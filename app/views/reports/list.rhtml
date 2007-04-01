@@ -6,7 +6,13 @@
           <tr>
             <td valign="top">
               <table id="reports" cellspacing=0 cellpadding=3>
-                <% if @column_headers %>
+
+
+                <% if @column_headers.size > 1 %>
+                  <% if @generated_report && @generated_report.id > 0 %>
+                <tr><td colspan=<%= @column_headers.keys.size + 1 %>><%= link_to "CSV", :action => "get_csv", :id => @generated_report.id %></td></tr>
+                  <% end %>
+
                 <tr>
                   <th class="row_header"><%= @column_headers['__'] %></th>
                   <% @column_headers.sort.each do |key,value| %>

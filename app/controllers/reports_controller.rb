@@ -184,6 +184,8 @@ class ReportsController < ApplicationController
   def list
     sql_filter = ""
     date_filter = ""
+    filename = "clockingit"
+
     if filter = params[:report]
       @type = filter[:type].to_i
       @range = filter[:range]
@@ -201,53 +203,69 @@ class ReportsController < ApplicationController
       task_severity = filter[:severity_id].to_i
       task_tags = filter[:tags]
 
+      filename << "_" + ["pivot", "audit", "timesheet"][@type-1]
+
       if customer_id.to_i > 0
         sql_filter = sql_filter + " AND work_logs.customer_id = #{customer_id}"
+        filename << "_" + Customer.find(customer_id).name.gsub(/ /, "-").downcase
       end
 
       if project_id.to_i > 0
         sql_filter = sql_filter + " AND work_logs.project_id = #{project_id}"
+        filename << "_" + Project.find(project_id).name.gsub(/ /, "-").downcase
       end
 
       if user_id.to_i > 0
         sql_filter = sql_filter + " AND work_logs.user_id = #{user_id}"
+        filename << "_" + User.find(user_id).name.gsub(/ /, "-").downcase
       end
-
-
 
 
       case @range.to_i
       when 0
-        # This Week
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
+        # Today
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + Time.now.at_midnight.strftime("%Y%m%d") + "-" + Time.now.strftime("%Y%m%d")
       when 1
         # This Week
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + Time.now.beginning_of_week.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
       when 2
         # Last Week
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(1.week.ago.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + 1.week.ago.beginning_of_week.strftime("%Y%m%d")
+        filename << "-" + Time.now.beginning_of_week.strftime("%Y%m%d")
       when 3
         # This Month
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "-" + Time.now.beginning_of_month.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
       when 4
         # Last Month
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + Time.now.last_month.beginning_of_month.strftime("%Y%m%d")
+        filename << "-" + Time.now.beginning_of_month.strftime("%Y%m%d")
       when 5
         # This Year
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "-" + Time.now.beginning_of_year.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
       when 6
         # Last Year
-        date_filter = " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + Time.now.last_year.beginning_of_year.strftime("%Y%m%d")
+        filename << "-" + Time.now.beginning_of_year.strftime("%Y%m%d")
       when 7
         if filter[:stop_date] && filter[:start_date].length > 1
           start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
-          date_filter = date_filter + " AND work_logs.started_at > '#{tz.utc_to_local(start_date).strftime("%Y-%m-%d 00:00:00")}'"
+          date_filter = date_filter + " AND work_logs.started_at > '#{tz.local_to_utc(start_date).strftime("%Y-%m-%d 00:00:00")}'"
         end
 
         if filter[:stop_date] && filter[:stop_date].length > 1
           end_date = DateTime.strptime( filter[:stop_date], session[:user].date_format ).to_time
-          date_filter = date_filter + " AND work_logs.started_at < '#{tz.utc_to_local(end_date).strftime("%Y-%m-%d 23:59:59")}'"
+          date_filter = date_filter + " AND work_logs.started_at < '#{tz.local_to_utc(end_date).strftime("%Y-%m-%d 23:59:59")}'"
         end
+
+        filename << "_" + start_date.strftime("%Y%m%d") if start_date
+        filename << "_" + end_date.strftime("%Y%m%d") if end_date
 
       end
 
@@ -364,11 +382,22 @@ class ReportsController < ApplicationController
 
     end
 
+    csv = create_csv if @column_headers.size > 1
+    unless csv.nil? || csv.empty?
+      @generated_report = GeneratedReport.new
+      @generated_report.company = session[:user].company
+      @generated_report.user = session[:user]
+      @generated_report.filename = filename + ".csv"
+      @generated_report.report = csv
+      @generated_report.save
+    else
+      flash['notice'] = "Empty report, log more work!"
+    end
 
   end
 
-  def get_csv
-    self.list
+  def create_csv
+    csv_string = ""
     if @column_headers
       csv_string = FasterCSV.generate( :col_sep => ";" ) do |csv|
 
@@ -395,11 +424,20 @@ class ReportsController < ApplicationController
         end
 
       end
-      filename = "report.csv"
-      send_data(csv_string,
-                :type => 'text/csv; charset=utf-8; header=present',
-                :filename => filename)
     end
+    csv_string
+  end
+
+  def get_csv
+    @report = GeneratedReport.find(params[:id], :conditions => ["user_id = ? AND company_id = ?", session[:user].id, session[:user].company_id])
+    if @report
+      send_data(@report.report,
+                :type => 'text/csv; charset=utf-8; header=present',
+                :filename => @report.filename)
+    else
+      redirect_to :action => 'list'
+    end
+
   end
 
   def get_projects
