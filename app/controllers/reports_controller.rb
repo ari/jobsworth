@@ -382,7 +382,7 @@ class ReportsController < ApplicationController
 
     end
 
-    csv = create_csv if @column_headers.size > 1
+    csv = create_csv if @column_headers && @column_headers.size > 1
     unless csv.nil? || csv.empty?
       @generated_report = GeneratedReport.new
       @generated_report.company = session[:user].company
