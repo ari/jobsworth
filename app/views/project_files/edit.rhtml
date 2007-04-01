@@ -1,0 +1,8 @@
+<fieldset>
+<legend>Editing Project File</legend>
+
+<%= start_form_tag :action => 'update', :id => @project_files %>
+  <%= render_partial "form_edit" %>
+  <%= submit_tag "Edit", :class => 'nolabel' %>
+<%= end_form_tag %>
+</fieldset>

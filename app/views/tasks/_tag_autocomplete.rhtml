@@ -1,0 +1,7 @@
+<ul class="tag_autocomplete">
+<% for tag in @tags do -%>
+  <li class="tag">
+    <span class="tag_name"><%=h tag[0] %></span> <span class="tag_count">(<%=h tag[1] %>)</span>
+  </li>
+<% end -%>
+</ul>

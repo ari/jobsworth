@@ -1,0 +1,16 @@
+<% for comment in comments %>
+ <li class="comment" id="comment_<%= comment.id %>">
+  <small><strong><%= "#{tz.utc_to_local(comment.started_at).strftime("%H:%M %d/%m")} - #{comment.user.username}" %></strong></small>
+  <pre><%= word_wrap(comment.body, 70) %></pre>
+ </li>
+<% end %>
+ <li class="comment" id="comment_add_<%= @params[:id] %>">
+    <%= form_remote_tag :url => { :action => 'ajax_add_comment', :id => "#{@params[:id]}" },
+                        :loading => "Element.show('loading');",
+                        :complete => "Element.hide('loading');"
+    %>
+  New message: <br/>
+  <textarea cols="50" rows="5" name="body"></textarea><br />
+  <input type="submit" value="Create"> or <%=link_to_function('Close', "Element.hide('comments_#{@params['id']}')") %>
+  <%= end_form_tag %>
+ </li>

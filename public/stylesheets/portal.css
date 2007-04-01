@@ -1,0 +1,123 @@
+/* Neutralize styling:
+   Elements we want to clean out entirely: */
+html, body, form, fieldset {
+        margin: 0;
+        padding: 0;
+        font: 100%/120% Arial, Verdana, Helvetica, sans-serif;
+}
+
+/* Neutralize styling:
+   Elements with a vertical margin: */
+h1, h2, h3, h4, h5, h6, p, pre,
+blockquote, ul, ol, dl, address {
+        margin: 1em 0;
+        padding: 0;
+}
+
+/* Apply left margin:
+   Only to the few elements that need it: */
+li, dd, blockquote {
+        margin-left: 1em;
+}
+
+/* Miscellaneous conveniences: */
+form label {
+        cursor: pointer;
+}
+fieldset {
+        border: none;
+}
+input, select, textarea {
+        font-size: 100%;
+}
+
+body {
+  margin:0;
+  padding:0;
+  background:#040404 url(/images/portal/bkg.jpg) left top repeat-x;
+  color:#FCFCFC;
+  font-size: 13px;
+}
+
+#container {
+  width:950px;
+  position:relative;
+  left:50%;
+  margin-left:-475px;
+  font-size: 122%;
+  line-height: 19px;
+}
+
+#container a {
+ }
+
+input:focus, textarea:focus { border: 1px solid #FC0; }
+input, textarea, select { border: 1px solid #AAA; }
+
+a {
+  color: #FCFCFC;
+  text-decoration: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+ }
+a:hover {
+}
+
+#menu a {
+  font-size: 136%;
+  display: inline;
+}
+
+#menu img {
+}
+
+#box {
+  font-size: 24px;
+}
+
+li {
+  font-size: smaller;
+
+}
+
+ul {
+  padding-left: 5px;
+  margin-left: 10px;
+}
+
+.small {
+  font-weight:normal;
+  font-size:70%;
+}
+#footer {
+  text-align:left;
+  font-size:11px;
+  color: #777;
+}
+
+#footer a {
+  color:#fba105;
+  font-size: 11px;
+}
+
+#notice {
+  margin-top: 2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-bottom: 1em;
+  border: 2px solid red;
+  width: 563px;
+}
+
+fieldset {
+  border: 1px solid #666666;
+  color: #666666;
+}
+
+legend {
+  font-size: 14px;
+  font-weight: bold;
+  color: #666666;
+}
+

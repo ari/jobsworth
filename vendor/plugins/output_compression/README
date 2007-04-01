@@ -1,0 +1,4 @@
+Contributors:
+  Tom Fakes    - Initial simple implementation, plugin implementation
+  Dan Kubb     - Handle multiple encodings, correct response headers
+  Sebastian    - Handle component requests

@@ -1,0 +1,12 @@
+<% if session[:user].can?(task.project, 'work') %>
+<% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
+<%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
+<% else -%>
+<%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
+                        :url => {:controller => 'tasks', :action => 'start_work_edit_ajax', :id => task },
+                        :loading => "Element.show('loading');",
+                        :complete => "Element.hide('loading');") -%>
+<% end -%>
+<% end -%>
+<%= task.issue_num %> <%= task.name %> (<%= "#{task.status_type}" %>) <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
+

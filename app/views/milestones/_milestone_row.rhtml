@@ -1,0 +1,32 @@
+  <tr id="milestone_<%=milestone.id%>">
+  <td class="milestone" nowrap style="padding-top: 1em;">
+ <% if milestone.total_tasks > 0.0 %>
+  <div style="background-color: #CCCCCC;"><div class="milestonebar" style="background-image:url(/images/red_pixel.gif);height: 14px; width: <%= number_to_percentage( milestone.percent_complete, :precision => 0 ) %>">
+      <div style="padding-left:0.5em;">
+      <strong><%=h milestone.name %></strong>
+        - <%= number_to_percentage( milestone.percent_complete, :precision => 1 ) %> [<%= number_with_precision(milestone.completed_tasks,0)%> of <%= number_with_precision(milestone.total_tasks,0) %> tasks done]
+</div></div></div>
+  <% else %>
+  <div style="background-color: #CCCCCC;"><div class="milestonebar" style="background-image:url(/images/red_pixel.gif);height: 14px; width:0%">
+        <div style="padding-left:0.5em;">
+      <strong><%=h milestone.name %></strong>
+        - 0% [0 of 0 tasks done]
+</div></div></div>
+  <% end %>
+    </td>
+  </tr>
+
+  <tr>
+    <td class="milestone">
+      <% if milestone.due_at != nil %>
+      <small><%= tz.utc_to_local(milestone.due_at).strftime("%A, %d %B %Y") %></small>
+      <% end %>
+      <% if milestone.description != "" %> - <small><%=h milestone.description %> </small> <% end %>
+<br />
+<small>
+          <%= link_to '[Edit]', :action => 'edit', :id => milestone %> |
+          <%= link_to '[Delete]', {:action => 'destroy', :id => milestone}, :confirm => "Really delete #{milestone.name}?" %>
+</small>
+    </td>
+</tr>
+

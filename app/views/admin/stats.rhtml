@@ -1,0 +1,76 @@
+<table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
+  <tr>
+    <td class="page_header" colspan="2">
+      Admin / Stats
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2"><%= link_to "[Admin]", :action => "index" %> | <%= link_to "[News]", :action => "news" %></td>
+  </tr>
+  <tr>
+    <th colspan="2" align="left">Active Users</th>
+  </tr>
+  <tr><td>Now: <%= @logged_in_now %></td><td>&nbsp;</td></tr>
+  <tr>
+    <td>Today: <%= @logged_in_today %></td><td>This Week: <%= @logged_in_this_week %></td>
+  </tr>
+  <tr>
+    <td>This Month: <%= @logged_in_this_month %></td><td>This Year: <%= @logged_in_this_year %></td>
+  </tr>
+  <tr>
+    <th colspan="2" align="left">User Registrations</th>
+  </tr>
+  <tr>
+    <td>Today: <%= @users_today %></td><td>Yesterday: <%= @users_yesterday %></td>
+  </tr>
+  <tr>
+    <td>This Week: <%= @users_this_week %></td><td>Last Week: <%= @users_last_week %></td>
+  </tr>
+  <tr>
+    <td>This Month: <%= @users_this_month %></td><td>Last Month: <%= @users_last_month %></td>
+  </tr>
+  <tr>
+    <td>This Year: <%= @users_this_year %></td><td>Total: <%= @users_total %></td>
+  </tr>
+  
+  <tr>
+    <th colspan="2" align="left">Projects</th>
+  </tr>
+  <tr>
+    <td>Today: <%= @projects_today %></td><td>Yesterday: <%= @projects_yesterday %></td>
+  </tr>
+  <tr>
+    <td>This Week: <%= @projects_this_week %></td><td>Last Week: <%= @projects_last_week %></td>
+  </tr>
+  <tr>
+    <td>This Month: <%= @projects_this_month %></td><td>Last Month: <%= @projects_last_month %></td>
+  </tr>
+  <tr>
+    <td>This Year: <%= @projects_this_year %></td><td>Total: <%= @projects_total %></td>
+  </tr>
+
+  <tr>
+    <th colspan="2" align="left">Tasks</th>
+  </tr>
+  <tr>
+    <td>Today: <%= @tasks_today %></td><td>Yesterday: <%= @tasks_yesterday %></td>
+  </tr>
+  <tr>
+    <td>This Week: <%= @tasks_this_week %></td><td>Last Week: <%= @tasks_last_week %></td>
+  </tr>
+  <tr>
+    <td>This Month: <%= @tasks_this_month %></td><td>Last Month: <%= @tasks_last_month %></td>
+  </tr>
+  <tr>
+    <td>This Year: <%= @tasks_this_year %></td><td>Total: <%= @tasks_total %></td>
+  </tr>
+  
+  </table>
+  <br />
+  <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
+  <tr><th colspan="5">Last Registered Users</th></tr>
+  <tr><th>Name</th><th>Company</th><th>Email</th><th>Created</th><th>Timezone</th></tr>
+  <% for u in @last_10_users %>
+  <tr><td><%= u.name %></td><td><%= u.company.name %></td><td><%= u.email %></td><td><%= tz.utc_to_local(u.created_at).strftime("%d/%m %Y %H:%M") %></td><td><%= u.time_zone %></td></tr>
+  <% end %>
+  </table>  

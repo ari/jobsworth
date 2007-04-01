@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<siteinfo xmlns="http://a9.com/-/spec/siteinfo/1.0/">
+  <webmenu>
+    <name>Clocking IT</name>
+    <menu>
+      <item>
+        <text>Clocking IT</text>
+        <url>http://www.clockingit.com</url>
+      </item>
+      <item>
+        <text>Forum</text>
+        <url>http://forum.clockingit.com</url>
+      </item>
+    </menu>
+  </webmenu>
+</siteinfo>

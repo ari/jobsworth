@@ -1,0 +1,74 @@
+<% if request.xhr? %>
+    <%= form_remote_tag :url => { :action => 'update_ajax', :id => @task } ,
+                        :loading => "Element.show('loading');",
+                        :complete => "Element.hide('loading');"
+    %>
+<% else -%>
+  <%= start_form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) %>
+<% end -%>
+  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
+    <tr>
+      <td align="left" colspan="3" class="page_header" id="task_page_header">
+          <%= render :partial => "task_edit_header", :locals => {:task => @task} %>
+      </td>
+    </tr>
+    <tr><td colspan="3" class="tasks_updated_by"><span class="optional">
+    Created <%= tz.utc_to_local(@task.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.created_at %> <%= "by #{User.find(@task.creator_id).name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
+     <% if @task.updated_at && @task.updated_at != @task.created_at %> - Last Updated <%= tz.utc_to_local(@task.updated_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.updated_at %> <%= "by #{User.find(@task.updated_by_id).name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
+</table>
+<table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0">
+<%= render_partial "form" %>
+<tr><td colspan="1" valign="top">
+  <%= submit_tag "Save", :class => "nolabel" %> <span class="optional">and</span>
+
+<%
+
+ options = []
+ options << ["Leave Open", 0] if @task.status == 0
+ options << ["Revert to Open", 0] if @task.status != 0
+ options << ["Set in Progress", 1] if @task.status == 0
+ options << ["Leave as in Progress", 1] if @task.status == 1
+ options << ["Close", 2] if @task.status == 0 || @task.status == 1
+ options << ["Leave Closed", 2] if @task.status == 2
+ options << ["Set as Won't Fix", 3] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Won't Fix", 3] if @task.status == 3
+ options << ["Set as Invalid", 4] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Invalid", 4] if @task.status == 4
+ options << ["Set as Duplicate", 5] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Duplicate", 5] if @task.status == 5
+
+ can_close = {:disabled => "disabled"} unless session[:user].can?( @task.project, 'close' )
+ can_close ||= {}
+%>
+
+<%= select 'task', 'status', options, {:selected => @task.status}, can_close %>
+<%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %>Send notification emails<br/>
+
+</td></tr>
+</table>
+<%= end_form_tag %>
+<script type="text/javascript">
+$('comment').focus();
+</script>
+
+<br/><br/>
+
+  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
+    <tr><td colspan="3">&nbsp;</td></tr>
+    <tr>
+      <td align="left" colspan="3" class="page_header">History</td>
+    </tr>
+    <tr><td colspan="3">&nbsp;</td></tr>
+    <%  day = 0
+        for log in @logs
+          if day != (tz.utc_to_local(log.started_at)).yday
+             day = (tz.utc_to_local(log.started_at)).yday
+           %>
+                <tr>
+                  <td class="log_header" colspan="3"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %>
+                  </td>
+                </tr>
+        <% end %>
+        <%= render :partial => 'activities/log_row', :locals => {:log => log} %>
+    <% end %>
+  </table>

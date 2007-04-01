@@ -1,0 +1,9 @@
+<fieldset>
+<legend>New Client</legend>
+
+<%= start_form_tag :action => 'create' %>
+  <%= render_partial "form" %>
+  <%= submit_tag "Create", :class => "nolabel" %>
+<%= end_form_tag %>
+
+</fieldset>

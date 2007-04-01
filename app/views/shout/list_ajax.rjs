@@ -1,0 +1,4 @@
+unless @shouts.nil?
+  page.replace_html('shouts',:partial => "shouts", :locals => { :shouts => @shouts })
+  page.visual_effect( :highlight, "shout_#{@shouts.first.id}", :duration => 2.0 )
+end

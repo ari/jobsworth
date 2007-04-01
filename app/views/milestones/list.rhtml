@@ -1,0 +1,72 @@
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td style="padding-left: 1em;" valign="top">
+        <table cellpadding=0 width=100% cellspacing=0 class="content">
+          <tr>
+            <td align="left" class="page_header">
+              <%= @session[:project].name if @session[:project] %> Milestones
+            </td>
+          </tr>
+          <% for milestone in @milestones %>
+          <%= render_partial 'milestone_row', { :milestone => milestone } %>
+          <% end %>
+
+          <tr>
+            <td class="milestone" style="padding-top: 1em;">
+              <strong>Unassigned</strong>
+              <%
+              completed = Task.count( ["project_id = ? AND completed_at is not null AND milestone_id is null ", @session[:project].id] ) * 1.0
+              total = Task.count( ["project_id = ? AND milestone_id is null", @session[:project].id] ) * 1.0
+              percent = (completed / total) * 100.0
+              percent = 0.0 if total == 0.0
+              if total > 0.0
+              %>
+              - <%= number_to_percentage( percent, :precision => 1 ) %> [<%= number_with_precision(completed,0)%> of <%= number_with_precision(total,0) %> tasks done]<br />
+              <% end %>
+            </td>
+          </tr>
+          <tr><td class="milestone" width="100%"><div class=milestonebar><img src="/images/red_pixel.gif" height="14px" width="<%= number_to_percentage( percent, :precision => 1 ) %>"></div></td></tr>
+          <tr>
+            <td class="milestone">
+              <small>Dummy milestone with all unassigned tasks.</small>
+            </td>
+          </tr>
+        <tr><td class="milestone"> <br /> <%= link_to 'New milestone', :action => 'new' %></td></tr>
+
+        </table>
+      </td>
+      <td width="5%" valign="top" style="padding-left:1em;">
+        <%
+
+    @databinder = lambda do |d|
+      cell_text = "#{d.mday}<br />"
+      cell_attrs = {:class => 'day', :align => 'center'}
+
+      if Time.now.utc.to_date == d
+        cell_attrs = {:class => 'dayToday'}
+      end
+
+      @milestones.each do |m|
+#    cell_text << debug(d) + "==" + debug(m.due_at) + ":" + debug(m.due_at == d)
+        if m.due_at != nil && m.due_at.to_date == d
+          if cell_attrs[:title] != nil
+             cell_attrs[:title] += "<br/>" + h(m.name)
+          else
+            cell_attrs[:title] = h(m.name)
+          end
+          cell_attrs[:class] = 'dayDue'
+        end
+      end
+      [cell_text, cell_attrs]
+    end
+
+
+         today = tz.now
+        %>
+
+        <%= show_calendar(:year => today.year, :month => today.month, &@databinder) %><br />
+        <%= show_calendar(:year => today.year, :month => today.month + 1, &@databinder) %><br />
+
+      </td>
+    </tr>
+  </table>

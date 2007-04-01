@@ -1,0 +1,125 @@
+<%= error_messages_for 'page' %>
+
+<div id="markup_info">
+<table width="100%" cellspacing=0 cellpadding=0>
+<tr><td valign="top">
+
+<!--[form:page]-->
+<p><label for="page_project_id">Project</label><%= select 'page', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ c.name, c.id ] }, :selected => @page.project_id %></p>
+<p><label for="page_name">Name</label><%= text_field 'page', 'name'  %></p>
+
+<p><label for="page_body">Body</label><%= text_area 'page', 'body'  %></p>
+<!--[eoform:page]-->
+<%= submit_tag "Save", :class => 'nolabel' %>
+</td>
+
+<td align="left" width="200px">
+<p>For more information and examples, check out <a href="http://hobix.com/textile/quick.html" target="_new">Textile Quick Reference</a></p>
+<table align=left cellspacing=0 cellpadding=0 style="padding: 0px; margin: 0px;">
+<tr><td colspan=2><pre>A single paragraph.<br /><br />Followed by another.</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><p>A single paragraph.</p>
+
+        <p>Followed by another.</p></td>
+</tr>
+<tr><td colspan=2><pre>I am &lt;b&gt;very&lt;/b&gt; serious.<br /><br />&lt;pre&gt;<br />  I am &lt;b&gt;very&lt;/b&gt; serious.<br />&lt;/pre&gt;</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><p>I am <b>very</b> serious.</p>
+<pre>
+  I am &lt;b&gt;very&lt;/b&gt; serious.
+</pre></td>
+</tr>
+<tr><td colspan=2><pre>I spoke.<br />And none replied.</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><p>I spoke.
+And none replied.</p></td></tr>
+<tr><td colspan=2><pre>one(TM), two(R), three(C).</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><p>one&#8482;, two&#174;, three&#169;.</p></td></tr>
+
+<tr><td colspan=2><pre>h1. Header 1</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><h1>Header 1</h1></td></tr>
+<tr><td colspan=2><pre>h2. Header 2</pre></td></tr>
+<td>&rarr;</td><td class='example2'><h2>Header 2</h2></td></tr>
+<tr><td colspan=2><pre>h3. Header 3</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><h3>Header 3</h3></td></tr>
+<tr><td colspan=2><pre>An old text<br /><br />bq. A block quotation.<br /><br />Any old text</pre></td></tr>
+<tr><td>&rarr;</td><td class='example2'><p>An old text</p>
+
+        <blockquote>
+                <p>A block quotation.</p>
+        </blockquote>
+
+        <p>Any old text</p></td></tr>
+<tr><td colspan=2><pre>This is covered elsewhere[1].</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>This is covered elsewhere<sup><a href="#fn1">1</a></sup>.</p></td></tr>
+<tr><td colspan=2><pre>fn1. Down here, in fact.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p id="fn1"><sup>1</sup> Down here, in fact.</p></td></tr>
+
+<tr><td colspan=2><pre>I _believe_ every word.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I <em>believe</em> every word.</p></td></tr>
+<tr><td colspan=2><pre>And then? She *fell*!</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>And then? She <strong>fell</strong>!</p></td></tr>
+<tr><td colspan=2><pre>I __know__.<br />I **really** __know__.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I <i>know</i>.
+I <b>really</b> <i>know</i>.</p></td></tr>
+
+<tr><td colspan=2><pre>??Cat's Cradle?? by Vonnegut</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p><cite>Cat&#8217;s Cradle</cite> by Vonnegut</p></td></tr>
+<tr><td colspan=2><pre>Convert with @r.to_html@</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>Convert with <code>r.to_html</code></p></td></tr>
+<tr><td colspan=2><pre>I'm -sure- not sure.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I&#8217;m <del>sure</del> not sure.</p></td></tr>
+
+<tr><td colspan=2><pre>You are a +pleasant+ child.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>You are a <ins>pleasant</ins> child.</p></td></tr>
+<tr><td colspan=2><pre>a ^2^ + b ^2^ = c ^2^</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>a <sup>2</sup> + b <sup>2</sup> = c <sup>2</sup></p></td></tr>
+<tr><td colspan=2><pre>log ~2~ x</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>log <sub>2</sub> x</p></td></tr>
+
+<tr><td colspan=2><pre>I'm %unaware% of most soft drinks.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I&#8217;m <span>unaware</span> of most soft drinks.</p></td></tr>
+<tr><td colspan=2><pre>I'm %{color:red}unaware%<br />of most soft drinks.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I&#8217;m <span style="color:red;">unaware</span>
+of most soft drinks.</p></td></tr>
+<tr><td colspan=2><pre># A first item<br /># A second item<br /># A third</pre></td></tr><tr><td>&rarr;</td><td class='example2'><ol>
+        <li>A first item</li>
+
+                <li>A second item</li>
+                <li>A third</li>
+        </ol></td></tr>
+<tr><td colspan=2><pre># Fuel could be:<br />## Coal<br />## Gasoline<br />## Electricity<br /># Humans need only:<br />## Water<br />## Protein</pre></td></tr><tr><td>&rarr;</td><td class='example2'><ol>
+        <li>Fuel could be:
+        <ol>
+
+        <li>Coal</li>
+                <li>Gasoline</li>
+                <li>Electricity</li>
+        </ol>
+        </li>
+                <li>Humans need only:
+        <ol>
+        <li>Water</li>
+
+                <li>Protein</li>
+        </ol></li>
+        </ol></td></tr>
+<tr><td colspan=2><pre>* A first item<br />* A second item<br />* A third</pre></td></tr><tr><td>&rarr;</td><td class='example2'><ul>
+        <li>A first item</li>
+                <li>A second item</li>
+
+                <li>A third</li>
+        </ul></td></tr>
+<tr><td colspan=2><pre>* Fuel could be:<br />** Coal<br />** Gasoline<br />** Electricity<br />* Humans need only:<br />** Water<br />** Protein</pre></td></tr><tr><td>&rarr;</td><td class='example2'><ul>
+        <li>Fuel could be:
+        <ul>
+        <li>Coal</li>
+
+                <li>Gasoline</li>
+                <li>Electricity</li>
+        </ul>
+        </li>
+                <li>Humans need only:
+        <ul>
+        <li>Water</li>
+                <li>Protein</li>
+
+        </ul></li>
+        </ul></td></tr>
+<tr><td colspan=2><pre>I searched "Google":http://google.com.</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I searched <a href="http://google.com">Google</a>.</p></td></tr>
+<tr><td colspan=2><pre>I am crazy about "Hobix":hobix<br />and "it's":hobix "all":hobix I ever<br />"link to":hobix!<br /><br />[hobix]http://hobix.com<br /></pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>I am crazy about <a href="http://hobix.com">Hobix</a>
+
+and <a href="http://hobix.com">it&#8217;s</a> <a href="http://hobix.com">all</a> I ever
+<a href="http://hobix.com">link to</a>!</p></td></tr>
+<tr><td colspan=2><pre>!http://www.clockingit.com/images/clock.gif!</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p><img src="http://www.clockingit.com/images/clock.gif" alt="" /></p></td></tr>
+<tr><td colspan=2><pre>We use CSS(Cascading Style Sheets).</pre></td></tr><tr><td>&rarr;</td><td class='example2'><p>We use <acronym title="Cascading Style Sheets">CSS</acronym>.</p></td></tr>
+</td></tr>
+</table>
+</td>
+</tr>
+</table>
+</div>

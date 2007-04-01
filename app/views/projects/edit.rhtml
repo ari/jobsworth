@@ -1,0 +1,34 @@
+  <table width="100%">
+    <tr>
+      <td valign="top">
+        <fieldset>
+          <legend>Edit Project</legend>
+
+          <%= start_form_tag :action => 'update', :id => @project %>
+          <%= render_partial "form" %>
+          <%= submit_tag "Edit", :class => 'nolabel' %>
+          <%= end_form_tag %>
+          <br />
+            <% if @project.user_id == session[:user].id %>
+            <div style="float: right;"><%= link_to ("Delete Project", {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
+            <% end %>
+            <% if session[:user].can?( @project, 'milestone' ) %>
+            <div style="float:left;"><%= link_to "New Milestone", {:controller => 'milestones', :action => 'new', :project_id => @project}  %></div>
+            <% end %>
+        </fieldset>
+      </td>
+    </tr>
+
+<% if session[:user].can?( @project, 'grant' ) %>
+    <tr>
+      <td valign="top">
+        <fieldset>
+          <legend>Access To Project</legend>
+          <div id="permission_list"><%= render :partial => "permission_list" %></div>
+        </fieldset>
+      </td>
+    </tr>
+<% end %>
+
+  </table>
+

@@ -1,0 +1,9 @@
+<fieldset>
+<legend>Editing milestone</legend>
+
+<%= start_form_tag :action => 'update', :id => @milestone %>
+  <%= render_partial 'form' %>
+  <%= submit_tag 'Edit', :class => 'nolabel' %>
+<%= end_form_tag %>
+[<%= link_to "Delete Milestone", {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %>]
+</fieldset>

@@ -1,0 +1,36 @@
+<fieldset>
+<legend>Edit Log Entry</legend>
+
+<%= start_form_tag :action => 'save_log', :id => @log %>
+  <%= render_partial "form_edit_log" %>
+<%
+
+ options = []
+ options << ["Leave Open", 0] if @task.status == 0
+ options << ["Revert to Open", 0] if @task.status != 0
+ options << ["Set in Progress", 1] if @task.status == 0
+ options << ["Leave as in Progress", 1] if @task.status == 1
+ options << ["Close", 2] if @task.status == 0 || @task.status == 1
+ options << ["Leave Closed", 2] if @task.status == 2
+ options << ["Set as Won't Fix", 3] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Won't Fix", 3] if @task.status == 3
+ options << ["Set as Invalid", 4] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Invalid", 4] if @task.status == 4
+ options << ["Set as Duplicate", 5] if @task.status == 0 || @task.status == 1
+ options << ["Leave as Duplicate", 5] if @task.status == 5
+
+ can_close = {:disabled => "disabled"} unless session[:user].can?( @task.project, 'close' )
+ can_close ||= {}
+
+%>
+<p><label for="task_status">Status</label><%= select 'task', 'status', options, {:selected => @task.status}, can_close %></p>
+  <%= submit_tag "Save", :class => 'nolabel' %>
+
+
+<%= end_form_tag %>
+<br />
+<% if @log.user_id == session[:user].id %>
+<%= link_to "Delete Log Entry", {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => "Really delete this log entry?"  %>
+<% end %>
+
+</fieldset>

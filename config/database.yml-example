@@ -1,0 +1,20 @@
+development:
+  adapter: mysql
+  database: cit_dev
+  host: localhost
+  username: cit
+  password: cit
+
+test:
+  adapter: mysql
+  database: cit_test
+  host: localhost
+  username: cit
+  password: cit
+
+production:
+  adapter: mysql
+  database: cit
+  host: localhost
+  username: cit
+  password: cit

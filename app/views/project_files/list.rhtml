@@ -1,0 +1,35 @@
+
+<table cellspacing=0 cellpadding=0 class="content" width=100% style="margin-left: 1em; margin-right:1em;">
+    <tr>
+      <td colspan=6 align=left class="page_header"><%=session[:project].name if session[:project] %> Files</td></tr>
+<tr><td colspan=6>&nbsp;</td></tr>
+  <tr>
+<% 
+  cols = 0
+  first_row = 1
+if @project_files
+  for project_files in @project_files 
+  if cols > 4
+     cols = 0
+     first_row = 0
+  %>
+</tr>
+<tr>
+<% end
+    cols += 1
+%>
+    <%= render_partial 'file_cell', {:project_files => project_files}%>
+<% end %>
+
+<% while cols <= 4 && first_row == 0 
+    cols += 1
+%>
+    <td>&nbsp;</td>
+<% end %>
+<% end %>
+  </tr>
+  <tr><td colspan=6>&nbsp;</td></tr>
+  <tr><td colspan=6><%= link_to '[New File]', :action => 'new' %></td></tr>
+  </table>
+
+

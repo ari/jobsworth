@@ -1,0 +1,16 @@
+if session[:history] && session[:history][0] == '/search/search'
+  page.replace "task_#{@task.id}", :partial => "search/search_task", :locals => {:task => @task}
+  page.visual_effect(:highlight, "task_#{@task.id}", :duration => 2.0)
+else
+  page.visual_effect(:fade, "task_#{@task.id}", :duration => 1.0)
+end
+
+if session[:history] && session[:history][0] == '/activities/list'
+  page.replace_html "top_tasks", :partial => "tasks/task_list", :locals => {:tasks => @tasks}
+  page.replace_html "new_tasks", :partial => "tasks/task_list", :locals => {:tasks => @new_tasks}
+  page.replace_html "recent_work", :partial => "activities/recent_work"
+  page.replace_html "project_overview", :partial => "activities/project_overview"
+end
+
+page.call "UpdateDnD"
+

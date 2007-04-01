@@ -1,0 +1,17 @@
+<%= error_messages_for 'user' %>
+
+<!--[form:user]-->
+<p><label for="user_time_zone">Location</label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
+<p><label for="user_time_format">Time Format</label><%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
+<p><label for="user_date_format">Date Format</label><%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
+<p><label for="user_option_tracktime">Track Time</label><%= check_box 'user', 'option_tracktime' %></p>
+<p><label for="user_option_externalclients">Use External Clients</label><%= check_box 'user', 'option_externalclients' %></p>
+<p><label for="user_option_showcalendar">Show Tooltips</label><%= check_box 'user', 'option_tooltips' %></p>
+<p><label for="user_send_notifications">Send Notifications</label><%= check_box 'user', 'send_notifications' %></p>
+<p><label for="user_receive_notifications">Receive Notifications</label><%= check_box 'user', 'receive_notifications' %></p>
+
+<br>
+
+<!--[eoform:user]-->
+
+

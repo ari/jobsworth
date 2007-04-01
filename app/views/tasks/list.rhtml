@@ -1,0 +1,132 @@
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <td style="padding-left: 1em;" valign="top">
+      <table cellpadding=0 width="99%" cellspacing="0" class="content">
+        <tr>
+          <td align="left" class="page_header">
+            Tasks <%= " / #{session[:view].name}" unless session[:view].nil? %>
+          </td>
+        </tr>
+        <tr>
+          <td align="left" style="padding-left:25px; padding-top:0.5em;" nowrap id="tasks_filter">
+            <%
+            @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
+            if session[:filter_customer].to_i > 0
+              @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]}"]).collect {|p| [p.name, p.id.to_s]}
+            else
+              @projects = User.find(session[:user].id).projects.collect {|p| [p.name, p.id.to_s]}
+            end
+            if session[:filter_project].to_i > 0
+              @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
+              @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ?", session[:user].company_id, session[:filter_project]]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
+            else
+              @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
+              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
+            end
+
+            filter_count = 0
+            if session[:view].nil?
+
+            %>
+            <%= start_form_tag( :controller => 'tasks', :action => 'filter' ) %>
+
+
+            <% if @clients.size > 1 && false %>
+            <select name="filter_customer" id="filter_customer" onchange="javascript:document.forms[1].submit();">
+              <% @clients = [["[Any Client]", "0"]] + @clients  %>
+              <%= options_for_select @clients, session[:filter_customer] %>
+            </select>
+            <%
+              filter_count += 1
+              end
+              %>
+
+            <% if @projects.size > 1 %>
+            <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
+              <% @projects = [["[Any Project]", "0"]] + @projects  %>
+              <%= options_for_select @projects, session[:filter_project] %>
+            </select>
+            <%
+              filter_count += 1
+              end
+              %>
+
+            <% if @users.size > 1 %>
+            <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
+              <% @users = [["[Any User]", "0"]] + @users + [["Unassigned", "-1"]] %>
+              <%= options_for_select @users, session[:filter_user] %>
+            </select>
+            <%
+              filter_count += 1
+              end
+              %>
+            <% if filter_count > 2 %>
+              <br />
+            <% filter_count = 0
+                end %>
+
+            <% if @milestones.size > 0 %>
+            <select name="filter_milestone" id="filter_milestone" onchange="javascript:document.forms[1].submit();">
+              <% @milestones = [["[Any Milestone]", "0"]] + @milestones + [["Unassigned", "-1"]] %>
+              <%= options_for_select @milestones, session[:filter_milestone] %>
+            </select>
+            <%
+              filter_count += 1
+              end
+              %>
+            <% if filter_count > 2 %>
+              <br />
+            <% filter_count = 0
+                end %>
+
+            <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
+              <%
+                 @status = [["[Any Status]", "-1"],["Open", "0"],["In Progress", "1"],["Closed", "2"],["Won't Fix", "3"],["Invalid", "4"],["Duplicate", "5"],["Archived", "-2"]]
+              %>
+              <%= options_for_select @status, session[:filter_status] %>
+            </select>
+
+            <input type="checkbox" name="group_tags" id="group_tags" value="1" <%= session[:group_tags].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> Group Tags
+
+            <span class="optional"><small><%= link_to("[Save as View]", {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></small></span>
+            <%= end_form_tag %>
+            <% end %>
+          </td>
+        </tr>
+
+        <tr>
+          <td align=left id="task_list">
+            <%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
+          </td>
+        </tr>
+      </table>
+    </td>
+    <td valign="top" style="padding-right:0.5em;" id="tags">
+      <table cellpadding=0 width="99%" cellspacing="0" class="content">
+        <tr>
+          <td align="right" class="page_header" style="padding-left:0;padding-right:1em;">
+            Tags
+          </td>
+        </tr>
+      <% unless @selected_tags.empty? %>
+      <tr><td align="right"><span class="tag_active"><%= link_to '[All Tags]', :action => "list" %> </span></td></tr>
+      <% end %>
+
+      <% for tag in @all_tags
+         if @selected_tags.include?(tag[0]) && @selected_tags.size > 0
+            link = (@selected_tags - [tag[0]]).join(',')
+         else
+            link = (@selected_tags + [tag[0]]).join(',')
+         end
+
+         link = tag[0]
+
+      %>
+
+      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><%= link_to tag[0], :action => "list", :tag => link %> (<%= tag[1] %>)</span></td></tr>
+      <% end %>
+      </table>
+    </td>
+  </tr>
+</table>
+

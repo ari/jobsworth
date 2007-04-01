@@ -1,0 +1,35 @@
+<table class="content" width="100%" style="padding-left:1em; padding-right:1em;" cellpadding="0" cellspacing="0">
+    <tr>
+    <td colspan="4" class="page_header">
+      <%= session[:user].company.name %> Clients
+    </td>
+    </tr>
+  <tr><td colspan=4>&nbsp;</td></tr>
+  <tr>
+    <th>Name</th>
+    <th>Contact</th>
+    <th>Email</th>
+    <th></th>
+  </tr>
+
+<% for customer in @customers %>
+  <tr class="hoverrow">
+    <td><%=h customer.name %></td>
+    <td><%=h customer.contact_name %></td>
+    <td><%=h customer.contact_email %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => customer %>
+          <% if customer.name != 'Internal' && customer.name != session[:user].company.name  && customer.projects.size == 0 %>
+    | <%= link_to 'Delete', {:action => 'destroy', :id => customer}, :confirm => "Really delete #{customer.name}?" %>
+        <% end %> </td>
+  </tr>
+<% end %>
+  <tr><td colspan=4>&nbsp;</td></tr>
+  <tr><td colspan=4><%= link_to 'New Client', :action => 'new' %></td></tr>
+</table>
+
+<%= link_to "Previous page", { :page => @customer_pages.current.previous } if @customer_pages.current.previous %>
+<%= link_to "Next page", { :page => @customer_pages.current.next } if @customer_pages.current.next %>
+
+<br />
+
+

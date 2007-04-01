@@ -1,0 +1,173 @@
+<% unless @company.nil? %>
+<html>
+<head>
+<title><%= @company.name %> - ClockingIT</title>
+<%= stylesheet_link_merged :tt %>
+<style type="text/css">
+body {
+  background-color: #CCCCCC;
+}
+#menu {
+  color: #423f54;
+  font-size: 14px;
+  font-weight: bold;
+  background-color: #c5cacf;
+  padding: 0.5em;
+  border: 1px solid #b7b7b7;
+}
+
+a {
+  color: #566ca5;
+  text-decoration: none;
+  font-weight: bold;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+#container {
+  width:600px;
+  position:relative;
+  left:50%;
+  margin-left:-300px;
+  margin-top: 100px;
+}
+input:focus, textarea:focus { border: 1px solid #FC0; }
+input, textarea, select { border: 1px solid #AAA; }
+
+#notice {
+  width: 384px;
+  border: 2px solid red;
+  padding: 7px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+#footer {
+  text-align:center;
+  font-size:11px;
+  color: #999;
+}
+
+<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", @company.name, @company.id]) %>
+<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
+<%= @internal.css %>
+<% end %>
+</style>
+
+
+</head>
+
+<div id="container">
+
+  <div align="center">
+  <% if @flash[:notice] %><div id="notice" align="center"><%= @flash[:notice] %><% flash.clear %></div><% end %>
+  <table width="400px" style="border: 1px solid #666666;" cellpadding="0" cellspacing="0">
+  <tr><td align="center" id="menu" style="padding-top:2em;padding-bottom:2em;">
+  <% if @internal && @internal.binary_id.to_i > 0 %>
+  <%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
+  <% else %>
+  <span style="font-size:120%;"><%= @company.name %></span>
+  <% end %>
+  <br/>
+  </td></tr>
+  <tr><td style="padding-top:2em; background-color: #ffffff;">&nbsp;</td></tr>
+  <tr><td align="center" style="background-color: #ffffff;">
+  <%= start_form_tag( {:action => 'validate'}, {:id => "loginform"}) %>
+  <table border="0" cellpadding="2" cellspacing="0" style="width:150px;">
+  <tr><td align="right" style="padding-right:0.5em;"><label for="textfield"><strong>Username</strong></label></td><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="10" /></td></tr>
+  <tr><td align="right" style="padding-right:0.5em;"><label for="label"><strong>Password</strong></label></td><td><input type="password" id="password" name="user[password]" class="inputbox" size="10" alt="password" /></td></tr>
+  <tr><td>&nbsp;</td><td><input type="submit" name="Submit" class="button" value="Log in" /></td></tr>
+  <tr><td style="padding-top:1.5em;">&nbsp;</td><td><small><a href="/login/forgotten_password">Forgot Login?</a></small></td></tr>
+  </table>
+  <%= end_form_tag %>
+  </td></tr>
+  </table>
+  </div>
+</div>
+<div id="footer">
+&copy; 2005-2006 <a href="http://www.clockingit.com">Clocking IT</a> - by Erlend &amp; Ellen Simonsen (support@clockingit.com)<br/>
+</div>
+<script type="text/javascript">
+document.forms[0].username.focus();
+</script>
+
+
+<% else %>
+
+
+<div id="container">
+  <div style="padding-right:280px;height: 95px;"><a href="http://www.clockingit.com"><img id="logo" src="/images/portal/logo.jpg" border="0" style="padding-top:12px;" /></a></div>
+
+  <div id="menu" style="position:absolute;top:78px;width:100%;">
+  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com/login/signup">Sign Up</a></div>
+  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://forum.clockingit.com/">Forum</a></div>
+  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://wiki.clockingit.com/">Wiki</a></div>
+  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com/login/about">About</a></div>
+  <div style="float:right;background: url(/images/portal/menu_on.gif) left top repeat-x; padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com">Home</a></div>
+  </div>
+  <div style="clear: both;padding-bottom:2em;"></div>
+
+  <table width="900" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top" style="padding-right:2em;">
+
+      <div style="margin-top:10px; padding-top:5px; padding-left:10px;padding-right:10px; padding-bottom: 5px; background-color: #1c1c1c;">
+        <span style="color:#fba105">ClockingIT</span> is a free to use hosted application, keeping track of all your tasks and the time you spend on them.
+      </div>
+
+      <img src="/images/portal/features.gif" style="padding-top:1em;"/>
+
+      <ul>
+        <li>time tracking &amp; reports</li>
+        <li>milestones &amp; due dates</li>
+        <li>tagging &amp; search</li>
+        <li>timeline &amp; activity log</li>
+        <li>notifications & rss</li>
+        <li>no restrictions or limits</li>
+      </ul>
+
+      <div align="center" style="padding-top:1em;"><img src="/images/portal/button.gif" /></div>
+      <div style="margin-top:10px; padding-top:0; padding-left:10px;padding-right:10px;"><small><span style="color:#fba105">ClockingIT</span> was created for fun, not profit, using Ruby on Rails.</small></div>
+      <div style="margin-top:10px; padding-top:0; padding-left:10px;padding-right:10px;"><small>It is not currently available for download, but it will be at a later stage.</small></div>
+
+      <div style="margin-top:10px; padding-top:5px; padding-left:10px;padding-right:10px; padding-bottom: 5px; background-color: #2c2c2c;font-size:larger; margin-top: 1.5em;">
+      <p>
+        <a href="http://www.clockingit.com/login/about">Why? Read more...</a>
+      </p>
+      </div>
+
+
+    </td>
+
+    <td valign="top">
+  <% if @flash[:notice] %><div id=notice><%= @flash[:notice] %><% flash.clear %></div><br />
+  <% else %>
+  <div style="padding-top:1em;padding-right:1em;"><strong>After introducing <span style="color:#fba105;">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align="right" style="padding-right:1em;"><em>-- Erlend Simonsen</em></div>
+
+  <% end %>
+
+    <div style="padding-top:1em;"><img src="/images/portal/box_top.gif" border=0></div>
+    <div id="box" style="background: url(/images/portal/box_bkg.gif) top left repeat-x; background-color: #fff; width: 697px; color: #000;">
+
+    <p id="caption" style="margin: 0; padding: 10px;">Never forget a task again...</p>
+    <div id="nav" style="margin-left:10px;margin-right:10px;">
+    <div style="float:left;"><a onclick="previous_image();" href="#" style="font-size: 13px;color:#fba105;text-decoration:underline;">Previous</a></div>
+    <div style="float:right;"><a onclick="next_image();" href="#" style="font-size: 13px;color:#fba105;text-decoration:underline;">Next</a></div>
+    </div>
+    <img id="screenshot" style="padding-left:10px;" src="/images/portal/screen_1.png" border="0"/>
+    </div>
+    <div style="background: url(/images/portal/lower_bkg.gif) top left repeat-x;height: 56px;" align="right">
+      <div style="padding-right:10px; padding-top:10px; width: 275px;"><a href="http://www.clockingit.com/login/signup"><img src="/images/portal/signup.gif" border="0" /></a></div>
+    </div>
+    </td>
+</tr>
+</table>
+
+
+</div>
+<script type="text/javascript">
+preload();
+</script>
+
+<% end %>

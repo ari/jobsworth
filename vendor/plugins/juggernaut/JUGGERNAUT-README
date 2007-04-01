@@ -1,0 +1,215 @@
+Juggernaut
+===========
+
+=CONTACT DETAILS
+
+  Author: Alex MacCaw
+  E-Mail Address: info@alexmaccaw.co.uk
+  License: MIT
+  Website: http://juggernaut.rubyforge.org
+  Blog: http://www.eribium.org
+
+=DESCRIPTION
+
+The Juggernaut plugin for Ruby on Rails aims to revolutionize your Rails app by letting the server initiate a connection and push data to the client. In other words your app can have a real time connection to the server with the advantage of instant updates. Although the obvious use of this is for chat, the most exciting prospect for me is collaborative cms and wikis.
+
+What Happens:
+
+   1. Client A opens socket connection to the socket server
+   2. Client B makes Ajax call to Rails
+   3. Rails sends message to the socket server
+   4. Socket server broadcasts message to clients
+
+Juggernaut Features:
+
+    * Allows a real time connection with a client - Rails can literally push javascript in real time to the client which is then evaluated.
+    * Push server - written in Ruby.
+    * Integrated, as a plugin, into Rails.
+    * Subscribers can subscribe to multiple channels, and broadcasters can broadcast to multiple channels. Channels are sent as a base64 encoded array - from the session.
+    * Uses Flash 6 - installed on more than 95% of computers.
+    * Supports all the major browsers (uses fscommand): Firefox 1+, IE 6+ and Safari 2+.
+
+Requirements:
+
+    * Rails 1.1+
+    * json gem (gem install json)
+
+
+===============================================
+INSTALLATION
+===============================================
+
+   1. Get the plugin from: http://rubyforge.org/frs/?group_id=1884 or alternatively get it from the svn: 
+      svn://rubyforge.org//var/svn/juggernaut/trunk/juggernaut and put it in the dir: vendor/plugins 
+   2. Run: rake install_juggernaut
+   3. If you're going to use prototype/scriptaculous then add the default javascripts to your view (not required):
+      <%= javascript_include_tag :defaults %>
+   4. Add this to your view/layout header
+      <%= javascript_include_tag "juggernaut_javascript" %>
+   5. Add this to your view/layout body:
+      <%= flash_plugin(session[:juggernaut_channels]) %>
+   6. Install the Json library (gem install json).
+   7. Configure the ports and host. This is very important as flash will only allow you to make a socket connection
+      to the same host as the address the client is viewing. Configure the ports in config/juggernaut_config.yml. 
+
+And you are all set!
+Usage
+
+To demonstrate Juggernaut I'll walk you through building a simple chat.
+
+Start the push server going by running:
+ruby script/push_server
+
+The chat controller:
+
+    def index
+    session[:juggernaut_channels] = ["chat_channel"]
+    end
+
+    def send_data
+    input_data = Juggernaut.html_and_string_escape(params[:chat_input])
+    data = "new Insertion.Top('chat_data','<li>#{input_data}</li>');"
+    Juggernaut.send(data,session[:juggernaut_channels])
+    render :nothing => "true"
+    end
+
+The index.rhtml
+
+    <html>
+    <head>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag "juggernaut_javascript" %>
+    </head>
+    <body>
+    <%= form_remote_tag(
+    :url => { :action => :send_data },
+    :complete => "$('chat_input').value = ''" ) %>
+    <%= text_field_tag( 'chat_input', '', { :size => 20, :id => 'chat_input'} ) %>
+    <%= submit_tag "Add" %>
+    <%= end_form_tag %>
+    <ul id="chat_data" style="list-style:none">
+    </ul>
+    <%= flash_plugin(session[:juggernaut_channels]) %>
+    </body>
+    </html>
+
+Start the webserver going with:
+ruby script/server
+
+Try it and see what you think. If it doesn't work please visit the faq.
+As soon as the page loads the 'flash plugin' opens a socket to the push server and subscribes to the appropriate channels. In this case I'm storing the channels I want to subscribe to in the session. When one client initiates the 'send data' command the javascript is created and sent to the push server with the command Juggernaut.send(data,channels). The push server then broadcasts the message to all clients on the selected channels.
+Advanced Usage
+
+Let's take a simple ajaxified rails app with Juggernaut - and then add it.
+
+Controller:
+
+    def milestone_create
+    begin
+    @milestone = Milestone.new(params[:milestone])
+    @successful = @milestone.save
+    rescue
+    end
+    end
+
+RJS (view)
+
+    if @successful
+    page.remove "#{@milestone.id}_milestone_view_container"
+    end
+
+Now the controller with Juggernaut added:
+
+    def milestone_create
+    begin
+    @milestone = Milestone.new(params[:milestone])
+    @successful = @milestone.save
+
+    partial_to_string = Juggernaut.parse_string(render_to_string(:partial => "milestone"))
+
+    Juggernaut.send("
+    createMilestone('#{partial_to_string}','#{cookies[:_session_id]}')
+    ", session[:juggernaut_channels])
+
+    rescue
+    "alert('Request failed');"
+    end
+    end
+
+Add some javascrip to application.jst:
+
+    function createMilestone(data, ses_id) {
+    if (getCookie('_session_id') != ses_id) {
+    new Insertion.Top('milestone_list', data);
+    }
+    }
+
+Juggernaut Helpers
+
+As you can see, Juggernaut provides some helper methods to easily parse strings from 'render_to_string' etc.
+
+Juggernaut.parse_string(string)
+This takes a string, usually a rendered partial. It then escapes the string, and parses it onto one line so it's understood by JavaScript.
+
+Juggernaut.string_escape(string)
+This does exactly what it says on the tin, escapes a string (not url encoding).
+
+Juggernaut.html_escape(string)
+Same as the rails helper h().
+
+Juggernaut.html_and_string_escape(string)
+Just combines the two methods above - usefull for chats. 
+
+
+
+===============================================
+FAQ
+===============================================
+
+
+Juggernaut doesn't seem to be connecting.
+Firstly make sure you're not behind a firewall. My school only lets data through port 80 (which is useless for xmlsocket connections). Apart from that the most likely thing that's wrong is that either the flash is trying to communicate with a port number below 1024:
+
+    The XMLSocket.connect method can connect only to TCP port numbers greater than or equal to 1024. Port numbers below 1024 are often used by system services such as FTP, Telnet, and HTTP, thus the XMLSocket object is barred from these ports for security reasons.
+
+Or that you're trying to communicate to a different domain.
+
+    The XMLSocket.connect method can connect only to computers in the same subdomain where the SWF file (movie) resides.
+
+Obviously the port number can be different than the one that the swf is served on. You can check to see what ports and addresses flash is trying to communicate with by looking at the html source. The port, address and channels are sent to flash via parameters in the swf address. The host in the parameters should be the same as the host the html file is served from (or at least in the same subdomain). Likewise you can check the port number is over 1024 here too.
+
+What flash version does Juggernaut use?
+Flash socket uses version 6 which is supported by more than 95% of users.
+
+Does it work in all browsers?
+It works in all the major ones: Firefox 1+, IE 6+ and Safari 2+.
+
+What are the advantages/disadvantages of using a flash socket over other methods?
+It's better than comet because:
+
+    * It's much less of a hack
+    * It doesn't crash your browser (Comet can do this after a while)
+    * 95% of browsers support it (flash 6).
+    * It's much easier to implement
+    * It can use a different port - unlike comet - so you don't need any custom dispatch servlets for forwarding messages through rails to the push server - it can connect directly.
+
+It's better than polling because:
+
+    * Much cleaner
+    * Doesn't use as many server resources
+
+Caveats are:
+
+    * It only works on ports above 1024 – which is blocked by some company firewalls. I'm working on getting round this. Any suggestions?
+
+Why need an external push server - can't you make everything part of rails?
+Rails uses FastCGI , each HTTP request to a rails app is handled by a whole rails process. Each rails process takes up more than ten megabytes, so for 100 push connections, more than 1000 mb would be needed. Because of this we need a webserver, external to Rails.
+
+Why this VBScript hackery?
+getURL("javascript:callFunction(data)" is by far the easiest way to call javascript functions from flash - however there's a catch. IE sets a limit of 508 chars on this method which is fine for small updates - but It will silently fail if you try and send a partial. Instead I've used fscommand - which doesn't have this limitation. However, again just for IE, you need a VBScript to get it working (the javascript auto detects browser, and dynamically adds the script if needed).
+
+Doesn't a Ruby webserver take up a lot of resources and is quite slow?
+With many threads you might see performance issues. My advice is to re-write the push server in C - please let me know if you've done this.
+
+What are you doing to extend this?
+My main aim is to get it working on ports lower that 1024 - if this is possible. I'm looking into using a binary connection - with flash 9 - or using Flex Data Services.

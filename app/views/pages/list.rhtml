@@ -1,0 +1,27 @@
+<h1>Listing pages</h1>
+
+<table>
+  <tr>
+<% for column in Page.content_columns %>
+    <th><%= column.human_name %></th>
+<% end %>
+  </tr>
+  
+<% for page in @pages %>
+  <tr>
+  <% for column in Page.content_columns %>
+    <td><%=h page.send(column.name) %></td>
+  <% end %>
+    <td><%= link_to 'Show', :action => 'show', :id => page %></td>
+    <td><%= link_to 'Edit', :action => 'edit', :id => page %></td>
+    <td><%= link_to 'Destroy', {:action => 'destroy', :id => page}, :confirm => "Are you sure?" %></td>
+  </tr>
+<% end %>
+</table>
+
+<%= link_to "Previous page", { :page => @page_pages.current.previous } if @page_pages.current.previous %>
+<%= link_to "Next page", { :page => @page_pages.current.next } if @page_pages.current.next %> 
+
+<br />
+
+<%= link_to 'New page', :action => 'new' %>

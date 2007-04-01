@@ -1,0 +1,28 @@
+***************
+*** 21,33 ****
+            options[:builder].instruct! unless options.delete(:skip_instruct)
+  
+            options[:builder].__send__(options[:root]) do
+-             for key in keys
+-               value = self[key]
+  
+-               case value.class.to_s # TODO: Figure out why I have to to_s the class to do comparisons in order for tests to run
+-                 when "Hash"
+                    value.to_xml(options.merge({ :root => key, :skip_instruct => true }))
+-                 when "Array"
+                    value.to_xml(options.merge({ :root => key, :children => key.to_s.singularize, :skip_instruct => true}))
+                  else
+                    type_name = XML_TYPE_NAMES[value.class.to_s]
+--- 21,32 ----
+            options[:builder].instruct! unless options.delete(:skip_instruct)
+  
+            options[:builder].__send__(options[:root]) do
++             each do |key, value|
+  
++               case value
++                 when ::Hash
+                    value.to_xml(options.merge({ :root => key, :skip_instruct => true }))
++                 when ::Array
+                    value.to_xml(options.merge({ :root => key, :children => key.to_s.singularize, :skip_instruct => true}))
+                  else
+                    type_name = XML_TYPE_NAMES[value.class.to_s]

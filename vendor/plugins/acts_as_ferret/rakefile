@@ -1,0 +1,19 @@
+# rakefile for RDig.
+# large parts borrowed from rake's Rakefile
+
+require 'rake'
+require 'rake/rdoctask'
+
+# Generate the RDoc documentation ----------------------------------------
+
+rdoc = Rake::RDocTask.new { |rdoc|
+  rdoc.rdoc_dir = 'html'
+  rdoc.title    = "acts_as_ferret - Ferret based full text search for any ActiveRecord model"
+  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.options << '--main' << 'README'
+  rdoc.template = "#{ENV['template']}.rb" if ENV['template']
+  rdoc.rdoc_files.include('README', 'LICENSE')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+}
+
+

@@ -1,0 +1,6 @@
+<h1>Editing company</h1>
+
+<%= start_form_tag :action => 'update', :id => @company %>
+  <%= render_partial "form" %>
+  <%= submit_tag "Edit", :class => 'nolabel' %>
+<%= end_form_tag %>

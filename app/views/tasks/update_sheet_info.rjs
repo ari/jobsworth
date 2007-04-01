@@ -1,0 +1,2 @@
+page.replace_html 'menu_info', :partial => 'layouts/sheet_info'
+page.replace_html 'menu_login', :partial => 'layouts/login_info'

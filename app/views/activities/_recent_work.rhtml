@@ -1,0 +1,23 @@
+ <%
+   if @activities.size > 0
+     day = 0
+  %>
+  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
+    <tr>
+      <td align="left" colspan="3" class="page_header">Recent Activities <%= link_to( image_tag("feed.png", :border => 0, :class => "tooltip", :title => "Subscribe to the recent activities RSS feed"), :controller => 'feeds', :action => 'rss', :id => session[:user].uuid )%></td>
+    </tr>
+    <%
+    for log in @activities
+      if day != tz.utc_to_local(log.started_at).yday
+         day = tz.utc_to_local(log.started_at).yday
+    %>
+    <tr>
+      <td colspan="3"><div class="log_header"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></div></td>
+    </tr>
+    <%
+    end
+    %>
+    <%= render_partial 'activities/log_row', { :log => log } %>
+  <% end %>
+  <% end %>
+  </table>

@@ -1,0 +1,46 @@
+  <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="6" class="page_header">
+        <%= session[:user].company.name %> Users
+      </td>
+    </tr>
+    <tr><td colspan="6">&nbsp;</td></tr>
+    <tr>
+     <th>Online</th>
+     <th>Name</th>
+     <th>Company</th>
+     <th>Email</th>
+     <th>Last Login</th>
+     <th>&nbsp;</th>
+
+  </tr>
+
+<% for user in @users %>
+  <tr class="hoverrow">
+    <td align="center"><%= if user_online?( user.id ) then image_tag('status_online.png', :alt => 'Online') else image_tag('status_offline.png', :alt => 'Offline') end %></td>
+    <td><%=h user.name %></td>
+    <td><%=h user.company.name %></td>
+    <td><%=h user.email %></td>
+    <td><strong><%=h tz.utc_to_local(user.last_login_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if user.last_login_at %></strong></td>
+    <td><%= link_to 'Edit', :controller => 'users', :action => 'edit', :id => user %>
+          <% if user.id != session[:user].id && !user_online?( user.id) %>
+          | <%= link_to 'Destroy', { :controller => 'users', :action => 'destroy', :id => user}, :confirm => "Are you sure?" %>
+          <% end %>
+<% if session[:user].admin > 1 %>
+          | <%= link_to 'Switch', :controller => 'users', :action => 'impersonate', :id => user %>
+<% end %>
+    </td>
+  </tr>
+<% end %>
+<tr><td colspan=6>&nbsp;</td></tr>
+<tr><td colspan=6>
+<%= link_to '[New User]', :action => 'new' %><br />
+<%= link_to "[Previous page]", :page => @user_pages.current.previous if @user_pages.current.previous %>
+<%= link_to "[Next page]", :page => @user_pages.current.next  if @user_pages.current.next %>
+</td></tr>
+
+</table>
+
+
+<br />
+

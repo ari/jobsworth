@@ -1,0 +1,7 @@
+page.replace_html "top_tasks", :partial => "tasks/task_list", :locals => {:tasks => @tasks}
+page.replace_html "new_tasks", :partial => "tasks/task_list", :locals => {:tasks => @new_tasks}
+page.replace_html "recent_work", :partial => "activities/recent_work"
+page.replace_html "project_overview", :partial => "activities/project_overview"
+
+page.call "UpdateDnD"
+

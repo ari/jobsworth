@@ -1,0 +1,24 @@
+<table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
+  <tr>
+    <td class="page_header">
+      Admin / News
+    </td>
+  </tr>
+  <tr>
+    <td><%= link_to "[Admin]", :action => "index" %> | <%= link_to "[Stats]", :action => "stats" %></td>
+  </tr>
+  
+  <tr>
+    <td> <%= link_to "[New]", :action => "new_news" %></td>
+  </tr>
+  
+  <% for news in @news %>
+  <tr>
+  <td><%= news.created_at.strftime("%H:%M %d/%m-%y") %><br/><%= news.body %><br/>
+  <%= link_to "Edit", :action => "edit_news", :id => news.id %> | <%= link_to "Delete", :action => "delete_news", :id => news.id %>
+  </td>
+  </tr>
+  <% end %>
+  
+</table>
+

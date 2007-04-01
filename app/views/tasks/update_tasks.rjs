@@ -1,0 +1,5 @@
+page << "if ($(\"task_#{@task.id}\")) {"
+page.replace "task_#{@task.id}", :partial => "task_row", :locals => {:task => @task}
+page.visual_effect(:highlight, "task_#{@task.id}", :duration => 2.0)
+page.call("updateTooltips")
+page << "}"

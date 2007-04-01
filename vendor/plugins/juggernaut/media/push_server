@@ -1,0 +1,262 @@
+#!/usr/bin/env ruby 
+
+# HTTP Push Server
+#
+#Copyright (c) 2006 Alexander MacCaw
+
+# based on httpd daemon V 1.8 by Hipster: 
+# http://www.xs4all.nl/~hipster
+#
+# Copyright (C) 2000-2004  Michel van de Ven <hipster@xs4all.nl>
+# Copyright (C) 2004  Patric Mueller <bhaak@gmx.net>
+
+#Permission is hereby granted, free of charge, to any person obtaining
+#a copy of this software and associated documentation files (the
+#"Software"), to deal in the Software without restriction, including
+#without limitation the rights to use, copy, modify, merge, publish,
+#distribute, sublicense, and/or sell copies of the Software, and to
+#permit persons to whom the Software is furnished to do so, subject to
+#the following conditions:
+
+#The above copyright notice and this permission notice shall be
+#included in all copies or substantial portions of the Software.
+
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+require "socket"
+require "thread"
+require "logger"
+require "yaml"
+require "monitor"
+require "json"
+
+RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
+APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/juggernaut_config.yml"))
+
+class Channel < Monitor
+  
+	attr_reader :name, :requests
+  
+	def initialize channel_name
+		@name=channel_name
+		@requests=[]
+		super()
+	end
+	
+	#how many requests are listening to the channel?
+  	def number_requests
+		return @requests.length
+  	end
+  
+	def subscribe request
+		synchronize do
+		request.num_subscribes+=1
+		@requests.push request
+		end
+  	end
+  
+  	#remove request from channel
+  	def unsubscribe request
+		return if(!@requests.find{|req| req==request })
+		synchronize do
+		request.num_subscribes-=1
+		request.socket.close if request.num_subscribes==0
+		@requests.delete request
+		end  
+  	end
+  	
+  	def send_message(msg, client)
+		if @requests.empty?
+		# No requests
+		else
+		for req in @requests
+		begin
+		req.socket.print msg.to_s + "\0"
+		req.socket.flush
+		rescue
+		end
+		end
+	end
+	
+	end
+  
+end
+
+class Request
+
+  attr_reader :socket, :unparsed_socket, :broadcast, :json_parsed_socket, :channels, :fatal_error, :num_subscribes, :ip, :message, :secret
+  attr_writer :num_subscribes
+  
+  def initialize socket
+  
+   	
+    @num_subscribes=0 # how many channels is the request subscribing to?
+    @socket = socket  #open socket connection to the client
+    @fatal_error = false
+    @unparsed_socket = ""
+    @broadcast = false
+    @json_parsed_socket = ""
+    @channels = {}
+    @message = ""
+    @ip = ""
+    @message = ""
+    
+
+    begin
+      line = @socket.gets
+        @unparsed_socket << line
+        puts @unparsed_socket
+        @json_parsed_socket = JSON.parse(@unparsed_socket)
+        @channels = @json_parsed_socket["channels"]
+			if @json_parsed_socket["broadcast"] == 1 # Assume broadcast message
+				@broadcast = true
+				@message = @json_parsed_socket["message"]
+				@secret = @json_parsed_socket["secret"]
+			end
+      	puts "JS Parsed everything"
+      	
+      	@ip = @socket.peeraddr[3]
+        rescue Exception
+        @fatal_error = true;
+        end #begin
+     
+   	end #initialize
+   
+end
+
+class PushServer < Monitor
+
+	def initialize
+		@logger = Logger.new("#{RAILS_ROOT}/log/push_server.log", 2, 10*1024)
+		@hostname = APP_CONFIG["PUSH_HOST"]
+		@port = APP_CONFIG["PUSH_PORT"]
+		
+		log "Starting server..."
+		@socket = TCPserver.new(@hostname, @port)
+		addr = @socket.addr 
+		addr.shift 
+		log("Server is on...\nIP:\t#{addr[2]}\nPort:\t#{addr[0]}\nComputer Name:\t#{addr[1]}\nAllowed IP for rails:\t#{APP_CONFIG['PUSH_ALLOWED_IP']}\n")
+		
+		@rqueue = Queue.new
+		@nrequest = 0
+		@channels = {}
+		
+		@cgi_mutex = Mutex.new
+	   
+		super()
+	end	
+	
+	def create_channel name
+        synchronize do
+		@channels[name.to_s]=Channel.new(name)
+        end
+        end
+
+	
+	def serve
+	log "Serving..."
+	Thread.abort_on_exception = true # XXX debugging only?
+	APP_CONFIG["PUSH_LISTEN_THREADS"].times { Thread.new { handler } }
+	
+	    # main accept loop
+	loop do
+	   begin
+	   @rqueue.push @socket.accept
+	   @nrequest += 1
+	   rescue
+	   log "listener: socket exception: " + $!
+	   end
+        end
+	end
+	
+	  # main function of request handling threads. . 
+	def handler
+	    loop do 
+	      socket = @rqueue.pop
+	      req = Request.new socket  
+	      if req.broadcast == true
+	        handle_broadcast req 
+	      else
+	          handle_listen req
+	      end
+	     
+	    end
+  	end
+
+	
+	def handle_listen req
+
+	for cha in req.channels
+        if @channels[cha]
+		  log "Already channel: #{cha}"
+        else
+		  create_channel cha
+		  log "Created channel: #{cha}"
+        end
+      
+        log "Subscribing..."
+        @channels[cha].subscribe(req)
+        log "Subscribed request to channels: #{req.ip}"
+  
+        end
+    
+	while line = req.socket.gets
+	end
+	
+	for cha in req.channels
+		@channels[cha].unsubscribe(req)
+	end
+	
+	log "Unsubscribed from channels: #{req.ip}"
+	
+	#req.socket.close
+	 	
+	log "Closed listen request from ip: #{req.ip}"
+	end
+	
+	def handle_broadcast req
+		if req.secret != APP_CONFIG["PUSH_SECRET"]
+		log "Unauthorised broadcast attempt with ip: #{req.ip}"
+		req.socket.close
+	else
+	
+
+       for cha in req.channels
+        if @channels[cha]
+		  log "Already channel: #{cha}"
+	else
+		  create_channel cha
+		  log "Created channel: #{cha}"
+        end
+      
+        log "Sending..."
+		  @channels[cha].send_message(req.message, req)
+        log "Sent"
+      
+       end
+       
+	end
+	end
+	
+	def log(text)
+		puts text
+		@logger.info(text)
+	end
+	
+	def shutdown
+		log("Shutting down...")
+		exit
+	end
+
+end
+
+
+push = PushServer.new
+trap("INT"){ push.shutdown }
+push.serve

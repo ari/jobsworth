@@ -1,0 +1,15 @@
+<%    @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", session[:user].company.id, session[:user].company.name]) if @internal.nil? %>
+<table width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align=left class="menu" style="padding-right:1em;width:1%;">
+    <% if !@internal.nil? && !@internal.binary_id.nil? && @internal.binary_id.to_i > 0 %>
+    <%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
+    <% else %>
+    <%= image_tag("logo.gif", :border => 0, :title => "Clocking IT Beta") %>
+    <% end %>
+    </td>
+    <td align=left class="menu" id="menu_info"> <%= render :partial => "layouts/sheet_info" %></td>
+    <td align=right class="menu" id="menu_login"><%= render :partial => "layouts/login_info" %></td>
+  </tr>
+</table>
+

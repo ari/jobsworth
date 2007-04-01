@@ -1,0 +1,100 @@
+        <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
+          <tr>
+            <td align="left" colspan="2" class="page_header"><div style="float:left;">Projects</div><div style="float:right;padding-top:0.1em;"><%= link_to 'New', :controller => "projects", :action => 'new' %></div></td>
+          </tr>
+          <%
+             last_customer = 0
+             for project in @projects
+               if last_customer != project.customer_id && session[:user].option_externalclients > 0
+                  last_customer = project.customer_id
+                  %>
+               <tr><td colspan=2 align=left class="project_customer"><strong><%= project.customer.name == 'Internal' ? session[:user].company.name : project.customer.name%></strong></td></tr>
+               <%
+               end
+
+
+               critical_count = Task.count(["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", project.id])
+               normal_count = Task.count(["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", project.id])
+               low_count = Task.count(["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", project.id])
+               total_count = (critical_count + normal_count + low_count) * 1.0
+
+               critical_percent = ((critical_count / total_count) * 100.0)
+               normal_percent = ((normal_count / total_count) * 100.0)
+
+               unless critical_percent.nan?
+                 critical_percent = critical_percent.round
+               end
+               unless normal_percent.nan?
+                 normal_percent = normal_percent.round
+               end
+
+               if normal_percent + critical_percent > 100
+                  normal_percent = 100 - critical_percent
+               end
+
+               low_percent = 100.0 - critical_percent - normal_percent
+
+
+
+          %>
+    <tr class="milestone" id="project_<%=project.id%>" onMouseOver="javascript:Hover('project', '<%=project.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
+        <div style="position: absolute; z-index:10; width: 16px;">
+          <% if session[:user].can?(project, 'grant') %>
+          <span id="edit_project_<%= project.id%>" style="display: none;">
+            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => "Edit project <b>#{project.name}</b>", :class => "tooltip"),
+            { :controller => 'projects', :action => 'edit', :id => project } -%>
+          </span>
+          <% end %>
+        </div>
+        <div style="float: left; margin-left:5px;"><span class="projects"><%= link_to project.name, { :controller => 'views', :action => 'select_project', :id => project.id} %></span></div>
+              <div class="prog-border"  style="float: right; height: 15px;">
+                  <div class="prog-bar-high tooltip" style="width: <%= number_to_percentage( critical_percent, :precision => 0)  %>;" title="<%= number_to_percentage( critical_percent, :precision => 0) + " (#{critical_count}/#{total_count.to_i})" %>  High Priority"> </div>
+                  <div class="prog-bar-medium tooltip" style="width: <%= number_to_percentage( normal_percent, :precision => 0)  %>;" title="<%= number_to_percentage( normal_percent, :precision => 0) + " (#{normal_count}/#{total_count.to_i})"%>  Normal"> </div>
+                  <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( low_percent, :precision => 0)  %>;" title="<%= number_to_percentage( low_percent, :precision => 0) + " (#{low_count}/#{total_count.to_i})" %>  Low Priority "> </div>
+                </div>
+              </div>
+            </td></tr>
+          <%
+               total_count = Task.count(["project_id = ?", project.id]) * 1.0
+             if total_count >= 1.0
+               done_count = Task.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
+               done_percent = (done_count/total_count) * 100.0
+          %>
+          <tr class="milestone" style="height:16px;"><td colspan="2"><div><div style="float: left;padding-top:2px;"><span class="milestones">Overall Progress</span></div>
+              <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
+                  <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %>  Complete"> </div>
+                  <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %>  Remaining"> </div>
+                </div>
+              </div>
+            </td></tr>
+          <% end
+
+
+             for milestone in project.milestones
+               done_count = Task.count(["project_id = ? AND milestone_id = ? AND completed_at IS NOT NULL", project.id, milestone.id])
+               total_count = Task.count(["project_id = ? AND milestone_id = ?", project.id, milestone.id]) * 1.0
+               done_percent = (done_count/total_count) * 100.0
+          %>
+    <tr class="milestone" id="milestone_<%=milestone.id%>" onMouseOver="javascript:Hover('milestone', '<%=milestone.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
+        <div style="height:16px;">
+          <div style="position: absolute; z-index:10; width: 16px;">
+            <% if session[:user].can?(project, 'milestone') %>
+            <span id="edit_milestone_<%= milestone.id%>" style="display: none;">
+            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => "Edit milestone <b>#{milestone.name}</b>", :class => "tooltip"),
+                  { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
+            </span>
+            <% end %>
+          </div>
+          <div style="float: left;padding-top:2px;"><span class="milestones"><%= link_to milestone.name, {:controller => 'views', :action => 'select_milestone', :id => milestone.id} %></span></div>
+          <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
+            <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %>  Complete"> </div>
+            <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %>  Remaining"> </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+          <% end %>
+
+          <% end %>
+          </table>
+

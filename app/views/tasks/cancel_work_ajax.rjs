@@ -1,0 +1,4 @@
+page.replace "task_#{@task.id}", :partial => "task_row", :locals => {:task => @task }
+page.replace_html "menu_info", :partial => "layouts/sheet_info"
+page.call "UpdateDnD"
+

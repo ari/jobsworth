@@ -1,0 +1,13 @@
+<td align=center width=200>
+  <strong><%=h project_files.name %></strong><br/><%= h project_files.project.name %><br /><small> (<%=h project_files.filename %>)</small><br />
+
+  <% if project_files.file_type == ProjectFile::FILETYPE_IMG %>
+  <%= link_to tag("img", {:src => "/project_files/thumbnail/#{project_files.id}", :border => 0 } ), :action => 'show', :id => project_files %><br />
+  <% else %>
+  <%= link_to image_tag(file_type_image(project_files), :border => 0), {:action => 'show', :id => project_files} %><br />
+  <% end %>
+  <strong><%=h project_files.created_at.strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= human_size(project_files.file_size) %> </strong><br />
+  <%= link_to 'Download', :action => 'download', :id => project_files %>
+  | <%= link_to 'Edit', :action => 'edit', :id => project_files %>
+  | <%= link_to 'Destroy', {:action => 'destroy', :id => project_files}, :confirm => "Are you sure?" %>
+</td>

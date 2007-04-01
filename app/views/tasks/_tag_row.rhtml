@@ -1,0 +1,70 @@
+<%
+
+  # Check for only hashes, if so, pass this name further in
+  for g in groups
+  end
+
+  printed_done_sep = false
+
+  for g in groups
+    if g.is_a? Hash
+
+      only_hashes = true
+      for k in g.keys
+
+        if (g[k].is_a? Array)
+          for j in g[k]
+            if j.is_a? Array
+              only_hashes = false
+            end
+          end
+        end
+
+        if only_hashes
+%>
+<%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => parent + k.capitalize + " / "} %>
+<%      else %>
+<ul><li class="tag_header"><%= parent + k.capitalize %></li>
+<%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => ""} %>
+</ul>
+<%
+        end
+      end
+    end
+
+    if g.is_a? Task
+      g.tags.each do |t|
+        @tags[t.name] ||= 0
+        @tags[t.name] += 1
+        @tags_total += 1
+      end
+
+    if session[:group_tags].to_i == 0 && session[:filter_hidden] != 2 && !g.completed_at.nil? && !printed_done_sep
+%>
+    <li class="task" id="done_sep_0" style="height:1px; line-height:0px; font-size: 1px; border: none; display:block; overflow:hidden; padding:0; margin:0; position: relative; clear: both;"></li>
+<%
+      printed_done_sep = true
+    end
+
+%><%= render :partial => "task_row", :locals => { :task => g} %>
+
+<%
+    end
+
+
+  if g.is_a? Array
+    if session[:group_tags].to_i == 0
+   %>
+   <ul>
+   <%
+    end
+   %>
+   <%= render :partial => 'tag_row', :locals => { :groups => g, :parent => "" } %>
+    <%= "</ul>" if session[:group_tags].to_i == 0 %>
+   <%
+  end
+%>
+
+
+<% end %>
+

@@ -1,0 +1,250 @@
+  <table cellspacing=0 cellpadding=0 class="content" width="99%" style="margin-left: 1em;padding-right:1em;">
+    <tr><td align=left colspan=2 class="page_header">Reports</td></tr>
+    <tr><td align=left colspan=2 style="padding-bottom:1em; padding-top:1em;">
+
+        <table width="100%" border=0 cellspacing=0 cellpadding=0>
+          <tr>
+            <td valign="top">
+              <table id="reports" cellspacing=0 cellpadding=3>
+                <% if @column_headers %>
+                <tr>
+                  <th class="row_header"><%= @column_headers['__'] %></th>
+                  <% @column_headers.sort.each do |key,value| %>
+                  <% next if key == '__' %>
+                  <th class="column_header"><%= value %></th>
+                  <% end %>
+                  <th class="row_header" style="padding-left:1em;">Total</th>
+                </tr>
+
+                <% if @rows
+                     last_key = ''
+                     subtotal = 0
+                %>
+                <% @rows.sort.each do |key, value| %>
+
+                <% if last_key != '' && last_key != value['__'] && subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+                <tr class="<%=cycle('even', 'odd')%>">
+                  <td class="row_subtotal_heading">Total</td>
+                  <% @column_headers.sort.each do |k,v| %>
+                    <% next if k == '__' %>
+                    <td class="row_value">&nbsp;</td>
+                  <% end %>
+                  <td class="row_subtotal"><%= worked_nice(subtotal) %></td>
+                </tr>
+                <% subtotal = 0 %>
+                <% end %>
+
+
+
+
+
+                <tr class="<%=cycle('even', 'odd')%>">
+                  <td class="row_heading"><%= value['__'] if last_key != value['__'] %></td>
+                  <% last_key = value['__'] %>
+                  <% @column_headers.sort.each do |k,v| %>
+                    <% next if k == '__' %>
+                    <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]) : value[k] %></td>
+                  <% end %>
+                    <% subtotal += @row_totals[key] if params[:report][:subtotals] == "1" %>
+                  <td class="row_total"><%= worked_nice(@row_totals[key]) %></td>
+                <% end %>
+                </tr>
+                  <% end %>
+
+                <% if subtotal > 0 && params[:report] && ["3","2"].include?(params[:report][:type]) %>
+                <tr class="<%=cycle('even', 'odd')%>">
+                  <td class="row_subtotal_heading">Total</td>
+                  <% @column_headers.sort.each do |k,v| %>
+                    <% next if k == '__' %>
+                    <td class="row_value">&nbsp;</td>
+                  <% end %>
+                  <td class="row_subtotal"><%= worked_nice(subtotal) %></td>
+                </tr>
+                <% subtotal = 0 %>
+                <% end %>
+
+                <tr>
+                  <th class="row_header">&nbsp;</th>
+                  <% @column_headers.sort.each do |key,value| %>
+                  <% next if key == '__' %>
+                  <th class="row_total"><%= worked_nice(@column_totals[key]) if @column_totals[key] > 0 %></th>
+                  <% end %>
+                  <th class="row_total_total" style="padding-left:1em;"><%= worked_nice(@total) %></th>
+                </tr>
+                <% end %>
+              </table>
+              &nbsp;
+            </td>
+
+            <td valign="top" align="right" style="width:21em;" id="reports_params">
+<%= start_form_tag :action => 'list' %>
+<fieldset  style="margin-right:10;" id="reports_config">
+<legend>Report Configuration</legend>
+<label for="report_type">Report Type</label><%= select( "report", "type", [
+                ["Pivot", "1"],
+                ["Audit", "2"],
+                ["Timesheet", "3"],
+#                ["Progress", "4"],
+#                ["Workload", "5"],
+#                ["Statistics", "6"]
+                ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") ) %><br/>
+
+<label for="report_range">Time Range</label><%= select("report", "range", [["Today", "0"], ["This Week","1"], ["Last Week","2"],["This Month","3"],["Last Month","4"],["This Year","5"],["Last Year","6"],["Custom","7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/>
+
+<% if params[:report] && params[:report][:type] == "1" || params[:report].nil? %>
+<div id="pivot_config">
+<% else %>
+<div id="pivot_config" style="display:none;">
+<% end %>
+<label for="report_rows">Rows</label>
+<%= select( "report", "rows",
+          [
+           ["Tasks", "1"],
+           ["Tags", "2"],
+           ["Users", "3"],
+           ["Clients", "4"],
+           ["Projects", "5"],
+           ["Milestones", "6"],
+           ["Date", "7"],
+           ["Task Status", "8"],
+           ["Task Type", "9"],
+           ["Task Priority", "11"],
+           ["Task Severity", "10"]
+          ],
+          :selected => ((params[:report] && params[:report][:rows]) ? params[:report][:rows] : "1") ) %><br/>
+<label for="report_columns">Columns</label>
+<%= select( "report", "columns",
+           [
+            ["Tasks", "1"],
+            ["Tags", "2"],
+            ["Users", "3"],
+            ["Clients", "4"],
+            ["Projects", "5"],
+            ["Milestones", "6"],
+            ["Date", "7" ],
+            ["Task Status", "8"],
+            ["Task Type", "9"],
+            ["Task Priority", "11"],
+            ["Task Severity", "10"]
+           ],
+           :selected => ((params[:report] && params[:report][:columns]) ? params[:report][:columns] : "7") ) %><br/>
+</div>
+
+<% if params[:report] && params[:report][:range] == "7" %>
+<div id="date_range">
+<% else %>
+<div id="date_range" style="display:none;">
+<% end %>
+<label for="report_start_date">From</label><%= calendar_field 'report', 'start_date', { :class => 'date', :field_title => 'Start Date', :button_title => 'Show Calendar', :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""},
+        { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
+<label for="report_stop_date">To</label><%= calendar_field 'report', 'stop_date', { :class => 'date', :field_title => 'Stop Date', :button_title => 'Show Calendar', :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : "" },
+        { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
+</div>
+
+
+<div id="subtotals"<%= " style=\"display:none;\"" if params[:report] && !["3", "2"].include?(params[:report][:type])  %>>
+<label for="report_subtotals">Sub-totals</label>
+<%= check_box 'report', 'subtotals', :checked => (params[:report] && params[:report][:subtotals].to_i == 1) ? "checked" : "" %><br/>
+</div>
+
+</fieldset>
+<fieldset  style="padding-right:0;" id="reports_filter">
+<legend>Filter</legend>
+<label for="report_client_id">Client</label><%= select 'report', 'client_id', [['[Any Client]', '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name' ).collect {|c| [ "#{c.customer.name}", c.customer.id ] }.uniq, :selected => ((params[:report] && params[:report][:client_id]) ? params[:report][:client_id].to_i : session[:filter_customer].to_i) %><br/>
+
+<label for="report_project_id">Project</label>
+<% if params[:report] && params[:report][:client_id].to_i > 0 %>
+  <%= select 'report', 'project_id', [['[Any Project]', '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["customer_id = ?", params[:report][:client_id]] ).collect {|c| [ "#{c.name}", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
+<% else %>
+  <%= select 'report', 'project_id', [['[Any Project]', '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name' ).collect {|c| [ "#{c.name} / #{c.customer.name == 'Internal' ? session[:user].company.name : c.customer.name }", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
+<% end %>
+<label for="report_user_id">User</label>
+<%= select 'report', 'user_id', [['[Any User]', '0']] + User.find(:all, :order => 'name', :conditions => ['company_id = ?', @session[:user].company_id] ).collect {|c| [ c.name, c.id ] }, :selected => ((params[:report] && params[:report][:user_id]) ? params[:report][:user_id].to_i : session[:user].id) %><br/>
+<div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="$('advanced').toggle();">Advanced Options</a></div>
+
+
+<div id="advanced" <%= "style=\"display:none;\"" unless (params[:report] && (params[:report][:status] != "-1" || params[:report][:type_id] != "-1" || params[:report][:priority] != "-3" || params[:report][:severity_id] != "-3" || params[:report][:tags].length > 0 ))%>>
+<label for="report_type_id">Status</label>
+<%= select 'report', 'status', [['[Any Status]', '-1'], ['Open',0],['In Progress',1],['Closed',2],['Won\'t fix',3], ['Invalid', 4], ['Duplicate', 5]], :selected => ((params[:report] && params[:report][:status]) ? params[:report][:status].to_i : "-1")  %><br/>
+<label for="report_type_id">Type</label>
+<%= select 'report', 'type_id', [['[Any Type]', '-1'], ['Task',0],['New Feature',1],['Defect',2],['Improvement',3]], :selected => ((params[:report] && params[:report][:type_id]) ? params[:report][:type_id].to_i : "-1")  %><br/>
+<label for="report_priority">Priority</label>
+<%= select 'report', 'priority', [['[Any Priority]', '-3'], ['Critical',3],['Urgent',2],['High',1],['Normal',0],['Low',-1],['Lowest',-2]], :selected => ((params[:report] && params[:report][:priority]) ? params[:report][:priority].to_i : "-3")   %><br/>
+<label for="report_severity_id">Severity</label>
+<%= select 'report', 'severity_id', [['[Any Severity]', '-3'], ['Blocker',3],['Critical',2],['Major',1],['Normal',0],['Minor',-1],['Trivial',-2]], :selected => ((params[:report] && params[:report][:severity_id]) ? params[:report][:severity_id].to_i : "-3")  %><br/>
+<label for="report_tags">Tags</label><%= text_field 'report', 'tags', :size => 12, :value => (params[:report] && params[:report][:tags]) ? params[:report][:tags] : "" %><br/>
+</div>
+</fieldset>
+</div>
+<div style="padding-top:0.5em;"><%= submit_tag "Run Report" %></div>
+<%= end_form_tag %>
+<div style="clear:both;"></div>
+</td>
+</tr>
+</table>
+
+</td></tr>
+</table>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+
+Event.observe($('report_range'), "change", function(e) {
+if( $('report_range').value == "7" ) {
+     Element.show('date_range');
+  } else {
+     Element.hide('date_range');
+  }
+  return false;
+}
+);
+
+Event.observe($('report_range'), "blur", function(e) {
+if( $('report_range').value == "7" ) {
+     Element.show('date_range');
+  } else {
+     Element.hide('date_range');
+  }
+  return false;
+}
+);
+
+Event.observe($('report_type'), "change", function(e) {
+  if( $('report_type').value == "1" ) {
+    Element.show('pivot_config');
+  } else {
+     Element.hide('pivot_config');
+  }
+
+  if( $('report_type').value == "3" || $('report_type').value == "2" ) {
+    Element.show('subtotals');
+  } else {
+     Element.hide('subtotals');
+  }
+
+
+  return false;
+}
+);
+
+Event.observe($('report_range'), "blur", function(e) {
+  if( $('report_type').value == "1" ) {
+     Element.show('pivot_config');
+  } else {
+     Element.hide('pivot_config');
+  }
+
+  if( $('report_type').value == "3" || $('report_type').value == "2" ) {
+    Element.show('subtotals');
+  } else {
+     Element.hide('subtotals');
+  }
+  return false;
+}
+);
+
+
+new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'client_id=' + value, insertion: updateSelect})})
+
+
+// ]]>
+</script>

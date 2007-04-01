@@ -1,0 +1,15 @@
+<% if @task_totals[user.id] %>
+<tr>
+  <td style="padding-left: <%=level%>em;">
+    <%= user.name %> 
+  </td>
+  
+<% for i in @headers.keys.sort %>
+  <td align=right style="padding-left: 1em;" valign="top">
+    <%= worked_nice(@task_totals[user.id][i]) if @task_totals[user.id][i] %>
+  </td>
+<% end %>
+<td align="right" valign="top"><%= worked_nice(@task_totals[user.id][:all]) %></td>
+</tr>
+
+<% end %>

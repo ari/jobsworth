@@ -1,0 +1,5 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+first_sheet:
+  id: 1
+another_sheet:
+  id: 2

@@ -1,0 +1,126 @@
+#!/usr/bin/env ruby 
+
+# HTTP Push Server
+#
+#Copyright (c) 2006 Alexander MacCaw
+
+#Permission is hereby granted, free of charge, to any person obtaining
+#a copy of this software and associated documentation files (the
+#"Software"), to deal in the Software without restriction, including
+#without limitation the rights to use, copy, modify, merge, publish,
+#distribute, sublicense, and/or sell copies of the Software, and to
+#permit persons to whom the Software is furnished to do so, subject to
+#the following conditions:
+
+#The above copyright notice and this permission notice shall be
+#included in all copies or substantial portions of the Software.
+
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+#EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+#LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+#OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+#WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+require "socket"
+require "thread"
+require "cgi"
+require "monitor"
+
+require "logger"
+require "base64"
+require "yaml"
+
+APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/flash_socket_config.yml"))
+
+class PushServer
+	 
+	 def initialize
+	   @logger = Logger.new("log/application.log", 5, 10*1024)
+	   log("Setting up Server")
+
+       	   @server = TCPServer.new(APP_CONFIG['PUSH_HOST'], APP_CONFIG['PUSH_PORT'])
+
+       	   addr = @server.addr 
+           addr.shift 
+	   log("Server is on...\nIP:\t#{addr[2]}\nPort:\t#{addr[0]}\nComputer Name:\t#{addr[1]}\nAllowed IP for rails:\t#{FLASH_SOCKET_ALLOWED_IP}\n")
+
+	   @clients = []
+	   @clientsMutex = Mutex.new
+	 end
+	 
+	 def serve
+	   while (socket = @server.accept)
+	     client = socket
+	     add_client(client)
+	     listen(client)
+	   end
+	 end
+	 
+	 def add_client(client)
+	   @clientsMutex.synchronize do
+	     @clients << client
+	   end
+	   peeraddr = client.peeraddr
+	   
+	   request = client.gets
+	   log "Request = #{request}"
+	   
+	   if client.peeraddr[3] == APP_CONFIG['PUSH_ALLOWED_IP']
+	   log("Rails connected: \tIP:\t #{peeraddr[3]} \tName:\t #{peeraddr[2]}")
+	   else
+	   log("Client added: \tIP:\t #{peeraddr[3]} \tName:\t #{peeraddr[2]}")
+	   end
+	 end
+	 
+	 def remove_client(client)
+	   @clientsMutex.synchronize do
+	     @clients.delete(client)
+	   end
+	    if client.peeraddr[3] == APP_CONFIG['PUSH_ALLOWED_IP']
+	      log("Rails removed")
+	    else
+	      log("Client removed")
+	    end
+	 end
+	 
+	 def listen(client)
+	  @listen_thread = Thread.new do
+	     while line = client.gets
+	        break if /^QUIT/ =~ line
+	        break unless client.peeraddr[3] == APP_CONFIG['PUSH_ALLOWED_IP']
+	        broadcast(client, line)
+	     end
+	     remove_client(client)
+	     client.close
+	   end
+	 end
+	   
+	 def broadcast(client, line)
+	   @clientsMutex.synchronize do
+	     @clients.each do | c |
+	       c.puts(Base64.encode64(line) + "\0\n") if c != client
+	     end
+	   end
+	   log "Rails says: " + line
+	 end
+	 
+	 
+	def log(text)
+	  puts text
+	  @logger.info(text)
+	end
+	
+	def shutdown
+	 @server.close
+	 @clients = nil
+	end
+	
+     end
+     
+     ps = PushServer.new
+     trap("INT") { ps.shutdown }
+     ps.serve
+     

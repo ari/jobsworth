@@ -1,0 +1,118 @@
+#menu {
+  display: none;
+}
+
+#globalMenu {
+  display: none;
+}
+
+#news {
+  display: none;
+}
+
+#help {
+  display: none;
+}
+
+#flash {
+  display: none;
+}
+
+#left_menu {
+  display: none;
+}
+
+#tasks_filter {
+  display: none;
+}
+
+#tags {
+  display: none;
+}
+
+#task_header {
+  display: none;
+}
+
+.work_icon {
+  display: none;
+}
+
+#task_info {
+  font-size: 9pt;
+  padding-left: 0pt;
+}
+
+.page_header {
+  display: none;
+}
+
+.contact {
+  display: none;
+}
+
+#reports_params {
+  display: none;
+}
+
+body {
+  background: white;
+  font-size: 10pt;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+}
+
+.task a {
+  color: #999;
+  font-weight: normal;
+}
+
+.task_crit_pri a {
+  color: #000;
+  font-weight: bold;
+  background: #CCCCCC;
+  font-size: 12pt;
+}
+
+.task_high_pri a {
+  font-weight: bold;
+  color: #666;
+  font-size: 12pt;
+}
+
+.task_raised_pri a {
+  color: #666;
+  font-weight: normal;
+  font-size: 12pt;
+}
+
+.task_low_pri a {
+  font-weight: normal;
+  color: #cccccc;
+}
+
+.task_lowest_pri a {
+  font-weight: normal;
+  color: #cccccc;
+}
+
+
+#task_info {
+  padding-top: 3pt;
+  padding-left: 18pt;
+  padding-bottom: 5pt;
+  font-size: 8pt;
+}
+
+#task_info_no_icon {
+  padding-top: 3pt;
+  padding-left: 18pt;
+  font-size: 8pt;
+}
+
