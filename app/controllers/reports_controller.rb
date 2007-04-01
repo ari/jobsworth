@@ -391,7 +391,7 @@ class ReportsController < ApplicationController
       @generated_report.report = csv
       @generated_report.save
     else
-      flash['notice'] = "Empty report, log more work!"
+      flash['notice'] = "Empty report, log more work!" if params[:report]
     end
 
   end
