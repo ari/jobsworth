@@ -1,3 +1,4 @@
+# Filter WorkLogs in different ways, with pagination
 class TimelineController < ApplicationController
 
   def list

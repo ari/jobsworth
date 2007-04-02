@@ -1,3 +1,6 @@
+# Massage the WorkLogs in different ways, saving reports for later access
+# as well as CSV downloading.
+#
 class ReportsController < ApplicationController
 
   require_gem 'fastercsv'

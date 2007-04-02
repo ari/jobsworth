@@ -77,8 +77,9 @@ class UsersController < ApplicationController
     redirect_to :action => 'list'
   end
 
+  # Used while debugging
   def impersonate
-    if session[:user].admin != nil && session[:user].admin > 0
+    if session[:user].admin > 9
       @user = User.find(@params[:id])
       if @user != nil
         session[:user] = @user

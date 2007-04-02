@@ -1,3 +1,5 @@
+# Save a set of filters for access later on, with some predefined Views
+#
 class ViewsController < ApplicationController
 
   def new
