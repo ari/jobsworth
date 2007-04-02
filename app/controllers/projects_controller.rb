@@ -1,3 +1,4 @@
+# Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
 
   cache_sweeper :project_sweeper, :only => [ :create, :edit, :update, :destroy, :ajax_remove_permission, :ajax_add_permission ]

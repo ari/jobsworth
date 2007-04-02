@@ -1,10 +1,21 @@
+# Show recent activities, and handle the simple tutorial
+#
+# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 class ActivitiesController < ApplicationController
 
+  # Redirect to list
   def index
     list
     render_action 'list'
   end
 
+  # Show the overview page including
+  # * Top Priority Task
+  # * Recent Task
+  # * Latest WorkLog
+  # * Project
+  # * Milestone progress
+  # * Progress
   def list
 
     session[:channels] += ["activity_#{session[:user].company_id}"]
@@ -23,6 +34,7 @@ class ActivitiesController < ApplicationController
 
   end
 
+  # Update the page, due to a Juggernaut push message
   def refresh
     user = User.find(session[:user].id)
       @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :include => [ :customer, :milestones]);
@@ -36,7 +48,12 @@ class ActivitiesController < ApplicationController
       @new_tasks = Task.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
   end
 
-
+  # Simple tutorial, guiding the user through
+  # * Creating a Project
+  # * Creating a Task
+  # * Adding a WorkLog
+  # * Completing a Task
+  # * Adding a User
   def welcome
     @projects_count = current_projects.size
     @tasks_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id ])
@@ -53,6 +70,7 @@ class ActivitiesController < ApplicationController
 
   end
 
+  # Skip the tutorial
   def hide_welcome
     u = User.find(session[:user].id)
     u.seen_welcome = 1

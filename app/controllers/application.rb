@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :render_to_string
 
+  # Force UTF-8 for all text Content-Types
   def set_charset
     content_type = @headers["Content-Type"] || 'text/html'
     if /^text\//.match(content_type)
@@ -23,17 +24,19 @@ class ApplicationController < ActionController::Base
 
   end
 
+  # Make sure the session is logged in
   def authorize
     session[:history] ||= []
 
+    # Remember the previous _important_ page for returning to after an edit / update.
     if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || request.request_uri.include?('/timeline')) && !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
     if session[:user].nil?
-
       subdomain = request.subdomains.first
 
+      # Generate a javascript redirect if user timed out without requesting a new page
       if request.xhr?
         render :update do |page|
           page.redirect_to :controller => 'login', :action => 'login'
@@ -42,19 +45,22 @@ class ApplicationController < ActionController::Base
         redirect_to "/login/login"
       end
     else
-
+      # Refresh the User object
       session[:user] = User.find(session[:user].id)
-
+      # Subscribe to chat and general info channels
       session[:channels] = ["chat_#{session[:user].company_id}", "info_#{session[:user].company_id}"]
 
+      # Update last seen, to track online users
       ActiveRecord::Base.connection.execute("update users set last_ping_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
     end
   end
 
+  # Users preferred TimeZone
   def tz
     Timezone.get(session[:user].time_zone)
   end
 
+  # Format minutes => <tt>1w 2d 3h 3m</tt>
   def worked_nice(minutes)
     res = ''
     if minutes >= 60
@@ -82,6 +88,7 @@ class ApplicationController < ActionController::Base
     res
   end
 
+  # Parse <tt>1w 2d 3h 4m</tt> => minutes or seconds
   def parse_time(input, minutes = false)
     total = 0
     unless input.nil?
@@ -102,7 +109,7 @@ class ApplicationController < ActionController::Base
     total
   end
 
-
+  # Redirect back to the last important page, forcing the tutorial unless that's completed.
   def redirect_from_last
     if session[:history] && session[:history].size > 0
       redirect_to(session[:history][0])
@@ -115,13 +122,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
     User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
                                                            :conditions => [ "projects.company_id = ?", session[:user].company_id ], :include => :customer )
   end
 
 
-
+  # List of current Project ids, joined with ,
   def current_project_ids
     projects = current_projects
     if projects.empty?

@@ -1,14 +1,20 @@
+#
+# Provide a RSS feed of Project WorkLog activities.
+# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
+#
 class FeedsController < ApplicationController
 
   require 'rss/maker'
 
   session :off
 
+  # Get the RSS feed, based on the secret key passed on the url
   def rss
     return if params[:id].empty? || params[:id].nil?
 
     @headers["Content-Type"] = "application/rss+xml"
 
+    # Lookup user based on the secret key
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
 
     if user.nil?
@@ -16,8 +22,10 @@ class FeedsController < ApplicationController
       return
     end
 
+    # Find all Project ids this user has access to
     pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ?", user.company_id ])
 
+    # Find 50 last WorkLogs of the Projects
     unless pids.nil? || pids.empty?
       pids = pids.collect{|p|p.id}.join(',')
       @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
@@ -25,6 +33,7 @@ class FeedsController < ApplicationController
       @activities = []
     end
 
+    # Create the RSS
     content = RSS::Maker.make("2.0") do |m|
       m.channel.title = "#{user.company.name} Activities"
       m.channel.link = "http://#{user.company.subdomain}.clockingit.com/activities/list"
@@ -60,6 +69,7 @@ class FeedsController < ApplicationController
       end
     end
 
+    # Render it inline
     render :inline => content.to_s, :layout => false
 
   end

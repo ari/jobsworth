@@ -1,3 +1,6 @@
+# Handle CRUD dealing with Clients, as well as upload of logos.
+#
+# Logo and CSS should be used when printing reports, or generating a PDF of a report.
 class CustomersController < ApplicationController
   require 'RMagick'
 
@@ -104,6 +107,7 @@ class CustomersController < ApplicationController
     redirect_from_last
   end
 
+  # Show a clients logo
   def show_logo
     if request.subdomains && request.subdomains.first != 'www'
       company = Company.find(:first, :conditions => ["subdomain = ?", request.subdomains.first])

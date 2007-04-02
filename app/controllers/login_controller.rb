@@ -1,3 +1,8 @@
+# Handle logins, as well as the portal pages
+#
+# The portal pages should probably be moved into
+# a separate controller.
+#
 class LoginController < ApplicationController
 
   layout 'login'
@@ -22,7 +27,10 @@ class LoginController < ApplicationController
   end
 
   def logout
+    # Mark user as logged out
     ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL where id = #{session[:user].id}")
+
+    # Let other logged in Users in same Company know that User logged out.
     Juggernaut.send("do_execute(#{session[:user].id}, \"Element.update('flash_message', '#{session[:user].username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{session[:user].company_id}"])
 
     session[:user] = nil
@@ -51,7 +59,8 @@ class LoginController < ApplicationController
         session[:sheet] = @sheet
       end
 
-
+      # Auto-filter by User if more than one Users are registered for
+      # Users Company
       if User.count("company_id = #{logged_in.company_id}") > 1
         session[:filter_user] = logged_in.id.to_s
       else
@@ -71,6 +80,7 @@ class LoginController < ApplicationController
         end
       end
 
+      # Let others know User logged in
       Juggernaut.send("do_execute(#{session[:user].id}, \"Element.update('flash_message', '#{session[:user].username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{session[:user].company_id}"])
 
       redirect_from_last
@@ -84,6 +94,8 @@ class LoginController < ApplicationController
 
   end
 
+  # Mail the User his/her credentials for all Users on the requested
+  # email address
   def take_forgotten
     flash[:notice] = ""
     error = 0
@@ -125,6 +137,7 @@ class LoginController < ApplicationController
     flash[:notice] = ""
 
 
+    # FIXME: Use models validation instead
     if @params[:username].length == 0
       flash[:notice] += "* Enter username<br/>"
       error = 1
@@ -175,6 +188,7 @@ class LoginController < ApplicationController
     end
 
     if error == 0
+      # Create the User and Company
       @user = User.new
       @company = Company.new
 

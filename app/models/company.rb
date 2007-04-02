@@ -1,3 +1,8 @@
+# A logical grouping of all users sharing projects
+#
+# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
+#
+
 class Company < ActiveRecord::Base
   has_many      :customers, :dependent => :destroy
   has_many      :users, :dependent => :destroy
@@ -19,6 +24,9 @@ class Company < ActiveRecord::Base
   validates_uniqueness_of       :subdomain
 
 
+  # Find the Internal client of this company.
+  # A small kludge is needed,as it was previously called Internal, now it has the same
+  # name as the parent company.
   def internal_customer
     customers.find(:first, :conditions => ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id])
   end

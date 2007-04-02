@@ -1,6 +1,9 @@
+# Controller handling admin activities
+
 class AdminController < ApplicationController
 
   require 'RMagick'
+
 
   before_filter :authorize
   def index
@@ -41,10 +44,12 @@ class AdminController < ApplicationController
       redirect_to :action => 'news'
   end
 
+  # List all logos uploaded
   def logos
     @customers = Customer.find(:all, :conditions => ["binary_id > 0 "])
   end
 
+  # Show a single logo
   def show_logo
     @customer = Customer.find(@params[:id])
     image = Magick::Image.from_blob( @customer.binary.data ).first

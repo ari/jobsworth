@@ -1,3 +1,6 @@
+# Allow Users to upload/download files, and generate thumbnails where appropriate.
+# If it's not an image, try and find an appropriate stock icon
+#
 class ProjectFilesController < ApplicationController
   require 'RMagick'
 #  enable_upload_progress
@@ -24,6 +27,7 @@ class ProjectFilesController < ApplicationController
     end
   end
 
+  # Show the thumbnail for a given image
   def thumbnail
     @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
 
@@ -49,7 +53,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def upload
-    filename = @params['project_files']['tmp_file'].original_filename
+    filename = params['project_files']['tmp_file'].original_filename if params['project_files']
 
     unless filename
       flash['notice'] = 'No file selected for upload.'

@@ -1,10 +1,12 @@
+# Handle tasks for a Company / User
+# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
+#
 class TasksController < ApplicationController
  cache_sweeper :component_sweeper, :only => [:create, :create_ajax, :update, :update_ajax, :destroy, :ajax_delete, :ajax_hide, :ajax_restore,
     :ajax_check, :ajax_uncheck, :ajax_add_comment, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
     :cancel_work_ajax, :destroy_log ]
 
   def new
-
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
 
     if @projects.nil? || @projects.empty?
@@ -15,18 +17,10 @@ class TasksController < ApplicationController
       @task.duration = 60
       @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
     end
-
-
-
-  end
-
-  def new_ajax
-    self.new
-    render :action => 'new', :layout => false
   end
 
   def list
-
+    # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{session[:user].company_id}"]
 
     @tags = {}
@@ -61,12 +55,6 @@ class TasksController < ApplicationController
       filter << "(tasks.milestone_id IS NULL OR tasks.milestone_id = 0) AND "
     end
 
-#    if session[:filter_hidden].to_i == 0 || session[:filter_hidden].to_i == 2
-#      filter << "tasks.hidden = 0 AND "
-#    elsif session[:filter_hidden].to_i == 1
-#      filter << "tasks.hidden = 1 AND "
-#    end
-
     unless session[:filter_status].to_i == -1 || session[:filter_status].to_i == -2
       if session[:filter_status].to_i == 0
         filter << "(tasks.status = 0 OR tasks.status = 1) AND "
@@ -90,13 +78,16 @@ class TasksController < ApplicationController
     end
 
     if params[:tag] && params[:tag].length > 0
+      # Looking for tasks based on tags
       @selected_tags = params[:tag].downcase.split(',').collect{|t| t.strip}
       @tasks = Task.tagged_with(@selected_tags, { :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer]})
     else
+      # Looking for tasks based on filters
       @selected_tags = []
       @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, :project])
     end
 
+    # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
 
     if session[:group_tags].to_i > 0
@@ -109,6 +100,7 @@ class TasksController < ApplicationController
 
   end
 
+  # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
     @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ?', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
 
@@ -119,6 +111,8 @@ class TasksController < ApplicationController
     render :text => res
   end
 
+  # Return a json formatted list of users to refresh the User dropdown
+  # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners
 
     @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
@@ -132,12 +126,6 @@ class TasksController < ApplicationController
     res << ']}'
 
     render :inline => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\">#{@resource_string}</select>';</script>"
-  end
-
-
-  def auto_complete_for_task_set_tags
-    @tags = Tag.top_counts({ :like => params[:task][:set_tags].downcase, :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
-    render :partial => 'tag_autocomplete'
   end
 
   def create
@@ -249,10 +237,10 @@ class TasksController < ApplicationController
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
   end
 
-  def edit_ajax
-    self.edit
-    render :action => 'edit', :layout => false
-  end
+#  def edit_ajax
+#    self.edit
+#    render :action => 'edit', :layout => false
+#  end
 
   def update
     projects = User.find(session[:user].id).projects.collect{|p|p.id}
@@ -464,30 +452,15 @@ class TasksController < ApplicationController
     self.update
   end
 
-  def destroy
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-    @task.work_logs.destroy_all
-    @task.destroy
-
-    return if request.xhr?
-
-    redirect_from_last
-  end
-
-  def ajax_delete
-    self.destroy
-    Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-    Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
-  end
-
-  # Toggle the hidden status of a task
-  def toggle_hidden
-    task = Task.find(params[:id], :conditions => ["project_id = ?", session[:project].id])
-    task.hidden = 1 - task.hidden;
-    task.updated_by_id = session[:user].id
-    task.save
-    redirect_from_last
-  end
+#  def destroy
+#    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+#    @task.work_logs.destroy_all
+#    @task.destroy
+#
+#    return if request.xhr?
+#
+#    redirect_from_last
+#  end
 
   def ajax_hide
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
@@ -536,21 +509,6 @@ class TasksController < ApplicationController
     render :nothing => true
   end
 
-
-  ## Toggle the done flag of a task
-  def toggle_check
-    @task = Task.find(params[:id], :conditions => ["project_id = ?", session[:project].id])
-    if @task.completed_at == nil
-      @task.completed_at = Time.now.utc
-    else
-      @task.completed_at = nil
-    end
-    @task.updated_by_id = session[:user].id
-    @task.save
-
-
-    redirect_from_last
-  end
 
   def ajax_check
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}], :include => :project)
@@ -769,14 +727,14 @@ class TasksController < ApplicationController
   end
 
   def edit_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     @log.started_at = tz.utc_to_local(@log.started_at)
     @task = @log.task
     render :action => 'edit_log'
   end
 
   def destroy_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     @log.destroy
     flash['notice'] = "Log entry deleted..."
     redirect_from_last
@@ -784,13 +742,13 @@ class TasksController < ApplicationController
 
   def add_log
     @log = Worklog.new
-    @log.started_at = tz.now.utc
-    @task = @log.task
+    @log.started_at = tz.utc_to_local(Time.now.utc)
+    @log.task = Task.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     render :action => 'edit_log'
   end
 
   def save_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     if @log.update_attributes(params[:log])
 
       if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
@@ -824,31 +782,5 @@ class TasksController < ApplicationController
     redirect_from_last
   end
 
-  def ajax_comments
-    @comments = WorkLog.find(:all, :conditions => ["task_id = ? AND log_type = #{WorkLog::TASK_COMMENT}", params[:id]], :order => "started_at")
-    render :partial => 'comment_list', :locals => { :comments => @comments }
-  end
-
-  def ajax_add_comment
-    @task = Task.find(params[:id])
-    @comment = WorkLog.new
-    @comment.started_at = Time.now.utc
-    @comment.body = params[:body]
-    @comment.task = @task
-    @comment.user = session[:user]
-    @comment.company = session[:user].company
-    @comment.project = @task.project
-    @comment.customer = @task.project.customer
-    @comment.duration = 0
-    @comment.log_type = 2
-    @comment.save
-
-    @task.updated_by_id = session[:user].id
-    @task.save
-
-    @comments = WorkLog.find(:all, :conditions => ["task_id = ? AND log_type = #{WorkLog::TASK_COMMENT}", params[:id]], :order => "started_at")
-    Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-    Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
-  end
 
 end

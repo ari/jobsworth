@@ -1,3 +1,4 @@
+# Simple Page/Notes system, will grow into a full Wiki once I get the time..
 class PagesController < ApplicationController
 
   def show

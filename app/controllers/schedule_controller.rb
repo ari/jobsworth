@@ -1,3 +1,5 @@
+# Generate a calendar showing completed and due Tasks for a Company
+# TODO: Simple Events
 class ScheduleController < ApplicationController
 
   def list
@@ -11,10 +13,13 @@ class ScheduleController < ApplicationController
     @month ||= today.month
 
 
+    # Find all tasks for the current month, should probably be adjusted to use
+    # TimeZone for current User instead of UTC.
     @tasks = Task.find(:all, :order => 'tasks.duration desc, tasks.name', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at > '#{@year}-#{@month}-01 00:00:00' AND tasks.due_at < '#{@year}-#{@month}-31 23:59:59') OR (tasks.completed_at is NOT NULL AND tasks.completed_at > '#{@year}-#{@month}-01 00:00:00' AND tasks.completed_at < '#{@year}-#{@month}-31 23:59:59'))", ], :include => [:milestone] )
     @milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
     @dates = {}
 
+    # Mark milestones
     @milestones.each do |m|
       unless m.due_at.nil?
         @dates[m.due_at.to_date] ||= []
@@ -22,7 +27,7 @@ class ScheduleController < ApplicationController
       end
     end
 
-
+    # Mark all tasks
     @tasks.each do |t|
       due_date = t.due_at.to_date unless t.due_at.nil?
       due_date ||= t.completed_at.to_date unless t.completed_at.nil?
@@ -68,26 +73,29 @@ class ScheduleController < ApplicationController
 
     end
 
-
-
-
   end
 
+  # New event
   def new
   end
 
+  # Edit event
   def edit
   end
 
+  # Create event
   def create
   end
 
+  # Update event
   def update
   end
 
+  # Delte event
   def delete
   end
 
+  # Refresh calendar on Event addition / task completion
   def refresh
   end
 end

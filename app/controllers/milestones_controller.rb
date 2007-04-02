@@ -1,3 +1,4 @@
+# Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
 
   cache_sweeper :component_sweeper, :only => [:update, :destroy]

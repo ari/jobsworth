@@ -1,7 +1,8 @@
+# Simple real-time chat.
 class ShoutController < ApplicationController
 
   cache_sweeper :shout_sweeper, :only => :add_ajax
-  
+
   def add_ajax
     shout = Shout.new(params[:shout])
     shout.user_id = session[:user].id
