@@ -1,29 +1,53 @@
 == Welcome to ClockingIT
 
-I've only done rudimentary testing, so you'll most likely to run into some problems. Feel free
-to let me know at admin@clockingit.com when you do, and I'll try and help you get running. I
-have been able to run this version on a pretty much clean install, so it should work.
+This is a developer preview, to try and get ClockingIT into releasable
+shape.
+
+I've only done rudimentary testing, so you'll most likely to run into
+some problems. Feel free to let me know at admin@clockingit.com when
+you do, and I'll try and help you get running. I have been able to run
+this version on a pretty much clean install, so it should work.
+
+ClockingIT is relased under the terms of the MIT License, see LICENSE
+for more information.
 
 == Getting started
 
-1. sudo gem install tzinfo RedCloth rake json ferret fastercsv eventmachine rmagick
-   Make sure you have ImageMagick installed.
+For now, you'll have to do these steps manually, but there will be a
+setup script or web page at a later stage.
+
+1. sudo gem install tzinfo RedCloth rake json ferret fastercsv\
+   eventmachine rmagick
+   
+	Make sure you have ImageMagick installed.
+
 2. mysql -u root -p
    create database cit_dev;
    grant all on cit.* to cit@localhost identified by '<password>';
    flush privileges;
+
 3. Copy config/database.yml-example to config/database.yml and modify it
-4. Copy config/jusggernaut_config.yml-example to config/juggernaut_config.yml and modify it
-5. Copy config/environment.rb-example to config/environment.rb and modify it
+4. Copy config/jusggernaut_config.yml-example to 
+   config/juggernaut_config.yml and modify it
+5. Copy config/environment.rb-example to config/environment.rb 
+   and modify it
+
 6. mkdir index log; chmod a+rwx log index tmp/*
 7. rake db:schema:load
 8. sudo vim /etc/hosts
    127.0.0.1 www.clockingit.com
    127.0.0.1 <subdomain>.clockingit.com
+
 9. sudo ./script/push_server
    ./script/server
    Create the initial account at http://www.clockingit.com:3000/login/signup
 10.Sign in from http://<subdomain>.clockingit.com:3000/
+
+== Support
+
+* mailto:admin@clockingit.com
+* http://wiki.clockingit.com/wiki:source
+* http://forum.clockingit.com/
 
 == Example for Apache conf
 
