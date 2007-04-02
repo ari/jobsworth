@@ -2,8 +2,8 @@
 # Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 #
 class TasksController < ApplicationController
- cache_sweeper :component_sweeper, :only => [:create, :create_ajax, :update, :update_ajax, :destroy, :ajax_delete, :ajax_hide, :ajax_restore,
-    :ajax_check, :ajax_uncheck, :ajax_add_comment, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
+ cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
+    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
     :cancel_work_ajax, :destroy_log ]
 
   def new
