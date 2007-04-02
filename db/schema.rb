@@ -229,7 +229,7 @@ ActiveRecord::Schema.define(:version => 64) do
   create_table "tasks", :force => true do |t|
     t.column "name", :string, :limit => 200, :default => "", :null => false
     t.column "project_id", :integer, :default => 0, :null => false
-    t.column "user_id_bak", :integer
+    t.column "user_id", :integer, :default => 0
     t.column "position", :integer, :default => 0, :null => false
     t.column "created_at", :datetime, :null => false
     t.column "due_at", :datetime

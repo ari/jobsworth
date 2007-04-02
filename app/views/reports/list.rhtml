@@ -7,7 +7,6 @@
             <td valign="top">
               <table id="reports" cellspacing=0 cellpadding=3>
 
-
                 <% if @column_headers && @column_headers.size > 1 %>
                   <% if @generated_report && @generated_report.id > 0 %>
                 <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>><%= link_to  "CSV" + image_tag('report_go.png', :border => 0, :class => 'tooltip', :title => 'Download CSV file of this report'), :action => "get_csv", :id => @generated_report.id %></td></tr>
@@ -135,7 +134,6 @@
            ],
            :selected => ((params[:report] && params[:report][:columns]) ? params[:report][:columns] : "7") ) %><br/>
 </div>
-
 <% if params[:report] && params[:report][:range] == "7" %>
 <div id="date_range">
 <% else %>
@@ -147,8 +145,7 @@
         { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
 </div>
 
-
-<div id="subtotals"<%= " style=\"display:none;\"" if params[:report] && !["3", "2"].include?(params[:report][:type])  %>>
+<div id="subtotals"<%= " style=\"display:none;\"" if params[:report].nil? || !["3", "2"].include?(params[:report][:type])  %>>
 <label for="report_subtotals">Sub-totals</label>
 <%= check_box 'report', 'subtotals', :checked => (params[:report] && params[:report][:subtotals].to_i == 1) ? "checked" : "" %><br/>
 </div>
