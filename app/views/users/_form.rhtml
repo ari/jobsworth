@@ -1,14 +1,10 @@
 <%= error_messages_for 'user' %>
 
 <!--[form:user]-->
-<p><label for="user_name">Name</label><%= text_field 'user', 'name'  %></p>
+<%= render :partial => "user_information" %>
 
-<p><label for="user_username">Username</label><%= text_field 'user', 'username'  %></p>
-
-<p><label for="user_password">Password</label><%= password_field 'user', 'password'  %></p>
-
-<p><label for="user_email">Email</label><%= text_field 'user', 'email'  %></p>
-
+<fieldset>
+<legend>Options</legend>
 <p><label for="user_time_zone">Location</label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
 <% if session[:user].admin > 0 %>
 <p><label for="user_admin">Administrator</label><%= check_box 'user', 'admin' %></p>
@@ -21,6 +17,7 @@
 <p><label for="user_option_tooltips">Show Tooltips</label><%= check_box 'user', 'option_tooltips' %></p>
 <p><label for="user_send_notifications">Send Notifications</label><%= check_box 'user', 'send_notifications' %></p>
 <p><label for="user_receive_notifications">Receive Notifications</label><%= check_box 'user', 'receive_notifications' %></p>
+</fieldset>
 <br>
 <!--[eoform:user]-->
 

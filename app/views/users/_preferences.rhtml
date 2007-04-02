@@ -2,13 +2,7 @@
 
 <!--[form:user]-->
 <!--[form:user]-->
-<fieldset>
-<legend>User Information</legend>
-<p><label for="user_name">Name</label><%= text_field 'user', 'name'  %></p>
-<p><label for="user_username">Username</label><%= text_field 'user', 'username'  %></p>
-<p><label for="user_password">Password</label><%= password_field 'user', 'password'  %></p>
-<p><label for="user_email">Email</label><%= text_field 'user', 'email'  %></p>
-</fieldset>
+<%= render :partial => "user_information" %>
 <fieldset>
 <legend>Options</legend>
 <p><label for="user_time_zone">Location</label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
