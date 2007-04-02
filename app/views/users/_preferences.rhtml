@@ -1,6 +1,16 @@
 <%= error_messages_for 'user' %>
 
 <!--[form:user]-->
+<!--[form:user]-->
+<fieldset>
+<legend>User Information</legend>
+<p><label for="user_name">Name</label><%= text_field 'user', 'name'  %></p>
+<p><label for="user_username">Username</label><%= text_field 'user', 'username'  %></p>
+<p><label for="user_password">Password</label><%= password_field 'user', 'password'  %></p>
+<p><label for="user_email">Email</label><%= text_field 'user', 'email'  %></p>
+</fieldset>
+<fieldset>
+<legend>Options</legend>
 <p><label for="user_time_zone">Location</label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
 <p><label for="user_time_format">Time Format</label><%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
 <p><label for="user_date_format">Date Format</label><%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
@@ -9,7 +19,7 @@
 <p><label for="user_option_showcalendar">Show Tooltips</label><%= check_box 'user', 'option_tooltips' %></p>
 <p><label for="user_send_notifications">Send Notifications</label><%= check_box 'user', 'send_notifications' %></p>
 <p><label for="user_receive_notifications">Receive Notifications</label><%= check_box 'user', 'receive_notifications' %></p>
-
+</fieldset>
 <br>
 
 <!--[eoform:user]-->
