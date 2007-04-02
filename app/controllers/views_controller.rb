@@ -219,7 +219,7 @@ class ViewsController < ApplicationController
 
   def get_milestones
     if params[:project_id].to_i == 0
-      @milestones = Milestone.find(:all, :order => "[project_id, due_at", :conditions => ["company_id = ?", session[:user].company_id]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
+      @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ?", session[:user].company_id]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
 
     else
       @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ?', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
