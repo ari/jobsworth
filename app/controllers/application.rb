@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
     User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
-                                                           :conditions => [ "projects.company_id = ?", session[:user].company_id ], :include => :customer )
+                                                           :conditions => [ "projects.company_id = ? AND completed_at IS NULL", session[:user].company_id ], :include => :customer )
   end
 
 

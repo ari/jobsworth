@@ -5,5 +5,9 @@
   <%= render_partial 'form' %>
   <%= submit_tag 'Edit', :class => 'nolabel' %>
 <%= end_form_tag %>
-[<%= link_to "Delete Milestone", {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %>]
+<br/>
+  <% if session[:user].can?( @milestone.project, 'milestone' ) %>
+  <div style="float:right;"><%= link_to "Delete Milestone", {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
+  <div style="float:left;"><%= link_to "Complete Milestone", {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
+  <% end %>
 </fieldset>

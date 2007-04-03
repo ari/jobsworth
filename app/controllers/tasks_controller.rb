@@ -7,7 +7,7 @@ class TasksController < ApplicationController
     :cancel_work_ajax, :destroy_log ]
 
   def new
-    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
 
     if @projects.nil? || @projects.empty?
       flash['notice'] = "You need to create a project to hold your tasks, or get access to create tasks in an existing project..."
@@ -32,7 +32,14 @@ class TasksController < ApplicationController
       project_ids = session[:filter_project]
     end
 
+
     filter = ""
+
+
+    completed_milestones_ids = Milestone.find(:all, :conditions => ["project_id IN (#{project_ids}) AND completed_at IS NOT NULL"]).collect{ |m| m.id}.join(',')
+
+    filter << "tasks.milestone_id NOT IN (#{completed_milestones_ids}) AND " if completed_milestones_ids != ''
+
     if session[:filter_user].to_i > 0
       task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
       if task_ids == ''
@@ -102,7 +109,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ?', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"[None]"}'
@@ -216,7 +223,7 @@ class TasksController < ApplicationController
       flash['notice'] ||= 'Task was successfully created.'
       redirect_from_last
     else
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
       @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
       render_action 'new'
     end
@@ -234,7 +241,7 @@ class TasksController < ApplicationController
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ?", @task.id], :include => [:user, :task, :project])
       @logs = []
     end
-    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
   end
 
 #  def edit_ajax
@@ -541,7 +548,7 @@ class TasksController < ApplicationController
     end
 
     if session[:history] && session[:history][0] == '/activities/list'
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :include => [ :customer, :milestones]);
+      @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
       @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 25, :conditions => ["work_logs.project_id IN ( #{current_project_ids} )"], :include => [:user, :project, :customer, :task])
 
       u = User.find(session[:user].id)

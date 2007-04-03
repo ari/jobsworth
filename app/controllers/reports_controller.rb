@@ -287,7 +287,7 @@ class ReportsController < ApplicationController
       end
 
       @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
+      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]);
       @logs = []
       @projects.each do |p|
         if join != ""
@@ -445,9 +445,9 @@ class ReportsController < ApplicationController
 
   def get_projects
     if params[:client_id].to_i == 0
-      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ?", session[:user].company_id ]).collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND completed_at IS NULL", session[:user].company_id ]).collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     else
-      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ?", session[:user].company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ? AND completed_at IS NULL", session[:user].company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
     res = '{"options":[{"value":"0", "text":"[Any Project]"}'

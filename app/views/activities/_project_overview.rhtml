@@ -93,8 +93,18 @@
         </div>
       </td>
     </tr>
-          <% end %>
+  <% end %>
+  <% @completed_milestones = Milestone.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
+     if @completed_milestones > 0
+  %>
+  <tr><td colspan=2 align=right class="milestone_completed"><%= link_to "#{pluralize(@completed_milestones, 'completed milestone')}", :controller => 'milestones', :action => 'list_completed', :id => project %></td></tr>
+  <% end %>
 
-          <% end %>
-          </table>
+
+  <% end %>
+
+  <% if @completed_projects > 0 %>
+  <tr><td colspan=2 align=right class="project_completed"><%= link_to "#{pluralize(@completed_projects, 'completed project')}", :controller => 'projects', :action => 'list_completed' %></td></tr>
+  <% end %>
+</table>
 

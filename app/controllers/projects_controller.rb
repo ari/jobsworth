@@ -169,4 +169,29 @@ class ProjectsController < ApplicationController
 
     redirect_to :controller => 'activities', :action => 'list'
   end
+
+  def complete
+    project = Project.find(params[:id], :conditions => ["id IN (#{current_project_ids}) AND completed_at IS NULL"])
+    unless project.nil?
+      project.completed_at = Time.now.utc
+      project.save
+      flash[:notice] = "#{project.name} completed."
+    end
+    redirect_to :controller => 'activities', :action => 'list'
+  end
+
+  def revert
+    project = User.find(session[:user].id).projects.find(params[:id], :conditions => ["completed_at IS NOT NULL"])
+    unless project.nil?
+      project.completed_at = nil
+      project.save
+      flash[:notice] = "#{project.name} reverted."
+    end
+    redirect_to :controller => 'activities', :action => 'list'
+  end
+
+  def list_completed
+    @completed_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
+  end
+
 end

@@ -11,6 +11,7 @@
           <br />
             <% if @project.user_id == session[:user].id %>
             <div style="float: right;"><%= link_to ("Delete Project", {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
+            <div style="float: right;"> <%= link_to ("Complete Project", {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> |&nbsp;</div>
             <% end %>
             <% if session[:user].can?( @project, 'milestone' ) %>
             <div style="float:left;"><%= link_to "New Milestone", {:controller => 'milestones', :action => 'new', :project_id => @project}  %></div>

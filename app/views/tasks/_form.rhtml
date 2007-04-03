@@ -64,9 +64,9 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
           <%#= observe_field 'task_project_id', { :url => { :controller => 'tasks', :action => 'get_owners' }, :update => 'users[]', :with => 'project_id', :success => 'reset_owners()', :insertion => "updateSelect" } %>
           <label for="task_milestone_id">Milestone</label>
           <% unless @task.id.nil? %>
-            <%= select 'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ?', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
+            <%= select 'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
           <% else %>
-            <%= select'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ?', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
+            <%= select'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
           <% end %>
 
 <%

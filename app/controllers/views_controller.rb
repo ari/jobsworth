@@ -208,7 +208,7 @@ class ViewsController < ApplicationController
     if params[:customer_id].to_i == 0
       @projects = User.find(session[:user].id).projects.collect {|p| "{\"text\":\"#{p.name} / #{p.customer.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     else
-      @projects = User.find( session[:user].id).projects.find(:all, :conditions => ['customer_id = ?', params[:customer_id]]).collect {|p| "{\"text\":\"#{p.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @projects = User.find( session[:user].id).projects.find(:all, :conditions => ['customer_id = ? AND completed_at IS NULL', params[:customer_id]]).collect {|p| "{\"text\":\"#{p.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
     res = '{"options":[{"value":"0", "text":"[Any]"}'
@@ -219,10 +219,10 @@ class ViewsController < ApplicationController
 
   def get_milestones
     if params[:project_id].to_i == 0
-      @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ?", session[:user].company_id]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
+      @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND completed_at IS NULL", session[:user].company_id]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
 
     else
-      @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ?', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
+      @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
     end
 
     res = '{"options":[{"value":"0", "text":"[Any]"}'

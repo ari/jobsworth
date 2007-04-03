@@ -12,7 +12,7 @@
           <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
-            @projects = User.find(session[:user].id).projects.collect {|p| [p.name, p.id.to_s]}
+            @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
             @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
 
             filter_count = 0

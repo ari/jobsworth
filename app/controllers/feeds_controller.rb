@@ -23,7 +23,7 @@ class FeedsController < ApplicationController
     end
 
     # Find all Project ids this user has access to
-    pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ?", user.company_id ])
+    pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
 
     # Find 50 last WorkLogs of the Projects
     unless pids.nil? || pids.empty?

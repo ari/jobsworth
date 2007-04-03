@@ -1,0 +1,22 @@
+  <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="6" class="page_header">
+        Completed Milestones
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+  <tr>
+    <th align="left">Name</th>
+    <th align="left">Completed</th>
+    <th align="left">Tasks</th>
+    <th align="left">&nbsp;</th>
+  </tr>
+  <% @completed_milestones.each do |m| %>
+  <tr>
+    <td><%= "#{m.project.customer.name} / #{m.project.name} / #{m.name}" %></td>
+    <td><%= tz.utc_to_local(m.completed_at).strftime(session[:user].date_format) %></td>
+    <td><%= m.tasks.size %></td>
+    <td><%= link_to( 'Revert', {:action => 'revert', :id => p}, :confirm => "Really revert #{m.name}?" ) %></td>
+  </tr>
+  <% end %>
+  </table>

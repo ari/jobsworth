@@ -77,6 +77,16 @@ h2 {
   font-size: 13px;
 }
 
+.project_completed {
+  padding-top: 1.5em;
+  font-size: smaller;
+}
+.milestone_completed {
+  padding-top: 0.5em;
+  font-size: smaller;
+}
+
+
 .views_item {
   font-size: 12px;
   font-weight: bold;

@@ -34,6 +34,11 @@ class WorkLog < ActiveRecord::Base
 
   SCM_COMMIT         = 40
 
+  PROJECT_COMPLETED  = 50
+  MILESTONE_COMPLETED = 51
+  PROJECT_REVERTED   = 52
+  MILESTONE_REVERTED = 53
+
   def self.full_text_search(q, options = {})
     return nil if q.nil? or q==""
     default_options = {:limit => 10, :page => 1}

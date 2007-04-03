@@ -76,4 +76,29 @@ class MilestonesController < ApplicationController
 
     redirect_from_last
   end
+
+  def complete
+    milestone = Milestone.find( params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    unless milestone.nil?
+      milestone.completed_at = Time.now.utc
+      milestone.save
+      flash[:notice] = "#{ milestone.project.name } / #{ milestone.name } completed."
+    end
+    redirect_to :controller => 'activities', :action => 'list'
+  end
+
+  def revert
+    milestone = Milestone.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    unless milestone.nil?
+      milestone.completed_at = nil
+      milestone.save
+      flash[:notice] = "#{ milestone.project.name } / #{milestone.name} reverted."
+    end
+    redirect_to :controller => 'activities', :action => 'list'
+  end
+
+  def list_completed
+    @completed_milestones = Milestone.find(:all, :conditions => ["project_id = ? AND completed_at IS NOT NULL", params[:id]])
+  end
+
 end

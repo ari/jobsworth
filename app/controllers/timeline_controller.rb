@@ -4,9 +4,11 @@ class TimelineController < ApplicationController
   def list
 
     filter = ""
-
-
-    filter << " AND work_logs.project_id = #{params[:filter_project]}" if params[:filter_project].to_i > 0
+    if params[:filter_project].to_i > 0
+      filter << " AND work_logs.project_id = #{params[:filter_project]}"
+    else
+      filter << " AND work_logs.project_id IN (#{current_project_ids})"
+    end
     filter << " AND work_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
     filter << " AND work_logs.log_type = #{WorkLog::TASK_CREATED}" if params[:filter_status].to_i == WorkLog::TASK_CREATED
     filter << " AND work_logs.log_type IN (#{WorkLog::TASK_CREATED},#{WorkLog::TASK_REVERTED},#{WorkLog::TASK_COMPLETED})" if params[:filter_status].to_i == WorkLog::TASK_REVERTED
