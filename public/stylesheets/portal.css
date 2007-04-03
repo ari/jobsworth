@@ -56,7 +56,7 @@ input, textarea, select { border: 1px solid #AAA; }
 
 a {
   color: #FCFCFC;
-  text-decoration: none;
+  text-decoration: underline;
   border: none;
   padding: 0;
   margin: 0;
@@ -67,6 +67,7 @@ a:hover {
 #menu a {
   font-size: 136%;
   display: inline;
+  text-decoration: none;
 }
 
 #menu img {
