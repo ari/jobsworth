@@ -109,12 +109,19 @@ class CustomersController < ApplicationController
 
   # Show a clients logo
   def show_logo
+
     if request.subdomains && request.subdomains.first != 'www'
       company = Company.find(:first, :conditions => ["subdomain = ?", request.subdomains.first])
       @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", company.id])
     else
       @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     end
+
+    if @customer.binary && @customer.binary.data.length == 0
+      render :nothing => true
+      return
+    end
+
     image = Magick::Image.from_blob( @customer.binary.data ).first
     send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
   end
