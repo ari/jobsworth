@@ -226,7 +226,39 @@ class LoginController < ApplicationController
       render_action 'signup'
     end
 
+  end
 
+  def company_check
+    companies = Company.count(["name = ?", params[:company]])
+    if params[:company].empty?
+      render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
+    else
+      if companies > 0
+        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name already taken, have someone from that company create your account, or choose a different name.</small>"
+      else
+        render :inline => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name OK</small>"
+      end
+    end
+  end
+
+  def subdomain_check
+    subdomain = Company.count(["subdomain = ?", params[:subdomain]])
+    if %w( www forum wiki repo mail ftp ).include?( params[:subdomain].downcase )
+      subdomain = 1
+    end
+
+    if params[:subdomain].empty?
+      render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
+    else
+      if params[:subdomain].match(/[\W _]/) != nil
+        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters and numbers, no spaces.</small>"
+
+      elsif subdomain > 0
+        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain already taken, choose a different one.</small>"
+      else
+        render :inline => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain OK</small>"
+      end
+    end
   end
 
 end

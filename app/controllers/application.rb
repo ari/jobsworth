@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   model :sheet
   model :task
 
-  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :about ]
+  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :about, :company_check, :subdomain_check ]
 
   after_filter :set_charset
   after_filter OutputCompressionFilter
