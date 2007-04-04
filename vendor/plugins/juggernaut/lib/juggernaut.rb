@@ -6,7 +6,7 @@ module Juggernaut
 FS_APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/juggernaut_config.yml"))
 
 def self.config
-	return FS_APP_CONFIG
+        return FS_APP_CONFIG
 end
 
 def self.send(data,chan = ["default"])
@@ -20,17 +20,17 @@ def self.send(data,chan = ["default"])
 end
 
     def self.html_escape(s)
-    	s.to_s.gsub(/&/, "&amp;").gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")
+        s.to_s.gsub(/&/, "&amp;").gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")
     end
-    
+
     def self.string_escape(s)
-    	s.gsub(/[']/, '\\\\\'')
+        s.gsub(/[']/, '\\\\\'')
     end
-    
+
     def self.parse_string(s)
-    	s.gsub(/\r\n|\n|\r/, "\\n").gsub(/["']/) { |m| "\\#{m}" }
+        s.gsub(/\r\n|\n|\r/, "\\n").gsub(/["']/) { |m| "\\#{m}" }
     end
-    
+
     def self.html_and_string_escape(s)
        i = s.gsub(/[']/, '\\\\\'')
        i.to_s.gsub(/&/, "&amp;").gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")

@@ -16,7 +16,7 @@ for more information.
 For now, you'll have to do these steps manually, but there will be a
 setup script or web page at a later stage.
 
-1. sudo gem install tzinfo RedCloth rake json ferret fastercsv\
+1. sudo gem install tzinfo RedCloth rake ferret fastercsv\
    eventmachine rmagick
    
 	Make sure you have ImageMagick installed.

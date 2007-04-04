@@ -1,13 +1,12 @@
 #!/usr/bin/ruby
 
-# HTTP Push Server
+# Juggernaut Push server
 
 require "socket"
 require "thread"
 require "logger"
 require "yaml"
 require "monitor"
-require "json"
 
 require "rubygems"
 require 'eventmachine'
@@ -17,6 +16,41 @@ module Juggernaut
 
   RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
   CONFIG = YAML::load_file("config/juggernaut_config.yml").freeze
+
+
+  module JSON
+    class ParseError < StandardError
+    end
+
+    class << self
+      # Converts a JSON string into a Ruby object.
+      def decode(json)
+        YAML.load(convert_json_to_yaml(json))
+      rescue ArgumentError => e
+        raise ParseError, "Invalid JSON string"
+      end
+
+      protected
+      # Ensure that ":" and "," are always followed by a space
+      def convert_json_to_yaml(json)
+        quoting, escaping = false, false
+        json.gsub(/./) do |char|
+          escaping = false and next char if escaping
+          case char
+          when '"', "'"
+            quoting = quoting == char ? false : char
+          when "\\"
+            escaping = true if quoting
+          when ":", ","
+            char << " " unless quoting
+          end
+          char
+        end
+      end
+
+    end
+  end
+
 
   class Channels < Monitor
 
@@ -103,8 +137,8 @@ module Juggernaut
       @@channels ||= Channels.new
       @line_buffer = ''
 
-	peer = get_peername
-     @port, @host = Socket.unpack_sockaddr_in( peer ) unless peer.nil?
+      peer = get_peername
+      @port, @host = Socket.unpack_sockaddr_in( peer ) unless peer.nil?
       Logger.info "#{@host}:#{@port} connected."
 
     end
@@ -151,7 +185,8 @@ module Juggernaut
           self.send_data "<?xml version=\"1.0\"?>\n<cross-domain-policy>\n<allow-access-from domain=\"#{Juggernaut::CONFIG["ALLOW_CROSSDOMAIN"]}\" to-ports=\"*\"/>\n<allow-access-from domain=\"192.168.*\" to-ports=\"*\"/>\n</cross-domain-policy>\n\0"
         else
           begin
-            request = JSON.parse(@line_buffer)
+            request = Juggernaut::JSON.decode(@line_buffer)
+            Logger.debug "JSON result: [#{request.inspect}]"
           rescue
             request = nil
           end
