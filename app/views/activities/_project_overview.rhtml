@@ -70,7 +70,7 @@
           <% end
 
 
-             for milestone in project.milestones
+             for milestone in project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, name")
                done_count = Task.count(["project_id = ? AND milestone_id = ? AND completed_at IS NOT NULL", project.id, milestone.id])
                total_count = Task.count(["project_id = ? AND milestone_id = ?", project.id, milestone.id]) * 1.0
                done_percent = (done_count/total_count) * 100.0

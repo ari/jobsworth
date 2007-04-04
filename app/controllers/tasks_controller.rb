@@ -35,11 +35,6 @@ class TasksController < ApplicationController
 
     filter = ""
 
-
-    completed_milestones_ids = Milestone.find(:all, :conditions => ["project_id IN (#{project_ids}) AND completed_at IS NOT NULL"]).collect{ |m| m.id}.join(',')
-
-    filter << "tasks.milestone_id NOT IN (#{completed_milestones_ids}) AND " if completed_milestones_ids != ''
-
     if session[:filter_user].to_i > 0
       task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
       if task_ids == ''
@@ -83,6 +78,9 @@ class TasksController < ApplicationController
     unless session[:filter_customer].to_i == 0
       filter << "projects.customer_id = #{session[:filter_customer]} AND "
     end
+
+    filter << "tasks.milestone_id NOT IN (#{completed_milestone_ids}) AND "
+
 
     if params[:tag] && params[:tag].length > 0
       # Looking for tasks based on tags

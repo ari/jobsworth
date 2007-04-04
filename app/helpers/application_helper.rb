@@ -39,6 +39,13 @@ module ApplicationHelper
     end
   end
 
+  # List of completed milestone ids, joined with ,
+  def completed_milestone_ids
+    milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
+    milestone_ids = "0" if milestone_ids.empty?
+    milestone_ids
+  end
+
   def current_pages
     @pages = Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
   end

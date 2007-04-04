@@ -12,16 +12,19 @@
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
             if session[:filter_customer].to_i > 0
-              @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
+              @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"])
             else
-              @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
+              @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"])
             end
+            @projects = @all_projects.collect {|p| [p.name, p.id.to_s]}
             if session[:filter_project].to_i > 0
               @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
               @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ? AND completed_at IS NULL", session[:user].company_id, session[:filter_project]]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
             else
+              project_ids = @all_projects.collect {|p| p.id}.join(',')
+              project_ids = "0" if project_ids.empty?
               @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
-              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND completed_at IS NULL", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
+              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND project_id IN (#{project_ids}) AND completed_at IS NULL", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
             end
 
             filter_count = 0

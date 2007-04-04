@@ -139,4 +139,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # List of completed milestone ids, joined with ,
+  def completed_milestone_ids
+    milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
+    milestone_ids = "0" if milestone_ids == ''
+    milestone_ids
+  end
+
 end
