@@ -16,7 +16,7 @@ class ReportsController < ApplicationController
           tz.utc_to_local(w.started_at).strftime("Week %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_month.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime("%d/%m")
         end
       else
-        tz.utc_to_local(w.started_at).strftime("Week %W<br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime("%d/%m")
+        tz.utc_to_local(w.started_at).strftime("Week %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime("%d/%m")
       end
     elsif @range.to_i == 5 || @range.to_i == 6
       tz.utc_to_local(w.started_at).strftime("%b <br/>%y")
@@ -425,6 +425,18 @@ class ReportsController < ApplicationController
           row << [@row_totals[key]]
           csv << row
         end
+
+        row = []
+        row << ['Total']
+        @column_headers.sort.each do |key,value|
+          next if key == '__'
+          val = nil
+          val = @column_totals[key] if @column_totals[key] > 0
+          row << [val]
+        end
+        row << [@total]
+        csv << row
+
 
       end
     end
