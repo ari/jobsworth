@@ -1,10 +1,9 @@
 <% title_string = "ClockingIT" %>
 <% if session[:sheet] -%>
-  <%= link_to (session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id) %> <br />
-    <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip", :title => "Done working on <b>#{session[:sheet].task.name}</b> for now."), {:controller => 'tasks', :action => 'stop_work'})  -%>
-    <%= time_ago_in_words(session[:sheet].created_at) -%>
-
-        <% title_string = worked_nice(((Time.now.utc - session[:sheet].created_at) / 60).to_i) + session[:sheet].task.issue_name + " / Clocking IT" %>
+  <%= link_to( session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id ) %> <br />
+  <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => "Done working on <b>#{session[:sheet].task.name}</b> for now."), {:controller => 'tasks', :action => 'stop_work'} )  -%>
+  <%= time_ago_in_words(session[:sheet].created_at) -%>
+  <% title_string = worked_nice(((Time.now.utc - session[:sheet].created_at) / 60).to_i) + session[:sheet].task.issue_name + " / Clocking IT" %>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>
