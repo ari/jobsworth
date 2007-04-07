@@ -1,6 +1,6 @@
         <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
           <tr>
-            <td align="left" colspan="2" class="page_header"><div style="float:left;">Projects</div><div style="float:right;padding-top:0.1em;"><%= link_to 'New', :controller => "projects", :action => 'new' %></div></td>
+            <td align="left" colspan="2" class="page_header"><div style="float:left;"><%=_ 'Projects'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "projects", :action => 'new' %></div></td>
           </tr>
           <%
              last_customer = 0
@@ -60,7 +60,7 @@
                done_count = Task.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
                done_percent = (done_count/total_count) * 100.0
           %>
-          <tr class="milestone" style="height:16px;"><td colspan="2"><div><div style="float: left;padding-top:2px;"><span class="milestones">Overall Progress</span></div>
+          <tr class="milestone" style="height:16px;"><td colspan="2"><div><div style="float: left;padding-top:2px;"><span class="milestones"><%=_ 'Overall Progress'%></span></div>
               <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
                   <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %>  Complete"> </div>
                   <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %>  Remaining"> </div>
@@ -97,14 +97,14 @@
   <% @completed_milestones = Milestone.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
      if @completed_milestones > 0
   %>
-  <tr><td colspan=2 align=right class="milestone_completed"><%= link_to "#{pluralize(@completed_milestones, 'completed milestone')}", :controller => 'milestones', :action => 'list_completed', :id => project %></td></tr>
+  <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => project %></td></tr>
   <% end %>
 
 
   <% end %>
 
   <% if @completed_projects > 0 %>
-  <tr><td colspan=2 align=right class="project_completed"><%= link_to "#{pluralize(@completed_projects, 'completed project')}", :controller => 'projects', :action => 'list_completed' %></td></tr>
+  <tr><td colspan=2 align=right class="project_completed"><%= link_to _('%d completed project', @completed_projects), :controller => 'projects', :action => 'list_completed' %></td></tr>
   <% end %>
 </table>
 

@@ -1,41 +1,25 @@
 Hepp!
 -----
-It's been a while since the last ClockingIT release, but the new version has 
-finally been deployed, with quite a few improvements. ClockingIT is now much
-better at handling a large number of tasks and issues, and it's a lot easier 
-to see what you should work on next. I've also implemented a new look, 
-designed by the missis, which is quite pleasing on the eye.
+This is just a quick note to let you know that I've opened up ClockingIT
+(http://www.clockingit.com) under a MIT/X11 license. It's quite possible
+to install it on your own server if you know a little bit about Linux/BSD,
+even though only a source repository is available at this time.
 
-Main Improvements
------------------
-- A new overview page has been created, showing your top tasks, progress on projects
-  and milestones, as well as the most recent changes and work done. 
-- Tasks can now be assigned tags, and views can be created on those tags.
-- Tasks can also have a type, severity and priority which lets you always see
-  what's most important to do next.
-- Revised look providing an even cleaner and easier to use interface.
-- Attach files to a task.
-- Define custom views into your tasks, showing just the tasks you need 
-  across projects and milestones.
-- Search for tasks and related log entries or look up by task number.
-- Fine-grained permissions allowing better control of who can do what.
-- Notifications via email on relevant actions.
-
-Have a look at http://wiki.clockingit.com/wiki:screenshots for some
-screenshots of the new look and features.
+Have a look at http://wiki.clockingit.com/wiki:source for information
+about the downloading the source, or log in with the following to see what
+else has changed in ClockingIT lately (better reports, for instance).
 
 Account Information
 -------------------
-In case you've forgotten your log in details, here they are: 
 Username: <%= @user.username %>
 Password: <%= @user.password %>
 
 Login URL: http://<%=@user.company.subdomain%>.clockingit.com
 
-If you need further help, have suggestions, find bugs, or just want to give 
+If you need further help, have suggestions, find bugs, or just want to give
 some feedback, don't hesitate to reply to this email.
 
---  
+--
 Regards,
 Erlend Simonsen
 http://www.clockingit.com

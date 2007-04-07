@@ -25,105 +25,112 @@ class="task_done<%=priority%>"
 class="task<%=priority%>"
 <% end %>
   onMouseOver="javascript:Hover('task', '<%=task.id%>')" onMouseOut="javascript:ClearHover()">
+
+<span>
   <% unless task.done?
-     @task = task
     %>
     <%= check_box("task", "done", { "title" => "Mark <b>#{task.name}</b> as completed", "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_check', :id => task },
                                                                 :loading => "Element.show('loading');",
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
-<% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
-<% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-<%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
-<% else -%>
-<%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
+    <% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
+      <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
+      <% else -%>
+        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
                         :loading => "Element.show('loading');",
                         :complete => "Element.hide('loading');") -%>
-<% end -%>
-<% else -%>
-<img src="/images/spacer.gif" width="16" height="16" border="0"/>
-<% end
+      <% end -%>
+   <% else -%>
+     <img src="/images/spacer.gif" width="16" height="16" border="0"/>
+   <% end -%>
+   <small><strong><%= task.issue_num %></strong></small>
+   <%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
+   <%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
 
--%>
-<small><strong><%= task.issue_num %></strong></small>
-<%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
-<%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
-
-      <small>
-        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
-        <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
-      </small>
-      <br/>
-        <% name = "No one"
-           name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
-     %>
+   <small>
+     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
+     <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
+   </small>
+   <br/>
+   <% name = "No one"
+      name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
+   %>
 
 
 
-  <% if session[:user].option_tracktime == 1 %>
-        <div lass="description" id="task_info">
+   <% if session[:user].option_tracktime == 1 %>
+     <div class="task_info description">
+   <% else %>
+     <div class="task_info_no_icon description">
+   <% end %>
+   <%= h(task.full_name) %>
+   <%= "<span class=\"otheruser\">[#{name}]</span>" %>
+   <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0)%>
+     </div>
   <% else %>
-        <div class="description" id="task_info_no_icon">
-  <% end %>
-              <%= h(task.full_name) %>
-              <%= "<span class=\"otheruser\">[#{name}]</span>" %>
-          <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0)%>
-        </div>
-  <% else %>
+  <%#
+    # Task is complete
+    #%>
     <%= check_box("task", "done", {"title" => "Revert <b>#{task.name}</b> to not completed status.", "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_uncheck', :id => task },
                                                                 :loading => "Element.show('loading');",
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
-<% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
-<% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-<%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
-<% else -%>
-<%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
+    <% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
+      <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
+      <% else -%>
+        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
                         :loading => "Element.show('loading');",
                         :complete => "Element.hide('loading');") -%>
-<% end -%>
-<% else -%>
-<img src="/images/spacer.gif" width="16" height="16" border="0"/><% end -%>
-<%= task.issue_num %>
-<% task_name = task.name %>
-<%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
-<%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
-    <small><% if @session[:user].option_tracktime == 1%>(<%= worked_nice(task.worked_minutes) %> / <%= worked_nice( task.duration ) %>)<% end %> <em>[<%=tz.utc_to_local(task.completed_at).strftime(session[:user].date_format) %>]</em>
-    </small>
-  <% if session[:user].option_tracktime == 1 %>
-  <div style="padding-left:2.9em;" class="description"><%= h(task.full_name) %></div>
-  <% else %>
-  <div style="padding-left:1.3em;" class="description"><%= h(task.full_name) %></div>
+     <% end -%>
+   <% else -%>
+     <img src="/images/spacer.gif" width="16" height="16" border="0"/><% end -%>
+     <%= task.issue_num %>
+     <% task_name = task.name %>
+     <%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
+     <%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
+     <small><% if @session[:user].option_tracktime == 1%>(<%= worked_nice(task.worked_minutes) %> / <%= worked_nice( task.duration ) %>)<% end %> <em>[<%=tz.utc_to_local(task.completed_at).strftime(session[:user].date_format) %>]</em></small>
+     <% if session[:user].option_tracktime == 1 %>
+       <div class="task_info description"><%= h(task.full_name) %></div>
+     <% else %>
+       <div class="task_info_no_icon description"><%= h(task.full_name) %></div>
+     <% end %>
+
   <% end %>
 
-<% end %>
-
-
+  <%#
+    # Always printed
+    #%>
 
   <div style="position: absolute; left: -59px; top: 0px; z-index:10; width:55px;" align="right">
 
     <span id="edit_task_<%=task.id%>" style="display: none;">
       <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-      <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => "Cancel working on <b>#{task.name}</b>.", :class => "tooltip"),
+        <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => "Cancel working on <b>#{task.name}</b>.", :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },
           :loading => "Element.show('loading');",
           :complete => "Element.hide('loading');" -%>
-           <% else -%><%
-            if task.done? -%>
-            <% if task.hidden == 0 -%>
-        <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => "Move <b>#{task.name}</b> to the Archive.", :class => "tooltip"),
-          :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');",
-          :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5)
-        -%><% else -%><%= link_to_remote image_tag("folder_go.png", :border => 0, :title => "Restore <b>#{task.name}</b> from the Archive.", :class => "tooltip"),
-          :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');",
-          :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5)
-        -%><% end -%><% end -%><% end -%>
+      <% else -%>
+        <% if task.done? -%>
+          <% if task.hidden == 0 -%>
+            <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => "Move <b>#{task.name}</b> to the Archive.", :class => "tooltip"),
+                  :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
+                  :loading => "Element.show('loading');",
+                  :complete => "Element.hide('loading');",
+                  :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
+          <% else -%>
+            <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => "Restore <b>#{task.name}</b> from the Archive.", :class => "tooltip"),
+                  :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
+                  :loading => "Element.show('loading');",
+                  :complete => "Element.hide('loading');",
+                  :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
+          <% end -%>
+        <% end -%>
+      <% end -%>
     </span>
     </div>
+</span>
 </li>
 
 <% end %>

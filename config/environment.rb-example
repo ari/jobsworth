@@ -70,6 +70,7 @@ end
 
 ActiveRecord::Base.verification_timeout = 14400
 
+Localization.load
 
 class ActiveRecord::ConnectionAdapters::AbstractAdapter
   def format_log_entry(message, dump = nil)

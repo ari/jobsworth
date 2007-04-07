@@ -51,86 +51,86 @@
               <ul>
                 <% if session[:user].seen_welcome.to_i == 0 %>
                   <% if controller.controller_name == "activities" && controller.action_name == 'welcome' %>
-                  <li><%= link_to '<span class="active">Tutorial</span>', { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
+                  <li><%= link_to "<span class=\"active\">#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
                   <% else %>
-                  <li><%= link_to '<span>Tutorial</span>', { :controller => 'activities', :action => 'welcome'} %></li>
+                  <li><%= link_to "<span>#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'} %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "activities" && controller.action_name != 'welcome' %>
-                <li><%= link_to '<span class="active">Overview</span>', { :controller => 'activities', :action => 'list'}, :class => "active"%></li>
+                        <li><%= link_to "<span class=\"active\">#{_('Overview') }</span>", { :controller => 'activities', :action => 'list'}, :class => "active"%></li>
                 <% else %>
                 <li><%= link_to '<span>Overview</span>', { :controller => 'activities', :action => 'list'} %></li>
                 <% end %>
 
                 <% if controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name) %>
-                <li><%= link_to '<span class="active">Browse</span>', { :controller => 'views', :action => 'browse'}, :class => "active" %></li>
+                <li><%= link_to "<span class=\"active\">#{_('Browse')}</span>", { :controller => 'views', :action => 'browse'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to '<span>Browse</span>', :controller => 'views', :action => 'browse' %></li>
+                <li><%= link_to "<span>#{_('Browse')}</span>", :controller => 'views', :action => 'browse' %></li>
                 <% end %>
 
                 <% if session[:user].option_tracktime == 1%>
                   <% if controller.controller_name == "timeline" && controller.action_name == "list" %>
-                  <li><%= link_to '<span class="active">Timeline</span>', { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
+                  <li><%= link_to "<span class=\"active\">#{_('Timeline')}</span>", { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
                   <% else %>
-                  <li><%= link_to '<span>Timeline</span>', :controller => 'timeline', :action => 'list' %></li>
+                  <li><%= link_to "<span>#{_('Timeline')}</span>", :controller => 'timeline', :action => 'list' %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "project_files"  %>
-                <li><%= link_to '<span class="active">Files</span>', {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
+                <li><%= link_to "<span class=\"active\">#{_('Files')}</span>", {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
                 <% else %>
-                <li><%= link_to '<span>Files</span>', :controller => 'project_files', :action => 'list' %> </li>
+                <li><%= link_to "<span>#{_('Files')}</span>", :controller => 'project_files', :action => 'list' %> </li>
                 <% end %>
 
                 <% if session[:user].option_tracktime == 1%>
                   <% if controller.controller_name == "reports"  %>
-                  <li><%= link_to '<span class="active">Reports</span>', {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
+                  <li><%= link_to "<span class=\"active\">#{_('Reports')}</span>", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
                   <% else %>
-                  <li><%= link_to '<span>Reports</span>', :controller => 'reports', :action => 'list' %></li>
+                  <li><%= link_to "<span>#{_('Reports')}</span>", :controller => 'reports', :action => 'list' %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "schedule"  %>
-                <li><%= link_to '<span class="active">Schedule</span>', {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
+                <li><%= link_to "<span class=\"active\">#{_('Schedule')}</span>", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to '<span>Schedule</span>', :controller => 'schedule', :action => 'list' %></li>
+                <li><%= link_to "<span>#{_('Schedule')}</span>", :controller => 'schedule', :action => 'list' %></li>
                 <% end %>
 
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li><%= link_to '<span class="active">New Task</span>', {:controller => 'tasks', :action => 'new'}, :class => "active" %> </li>
+                <li><%= link_to "<span class=\"active\">#{_('New')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> </li>
                 <% else %>
-                <li><%= link_to '<span>New Task</span>', :controller => 'tasks', :action => 'new' %> </li>
+                <li><%= link_to "<span>#{_('New Task')}</span>", :controller => 'tasks', :action => 'new' %> </li>
                 <% end %>
 
-                <li class="right"><%= link_to '<span class="last">Log Out</span>', { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
+                <li class="right"><%= link_to "<span class=\"last\">#{_('Log Out')}</span>", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
                 <% if controller.controller_name == "users" && controller.action_name == "edit_preferences" %>
-                <li class="right"><%= link_to '<span class="right active">Preferences</span>', { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%></li>
+                <li class="right"><%= link_to "<span class=\"right active\">#{_('Preferences')}</span>", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%></li>
                 <% else %>
-                <li class="right"><%= link_to '<span class="right">Preferences</span>', { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
+                <li class="right"><%= link_to "<span class=\"right\">#{_('Preferences')}</span>", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
                 <% end %>
 
                 <% if session[:user].admin > 0 %>
 
                 <% if session[:user].option_externalclients == 1%>
                 <% if controller.controller_name == "customers" %>
-                  <li class="right"><%= link_to '<span class="active">Clients</span>', { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
+                  <li class="right"><%= link_to "<span class=\"active\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
                   <% else %>
-                  <li class="right"><%= link_to '<span class="right">Clients</span>', { :controller => 'customers', :action => 'list'}, :class => "right" %></li>
+                  <li class="right"><%= link_to "<span class=\"right\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "right" %></li>
                 <% end %>
                 <% end %>
 
 
                 <% if controller.controller_name == "users" && controller.action_name != "edit_preferences" %>
-                  <li class="right"><%= link_to '<span class="right active">Users</span>', { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
-                  <% else %>
-                  <li class="right"><%= link_to '<span class="right">Users</span>', { :controller => 'users', :action => 'list'}, :class => "right" %></li>
+                   <li class="right"><%= link_to "<span class=\"right active\">#{_('Users')}</span>", { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
+                <% else %>
+                   <li class="right"><%= link_to "<span class=\"right\">#{_('Users')}</span>", { :controller => 'users', :action => 'list'}, :class => "right" %></li>
                 <% end %>
 
                 <% end %>
 
-                  <li class="right" id="search_menu"><span class="right">Search <%= text_field_tag 'query', "", {:size => 10, :style => "font-size:9px;"}%></span></li>
+                  <li class="right" id="search_menu"><span class="right"><%=_ 'Search' %> <%= text_field_tag 'query', "", {:size => 10, :style => "font-size:9px;"}%></span></li>
 
                 </ul>
               </div>
@@ -156,7 +156,7 @@
               <div  class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
               <table class="news" id="news_table">
                 <tr><td width="1%" nowrap valign="top"><span class="news_date">[<%= tz.utc_to_local(news.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") %>]</span></td><td><span class="news_body" id="news_body"><%= news.body %></span></td><td align="right" width="1%" >
-                <%= link_to_remote '[Hide]', :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },
+                <%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },
                 :success => visual_effect(:fade, "news", :duration => 0.5) %></td></tr>
               </table>
               </div><div style="background-color: rgb(238, 238, 238);"><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span></div></div>
@@ -172,7 +172,7 @@
 
             <div id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
               <div  class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
-                <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= @flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[Hide]</a></td></tr></table>
+                <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= @flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
               </div><div style="background-color: rgb(238, 238, 238);"><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span></div></div>
               <br />
               </div>
@@ -192,22 +192,22 @@
             <table align="left" width="10%" class="projects" cellspacing=0 cellpadding=0>
               <tr>
                 <td align="left" class="page_header"colspan="2" width="100%">
-                  <div style="float: left;">Views</div><div style="float:right;padding-top:0.1em;"><%= link_to 'New',  :controller => 'views', :action => 'new' %></div></td>
+                  <div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
 
-                <tr><td class="views_item" style="padding-top: 0.2em;" colspan="2"><%= link_to 'Open Tasks', :controller => 'views', :action => 'all_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to 'My Open Tasks', :controller => 'views', :action => 'my_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to 'My In Progress Tasks', :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to 'Unassigned Tasks', :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
+                <tr><td class="views_item" style="padding-top: 0.2em;" colspan="2"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
+                <tr><td class="views_item" colspan="2"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
+                <tr><td class="views_item" colspan="2"><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
+                <tr><td class="views_item" colspan="2"><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
                 <% project_ids = current_project_ids
                    views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", session[:user].company_id, session[:user].id], :order => "shared, name")
                    for view in views %>
-                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to 'Edit', :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[Shared]" if view.user_id != session[:user].id %></td></tr>
+                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[#{_('Shared')}]" if view.user_id != session[:user].id %></td></tr>
                    <% end %>
                 <tr><td colspan=2>&nbsp;</td></tr>
         <% cache( :controller => "application", :action => "chat", :action_suffix => "#{session[:user].company_id}_#{session[:user].id}") do %>
                 <tr>
                   <td align=left style="margin-bottom:4px;" class="page_header" colspan=2>
-                    Chat
+                    <%=_ 'Chat'%>
                   </td>
                 </tr>
                 <tr>
@@ -224,7 +224,7 @@
         <% end %>
                 <tr>
                   <td align=left class="page_header" width="100%" colspan="2">
-                    <div style="float:left;">Notes</div><div style="float:right;padding-top:0.1em;"><%= link_to 'New', :controller => 'pages', :action => 'new' %></div></td>
+                    <div style="float:left;"><%=_ 'Notes'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div></td>
                 </tr>
                         <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
           <% for page in current_pages %>
@@ -240,7 +240,7 @@
         </td>
       </tr>
     </table>
-    <span class="contact">Clocking IT v0.99 - Feedback? Suggestions? Ideas? Bugs? <a href="mailto:feedback@clockingit.com">Let me know</a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if session[:user].admin == 10 %></span>
+    <span class="contact">Clocking IT v0.99 - <%=_ 'Feedback? Suggestions? Ideas? Bugs?'%> <a href="mailto:feedback@clockingit.com"><%=_ 'Let me know'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if session[:user].admin == 10 %></span>
 
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
 <%#= periodically_call_remote(:url => { :controller => 'shout', :action => 'list_ajax' }, :frequency => 7, :complete => "check_chat(request);" ) -%>

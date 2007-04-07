@@ -1051,14 +1051,14 @@ li.help {
 
 }
 
-#task_info {
+.task_info {
   font-size: 9px;
-  padding-left: 2.9em;
+  padding-left: 3.9em;
 }
 
-#task_info_no_icon {
+.task_info_no_icon {
   font-size: 9px;
-  padding-left: 1.3em;
+  padding-left: 2.3em;
 }
 
 #tutorial .welcome {

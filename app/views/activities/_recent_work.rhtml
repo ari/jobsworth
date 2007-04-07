@@ -4,7 +4,7 @@
   %>
   <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
     <tr>
-      <td align="left" colspan="3" class="page_header">Recent Activities <%= link_to( image_tag("feed.png", :border => 0, :class => "tooltip", :title => "Subscribe to the recent activities RSS feed"), :controller => 'feeds', :action => 'rss', :id => session[:user].uuid )%></td>
+      <td align="left" colspan="3" class="page_header"><%=_ 'Recent Activities'%> <%= link_to( image_tag("feed.png", :border => 0, :class => "tooltip", :title => "Subscribe to the recent activities RSS feed"), :controller => 'feeds', :action => 'rss', :id => session[:user].uuid )%></td>
     </tr>
     <%
     for log in @activities
