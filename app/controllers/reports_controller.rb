@@ -227,35 +227,35 @@ class ReportsController < ApplicationController
       case @range.to_i
       when 0
         # Today
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + Time.now.at_midnight.strftime("%Y%m%d") + "-" + Time.now.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + tz.now.at_midnight.strftime("%Y%m%d") + "-" + tz.now.strftime("%Y%m%d")
       when 1
         # This Week
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + Time.now.beginning_of_week.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + tz.now.beginning_of_week.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
       when 2
         # Last Week
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(1.week.ago.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.week).beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
         filename << "_" + 1.week.ago.beginning_of_week.strftime("%Y%m%d")
-        filename << "-" + Time.now.beginning_of_week.strftime("%Y%m%d")
+        filename << "-" + tz.now.beginning_of_week.strftime("%Y%m%d")
       when 3
         # This Month
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "-" + Time.now.beginning_of_month.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
       when 4
         # Last Month
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + Time.now.last_month.beginning_of_month.strftime("%Y%m%d")
-        filename << "-" + Time.now.beginning_of_month.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + tz.now.last_month.beginning_of_month.strftime("%Y%m%d")
+        filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")
       when 5
         # This Year
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "-" + Time.now.beginning_of_year.strftime("%Y%m%d")  + "-" + Time.now.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
       when 6
         # Last Year
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(Time.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + Time.now.last_year.beginning_of_year.strftime("%Y%m%d")
-        filename << "-" + Time.now.beginning_of_year.strftime("%Y%m%d")
+        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+        filename << "_" + tz.now.last_year.beginning_of_year.strftime("%Y%m%d")
+        filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")
       when 7
         if filter[:stop_date] && filter[:start_date].length > 1
           start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
