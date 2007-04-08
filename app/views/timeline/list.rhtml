@@ -4,7 +4,7 @@
         <table cellpadding="0" width="100%" cellspacing="0" class="content" style="padding-left: 1em; padding-right: 1em;">
           <tr>
             <td colspan="3" align=left class="page_header">
-              Timeline
+              <%=_ 'Timeline' %>
             </td>
           </tr>
 
@@ -20,33 +20,33 @@
             <%= start_form_tag( :controller => 'timeline', :action => 'list' ) %>
 
             <select name="filter_date" id="filter_date" onchange="javascript:document.forms[1].submit();">
-                <% @dates =  [["[All Time]", "0"], ["This Week","1"], ["Last Week","2"],["This Month","3"],["Last Month","4"],["This Year","5"],["Last Year","6"]] %>
+                <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"]] %>
                 <%= options_for_select @dates, params[:filter_date] %>
             </select>
 
             <% if @projects.size > 1 %>
             <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
-              <% @projects = [["[Any Project]", "0"]] + @projects  %>
+              <% @projects = [[_("[Any Project]"), "0"]] + @projects  %>
               <%= options_for_select @projects, params[:filter_project] %>
             </select>
             <% end %>
 
             <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
-              <% @users = [["[Any User]", "0"]] + @users %>
+              <% @users = [[_("[Any User]"), "0"]] + @users %>
               <%= options_for_select @users, params[:filter_user] %>
             </select>
             <% end %>
 
             <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
               <%
-                 @status = [["[Any Type]", "-1"],
-                            ["Closed", WorkLog::TASK_COMPLETED.to_s],
-                            ["Work Log", WorkLog::TASK_WORK_ADDED.to_s],
-                            ["Status Change", WorkLog::TASK_REVERTED.to_s],
-                            ["Created", WorkLog::TASK_CREATED.to_s],
-                            ["Comment", WorkLog::TASK_COMMENT.to_s],
-                            ["Modified", WorkLog::TASK_MODIFIED.to_s]
+                 @status = [[_("[Any Type]"), "-1"],
+                            [_("Closed"), WorkLog::TASK_COMPLETED.to_s],
+                            [_("Work Log"), WorkLog::TASK_WORK_ADDED.to_s],
+                            [_("Status Change"), WorkLog::TASK_REVERTED.to_s],
+                            [_("Created"), WorkLog::TASK_CREATED.to_s],
+                            [_("Comment"), WorkLog::TASK_COMMENT.to_s],
+                            [_("Modified"), WorkLog::TASK_MODIFIED.to_s]
                            ]
 
               %>
@@ -64,9 +64,9 @@
                  offset = "#{@offset + 1} - #{@count}" if (@offset + 100 > @count && @count > 0)
               %>
               <span class="paging_header">
-              <%= link_to('[Prev]', { :action => 'list', :page => params[:page].to_i - 1, :filter_status => params[:filter_status], :filter_user => params[:filter_user],
+              <%= link_to(_('[Prev]'), { :action => 'list', :page => params[:page].to_i - 1, :filter_status => params[:filter_status], :filter_user => params[:filter_user],
                           :filter_project => params[:filter_project], :filter_date => params[:filter_date] }) if (@offset > 0) %>
-              <%= offset %> of <%= @count %> entries..
+              <%= offset %> <%=_ 'of' %> <%= @count %> <%=_ 'entries..' %>
               <%= link_to('[Next]', { :action => 'list', :page => params[:page].to_i + 1, :filter_status => params[:filter_status], :filter_user => params[:filter_user],
                           :filter_project => params[:filter_project], :filter_date => params[:filter_date]}) if (@offset+100 < @count) %>
               </span>

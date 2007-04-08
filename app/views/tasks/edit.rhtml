@@ -13,36 +13,36 @@
       </td>
     </tr>
     <tr><td colspan="3" class="tasks_updated_by"><span class="optional">
-    Created <%= tz.utc_to_local(@task.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.created_at %> <%= "by #{User.find(@task.creator_id).name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
-     <% if @task.updated_at && @task.updated_at != @task.created_at %> - Last Updated <%= tz.utc_to_local(@task.updated_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.updated_at %> <%= "by #{User.find(@task.updated_by_id).name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
+     <%=_ 'Created' %> <%= tz.utc_to_local(@task.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.created_at %> <%= "#{_('by')} #{User.find(@task.creator_id).name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
+     <% if @task.updated_at && @task.updated_at != @task.created_at %> - <%=_ 'Last Updated' %> <%= tz.utc_to_local(@task.updated_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.updated_at %> <%= "#{_('by')} #{User.find(@task.updated_by_id).name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
 </table>
 <table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0">
 <%= render_partial "form" %>
 <tr><td colspan="1" valign="top">
-  <%= submit_tag "Save", :class => "nolabel" %> <span class="optional">and</span>
+  <%= submit_tag _("Save"), :class => "nolabel" %> <span class="optional"><%=_ 'and' %></span>
 
 <%
 
  options = []
- options << ["Leave Open", 0] if @task.status == 0
- options << ["Revert to Open", 0] if @task.status != 0
- options << ["Set in Progress", 1] if @task.status == 0
- options << ["Leave as in Progress", 1] if @task.status == 1
- options << ["Close", 2] if @task.status == 0 || @task.status == 1
- options << ["Leave Closed", 2] if @task.status == 2
- options << ["Set as Won't Fix", 3] if @task.status == 0 || @task.status == 1
- options << ["Leave as Won't Fix", 3] if @task.status == 3
- options << ["Set as Invalid", 4] if @task.status == 0 || @task.status == 1
- options << ["Leave as Invalid", 4] if @task.status == 4
- options << ["Set as Duplicate", 5] if @task.status == 0 || @task.status == 1
- options << ["Leave as Duplicate", 5] if @task.status == 5
+ options << [_("Leave Open"), 0] if @task.status == 0
+ options << [_("Revert to Open"), 0] if @task.status != 0
+ options << [_("Set in Progress"), 1] if @task.status == 0
+ options << [_("Leave as in Progress"), 1] if @task.status == 1
+ options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
+ options << [_("Leave Closed"), 2] if @task.status == 2
+ options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Won't Fix"), 3] if @task.status == 3
+ options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Invalid"), 4] if @task.status == 4
+ options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Duplicate"), 5] if @task.status == 5
 
  can_close = {:disabled => "disabled"} unless session[:user].can?( @task.project, 'close' )
  can_close ||= {}
 %>
 
 <%= select 'task', 'status', options, {:selected => @task.status}, can_close %>
-<%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %>Send notification emails<br/>
+<%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %><%=_ 'Send notification emails' %><br/>
 
 </td></tr>
 </table>
@@ -56,7 +56,7 @@ $('comment').focus();
   <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
     <tr><td colspan="3">&nbsp;</td></tr>
     <tr>
-      <td align="left" colspan="3" class="page_header">History</td>
+      <td align="left" colspan="3" class="page_header"><%= _ 'History' %></td>
     </tr>
     <tr><td colspan="3">&nbsp;</td></tr>
     <%  day = 0

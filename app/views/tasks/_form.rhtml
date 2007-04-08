@@ -17,17 +17,17 @@
 
 <tr>
     <td valign="top">
-      <fieldset id="task_information" style="padding-right:0.5em;"><legend>Information</legend>
-        <label for="task_name">Summary</label>
+      <fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
+        <label for="task_name"><%=_ 'Summary' %></label>
         <%= text_field 'task', 'name', { :size => 47, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
-        <label for="task_set_tags">Tags</label>
+        <label for="task_set_tags"><%=_ 'Tags' %></label>
         <%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
         <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
-        <label for="task_description">Description</label>
+        <label for="task_description"><%=_ 'Description' %></label>
         <%= text_area 'task', 'description', { :rows => 20, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
-        <label for="comment">Comment</label>
+        <label for="comment"><%=_ 'Comment' %></label>
         <%= text_area_tag 'comment', {}, { :rows => 10, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
-        <label for="task_tmp_file">Attach file</label>
+        <label for="task_tmp_file"><%=_ 'Attach file' %></label>
         <%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
       </fieldset>
 <script type="text/javascript">
@@ -45,8 +45,8 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 
             %>
       <fieldset id="task_project_selection" style="padding-right:0;">
-        <legend>Target</legend>
-          <label for="task_project_id">Project</label>
+        <legend><%=_ 'Target' %></legend>
+          <label for="task_project_id"><%=_ 'Project' %></label>
           <%= select 'task', 'project_id', @projects, {:selected => selected_project}, perms['reassign'] %><br/>
 
           <script type="text/javascript">
@@ -62,27 +62,27 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 
           <%#= observe_field 'task_project_id', { :url => { :controller => 'tasks', :action => 'get_milestones' }, :update => 'task_milestone_id', :with => 'project_id', :loading => "Element.show('loading');", :complete => "Element.hide('loading');", :insertion => "updateSelect" } %>
           <%#= observe_field 'task_project_id', { :url => { :controller => 'tasks', :action => 'get_owners' }, :update => 'users[]', :with => 'project_id', :success => 'reset_owners()', :insertion => "updateSelect" } %>
-          <label for="task_milestone_id">Milestone</label>
+          <label for="task_milestone_id"><%=_ 'Milestone' %></label>
           <% unless @task.id.nil? %>
-            <%= select 'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
+            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
           <% else %>
-            <%= select'task', 'milestone_id', [["[None]", "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
+            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', @session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
           <% end %>
 
 <%
 
 users = Project.find(selected_project).users.find(:all, :order => 'name' )
 
-resource_string = select_tag 'users[]', "<option value=\"\">[No one]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join(''), perms['reassign']
+resource_string = select_tag 'users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join(''), perms['reassign']
 resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
 owner_string = ''
 num = 0
 unless @task.users.empty?
   @task.users.each do |u|
-    owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\">Assigned To</label>" if num == 0
+    owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>" if num == 0
     owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\"></label>" if num != 0
-    owner_string <<  select_tag ('users[]', "<option value=\"\">[No one]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'"), perms['reassign'])
+    owner_string <<  select_tag ('users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'"), perms['reassign'])
 
     if( perms['reassign'].keys.size == 0 )
       owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num == 0
@@ -93,11 +93,11 @@ unless @task.users.empty?
   end
   owner_string = owner_string.split(/\n/).join('')
 else
-  owner_string = select_tag 'users[]', "<option value=\"\">[No one]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{"selected" if (us.id == session[:user].id && @task.created_at.nil?) }>#{us.name}</option>"}.join(''), perms['reassign']
+  owner_string = select_tag 'users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{"selected" if (us.id == session[:user].id && @task.created_at.nil?) }>#{us.name}</option>"}.join(''), perms['reassign']
   owner_string = owner_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
   if perms['reassign'].keys.size == 0
-    owner_string = "<div id=\"owner_#{num}\"><label for=\"dummy\">Assigned To</label>#{owner_string}"
+    owner_string = "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>#{owner_string}"
     owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a></div>"
   end
   num = num + 1
@@ -127,24 +127,24 @@ function reset_owners() {
 
        <%= owner_string %>
       <div id="owner_separator"></div>
-      <label for="task_requested_by">Requested By</label>
+      <label for="task_requested_by"><%=_ 'Requested By' %></label>
       <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %><br/>
 
         </fieldset>
       <fieldset id="task_attr" style="padding-right:0;">
-        <legend>Attributes</legend>
-      <label for="task_type_id">Type</label>
+        <legend><%=_ 'Attributes' %></legend>
+      <label for="task_type_id"><%=_ 'Type' %></label>
         <%= select 'task', 'type_id', [['Task',0],['New Feature',1],['Defect',2],['Improvement',3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
-        <label for="task_priority">Priority</label>
+        <label for="task_priority"><%=_ 'Priority' %></label>
         <%= select 'task', 'priority', [['Critical',3],['Urgent',2],['High',1],['Normal',0],['Low',-1],['Lowest',-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
-      <label for="task_severity_id">Severity</label>
+      <label for="task_severity_id"><%=_ 'Severity' %></label>
         <%= select 'task', 'severity_id', [['Blocker',3],['Critical',2],['Major',1],['Normal',0],['Minor',-1],['Trivial',-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
       <% if @session[:user].option_tracktime == 1%>
-       <label for="task_duration">Time Estimate</label>
+       <label for="task_duration"><%=_ 'Time Estimate' %></label>
       <%= text_field 'task', 'duration', {:size => 12, :value => worked_nice(@task.duration), :class => 'tooltip', :title => '2w 3d 1h'}.merge(perms['prioritize']) %><br/>
-      <label for="task_due_at">Due Date</label>
+      <label for="task_due_at"><%=_ 'Due Date' %></label>
         <% if perms['prioritize'].empty? %>
-        <%= calendar_field 'task', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => 'Show Calendar' },
+        <%= calendar_field 'task', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => _('Show Calendar') },
         { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true }
         %><br/>
         <% else %>
@@ -157,10 +157,10 @@ function reset_owners() {
 <% end %>
       </fieldset>
       <fieldset id="task_notify" style="padding-right:0;">
-        <legend>Notification</legend>
+        <legend><%=_ 'Notification' %></legend>
 
         <% watchers = @task.watchers.collect {|t| t.id } %>
-        <label for="task[notification_ids][]" class="tooltip" title="Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.">Notify Users</label>
+        <label for="task[notification_ids][]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'Notify Users' %></label>
         <%= select_tag "watchers[]", User.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect {|u| "<option value=#{u.id} #{(watchers.include?(u.id) ? 'selected=\"selected\"' : '')} >#{u.name}</option>"}.join(''), {:multiple => true, :size => 8, :class => 'tooltip', :title => 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.'}.merge(perms['edit']) %><br/>
         <label for="task[notify_emails]" class="tooltip" title="Comma-separated list of emails to notify">Cc:</label>
         <%= text_area 'task', 'notify_emails', { :cols => 15, :rows => 3, :class => 'tooltip', :title => 'Comma-separated list of emails to notify'}.merge(perms['edit']) %><br/>
@@ -172,7 +172,7 @@ function reset_owners() {
 
         <% for file in @task.attachments %>
         <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=human_size(file.file_size)%>)
-        <%= link_to '[Delete]', {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => "Really delete #{file.name}?" %>
+        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete <b>%s</b>?", file.name) %>
         <br/>
         <% end %>
       </fieldset>

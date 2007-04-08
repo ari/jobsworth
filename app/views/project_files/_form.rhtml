@@ -1,9 +1,9 @@
 
 <!--[form:project_files]-->
-<p><label for="project_files_project_id">Project</label><%= select 'project_files', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
-<p><label for="project_files_name">Name</label><%= text_field 'project_files', 'name'  %></p>
+<p><label for="project_files_project_id"><%=_ 'Project' %></label><%= select 'project_files', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
+<p><label for="project_files_name"><%=_ 'Name' %></label><%= text_field 'project_files', 'name'  %></p>
 
-<p><label for="project_files_file">File</label><%= file_field 'project_files', 'tmp_file' %>
+<p><label for="project_files_file"><%=_ 'File', 1 %></label><%= file_field 'project_files', 'tmp_file' %>
 </p>
 
 <br>
