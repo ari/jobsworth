@@ -29,14 +29,14 @@ class="task<%=priority%>"
 <span>
   <% unless task.done?
     %>
-    <%= check_box("task", "done", { "title" => "Mark <b>#{task.name}</b> as completed", "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_check', :id => task },
+    <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_check', :id => task },
                                                                 :loading => "Element.show('loading');",
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
       <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
       <% else -%>
-        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
+        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name)),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
                         :loading => "Element.show('loading');",
                         :complete => "Element.hide('loading');") -%>
@@ -53,7 +53,7 @@ class="task<%=priority%>"
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
    </small>
    <br/>
-   <% name = "No one"
+   <% name = _("No one")
       name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
    %>
 
@@ -72,14 +72,14 @@ class="task<%=priority%>"
   <%#
     # Task is complete
     #%>
-    <%= check_box("task", "done", {"title" => "Revert <b>#{task.name}</b> to not completed status.", "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_uncheck', :id => task },
+    <%= check_box("task", "done", {"title" => _("Revert <b>%s</b> to not completed status.", task.name), "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_uncheck', :id => task },
                                                                 :loading => "Element.show('loading');",
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% if @session[:user].option_tracktime == 1 && can_work.size == 0 -%>
       <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => "Stop working on <b>#{task.name}</b>."), {:controller => 'tasks', :action => 'stop_work'})  -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
       <% else -%>
-        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => "Start working on <b>#{task.name}</b>. Click again when done."),
+        <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name)),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
                         :loading => "Element.show('loading');",
                         :complete => "Element.hide('loading');") -%>
@@ -107,20 +107,20 @@ class="task<%=priority%>"
 
     <span id="edit_task_<%=task.id%>" style="display: none;">
       <% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
-        <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => "Cancel working on <b>#{task.name}</b>.", :class => "tooltip"),
+        <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },
           :loading => "Element.show('loading');",
           :complete => "Element.hide('loading');" -%>
       <% else -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
-            <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => "Move <b>#{task.name}</b> to the Archive.", :class => "tooltip"),
+            <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
                   :loading => "Element.show('loading');",
                   :complete => "Element.hide('loading');",
                   :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
           <% else -%>
-            <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => "Restore <b>#{task.name}</b> from the Archive.", :class => "tooltip"),
+            <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
                   :loading => "Element.show('loading');",
                   :complete => "Element.hide('loading');",

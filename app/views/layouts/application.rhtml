@@ -60,7 +60,7 @@
                 <% if controller.controller_name == "activities" && controller.action_name != 'welcome' %>
                         <li><%= link_to "<span class=\"active\">#{_('Overview') }</span>", { :controller => 'activities', :action => 'list'}, :class => "active"%></li>
                 <% else %>
-                <li><%= link_to '<span>Overview</span>', { :controller => 'activities', :action => 'list'} %></li>
+                <li><%= link_to "<span>#{_('Overview')}</span>", { :controller => 'activities', :action => 'list'} %></li>
                 <% end %>
 
                 <% if controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name) %>
@@ -229,7 +229,7 @@
                         <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
           <% for page in current_pages %>
                 <tr>
-                  <td align=left class="pages_item" colspan=2><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%= time_ago_in_words( page.updated_at, false ) %> ago)</small></td>
+                  <td align=left class="pages_item" colspan=2><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%= time_ago_in_words( page.updated_at, false ) %> <%= _ 'ago'%>)</small></td>
                 </tr>
           <% end %>
                <tr><td colspan=2>&nbsp;</td></tr>

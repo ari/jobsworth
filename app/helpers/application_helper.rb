@@ -102,13 +102,13 @@ module ApplicationHelper
     distance_in_minutes = (((to_time - from_time).abs)/60).round
 
     case distance_in_minutes
-    when 0..1440     then "today"
-    when 1441..2880   then 'tomorrow'
-    when 2881..10080  then "#{(distance_in_minutes / 1440).round} days"
-    when 10081..20160 then "#{(distance_in_minutes / 1440).round} days"
-    when 20161..43200 then "#{(distance_in_minutes / 1440 / 7).round} weeks"
-    when 43201..86400 then "1 month"
-    else "#{(distance_in_minutes / 1440 / 30).round} months"
+    when 0..1440     then _('today')
+    when 1441..2880   then _('tomorrow')
+    when 2881..10080  then _("%d day", (distance_in_minutes / 1440).round)
+    when 10081..20160 then _("%d day", (distance_in_minutes / 1440).round)
+    when 20161..43200 then _("%d week", (distance_in_minutes / 1440 / 7).round)
+    when 43201..86400 then _("%d month", 1)
+    else _("%d month", (distance_in_minutes / 1440 / 30).round)
     end
 
   end
@@ -119,12 +119,12 @@ module ApplicationHelper
     distance_in_minutes = (((to_time - from_time).abs)/60).round
 
     case distance_in_minutes
-    when 0..1440     then "yesterday"
-    when 1441..10080  then "#{(distance_in_minutes / 1440).round} days ago"
-    when 10081..20160 then '1 week ago'
-    when 20161..43200 then "#{(distance_in_minutes / 1440 / 7).round} weeks ago"
-    when 43201..86400 then "1 month ago"
-    else "#{(distance_in_minutes / 1440 / 30).round} months ago"
+    when 0..1440     then _('yesterday')
+    when 1441..10080  then _("%d day ago", (distance_in_minutes / 1440).round)
+    when 10081..20160 then _('%d week ago', 1)
+    when 20161..43200 then _("%d week ago", (distance_in_minutes / 1440 / 7).round)
+    when 43201..86400 then _("%d month ago", 1)
+    else _("%d month ago", (distance_in_minutes / 1440 / 30).round)
     end
 
   end

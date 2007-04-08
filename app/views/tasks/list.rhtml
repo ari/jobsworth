@@ -4,7 +4,7 @@
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
           <td align="left" class="page_header">
-            Tasks <%= " / #{session[:view].name}" unless session[:view].nil? %>
+            <%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %>
           </td>
         </tr>
         <tr>
@@ -36,7 +36,7 @@
 
             <% if @clients.size > 1 && false %>
             <select name="filter_customer" id="filter_customer" onchange="javascript:document.forms[1].submit();">
-              <% @clients = [["[Any Client]", "0"]] + @clients  %>
+              <% @clients = [[ _("[Any Client]"), "0"]] + @clients  %>
               <%= options_for_select @clients, session[:filter_customer] %>
             </select>
             <%
@@ -46,7 +46,7 @@
 
             <% if @projects.size > 1 %>
             <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
-              <% @projects = [["[Any Project]", "0"]] + @projects  %>
+              <% @projects = [[_("[Any Project]"), "0"]] + @projects  %>
               <%= options_for_select @projects, session[:filter_project] %>
             </select>
             <%
@@ -56,7 +56,7 @@
 
             <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
-              <% @users = [["[Any User]", "0"]] + @users + [["Unassigned", "-1"]] %>
+              <% @users = [[_("[Any User]"), "0"]] + @users + [[_("Unassigned"), "-1"]] %>
               <%= options_for_select @users, session[:filter_user] %>
             </select>
             <%
@@ -70,7 +70,7 @@
 
             <% if @milestones.size > 0 %>
             <select name="filter_milestone" id="filter_milestone" onchange="javascript:document.forms[1].submit();">
-              <% @milestones = [["[Any Milestone]", "0"]] + @milestones + [["Unassigned", "-1"]] %>
+              <% @milestones = [[_("[Any Milestone]"), "0"]] + @milestones + [[_("Unassigned"), "-1"]] %>
               <%= options_for_select @milestones, session[:filter_milestone] %>
             </select>
             <%
@@ -84,14 +84,14 @@
 
             <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
               <%
-                 @status = [["[Any Status]", "-1"],["Open", "0"],["In Progress", "1"],["Closed", "2"],["Won't Fix", "3"],["Invalid", "4"],["Duplicate", "5"],["Archived", "-2"]]
+                 @status = [[_("[Any Status]"), "-1"],[_("Open"), "0"],[_("In Progress"), "1"],[_("Closed"), "2"],[_("Won't Fix"), "3"],[_("Invalid"), "4"],[_("Duplicate"), "5"],[_("Archived"), "-2"]]
               %>
               <%= options_for_select @status, session[:filter_status] %>
             </select>
 
-            <input type="checkbox" name="group_tags" id="group_tags" value="1" <%= session[:group_tags].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> Group Tags
+            <input type="checkbox" name="group_tags" id="group_tags" value="1" <%= session[:group_tags].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> <%=_ 'Group Tags'%>
 
-            <span class="optional"><small><%= link_to("[Save as View]", {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></small></span>
+            <span class="optional"><small><%= link_to( _("[Save as View]"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></small></span>
             <%= end_form_tag %>
             <% end %>
           </td>
@@ -108,11 +108,11 @@
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
           <td align="right" class="page_header" style="padding-left:0;padding-right:1em;">
-            Tags
+            <%=_ 'Tags' %>
           </td>
         </tr>
       <% unless @selected_tags.empty? %>
-      <tr><td align="right"><span class="tag_active"><%= link_to '[All Tags]', :action => "list" %> </span></td></tr>
+      <tr><td align="right"><span class="tag_active"><%= link_to _('[All Tags]'), :action => "list" %> </span></td></tr>
       <% end %>
 
       <% for tag in @all_tags
