@@ -1,18 +1,18 @@
   <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
     <tr>
-      <th>Online</th>
-      <th>User</th>
-      <th>Read</th>
-      <th>Comment</th>
-      <th>Work</th>
-      <th>Close</th>
-      <th>Create</th>
-      <th>Edit</th>
-      <th>Assign</th>
-      <th>Prioritize</th>
-      <th>Milestones</th>
-      <th>Reports</th>
-      <th>Grant</th>
+      <th><%=_ 'Online' %></th>
+      <th><%=_ 'User' %></th>
+      <th><%=_ 'Read' %></th>
+      <th><%=_ 'Comment' %></th>
+      <th><%=_ 'Work' %></th>
+      <th><%=_ 'Close' %></th>
+      <th><%=_ 'Create' %></th>
+      <th><%=_ 'Edit' %></th>
+      <th><%=_ 'Assign' %></th>
+      <th><%=_ 'Prioritize' %></th>
+      <th><%=_ 'Milestones' %></th>
+      <th><%=_ 'Reports' %></th>
+      <th><%=_ 'Grant' %></th>
     </tr>
 
 <% for u in @users %>
@@ -31,7 +31,7 @@
 
 <% if user_granted && (u.id != @project.user_id && u.id != session[:user].id ) %>
       <td align="center">
-       <%= link_to_remote image_tag("tick.png", :border => 0, :title => "Remove all access for <b>#{u.name}</b>?", :class => "tooltip centered"),
+       <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove all access for <b>%s</b>?", u.name), :class => "tooltip centered"),
           :update => 'permission_list',
           :url => { :action => 'ajax_remove_permission', :user_id => u.id, :id => @project.id },
           :loading => "Element.show('loading');",
@@ -41,12 +41,12 @@
 
       <% for p in perms %>
       <td align="center">
-             <%= link_to_remote image_tag("tick.png", :border => 0, :title => "Remove #{p} access for <b>#{u.name}</b>?", :class => "tooltip centered"),
+             <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove %s access for <b>%s</b>?", p, u.name), :class => "tooltip centered"),
         :update => 'permission_list',
         :url => { :action => 'ajax_remove_permission', :user_id => u.id, :id => @project.id, :perm => p },
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" if perm.can? p %>
-       <%= link_to_remote image_tag("delete.png", :border => 0, :title => "Grant #{p} access for <b>#{u.name}</b>?", :class => "tooltip centered"),
+       <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant %s access for <b>%s</b>?", p. u.name), :class => "tooltip centered"),
         :update => 'permission_list',
         :url => { :action => 'ajax_add_permission', :user_id => u.id, :id => @project.id, :perm => p },
         :loading => "Element.show('loading');",

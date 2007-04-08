@@ -1,9 +1,9 @@
 <fieldset>
-<legend>Edit User</legend>
+<legend><%=_ 'Edit User' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @user %>
   <%= render_partial "form" %>
-  <%= submit_tag "Edit", :class => 'nolabel' %>
+  <%= submit_tag _("Edit"), :class => 'nolabel' %>
 <%= end_form_tag %>
 
 </fieldset>

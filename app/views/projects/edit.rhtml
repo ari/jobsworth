@@ -2,19 +2,19 @@
     <tr>
       <td valign="top">
         <fieldset>
-          <legend>Edit Project</legend>
+          <legend><%=_ 'Edit Project' %></legend>
 
           <%= start_form_tag :action => 'update', :id => @project %>
           <%= render_partial "form" %>
-          <%= submit_tag "Edit", :class => 'nolabel' %>
+          <%= submit_tag _("Edit"), :class => 'nolabel' %>
           <%= end_form_tag %>
           <br />
             <% if @project.user_id == session[:user].id %>
-            <div style="float: right;"><%= link_to ("Delete Project", {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
-            <div style="float: right;"> <%= link_to ("Complete Project", {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> |&nbsp;</div>
+            <div style="float: right;"><%= link_to (_("Delete Project"), {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
+            <div style="float: right;"> <%= link_to (_("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> |&nbsp;</div>
             <% end %>
             <% if session[:user].can?( @project, 'milestone' ) %>
-            <div style="float:left;"><%= link_to "New Milestone", {:controller => 'milestones', :action => 'new', :project_id => @project}  %></div>
+            <div style="float:left;"><%= link_to _("New Milestone"), {:controller => 'milestones', :action => 'new', :project_id => @project}  %></div>
             <% end %>
         </fieldset>
       </td>
@@ -24,7 +24,7 @@
     <tr>
       <td valign="top">
         <fieldset>
-          <legend>Access To Project</legend>
+          <legend><%=_ 'Access To Project' %></legend>
           <div id="permission_list"><%= render :partial => "permission_list" %></div>
         </fieldset>
       </td>

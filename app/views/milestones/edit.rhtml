@@ -1,13 +1,13 @@
 <fieldset>
-<legend>Editing milestone</legend>
+<legend><%=_ 'Edit Milestone' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @milestone %>
   <%= render_partial 'form' %>
-  <%= submit_tag 'Edit', :class => 'nolabel' %>
+  <%= submit_tag _('Edit'), :class => 'nolabel' %>
 <%= end_form_tag %>
 <br/>
   <% if session[:user].can?( @milestone.project, 'milestone' ) %>
-  <div style="float:right;"><%= link_to "Delete Milestone", {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
-  <div style="float:left;"><%= link_to "Complete Milestone", {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
+  <div style="float:right;"><%= link_to _("Delete Milestone"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
+  <div style="float:left;"><%= link_to _("Complete Milestone"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
   <% end %>
 </fieldset>

@@ -8,7 +8,7 @@
 <%= r.to_html %>
 </td></tr>
 <tr><td style="padding-left:15px;">
-<%= link_to 'Edit', :action => 'edit', :id => @page %> |
-<%= link_to 'Delete', { :action => 'destroy', :id => @page }, :confirm => "Really delete #{@page.name}?" %>
+<%= link_to _('Edit'), :action => 'edit', :id => @page %> |
+<%= link_to _('Delete'), { :action => 'destroy', :id => @page }, :confirm => _("Really delete <b>%s</b>?", @page.name) %>
 </td></tr>
 </table>

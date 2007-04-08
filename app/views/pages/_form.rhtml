@@ -5,15 +5,15 @@
 <tr><td valign="top">
 
 <!--[form:page]-->
-<p><label for="page_project_id">Project</label><%= select 'page', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] }, :selected => @page.project_id %></p>
-<p><label for="page_name">Name</label><%= text_field 'page', 'name'  %></p>
+<p><label for="page_project_id"><%=_ 'Project' %></label><%= select 'page', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] }, :selected => @page.project_id %></p>
+<p><label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %></p>
 
-<p><label for="page_body">Body</label><%= text_area 'page', 'body'  %></p>
+<p><label for="page_body"><%=_ 'Body' %></label><%= text_area 'page', 'body'  %></p>
 <!--[eoform:page]-->
-<%= submit_tag "Save", :class => 'nolabel' %>
+<%= submit_tag _("Save"), :class => 'nolabel' %>
 
 <fieldset>
-<legend>Preview</legend>
+<legend><%=_ 'Preview' %></legend>
 <div id="page"><%= RedCloth.new(@page.body).to_html if @page && @page.body%> </div>
 </preview>
 <%= observe_field( 'page_body', { :url => { :action => 'preview' }, :update => 'page', :frequency => 2, :with => 'body' } ) %>

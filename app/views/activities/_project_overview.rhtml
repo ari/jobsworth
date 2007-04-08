@@ -41,7 +41,7 @@
         <div style="position: absolute; z-index:10; width: 16px;">
           <% if session[:user].can?(project, 'grant') %>
           <span id="edit_project_<%= project.id%>" style="display: none;">
-            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => "Edit project <b>#{project.name}</b>", :class => "tooltip"),
+            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
           </span>
           <% end %>
@@ -80,7 +80,7 @@
           <div style="position: absolute; z-index:10; width: 16px;">
             <% if session[:user].can?(project, 'milestone') %>
             <span id="edit_milestone_<%= milestone.id%>" style="display: none;">
-            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => "Edit milestone <b>#{milestone.name}</b>", :class => "tooltip"),
+            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", milestone.name), :class => "tooltip"),
                   { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
             </span>
             <% end %>

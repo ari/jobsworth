@@ -1,9 +1,9 @@
 <fieldset>
-<legend>Edit View</legend>
+<legend><%=_ 'Edit View' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @view %>
   <%= render_partial "form" %>
-  <%= submit_tag "Edit", :class => "nolabel" %>
+  <%= submit_tag _("Edit"), :class => "nolabel" %>
 <%= end_form_tag %>
 </fieldset>
-[<%= link_to "Delete View", {:controller => 'views', :action => 'destroy', :id => @view}, :confirm => "Really delete #{@view.name}?"  %>] |
+[<%= link_to _("Delete View"), {:controller => 'views', :action => 'destroy', :id => @view}, :confirm => _("Really delete <b>%s</b>?", @view.name) %>]

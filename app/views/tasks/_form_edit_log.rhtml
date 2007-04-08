@@ -1,13 +1,13 @@
 <%= error_messages_for 'log' %>
 
 <!--[form:log]-->
-<p><label for="log_started_at">Start</label>
-<%= calendar_field 'log', 'started_at', { :class => 'date', :field_title => 'Start', :button_title => 'Show Calendar', :size => '15' },
+<p><label for="log_started_at"><%=_ 'Start' %></label>
+<%= calendar_field 'log', 'started_at', { :class => 'date', :field_title => 'Start', :button_title => _('Show Calendar'), :size => '15' },
         { :ifFormat => "#{session[:user].date_format} #{session[:user].time_format}", :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true, :showsTime => true, :timeformat => "24" } %></p>
 
-<p><label for="log_duration">Duration Worked</label><%= text_field 'log', 'duration', {:value => worked_nice(@log.duration), :size => 10, :class => 'tooltip', :title => '4h 21m' }  %></p>
+<p><label for="log_duration"><%=_ 'Duration Worked' %></label><%= text_field 'log', 'duration', {:value => worked_nice(@log.duration), :size => 10, :class => 'tooltip', :title => '4h 21m' }  %></p>
 
-<p><label for="log_body">Notes</label><%= text_area 'log', 'body', :rows => 10  %></p>
+<p><label for="log_body"><%=_ 'Notes' %></label><%= text_area 'log', 'body', :rows => 10  %></p>
 
 <br>
 

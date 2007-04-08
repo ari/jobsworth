@@ -1,9 +1,9 @@
 <fieldset>
-<legend>Preferences</legend>
+<legend><%=_ 'Preferences' %></legend>
 
 <%= start_form_tag :action => 'update_preferences', :id => @user %>
   <%= render_partial "preferences" %>
-  <%= submit_tag "Save", :class => 'nolabel' %>
+  <%= submit_tag _("Save"), :class => 'nolabel' %>
 <%= end_form_tag %>
 
 </fieldset>
@@ -11,15 +11,15 @@
 <% if session[:user].admin > 0 %>
 <% @customer = session[:user].company.internal_customer %>
 <fieldset>
-<legend>Custom Logo</legend>
+<legend><%=_ 'Custom Logo' %></legend>
 <% if !@customer.binary_id.nil? && @customer.binary_id > 0 -%>
-<p><label for="current_logo">Current logo</label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to "[Delete]", :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
+<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to "[Delete]", :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
 <% end -%>
 <%= start_form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) %>
-<p><label for="customer_tmp_file">New logo</label><%= file_field 'customer', 'tmp_file' %><br/>
+<p><label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
 <label for="options_text"></label><span class="optional">(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)</span></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-<%= submit_tag "Upload", :class => 'nolabel' %>
+<%= submit_tag _("Upload"), :class => 'nolabel' %>
 </fieldset>
 
 <% end %>

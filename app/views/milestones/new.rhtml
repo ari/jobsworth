@@ -1,9 +1,9 @@
 <fieldset>
-<legend>New milestone</legend>
+<legend><%=_ 'New Milestone' %></legend>
 
 <%= start_form_tag :action => 'create' %>
   <%= render_partial 'form' %>
-  <%= submit_tag "Create", :class => 'nolabel' %>
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
 <%= end_form_tag %>
 
 </fieldset>

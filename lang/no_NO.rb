@@ -32,7 +32,7 @@ Localization.define('no_NO') do |l|
   l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Tilbakemeldinger? Forslag? Idéer? Feil?'
   l.store 'Let me know', 'Fortell meg'
   l.store 'worked today', 'jobbet i dag'
-  l.store 'Online', 'pålogget'
+  l.store 'Online', 'Pålogget'
   l.store 'Done working on <b>%s</b> for now.', 'Ferdig å jobbe med <b>%s</b> for nå.' # %s = @task.name
   l.store 'ago', 'siden' # X days ago
 
@@ -64,6 +64,8 @@ Localization.define('no_NO') do |l|
   l.store 'Overall Progress', 'Progresjon'
   l.store '%d completed milestone', ['en ferdig milepæl', '%d ferdige milepæler']
   l.store '%d completed project', ['ett ferdig prosjekt', '%d ferdige prosjekter']
+  l.store 'Edit project <b>%s</b>', 'Editer prosjektet <b>%s</b>'
+  l.store 'Edit milestone <b>%s</b>', 'Editer milepælen <b>%s</b>'
 
   # Tasks
   l.store 'Tasks', 'Oppgaver'
@@ -72,7 +74,7 @@ Localization.define('no_NO') do |l|
   l.store '[Any User]', '[Alle Brukere]'
   l.store '[Any Milestone]', '[Alle Milepæler]'
   l.store '[Any Status]', '[Alle Statuser]'
-  l.store '[Unassigned]','[Eierløs]'
+  l.store '[Unassigned]','[Uten Ansvarlig]'
   l.store 'Open', 'Åpen'
   l.store 'In Progress', 'Under Utvikling'
   l.store 'Closed', 'Lukket'
@@ -157,6 +159,10 @@ Localization.define('no_NO') do |l|
   l.store 'Minor', 'Liten'
   l.store 'Trivial', 'Triviell'
 
+  l.store 'Start', 'Start'
+  l.store 'Duration Worked', 'Arbeidet tid'
+  l.store 'Notes', 'Notater'
+
   # Timeline
   l.store '[All Time]', '[All Tid]'
   l.store 'This Week', 'Denne Uke'
@@ -215,4 +221,81 @@ Localization.define('no_NO') do |l|
   # Search
   l.store 'Search Results', 'Resultater av Søk'
   l.store 'Activities', 'Aktiviteter'
+
+  # Project list
+  l.store 'Read', 'Lese'
+  l.store 'Work', 'Arbeide'
+  l.store 'Assign', 'Tildel'
+  l.store 'Prioritize', 'Prioritere'
+  l.store 'Grant', 'Gi tilgang'
+  l.store "Remove all access for <b>%s</b>?", 'Fjærn all tilgang for <b>%s</b>?'
+  l.store "Grant %s access for <b>%s</b>?", 'Gi tilgang til %s for <b>%s</b>?'
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Du kan ikke fjærne <b>deg selv</b> eller <b>prosjekt oppretteren</b>!'
+  l.store "Grant access to <b>%s</b>?", 'Gi tilgang til <b>%s</b>?'
+  l.store 'Edit Project', 'Rediger Prosjektet'
+  l.store 'Delete Project', 'Slett Prosjekt'
+  l.store 'Complete Project', 'Avslutt Prosjekt'
+  l.store 'New Milestone', 'Ny Milepæle'
+  l.store 'Access To Project', 'Tilgang til Prosjektet'
+
+  # Milestones
+  l.store 'Owner', 'Ansvarlig'
+  l.store 'Edit Milestone', 'Rediger Milepæle'
+  l.store 'Delete Milestone', 'Slett Milepæle'
+  l.store 'Complete Milestone', 'Avslutt Milepæle'
+
+  # Users
+  l.store 'Email', 'Epost'
+  l.store 'Last Login', 'Sist Pålogget'
+  l.store 'Offline', 'Avlogget'
+  l.store 'Are your sure?', 'Er du sikker?'
+  l.store 'Company', 'Firma'
+  l.store '[New User]', '[Ny Bruker]'
+  l.store '[Previous page]', '[Forrige side]'
+  l.store '[Next page]', '[Neste side]'
+  l.store 'Edit User', 'Rediger Bruker'
+
+  l.store 'Options', 'Valg'
+  l.store 'Location', 'Sted'
+  l.store 'Administrator', 'Administrator'
+  l.store 'Track Time', 'Logg tid'
+  l.store 'Use External Clients', 'Bruk eksterne kunder'
+  l.store 'Show Calendar', 'Vis kalender'
+  l.store 'Show Tooltips', 'Vis hjelpebobler'
+  l.store 'Send Notifications', 'Send varslinger'
+  l.store 'Receive Notifications', 'Motta varslinger'
+
+  l.store 'User Information', 'Brukerinformasjon'
+  l.store 'Username', 'Brukernavn'
+  l.store 'Password', 'Passord'
+
+  # Preferences
+  l.store 'Preferences', 'Innstillinger'
+  l.store 'Language', 'Språk'
+  l.store 'Time Format', 'Tidsformat'
+  l.store 'Date Format', 'Datoformat'
+  l.store 'Custom Logo', 'Egendefinert Logo'
+  l.store 'Current logo', 'Aktivt Logo'
+  l.store 'New logo', 'Ny logo'
+  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Vil ikke bli skalert, 150x50px burde se bra ut. Logoen vil bli vist øverst, og på loggin siden din.)"
+
+  # Notes / Pages
+  l.store 'Body', 'Innhold'
+  l.store 'Preview', 'Forhåndsvisning'
+  l.store 'New Note', 'Nytt notat'
+  l.store 'Edit Note', 'Rediger notat'
+
+  # Views
+  l.store 'New View', 'Nytt Utsnitt'
+  l.store 'Edit View', 'Rediger Utsnitt'
+  l.store 'Delete View', 'Slett Utsnitt'
+  l.store '[Active User]', '[Aktiv Bruker]'
+  l.store 'Shared', 'Delt'
+
+  # Clients
+  l.store 'Contact', 'Kontakt'
+  l.store 'New Client', 'Ny Kunde'
+  l.store 'Contact email', 'Kontakt epost'
+  l.store 'Contact name', 'Kontakt navn'
+  l.store 'Client CSS', 'Kundens CSS'
 end

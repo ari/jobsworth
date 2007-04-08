@@ -1,31 +1,31 @@
 <fieldset>
-<legend>Edit Client</legend>
+<legend><%=_ 'Edit Client' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @customer %>
   <%= render_partial "form" %>
-  <%= submit_tag "Edit", :class => "nolabel" %>
+  <%= submit_tag _("Edit"), :class => "nolabel" %>
 <%= end_form_tag %>
 </fieldset>
 
 <fieldset>
-<legend>Upload Client CSS</legend>
+<legend><%=_ 'Upload Client CSS' %></legend>
 <%= start_form_tag({ :action => 'upload_css'}, { :multipart => "true" }) %>
-<p><label for="customer_tmp_file">File</label><%= file_field 'customer', 'tmp_file' %></p><br/>
+<p><label for="customer_tmp_file"><%=_ 'File' %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-<%= submit_tag "Upload", :class => 'nolabel' %>
+<%= submit_tag _("Upload"), :class => 'nolabel' %>
 <%= end_form_tag %>
 </fieldset>
 
 <fieldset>
-<legend>Upload Client Logo</legend>
+<legend><%=_ 'Upload Client Logo' %></legend>
 <%= start_form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) %>
-<p><label for="customer_tmp_file">File</label><%= file_field 'customer', 'tmp_file' %></p><br/>
+<p><label for="customer_tmp_file"><%=_ 'File' %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
 <%= submit_tag "Upload", :class => 'nolabel' %>
 <%= end_form_tag %>
 <% if !@customer.binary_id.nil? && @customer.binary_id > 0 -%>
 <br />
   <%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %>
-  <%= link_to "[Delete]", :action => "delete_logo", :id => "#{@customer.id}" %>
+  [<%= link_to _("Delete"), :action => "delete_logo", :id => "#{@customer.id}" %>]
 <% end -%>
 </fieldset>
