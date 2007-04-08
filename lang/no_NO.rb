@@ -12,8 +12,10 @@ Localization.define('no_NO') do |l|
   l.store "Preferences", "Innstillinger"
   l.store "Log Out", "Logg ut"
   l.store "Clients", "Kunder"
+  l.store "Client", "Kunde"
   l.store 'Search', 'Søk'
   l.store 'Users', 'Brukere'
+  l.store 'User', 'Bruker'
 
   # Main layout
   l.store 'Hide', 'Gjem'
@@ -140,6 +142,21 @@ Localization.define('no_NO') do |l|
   l.store 'Delete Log Entry', 'Slett logg'
   l.store 'Really delete this log entry?', 'Virkelig slette denne loggen?'
 
+  l.store 'Task', 'Oppgave'
+  l.store 'New Feature', 'Ny Funksjonalitet'
+  l.store 'Defect', 'Feil'
+  l.store 'Improvement', 'Forbedring'
+  l.store 'Critical', 'Kritisk'
+  l.store 'Urgent', 'Haster'
+  l.store 'High', 'Høy'
+  l.store 'Normal', 'Normal'
+  l.store 'Low', 'Lav'
+  l.store 'Lowest', 'Lavest'
+  l.store 'Blocker', 'Blokkerer'
+  l.store 'Major', 'Stor'
+  l.store 'Minor', 'Liten'
+  l.store 'Trivial', 'Triviell'
+
   # Timeline
   l.store '[All Time]', '[All Tid]'
   l.store 'This Week', 'Denne Uke'
@@ -165,4 +182,37 @@ Localization.define('no_NO') do |l|
   l.store 'Upload New File', 'Last Opp Ny Fil'
   l.store 'Name', 'Navn'
   l.store 'Upload', 'Last Opp'
+
+  # Reports
+  l.store 'Reports', 'Rapporter'
+  l.store 'Download CSV file of this report', 'Last ned CSV filen til denne rapporten.'
+  l.store 'Total', 'Totalt'
+  l.store 'Report Configuration', 'Rapport Konfigurasjon'
+  l.store 'Report Type', 'Rapport Type'
+  l.store 'Pivot', 'Pivot'
+  l.store 'Audit', 'Tidssjekk'
+  l.store 'Timesheet', 'Timeliste'
+  l.store 'Time Range', 'Tidsomfang'
+  l.store 'Custom', 'Egendefinert'
+  l.store 'Rows', 'Rader'
+  l.store 'Columns', 'Kolonner'
+  l.store "Milestones", 'Milepæler'
+  l.store "Date", 'Dato'
+  l.store 'Task Status', 'Oppgave Status'
+  l.store "Task Type", 'Oppgave Type'
+  l.store "Task Priority", 'Oppgave Prioritet'
+  l.store "Task Severity", 'Oppgave Alvorlighet'
+  l.store 'From', 'Fra' # From Date
+  l.store 'To', 'Til' # To Date
+  l.store 'Sub-totals', 'Subtotaler'
+  l.store 'Filter', 'Filtrering'
+  l.store 'Advanced Options', 'Avanserte Valg'
+  l.store 'Status', 'Status'
+  l.store 'Run Report', 'Kjør Rapport'
+
+  # Schedule
+
+  # Search
+  l.store 'Search Results', 'Resultater av Søk'
+  l.store 'Activities', 'Aktiviteter'
 end
