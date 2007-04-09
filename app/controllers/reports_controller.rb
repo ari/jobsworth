@@ -394,7 +394,7 @@ class ReportsController < ApplicationController
       @generated_report.report = csv
       @generated_report.save
     else
-      flash['notice'] = "Empty report, log more work!" if params[:report]
+      flash['notice'] = _("Empty report, log more work!") if params[:report]
     end
 
   end
@@ -409,7 +409,7 @@ class ReportsController < ApplicationController
           next if key == '__'
           header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
         end
-        header << ["Total"]
+        header << [_("Total")]
         csv << header
 
         @rows.sort.each do |key, value|
@@ -427,7 +427,7 @@ class ReportsController < ApplicationController
         end
 
         row = []
-        row << ['Total']
+        row << [_('Total')]
         @column_headers.sort.each do |key,value|
           next if key == '__'
           val = nil
@@ -462,7 +462,7 @@ class ReportsController < ApplicationController
       @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ? AND completed_at IS NULL", session[:user].company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"[Any Project]"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Any Project]') + '"}'
 
     res << ", #{@clients}" unless @clients.nil? || @clients.empty?
     res << ']}'

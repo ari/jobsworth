@@ -33,8 +33,8 @@ class UsersController < ApplicationController
     @user.time_format = "%H:%M"
 
     if @user.save
-      flash['notice'] = 'User was successfully created. Remeber to give this user access to needed projects.'
-      Signup::deliver_account_created(@user, session[:user]) rescue flash['notice'] += "<br/>Error sending creation email. Account still created."
+      flash['notice'] = _('User was successfully created. Remeber to give this user access to needed projects.')
+      Signup::deliver_account_created(@user, session[:user]) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'list'
     else
       render_action 'new'
@@ -49,7 +49,7 @@ class UsersController < ApplicationController
     @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     if @user.update_attributes(@params[:user])
       session[:user] = @user if @user.id == session[:user].id
-      flash['notice'] = 'User was successfully updated.'
+      flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
     else
       render_action 'edit'
@@ -64,7 +64,7 @@ class UsersController < ApplicationController
     @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     if @user.update_attributes(@params[:user])
       session[:user] = @user if @user.id == session[:user].id
-      flash['notice'] = 'Preferences successfully updated.'
+      flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
       render_action 'edit'

@@ -69,7 +69,7 @@ class ActivitiesController < ApplicationController
       u = User.find(session[:user].id)
       u.seen_welcome = 1
       u.save
-      flash['notice'] = 'Tutorial completed. It will no longer be shown in the menu.'
+      flash['notice'] = _('Tutorial completed. It will no longer be shown in the menu.')
     end
 
   end
@@ -79,7 +79,7 @@ class ActivitiesController < ApplicationController
     u = User.find(session[:user].id)
     u.seen_welcome = 1
     u.save
-    flash['notice'] = 'Tutorial hidden. It will no longer be shown in the menu.'
+    flash['notice'] = _('Tutorial hidden. It will no longer be shown in the menu.')
     redirect_to :controller => 'activities', :action => 'list'
   end
 

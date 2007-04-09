@@ -298,4 +298,64 @@ Localization.define('no_NO') do |l|
   l.store 'Contact email', 'Kontakt epost'
   l.store 'Contact name', 'Kontakt navn'
   l.store 'Client CSS', 'Kundens CSS'
+
+  # Activities Controller
+  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Introduksjon ferdig. Den vil ikke vises i menyen lengre.'
+  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Introduksjon gjemt. Den vil ikke vises i menyen lengre.'
+
+  # Customers Controller
+  l.store 'Client was successfully created.', 'Kunde registrert.'
+  l.store 'Client was successfully updated.', 'Kunde oppdatert.'
+  l.store 'Please delete all projects for %s before deleting it.', 'Vennligst slett alle prosjekter for %s før du sletter.'
+  l.store "You can't delete your own company.", 'Du kan ikke slette ditt eget firma.'
+  l.store 'CSS successfully uploaded.', 'CSS lastet opp.'
+  l.store 'Logo successfully uploaded.', 'Logo lastet opp.'
+
+  # Milestones Controller
+  l.store 'Milestone was successfully created.', 'Milepæl opprettet.'
+  l.store 'Milestone was successfully updated.', 'Milepæl oppdatert.'
+  l.store '%s / %s completed.', '%s / %s avsluttet.' # Project name / Milestone name completed.
+  l.store '%s / %s reverted.', '%s / %s tilbakestilt.' # Project name / Milestone name reverted.
+
+  # Pages / Notes Controller
+  l.store 'Note was successfully created.', 'Notat opprettet.'
+  l.store 'Note was successfully updated.', 'Notat oppdatert.'
+
+  # Project Files Controller
+  l.store 'No file selected for upload.', 'Ingen fil valgt for opplastning.'
+  l.store 'File too big.', 'For stor fil.'
+  l.store 'File successfully uploaded.', 'Fil lastet opp.'
+
+  # Projects Controller
+  l.store 'Project was successfully created.', 'Prosjekt opprettet.'
+  l.store 'Project was successfully created. Add users who need access to this project.', 'Prosjekt opprettet. Gi tilgang til brukere som skal være med på prosjektet.'
+  l.store 'Project was successfully updated.', 'Prosjekt oppdatert.'
+  l.store 'Project was deleted.', 'Prosjekt slettet.'
+  l.store '%s completed.', '%s avsluttet.'
+  l.store '%s reverted.', '%s tilbakestilt.'
+
+  # Reports Controller
+  l.store "Empty report, log more work!", 'Tom rapport, logg mere tid!'
+
+  # Tasks Controller
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du må opprette et prosjekt som kan holde oppgavene dine, eller få tilgang til et eksisterende prosjekt...'
+  l.store 'Invalid due date ignored.', 'Ignorerer ubrukelig ferdigstillelse dato.'
+  l.store 'Task was successfully created.', 'Oppgave opprettet.'
+  l.store 'Task was successfully updated.', 'Oppgave oppdatert.'
+  l.store 'Log entry saved...', 'Arbeidslogg lagret...'
+  l.store "Unable to save log entry...", 'Arbeidslogg <b>ikke</b> lagret...'
+  l.store "Log entry already saved from another browser instance.", 'Arbeidslogg allerede lagret fra en annen nett-leser instans.'
+  l.store 'Log entry deleted...', 'Arbeidslogg slettet...'
+
+  # Users Controller
+  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Bruker opprettet. Husk å gi brukeren tilgang til prosjekter.'
+  l.store "Error sending creation email. Account still created.", 'Feil under sending av varslingsepost. Kontoen ble opprettet alikevel.'
+  l.store 'User was successfully updated.', 'Bruker oppdatert.'
+  l.store 'Preferences successfully updated.', 'Innstillinger oppdatert.'
+
+  # Views Controller
+  l.store "View '%s' was successfully created.", "Utsnitt '%s' opprettet."
+  l.store "View '%s' was successfully updated.", "Utsnitt '%s' oppdatert."
+  l.store "View '%s' was deleted.", "Utsnitt '%s' slettet."
+
 end

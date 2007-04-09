@@ -56,7 +56,7 @@ class ProjectFilesController < ApplicationController
     filename = params['project_files']['tmp_file'].original_filename if params['project_files']
 
     unless filename
-      flash['notice'] = 'No file selected for upload.'
+      flash['notice'] = _('No file selected for upload.')
       redirect_to :action => 'list'
       return
     end
@@ -70,7 +70,7 @@ class ProjectFilesController < ApplicationController
     @binary.data = @params['project_files']['tmp_file'].read
     @binary.save rescue begin
                           @params['project_files'].delete('tmp_file')
-                          flash['notice'] = 'File too big.'
+                          flash['notice'] = _('File too big.')
                           redirect_to :action => 'list'
                           return
                         end
@@ -158,7 +158,7 @@ class ProjectFilesController < ApplicationController
     end
 
     if @project_files.save
-      flash['notice'] = 'File successfully uploaded.'
+      flash['notice'] = _('File successfully uploaded.')
       redirect_to :action => 'list'
     else
       render_action 'new'

@@ -30,7 +30,7 @@ class PagesController < ApplicationController
       worklog.body = "- #{@page.name} Created"
       worklog.save
 
-      flash['notice'] = 'Page was successfully created.'
+      flash['notice'] = _('Note was successfully created.')
       redirect_to :action => 'show', :id => @page.id
     else
       render_action 'new'
@@ -65,7 +65,7 @@ class PagesController < ApplicationController
       worklog.body << "- #{@page.name} Modified\n" if old_body != @page.body
       worklog.save
 
-      flash['notice'] = 'Page was successfully updated.'
+      flash['notice'] = _('Note was successfully updated.')
       redirect_to :action => 'show', :id => @page
     else
       render_action 'edit'

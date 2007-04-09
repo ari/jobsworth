@@ -14,7 +14,7 @@ class ViewsController < ApplicationController
     @view.company_id = session[:user].company_id
     @view.user_id = session[:user].id
     if @view.save
-      flash['notice'] = "View '#{@view.name}' was successfully created."
+      flash['notice'] = _("View '%s' was successfully created.", @view.name)
       redirect_to :action => 'select', :id => @view.id
     else
       render :action => 'new'
@@ -40,7 +40,7 @@ class ViewsController < ApplicationController
       }.compact.join(',')
     if @view.save
 
-      flash['notice'] = "View '#{@view.name}' was successfully updated."
+      flash['notice'] = _("View '%s' was successfully updated.", @view.name)
       redirect_to :action => 'select', :id => @view.id
     else
       render :action => 'edit'
@@ -69,7 +69,7 @@ class ViewsController < ApplicationController
 
   def destroy
     @view = View.find(@params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
-    flash['notice'] = "View '#{@view.name}' was deleted."
+    flash['notice'] = _("View '%s' was deleted.", @view.name)
     @view.destroy
     redirect_from_last
   end

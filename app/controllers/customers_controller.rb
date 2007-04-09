@@ -25,7 +25,7 @@ class CustomersController < ApplicationController
     @customer = Customer.new(@params[:customer])
     @customer.company = session[:user].company
     if @customer.save
-      flash['notice'] = 'Client was successfully created.'
+      flash['notice'] = _('Client was successfully created.')
       redirect_to :action => 'list'
     else
       render :action => 'new'
@@ -39,7 +39,7 @@ class CustomersController < ApplicationController
   def update
     @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     if @customer.update_attributes(@params[:customer])
-      flash['notice'] = 'Client was successfully updated.'
+      flash['notice'] = _('Client was successfully updated.')
       redirect_to :action => 'list'
     else
       render :action => 'edit'
@@ -49,10 +49,10 @@ class CustomersController < ApplicationController
   def destroy
     @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     if @customer.projects.count > 0
-      flash['notice'] = "Please delete all projects for #{@customer.name} before destroying."
+      flash['notice'] = _('Please delete all projects for %s before deleting it.', @customer.name)
     else
       if @customer.name == session[:user].company.name
-        flash['notice'] = "You can't delete your own company."
+        flash['notice'] = _("You can't delete your own company.")
       else
         @customer.destroy
       end
@@ -67,7 +67,7 @@ class CustomersController < ApplicationController
     @params['customer'].delete('tmp_file')
 
     if @customer.save
-      flash['notice'] = 'CSS successfully uploaded.'
+      flash['notice'] = _('CSS successfully uploaded.')
       redirect_to :action => 'list'
     else
       render_action 'edit'
@@ -90,7 +90,7 @@ class CustomersController < ApplicationController
     @params['customer'].delete('tmp_file')
 
     if @customer.save
-      flash['notice'] = 'Logo successfully uploaded.'
+      flash['notice'] = _('Logo successfully uploaded.')
       redirect_from_last
     else
       render_action 'edit'

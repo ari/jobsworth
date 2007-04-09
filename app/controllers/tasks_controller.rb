@@ -10,7 +10,7 @@ class TasksController < ApplicationController
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
 
     if @projects.nil? || @projects.empty?
-      flash['notice'] = "You need to create a project to hold your tasks, or get access to create tasks in an existing project..."
+      flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
     else
       @task = Task.new
@@ -139,7 +139,7 @@ class TasksController < ApplicationController
 
     if !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
       due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
-                                                                                                 flash['notice'] = 'Invalid due date ignored.'
+                                                                                                 flash['notice'] = _('Invalid due date ignored.')
                                                                                                   due_date = nil
                                                                                                 end
       @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
@@ -218,7 +218,7 @@ class TasksController < ApplicationController
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
 
-      flash['notice'] ||= 'Task was successfully created.'
+      flash['notice'] ||= _('Task was successfully created.')
       redirect_from_last
     else
       @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
@@ -260,7 +260,7 @@ class TasksController < ApplicationController
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
         due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
-                                                                                                 flash['notice'] = 'Invalid due date ignored.'
+                                                                                                 flash['notice'] = _('Invalid due date ignored.')
                                                                                                   due_date = nil
                                                                                                 end
         @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
@@ -446,7 +446,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
 
-      flash['notice'] ||= 'Task was successfully updated.'
+      flash['notice'] ||= _('Task was successfully updated.')
       redirect_from_last
     else
       render_action 'edit'
@@ -657,11 +657,11 @@ class TasksController < ApplicationController
       if worklog.save
         sheet.destroy
         session[:sheet] = nil
-        flash['notice'] = "Log entry saved..."
+        flash['notice'] = _("Log entry saved...")
         Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{session[:user].company_id}"])
         Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
       else
-        flash['notice'] = "Unable to save log entry..."
+        flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
       end
     end
@@ -686,18 +686,18 @@ class TasksController < ApplicationController
 
         sheet.destroy
         session[:sheet] = nil
-        flash['notice'] = "Log entry saved..."
+        flash['notice'] = _("Log entry saved...")
         @log = worklog
         @log.started_at = tz.utc_to_local(@log.started_at)
         @task = @log.task
         render_action 'edit_log'
       else
-        flash['notice'] = "Unable to save log entry..."
+        flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
       end
     else
       session[:sheet] = nil
-      flash['notice'] = "Synchronization issue, please let me know at admin@clockingit.com..."
+      flash['notice'] = _("Log entry already saved from another browser instance.")
       redirect_from_last
     end
 
@@ -741,7 +741,7 @@ class TasksController < ApplicationController
   def destroy_log
     @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     @log.destroy
-    flash['notice'] = "Log entry deleted..."
+    flash['notice'] = _("Log entry deleted...")
     redirect_from_last
   end
 
@@ -779,7 +779,7 @@ class TasksController < ApplicationController
       @log.task.save
       @log.save
 
-      flash['notice'] = "Log saved..."
+      flash['notice'] = _("Log entry saved...")
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{session[:user].company_id}"])
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
 

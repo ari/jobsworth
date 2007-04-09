@@ -35,10 +35,10 @@ class ProjectsController < ApplicationController
       @project_permission.save
 
       if @project.company.users.size == 1
-        flash['notice'] = 'Project was successfully created.'
+        flash['notice'] = _('Project was successfully created.')
         redirect_from_last
       else
-        flash['notice'] = 'Project was successfully created. Add users who need access to this project.'
+        flash['notice'] = _('Project was successfully created. Add users who need access to this project.')
         redirect_to :action => 'edit', :id => @project
       end
     else
@@ -120,7 +120,7 @@ class ProjectsController < ApplicationController
   def update
     @project = User.find(session[:user].id).projects.find(@params[:id])
     if @project.update_attributes(@params[:project])
-      flash['notice'] = 'Project was successfully updated.'
+      flash['notice'] = _('Project was successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
       render_action 'edit'
@@ -147,7 +147,7 @@ class ProjectsController < ApplicationController
     end
 
     @project.destroy
-    flash['notice'] = 'Project was deleted.'
+    flash['notice'] = _('Project was deleted.')
     redirect_to :controller => 'activities', :action => 'list'
   end
 
@@ -175,7 +175,7 @@ class ProjectsController < ApplicationController
     unless project.nil?
       project.completed_at = Time.now.utc
       project.save
-      flash[:notice] = "#{project.name} completed."
+      flash[:notice] = _("%s completed.", project.name )
     end
     redirect_to :controller => 'activities', :action => 'list'
   end
@@ -185,7 +185,7 @@ class ProjectsController < ApplicationController
     unless project.nil?
       project.completed_at = nil
       project.save
-      flash[:notice] = "#{project.name} reverted."
+      flash[:notice] = _("%s reverted.", project.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
   end

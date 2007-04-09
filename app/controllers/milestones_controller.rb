@@ -32,7 +32,7 @@ class MilestonesController < ApplicationController
     @milestone.company_id = session[:user].company_id
 
     if @milestone.save
-      flash[:notice] = 'Milestone was successfully created.'
+      flash[:notice] = _('Milestone was successfully created.')
       redirect_from_last
     else
       render :action => 'new'
@@ -53,7 +53,7 @@ class MilestonesController < ApplicationController
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
     if @milestone.save
-      flash[:notice] = 'Milestone was successfully updated.'
+      flash[:notice] = _('Milestone was successfully updated.')
       redirect_from_last
     else
       render :action => 'edit'
@@ -82,7 +82,7 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = Time.now.utc
       milestone.save
-      flash[:notice] = "#{ milestone.project.name } / #{ milestone.name } completed."
+      flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
   end
@@ -92,7 +92,7 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = nil
       milestone.save
-      flash[:notice] = "#{ milestone.project.name } / #{milestone.name} reverted."
+      flash[:notice] = _("%s / %s reverted.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
   end
