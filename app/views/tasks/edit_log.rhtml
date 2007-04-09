@@ -30,7 +30,7 @@
 <%= end_form_tag %>
 <br />
 <% if @log.user_id == session[:user].id %>
-<%= link_to _("Delete Log Entry"), {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => "Really delete this log entry?"  %>
+<%= link_to _("Delete Log Entry"), {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => _("Really delete this log entry?")  %>
 <% end %>
 
 </fieldset>

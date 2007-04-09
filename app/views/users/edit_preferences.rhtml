@@ -17,7 +17,7 @@
 <% end -%>
 <%= start_form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) %>
 <p><label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
-<label for="options_text"></label><span class="optional">(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)</span></p><br/>
+<label for="options_text"></label><span class="optional"><%=_ "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></span></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
 </fieldset>

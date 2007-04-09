@@ -61,12 +61,12 @@
       <% for p in perms %>
       <td align="center">
         <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") if perm.can? p %>
-        <%= image_tag("delete.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") unless perm.can? p %>
+        <%= image_tag("delete.png", :border => 0, :title => _("Can't remove <b>yourself</b> or the <b>project creator</b>!"), :class => "tooltip centered") unless perm.can? p %>
       </td>
       <% end %>
 <% else %>
       <td align="center">
-        <%= link_to_remote image_tag("delete.png", :border => 0, :title => "Grant access to <b>#{u.name}</b>?", :class => "tooltip centered"),
+        <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant access to <b>%s</b>?", u.name), :class => "tooltip centered"),
           :update => 'permission_list',
           :url => { :action => 'ajax_add_permission', :user_id => u.id, :id => @project.id },
           :loading => "Element.show('loading');",
