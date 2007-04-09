@@ -237,12 +237,16 @@ Localization.define('no_NO') do |l|
   l.store 'Complete Project', 'Avslutt Prosjekt'
   l.store 'New Milestone', 'Ny Milepæle'
   l.store 'Access To Project', 'Tilgang til Prosjektet'
+  l.store 'Completed', 'Avsluttet'
+  l.store 'Completed Projects', 'Avsluttede Prosjekter'
+
 
   # Milestones
   l.store 'Owner', 'Ansvarlig'
   l.store 'Edit Milestone', 'Rediger Milepæle'
   l.store 'Delete Milestone', 'Slett Milepæle'
   l.store 'Complete Milestone', 'Avslutt Milepæle'
+  l.store 'Completed Milestones', 'Avsluttede Milepæler'
 
   # Users
   l.store 'Email', 'Epost'
