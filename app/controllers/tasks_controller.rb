@@ -110,7 +110,7 @@ class TasksController < ApplicationController
     @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
-    res = '{"options":[{"value":"0", "text":"[None]"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
     res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
     res << ']}'
     render :text => res
@@ -122,7 +122,7 @@ class TasksController < ApplicationController
 
     @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
 
-    @resource_string = "<option value=\"\">[No one]</option>" + @users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('')
+    @resource_string = "<option value=\"\">[#{_('No one')}]</option>" + @users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('')
     @resource_string = @resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
     @options = @users.collect{ |u| "{\"text\":\"#{u.name.gsub(/"/,'\"') }\", \"value\":\"#{u.id}\"}" }.join(',')

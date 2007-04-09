@@ -211,7 +211,7 @@ class ViewsController < ApplicationController
       @projects = User.find( session[:user].id).projects.find(:all, :conditions => ['customer_id = ? AND completed_at IS NULL', params[:customer_id]]).collect {|p| "{\"text\":\"#{p.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"[Any]"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Any Project]') + '"}'
     res << ", #{@projects}" unless @projects.nil? || @projects.empty?
     res << ']}'
     render :text => res
@@ -225,7 +225,7 @@ class ViewsController < ApplicationController
       @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"[Any]"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Any Milestone]') + '"}'
     res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
     res << ']}'
     render :text => res
@@ -238,7 +238,7 @@ class ViewsController < ApplicationController
       @users = Project.find(:first, :conditions => ['company_id = ? AND id = ?', session[:user].company_id, params[:project_id]]).users.collect  {|u| "{\"text\":\"#{u.name.gsub(/"/,'\"')}\", \"value\":\"#{u.id.to_s}\"}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"[Any]"},{"value":"-2","text":"[Active User]"},{"value":"-1","text":"[Unassigned]"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Any User]') + '"},{"value":"-2","text":"' + _('[Active User]') + '"},{"value":"-1","text":"' + _('[Unassigned]') + '"}'
 
     res << ", #{@users}" unless @users.nil? || @users.empty?
     res << ']}'
