@@ -239,7 +239,8 @@ Localization.define('no_NO') do |l|
   l.store 'Access To Project', 'Tilgang til Prosjektet'
   l.store 'Completed', 'Avsluttet'
   l.store 'Completed Projects', 'Avsluttede Prosjekter'
-
+  l.store 'Revert', 'Tilbakestill'
+  l.store 'Really revert %s?', 'Tilbakestille %s?'
 
   # Milestones
   l.store 'Owner', 'Ansvarlig'
