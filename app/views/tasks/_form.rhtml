@@ -172,7 +172,7 @@ function reset_owners() {
 
         <% for file in @task.attachments %>
         <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=human_size(file.file_size)%>)
-        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete <b>%s</b>?", file.name) %>
+        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
         <br/>
         <% end %>
       </fieldset>

@@ -6,4 +6,4 @@
   <%= submit_tag _("Edit"), :class => "nolabel" %>
 <%= end_form_tag %>
 </fieldset>
-[<%= link_to _("Delete View"), {:controller => 'views', :action => 'destroy', :id => @view}, :confirm => _("Really delete <b>%s</b>?", @view.name) %>]
+[<%= link_to _("Delete View"), {:controller => 'views', :action => 'destroy', :id => @view}, :confirm => _("Really delete %s?", @view.name) %>]

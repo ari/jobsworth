@@ -117,7 +117,7 @@ Localization.define('no_NO') do |l|
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andre som skal varsles ved forandringer<br/>i tillegg til registrator og ansvarlig<br/><br/>Ctrl-klikk for å velge.'
   l.store 'Notify Users', 'Varsle Brukere'
   l.store '[Delete]', '[Slett]'
-  l.store 'Really delete <b>%s</b>?', 'Slette <b>%s</b>?'
+  l.store 'Really delete %s?', 'Slette %s?'
   l.store 'New Task', 'Ny Oppgave'
   l.store 'Create', 'Opprett'
   l.store 'Send notification emails', 'Send varslingsepost'

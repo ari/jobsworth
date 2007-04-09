@@ -19,7 +19,7 @@
     <td><%=h customer.contact_email %></td>
     <td><%= link_to _('Edit'), :action => 'edit', :id => customer %>
           <% if customer.name != 'Internal' && customer.name != session[:user].company.name  && customer.projects.size == 0 %>
-    | <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete <b>%s</b>?", customer.name) %>
+    | <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete %s?", customer.name) %>
         <% end %> </td>
   </tr>
 <% end %>
