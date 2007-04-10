@@ -52,7 +52,6 @@ Localization.define('no_NO') do |l|
   l.store '%d minute', ['ett minutt', '%d minutter']
   l.store 'less than %d seconds', 'mindre enn %d sekunder'
   l.store 'half a minute', 'et halvt minutt'
-  l.store 'less than a minute', 'mindre enn ett minutt'
   l.store 'about %d hour', ['omtrent en time', 'omtrent %d timer']
 
 
