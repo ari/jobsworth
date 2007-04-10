@@ -121,6 +121,7 @@ class LoginController < ApplicationController
 
 
   def signup
+    @user = User.new
   end
 
   def take_signup
@@ -197,6 +198,7 @@ class LoginController < ApplicationController
       @user.password = @params[:password]
       @user.email = @params[:email]
       @user.time_zone = @params[:user][:time_zone]
+      @user.locale = @params[:user][:locale]
       @user.option_externalclients = 1
       @user.option_tracktime = 1
       @user.option_showcalendar = 1

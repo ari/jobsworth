@@ -3,6 +3,9 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find(@params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+
+    @body = RedCloth.new(@page.body).to_html
+
   end
 
   def new

@@ -1,0 +1,13 @@
+<fieldset>
+<legend><%= @page.name %></legend>
+
+<% if @page.revisions.empty? %>
+<%= start_form_tag :action => 'create', :id => @page.name %>
+<textarea name="body" rows="20" cols="80">This wiki page doesn't exist yet. Be the one to create it!</textarea>
+<%= submit_tag _("Create"), :style => 'clear:both;float:left;' %>
+<% else %>
+<%= @page.to_html %>
+<br/>
+<span class="description">Revision: <%= @page.revisions.count %></span><br/>
+<%= link_to "Edit", :controller => "wiki", :action => "edit", :id => @page.name %>
+<% end %>

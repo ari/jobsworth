@@ -4,6 +4,10 @@ module Localization
   @@l10s = { :default => {} }
   @@lang = :default
 
+  def self.locales
+    [['English', 'en_US'], ['Español', 'es_ES'], ['Norsk', 'no_NO']]
+  end
+
   def self._(string_to_localize, *args)
     translated =
       @@l10s[@@lang][string_to_localize] || string_to_localize

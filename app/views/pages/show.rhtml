@@ -1,11 +1,7 @@
 <table width="100%" id="page">
 <tr><td style="padding-left:15px;">
 <h1><%= @page.name %></h1>
-<%
-  r = RedCloth.new @page.body
-%>
-
-<%= r.to_html %>
+<%= @body %>
 </td></tr>
 <tr><td style="padding-left:15px;">
 <%= link_to _('Edit'), :action => 'edit', :id => @page %> |

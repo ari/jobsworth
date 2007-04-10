@@ -34,7 +34,7 @@ Localization.define('es_ES') do |l|
   l.store 'worked today', 'de trabajo hoy'
   l.store 'Online', 'En linea'
   l.store 'Done working on <b>%s</b> for now.', 'Trabajado en <b>%s</b> hasta el momento.' # %s = @task.name
-  l.store 'ago', 'hace'
+  l.store '%s ago', 'Hace %s'
 
   # Application Helper
   l.store 'today','hoy'

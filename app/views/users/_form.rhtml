@@ -5,6 +5,7 @@
 
 <fieldset>
 <legend><%=_ 'Options' %></legend>
+<p><label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %></p>
 <p><label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
 <% if session[:user].admin > 0 %>
 <p><label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %></p>
