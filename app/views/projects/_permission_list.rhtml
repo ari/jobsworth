@@ -46,7 +46,7 @@
         :url => { :action => 'ajax_remove_permission', :user_id => u.id, :id => @project.id, :perm => p },
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" if perm.can? p %>
-       <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant %s access for <b>%s</b>?", p. u.name), :class => "tooltip centered"),
+       <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant %s access for <b>%s</b>?", p, u.name), :class => "tooltip centered"),
         :update => 'permission_list',
         :url => { :action => 'ajax_add_permission', :user_id => u.id, :id => @project.id, :perm => p },
         :loading => "Element.show('loading');",
