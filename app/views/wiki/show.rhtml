@@ -3,7 +3,10 @@
 
 <% if @page.revisions.empty? %>
 <%= start_form_tag :action => 'create', :id => @page.name %>
-<textarea name="body" rows="20" cols="80">This wiki page doesn't exist yet. Be the one to create it!</textarea>
+<textarea name="body" rows="20" cols="80">h1. This wiki page doesn't exist yet. Be the one to create it!
+
+Use [[AnotherPage|another page]] or [[AnotherPage]] to link to and create other pages.
+</textarea>
 <%= submit_tag _("Create"), :style => 'clear:both;float:left;' %>
 <% else %>
 <%= @page.to_html %>
