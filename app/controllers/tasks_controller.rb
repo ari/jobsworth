@@ -547,16 +547,16 @@ class TasksController < ApplicationController
 
     if session[:history] && session[:history][0] == '/activities/list'
       @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+      @completed_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
       @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 25, :conditions => ["work_logs.project_id IN ( #{current_project_ids} )"], :include => [:user, :project, :customer, :task])
 
       u = User.find(session[:user].id)
-      @tasks = u.tasks.find(:all, :conditions => [" tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
+      @tasks = u.tasks.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.milestone_id NOT IN (#{completed_milestone_ids})"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
 
       new_filter = ""
       new_filter = "AND tasks.id NOT IN (" + @tasks.collect{ |t| t.id}.join(', ') + ")" if @tasks.size > 0
 
-      #FIXME: Show unassigned tasks
-      @new_tasks = u.tasks.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
+      @new_tasks = u.tasks.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL AND tasks.milestone_id NOT IN (#{completed_milestone_ids})"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
     end
   end
 

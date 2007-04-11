@@ -190,7 +190,6 @@ Localization.define('es_ES') do |l|
   l.store 'Upload', 'Subir'
 
   # Reports
-  l.store 'Reports', 'Informes'
   l.store 'Download CSV file of this report', 'Descargar archivi CSV de este informe.'
   l.store 'Total', 'Total'
   l.store 'Report Configuration', 'Configurar informe'

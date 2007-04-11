@@ -189,7 +189,6 @@ Localization.define('no_NO') do |l|
   l.store 'Upload', 'Last Opp'
 
   # Reports
-  l.store 'Reports', 'Rapporter'
   l.store 'Download CSV file of this report', 'Last ned CSV filen til denne rapporten.'
   l.store 'Total', 'Totalt'
   l.store 'Report Configuration', 'Rapport Konfigurasjon'
