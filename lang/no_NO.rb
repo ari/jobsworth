@@ -196,7 +196,7 @@ Localization.define('no_NO') do |l|
   l.store 'Report Type', 'Rapport Type'
   l.store 'Pivot', 'Pivot'
   l.store 'Audit', 'Tidssjekk'
-  l.store 'Timesheet', 'Timeliste'
+  l.store 'Time sheet', 'Timeliste'
   l.store 'Time Range', 'Tidsomfang'
   l.store 'Custom', 'Egendefinert'
   l.store 'Rows', 'Rader'

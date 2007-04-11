@@ -197,7 +197,7 @@ Localization.define('es_ES') do |l|
   l.store 'Report Type', 'Tipo de informe'
   l.store 'Pivot', 'Pivot'
   l.store 'Audit', 'Auditoría'
-  l.store 'Timesheet', 'Hoja de tiempos'
+  l.store 'Time sheet', 'Hoja de tiempos'
   l.store 'Time Range', 'Intervalo de tiempo'
   l.store 'Custom', 'Personalizado'
   l.store 'Rows', 'Filas'

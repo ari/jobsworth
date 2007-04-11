@@ -206,7 +206,7 @@ class ReportsController < ApplicationController
       task_severity = filter[:severity_id].to_i
       task_tags = filter[:tags]
 
-      filename << "_" + ["pivot", "audit", "timesheet"][@type-1]
+      filename << "_" + ["pivot", "audit", "time_sheet"][@type-1]
 
       if customer_id.to_i > 0
         sql_filter = sql_filter + " AND work_logs.customer_id = #{customer_id}"
@@ -369,7 +369,7 @@ class ReportsController < ApplicationController
           do_column(w, key)
 
         when 3
-          # Timesheet
+          # Time sheet
           [16, 17, 18, 19].each do |k|
             key = key_from_worklog(w, k)
             unless @column_headers[ key ]
