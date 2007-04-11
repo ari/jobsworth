@@ -19,15 +19,19 @@ class WikiPage < ActiveRecord::Base
   end
 
   def unlock
-    update_attribute(:locked_at, nil)
+    update_attributes(:locked_at => nil, :locked_by => nil)
   end
 
-  def locked?(comparison_time)
-    locked_at + LOCKING_PERIOD > comparison_time unless locked_at.nil?
+  def locked?
+    locked_at + LOCKING_PERIOD > Time.now.utc unless locked_at.nil?
   end
 
   def continous_revision?(time, author)
     (current_revision.author == author) && (revised_at + 30.minutes > time)
+  end
+
+  def locked_by
+    User.find( self.attributes['locked_by'] ) unless self.attributes['locked_by'].nil?
   end
 
   def to_html

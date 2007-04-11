@@ -22,8 +22,9 @@ class WikiController < ApplicationController
       @page.company_id = session[:user].company_id
       @page.name = params[:id]
       @page.project_id = nil
-      @page.save
     end
+    @page.unlock
+    @page.save
 
     @rev = WikiRevision.new
     @rev.wiki_page = @page
@@ -36,10 +37,17 @@ class WikiController < ApplicationController
 
   def edit
     @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, params[:id]])
+    @page.lock(Time.now.utc, session[:user].id)
+    @page.save
   end
 
   def cancel
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, params[:id]])
+    @page.unlock
+    @page.save
+
     redirect_to :action => 'show', :id => params[:id]
+
   end
 
 end

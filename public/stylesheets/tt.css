@@ -20,10 +20,16 @@ a:hover {
   background-color: #fff2d4;
 }
 
+h1 {
+  font-size: 26px;
+}
 
 h2 {
+  font-size: 20px;
+}
+
+h3 {
   font-size: 14px;
-  line-padding: 0px;
 }
 
 #menu {
