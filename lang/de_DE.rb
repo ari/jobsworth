@@ -52,7 +52,6 @@ Localization.define('de_DE') do |l|
   l.store '%d minute', ['eine Minute', '%d Minuten']
   l.store 'less than %d seconds', 'weniger als %d Sekunden'
   l.store 'half a minute', 'eine halbe Minute'
-  l.store 'less than a minute', 'weniger als eine Minute'
   l.store 'about %d hour', ['zirka eine Stunde', 'zirka %d Stunden']
 
 
@@ -90,7 +89,7 @@ Localization.define('de_DE') do |l|
   l.store "Stop working on <b>%s</b>.", 'Bearbeitung von <b>%s</b> beenden.'
   l.store "Start working on <b>%s</b>. Click again when done.", 'Bearbeitung von <b>%s</b> beginnen. Nochmals anklicken, wenn fertig.'
   l.store 'No one', 'Niemand'
-  l.store "Revert <b>%s</b> to not completed status.", 'Sett <b>%s</b> til uferdig'
+  l.store "Revert <b>%s</b> to not completed status.", '<b>%s</b> auf Nicht Abgeschlossen zurückversetzen.'
   l.store "Cancel working on <b>%s</b>.", 'Bearbeitung von<b>%s</b> abbrechen.'
   l.store "Move <b>%s</b> to the Archive.", '<b>%s</b> im Archiv ablegen'
   l.store "Restore <b>%s</b> from the Archive.", '<b>%s</b> aus dem Archiv holen.'
@@ -99,12 +98,12 @@ Localization.define('de_DE') do |l|
   l.store 'Description', 'Beschreibung'
   l.store 'Comment', 'Kommentar'
   l.store 'Attach file', 'Datei anhängen'
-  l.store 'Target', 'Gruppering'
+  l.store 'Target', 'Ziel'
   l.store 'Project', 'Projekt'
   l.store 'Milestone', 'Meilenstein'
   l.store '[None]', '[Niemand]'
   l.store 'Assigned To', 'Zugewiesen an'
-  l.store 'Requested By', 'Verlangt von'
+  l.store 'Requested By', 'Angefordert von'
   l.store 'Attributes', 'Attribute'
 
   l.store 'Type', 'Typ'
@@ -128,7 +127,7 @@ Localization.define('de_DE') do |l|
   l.store 'and', 'und' # Save and ...
 
   l.store "Leave Open",'Offen lassen'
-  l.store "Revert to Open",'In Offen-Status zurückversetzen'
+  l.store "Revert to Open",'Auf Offen zurückversetzen'
   l.store "Set in Progress",'In Bearbeitung versetzen'
   l.store "Leave as in Progress",'In Bearbeitung belassen'
   l.store "Close",'Abschließen'
@@ -190,15 +189,14 @@ Localization.define('de_DE') do |l|
   l.store 'Upload', 'Hochladen'
 
   # Reports
-  l.store 'Reports', 'Rapporter'
   l.store 'Download CSV file of this report', 'CSV-Datei dieses Berichts herunterladen.'
   l.store 'Total', 'Gesamtsumme' # total in the sense of complete or sum of everything?
   l.store 'Report Configuration', 'Berichtseinstellungen'
   l.store 'Report Type', 'Berichtstyp'
   l.store 'Pivot', 'Pivot'  # Pivot means Drehpunkt, but there is no "Drehpunkttabelle" in German language.
   l.store 'Audit', 'Überprüfung'
-  l.store 'Time sheet', 'Arbeitszeitnachweis'
-  l.store 'Time Range', 'Zeitbereich'
+  l.store 'Time Sheet', 'Arbeitszeitnachweis'
+  l.store 'Time Range', 'Zeitfenster'
   l.store 'Custom', 'Selbstdefiniert'
   l.store 'Rows', 'Zeile'
   l.store 'Columns', 'Spalten'
@@ -206,7 +204,7 @@ Localization.define('de_DE') do |l|
   l.store "Date", 'Datum'
   l.store 'Task Status', 'Aufgabenstatus'
   l.store "Task Type", 'Aufgabentyp'
-  l.store "Task Priority", 'Priorotät der Aufgabe'
+  l.store "Task Priority", 'Priorität der Aufgabe'
   l.store "Task Severity", 'Schweregrad der Aufgabe'
   l.store 'From', 'Von' # From Date
   l.store 'To', 'Bis' # To Date
@@ -239,8 +237,8 @@ Localization.define('de_DE') do |l|
   l.store 'Access To Project', 'Zugriff auf Projekt'
   l.store 'Completed', 'Abgeschlossen'
   l.store 'Completed Projects', 'Abgeschlossene Projekte'
-  l.store 'Revert', 'Tilbakestill'
-  l.store 'Really revert %s?', 'Tilbakestille %s?'
+  l.store 'Revert', 'Zurückversetzen'
+  l.store 'Really revert %s?', '%s wirklich zurückversetzen?'
 
   # Milestones
   l.store 'Owner', 'Eigentümer'
@@ -319,12 +317,12 @@ Localization.define('de_DE') do |l|
   # Milestones Controller
   l.store 'Milestone was successfully created.', 'Meilenstein erfolgreich angelegt.'
   l.store 'Milestone was successfully updated.', 'Meilenstein erfolgreich aktualisiert.'
-  l.store '%s / %s completed.', '%s / %s bgeschlossen.' # Project name / Milestone name completed.
-  l.store '%s / %s reverted.', '%s / %s tilbakestilt.' # Project name / Milestone name reverted.
+  l.store '%s / %s completed.', '%s / %s abgeschlossen.' # Project name / Milestone name completed.
+  l.store '%s / %s reverted.', '%s / %s zurückversetzt.' # Project name / Milestone name reverted.
 
   # Pages / Notes Controller
   l.store 'Note was successfully created.', 'Bemerkung wurde erfolgreich angelegt.'
-  l.store 'Note was successfully updated.', 'emerkung wurde erfolgreich aktualisiert.'
+  l.store 'Note was successfully updated.', 'Bemerkung wurde erfolgreich aktualisiert.'
 
   # Project Files Controller
   l.store 'No file selected for upload.', 'Keine Datei zum Hochladen ausgewählt.'
@@ -337,7 +335,7 @@ Localization.define('de_DE') do |l|
   l.store 'Project was successfully updated.', 'Projekt wurde erfolgreich aktualisiert.'
   l.store 'Project was deleted.', 'Projekt wurde gelöscht.'
   l.store '%s completed.', '%s abgeschlossen.'
-  l.store '%s reverted.', '%s tilbakestilt.'
+  l.store '%s reverted.', '%s zurückversetzt.'
 
   # Reports Controller
   l.store "Empty report, log more work!", 'Bericht ist leer, bitte mehr Arbeit aufschreiben!'
