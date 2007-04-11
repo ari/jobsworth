@@ -56,8 +56,8 @@
       <tr><td align="right"><label for="password_again">Password Again</label></td><td><%= password_field_tag 'password_again', @params[:password_again]  %></td></tr>
       <tr><td align="right"><label for="name">Name</label></td><td><%= text_field_tag 'name', @params[:name]  %></td></tr>
       <tr><td align="right"><label for="email">Email</label></td><td><%= text_field_tag 'email', @params[:email]  %></td></tr>
-      <tr><td>&nbsp;</td></tr>
-      <tr><td align="right"><label for="user_locale">Language</label><%= select 'user', 'locale', Localization.locales %></td></tr>
+      <tr><td><div style="height:5px;">&nbsp;</div></td></tr>
+      <tr><td align="right"><label for="user_locale">Language</label></td><td><%= select 'user', 'locale', Localization.locales %></td></tr>
       <tr><td align="right"><label for="time_zone">Timezone</label></td><td><%= time_zone_select 'user', 'time_zone', [TZInfoExt['Pacific Time (US & Canada)'], TZInfoExt['Eastern Time (US & Canada)'], TZInfoExt['Mexico City'], TZInfoExt['London'], TZInfoExt['Madrid'], TZInfoExt['Oslo'], TZInfoExt['Berlin'], TZInfoExt['Paris'] ],   :model => TZInfoExt %></td></tr>
       </table>
       </fieldset>
