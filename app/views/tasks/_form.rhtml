@@ -30,9 +30,11 @@
         <label for="task_tmp_file"><%=_ 'Attach file' %></label>
         <%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
       </fieldset>
+<% unless @tags.nil? %>
 <script type="text/javascript">
 new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
 </script>
+<% end %>
     </td>
     <td valign="top" rowspan="2" style="width:22em;">
           <% if @task.project_id > 0
