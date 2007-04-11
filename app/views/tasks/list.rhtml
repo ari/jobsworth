@@ -1,4 +1,4 @@
-<table width="100%" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0" id="content">
   <tr>
     <td style="padding-left: 1em;" valign="top">
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
@@ -8,7 +8,7 @@
           </td>
         </tr>
         <tr>
-          <td align="left" style="padding-left:25px; padding-top:0.5em;" nowrap id="tasks_filter">
+          <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
             if session[:filter_customer].to_i > 0

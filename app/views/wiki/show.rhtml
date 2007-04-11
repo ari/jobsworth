@@ -1,22 +1,47 @@
+<div id="wiki">
+
 <fieldset>
 <legend><%= @page.name %></legend>
 
 <% if @page.revisions.empty? %>
 <%= start_form_tag :action => 'create', :id => @page.name %>
-<textarea name="body" rows="20" cols="80">h3. This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.
+<textarea name="body" rows="20" cols="80">
+h3. This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.
 
 Use [[AnotherPage|another page]] or [[AnotherPage]] to link to and create other pages.
+
+
+h4. Other things to do[1]
+
+* Create lists
+* [[http://google.com|Google]]
+** _Experiment_
+** *Add emphasis*
+* And have fun!
+
+|_. This |_. Is |
+| pretty | fun  |
+| and not too | hard|
+
+@A man once said...@
+
+fn1. If you're -bored- %{color:red}inspired%.
+
+!http://www.clockingit.com/images/logo.gif!
+
 </textarea>
 <%= submit_tag _("Create"), :style => 'clear:both;float:left;' %>
 <% else %>
 <%= @page.to_html %>
 <br/>
-<span class="description">Revision: <%= @page.revisions.count %></span><br/>
+      <div class="description">Revision: <%= "#{@page.revisions.size}, " + tz.utc_to_local(@page.current_revision.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") + " by #{@page.current_revision.user.name}" %></div>
 <% if @page.locked? %>
-Locked by <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(session[:user].time_format) %>]<br/>
+  <strong>Under revision by <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(session[:user].time_format) %>]</strong><br/>
 <% end %>
+
 <% if @page.locked_by.nil? || @page.locked_by.id == session[:user].id %>
-<%= link_to "Edit", :controller => "wiki", :action => "edit", :id => @page.name %>
+  <%= link_to "Edit", :controller => "wiki", :action => "edit", :id => @page.name %>
 <% end %>
 
 <% end %>
+</div>

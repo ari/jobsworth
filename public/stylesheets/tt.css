@@ -637,7 +637,7 @@ pre.auto_generated {
 #content ul
 {
         list-style: none;
-        padding-left: 1.3em;
+        padding-left: 0.3em;
         margin-left: 1px;
         display: block;
         clear: both;
@@ -1042,19 +1042,9 @@ li.help {
 
 
 #page {
-    padding-left: 0;
-    list-style: none;
-    margin: 0;
-    }
-
-#page li {
-    border-left: none;
-    padding-left: 1em;
-    background-image: url(/images/bullet_orange.png);
-    list-style-image: url(/images/bullet_orange.png);
-    background-repeat: no-repeat;
-    background-position: 0 0px;
-
+  padding-left: 0;
+  list-style: disc;
+  margin: 0;
 }
 
 .task_info {
@@ -1173,3 +1163,23 @@ li.help {
   vertical-align: top;
 }
 
+#wiki ul
+{
+  list-style-type: disc;
+  padding-left: 1.3em;
+  margin-left: 1px;
+  min-height: 1px;
+  list-style-position: outside;
+}
+
+#wiki li
+{
+  list-style-type: disc;
+  list-style-position: outside;
+  list-style-image: none;
+  border-left: none;
+  margin-left: 8px;
+  padding-left: 4px;
+  position: relative;
+  margin-bottom: 2px;
+}

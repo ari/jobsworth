@@ -26,8 +26,6 @@ class ActivitiesController < ApplicationController
 
     user = User.find(session[:user].id)
 
-
-
     @tasks = user.tasks.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.milestone_id NOT IN (#{completed_milestone_ids})"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
 
     new_filter = ""
