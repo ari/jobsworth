@@ -1,5 +1,6 @@
 class WikiPage < ActiveRecord::Base
   has_many :revisions, :class_name => 'WikiRevision', :order => 'id'
+  has_many :references, :class_name => 'WikiReference', :order => 'reference_name'
   has_one  :current_revision, :class_name => 'WikiRevision', :order => 'id DESC'
   belongs_to :company
 
@@ -23,6 +24,15 @@ class WikiPage < ActiveRecord::Base
 
   def locked_by
     User.find( self.attributes['locked_by'] ) unless self.attributes['locked_by'].nil?
+  end
+
+  # SELECT wiki_pages.* FROM wiki_pages LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id WHERE  w_r.referenced_name = 'pagename';
+  def pages_linking_here
+    @refs ||= WikiPage.find(:all, :select => "wiki_pages.*", :joins => "LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id", :conditions => ["w_r.referenced_name = ?", self.name])
+  end
+
+  def to_url
+    "<a href=\"/wiki/show/#{URI.encode(name)}\">#{name}</a>"
   end
 
   def to_html

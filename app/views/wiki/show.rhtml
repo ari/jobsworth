@@ -34,12 +34,15 @@ fn1. If you're -bored- %{color:red}inspired%.
 <% else %>
 <%= @page.to_html %>
 <br/>
+<% if @page.pages_linking_here.size > 0 %>
+<div class="description">Linked from: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ') %></div>
+<% end %>
       <div class="description">Revision: <%= "#{@page.revisions.size}, " + tz.utc_to_local(@page.current_revision.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") + " by #{@page.current_revision.user.name}" %></div>
 <% if @page.locked? %>
   <strong>Under revision by <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(session[:user].time_format) %>]</strong><br/>
 <% end %>
 
-<% if @page.locked_by.nil? || @page.locked_by.id == session[:user].id %>
+<% if !@page.locked? || @page.locked_by.id == session[:user].id %>
   <%= link_to "Edit", :controller => "wiki", :action => "edit", :id => @page.name %>
 <% end %>
 

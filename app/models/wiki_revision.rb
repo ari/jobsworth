@@ -10,6 +10,32 @@ class WikiRevision < ActiveRecord::Base
 
   ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, 'utf-8')
 
+  after_save :update_references
+
+  def update_references
+
+    self.wiki_page.references.destroy_all if self.wiki_page.references.size > 0
+
+    body.gsub!( WIKI_LINK ) { |m|
+      match = m.match(WIKI_LINK)
+      name = text = match[1]
+      alias_match = match[1].match(ALIAS_SEPARATION)
+      if alias_match
+        name = alias_match[1]
+        text = alias_match[2]
+      end
+
+      unless name.downcase.include? '://'
+        ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
+        unless ref
+          ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
+          ref.save
+        end
+      end
+    }
+
+  end
+
   def to_html
     body.gsub!( WIKI_LINK ) { |m|
       match = m.match(WIKI_LINK)
