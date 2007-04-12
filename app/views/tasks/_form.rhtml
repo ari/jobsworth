@@ -84,7 +84,7 @@ unless @task.users.empty?
   @task.users.each do |u|
     owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>" if num == 0
     owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\"></label>" if num != 0
-    owner_string <<  select_tag ('users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'"), perms['reassign'])
+    owner_string <<  select_tag('users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'"), perms['reassign'])
 
     if( perms['reassign'].keys.size == 0 )
       owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num == 0

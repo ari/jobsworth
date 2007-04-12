@@ -364,8 +364,29 @@ module ApplicationHelper
 
 
   def wrap_text(txt, col = 80)
+
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
-    txt.gsub(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
+    txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
+    txt.gsub( WikiRevision::WIKI_LINK ) { |m|
+      match = m.match(WikiRevision::WIKI_LINK)
+      name = text = match[1]
+
+      alias_match = match[1].match(WikiRevision::ALIAS_SEPARATION)
+      if alias_match
+        name = alias_match[1]
+        text = alias_match[2]
+      end
+
+      if name.downcase.include? '://'
+        url = name
+      else
+        url = "/wiki/show/#{URI.encode(name)}"
+      end
+
+      "<a href=\"#{url}\">#{text}</a>"
+    }
+
+
   end
 
   def highlight_all( text, keys )
