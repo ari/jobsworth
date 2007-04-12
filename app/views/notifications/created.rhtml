@@ -9,6 +9,9 @@
   Task Type:   <%= @task.issue_type %>
   Severity:    <%= @task.severity_type %>
   Priority:    <%= @task.priority_type %>
+<% unless @task.due_at.nil? -%>
+  Due:         <%= @task.due_at.strftime("%A, %d %B %Y") %>
+<% end -%>
   Assigned To: <%= @task.users.collect{|u| u.name}.join(', ') unless @task.users.empty? %><%= "No one" if @task.users.empty? %>
   Created By:  <%= @user.name %>
 
