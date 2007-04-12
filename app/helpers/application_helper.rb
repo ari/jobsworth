@@ -26,28 +26,29 @@ module ApplicationHelper
   end
 
   def current_projects
-    User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
+    @current_projects ||= User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
                                                            :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
   end
 
   def current_project_ids
     projects = current_projects
     if projects.empty?
-      "0"
+      @current_project_ids ||= "0"
     else
-      projects.collect{|p|p.id}.join(',')
+      @current_project_ids ||= projects.collect{|p|p.id}.join(',')
     end
+    @current_project_ids
   end
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
-    milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
-    milestone_ids = "-1" if milestone_ids.empty?
-    milestone_ids
+    @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
+    @milestone_ids = "-1" if @milestone_ids == ''
+    @milestone_ids
   end
 
   def current_pages
-    @pages = Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
+    @pages ||= Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
   end
 
   def urlize(name)
