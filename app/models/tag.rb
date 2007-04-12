@@ -46,8 +46,8 @@ class Tag < ActiveRecord::Base
     task_ids_str = "tasks.id IN (#{task_ids})" if task_ids != ''
     task_ids_str = "tasks.id = 0" if task_ids == ''
 
-    completed_milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", options[:company_id]]).collect{ |m| m.id }.join(',')
-    completed_milestone_ids = "0" if completed_milestone_ids == ''
+    @completed_milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", options[:company_id]]).collect{ |m| m.id }.join(',')
+    @completed_milestone_ids = "-1" if @completed_milestone_ids == ''
 
 
     conditions = []
@@ -56,7 +56,7 @@ class Tag < ActiveRecord::Base
     conditions << "#{task_ids_str}" unless options[:filter_user].to_i == 0
     conditions << "tasks.milestone_id = #{options[:filter_milestone]}" if options[:filter_milestone].to_i > 0
     conditions << "tasks.milestone_id IS NULL" if options[:filter_milestone].to_i < 0
-    conditions << "tasks.milestone_id NOT IN (#{completed_milestone_ids})"
+    conditions << "tasks.milestone_id NOT IN (#{@completed_milestone_ids})"
     conditions << "tasks.hidden = 0" if options[:filter_status].to_i != -2
     conditions << "tasks.hidden = 1" if options[:filter_status].to_i == -2
     conditions << "projects.customer_id = #{options[:filter_customer]}" if options[:filter_customer].to_i > 0
