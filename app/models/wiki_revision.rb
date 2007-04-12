@@ -49,11 +49,14 @@ class WikiRevision < ActiveRecord::Base
 
       if name.downcase.include? '://'
         url = name
+        url_class = 'external'
       else
         url = "/wiki/show/#{URI.encode(name)}"
+        url_class = 'internal'
+        url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, name])
       end
 
-      "\"#{text}\":#{url}"
+      "%(#{url_class})\"#{text}\":#{url}%"
     }
 #    body.gsub!( CamelCase, '"\1":/wiki/show/\1')
 
