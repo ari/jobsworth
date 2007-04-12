@@ -161,7 +161,6 @@ Localization.define('es_ES') do |l|
 
   l.store 'Start', 'Comienzo'
   l.store 'Duration Worked', 'Tiempo trabajado'
-  l.store 'Notes', 'Notas'
 
   # Timeline
   l.store '[All Time]', '[Todo]'

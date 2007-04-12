@@ -160,7 +160,6 @@ Localization.define('no_NO') do |l|
 
   l.store 'Start', 'Start'
   l.store 'Duration Worked', 'Arbeidet tid'
-  l.store 'Notes', 'Notater'
 
   # Timeline
   l.store '[All Time]', '[All Tid]'
@@ -361,4 +360,11 @@ Localization.define('no_NO') do |l|
   l.store "View '%s' was successfully updated.", "Utsnitt '%s' oppdatert."
   l.store "View '%s' was deleted.", "Utsnitt '%s' slettet."
 
+  # Wiki
+  l.store 'Quick Reference', 'Kjapp Oversikt'
+  l.store 'Full Reference', 'Full Oversikt'
+  l.store 'or', 'eller'
+  l.store 'Under revision by', 'Under revidering av'
+  l.store 'Revision', 'Revisjon'
+  l.store 'Linked from', 'Liket til fra'
 end

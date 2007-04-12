@@ -2,7 +2,7 @@ class WikiRevision < ActiveRecord::Base
   belongs_to :wiki_page
   belongs_to :user
 
-  CamelCase = Regexp.new( '\b((?:[A-Z]\w+){2,})' )
+#  CamelCase = /\b((?:[A-Z]\w+){2,})/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
 #  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
 
@@ -37,6 +37,16 @@ class WikiRevision < ActiveRecord::Base
   end
 
   def to_html
+
+#    body.gsub!( CamelCase ) { |m|
+#      url = "/wiki/show/#{URI.encode(m)}"
+#      url_class = 'internal'
+#      url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, m])
+#
+#
+#      "%(#{url_class})\"#{m}\":#{url}%"
+#   }
+
     body.gsub!( WIKI_LINK ) { |m|
       match = m.match(WIKI_LINK)
       name = text = match[1]
@@ -58,7 +68,7 @@ class WikiRevision < ActiveRecord::Base
 
       "%(#{url_class})\"#{text}\":#{url}%"
     }
-#    body.gsub!( CamelCase, '"\1":/wiki/show/\1')
+
 
     body.gsub!( TaskNumber, '"#\1":/tasks/view/\1')
 

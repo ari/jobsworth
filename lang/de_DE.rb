@@ -28,7 +28,7 @@ Localization.define('de_DE') do |l|
   l.store 'Edit', 'Bearbeiten'
   l.store 'New', 'Neu'
   l.store 'Chat', 'Unterhaltung'
-  l.store 'Notes', 'Notizen'
+  l.store 'Notes', 'Bemerkungen'
   l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Rückmeldungen? Vorschläge? Ideen? Fehler?'
   l.store 'Let me know', 'Laß es mich wissen'
   l.store 'worked today', 'heute gearbeitet'
@@ -160,7 +160,6 @@ Localization.define('de_DE') do |l|
 
   l.store 'Start', 'Start'
   l.store 'Duration Worked', 'Arbeitsdauer'
-  l.store 'Notes', 'Bemerkungen'
 
   # Timeline
   l.store '[All Time]', '[Ganze Zeit]'
@@ -225,7 +224,7 @@ Localization.define('de_DE') do |l|
   l.store 'Work', 'Arbeiten'
   l.store 'Assign', 'Zuweisen'
   l.store 'Prioritize', 'Priorisieren'
-  l.store 'Grant', 'Gewähren'  # 
+  l.store 'Grant', 'Gewähren'  #
   l.store "Remove all access for <b>%s</b>?", 'Gesamten Zugriff für <b>%s</b>entziehen?'
   l.store "Grant %s access for <b>%s</b>?", '%s Zugriff gewähren für <b>%s</b>?'
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Man kann weder <b>sich selbst</b> noch <b>den Projekturheber</b> entfernen!'
