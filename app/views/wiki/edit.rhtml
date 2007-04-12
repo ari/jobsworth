@@ -3,4 +3,5 @@
 
 <%= start_form_tag :action => 'create', :id => @page.name %>
 <textarea name="body" rows="20" cols="80"><%=@page.current_revision.body%></textarea>
+<div stle="float:left;"><p><a href="http://hobix.com/textile/quick.html" target="_new">Quick Reference</a></p><p><a href="http://hobix.com/textile/" target="_new">Full Reference</a></p></div>
 <div style="clear:both;float:left;"><%= submit_tag _("Edit") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %></div>

@@ -1,6 +1,6 @@
 class WikiPage < ActiveRecord::Base
   has_many :revisions, :class_name => 'WikiRevision', :order => 'id'
-  has_many :references, :class_name => 'WikiReference', :order => 'reference_name'
+  has_many :references, :class_name => 'WikiReference', :order => 'referenced_name'
   has_one  :current_revision, :class_name => 'WikiRevision', :order => 'id DESC'
   belongs_to :company
 

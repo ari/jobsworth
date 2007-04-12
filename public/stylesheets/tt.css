@@ -1183,3 +1183,7 @@ li.help {
   position: relative;
   margin-bottom: 2px;
 }
+
+#wiki pre {
+  background-color: #eee;
+}
