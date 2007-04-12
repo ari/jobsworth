@@ -3,7 +3,7 @@ Localization.define('es_ES') do |l|
   # Main menu
   l.store "Overview", "General"
   l.store "Tutorial", "Tutorial"
-  l.store "Browse", "Vistas" # In fact, Browse, in spanish, means like "browse the internet", or "take a look", but i think, due the page, is better "Views", because is the same page of opening a view
+  l.store "Browse", "Examinar" # In fact, Browse, in spanish, means like "browse the internet", or "take a look", but i think, due the page, is better "Views", because is the same page of opening a view. I THINK IS BETTER "EXAMINAR".
   l.store "Timeline", "Historial"
   l.store "Files", "Archivos"
   l.store "Reports", "Informes"
@@ -20,7 +20,7 @@ Localization.define('es_ES') do |l|
   # Main layout
   l.store 'Hide', 'Esconder'
   l.store 'Views', 'Vistas'
-  l.store 'Open Tasks', 'Abrir tarea'
+  l.store 'Open Tasks', 'Abrir tarea'# I THINK IS BETTER "ABRIR TAREA"
   l.store 'My Open Tasks', 'Mis tareas abiertas'
   l.store 'My In Progress Tasks', 'Mis tareas en curso'
   l.store 'Unassigned Tasks', 'Tareas no asignadas'
@@ -104,7 +104,7 @@ Localization.define('es_ES') do |l|
   l.store 'Milestone', 'Hito'
   l.store '[None]', '[Ninguno]'
   l.store 'Assigned To', 'Asignada a '
-  l.store 'Requested By', 'Pedida por'
+  l.store 'Requested By', 'Solicitada por' # I THINK IS BETTER "SOLICITADA POR"
   l.store 'Attributes', 'Atributos'
 
   l.store 'Type', 'Tipo'
@@ -190,7 +190,7 @@ Localization.define('es_ES') do |l|
   l.store 'Upload', 'Subir'
 
   # Reports
-  l.store 'Download CSV file of this report', 'Descargar archivi CSV de este informe.'
+  l.store 'Download CSV file of this report', 'Descargar archivo CSV de este informe.'
   l.store 'Total', 'Total'
   l.store 'Report Configuration', 'Configurar informe'
   l.store 'Report Type', 'Tipo de informe'
@@ -281,7 +281,7 @@ Localization.define('es_ES') do |l|
   l.store 'Custom Logo', 'Logo personalizado'
   l.store 'Current logo', 'Logo actual'
   l.store 'New logo', 'Nuevo logo'
-  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(No se redimensionará, un tamaño de 150x150px se verá bien. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
+  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(No se redimensionará. Se recomienda un tamaño de imagen de 150x50px. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
 
   # Notes / Pages
   l.store 'Body', 'Contenido'
@@ -312,8 +312,8 @@ Localization.define('es_ES') do |l|
   l.store 'Client was successfully updated.', 'El cliente fue modificado satisfactoriamente.'
   l.store 'Please delete all projects for %s before deleting it.', 'Por favor, elimine todos los proyectos de %s antes de borrarlo.'
   l.store "You can't delete your own company.", 'No puede borrar su propia compañia.'
-  l.store 'CSS successfully uploaded.', 'CSS cargado satisfactoriamente.'
-  l.store 'Logo successfully uploaded.', 'Logo cargado satisfactoriamente.'
+  l.store 'CSS successfully uploaded.', 'CSS subido satisfactoriamente.'
+  l.store 'Logo successfully uploaded.', 'Logo subido satisfactoriamente.'
 
   # Milestones Controller
   l.store 'Milestone was successfully created.', 'Hito creado satisfactoriamente.'
@@ -363,3 +363,4 @@ Localization.define('es_ES') do |l|
   l.store "View '%s' was deleted.", "Vista '%s' eliminada."
 
 end
+
