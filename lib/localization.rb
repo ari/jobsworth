@@ -67,7 +67,7 @@ module ActionView::Helpers::DateHelper
     when 2..45      then _("%d minute", distance_in_minutes)
     when 46..90     then _('about %d hour', 1)
     when 90..1440   then _("about %d hour", (distance_in_minutes.to_f / 60.0).round)
-    when 1441..2880 then _('%d day')
+    when 1441..2880 then _('%d day', 1)
     else                 _('%d day', (distance_in_minutes / 1440).round)
     end
   end
