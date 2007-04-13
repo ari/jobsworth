@@ -79,7 +79,7 @@ class TasksController < ApplicationController
       filter << "projects.customer_id = #{session[:filter_customer]} AND "
     end
 
-    filter << "tasks.milestone_id NOT IN (#{completed_milestone_ids}) AND "
+    filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) AND "
 
 
     if params[:tag] && params[:tag].length > 0
