@@ -17,7 +17,7 @@ class Milestone < ActiveRecord::Base
 
     complete = self.completed_tasks
     total =  self.total_tasks
-
+    return 0.0 if total == 0
     p = (complete / total) * 100.0
   end
 
