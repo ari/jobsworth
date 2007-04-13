@@ -13,7 +13,7 @@
 <fieldset>
 <legend><%=_ 'Custom Logo' %></legend>
 <% if !@customer.binary_id.nil? && @customer.binary_id > 0 -%>
-<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to "[Delete]", :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
+<p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
 <% end -%>
 <%= start_form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) %>
 <p><label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
