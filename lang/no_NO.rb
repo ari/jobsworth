@@ -114,7 +114,7 @@ Localization.define('no_NO') do |l|
   l.store 'Show Calendar', 'Vis Kalender'
   l.store 'Notification', 'Varsling'
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andre som skal varsles ved forandringer<br/>i tillegg til registrator og ansvarlig<br/><br/>Ctrl-klikk for å velge.'
-  l.store 'Notify Users', 'Varsle Brukere'
+  l.store 'To:', 'Til:'
   l.store '[Delete]', '[Slett]'
   l.store 'Really delete %s?', 'Slette %s?'
   l.store 'New Task', 'Ny Oppgave'
@@ -296,7 +296,7 @@ Localization.define('no_NO') do |l|
 
   # Clients
   l.store 'Contact', 'Kontakt'
-  l.store 'New Client', 'Ny Kunde'
+  l.store '[New Client]', '[Ny Kunde]'
   l.store 'Contact email', 'Kontakt epost'
   l.store 'Contact name', 'Kontakt navn'
   l.store 'Client CSS', 'Kundens CSS'

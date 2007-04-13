@@ -162,7 +162,7 @@ function reset_owners() {
         <legend><%=_ 'Notification' %></legend>
 
         <% watchers = @task.watchers.collect {|t| t.id } %>
-        <label for="task[notification_ids][]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'Notify Users' %></label>
+        <label for="task[notification_ids][]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'To:' %></label>
         <%= select_tag "watchers[]", User.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect {|u| "<option value=#{u.id} #{(watchers.include?(u.id) ? 'selected=\"selected\"' : '')} >#{u.name}</option>"}.join(''), {:multiple => true, :size => 8, :class => 'tooltip', :title => 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.'}.merge(perms['edit']) %><br/>
         <label for="task[notify_emails]" class="tooltip" title="Comma-separated list of emails to notify">Cc:</label>
         <%= text_area 'task', 'notify_emails', { :cols => 15, :rows => 3, :class => 'tooltip', :title => 'Comma-separated list of emails to notify'}.merge(perms['edit']) %><br/>

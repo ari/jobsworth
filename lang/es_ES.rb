@@ -115,7 +115,7 @@ Localization.define('es_ES') do |l|
   l.store 'Show Calendar', 'Ver calendario'
   l.store 'Notification', 'Notificación'
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Los cambios en la tarea se notificarán, además de a<br/>su creador y a las personas asignadas a:<br/><br/>Ctrl-click para cambiar.'
-  l.store 'Notify Users', 'Notificar usuarios'
+  l.store 'To:', 'To:'
   l.store '[Delete]', '[Borrar]'
   l.store 'Really delete %s?', '¿De verdad desea borrar %s?'
   l.store 'New Task', 'Nueva tarea'
@@ -297,7 +297,7 @@ Localization.define('es_ES') do |l|
 
   # Clients
   l.store 'Contact', 'Contacto'
-  l.store 'New Client', 'Nuevo cliente'
+  l.store '[New Client]', '[Nuevo cliente]'
   l.store 'Contact email', 'E-mail de contacto'
   l.store 'Contact name', 'Nombre de contacto'
   l.store 'Client CSS', 'CSS del cliente'

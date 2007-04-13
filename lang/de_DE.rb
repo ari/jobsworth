@@ -39,7 +39,7 @@ Localization.define('de_DE') do |l|
   # Application Helper
   l.store 'today','heute'
   l.store 'tomorrow', 'morgen'
-  l.store '%d day', ['ein Tag', '%d Tage']
+  l.store '%d day', ['ein Tag', '%d Tagen']
   l.store '%d week', ['eine Woche', '%d Wochen']
   l.store '%d month', ['ein Monat', '%d Monate']
   l.store 'yesterday', 'gestern'
@@ -101,7 +101,7 @@ Localization.define('de_DE') do |l|
   l.store 'Target', 'Ziel'
   l.store 'Project', 'Projekt'
   l.store 'Milestone', 'Meilenstein'
-  l.store '[None]', '[Niemand]'
+  l.store '[None]', '[Kein]'
   l.store 'Assigned To', 'Zugewiesen an'
   l.store 'Requested By', 'Angefordert von'
   l.store 'Attributes', 'Attribute'
@@ -114,7 +114,7 @@ Localization.define('de_DE') do |l|
   l.store 'Show Calendar', 'Kalender anzeigen'
   l.store 'Notification', 'Benachrichtigung'
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andere über Änderungen an Aufgaben<br/>zusätzlich zu Urheber und Beauftragtem zu<br/>benachrichtigende Personen.<br/><br/>Strg-Mausklick zum Auswählen.'
-  l.store 'Notify Users', 'Benutzer benachrichtigen'
+  l.store 'To:', 'An:'
   l.store '[Delete]', '[Löschen]'
   l.store 'Really delete %s?', '%s? wirklich löschen?'
   l.store 'New Task', 'Neue Aufgabe'
@@ -252,7 +252,7 @@ Localization.define('de_DE') do |l|
   l.store 'Offline', 'Abwesend'
   l.store 'Are your sure?', 'Bist Du Dir sicher?'
   l.store 'Company', 'Firma'
-  l.store '[New User]', 'Neuer Benutzer]'
+  l.store '[New User]', '[Neuer Benutzer]'
   l.store '[Previous page]', '[Vorherige Seite]'
   l.store '[Next page]', '[Nächste Seite]'
   l.store 'Edit User', 'Benutzer bearbeiten'
@@ -296,7 +296,7 @@ Localization.define('de_DE') do |l|
 
   # Clients
   l.store 'Contact', 'Kontakt'
-  l.store 'New Client', 'Neuer Kunde'
+  l.store '[New Client]', '[Neuer Kunde]'
   l.store 'Contact email', 'E-Mail des Kontaktes'
   l.store 'Contact name', 'Name des Kontaktes'
   l.store 'Client CSS', 'Kunden-CSS'
