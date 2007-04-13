@@ -13,6 +13,7 @@
       <th><%=_ 'Milestones' %></th>
       <th><%=_ 'Reports' %></th>
       <th><%=_ 'Grant' %></th>
+      <th><%=_ 'All' %></th>
     </tr>
 
 <% for u in @users %>
@@ -25,7 +26,7 @@
 
      perm = u.project_permissions.find(:first, :conditions => ["project_id=?", @project.id])
 
-     perms = ['comment', 'work', 'close', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant']
+     perms = ['comment', 'work', 'close', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
 
 %>
 

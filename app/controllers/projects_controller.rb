@@ -61,18 +61,7 @@ class ProjectsController < ApplicationController
     if params[:perm].nil?
       permission.destroy
     else
-      case params[:perm]
-      when 'comment'    then permission.can_comment = 0
-      when 'work'       then permission.can_work = 0
-      when 'close'      then permission.can_close = 0
-      when 'report'     then permission.can_report = 0
-      when 'create'     then permission.can_create = 0
-      when 'edit'       then permission.can_edit = 0
-      when 'reassign'   then permission.can_reassign = 0
-      when 'prioritize' then permission.can_prioritize = 0
-      when 'milestone'  then permission.can_milestone = 0
-      when 'grant'      then permission.can_grant = 0
-      end
+      permission.remove(params[:perm])
       permission.save
     end
 
@@ -98,18 +87,7 @@ class ProjectsController < ApplicationController
       permission.save
     else
       permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], session[:user].company_id])
-      case params[:perm]
-      when 'comment'    then permission.can_comment = 1
-      when 'work'       then permission.can_work = 1
-      when 'close'      then permission.can_close = 1
-      when 'report'     then permission.can_report = 1
-      when 'create'     then permission.can_create = 1
-      when 'edit'       then permission.can_edit = 1
-      when 'reassign'   then permission.can_reassign = 1
-      when 'prioritize' then permission.can_prioritize = 1
-      when 'milestone'  then permission.can_milestone = 1
-      when 'grant'      then permission.can_grant = 1
-      end
+      permission.set(params[:perm])
       permission.save
     end
     @users = Company.find(session[:user].company_id).users.find(:all, :order => "users.name")

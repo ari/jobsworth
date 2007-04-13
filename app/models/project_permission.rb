@@ -15,6 +15,7 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize
     when 'milestone'  then self.can_milestone
     when 'grant'      then self.can_grant
+    when 'all'        then (self.can_comment && self.can_work && self.can_close && self.can_report && self.can_create && self.can_edit && self.can_reassign && self.can_prioritize && self.can_milestone && self.can_grant)
     end
   end
 
@@ -30,6 +31,17 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize = 1
     when 'milestone'  then self.can_milestone = 1
     when 'grant'      then self.can_grant = 1
+    when 'all'        then
+      self.can_comment = 1
+      self.can_work = 1
+      self.can_close = 1
+      self.can_report = 1
+      self.can_create = 1
+      self.can_edit = 1
+      self.can_reassign = 1
+      self.can_prioritize = 1
+      self.can_milestone = 1
+      self.can_grant = 1
     end
   end
 
@@ -45,6 +57,17 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize = 0
     when 'milestone'  then self.can_milestone = 0
     when 'grant'      then self.can_grant = 0
+    when 'all'        then
+      self.can_comment = 0
+      self.can_work = 0
+      self.can_close = 0
+      self.can_report = 0
+      self.can_create = 0
+      self.can_edit = 0
+      self.can_reassign = 0
+      self.can_prioritize = 0
+      self.can_milestone = 0
+      self.can_grant = 0
     end
   end
 
