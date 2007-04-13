@@ -26,6 +26,8 @@ class="task<%=priority%>"
 <% end %>
   onMouseOver="javascript:Hover('task', '<%=task.id%>')" onMouseOut="javascript:ClearHover()">
 
+<% @task = task %>
+
 <span>
   <% unless task.done?
     %>
