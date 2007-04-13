@@ -22,15 +22,15 @@ class ScheduleController < ApplicationController
     # Mark milestones
     @milestones.each do |m|
       unless m.due_at.nil?
-        @dates[m.due_at.to_date] ||= []
-        @dates[m.due_at.to_date] << m
+        @dates[tz.utc_to_local(m.due_at).to_date] ||= []
+        @dates[tz.utc_to_local(m.due_at).to_date] << m
       end
     end
 
     # Mark all tasks
     @tasks.each do |t|
-      due_date = t.due_at.to_date unless t.due_at.nil?
-      due_date ||= t.completed_at.to_date unless t.completed_at.nil?
+      due_date = tz.utc_to_local(t.due_at).to_date unless t.due_at.nil?
+      due_date ||= tz.utc_to_local(t.completed_at).to_date unless t.completed_at.nil?
 
 
       @dates[due_date] ||= []
