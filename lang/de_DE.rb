@@ -360,4 +360,6 @@ Localization.define('de_DE') do |l|
   l.store "View '%s' was successfully updated.", "Ansicht '%s' wurde erfolgreich aktualisiert."
   l.store "View '%s' was deleted.", "Ansicht '%s' wurde gelöscht."
 
+  # Reports
+  l.store 'Today','Heute'
 end

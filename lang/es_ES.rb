@@ -361,5 +361,8 @@ Localization.define('es_ES') do |l|
   l.store "View '%s' was successfully updated.", "Vista '%s' modificada satisfactoriamente."
   l.store "View '%s' was deleted.", "Vista '%s' eliminada."
 
+  # Reports
+  l.store 'Today','Hoy'
+
 end
 

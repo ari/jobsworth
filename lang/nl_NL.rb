@@ -362,4 +362,6 @@ Localization.define('nl_NL') do |l|
   l.store "View '%s' was successfully updated.", "Overzicht '%s' is gewijzigd."
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
 
+  # Reports
+  l.store 'Today','Vandaag'
 end
