@@ -5,7 +5,7 @@ module Localization
   @@lang = :default
 
   def self.locales
-    [['English', 'en_US'], ['Español', 'es_ES'], ['Deutsch', 'de_DE'], ['Norsk', 'no_NO']]
+    [['English', 'en_US'], ['Español', 'es_ES'], ['Deutsch', 'de_DE'], ['Dutch', 'nl_NL'], ['Norsk', 'no_NO']]
   end
 
   def self._(string_to_localize, *args)

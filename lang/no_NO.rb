@@ -367,4 +367,7 @@ Localization.define('no_NO') do |l|
   l.store 'Under revision by', 'Under revidering av'
   l.store 'Revision', 'Revisjon'
   l.store 'Linked from', 'Liket til fra'
+
+  # Reports
+  l.store 'Today', 'I dag'
 end
