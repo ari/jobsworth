@@ -98,7 +98,7 @@ class ApplicationController < ActionController::Base
               format("%d:%02d", hours, minutes)
             end
     elsif( session[:user].duration_format == 3 )
-      res = format("%d:%02d", (weeks * 60 * 8 * 5) + (days * 60 * 8) + hours, minutes)
+      res = format("%d:%02d", (weeks * 8 * 5) + (days * 8) + hours, minutes)
     end
 
     res.strip
