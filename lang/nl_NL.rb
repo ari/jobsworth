@@ -363,12 +363,12 @@ Localization.define('nl_NL') do |l|
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
 
    # Wiki
-    l.store 'Quick Reference', 'Kjapp Oversikt'
-    l.store 'Full Reference', 'Full Oversikt'
-    l.store 'or', 'eller'
-    l.store 'Under revision by', 'Under revidering av'
-    l.store 'Revision', 'Revisjon'
-    l.store 'Linked from', 'Liket til fra'
+#    l.store 'Quick Reference', 'Kjapp Oversikt'
+#    l.store 'Full Reference', 'Full Oversikt'
+#    l.store 'or', 'eller'
+#    l.store 'Under revision by', 'Under revidering av'
+#    l.store 'Revision', 'Revisjon'
+#    l.store 'Linked from', 'Liket til fra'
 
     # Reports
     l.store 'Today', 'Vandaag'
