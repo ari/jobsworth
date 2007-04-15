@@ -37,7 +37,7 @@ fn1. If you're -bored- %{color:red}inspired%.
 <% if @page.pages_linking_here.size > 0 %>
 <div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ') %></div>
 <% end %>
-      <div class="description"><%=_ 'Revision' %>: <%= "#{@page.revisions.size}, " + tz.utc_to_local(@page.current_revision.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") + " by #{@page.current_revision.user.name}" %></div>
+      <div class="description"><%=_ 'Revision' %>: <%= "#{@page.revisions.size}, " + tz.utc_to_local(@page.current_revision.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") + " #{_('by')} #{@page.current_revision.user.name}" %></div>
 <% if @page.locked? %>
   <strong><%=_ 'Under revision by' %> <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(session[:user].time_format) %>]</strong><br/>
 <% end %>
