@@ -362,6 +362,58 @@ Localization.define('nl_NL') do |l|
   l.store "View '%s' was successfully updated.", "Overzicht '%s' is gewijzigd."
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
 
-  # Reports
-  l.store 'Today','Vandaag'
-end
+   # Wiki
+    l.store 'Quick Reference', 'Kjapp Oversikt'
+    l.store 'Full Reference', 'Full Oversikt'
+    l.store 'or', 'eller'
+    l.store 'Under revision by', 'Under revidering av'
+    l.store 'Revision', 'Revisjon'
+    l.store 'Linked from', 'Liket til fra'
+
+    # Reports
+    l.store 'Today', 'Vandaag'
+    l.store 'Week', 'Week'
+
+    # Dates
+    l.store 'January', 'Januari'
+    l.store 'February', 'Februari'
+    l.store 'March', 'Maart'
+    l.store 'April', 'April'
+    l.store 'May', 'Mei'
+    l.store 'June', 'Juni'
+    l.store 'July', 'Juli'
+    l.store 'August', 'Augustus'
+    l.store 'September', 'September'
+    l.store 'October', 'Oktober'
+    l.store 'November', 'November'
+    l.store 'December', 'December'
+
+    l.store 'Jan', 'Jan'
+    l.store 'Feb', 'Feb'
+    l.store 'Mar', 'Mrt'
+    l.store 'Apr', 'Apr'
+    l.store 'May', 'Mei'
+    l.store 'Jun', 'Jun'
+    l.store 'Jul', 'Jul'
+    l.store 'Aug', 'Aug'
+    l.store 'Sep', 'Sep'
+    l.store 'Oct', 'Okt'
+    l.store 'Nov', 'Nov'
+    l.store 'Dec', 'Dec'
+
+    l.store 'Sunday', 'Zondag'
+    l.store 'Monday', 'Maandag'
+    l.store 'Tuesday', 'Dinsdag'
+    l.store 'Wednesday', 'Woensdag'
+    l.store 'Thursday', 'Donderdag'
+    l.store 'Friday', 'Vrijdag'
+    l.store 'Saturday', 'Zaterdag'
+
+    l.store 'Sun', 'Zo'
+    l.store 'Mon', 'Ma'
+    l.store 'Tue', 'Di'
+    l.store 'Wed', 'Wo'
+    l.store 'Thu', 'Do'
+    l.store 'Fri', 'Vr'
+    l.store 'Sat', 'Za'
+  end
