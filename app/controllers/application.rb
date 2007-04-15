@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
       ActiveRecord::Base.connection.execute("update users set last_ping_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
 
       # Set current locale
-      Localization.lang = session[:user].locale || 'en_US'
+      Localization.lang(session[:user].locale || 'en_US')
     end
   end
 

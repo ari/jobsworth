@@ -1,5 +1,4 @@
 module Localization
-  mattr_accessor :lang
 
   @@l10s = { :default => {} }
   @@lang = :default
@@ -27,7 +26,36 @@ module Localization
     Dir.glob("#{RAILS_ROOT}/lang/custom/*.rb"){ |t| require t }
   end
 
+  def self.lang(locale)
+    @@lang = locale
+    Date.translate_strings
+  end
+
 end
+
+class Date
+  def self.translate_strings
+    Date::MONTHNAMES.replace([nil, _('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'). _('December')])
+    Date::DAYNAMES.replace([_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')])
+    Date::ABBR_MONTHNAMES.replace([nil, _('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'). _('Dec')])
+    Date::ABBR_DAYNAMES.replace([_('Sun'), _('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat')])
+  end
+end
+
+
+class Time
+  alias :strftime_nolocale :strftime
+
+  def strftime(format)
+    format = format.dup
+    format.gsub!(/%a/, Date::ABBR_DAYNAMES[self.wday])
+    format.gsub!(/%A/, Date::DAYNAMES[self.wday])
+    format.gsub!(/%b/, Date::ABBR_MONTHNAMES[self.mon])
+    format.gsub!(/%B/, Date::MONTHNAMES[self.mon])
+    self.strftime_nolocale(format)
+  end
+end
+
 
 class Object
   def _(*args); Localization._(*args); end

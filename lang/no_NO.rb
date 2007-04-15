@@ -1,3 +1,6 @@
+
+
+
 Localization.define('no_NO') do |l|
 
   # Main menu
@@ -370,4 +373,48 @@ Localization.define('no_NO') do |l|
 
   # Reports
   l.store 'Today', 'I dag'
+  l.store 'Week', 'Uke'
+
+  # Dates
+  l.store 'January', 'Januar'
+  l.store 'February', 'Februar'
+  l.store 'March', 'Mars'
+  l.store 'April', 'April'
+  l.store 'May', 'Mai'
+  l.store 'June', 'Juni'
+  l.store 'July', 'Juli'
+  l.store 'August', 'August'
+  l.store 'September', 'September'
+  l.store 'October', 'Oktober'
+  l.store 'November', 'November'
+  l.store 'December', 'Desember'
+
+  l.store 'Jan', 'Jan'
+  l.store 'Feb', 'Feb'
+  l.store 'Mar', 'Mar'
+  l.store 'Apr', 'Apr'
+  l.store 'May', 'Mai'
+  l.store 'Jun', 'Jun'
+  l.store 'Jul', 'Jul'
+  l.store 'Aug', 'Aug'
+  l.store 'Sep', 'Sep'
+  l.store 'Oct', 'Okt'
+  l.store 'Nov', 'Nov'
+  l.store 'Dec', 'Des'
+
+  l.store 'Sunday', 'Søndag'
+  l.store 'Monday', 'Mandag'
+  l.store 'Tuesday', 'Tirsdag'
+  l.store 'Wednesday', 'Onsdag'
+  l.store 'Thursday', 'Torsdag'
+  l.store 'Friday', 'Fredag'
+  l.store 'Saturday', 'Lørdag'
+
+  l.store 'Sun', 'Søn'
+  l.store 'Mon', 'Man'
+  l.store 'Tue', 'Tir'
+  l.store 'Wed', 'Ons'
+  l.store 'Thu', 'Tor'
+  l.store 'Fri', 'Fre'
+  l.store 'Sat', 'Lør'
 end
