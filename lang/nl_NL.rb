@@ -363,12 +363,12 @@ Localization.define('nl_NL') do |l|
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
 
    # Wiki
-#    l.store 'Quick Reference', 'Kjapp Oversikt'
-#    l.store 'Full Reference', 'Full Oversikt'
-#    l.store 'or', 'eller'
-#    l.store 'Under revision by', 'Under revidering av'
-#    l.store 'Revision', 'Revisjon'
-#    l.store 'Linked from', 'Liket til fra'
+    l.store 'Quick Reference', 'Verkorte Beschrijving'
+    l.store 'Full Reference', 'Volledige Beschrijving'
+    l.store 'or', 'of'
+    l.store 'Under revision by', 'Gereviseerd door'
+    l.store 'Revision', 'Revisie'
+    l.store 'Linked from', 'Gekoppeld vanaf'
 
     # Reports
     l.store 'Today', 'Vandaag'
@@ -416,4 +416,14 @@ Localization.define('nl_NL') do |l|
     l.store 'Thu', 'Do'
     l.store 'Fri', 'Vr'
     l.store 'Sat', 'Za'
+    
+    # worked_nice
+    l.store '[wdhm]', '[wdum]'
+    l.store 'w', 'w'
+    l.store 'd', 'd'
+    l.store 'h', 'u'
+    l.store 'm', 'm'
+
+    # Preferences
+    l.store 'Duration Format', 'Weergave Tijdsduur'    
   end
