@@ -424,4 +424,7 @@ Localization.define('no_NO') do |l|
   l.store 'd', 'd'
   l.store 'h', 't'
   l.store 'm', 'm'
+
+  # Preferences
+  l.store 'Duration Format', 'Lengdeformat'
 end
