@@ -57,6 +57,8 @@ module ApplicationHelper
 
   def worked_nice(minutes)
     res = ''
+    weeks = days = hours = 0
+
     if minutes >= 60
       hours = minutes / 60
       minutes = minutes - (hours * 60)
@@ -68,16 +70,27 @@ module ApplicationHelper
         if days >= 5
           weeks = days / 5
           days = days - (weeks * 5)
-          res += "#{weeks}#{_('w')} "
+          res += "#{weeks}#{_('w')}#{' ' if session[:user].duration_format == 0}"
         end
 
-        res += "#{days}#{_('d')} " if days > 0
+        res += "#{days}#{_('d')}#{' ' if session[:user].duration_format == 0}" if days > 0
       end
 
-
-      res += "#{hours}#{_('h')} " if hours > 0
+      res += "#{hours}#{_('h')}#{' ' if session[:user].duration_format == 0}" if hours > 0
     end
     res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
+
+    if( session[:user].duration_format == 2 )
+      res = if weeks > 0
+              format("%d:%d:%d:%02d", weeks, days, hours, minutes)
+            elsif days > 0
+              format("%d:%d:%02d", days, hours, minutes)
+            else
+              format("%d:%02d", hours, minutes)
+            end
+    elsif( session[:user].duration_format == 3 )
+      res = format("%d:%02d", (weeks * 60 * 8 * 5) + (days * 60 * 8) + hours, minutes)
+    end
 
     res.strip
   end

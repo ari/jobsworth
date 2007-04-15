@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 69) do
+ActiveRecord::Schema.define(:version => 70) do
 
   create_table "binaries", :force => true do |t|
     t.column "data", :binary
@@ -288,6 +288,7 @@ ActiveRecord::Schema.define(:version => 69) do
     t.column "uuid", :string
     t.column "seen_welcome", :integer, :default => 0
     t.column "locale", :string, :default => "en_US"
+    t.column "duration_format", :integer, :default => 0
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
