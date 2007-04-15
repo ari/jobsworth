@@ -68,16 +68,16 @@ module ApplicationHelper
         if days >= 5
           weeks = days / 5
           days = days - (weeks * 5)
-          res += "#{weeks}w "
+          res += "#{weeks}#{_('w')} "
         end
 
-        res += "#{days}d " if days > 0
+        res += "#{days}#{_('d')} " if days > 0
       end
 
 
-      res += "#{hours}h " if hours > 0
+      res += "#{hours}#{_('h')} " if hours > 0
     end
-    res += "#{minutes}m" if minutes > 0 || res == ''
+    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
 
     res.strip
   end

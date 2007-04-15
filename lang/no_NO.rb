@@ -417,4 +417,11 @@ Localization.define('no_NO') do |l|
   l.store 'Thu', 'Tor'
   l.store 'Fri', 'Fre'
   l.store 'Sat', 'Lør'
+
+  # worked_nice
+  l.store '[wdhm]', '[udtm]'
+  l.store 'w', 'u'
+  l.store 'd', 'd'
+  l.store 'h', 't'
+  l.store 'm', 'm'
 end

@@ -77,30 +77,31 @@ class ApplicationController < ActionController::Base
         if days >= 5
           weeks = days / 5
           days = days - (weeks * 5)
-          res += "#{weeks}w "
+          res += "#{weeks}#{_('w')} "
         end
 
-        res += "#{days}d " if days > 0
+        res += "#{days}#{_('d')} " if days > 0
       end
 
 
-      res += "#{hours}h " if hours > 0
+      res += "#{hours}#{_('h')} " if hours > 0
     end
-    res += "#{minutes}m" if minutes > 0 || res == ''
+    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
 
-    res
+    res.strip
   end
 
   # Parse <tt>1w 2d 3h 4m</tt> => minutes or seconds
   def parse_time(input, minutes = false)
     total = 0
     unless input.nil?
-      input.downcase.gsub(/([wdhm])/,'\1 ').split(' ').each do |e|
+      reg = Regexp.new(_("([wdhm])"))
+      input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
         case e[-1,1]
-          when 'w' then total += e.to_i * 60 * 8 * 5
-          when 'd' then total += e.to_i * 60 * 8
-          when 'h' then total += e.to_i * 60
-          when 'm' then total += e.to_i
+          when _('w') then total += e.to_i * 60 * 8 * 5
+          when _('d') then total += e.to_i * 60 * 8
+          when _('h') then total += e.to_i * 60
+          when _('m') then total += e.to_i
         end
       end
       if total == 0 && input.to_i > 0

@@ -26,7 +26,7 @@
                  end
 
                  days = 1
-                 days += 1 while @dates[d+days] && @dates[d+days][@dates[d].index(t)] && @dates[d+days][@dates[d].index(t)].id == t.id && ![1,6].include? ((d+days).wday) && d.month == (d + days).month
+                 days += 1 while @dates[d+days] && @dates[d+days][@dates[d].index(t)] && @dates[d+days][@dates[d].index(t)].id == t.id && ![1,6].include?((d+days).wday) && d.month == (d + days).month
 
                  unless @dates[d-1] && @dates[d-1][@dates[d].index(t)] && @dates[d-1][@dates[d].index(t)].id == t.id && d.month == (d-1).month
                    cell_text << "<div class=\"#{c} tooltip\" title=\"#{event_tip(t)}\" style=\"position:absolute;margin-top:#{@dates[d].index(t) * 14 + 1}px;width:#{(131 * days) - 5}px;\"><a href=\"/tasks/edit/#{t.id}\" class=\"tooltip\" title=\"#{event_tip(t)}\">[#{t.issue_num}] #{t.name}</a></div>"
