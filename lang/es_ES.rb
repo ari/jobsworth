@@ -1,3 +1,6 @@
+
+
+
 Localization.define('es_ES') do |l|
 
   # Main menu
@@ -52,7 +55,6 @@ Localization.define('es_ES') do |l|
   l.store '%d minute', ['un minuto', '%d minutos']
   l.store 'less than %d seconds', ['menos de un segundo', 'menos de %d segundos']
   l.store 'half a minute', 'medio minuto'
-  l.store 'less than a minute', 'menos de un minuto'
   l.store 'about %d hour', ['alrededor de una hora', 'alrededor de %d horas']
 
 
@@ -361,8 +363,68 @@ Localization.define('es_ES') do |l|
   l.store "View '%s' was successfully updated.", "Vista '%s' modificada satisfactoriamente."
   l.store "View '%s' was deleted.", "Vista '%s' eliminada."
 
+  # Wiki
+  l.store 'Quick Reference', 'Referencia rápida'
+  l.store 'Full Reference', 'Referencia completa'
+  l.store 'or', 'o'
+  l.store 'Under revision by', 'Está siendo revisado por'
+  l.store 'Revision', 'Revisión'
+  l.store 'Linked from', 'Referenciado desde' # Linked from in the way of href link ???
+
   # Reports
-  l.store 'Today','Hoy'
+  l.store 'Today', 'Hoy'
+  l.store 'Week', 'Semana'
 
+  # Dates
+  l.store 'January', 'Enero'
+  l.store 'February', 'Febrero'
+  l.store 'March', 'Marzo'
+  l.store 'April', 'Abril'
+  l.store 'May', 'Mayo'
+  l.store 'June', 'Junio'
+  l.store 'July', 'Julio'
+  l.store 'August', 'Agosto'
+  l.store 'September', 'Septiembre'
+  l.store 'October', 'Octubre'
+  l.store 'November', 'Noviembre'
+  l.store 'December', 'Diciembre'
+
+  l.store 'Jan', 'Ene'
+  l.store 'Feb', 'Feb'
+  l.store 'Mar', 'Mar'
+  l.store 'Apr', 'Abr'
+  l.store 'May', 'May'
+  l.store 'Jun', 'Jun'
+  l.store 'Jul', 'Jul'
+  l.store 'Aug', 'Ago'
+  l.store 'Sep', 'Sep'
+  l.store 'Oct', 'Oct'
+  l.store 'Nov', 'Nov'
+  l.store 'Dec', 'Dic'
+
+  l.store 'Sunday', 'Domingo'
+  l.store 'Monday', 'Lunes'
+  l.store 'Tuesday', 'Martes'
+  l.store 'Wednesday', 'Miércoles'
+  l.store 'Thursday', 'Jueves'
+  l.store 'Friday', 'Viernes'
+  l.store 'Saturday', 'Sábado'
+
+  l.store 'Sun', 'Dom'
+  l.store 'Mon', 'Lun'
+  l.store 'Tue', 'Mar'
+  l.store 'Wed', 'Mie'
+  l.store 'Thu', 'Jue'
+  l.store 'Fri', 'Vie'
+  l.store 'Sat', 'Sáb'
+
+  # worked_nice
+  l.store '[wdhm]', '[sdhm]'
+  l.store 'w', 's'
+  l.store 'd', 'd'
+  l.store 'h', 'h'
+  l.store 'm', 'm'
+
+  # Preferences
+  l.store 'Duration Format', 'Formato de duración'
 end
-
