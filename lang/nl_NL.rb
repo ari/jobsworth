@@ -4,7 +4,7 @@ Localization.define('nl_NL') do |l|
   l.store "Overview", "Overzicht"
   l.store "Tutorial", "Introductie"
   l.store "Browse", "Bladeren"
-  l.store "Timeline", "Tijdslijn"
+  l.store "Timeline", "Tijdlog" #Had "Tijdslijn" here what means timeline(graphical)... But it is more like a log of all actions or time spend, so it's now "Tijdlog" what means "Time Log".
   l.store "Files", "Bestanden"
   l.store "Reports", "Rapporten"
   l.store "Schedule", "Planning"
@@ -197,7 +197,7 @@ Localization.define('nl_NL') do |l|
   l.store 'Pivot', 'Pivot'
   l.store 'Audit', 'Audit'
   l.store 'Time sheet', 'Tijdslijst'
-  l.store 'Time Range', 'Tidsreeks'
+  l.store 'Time Range', 'Tijdsreeks'
   l.store 'Custom', 'Aangepast'
   l.store 'Rows', 'Regels'
   l.store 'Columns', 'Kolommen'
