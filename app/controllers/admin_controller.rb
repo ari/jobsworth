@@ -100,7 +100,7 @@ class AdminController < ApplicationController
       return false
     end
     # Set current locale
-    Localization.lang = session[:user].locale || 'en_US'
+    Localization.lang(session[:user].locale || 'en_US')
   end
 
 end
