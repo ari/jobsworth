@@ -99,6 +99,8 @@ class AdminController < ApplicationController
       redirect_to :controller => 'login', :action => 'login'
       return false
     end
+    # Set current locale
+    Localization.lang = session[:user].locale || 'en_US'
   end
 
 end
