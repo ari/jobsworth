@@ -4,18 +4,18 @@
 Localization.define('fr_FR') do |l|
 
   # Main menu
-  l.store "Overview", "Vue d'ensemble"
-  l.store "Tutorial", "Tutoriel"
-  l.store "Browse", "En détail"
-  l.store "Timeline", "Chronologie"
-  l.store "Files", "Fichiers"
-  l.store "Reports", "Rapports"
-  l.store "Schedule", "Calendrier"
-  l.store "New Task", "Nouvelle Tâche"
-  l.store "Preferences", "Préférences"
-  l.store "Log Out", "Déconnexion"
-  l.store "Clients", "Clients"
-  l.store "Client", "Client"
+  l.store 'Overview', "Vue d'ensemble"
+  l.store 'Tutorial', 'Tutoriel'
+  l.store 'Browse', 'En détail'
+  l.store 'Timeline', 'Chronologie'
+  l.store 'Files', 'Fichiers'
+  l.store 'Reports', 'Rapports'
+  l.store 'Schedule', 'Calendrier'
+  l.store 'New Task', 'Nouvelle tâche'
+  l.store 'Preferences', 'Préférences'
+  l.store 'Log Out', 'Déconnexion'
+  l.store 'Clients', 'Clients'
+  l.store 'Client', 'Client'
   l.store 'Search', 'Rechercher'
   l.store 'Users', 'Utilisateurs'
   l.store 'User', 'Utilisateur'
@@ -24,8 +24,8 @@ Localization.define('fr_FR') do |l|
   l.store 'Hide', 'Masquer'
   l.store 'Views', 'Vues'
   l.store 'Open Tasks', 'Tâches ouvertes'
-  l.store 'My Open Tasks', 'Mes Tâches ouvertes'
-  l.store 'My In Progress Tasks', 'Mes Tâches en cours'
+  l.store 'My Open Tasks', 'Mes tâches ouvertes'
+  l.store 'My In Progress Tasks', 'Mes tâches en cours'
   l.store 'Unassigned Tasks', 'Tâches non affectées'
   l.store 'Shared', 'Partagées'
   l.store 'Edit', 'Modifier'
@@ -33,11 +33,11 @@ Localization.define('fr_FR') do |l|
   l.store 'Chat', 'Chat'
   l.store 'Notes', 'Notes'
   l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Feedback? Suggestions? Idées? Bugs?'
-  l.store 'Let me know', 'Dites-le nous'
+  l.store 'Let me know', 'Ecrivez-moi !'
   l.store 'worked today', "travaillé aujourd'hui"
   l.store 'Online', 'En ligne'
   l.store 'Done working on <b>%s</b> for now.', 'Fin du travail sur <b>%s</b>' # %s = @task.name
-  l.store '%s ago', '%s derniers'  # X days ago -> Vor X Tagen
+  l.store '%s ago', 'derniers %s'  # X days ago -> Vor X Tagen
 
   # Application Helper
   l.store 'today',"aujourd'hui"
@@ -60,11 +60,11 @@ Localization.define('fr_FR') do |l|
   # Activities
   l.store 'Top Tasks', 'Tâches prioritaires'
   l.store 'Newest Tasks', 'Nouvelles tâches'
-  l.store 'Recent Activities', 'Activités récentes'
+  l.store 'Recent Activities', 'Tâches récentes'
   l.store 'Projects', 'Projets'
   l.store 'Overall Progress', 'Progression générale'
   l.store '%d completed milestone', ['un milestone atteint', '%d du milestone atteint']
-  l.store '%d completed project', ['un projet achevé', '%d du projet achevé']
+  l.store '%d completed project', ['un projet terminé', '%d du projet terminé']
   l.store 'Edit project <b>%s</b>', 'Modifier le projet <b>%s</b> '
   l.store 'Edit milestone <b>%s</b>', 'Modifier le milestone <b>%s</b> '
 
@@ -76,10 +76,10 @@ Localization.define('fr_FR') do |l|
   l.store '[Any Milestone]', '[Tout milestone]'
   l.store '[Any Status]', '[Tout Statut]'
   l.store '[Unassigned]','[Non affectées]'
-  l.store 'Open', 'Ouvrir'
+  l.store 'Open', 'Ouvert'
   l.store 'In Progress', 'En cours'
-  l.store 'Closed', 'Fermer'
-  l.store 'Won\'t Fix', 'Ne sera pas corrigé'
+  l.store 'Closed', 'Classé'
+  l.store 'Won\'t Fix', 'Endommagé'
   l.store 'Invalid', 'Invalide'
   l.store 'Duplicate', 'Doublon'
   l.store 'Archived', 'Archivé'
@@ -87,14 +87,14 @@ Localization.define('fr_FR') do |l|
   l.store '[Save as View]', '[Sauvegarder comme vue]'
   l.store 'Tags', 'Tag'
   l.store '[All Tags]', '[Tout tag]'
-  l.store 'Close <b>%s</b>', 'Fermer <b>%s</b>'
-  l.store "Stop working on <b>%s</b>.", 'Arrêter de travailler sur <b>%s</b>.'
-  l.store "Start working on <b>%s</b>. Click again when done.", 'Commencer à travailler sur <b>%s</b>. Cliquer de  nouveau lorsque vous aurez terminé.'
+  l.store 'Close <b>%s</b>', 'Classer <b>%s</b>'
+  l.store 'Stop working on <b>%s</b>.', 'Arrêter de travailler sur <b>%s</b>.'
+  l.store 'Start working on <b>%s</b>. Click again when done.', 'Commencer à travailler sur <b>%s</b>. Cliquer de  nouveau lorsque vous aurez terminé.'
   l.store 'No one', 'Personne'
-  l.store "Revert <b>%s</b> to not completed status.", 'Restaurer <b>%s</b> vers Inachevé.'
-  l.store "Cancel working on <b>%s</b>.", 'Annuler <b>%s</b>.'
-  l.store "Move <b>%s</b> to the Archive.", 'Déplacer <b>%s</b> dans les archives'
-  l.store "Restore <b>%s</b> from the Archive.", 'Récupérer <b>%s</b> depuis les archives.'
+  l.store 'Revert <b>%s</b> to not completed status.', 'Marquer <b>%s</b> comme inachevé.'
+  l.store 'Cancel working on <b>%s</b>.', 'Annuler le temps travaillé sur <b>%s</b>.'
+  l.store 'Move <b>%s</b> to the Archive.', 'Déplacer <b>%s</b> dans les archives'
+  l.store 'Restore <b>%s</b> from the Archive.', 'Recupérer <b>%s</b> dans les archives.'
   l.store 'Information', 'Information'
   l.store 'Summary', 'Résumé'
   l.store 'Description', 'Description'
@@ -110,12 +110,12 @@ Localization.define('fr_FR') do |l|
   l.store 'Type', 'Type'
   l.store 'Priority', 'Priorité'
   l.store 'Severity', 'Importance'
-  l.store 'Time Estimate', 'Estimation'
+  l.store 'Time Estimate', 'Estimation de durée'
   l.store 'Due Date', 'Echéance'
   l.store 'Show Calendar', 'Afficher le calendrier'
   l.store 'Notification', 'Notification'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Autres personnes à informer des changements<br /> (en plus du créateur et du destinataire).<br/><br/>Ctrl-click pour basculer.'
-  l.store 'To:', 'A:'
+  l.store 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.', 'Autres personnes à informer des changements<br /> (en plus du créateur et du destinataire).<br/><br/>Ctrl-click pour (dé)sélectionner.'
+  l.store 'To:', 'A :'
   l.store '[Delete]', '[Supprimer]'
   l.store 'Really delete %s?', 'Confirmer la suppression de %s ?'
   l.store 'New Task', 'Nouvelle tâche'
@@ -126,25 +126,25 @@ Localization.define('fr_FR') do |l|
   l.store 'Last Updated', 'Dernière modification'
   l.store 'Save', 'Sauvegarder'
   l.store 'and', 'et'
-  l.store "Leave Open",'Laisser ouvert'
-  l.store "Revert to Open",'Restaurer à "ouvert"'
-  l.store "Set in Progress",'Marquer comme "en cours"'
-  l.store "Leave as in Progress",'Laisser "en cours"'
-  l.store "Close",'Fermer'
-  l.store "Leave Closed",'Laisser fermé'
-  l.store "Set as Won't Fix",'Marquer comme "***"'
-  l.store "Leave as Won't Fix",'Laisser "***"'
-  l.store "Set as Invalid",'Marquer comme "invalide"'
-  l.store "Leave as Invalid",'Laisser "invalide"'
-  l.store "Set as Duplicate",'Marquer comme doublon'
-  l.store "Leave as Duplicate",'Laisser le doublon'
+  l.store 'Leave Open','Laisser ouvert'
+  l.store 'Revert to Open','Rouvrir la tâche'
+  l.store 'Set in Progress','Marquer comme en cours'
+  l.store 'Leave as in Progress', 'Marquer comme toujours en cours'
+  l.store 'Close','Classer'
+  l.store 'Leave Closed','Maintenir classé'
+  l.store "Set as Won't Fix",'Marquer comme endommagé'
+  l.store 'Leave as Won\'t Fix','Laisser endommagé'
+  l.store 'Set as Invalid','Marquer comme invalide'
+  l.store 'Leave as Invalid','Laisser invalide'
+  l.store 'Set as Duplicate','Marquer comme doublon'
+  l.store 'Leave as Duplicate','Conserver le doublon'
   l.store 'History', 'Historique'
-  l.store 'Edit Log Entry', "Modifier l'entrée"
-  l.store 'Delete Log Entry', "Supprimer l'entrée"
-  l.store 'Really delete this log entry?', 'Confirmer ?'
+  l.store 'Edit Log Entry', 'Modifier l\'entrée'
+  l.store 'Delete Log Entry', 'Supprimer l\'entrée'
+  l.store 'Really delete this log entry?', 'Confirmer la suppression de cette entrée ?'
   l.store 'Task', 'Tâche'
   l.store 'New Feature', 'Nouvelle fonction'
-  l.store 'Defect', 'Défaut'
+  l.store 'Defect', 'Correction'
   l.store 'Improvement', 'Amélioration'
   l.store 'Critical', 'Critique'
   l.store 'Urgent', 'Urgent'
@@ -152,12 +152,12 @@ Localization.define('fr_FR') do |l|
   l.store 'Normal', 'Normal'
   l.store 'Low', 'Faible'
   l.store 'Lowest', 'Négligeable'
-  l.store 'Blocker', 'Achoppement' # Conditio sine qua non
-  l.store 'Major', 'Majeure'         # r.p.i.t.a
-  l.store 'Minor', 'Mineur'        # p.i.t.a
-  l.store 'Trivial', 'Trivial'
+  l.store 'Blocker', 'Crucial'
+  l.store 'Major', 'Majeure'
+  l.store 'Minor', 'Mineur'
+  l.store 'Trivial', 'Bénin'
   l.store 'Start', 'Commencer'
-  l.store 'Duration Worked', 'Temps de travail accompli'
+  l.store 'Duration Worked', 'Durée du travail accompli'
 
   # Timeline
   l.store '[All Time]', '[Toute date]'
@@ -166,7 +166,7 @@ Localization.define('fr_FR') do |l|
   l.store 'This Month', 'Ce mois-ci'
   l.store 'Last Month', 'Le mois dernier'
   l.store 'This Year', 'Cette année'
-  l.store 'Last Year', "L'année dernière"
+  l.store 'Last Year', 'L\'année dernière'
   l.store '[Any Type]', '[Tout type]'
   l.store 'Work Log', 'Journal'
   l.store 'Status Change', 'Modification du statut'
@@ -193,16 +193,16 @@ Localization.define('fr_FR') do |l|
   l.store 'Pivot', 'Pivot'
   l.store 'Audit', 'Audit'
   l.store 'Time Sheet', 'Feuille horaire'
-  l.store 'Time Range', 'Laps de temps'
+  l.store 'Time Range', 'Durée'
   l.store 'Custom', 'Personnaliser'
   l.store 'Rows', 'Lignes'
   l.store 'Columns', 'Colonnes'
-  l.store "Milestones", 'Milestone'
-  l.store "Date", 'Date'
+  l.store 'Milestones', 'Milestone'
+  l.store 'Date', 'Date'
   l.store 'Task Status', 'Statut des tâches'
-  l.store "Task Type", 'Type de tâches'
-  l.store "Task Priority", 'Priorité des tâches'
-  l.store "Task Severity", 'Importance des tâches'
+  l.store 'Task Type', 'Type de tâches'
+  l.store 'Task Priority', 'Priorité des tâches'
+  l.store 'Task Severity', 'Importance des tâches'
   l.store 'From', 'Du' # From Date
   l.store 'To', 'Au' # To Date
   l.store 'Sub-totals', 'Sous-totaux'
@@ -223,10 +223,10 @@ Localization.define('fr_FR') do |l|
   l.store 'Assign', 'Affecter'
   l.store 'Prioritize', 'Classer par priorité'
   l.store 'Grant', 'Autoriser'
-  l.store "Remove all access for <b>%s</b>?", 'Supprimer tous les accès de <b>%s</b> ?'
-  l.store "Grant %s access for <b>%s</b>?", "Autoriser l'accès de %s à <b>%s</b>? "
-  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Vous ne pouvez pas supprimer le créateur du projet (ni vous-même) !'
-  l.store "Grant access to <b>%s</b>?", "Autoriser l'accès de <b>%s</b>? "
+  l.store 'Remove all access for <b>%s</b>?', 'Supprimer tous les accès de <b>%s</b> ?'
+  l.store 'Grant %s access for <b>%s</b>?', 'Autoriser l\'accès de %s à <b>%s</b>? '
+  l.store 'Can\'t remove <b>yourself</b> or the <b>project creator</b>!', 'Vous ne pouvez pas supprimer le créateur du projet (ni vous-même) !'
+  l.store 'Grant access to <b>%s</b>?', 'Autoriser l\'accès de <b>%s</b>? '
   l.store 'Edit Project', 'Modifier le projet'
   l.store 'Delete Project', 'Supprimer le projet'
   l.store 'Complete Project', 'Terminer le projet'
@@ -235,7 +235,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Completed', 'Achevé'
   l.store 'Completed Projects', 'Projets achevés'
   l.store 'Revert', 'Restaurer'
-  l.store 'Really revert %s?', 'Restaurer %s ?'
+  l.store 'Really revert %s?', 'Confirmer la resaturation de %s ?'
 
   # Milestones
   l.store 'Owner', 'Propriétaire'
@@ -253,7 +253,7 @@ Localization.define('fr_FR') do |l|
   l.store '[New User]', '[Nouvel utilisateur]'
   l.store '[Previous page]', '[Page précédente]'
   l.store '[Next page]', '[Page suivante]'
-  l.store 'Edit User', "Modifier l'utilisateur"
+  l.store 'Edit User', 'Modifier l\'utilisateur'
 
   l.store 'Options', 'Options'
   l.store 'Location', 'Localisation'
@@ -261,22 +261,23 @@ Localization.define('fr_FR') do |l|
   l.store 'Track Time', 'Comptabiliser le temps'
   l.store 'Use External Clients', 'Utiliser des clients externes'
   l.store 'Show Calendar', 'Afficher le calendrier'
-  l.store 'Show Tooltips', "Afficher les bulles d'aide"
+  l.store 'Show Tooltips', 'Afficher les bulles d\'aide'
   l.store 'Send Notifications', 'Envoyer des notifications'
   l.store 'Receive Notifications', 'Recevoir des notifications'
-  l.store 'User Information', "Information sur l'utilisateur"
-  l.store 'Username', "Nom d'utilisateur"
+  l.store 'User Information', 'Information sur l\'utilisateur'
+  l.store 'Username', 'Nom d\'utilisateur'
   l.store 'Password', 'Mot de passe'
 
   # Preferences
   l.store 'Preferences', 'Préférences'
   l.store 'Language', 'Langue'
-  l.store 'Time Format', "Format de l'heure"
+  l.store 'Time Format', 'Format de l\'heure'
   l.store 'Date Format', 'Format de la date'
+  l.store 'Duration Format', 'Format des durées'
   l.store 'Custom Logo', 'Logo personnalisé'
   l.store 'Current logo', 'Logo actuel'
   l.store 'New logo', 'Nouveau logo'
-  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Ne sera pas redimensionné, 150x50px recommandé. Ce logo remplacera celui de ClockingIT et sera également affiché sur la page de connexion.)"
+  l.store '(Won\'t be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)', '(Ne sera pas redimensionné, 150x50px recommandé. Ce logo remplacera celui de ClockingIT et sera également affiché sur la page de connexion.)'
 
   # Notes / Pages
   l.store 'Body', 'Contenu'
@@ -306,7 +307,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Client was successfully created.', 'Client créé.'
   l.store 'Client was successfully updated.', 'Client actualisé.'
   l.store 'Please delete all projects for %s before deleting it.', 'Veuillez suppprimer tous les projets pour %s avant sa suppression.'
-  l.store "You can't delete your own company.", 'Vous ne pouvez pas supprimer votre propre société.'
+  l.store 'You can\'t delete your own company.', 'Vous ne pouvez pas supprimer votre propre société.'
   l.store 'CSS successfully uploaded.', 'CSS envoyé.'
   l.store 'Logo successfully uploaded.', 'Logo envoyé.'
 
@@ -334,21 +335,21 @@ Localization.define('fr_FR') do |l|
   l.store '%s reverted.', '%s restauré.'
 
   # Reports Controller
-  l.store "Empty report, log more work!", 'Rapport vide, saisissez plus de données de travail !'
+  l.store 'Empty report, log more work!', 'Rapport vide, saisissez plus de données de travail !'
 
   # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Vous devez créer un projet pour y stocker vos tâches, ou obtenir un accès pour stocker vos tâches dans un projet existant...'
+  l.store 'You need to create a project to hold your tasks, or get access to create tasks in an existing project...', 'Vous devez créer un projet pour y stocker vos tâches, ou obtenir un accès pour stocker vos tâches dans un projet existant...'
   l.store 'Invalid due date ignored.', 'Echéance invalide.'
   l.store 'Task was successfully created.', 'Tâche créée.'
   l.store 'Task was successfully updated.', 'Tâche actualisée.'
   l.store 'Log entry saved...', 'Entrée sauvegardée.'
-  l.store "Unable to save log entry...", "Impossible de sauvegarder l'entrée..."
-  l.store "Log entry already saved from another browser instance.", 'Entrée sauvegardée depuis une autre instance du navigateur.'
-  l.store 'Log entry deleted...', 'Entrée supprimée...'
+  l.store 'Unable to save log entry...', 'Impossible de sauvegarder l\'entrée.'
+  l.store 'Log entry already saved from another browser instance.', 'Entrée sauvegardée depuis une autre instance du navigateur.'
+  l.store 'Log entry deleted...', 'Entrée supprimée.'
 
   # Users Controller
   l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Utilisateur ajouté. Rappelez-vous de lui donner accès aux projets.'
-  l.store "Error sending creation email. Account still created.", "Erreur dans l'envoi de l'e-mail de création. Le compte a néanmoins été créé."
+  l.store 'Error sending creation email. Account still created.', 'Erreur dans l\'envoi de l\'e-mail de création. Le compte a néanmoins été créé.'
   l.store 'User was successfully updated.', 'Utilisateur actualisé.'
   l.store 'Preferences successfully updated.', 'Préférences sauvegardées.'
 
@@ -358,8 +359,8 @@ Localization.define('fr_FR') do |l|
   l.store "View '%s' was deleted.", "Vue '%s' supprimée."
 
   # Wiki
-  l.store 'Quick Reference', 'Référence abrégée'
-  l.store 'Full Reference', 'Référence complète'
+  l.store 'Quick Reference', 'Syntaxe abrégée'
+  l.store 'Full Reference', 'Exemples de syntaxe'
   l.store 'or', 'ou'
   l.store 'Under revision by', 'En cours de révision par'
   l.store 'Revision', 'Révision'
