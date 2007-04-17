@@ -28,7 +28,7 @@ class WikiPage < ActiveRecord::Base
 
   # SELECT wiki_pages.* FROM wiki_pages LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id WHERE  w_r.referenced_name = 'pagename';
   def pages_linking_here
-    @refs ||= WikiPage.find(:all, :select => "wiki_pages.*", :joins => "LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id", :conditions => ["w_r.referenced_name = ?", self.name])
+    @refs ||= WikiPage.find(:all, :select => "wiki_pages.*", :joins => "LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id", :conditions => ["w_r.referenced_name = ? AND wiki_pages.company_id = ?", self.name, self.company_id])
   end
 
   def to_url
