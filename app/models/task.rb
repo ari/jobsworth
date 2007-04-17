@@ -1,5 +1,7 @@
 class Task < ActiveRecord::Base
 
+  include Misc
+
   acts_as_ferret :fields => { 'company_id' => {},
     'project_id' => {},
     'full_name' => { :boost => 1.5 },
@@ -66,23 +68,24 @@ class Task < ActiveRecord::Base
   end
 
   def worked_minutes
-    minutes = 0
+    @minutes ||= 0
+    return @minutes if @minutes > 0
     self.work_logs.each do | work |
-        minutes += work.duration
+        @minutes += work.duration
     end
-    minutes
+    @minutes
   end
 
   def full_name
-    [self.project.full_name, self.full_tags].join(' / ')
+    @full_name ||= [self.project.full_name, self.full_tags].join(' / ')
   end
 
   def full_tags
-    self.tags.collect{ |t| t.name.capitalize }.join(" / ")
+    @full_tags ||= self.tags.collect{ |t| t.name.capitalize }.join(" / ")
   end
 
   def issue_name
-    "[##{self.task_num}] #{self[:name]}"
+    @issue_name ||= "[##{self.task_num}] #{self[:name]}"
   end
 
   def issue_num
@@ -94,11 +97,7 @@ class Task < ActiveRecord::Base
   end
 
   def name
-    if self.status > 2
-      "<strike>#{self[:name]}</strike>"
-    else
-      "#{self[:name]}"
-    end
+    "#{self[:name]}"
   end
 
   def status_name
@@ -289,4 +288,17 @@ class Task < ActiveRecord::Base
     return [results.total_hits, results]
   end
 
+  def to_tip(options = { })
+    owners = "No one"
+    owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
+    res = ""
+    res << "<strong>#{_('Summary')}</strong> #{self.name}<br/>"
+    res << "<strong>#{_('Project')}</strong> #{self.project.full_name}<br/>"
+    res << "<strong>#{_('Tags')}</strong> #{self.full_tags}<br/>"
+    res << "<strong>#{_('Assigned To')}</strong> #{owners}<br/>"
+    res << "<strong>#{_('Status')}</strong> #{self.status_type}<br/>"
+    res << "<strong>#{_('Progress')}</strong> #{format_duration(self.worked_minutes, options[:duration_format])} / #{format_duration( self.duration, options[:duration_format] )}"
+    res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
+    res
+  end
 end

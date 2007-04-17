@@ -32,11 +32,8 @@
   <% end %>
   </td>
   <td class="log" valign="top"><strong>
-<% if log.task && log.task_id > 0 && log.task.description %>
-<%= "<small>" + log.task.issue_num + "</small> " + link_to(highlight_all(log.task.name, @keys), {:controller => 'tasks', :action => 'edit', :id => log.task_id}, {:class => "tooltip", :title => highlight_all(log.task.description.gsub(/\n/, '<br/>'), @keys) }) if log.task.description.length > 0 -%>
-<%= "<small>" + log.task.issue_num + "</small> " + link_to(highlight_all(log.task.name, @keys), {:controller => 'tasks', :action => 'edit', :id => log.task_id}) if log.task.description.length == 0 -%>
-<% elsif log.task && log.task_id > 0 %>
-<%= "<small>" + log.task.issue_num + "</small> " + link_to(highlight_all(log.task.name, @keys), {:controller => 'tasks', :action => 'edit', :id => log.task_id}) -%>
+<% if log.task && log.task_id > 0  %>
+<%= link_to_task_with_highlight(log.task, @keys) %>
 <% elsif log.scm_changeset && log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(highlight_all(log.scm_changeset.name, @keys)), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
           <br /><%= "<span class=\"optional\">#{highlight_all(log.scm_changeset.full_name, @keys)}</span> " %>

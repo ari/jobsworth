@@ -287,7 +287,7 @@ class ReportsController < ApplicationController
       end
 
       @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]);
+      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
       @logs = []
       @projects.each do |p|
         if join != ""

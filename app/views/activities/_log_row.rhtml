@@ -32,10 +32,8 @@
   <% end %>
   </td>
   <td  valign="top" width="90%"><strong>
-<% if log.task && log.task_id > 0 && log.task.description && log.task.description.length > 0 %>
-<%= "<small>" + log.task.issue_num + "</small> " + link_to(log.task.name, {:controller => 'tasks', :action => 'edit', :id => log.task_id}, {:class => "tooltip", :title => log.task.description.gsub(/\n/, '<br/>')}) -%>
-<% elsif log.task && log.task_id > 0 %>
-<%= "<small>" + log.task.issue_num + "</small> " + link_to(log.task.name, {:controller => 'tasks', :action => 'edit', :id => log.task_id}) -%>
+<% if log.task && log.task_id > 0 %>
+<%= link_to_task log.task %>
 <% elsif log.scm_changeset && log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
           <br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>

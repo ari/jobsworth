@@ -29,16 +29,14 @@
                  days += 1 while @dates[d+days] && @dates[d+days][@dates[d].index(t)] && @dates[d+days][@dates[d].index(t)].id == t.id && ![1,6].include?((d+days).wday) && d.month == (d + days).month
 
                  unless @dates[d-1] && @dates[d-1][@dates[d].index(t)] && @dates[d-1][@dates[d].index(t)].id == t.id && d.month == (d-1).month
-                   cell_text << "<div class=\"#{c} tooltip\" title=\"#{event_tip(t)}\" style=\"position:absolute;margin-top:#{@dates[d].index(t) * 14 + 1}px;width:#{(131 * days) - 5}px;\"><a href=\"/tasks/edit/#{t.id}\" class=\"tooltip\" title=\"#{event_tip(t)}\">[#{t.issue_num}] #{t.name}</a></div>"
-#               else
-#                cell_text << "<div class=\"#{c} tooltip\" title=\"#{event_tip(t)}\">&nbsp;</div>"
+                   cell_text << "<div class=\"#{c} tooltip\" title=\"#{event_tip(t)}\" style=\"position:absolute;margin-top:#{@dates[d].index(t) * 14 + 1}px;width:#{(131 * days) - 5}px;\">#{link_to_task t}</div>"
                  end
                elsif t.is_a? Milestone
                  c = "scheduleMilestone"
                  c = "scheduleMilestoneOverdue" if t.due_at.to_date < Time.now.to_date
                  c = "scheduleMilestoneComplete" if t.complete?
 
-                        cell_text << "<div class=\"#{c} tooltip\" title=\"<strong>Project</strong> #{t.project.name}\" style=\"position:absolute;margin-top:#{@dates[d].index(t) * 14 + 1}px;width:#{131 - 5}px;\"><img src=\"/images/milestone.png\" style=\"vertical-align: middle;\"> #{t.name} (#{ number_to_percentage(t.percent_complete, :precision => 1)})</div>"
+                 cell_text << "<div class=\"#{c} tooltip\" title=\"#{event_tip(t)}\" style=\"position:absolute;margin-top:#{@dates[d].index(t) * 14 + 1}px;width:#{131 - 5}px;\"><img src=\"/images/milestone.png\" style=\"vertical-align: middle;\"> #{t.name} (#{ number_to_percentage(t.percent_complete, :precision => 1)})</div>"
                end
              end
            end

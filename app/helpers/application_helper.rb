@@ -1,6 +1,8 @@
 # The methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  include Misc
+
   def tz
     Timezone.get(@session[:user].time_zone)
   end
@@ -56,45 +58,8 @@ module ApplicationHelper
   end
 
   def worked_nice(minutes)
-    res = ''
-    weeks = days = hours = 0
-
-    if minutes >= 60
-      hours = minutes / 60
-      minutes = minutes - (hours * 60)
-
-      if hours >= 8
-        days = hours / 8
-        hours = hours - (days * 8)
-
-        if days >= 5
-          weeks = days / 5
-          days = days - (weeks * 5)
-          res += "#{weeks}#{_('w')}#{' ' if session[:user].duration_format == 0}"
-        end
-
-        res += "#{days}#{_('d')}#{' ' if session[:user].duration_format == 0}" if days > 0
-      end
-
-      res += "#{hours}#{_('h')}#{' ' if session[:user].duration_format == 0}" if hours > 0
-    end
-    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
-
-    if( session[:user].duration_format == 2 )
-      res = if weeks > 0
-              format("%d:%d:%d:%02d", weeks, days, hours, minutes)
-            elsif days > 0
-              format("%d:%d:%02d", days, hours, minutes)
-            else
-              format("%d:%02d", hours, minutes)
-            end
-    elsif( session[:user].duration_format == 3 )
-      res = format("%d:%02d", (weeks * 8 * 5) + (days * 8) + hours, minutes)
-    end
-
-    res.strip
+    format_duration(minutes, session[:user].duration_format)
   end
-
 
   def total_today
     @logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", session[:user].id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
@@ -409,12 +374,39 @@ module ApplicationHelper
     text
   end
 
-  def in_progress(task, text )
+  def task_classes(task)
+    res = ""
     if task.status == 1
-      "<em>#{text}</em>"
-    else
-      text
+      res << " in_progress"
+    elsif task.status == 2
+      res << " closed"
+    elsif task.status > 2
+      res << " invalid"
     end
   end
+
+  def link_to_task(task)
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( h(task.name), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => task.to_tip(:duration_format => session[:user].duration_format)})
+  end
+
+  def link_to_task_with_highlight(task, keys)
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => highlight_all(task.to_tip(:duration_format => session[:user].duration_format), keys)})
+  end
+
+  def milestone_classes(m)
+    return " complete_milestone" unless m.completed_at.nil?
+
+    unless m.due_at.nil?
+      if m.due_at.utc < Time.now.utc
+        return " overdue_milestone"
+      end
+    end
+    ""
+  end
+
+  def link_to_milestone(milestone)
+    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => session[:user].duration_format)})
+  end
+
 
 end

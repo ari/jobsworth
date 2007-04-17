@@ -46,9 +46,7 @@ class="task<%=priority%>"
    <% else -%>
      <img src="/images/spacer.gif" width="16" height="16" border="0"/>
    <% end -%>
-   <small><strong><%= task.issue_num %></strong></small>
-   <%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
-   <%= link_to in_progress(task, h(task.name)), {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
+   <%= link_to_task(task) -%>
 
    <small>
      <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
@@ -88,10 +86,7 @@ class="task<%=priority%>"
      <% end -%>
    <% else -%>
      <img src="/images/spacer.gif" width="16" height="16" border="0"/><% end -%>
-     <%= task.issue_num %>
-     <% task_name = task.name %>
-     <%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip", :title => task.description.gsub(/\n/, '<br/>')} if (task.description && task.description.length > 0) -%>
-     <%= link_to task_name, {:controller => 'tasks', :action => 'edit', :id => task.id} if (task.description.nil? || task.description.length == 0) -%>
+     <%= link_to_task(task) -%>
      <small><% if @session[:user].option_tracktime == 1%>(<%= worked_nice(task.worked_minutes) %> / <%= worked_nice( task.duration ) %>)<% end %> <em>[<%=tz.utc_to_local(task.completed_at).strftime(session[:user].date_format) %>]</em></small>
      <% if session[:user].option_tracktime == 1 %>
        <div class="task_info description"><%= h(task.full_name) %></div>

@@ -6,10 +6,10 @@ class Milestone < ActiveRecord::Base
   has_many :tasks, :dependent => :nullify
 
   def completed_tasks
-    completed = Task.count( ["milestone_id = ? AND completed_at is not null", self.id] ) * 1.0
+    @completed ||= Task.count( ["milestone_id = ? AND completed_at is not null", self.id] ) * 1.0
   end
   def total_tasks
-    total = Task.count( ["milestone_id = ?", self.id] ) * 1.0
+    @total ||= Task.count( ["milestone_id = ?", self.id] ) * 1.0
   end
 
   def percent_complete
@@ -22,7 +22,18 @@ class Milestone < ActiveRecord::Base
   end
 
   def complete?
-    self.completed_tasks == self.total_tasks
+    (self.completed_tasks == self.total_tasks) || (!self.completed_at.nil?)
   end
+
+  def to_tip(options = { })
+    res = ""
+    res << "<strong>#{_('Name')}</strong> #{self.name}<br />"
+    res << "<strong>#{_('Due Date')}</strong> #{self.due_at.strftime("%A, %d %B %Y")}<br/>" unless self.due_at.nil?
+    res << "<strong>#{_('Owner')}</strong> #{self.user.name}<br />"
+    res << "<strong>#{_('Progress')}</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}"
+    res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
+    res
+  end
+
 
 end

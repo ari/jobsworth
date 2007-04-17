@@ -1,10 +1,8 @@
 module ScheduleHelper
 
   def event_tip(e)
-    if e.is_a? Task
-      owners = "No one"
-      owners = e.users.collect{|u| u.name}.join(', ') unless e.users.empty?
-      "<strong>Summary</strong> #{h(e.name)}<br/><strong>Assigned To</strong> #{h(owners)}<br/><strong>Progress</strong> #{worked_nice(e.worked_minutes)} / #{worked_nice( e.duration )}"
+    if e.is_a?(Task) || e.is_a?(Milestone)
+      e.to_tip(:duration_format => session[:user].duration_format)
     else
       ""
     end

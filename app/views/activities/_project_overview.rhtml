@@ -71,9 +71,9 @@
 
 
              for milestone in project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, name")
-               done_count = Task.count(["project_id = ? AND milestone_id = ? AND completed_at IS NOT NULL", project.id, milestone.id])
-               total_count = Task.count(["project_id = ? AND milestone_id = ?", project.id, milestone.id]) * 1.0
-               done_percent = (done_count/total_count) * 100.0
+               done_count = milestone.completed_tasks
+               total_count = milestone.total_tasks
+               done_percent = milestone.percent_complete
           %>
     <tr class="milestone" id="milestone_<%=milestone.id%>" onMouseOver="javascript:Hover('milestone', '<%=milestone.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
         <div style="height:16px;">
@@ -85,7 +85,7 @@
             </span>
             <% end %>
           </div>
-          <div style="float: left;padding-top:2px;"><span class="milestones"><%= link_to milestone.name, {:controller => 'views', :action => 'select_milestone', :id => milestone.id} %></span></div>
+          <div style="float: left;padding-top:2px;"><span class="milestones"><%= link_to_milestone milestone %></span></div>
           <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
             <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %>  Complete"> </div>
             <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %>  Remaining"> </div>

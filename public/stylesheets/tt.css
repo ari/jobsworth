@@ -193,6 +193,27 @@ body, p, ol, ul, td, tr {
   margin: 0 0 1px 0px;
 }
 
+.in_progress {
+  font-style: italic;
+}
+
+.closed {
+
+}
+
+.invalid {
+  text-decoration: line-through;
+}
+
+a.invalid:hover {
+  text-decoration: line-through underline;
+}
+
+.tip_description {
+  margin-top: 0.3em;
+  background-color: #eee;
+}
+
 fieldset {
   border: 1px solid #dcdcdc;
   background-color: #fafafa;

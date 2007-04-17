@@ -2,6 +2,8 @@
 # Likewise will all the methods added be available for all controllers.
 class ApplicationController < ActionController::Base
 
+  include Misc
+
   model :user
   model :company
   model :project
@@ -63,46 +65,6 @@ class ApplicationController < ActionController::Base
     @tz ||= Timezone.get(session[:user].time_zone)
   end
 
-  # Format minutes => <tt>1w 2d 3h 3m</tt>
-  def worked_nice(minutes)
-    res = ''
-    weeks = days = hours = 0
-
-    if minutes >= 60
-      hours = minutes / 60
-      minutes = minutes - (hours * 60)
-
-      if hours >= 8
-        days = hours / 8
-        hours = hours - (days * 8)
-
-        if days >= 5
-          weeks = days / 5
-          days = days - (weeks * 5)
-          res += "#{weeks}#{_('w')}#{' ' if session[:user].duration_format == 0}"
-        end
-
-        res += "#{days}#{_('d')}#{' ' if session[:user].duration_format == 0}" if days > 0
-      end
-
-      res += "#{hours}#{_('h')}#{' ' if session[:user].duration_format == 0}" if hours > 0
-    end
-    res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
-
-    if( session[:user].duration_format == 2 )
-      res = if weeks > 0
-              format("%d:%d:%d:%02d", weeks, days, hours, minutes)
-            elsif days > 0
-              format("%d:%d:%02d", days, hours, minutes)
-            else
-              format("%d:%02d", hours, minutes)
-            end
-    elsif( session[:user].duration_format == 3 )
-      res = format("%d:%02d", (weeks * 8 * 5) + (days * 8) + hours, minutes)
-    end
-
-    res.strip
-  end
 
   # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes or seconds
   def parse_time(input, minutes = false)
@@ -175,6 +137,10 @@ class ApplicationController < ActionController::Base
     @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
     @milestone_ids = "-1" if @milestone_ids == ''
     @milestone_ids
+  end
+
+  def worked_nice(minutes)
+    format_duration(minutes, session[:user].duration_format)
   end
 
 end

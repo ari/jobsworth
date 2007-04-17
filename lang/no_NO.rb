@@ -427,4 +427,5 @@ Localization.define('no_NO') do |l|
 
   # Preferences
   l.store 'Duration Format', 'Lengdeformat'
+
 end

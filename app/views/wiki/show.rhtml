@@ -30,7 +30,7 @@ fn1. If you're -bored- %{color:red}inspired%.
 !http://www.clockingit.com/images/logo.gif!
 
 </textarea>
-<%= submit_tag _("Create"), :style => 'clear:both;float:left;' %>
+<div style="clear:both;float:left;"><%= submit_tag _("Create") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>
 <% else %>
 <%= @page.to_html %>
 <br/>
