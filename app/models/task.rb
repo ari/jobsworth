@@ -299,6 +299,6 @@ class Task < ActiveRecord::Base
     res << "<strong>#{_('Status')}</strong> #{self.status_type}<br/>"
     res << "<strong>#{_('Progress')}</strong> #{format_duration(self.worked_minutes, options[:duration_format])} / #{format_duration( self.duration, options[:duration_format] )}"
     res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
-    res
+    res.gsub(/\"/,'&quot;')
   end
 end
