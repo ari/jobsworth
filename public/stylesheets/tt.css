@@ -792,8 +792,13 @@ div.auto_complete {
 
 .description
 {
-        color: #5e6b71;
-        font-size: 10px;
+  color: #5e6b71;
+  font-size: 10px;
+}
+
+a.description {
+  color: #5e6b71;
+  font-weight: normal;
 }
 
 #shouts {

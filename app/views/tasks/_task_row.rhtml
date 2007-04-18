@@ -64,7 +64,7 @@ class="task<%=priority%>"
    <% else %>
      <div class="task_info_no_icon description">
    <% end %>
-   <%= h(task.full_name) %>
+   <%= task.full_name %>
    <%= "<span class=\"otheruser\">[#{name}]</span>" %>
    <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0)%>
      </div>
