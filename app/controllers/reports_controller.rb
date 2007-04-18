@@ -402,7 +402,7 @@ class ReportsController < ApplicationController
   def create_csv
     csv_string = ""
     if @column_headers
-      csv_string = FasterCSV.generate( :col_sep => ";" ) do |csv|
+      csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
         header = [nil]
         @column_headers.sort.each do |key,value|
