@@ -77,15 +77,15 @@ class Task < ActiveRecord::Base
   end
 
   def full_name
-    @full_name ||= [self.project.full_name, self.full_tags].join(' / ')
+    [self.project.full_name, self.full_tags].join(' / ')
   end
 
   def full_tags
-    @full_tags ||= self.tags.collect{ |t| t.name.capitalize }.join(" / ")
+    self.tags.collect{ |t| t.name.capitalize }.join(" / ")
   end
 
   def issue_name
-    @issue_name ||= "[##{self.task_num}] #{self[:name]}"
+    "[##{self.task_num}] #{self[:name]}"
   end
 
   def issue_num
@@ -270,7 +270,7 @@ class Task < ActiveRecord::Base
     sql << " AND #{task_ids_str}" unless options[:filter_user].to_i == 0
     sql << " AND tasks.milestone_id = #{options[:filter_milestone]}" if options[:filter_milestone].to_i > 0
     sql << " AND (tasks.milestone_id IS NULL OR tasks.milestone_id = 0)" if options[:filter_milestone].to_i < 0
-    sql << " (AND tasks.milestone_id NOT IN (#{completed_milestones_ids}) OR tasks.milestone_id IS NULL)" if completed_milestones_ids != ''
+    sql << " AND (tasks.milestone_id NOT IN (#{completed_milestones_ids}) OR tasks.milestone_id IS NULL)" if completed_milestones_ids != ''
     sql << " AND projects.customer_id = #{options[:filter_customer]}" if options[:filter_customer].to_i > 0
     sql << " GROUP BY tasks.id"
     sql << " HAVING COUNT(tasks.id) = #{tags.size}"

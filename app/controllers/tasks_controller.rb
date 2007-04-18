@@ -15,7 +15,7 @@ class TasksController < ApplicationController
     else
       @task = Task.new
       @task.duration = 60
-      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
+      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     end
   end
 
@@ -93,7 +93,7 @@ class TasksController < ApplicationController
     end
 
     # Most popular tags, currently unlimited.
-    @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
+    @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
 
     if session[:group_tags].to_i > 0
       @tag_names = @all_tags.collect{|i,j| i}
@@ -125,7 +125,7 @@ class TasksController < ApplicationController
     @resource_string = "<option value=\"\">[#{_('No one')}]</option>" + @users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('')
     @resource_string = @resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
-    @options = @users.collect{ |u| "{\"text\":\"#{u.name.gsub(/"/,'\"') }\", \"value\":\"#{u.id}\"}" }.join(',')
+    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
     res = '{"options":[{"value":"0", "text":"[None]"}'
     res << ", #{@options}" unless @options.nil? || @options.empty?
     res << ']}'
@@ -222,7 +222,7 @@ class TasksController < ApplicationController
       redirect_from_last
     else
       @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
-      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
+      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
       render_action 'new'
     end
   end
@@ -235,7 +235,7 @@ class TasksController < ApplicationController
   def edit
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}] )
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
-    @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_user => session[:filter_user], :filter_hidden => session[:filter_hidden]})
+    @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ?", @task.id], :include => [:user, :task, :project])
       @logs = []
     end

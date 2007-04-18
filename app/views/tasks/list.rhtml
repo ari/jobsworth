@@ -126,7 +126,7 @@
 
       %>
 
-      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><%= link_to tag[0], :action => "list", :tag => link %> (<%= tag[1] %>)</span></td></tr>
+      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><%= link_to tag[0], :action => "list", :tag => link %> (<%= @tags[tag[0]] %>)</span></td></tr>
       <% end %>
       </table>
     </td>
