@@ -112,7 +112,7 @@ class ReportsController < ApplicationController
     when 14
       "End"
     when 15
-      "#{tz.utc_to_local(w.started_at).strftime( "%a, " + session[:user].date_format )}"
+      "#{tz.utc_to_local(w.started_at).strftime( "%a " + session[:user].date_format )}"
     when 16
       "Start"
     when 17
