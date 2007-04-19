@@ -16,7 +16,7 @@
             else
               @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"])
             end
-            @projects = @all_projects.collect {|p| [p.name, p.id.to_s]}
+            @projects = @all_projects.collect {|p| [ (session[:filter_customer].to_i > 0 || @clients.size < 2) ? p.name : "#{p.name} / #{p.customer.name}", p.id.to_s]}
             if session[:filter_project].to_i > 0
               @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
               @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ? AND completed_at IS NULL", session[:user].company_id, session[:filter_project]]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
@@ -34,7 +34,7 @@
             <%= start_form_tag( :controller => 'tasks', :action => 'filter' ) %>
 
 
-            <% if @clients.size > 1 && false %>
+            <% if @clients.size > 1  %>
             <select name="filter_customer" id="filter_customer" onchange="javascript:document.forms[1].submit();">
               <% @clients = [[ _("[Any Client]"), "0"]] + @clients  %>
               <%= options_for_select @clients, session[:filter_customer] %>

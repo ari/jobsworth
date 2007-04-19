@@ -55,7 +55,7 @@ class ProjectFilesController < ApplicationController
   def upload
     filename = params['project_files']['tmp_file'].original_filename if params['project_files']
 
-    unless filename
+    if filename.nil? || filename.strip.length == 0
       flash['notice'] = _('No file selected for upload.')
       redirect_to :action => 'list'
       return

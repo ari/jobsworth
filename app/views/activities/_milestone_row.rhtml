@@ -1,0 +1,22 @@
+<%             done_count = milestone.completed_tasks
+               total_count = milestone.total_tasks
+               done_percent = milestone.percent_complete
+%>
+    <tr class="milestone" id="milestone_<%=milestone.id%>" onMouseOver="javascript:Hover('milestone', '<%=milestone.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
+        <div style="height:16px;">
+          <div style="position: absolute; z-index:10; width: 16px;">
+            <% if session[:user].can?(milestone.project, 'milestone') %>
+            <span id="edit_milestone_<%= milestone.id%>" style="display: none;">
+            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", milestone.name), :class => "tooltip"),
+                  { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
+            </span>
+            <% end %>
+          </div>
+          <div style="float: left;padding-top:2px;"><span class="milestones"><%= link_to_milestone milestone %></span></div>
+          <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
+            <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Complete'%>"> </div>
+            <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) <%=_ 'Remaining'%>"> </div>
+          </div>
+        </div>
+      </td>
+    </tr>
