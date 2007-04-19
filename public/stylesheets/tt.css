@@ -801,6 +801,11 @@ a.description {
   font-weight: normal;
 }
 
+#tip a {
+  color: #5e6b71;
+  font-weight: normal;
+}
+
 #shouts {
   font-size: 10px;
   font-weight: normal;
