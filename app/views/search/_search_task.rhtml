@@ -48,7 +48,7 @@ class="task<%=priority%>"
 <img src="/images/spacer.gif" width="16" height="16" border="0"/><% end -%>
 <%= link_to_task_with_highlight(task, @keys)  -%>
       <small>
-        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
+        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (@session[:user].option_tracktime == 1 && task.duration > 0) %>
         <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
       </small>
       <br/>

@@ -14,7 +14,7 @@ class TasksController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
     else
       @task = Task.new
-      @task.duration = 60
+      @task.duration = 0
       @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     end
   end
