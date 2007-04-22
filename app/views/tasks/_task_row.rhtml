@@ -15,6 +15,9 @@
 
  can_work = { :disabled => "disabled" } unless session[:user].can?(task.project, 'work')
  can_work ||= {}
+
+ priority << " #{task.project.to_css_name}"
+
 %>
 
 <% if @session[:sheet] && @session[:sheet].task.id == task.id %>
