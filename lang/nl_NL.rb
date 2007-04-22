@@ -426,4 +426,5 @@ Localization.define('nl_NL') do |l|
 
     # Preferences
     l.store 'Duration Format', 'Weergave Tijdsduur'    
+    l.store 'Workday Length', 'Workday Length'
   end

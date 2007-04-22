@@ -73,8 +73,8 @@ class ApplicationController < ActionController::Base
       reg = Regexp.new(_("([wdhm])"))
       input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
         case e[-1,1]
-          when _('w') then total += e.to_i * 60 * 8 * 5
-          when _('d') then total += e.to_i * 60 * 8
+          when _('w') then total += e.to_i * session[:user].workday_duration * 5
+          when _('d') then total += e.to_i * session[:user].workday_duration
           when _('h') then total += e.to_i * 60
           when _('m') then total += e.to_i
         end
@@ -86,8 +86,8 @@ class ApplicationController < ActionController::Base
           case times.size
           when 0 then total += time.to_i
           when 1 then total += time.to_i * 60
-          when 2 then total += time.to_i * 60 * 8
-          when 3 then total += time.to_i * 60 * 8 * 5
+          when 2 then total += time.to_i * session[:user].workday_duration
+          when 3 then total += time.to_i * session[:user].workday_duration * 5
           end
         end
       end
@@ -140,7 +140,7 @@ class ApplicationController < ActionController::Base
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, session[:user].duration_format)
+    format_duration(minutes, session[:user].duration_format, session[:user].workday_duration)
   end
 
 end

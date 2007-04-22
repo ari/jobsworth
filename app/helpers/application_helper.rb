@@ -58,7 +58,7 @@ module ApplicationHelper
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, session[:user].duration_format)
+    format_duration(minutes, session[:user].duration_format, session[:user].workday_duration)
   end
 
   def total_today
@@ -386,11 +386,11 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( h(task.name), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => task.to_tip(:duration_format => session[:user].duration_format)})
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( h(task.name), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})})
   end
 
   def link_to_task_with_highlight(task, keys)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => highlight_all(task.to_tip(:duration_format => session[:user].duration_format), keys)})
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => highlight_all(task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration}), keys)})
   end
 
   def milestone_classes(m)
@@ -405,7 +405,7 @@ module ApplicationHelper
   end
 
   def link_to_milestone(milestone)
-    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => session[:user].duration_format)})
+    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => session[:user].duration_format), :workday_duration => session[:user].workday_duration})
   end
 
 

@@ -422,4 +422,5 @@ Localization.define('fr_FR') do |l|
 
   # Preferences
   l.store 'Duration Format', 'Format de durée'
+  l.store 'Workday Length', 'Workday Length'
 end

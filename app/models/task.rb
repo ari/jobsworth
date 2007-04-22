@@ -297,7 +297,7 @@ class Task < ActiveRecord::Base
     res << "<strong>#{_('Tags')}</strong> #{self.full_tags}<br/>"
     res << "<strong>#{_('Assigned To')}</strong> #{owners}<br/>"
     res << "<strong>#{_('Status')}</strong> #{self.status_type}<br/>"
-    res << "<strong>#{_('Progress')}</strong> #{format_duration(self.worked_minutes, options[:duration_format])} / #{format_duration( self.duration, options[:duration_format] )}"
+    res << "<strong>#{_('Progress')}</strong> #{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}"
     res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
     res.gsub(/\"/,'&quot;')
   end

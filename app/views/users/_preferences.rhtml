@@ -1,5 +1,13 @@
 <%= error_messages_for 'user' %>
 
+<%
+  @workday_duration = []
+  48.upto(12 * 12) do |m|
+     t = m * 5
+     @workday_duration << [ "#{t/60}h #{t%60}m", t]
+  end
+
+%>
 
 <!--[form:user]-->
 <%= render :partial => "user_information" %>
@@ -10,6 +18,7 @@
 <p><label for="user_time_format"><%=_ 'Time Format' %></label><%= select 'user', 'time_format', [ ['16:00', '%H:%M'], ['4:00 PM', '%I:%M%p'] ] %>
 <p><label for="user_date_format"><%=_ 'Date Format' %></label><%= select 'user', 'date_format', [ ['1/21/2007', '%m/%d/%Y'], ['21/1/2007', '%d/%m/%Y'], ['2007-1-21', '%Y-%m-%d'] ] %>
 <p><label for="user_duration_format"><%=_ 'Duration Format' %></label><%= select 'user', 'duration_format', [ ['1w 2d 3h 4m', 0], ['1w2d3h4m', 1], ['1:2:3:04', 2], ['59:04', 3] ] %>
+<p><label for="user_workday_duration"><%=_ 'Workday Length' %></label><%= select 'user', 'workday_duration', @workday_duration %>
 <p><label for="user_option_tracktime"><%=_ 'Track Time' %></label><%= check_box 'user', 'option_tracktime' %></p>
 <p><label for="user_option_externalclients"><%=_ 'Use External Clients' %></label><%= check_box 'user', 'option_externalclients' %></p>
 <p><label for="user_option_showcalendar"><%=_ 'Show Tooltips' %></label><%= check_box 'user', 'option_tooltips' %></p>
