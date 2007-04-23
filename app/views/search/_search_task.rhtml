@@ -88,9 +88,9 @@ class="task<%=priority%>"
     </small>
 
   <% if session[:user].option_tracktime == 1 %>
-  <div class="task_info description"><%= highlight_all(task.full_name, @keys) %></div>
+  <div class="task_info description"><%= task.full_name %></div>
   <% else %>
-  <div class="task_info_no_icon description"><%= highlight_all(task.full_name, @keys) %></div>
+  <div class="task_info_no_icon description"><%= task.full_name %></div>
   <% end %>
 
 <% end %>
