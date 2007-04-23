@@ -1,15 +1,8 @@
-module FerretMixin
-  module Acts #:nodoc:
-    module ARFerret #:nodoc:
+module ActsAsFerret #:nodoc:
 
-      module MoreLikeThis
+    module MoreLikeThis
 
-        class DefaultAAFSimilarity
-          def idf(doc_freq, num_docs)
-            return 0.0 if num_docs == 0
-            return Math.log(num_docs.to_f/(doc_freq+1)) + 1.0
-          end
-        end
+      module InstanceMethods
 
         # returns other instances of this class, which have similar contents
         # like this one. Basically works like this: find out n most interesting
@@ -25,18 +18,16 @@ module FerretMixin
         # :field_names : Array of field names to use for similarity search (mandatory)
         # :min_term_freq => 2,  # Ignore terms with less than this frequency in the source doc.
         # :min_doc_freq => 5,   # Ignore words which do not occur in at least this many docs
-        # :min_word_length => nil, # Ignore words if less than this len (longer
-        # words tend to be more characteristic for the document they occur in).
+        # :min_word_length => nil, # Ignore words shorter than this length (longer words tend to 
+        #                            be more characteristic for the document they occur in).
         # :max_word_length => nil, # Ignore words if greater than this len.
         # :max_query_terms => 25,  # maximum number of terms in the query built
-        # :max_num_tokens => 5000, # maximum number of tokens to examine in a
-        # single field
-        # :boost => false,         # when true, a boost according to the
-        # relative score of a term is applied to this Term's TermQuery.
-        # :similarity => Ferret::Search::Similarity.default, # the similarity
-        # implementation to use
-        # :analyzer => Ferret::Analysis::StandardAnalyzer.new # the analyzer to
-        # use
+        # :max_num_tokens => 5000, # maximum number of tokens to examine in a single field
+        # :boost => false,         # when true, a boost according to the relative score of 
+        #                            a term is applied to this Term's TermQuery.
+        # :similarity => 'DefaultAAFSimilarity'   # the similarity implementation to use (the default 
+        #                                           equals Ferret's internal similarity implementation)
+        # :analyzer => 'Ferret::Analysis::StandardAnalyzer' # class name of the analyzer to use
         # :append_to_query => nil # proc taking a query object as argument, which will be called after generating the query. can be used to further manipulate the query used to find related documents, i.e. to constrain the search to a given class in single table inheritance scenarios
         # find_options : options handed over to find_by_contents
         def more_like_this(options = {}, find_options = {})
@@ -49,30 +40,39 @@ module FerretMixin
             :max_query_terms => 25,  # maximum number of terms in the query built
             :max_num_tokens => 5000, # maximum number of tokens to analyze when analyzing contents
             :boost => false,      
-            :similarity => DefaultAAFSimilarity.new,
-            :analyzer => Ferret::Analysis::StandardAnalyzer.new,
+            :similarity => 'ActsAsFerret::MoreLikeThis::DefaultAAFSimilarity',  # class name of the similarity implementation to use
+            :analyzer => 'Ferret::Analysis::StandardAnalyzer', # class name of the analyzer to use
             :append_to_query => nil,
             :base_class => self.class # base class to use for querying, useful in STI scenarios where BaseClass.find_by_contents can be used to retrieve results from other classes, too
           }.update(options)
-          index = self.class.ferret_index
           #index.search_each('id:*') do |doc, score|
           #  puts "#{doc} == #{index[doc][:description]}"
           #end
-          index.synchronize do # avoid that concurrent writes close our reader
-            index.send(:ensure_reader_open)
-            reader = index.send(:reader)
-            doc_number = self.document_number
-            term_freq_map = retrieve_terms(document_number, reader, options)
+          clazz = options[:base_class]
+          options[:base_class] = clazz.name
+          query = clazz.aaf_index.build_more_like_this_query(self.id, self.class.name, options)
+          options[:append_to_query].call(query) if options[:append_to_query]
+          clazz.find_by_contents(query, find_options)
+        end
+
+      end
+
+      module IndexMethods
+
+        def build_more_like_this_query(id, class_name, options)
+          [:similarity, :analyzer].each { |sym| options[sym] = options[sym].constantize.new }
+          ferret_index.synchronize do # avoid that concurrent writes close our reader
+            ferret_index.send(:ensure_reader_open)
+            reader = ferret_index.send(:reader)
+            term_freq_map = retrieve_terms(id, class_name, reader, options)
             priority_queue = create_queue(term_freq_map, reader, options)
-            query = create_query(priority_queue, options)
-            logger.debug "morelikethis-query: #{query}"
-            options[:append_to_query].call(query) if options[:append_to_query]
-            options[:base_class].find_by_contents(query, find_options)
+            create_query(id, class_name, priority_queue, options)
           end
         end
 
+        protected
         
-        def create_query(priority_queue, options={})
+        def create_query(id, class_name, priority_queue, options={})
           query = Ferret::Search::BooleanQuery.new
           qterms = 0
           best_score = nil
@@ -93,8 +93,8 @@ module FerretMixin
             qterms += 1
             break if options[:max_query_terms] > 0 && qterms >= options[:max_query_terms]
           end
-          # exclude ourselves
-          query.add_query(Ferret::Search::TermQuery.new(:id, self.id.to_s), :must_not)
+          # exclude the original record 
+          query.add_query(query_for_record(id, class_name), :must_not)
           return query
         end
 
@@ -102,11 +102,13 @@ module FerretMixin
 
         # creates a term/term_frequency map for terms from the fields
         # given in options[:field_names]
-        def retrieve_terms(doc_number, reader, options)
+        def retrieve_terms(id, class_name, reader, options)
+          document_number = document_number(id, class_name)
           field_names = options[:field_names]
           max_num_tokens = options[:max_num_tokens]
           term_freq_map = Hash.new(0)
           doc = nil
+          record = nil
           field_names.each do |field|
             #puts "field: #{field}"
             term_freq_vector = reader.term_vector(document_number, field)
@@ -125,7 +127,8 @@ module FerretMixin
               content = doc[field]
               unless content
                 # no term vector, no stored content, so try content from this instance
-                content = content_for_field_name(field.to_s)
+                record ||= options[:base_class].constantize.find(id)
+                content = record.content_for_field_name(field.to_s)
               end
               puts "have doc: #{doc[:id]} with #{field} == #{content}"
               token_count = 0
@@ -184,11 +187,15 @@ module FerretMixin
           )
         end
 
-        def content_for_field_name(field)
-          self[field] || self.instance_variable_get("@#{field.to_s}".to_sym) || self.send(field.to_sym)
-        end
-
       end
+
+      class DefaultAAFSimilarity
+        def idf(doc_freq, num_docs)
+          return 0.0 if num_docs == 0
+          return Math.log(num_docs.to_f/(doc_freq+1)) + 1.0
+        end
+      end
+
 
       class FrequencyQueueItem
         attr_reader :word, :field, :score
@@ -198,6 +205,5 @@ module FerretMixin
       end
 
     end
-  end
 end
 
