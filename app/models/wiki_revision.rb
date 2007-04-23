@@ -57,6 +57,8 @@ class WikiRevision < ActiveRecord::Base
         text = alias_match[2]
       end
 
+      name.strip!
+
       if name.downcase.include? '://'
         url = name
         url_class = 'external'
