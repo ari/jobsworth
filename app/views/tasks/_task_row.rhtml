@@ -92,9 +92,9 @@ class="task<%=priority%>"
      <%= link_to_task(task) -%>
      <small><% if @session[:user].option_tracktime == 1%>(<%= worked_nice(task.worked_minutes) %> / <%= worked_nice( task.duration ) %>)<% end %> <em>[<%=tz.utc_to_local(task.completed_at).strftime(session[:user].date_format) %>]</em></small>
      <% if session[:user].option_tracktime == 1 %>
-       <div class="task_info description"><%= h(task.full_name) %></div>
+       <div class="task_info description"><%= task.full_name %></div>
      <% else %>
-       <div class="task_info_no_icon description"><%= h(task.full_name) %></div>
+       <div class="task_info_no_icon description"><%= task.full_name %></div>
      <% end %>
 
   <% end %>
