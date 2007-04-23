@@ -145,33 +145,34 @@ class TasksController < ApplicationController
       @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
     end
 
-    if params[:watchers]
-      params[:watchers].each do |w|
-        u = User.find(w.to_i, :conditions => ["company_id = ?", session[:user].company_id])
-        n = Notification.new(:user => u, :task => @task)
-        n.save
-      end
-    end
-
-    if params[:users]
-      params[:users].each do |o|
-        next if o.to_i == 0
-        u = User.find(o.to_i, :conditions => ["company_id = ?", session[:user].company_id])
-        to = TaskOwner.new(:user => u, :task => @task)
-        to.save
-      end
-    end
-
     @task.company_id = session[:user].company_id
     @task.duration = parse_time(params[:task][:duration])
     @task.updated_by_id = session[:user].id
     @task.creator_id = session[:user].id
     @task.set_tags(params[:task][:set_tags])
     @task.set_task_num(session[:user].company_id)
+    @task.duration = 0 if @task.duration.nil?
 
 
 
     if @task.save
+
+      if params[:watchers]
+        params[:watchers].each do |w|
+          u = User.find(w.to_i, :conditions => ["company_id = ?", session[:user].company_id])
+          n = Notification.new(:user => u, :task => @task)
+          n.save
+        end
+      end
+
+      if params[:users]
+        params[:users].each do |o|
+          next if o.to_i == 0
+          u = User.find(o.to_i, :conditions => ["company_id = ?", session[:user].company_id])
+          to = TaskOwner.new(:user => u, :task => @task)
+          to.save
+        end
+      end
 
       if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
 
