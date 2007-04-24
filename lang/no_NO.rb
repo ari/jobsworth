@@ -57,7 +57,6 @@ Localization.define('no_NO') do |l|
   l.store 'half a minute', 'et halvt minutt'
   l.store 'about %d hour', ['omtrent en time', 'omtrent %d timer']
 
-
   # Activities
   l.store 'Top Tasks', 'Viktigste Oppgaver'
   l.store 'Newest Tasks', 'Nyeste Oppgaver'
