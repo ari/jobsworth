@@ -75,8 +75,8 @@
                 <%
             day = 0
             for log in @logs
-              if day != tz.utc_to_local(log.started_at.day)
-                day = tz.utc_to_local(log.started_at.day)
+              if day != tz.utc_to_local(log.started_at).day
+                day = tz.utc_to_local(log.started_at).day
                 %>
           <tr>
             <td class="log_header" colspan="3">
