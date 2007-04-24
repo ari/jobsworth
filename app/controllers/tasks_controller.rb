@@ -768,7 +768,7 @@ class TasksController < ApplicationController
 
       @log.task.updated_by_id = session[:user].id
 
-      if params[:task][:status].to_i != @log.task.status
+      if params[:task] && params[:task][:status].to_i != @log.task.status
         @log.task.status = params[:task][:status].to_i
         @log.log_type = WorkLog::TASK_COMPLETED if params[:task][:status].to_i > 1
         @log.log_type = WorkLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
