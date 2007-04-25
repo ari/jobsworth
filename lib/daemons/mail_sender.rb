@@ -46,7 +46,10 @@ while($running) do
 
 
 
-  puts "Done..."
-  sleep 60
+
+  secs = ((Time.now.change(:min => 1) + 1.hour) - Time.now).to_i
+  puts "Done... Sleeping for #{secs}s"
+
+  sleep secs
 end
 
