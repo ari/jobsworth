@@ -418,14 +418,27 @@ Localization.define('fr_FR') do |l|
   l.store 'Sat', 'Sam'
 
   # worked_nice
-  l.store '[wdhm]', '[sjhm]'
+  l.store '[wdhm]', '[sjh]|mn'
   l.store 'w', 's'
   l.store 'd', 'j'
   l.store 'h', 'h'
-  l.store 'm', 'm'
+  l.store 'm', 'mn'
 
   # Preferences
   l.store 'Duration Format', 'Format de durée'
   l.store 'Workday Length', 'Travail quotidien'
-  
+
+  # Tasks filter
+  l.store '[Without Milestone]', '[Sans jalon]'
+
+  # Task tooltip
+  l.store 'Progress', 'Progression'
+
+  # User Permissions
+  l.store 'All', 'Tout'
+
+  # Reports filter
+  l.store '[Any Priority]', '[Toutes les priorités]'
+  l.store '[Any Severity]', '[Toutes les importances]'
+
 end
