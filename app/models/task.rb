@@ -84,6 +84,14 @@ class Task < ActiveRecord::Base
     self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{t.name}\" class=\"description\">#{t.name.capitalize.gsub(/\"/,'&quot;')}</a>" }.join(" / ")
   end
 
+  def full_name_without_links
+    [self.project.full_name, self.full_tags_without_links].join(' / ')
+  end
+
+  def full_tags_without_links
+    self.tags.collect{ |t| t.name.capitalize }.join(" / ")
+  end
+
   def issue_name
     "[##{self.task_num}] #{self[:name]}"
   end

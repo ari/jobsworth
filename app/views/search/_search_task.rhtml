@@ -62,7 +62,7 @@ class="task<%=priority%>"
      <div class="task_info_no_icon description">
   <% end %>
             <small>
-              <span class="description"><small><%= highlight_all(task.full_name, @keys) %></small></span>
+              <span class="description"><small><%= highlight_all(task.full_name_without_links, @keys) %></small></span>
               <%= "<span class=\"otheruser\">[#{name}]</span>" %>
               <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0)%>
             </small>
@@ -88,7 +88,7 @@ class="task<%=priority%>"
     </small>
 
   <% if session[:user].option_tracktime == 1 %>
-  <div class="task_info description"><%= task.full_name %></div>
+  <div class="task_info description"><%= highlight_all(task.full_name_without_links, @keys) %></div>
   <% else %>
   <div class="task_info_no_icon description"><%= task.full_name %></div>
   <% end %>
