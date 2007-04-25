@@ -37,7 +37,7 @@ Localization.define('fr_FR') do |l|
   l.store 'worked today', "de travail aujourd'hui"
   l.store 'Online', 'En ligne'
   l.store 'Done working on <b>%s</b> for now.', 'Fin du travail sur <b>%s</b>' # %s = @task.name
-  l.store '%s ago', 'derniers %s'  # X days ago -> Vor X Tagen
+  l.store '%s ago', 'Rédigée il y a %s'  # X days ago -> Vor X Tagen
 
   # Application Helper
   l.store 'today',"aujourd'hui"
@@ -85,7 +85,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Archived', 'Archivé'
   l.store 'Group Tags', 'Regrouper par tags'
   l.store '[Save as View]', '[Sauvegarder comme vue]'
-  l.store 'Tags', 'Tag'
+  l.store 'Tags', 'Tags'
   l.store '[All Tags]', '[Tous les tags]'
   l.store 'Close <b>%s</b>', 'Classer <b>%s</b>'
   l.store 'Stop working on <b>%s</b>.', 'Arrêter de travailler sur <b>%s</b>.'
