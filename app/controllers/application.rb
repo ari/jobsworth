@@ -72,7 +72,7 @@ class ApplicationController < ActionController::Base
     unless input.nil?
       reg = Regexp.new("(#{_('[wdhm]')})")
       input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
-        case e[-1,1]
+        case  /(\d+)(\w+)/.match(e)[2]
           when _('w') then total += e.to_i * session[:user].workday_duration * 5
           when _('d') then total += e.to_i * session[:user].workday_duration
           when _('h') then total += e.to_i * 60
