@@ -18,8 +18,8 @@ setup script or web page at a later stage.
 
 1. sudo gem install tzinfo RedCloth rake ferret fastercsv\
    eventmachine rmagick
-   
-	Make sure you have ImageMagick installed.
+
+        Make sure you have ImageMagick installed.
 
 2. mysql -u root -p
    create database cit_dev;
@@ -27,9 +27,9 @@ setup script or web page at a later stage.
    flush privileges;
 
 3. Copy config/database.yml-example to config/database.yml and modify it
-4. Copy config/jusggernaut_config.yml-example to 
+4. Copy config/jusggernaut_config.yml-example to
    config/juggernaut_config.yml and modify it
-5. Copy config/environment.rb-example to config/environment.rb 
+5. Copy config/environment.rb-example to config/environment.rb
    and modify it
 
 6. mkdir index log; chmod a+rwx log index tmp/*
@@ -39,6 +39,7 @@ setup script or web page at a later stage.
    127.0.0.1 <subdomain>.clockingit.com
 
 9. sudo ./script/push_server
+   sudo RAILS_ENV=production ./script/runner "load './lib/daemons/ferret_server'"
    ./script/server
    Create the initial account at http://www.clockingit.com:3000/login/signup
 10.Sign in from http://<subdomain>.clockingit.com:3000/
@@ -55,7 +56,7 @@ setup script or web page at a later stage.
     ServerName *.clockingit.com
     DocumentRoot /path/application/public/
     ErrorLog /path/application/log/server.log
-  
+
     <Directory /path/application/public/>
       Options ExecCGI FollowSymLinks
       AllowOverride all
@@ -77,13 +78,13 @@ app/controllers
 app/models
   Holds models that should be named like post.rb.
   Most models will descend from ActiveRecord::Base.
-  
+
 app/views
   Holds the template files for the view that should be named like
   weblog/index.rhtml for the WeblogController#index action. All views use eRuby
   syntax. This directory can also be used to keep stylesheets, images, and so on
   that can be symlinked to public.
-  
+
 app/helpers
   Holds view helpers that should be named like weblog_helper.rb.
 
@@ -103,7 +104,7 @@ db
 lib
   Application specific libraries. Basically, any kind of custom code that doesn't
   belong under controllers, models, or helpers. This directory is in the load path.
-    
+
 public
   The directory available for the web server. Contains subdirectories for images, stylesheets,
   and javascripts. Also contains the dispatchers and the default HTML files.

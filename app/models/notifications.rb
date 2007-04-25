@@ -97,4 +97,16 @@ class Notifications < ActionMailer::Base
     @headers    = {}
 
   end
+
+  def reminder(tasks, user, sent_at = Time.now)
+    @body       = {:tasks => tasks, :user => user}
+    @subject    = "[ClockingIT] Reminder #{Time.now.utc.strftime("%A, %d %B %Y")}"
+
+    @recipients = [user.email]
+
+    @from       = 'admin@clockingit.com'
+    @sent_on    = sent_at
+    @headers    = {}
+  end
+
 end
