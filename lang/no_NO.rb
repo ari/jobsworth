@@ -428,4 +428,17 @@ Localization.define('no_NO') do |l|
   l.store 'Duration Format', 'Lengdeformat'
   l.store 'Workday Length', 'Arbeidsdag'
 
+  # Tasks filter
+  l.store '[Without Milestone]', '[Uten Milepæl]'
+
+  # Task tooltip
+  l.store 'Progress', 'Progresjon'
+
+  # User Permissions
+  l.store 'All', 'Alle'
+
+  # Reports filter
+  l.store '[Any Priority]', '[Alle Prioriteter]'
+  l.store '[Any Severity]', '[Alle Alvorlighetsgrader]'
+
 end

@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
   def parse_time(input, minutes = false)
     total = 0
     unless input.nil?
-      reg = Regexp.new(_("([wdhm])"))
+      reg = Regexp.new("(#{_('[wdhm]')})")
       input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
         case e[-1,1]
           when _('w') then total += e.to_i * session[:user].workday_duration * 5

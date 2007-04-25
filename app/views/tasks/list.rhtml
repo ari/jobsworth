@@ -56,7 +56,7 @@
 
             <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
-              <% @users = [[_("[Any User]"), "0"]] + @users + [[_("Unassigned"), "-1"]] %>
+              <% @users = [[_("[Any User]"), "0"]] + @users + [[_("[Unassigned]"), "-1"]] %>
               <%= options_for_select @users, session[:filter_user] %>
             </select>
             <%
