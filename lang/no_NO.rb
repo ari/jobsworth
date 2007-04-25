@@ -441,4 +441,8 @@ Localization.define('no_NO') do |l|
   l.store '[Any Priority]', '[Alle Prioriteter]'
   l.store '[Any Severity]', '[Alle Alvorlighetsgrader]'
 
+  # Preferences
+  l.store '1w 2d 3h 4m', '1u 2d 3t 4m'
+  l.store '1w2d3h4m', '1u2d3h4m'
+
 end

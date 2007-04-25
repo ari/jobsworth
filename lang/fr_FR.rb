@@ -107,7 +107,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Assigned To', 'Affecté à'
   l.store 'Requested By', 'Requis par'
   l.store 'Attributes', 'Attributs'
-  
+
   l.store 'Type', 'Type'
   l.store 'Priority', 'Priorité'
   l.store 'Severity', 'Importance'
@@ -127,7 +127,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Last Updated', 'Dernière modification'
   l.store 'Save', 'Sauvegarder'
   l.store 'and', 'et'
-  
+
   l.store 'Leave Open','Laisser ouvert'
   l.store 'Revert to Open','Rouvrir la tâche'
   l.store 'Set in Progress','Marquer comme en cours'
@@ -144,7 +144,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Edit Log Entry', 'Modifier l\'entrée'
   l.store 'Delete Log Entry', 'Supprimer l\'entrée'
   l.store 'Really delete this log entry?', 'Confirmer la suppression de cette entrée ?'
-  
+
   l.store 'Task', 'Tâche'
   l.store 'New Feature', 'Nouvelle fonction'
   l.store 'Defect', 'Correction'
@@ -159,7 +159,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Major', 'Majeure'
   l.store 'Minor', 'Mineur'
   l.store 'Trivial', 'Bénin'
-  
+
   l.store 'Start', 'Commencer'
   l.store 'Duration Worked', 'Durée du travail accompli'
 
@@ -268,7 +268,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Show Tooltips', 'Afficher les bulles d\'aide'
   l.store 'Send Notifications', 'Envoyer des notifications'
   l.store 'Receive Notifications', 'Recevoir des notifications'
-  
+
   l.store 'User Information', 'Informations sur l\'utilisateur'
   l.store 'Username', 'Nom d\'utilisateur'
   l.store 'Password', 'Mot de passe'
@@ -440,5 +440,9 @@ Localization.define('fr_FR') do |l|
   # Reports filter
   l.store '[Any Priority]', '[Toutes les priorités]'
   l.store '[Any Severity]', '[Toutes les importances]'
+
+  # Preferences
+  l.store '1w 2d 3h 4m', '1s 2j 3h 4mn'
+  l.store '1w2d3h4m', '1s2j3h4mn'
 
 end

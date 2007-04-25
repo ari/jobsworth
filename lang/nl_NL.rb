@@ -416,7 +416,7 @@ Localization.define('nl_NL') do |l|
     l.store 'Thu', 'Do'
     l.store 'Fri', 'Vr'
     l.store 'Sat', 'Za'
-    
+
     # worked_nice
     l.store '[wdhm]', '[wdum]'
     l.store 'w', 'w'
@@ -424,7 +424,26 @@ Localization.define('nl_NL') do |l|
     l.store 'h', 'u'
     l.store 'm', 'm'
 
-    # Preferences
-    l.store 'Duration Format', 'Weergave Tijdsduur'    
-    l.store 'Workday Length', 'Workday Length'
-  end
+  # Preferences
+  l.store 'Duration Format', 'Weergave Tijdsduur'
+  l.store 'Workday Length', 'Workday Length'
+
+
+  # Tasks filter
+#  l.store '[Without Milestone]', '[Without Milestone]'
+
+  # Task tooltip
+#  l.store 'Progress', 'Progress'
+
+  # User Permissions
+#  l.store 'All', 'All'
+
+  # Reports filter
+#  l.store '[Any Priority]', '[Any Priority]'
+#  l.store '[Any Severity]', '[Any Severity]'
+
+  # Preferences
+  l.store '1w 2d 3h 4m', '1w 2d 3u 4m'
+  l.store '1w2d3h4m', '1w2d3u4m'
+
+end

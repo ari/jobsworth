@@ -428,4 +428,21 @@ Localization.define('es_ES') do |l|
   # Preferences
   l.store 'Duration Format', 'Formato de duración'
   l.store 'Workday Length', 'Workday Length'
+
+  # Tasks filter
+#  l.store '[Without Milestone]', '[Without Milestone]'
+
+  # Task tooltip
+#  l.store 'Progress', 'Progress'
+
+  # User Permissions
+#  l.store 'All', 'All'
+
+  # Reports filter
+#  l.store '[Any Priority]', '[Any Priority]'
+#  l.store '[Any Severity]', '[Any Severity]'
+
+  # Preferences
+  l.store '1w 2d 3h 4m', '1s 2d 3h 4m'
+  l.store '1w2d3h4m', '1s2d3h4m'
 end
