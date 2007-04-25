@@ -28,7 +28,7 @@ while($running) do
       end
     end
     user_ids.uniq!
-    puts "Users involved: " + user_ids.join(',')
+    puts "Users involved: " + user_ids.size.to_s
 
     user_ids.each do |u|
       user = User.find(u)
@@ -36,7 +36,7 @@ while($running) do
       user_tasks = user.tasks.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => 'project_id, name')
 
       user_tasks.each do | ut |
-        puts "  #{ut.due_at} => #{ut.name}"
+        puts "  [#{ut.id}] ##{ut.task_num} #{ut.name}"
       end
 
 #      Notifications::deliver_reminder(user_tasks, user)
