@@ -27,7 +27,7 @@ while($running) do
         user_ids += t.users.collect { |u| u.id if u.receive_notifications.to_i > 0 }
       end
     end
-    user_ids.uniq!
+    user_ids = user_ids.compact.uniq
     puts "Users involved: " + user_ids.size.to_s
 
     user_ids.each do |u|
@@ -39,13 +39,10 @@ while($running) do
         puts "  [#{ut.id}] ##{ut.task_num} #{ut.name}"
       end
 
-#      Notifications::deliver_reminder(user_tasks, user)
+      Notifications::deliver_reminder(user_tasks, user)
 
     end
   end
-
-
-
 
   secs = ((Time.now.change(:min => 1) + 1.hour) - Time.now).to_i
   puts "Done... Sleeping for #{secs}s"
