@@ -28,7 +28,7 @@ class WikiRevision < ActiveRecord::Base
 
       unless name.downcase.include? '://'
         ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
-        unless ref
+        if ref.nil? && self.wiki_page.name != name
           ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
           ref.save
         end
@@ -38,10 +38,10 @@ class WikiRevision < ActiveRecord::Base
     body.gsub!( CamelCase ) { |m|
       match = m.match(CamelCase)
       name = text = match[1]
-      
-	unless name.downcase.include? '://'
+
+        unless name.downcase.include? '://'
         ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
-        unless ref
+        if ref.nil? && self.wiki_page.name != name
           ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
           ref.save
         end
@@ -75,8 +75,8 @@ class WikiRevision < ActiveRecord::Base
         end
 
         "%(#{url_class})\"#{text}\":#{url}%"
-   
-      else     
+
+      else
         url = "/wiki/show/#{URI.encode(m)}"
         url_class = 'internal'
         url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, m])

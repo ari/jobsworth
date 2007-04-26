@@ -4,9 +4,10 @@
 <legend><%= @page.name %></legend>
 
 <% if @page.revisions.empty? %>
+<h3>This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.</h3>
 <%= start_form_tag :action => 'create', :id => @page.name %>
 <textarea name="body" rows="20" style="width:80%;">
-h3. This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.
+h3. <%= @page.name %>
 
 Use [[AnotherPage|another page]] or [[AnotherPage]] to link to and create other pages.
 
