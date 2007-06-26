@@ -97,7 +97,15 @@ class ProjectsController < ApplicationController
 
   def update
     @project = User.find(session[:user].id).projects.find(@params[:id])
+    old_client = @project.customer_id
+
     if @project.update_attributes(@params[:project])
+
+      # Need to update work-sheet entries?
+      if @project.customer_id != old_client
+        WorkLog.update_all("customer_id = #{@project.customer_id}", "project_id = #{@project.id} AND customer_id != #{@project.customer_id}")
+      end
+
       flash['notice'] = _('Project was successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
