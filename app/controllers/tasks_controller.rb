@@ -255,6 +255,7 @@ class TasksController < ApplicationController
     old_tags = @task.tags.collect {|t| t.name}.join(', ')
     old_users = @task.users.collect{ |u| u.id}.sort.join(',')
     old_users = "0" if old_users.nil? || old_users.empty?
+    old_project = @task.project.clone
     @old_task = @task.clone
 
     if @task.update_attributes(params[:task])
@@ -286,7 +287,6 @@ class TasksController < ApplicationController
         end
       end
 
-
       @task.duration = parse_time(params[:task][:duration]) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = session[:user].id
 
@@ -299,7 +299,7 @@ class TasksController < ApplicationController
       end
       @task.save
 
-
+      @task.reload
 
       body = ""
       if @old_task[:name] != @task[:name]
@@ -324,8 +324,9 @@ class TasksController < ApplicationController
 
       end
 
-      if @old_task.project_id != @task.project_id
-        body = body + "- <strong>Project</strong>: #{@old_task.project.name} -> #{@task.project.name}\n"
+      if old_project.id != @task.project_id
+        body = body + "- <strong>Project</strong>: #{old_project.name} -> #{@task.project.name}\n"
+        WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       end
 
       if @old_task.duration != @task.duration
@@ -761,7 +762,7 @@ class TasksController < ApplicationController
       if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
         due_date = DateTime.strptime( params[:log][:started_at], "#{session[:user].date_format} #{session[:user].time_format}" )
         @log.started_at = tz.local_to_utc(due_date)
-      end 
+      end
       @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
 
       @log.duration = parse_time(params[:log][:duration], true)
