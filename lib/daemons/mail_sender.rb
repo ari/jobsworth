@@ -12,7 +12,7 @@ end
 
 while($running) do
 
-  date = Time.now.utc.change(:min => 0) + 17.hours
+  date = Time.now.utc.change(:min => 0) + 16.hours
 
   puts "Checking tasks between #{date} and #{date + 1.hours}"
 
@@ -39,7 +39,11 @@ while($running) do
         puts "  [#{ut.id}] ##{ut.task_num} #{ut.name}"
       end
 
-      Notifications::deliver_reminder(user_tasks, user)
+      begin
+      	Notifications::deliver_reminder(user_tasks, user)
+      rescue
+        puts "  [#{ut.id}] #{user.email} failed."
+      end
 
     end
   end
