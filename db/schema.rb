@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 71) do
+ActiveRecord::Schema.define(:version => 72) do
 
   create_table "binaries", :force => true do |t|
     t.column "data", :binary
@@ -33,6 +33,14 @@ ActiveRecord::Schema.define(:version => 71) do
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
+
+  create_table "dependencies", :force => true do |t|
+    t.column "task_id", :integer
+    t.column "dependency_id", :integer
+  end
+
+  add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
+  add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
 
   create_table "generated_reports", :force => true do |t|
     t.column "company_id", :integer

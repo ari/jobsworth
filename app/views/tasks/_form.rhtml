@@ -125,14 +125,18 @@ function reset_owners() {
     }
 }
 
+function add_dependency() {
+  new Insertion.Before("dep_separator", '<label>Task #</label><input name=\"dependencies[]\" size=\"12\" type=\"text\"');
+}
 </script>
 
        <%= owner_string %>
       <div id="owner_separator"></div>
       <label for="task_requested_by"><%=_ 'Requested By' %></label>
       <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %><br/>
+      </fieldset>
 
-        </fieldset>
+
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
       <label for="task_type_id"><%=_ 'Type' %></label>
@@ -158,6 +162,21 @@ function reset_owners() {
     <%= hidden_field_tag "task[due_at]", "" %>
 <% end %>
       </fieldset>
+
+      <fieldset id="task_dependencies" style="padding-right:0;">
+        <legend><%=_ "Dependencies"%></legend>
+        <label for="new_dependency">New</label>
+
+        <a href="#" onclick="javascript:add_dependency(); false;"><img src="/images/add.png" border="0"></a>
+
+        <% @task.dependencies.each do |d| %>
+        <div id="dep_<%=d.id%>"><label for="task[dependencies][]"><%=_ 'Task' %> #</label>
+        <%= text_field_tag "dependencies[]", {}, {:value => d.task_num, :size => 12} %><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;"><img src="/images/delete.png" border="0"></a></div>
+
+        <% end %>
+        <div id="dep_separator"></div>
+      </fieldset>
+
       <fieldset id="task_notify" style="padding-right:0;">
         <legend><%=_ 'Notification' %></legend>
 
@@ -170,7 +189,7 @@ function reset_owners() {
 
       <% if @task.attachments.size > 0 %>
       <fieldset id="task_attachments">
-        <legend>Attachments</legend>
+        <legend><%=_ "Attachments" %></legend>
 
         <% for file in @task.attachments %>
         <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=human_size(file.file_size)%>)
