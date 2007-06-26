@@ -165,15 +165,15 @@ function add_dependency() {
 
       <fieldset id="task_dependencies" style="padding-right:0;">
         <legend><%=_ "Dependencies"%></legend>
-        <label for="new_dependency">New</label>
-
-        <a href="#" onclick="javascript:add_dependency(); false;"><img src="/images/add.png" border="0"></a>
 
         <% @task.dependencies.each do |d| %>
         <div id="dep_<%=d.id%>"><label for="task[dependencies][]"><%=_ 'Task' %> #</label>
         <%= text_field_tag "dependencies[]", {}, {:value => d.task_num, :size => 12} %><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;"><img src="/images/delete.png" border="0"></a></div>
 
         <% end %>
+        <label>Task #</label>
+        <input name="dependencies[]" size="12" type="text">
+        <a href="#" onclick="javascript:add_dependency(); false;"><img src="/images/add.png" border="0"></a>
         <div id="dep_separator"></div>
       </fieldset>
 

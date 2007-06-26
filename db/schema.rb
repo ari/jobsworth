@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(:version => 72) do
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
 
-  create_table "dependencies", :force => true do |t|
+  create_table "dependencies", :id => false, :force => true do |t|
     t.column "task_id", :integer
     t.column "dependency_id", :integer
   end

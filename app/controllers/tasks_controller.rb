@@ -174,6 +174,17 @@ class TasksController < ApplicationController
         end
       end
 
+      if params[:dependencies]
+        params[:dependencies].each do |d|
+          next if d.to_i == 0
+          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, d.to_i])
+          unless t.nil?
+            @task.dependencies << t
+          end
+        end
+        @task.save
+      end
+
       if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
 
         filename = params[:task_file].original_filename
@@ -284,6 +295,17 @@ class TasksController < ApplicationController
           u = User.find(o.to_i, :conditions => ["company_id = ?", session[:user].company_id])
           to = TaskOwner.new(:user => u, :task => @task)
           to.save
+        end
+      end
+
+      if params[:dependencies]
+        @task.dependencies.delete @task.dependencies
+        params[:dependencies].each do |d|
+          next if d.to_i == 0
+          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, d.to_i])
+          unless t.nil?
+            @task.dependencies << t
+          end
         end
       end
 

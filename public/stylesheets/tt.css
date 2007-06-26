@@ -327,6 +327,10 @@ fieldset label {
   width: 7em;
 }
 
+#task_dependencies label {
+  width: 7em;
+}
+
 #task_attachments label {
   width: 7em;
 }

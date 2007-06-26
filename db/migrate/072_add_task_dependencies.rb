@@ -1,6 +1,6 @@
 class AddTaskDependencies < ActiveRecord::Migration
   def self.up
-    create_table :dependencies do |t|
+    create_table :dependencies, :id => false do |t|
       t.column :task_id, :integer
       t.column :dependency_id, :integer
     end
