@@ -52,6 +52,9 @@ class ApplicationController < ActionController::Base
       # Subscribe to chat and general info channels
       session[:channels] = ["chat_#{session[:user].company_id}", "info_#{session[:user].company_id}"]
 
+      # Refresh work sheet
+      session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => 'id')
+
       # Update last seen, to track online users
       ActiveRecord::Base.connection.execute("update users set last_ping_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
 

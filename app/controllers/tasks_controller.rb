@@ -706,11 +706,20 @@ class TasksController < ApplicationController
 
 
   def start_work
-    sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id])
+    sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
 
     if sheet
       self.swap_work_ajax
     end
+
+    sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    if sheet
+	session[:sheet] = sheet
+        flash['notice'] = "You're already working on #{sheet.task.name}. Please stop or cancel it first."
+        redirect_from_last
+        return
+    end
+
 
     task = Task.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     sheet = Sheet.new
@@ -739,7 +748,7 @@ class TasksController < ApplicationController
   end
 
   def cancel_work_ajax
-    if sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task.id])
+    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task_id], :order => "id")
       sheet.destroy
     end
     session[:sheet] = nil
@@ -750,7 +759,7 @@ class TasksController < ApplicationController
 
 
   def swap_work_ajax
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task.id])
+    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
 
       @old_task = sheet.task
       @old_task.updated_by_id = session[:user].id
@@ -803,7 +812,7 @@ class TasksController < ApplicationController
   end
 
   def stop_work
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task.id])
+    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
       worklog = WorkLog.new
       worklog.user = session[:user]
       worklog.company = session[:user].company
