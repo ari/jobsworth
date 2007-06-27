@@ -168,12 +168,17 @@ function add_dependency() {
 
         <% @task.dependencies.each do |d| %>
         <div id="dep_<%=d.id%>"><label for="task[dependencies][]"><%=_ 'Task' %> #</label>
-        <%= text_field_tag "dependencies[]", {}, {:value => d.task_num, :size => 12} %><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;"><img src="/images/delete.png" border="0"></a></div>
+        <%= text_field_tag "dependencies[]", {}, {:value => d.task_num, :size => 12}.merge(perms['prioritize']) %><% if perms['prioritize'].empty? %><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/delete.png" border="0" title="<%=_ 'Remove dependency'%>" class="tooltip"></a><% end %></div>
 
         <% end %>
         <label>Task #</label>
-        <input name="dependencies[]" size="12" type="text">
-        <a href="#" onclick="javascript:add_dependency(); false;"><img src="/images/add.png" border="0"></a>
+        <% if perms['prioritize'].empty? %>
+        <input name="dependencies[]" size="12" type="text" >
+          <a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a>
+        <% else %>
+        <input name="dependencies[]" size="12" type="text" disabled="disabled">
+        <% end %>
+
         <div id="dep_separator"></div>
       </fieldset>
 
