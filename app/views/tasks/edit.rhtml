@@ -13,8 +13,15 @@
       </td>
     </tr>
     <tr><td colspan="3" class="tasks_updated_by"><span class="optional">
-     <%=_ 'Created' %> <%= tz.utc_to_local(@task.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.created_at %> <%= "#{_('by')} #{User.find(@task.creator_id).name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
-     <% if @task.updated_at && @task.updated_at != @task.created_at %> - <%=_ 'Last Updated' %> <%= tz.utc_to_local(@task.updated_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.updated_at %> <%= "#{_('by')} #{User.find(@task.updated_by_id).name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
+     <% creator = User.find(@task.creator_id)
+        creator_name = (creator.nil? ? "Unknown" : creator.name)
+
+        updator = User.find(@task.updated_by_id)
+        updator_name = (updator.nil? ? "Unknown" : updator.name)
+
+     %>
+     <%=_ 'Created' %> <%= tz.utc_to_local(@task.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.created_at %> <%= "#{_('by')} #{creator_name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
+     <% if @task.updated_at && @task.updated_at != @task.created_at %> - <%=_ 'Last Updated' %> <%= tz.utc_to_local(@task.updated_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") if @task.updated_at %> <%= "#{_('by')} #{updator_name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
 </table>
 <table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0" id="content">
 <%= render_partial "form" %>
