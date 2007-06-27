@@ -119,7 +119,6 @@ class ProjectsController < ApplicationController
     @project.sheets.destroy_all
     @project.tasks.destroy_all
     @project.work_logs.destroy_all
-    @project.activities.destroy_all
     @project.milestones.destroy_all
     @project.project_permissions.destroy_all
     @project.project_files.each { |p|
