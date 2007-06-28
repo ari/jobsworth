@@ -29,8 +29,8 @@ class Task < ActiveRecord::Base
 
   has_and_belongs_to_many      :tags, :join_table => :task_tags
 
-  has_and_belongs_to_many       :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id"
-  has_and_belongs_to_many       :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id"
+  has_and_belongs_to_many       :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => "task_num"
+  has_and_belongs_to_many       :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => "task_num"
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
