@@ -189,6 +189,23 @@ function add_dependency() {
 
       </fieldset>
 
+<% unless @task.dependants.empty? %>
+
+      <fieldset id="task_dependants" style="padding-right:0;">
+        <legend><%=_ "Depended on by"%></legend>
+
+        <% @task.dependants.each do |d| %>
+
+        <div id="dep_<%=d.id%>" style="clear:both;">
+        <div style="float:left;"><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
+        </div>
+        <% end %>
+
+      </fieldset>
+
+
+<% end %>
+
       <fieldset id="task_notify" style="padding-right:0;">
         <legend><%=_ 'Notification' %></legend>
 

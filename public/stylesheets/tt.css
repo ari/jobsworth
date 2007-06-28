@@ -246,8 +246,7 @@ img {
 }
 
 .waiting_dependency a, .waiting_dependency small {
-  color: #ccc;
-  background-color: #fbfbfb;
+  color: #bbb;
   font-style: italic;
 }
 

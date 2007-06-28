@@ -45,7 +45,7 @@ class Task < ActiveRecord::Base
   end
 
   def ready?
-    self.dependencies.collect{ |t| t.done? }.empty?
+    self.dependencies.reject{ |t| t.done? }.empty?
   end
 
   def set_task_num(company_id)
