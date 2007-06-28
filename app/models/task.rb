@@ -302,14 +302,22 @@ class Task < ActiveRecord::Base
   def to_tip(options = { })
     owners = "No one"
     owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
-    res = ""
-    res << "<strong>#{_('Summary')}</strong> #{self.name}<br/>"
-    res << "<strong>#{_('Project')}</strong> #{self.project.full_name}<br/>"
-    res << "<strong>#{_('Tags')}</strong> #{self.full_tags}<br/>"
-    res << "<strong>#{_('Assigned To')}</strong> #{owners}<br/>"
-    res << "<strong>#{_('Status')}</strong> #{_(self.status_type)}<br/>"
-    res << "<strong>#{_('Progress')}</strong> #{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}"
-    res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
+    res = "<table cellpadding=0 cellspacing=0>"
+    res << "<tr><td style=\"padding-right:1em;\"><strong>#{_('Summary')}</strong></td><td>&nbsp;#{self.name}</tr>"
+    res << "<tr><td><strong>#{_('Project')}</strong></td><td>&nbsp;#{self.project.full_name}</td></tr>"
+    res << "<tr><td><strong>#{_('Tags')}</strong></td><td>&nbsp;#{self.full_tags}</td></tr>"
+    res << "<tr><td><strong>#{_('Assigned To')}</strong></td><td>&nbsp;#{owners}</td></tr>"
+    res << "<tr><td><strong>#{_('Status')}</strong></td><td>&nbsp;#{_(self.status_type)}</td></tr>"
+
+    unless self.dependencies.empty?
+      res << "<tr><td><strong>#{_('Dependencies')}</strong></td><td>&nbsp;#{self.dependencies.collect { |t| t.issue_num}.join(', ')}</td></tr>"
+    end
+    unless self.dependants.empty?
+      res << "<tr><td><strong>#{_('Depended on by')}</strong></td><td>&nbsp;#{self.dependants.collect { |t| t.issue_num}.join(', ')}</td></tr>"
+    end
+    res << "<tr><td><strong>#{_('Progress')}</strong></td><td>&nbsp;#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}</tr>"
+    res << "<tr><td colspan=\"2\"><div class=tip_description>#{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div></td></tr>" if( self.description && self.description.strip.length > 0)
+    res << "</table>"
     res.gsub(/\"/,'&quot;')
   end
 end

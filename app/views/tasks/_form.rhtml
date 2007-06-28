@@ -183,8 +183,8 @@ function add_dependency() {
         <% if perms['prioritize'].empty? %>
                <div style="float:right;"><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/delete.png" border="0" title="<%=_ 'Remove dependency'%>" class="tooltip"></a></div>
         <% end %>
-        </div>
         <input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
+        </div>
         <% end %>
 
       </fieldset>
