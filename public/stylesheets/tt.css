@@ -245,6 +245,12 @@ img {
   font-size: 10px;
 }
 
+.waiting_dependency a, .waiting_dependency small {
+  color: #ccc;
+  background-color: #fbfbfb;
+  font-style: italic;
+}
+
 .optional {
   color: #a6a6a6;
   font-style: italic;

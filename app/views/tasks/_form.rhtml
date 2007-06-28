@@ -166,20 +166,27 @@ function add_dependency() {
       <fieldset id="task_dependencies" style="padding-right:0;">
         <legend><%=_ "Dependencies"%></legend>
 
-        <% @task.dependencies.each do |d| %>
-        <div id="dep_<%=d.id%>"><label for="task[dependencies][]"><%=_ 'Task' %> #</label>
-        <%= text_field_tag "dependencies[]", {}, {:value => d.task_num, :size => 12}.merge(perms['prioritize']) %><% if perms['prioritize'].empty? %><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/delete.png" border="0" title="<%=_ 'Remove dependency'%>" class="tooltip"></a><% end %></div>
-
-        <% end %>
-        <label>Task #</label>
+        <label><%=_ 'Depends on '%> #</label>
         <% if perms['prioritize'].empty? %>
         <input name="dependencies[]" size="12" type="text" >
-          <a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a>
+          <div style="float:right;"><a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a></div>
         <% else %>
         <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>
 
         <div id="dep_separator"></div>
+
+        <% @task.dependencies.each do |d| %>
+
+        <div id="dep_<%=d.id%>" style="clear:both;">
+        <div style="float:left;"><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
+        <% if perms['prioritize'].empty? %>
+               <div style="float:right;"><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/delete.png" border="0" title="<%=_ 'Remove dependency'%>" class="tooltip"></a></div>
+        <% end %>
+        </div>
+        <input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
+        <% end %>
+
       </fieldset>
 
       <fieldset id="task_notify" style="padding-right:0;">

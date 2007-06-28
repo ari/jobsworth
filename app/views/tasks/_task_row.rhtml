@@ -18,6 +18,8 @@
 
  priority << " #{task.project.to_css_name}"
 
+ priority << " waiting_dependency" unless task.ready?
+
 %>
 
 <% if @session[:sheet] && @session[:sheet].task.id == task.id %>

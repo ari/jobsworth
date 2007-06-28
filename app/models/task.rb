@@ -37,17 +37,15 @@ class Task < ActiveRecord::Base
 
 
   def done?
-    res = 0
-    if self.status > 1
-      res = 1
-    end
+    self.status > 1
   end
 
   def done
-    res = 0
-    if self.status > 1
-      res = 1
-    end
+    self.status > 1
+  end
+
+  def ready?
+    self.dependencies.collect{ |t| t.done? }.empty?
   end
 
   def set_task_num(company_id)
@@ -59,6 +57,7 @@ class Task < ActiveRecord::Base
     if self.due_at != nil
       res = self.due_at - Time.now.utc
     end
+    res
   end
 
   def overdue?
@@ -68,6 +67,7 @@ class Task < ActiveRecord::Base
         res = 1
       end
     end
+    res
   end
 
   def worked_minutes
