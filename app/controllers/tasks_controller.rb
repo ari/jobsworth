@@ -264,6 +264,7 @@ class TasksController < ApplicationController
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
     old_tags = @task.tags.collect {|t| t.name}.join(', ')
+    old_deps = @task.dependencies.collect { |t| t.issue_num }.join(', ')
     old_users = @task.users.collect{ |u| u.id}.sort.join(',')
     old_users = "0" if old_users.nil? || old_users.empty?
     old_project_id = @task.project_id
@@ -397,6 +398,11 @@ class TasksController < ApplicationController
       new_tags = @task.tags.collect {|t| t.name}.join(', ')
       if old_tags != new_tags
         body << "- <strong>Tags</strong>: #{new_tags}\n"
+      end
+
+      new_deps = @task.dependencies.collect { |t| t.issue_num}.join(', ')
+      if old_deps != new_deps
+        body << "- <strong>Dependencies</strong>: #{new_deps}"
       end
 
       worklog = WorkLog.new
