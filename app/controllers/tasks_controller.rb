@@ -266,7 +266,8 @@ class TasksController < ApplicationController
     old_tags = @task.tags.collect {|t| t.name}.join(', ')
     old_users = @task.users.collect{ |u| u.id}.sort.join(',')
     old_users = "0" if old_users.nil? || old_users.empty?
-    old_project = @task.project.clone
+    old_project_id = @task.project_id
+    old_project_name = @task.project.name
     @old_task = @task.clone
 
     if @task.update_attributes(params[:task])
@@ -346,8 +347,8 @@ class TasksController < ApplicationController
 
       end
 
-      if old_project.id != @task.project_id
-        body = body + "- <strong>Project</strong>: #{old_project.name} -> #{@task.project.name}\n"
+      if old_project_id != @task.project_id
+        body = body + "- <strong>Project</strong>: #{old_project_name} -> #{@task.project.name}\n"
         WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       end
 
