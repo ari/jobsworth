@@ -137,13 +137,24 @@ class TasksController < ApplicationController
 
     @task = Task.new(params[:task])
 
-    if !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-      due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
-                                                                                                 flash['notice'] = _('Invalid due date ignored.')
-                                                                                                  due_date = nil
-                                                                                                end
-      @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
-    end
+      if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
+
+        repeat = @task.parse_repeat(params[:task][:due_at])
+        if  repeat != ""
+          @task.repeat = repeat
+          @task.due_at = tz.local_to_utc(@task.next_repeat_date)
+        else
+          @task.repeat = nil
+          due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
+                                                                                                      flash['notice'] = _('Invalid due date ignored.')
+                                                                                                      due_date = nil
+                                                                                                    end
+          @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+        end
+      else
+        @task.repeat = nil
+      end
+
 
     @task.company_id = session[:user].company_id
     @task.duration = parse_time(params[:task][:duration])
@@ -152,8 +163,6 @@ class TasksController < ApplicationController
     @task.set_tags(params[:task][:set_tags])
     @task.set_task_num(session[:user].company_id)
     @task.duration = 0 if @task.duration.nil?
-
-
 
     if @task.save
 
@@ -277,7 +286,8 @@ class TasksController < ApplicationController
     @repeat.notify_emails = task.notify_emails
     @repeat.milestone_id = task.milestone_id
     @repeat.hidden = task.hidden
-    @repeat.due_at = task.next_repeat_date
+    @repeat.due_at = @task.due_at
+    @repeat.due_at = @repeat.next_repeat_date
     @repeat.description = task.description
 
     @repeat.save
