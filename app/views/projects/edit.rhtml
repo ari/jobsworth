@@ -9,9 +9,11 @@
           <%= submit_tag _("Edit"), :class => 'nolabel' %>
           <%= end_form_tag %>
           <br />
-            <% if @project.user_id == session[:user].id %>
+            <% if @project.user_id == session[:user].id || session[:user].admin > 0%>
             <div style="float: right;"><%= link_to( _("Delete Project"), {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>
-            <div style="float: right;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> |&nbsp;</div>
+            <% end %>
+            <% if session[:user].can?( @project, 'grant' ) || session[:user].admin > 0 %>
+            <div style="float: right;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "|&nbsp;" if @project.user_id == session[:user].id %></div>
             <% end %>
             <% if session[:user].can?( @project, 'milestone' ) %>
             <div style="float:left;"><%= link_to _("New Milestone"), {:controller => 'milestones', :action => 'new', :project_id => @project}  %></div>
