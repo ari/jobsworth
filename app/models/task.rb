@@ -51,6 +51,7 @@ class Task < ActiveRecord::Base
     code = args[0]
 
     @start = self.due_at
+    @start ||= Time.now.utc
 
     case code
     when ''  :
