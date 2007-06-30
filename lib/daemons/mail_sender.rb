@@ -35,14 +35,14 @@ while($running) do
       puts "Handling tasks for #{user.name} / #{user.company.name}"
       user_tasks = user.tasks.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => 'project_id, name')
 
-      user_tasks.each do | ut |
+      user_tasks.each do |ut|
         puts "  [#{ut.id}] ##{ut.task_num} #{ut.name}"
       end
 
       begin
-      	Notifications::deliver_reminder(user_tasks, user)
+        Notifications::deliver_reminder(user_tasks, user)
       rescue
-        puts "  [#{ut.id}] #{user.email} failed."
+        puts "  [#{user.id}] #{user.email} failed."
       end
 
     end
