@@ -150,11 +150,20 @@ function add_dependency() {
       <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => '2w 3d 1h'}.merge(perms['prioritize']) %><br/>
       <label for="task_due_at"><%=_ 'Due Date' %></label>
         <% if perms['prioritize'].empty? %>
-        <%= calendar_field 'task', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => _('Show Calendar') },
-        { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true }
-        %><br/>
+          <% if @task.repeat && @task.repeat.length > 0 %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => _('Show Calendar'), :value => @task.repeat_summary },
+          { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <% else %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => _('Show Calendar') },
+          { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <% end %>
+          <br/>
         <% else %>
+          <% if @task.repeat && @task.repeat.length > 0 %>
+        <%= text_field 'task', 'due_at', {:size => 12, :value => @task.repeat_summary}.merge(perms['prioritize']) %><br/>
+          <% else %>
         <%= text_field 'task', 'due_at', {:size => 12}.merge(perms['prioritize']) %><br/>
+          <% end %>
         <% end %>
 
 <% else %>

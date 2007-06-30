@@ -259,6 +259,48 @@ class TasksController < ApplicationController
 #    render :action => 'edit', :layout => false
 #  end
 
+  def repeat_task(task)
+    @repeat = Task.new
+    @repeat.status = 0
+    @repeat.project_id = task.project_id
+    @repeat.company_id = task.company_id
+    @repeat.name = task.name
+    @repeat.repeat = task.repeat
+    @repeat.requested_by = task.requested_by
+    @repeat.creator_id = task.creator_id
+    @repeat.type_id = task.type_id
+    @repeat.priority = task.priority
+    @repeat.severity_id = task.severity_id
+    @repeat.set_tags(task.tags.collect{|t| t.name}.join(', '))
+    @repeat.set_task_num(session[:user].company_id)
+    @repeat.duration = task.duration
+    @repeat.notify_emails = task.notify_emails
+    @repeat.milestone_id = task.milestone_id
+    @repeat.hidden = task.hidden
+    @repeat.due_at = task.next_repeat_date
+    @repeat.description = task.description
+
+    @repeat.save
+    @repeat.reload
+
+    task.notifications.each do |w|
+      n = Notification.new(:user => w.user, :task => @repeat)
+      n.save
+    end
+
+    task.task_owners.each do |o|
+      to = TaskOwner.new(:user => o.user, :task => @repeat)
+      to.save
+    end
+
+    task.dependencies.each do |d|
+        @repeat.dependencies << d
+    end
+
+    @repeat.save
+
+  end
+
   def update
     projects = User.find(session[:user].id).projects.collect{|p|p.id}
 
@@ -274,11 +316,21 @@ class TasksController < ApplicationController
     if @task.update_attributes(params[:task])
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-        due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
-                                                                                                 flash['notice'] = _('Invalid due date ignored.')
-                                                                                                  due_date = nil
-                                                                                                end
-        @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+
+        repeat = @task.parse_repeat(params[:task][:due_at])
+        if  repeat != ""
+          @task.repeat = repeat
+          @task.due_at = tz.local_to_utc(@task.next_repeat_date)
+        else
+          @task.repeat = nil
+          due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
+                                                                                                      flash['notice'] = _('Invalid due date ignored.')
+                                                                                                      due_date = nil
+                                                                                                    end
+          @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+        end
+      else
+        @task.repeat = nil
       end
 
       unless params[:watchers].nil?
@@ -316,6 +368,15 @@ class TasksController < ApplicationController
 
       if @task.status > 1 && @task.completed_at.nil?
         @task.completed_at = Time.now.utc
+
+        # Repeat this task every X...
+        if @task.next_repeat_date != nil
+
+          @task.save
+          @task.reload
+
+          repeat_task(@task)
+        end
       end
 
       if @task.status < 2 && !@task.completed_at.nil?
@@ -555,6 +616,9 @@ class TasksController < ApplicationController
       @task.updated_by_id = session[:user].id
       @task.status = 2
       @task.save
+      @task.reload
+
+      repeat_task(@task)
 
       worklog = WorkLog.new
       worklog.user = session[:user]

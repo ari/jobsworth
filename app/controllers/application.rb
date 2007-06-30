@@ -104,6 +104,48 @@ class ApplicationController < ActionController::Base
     total
   end
 
+  def parse_repeat(r)
+    # every monday
+    # every 15th
+    # every last monday
+    # every 3rd tuesday
+    # every 01/02
+    # every 12 days
+
+    r = r.strip.downcase
+
+    return unless r[0..5] == 'every '
+
+    tokens = r[6..-1].split(' ')
+
+    mode = ""
+    args = []
+
+    if tokens.size == 1
+      Date::DAYNAMES.each do |d|
+        if d.downcase == tokens[0]
+          mode = "w"
+          args[0] = tokens[0]
+          break
+        end
+      end
+
+      if mode == ""
+        1.upto(Task::REPEAT_DATE.size) do |i|
+          if Task::REPEAT_DATE[i].include? tokens[0]
+            mode = 'm'
+            args[0] = i
+            break
+          end
+        end
+      end
+
+    end
+
+
+  end
+
+
   # Redirect back to the last important page, forcing the tutorial unless that's completed.
   def redirect_from_last
     if session[:history] && session[:history].size > 0
