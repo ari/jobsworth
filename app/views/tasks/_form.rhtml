@@ -49,7 +49,21 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
       <fieldset id="task_project_selection" style="padding-right:0;">
         <legend><%=_ 'Target' %></legend>
           <label for="task_project_id"><%=_ 'Project' %></label>
-          <%= select 'task', 'project_id', @projects, {:selected => selected_project}, perms['reassign'] %><br/>
+
+          <select name="task[project_id]" id="task_project_id" <%= perms['reassign'] %>>
+          <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
+          <% @clients.each do |c| %>
+          <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"]) %>
+            <% if @client_projects.size > 0 %>
+            <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
+              <% @client_projects.each do |p| %>
+                 <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id == selected_project%>><%= p.name %></option>
+              <% end %>
+           <% end %>
+
+          <% end %>
+
+           </select>
 
           <script type="text/javascript">
 //<![CDATA[
@@ -75,7 +89,7 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 
 users = Project.find(selected_project).users.find(:all, :order => 'name' )
 
-resource_string = select_tag 'users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join(''), perms['reassign']
+resource_string = select_tag 'users[]', "<option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join(''), perms['reassign']
 resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
 owner_string = ''

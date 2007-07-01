@@ -1237,3 +1237,17 @@ li.help {
 #wiki .internal_missing a {
   color: #f00;
 }
+
+.select_heading  {
+  color:#566CA5;
+  font-weight: bold;
+}
+
+.select_default {
+  color: #FFC266;
+  font-weight: bold;
+}
+
+.select_item  {
+  text-indent: 1em;
+}
