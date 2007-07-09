@@ -123,16 +123,16 @@ class Task < ActiveRecord::Base
 
     r = r.strip.downcase
 
-    return unless r[0..5] == 'every '
+    return unless r[0..(-1 + (_('every') + " ").length)] == _('every') + " "
 
-    tokens = r[6..-1].split(' ')
+    tokens = r[((_('every') + " ").length)..-1].split(' ')
 
     mode = ""
     args = []
 
     if tokens.size == 1
 
-      if tokens[0] == 'day'
+      if tokens[0] == _('day')
         # every day
         mode = "a"
         args[0] = '1'
@@ -178,14 +178,14 @@ class Task < ActiveRecord::Base
 
       if mode == ""
         # every 14 days
-        if tokens[1] == 'days'
+        if tokens[1] == _('days')
           mode = 'a'
           args[0] = tokens[0].to_i
         end
       end
 
       if mode == ""
-        if tokens[0] == 'last'
+        if tokens[0] == _('last')
           0.upto(Date::DAYNAMES.size - 1) do |d|
             if Date::DAYNAMES[d].downcase == tokens[1]
               mode = 'l'

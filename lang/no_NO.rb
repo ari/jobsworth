@@ -450,5 +450,10 @@ Localization.define('no_NO') do |l|
   l.store "Dependencies", "Avhenger av"
   l.store 'Add another dependency', "Ny avhengighet"
   l.store 'Remove dependency', "Fjern avhengighet"
+  l.store "every", 'hver'
+  l.store "[Any Task]", "[Alle Oppgaver]"
 
+  l.store 'day', 'dag' # every day
+  l.store 'days', 'dag' # every 14 days
+  l.store 'last', 'siste' # every last thursday
 end
