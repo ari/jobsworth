@@ -818,12 +818,36 @@ class TasksController < ApplicationController
   end
 
   def filter
-    session[:filter_customer] = params[:filter_customer]
+
+    f = params[:filter]
+
+    if f == "0"
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "0"
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'c'
+      session[:filter_customer] = f[1..-1]
+      session[:filter_milestone] = "0"
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'p'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "0"
+      session[:filter_project] = f[1..-1]
+    elsif f[0..0] == 'm'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = f[1..-1]
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'u'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "-1"
+      session[:filter_project] = f[1..-1]
+    end
+
+
+
     session[:filter_user] = params[:filter_user]
-    session[:filter_milestone] = params[:filter_milestone]
     session[:filter_hidden] = params[:filter_hidden]
     session[:filter_status] = params[:filter_status]
-    session[:filter_project] = params[:filter_project]
 
     session[:group_tags] = params[:group_tags]
 

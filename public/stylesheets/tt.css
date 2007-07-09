@@ -1010,10 +1010,6 @@ a.description {
   font-size: 10px;
 }
 
-#filter_customer {
-  font-size: 10px;
-}
-
 #filter_status {
   font-size: 10px;
 }
@@ -1022,11 +1018,7 @@ a.description {
   font-size: 10px;
 }
 
-#filter_milestone {
-  font-size: 10px;
-}
-
-#filter_project {
+#filter {
   font-size: 10px;
 }
 
@@ -1250,4 +1242,8 @@ li.help {
 
 .select_item  {
   text-indent: 1em;
+}
+.select_subitem  {
+  text-indent: 2em;
+  font-style: italic;
 }

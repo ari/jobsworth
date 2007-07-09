@@ -35,68 +35,35 @@
             %>
             <%= start_form_tag( :controller => 'tasks', :action => 'filter' ) %>
 
-
-
-            <% if @clients.size > 1  %>
-            <select name="filter_customer" id="filter_customer" onchange="javascript:document.forms[1].submit();">
-
-              <option value="0" class="select_default"><%= _("[Any Client]") %></option>
-              <%= options_for_select @clients, session[:filter_customer] %>
-            </select>
-            <%
-              filter_count += 1
-              end
-              %>
-
-            <% if @projects.size > 1 %>
-            <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
-              <option value="0" class="select_default"><%= _("[Any Project]") %></option>
+            <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 
                 <% @clients.each do |c| %>
-                <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"]) %>
-                <% if @client_projects.size > 0 %>
-                <option value="" disabled="disabled" class="select_heading"><%= c[0] %></option>
-                  <% @client_projects.each do |p| %>
-                    <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id == session[:filter_project].to_i%>><%= p.name %></option>
-                  <% end %>
-                <% end %>
+                  <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"]) %>
+                  <% if @client_projects.size > 0 %>
+                  <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
+                    <% @client_projects.each do |p| %>
+                      <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>><%= p.name %></option>
+                      <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p.id} AND completed_at IS NULL"], :order => "due_at, name") %>
+                      <% if @project_milestones.size > 0 -%>
+                       <% @project_milestones.each do |m| -%>
+                         <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>><%= m.name %></option>
+                       <% end -%>
+                       <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>><%= _("[Unassigned]") -%></option>
+                      <% end -%>
+                    <% end -%>
+                  <% end -%>
                 <% end %>
             </select>
             <%
               filter_count += 1
-              end
               %>
 
             <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Any User]") %></option>
               <%= options_for_select @users, session[:filter_user] %>
-              <option value="-1" class="select_default"><%= _("[Unassigned]") %></option>
-            </select>
-            <%
-              filter_count += 1
-              end
-              %>
-            <% if filter_count > 2 %>
-              <br />
-            <% filter_count = 0
-                end %>
-
-            <% if @milestones.size > 0 %>
-            <select name="filter_milestone" id="filter_milestone" onchange="javascript:document.forms[1].submit();">
-              <option value="0" class="select_default"><%= _("[Any Milestone]") %></option>
-
-                <% @projects.each do |p| %>
-                <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p[1]} AND completed_at IS NULL"], :order => "due_at, name") %>
-                <% if @project_milestones.size > 0 %>
-                <option value="" disabled="disabled" class="select_heading"><%= p[0] %></option>
-                  <% @project_milestones.each do |m| %>
-                    <option value="<%=m.id%>" class="select_item"<%= " selected" if m.id == session[:filter_milestone].to_i%>><%= m.name %></option>
-                  <% end %>
-                <% end %>
-                <% end %>
-
-              <option value="-1" class="select_default"><%= _("[Unassigned]") %></option>
+              <option value="-1" class="select_default"<%= " selected" if session[:filter_user].to_i == -1 %>><%= _("[Unassigned]") %></option>
             </select>
             <%
               filter_count += 1
