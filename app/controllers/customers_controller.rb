@@ -83,24 +83,54 @@ class CustomersController < ApplicationController
       @customer.binary.destroy
     end
 
-    @binary = Binary.new
-    @binary.data = @params['customer']['tmp_file'].read
-    @binary.save
-    @customer.binary = @binary
-    @params['customer'].delete('tmp_file')
-
-    if @customer.save
-      flash['notice'] = _('Logo successfully uploaded.')
-      redirect_from_last
-    else
-      render_action 'edit'
+    if !@customer.logo? || !File.directory?(@customer.path)
+      Dir.mkdir(@customer.path, 0755) rescue begin
+                                                flash['notice'] = _('Unable to create storage directory.')
+                                                redirect_to :action => 'list'
+                                                return
+                                              end
     end
+    File.open(@customer.logo_path, "wb", 0755) { |f| f.write( params['customer']['tmp_file'].read ) } rescue begin
+                                                                                                               flash['notice'] = _("Permission denied while saving file.")
+                                                                                                               redirect_to :action => 'list'
+                                                                                                               return
+                                                                                                             end
+
+
+    if( File.size?(@customer.logo_path).to_i > 0 )
+      image = Magick::Image.read( @customer.logo_path ).first
+
+      if image.columns > 250 or image.rows > 100
+
+        if image.columns > image.rows
+          scale = 250.0 / image.columns
+        else
+          scale = 100.0 / image.rows
+        end
+        image.scale!(scale)
+
+        File.open(@customer.logo_path, "wb", 0777) { |f| f.write( image.to_blob ) } rescue begin
+                                                                                             flash['notice'] = _("Permission denied while saving resized file.")
+                                                                                             redirect_to :action => 'list'
+                                                                                             return
+                                                                                           end
+
+      end
+      GC.start
+    else
+      flash['notice'] = _('Empty file.')
+      redirect_from_last
+      return
+    end
+
+    flash['notice'] = _('Logo successfully uploaded.')
+    redirect_from_last
   end
 
   def delete_logo
     @customer = Customer.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     if !@customer.nil?
-      @customer.binary.destroy
+      File.delete(@customer.logo_path) rescue begin end
       @customer.binary_id = nil
       @customer.save
     end
@@ -117,12 +147,12 @@ class CustomersController < ApplicationController
       @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     end
 
-    if @customer.binary && @customer.binary.data.length == 0
+    unless @customer.logo?
       render :nothing => true
       return
     end
 
-    image = Magick::Image.from_blob( @customer.binary.data ).first
+    image = Magick::Image.read( @customer.logo_path ).first
     send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
   end
 

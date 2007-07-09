@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 73) do
+ActiveRecord::Schema.define(:version => 74) do
 
   create_table "binaries", :force => true do |t|
     t.column "data", :binary

@@ -18,12 +18,12 @@ class ProjectFilesController < ApplicationController
   def show
     @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
 
-    if @project_files.file_type == ProjectFile::FILETYPE_IMG
-      image = Magick::Image.from_blob( @project_files.binary.data ).first
+    if @project_files.thumbnail?
+      image = Magick::Image.read(@project_files.file_path ).first
       send_data image.to_blob, :filename => @project_files.filename, :type => image.mime_type, :disposition => 'inline'
       GC.start
     else
-      send_data @project_files.binary.data, :filename => @project_files.filename, :type => "application/octet-stream"
+      send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
     end
   end
 
@@ -31,8 +31,8 @@ class ProjectFilesController < ApplicationController
   def thumbnail
     @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
 
-    if @project_files.file_type == ProjectFile::FILETYPE_IMG
-      image = Magick::Image.from_blob( @project_files.thumbnail.data ).first
+    if @project_files.thumbnail?
+      image = Magick::Image.read( @project_files.thumbnail_path ).first
       send_data image.to_blob, :filename => "thumb_" + @project_files.filename, :type => image.mime_type, :disposition => 'inline'
       GC.start
     end
@@ -40,7 +40,7 @@ class ProjectFilesController < ApplicationController
 
   def download
     @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
-    send_data @project_files.binary.data, :filename => @project_files.filename, :type => "application/octet-stream"
+    send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
   end
 
 
@@ -61,108 +61,125 @@ class ProjectFilesController < ApplicationController
       return
     end
 
+
     filename = filename.split("/").last
     filename = filename.split("\\").last
 
     @params['project_files']['filename'] = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
-    @binary = Binary.new
-    @binary.data = @params['project_files']['tmp_file'].read
-    @binary.save rescue begin
-                          @params['project_files'].delete('tmp_file')
-                          flash['notice'] = _('File too big.')
-                          redirect_to :action => 'list'
-                          return
-                        end
+    tmp_file = @params['project_files']['tmp_file']
 
     @params['project_files'].delete('tmp_file')
 
     @project_files = ProjectFile.new(@params[:project_files])
-    @project_files.binary = @binary
-    @project_files.file_size = @binary.data.size
 
     @project_files.company = session[:user].company
     @project_files.customer = @project_files.project.customer
 
+    @project_files.save
+    @project_files.reload
 
-    if @project_files.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && @project_files.file_size > 0
-      image = Magick::Image.from_blob( @binary.data ).first
+    if !File.exist?(@project_files.path) || !File.directory?(@project_files.path)
+      File.mkdir(@project_files.path, 0755) rescue begin
+                                                   @project_files.destroy
+                                                   flash['notice'] = _('Unable to create storage directory.')
+                                                   redirect_to :action => 'list'
+                                                   return
+                                                 end
+    end
+    File.open(@project_files.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
+                                                                                              @project_files.destroy
+                                                                                              flash['notice'] = _("Permission denied while saving file.")
+                                                                                              redirect_to :action => 'list'
+                                                                                              return
+                                                                                            end
 
-      if image.columns > 0
-        @project_files.file_type = ProjectFile::FILETYPE_IMG
 
-        if image.columns > 124 or image.rows > 124
+    if( File.size?(@project_files.file_path).to_i > 0 )
+      @project_files.file_size = File.size?( @project_files.file_path )
 
-          if image.columns > image.rows
-            scale = 124.0 / image.columns
-          else
-            scale = 124.0 / image.rows
+      if @project_files.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && @project_files.file_size > 0
+        image = Magick::Image.read( @project_files.file_path ).first
+
+        if image.columns > 0
+          @project_files.file_type = ProjectFile::FILETYPE_IMG
+
+          if image.columns > 124 or image.rows > 124
+
+            if image.columns > image.rows
+              scale = 124.0 / image.columns
+            else
+              scale = 124.0 / image.rows
+            end
+
+            image.scale!(scale)
           end
 
-          image.scale!(scale)
+          thumb = shadow(image)
+          thumb.format = 'jpg'
+
+          t = File.new(@project_files.thumbnail_path, "w", 0777)
+          t.write(thumb.to_blob)
+          t.close
         end
-
-        thumb = shadow(image)
-        thumb.format = 'jpg'
-
-        @thumbnail = Thumbnail.new
-        @thumbnail.data = thumb.to_blob
-        @thumbnail.save
-        @project_files.thumbnail = @thumbnail
       end
       GC.start
-    end
 
-    if @project_files.file_type != ProjectFile::FILETYPE_IMG
-      if @project_files.filename[/\.doc/i]
-        @project_files.file_type = ProjectFile::FILETYPE_DOC
-      elsif @project_files.filename[/\.txt/i]
-        @project_files.file_type = ProjectFile::FILETYPE_TXT
-      elsif @project_files.filename[/\.xls|\.sxc|\.csv/i]
-        @project_files.file_type = ProjectFile::FILETYPE_XLS
-      elsif @project_files.filename[/\.avi|\.mpeg/i]
-        @project_files.file_type = ProjectFile::FILETYPE_AVI
-      elsif @project_files.filename[/\.mov/i]
-        @project_files.file_type = ProjectFile::FILETYPE_MOV
-      elsif @project_files.filename[/\.swf/i]
-        @project_files.file_type = ProjectFile::FILETYPE_SWF
-      elsif @project_files.filename[/\.fla/i]
-        @project_files.file_type = ProjectFile::FILETYPE_FLA
-      elsif @project_files.filename[/\.xml/i]
-        @project_files.file_type = ProjectFile::FILETYPE_XML
-      elsif @project_files.filename[/\.html/i]
-        @project_files.file_type = ProjectFile::FILETYPE_HTML
-      elsif @project_files.filename[/\.css/i]
-        @project_files.file_type = ProjectFile::FILETYPE_CSS
-      elsif @project_files.filename[/\.zip/i]
-        @project_files.file_type = ProjectFile::FILETYPE_ZIP
-      elsif @project_files.filename[/\.rar/i]
-        @project_files.file_type = ProjectFile::FILETYPE_RAR
-      elsif @project_files.filename[/\.tgz/i]
-        @project_files.file_type = ProjectFile::FILETYPE_TGZ
-      elsif @project_files.filename[/\.mp3|\.wav|\.ogg|\.aiff/i]
-        @project_files.file_type = ProjectFile::FILETYPE_AUDIO
-      elsif @project_files.filename[/\.iso|\.img/i]
-        @project_files.file_type = ProjectFile::FILETYPE_ISO
-      elsif @project_files.filename[/\.sql/i]
-        @project_files.file_type = ProjectFile::FILETYPE_SQL
-      elsif @project_files.filename[/\.asf/i]
-        @project_files.file_type = ProjectFile::FILETYPE_ASF
-      elsif @project_files.filename[/\.wmv/i]
-        @project_files.file_type = ProjectFile::FILETYPE_WMV
-      else
-        @project_files.file_type = ProjectFile::FILETYPE_UNKNOWN
+      if @project_files.file_type != ProjectFile::FILETYPE_IMG
+        if @project_files.filename[/\.doc/i]
+          @project_files.file_type = ProjectFile::FILETYPE_DOC
+        elsif @project_files.filename[/\.txt/i]
+          @project_files.file_type = ProjectFile::FILETYPE_TXT
+        elsif @project_files.filename[/\.xls|\.sxc|\.csv/i]
+          @project_files.file_type = ProjectFile::FILETYPE_XLS
+        elsif @project_files.filename[/\.avi|\.mpeg/i]
+          @project_files.file_type = ProjectFile::FILETYPE_AVI
+        elsif @project_files.filename[/\.mov/i]
+          @project_files.file_type = ProjectFile::FILETYPE_MOV
+        elsif @project_files.filename[/\.swf/i]
+          @project_files.file_type = ProjectFile::FILETYPE_SWF
+        elsif @project_files.filename[/\.fla/i]
+          @project_files.file_type = ProjectFile::FILETYPE_FLA
+        elsif @project_files.filename[/\.xml/i]
+          @project_files.file_type = ProjectFile::FILETYPE_XML
+        elsif @project_files.filename[/\.html/i]
+          @project_files.file_type = ProjectFile::FILETYPE_HTML
+        elsif @project_files.filename[/\.css/i]
+          @project_files.file_type = ProjectFile::FILETYPE_CSS
+        elsif @project_files.filename[/\.zip/i]
+          @project_files.file_type = ProjectFile::FILETYPE_ZIP
+        elsif @project_files.filename[/\.rar/i]
+          @project_files.file_type = ProjectFile::FILETYPE_RAR
+        elsif @project_files.filename[/\.tgz/i]
+          @project_files.file_type = ProjectFile::FILETYPE_TGZ
+        elsif @project_files.filename[/\.mp3|\.wav|\.ogg|\.aiff/i]
+          @project_files.file_type = ProjectFile::FILETYPE_AUDIO
+        elsif @project_files.filename[/\.iso|\.img/i]
+          @project_files.file_type = ProjectFile::FILETYPE_ISO
+        elsif @project_files.filename[/\.sql/i]
+          @project_files.file_type = ProjectFile::FILETYPE_SQL
+        elsif @project_files.filename[/\.asf/i]
+          @project_files.file_type = ProjectFile::FILETYPE_ASF
+        elsif @project_files.filename[/\.wmv/i]
+          @project_files.file_type = ProjectFile::FILETYPE_WMV
+        else
+          @project_files.file_type = ProjectFile::FILETYPE_UNKNOWN
+        end
       end
 
-      @project_files.thumbnail = nil
+      if @project_files.save
+        flash['notice'] = _('File successfully uploaded.')
+        redirect_to :action => 'list'
+      else
+        render_action 'new'
+      end
+
+    else
+      flash['notice'] = _('Empty file.')
+      redirect_to :action => 'list'
+      return
     end
 
-    if @project_files.save
-      flash['notice'] = _('File successfully uploaded.')
-      redirect_to :action => 'list'
-    else
-      render_action 'new'
-    end
   end
 
   def edit
@@ -180,8 +197,15 @@ class ProjectFilesController < ApplicationController
 
   def destroy
     @file = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
-    @file.binary.destroy if @file.binary
-    @file.thumbnail.destroy if @file.thumbnail
+
+    begin
+      File.delete(@file.file_path)
+      File.delete(@file.thumbnail_path)
+    rescue
+      flash['notice'] = _("Unable to delete file.")
+      redirect_to :action => 'list'
+      return
+    end
     @file.destroy
     redirect_to :action => 'list'
   end

@@ -2,7 +2,7 @@
 <table width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td align=left class="menu" style="padding-right:1em;width:1%;">
-    <% if !@internal.nil? && !@internal.binary_id.nil? && @internal.binary_id.to_i > 0 %>
+    <% if !@internal.nil? && @internal.logo? %>
     <%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
     <% else %>
     <%= image_tag("logo.gif", :border => 0, :title => "Clocking IT Beta") %>
