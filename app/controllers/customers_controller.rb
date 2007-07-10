@@ -79,8 +79,13 @@ class CustomersController < ApplicationController
     filename = @params['customer']['tmp_file'].original_filename
     @customer = Customer.find(@params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
 
-    if !@customer.binary.nil?
-      @customer.binary.destroy
+    if !@customer.logo?
+      File.delete(@customer.logo_path) rescue begin
+                                                flash['notice'] = _("Permission denied while deleting old logo.")
+                                                redirect_to :action => 'list'
+                                                return
+                                              end
+
     end
 
     if !@customer.logo? || !File.directory?(@customer.path)
@@ -119,6 +124,7 @@ class CustomersController < ApplicationController
       GC.start
     else
       flash['notice'] = _('Empty file.')
+      File.delete(@customer.logo_path) rescue begin end
       redirect_from_last
       return
     end
@@ -131,7 +137,6 @@ class CustomersController < ApplicationController
     @customer = Customer.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     if !@customer.nil?
       File.delete(@customer.logo_path) rescue begin end
-      @customer.binary_id = nil
       @customer.save
     end
     redirect_from_last

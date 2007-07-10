@@ -5,12 +5,14 @@ class Customer < ActiveRecord::Base
   has_many      :activities, :dependent => :destroy
   has_many      :project_files
 
-  belongs_to    :binary, :dependent => :destroy
-
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
   validates_presence_of         :company_id
+
+  after_destroy { |r|
+    File.delete(r.logo_path) rescue begin end
+  }
 
   def path
     File.join("#{RAILS_ROOT}", 'store', 'logos', self.company_id.to_s)

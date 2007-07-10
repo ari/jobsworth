@@ -201,19 +201,21 @@ class TasksController < ApplicationController
         filename = filename.split("\\").last
         filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
-        binary = Binary.new
-        binary.data = @params['task_file'].read
-        binary.save
-
         task_file = ProjectFile.new()
-        task_file.binary = binary
-        task_file.file_size = binary.data.size
         task_file.company = session[:user].company
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
         task_file.filename = filename
         task_file.name = filename
+        task_file.save
+        task_file.reload
+
+        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
+                                                                                                        task_file.destroy
+                                                                                                        flash['notice'] = _("Permission denied while saving file.")
+                                                                                                      end
+        task_file.file_size = File.size?( task_file.file_path )
         task_file.save
 
         #TODO Add notification
@@ -502,19 +504,23 @@ class TasksController < ApplicationController
         filename = filename.split("\\").last
         filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
-        binary = Binary.new
-        binary.data = @params['task_file'].read
-        binary.save
 
         task_file = ProjectFile.new()
-        task_file.binary = binary
-        task_file.file_size = binary.data.size
         task_file.company = session[:user].company
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
         task_file.filename = filename
         task_file.name = filename
+        task_file.save
+
+        task_file.reload
+
+        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
+                                                                                                        task_file.destroy
+                                                                                                        flash['notice'] = _("Permission denied while saving file.")
+                                                                                                      end
+        task_file.file_size = File.size?( task_file.file_path )
         task_file.save
 
         body << "- <strong>Attached</strong>: #{filename}\n"

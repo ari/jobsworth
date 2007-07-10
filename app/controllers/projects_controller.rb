@@ -122,8 +122,6 @@ class ProjectsController < ApplicationController
     @project.milestones.destroy_all
     @project.project_permissions.destroy_all
     @project.project_files.each { |p|
-      p.binary.destroy if p.binary
-      p.thumbnail.destroy if p.thumbnail
       p.destroy
     }
 
