@@ -1241,9 +1241,8 @@ li.help {
 }
 
 .select_item  {
-  text-indent: 1em;
 }
+
 .select_subitem  {
-  text-indent: 2em;
   font-style: italic;
 }

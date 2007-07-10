@@ -43,13 +43,13 @@
                   <% if @client_projects.size > 0 %>
                   <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
                     <% @client_projects.each do |p| %>
-                      <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>><%= p.name %></option>
+                      <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>>&nbsp;&nbsp;<%= p.name %></option>
                       <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p.id} AND completed_at IS NULL"], :order => "due_at, name") %>
                       <% if @project_milestones.size > 0 -%>
                        <% @project_milestones.each do |m| -%>
-                         <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>><%= m.name %></option>
+                         <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
                        <% end -%>
-                       <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>><%= _("[Unassigned]") -%></option>
+                       <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
                       <% end -%>
                     <% end -%>
                   <% end -%>
