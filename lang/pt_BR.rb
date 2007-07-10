@@ -281,7 +281,7 @@ Localization.define('pt_BR') do |l|
   l.store 'Custom Logo', 'Logo personalizado'
   l.store 'Current logo', 'Logo atual'
   l.store 'New logo', 'Novo logo'
-  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Não será redimencionado. Se recomenda uma imagem de tamanho 150x50px. O logotipo será apresentado no cabeçalho, no lugar de ClockingIt, e na página de login.)"
+  l.store "(250x100px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Se recomenda uma imagem de tamanho 250x100px. O logotipo será apresentado no cabeçalho, no lugar de ClockingIt, e na página de login.)"
 
   # Notes / Pages
   l.store 'Body', 'Conteúdo'

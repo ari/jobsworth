@@ -279,7 +279,7 @@ Localization.define('de_DE') do |l|
   l.store 'Custom Logo', 'Selbstdefiniertes Markenzeichen'
   l.store 'Current logo', 'Gegenwärtiges Markenzeichen'
   l.store 'New logo', 'Neues Markenzeichen'
-  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Wird nicht skaliert, 150x50px wird gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
+  l.store "(250x100px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x100px wird gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
 
   # Notes / Pages
   l.store 'Body', 'Inhalt'
