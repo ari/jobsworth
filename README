@@ -32,7 +32,7 @@ setup script or web page at a later stage.
 5. Copy config/environment.rb-example to config/environment.rb
    and modify it
 
-6. mkdir index log; chmod a+rwx log index tmp/*
+6. mkdir index log store; chmod a+rwx log index store tmp/*
 7. rake db:schema:load
 8. sudo vim /etc/hosts
    127.0.0.1 www.clockingit.com
@@ -42,6 +42,7 @@ setup script or web page at a later stage.
    sudo RAILS_ENV=production ./script/runner "load './lib/daemons/ferret_server'"
    ./script/server
    Create the initial account at http://www.clockingit.com:3000/login/signup
+
 10.Sign in from http://<subdomain>.clockingit.com:3000/
 
 == Support
@@ -64,6 +65,40 @@ setup script or web page at a later stage.
       Order allow,deny
     </Directory>
   </VirtualHost>
+
+== Example for Apache using mod_rewrite
+
+This will redirect requests for http://server.my_domain.com to https://server.my_domain.com
+and will proxy requests for https://server.my_domain.com to http://hostname.clockingit.com:3000 on the localhost
+The end-user who is contacting server.my_domain.com does not know that the request is being proxied, because apache will change the "Host:" values to itself as it sends back the response. The proxy request is performed on the localhost, which is informed by /etc/hosts that hostname.clockingit.com points to 127.0.0.1
+
+### Insecure VirtualHost ###
+<VirtualHost *:80>
+ServerAdmin root@my_domain.com
+ServerName server.my_domain.com
+UseCanonicalName Off
+# Force clients from the Internet to use HTTPS
+RewriteEngine on
+RewriteRule ^/?(.*)$ https://server.my_domain.com/$1 [L,R]
+</VirtualHost>
+
+### SSL VirtualHost ###
+<VirtualHost *:443>
+ServerAdmin root@my_domain.com
+ServerName server.my_domain.com
+UseCanonicalName Off
+SSLCertificateFile /home/clockingit/ssl.cert.pem
+SSLCertificateKeyFile /home/clockingit/ssl.key.pem
+
+ProxyRequests Off
+<Proxy *>
+Order Allow,Deny
+Allow from all
+</Proxy>
+RewriteEngine On
+RewriteRule ^/(.*)$ http://hostname.clockingit.com:3000/$1 [P,NC]
+ProxyPassReverse / http://hostname.clockingit.com:3000/
+</VirtualHost>
 
 == Description of contents
 
