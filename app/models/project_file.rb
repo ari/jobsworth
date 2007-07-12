@@ -40,7 +40,7 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :thumbnail
 
   after_destroy { |r|
-    File.delete(r.path) rescue begin end
+    File.delete(r.file_path) rescue begin end
     File.delete(r.thumbnail_path) rescue begin end
   }
 

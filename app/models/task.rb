@@ -210,7 +210,7 @@ class Task < ActiveRecord::Base
   end
 
   def done?
-    self.status > 1
+    self.status > 1 && self.completed_at != nil
   end
 
   def done
