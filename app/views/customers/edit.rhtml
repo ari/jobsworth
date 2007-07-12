@@ -8,15 +8,6 @@
 </fieldset>
 
 <fieldset>
-<legend><%=_ 'Upload Client CSS' %></legend>
-<%= start_form_tag({ :action => 'upload_css'}, { :multipart => "true" }) %>
-<p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
-<%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
-<%= submit_tag _("Upload"), :class => 'nolabel' %>
-<%= end_form_tag %>
-</fieldset>
-
-<fieldset>
 <legend><%=_ 'Upload Client Logo' %></legend>
 <%= start_form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) %>
 <p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
