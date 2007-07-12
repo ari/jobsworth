@@ -81,7 +81,7 @@ class Task < ActiveRecord::Base
   end
 
   Task::REPEAT_DATE = [
-                       ['last'],
+                       [_('last')],
                        ['1st', 'first'], ['2nd', 'second'], ['3rd', 'third'], ['4th', 'fourth'], ['5th', 'fifth'], ['6th', 'sixth'], ['7th', 'seventh'], ['8th', 'eighth'], ['9th', 'ninth'], ['10th', 'tenth'],
                        ['11th', 'eleventh'], ['12th', 'twelwth'], ['13th', 'thirteenth'], ['14th', 'fourteenth'], ['15th', 'fifthteenth'], ['16th', 'sixteenth'], ['17th', 'seventeenth'], ['18th', 'eighthteenth'], ['19th', 'nineteenth'], ['20th', 'twentieth'],
                        ['21st', 'twentyfirst'], ['22nd', 'twentysecond'], ['23rd', 'twentythird'], ['24th', 'twentyfourth'], ['25th', 'twentyfifth'], ['26th', 'twentysixth'], ['27th', 'twentyseventh'], ['28th', 'twentyeight'], ['29th', 'twentyninth'], ['30th', 'thirtieth'], ['31st', 'thirtyfirst'],
@@ -97,17 +97,17 @@ class Task < ActiveRecord::Base
     case code
       when ''
       when 'w'
-      "every #{Date::DAYNAMES[args[1].to_i].downcase}"
+      "#{_'every'} #{Date::DAYNAMES[args[1].to_i].downcase}"
       when 'm'
-      "every #{Task::REPEAT_DATE[args[1].to_i][0]}"
+      "#{_'every'} #{Task::REPEAT_DATE[args[1].to_i][0]}"
       when 'n'
-      "every #{Task::REPEAT_DATE[args[1].to_i][0]} #{Date::DAYNAMES[args[2].to_i].downcase}"
+      "#{_'every'} #{Task::REPEAT_DATE[args[1].to_i][0]} #{Date::DAYNAMES[args[2].to_i].downcase}"
       when 'l'
-      "every last #{Date::DAYNAMES[args[2].to_i].downcase}"
+      "#{_'every'} #{_'last'} #{Date::DAYNAMES[args[2].to_i].downcase}"
       when 'y'
-      "every #{args[1].to_i}/#{args[2].to_i}"
+      "#{_'every'} #{args[1].to_i}/#{args[2].to_i}"
       when 'a'
-      "every #{args[1]} #{_ 'days'}"
+      "#{_'every'} #{args[1]} #{_ 'days'}"
     end
   end
 
@@ -115,7 +115,7 @@ class Task < ActiveRecord::Base
     # every monday
     # every 15th
 
-    ## every last monday
+    # every last monday
 
     # every 3rd tuesday
     # every 1st may
