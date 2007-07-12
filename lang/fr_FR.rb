@@ -281,7 +281,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Custom Logo', 'Logo personnalisé'
   l.store 'Current logo', 'Logo actuel'
   l.store 'New logo', 'Nouveau logo'
-  l.store '(250x100px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)', '(250x100px recommandé. Ce logo remplacera celui de ClockingIT et sera également affiché sur la page de connexion.)'
+  l.store '(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)', '(250x50px recommandé. Ce logo remplacera celui de ClockingIT et sera également affiché sur la page de connexion.)'
 
   # Notes / Pages
   l.store 'Body', 'Contenu'

@@ -281,7 +281,7 @@ Localization.define('no_NO') do |l|
   l.store 'Custom Logo', 'Egendefinert Logo'
   l.store 'Current logo', 'Aktivt Logo'
   l.store 'New logo', 'Ny logo'
-  l.store "(250x100px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x100px burde se bra ut. Logoen vil bli vist øverst, og på loggin siden din.)"
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se bra ut. Logoen vil bli vist øverst, og på loggin siden din.)"
 
   # Notes / Pages
   l.store 'Body', 'Innhold'

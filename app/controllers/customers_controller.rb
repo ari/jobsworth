@@ -79,7 +79,7 @@ class CustomersController < ApplicationController
     filename = @params['customer']['tmp_file'].original_filename
     @customer = Customer.find(@params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
 
-    if !@customer.logo?
+    if @customer.logo?
       File.delete(@customer.logo_path) rescue begin
                                                 flash['notice'] = _("Permission denied while deleting old logo.")
                                                 redirect_to :action => 'list'
@@ -88,13 +88,20 @@ class CustomersController < ApplicationController
 
     end
 
-    if !@customer.logo? || !File.directory?(@customer.path)
+    if !File.directory?(@customer.path)
       Dir.mkdir(@customer.path, 0755) rescue begin
                                                 flash['notice'] = _('Unable to create storage directory.')
                                                 redirect_to :action => 'list'
                                                 return
                                               end
     end
+
+    unless params['customer']['tmp_file'].size > 0
+      flash['notice'] = _('Empty file uploaded.')
+      redirect_to :action => 'list'
+      return
+    end
+
     File.open(@customer.logo_path, "wb", 0755) { |f| f.write( params['customer']['tmp_file'].read ) } rescue begin
                                                                                                                flash['notice'] = _("Permission denied while saving file.")
                                                                                                                redirect_to :action => 'list'
@@ -105,13 +112,18 @@ class CustomersController < ApplicationController
     if( File.size?(@customer.logo_path).to_i > 0 )
       image = Magick::Image.read( @customer.logo_path ).first
 
-      if image.columns > 250 or image.rows > 100
+      if image.columns > 250 or image.rows > 50
 
         if image.columns > image.rows
           scale = 250.0 / image.columns
         else
-          scale = 100.0 / image.rows
+          scale = 50.0 / image.rows
         end
+
+        if image.rows * scale > 50.0
+          scale = 50.0 / image.rows
+        end
+
         image.scale!(scale)
 
         File.open(@customer.logo_path, "wb", 0777) { |f| f.write( image.to_blob ) } rescue begin

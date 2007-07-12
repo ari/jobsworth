@@ -281,7 +281,7 @@ Localization.define('nl_NL') do |l|
   l.store 'Custom Logo', 'Aangepast Logo'
   l.store 'Current logo', 'Huidig Logo'
   l.store 'New logo', 'Nieuw Logo'
-  l.store "(250x100px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x100px zou goed moeten zijn. Het logo verschijnt in plaats van het logo in de koptekst en op de Aanmeldpagina.)"
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px zou goed moeten zijn. Het logo verschijnt in plaats van het logo in de koptekst en op de Aanmeldpagina.)"
 
   # Notes / Pages
   l.store 'Body', 'Inhoud'
