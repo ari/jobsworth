@@ -54,7 +54,7 @@ class="task<%=priority%>"
    <%= link_to_task(task) -%>
 
    <small>
-     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (@session[:user].option_tracktime == 1 && task.duration > 0) %>
+     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (@session[:user].option_tracktime == 1 && task.duration.to_i > 0) %>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
    </small>
    <br/>
