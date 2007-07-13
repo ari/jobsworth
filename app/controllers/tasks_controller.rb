@@ -137,24 +137,23 @@ class TasksController < ApplicationController
 
     @task = Task.new(params[:task])
 
-      if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
+    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
-        repeat = @task.parse_repeat(params[:task][:due_at])
-        if  repeat != ""
-          @task.repeat = repeat
-          @task.due_at = tz.local_to_utc(@task.next_repeat_date)
-        else
-          @task.repeat = nil
-          due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
-                                                                                                      flash['notice'] = _('Invalid due date ignored.')
-                                                                                                      due_date = nil
-                                                                                                    end
-          @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
-        end
+      repeat = @task.parse_repeat(params[:task][:due_at])
+      if repeat && repeat != ""
+        @task.repeat = repeat
+        @task.due_at = tz.local_to_utc(@task.next_repeat_date)
       else
         @task.repeat = nil
+        due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
+                                                                                                    flash['notice'] = _('Invalid due date ignored.')
+                                                                                                    due_date = nil
+                                                                                                  end
+        @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
       end
-
+    else
+      @task.repeat = nil
+    end
 
     @task.company_id = session[:user].company_id
     @task.duration = parse_time(params[:task][:duration])
@@ -330,7 +329,7 @@ class TasksController < ApplicationController
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
         repeat = @task.parse_repeat(params[:task][:due_at])
-        if  repeat != ""
+        if repeat && repeat != ""
           @task.repeat = repeat
           @task.due_at = tz.local_to_utc(@task.next_repeat_date)
         else
