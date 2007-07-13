@@ -633,7 +633,9 @@ class TasksController < ApplicationController
       @task.save
       @task.reload
 
-      repeat_task(@task)
+      if @task.next_repeat_date != nil
+          repeat_task(@task)
+      end
 
       worklog = WorkLog.new
       worklog.user = session[:user]
