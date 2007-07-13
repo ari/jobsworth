@@ -170,7 +170,11 @@ class CustomersController < ApplicationController
     end
 
     image = Magick::Image.read( @customer.logo_path ).first
-    send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline' if image
+    if image
+      send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+    else
+      render :nothing => true
+    end
   end
 
 end
