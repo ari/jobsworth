@@ -1241,6 +1241,7 @@ li.help {
   padding: 0 0 0 16px;
 }
 
+
 #wiki .internal_missing a {
   color: #f00;
 }
@@ -1260,4 +1261,8 @@ li.help {
 
 .select_subitem  {
   font-style: italic;
+}
+
+#task_page_header a {
+  padding-right: 0.4em;
 }

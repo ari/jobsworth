@@ -779,6 +779,29 @@ class TasksController < ApplicationController
     end
   end
 
+  def add_work
+    @task = User.find(session[:user].id, :conditions => ["company_id = ?", session[:user].company_id]).tasks.find( params['id'] )
+
+    unless @task
+      flash['notice'] = _('Unable to find task.')
+      redirect_from_last
+    end
+
+    @log = WorkLog.new
+    @log.user = session[:user]
+    @log.company = session[:user].company
+    @log.project = @task.project
+    @log.task = @task
+    @log.customer = @task.project.customer
+    @log.started_at = tz.utc_to_local(Time.now.utc)
+    @log.duration = 0
+    @log.log_type = WorkLog::TASK_WORK_ADDED
+
+    @log.save
+
+    render_action 'edit_log'
+  end
+
   def stop_work
     if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task.id])
       worklog = WorkLog.new
