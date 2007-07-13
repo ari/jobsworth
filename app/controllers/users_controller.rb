@@ -34,7 +34,7 @@ class UsersController < ApplicationController
 
     if @user.save
       flash['notice'] = _('User was successfully created. Remeber to give this user access to needed projects.')
-      Signup::deliver_account_created(@user, session[:user]) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
+      Signup::deliver_account_created(@user, session[:user], params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'list'
     else
       render_action 'new'

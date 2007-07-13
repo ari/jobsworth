@@ -18,9 +18,9 @@ class Signup < ActionMailer::Base
     @headers    = {}
   end
 
-  def account_created(user, created_by, sent_at = Time.now)
+  def account_created(user, created_by, welcome_message, sent_at = Time.now)
     @subject    = "[ClockingIT] Invitation from #{created_by.name}"
-    @body       = {:user => user, :created_by => created_by}
+    @body       = {:user => user, :created_by => created_by, :welcome_message => welcome_message}
     @recipients = user.email
     @from       = 'admin@clockingit.com'
     @sent_on    = sent_at
@@ -44,6 +44,6 @@ class Signup < ActionMailer::Base
     @sent_on    = sent_at
     @headers    = {}
   end
-  
+
 
 end
