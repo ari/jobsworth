@@ -189,7 +189,7 @@ function add_dependency() {
       <fieldset id="task_dependencies" style="padding-right:0;">
         <legend><%=_ "Dependencies"%></legend>
 
-        <label><%=_ 'Depends on '%> #</label>
+        <label><%=_ 'Depends on'%> #</label>
         <% if perms['prioritize'].empty? %>
         <input name="dependencies[]" size="12" type="text" >
           <div style="float:right;"><a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a></div>

@@ -447,7 +447,7 @@ Localization.define('no_NO') do |l|
 
   # Task
   l.store "Attachments", "Vedlegg"
-  l.store "Dependencies", "Avhenger av"
+  l.store "Dependencies", "Avhengig av"
   l.store 'Add another dependency', "Ny avhengighet"
   l.store 'Remove dependency', "Fjern avhengighet"
   l.store "every", 'hver'
@@ -456,4 +456,9 @@ Localization.define('no_NO') do |l|
   l.store 'day', 'dag' # every day
   l.store 'days', 'dag' # every 14 days
   l.store 'last', 'siste' # every last thursday
+
+  l.store 'Hide Dependencies', 'Skjul Avhengigheter'
+  l.store 'Signup Message', 'Personlig Beskjed'
+  l.store 'The message will be included in the signup email.', 'Beskjeden blir inkludert i registrerings emailen.'
+  l.store 'Depends on', 'Avhengig av'
 end
