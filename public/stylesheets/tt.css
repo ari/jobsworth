@@ -775,6 +775,21 @@ div.auto_complete {
 
 #task_set_tags_auto_complete ul li.selected { background-color: #ffb; }
 
+#report_tags_auto_complete ul
+{
+  padding: 0;
+  margin: 0;
+}
+
+#report_tags_auto_complete ul li
+{
+  border-left: none;
+  margin-left: 1px;
+  padding: 0px;
+}
+
+#report_tags_auto_complete ul li.selected { background-color: #ffb; }
+
 
 #content li.tag_header
 {

@@ -1,4 +1,4 @@
-  <table cellspacing=0 cellpadding=0 class="content" width="99%" style="margin-left: 1em;padding-right:1em;">
+  <table cellspacing=0 cellpadding=0 class="content" width="99%" style="margin-left: 1em;padding-right:1em;" id="content">
   <tr><td align=left colspan=2 class="page_header"><%=_ 'Reports' %></td></tr>
   <tr>
     <td align=left colspan=2 style="padding-bottom:1em; padding-top:1em;">
@@ -172,7 +172,15 @@
 <%= select 'report', 'priority', [[_('[Any Priority]'), '-3'], [_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], :selected => ((params[:report] && params[:report][:priority]) ? params[:report][:priority].to_i : "-3")   %><br/>
 <label for="report_severity_id"><%=_ 'Severity' %></label>
 <%= select 'report', 'severity_id', [[_('[Any Severity]'), '-3'], [_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], :selected => ((params[:report] && params[:report][:severity_id]) ? params[:report][:severity_id].to_i : "-3")  %><br/>
-<label for="report_tags"><%=_ 'Tags' %></label><%= text_field 'report', 'tags', :size => 12, :value => (params[:report] && params[:report][:tags]) ? params[:report][:tags] : "" %><br/>
+<label for="report_tags"><%=_ 'Tags' %></label><%= text_field 'report', 'tags', {:size => 12, :value => (params[:report] && params[:report][:tags]) ? params[:report][:tags] : "", :autocomplete => "off"} %><br/>
+<div class="auto_complete" id="report_tags_auto_complete" style="display:none;" align="left"></div>
+<% unless @tags.nil? %>
+<script type="text/javascript">
+new Autocompleter.Local('report_tags', 'report_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
+</script>
+<% end %>
+
+
 </div>
 </fieldset>
 </div>

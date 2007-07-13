@@ -189,6 +189,9 @@ class ReportsController < ApplicationController
     date_filter = ""
     filename = "clockingit"
 
+    @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids})
+
+
     if filter = params[:report]
       @type = filter[:type].to_i
       @range = filter[:range]
