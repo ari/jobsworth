@@ -134,6 +134,10 @@ module ApplicationHelper
       end
     end
 
+    if task.repeat && task.repeat.length > 0
+      res += ", " + task.repeat_summary
+    end
+
     if res.length > 0
       res = "<span class=\"" + css + "\">[" + res + "]</span>"
     end
