@@ -1,6 +1,6 @@
 class Customer < ActiveRecord::Base
   belongs_to    :company
-  has_many      :projects, :dependent => :destroy
+  has_many      :projects, :order => "name", :dependent => :destroy
   has_many      :work_logs
   has_many      :activities, :dependent => :destroy
   has_many      :project_files
