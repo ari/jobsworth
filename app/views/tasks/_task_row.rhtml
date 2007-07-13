@@ -1,5 +1,4 @@
-<% cache( :controller => "tasks", :action => "task_row", :action_suffix => "#{task.id}_#{session[:user].id}_#{session[:filter_user].to_i}_#{session[:filter_milestone]}_#{tz.now.strftime('%d%m%y')}") do %>
-
+<% if session[:hide_dependencies].to_i == 0 || task.ready? %>
 <li id="task_<%=task.id%>"
 
 <%
@@ -134,5 +133,4 @@ class="task<%=priority%>"
     </div>
 </span>
 </li>
-
 <% end %>

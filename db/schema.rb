@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 74) do
+ActiveRecord::Schema.define(:version => 75) do
 
   create_table "binaries", :force => true do |t|
     t.column "data", :binary
@@ -318,6 +318,7 @@ ActiveRecord::Schema.define(:version => 74) do
     t.column "filter_tags", :string, :default => ""
     t.column "filter_status", :integer, :default => 0
     t.column "filter_type_id", :integer, :default => 0
+    t.column "hide_dependencies", :integer
   end
 
   add_index "views", ["company_id"], :name => "views_company_id_index"

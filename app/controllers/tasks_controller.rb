@@ -857,6 +857,7 @@ class TasksController < ApplicationController
     session[:filter_status] = params[:filter_status]
 
     session[:group_tags] = params[:group_tags]
+    session[:hide_dependencies] = params[:hide_dependencies]
 
     session[:user].last_filter = session[:filter_hidden]
     session[:user].last_milestone_id = session[:filter_milestone]

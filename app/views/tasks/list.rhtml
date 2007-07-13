@@ -84,6 +84,7 @@
             </select>
 
             <input type="checkbox" name="group_tags" id="group_tags" value="1" <%= session[:group_tags].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> <%=_ 'Group Tags'%>
+            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> <%=_ 'Hide Dependencies'%>
 
             <span class="optional"><small><%= link_to( _("[Save as View]"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></small></span>
             <%= end_form_tag %>
