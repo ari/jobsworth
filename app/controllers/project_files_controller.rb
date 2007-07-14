@@ -80,7 +80,7 @@ class ProjectFilesController < ApplicationController
     @project_files.reload
 
     if !File.exist?(@project_files.path) || !File.directory?(@project_files.path)
-      File.mkdir(@project_files.path, 0755) rescue begin
+      Dir.mkdir(@project_files.path, 0755) rescue begin
                                                    @project_files.destroy
                                                    flash['notice'] = _('Unable to create storage directory.')
                                                    redirect_to :action => 'list'
@@ -202,9 +202,6 @@ class ProjectFilesController < ApplicationController
       File.delete(@file.file_path)
       File.delete(@file.thumbnail_path)
     rescue
-      flash['notice'] = _("Unable to delete file.")
-      redirect_to :action => 'list'
-      return
     end
     @file.destroy
     redirect_to :action => 'list'
