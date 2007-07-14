@@ -116,7 +116,7 @@ class FeedsController < ApplicationController
     unless pids.nil? || pids.empty?
       pids = pids.collect{|p|p.id}.join(',')
       if mode == :all
-        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.duration > 0"], :include => [:user, :project, :customer, { :task => :tags}])
+        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, { :task => :tags}])
         @tasks = Task.find(:all, :order => 'tasks.duration desc, tasks.name', :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL) OR (tasks.completed_at is NOT NULL))", ], :include => [:milestone, :tags] )
       else
         @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.duration > 0 AND work_logs.user_id = ?", user.id], :include => [:user, :project, :customer, { :task => :tags } ])
@@ -141,6 +141,7 @@ class FeedsController < ApplicationController
       else
         event.start = to_localtime(user, m.due_at)
       end
+      event.duration = "PT1M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{m.user.email}"
       event.url = "http://#{user.company.subdomain}.clockingit.com/views/select_milestone/#{m.id}"
@@ -164,6 +165,9 @@ class FeedsController < ApplicationController
         todo.start = to_localtime(user, t.completed_at)
       end
 
+      event.start = todo.start
+      event.duration = "PT1M"
+
       todo.created = to_localtime(user, t.created_at)
       todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
@@ -176,7 +180,6 @@ class FeedsController < ApplicationController
       todo.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
       todo.percent = 100 if t.done?
 
-      event.start = todo.start
       event.created = todo.created
       event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = todo.organizer
@@ -191,8 +194,8 @@ class FeedsController < ApplicationController
     @activities.each do |log|
       event = cal.event
       event.start = to_localtime(user, log.started_at)
-#      event.end = to_localtime(user, log.started_at + log.duration * 60)
-      event.duration = to_duration(log.duration)
+#      event.end = to_localtime(user, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
+      event.duration = "PT" + to_duration(log.duration)
       event.created = to_localtime(user, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{log.user.email}"
