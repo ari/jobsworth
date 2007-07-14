@@ -118,29 +118,48 @@ class FeedsController < ApplicationController
     unless pids.nil? || pids.empty?
       pids = pids.collect{|p|p.id}.join(',')
       if mode == :all
-        @activities = WorkLog.find(:all,
-                                   :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", WorkLog::TASK_WORK_ADDED],
-                                   :include => [ :user, { :task => :users, :task => :tags }  ] )
-        @tasks = Task.find(:all,
-                           :conditions => ["tasks.project_id IN (#{pids})" ],
-                           :include => [:milestone, :tags, :task_owners, :users ])
+
+        if params['mode'].nil? || params['mode'] == 'logs'
+          logger.info("selecting logs")
+          @activities = WorkLog.find(:all,
+                                     :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", WorkLog::TASK_WORK_ADDED],
+                                     :include => [ :user, { :task => :users, :task => :tags }  ] )
+        end
+
+        if params['mode'].nil? || params['mode'] == 'tasks'
+          logger.info("selecting tasks")
+          @tasks = Task.find(:all,
+                             :conditions => ["tasks.project_id IN (#{pids})" ],
+                             :include => [:milestone, :tags, :task_owners, :users ])
+        end
+
       else
-        @activities = WorkLog.find(:all,
-                                   :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", user.id, WorkLog::TASK_WORK_ADDED],
-                                   :include => [ :user, { :task => :users, :task => :tags }  ] )
-        @tasks = user.tasks.find(:all,
-                                 :conditions => ["tasks.project_id IN (#{pids})" ],
-                                 :include => [:milestone, :tags, :task_owners, :users ])
+
+        if params['mode'].nil? || params['mode'] == 'logs'
+          logger.info("selecting personal logs")
+          @activities = WorkLog.find(:all,
+                                     :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, WorkLog::TASK_WORK_ADDED],
+                                     :include => [ :user, { :task => :users, :task => :tags }  ] )
+        end
+
+        if params['mode'].nil? || params['mode'] == 'tasks'
+          logger.info("selecting personal tasks")
+          @tasks = user.tasks.find(:all,
+                                   :conditions => ["tasks.project_id IN (#{pids})" ],
+                                   :include => [:milestone, :tags, :task_owners, :users ])
+        end
       end
 
-      @milestones = Milestone.find(:all,
-                                   :conditions => ["company_id = ? AND project_id IN (#{pids}) AND due_at IS NOT NULL", user.company_id])
+      if params['mode'].nil? || params['mode'] == 'milestones'
+          logger.info("selecting milestones")
+        @milestones = Milestone.find(:all,
+                                     :conditions => ["company_id = ? AND project_id IN (#{pids}) AND due_at IS NOT NULL", user.company_id])
+      end
 
-    else
-      @activities = []
-      @milestones = []
-      @tasks = []
     end
+    @activities ||= []
+    @tasks ||= []
+    @milestones ||= []
 
     cal = Calendar.new
 
