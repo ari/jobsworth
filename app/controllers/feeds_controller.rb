@@ -118,14 +118,23 @@ class FeedsController < ApplicationController
     unless pids.nil? || pids.empty?
       pids = pids.collect{|p|p.id}.join(',')
       if mode == :all
-        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, { :task => :tags}])
-        @tasks = Task.find(:all, :order => 'tasks.duration desc, tasks.name', :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL) OR (tasks.completed_at is NOT NULL))", ], :include => [:milestone, :tags] )
+        @activities = WorkLog.find(:all,
+                                   :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", WorkLog::TASK_WORK_ADDED],
+                                   :include => [ :user, { :task => :users, :task => :tags }  ] )
+        @tasks = Task.find(:all,
+                           :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at IS NOT NULL) OR (tasks.completed_at is NOT NULL))" ],
+                           :include => [:milestone, :tags, :task_owners, :users ])
       else
-        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.duration > 0 AND work_logs.user_id = ?", user.id], :include => [:user, :project, :customer, { :task => :tags } ])
-        @tasks = user.tasks.find(:all, :order => 'tasks.duration desc, tasks.name', :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at IS NOT NULL) OR (tasks.completed_at is NOT NULL))", ], :include => [:milestone, :tags] )
+        @activities = WorkLog.find(:all,
+                                   :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", user.id, WorkLog::TASK_WORK_ADDED],
+                                   :include => [ :user, { :task => :users, :task => :tags }  ] )
+        @tasks = user.tasks.find(:all,
+                                 :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at IS NOT NULL) OR (tasks.completed_at is NOT NULL))" ],
+                                 :include => [:milestone, :tags, :task_owners, :users ])
       end
 
-      @milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{pids}) AND due_at IS NOT NULL", user.company_id])
+      @milestones = Milestone.find(:all,
+                                   :conditions => ["company_id = ? AND project_id IN (#{pids}) AND due_at IS NOT NULL", user.company_id])
 
     else
       @activities = []
@@ -202,21 +211,20 @@ class FeedsController < ApplicationController
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{log.user.email}"
 
-      event.url = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{log.task.task_num}" unless log.task.nil?
+      event.url = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{log.task.task_num}"
 
       action = get_action(log)
 
       event.summary = "#{action}: #{log.task.issue_name} - #{log.user.name}" unless log.task.nil?
-      event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.task && log.duration > 0
+      event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.duration > 0
       event.summary ||= "#{action} - #{log.user.name}"
       description = log.body.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if log.body
       event.description = description if description && description.length > 0
 
-      event.categories = log.task.tags.collect{ |t| t.name.upcase } if(log.task && log.task.tags.size > 0)
+      event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
     end
 
-
-    render :inline => cal.to_ical, :layout => false
+    render :inline => cal.to_ical.gsub(/^PERCENT:/, 'PERCENT-COMPLETE:'), :layout => false
 
   end
 
