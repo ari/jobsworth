@@ -152,7 +152,7 @@ class FeedsController < ApplicationController
       else
         event.start = to_localtime(tz, m.due_at)
       end
-      event.duration = "PT0M"
+      event.duration = "PT1M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{m.user.email}"
       event.url = "http://#{user.company.subdomain}.clockingit.com/views/select_milestone/#{m.id}"
@@ -195,7 +195,7 @@ class FeedsController < ApplicationController
 
       event = cal.event
       event.start = todo.start
-      event.duration = "PT0M"
+      event.duration = "PT1M"
       event.created = todo.created
       event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = todo.organizer
@@ -211,7 +211,7 @@ class FeedsController < ApplicationController
       event = cal.event
       event.start = to_localtime(tz, log.started_at)
 #      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
-      event.duration = "PT" + to_duration(log.duration)
+      event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M"
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{log.user.email}"
