@@ -81,8 +81,8 @@ class FeedsController < ApplicationController
 
   end
 
-  def to_localtime(user, time)
-    DateTime.parse(TZInfo::Timezone.get(user.time_zone).utc_to_local(time).to_s)
+  def to_localtime(tz, time)
+    DateTime.parse(tz.utc_to_local(time).to_s)
   end
 
   def to_duration(dur)
@@ -108,6 +108,8 @@ class FeedsController < ApplicationController
       render :nothing => true, :layout => false
       return
     end
+
+    tz = TZInfo::Timezone.get(user.time_zone)
 
     # Find all Project ids this user has access to
     pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
@@ -137,11 +139,11 @@ class FeedsController < ApplicationController
       event = cal.event
 
       if m.completed_at
-        event.start = to_localtime(user, m.completed_at)
+        event.start = to_localtime(tz, m.completed_at)
       else
-        event.start = to_localtime(user, m.due_at)
+        event.start = to_localtime(tz, m.due_at)
       end
-      event.duration = "PT1M"
+      event.duration = "PT0M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{m.user.email}"
       event.url = "http://#{user.company.subdomain}.clockingit.com/views/select_milestone/#{m.id}"
@@ -160,15 +162,15 @@ class FeedsController < ApplicationController
       todo = cal.todo
 
       unless t.completed_at
-        todo.start = to_localtime(user, t.due_at - 12.hours)
+        todo.start = to_localtime(tz, t.due_at - 12.hours)
       else
-        todo.start = to_localtime(user, t.completed_at)
+        todo.start = to_localtime(tz, t.completed_at)
       end
 
       event.start = todo.start
-      event.duration = "PT1M"
+      event.duration = "PT0M"
 
-      todo.created = to_localtime(user, t.created_at)
+      todo.created = to_localtime(tz, t.created_at)
       todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
       todo.url = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{t.task_num}"
@@ -193,10 +195,10 @@ class FeedsController < ApplicationController
 
     @activities.each do |log|
       event = cal.event
-      event.start = to_localtime(user, log.started_at)
-#      event.end = to_localtime(user, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
+      event.start = to_localtime(tz, log.started_at)
+#      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
       event.duration = "PT" + to_duration(log.duration)
-      event.created = to_localtime(user, log.task.created_at) unless log.task.nil?
+      event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = "MAILTO:#{log.user.email}"
 
