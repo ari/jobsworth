@@ -122,14 +122,14 @@ class FeedsController < ApplicationController
                                    :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", WorkLog::TASK_WORK_ADDED],
                                    :include => [ :user, { :task => :users, :task => :tags }  ] )
         @tasks = Task.find(:all,
-                           :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at IS NOT NULL) OR (tasks.completed_at is NOT NULL))" ],
+                           :conditions => ["tasks.project_id IN (#{pids})" ],
                            :include => [:milestone, :tags, :task_owners, :users ])
       else
         @activities = WorkLog.find(:all,
                                    :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? || work_logs.duration > 0)", user.id, WorkLog::TASK_WORK_ADDED],
                                    :include => [ :user, { :task => :users, :task => :tags }  ] )
         @tasks = user.tasks.find(:all,
-                                 :conditions => ["tasks.project_id IN (#{pids}) AND ((tasks.due_at is NOT NULL AND tasks.due_at IS NOT NULL) OR (tasks.completed_at is NOT NULL))" ],
+                                 :conditions => ["tasks.project_id IN (#{pids})" ],
                                  :include => [:milestone, :tags, :task_owners, :users ])
       end
 
@@ -167,17 +167,19 @@ class FeedsController < ApplicationController
 
 
     @tasks.each do |t|
-      event = cal.event
       todo = cal.todo
 
       unless t.completed_at
-        todo.start = to_localtime(tz, t.due_at - 12.hours)
+        if t.due_at
+          todo.start = to_localtime(tz, t.due_at - 12.hours)
+        elsif t.milestone && t.milestone.due_at
+          todo.start = to_localtime(tz, t.milestone.due_at - 12.hours)
+        else
+          todo.start = to_localtime(tz, t.created_at)
+        end
       else
         todo.start = to_localtime(tz, t.completed_at)
       end
-
-      event.start = todo.start
-      event.duration = "PT0M"
 
       todo.created = to_localtime(tz, t.created_at)
       todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
@@ -191,6 +193,9 @@ class FeedsController < ApplicationController
       todo.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
       todo.percent = 100 if t.done?
 
+      event = cal.event
+      event.start = todo.start
+      event.duration = "PT0M"
       event.created = todo.created
       event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
       event.organizer = todo.organizer
