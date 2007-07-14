@@ -457,7 +457,7 @@ Localization.define('no_NO') do |l|
   l.store 'days', 'dag' # every 14 days
   l.store 'last', 'siste' # every last thursday
 
-  l.store 'Hide Dependencies', 'Skjul Avhengigheter'
+  l.store 'Hide Waiting Tasks', 'Gjem Ventende Oppgaver'
   l.store 'Signup Message', 'Personlig Beskjed'
   l.store 'The message will be included in the signup email.', 'Beskjeden blir inkludert i registrerings emailen.'
   l.store 'Depends on', 'Avhengig av'
