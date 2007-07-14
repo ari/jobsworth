@@ -331,6 +331,12 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def owners
+    o = self.users.collect{ |u| u.name}.join(', ')
+    o = "Unassigned" if o.nil? || o == ""
+    o
+  end
+
   def set_tags( tagstring )
     self.tags.clear
     tagstring.split(',').each do |t|

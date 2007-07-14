@@ -1266,3 +1266,7 @@ li.help {
 #task_page_header a {
   padding-right: 0.4em;
 }
+
+#recent_activities_page_header a {
+  padding-right: 0.2em;
+}

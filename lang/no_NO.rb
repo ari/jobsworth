@@ -461,4 +461,8 @@ Localization.define('no_NO') do |l|
   l.store 'Signup Message', 'Personlig Beskjed'
   l.store 'The message will be included in the signup email.', 'Beskjeden blir inkludert i registrerings emailen.'
   l.store 'Depends on', 'Avhengig av'
+
+  # Activities
+  l.store 'Subscribe to the recent activities RSS feed', 'Abonner på alle aktiviteter via RSS'
+
 end
