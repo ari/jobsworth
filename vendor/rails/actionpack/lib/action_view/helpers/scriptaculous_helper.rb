@@ -102,6 +102,10 @@ module ActionView
       end
       
       def draggable_element_js(element_id, options = {}) #:nodoc:
+        [:constraint, :handle].each do |option|
+          options[option] = "'#{options[option]}'" if options[option]
+        end
+
         %(new Draggable(#{element_id.to_json}, #{options_for_javascript(options)});)
       end
 
