@@ -1,7 +1,8 @@
   <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
     <tr>
       <td colspan="6" class="page_header">
-        <%= session[:user].company.name %> <%=_ 'Users' %>
+      <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Users' %></div>
+      <div style="float:right;padding-top:0.1em;"><%= link_to _('New User'), :action => 'new' %></div>
       </td>
     </tr>
     <tr><td colspan="6">&nbsp;</td></tr>
@@ -34,7 +35,6 @@
 <% end %>
 <tr><td colspan=6>&nbsp;</td></tr>
 <tr><td colspan=6>
-<%= link_to _('[New User]'), :action => 'new' %><br />
 <%= link_to _("[Previous page]"), :page => @user_pages.current.previous if @user_pages.current.previous %>
 <%= link_to _("[Next page]"), :page => @user_pages.current.next  if @user_pages.current.next %>
 </td></tr>
