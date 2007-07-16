@@ -1,0 +1,19 @@
+<div id="folder_cell_<%= folder %>" class="file_cell">
+  <strong><%=h folder %></strong><br/>
+  <small> (4 files)</small><br />
+  <%= h "WebApplication" %><br />
+
+  <center>
+  <div class="file_cell_img">
+  <%= link_to image_tag("folder_big.png", :border => 0), {:action => 'enter', :id => folder} %><br />
+  </div>
+  </center>
+  <strong><%=h "21:09 21/12/2006" %> - <%= "409 MB" %> </strong><br />
+  <%= link_to _('Enter'), :action => 'Enter', :id => folder %>
+  | <%= link_to _('Edit'), :action => 'edit', :id => folder %>
+  | <%= link_to _('Delete'), {:action => 'destroy', :id => folder}, :confirm => "Are you sure?" %>
+</div>
+<%= drop_receiving_element "folder_cell_#{folder}",
+      :hoverclass => 'folder-active',
+      :before => 'Element.hide(element)'
+%>
