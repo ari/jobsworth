@@ -4,14 +4,27 @@ module ActiveRecord
       attr_reader :reflection
       alias_method :proxy_respond_to?, :respond_to?
       alias_method :proxy_extend, :extend
-      instance_methods.each { |m| undef_method m unless m =~ /(^__|^nil\?|^proxy_respond_to\?|^proxy_extend|^send)/ }
+      delegate :to_param, :to => :proxy_target
+      instance_methods.each { |m| undef_method m unless m =~ /(^__|^nil\?$|^send$|proxy_)/ }
 
       def initialize(owner, reflection)
         @owner, @reflection = owner, reflection
-        proxy_extend(reflection.options[:extend]) if reflection.options[:extend]
+        Array(reflection.options[:extend]).each { |ext| proxy_extend(ext) }
         reset
       end
       
+      def proxy_owner
+        @owner
+      end
+      
+      def proxy_reflection
+        @reflection
+      end
+      
+      def proxy_target
+        @target
+      end
+
       def respond_to?(symbol, include_priv = false)
         proxy_respond_to?(symbol, include_priv) || (load_target && @target.respond_to?(symbol, include_priv))
       end
@@ -28,7 +41,7 @@ module ActiveRecord
       end
       
       def conditions
-        @conditions ||= eval("%(#{@reflection.active_record.send :sanitize_sql, @reflection.options[:conditions]})") if @reflection.options[:conditions]
+        @conditions ||= interpolate_sql(sanitize_sql(@reflection.options[:conditions])) if @reflection.options[:conditions]
       end
       alias :sql_conditions :conditions
       
@@ -106,21 +119,22 @@ module ActiveRecord
         
       private
         def method_missing(method, *args, &block)
-          load_target
-          @target.send(method, *args, &block)
+          if load_target        
+            @target.send(method, *args, &block)
+          end
         end
 
         def load_target
-          if !@owner.new_record? || foreign_key_present
-            begin
-              @target = find_target if !loaded?
-            rescue ActiveRecord::RecordNotFound
-              reset
-            end
+          return nil unless defined?(@loaded)
+
+          if !loaded? and (!@owner.new_record? || foreign_key_present)
+            @target = find_target
           end
 
-          loaded if target
-          target
+          @loaded = true
+          @target
+        rescue ActiveRecord::RecordNotFound
+          reset
         end
 
         # Can be overwritten by associations that might have the foreign key available for an association without
@@ -133,6 +147,11 @@ module ActiveRecord
           unless record.is_a?(@reflection.klass)
             raise ActiveRecord::AssociationTypeMismatch, "#{@reflection.class_name} expected, got #{record.class}"
           end
+        end
+
+        # Array#flatten has problems with recursive arrays. Going one level deeper solves the majority of the problems.
+        def flatten_deeper(array)
+          array.collect { |element| element.respond_to?(:flatten) ? element.flatten : element }.flatten
         end
     end
   end

@@ -46,7 +46,7 @@ end
 
 class CalleeController < ActionController::Base
   def being_called
-    render_text "#{@params["name"] || "Lady"} of the House, speaking"
+    render_text "#{params[:name] || "Lady"} of the House, speaking"
   end
   
   def blowing_up
@@ -125,5 +125,27 @@ class ComponentsTest < Test::Unit::TestCase
     get :calling_redirected_as_string
     
     assert_equal "Lady of the House, speaking", @response.body
+  end
+end
+
+module A
+  module B
+    module C
+      class NestedController < ActionController::Base
+        # Stub for uses_component_template_root
+        def self.caller
+          [ '/path/to/active_support/deprecation.rb:93:in `uses_component_template_root',
+            './test/fixtures/a/b/c/nested_controller.rb' ]
+        end
+      end
+    end
+  end
+end
+
+class UsesComponentTemplateRootTest < Test::Unit::TestCase
+  def test_uses_component_template_root
+    assert_deprecated 'uses_component_template_root' do
+      assert_equal './test/fixtures/', A::B::C::NestedController.uses_component_template_root
+    end
   end
 end

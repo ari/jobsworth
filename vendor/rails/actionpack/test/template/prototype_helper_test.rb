@@ -8,17 +8,23 @@ module BaseTest
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::FormTagHelper
   include ActionView::Helpers::FormHelper
   include ActionView::Helpers::CaptureHelper
   
   def setup
+    @template = nil
     @controller = Class.new do
       def url_for(options, *parameters_for_method_reference)
-        url =  "http://www.example.com/"
-        url << options[:action].to_s if options and options[:action]
-        url << "?a=#{options[:a]}" if options && options[:a]
-        url << "&b=#{options[:b]}" if options && options[:a] && options[:b]
-        url
+        if options.is_a?(String)
+          options
+        else
+          url =  "http://www.example.com/"
+          url << options[:action].to_s if options and options[:action]
+          url << "?a=#{options[:a]}" if options && options[:a]
+          url << "&b=#{options[:b]}" if options && options[:a] && options[:b]
+          url
+        end
       end
     end.new
   end
@@ -60,6 +66,17 @@ class PrototypeHelperTest < Test::Unit::TestCase
       form_remote_tag(:update => { :failure => "glass_of_water" }, :url => { :action => :fast  })
     assert_dom_equal %(<form action=\"http://www.example.com/fast\" method=\"post\" onsubmit=\"new Ajax.Updater({success:'glass_of_beer',failure:'glass_of_water'}, 'http://www.example.com/fast', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\">),
       form_remote_tag(:update => { :success => 'glass_of_beer', :failure => "glass_of_water" }, :url => { :action => :fast  })
+  end
+
+  def test_form_remote_tag_with_method
+    assert_dom_equal %(<form action=\"http://www.example.com/fast\" method=\"post\" onsubmit=\"new Ajax.Updater('glass_of_beer', 'http://www.example.com/fast', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\"><div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div>),
+      form_remote_tag(:update => "glass_of_beer", :url => { :action => :fast  }, :html => { :method => :put })
+  end
+
+  def test_form_remote_tag_with_block
+    _erbout = ''
+    form_remote_tag(:update => "glass_of_beer", :url => { :action => :fast  }) { _erbout.concat "Hello world!" }
+    assert_dom_equal %(<form action=\"http://www.example.com/fast\" method=\"post\" onsubmit=\"new Ajax.Updater('glass_of_beer', 'http://www.example.com/fast', {asynchronous:true, evalScripts:true, parameters:Form.serialize(this)}); return false;\">Hello world!</form>), _erbout
   end
   
   def test_on_callbacks
@@ -126,30 +143,6 @@ class PrototypeHelperTest < Test::Unit::TestCase
     assert_dom_equal %(<script type=\"text/javascript\">\n//<![CDATA[\nnew Form.Observer('cart', 2, function(element, value) {alert('Form changed')})\n//]]>\n</script>),
       observe_form("cart", :frequency => 2, :function => "alert('Form changed')")
   end
-
-  def test_update_element_function
-    assert_equal %($('myelement').innerHTML = 'blub';\n),
-      update_element_function('myelement', :content => 'blub')
-    assert_equal %($('myelement').innerHTML = 'blub';\n),
-      update_element_function('myelement', :action => :update, :content => 'blub')
-    assert_equal %($('myelement').innerHTML = '';\n),
-      update_element_function('myelement', :action => :empty)
-    assert_equal %(Element.remove('myelement');\n),
-      update_element_function('myelement', :action => :remove)
-      
-    assert_equal %(new Insertion.Bottom('myelement','blub');\n),
-      update_element_function('myelement', :position => 'bottom', :content => 'blub')
-    assert_equal %(new Insertion.Bottom('myelement','blub');\n),
-      update_element_function('myelement', :action => :update, :position => :bottom, :content => 'blub')
-      
-    _erbout = ""
-    assert_equal %($('myelement').innerHTML = 'test';\n),
-      update_element_function('myelement') { _erbout << "test" }
-      
-    _erbout = ""
-    assert_equal %($('myelement').innerHTML = 'blockstuff';\n),
-      update_element_function('myelement', :content => 'paramstuff') { _erbout << "blockstuff" }
-  end
   
   def test_update_page
     block = Proc.new { |page| page.replace_html('foo', 'bar') }
@@ -160,6 +153,12 @@ class PrototypeHelperTest < Test::Unit::TestCase
     block = Proc.new { |page| page.replace_html('foo', 'bar') }
     assert_equal javascript_tag(create_generator(&block).to_s), update_page_tag(&block)
   end
+
+  def test_update_page_tag_with_html_options
+    block = Proc.new { |page| page.replace_html('foo', 'bar') }
+    assert_equal javascript_tag(create_generator(&block).to_s, {:defer => 'true'}), update_page_tag({:defer => 'true'}, &block)
+  end
+
 end
 
 class JavaScriptGeneratorTest < Test::Unit::TestCase
@@ -192,7 +191,7 @@ class JavaScriptGeneratorTest < Test::Unit::TestCase
   end
   
   def test_remove
-    assert_equal '["foo"].each(Element.remove);',
+    assert_equal 'Element.remove("foo");',
       @generator.remove('foo')
     assert_equal '["foo", "bar", "baz"].each(Element.remove);',
       @generator.remove('foo', 'bar', 'baz')
@@ -201,17 +200,24 @@ class JavaScriptGeneratorTest < Test::Unit::TestCase
   def test_show
     assert_equal 'Element.show("foo");',
       @generator.show('foo')
-    assert_equal 'Element.show("foo", "bar", "baz");',
-      @generator.show('foo', 'bar', 'baz')
+    assert_equal '["foo", "bar", "baz"].each(Element.show);',
+      @generator.show('foo', 'bar', 'baz')  
   end
   
   def test_hide
     assert_equal 'Element.hide("foo");',
       @generator.hide('foo')
-    assert_equal 'Element.hide("foo", "bar", "baz");',
-      @generator.hide('foo', 'bar', 'baz')
+    assert_equal '["foo", "bar", "baz"].each(Element.hide);',
+      @generator.hide('foo', 'bar', 'baz')  
   end
   
+  def test_toggle
+    assert_equal 'Element.toggle("foo");',
+      @generator.toggle('foo')
+    assert_equal '["foo", "bar", "baz"].each(Element.toggle);',
+      @generator.toggle('foo', 'bar', 'baz')  
+  end
+    
   def test_alert
     assert_equal 'alert("hello");', @generator.alert('hello')
   end
@@ -250,6 +256,16 @@ Element.update("baz", "<p>This is a test</p>");
   def test_element_proxy_one_deep
     @generator['hello'].hide
     assert_equal %($("hello").hide();), @generator.to_s
+  end
+  
+  def test_element_proxy_variable_access
+    @generator['hello']['style']
+    assert_equal %($("hello").style;), @generator.to_s
+  end
+  
+  def test_element_proxy_variable_access_with_assignment
+    @generator['hello']['style']['color'] = 'red'
+    assert_equal %($("hello").style.color = "red";), @generator.to_s
   end
 
   def test_element_proxy_assignment
@@ -414,10 +430,37 @@ return (value.className == "welcome");
   ensure
     ActionView::Base.debug_rjs = false
   end
+  
+  def test_literal
+    literal = @generator.literal("function() {}")
+    assert_equal "function() {}", literal.to_json
+    assert_equal "", @generator.to_s
+  end
 
   def test_class_proxy
     @generator.form.focus('my_field')
     assert_equal "Form.focus(\"my_field\");", @generator.to_s
+  end
+  
+  def test_call_with_block
+    @generator.call(:before)
+    @generator.call(:my_method) do |p|
+      p[:one].show
+      p[:two].hide
+    end
+    @generator.call(:in_between)
+    @generator.call(:my_method_with_arguments, true, "hello") do |p|
+      p[:three].visual_effect(:highlight)
+    end
+    assert_equal "before();\nmy_method(function() { $(\"one\").show();\n$(\"two\").hide(); });\nin_between();\nmy_method_with_arguments(true, \"hello\", function() { $(\"three\").visualEffect(\"highlight\"); });", @generator.to_s
+  end
+  
+  def test_class_proxy_call_with_block
+    @generator.my_object.my_method do |p|
+      p[:one].show
+      p[:two].hide
+    end
+    assert_equal "MyObject.myMethod(function() { $(\"one\").show();\n$(\"two\").hide(); });", @generator.to_s
   end
 end
 

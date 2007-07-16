@@ -50,14 +50,9 @@ module ActionController #:nodoc:
       base.send :attr_accessor, :parent_controller
       
       base.class_eval do
-        alias_method :process_cleanup_without_components, :process_cleanup
-        alias_method :process_cleanup, :process_cleanup_with_components
-        
-        alias_method :set_session_options_without_components, :set_session_options
-        alias_method :set_session_options, :set_session_options_with_components
-        
-        alias_method :flash_without_components, :flash
-        alias_method :flash, :flash_with_components
+        alias_method_chain :process_cleanup, :components
+        alias_method_chain :set_session_options, :components
+        alias_method_chain :flash, :components
 
         alias_method :component_request?, :parent_controller       
       end
@@ -80,11 +75,13 @@ module ActionController #:nodoc:
       #     will also use /code/weblog/components as template root 
       #     and find templates in /code/weblog/components/admin/parties/users/
       def uses_component_template_root
-        path_of_calling_controller = File.dirname(caller[0].split(/:\d+:/).first)
-        path_of_controller_root    = path_of_calling_controller.sub(/#{controller_path.split("/")[0..-2]}$/, "") # " (for ruby-mode)
+        path_of_calling_controller = File.dirname(caller[1].split(/:\d+:/, 2).first)
+        path_of_controller_root    = path_of_calling_controller.sub(/#{Regexp.escape(File.dirname(controller_path))}$/, "")
 
         self.template_root = path_of_controller_root
       end
+
+      deprecate :uses_component_template_root => 'Components are deprecated and will be removed in Rails 2.0.'
     end
 
     module InstanceMethods
@@ -116,27 +113,26 @@ module ActionController #:nodoc:
         end
 
         def flash_with_components(refresh = false) #:nodoc:
-          if @flash.nil? || refresh
-            @flash = 
-              if @parent_controller
+          if !defined?(@_flash) || refresh
+            @_flash =
+              if defined?(@parent_controller)
                 @parent_controller.flash
               else
                 flash_without_components
               end
           end
-          
-          @flash
+          @_flash
         end
 
       private
         def component_response(options, reuse_response)
           klass    = component_class(options)
           request  = request_for_component(klass.controller_name, options)
-          response = reuse_response ? @response : @response.dup
+          new_response = reuse_response ? response : response.dup
 
-          klass.process_with_components(request, response, self)
+          klass.process_with_components(request, new_response, self)
         end
-        
+
         # determine the controller class for the component request
         def component_class(options)
           if controller = options[:controller]
@@ -145,22 +141,22 @@ module ActionController #:nodoc:
             self.class
           end
         end
-        
+
         # Create a new request object based on the current request.
         # The new request inherits the session from the current request,
         # bypassing any session options set for the component controller's class
         def request_for_component(controller_name, options)
-          request         = @request.dup
-          request.session = @request.session
-        
-          request.instance_variable_set(
+          new_request         = request.dup
+          new_request.session = request.session
+
+          new_request.instance_variable_set(
             :@parameters,
             (options[:params] || {}).with_indifferent_access.update(
               "controller" => controller_name, "action" => options[:action], "id" => options[:id]
             )
           )
-          
-          request
+
+          new_request
         end
 
         def component_logging(options)

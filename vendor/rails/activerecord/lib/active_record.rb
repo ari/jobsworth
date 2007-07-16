@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2004 David Heinemeier Hansson
+# Copyright (c) 2004-2006 David Heinemeier Hansson
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -30,7 +30,7 @@ unless defined?(ActiveSupport)
     require 'active_support'  
   rescue LoadError
     require 'rubygems'
-    require_gem 'activesupport'
+    gem 'activesupport'
   end
 end
 
@@ -46,14 +46,18 @@ require 'active_record/timestamp'
 require 'active_record/acts/list'
 require 'active_record/acts/tree'
 require 'active_record/acts/nested_set'
-require 'active_record/locking'
+require 'active_record/locking/optimistic'
+require 'active_record/locking/pessimistic'
 require 'active_record/migration'
 require 'active_record/schema'
 require 'active_record/calculations'
+require 'active_record/xml_serialization'
+require 'active_record/attribute_methods'
 
 ActiveRecord::Base.class_eval do
   include ActiveRecord::Validations
-  include ActiveRecord::Locking
+  include ActiveRecord::Locking::Optimistic
+  include ActiveRecord::Locking::Pessimistic
   include ActiveRecord::Callbacks
   include ActiveRecord::Observing
   include ActiveRecord::Timestamp
@@ -65,10 +69,12 @@ ActiveRecord::Base.class_eval do
   include ActiveRecord::Acts::List
   include ActiveRecord::Acts::NestedSet
   include ActiveRecord::Calculations
+  include ActiveRecord::XmlSerialization
+  include ActiveRecord::AttributeMethods
 end
 
 unless defined?(RAILS_CONNECTION_ADAPTERS)
-  RAILS_CONNECTION_ADAPTERS = %w( mysql postgresql sqlite firebird sqlserver db2 oracle sybase openbase )
+  RAILS_CONNECTION_ADAPTERS = %w( mysql postgresql sqlite firebird sqlserver db2 oracle sybase openbase frontbase )
 end
 
 RAILS_CONNECTION_ADAPTERS.each do |adapter|

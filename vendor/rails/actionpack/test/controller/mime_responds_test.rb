@@ -20,6 +20,13 @@ class RespondToController < ActionController::Base
     end
   end
 
+  def json_or_yaml
+    respond_to do |type|
+      type.json { render :text => "JSON" }
+      type.yaml { render :text => "YAML" }
+    end
+  end
+
   def html_or_xml
     respond_to do |type|
       type.html { render :text => "HTML"    }
@@ -61,6 +68,29 @@ class RespondToController < ActionController::Base
       type.all  { render :text => "Nothing" }
     end
   end
+  
+  def custom_constant_handling
+    Mime::Type.register("text/x-mobile", :mobile)
+
+    respond_to do |type|
+      type.html   { render :text => "HTML"   }
+      type.mobile { render :text => "Mobile" }
+    end
+    
+    Mime.send :remove_const, :MOBILE
+  end
+  
+  def custom_constant_handling_without_block
+    Mime::Type.register("text/x-mobile", :mobile)
+
+    respond_to do |type|
+      type.html   { render :text => "HTML"   }
+      type.mobile
+    end
+    
+    Mime.send :remove_const, :MOBILE    
+  end
+  
 
   def handle_any
     respond_to do |type|
@@ -139,6 +169,27 @@ class MimeControllerTest < Test::Unit::TestCase
 
     get :just_xml
     assert_response 406
+  end
+
+  def test_json_or_yaml
+    get :json_or_yaml
+    assert_equal 'JSON', @response.body
+
+    get :json_or_yaml, :format => 'json'
+    assert_equal 'JSON', @response.body
+
+    get :json_or_yaml, :format => 'yaml'
+    assert_equal 'YAML', @response.body
+
+    { 'YAML' => %w(text/yaml),
+      'JSON' => %w(application/json text/x-json)
+    }.each do |body, content_types|
+      content_types.each do |content_type|
+        @request.env['HTTP_ACCEPT'] = content_type
+        get :json_or_yaml
+        assert_equal body, @response.body
+      end
+    end
   end
 
   def test_js_or_anything
@@ -253,5 +304,48 @@ class MimeControllerTest < Test::Unit::TestCase
 
     xhr :get, :using_defaults
     assert_equal '$("body").visualEffect("highlight");', @response.body
+  end
+  
+  def test_custom_constant
+    get :custom_constant_handling, :format => "mobile"
+    assert_equal "Mobile", @response.body
+  end
+  
+  def custom_constant_handling_without_block
+    
+    assert_raised(ActionController::RenderError) do
+      get :custom_constant_handling, :format => "mobile"
+    end
+  end
+  
+  def test_forced_format
+    get :html_xml_or_rss
+    assert_equal "HTML", @response.body
+
+    get :html_xml_or_rss, :format => "html"
+    assert_equal "HTML", @response.body
+
+    get :html_xml_or_rss, :format => "xml"
+    assert_equal "XML", @response.body
+
+    get :html_xml_or_rss, :format => "rss"
+    assert_equal "RSS", @response.body
+  end
+
+  def test_render_action_for_html
+    @controller.instance_eval do
+      def render(*args)
+        unless args.empty?
+          @action = args.first[:action]
+        end
+        response.body = @action
+      end
+    end
+
+    get :using_defaults
+    assert_equal "using_defaults", @response.body
+
+    get :using_defaults, :format => "xml"
+    assert_equal "using_defaults.rxml", @response.body
   end
 end

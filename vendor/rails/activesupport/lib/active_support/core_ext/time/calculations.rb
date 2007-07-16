@@ -3,8 +3,7 @@ module ActiveSupport #:nodoc:
     module Time #:nodoc:
       # Enables the use of time calculations within Time itself
       module Calculations
-        def self.append_features(base) #:nodoc:
-          super
+        def self.included(base) #:nodoc:
           base.extend(ClassMethods)
         end
 
@@ -26,7 +25,7 @@ module ActiveSupport #:nodoc:
 
         # Seconds since midnight: Time.now.seconds_since_midnight
         def seconds_since_midnight
-          self.hour.hours + self.min.minutes + self.sec + (self.usec/1.0e+6)
+          self.to_i - self.change(:hour => 0).to_i + (self.usec/1.0e+6)
         end
             
         # Returns a new Time where one or more of the elements have been changed according to the +options+ parameter. The time options
@@ -57,13 +56,16 @@ module ActiveSupport #:nodoc:
         # Returns a new Time representing the time a number of seconds ago, this is basically a wrapper around the Numeric extension
         # Do not use this method in combination with x.months, use months_ago instead!
         def ago(seconds)
-          seconds.until(self)
+          self.since(-seconds)
         end
 
         # Returns a new Time representing the time a number of seconds since the instance time, this is basically a wrapper around 
         #the Numeric extension. Do not use this method in combination with x.months, use months_since instead!
         def since(seconds)
-          seconds.since(self)
+          initial_dst = self.dst? ? 1 : 0
+          f = seconds.since(self)
+          final_dst   = f.dst? ? 1 : 0
+          (seconds.abs >= 86400 && initial_dst != final_dst) ? f + (initial_dst - final_dst).hours : f
         end
         alias :in :since
 

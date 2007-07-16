@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2004 David Heinemeier Hansson
+# Copyright (c) 2004-2006 David Heinemeier Hansson
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,14 +21,13 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-begin
-  require 'action_controller'
-rescue LoadError
+unless defined?(ActionController)
   begin
-    require File.dirname(__FILE__) + '/../../actionpack/lib/action_controller'
+    $:.unshift "#{File.dirname(__FILE__)}/../../actionpack/lib"
+    require 'action_controller'
   rescue LoadError
     require 'rubygems'
-    require_gem 'actionpack', '>= 1.9.1'
+    gem 'actionpack', '>= 1.12.5'
   end
 end
 

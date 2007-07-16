@@ -30,6 +30,10 @@ class ActionView::Helpers::InstanceTag
   def to_datetime_select_tag(options = {})
     "<%= datetime_select '#{@object_name}', '#{@method_name}' #{options.empty? ? '' : ', '+ options.inspect} %>"
   end
+  
+  def to_time_select_tag(options = {})
+    "<%= time_select '#{@object_name}', '#{@method_name}' #{options.empty? ? '' : ', '+ options.inspect} %>"
+  end
 end
 
 class ScaffoldGenerator < Rails::Generator::NamedBase
@@ -70,6 +74,7 @@ class ScaffoldGenerator < Rails::Generator::NamedBase
       m.directory File.join('app/controllers', controller_class_path)
       m.directory File.join('app/helpers', controller_class_path)
       m.directory File.join('app/views', controller_class_path, controller_file_name)
+      m.directory File.join('app/views/layouts', controller_class_path)
       m.directory File.join('test/functional', controller_class_path)
 
       # Depend on model generator but skip if the model exists.
@@ -115,7 +120,11 @@ class ScaffoldGenerator < Rails::Generator::NamedBase
                             "#{controller_file_name}_helper.rb")
 
       # Layout and stylesheet.
-      m.template 'layout.rhtml',  "app/views/layouts/#{controller_file_name}.rhtml"
+      m.template 'layout.rhtml',
+                  File.join('app/views/layouts',
+                            controller_class_path,
+                            "#{controller_file_name}.rhtml")
+
       m.template 'style.css',     'public/stylesheets/scaffold.css'
 
 

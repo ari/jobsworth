@@ -92,7 +92,6 @@ module HTML #:nodoc:
     # returns non +nil+. Returns the result of the #find call that succeeded.
     def find(conditions)
       conditions = validate_conditions(conditions)
-
       @children.each do |child|        
         node = child.find(conditions)
         return node if node
@@ -152,11 +151,11 @@ module HTML #:nodoc:
 
           if scanner.skip(/!\[CDATA\[/)
             scanner.scan_until(/\]\]>/)
-            return CDATA.new(parent, line, pos, scanner.pre_match)
+            return CDATA.new(parent, line, pos, scanner.pre_match.gsub(/<!\[CDATA\[/, ''))
           end
           
           closing = ( scanner.scan(/\//) ? :close : nil )
-          return Text.new(parent, line, pos, content) unless name = scanner.scan(/[\w:]+/)
+          return Text.new(parent, line, pos, content) unless name = scanner.scan(/[\w:-]+/)
           name.downcase!
   
           unless closing
@@ -239,7 +238,7 @@ module HTML #:nodoc:
     def match(conditions)
       case conditions
         when String
-          @content.index(conditions)
+          @content == conditions
         when Regexp
           @content =~ conditions
         when Hash
@@ -316,7 +315,7 @@ module HTML #:nodoc:
         s = "<#{@name}"
         @attributes.each do |k,v|
           s << " #{k}"
-          s << "='#{v.gsub(/'/,"\\\\'")}'" if String === v
+          s << "=\"#{v}\"" if String === v
         end
         s << " /" if @closing == :self
         s << ">"
@@ -410,7 +409,6 @@ module HTML #:nodoc:
     #                               :child => /hello world/ }
     def match(conditions)
       conditions = validate_conditions(conditions)
-
       # check content of child nodes
       if conditions[:content]
         if children.empty?
@@ -455,7 +453,6 @@ module HTML #:nodoc:
       # count children
       if opts = conditions[:children]
         matches = children.select do |c|
-          c.match(/./) or
           (c.kind_of?(HTML::Tag) and (c.closing == :self or ! c.childless?))
         end
         

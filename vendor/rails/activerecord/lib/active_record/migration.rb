@@ -64,8 +64,10 @@ module ActiveRecord
   # * <tt>rename_table(old_name, new_name)</tt>: Renames the table called +old_name+ to +new_name+.
   # * <tt>add_column(table_name, column_name, type, options)</tt>: Adds a new column to the table called +table_name+
   #   named +column_name+ specified to be one of the following types:
-  #   :string, :text, :integer, :float, :datetime, :timestamp, :time, :date, :binary, :boolean. A default value can be specified
-  #   by passing an +options+ hash like { :default => 11 }.
+  #   :string, :text, :integer, :float, :decimal, :datetime, :timestamp, :time,
+  #   :date, :binary, :boolean. A default value can be specified by passing an
+  #   +options+ hash like { :default => 11 }. Other options include :limit and :null (e.g. { :limit => 50, :null => false })
+  #   -- see ActiveRecord::ConnectionAdapters::TableDefinition#column for details.
   # * <tt>rename_column(table_name, column_name, new_column_name)</tt>: Renames a column but keeps the type and content.
   # * <tt>change_column(table_name, column_name, type, options)</tt>:  Changes the column to a different type using the same
   #   parameters as add_column.
@@ -156,7 +158,7 @@ module ActiveRecord
   #       add_column :people, :salary, :integer
   #       Person.reset_column_information
   #       Person.find(:all).each do |p|
-  #         p.salary = SalaryCalculator.compute(p)
+  #         p.update_attribute :salary, SalaryCalculator.compute(p)
   #       end
   #     end
   #   end
@@ -176,7 +178,7 @@ module ActiveRecord
   #     ...
   #     say_with_time "Updating salaries..." do
   #       Person.find(:all).each do |p|
-  #         p.salary = SalaryCalculator.compute(p)
+  #         p.update_attribute :salary, SalaryCalculator.compute(p)
   #       end
   #     end
   #     ...
@@ -381,7 +383,8 @@ module ActiveRecord
       end
       
       def reached_target_version?(version)
-        (up? && version.to_i - 1 == @target_version) || (down? && version.to_i == @target_version)
+        return false if @target_version == nil
+        (up? && version.to_i - 1 >= @target_version) || (down? && version.to_i <= @target_version)
       end
       
       def irrelevant_migration?(version)

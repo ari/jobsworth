@@ -71,3 +71,117 @@ class LayoutAutoDiscoveryTest < Test::Unit::TestCase
     assert_equal 'controller_name_space/nested.rhtml hello.rhtml', @response.body
   end
 end
+
+class ExemptFromLayoutTest < Test::Unit::TestCase
+  def setup
+    @controller = LayoutTest.new
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+  end
+
+  def test_rjs_exempt_from_layout
+    assert @controller.send(:template_exempt_from_layout?, 'test.rjs')
+  end
+
+  def test_rhtml_and_rxml_not_exempt_from_layout
+    assert !@controller.send(:template_exempt_from_layout?, 'test.rhtml')
+    assert !@controller.send(:template_exempt_from_layout?, 'test.rxml')
+  end
+
+  def test_other_extension_not_exempt_from_layout
+    assert !@controller.send(:template_exempt_from_layout?, 'test.random')
+  end
+
+  def test_add_extension_to_exempt_from_layout
+    ['rpdf', :rpdf].each do |ext|
+      assert_nothing_raised do
+        ActionController::Base.exempt_from_layout ext
+      end
+      assert @controller.send(:template_exempt_from_layout?, "test.#{ext}")
+    end
+  end
+
+  def test_add_regexp_to_exempt_from_layout
+    ActionController::Base.exempt_from_layout /\.rdoc/
+    assert @controller.send(:template_exempt_from_layout?, 'test.rdoc')
+  end
+
+  def test_rhtml_exempt_from_layout_status_should_prevent_layout_render
+    ActionController::Base.exempt_from_layout :rhtml
+    assert @controller.send(:template_exempt_from_layout?, 'test.rhtml')
+
+    get :hello
+    assert_equal 'hello.rhtml', @response.body
+    ActionController::Base.exempt_from_layout.delete(/\.rhtml$/)
+  end
+end
+
+
+class DefaultLayoutController < LayoutTest
+end
+
+class HasOwnLayoutController < LayoutTest
+  layout 'item'
+end
+
+class SetsLayoutInRenderController < LayoutTest
+  def hello
+    render :layout => 'third_party_template_library'
+  end
+end
+
+class RendersNoLayoutController < LayoutTest
+  def hello
+    render :layout => false
+  end
+end
+
+class LayoutSetInResponseTest < Test::Unit::TestCase
+  def setup
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+  end
+
+  def test_layout_set_when_using_default_layout
+    @controller = DefaultLayoutController.new
+    get :hello
+    assert_equal 'layouts/layout_test', @response.layout
+  end
+  
+  def test_layout_set_when_set_in_controller
+    @controller = HasOwnLayoutController.new
+    get :hello
+    assert_equal 'layouts/item', @response.layout
+  end
+  
+  def test_layout_set_when_using_render
+    @controller = SetsLayoutInRenderController.new
+    get :hello
+    assert_equal 'layouts/third_party_template_library', @response.layout
+  end
+  
+  def test_layout_is_not_set_when_none_rendered
+    @controller = RendersNoLayoutController.new
+    get :hello
+    assert_nil @response.layout
+  end
+end
+
+
+class SetsNonExistentLayoutFile < LayoutTest
+  layout "nofile.rhtml"
+end
+
+class LayoutExceptionRaised < Test::Unit::TestCase
+  def setup
+    @request    = ActionController::TestRequest.new
+    @response   = ActionController::TestResponse.new
+  end
+
+  def test_exception_raised_when_layout_file_not_found
+    @controller = SetsNonExistentLayoutFile.new
+    get :hello
+    @response.template.class.module_eval { attr_accessor :exception }
+    assert_equal ActionController::MissingTemplate, @response.template.exception.class
+  end
+end

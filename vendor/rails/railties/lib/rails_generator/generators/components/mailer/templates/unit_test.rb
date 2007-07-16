@@ -1,8 +1,7 @@
-require File.dirname(__FILE__) + '/../test_helper'
-require '<%= file_name %>'
+require File.dirname(__FILE__) + '<%= '/..' * class_nesting_depth %>/../test_helper'
 
 class <%= class_name %>Test < Test::Unit::TestCase
-  FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
+  FIXTURES_PATH = File.dirname(__FILE__) + '<%= '/..' * class_nesting_depth %>/../fixtures'
   CHARSET = "utf-8"
 
   include ActionMailer::Quoting
@@ -14,6 +13,7 @@ class <%= class_name %>Test < Test::Unit::TestCase
 
     @expected = TMail::Mail.new
     @expected.set_content_type "text", "plain", { "charset" => CHARSET }
+    @expected.mime_version = '1.0'
   end
 
 <% for action in actions -%>
@@ -28,7 +28,7 @@ class <%= class_name %>Test < Test::Unit::TestCase
 <% end -%>
   private
     def read_fixture(action)
-      IO.readlines("#{FIXTURES_PATH}/<%= file_name %>/#{action}")
+      IO.readlines("#{FIXTURES_PATH}/<%= file_path %>/#{action}")
     end
 
     def encode(subject)

@@ -1,7 +1,4 @@
-$:.unshift(File.dirname(__FILE__) + "/../lib/")
-
-require 'test/unit'
-require 'action_mailer'
+require "#{File.dirname(__FILE__)}/abstract_unit"
 
 class RenderMailer < ActionMailer::Base
   def inline_template(recipient)
@@ -24,7 +21,21 @@ class RenderMailer < ActionMailer::Base
   end
 end
 
-RenderMailer.template_root = File.dirname(__FILE__) + "/fixtures"
+class FirstMailer < ActionMailer::Base
+  def share(recipient)
+    recipients recipient
+    subject    "using helpers"
+    from       "tester@example.com"
+  end
+end
+
+class SecondMailer < ActionMailer::Base
+  def share(recipient)
+    recipients recipient
+    subject    "using helpers"
+    from       "tester@example.com"
+  end
+end
 
 class RenderHelperTest < Test::Unit::TestCase
   def setup
@@ -46,3 +57,23 @@ class RenderHelperTest < Test::Unit::TestCase
   end
 end
 
+class FirstSecondHelperTest < Test::Unit::TestCase
+  def setup
+    ActionMailer::Base.delivery_method = :test
+    ActionMailer::Base.perform_deliveries = true
+    ActionMailer::Base.deliveries = []
+
+    @recipient = 'test@localhost'
+  end
+
+  def test_ordering
+    mail = FirstMailer.create_share(@recipient)
+    assert_equal "first mail", mail.body.strip
+    mail = SecondMailer.create_share(@recipient)
+    assert_equal "second mail", mail.body.strip
+    mail = FirstMailer.create_share(@recipient)
+    assert_equal "first mail", mail.body.strip
+    mail = SecondMailer.create_share(@recipient)
+    assert_equal "second mail", mail.body.strip
+  end
+end

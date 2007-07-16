@@ -12,14 +12,49 @@ module ActionView
       # Starts a form tag that points the action to an url configured with <tt>url_for_options</tt> just like
       # ActionController::Base#url_for. The method for the form defaults to POST.
       #
+      # Examples:
+      # * <tt>form_tag('/posts') => <form action="/posts" method="post"></tt>
+      # * <tt>form_tag('/posts/1', :method => :put) => <form action="/posts/1" method="put"></tt>
+      # * <tt>form_tag('/upload', :multipart => true) => <form action="/upload" method="post" enctype="multipart/form-data"></tt>
+      # 
+      # ERb example:
+      #   <% form_tag '/posts' do -%>
+      #     <div><%= submit_tag 'Save' %></div>
+      #   <% end -%>
+      #
+      # Will output:
+      #   <form action="/posts" method="post"><div><input type="submit" name="submit" value="Save" /></div></form>
+      #
       # Options:
       # * <tt>:multipart</tt> - If set to true, the enctype is set to "multipart/form-data".
-      # * <tt>:method</tt> - The method to use when submitting the form, usually either "get" or "post".
-      def form_tag(url_for_options = {}, options = {}, *parameters_for_url, &proc)
-        html_options = { "method" => "post" }.merge(options.stringify_keys)
+      # * <tt>:method</tt>    - The method to use when submitting the form, usually either "get" or "post".
+      #                         If "put", "delete", or another verb is used, a hidden input with name _method 
+      #                         is added to simulate the verb over post.
+      def form_tag(url_for_options = {}, options = {}, *parameters_for_url, &block)
+        html_options = options.stringify_keys
         html_options["enctype"] = "multipart/form-data" if html_options.delete("multipart")
-        html_options["action"] = url_for(url_for_options, *parameters_for_url)
-        tag :form, html_options, true
+        html_options["action"]  = url_for(url_for_options, *parameters_for_url)
+
+        method_tag = ""
+        
+        case method = html_options.delete("method").to_s
+          when /^get$/i # must be case-insentive, but can't use downcase as might be nil
+            html_options["method"] = "get"
+          when /^post$/i, "", nil
+            html_options["method"] = "post"
+          else
+            html_options["method"] = "post"
+            method_tag = content_tag(:div, tag(:input, :type => "hidden", :name => "_method", :value => method), :style => 'margin:0;padding:0')
+        end
+        
+        if block_given?
+          content = capture(&block)
+          concat(tag(:form, html_options, true) + method_tag, block.binding)
+          concat(content, block.binding)
+          concat("</form>", block.binding)
+        else
+          tag(:form, html_options, true) + method_tag
+        end
       end
 
       alias_method :start_form_tag, :form_tag
@@ -28,6 +63,8 @@ module ActionView
       def end_form_tag
         "</form>"
       end
+      
+      deprecate :end_form_tag, :start_form_tag => :form_tag
 
       # Creates a dropdown selection box, or if the <tt>:multiple</tt> option is set to true, a multiple
       # choice selection box.
@@ -110,7 +147,8 @@ module ActionView
 
       # Creates a radio button.
       def radio_button_tag(name, value, checked = false, options = {})
-        html_options = { "type" => "radio", "name" => name, "id" => name, "value" => value }.update(options.stringify_keys)
+        pretty_tag_value = value.to_s.gsub(/\s/, "_").gsub(/(?!-)\W/, "").downcase
+        html_options = { "type" => "radio", "name" => name, "id" => "#{name}_#{pretty_tag_value}", "value" => value }.update(options.stringify_keys)
         html_options["checked"] = "checked" if checked
         tag :input, html_options
       end

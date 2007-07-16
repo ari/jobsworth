@@ -7,6 +7,8 @@ module ActionView
     # editing relies on ActionController::Base.in_place_edit_for and the autocompletion relies on 
     # ActionController::Base.auto_complete_for.
     module JavaScriptMacrosHelper
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Makes an HTML element specified by the DOM ID +field_id+ become an in-place
       # editor of a property.
       #
@@ -27,20 +29,21 @@ module ActionView
       # <tt>:url</tt>::       Specifies the url where the updated value should
       #                       be sent after the user presses "ok".
       # 
-      #
       # Addtional +options+ are:
       # <tt>:rows</tt>::              Number of rows (more than 1 will use a TEXTAREA)
       # <tt>:cols</tt>::              Number of characters the text input should span (works for both INPUT and TEXTAREA)
       # <tt>:size</tt>::              Synonym for :cols when using a single line text input.
       # <tt>:cancel_text</tt>::       The text on the cancel link. (default: "cancel")
       # <tt>:save_text</tt>::         The text on the save link. (default: "ok")
-      # <tt>:loading_text</tt>::      The text to display when submitting to the server (default: "Saving...")
+      # <tt>:loading_text</tt>::      The text to display while the data is being loaded from the server (default: "Loading...")
+      # <tt>:saving_text</tt>::       The text to display when submitting to the server (default: "Saving...")
       # <tt>:external_control</tt>::  The id of an external control used to enter edit mode.
       # <tt>:load_text_url</tt>::     URL where initial value of editor (content) is retrieved.
       # <tt>:options</tt>::           Pass through options to the AJAX call (see prototype's Ajax.Updater)
       # <tt>:with</tt>::              JavaScript snippet that should return what is to be sent
       #                               in the AJAX call, +form+ is an implicit parameter
       # <tt>:script</tt>::            Instructs the in-place editor to evaluate the remote JavaScript response (default: false)
+      # <tt>:click_to_edit_text</tt>::The text shown during mouseover the editable text (default: "Click to edit")
       def in_place_editor(field_id, options = {})
         function =  "new Ajax.InPlaceEditor("
         function << "'#{field_id}', "
@@ -50,6 +53,7 @@ module ActionView
         js_options['cancelText'] = %('#{options[:cancel_text]}') if options[:cancel_text]
         js_options['okText'] = %('#{options[:save_text]}') if options[:save_text]
         js_options['loadingText'] = %('#{options[:loading_text]}') if options[:loading_text]
+        js_options['savingText'] = %('#{options[:saving_text]}') if options[:saving_text]
         js_options['rows'] = options[:rows] if options[:rows]
         js_options['cols'] = options[:cols] if options[:cols]
         js_options['size'] = options[:size] if options[:size]
@@ -58,6 +62,7 @@ module ActionView
         js_options['ajaxOptions'] = options[:options] if options[:options]
         js_options['evalScripts'] = options[:script] if options[:script]
         js_options['callback']   = "function(form) { return #{options[:with]} }" if options[:with]
+        js_options['clickToEditText'] = %('#{options[:click_to_edit_text]}') if options[:click_to_edit_text]
         function << (', ' + options_for_javascript(js_options)) unless js_options.empty?
         
         function << ')'
@@ -65,6 +70,8 @@ module ActionView
         javascript_tag(function)
       end
       
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Renders the value of the specified object and method with in-place editing capabilities.
       #
       # See the RDoc on ActionController::InPlaceEditing to learn more about this.
@@ -76,14 +83,16 @@ module ActionView
         in_place_editor(tag_options[:id], in_place_editor_options)
       end
       
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Adds AJAX autocomplete functionality to the text input field with the 
       # DOM ID specified by +field_id+.
       #
-      # This function expects that the called action returns a HTML <ul> list,
+      # This function expects that the called action returns an HTML <ul> list,
       # or nothing if no entries should be displayed for autocompletion.
       #
       # You'll probably want to turn the browser's built-in autocompletion off,
-      # so be sure to include a autocomplete="off" attribute with your text
+      # so be sure to include an <tt>autocomplete="off"</tt> attribute with your text
       # input field.
       #
       # The autocompleter object is assigned to a Javascript variable named <tt>field_id</tt>_auto_completer.
@@ -91,45 +100,45 @@ module ActionView
       # other means than user input (for that specific case, call the <tt>activate</tt> method on that object). 
       # 
       # Required +options+ are:
-      # <tt>:url</tt>::       URL to call for autocompletion results
-      #                       in url_for format.
+      # <tt>:url</tt>::                  URL to call for autocompletion results
+      #                                  in url_for format.
       # 
       # Addtional +options+ are:
-      # <tt>:update</tt>::    Specifies the DOM ID of the element whose 
-      #                       innerHTML should be updated with the autocomplete
-      #                       entries returned by the AJAX request. 
-      #                       Defaults to field_id + '_auto_complete'
-      # <tt>:with</tt>::      A JavaScript expression specifying the
-      #                       parameters for the XMLHttpRequest. This defaults
-      #                       to 'fieldname=value'.
-      # <tt>:frequency</tt>:: Determines the time to wait after the last keystroke
-      #                       for the AJAX request to be initiated.
-      # <tt>:indicator</tt>:: Specifies the DOM ID of an element which will be
-      #                       displayed while autocomplete is running.
-      # <tt>:tokens</tt>::    A string or an array of strings containing
-      #                       separator tokens for tokenized incremental 
-      #                       autocompletion. Example: <tt>:tokens => ','</tt> would
-      #                       allow multiple autocompletion entries, separated
-      #                       by commas.
-      # <tt>:min_chars</tt>:: The minimum number of characters that should be
-      #                       in the input field before an Ajax call is made
-      #                       to the server.
-      # <tt>:on_hide</tt>::   A Javascript expression that is called when the
-      #                       autocompletion div is hidden. The expression
-      #                       should take two variables: element and update.
-      #                       Element is a DOM element for the field, update
-      #                       is a DOM element for the div from which the
-      #                       innerHTML is replaced.
-      # <tt>:on_show</tt>::   Like on_hide, only now the expression is called
-      #                       then the div is shown.
-      # <tt>:after_update_element</tt>::   A Javascript expression that is called when the
-      #                                    user has selected one of the proposed values. 
-      #                                    The expression should take two variables: element and value.
-      #                                    Element is a DOM element for the field, value
-      #                                    is the value selected by the user.
-      # <tt>:select</tt>::    Pick the class of the element from which the value for 
-      #                       insertion should be extracted. If this is not specified,
-      #                       the entire element is used.
+      # <tt>:update</tt>::               Specifies the DOM ID of the element whose 
+      #                                  innerHTML should be updated with the autocomplete
+      #                                  entries returned by the AJAX request. 
+      #                                  Defaults to <tt>field_id</tt> + '_auto_complete'
+      # <tt>:with</tt>::                 A JavaScript expression specifying the
+      #                                  parameters for the XMLHttpRequest. This defaults
+      #                                  to 'fieldname=value'.
+      # <tt>:frequency</tt>::            Determines the time to wait after the last keystroke
+      #                                  for the AJAX request to be initiated.
+      # <tt>:indicator</tt>::            Specifies the DOM ID of an element which will be
+      #                                  displayed while autocomplete is running.
+      # <tt>:tokens</tt>::               A string or an array of strings containing
+      #                                  separator tokens for tokenized incremental 
+      #                                  autocompletion. Example: <tt>:tokens => ','</tt> would
+      #                                  allow multiple autocompletion entries, separated
+      #                                  by commas.
+      # <tt>:min_chars</tt>::            The minimum number of characters that should be
+      #                                  in the input field before an Ajax call is made
+      #                                  to the server.
+      # <tt>:on_hide</tt>::              A Javascript expression that is called when the
+      #                                  autocompletion div is hidden. The expression
+      #                                  should take two variables: element and update.
+      #                                  Element is a DOM element for the field, update
+      #                                  is a DOM element for the div from which the
+      #                                  innerHTML is replaced.
+      # <tt>:on_show</tt>::              Like on_hide, only now the expression is called
+      #                                  then the div is shown.
+      # <tt>:after_update_element</tt>:: A Javascript expression that is called when the
+      #                                  user has selected one of the proposed values. 
+      #                                  The expression should take two variables: element and value.
+      #                                  Element is a DOM element for the field, value
+      #                                  is the value selected by the user.
+      # <tt>:select</tt>::               Pick the class of the element from which the value for 
+      #                                  insertion should be extracted. If this is not specified,
+      #                                  the entire element is used.
       def auto_complete_field(field_id, options = {})
         function =  "var #{field_id}_auto_completer = new Ajax.Autocompleter("
         function << "'#{field_id}', "
@@ -141,6 +150,7 @@ module ActionView
         js_options[:callback]   = "function(element, value) { return #{options[:with]} }" if options[:with]
         js_options[:indicator]  = "'#{options[:indicator]}'" if options[:indicator]
         js_options[:select]     = "'#{options[:select]}'" if options[:select]
+        js_options[:paramName]  = "'#{options[:param_name]}'" if options[:param_name]
         js_options[:frequency]  = "#{options[:frequency]}" if options[:frequency]
 
         { :after_update_element => :afterUpdateElement, 
@@ -153,6 +163,8 @@ module ActionView
         javascript_tag(function)
       end
       
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Use this method in your view to generate a return for the AJAX autocomplete requests.
       #
       # Example action:
@@ -161,7 +173,7 @@ module ActionView
       #     @items = Item.find(:all, 
       #       :conditions => [ 'LOWER(description) LIKE ?', 
       #       '%' + request.raw_post.downcase + '%' ])
-      #     render :inline => '<%= auto_complete_result(@items, 'description') %>'
+      #     render :inline => "<%= auto_complete_result(@items, 'description') %>"
       #   end
       #
       # The auto_complete_result can of course also be called from a view belonging to the 
@@ -172,12 +184,14 @@ module ActionView
         content_tag("ul", items.uniq)
       end
       
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Wrapper for text_field with added AJAX autocompletion functionality.
       #
       # In your controller, you'll need to define an action called
-      # auto_complete_for_object_method to respond the AJAX calls,
+      # auto_complete_for to respond the AJAX calls,
       # 
-      # See the RDoc on ActionController::AutoComplete to learn more about this.
+      # See the RDoc on ActionController::Macros::AutoComplete to learn more about this.
       def text_field_with_auto_complete(object, method, tag_options = {}, completion_options = {})
         (completion_options[:skip_style] ? "" : auto_complete_stylesheet) +
         text_field(object, method, tag_options) +
@@ -187,7 +201,7 @@ module ActionView
       
       private
         def auto_complete_stylesheet
-          content_tag("style", <<-EOT
+          content_tag('style', <<-EOT, :type => 'text/css')
             div.auto_complete {
               width: 350px;
               background: #fff;
@@ -212,7 +226,6 @@ module ActionView
               padding:0;
             }
           EOT
-          )
         end
       
     end

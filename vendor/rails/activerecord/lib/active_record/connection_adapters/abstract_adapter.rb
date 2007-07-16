@@ -1,5 +1,7 @@
 require 'benchmark'
 require 'date'
+require 'bigdecimal'
+require 'bigdecimal/util'
 
 require 'active_record/connection_adapters/abstract/schema_definitions'
 require 'active_record/connection_adapters/abstract/schema_statements'
@@ -75,6 +77,12 @@ module ActiveRecord
       # Close this connection
       def disconnect!
         @active = false
+      end
+
+      # Returns true if its safe to reload the connection between requests for development mode.
+      # This is not the case for Ruby/MySQL and it's not necessary for any adapters except SQLite.
+      def requires_reloading?
+        false
       end
 
       # Lazily verify this connection, calling +active?+ only if it hasn't

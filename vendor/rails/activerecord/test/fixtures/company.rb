@@ -5,6 +5,10 @@ class Company < ActiveRecord::Base
   validates_presence_of :name
 
   has_one :dummy_account, :foreign_key => "firm_id", :class_name => "Account"
+  
+  def arbitrary_method
+    "I am Jack's profound disappointment"
+  end
 end
 
 
@@ -18,6 +22,8 @@ class Firm < Company
   has_many :exclusively_dependent_clients_of_firm, :foreign_key => "client_of", :class_name => "Client", :order => "id", :dependent => :delete_all
   has_many :limited_clients, :class_name => "Client", :order => "id", :limit => 1
   has_many :clients_like_ms, :conditions => "name = 'Microsoft'", :class_name => "Client", :order => "id"
+  has_many :clients_with_interpolated_conditions, :class_name => "Client", :conditions => 'rating > #{rating}'
+  has_many :clients_like_ms_with_hash_conditions, :conditions => { :name => 'Microsoft' }, :class_name => "Client", :order => "id"
   has_many :clients_using_sql, :class_name => "Client", :finder_sql => 'SELECT * FROM companies WHERE client_of = #{id}'
   has_many :clients_using_counter_sql, :class_name => "Client",
            :finder_sql  => 'SELECT * FROM companies WHERE client_of = #{id}',
@@ -28,6 +34,7 @@ class Firm < Company
   has_many :no_clients_using_counter_sql, :class_name => "Client",
            :finder_sql  => 'SELECT * FROM companies WHERE client_of = 1000',
            :counter_sql => 'SELECT COUNT(*) FROM companies WHERE client_of = 1000'
+  has_many :plain_clients, :class_name => 'Client'
 
   has_one :account, :foreign_key => "firm_id", :dependent => :destroy
 end
@@ -37,6 +44,9 @@ class DependentFirm < Company
   has_many :companies, :foreign_key => 'client_of', :order => "id", :dependent => :nullify
 end
 
+class ExclusivelyDependentFirm < Company
+  has_one :account, :foreign_key => "firm_id", :dependent => :delete
+end
 
 class Client < Company
   belongs_to :firm, :foreign_key => "client_of"
@@ -77,6 +87,18 @@ end
 
 class Account < ActiveRecord::Base
   belongs_to :firm
+  
+  def self.destroyed_account_ids
+    @destroyed_account_ids ||= Hash.new { |h,k| h[k] = [] }
+  end
+
+  before_destroy do |account|
+    if account.firm
+      Account.destroyed_account_ids[account.firm.id] << account.id
+    end
+    true
+  end
+  
   
   protected
     def validate

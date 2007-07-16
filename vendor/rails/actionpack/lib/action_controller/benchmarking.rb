@@ -8,11 +8,8 @@ module ActionController #:nodoc:
       base.extend(ClassMethods)
 
       base.class_eval do
-        alias_method :perform_action_without_benchmark, :perform_action
-        alias_method :perform_action, :perform_action_with_benchmark
-
-        alias_method :render_without_benchmark, :render
-        alias_method :render, :render_with_benchmark
+        alias_method_chain :perform_action, :benchmark
+        alias_method_chain :render, :benchmark
       end
     end
 
@@ -68,7 +65,7 @@ module ActionController #:nodoc:
       else
         runtime = [Benchmark::measure{ perform_action_without_benchmark }.real, 0.0001].max
         log_message  = "Completed in #{sprintf("%.5f", runtime)} (#{(1 / runtime).floor} reqs/sec)"
-        log_message << rendering_runtime(runtime) if @rendering_runtime
+        log_message << rendering_runtime(runtime) if defined?(@rendering_runtime)
         log_message << active_record_runtime(runtime) if Object.const_defined?("ActiveRecord") && ActiveRecord::Base.connected?
         log_message << " | #{headers["Status"]}"
         log_message << " [#{complete_request_uri rescue "unknown"}]"

@@ -21,11 +21,7 @@ module MyApplication
     
     class Developer < ActiveRecord::Base
       has_and_belongs_to_many :projects
-
-      protected
-        def validate
-          errors.add_on_boundary_breaking("name", 3..20)
-      end
+      validates_length_of :name, :within => (3..20)
     end
     
     class Project < ActiveRecord::Base
@@ -46,11 +42,13 @@ module MyApplication
     end
 
     class Account < ActiveRecord::Base
-      belongs_to :firm, :class_name => 'MyApplication::Business::Firm'
-      belongs_to :qualified_billing_firm, :class_name => 'MyApplication::Billing::Firm'
-      belongs_to :unqualified_billing_firm, :class_name => 'Firm'
-      belongs_to :nested_qualified_billing_firm, :class_name => 'MyApplication::Billing::Nested::Firm'
-      belongs_to :nested_unqualified_billing_firm, :class_name => 'Nested::Firm'
+      with_options(:foreign_key => :firm_id) do |i|
+        i.belongs_to :firm, :class_name => 'MyApplication::Business::Firm'
+        i.belongs_to :qualified_billing_firm, :class_name => 'MyApplication::Billing::Firm'
+        i.belongs_to :unqualified_billing_firm, :class_name => 'Firm'
+        i.belongs_to :nested_qualified_billing_firm, :class_name => 'MyApplication::Billing::Nested::Firm'
+        i.belongs_to :nested_unqualified_billing_firm, :class_name => 'Nested::Firm'
+      end
 
       protected
         def validate

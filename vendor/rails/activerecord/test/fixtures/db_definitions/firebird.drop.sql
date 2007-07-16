@@ -29,6 +29,8 @@ DROP TABLE fk_test_has_pk;
 DROP TABLE keyboards;
 DROP TABLE defaults;
 DROP TABLE legacy_things;
+DROP TABLE numeric_data;
+DROP TABLE mixed_case_monkeys;
 
 DROP DOMAIN D_BOOLEAN;
 
@@ -56,3 +58,6 @@ DROP GENERATOR tasks_seq;
 DROP GENERATOR categories_seq;
 DROP GENERATOR keyboards_seq;
 DROP GENERATOR defaults_seq;
+DROP GENERATOR legacy_things_seq;
+DROP GENERATOR numeric_data_seq;
+DROP GENERATOR mixed_case_monkeys_seq;

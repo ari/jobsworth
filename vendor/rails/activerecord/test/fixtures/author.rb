@@ -3,12 +3,30 @@ class Author < ActiveRecord::Base
   has_many :posts_with_comments, :include => :comments, :class_name => "Post"
   has_many :posts_with_categories, :include => :categories, :class_name => "Post"
   has_many :posts_with_comments_and_categories, :include => [ :comments, :categories ], :order => "posts.id", :class_name => "Post"
+  has_many :posts_with_extension, :class_name => "Post" do #, :extend => ProxyTestExtension
+    def testing_proxy_owner
+      proxy_owner
+    end
+    def testing_proxy_reflection
+      proxy_reflection
+    end
+    def testing_proxy_target
+      proxy_target
+    end
+  end
   has_many :comments, :through => :posts
   has_many :funky_comments, :through => :posts, :source => :comments
 
-  has_many :special_posts,        :class_name => "Post"
-  has_many :hello_posts,          :class_name => "Post", :conditions=>"\#{aliased_table_name}.body = 'hello'"
-  has_many :nonexistent_posts,    :class_name => "Post", :conditions=>"\#{aliased_table_name}.body = 'nonexistent'"
+  has_many :special_posts
+  has_many :special_post_comments, :through => :special_posts, :source => :comments
+  
+  has_many :special_nonexistant_posts, :class_name => "SpecialPost", :conditions => "posts.body = 'nonexistant'"
+  has_many :special_nonexistant_post_comments, :through => :special_nonexistant_posts, :source => :comments, :conditions => "comments.post_id = 0"
+
+  has_many :hello_posts, :class_name => "Post", :conditions => "posts.body = 'hello'"
+  has_many :hello_post_comments, :through => :hello_posts, :source => :comments
+
+  has_many :other_posts,          :class_name => "Post"
   has_many :posts_with_callbacks, :class_name => "Post", :before_add => :log_before_adding,
            :after_add     => :log_after_adding, 
            :before_remove => :log_before_removing,
@@ -25,6 +43,11 @@ class Author < ActiveRecord::Base
 
   has_many :categorizations
   has_many :categories, :through => :categorizations
+
+  has_many :categories_like_general, :through => :categorizations, :source => :category, :class_name => 'Category', :conditions => { :name => 'General' }
+
+  has_many :categorized_posts, :through => :categorizations, :source => :post
+  has_many :unique_categorized_posts, :through => :categorizations, :source => :post, :uniq => true
 
   has_many :nothings, :through => :kateggorisatons, :class_name => 'Category'
 

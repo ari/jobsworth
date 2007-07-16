@@ -15,8 +15,8 @@ class TestTest < Test::Unit::TestCase
 
     def test_params
       render :text => params.inspect
-    end                         
-    
+    end
+
     def test_uri
       render :text => request.request_uri
     end
@@ -41,7 +41,7 @@ class TestTest < Test::Unit::TestCase
 </html>
 HTML
     end
-    
+
     def test_only_one_param
       render :text => (params[:left] && params[:right]) ? "EEP, Both here!" : "OK"
     end
@@ -49,7 +49,7 @@ HTML
     def test_remote_addr
       render :text => (request.remote_addr || "not specified")
     end
-    
+
     def test_file_upload
       render :text => params[:file].size
     end
@@ -58,8 +58,20 @@ HTML
       redirect_to :generate_url, :id => 5
     end
 
+    def redirect_to_same_controller
+      redirect_to :controller => 'test', :action => 'test_uri', :id => 5
+    end
+
+    def redirect_to_different_controller
+      redirect_to :controller => 'fail', :id => 5
+    end
+
+    def create
+      headers['Location'] = 'created resource'
+      head :created
+    end
+
     private
-    
       def rescue_action(e)
         raise e
       end
@@ -74,6 +86,7 @@ HTML
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     ActionController::Routing::Routes.reload
+    ActionController::Routing.use_controllers! %w(content admin/user test_test/test)
   end
 
   def teardown
@@ -91,8 +104,8 @@ HTML
   def test_process_without_flash
     process :set_flash
     assert_equal '><', flash['test']
-  end          
-  
+  end
+
   def test_process_with_flash
     process :set_flash, nil, nil, { "test" => "value" }
     assert_equal '>value<', flash['test']
@@ -112,12 +125,12 @@ HTML
     @request.set_REQUEST_URI "/explicit/uri"
     process :test_uri, :id => 7
     assert_equal "/explicit/uri", @response.body
-  end                     
-  
-  def test_multiple_calls         
+  end
+
+  def test_multiple_calls
     process :test_only_one_param, :left => true
     assert_equal "OK", @response.body
-    process :test_only_one_param, :right => true  
+    process :test_only_one_param, :right => true
     assert_equal "OK", @response.body
   end
 
@@ -207,6 +220,8 @@ HTML
 
     # there is a tag with 2 children
     assert_tag :children => { :count => 2 }
+    # in particular, there is a <ul> tag with two children (a nameless pair of <li>s)
+    assert_tag :tag => 'ul', :children => { :count => 2 }
     # there is no tag with 4 children
     assert_no_tag :children => { :count => 4 }
   end
@@ -233,7 +248,7 @@ HTML
     process :test_html_output
 
     # there is a tag containing only one child with an id of 'foo'
-    assert_tag :children => { :count => 1, 
+    assert_tag :children => { :count => 1,
                               :only => { :attributes => { :id => "foo" } } }
     # there is no tag containing only one 'li' child
     assert_no_tag :children => { :count => 1, :only => { :tag => "li" } }
@@ -243,11 +258,11 @@ HTML
     process :test_html_output
 
     # the output contains the string "Name"
-    assert_tag :content => "Name"
+    assert_tag :content => /Name/
     # the output does not contain the string "test"
-    assert_no_tag :content => "test"
+    assert_no_tag :content => /test/
   end
-  
+
   def test_assert_tag_multiple
     process :test_html_output
 
@@ -267,7 +282,7 @@ HTML
 
   def test_assert_tag_children_without_content
     process :test_html_output
-    
+
     # there is a form tag with an 'input' child which is a self closing tag
     assert_tag :tag => "form",
       :children => { :count => 1,
@@ -281,8 +296,29 @@ HTML
             :only => { :tag => "img" } } } }
   end
 
+  def test_assert_tag_attribute_matching
+    @response.body = '<input type="text" name="my_name">'
+    assert_tag :tag => 'input',
+                 :attributes => { :name => /my/, :type => 'text' }
+    assert_no_tag :tag => 'input',
+                 :attributes => { :name => 'my', :type => 'text' }
+    assert_no_tag :tag => 'input',
+                 :attributes => { :name => /^my$/, :type => 'text' }
+  end
+
+  def test_assert_tag_content_matching
+    @response.body = "<p>hello world</p>"
+    assert_tag :tag => "p", :content => "hello world"
+    assert_tag :tag => "p", :content => /hello/
+    assert_no_tag :tag => "p", :content => "hello"
+  end
+
   def test_assert_generates
     assert_generates 'controller/action/5', :controller => 'controller', :action => 'action', :id => '5'
+    assert_generates 'controller/action/7', {:id => "7"}, {:controller => "controller", :action => "action"}
+    assert_generates 'controller/action/5', {:controller => "controller", :action => "action", :id => "5", :name => "bob"}, {}, {:name => "bob"}
+    assert_generates 'controller/action/7', {:id => "7", :name => "bob"}, {:controller => "controller", :action => "action"}, {:name => "bob"}
+    assert_generates 'controller/action/7', {:id => "7"}, {:controller => "controller", :action => "action", :name => "bob"}, {}
   end
 
   def test_assert_routing
@@ -310,11 +346,11 @@ HTML
 
   def test_array_path_parameter_handled_properly
     with_routing do |set|
-      set.draw do 
-        set.connect 'file/*path', :controller => 'test_test/test', :action => 'test_params'
-        set.connect ':controller/:action/:id'
+      set.draw do |map|
+        map.connect 'file/*path', :controller => 'test_test/test', :action => 'test_params'
+        map.connect ':controller/:action/:id'
       end
-      
+
       get :test_params, :path => ['hello', 'world']
       assert_equal ['hello', 'world'], @request.path_parameters['path']
       assert_equal 'hello/world', @request.path_parameters['path'].to_s
@@ -333,13 +369,13 @@ HTML
   def test_with_routing_places_routes_back
     assert ActionController::Routing::Routes
     routes_id = ActionController::Routing::Routes.object_id
-    
+
     begin
       with_routing { raise 'fail' }
       fail 'Should not be here.'
     rescue RuntimeError
     end
-    
+
     assert ActionController::Routing::Routes
     assert_equal routes_id, ActionController::Routing::Routes.object_id
   end
@@ -380,32 +416,80 @@ HTML
       end
     end
   end
-  
+
   FILES_DIR = File.dirname(__FILE__) + '/../fixtures/multipart'
-  
+
   def test_test_uploaded_file
     filename = 'mona_lisa.jpg'
     path = "#{FILES_DIR}/#{filename}"
     content_type = 'image/png'
-    
+
     file = ActionController::TestUploadedFile.new(path, content_type)
     assert_equal filename, file.original_filename
     assert_equal content_type, file.content_type
     assert_equal file.path, file.local_path
     assert_equal File.read(path), file.read
   end
-  
+
   def test_fixture_file_upload
     post :test_file_upload, :file => fixture_file_upload(FILES_DIR + "/mona_lisa.jpg", "image/jpg")
     assert_equal 159528, @response.body
   end
-  
+
   def test_test_uploaded_file_exception_when_file_doesnt_exist
     assert_raise(RuntimeError) { ActionController::TestUploadedFile.new('non_existent_file') }
   end
 
   def test_assert_redirected_to_symbol
-    get :redirect_to_symbol
-    assert_redirected_to :generate_url
+    with_foo_routing do |set|
+      assert_deprecated(/generate_url.*redirect_to/) do
+        get :redirect_to_symbol
+      end
+      assert_response :redirect
+      assert_redirected_to :generate_url
+    end
   end
+
+  def test_assert_follow_redirect_to_same_controller
+    with_foo_routing do |set|
+      get :redirect_to_same_controller
+      assert_response :redirect
+      assert_redirected_to :controller => 'test_test/test', :action => 'test_uri', :id => 5
+      assert_nothing_raised { follow_redirect }
+    end
+  end
+
+  def test_assert_follow_redirect_to_different_controller
+    with_foo_routing do |set|
+      get :redirect_to_different_controller
+      assert_response :redirect
+      assert_redirected_to :controller => 'fail', :id => 5
+      assert_raise(RuntimeError) { follow_redirect }
+    end
+  end
+
+  def test_redirect_url_only_cares_about_location_header
+    get :create
+    assert_response :created
+
+    # Redirect url doesn't care that it wasn't a :redirect response.
+    assert_equal 'created resource', @response.redirect_url
+    assert_equal @response.redirect_url, redirect_to_url
+
+    # Must be a :redirect response.
+    assert_raise(Test::Unit::AssertionFailedError) do
+      assert_redirected_to 'created resource'
+    end
+  end
+
+  protected
+    def with_foo_routing
+      with_routing do |set|
+        set.draw do |map|
+          map.generate_url 'foo', :controller => 'test'
+          map.connect      ':controller/:action/:id'
+        end
+        yield set
+      end
+    end
 end

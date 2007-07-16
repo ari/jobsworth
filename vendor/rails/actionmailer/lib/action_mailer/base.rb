@@ -7,7 +7,9 @@ require 'tmail/net'
 module ActionMailer #:nodoc:
   # ActionMailer allows you to send email from your application using a mailer model and views.
   #
+  #
   # = Mailer Models
+  #
   # To use ActionMailer, you need to create a mailer model.
   #   
   #   $ script/generate mailer Notifier
@@ -23,7 +25,7 @@ module ActionMailer #:nodoc:
   #      recipients recipient.email_address_with_name
   #      from       "system@example.com"
   #      subject    "New account information"
-  #      body       "account" => recipient
+  #      body       :account => recipient
   #    end
   #  end
   #
@@ -45,7 +47,9 @@ module ActionMailer #:nodoc:
   # in an instance variable <tt>@account</tt> with the value of <tt>recipient</tt> being accessible in the 
   # view.
   #
-  # = Mailer Views
+  #
+  # = Mailer views
+  #
   # Like ActionController, each mailer class has a corresponding view directory
   # in which each method of the class looks for a template with its name.
   # To define a template to be used with a mailing, create an <tt>.rhtml</tt> file with the same name as the method
@@ -59,7 +63,30 @@ module ActionMailer #:nodoc:
   #   Hi <%= @account.name %>,
   #   Thanks for joining our service! Please check back often.
   #
-  # = Sending Mail
+  # You can even use Action Pack helpers in these views. For example:
+  #
+  #   You got a new note!
+  #   <%= truncate(note.body, 25) %>
+  # 
+  #
+  # = Generating URLs for mailer views
+  #
+  # If your view includes URLs from the application, you need to use url_for in the mailing method instead of the view.
+  # Unlike controllers from Action Pack, the mailer instance doesn't have any context about the incoming request. That's
+  # why you need to jump this little hoop and supply all the details needed for the URL. Example:
+  #
+  #    def signup_notification(recipient)
+  #      recipients recipient.email_address_with_name
+  #      from       "system@example.com"
+  #      subject    "New account information"
+  #      body       :account => recipient,
+  #                 :home_page => url_for(:host => "example.com", :controller => "welcome", :action => "greeting")
+  #    end
+  #
+  # You can now access @home_page in the template and get http://example.com/welcome/greeting.
+  #
+  # = Sending mail
+  #
   # Once a mailer action and template are defined, you can deliver your message or create it and save it 
   # for delivery later:
   #
@@ -73,7 +100,9 @@ module ActionMailer #:nodoc:
   # like to deliver. The <tt>signup_notification</tt> method defined above is
   # delivered by invoking <tt>Notifier.deliver_signup_notification</tt>.
   #
-  # = HTML Email
+  #
+  # = HTML email
+  #
   # To send mail as HTML, make sure your view (the <tt>.rhtml</tt> file) generates HTML and
   # set the content type to html.
   #
@@ -87,7 +116,9 @@ module ActionMailer #:nodoc:
   #     end
   #   end  
   #
-  # = Multipart Email
+  #
+  # = Multipart email
+  #
   # You can explicitly specify multipart messages:
   #
   #   class ApplicationMailer < ActionMailer::Base
@@ -120,7 +151,9 @@ module ActionMailer #:nodoc:
   # with the corresponding content type. The same body hash is passed to
   # each template.
   #
+  #
   # = Attachments
+  #
   # Attachments can be added by using the +attachment+ method.
   #
   # Example:
@@ -141,6 +174,7 @@ module ActionMailer #:nodoc:
   #     end
   #   end 
   #
+  #
   # = Configuration options
   #
   # These options are specified on the class level, like <tt>ActionMailer::Base.template_root = "/my/templates"</tt>
@@ -150,7 +184,7 @@ module ActionMailer #:nodoc:
   # * <tt>logger</tt> - the logger is used for generating information on the mailing run if available.
   #   Can be set to nil for no logging. Compatible with both Ruby's own Logger and Log4r loggers.
   #
-  # * <tt>server_settings</tt> -  Allows detailed configuration of the server:
+  # * <tt>smtp_settings</tt> -  Allows detailed configuration for :smtp delivery method:
   #   * <tt>:address</tt> Allows you to use a remote mail server. Just change it from its default "localhost" setting.
   #   * <tt>:port</tt> On the off chance that your mail server doesn't run on port 25, you can change it.
   #   * <tt>:domain</tt> If you need to specify a HELO domain, you can do it here.
@@ -159,10 +193,12 @@ module ActionMailer #:nodoc:
   #   * <tt>:authentication</tt> If your mail server requires authentication, you need to specify the authentication type here. 
   #     This is a symbol and one of :plain, :login, :cram_md5
   #
+  # * <tt>sendmail_settings</tt> - Allows you to override options for the :sendmail delivery method
+  #   * <tt>:location</tt> The location of the sendmail executable, defaults to "/usr/sbin/sendmail"
+  #   * <tt>:arguments</tt> The command line arguments
   # * <tt>raise_delivery_errors</tt> - whether or not errors should be raised if the email fails to be delivered.
   #
   # * <tt>delivery_method</tt> - Defines a delivery method. Possible values are :smtp (default), :sendmail, and :test.
-  #   Sendmail is assumed to be present at "/usr/sbin/sendmail".
   #
   # * <tt>perform_deliveries</tt> - Determines whether deliver_* methods are actually carried out. By default they are,
   #   but this can be turned off to help functional testing.
@@ -174,9 +210,8 @@ module ActionMailer #:nodoc:
   #   pick a different charset from inside a method with <tt>@charset</tt>.
   # * <tt>default_content_type</tt> - The default content type used for the main part of the message. Defaults to "text/plain". You
   #   can also pick a different content type from inside a method with <tt>@content_type</tt>. 
-  # * <tt>default_mime_version</tt> - The default mime version used for the message. Defaults to nil. You
-  #   can also pick a different value from inside a method with <tt>@mime_version</tt>. When multipart messages are in
-  #   use, <tt>@mime_version</tt> will be set to "1.0" if it is not set inside a method.
+  # * <tt>default_mime_version</tt> - The default mime version used for the message. Defaults to "1.0". You
+  #   can also pick a different value from inside a method with <tt>@mime_version</tt>.
   # * <tt>default_implicit_parts_order</tt> - When a message is built implicitly (i.e. multiple parts are assembled from templates
   #   which specify the content type in their filenames) this variable controls how the parts are ordered. Defaults to
   #   ["text/html", "text/enriched", "text/plain"]. Items that appear first in the array have higher priority in the mail client
@@ -184,17 +219,18 @@ module ActionMailer #:nodoc:
   #   <tt>@implicit_parts_order</tt>.
   class Base
     include AdvAttrAccessor, PartContainer
+    include ActionController::UrlWriter
 
     # Action Mailer subclasses should be reloaded by the dispatcher in Rails
     # when Dependencies.mechanism = :load.
-    include Reloadable::Subclasses
+    include Reloadable::Deprecated
     
     private_class_method :new #:nodoc:
 
     class_inheritable_accessor :template_root
     cattr_accessor :logger
 
-    @@server_settings = { 
+    @@smtp_settings = { 
       :address        => "localhost", 
       :port           => 25, 
       :domain         => 'localhost.localdomain', 
@@ -202,7 +238,13 @@ module ActionMailer #:nodoc:
       :password       => nil, 
       :authentication => nil
     }
-    cattr_accessor :server_settings
+    cattr_accessor :smtp_settings
+    
+    @@sendmail_settings = {
+      :location       => '/usr/sbin/sendmail',
+      :arguments      => '-i -t'
+    }
+    cattr_accessor :sendmail_settings
 
     @@raise_delivery_errors = true
     cattr_accessor :raise_delivery_errors
@@ -222,7 +264,7 @@ module ActionMailer #:nodoc:
     @@default_content_type = "text/plain"
     cattr_accessor :default_content_type
     
-    @@default_mime_version = nil
+    @@default_mime_version = "1.0"
     cattr_accessor :default_mime_version
 
     @@default_implicit_parts_order = [ "text/html", "text/enriched", "text/plain" ]
@@ -321,6 +363,18 @@ module ActionMailer #:nodoc:
       def deliver(mail)
         new.deliver!(mail)
       end
+      
+      # Server Settings is the old name for <tt>smtp_settings</tt>
+      def server_settings
+        smtp_settings
+      end
+      deprecate :server_settings=>"It's now named smtp_settings"
+      
+      def server_settings=(settings)
+        ActiveSupport::Deprecation.warn("server_settings has been renamed smtp_settings, this warning will be removed with rails 2.0", caller)
+        self.smtp_settings=settings
+      end
+      
     end
 
     # Instantiate a new mailer object. If +method_name+ is not +nil+, the mailer
@@ -348,7 +402,7 @@ module ActionMailer #:nodoc:
           templates.each do |path|
             # TODO: don't hardcode rhtml|rxml
             basename = File.basename(path)
-            next unless md = /^([^\.]+)\.([^\.]+\.[^\+]+)\.(rhtml|rxml)$/.match(basename)
+            next unless md = /^([^\.]+)\.([^\.]+\.[^\.]+)\.(rhtml|rxml)$/.match(basename)
             template_name = basename
             content_type = md.captures[1].gsub('.', '/')
             @parts << Part.new(:content_type => content_type,
@@ -395,7 +449,7 @@ module ActionMailer #:nodoc:
 
       begin
         send("perform_delivery_#{delivery_method}", mail) if perform_deliveries
-      rescue Object => e
+      rescue Exception => e  # Net::SMTP errors or sendmail pipe errors
         raise e if raise_delivery_errors
       end
 
@@ -508,14 +562,14 @@ module ActionMailer #:nodoc:
         destinations = mail.destinations
         mail.ready_to_send
 
-        Net::SMTP.start(server_settings[:address], server_settings[:port], server_settings[:domain], 
-            server_settings[:user_name], server_settings[:password], server_settings[:authentication]) do |smtp|
+        Net::SMTP.start(smtp_settings[:address], smtp_settings[:port], smtp_settings[:domain], 
+            smtp_settings[:user_name], smtp_settings[:password], smtp_settings[:authentication]) do |smtp|
           smtp.sendmail(mail.encoded, mail.from, destinations)
         end
       end
 
       def perform_delivery_sendmail(mail)
-        IO.popen("/usr/sbin/sendmail -i -t","w+") do |sm|
+        IO.popen("#{sendmail_settings[:location]} #{sendmail_settings[:arguments]}","w+") do |sm|
           sm.print(mail.encoded.gsub(/\r/, ''))
           sm.flush
         end

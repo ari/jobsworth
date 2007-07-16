@@ -215,3 +215,17 @@ CREATE TABLE legacy_things (
   version INT DEFAULT 0,
   PRIMARY KEY (id)
 );
+
+CREATE TABLE numeric_data (
+  id INT NOT NULL PRIMARY KEY,
+  bank_balance DECIMAL(10,2),
+  big_bank_balance DECIMAL(15,2),
+  world_population DECIMAL(10),
+  my_house_population DECIMAL(2),
+  decimal_number_with_default DECIMAL(3,2) DEFAULT 2.78
+);
+
+CREATE TABLE mixed_case_monkeys (
+ monkeyID INT NOT NULL PRIMARY KEY,
+ fleaCount INT
+);

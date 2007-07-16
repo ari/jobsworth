@@ -10,10 +10,12 @@ module ActiveRecord
         if attributes.is_a?(Array)
           attributes.collect { |attr| build(attr) }
         else
-          load_target
           record = @reflection.klass.new(attributes)
           set_belongs_to_association_for(record)
+          
+          @target ||= [] unless loaded?
           @target << record
+          
           record
         end
       end
@@ -29,22 +31,28 @@ module ActiveRecord
           @reflection.klass.find_all(conditions, orderings, limit, joins)
         end
       end
+      deprecate :find_all => "use find(:all, ...) instead"
 
       # DEPRECATED. Find the first associated record.  All arguments are optional.
       def find_first(conditions = nil, orderings = nil)
         find_all(conditions, orderings, 1).first
       end
+      deprecate :find_first => "use find(:first, ...) instead"
 
       # Count the number of associated records. All arguments are optional.
-      def count(runtime_conditions = nil)
+      def count(*args)
         if @reflection.options[:counter_sql]
           @reflection.klass.count_by_sql(@counter_sql)
         elsif @reflection.options[:finder_sql]
           @reflection.klass.count_by_sql(@finder_sql)
         else
-          sql = @finder_sql
-          sql += " AND (#{sanitize_sql(runtime_conditions)})" if runtime_conditions
-          @reflection.klass.count(sql)
+          column_name, options = @reflection.klass.send(:construct_count_options_from_legacy_args, *args)          
+          options[:conditions] = options[:conditions].nil? ?
+            @finder_sql :
+            @finder_sql + " AND (#{sanitize_sql(options[:conditions])})"
+          options[:include] = @reflection.options[:include]
+
+          @reflection.klass.count(column_name, options)
         end
       end
 
@@ -83,33 +91,45 @@ module ActiveRecord
           @reflection.klass.find(*args)
         end
       end
-      
+
       protected
         def method_missing(method, *args, &block)
           if @target.respond_to?(method) || (!@reflection.klass.respond_to?(method) && Class.respond_to?(method))
             super
           else
+            create_scoping = {}
+            set_belongs_to_association_for(create_scoping)
+
             @reflection.klass.with_scope(
+              :create => create_scoping,
               :find => {
                 :conditions => @finder_sql, 
                 :joins      => @join_sql, 
                 :readonly   => false
-              },
-              :create => {
-                @reflection.primary_key_name => @owner.id
               }
             ) do
               @reflection.klass.send(method, *args, &block)
             end
           end
         end
-            
-        def find_target
-          if @reflection.options[:finder_sql]
-            @reflection.klass.find_by_sql(@finder_sql)
-          else
-            find(:all)
+
+        def load_target
+          if !@owner.new_record? || foreign_key_present
+            begin
+              if !loaded?
+                if @target.is_a?(Array) && @target.any?
+                  @target = (find_target + @target).uniq
+                else
+                  @target = find_target
+                end
+              end
+            rescue ActiveRecord::RecordNotFound
+              reset
+            end
           end
+
+          loaded if target
+          target
         end
 
         def count_records
@@ -118,7 +138,7 @@ module ActiveRecord
           elsif @reflection.options[:counter_sql]
             @reflection.klass.count_by_sql(@counter_sql)
           else
-            @reflection.klass.count(@counter_sql)
+            @reflection.klass.count(:conditions => @counter_sql)
           end
           
           @target = [] and loaded if count == 0
@@ -167,7 +187,7 @@ module ActiveRecord
             when @reflection.options[:as]
               @finder_sql = 
                 "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_id = #{@owner.quoted_id} AND " + 
-                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote @owner.class.base_class.name.to_s}"
+                "#{@reflection.klass.table_name}.#{@reflection.options[:as]}_type = #{@owner.class.quote_value(@owner.class.base_class.name.to_s)}"
               @finder_sql << " AND (#{conditions})" if conditions
             
             else

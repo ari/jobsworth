@@ -1,6 +1,7 @@
 require 'delegate'
 require 'optparse'
 require 'fileutils'
+require 'tempfile'
 require 'erb'
 
 module Rails
@@ -16,7 +17,7 @@ module Rails
       # Even more convenient access to commands.  Include Commands in
       # the generator Base class to get a nice #command instance method
       # which returns a delegate for the requested command.
-      def self.append_features(base)
+      def self.included(base)
         base.send(:define_method, :command) do |command|
           Commands.instance(command, self)
         end
@@ -83,11 +84,25 @@ module Rails
             "%.#{padding}d" % next_migration_number
           end
 
+          def gsub_file(relative_destination, regexp, *args, &block)
+            path = destination_path(relative_destination)
+            content = File.read(path).gsub(regexp, *args, &block)
+            File.open(path, 'wb') { |file| file.write(content) }
+          end
+
         private
           # Ask the user interactively whether to force collision.
-          def force_file_collision?(destination)
-            $stdout.print "overwrite #{destination}? [Ynaq] "
+          def force_file_collision?(destination, src, dst, file_options = {}, &block)
+            $stdout.print "overwrite #{destination}? [Ynaqd] "
             case $stdin.gets
+              when /d/i
+                Tempfile.open(File.basename(destination), File.dirname(dst)) do |temp|
+                  temp.write render_file(src, file_options, &block)
+                  temp.rewind
+                  $stdout.puts `#{diff_cmd} #{dst} #{temp.path}`
+                end
+                puts "retrying"
+                raise 'retry diff'
               when /a/i
                 $stdout.puts "forcing #{spec.name}"
                 options[:collision] = :force
@@ -99,6 +114,10 @@ module Rails
             end
           rescue
             retry
+          end
+
+          def diff_cmd
+            ENV['RAILS_DIFF'] || 'diff -u'
           end
 
           def render_template_part(template_options)
@@ -191,7 +210,7 @@ module Rails
             # Make a choice whether to overwrite the file.  :force and
             # :skip already have their mind made up, but give :ask a shot.
             choice = case (file_options[:collision] || options[:collision]).to_sym #|| :ask
-              when :ask   then force_file_collision?(relative_destination)
+              when :ask   then force_file_collision?(relative_destination, source, destination, file_options, &block)
               when :force then :force
               when :skip  then :skip
               else raise "Invalid collision option: #{options[:collision].inspect}"
@@ -217,27 +236,15 @@ module Rails
           # if block given so templaters may render the source file.  If a
           # shebang is requested, replace the existing shebang or insert a
           # new one.
-          File.open(destination, 'wb') do |df|
-            File.open(source, 'rb') do |sf|
-              if block_given?
-                df.write(yield(sf))
-              else
-                if file_options[:shebang]
-                  df.puts("#!#{file_options[:shebang]}")
-                  if line = sf.gets
-                    df.puts(line) if line !~ /^#!/
-                  end
-                end
-                df.write(sf.read)
-              end
-            end
+          File.open(destination, 'wb') do |dest|
+            dest.write render_file(source, file_options, &block)
           end
 
           # Optionally change permissions.
           if file_options[:chmod]
             FileUtils.chmod(file_options[:chmod], destination)
           end
-          
+
           # Optionally add file to subversion
           system("svn add #{destination}") if options[:svn]
         end
@@ -293,12 +300,26 @@ module Rails
             logger.exists relative_path
           else
             logger.create relative_path
-            FileUtils.mkdir_p(path) unless options[:pretend]
-            
-            # Optionally add file to subversion
-            system("svn add #{path}") if options[:svn]
-          end
-        end
+	    unless options[:pretend]
+	      FileUtils.mkdir_p(path)
+	      
+	      # Subversion doesn't do path adds, so we need to add
+	      # each directory individually.
+	      # So stack up the directory tree and add the paths to
+	      # subversion in order without recursion.
+	      if options[:svn]
+		stack=[relative_path]
+		until File.dirname(stack.last) == stack.last # dirname('.') == '.'
+		  stack.push File.dirname(stack.last)
+		end
+		stack.reverse_each do |rel_path|
+		  svn_path = destination_path(rel_path)
+		  system("svn add -N #{svn_path}") unless File.directory?(File.join(svn_path, '.svn'))
+		end
+	      end
+	    end
+	  end
+	end
 
         # Display a README.
         def readme(*relative_sources)
@@ -316,7 +337,36 @@ module Rails
           template(relative_source, "#{relative_destination}/#{next_migration_string}_#{migration_file_name}.rb", template_options)
         end
 
+        def route_resources(*resources)
+          resource_list = resources.map { |r| r.to_sym.inspect }.join(', ')
+          sentinel = 'ActionController::Routing::Routes.draw do |map|'
+
+          logger.route "map.resources #{resource_list}"
+          unless options[:pretend]
+            gsub_file 'config/routes.rb', /(#{Regexp.escape(sentinel)})/mi do |match|
+              "#{match}\n  map.resources #{resource_list}\n"
+            end
+          end
+        end
+
         private
+          def render_file(path, options = {})
+            File.open(path, 'rb') do |file|
+              if block_given?
+                yield file
+              else
+                content = ''
+                if shebang = options[:shebang]
+                  content << "#!#{shebang}\n"
+                  if line = file.gets
+                    content << "line\n" if line !~ /^#!/
+                  end
+                end
+                content << file.read
+              end
+            end
+          end
+
           # Raise a usage error with an informative WordNet suggestion.
           # Thanks to Florian Gross (flgr).
           def raise_class_collision(class_name)
@@ -438,6 +488,13 @@ end_message
             file(relative_source, file_path, template_options)
           end
         end
+
+        def route_resources(*resources)
+          resource_list = resources.map { |r| r.to_sym.inspect }.join(', ')
+          look_for = "\n  map.resources #{resource_list}\n"
+          logger.route "map.resources #{resource_list}"
+          gsub_file 'config/routes.rb', /(#{look_for})/mi, ''
+        end
       end
 
 
@@ -474,6 +531,11 @@ end_message
         def migration_template(relative_source, relative_destination, options = {})
           migration_directory relative_destination
           logger.migration_template file_name
+        end
+
+        def route_resources(*resources)
+          resource_list = resources.map { |r| r.to_sym.inspect }.join(', ')
+          logger.route "map.resources #{resource_list}"
         end
       end
 

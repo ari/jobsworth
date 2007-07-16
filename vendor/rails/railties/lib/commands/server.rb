@@ -7,24 +7,33 @@ rescue Exception
   # FCGI not available
 end
 
+begin
+  require_library_or_gem 'mongrel'
+rescue Exception
+  # Mongrel not available
+end
+
 server = case ARGV.first
-  when "lighttpd"
-    ARGV.shift
-  when "webrick"
+  when "lighttpd", "mongrel", "webrick"
     ARGV.shift
   else
-    if RUBY_PLATFORM !~ /mswin/ && !silence_stderr { `lighttpd -version` }.blank? && defined?(FCGI)
+    if defined?(Mongrel)
+      "mongrel"
+    elsif RUBY_PLATFORM !~ /(:?mswin|mingw)/ && !silence_stderr { `lighttpd -version` }.blank? && defined?(FCGI)
       "lighttpd"
     else
       "webrick"
     end
 end
 
-if server == "webrick"
-  puts "=> Booting WEBrick..."
-else
-  puts "=> Booting lighttpd (use 'script/server webrick' to force WEBrick)"
+case server
+  when "webrick"
+    puts "=> Booting WEBrick..."
+  when "lighttpd"
+    puts "=> Booting lighttpd (use 'script/server webrick' to force WEBrick)"
+  when "mongrel"
+    puts "=> Booting Mongrel (use 'script/server webrick' to force WEBrick)"
 end
 
-FileUtils.mkdir_p(%w( tmp/sessions tmp/cache tmp/sockets ))
+%w(cache pids sessions sockets).each { |dir_to_make| FileUtils.mkdir_p(File.join(RAILS_ROOT, 'tmp', dir_to_make)) }
 require "commands/servers/#{server}"

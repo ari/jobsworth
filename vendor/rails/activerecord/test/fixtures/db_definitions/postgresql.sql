@@ -118,7 +118,8 @@ CREATE TABLE defaults (
     char2 character varying(50) default 'a varchar field',
     char3 text default 'a text field',
     positive_integer integer default 1,
-    negative_integer integer default -1
+    negative_integer integer default -1,
+    decimal_number decimal(3,2) default 2.78
 );
 
 CREATE TABLE auto_id_tests (
@@ -129,8 +130,8 @@ CREATE TABLE auto_id_tests (
 
 CREATE TABLE entrants (
   id serial,
-  name text,
-  course_id integer
+  name text not null,
+  course_id integer not null
 );
 
 CREATE TABLE colnametests (
@@ -245,4 +246,18 @@ CREATE TABLE legacy_things (
   id serial primary key,
   tps_report_number integer,
   version integer default 0
+);
+
+CREATE TABLE numeric_data (
+  id serial primary key,
+  bank_balance decimal(10,2),
+  big_bank_balance decimal(15,2),
+  world_population decimal(10),
+  my_house_population decimal(2),
+  decimal_number_with_default decimal(3,2) default 2.78
+);
+
+CREATE TABLE mixed_case_monkeys (
+ "monkeyID" INTEGER PRIMARY KEY,
+ "fleaCount" INTEGER
 );

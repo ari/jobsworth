@@ -14,7 +14,7 @@ class BlogController < ActionController::Base
     
     render_template <<-"EOF"
       <html><body>
-      <%= @flash["alert"] %>
+      <%= flash["alert"] %>
       <h1>Posts</h1>
       <% @posts.each do |post| %>
         <p><b><%= post.title %></b><br /><%= post.body %></p>
@@ -32,7 +32,7 @@ class BlogController < ActionController::Base
   end
   
   def create
-    @session["posts"].unshift(Post.new(@params["post"]["title"], @params["post"]["body"]))
+    @session["posts"].unshift(Post.new(params[:post][:title], params[:post][:body]))
     flash["alert"] = "New post added!"
     redirect_to :action => "index"
   end

@@ -26,7 +26,7 @@ module ActionView
     #
     # Another common case is a select tag for an <tt>belongs_to</tt>-associated object. For example,
     #
-    #   select("post", "person_id", Person.find_all.collect {|p| [ p.name, p.id ] })
+    #   select("post", "person_id", Person.find(:all).collect {|p| [ p.name, p.id ] })
     #
     # could become:
     #
@@ -43,7 +43,7 @@ module ActionView
       # See options_for_select for the required format of the choices parameter.
       #
       # Example with @post.person_id => 1:
-      #   select("post", "person_id", Person.find_all.collect {|p| [ p.name, p.id ] }, { :include_blank => true })
+      #   select("post", "person_id", Person.find(:all).collect {|p| [ p.name, p.id ] }, { :include_blank => true })
       #
       # could become:
       #
@@ -113,7 +113,6 @@ module ActionView
 
         options_for_select = container.inject([]) do |options, element|
           if !element.is_a?(String) and element.respond_to?(:first) and element.respond_to?(:last)
-            is_selected = ( (selected.respond_to?(:include?) ? selected.include?(element.last) : element.last == selected) )
             is_selected = ( (selected.respond_to?(:include?) && !selected.is_a?(String) ? selected.include?(element.last) : element.last == selected) )
             if is_selected
               options << "<option value=\"#{html_escape(element.last.to_s)}\" selected=\"selected\">#{html_escape(element.first.to_s)}</option>"
@@ -121,7 +120,6 @@ module ActionView
               options << "<option value=\"#{html_escape(element.last.to_s)}\">#{html_escape(element.first.to_s)}</option>"
             end
           else
-            is_selected = ( (selected.respond_to?(:include?) ? selected.include?(element) : element == selected) )
             is_selected = ( (selected.respond_to?(:include?) && !selected.is_a?(String) ? selected.include?(element) : element == selected) )
             options << ((is_selected) ? "<option value=\"#{html_escape(element.to_s)}\" selected=\"selected\">#{html_escape(element.to_s)}</option>" : "<option value=\"#{html_escape(element.to_s)}\">#{html_escape(element.to_s)}</option>")
           end
@@ -299,13 +297,15 @@ module ActionView
       def to_select_tag(choices, options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
+        value = value(object)
         selected_value = options.has_key?(:selected) ? options[:selected] : value
-        content_tag("select", add_options(options_for_select(choices, selected_value), options, value), html_options)
+        content_tag("select", add_options(options_for_select(choices, selected_value), options, selected_value), html_options)
       end
 
       def to_collection_select_tag(collection, value_method, text_method, options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
+        value = value(object)
         content_tag(
           "select", add_options(options_from_collection_for_select(collection, value_method, text_method, value), options, value), html_options
         )
@@ -314,12 +314,14 @@ module ActionView
       def to_country_select_tag(priority_countries, options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
+        value = value(object)
         content_tag("select", add_options(country_options_for_select(value, priority_countries), options, value), html_options)
       end
 
       def to_time_zone_select_tag(priority_zones, options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
+        value = value(object)
         content_tag("select",
           add_options(
             time_zone_options_for_select(value, priority_zones, options[:model] || TimeZone),

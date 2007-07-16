@@ -13,6 +13,17 @@ module ActiveRecord
         record
       end
 
+      def create(attributes = {})
+        # Can't use Base.create since the foreign key may be a protected attribute.
+        if attributes.is_a?(Array)
+          attributes.collect { |attr| create(attr) }
+        else
+          record = build(attributes)
+          insert_record(record) unless @owner.new_record?
+          record
+        end
+      end
+
       def find_first
         load_target.first
       end
@@ -56,7 +67,9 @@ module ActiveRecord
           @reflection.klass.find(*args)
         end
       end      
-
+      
+      # Deprecated as of Rails 1.2.   If your associations require attributes
+      # you should be using has_many :through
       def push_with_attributes(record, join_attributes = {})
         raise_on_type_mismatch(record)
         join_attributes.each { |key, value| record[key.to_s] = value }
@@ -68,13 +81,10 @@ module ActiveRecord
 
         self
       end
-      
+      deprecate :push_with_attributes => "consider using has_many :through instead"
+
       alias :concat_with_attributes :push_with_attributes
 
-      def size
-        @reflection.options[:uniq] ? count_records : super
-      end
-      
       protected
         def method_missing(method, *args, &block)
           if @target.respond_to?(method) || (!@reflection.klass.respond_to?(method) && Class.respond_to?(method))
@@ -85,17 +95,7 @@ module ActiveRecord
             end
           end
         end
-            
-        def find_target
-          if @reflection.options[:finder_sql]
-            records = @reflection.klass.find_by_sql(@finder_sql)
-          else
-            records = find(:all)
-          end
-          
-          @reflection.options[:uniq] ? uniq(records) : records
-        end
-        
+
         def count_records
           load_target.size
         end
@@ -118,7 +118,7 @@ module ActiveRecord
                   attributes[column.name] = record.quoted_id
                 else
                   if record.attributes.has_key?(column.name)
-                    value = @owner.send(:quote, record[column.name], column)
+                    value = @owner.send(:quote_value, record[column.name], column)
                     attributes[column.name] = value unless value.nil?
                   end
               end

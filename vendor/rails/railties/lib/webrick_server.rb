@@ -3,10 +3,9 @@
 require 'webrick'
 require 'cgi'
 require 'stringio'
+require 'dispatcher'
 
 include WEBrick
-
-ABSOLUTE_RAILS_ROOT = File.expand_path(RAILS_ROOT)
 
 class CGI #:nodoc:
   def stdinput
@@ -60,17 +59,16 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
     server.mount('/', DispatchServlet, options)
 
     trap("INT") { server.shutdown }
-
-    require File.join(@server_options[:server_root], "..", "config", "environment") unless defined?(RAILS_ROOT)
-    require "dispatcher"
-
+    
     server.start
   end
 
   def initialize(server, options) #:nodoc:
     @server_options = options
     @file_handler = WEBrick::HTTPServlet::FileHandler.new(server, options[:server_root])
-    Dir.chdir(ABSOLUTE_RAILS_ROOT)
+    # Change to the RAILS_ROOT, since Webrick::Daemon.start does a Dir::cwd("/") 
+    # OPTIONS['working_directory'] is an absolute path of the RAILS_ROOT, set in railties/lib/commands/servers/webrick.rb 
+    Dir.chdir(OPTIONS['working_directory']) if defined?(OPTIONS) && File.directory?(OPTIONS['working_directory']) 
     super
   end
 
@@ -145,7 +143,7 @@ class DispatchServlet < WEBrick::HTTPServlet::AbstractServlet
       data.rewind
       data = data.read
 
-      raw_header, body = *data.split(/^[\xd\xa]+/on, 2)
+      raw_header, body = *data.split(/^[\xd\xa]{2}/on, 2)
       header = WEBrick::HTTPUtils::parse_header(raw_header)
       
       return header, body

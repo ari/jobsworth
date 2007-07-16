@@ -6,12 +6,10 @@ module ActionController #:nodoc:
   #
   # You can tailor the rescuing behavior and appearance by overwriting the following two stub methods.
   module Rescue
-    def self.append_features(base) #:nodoc:
-      super
+    def self.included(base) #:nodoc:
       base.extend(ClassMethods)
       base.class_eval do
-        alias_method :perform_action_without_rescue, :perform_action
-        alias_method :perform_action, :perform_action_with_rescue
+        alias_method_chain :perform_action, :rescue
       end
     end
 
@@ -36,23 +34,26 @@ module ActionController #:nodoc:
 
       # Overwrite to implement custom logging of errors. By default logs as fatal.
       def log_error(exception) #:doc:
-        if ActionView::TemplateError === exception
-          logger.fatal(exception.to_s)
-        else
-          logger.fatal(
-            "\n\n#{exception.class} (#{exception.message}):\n    " + 
-            clean_backtrace(exception).join("\n    ") + 
-            "\n\n"
-          )
+        ActiveSupport::Deprecation.silence do
+          if ActionView::TemplateError === exception
+            logger.fatal(exception.to_s)
+          else
+            logger.fatal(
+              "\n\n#{exception.class} (#{exception.message}):\n    " +
+              clean_backtrace(exception).join("\n    ") +
+              "\n\n"
+            )
+          end
         end
       end
 
       # Overwrite to implement public exception handling (for requests answering false to <tt>local_request?</tt>).
       def rescue_action_in_public(exception) #:doc:
         case exception
-          when RoutingError, UnknownAction then
+          when RoutingError, UnknownAction
             render_text(IO.read(File.join(RAILS_ROOT, 'public', '404.html')), "404 Not Found")
-          else render_text "<html><body><h1>Application error (Rails)</h1></body></html>"
+          else
+            render_text(IO.read(File.join(RAILS_ROOT, 'public', '500.html')), "500 Internal Error")
         end
       end
 
@@ -60,19 +61,19 @@ module ActionController #:nodoc:
       # the remote IP being 127.0.0.1. For example, this could include the IP of the developer machine when debugging
       # remotely.
       def local_request? #:doc:
-        [@request.remote_addr, @request.remote_ip] == ["127.0.0.1"] * 2
+        [request.remote_addr, request.remote_ip] == ["127.0.0.1"] * 2
       end
 
       # Renders a detailed diagnostics screen on action exceptions. 
       def rescue_action_locally(exception)
         add_variables_to_assigns
         @template.instance_variable_set("@exception", exception)
-        @template.instance_variable_set("@rescues_path", File.dirname(__FILE__) + "/templates/rescues/")    
+        @template.instance_variable_set("@rescues_path", File.dirname(rescues_path("stub")))    
         @template.send(:assign_variables_from_controller)
 
         @template.instance_variable_set("@contents", @template.render_file(template_path_for_local_rescue(exception), false))
     
-        @headers["Content-Type"] = "text/html"
+        response.content_type = Mime::HTML
         render_file(rescues_path("layout"), response_code_for_rescue(exception))
       end
     
@@ -80,8 +81,8 @@ module ActionController #:nodoc:
       def perform_action_with_rescue #:nodoc:
         begin
           perform_action_without_rescue
-        rescue Object => exception
-          if defined?(Breakpoint) && @params["BP-RETRY"]
+        rescue Exception => exception  # errors from action performed
+          if defined?(Breakpoint) && params["BP-RETRY"]
             msg = exception.backtrace.first
             if md = /^(.+?):(\d+)(?::in `(.+)')?$/.match(msg) then
               origin_file, origin_line = md[1], md[2].to_i
@@ -89,7 +90,7 @@ module ActionController #:nodoc:
               set_trace_func(lambda do |type, file, line, method, context, klass|
                 if file == origin_file and line == origin_line then
                   set_trace_func(nil)
-                  @params["BP-RETRY"] = false
+                  params["BP-RETRY"] = false
 
                   callstack = caller
                   callstack.slice!(0) if callstack.first["rescue.rb"]
@@ -127,8 +128,10 @@ module ActionController #:nodoc:
       
       def response_code_for_rescue(exception)
         case exception
-          when UnknownAction, RoutingError then "404 Page Not Found"
-          else "500 Internal Error"
+          when UnknownAction, RoutingError 
+            "404 Page Not Found"
+          else
+            "500 Internal Error"
         end
       end
       

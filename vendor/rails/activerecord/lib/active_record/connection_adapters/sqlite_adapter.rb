@@ -19,7 +19,10 @@ module ActiveRecord
           :results_as_hash => true,
           :type_translation => false
         )
-        ConnectionAdapters::SQLiteAdapter.new(db, logger)
+
+        db.busy_timeout(config[:timeout]) unless config[:timeout].nil?
+
+        ConnectionAdapters::SQLite3Adapter.new(db, logger)
       end
 
       # Establishes a connection to the database that's used by all Active Record objects
@@ -98,6 +101,10 @@ module ActiveRecord
       def supports_migrations? #:nodoc:
         true
       end
+
+      def requires_reloading?
+        true
+      end
       
       def supports_count_distinct? #:nodoc:
         false
@@ -110,6 +117,7 @@ module ActiveRecord
           :text        => { :name => "text" },
           :integer     => { :name => "integer" },
           :float       => { :name => "float" },
+          :decimal     => { :name => "decimal" },
           :datetime    => { :name => "datetime" },
           :timestamp   => { :name => "datetime" },
           :time        => { :name => "datetime" },
@@ -184,6 +192,12 @@ module ActiveRecord
       end
 
 
+      # SELECT ... FOR UPDATE is redundant since the table is locked.
+      def add_lock!(sql, options) #:nodoc:
+        sql
+      end
+
+
       # SCHEMA STATEMENTS ========================================
 
       def tables(name = nil) #:nodoc:
@@ -217,13 +231,13 @@ module ActiveRecord
       end
       
       def rename_table(name, new_name)
-        move_table(name, new_name)
+        execute "ALTER TABLE #{name} RENAME TO #{new_name}"
       end
 
       def add_column(table_name, column_name, type, options = {}) #:nodoc:
-        alter_table(table_name) do |definition|
-          definition.column(column_name, type, options)
-        end
+        super(table_name, column_name, type, options)
+        # See last paragraph on http://www.sqlite.org/lang_altertable.html
+        execute "VACUUM"
       end
       
       def remove_column(table_name, column_name) #:nodoc:
@@ -240,10 +254,11 @@ module ActiveRecord
 
       def change_column(table_name, column_name, type, options = {}) #:nodoc:
         alter_table(table_name) do |definition|
+          include_default = options_include_default?(options)
           definition[column_name].instance_eval do
             self.type    = type
-            self.limit   = options[:limit] if options[:limit]
-            self.default = options[:default] if options[:default]
+            self.limit   = options[:limit] if options.include?(:limit)
+            self.default = options[:default] if include_default
           end
         end
       end
@@ -306,8 +321,9 @@ module ActiveRecord
             elsif from == "altered_#{to}"
               name = name[5..-1]
             end
-
-            opts = { :name => name }
+            
+            # index name can't be the same
+            opts = { :name => name.gsub(/_(#{from})_/, "_#{to}_") }
             opts[:unique] = true if index.unique
             add_index(to, index.columns, opts)
           end
@@ -316,9 +332,10 @@ module ActiveRecord
         def copy_table_contents(from, to, columns, rename = {}) #:nodoc:
           column_mappings = Hash[*columns.map {|name| [name, name]}.flatten]
           rename.inject(column_mappings) {|map, a| map[a.last] = a.first; map}
-          
+          from_columns = columns(from).collect {|col| col.name}
+          columns = columns.find_all{|col| from_columns.include?(column_mappings[col])}
           @connection.execute "SELECT * FROM #{from}" do |row|
-            sql = "INSERT INTO #{to} VALUES ("
+            sql = "INSERT INTO #{to} ("+columns*','+") VALUES ("            
             sql << columns.map {|col| quote row[column_mappings[col]]} * ', '
             sql << ')'
             @connection.execute sql
@@ -337,6 +354,14 @@ module ActiveRecord
         end
     end
     
+    class SQLite3Adapter < SQLiteAdapter # :nodoc:
+      def table_structure(table_name)
+        returning structure = @connection.table_info(table_name) do
+          raise ActiveRecord::StatementInvalid if structure.empty?
+        end
+      end
+    end
+
     class SQLite2Adapter < SQLiteAdapter # :nodoc:
       # SQLite 2 does not support COUNT(DISTINCT) queries:
       #
@@ -359,6 +384,17 @@ module ActiveRecord
           sql
         end
       end
+      
+      def rename_table(name, new_name)
+        move_table(name, new_name)
+      end
+      
+      def add_column(table_name, column_name, type, options = {}) #:nodoc:
+        alter_table(table_name) do |definition|
+          definition.column(column_name, type, options)
+        end
+      end
+      
     end
 
     class DeprecatedSQLiteAdapter < SQLite2Adapter # :nodoc:

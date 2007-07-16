@@ -1,8 +1,6 @@
 module ActionController #:nodoc:
   module Helpers #:nodoc:
-    def self.append_features(base)
-      super
-
+    def self.included(base)
       # Initialize the base module to aggregate its helpers.
       base.class_inheritable_accessor :master_helper_module
       base.master_helper_module = Module.new
@@ -13,8 +11,7 @@ module ActionController #:nodoc:
       base.class_eval do
         # Wrap inherited to create a new master helper module for subclasses.
         class << self
-          alias_method :inherited_without_helper, :inherited
-          alias_method :inherited, :inherited_with_helper
+          alias_method_chain :inherited, :helper
         end
       end
     end

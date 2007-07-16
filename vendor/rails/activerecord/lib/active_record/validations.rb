@@ -87,6 +87,7 @@ module ActiveRecord
     end
 
     alias :add_on_boundry_breaking :add_on_boundary_breaking
+    deprecate :add_on_boundary_breaking => :validates_length_of, :add_on_boundry_breaking => :validates_length_of
 
     # Returns true if the specified +attribute+ has errors associated with it.
     def invalid?(attribute)
@@ -97,13 +98,9 @@ module ActiveRecord
     # * Returns the error message, if one error is associated with the specified +attribute+.
     # * Returns an array of error messages, if more than one error is associated with the specified +attribute+.
     def on(attribute)
-      if @errors[attribute.to_s].nil?
-        nil
-      elsif @errors[attribute.to_s].length == 1
-        @errors[attribute.to_s].first
-      else
-        @errors[attribute.to_s]
-      end
+      errors = @errors[attribute.to_s]
+      return nil if errors.nil?
+      errors.size == 1 ? errors.first : errors
     end
 
     alias :[] :on
@@ -139,13 +136,12 @@ module ActiveRecord
           end
         end
       end
-
-      return full_messages
+      full_messages
     end
 
     # Returns true if no errors have been added.
     def empty?
-      return @errors.empty?
+      @errors.empty?
     end
     
     # Removes all the errors that have been added.
@@ -156,13 +152,23 @@ module ActiveRecord
     # Returns the total number of errors added. Two errors added to the same attribute will be counted as such
     # with this as well.
     def size
-      error_count = 0
-      @errors.each_value { |attribute| error_count += attribute.length }
-      error_count
+      @errors.values.inject(0) { |error_count, attribute| error_count + attribute.size }
     end
     
     alias_method :count, :size
     alias_method :length, :size
+
+    # Return an XML representation of this error object.
+    def to_xml(options={})
+      options[:root] ||= "errors"
+      options[:indent] ||= 2
+      options[:builder] ||= Builder::XmlMarkup.new(:indent => options[:indent])
+
+      options[:builder].instruct! unless options.delete(:skip_instruct)
+      options[:builder].errors do |e|
+        full_messages.each { |msg| e.error(msg) }
+      end
+    end
   end
 
 
@@ -209,18 +215,12 @@ module ActiveRecord
   module Validations
     VALIDATIONS = %w( validate validate_on_create validate_on_update )
 
-    def self.append_features(base) # :nodoc:
-      super
+    def self.included(base) # :nodoc:
       base.extend ClassMethods
       base.class_eval do
-        alias_method :save_without_validation, :save
-        alias_method :save, :save_with_validation
-
-        alias_method :save_without_validation!, :save!
-        alias_method :save!, :save_with_validation!
-
-        alias_method :update_attribute_without_validation_skipping, :update_attribute
-        alias_method :update_attribute, :update_attribute_with_validation_skipping
+        alias_method_chain :save, :validation
+        alias_method_chain :save!, :validation
+        alias_method_chain :update_attribute, :validation_skipping
       end
     end
 
@@ -290,7 +290,7 @@ module ActiveRecord
       # method, proc or string should return or evaluate to a true or false value.
       def validates_each(*attrs)
         options = attrs.last.is_a?(Hash) ? attrs.pop.symbolize_keys : {}
-        attrs = attrs.flatten
+        attrs   = attrs.flatten
 
         # Declare the validation.
         send(validation_method(options[:on] || :save)) do |record|
@@ -375,6 +375,10 @@ module ActiveRecord
       #
       # The first_name attribute must be in the object and it cannot be blank.
       #      
+      # If you want to validate the presence of a boolean field (where the real values are true and false),
+      # you will want to use validates_inclusion_of :field_name, :in => [true, false]
+      # This is due to the way Object#blank? handles boolean values. false.blank? # => true
+      #
       # Configuration options:
       # * <tt>message</tt> - A custom error message (default is: "can't be blank")
       # * <tt>on</tt> - Specifies when this validation is active (default is :save, other options :create, :update)
@@ -515,17 +519,24 @@ module ActiveRecord
       # Configuration options:
       # * <tt>message</tt> - Specifies a custom error message (default is: "has already been taken")
       # * <tt>scope</tt> - One or more columns by which to limit the scope of the uniquness constraint.
+      # * <tt>case_sensitive</tt> - Looks for an exact match.  Ignored by non-text columns (true by default).
+      # * <tt>allow_nil</tt> - If set to true, skips this validation if the attribute is null (default is: false)
       # * <tt>if</tt> - Specifies a method, proc or string to call to determine if the validation should
       # occur (e.g. :if => :allow_validation, or :if => Proc.new { |user| user.signup_step > 2 }).  The
       # method, proc or string should return or evaluate to a true or false value.
        
       def validates_uniqueness_of(*attr_names)
-        configuration = { :message => ActiveRecord::Errors.default_error_messages[:taken] }
+        configuration = { :message => ActiveRecord::Errors.default_error_messages[:taken], :case_sensitive => true }
         configuration.update(attr_names.pop) if attr_names.last.is_a?(Hash)
 
         validates_each(attr_names,configuration) do |record, attr_name, value|
-          condition_sql = "#{record.class.table_name}.#{attr_name} #{attribute_condition(value)}"
-          condition_params = [value]
+          if value.nil? || (configuration[:case_sensitive] || !columns_hash[attr_name.to_s].text?)
+            condition_sql = "#{record.class.table_name}.#{attr_name} #{attribute_condition(value)}"
+            condition_params = [value]
+          else
+            condition_sql = "LOWER(#{record.class.table_name}.#{attr_name}) #{attribute_condition(value)}"
+            condition_params = [value.downcase]
+          end
           if scope = configuration[:scope]
             Array(scope).map do |scope_item|
               scope_value = record.send(scope_item)
@@ -543,12 +554,16 @@ module ActiveRecord
         end
       end
 
+      
+
       # Validates whether the value of the specified attribute is of the correct form by matching it against the regular expression
       # provided.
       #
       #   class Person < ActiveRecord::Base
-      #     validates_format_of :email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i, :on => :create
+      #     validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i, :on => :create
       #   end
+      #
+      # Note: use \A and \Z to match the start and end of the string, ^ and $ match the start/end of a line.
       #
       # A regular expression must be provided or else an exception will be raised.
       #
@@ -663,7 +678,7 @@ module ActiveRecord
 
       # Validates whether the value of the specified attribute is numeric by trying to convert it to
       # a float with Kernel.Float (if <tt>integer</tt> is false) or applying it to the regular expression
-      # <tt>/^[\+\-]?\d+$/</tt> (if <tt>integer</tt> is set to true).
+      # <tt>/\A[\+\-]?\d+\Z/</tt> (if <tt>integer</tt> is set to true).
       #
       #   class Person < ActiveRecord::Base
       #     validates_numericality_of :value, :on => :create
@@ -684,7 +699,7 @@ module ActiveRecord
 
         if configuration[:only_integer]
           validates_each(attr_names,configuration) do |record, attr_name,value|
-            record.errors.add(attr_name, configuration[:message]) unless record.send("#{attr_name}_before_type_cast").to_s =~ /^[+-]?\d+$/
+            record.errors.add(attr_name, configuration[:message]) unless record.send("#{attr_name}_before_type_cast").to_s =~ /\A[+-]?\d+\Z/
           end
         else
           validates_each(attr_names,configuration) do |record, attr_name,value|
@@ -705,6 +720,7 @@ module ActiveRecord
         if attributes.is_a?(Array)
           attributes.collect { |attr| create!(attr) }
         else
+          attributes ||= {}
           attributes.reverse_merge!(scope(:create)) if scoped?(:create)
 
           object = new(attributes)

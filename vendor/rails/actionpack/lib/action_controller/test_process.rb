@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/assertions'
-require File.dirname(__FILE__) + '/deprecated_assertions'
 
 module ActionController #:nodoc:
   class Base
@@ -18,8 +17,7 @@ module ActionController #:nodoc:
       end
     end
 
-    alias_method :process_without_test, :process
-    alias_method :process, :process_with_test
+    alias_method_chain :process, :test
   end
 
   class TestRequest < AbstractRequest #:nodoc:
@@ -39,8 +37,8 @@ module ActionController #:nodoc:
     end
 
     def reset_session
-      @session = {}
-    end              
+      @session = TestSession.new
+    end
 
     def raw_post
       if raw_post = env['RAW_POST_DATA']
@@ -79,6 +77,10 @@ module ActionController #:nodoc:
       @path = uri.split("?").first
     end
 
+    def accept=(mime_types)
+      @env["HTTP_ACCEPT"] = Array(mime_types).collect { |mime_types| mime_types.to_s }.join(",")
+    end
+
     def remote_addr=(addr)
       @env['REMOTE_ADDR'] = addr
     end
@@ -103,7 +105,7 @@ module ActionController #:nodoc:
         if value.is_a? Fixnum
           value = value.to_s
         elsif value.is_a? Array
-          value = ActionController::Routing::PathComponent::Result.new(value)
+          value = ActionController::Routing::PathSegment::Result.new(value)
         end
 
         if extra_keys.include?(key.to_sym)
@@ -112,6 +114,7 @@ module ActionController #:nodoc:
           path_parameters[key.to_s] = value
         end
       end
+      @parameters = nil # reset TestRequest#parameters to use the new path_parameters
     end                        
     
     def recycle!
@@ -176,7 +179,7 @@ module ActionController #:nodoc:
 
     # returns the redirection location or nil
     def redirect_url
-      redirect? ? headers['location'] : nil
+      headers['Location']
     end
 
     # does the redirect location match this regexp pattern?
@@ -272,27 +275,40 @@ module ActionController #:nodoc:
   end
 
   class TestSession #:nodoc:
-    def initialize(attributes = {})
+    attr_accessor :session_id
+
+    def initialize(attributes = nil)
+      @session_id = ''
       @attributes = attributes
+      @saved_attributes = nil
+    end
+
+    def data
+      @attributes ||= @saved_attributes || {}
     end
 
     def [](key)
-      @attributes[key]
+      data[key]
     end
 
     def []=(key, value)
-      @attributes[key] = value
+      data[key] = value
     end
 
-    def session_id
-      ""
+    def update
+      @saved_attributes = @attributes
     end
 
-    def update() end
-    def close() end
-    def delete() @attributes = {} end
+    def delete
+      @attributes = nil
+    end
+
+    def close
+      update
+      delete
+    end
   end
-  
+
   # Essentially generates a modified Tempfile object similar to the object
   # you'd get from the standard library CGI module in a multipart
   # request. This means you can use an ActionController::TestUploadedFile
@@ -301,6 +317,7 @@ module ActionController #:nodoc:
   #
   # Usage example, within a functional test:
   #   post :change_avatar, :avatar => ActionController::TestUploadedFile.new(Test::Unit::TestCase.fixture_path + '/files/spongebob.png', 'image/png')
+  require 'tempfile'
   class TestUploadedFile
     # The filename, *not* including the path, of the "uploaded" file
     attr_reader :original_filename
@@ -309,7 +326,7 @@ module ActionController #:nodoc:
     attr_reader :content_type
     
     def initialize(path, content_type = 'text/plain')
-      raise "file does not exist" unless File.exist?(path)
+      raise "#{path} file does not exist" unless File.exist?(path)
       @content_type = content_type
       @original_filename = path.sub(/^.*#{File::SEPARATOR}([^#{File::SEPARATOR}]+)$/) { $1 }
       @tempfile = Tempfile.new(@original_filename)
@@ -333,7 +350,7 @@ module ActionController #:nodoc:
       %w( get post put delete head ).each do |method|
         base.class_eval <<-EOV, __FILE__, __LINE__
           def #{method}(action, parameters = nil, session = nil, flash = nil)
-            @request.env['REQUEST_METHOD'] = "#{method.upcase}" if @request
+            @request.env['REQUEST_METHOD'] = "#{method.upcase}" if defined?(@request)
             process(action, parameters, session, flash)
           end
         EOV
@@ -344,8 +361,10 @@ module ActionController #:nodoc:
     def process(action, parameters = nil, session = nil, flash = nil)
       # Sanity check for required instance variables so we can give an
       # understandable error message.
-      %w(controller request response).each do |iv_name|
-        raise "@#{iv_name} is nil: make sure you set it in your test's setup method." if instance_variable_get("@#{iv_name}").nil?
+      %w(@controller @request @response).each do |iv_name|
+        if !instance_variables.include?(iv_name) || instance_variable_get(iv_name).nil?
+          raise "#{iv_name} is nil: make sure you set it in your test's setup method."
+        end
       end
 
       @request.recycle!
@@ -374,8 +393,9 @@ module ActionController #:nodoc:
     alias xhr :xml_http_request
 
     def follow_redirect
-      if @response.redirected_to[:controller]
-        raise "Can't follow redirects outside of current controller (#{@response.redirected_to[:controller]})"
+      redirected_controller = @response.redirected_to[:controller]
+      if redirected_controller && redirected_controller != @controller.controller_name
+        raise "Can't follow redirects outside of current controller (from #{@controller.controller_name} to #{redirected_controller})"
       end
 
       get(@response.redirected_to.delete(:action), @response.redirected_to.stringify_keys)
@@ -428,7 +448,7 @@ module ActionController #:nodoc:
     end
 
     def method_missing(selector, *args)
-      return @controller.send(selector, *args) if ActionController::Routing::NamedRoutes::Helpers.include?(selector)
+      return @controller.send(selector, *args) if ActionController::Routing::Routes.named_routes.helpers.include?(selector)
       return super
     end
     
@@ -448,13 +468,15 @@ module ActionController #:nodoc:
     # The new instance is yielded to the passed block. Typically the block
     # will create some routes using map.draw { map.connect ... }:
     #
-    #   with_routing do |set|
-    #     set.draw { set.connect ':controller/:id/:action' }
-    #     assert_equal(
-    #        ['/content/10/show', {}],
-    #        set.generate(:controller => 'content', :id => 10, :action => 'show')
-    #     )
-    #   end
+    #  with_routing do |set|
+    #    set.draw do |map|
+    #      map.connect ':controller/:action/:id'
+    #        assert_equal(
+    #          ['/content/10/show', {}],
+    #          map.generate(:controller => 'content', :id => 10, :action => 'show')
+    #      end
+    #    end
+    #  end
     #
     def with_routing
       real_routes = ActionController::Routing::Routes

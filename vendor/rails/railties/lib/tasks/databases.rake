@@ -5,16 +5,16 @@ namespace :db do
     Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
   end
 
-	namespace :fixtures do
-	  desc "Load fixtures into the current environment's database.  Load specific fixtures using FIXTURES=x,y"
-	  task :load => :environment do
-	    require 'active_record/fixtures'
-	    ActiveRecord::Base.establish_connection(RAILS_ENV.to_sym)
-	    (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join(RAILS_ROOT, 'test', 'fixtures', '*.{yml,csv}'))).each do |fixture_file|
-	      Fixtures.create_fixtures('test/fixtures', File.basename(fixture_file, '.*'))
-	    end
-	  end
-	end
+  namespace :fixtures do
+    desc "Load fixtures into the current environment's database.  Load specific fixtures using FIXTURES=x,y"
+    task :load => :environment do
+      require 'active_record/fixtures'
+      ActiveRecord::Base.establish_connection(RAILS_ENV.to_sym)
+      (ENV['FIXTURES'] ? ENV['FIXTURES'].split(/,/) : Dir.glob(File.join(RAILS_ROOT, 'test', 'fixtures', '*.{yml,csv}'))).each do |fixture_file|
+        Fixtures.create_fixtures('test/fixtures', File.basename(fixture_file, '.*'))
+      end
+    end
+  end
 
   namespace :schema do
     desc "Create a db/schema.rb file that can be portably used against any DB supported by AR"
@@ -36,8 +36,8 @@ namespace :db do
     desc "Dump the database structure to a SQL file"
     task :dump => :environment do
       abcs = ActiveRecord::Base.configurations
-      case abcs[RAILS_ENV]["adapter"] 
-        when "mysql", "oci"
+      case abcs[RAILS_ENV]["adapter"]
+        when "mysql", "oci", "oracle"
           ActiveRecord::Base.establish_connection(abcs[RAILS_ENV])
           File.open("db/#{RAILS_ENV}_structure.sql", "w+") { |f| f << ActiveRecord::Base.connection.structure_dump }
         when "postgresql"
@@ -54,7 +54,11 @@ namespace :db do
         when "sqlserver"
           `scptxfr /s #{abcs[RAILS_ENV]["host"]} /d #{abcs[RAILS_ENV]["database"]} /I /f db\\#{RAILS_ENV}_structure.sql /q /A /r`
           `scptxfr /s #{abcs[RAILS_ENV]["host"]} /d #{abcs[RAILS_ENV]["database"]} /I /F db\ /q /A /r`
-        else 
+        when "firebird"
+          set_firebird_env(abcs[RAILS_ENV])
+          db_string = firebird_db_string(abcs[RAILS_ENV])
+          sh "isql -a #{db_string} > db/#{RAILS_ENV}_structure.sql"
+        else
           raise "Task not supported by '#{abcs["test"]["adapter"]}'"
       end
 
@@ -66,13 +70,13 @@ namespace :db do
 
   namespace :test do
     desc "Recreate the test database from the current environment's database schema"
-    task :clone => "db:schema:dump" do
+    task :clone => %w(db:schema:dump db:test:purge) do
       ActiveRecord::Base.establish_connection(ActiveRecord::Base.configurations['test'])
       ActiveRecord::Schema.verbose = false
       Rake::Task["db:schema:load"].invoke
     end
 
-  
+
     desc "Recreate the test databases from the development structure"
     task :clone_structure => [ "db:structure:dump", "db:test:purge" ] do
       abcs = ActiveRecord::Base.configurations
@@ -93,12 +97,16 @@ namespace :db do
           `#{abcs["test"]["adapter"]} #{dbfile} < db/#{RAILS_ENV}_structure.sql`
         when "sqlserver"
           `osql -E -S #{abcs["test"]["host"]} -d #{abcs["test"]["database"]} -i db\\#{RAILS_ENV}_structure.sql`
-        when "oci"
+        when "oci", "oracle"
           ActiveRecord::Base.establish_connection(:test)
           IO.readlines("db/#{RAILS_ENV}_structure.sql").join.split(";\n\n").each do |ddl|
             ActiveRecord::Base.connection.execute(ddl)
           end
-        else 
+        when "firebird"
+          set_firebird_env(abcs["test"])
+          db_string = firebird_db_string(abcs["test"])
+          sh "isql -i db/#{RAILS_ENV}_structure.sql #{db_string}"
+        else
           raise "Task not supported by '#{abcs["test"]["adapter"]}'"
       end
     end
@@ -115,6 +123,8 @@ namespace :db do
           ENV['PGPORT']     = abcs["test"]["port"].to_s if abcs["test"]["port"]
           ENV['PGPASSWORD'] = abcs["test"]["password"].to_s if abcs["test"]["password"]
           enc_option = "-E #{abcs["test"]["encoding"]}" if abcs["test"]["encoding"]
+
+          ActiveRecord::Base.clear_active_connections!
           `dropdb -U "#{abcs["test"]["username"]}" #{abcs["test"]["database"]}`
           `createdb #{enc_option} -U "#{abcs["test"]["username"]}" #{abcs["test"]["database"]}`
         when "sqlite","sqlite3"
@@ -124,11 +134,14 @@ namespace :db do
           dropfkscript = "#{abcs["test"]["host"]}.#{abcs["test"]["database"]}.DP1".gsub(/\\/,'-')
           `osql -E -S #{abcs["test"]["host"]} -d #{abcs["test"]["database"]} -i db\\#{dropfkscript}`
           `osql -E -S #{abcs["test"]["host"]} -d #{abcs["test"]["database"]} -i db\\#{RAILS_ENV}_structure.sql`
-        when "oci"
+        when "oci", "oracle"
           ActiveRecord::Base.establish_connection(:test)
           ActiveRecord::Base.connection.structure_drop.split(";\n\n").each do |ddl|
             ActiveRecord::Base.connection.execute(ddl)
           end
+        when "firebird"
+          ActiveRecord::Base.establish_connection(:test)
+          ActiveRecord::Base.connection.recreate_database!
         else
           raise "Task not supported by '#{abcs["test"]["adapter"]}'"
       end
@@ -136,7 +149,9 @@ namespace :db do
 
     desc 'Prepare the test database and load the schema'
     task :prepare => :environment do
-      Rake::Task[{ :sql  => "db:test:clone_structure", :ruby => "db:test:clone" }[ActiveRecord::Base.schema_format]].invoke
+      if defined?(ActiveRecord::Base) && !ActiveRecord::Base.configurations.blank?
+        Rake::Task[{ :sql  => "db:test:clone_structure", :ruby => "db:test:clone" }[ActiveRecord::Base.schema_format]].invoke
+      end
     end
   end
 
@@ -151,11 +166,22 @@ namespace :db do
 
     desc "Clear the sessions table"
     task :clear => :environment do
-      ActiveRecord::Base.connection.execute "DELETE FROM sessions"
+      session_table = 'session'
+      session_table = Inflector.pluralize(session_table) if ActiveRecord::Base.pluralize_table_names
+      ActiveRecord::Base.connection.execute "DELETE FROM #{session_table}"
     end
   end
 end
 
 def session_table_name
   ActiveRecord::Base.pluralize_table_names ? :sessions : :session
+end
+
+def set_firebird_env(config)
+  ENV["ISC_USER"]     = config["username"].to_s if config["username"]
+  ENV["ISC_PASSWORD"] = config["password"].to_s if config["password"]
+end
+
+def firebird_db_string(config)
+  FireRuby::Database.db_string_for(config.symbolize_keys)
 end

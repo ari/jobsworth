@@ -158,6 +158,12 @@ module ActiveRecord
   # after_initialize will only be run if an explicit implementation is defined (<tt>def after_find</tt>). In that case, all of the
   # callback types will be called.
   #
+  # == before_validation* returning statements
+  #
+  # If the returning value of a before_validation callback can be evaluated to false, the process will be aborted and Base#save will return false.
+  # If Base#save! is called it will raise a RecordNotSave error.
+  # Nothing will be appended to the errors object.
+  #
   # == Cancelling callbacks
   #
   # If a before_* callback returns false, all the later callbacks and the associated action are cancelled. If an after_* callback returns
@@ -170,34 +176,17 @@ module ActiveRecord
       after_validation_on_update before_destroy after_destroy
     )
 
-    def self.append_features(base) #:nodoc:
-      super
-
+    def self.included(base) #:nodoc:
       base.extend(ClassMethods)
       base.class_eval do
         class << self
           include Observable
-          alias_method :instantiate_without_callbacks, :instantiate
-          alias_method :instantiate, :instantiate_with_callbacks
+          alias_method_chain :instantiate, :callbacks
         end
 
-        alias_method :initialize_without_callbacks, :initialize
-        alias_method :initialize, :initialize_with_callbacks
-
-        alias_method :create_or_update_without_callbacks, :create_or_update
-        alias_method :create_or_update, :create_or_update_with_callbacks
-
-        alias_method :valid_without_callbacks, :valid?
-        alias_method :valid?, :valid_with_callbacks
-
-        alias_method :create_without_callbacks, :create
-        alias_method :create, :create_with_callbacks
-
-        alias_method :update_without_callbacks, :update
-        alias_method :update, :update_with_callbacks
-
-        alias_method :destroy_without_callbacks, :destroy
-        alias_method :destroy, :destroy_with_callbacks
+        [:initialize, :create_or_update, :valid?, :create, :update, :destroy].each do |method|
+          alias_method_chain method, :callbacks
+        end
       end
 
       CALLBACKS.each do |method|
@@ -302,12 +291,12 @@ module ActiveRecord
     # existing objects that have a record.
     def after_validation_on_update()  end
 
-    def valid_with_callbacks #:nodoc:
+    def valid_with_callbacks? #:nodoc:
       return false if callback(:before_validation) == false
       if new_record? then result = callback(:before_validation_on_create) else result = callback(:before_validation_on_update) end
       return false if result == false
 
-      result = valid_without_callbacks
+      result = valid_without_callbacks?
 
       callback(:after_validation)
       if new_record? then callback(:after_validation_on_create) else callback(:after_validation_on_update) end

@@ -120,6 +120,12 @@ class FormHelperTest < Test::Unit::TestCase
       radio_button("post", "secret", "1")
    )
   end
+  
+  def test_radio_button_respects_passed_in_id
+     assert_dom_equal('<input checked="checked" id="foo" name="post[secret]" type="radio" value="1" />',
+       radio_button("post", "secret", "1", :id=>"foo")
+    )
+  end
 
   def test_text_area
     assert_dom_equal(
@@ -140,6 +146,13 @@ class FormHelperTest < Test::Unit::TestCase
     assert_dom_equal(
       '<textarea cols="40" id="post_body" name="post[body]" rows="20">Testing alternate values.</textarea>',
       text_area("post", "body", :value => 'Testing alternate values.')
+    )
+  end
+  
+  def test_text_area_with_size_option
+    assert_dom_equal(
+      '<textarea cols="183" id="post_body" name="post[body]" rows="820">Back to the hill and over it again!</textarea>',
+      text_area("post", "body", :size => "183x820")
     )
   end
   
@@ -232,6 +245,27 @@ class FormHelperTest < Test::Unit::TestCase
     assert_dom_equal expected, _erbout
   end
 
+  def test_form_for_with_method
+    _erbout = ''
+
+    form_for(:post, @post, :html => { :id => 'create-post', :method => :put }) do |f|
+      _erbout.concat f.text_field(:title)
+      _erbout.concat f.text_area(:body)
+      _erbout.concat f.check_box(:secret)
+    end
+
+    expected = 
+      "<form action='http://www.example.com' id='create-post' method='post'>" +
+      "<div style='margin:0;padding:0'><input name='_method' type='hidden' value='put' /></div>" +
+      "<input name='post[title]' size='30' type='text' id='post_title' value='Hello World' />" +
+      "<textarea name='post[body]' id='post_body' rows='20' cols='40'>Back to the hill and over it again!</textarea>" +
+      "<input name='post[secret]' checked='checked' type='checkbox' id='post_secret' value='1' />" +
+      "<input name='post[secret]' type='hidden' value='0' />" +
+      "</form>"
+
+    assert_dom_equal expected, _erbout
+  end
+
   def test_form_for_without_object
     _erbout = ''
 
@@ -250,6 +284,24 @@ class FormHelperTest < Test::Unit::TestCase
       "</form>"
 
     assert_dom_equal expected, _erbout
+  end
+  
+  def test_form_for_with_index
+    _erbout = ''
+    
+    form_for("post[]", @post) do |f|
+      _erbout.concat f.text_field(:title)
+      _erbout.concat f.text_area(:body)
+      _erbout.concat f.check_box(:secret)
+    end
+    
+    expected = 
+      "<form action='http://www.example.com' method='post'>" +
+      "<input name='post[123][title]' size='30' type='text' id='post_title' value='Hello World' />" +
+      "<textarea name='post[123][body]' id='post_body' rows='20' cols='40'>Back to the hill and over it again!</textarea>" +
+      "<input name='post[123][secret]' checked='checked' type='checkbox' id='post_secret' value='1' />" +
+      "<input name='post[123][secret]' type='hidden' value='0' />" +
+      "</form>"
   end
 
   def test_fields_for
@@ -344,7 +396,31 @@ class FormHelperTest < Test::Unit::TestCase
 
     assert_dom_equal expected, _erbout
   end
-  
+
+  def test_default_form_builder
+    old_default_form_builder, ActionView::Base.default_form_builder =
+      ActionView::Base.default_form_builder, LabelledFormBuilder
+
+    _erbout = ''
+    form_for(:post, @post) do |f|
+      _erbout.concat f.text_field(:title)
+      _erbout.concat f.text_area(:body)
+      _erbout.concat f.check_box(:secret)
+    end
+
+    expected = 
+      "<form action='http://www.example.com' method='post'>" +
+      "<label for='title'>Title:</label> <input name='post[title]' size='30' type='text' id='post_title' value='Hello World' /><br/>" +
+      "<label for='body'>Body:</label> <textarea name='post[body]' id='post_body' rows='20' cols='40'>Back to the hill and over it again!</textarea><br/>" +
+      "<label for='secret'>Secret:</label> <input name='post[secret]' checked='checked' type='checkbox' id='post_secret' value='1' />" +
+      "<input name='post[secret]' type='hidden' value='0' /><br/>" +
+      "</form>"
+
+    assert_dom_equal expected, _erbout
+  ensure
+    ActionView::Base.default_form_builder = old_default_form_builder
+  end
+
   # Perhaps this test should be moved to prototype helper tests.
   def test_remote_form_for_with_labelled_builder
     self.extend ActionView::Helpers::PrototypeHelper

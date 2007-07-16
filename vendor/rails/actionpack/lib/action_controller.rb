@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2004 David Heinemeier Hansson
+# Copyright (c) 2004-2006 David Heinemeier Hansson
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -30,7 +30,7 @@ unless defined?(ActiveSupport)
     require 'active_support'  
   rescue LoadError
     require 'rubygems'
-    require_gem 'activesupport'
+    gem 'activesupport'
   end
 end
 
@@ -43,7 +43,7 @@ require 'action_controller/benchmarking'
 require 'action_controller/flash'
 require 'action_controller/filters'
 require 'action_controller/layout'
-require 'action_controller/dependencies'
+require 'action_controller/deprecated_dependencies'
 require 'action_controller/mime_responds'
 require 'action_controller/pagination'
 require 'action_controller/scaffolding'

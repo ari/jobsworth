@@ -1,11 +1,12 @@
 module ActionController
   module Macros
     module InPlaceEditing #:nodoc:
-      def self.append_features(base) #:nodoc:
-        super
+      def self.included(base) #:nodoc:
         base.extend(ClassMethods)
       end
 
+      # DEPRECATION WARNING: This method will become a separate plugin when Rails 2.0 ships.
+      #
       # Example:
       #
       #   # Controller

@@ -1,10 +1,11 @@
 require File.dirname(__FILE__) + '/../abstract_unit'
 
 class FormTagHelperTest < Test::Unit::TestCase
-
   include ActionView::Helpers::UrlHelper
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormTagHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::CaptureHelper
 
   def setup
     @controller = Class.new do
@@ -33,6 +34,28 @@ class FormTagHelperTest < Test::Unit::TestCase
     assert_dom_equal expected, actual
   end
 
+  def test_form_tag_with_method
+    actual = form_tag({}, { :method => :put })
+    expected = %(<form action="http://www.example.com" method="post"><div style='margin:0;padding:0'><input type="hidden" name="_method" value="put" /></div>)
+    assert_dom_equal expected, actual
+  end
+
+  def test_form_tag_with_block
+    _erbout = ''
+    form_tag("http://example.com") { _erbout.concat "Hello world!" }
+
+    expected = %(<form action="http://www.example.com" method="post">Hello world!</form>)
+    assert_dom_equal expected, _erbout
+  end
+
+  def test_form_tag_with_block_and_method
+    _erbout = ''
+    form_tag("http://example.com", :method => :put) { _erbout.concat "Hello world!" }
+
+    expected = %(<form action="http://www.example.com" method="post"><div style='margin:0;padding:0'><input type="hidden" name="_method" value="put" /></div>Hello world!</form>)
+    assert_dom_equal expected, _erbout
+  end
+
   def test_hidden_field_tag
     actual = hidden_field_tag "id", 3
     expected = %(<input id="id" name="id" type="hidden" value="3" />)
@@ -47,8 +70,21 @@ class FormTagHelperTest < Test::Unit::TestCase
 
   def test_radio_button_tag
     actual = radio_button_tag "people", "david"
-    expected = %(<input id="people" name="people" type="radio" value="david" />)
+    expected = %(<input id="people_david" name="people" type="radio" value="david" />)
     assert_dom_equal expected, actual
+
+    actual = radio_button_tag("num_people", 5)
+    expected = %(<input id="num_people_5" name="num_people" type="radio" value="5" />)
+    assert_dom_equal expected, actual
+
+    actual = radio_button_tag("gender", "m") + radio_button_tag("gender", "f")
+    expected = %(<input id="gender_m" name="gender" type="radio" value="m" /><input id="gender_f" name="gender" type="radio" value="f" />)
+    assert_dom_equal expected, actual
+    
+    actual = radio_button_tag("opinion", "-1") + radio_button_tag("opinion", "1")
+    expected = %(<input id="opinion_-1" name="opinion" type="radio" value="-1" /><input id="opinion_1" name="opinion" type="radio" value="1" />)
+    assert_dom_equal expected, actual
+    
   end
 
   def test_select_tag
@@ -106,3 +142,31 @@ class FormTagHelperTest < Test::Unit::TestCase
   end
 end
 
+class DeprecatedFormTagHelperTest < Test::Unit::TestCase
+  include ActionView::Helpers::UrlHelper
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::FormTagHelper
+  include ActionView::Helpers::TextHelper
+  include ActionView::Helpers::CaptureHelper
+
+  def setup
+    @controller = Class.new do
+      def url_for(options, *parameters_for_method_reference)
+        "http://www.example.com"
+      end
+    end
+    @controller = @controller.new
+  end
+
+  def test_start_form_tag_deprecation
+    assert_deprecated /start_form_tag/ do
+      start_form_tag
+    end
+  end
+  
+  def test_end_form_tag_deprecation
+    assert_deprecated /end_form_tag/ do
+      end_form_tag
+    end
+  end
+end

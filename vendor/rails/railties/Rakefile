@@ -21,16 +21,26 @@ RUBY_FORGE_PROJECT = "rails"
 RUBY_FORGE_USER    = "webster132"
 
 
-# Rake::TestTask.new("test") do |t|
-#   t.libs << 'test'
-#   t.pattern = 'test/*_test.rb'
-#   t.verbose = true
-# end
+## This is required until the regular test task
+## below passes.  It's not ideal, but at least
+## we can see the failures
+task :test do 
+  Dir['test/**/*_test.rb'].all? do |file|
+    system("ruby #{file}")
+  end or raise "Failures"
+end
+
+Rake::TestTask.new("regular_test") do |t|
+  t.libs << 'test'
+  t.pattern = 'test/**/*_test.rb'
+  t.warning = true
+  t.verbose = true
+end
 
 
 BASE_DIRS   = %w( 
   app config/environments components db doc log lib lib/tasks public script script/performance script/process test vendor vendor/plugins
-  tmp/sessions tmp/cache tmp/sockets
+  tmp/sessions tmp/cache tmp/sockets tmp/pids
 )
 
 APP_DIRS    = %w( models controllers helpers views views/layouts )
@@ -41,7 +51,7 @@ LOG_FILES    = %w( server.log development.log test.log production.log )
 HTML_FILES   = %w( 404.html 500.html index.html robots.txt favicon.ico images/rails.png
                    javascripts/prototype.js javascripts/application.js
                    javascripts/effects.js javascripts/dragdrop.js javascripts/controls.js )
-BIN_FILES    = %w( about breakpointer console destroy generate performance/benchmarker performance/profiler process/reaper process/spawner runner server plugin )
+BIN_FILES    = %w( about breakpointer console destroy generate performance/benchmarker performance/profiler process/reaper process/spawner process/inspector runner server plugin )
 
 VENDOR_LIBS = %w( actionpack activerecord actionmailer activesupport actionwebservice railties )
 
@@ -83,7 +93,7 @@ end
 
 # Make directory structure ----------------------------------------------------------------
 
-def make_dest_dirs(dirs, path = nil)
+def make_dest_dirs(dirs, path = '.')
   mkdir_p dirs.map { |dir| File.join(PKG_DESTINATION, path.to_s, dir) }
 end
 
@@ -266,7 +276,7 @@ PKG_FILES = FileList[
   'generators/**/*', 
   'html/**/*', 
   'lib/**/*'
-]
+] - [ 'test' ]
 
 spec = Gem::Specification.new do |s|
   s.name = 'rails'
@@ -277,12 +287,12 @@ spec = Gem::Specification.new do |s|
     on top of either MySQL, PostgreSQL, SQLite, DB2, SQL Server, or Oracle with eRuby- or Builder-based templates.
   EOF
 
-  s.add_dependency('rake', '>= 0.7.1')
-  s.add_dependency('activesupport',    '= 1.3.1' + PKG_BUILD)
-  s.add_dependency('activerecord',     '= 1.14.4' + PKG_BUILD)
-  s.add_dependency('actionpack',       '= 1.12.5' + PKG_BUILD)
-  s.add_dependency('actionmailer',     '= 1.2.5' + PKG_BUILD)
-  s.add_dependency('actionwebservice', '= 1.1.6' + PKG_BUILD)
+  s.add_dependency('rake', '>= 0.7.2')
+  s.add_dependency('activesupport',    '= 1.4.2' + PKG_BUILD)
+  s.add_dependency('activerecord',     '= 1.15.3' + PKG_BUILD)
+  s.add_dependency('actionpack',       '= 1.13.3' + PKG_BUILD)
+  s.add_dependency('actionmailer',     '= 1.3.3' + PKG_BUILD)
+  s.add_dependency('actionwebservice', '= 1.2.3' + PKG_BUILD)
 
   s.rdoc_options << '--exclude' << '.'
   s.has_rdoc = false
@@ -301,6 +311,7 @@ spec = Gem::Specification.new do |s|
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
 end
 
 
@@ -312,9 +323,12 @@ task :pgem => [:gem] do
 end
 
 desc "Publish the release files to RubyForge."
-task :release => [ :gem ] do
-  `rubyforge login`
-  release_command = "rubyforge add_release #{PKG_NAME} #{PKG_NAME} 'REL #{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
-  puts release_command
-  system(release_command)
+task :release => [ :package ] do
+  require 'rubyforge'
+
+  packages = %w( gem tgz zip ).collect{ |ext| "pkg/#{PKG_NAME}-#{PKG_VERSION}.#{ext}" }
+
+  rubyforge = RubyForge.new
+  rubyforge.login
+  rubyforge.add_release(PKG_NAME, PKG_NAME, "REL #{PKG_VERSION}", *packages)
 end

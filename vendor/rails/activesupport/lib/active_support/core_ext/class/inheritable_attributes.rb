@@ -9,6 +9,7 @@ end
 class Class # :nodoc:
   def class_inheritable_reader(*syms)
     syms.each do |sym|
+      next if sym.is_a?(Hash)
       class_eval <<-EOS
         def self.#{sym}
           read_inheritable_attribute(:#{sym})
@@ -22,43 +23,52 @@ class Class # :nodoc:
   end
 
   def class_inheritable_writer(*syms)
+    options = syms.last.is_a?(Hash) ? syms.pop : {}
     syms.each do |sym|
       class_eval <<-EOS
         def self.#{sym}=(obj)
           write_inheritable_attribute(:#{sym}, obj)
         end
 
+        #{"
         def #{sym}=(obj)
           self.class.#{sym} = obj
         end
+        " unless options[:instance_writer] == false }
       EOS
     end
   end
 
   def class_inheritable_array_writer(*syms)
+    options = syms.last.is_a?(Hash) ? syms.pop : {}
     syms.each do |sym|
       class_eval <<-EOS
         def self.#{sym}=(obj)
           write_inheritable_array(:#{sym}, obj)
         end
 
+        #{"
         def #{sym}=(obj)
           self.class.#{sym} = obj
         end
+        " unless options[:instance_writer] == false }
       EOS
     end
   end
 
   def class_inheritable_hash_writer(*syms)
+    options = syms.last.is_a?(Hash) ? syms.pop : {}
     syms.each do |sym|
       class_eval <<-EOS
         def self.#{sym}=(obj)
           write_inheritable_hash(:#{sym}, obj)
         end
 
+        #{"
         def #{sym}=(obj)
           self.class.#{sym} = obj
         end
+        " unless options[:instance_writer] == false }
       EOS
     end
   end
@@ -79,10 +89,13 @@ class Class # :nodoc:
   end
 
   def inheritable_attributes
-    @inheritable_attributes ||= {}
+    @inheritable_attributes ||= EMPTY_INHERITABLE_ATTRIBUTES
   end
   
   def write_inheritable_attribute(key, value)
+    if inheritable_attributes.equal?(EMPTY_INHERITABLE_ATTRIBUTES)
+      @inheritable_attributes = {}
+    end
     inheritable_attributes[key] = value
   end
   
@@ -101,13 +114,25 @@ class Class # :nodoc:
   end
   
   def reset_inheritable_attributes
-    inheritable_attributes.clear
+    @inheritable_attributes = EMPTY_INHERITABLE_ATTRIBUTES
   end
 
-  private 
+  private
+    # Prevent this constant from being created multiple times
+    EMPTY_INHERITABLE_ATTRIBUTES = {}.freeze unless const_defined?(:EMPTY_INHERITABLE_ATTRIBUTES)
+
     def inherited_with_inheritable_attributes(child)
       inherited_without_inheritable_attributes(child) if respond_to?(:inherited_without_inheritable_attributes)
-      child.instance_variable_set('@inheritable_attributes', inheritable_attributes.dup)
+      
+      if inheritable_attributes.equal?(EMPTY_INHERITABLE_ATTRIBUTES)
+        new_inheritable_attributes = EMPTY_INHERITABLE_ATTRIBUTES
+      else
+        new_inheritable_attributes = inheritable_attributes.inject({}) do |memo, (key, value)|
+          memo.update(key => (value.dup rescue value))
+        end
+      end
+      
+      child.instance_variable_set('@inheritable_attributes', new_inheritable_attributes)
     end
 
     alias inherited_without_inheritable_attributes inherited

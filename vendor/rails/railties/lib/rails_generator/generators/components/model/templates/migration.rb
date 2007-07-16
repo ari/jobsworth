@@ -1,7 +1,9 @@
 class <%= migration_name %> < ActiveRecord::Migration
   def self.up
     create_table :<%= table_name %> do |t|
-      # t.column :name, :string
+<% for attribute in attributes -%>
+      t.column :<%= attribute.name %>, :<%= attribute.type %>
+<% end -%>
     end
   end
 

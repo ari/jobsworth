@@ -1,3 +1,6 @@
+require 'stringio'
+require 'bigdecimal'
+
 module ActiveRecord
   # This class is used to dump the database schema for some connection to some
   # output format (i.e., ActiveRecord::Schema).
@@ -82,13 +85,27 @@ HEADER
           tbl.print ", :force => true"
           tbl.puts " do |t|"
 
-          columns.each do |column|
+          column_specs = columns.map do |column|
             raise StandardError, "Unknown type '#{column.sql_type}' for column '#{column.name}'" if @types[column.type].nil?
             next if column.name == pk
-            tbl.print "    t.column #{column.name.inspect}, #{column.type.inspect}"
-            tbl.print ", :limit => #{column.limit.inspect}" if column.limit != @types[column.type][:limit] 
-            tbl.print ", :default => #{column.default.inspect}" if !column.default.nil?
-            tbl.print ", :null => false" if !column.null
+            spec = {}
+            spec[:name]    = column.name.inspect
+            spec[:type]    = column.type.inspect
+            spec[:limit]   = column.limit.inspect if column.limit != @types[column.type][:limit] && column.type != :decimal
+            spec[:precision] = column.precision.inspect if !column.precision.nil?
+            spec[:scale] = column.scale.inspect if !column.scale.nil?
+            spec[:null]    = 'false' if !column.null
+            spec[:default] = default_string(column.default) if !column.default.nil?
+            (spec.keys - [:name, :type]).each{ |k| spec[k].insert(0, "#{k.inspect} => ")}
+            spec
+          end.compact
+          keys = [:name, :type, :limit, :precision, :scale, :default, :null] & column_specs.map{ |spec| spec.keys }.inject([]){ |a,b| a | b }
+          lengths = keys.map{ |key| column_specs.map{ |spec| spec[key] ? spec[key].length + 2 : 0 }.max }
+          format_string = lengths.map{ |len| "%-#{len}s" }.join("")
+          column_specs.each do |colspec|
+            values = keys.zip(lengths).map{ |key, len| colspec.key?(key) ? colspec[key] + ", " : " " * len }
+            tbl.print "    t.column "
+            tbl.print((format_string % values).gsub(/,\s*$/, ''))
             tbl.puts
           end
 
@@ -108,6 +125,17 @@ HEADER
         stream
       end
 
+      def default_string(value)
+        case value
+        when BigDecimal
+          value.to_s
+        when Date, DateTime, Time
+          "'" + value.to_s(:db) + "'"
+        else
+          value.inspect
+        end
+      end
+      
       def indexes(table, stream)
         indexes = @connection.indexes(table)
         indexes.each do |index|

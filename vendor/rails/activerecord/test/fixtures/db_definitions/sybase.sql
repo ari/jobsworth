@@ -26,7 +26,7 @@ CREATE TABLE topics (
   author_name varchar(255) NULL,
   author_email_address varchar(255) NULL,
   written_on datetime NULL,
-  bonus_time time NULL,
+  bonus_time datetime NULL,
   last_read datetime NULL,
   content varchar(255) NULL,
   approved bit default 1,
@@ -118,7 +118,7 @@ CREATE TABLE mixins (
 
 CREATE TABLE people (
   id numeric(9,0) IDENTITY PRIMARY KEY,
-  first_name varchar(40) NOT NULL,
+  first_name varchar(40) NULL,
   lock_version int DEFAULT 0
 )
 
@@ -197,8 +197,22 @@ CREATE TABLE keyboards (
 CREATE TABLE legacy_things (
   id numeric(9,0) IDENTITY PRIMARY KEY,
   tps_report_number int default NULL,
-  version int default 0,
+  version int default 0
 )
 
-go
 
+CREATE TABLE numeric_data (
+  id numeric(9,0) IDENTITY PRIMARY KEY,
+  bank_balance numeric(10,2),
+  big_bank_balance numeric(15,2),
+  world_population numeric(10),
+  my_house_population numeric(2),
+  decimal_number_with_default numeric(3,2) DEFAULT 2.78
+)
+
+CREATE TABLE mixed_case_monkeys (
+  [monkeyID] numeric(9,0) IDENTITY PRIMARY KEY,
+  [fleaCount] numeric(9,0)
+);
+
+go

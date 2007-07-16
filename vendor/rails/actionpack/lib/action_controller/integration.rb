@@ -1,6 +1,7 @@
 require 'dispatcher'
 require 'stringio'
 require 'uri'
+require 'action_controller/test_process'
 
 module ActionController
   module Integration #:nodoc:
@@ -13,6 +14,7 @@ module ActionController
     # rather than instantiating Integration::Session directly.
     class Session
       include Test::Unit::Assertions
+      include ActionController::Assertions
       include ActionController::TestProcess
 
       # The integer HTTP status code of the last request.
@@ -73,11 +75,11 @@ module ActionController
         unless @named_routes_configured
           # install the named routes in this session instance.
           klass = class<<self; self; end
-          Routing::NamedRoutes.install(klass)
+          Routing::Routes.named_routes.install(klass)
 
           # the helpers are made protected by default--we make them public for
           # easier access during testing and troubleshooting.
-          klass.send(:public, *Routing::NamedRoutes::Helpers)
+          klass.send(:public, *Routing::Routes.named_routes.helpers)
           @named_routes_configured = true
         end
       end
@@ -111,7 +113,7 @@ module ActionController
       # performed on the location header.
       def follow_redirect!
         raise "not a redirect! #{@status} #{@status_message}" unless redirect?
-        get(interpret_uri(headers["location"].first))
+        get(interpret_uri(headers['location'].first))
         status
       end
 
@@ -143,17 +145,31 @@ module ActionController
       # (application/x-www-form-urlencoded or multipart/form-data).  The headers
       # should be a hash.  The keys will automatically be upcased, with the 
       # prefix 'HTTP_' added if needed.
+      #
+      # You can also perform POST, PUT, DELETE, and HEAD requests with #post, 
+      # #put, #delete, and #head.
       def get(path, parameters=nil, headers=nil)
         process :get, path, parameters, headers
       end
 
-      # Performs a POST request with the given parameters. The parameters may
-      # be +nil+, a Hash, or a string that is appropriately encoded
-      # (application/x-www-form-urlencoded or multipart/form-data).  The headers
-      # should be a hash.  The keys will automatically be upcased, with the 
-      # prefix 'HTTP_' added if needed.
+      # Performs a POST request with the given parameters. See get() for more details.
       def post(path, parameters=nil, headers=nil)
         process :post, path, parameters, headers
+      end
+
+      # Performs a PUT request with the given parameters. See get() for more details.
+      def put(path, parameters=nil, headers=nil)
+        process :put, path, parameters, headers
+      end
+      
+      # Performs a DELETE request with the given parameters. See get() for more details.
+      def delete(path, parameters=nil, headers=nil)
+        process :delete, path, parameters, headers
+      end
+      
+      # Performs a HEAD request with the given parameters. See get() for more details.
+      def head(path, parameters=nil, headers=nil)
+        process :head, path, parameters, headers
       end
 
       # Performs an XMLHttpRequest request with the given parameters, mimicing
@@ -163,7 +179,11 @@ module ActionController
       # should be a hash.  The keys will automatically be upcased, with the 
       # prefix 'HTTP_' added if needed.
       def xml_http_request(path, parameters=nil, headers=nil)
-        headers = (headers || {}).merge("X-Requested-With" => "XMLHttpRequest")
+        headers = (headers || {}).merge(
+          "X-Requested-With" => "XMLHttpRequest",
+          "Accept"           => "text/javascript, text/html, application/xml, text/xml, */*"
+        )
+
         post(path, parameters, headers)
       end
 
@@ -174,7 +194,6 @@ module ActionController
       end
 
       private
-
         class MockCGI < CGI #:nodoc:
           attr_accessor :stdinput, :stdoutput, :env_table
 
@@ -224,7 +243,7 @@ module ActionController
 
           (headers || {}).each do |key, value|
             key = key.to_s.upcase.gsub(/-/, "_")
-            key = "HTTP_#{key}" unless env.has_key?(key) || env =~ /^X|HTTP/
+            key = "HTTP_#{key}" unless env.has_key?(key) || key =~ /^HTTP_/
             env[key] = value
           end
 
@@ -246,6 +265,8 @@ module ActionController
           # so that things like assert_response can be used in integration
           # tests.
           @response.extend(TestResponseBehavior)
+
+          @html_document = nil
 
           parse_result
           return status
@@ -317,9 +338,8 @@ module ActionController
       def self.included(base)
         base.extend(ClassMethods)
         base.class_eval do
-          class <<self
-            alias_method :new_without_capture, :new
-            alias_method :new, :new_with_capture
+          class << self
+            alias_method_chain :new, :capture
           end
         end
       end
@@ -330,9 +350,11 @@ module ActionController
         def clear_last_instantiation!
           self.last_instantiation = nil
         end
-    
+
         def new_with_capture(*args)
-          self.last_instantiation ||= new_without_capture(*args)
+          controller = new_without_capture(*args)
+          self.last_instantiation ||= controller
+          controller
         end
       end
     end
@@ -471,6 +493,8 @@ module ActionController
     %w(get post cookies assigns xml_http_request).each do |method|
       define_method(method) do |*args|
         reset! unless @integration_session
+        # reset the html_document variable, but only for new get/post calls
+        @html_document = nil unless %w(cookies assigns).include?(method)
         returning @integration_session.send(method, *args) do
           copy_session_variables!
         end

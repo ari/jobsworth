@@ -3,9 +3,9 @@ require 'rbconfig'
 class AppGenerator < Rails::Generator::Base
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
-  
-  DATABASES = %w( mysql oracle postgresql sqlite2 sqlite3 )
-  
+
+  DATABASES = %w(mysql oracle postgresql sqlite2 sqlite3 frontbase)
+
   default_options   :db => "mysql", :shebang => DEFAULT_SHEBANG, :freeze => false
   mandatory_options :source => "#{File.dirname(__FILE__)}/../../../../.."
 
@@ -14,6 +14,7 @@ class AppGenerator < Rails::Generator::Base
     usage if args.empty?
     usage("Databases supported for preconfiguration are: #{DATABASES.join(", ")}") if (options[:db] && !DATABASES.include?(options[:db]))
     @destination_root = args.shift
+    @app_name = File.basename(File.expand_path(@destination_root))
   end
 
   def manifest
@@ -31,13 +32,13 @@ class AppGenerator < Rails::Generator::Base
       m.file "README",         "README"
 
       # Application
-      m.template "helpers/application.rb",        "app/controllers/application.rb"
+      m.template "helpers/application.rb",        "app/controllers/application.rb", :assigns => { :app_name => @app_name }
       m.template "helpers/application_helper.rb", "app/helpers/application_helper.rb"
       m.template "helpers/test_helper.rb",        "test/test_helper.rb"
 
       # database.yml and .htaccess
       m.template "configs/databases/#{options[:db]}.yml", "config/database.yml", :assigns => {
-        :app_name => File.basename(File.expand_path(@destination_root)),
+        :app_name => @app_name,
         :socket   => options[:db] == "mysql" ? mysql_socket_location : nil
       }
       m.template "configs/routes.rb",     "config/routes.rb"
@@ -51,7 +52,7 @@ class AppGenerator < Rails::Generator::Base
       m.file "environments/test.rb",        "config/environments/test.rb"
 
       # Scripts
-      %w( about breakpointer console destroy generate performance/benchmarker performance/profiler process/reaper process/spawner runner server plugin ).each do |file|
+      %w( about breakpointer console destroy generate performance/benchmarker performance/profiler process/reaper process/spawner process/inspector runner server plugin ).each do |file|
         m.file "bin/#{file}", "script/#{file}", script_options
       end
 
@@ -64,7 +65,7 @@ class AppGenerator < Rails::Generator::Base
       %w(404 500 index).each do |file|
         m.template "html/#{file}.html", "public/#{file}.html"
       end
-      
+
       m.template "html/favicon.ico",  "public/favicon.ico"
       m.template "html/robots.txt",   "public/robots.txt"
       m.file "html/images/rails.png", "public/images/rails.png"
@@ -102,13 +103,13 @@ class AppGenerator < Rails::Generator::Base
             "Preconfigure for selected database (options: mysql/oracle/postgresql/sqlite2/sqlite3).",
             "Default: mysql") { |v| options[:db] = v }
 
-      opt.on("-f", "--freeze", 
+      opt.on("-f", "--freeze",
             "Freeze Rails in vendor/rails from the gems generating the skeleton",
             "Default: false") { |v| options[:freeze] = v }
     end
-    
+
     def mysql_socket_location
-      RUBY_PLATFORM =~ /mswin32/ ? MYSQL_SOCKET_LOCATIONS.find { |f| File.exists?(f) } : nil
+      MYSQL_SOCKET_LOCATIONS.find { |f| File.exists?(f) } unless RUBY_PLATFORM =~ /(:?mswin|mingw)/
     end
 
 
@@ -142,6 +143,7 @@ class AppGenerator < Rails::Generator::Base
     tmp/sessions
     tmp/sockets
     tmp/cache
+    tmp/pids
   )
 
   MYSQL_SOCKET_LOCATIONS = [
@@ -152,6 +154,7 @@ class AppGenerator < Rails::Generator::Base
     "/opt/local/lib/mysql/mysql.sock",        # fedora
     "/opt/local/var/run/mysqld/mysqld.sock",  # mac + darwinports + mysql
     "/opt/local/var/run/mysql4/mysqld.sock",  # mac + darwinports + mysql4
-    "/opt/local/var/run/mysql5/mysqld.sock"   # mac + darwinports + mysql5
+    "/opt/local/var/run/mysql5/mysqld.sock",  # mac + darwinports + mysql5
+    "/opt/lampp/var/mysql/mysql.sock"         # xampp for linux
   ]
 end

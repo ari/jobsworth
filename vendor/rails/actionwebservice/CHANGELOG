@@ -1,3 +1,33 @@
+*1.2.3* (March 12th, 2007)
+
+* Depend on Action Pack 1.13.3
+
+
+*1.2.2* (Feburary 4th, 2007)
+
+* Depend on Action Pack 1.13.2
+
+
+*1.2.1* (January 16th, 2007)
+
+* Depend on Action Pack 1.13.1
+
+
+*1.2.0* (January 16th, 2007)
+
+* Removed invocation of deprecated before_action and around_action filter methods. Corresponding before_invocation and after_invocation methods should be used instead. #6275 [Kent Sibilev]
+
+* Provide access to the underlying SOAP driver. #6212 [bmilekic, Kent Sibilev]
+
+* ActionWebService WSDL generation ignores HTTP_X_FORWARDED_HOST [Paul Butcher <paul@paulbutcher.com>]
+
+* Tighten rescue clauses.  #5985 [james@grayproductions.net]
+
+* Fixed XMLRPC multicall when one of the called methods returns a struct object. [Kent Sibilev] 
+
+* Fix invoke_layered since api_method didn't declare :expects. Closes #4720. [Kevin Ballard <kevin@sb.org>, Kent Sibilev]
+
+
 *1.1.6* (August 10th, 2006)
 
 * Rely on Action Pack 1.12.5
@@ -18,17 +48,17 @@
 * Rely on Action Pack 1.12.2 and Active Record 1.14.3
 
 
-*1.1.2* (April 9th, 2005)
+*1.1.2* (April 9th, 2006)
 
 * Rely on Active Record 1.14.2
 
 
-*1.1.1* (April 6th, 2005)
+*1.1.1* (April 6th, 2006)
 
 * Do not convert driver options to strings (#4499)
 
 
-*1.1.0* (March 27th, 2005)
+*1.1.0* (March 27th, 2006)
 
 * Make ActiveWebService::Struct type reloadable
 

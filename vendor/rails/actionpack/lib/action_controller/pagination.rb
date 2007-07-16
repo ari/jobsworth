@@ -1,6 +1,8 @@
 module ActionController
   # === Action Pack pagination for Active Record collections
   #
+  # DEPRECATION WARNING: Pagination will be separated into its own plugin with Rails 2.0.
+  #
   # The Pagination module aids in the process of paging large collections of
   # Active Record objects. It offers macro-style automatic fetching of your
   # model for multiple views, or explicit fetching for single actions. And if
@@ -104,8 +106,7 @@ module ActionController
     # ClassMethods#paginate.
     #
     # +options+ are:
-    # <tt>:singular_name</tt>:: the singular name to use, if it can't be inferred by
-    #                        singularizing the collection name
+    # <tt>:singular_name</tt>:: the singular name to use, if it can't be inferred by singularizing the collection name
     # <tt>:class_name</tt>:: the class name to use, if it can't be inferred by
     #                        camelizing the singular name
     # <tt>:per_page</tt>::   the maximum number of items to include in a 
@@ -192,7 +193,7 @@ module ActionController
 
     def paginator_and_collection_for(collection_id, options) #:nodoc:
       klass = options[:class_name].constantize
-      page  = @params[options[:parameter]]
+      page  = params[options[:parameter]]
       count = count_collection_for_pagination(klass, options)
       paginator = Paginator.new(self, count, options[:per_page], page)
       collection = find_collection_for_pagination(klass, options, paginator)

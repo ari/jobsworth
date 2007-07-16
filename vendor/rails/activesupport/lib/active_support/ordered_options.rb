@@ -1,34 +1,35 @@
-class OrderedHash < Array #:nodoc:
-  def []=(key, value)    
-    if pair = find_pair(key)
-      pair.pop
-      pair << value
-    else
-      self << [key, value]
+# OrderedHash is namespaced to prevent conflicts with other implementations
+module ActiveSupport
+  class OrderedHash < Array #:nodoc:
+    def []=(key, value)
+      if pair = assoc(key)
+        pair.pop
+        pair << value
+      else
+        self << [key, value]
+      end
+    end
+
+    def [](key)
+      pair = assoc(key)
+      pair ? pair.last : nil
+    end
+
+    def keys
+      collect { |key, value| key }
+    end
+
+    def values
+      collect { |key, value| value }
     end
   end
-  
-  def [](key)
-    pair = find_pair(key)
-    pair ? pair.last : nil
-  end
-
-  def keys
-    self.collect { |i| i.first }
-  end
-
-  private
-    def find_pair(key)
-      self.each { |i| return i if i.first == key }
-      return false
-    end
 end
 
-class OrderedOptions < OrderedHash #:nodoc:
+class OrderedOptions < ActiveSupport::OrderedHash #:nodoc:
   def []=(key, value)
     super(key.to_sym, value)
   end
-  
+
   def [](key)
     super(key.to_sym)
   end

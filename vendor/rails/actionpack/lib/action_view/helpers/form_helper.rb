@@ -142,11 +142,13 @@ module ActionView
       #
       # Note: This also works for the methods in FormOptionHelper and DateHelper that are designed to work with an object as base.
       # Like collection_select and datetime_select.
-      def fields_for(object_name, *args, &proc)
+      def fields_for(object_name, *args, &block)
         raise ArgumentError, "Missing block" unless block_given?
         options = args.last.is_a?(Hash) ? args.pop : {}
         object  = args.first
-        yield((options[:builder] || FormBuilder).new(object_name, object, self, options, proc))
+
+        builder = options[:builder] || ActionView::Base.default_form_builder
+        yield builder.new(object_name, object, self, options, block)
       end
 
       # Returns an input tag of the "text" type tailored for accessing a specified attribute (identified by +method+) on an object
@@ -238,7 +240,11 @@ module ActionView
         @template_object, @local_binding = template_object, local_binding
         @object = object
         if @object_name.sub!(/\[\]$/,"")
-          @auto_index = @template_object.instance_variable_get("@#{Regexp.last_match.pre_match}").id_before_type_cast
+          if object ||= @template_object.instance_variable_get("@#{Regexp.last_match.pre_match}") and object.respond_to?(:id_before_type_cast)
+            @auto_index = object.id_before_type_cast
+          else
+            raise ArgumentError, "object[] naming but object param and @object var don't exist or don't respond to id_before_type_cast: #{object.inspect}"
+          end
         end
       end
 
@@ -250,7 +256,7 @@ module ActionView
           options.delete("size")
         end
         options["type"] = field_type
-        options["value"] ||= value_before_type_cast unless field_type == "file"
+        options["value"] ||= value_before_type_cast(object) unless field_type == "file"
         add_default_name_and_id(options)
         tag("input", options)
       end
@@ -259,9 +265,15 @@ module ActionView
         options = DEFAULT_RADIO_OPTIONS.merge(options.stringify_keys)
         options["type"]     = "radio"
         options["value"]    = tag_value
-        options["checked"]  = "checked" if value.to_s == tag_value.to_s
+        if options.has_key?("checked")
+          cv = options.delete "checked"
+          checked = cv == true || cv == "checked"
+        else
+          checked = self.class.radio_button_checked?(value(object), tag_value)
+        end
+        options["checked"]  = "checked" if checked
         pretty_tag_value    = tag_value.to_s.gsub(/\s/, "_").gsub(/\W/, "").downcase
-        options["id"]       = @auto_index ?             
+        options["id"]     ||= defined?(@auto_index) ?             
           "#{@object_name}_#{@auto_index}_#{@method_name}_#{pretty_tag_value}" :
           "#{@object_name}_#{@method_name}_#{pretty_tag_value}"
         add_default_name_and_id(options)
@@ -271,14 +283,82 @@ module ActionView
       def to_text_area_tag(options = {})
         options = DEFAULT_TEXT_AREA_OPTIONS.merge(options.stringify_keys)
         add_default_name_and_id(options)
-        content_tag("textarea", html_escape(options.delete('value') || value_before_type_cast), options)
+
+        if size = options.delete("size")
+          options["cols"], options["rows"] = size.split("x")
+        end
+
+        content_tag("textarea", html_escape(options.delete('value') || value_before_type_cast(object)), options)
       end
 
       def to_check_box_tag(options = {}, checked_value = "1", unchecked_value = "0")
         options = options.stringify_keys
         options["type"]     = "checkbox"
         options["value"]    = checked_value
-        checked = case value
+        if options.has_key?("checked")
+          cv = options.delete "checked"
+          checked = cv == true || cv == "checked"
+        else
+          checked = self.class.check_box_checked?(value(object), checked_value)
+        end
+        options["checked"] = "checked" if checked
+        add_default_name_and_id(options)
+        tag("input", options) << tag("input", "name" => options["name"], "type" => "hidden", "value" => unchecked_value)
+      end
+
+      def to_date_tag()
+        defaults = DEFAULT_DATE_OPTIONS.dup
+        date     = value(object) || Date.today
+        options  = Proc.new { |position| defaults.merge(:prefix => "#{@object_name}[#{@method_name}(#{position}i)]") }
+        html_day_select(date, options.call(3)) +
+        html_month_select(date, options.call(2)) +
+        html_year_select(date, options.call(1))
+      end
+
+      def to_boolean_select_tag(options = {})
+        options = options.stringify_keys
+        add_default_name_and_id(options)
+        value = value(object)
+        tag_text = "<select"
+        tag_text << tag_options(options)
+        tag_text << "><option value=\"false\""
+        tag_text << " selected" if value == false
+        tag_text << ">False</option><option value=\"true\""
+        tag_text << " selected" if value
+        tag_text << ">True</option></select>"
+      end
+      
+      def to_content_tag(tag_name, options = {})
+        content_tag(tag_name, value(object), options)
+      end
+      
+      def object
+        @object || @template_object.instance_variable_get("@#{@object_name}")
+      end
+
+      def value(object)
+        self.class.value(object, @method_name)
+      end
+
+      def value_before_type_cast(object)
+        self.class.value_before_type_cast(object, @method_name)
+      end
+      
+      class << self
+        def value(object, method_name)
+          object.send method_name unless object.nil?
+        end
+        
+        def value_before_type_cast(object, method_name)
+          unless object.nil?
+            object.respond_to?(method_name + "_before_type_cast") ?
+            object.send(method_name + "_before_type_cast") :
+            object.send(method_name)
+          end
+        end
+        
+        def check_box_checked?(value, checked_value)
+          case value
           when TrueClass, FalseClass
             value
           when NilClass
@@ -290,55 +370,10 @@ module ActionView
           else
             value.to_i != 0
           end
-        if checked || options["checked"] == "checked"
-          options["checked"] = "checked"
-        else
-          options.delete("checked")
         end
-        add_default_name_and_id(options)
-        tag("input", options) << tag("input", "name" => options["name"], "type" => "hidden", "value" => unchecked_value)
-      end
-
-      def to_date_tag()
-        defaults = DEFAULT_DATE_OPTIONS.dup
-        date     = value || Date.today
-        options  = Proc.new { |position| defaults.merge(:prefix => "#{@object_name}[#{@method_name}(#{position}i)]") }
-        html_day_select(date, options.call(3)) +
-        html_month_select(date, options.call(2)) +
-        html_year_select(date, options.call(1))
-      end
-
-      def to_boolean_select_tag(options = {})
-        options = options.stringify_keys
-        add_default_name_and_id(options)
-        tag_text = "<select"
-        tag_text << tag_options(options)
-        tag_text << "><option value=\"false\""
-        tag_text << " selected" if value == false
-        tag_text << ">False</option><option value=\"true\""
-        tag_text << " selected" if value
-        tag_text << ">True</option></select>"
-      end
-      
-      def to_content_tag(tag_name, options = {})
-        content_tag(tag_name, value, options)
-      end
-      
-      def object
-        @object || @template_object.instance_variable_get("@#{@object_name}")
-      end
-
-      def value
-        unless object.nil?
-          object.send(@method_name)
-        end
-      end
-
-      def value_before_type_cast
-        unless object.nil?
-          object.respond_to?(@method_name + "_before_type_cast") ?
-            object.send(@method_name + "_before_type_cast") :
-            object.send(@method_name)
+        
+        def radio_button_checked?(value, checked_value)
+          value.to_s == checked_value.to_s
         end
       end
 
@@ -348,11 +383,11 @@ module ActionView
             options["name"] ||= tag_name_with_index(options["index"])
             options["id"]   ||= tag_id_with_index(options["index"])
             options.delete("index")
-          elsif @auto_index
+          elsif defined?(@auto_index)
             options["name"] ||= tag_name_with_index(@auto_index)
             options["id"]   ||= tag_id_with_index(@auto_index)
           else
-            options["name"] ||= tag_name
+            options["name"] ||= tag_name + (options.has_key?('multiple') ? '[]' : '')
             options["id"]   ||= tag_id
           end
         end
@@ -379,7 +414,7 @@ module ActionView
       class_inheritable_accessor :field_helpers
       self.field_helpers = (FormHelper.instance_methods - ['form_for'])
 
-      attr_accessor :object_name, :object
+      attr_accessor :object_name, :object, :options
 
       def initialize(object_name, object, template, options, proc)
         @object_name, @object, @template, @options, @proc = object_name, object, template, options, proc        
@@ -402,5 +437,10 @@ module ActionView
         @template.radio_button(@object_name, method, tag_value, options.merge(:object => @object))
       end
     end
+  end
+
+  class Base
+    cattr_accessor :default_form_builder
+    self.default_form_builder = ::ActionView::Helpers::FormBuilder
   end
 end

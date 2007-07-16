@@ -1,13 +1,8 @@
 require File.dirname(__FILE__) + '/../active_record_unit'
 
-require 'fixtures/topic'
-require 'fixtures/reply'
-require 'fixtures/developer'
-require 'fixtures/project'
-
 class PaginationTest < ActiveRecordTestCase
   fixtures :topics, :replies, :developers, :projects, :developers_projects
-
+  
   class PaginationController < ActionController::Base
     self.template_root = "#{File.dirname(__FILE__)}/../fixtures/"
     

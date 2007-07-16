@@ -44,8 +44,8 @@ module ActiveRecord
       #
       # The +options+ hash can include the following keys:
       # [<tt>:id</tt>]
-      #   Set to true or false to add/not add a primary key column
-      #   automatically.  Defaults to true.
+      #   Whether to automatically add a primary key column. Defaults to true.
+      #   Join tables for has_and_belongs_to_many should set :id => false.
       # [<tt>:primary_key</tt>]
       #   The name of the primary key, if one is to be added automatically.
       #   Defaults to +id+.
@@ -94,7 +94,7 @@ module ActiveRecord
         yield table_definition
 
         if options[:force]
-          drop_table(name) rescue nil
+          drop_table(name, options) rescue nil
         end
 
         create_sql = "CREATE#{' TEMPORARY' if options[:temporary]} TABLE "
@@ -112,14 +112,14 @@ module ActiveRecord
       end
 
       # Drops a table from the database.
-      def drop_table(name)
+      def drop_table(name, options = {})
         execute "DROP TABLE #{name}"
       end
 
       # Adds a new column to the named table.
       # See TableDefinition#column for details of the options you can use.
       def add_column(table_name, column_name, type, options = {})
-        add_column_sql = "ALTER TABLE #{table_name} ADD #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit])}"
+        add_column_sql = "ALTER TABLE #{table_name} ADD #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
         add_column_options!(add_column_sql, options)
         execute(add_column_sql)
       end
@@ -178,14 +178,14 @@ module ActiveRecord
       # ====== Creating a unique index
       #  add_index(:accounts, [:branch_id, :party_id], :unique => true)
       # generates
-      #  CREATE UNIQUE INDEX accounts_branch_id_index ON accounts(branch_id, party_id)
+      #  CREATE UNIQUE INDEX accounts_branch_id_party_id_index ON accounts(branch_id, party_id)
       # ====== Creating a named index
       #  add_index(:accounts, [:branch_id, :party_id], :unique => true, :name => 'by_branch_party')
       # generates
       #  CREATE UNIQUE INDEX by_branch_party ON accounts(branch_id, party_id)
       def add_index(table_name, column_name, options = {})
         column_names = Array(column_name)
-        index_name   = index_name(table_name, :column => column_names.first)
+        index_name   = index_name(table_name, :column => column_names)
 
         if Hash === options # legacy support, since this param was a string
           index_type = options[:unique] ? "UNIQUE" : ""
@@ -199,16 +199,14 @@ module ActiveRecord
 
       # Remove the given index from the table.
       #
-      # Remove the suppliers_name_index in the suppliers table (legacy support, use the second or third forms).
+      # Remove the suppliers_name_index in the suppliers table.
       #   remove_index :suppliers, :name
-      # Remove the index named accounts_branch_id in the accounts table.
+      # Remove the index named accounts_branch_id_index in the accounts table.
       #   remove_index :accounts, :column => :branch_id
+      # Remove the index named accounts_branch_id_party_id_index in the accounts table.
+      #   remove_index :accounts, :column => [:branch_id, :party_id]
       # Remove the index named by_branch_party in the accounts table.
       #   remove_index :accounts, :name => :by_branch_party
-      #
-      # You can remove an index on multiple columns by specifying the first column.
-      #   add_index :accounts, [:username, :password]
-      #   remove_index :accounts, :username
       def remove_index(table_name, options = {})
         execute "DROP INDEX #{quote_column_name(index_name(table_name, options))} ON #{table_name}"
       end
@@ -216,14 +214,14 @@ module ActiveRecord
       def index_name(table_name, options) #:nodoc:
         if Hash === options # legacy support
           if options[:column]
-            "#{table_name}_#{options[:column]}_index"
+            "index_#{table_name}_on_#{Array(options[:column]) * '_and_'}"
           elsif options[:name]
             options[:name]
           else
             raise ArgumentError, "You must specify the index name"
           end
         else
-          "#{table_name}_#{options}_index"
+          index_name(table_name, :column => options)
         end
       end
 
@@ -254,18 +252,52 @@ module ActiveRecord
       end
 
 
-      def type_to_sql(type, limit = nil) #:nodoc:
+      def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
         native = native_database_types[type]
-        limit ||= native[:limit]
-        column_type_sql = native[:name]
-        column_type_sql << "(#{limit})" if limit
-        column_type_sql
-      end            
-    
+        column_type_sql = native.is_a?(Hash) ? native[:name] : native
+        if type == :decimal # ignore limit, use precison and scale
+          precision ||= native[:precision]
+          scale ||= native[:scale]
+          if precision
+            if scale
+              column_type_sql << "(#{precision},#{scale})"
+            else
+              column_type_sql << "(#{precision})"
+            end
+          else
+            raise ArgumentError, "Error adding decimal column: precision cannot be empty if scale if specified" if scale
+          end
+          column_type_sql
+        else
+          limit ||= native[:limit]
+          column_type_sql << "(#{limit})" if limit
+          column_type_sql
+        end
+      end
+
       def add_column_options!(sql, options) #:nodoc:
-        sql << " DEFAULT #{quote(options[:default], options[:column])}" unless options[:default].nil?
+        sql << " DEFAULT #{quote(options[:default], options[:column])}" if options_include_default?(options)
         sql << " NOT NULL" if options[:null] == false
       end
+
+      # SELECT DISTINCT clause for a given set of columns and a given ORDER BY clause.
+      # Both PostgreSQL and Oracle overrides this for custom DISTINCT syntax.
+      #
+      #   distinct("posts.id", "posts.created_at desc")
+      def distinct(columns, order_by)
+        "DISTINCT #{columns}"
+      end
+      
+      # ORDER BY clause for the passed order option.
+      # PostgreSQL overrides this due to its stricter standards compliance.
+      def add_order_by_for_association_limiting!(sql, options)
+        sql << "ORDER BY #{options[:order]}"
+      end
+
+      protected
+        def options_include_default?(options)
+          options.include?(:default) && !(options[:null] == false && options[:default].nil?)
+        end
     end
   end
 end

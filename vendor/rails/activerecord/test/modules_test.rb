@@ -5,10 +5,9 @@ class ModulesTest < Test::Unit::TestCase
   fixtures :accounts, :companies, :projects, :developers
 
   def test_module_spanning_associations
-    assert MyApplication::Business::Firm.find(:first).has_clients?, "Firm should have clients"
     firm = MyApplication::Business::Firm.find(:first)
+    assert !firm.clients.empty?, "Firm should have clients"
     assert_nil firm.class.table_name.match('::'), "Firm shouldn't have the module appear in its table name"
-    assert_equal 2, firm.clients_count, "Firm should have two clients"
   end
 
   def test_module_spanning_has_and_belongs_to_many_associations
@@ -25,4 +24,11 @@ class ModulesTest < Test::Unit::TestCase
     assert_kind_of MyApplication::Billing::Nested::Firm, account.nested_qualified_billing_firm
     assert_kind_of MyApplication::Billing::Nested::Firm, account.nested_unqualified_billing_firm
   end
+  
+  def test_find_account_and_include_company
+    account = MyApplication::Billing::Account.find(1, :include => :firm)
+    assert_kind_of MyApplication::Business::Firm, account.instance_variable_get('@firm')
+    assert_kind_of MyApplication::Business::Firm, account.firm
+  end
+  
 end

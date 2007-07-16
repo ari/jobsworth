@@ -136,7 +136,7 @@ class RailsEnvironment
     Tempfile.open("svn-set-prop") do |file|
       file.write(items)
       file.flush
-      system("svn propset -q svn:externals -F #{file.path} \"#{root}/vendor/plugins\"")
+      system("svn propset -q svn:externals -F \"#{file.path}\" \"#{root}/vendor/plugins\"")
     end
   end
   
@@ -150,8 +150,16 @@ class Plugin
     guess_name(uri)
   end
   
+  def self.find(name)
+    name =~ /\// ? new(name) : Repositories.instance.find_plugin(name)
+  end
+  
   def to_s
     "#{@name.ljust(30)}#{@uri}"
+  end
+  
+  def svn_url?
+    @uri =~ /svn(?:\+ssh)?:\/\/*/
   end
   
   def installed?
@@ -161,7 +169,7 @@ class Plugin
   
   def install(method=nil, options = {})
     method ||= rails_env.best_install_method?
-    method = :export if method == :http and @uri =~ /svn:\/\/*/
+    method   = :export if method == :http and svn_url?
 
     uninstall if installed? and options[:force]
 
@@ -177,6 +185,7 @@ class Plugin
     path = "#{rails_env.root}/vendor/plugins/#{name}"
     if File.directory?(path)
       puts "Removing 'vendor/plugins/#{name}'" if $verbose
+      run_uninstall_hook
       rm_r path
     else
       puts "Plugin doesn't exist: #{path}"
@@ -187,11 +196,30 @@ class Plugin
     rails_env.externals = externals
   end
 
+  def info
+    tmp = "#{rails_env.root}/_tmp_about.yml"
+    if svn_url?
+      cmd = "svn export #{@uri} \"#{rails_env.root}/#{tmp}\""
+      puts cmd if $verbose
+      system(cmd)
+    end
+    open(svn_url? ? tmp : File.join(@uri, 'about.yml')) do |stream|
+      stream.read
+    end rescue "No about.yml found in #{uri}"
+  ensure
+    FileUtils.rm_rf tmp if svn_url?
+  end
+
   private 
 
     def run_install_hook
       install_hook_file = "#{rails_env.root}/vendor/plugins/#{name}/install.rb"
       load install_hook_file if File.exists? install_hook_file
+    end
+
+    def run_uninstall_hook
+      uninstall_hook_file = "#{rails_env.root}/vendor/plugins/#{name}/uninstall.rb"
+      load uninstall_hook_file if File.exists? uninstall_hook_file
     end
 
     def install_using_export(options = {})
@@ -212,11 +240,12 @@ class Plugin
     def install_using_http(options = {})
       root = rails_env.root
       mkdir_p "#{root}/vendor/plugins"
-      Dir.chdir "#{root}/vendor/plugins"
-      puts "fetching from '#{uri}'" if $verbose
-      fetcher = RecursiveHTTPFetcher.new(uri)
-      fetcher.quiet = true if options[:quiet]
-      fetcher.fetch
+      Dir.chdir "#{root}/vendor/plugins" do
+        puts "fetching from '#{uri}'" if $verbose
+        fetcher = RecursiveHTTPFetcher.new(uri)
+        fetcher.quiet = true if options[:quiet]
+        fetcher.fetch
+      end
     end
 
     def svn_command(cmd, options = {})
@@ -442,7 +471,7 @@ module Commands
       options.parse!(general)
       
       command = general.shift
-      if command =~ /^(list|discover|install|source|unsource|sources|remove|update)$/
+      if command =~ /^(list|discover|install|source|unsource|sources|remove|update|info)$/
         command = Commands.const_get(command.capitalize).new(self)
         command.parse!(sub)
       else
@@ -549,8 +578,8 @@ module Commands
     def options
       OptionParser.new do |o|
         o.set_summary_indent('  ')
-        o.banner =    "Usage: #{@base_command.script_name} source REPOSITORY"
-        o.define_head "Add a new repository."
+        o.banner =    "Usage: #{@base_command.script_name} source REPOSITORY [REPOSITORY [REPOSITORY]...]"
+        o.define_head "Add new repositories to the default search list."
       end
     end
     
@@ -656,13 +685,17 @@ module Commands
       puts "Scraping #{uri}" if $verbose
       dupes = []
       content = open(uri).each do |line|
-        if line =~ /<a[^>]*href=['"]([^'"]*)['"]/ or line =~ /(svn:\/\/[^<|\n]*)/
-          uri = $1
-          if uri =~ /\/plugins\// and uri !~ /\/browser\//
-            uri = extract_repository_uri(uri)
-            yield uri unless dupes.include?(uri) or Repositories.instance.exist?(uri)
-            dupes << uri
+        begin
+          if line =~ /<a[^>]*href=['"]([^'"]*)['"]/ || line =~ /(svn:\/\/[^<|\n]*)/
+            uri = $1
+            if uri =~ /^\w+:\/\// && uri =~ /\/plugins\// && uri !~ /\/browser\// && uri !~ /^http:\/\/wiki\.rubyonrails/ && uri !~ /http:\/\/instiki/
+              uri = extract_repository_uri(uri)
+              yield uri unless dupes.include?(uri) || Repositories.instance.exist?(uri)
+              dupes << uri
+            end
           end
+        rescue
+          puts "Problems scraping '#{uri}': #{$!.to_s}"
         end
       end
     end
@@ -729,19 +762,12 @@ module Commands
       environment = @base_command.environment
       install_method = determine_install_method
       puts "Plugins will be installed using #{install_method}" if $verbose
-      args.each do |name| 
-        if name =~ /\// then
-          ::Plugin.new(name).install(install_method, @options)
-        else
-          plugin = Repositories.instance.find_plugin(name)
-          unless plugin.nil?
-            plugin.install(install_method, @options)
-          else
-            puts "Plugin not found: #{name}"
-            exit 1
-          end
-        end
+      args.each do |name|
+        ::Plugin.find(name).install(install_method, @options)
       end
+    rescue
+      puts "Plugin not found: #{args.inspect}"
+      exit 1
     end
   end
 
@@ -802,6 +828,27 @@ module Commands
     end
   end
 
+  class Info
+    def initialize(base_command)
+      @base_command = base_command
+    end
+
+    def options
+      OptionParser.new do |o|
+        o.set_summary_indent('  ')
+        o.banner =    "Usage: #{@base_command.script_name} info name [name]..."
+        o.define_head "Shows plugin info at {url}/about.yml."
+      end
+    end
+
+    def parse!(args)
+      options.parse!(args)
+      args.each do |name|
+        puts ::Plugin.find(name).info
+        puts
+      end
+    end
+  end
 end
  
 class RecursiveHTTPFetcher

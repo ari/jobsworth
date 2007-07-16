@@ -1,7 +1,6 @@
 module ActionController #:nodoc:
   module Verification #:nodoc:
-    def self.append_features(base) #:nodoc:
-      super
+    def self.included(base) #:nodoc:
       base.extend(ClassMethods)
     end
 
@@ -18,19 +17,26 @@ module ActionController #:nodoc:
     # Usage:
     #
     #   class GlobalController < ActionController::Base
-    #     # prevent the #update_settings action from being invoked unless
-    #     # the 'admin_privileges' request parameter exists.
+    #     # Prevent the #update_settings action from being invoked unless
+    #     # the 'admin_privileges' request parameter exists. The
+    #     # settings action will be redirected to in current controller
+    #     # if verification fails.
     #     verify :params => "admin_privileges", :only => :update_post,
     #            :redirect_to => { :action => "settings" }
     #
-    #     # disallow a post from being updated if there was no information
+    #     # Disallow a post from being updated if there was no information
     #     # submitted with the post, and if there is no active post in the
-    #     # session, and if there is no "note" key in the flash.
+    #     # session, and if there is no "note" key in the flash. The route
+    #     # named category_url will be redirected to if verification fails.
+    #
     #     verify :params => "post", :session => "post", "flash" => "note",
     #            :only => :update_post,
     #            :add_flash => { "alert" => "Failed to create your message" },
     #            :redirect_to => :category_url
     #
+    # Note that these prerequisites are not business rules. They do not examine 
+    # the content of the session or the parameters. That level of validation should
+    # be encapsulated by your domain model or helper methods in the controller.
     module ClassMethods
       # Verify the given actions so that if certain prerequisites are not met,
       # the user is redirected to a different action. The +options+ parameter
@@ -40,7 +46,7 @@ module ActionController #:nodoc:
       #   be in the <tt>params</tt> hash in order for the action(s) to be safely
       #   called.
       # * <tt>:session</tt>: a single key or an array of keys that must
-      #   be in the @session in order for the action(s) to be safely called.
+      #   be in the <tt>session</tt> in order for the action(s) to be safely called.
       # * <tt>:flash</tt>: a single key or an array of keys that must
       #   be in the flash in order for the action(s) to be safely called.
       # * <tt>:method</tt>: a single key or an array of keys--any one of which
@@ -51,8 +57,12 @@ module ActionController #:nodoc:
       #   from an Ajax call or not. 
       # * <tt>:add_flash</tt>: a hash of name/value pairs that should be merged
       #   into the session's flash if the prerequisites cannot be satisfied.
+      # * <tt>:add_headers</tt>: a hash of name/value pairs that should be
+      #   merged into the response's headers hash if the prerequisites cannot
+      #   be satisfied.
       # * <tt>:redirect_to</tt>: the redirection parameters to be used when
-      #   redirecting if the prerequisites cannot be satisfied.
+      #   redirecting if the prerequisites cannot be satisfied. You can 
+      #   redirect either to named route or to the action in some controller.
       # * <tt>:render</tt>: the render parameters to be used when
       #   the prerequisites cannot be satisfied.
       # * <tt>:only</tt>: only apply this verification to the actions specified
@@ -69,19 +79,20 @@ module ActionController #:nodoc:
 
     def verify_action(options) #:nodoc:
       prereqs_invalid =
-        [*options[:params] ].find { |v| @params[v].nil?  } ||
-        [*options[:session]].find { |v| @session[v].nil? } ||
+        [*options[:params] ].find { |v| params[v].nil?  } ||
+        [*options[:session]].find { |v| session[v].nil? } ||
         [*options[:flash]  ].find { |v| flash[v].nil?    }
       
       if !prereqs_invalid && options[:method]
         prereqs_invalid ||= 
-          [*options[:method]].all? { |v| @request.method != v.to_sym }
+          [*options[:method]].all? { |v| request.method != v.to_sym }
       end
       
       prereqs_invalid ||= (request.xhr? != options[:xhr]) unless options[:xhr].nil?
       
       if prereqs_invalid
         flash.update(options[:add_flash]) if options[:add_flash]
+        response.headers.update(options[:add_headers]) if options[:add_headers]
         unless performed?
           render(options[:render]) if options[:render]
           redirect_to(options[:redirect_to]) if options[:redirect_to]

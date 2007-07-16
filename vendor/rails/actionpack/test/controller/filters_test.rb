@@ -21,6 +21,34 @@ class FilterTest < Test::Unit::TestCase
       end
   end
 
+  class ChangingTheRequirementsController < TestController
+    before_filter :ensure_login, :except => [:go_wild]
+
+    def go_wild
+      render :text => "gobble"
+    end
+  end
+
+  class TestMultipleFiltersController < ActionController::Base
+    before_filter :try_1
+    before_filter :try_2
+    before_filter :try_3
+
+    (1..3).each do |i|
+      define_method "fail_#{i}" do
+        render :text => i.to_s
+      end
+    end
+
+    protected
+    (1..3).each do |i|
+      define_method "try_#{i}" do
+        instance_variable_set :@try, i
+        action_name != "fail_#{i}"
+      end
+    end
+  end
+
   class RenderingController < ActionController::Base
     before_filter :render_something_else
 
@@ -134,7 +162,7 @@ class FilterTest < Test::Unit::TestCase
         @ran_filter << "find_user"
       end
   end
-  
+
   class ConditionalParentOfConditionalSkippingController < ConditionalFilterController
     before_filter :conditional_in_parent, :only => [:show, :another_action]
     after_filter  :conditional_in_parent, :only => [:show, :another_action]
@@ -150,6 +178,10 @@ class FilterTest < Test::Unit::TestCase
   class ChildOfConditionalParentController < ConditionalParentOfConditionalSkippingController
     skip_before_filter :conditional_in_parent, :only => :another_action
     skip_after_filter  :conditional_in_parent, :only => :another_action
+  end
+
+  class AnotherChildOfConditionalParentController < ConditionalParentOfConditionalSkippingController
+    skip_before_filter :conditional_in_parent, :only => :show
   end
 
   class ProcController < PrependingController
@@ -196,15 +228,6 @@ class FilterTest < Test::Unit::TestCase
     def show
       render_text "hello"
     end
-  end
-
-  class BadFilterController < ActionController::Base
-    before_filter 2
-    
-    def show() "show" end
-    
-    protected
-      def rescue_action(e) raise(e) end
   end
 
   class AroundFilterController < PrependingController
@@ -336,19 +359,20 @@ class FilterTest < Test::Unit::TestCase
     assert_equal %w( ensure_login clean_up_tmp), test_process(BeforeAndAfterConditionController).template.assigns["ran_filter"]
     assert_equal nil, test_process(BeforeAndAfterConditionController, "show_without_filter").template.assigns["ran_filter"]
   end
-  
+
   def test_bad_filter
-    assert_raises(ActionController::ActionControllerError) { 
-      test_process(BadFilterController)
-    }
+    bad_filter_controller = Class.new(ActionController::Base)
+    assert_raises(ActionController::ActionControllerError) do
+      bad_filter_controller.before_filter 2
+    end
   end
-  
+
   def test_around_filter
     controller = test_process(AroundFilterController)
     assert controller.template.assigns["before_ran"]
     assert controller.template.assigns["after_ran"]
   end
- 
+
   def test_having_properties_in_around_filter
     controller = test_process(AroundFilterController)
     assert_equal "before and after", controller.template.assigns["execution_log"]
@@ -401,7 +425,268 @@ class FilterTest < Test::Unit::TestCase
     assert_nil test_process(ChildOfConditionalParentController, 'another_action').template.assigns['ran_filter']
   end
 
+  def test_condition_skipping_of_filters_when_siblings_also_have_conditions
+    assert_equal %w( conditional_in_parent conditional_in_parent ), test_process(ChildOfConditionalParentController).template.assigns['ran_filter'], "1"
+    assert_equal nil, test_process(AnotherChildOfConditionalParentController).template.assigns['ran_filter']
+    assert_equal %w( conditional_in_parent conditional_in_parent ), test_process(ChildOfConditionalParentController).template.assigns['ran_filter']
+  end
+
+  def test_changing_the_requirements
+    assert_equal nil, test_process(ChangingTheRequirementsController, "go_wild").template.assigns['ran_filter']
+  end
+
   private
+    def test_process(controller, action = "show")
+      request = ActionController::TestRequest.new
+      request.action = action
+      controller.process(request, ActionController::TestResponse.new)
+    end
+end
+
+
+
+class PostsController < ActionController::Base
+  def rescue_action(e); raise e; end
+
+  module AroundExceptions
+    class Error < StandardError ; end
+    class Before < Error ; end
+    class After < Error ; end
+  end
+  include AroundExceptions
+
+  class DefaultFilter
+    include AroundExceptions
+  end
+
+  module_eval %w(raises_before raises_after raises_both no_raise no_filter).map { |action| "def #{action}; default_action end" }.join("\n")
+
+  private
+    def default_action
+      render :inline => "#{action_name} called"
+    end
+end
+
+class ControllerWithSymbolAsFilter < PostsController
+  around_filter :raise_before, :only => :raises_before
+  around_filter :raise_after, :only => :raises_after
+  around_filter :without_exception, :only => :no_raise
+
+  private
+    def raise_before
+      raise Before
+      yield
+    end
+
+    def raise_after
+      yield
+      raise After
+    end
+
+    def without_exception
+      # Do stuff...
+      1 + 1
+
+      yield
+
+      # Do stuff...
+      1 + 1
+    end
+end
+
+class ControllerWithFilterClass < PostsController
+  class YieldingFilter < DefaultFilter
+    def self.filter(controller)
+      yield
+      raise After
+    end
+  end
+
+  around_filter YieldingFilter, :only => :raises_after
+end
+
+class ControllerWithFilterInstance < PostsController
+  class YieldingFilter < DefaultFilter
+    def filter(controller)
+      yield
+      raise After
+    end
+  end
+
+  around_filter YieldingFilter.new, :only => :raises_after
+end
+
+class ControllerWithFilterMethod < PostsController
+  class YieldingFilter < DefaultFilter
+    def filter(controller)
+      yield
+      raise After
+    end
+  end
+
+  around_filter YieldingFilter.new.method(:filter), :only => :raises_after
+end
+
+class ControllerWithProcFilter < PostsController
+  around_filter(:only => :no_raise) do |c,b|
+    c.assigns['before'] = true
+    b.call
+    c.assigns['after'] = true
+  end
+end
+
+class ControllerWithWrongFilterType < PostsController
+  around_filter lambda { yield }, :only => :no_raise
+end
+
+class ControllerWithNestedFilters < ControllerWithSymbolAsFilter
+  around_filter :raise_before, :raise_after, :without_exception, :only => :raises_both
+end
+
+class ControllerWithAllTypesOfFilters < PostsController
+  before_filter :before
+  around_filter :around
+  after_filter :after
+  around_filter :around_again
+
+  private
+  def before
+    @ran_filter ||= []
+    @ran_filter << 'before'
+  end
+
+  def around
+    @ran_filter << 'around (before yield)'
+    yield
+    @ran_filter << 'around (after yield)'
+  end
+
+  def after
+    @ran_filter << 'after'
+  end
+
+  def around_again
+    @ran_filter << 'around_again (before yield)'
+    yield
+    @ran_filter << 'around_again (after yield)'
+  end
+end
+
+class ControllerWithTwoLessFilters < ControllerWithAllTypesOfFilters
+  skip_filter :around_again
+  skip_filter :after
+end
+
+class YieldingAroundFiltersTest < Test::Unit::TestCase
+  include PostsController::AroundExceptions
+
+  def test_filters_registering
+    assert_equal 1, ControllerWithFilterMethod.filter_chain.size
+    assert_equal 1, ControllerWithFilterClass.filter_chain.size
+    assert_equal 1, ControllerWithFilterInstance.filter_chain.size
+    assert_equal 3, ControllerWithSymbolAsFilter.filter_chain.size
+    assert_equal 1, ControllerWithWrongFilterType.filter_chain.size
+    assert_equal 6, ControllerWithNestedFilters.filter_chain.size
+    assert_equal 4, ControllerWithAllTypesOfFilters.filter_chain.size
+  end
+
+  def test_wrong_filter_type
+    assert_raise(ActionController::ActionControllerError) do
+      test_process(ControllerWithWrongFilterType,'no_raise')
+    end
+  end
+
+  def test_base
+    controller = PostsController
+    assert_nothing_raised { test_process(controller,'no_raise') }
+    assert_nothing_raised { test_process(controller,'raises_before') }
+    assert_nothing_raised { test_process(controller,'raises_after') }
+    assert_nothing_raised { test_process(controller,'no_filter') }
+  end
+
+  def test_with_symbol
+    controller = ControllerWithSymbolAsFilter
+    assert_nothing_raised { test_process(controller,'no_raise') }
+    assert_raise(Before) { test_process(controller,'raises_before') }
+    assert_raise(After) { test_process(controller,'raises_after') }
+    assert_nothing_raised { test_process(controller,'no_raise') }
+  end
+
+  def test_with_class
+    controller = ControllerWithFilterClass
+    assert_nothing_raised { test_process(controller,'no_raise') }
+    assert_raise(After) { test_process(controller,'raises_after') }
+  end
+
+  def test_with_instance
+    controller = ControllerWithFilterInstance
+    assert_nothing_raised { test_process(controller,'no_raise') }
+    assert_raise(After) { test_process(controller,'raises_after') }
+  end
+
+  def test_with_method
+    controller = ControllerWithFilterMethod
+    assert_nothing_raised { test_process(controller,'no_raise') }
+    assert_raise(After) { test_process(controller,'raises_after') }
+  end
+
+  def test_with_proc
+    controller = test_process(ControllerWithProcFilter,'no_raise')
+    assert controller.template.assigns['before']
+    assert controller.template.assigns['after']
+  end
+
+  def test_nested_filters
+    controller = ControllerWithNestedFilters
+    assert_nothing_raised do
+      begin
+        test_process(controller,'raises_both')
+      rescue Before, After
+      end
+    end
+    assert_raise Before do
+      begin
+        test_process(controller,'raises_both')
+      rescue After
+      end
+    end
+  end
+
+  def test_filter_order_with_all_filter_types
+    controller = test_process(ControllerWithAllTypesOfFilters,'no_raise')
+    assert_equal 'before around (before yield) around_again (before yield) around_again (after yield) around (after yield) after',controller.template.assigns['ran_filter'].join(' ')
+  end
+
+  def test_filter_order_with_skip_filter_method
+    controller = test_process(ControllerWithTwoLessFilters,'no_raise')
+    assert_equal 'before around (before yield) around (after yield)',controller.template.assigns['ran_filter'].join(' ')
+  end
+
+  def test_first_filter_in_multiple_before_filter_chain_halts
+    controller = ::FilterTest::TestMultipleFiltersController.new
+    response = test_process(controller, 'fail_1')
+    assert_equal '', response.body
+    assert_equal 1, controller.instance_variable_get(:@try)
+    assert controller.instance_variable_get(:@before_filter_chain_aborted)
+  end
+
+  def test_second_filter_in_multiple_before_filter_chain_halts
+    controller = ::FilterTest::TestMultipleFiltersController.new
+    response = test_process(controller, 'fail_2')
+    assert_equal '', response.body
+    assert_equal 2, controller.instance_variable_get(:@try)
+    assert controller.instance_variable_get(:@before_filter_chain_aborted)
+  end
+
+  def test_last_filter_in_multiple_before_filter_chain_halts
+    controller = ::FilterTest::TestMultipleFiltersController.new
+    response = test_process(controller, 'fail_3')
+    assert_equal '', response.body
+    assert_equal 3, controller.instance_variable_get(:@try)
+    assert controller.instance_variable_get(:@before_filter_chain_aborted)
+  end
+
+  protected
     def test_process(controller, action = "show")
       request = ActionController::TestRequest.new
       request.action = action

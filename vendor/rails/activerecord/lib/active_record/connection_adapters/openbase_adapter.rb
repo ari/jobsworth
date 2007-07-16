@@ -32,7 +32,7 @@ module ActiveRecord
       private
         def simplified_type(field_type)
           return :integer if field_type.downcase =~ /long/
-          return :float   if field_type.downcase == "money"
+          return :decimal if field_type.downcase == "money"
           return :binary  if field_type.downcase == "object"
           super
         end
@@ -55,7 +55,7 @@ module ActiveRecord
     #
     # Caveat: Operations involving LIMIT and OFFSET do not yet work!
     #
-    # Maintainer: derrickspell@cdmplus.com
+    # Maintainer: derrick.spell@gmail.com
     class OpenBaseAdapter < AbstractAdapter
       def adapter_name
         'OpenBase'
@@ -68,6 +68,7 @@ module ActiveRecord
           :text        => { :name => "text" },
           :integer     => { :name => "integer" },
           :float       => { :name => "float" },
+          :decimal     => { :name => "decimal" },
           :datetime    => { :name => "datetime" },
           :timestamp   => { :name => "timestamp" },
           :time        => { :name => "time" },
@@ -121,7 +122,7 @@ module ActiveRecord
 
       # DATABASE STATEMENTS ======================================
 
-      def add_limit_offset!(sql, options) #:nodoc
+      def add_limit_offset!(sql, options) #:nodoc:
         if limit = options[:limit]
           unless offset = options[:offset]
             sql << " RETURN RESULTS #{limit}"

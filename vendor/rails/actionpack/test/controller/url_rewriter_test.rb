@@ -6,23 +6,6 @@ class UrlRewriterTests < Test::Unit::TestCase
     @params = {}
     @rewriter = ActionController::UrlRewriter.new(@request, @params)
   end 
-  
-  def test_simple_build_query_string
-    assert_query_equal '?x=1&y=2', @rewriter.send(:build_query_string, :x => '1', :y => '2')
-  end
-  def test_convert_ints_build_query_string
-    assert_query_equal '?x=1&y=2', @rewriter.send(:build_query_string, :x => 1, :y => 2)
-  end
-  def test_escape_spaces_build_query_string
-    assert_query_equal '?x=hello+world&y=goodbye+world', @rewriter.send(:build_query_string, :x => 'hello world', :y => 'goodbye world')
-  end
-  def test_expand_array_build_query_string
-    assert_query_equal '?x[]=1&x[]=2', @rewriter.send(:build_query_string, :x => [1, 2])
-  end
-
-  def test_escape_spaces_build_query_string_selected_keys
-    assert_query_equal '?x=hello+world', @rewriter.send(:build_query_string, {:x => 'hello world', :y => 'goodbye world'}, [:x])
-  end
 
   def test_overwrite_params
     @params[:controller] = 'hi'
@@ -43,4 +26,90 @@ class UrlRewriterTests < Test::Unit::TestCase
     def assert_query_equal(q1, q2)
       assert_equal(split_query_string(q1), split_query_string(q2))
     end
+end
+
+class UrlWriterTests < Test::Unit::TestCase
+  
+  class W
+    include ActionController::UrlWriter
+  end
+  
+  def teardown
+    W.default_url_options.clear
+  end
+  
+  def add_host!
+    W.default_url_options[:host] = 'www.basecamphq.com'
+  end
+  
+  def test_exception_is_thrown_without_host
+    assert_raises RuntimeError do
+      W.new.url_for :controller => 'c', :action => 'a', :id => 'i'
+    end
+  end
+  
+  def test_default_host
+    add_host!
+    assert_equal('http://www.basecamphq.com/c/a/i',
+      W.new.url_for(:controller => 'c', :action => 'a', :id => 'i')
+    )
+  end
+  
+  def test_host_may_be_overridden
+    add_host!
+    assert_equal('http://37signals.basecamphq.com/c/a/i',
+      W.new.url_for(:host => '37signals.basecamphq.com', :controller => 'c', :action => 'a', :id => 'i')
+    )
+  end
+  
+  def test_port
+    add_host!
+    assert_equal('http://www.basecamphq.com:3000/c/a/i',
+      W.new.url_for(:controller => 'c', :action => 'a', :id => 'i', :port => 3000)
+    )
+  end
+  
+  def test_protocol
+    add_host!
+    assert_equal('https://www.basecamphq.com/c/a/i',
+      W.new.url_for(:controller => 'c', :action => 'a', :id => 'i', :protocol => 'https')
+    )
+  end
+  
+  def test_named_route
+    ActionController::Routing::Routes.draw do |map|
+      map.home '/home/sweet/home/:user', :controller => 'home', :action => 'index'
+      map.connect ':controller/:action/:id'
+    end
+    
+    # We need to create a new class in order to install the new named route.
+    kls = Class.new { include ActionController::UrlWriter }
+    controller = kls.new
+    assert controller.respond_to?(:home_url)
+    assert_equal 'http://www.basecamphq.com/home/sweet/home/again',
+      controller.send(:home_url, :host => 'www.basecamphq.com', :user => 'again')
+      
+    assert_equal("/home/sweet/home/alabama", controller.send(:home_path, :user => 'alabama', :host => 'unused'))
+  ensure
+    ActionController::Routing::Routes.load!
+  end
+  
+  def test_only_path
+    ActionController::Routing::Routes.draw do |map|
+      map.home '/home/sweet/home/:user', :controller => 'home', :action => 'index'
+      map.connect ':controller/:action/:id'
+    end
+    
+    # We need to create a new class in order to install the new named route.
+    kls = Class.new { include ActionController::UrlWriter }
+    controller = kls.new
+    assert controller.respond_to?(:home_url)
+    assert_equal '/brave/new/world',
+      controller.send(:url_for, :controller => 'brave', :action => 'new', :id => 'world', :only_path => true)
+    
+    assert_equal("/home/sweet/home/alabama", controller.send(:home_url, :user => 'alabama', :host => 'unused', :only_path => true))
+  ensure
+    ActionController::Routing::Routes.load!
+  end
+  
 end

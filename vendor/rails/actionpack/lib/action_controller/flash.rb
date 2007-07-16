@@ -17,7 +17,7 @@ module ActionController #:nodoc:
   #   end
   #
   #   display.rhtml
-  #     <% if @flash[:notice] %><div class="notice"><%= @flash[:notice] %></div><% end %>
+  #     <% if flash[:notice] %><div class="notice"><%= flash[:notice] %></div><% end %>
   #
   # This example just places a string in the flash, but you can put any object in there. And of course, you can put as many
   # as you like at a time too. Just remember: They'll be gone by the time the next action has been performed.
@@ -28,11 +28,9 @@ module ActionController #:nodoc:
       base.send :include, InstanceMethods
 
       base.class_eval do
-        alias_method :assign_shortcuts_without_flash, :assign_shortcuts
-        alias_method :assign_shortcuts, :assign_shortcuts_with_flash
-
-        alias_method :process_cleanup_without_flash, :process_cleanup
-        alias_method :process_cleanup, :process_cleanup_with_flash
+        alias_method_chain :assign_shortcuts, :flash
+        alias_method_chain :process_cleanup,  :flash
+        alias_method_chain :reset_session,    :flash
       end
     end
     
@@ -94,7 +92,7 @@ module ActionController #:nodoc:
       #
       #    flash.keep            # keeps the entire flash
       #    flash.keep(:notice)   # keeps only the "notice" entry, the rest of the flash is discarded
-      def keep(k=nil)
+      def keep(k = nil)
         use(k, false)
       end
     
@@ -102,7 +100,7 @@ module ActionController #:nodoc:
       #
       #     flash.keep                 # keep entire flash available for the next action
       #     flash.discard(:warning)    # discard the "warning" entry (it'll still be available for the current action)
-      def discard(k=nil)
+      def discard(k = nil)
         use(k)
       end
     
@@ -118,6 +116,7 @@ module ActionController #:nodoc:
             @used.delete(k)
           end
         end
+
         (@used.keys - keys).each{|k| @used.delete k } # clean up after keys that could have been left over by calling reject! or shift on the flash
       end
     
@@ -143,8 +142,14 @@ module ActionController #:nodoc:
       end
       
       def process_cleanup_with_flash
-        flash.sweep if @session
+        flash.sweep if @_session
         process_cleanup_without_flash
+      end
+
+      def reset_session_with_flash
+        reset_session_without_flash
+        remove_instance_variable(:@_flash)
+        flash(:refresh)
       end
       
       protected 
@@ -152,25 +157,24 @@ module ActionController #:nodoc:
         # <tt>flash["notice"] = "hello"</tt> to put a new one.
         # Note that if sessions are disabled only flash.now will work.
         def flash(refresh = false) #:doc:
-          if @flash.nil? || refresh
-            @flash = 
-              if @session.is_a?(Hash)
-                # @session is a Hash, if sessions are disabled
-                # we don't put the flash in the session in this case
+          if !defined?(@_flash) || refresh
+            @_flash =
+              if session.is_a?(Hash)
+                # don't put flash in session if disabled
                 FlashHash.new
               else
-                # otherwise, @session is a CGI::Session or a TestSession
+                # otherwise, session is a CGI::Session or a TestSession
                 # so make sure it gets retrieved from/saved to session storage after request processing
-                @session["flash"] ||= FlashHash.new
+                session["flash"] ||= FlashHash.new
               end
           end
-          
-          @flash
+
+          @_flash
         end
 
         # deprecated. use <tt>flash.keep</tt> instead
         def keep_flash #:doc:
-          warn 'keep_flash is deprecated; use flash.keep instead.'
+          ActiveSupport::Deprecation.warn 'keep_flash is deprecated; use flash.keep instead.', caller
           flash.keep
         end
     end

@@ -19,6 +19,7 @@ class JavaScriptHelperTest < Test::Unit::TestCase
 
   def test_escape_javascript
     assert_equal %(This \\"thing\\" is really\\n netos\\'), escape_javascript(%(This "thing" is really\n netos'))
+    assert_equal %(backslash\\\\test), escape_javascript( %(backslash\\test) )
   end
                                       
   def test_link_to_function
@@ -31,8 +32,36 @@ class JavaScriptHelperTest < Test::Unit::TestCase
       link_to_function("Greeting", "alert('Hello world!')", :onclick => "confirm('Sanity!')")
   end
 
+  def test_link_to_function_with_rjs_block
+    html = link_to_function( "Greet me!" ) do |page|
+      page.replace_html 'header', "<h1>Greetings</h1>"
+    end
+    assert_dom_equal %(<a href="#" onclick="Element.update(&quot;header&quot;, &quot;&lt;h1&gt;Greetings&lt;/h1&gt;&quot;);; return false;">Greet me!</a>), html
+  end
+
+  def test_link_to_function_with_rjs_block_and_options
+    html = link_to_function( "Greet me!", :class => "updater" ) do |page|
+      page.replace_html 'header', "<h1>Greetings</h1>"
+    end
+    assert_dom_equal %(<a href="#" class="updater" onclick="Element.update(&quot;header&quot;, &quot;&lt;h1&gt;Greetings&lt;/h1&gt;&quot;);; return false;">Greet me!</a>), html
+  end
+
   def test_button_to_function
     assert_dom_equal %(<input type="button" onclick="alert('Hello world!');" value="Greeting" />), 
       button_to_function("Greeting", "alert('Hello world!')")
+  end
+
+  def test_button_to_function_with_rjs_block
+    html = button_to_function( "Greet me!" ) do |page|
+      page.replace_html 'header', "<h1>Greetings</h1>"
+    end
+    assert_dom_equal %(<input type="button" onclick="Element.update(&quot;header&quot;, &quot;&lt;h1&gt;Greetings&lt;/h1&gt;&quot;);;" value="Greet me!" />), html
+  end
+
+  def test_button_to_function_with_rjs_block_and_options
+    html = button_to_function( "Greet me!", :class => "greeter" ) do |page|
+      page.replace_html 'header', "<h1>Greetings</h1>"
+    end
+    assert_dom_equal %(<input type="button" class="greeter" onclick="Element.update(&quot;header&quot;, &quot;&lt;h1&gt;Greetings&lt;/h1&gt;&quot;);;" value="Greet me!" />), html
   end
 end

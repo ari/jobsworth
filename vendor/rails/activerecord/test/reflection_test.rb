@@ -45,6 +45,12 @@ class ReflectionTest < Test::Unit::TestCase
     assert_equal :string, @first.column_for_attribute("title").type
     assert_equal 255, @first.column_for_attribute("title").limit
   end
+  
+  def test_column_null_not_null
+    subscriber = Subscriber.find(:first)
+    assert subscriber.column_for_attribute("name").null
+    assert !subscriber.column_for_attribute("nick").null
+  end
 
   def test_human_name_for_column
     assert_equal "Author name", @first.column_for_attribute("author_name").human_name
@@ -137,8 +143,8 @@ class ReflectionTest < Test::Unit::TestCase
   end
   
   def test_reflection_of_all_associations
-    assert_equal 13, Firm.reflect_on_all_associations.size
-    assert_equal 11, Firm.reflect_on_all_associations(:has_many).size
+    assert_equal 17, Firm.reflect_on_all_associations.size
+    assert_equal 15, Firm.reflect_on_all_associations(:has_many).size
     assert_equal 2, Firm.reflect_on_all_associations(:has_one).size
     assert_equal 0, Firm.reflect_on_all_associations(:belongs_to).size
   end

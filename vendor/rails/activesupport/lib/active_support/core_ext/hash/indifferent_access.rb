@@ -10,14 +10,18 @@ class HashWithIndifferentAccess < Hash
       super(constructor)
     end
   end
- 
-  def default(key)
-    self[key.to_s] if key.is_a?(Symbol)
-  end  
+
+  def default(key = nil)
+    if key.is_a?(Symbol) && include?(key = key.to_s)
+      self[key]
+    else
+      super
+    end
+  end
 
   alias_method :regular_writer, :[]= unless method_defined?(:regular_writer)
   alias_method :regular_update, :update unless method_defined?(:regular_update)
-  
+
   def []=(key, value)
     regular_writer(convert_key(key), convert_value(value))
   end
@@ -26,7 +30,7 @@ class HashWithIndifferentAccess < Hash
     other_hash.each_pair { |key, value| regular_writer(convert_key(key), convert_value(value)) }
     self
   end
-  
+
   alias_method :merge!, :update
 
   def key?(key)
@@ -48,7 +52,7 @@ class HashWithIndifferentAccess < Hash
   def dup
     HashWithIndifferentAccess.new(self)
   end
-  
+
   def merge(hash)
     self.dup.update(hash)
   end
@@ -56,7 +60,10 @@ class HashWithIndifferentAccess < Hash
   def delete(key)
     super(convert_key(key))
   end
-    
+
+  def stringify_keys!; self end
+  def symbolize_keys!; self end
+
   protected
     def convert_key(key)
       key.kind_of?(Symbol) ? key.to_s : key
@@ -71,7 +78,9 @@ module ActiveSupport #:nodoc:
     module Hash #:nodoc:
       module IndifferentAccess #:nodoc:
         def with_indifferent_access
-          HashWithIndifferentAccess.new(self)
+          hash = HashWithIndifferentAccess.new(self)
+          hash.default = self.default
+          hash
         end
       end
     end

@@ -9,7 +9,7 @@ module ActiveRecord
       end
   
       def reset
-        @target = []
+        reset_target!
         @loaded = false
       end
 
@@ -28,7 +28,7 @@ module ActiveRecord
             callback(:after_add, record)
           end
         end
-				
+
         result && self
       end
 
@@ -39,7 +39,12 @@ module ActiveRecord
       def delete_all
         load_target
         delete(@target)
-        @target = []
+        reset_target!
+      end
+
+      # Calculate sum using SQL, not Enumerable
+      def sum(*args, &block)
+        calculate(:sum, *args, &block)
       end
 
       # Remove +records+ from this association.  Does not destroy +records+.
@@ -77,9 +82,9 @@ module ActiveRecord
           each { |record| record.destroy }
         end
 
-        @target = []
+        reset_target!
       end
-      
+
       def create(attributes = {})
         # Can't use Base.create since the foreign key may be a protected attribute.
         if attributes.is_a?(Array)
@@ -95,21 +100,35 @@ module ActiveRecord
       # calling collection.size if it has. If it's more likely than not that the collection does have a size larger than zero
       # and you need to fetch that collection afterwards, it'll take one less SELECT query if you use length.
       def size
-        if loaded? then @target.size else count_records end
+        if loaded? && !@reflection.options[:uniq]
+          @target.size
+        elsif !loaded? && !@reflection.options[:uniq] && @target.is_a?(Array)
+          unsaved_records = Array(@target.detect { |r| r.new_record? })
+          unsaved_records.size + count_records
+        else
+          count_records
+        end
       end
-      
+
       # Returns the size of the collection by loading it and calling size on the array. If you want to use this method to check
       # whether the collection is empty, use collection.length.zero? instead of collection.empty?
       def length
         load_target.size
       end
-      
+
       def empty?
         size.zero?
       end
-      
+
       def uniq(collection = self)
-        collection.inject([]) { |uniq_records, record| uniq_records << record unless uniq_records.include?(record); uniq_records }
+        seen = Set.new
+        collection.inject([]) do |kept, record|
+          unless seen.include?(record.id)
+            kept << record
+            seen << record.id
+          end
+          kept
+        end
       end
 
       # Replace this collection with +other_array+
@@ -127,12 +146,23 @@ module ActiveRecord
         end
       end
 
-      private
-        # Array#flatten has problems with recursive arrays. Going one level deeper solves the majority of the problems.
-        def flatten_deeper(array)
-          array.collect { |element| element.respond_to?(:flatten) ? element.flatten : element }.flatten
+      protected
+        def reset_target!
+          @target = Array.new
         end
-        
+
+        def find_target
+          records =
+            if @reflection.options[:finder_sql]
+              @reflection.klass.find_by_sql(@finder_sql)
+            else
+              find(:all)
+            end
+
+          @reflection.options[:uniq] ? uniq(records) : records
+        end
+
+      private
         def callback(method, record)
           callbacks_for(method).each do |callback|
             case callback

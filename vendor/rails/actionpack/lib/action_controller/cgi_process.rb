@@ -1,6 +1,7 @@
 require 'action_controller/cgi_ext/cgi_ext'
 require 'action_controller/cgi_ext/cookie_performance_fix'
 require 'action_controller/cgi_ext/raw_post_data_fix'
+require 'action_controller/cgi_ext/session_performance_fix'
 
 module ActionController #:nodoc:
   class Base
@@ -8,13 +9,13 @@ module ActionController #:nodoc:
     # sessions (large performance increase if sessions are not needed). The <tt>session_options</tt> are the same as for CGI::Session:
     #
     # * <tt>:database_manager</tt> - standard options are CGI::Session::FileStore, CGI::Session::MemoryStore, and CGI::Session::PStore
-    #   (default). Additionally, there is CGI::Session::DRbStore and CGI::Session::ActiveRecordStore. Read more about these in 
+    #   (default). Additionally, there is CGI::Session::DRbStore and CGI::Session::ActiveRecordStore. Read more about these in
     #   lib/action_controller/session.
     # * <tt>:session_key</tt> - the parameter name used for the session id. Defaults to '_session_id'.
     # * <tt>:session_id</tt> - the session id to use.  If not provided, then it is retrieved from the +session_key+ parameter
     #   of the request, or automatically generated for a new session.
     # * <tt>:new_session</tt> - if true, force creation of a new session.  If not set, a new session is only created if none currently
-    #   exists.  If false, a new session is never created, and if none currently exists and the +session_id+ option is not set, 
+    #   exists.  If false, a new session is never created, and if none currently exists and the +session_id+ option is not set,
     #   an ArgumentError is raised.
     # * <tt>:session_expires</tt> - the time the current session expires, as a +Time+ object.  If not set, the session will continue
     #   indefinitely.
@@ -22,10 +23,10 @@ module ActionController #:nodoc:
     #   server.
     # * <tt>:session_secure</tt> - if +true+, this session will only work over HTTPS.
     # * <tt>:session_path</tt> - the path for which this session applies.  Defaults to the directory of the CGI script.
-    def self.process_cgi(cgi = CGI.new, session_options = {}) 
+    def self.process_cgi(cgi = CGI.new, session_options = {})
       new.process_cgi(cgi, session_options)
     end
-  
+
     def process_cgi(cgi, session_options = {}) #:nodoc:
       process(CgiRequest.new(cgi, session_options), CgiResponse.new(cgi)).out
     end
@@ -51,7 +52,7 @@ module ActionController #:nodoc:
       if (qs = @cgi.query_string) && !qs.empty?
         qs
       elsif uri = @env['REQUEST_URI']
-        parts = uri.split('?')  
+        parts = uri.split('?')
         parts.shift
         parts.join('?')
       else
@@ -60,7 +61,8 @@ module ActionController #:nodoc:
     end
 
     def query_parameters
-      (qs = self.query_string).empty? ? {} : CGIMethods.parse_query_parameters(qs)
+      @query_parameters ||=
+        (qs = self.query_string).empty? ? {} : CGIMethods.parse_query_parameters(qs)
     end
 
     def request_parameters
@@ -71,7 +73,7 @@ module ActionController #:nodoc:
           CGIMethods.parse_request_parameters(@cgi.params)
         end
     end
-   
+
     def cookies
       @cgi.cookies.freeze
     end
@@ -101,15 +103,26 @@ module ActionController #:nodoc:
     end
 
     def session
-      unless @session
+      unless defined?(@session)
         if @session_options == false
           @session = Hash.new
         else
           stale_session_check! do
-            if session_options_with_string_keys['new_session'] == true
-              @session = new_session
-            else
-              @session = CGI::Session.new(@cgi, session_options_with_string_keys)
+            case value = session_options_with_string_keys['new_session']
+              when true
+                @session = new_session
+              when false
+                begin
+                  @session = CGI::Session.new(@cgi, session_options_with_string_keys)
+                # CGI::Session raises ArgumentError if 'new_session' == false
+                # and no session cookie or query param is present.
+                rescue ArgumentError
+                  @session = Hash.new
+                end
+              when nil
+                @session = CGI::Session.new(@cgi, session_options_with_string_keys)
+              else
+                raise ArgumentError, "Invalid new_session option: #{value}"
             end
             @session['__valid_session']
           end
@@ -119,7 +132,7 @@ module ActionController #:nodoc:
     end
 
     def reset_session
-      @session.delete if CGI::Session === @session
+      @session.delete if defined?(@session) && @session.is_a?(CGI::Session)
       @session = new_session
     end
 
@@ -141,11 +154,11 @@ module ActionController #:nodoc:
       def stale_session_check!
         yield
       rescue ArgumentError => argument_error
-        if argument_error.message =~ %r{undefined class/module (\w+)}
+        if argument_error.message =~ %r{undefined class/module ([\w:]+)}
           begin
             Module.const_missing($1)
           rescue LoadError, NameError => const_error
-            raise ActionController::SessionRestoreError, <<end_msg
+            raise ActionController::SessionRestoreError, <<-end_msg
 Session contains objects whose class definition isn\'t available.
 Remember to require the classes for all objects kept in the session.
 (Original exception: #{const_error.message} [#{const_error.class}])
@@ -159,7 +172,7 @@ end_msg
       end
 
       def session_options_with_string_keys
-        @session_options_with_string_keys ||= DEFAULT_SESSION_OPTIONS.merge(@session_options).inject({}) { |options, (k,v)| options[k.to_s] = v; options }
+        @session_options_with_string_keys ||= DEFAULT_SESSION_OPTIONS.merge(@session_options).stringify_keys
       end
   end
 
@@ -170,38 +183,49 @@ end_msg
     end
 
     def out(output = $stdout)
-      convert_content_type!(@headers)
+      convert_content_type!
+      set_content_length!
+
       output.binmode      if output.respond_to?(:binmode)
       output.sync = false if output.respond_to?(:sync=)
-      
+
       begin
         output.write(@cgi.header(@headers))
 
         if @cgi.send(:env_table)['REQUEST_METHOD'] == 'HEAD'
           return
         elsif @body.respond_to?(:call)
+          # Flush the output now in case the @body Proc uses
+          # #syswrite.
+          output.flush if output.respond_to?(:flush)
           @body.call(self, output)
         else
           output.write(@body)
         end
 
         output.flush if output.respond_to?(:flush)
-      rescue Errno::EPIPE => e
-        # lost connection to the FCGI process -- ignore the output, then
+      rescue Errno::EPIPE, Errno::ECONNRESET
+        # lost connection to parent process, ignore output
       end
     end
 
     private
-      def convert_content_type!(headers)
-        if header = headers.delete("Content-Type")
-          headers["type"] = header
+      def convert_content_type!
+        if content_type = @headers.delete("Content-Type")
+          @headers["type"] = content_type
         end
-        if header = headers.delete("Content-type")
-          headers["type"] = header
+        if content_type = @headers.delete("Content-type")
+          @headers["type"] = content_type
         end
-        if header = headers.delete("content-type")
-          headers["type"] = header
+        if content_type = @headers.delete("content-type")
+          @headers["type"] = content_type
         end
+      end
+      
+      # Don't set the Content-Length for block-based bodies as that would mean reading it all into memory. Not nice
+      # for, say, a 2GB streaming file.
+      def set_content_length!
+        @headers["Content-Length"] = @body.size unless @body.respond_to?(:call)
       end
   end
 end

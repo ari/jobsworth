@@ -11,7 +11,7 @@ module ActiveRecord
 
     # Check for activity after at least +verification_timeout+ seconds.
     # Defaults to 0 (always check.)
-    cattr_accessor :verification_timeout
+    cattr_accessor :verification_timeout, :instance_writer => false
     @@verification_timeout = 0
 
     # The class -> [adapter_method, config] map
@@ -84,6 +84,16 @@ module ActiveRecord
       def clear_active_connections!
         clear_cache!(@@active_connections) do |name, conn|
           conn.disconnect!
+        end
+      end
+      
+      # Clears the cache which maps classes 
+      def clear_reloadable_connections!
+        @@active_connections.each do |name, conn|
+          if conn.requires_reloading?
+            conn.disconnect!
+            @@active_connections.delete(name)
+          end
         end
       end
 
@@ -248,7 +258,8 @@ module ActiveRecord
       if spec.kind_of?(ActiveRecord::ConnectionAdapters::AbstractAdapter)
         active_connections[name] = spec
       elsif spec.kind_of?(ConnectionSpecification)
-        self.connection = self.send(spec.adapter_method, spec.config)
+        config = spec.config.reverse_merge(:allow_concurrency => @@allow_concurrency)
+        self.connection = self.send(spec.adapter_method, config)
       elsif spec.nil?
         raise ConnectionNotEstablished
       else

@@ -117,7 +117,7 @@ A short rundown of the major features:
 
 
 * Transaction support on both a database and object level. The latter is implemented 
-  by using Transaction::Simple[http://www.halostatue.ca/ruby/Transaction__Simple.html]
+  by using Transaction::Simple[http://railsmanual.com/module/Transaction::Simple]
 
     # Just database transaction
     Account.transaction do
@@ -264,7 +264,7 @@ Lots of different finders
    next_angle = Firm.find(1)    
 
    # SQL: SELECT * FROM companies WHERE id = 1 AND name = 'Next Angle'
-   next_angle = Company.find_first "name = 'Next Angle'"
+   next_angle = Company.find(:first, :conditions => "name = 'Next Angle'")
 
    next_angle = Firm.find_by_sql("SELECT * FROM companies WHERE id = 1").first
 

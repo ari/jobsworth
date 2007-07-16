@@ -41,28 +41,17 @@ begin
         self.oracle_connection(config)
       end
 
-      # Enable the id column to be bound into the sql later, by the adapter's insert method.
-      # This is preferable to inserting the hard-coded value here, because the insert method
-      # needs to know the id value explicitly.
-      alias :attributes_with_quotes_pre_oracle :attributes_with_quotes
-      def attributes_with_quotes(include_primary_key = true) #:nodoc:
-        aq = attributes_with_quotes_pre_oracle(include_primary_key)
-        if connection.class == ConnectionAdapters::OracleAdapter
-          aq[self.class.primary_key] = ":id" if include_primary_key && aq[self.class.primary_key].nil?
-        end
-        aq
-      end
-
       # After setting large objects to empty, select the OCI8::LOB
       # and write back the data.
-      after_save :write_lobs 
+      after_save :write_lobs
       def write_lobs() #:nodoc:
         if connection.is_a?(ConnectionAdapters::OracleAdapter)
-          self.class.columns.select { |c| c.type == :binary }.each { |c|
+          self.class.columns.select { |c| c.sql_type =~ /LOB$/i }.each { |c|
             value = self[c.name]
+            value = value.to_yaml if unserializable_attribute?(c.name, c)
             next if value.nil?  || (value == '')
             lob = connection.select_one(
-              "SELECT #{ c.name} FROM #{ self.class.table_name } WHERE #{ self.class.primary_key} = #{quote(id)}",
+              "SELECT #{c.name} FROM #{self.class.table_name} WHERE #{self.class.primary_key} = #{quote_value(id)}",
               'Writable Large Object')[c.name]
             lob.write value
           }
@@ -75,55 +64,19 @@ begin
 
     module ConnectionAdapters #:nodoc:
       class OracleColumn < Column #:nodoc:
-        attr_reader :sql_type
-
-        # overridden to add the concept of scale, required to differentiate
-        # between integer and float fields
-        def initialize(name, default, sql_type, limit, scale, null)
-          @name, @limit, @sql_type, @scale, @null = name, limit, sql_type, scale, null
-
-          @type = simplified_type(sql_type)
-          @default = type_cast(default)
-
-          @primary = nil
-          @text    = [:string, :text].include? @type
-          @number  = [:float, :integer].include? @type
-        end
 
         def type_cast(value)
-          return nil if value.nil? || value =~ /^\s*null\s*$/i
-          case type
-          when :string   then value
-          when :integer  then defined?(value.to_i) ? value.to_i : (value ? 1 : 0)
-          when :float    then value.to_f
-          when :datetime then cast_to_date_or_time(value)
-          when :time     then cast_to_time(value)
-          else value
-          end
+          return guess_date_or_time(value) if type == :datetime && OracleAdapter.emulate_dates
+          super
         end
 
         private
         def simplified_type(field_type)
+          return :boolean if OracleAdapter.emulate_booleans && field_type == 'NUMBER(1)'
           case field_type
-          when /char/i                          : :string
-          when /num|float|double|dec|real|int/i : @scale == 0 ? :integer : :float
-          when /date|time/i                     : @name =~ /_at$/ ? :time : :datetime
-          when /clob/i                           : :text
-          when /blob/i                           : :binary
+            when /date|time/i then :datetime
+            else super
           end
-        end
-
-        def cast_to_date_or_time(value)
-          return value if value.is_a? Date
-          return nil if value.blank?
-          guess_date_or_time (value.is_a? Time) ? value : cast_to_time(value)
-        end
-
-        def cast_to_time(value)
-          return value if value.is_a? Time
-          time_array = ParseDate.parsedate value
-          time_array[0] ||= 2000; time_array[1] ||= 1; time_array[2] ||= 1;
-          Time.send(Base.default_timezone, *time_array) rescue nil
         end
 
         def guess_date_or_time(value)
@@ -167,6 +120,12 @@ begin
       # * <tt>:database</tt>
       class OracleAdapter < AbstractAdapter
 
+        @@emulate_booleans = true
+        cattr_accessor :emulate_booleans
+
+        @@emulate_dates = false
+        cattr_accessor :emulate_dates
+
         def adapter_name #:nodoc:
           'Oracle'
         end
@@ -174,14 +133,15 @@ begin
         def supports_migrations? #:nodoc:
           true
         end
-        
-        def native_database_types #:nodoc
+
+        def native_database_types #:nodoc:
           {
             :primary_key => "NUMBER(38) NOT NULL PRIMARY KEY",
             :string      => { :name => "VARCHAR2", :limit => 255 },
             :text        => { :name => "CLOB" },
             :integer     => { :name => "NUMBER", :limit => 38 },
             :float       => { :name => "NUMBER" },
+            :decimal     => { :name => "DECIMAL" },
             :datetime    => { :name => "DATE" },
             :timestamp   => { :name => "DATE" },
             :time        => { :name => "DATE" },
@@ -205,24 +165,24 @@ begin
           name =~ /[A-Z]/ ? "\"#{name}\"" : name
         end
 
-        def quote_string(string) #:nodoc:
-          string.gsub(/'/, "''")
+        def quote_string(s) #:nodoc:
+          s.gsub(/'/, "''")
         end
 
         def quote(value, column = nil) #:nodoc:
-          if column && column.type == :binary
-            %Q{empty_#{ column.sql_type rescue 'blob' }()}
+          if column && [:text, :binary].include?(column.type)
+            %Q{empty_#{ column.sql_type.downcase rescue 'blob' }()}
           else
-            case value
-            when String     : %Q{'#{quote_string(value)}'}
-            when NilClass   : 'null'
-            when TrueClass  : '1'
-            when FalseClass : '0'
-            when Numeric    : value.to_s
-            when Date, Time : %Q{'#{value.strftime("%Y-%m-%d %H:%M:%S")}'}
-            else              %Q{'#{quote_string(value.to_yaml)}'}
-            end
+            super
           end
+        end
+
+        def quoted_true
+          "1"
+        end
+
+        def quoted_false
+          "0"
         end
 
 
@@ -232,7 +192,7 @@ begin
         # Returns true if the connection is active.
         def active?
           # Pings the connection to check if it's still good. Note that an
-          # #active? method is also available, but that simply returns the 
+          # #active? method is also available, but that simply returns the
           # last known state, which isn't good enough if the connection has
           # gone stale since the last use.
           @connection.ping
@@ -258,34 +218,23 @@ begin
         #
         # see: abstract/database_statements.rb
 
-        def select_all(sql, name = nil) #:nodoc:
-          select(sql, name)
-        end
-
-        def select_one(sql, name = nil) #:nodoc:
-          result = select_all(sql, name)
-          result.size > 0 ? result.first : nil
-        end
-
         def execute(sql, name = nil) #:nodoc:
           log(sql, name) { @connection.exec sql }
         end
 
-        def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
-          if pk.nil? # Who called us? What does the sql look like? No idea!
-            execute sql, name
-          elsif id_value # Pre-assigned id
-            log(sql, name) { @connection.exec sql }
-          else # Assume the sql contains a bind-variable for the id
-            id_value = select_one("select #{sequence_name}.nextval id from dual")['id']
-            log(sql, name) { @connection.exec sql, id_value }
-          end
-
-          id_value
+        # Returns the next sequence value from a sequence generator. Not generally
+        # called directly; used by ActiveRecord to get the next primary key value
+        # when inserting a new database record (see #prefetch_primary_key?).
+        def next_sequence_value(sequence_name)
+          id = 0
+          @connection.exec("select #{sequence_name}.nextval id from dual") { |r| id = r[0].to_i }
+          id
         end
 
-        alias :update :execute #:nodoc:
-        alias :delete :execute #:nodoc:
+        def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil) #:nodoc:
+          execute(sql, name)
+          id_value
+        end
 
         def begin_db_transaction #:nodoc:
           @connection.autocommit = false
@@ -313,6 +262,12 @@ begin
           end
         end
 
+        # Returns true for Oracle adapter (since Oracle requires primary key
+        # values to be pre-fetched before insert). See also #next_sequence_value.
+        def prefetch_primary_key?(table_name = nil)
+          true
+        end
+
         def default_sequence_name(table, column) #:nodoc:
           "#{table}_seq"
         end
@@ -338,7 +293,7 @@ begin
               FROM user_indexes i, user_ind_columns c
              WHERE i.table_name = '#{table_name.to_s.upcase}'
                AND c.index_name = i.index_name
-               AND i.index_name NOT IN (SELECT index_name FROM user_constraints WHERE constraint_type = 'P')
+               AND i.index_name NOT IN (SELECT uc.index_name FROM user_constraints uc WHERE uc.constraint_type = 'P')
               ORDER BY i.index_name, c.column_position
           SQL
 
@@ -360,47 +315,54 @@ begin
         def columns(table_name, name = nil) #:nodoc:
           (owner, table_name) = @connection.describe(table_name)
 
-          table_cols = %Q{
-            select column_name, data_type, data_default, nullable,
+          table_cols = <<-SQL
+            select column_name as name, data_type as sql_type, data_default, nullable,
                    decode(data_type, 'NUMBER', data_precision,
+                                     'FLOAT', data_precision,
                                      'VARCHAR2', data_length,
-                                      null) as length,
+                                      null) as limit,
                    decode(data_type, 'NUMBER', data_scale, null) as scale
               from all_tab_columns
              where owner      = '#{owner}'
                and table_name = '#{table_name}'
              order by column_id
-          }
+          SQL
 
           select_all(table_cols, name).map do |row|
+            limit, scale = row['limit'], row['scale']
+            if limit || scale
+              row['sql_type'] << "(#{(limit || 38).to_i}" + ((scale = scale.to_i) > 0 ? ",#{scale})" : ")")
+            end
+
+            # clean up odd default spacing from Oracle
             if row['data_default']
               row['data_default'].sub!(/^(.*?)\s*$/, '\1')
               row['data_default'].sub!(/^'(.*)'$/, '\1')
+              row['data_default'] = nil if row['data_default'] =~ /^null$/i
             end
-            OracleColumn.new(
-              oracle_downcase(row['column_name']),
-              row['data_default'],
-              row['data_type'],
-              (l = row['length']).nil? ? nil : l.to_i,
-              (s = row['scale']).nil? ? nil : s.to_i,
-              row['nullable'] == 'Y'
-            )
+
+            OracleColumn.new(oracle_downcase(row['name']),
+                             row['data_default'],
+                             row['sql_type'],
+                             row['nullable'] == 'Y')
           end
         end
 
         def create_table(name, options = {}) #:nodoc:
           super(name, options)
-          execute "CREATE SEQUENCE #{name}_seq START WITH 10000" unless options[:id] == false
+          seq_name = options[:sequence_name] || "#{name}_seq"
+          execute "CREATE SEQUENCE #{seq_name} START WITH 10000" unless options[:id] == false
         end
 
         def rename_table(name, new_name) #:nodoc:
           execute "RENAME #{name} TO #{new_name}"
           execute "RENAME #{name}_seq TO #{new_name}_seq" rescue nil
-        end  
+        end
 
-        def drop_table(name) #:nodoc:
+        def drop_table(name, options = {}) #:nodoc:
           super(name)
-          execute "DROP SEQUENCE #{name}_seq" rescue nil
+          seq_name = options[:sequence_name] || "#{name}_seq"
+          execute "DROP SEQUENCE #{seq_name}" rescue nil
         end
 
         def remove_index(table_name, options = {}) #:nodoc:
@@ -412,7 +374,7 @@ begin
         end
 
         def change_column(table_name, column_name, type, options = {}) #:nodoc:
-          change_column_sql = "ALTER TABLE #{table_name} MODIFY #{column_name} #{type_to_sql(type, options[:limit])}"
+          change_column_sql = "ALTER TABLE #{table_name} MODIFY #{column_name} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
           add_column_options!(change_column_sql, options)
           execute(change_column_sql)
         end
@@ -425,26 +387,45 @@ begin
           execute "ALTER TABLE #{table_name} DROP COLUMN #{column_name}"
         end
 
+        # Find a table's primary key and sequence. 
+        # *Note*: Only primary key is implemented - sequence will be nil.
+        def pk_and_sequence_for(table_name)
+          (owner, table_name) = @connection.describe(table_name)
+
+          pks = select_values(<<-SQL, 'Primary Key')
+            select cc.column_name
+              from all_constraints c, all_cons_columns cc
+             where c.owner = '#{owner}'
+               and c.table_name = '#{table_name}'
+               and c.constraint_type = 'P'
+               and cc.owner = c.owner
+               and cc.constraint_name = c.constraint_name
+          SQL
+
+          # only support single column keys
+          pks.size == 1 ? [oracle_downcase(pks.first), nil] : nil
+        end
+
         def structure_dump #:nodoc:
           s = select_all("select sequence_name from user_sequences").inject("") do |structure, seq|
             structure << "create sequence #{seq.to_a.first.last};\n\n"
           end
 
           select_all("select table_name from user_tables").inject(s) do |structure, table|
-            ddl = "create table #{table.to_a.first.last} (\n "  
+            ddl = "create table #{table.to_a.first.last} (\n "
             cols = select_all(%Q{
               select column_name, data_type, data_length, data_precision, data_scale, data_default, nullable
               from user_tab_columns
               where table_name = '#{table.to_a.first.last}'
               order by column_id
-            }).map do |row|              
-              col = "#{row['column_name'].downcase} #{row['data_type'].downcase}"      
+            }).map do |row|
+              col = "#{row['column_name'].downcase} #{row['data_type'].downcase}"
               if row['data_type'] =='NUMBER' and !row['data_precision'].nil?
                 col << "(#{row['data_precision'].to_i}"
                 col << ",#{row['data_scale'].to_i}" if !row['data_scale'].nil?
                 col << ')'
               elsif row['data_type'].include?('CHAR')
-                col << "(#{row['data_length'].to_i})"  
+                col << "(#{row['data_length'].to_i})"
               end
               col << " default #{row['data_default']}" if !row['data_default'].nil?
               col << ' not null' if row['nullable'] == 'N'
@@ -466,6 +447,41 @@ begin
           end
         end
 
+        # SELECT DISTINCT clause for a given set of columns and a given ORDER BY clause.
+        #
+        # Oracle requires the ORDER BY columns to be in the SELECT list for DISTINCT
+        # queries. However, with those columns included in the SELECT DISTINCT list, you
+        # won't actually get a distinct list of the column you want (presuming the column
+        # has duplicates with multiple values for the ordered-by columns. So we use the 
+        # FIRST_VALUE function to get a single (first) value for each column, effectively
+        # making every row the same.
+        #
+        #   distinct("posts.id", "posts.created_at desc")
+        def distinct(columns, order_by)
+          return "DISTINCT #{columns}" if order_by.blank?
+
+          # construct a valid DISTINCT clause, ie. one that includes the ORDER BY columns, using
+          # FIRST_VALUE such that the inclusion of these columns doesn't invalidate the DISTINCT
+          order_columns = order_by.split(',').map { |s| s.strip }.reject(&:blank?)
+          order_columns = order_columns.zip((0...order_columns.size).to_a).map do |c, i|
+            "FIRST_VALUE(#{c.split.first}) OVER (PARTITION BY #{columns} ORDER BY #{c}) AS alias_#{i}__"
+          end
+          sql = "DISTINCT #{columns}, "
+          sql << order_columns * ", "
+        end
+
+        # ORDER BY clause for the passed order option.
+        # 
+        # Uses column aliases as defined by #distinct.
+        def add_order_by_for_association_limiting!(sql, options)
+          return sql if options[:order].blank?
+
+          order = options[:order].split(',').collect { |s| s.strip }.reject(&:blank?)
+          order.map! {|s| $1 if s =~ / (.*)/}
+          order = order.zip((0...order.size).to_a).map { |s,i| "alias_#{i}__ #{s}" }.join(', ')
+
+          sql << "ORDER BY #{order}"
+        end
 
         private
 
@@ -542,7 +558,7 @@ begin
     def describe(name)
       @desc ||= @@env.alloc(OCIDescribe)
       @desc.attrSet(OCI_ATTR_DESC_PUBLIC, -1) if VERSION >= '0.1.14'
-      @desc.describeAny(@svc, name.to_s, OCI_PTYPE_UNK)
+      @desc.describeAny(@svc, name.to_s, OCI_PTYPE_UNK) rescue raise %Q{"DESC #{name}" failed; does it exist?}
       info = @desc.attrGet(OCI_ATTR_PARAM)
 
       case info.attrGet(OCI_ATTR_PTYPE)
@@ -554,6 +570,7 @@ begin
         schema = info.attrGet(OCI_ATTR_SCHEMA_NAME)
         name   = info.attrGet(OCI_ATTR_NAME)
         describe(schema + '.' + name)
+      else raise %Q{"DESC #{name}" failed; not a table or view.}
       end
     end
 
@@ -563,11 +580,14 @@ begin
   # The OracleConnectionFactory factors out the code necessary to connect and
   # configure an Oracle/OCI connection.
   class OracleConnectionFactory #:nodoc:
-    def new_connection(username, password, database)
+    def new_connection(username, password, database, async, prefetch_rows, cursor_sharing)
       conn = OCI8.new username, password, database
       conn.exec %q{alter session set nls_date_format = 'YYYY-MM-DD HH24:MI:SS'}
       conn.exec %q{alter session set nls_timestamp_format = 'YYYY-MM-DD HH24:MI:SS'} rescue nil
       conn.autocommit = true
+      conn.non_blocking = true if async
+      conn.prefetch_rows = prefetch_rows
+      conn.exec "alter session set cursor_sharing = #{cursor_sharing}" rescue nil
       conn
     end
   end
@@ -575,10 +595,10 @@ begin
 
   # The OCI8AutoRecover class enhances the OCI8 driver with auto-recover and
   # reset functionality. If a call to #exec fails, and autocommit is turned on
-  # (ie., we're not in the middle of a longer transaction), it will 
+  # (ie., we're not in the middle of a longer transaction), it will
   # automatically reconnect and try again. If autocommit is turned off,
   # this would be dangerous (as the earlier part of the implied transaction
-  # may have failed silently if the connection died) -- so instead the 
+  # may have failed silently if the connection died) -- so instead the
   # connection is marked as dead, to be reconnected on it's next use.
   class OCI8AutoRecover < DelegateClass(OCI8) #:nodoc:
     attr_accessor :active
@@ -592,9 +612,12 @@ begin
 
     def initialize(config, factory = OracleConnectionFactory.new)
       @active = true
-      @username, @password, @database = config[:username], config[:password], config[:database]
+      @username, @password, @database, = config[:username], config[:password], config[:database]
+      @async = config[:allow_concurrency]
+      @prefetch_rows = config[:prefetch_rows] || 100
+      @cursor_sharing = config[:cursor_sharing] || 'similar'
       @factory = factory
-      @connection  = @factory.new_connection @username, @password, @database
+      @connection  = @factory.new_connection @username, @password, @database, @async, @prefetch_rows, @cursor_sharing
       super @connection
     end
 
@@ -613,7 +636,7 @@ begin
     def reset!
       logoff rescue nil
       begin
-        @connection = @factory.new_connection @username, @password, @database
+        @connection = @factory.new_connection @username, @password, @database, @async, @prefetch_rows, @cursor_sharing
         __setobj__ @connection
         @active = true
       rescue
@@ -623,7 +646,7 @@ begin
     end
 
     # ORA-00028: your session has been killed
-    # ORA-01012: not logged on 
+    # ORA-01012: not logged on
     # ORA-03113: end-of-file on communication channel
     # ORA-03114: not connected to ORACLE
     LOST_CONNECTION_ERROR_CODES = [ 28, 1012, 3113, 3114 ]
@@ -631,11 +654,11 @@ begin
     # Adds auto-recovery functionality.
     #
     # See: http://www.jiubao.org/ruby-oci8/api.en.html#label-11
-    def exec(sql, *bindvars)
+    def exec(sql, *bindvars, &block)
       should_retry = self.class.auto_retry? && autocommit?
 
       begin
-        @connection.exec(sql, *bindvars)
+        @connection.exec(sql, *bindvars, &block)
       rescue OCIException => e
         raise unless LOST_CONNECTION_ERROR_CODES.include?(e.code)
         @active = false
@@ -652,13 +675,14 @@ rescue LoadError
   # OCI8 driver is unavailable.
   module ActiveRecord # :nodoc:
     class Base
+      @@oracle_error_message = "Oracle/OCI libraries could not be loaded: #{$!.to_s}"
       def self.oracle_connection(config) # :nodoc:
         # Set up a reasonable error message
-        raise LoadError, "Oracle/OCI libraries could not be loaded."
+        raise LoadError, @@oracle_error_message
       end
       def self.oci_connection(config) # :nodoc:
         # Set up a reasonable error message
-        raise LoadError, "Oracle/OCI libraries could not be loaded."
+        raise LoadError, @@oracle_error_message
       end
     end
   end

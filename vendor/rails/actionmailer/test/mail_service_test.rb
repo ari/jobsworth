@@ -1,27 +1,4 @@
-$:.unshift(File.dirname(__FILE__) + "/../lib/")
-
-require 'test/unit'
-require 'action_mailer'
-
-class MockSMTP
-  def self.deliveries
-    @@deliveries
-  end
-
-  def initialize
-    @@deliveries = []
-  end
-
-  def sendmail(mail, from, to)
-    @@deliveries << [mail, from, to]
-  end
-end
-
-class Net::SMTP
-  def self.start(*args)
-    yield MockSMTP.new
-  end
-end
+require "#{File.dirname(__FILE__)}/abstract_unit"
 
 class FunkyPathMailer < ActionMailer::Base
   self.template_root = "#{File.dirname(__FILE__)}/fixtures/path.with.dots"
@@ -33,14 +10,9 @@ class FunkyPathMailer < ActionMailer::Base
     attachment :content_type => "image/jpeg",
       :body => "not really a jpeg, we're only testing, after all"
   end
-
-  def template_path
-    "#{File.dirname(__FILE__)}/fixtures/path.with.dots"
-  end
 end
 
 class TestMailer < ActionMailer::Base
-
   def signed_up(recipient)
     @recipients   = recipient
     @subject      = "[Signed up] Welcome #{recipient}"
@@ -222,7 +194,7 @@ class TestMailer < ActionMailer::Base
     subject      "nested multipart"
     from         "test@example.com"
     content_type "multipart/mixed"
-    part :content_type => "multipart/alternative", :content_disposition => "inline" do |p|
+    part :content_type => "multipart/alternative", :content_disposition => "inline", :headers => { "foo" => "bar" } do |p|
       p.part :content_type => "text/plain", :body => "test text\nline #2"
       p.part :content_type => "text/html", :body => "<b>test</b> HTML<br/>\nline #2"
     end
@@ -273,8 +245,6 @@ class TestMailer < ActionMailer::Base
   end
 end
 
-TestMailer.template_root = File.dirname(__FILE__) + "/fixtures"
-
 class ActionMailerTest < Test::Unit::TestCase
   include ActionMailer::Quoting
 
@@ -284,6 +254,7 @@ class ActionMailerTest < Test::Unit::TestCase
 
   def new_mail( charset="utf-8" )
     mail = TMail::Mail.new
+    mail.mime_version = "1.0"
     if charset
       mail.set_content_type "text", "plain", { "charset" => charset }
     end
@@ -306,6 +277,7 @@ class ActionMailerTest < Test::Unit::TestCase
     
     assert_equal "multipart/mixed", created.content_type
     assert_equal "multipart/alternative", created.parts.first.content_type
+    assert_equal "bar", created.parts.first.header['foo'].to_s
     assert_equal "text/plain", created.parts.first.parts.first.content_type
     assert_equal "text/html", created.parts.first.parts[1].content_type
     assert_equal "application/octet-stream", created.parts[1].content_type
@@ -324,7 +296,6 @@ class ActionMailerTest < Test::Unit::TestCase
     expected.body    = "Hello there, \n\nMr. #{@recipient}"
     expected.from    = "system@loudthinking.com"
     expected.date    = Time.local(2004, 12, 12)
-    expected.mime_version = nil
 
     created = nil
     assert_nothing_raised { created = TestMailer.create_signed_up(@recipient) }
@@ -815,6 +786,19 @@ EOF
     mail = TestMailer.create_custom_content_type_attributes
     assert_match %r{format=flowed}, mail['content-type'].to_s
     assert_match %r{charset=utf-8}, mail['content-type'].to_s
+  end
+  
+  def test_deprecated_server_settings
+    old_smtp_settings = ActionMailer::Base.smtp_settings
+    assert_deprecated do
+      ActionMailer::Base.server_settings
+    end
+    assert_deprecated do
+      ActionMailer::Base.server_settings={}
+      assert_equal Hash.new, ActionMailer::Base.smtp_settings
+    end
+  ensure
+    ActionMailer::Base.smtp_settings=old_smtp_settings    
   end
 end
 

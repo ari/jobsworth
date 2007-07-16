@@ -6,9 +6,9 @@ class MailerGenerator < Rails::Generator::NamedBase
 
       # Mailer, view, test, and fixture directories.
       m.directory File.join('app/models', class_path)
-      m.directory File.join('app/views', class_path, file_name)
+      m.directory File.join('app/views', file_path)
       m.directory File.join('test/unit', class_path)
-      m.directory File.join('test/fixtures', class_path, file_name)
+      m.directory File.join('test/fixtures', file_path)
 
       # Mailer class and unit test.
       m.template "mailer.rb",    File.join('app/models',
@@ -20,12 +20,14 @@ class MailerGenerator < Rails::Generator::NamedBase
 
       # View template and fixture for each action.
       actions.each do |action|
-        m.template "view.rhtml",
-                   File.join('app/views', class_path, file_name, "#{action}.rhtml"),
-                   :assigns => { :action => action }
-        m.template "fixture.rhtml",
-                   File.join('test/fixtures', class_path, file_name, action),
-                   :assigns => { :action => action }
+        relative_path = File.join(file_path, action)
+        view_path     = File.join('app/views', "#{relative_path}.rhtml")
+        fixture_path  = File.join('test/fixtures', relative_path)
+
+        m.template "view.rhtml", view_path,
+                   :assigns => { :action => action, :path => view_path }
+        m.template "fixture.rhtml", fixture_path,
+                   :assigns => { :action => action, :path => view_path }
       end
     end
   end

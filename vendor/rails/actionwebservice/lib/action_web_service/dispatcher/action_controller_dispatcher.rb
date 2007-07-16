@@ -4,12 +4,10 @@ require 'builder/xmlmarkup'
 module ActionWebService # :nodoc:
   module Dispatcher # :nodoc:
     module ActionController # :nodoc:
-      def self.append_features(base) # :nodoc:
-        super
+      def self.included(base) # :nodoc:
         class << base
           include ClassMethods
-          alias_method :inherited_without_action_controller, :inherited
-          alias_method :inherited, :inherited_with_action_controller
+          alias_method_chain :inherited, :action_controller
         end
         base.class_eval do
           alias_method :web_service_direct_invoke_without_controller, :web_service_direct_invoke
@@ -39,6 +37,10 @@ module ActionWebService # :nodoc:
       module InstanceMethods # :nodoc:
         private
           def dispatch_web_service_request
+            if request.get?
+              render_text('GET not supported', '500 GET not supported')
+              return
+            end
             exception = nil
             begin
               ws_request = discover_web_service_request(request)
@@ -104,13 +106,7 @@ module ActionWebService # :nodoc:
             invocation.method_named_params.each do |name, value|
               params[name] = value
             end
-            params['action'] = invocation.api_method.name.to_s
-            if before_action == false
-              raise(DispatcherError, "Method filtered")
-            end
-            return_value = web_service_direct_invoke_without_controller(invocation)
-            after_action
-            return_value
+            web_service_direct_invoke_without_controller(invocation)
           end
 
           def log_request(ws_request, body)
@@ -165,7 +161,7 @@ module ActionWebService # :nodoc:
 
         private
           def base_uri
-            host = request.env['HTTP_HOST'] || request.env['SERVER_NAME'] || 'localhost'
+            host = request.host_with_port
             relative_url_root = request.relative_url_root
             scheme = request.ssl? ? 'https' : 'http'
             '%s://%s%s/%s/' % [scheme, host, relative_url_root, self.class.controller_path]

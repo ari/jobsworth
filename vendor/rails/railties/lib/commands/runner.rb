@@ -1,10 +1,11 @@
 require 'optparse'
 
 options = { :environment => (ENV['RAILS_ENV'] || "development").dup }
+code_or_file = nil
 
-ARGV.options do |opts|
+ARGV.clone.options do |opts|
   script_name = File.basename($0)
-  opts.banner = "Usage: runner 'puts Person.find(1).name' [options]"
+  opts.banner = "Usage: #{$0} [options] ('Some.ruby(code)' or a filename)"
 
   opts.separator ""
 
@@ -15,13 +16,33 @@ ARGV.options do |opts|
   opts.separator ""
 
   opts.on("-h", "--help",
-          "Show this help message.") { puts opts; exit }
+          "Show this help message.") { $stderr.puts opts; exit }
 
-  opts.parse!
+  if RUBY_PLATFORM !~ /mswin/
+    opts.separator ""
+    opts.separator "You can also use runner as a shebang line for your scripts like this:"
+    opts.separator "-------------------------------------------------------------"
+    opts.separator "#!/usr/bin/env #{File.expand_path($0)}"
+    opts.separator ""
+    opts.separator "Product.find(:all).each { |p| p.price *= 2 ; p.save! }"
+    opts.separator "-------------------------------------------------------------"
+  end
+
+  opts.order! { |o| code_or_file ||= o } rescue retry
 end
+
+ARGV.delete(code_or_file)
 
 ENV["RAILS_ENV"] = options[:environment]
 RAILS_ENV.replace(options[:environment]) if defined?(RAILS_ENV)
 
 require RAILS_ROOT + '/config/environment'
-ARGV.empty? ? puts("Usage: runner 'code' [options]") : eval(ARGV.first)
+
+if code_or_file.nil?
+  $stderr.puts "Run '#{$0} -h' for help."
+  exit 1
+elsif File.exists?(code_or_file)
+  eval(File.read(code_or_file))
+else
+  eval(code_or_file)
+end

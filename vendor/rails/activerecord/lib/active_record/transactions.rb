@@ -4,21 +4,16 @@ require 'thread'
 
 module ActiveRecord
   module Transactions # :nodoc:
-    TRANSACTION_MUTEX = Mutex.new
-
     class TransactionError < ActiveRecordError # :nodoc:
     end
 
-    def self.append_features(base)
-      super
+    def self.included(base)
       base.extend(ClassMethods)
 
       base.class_eval do
-        alias_method :destroy_without_transactions, :destroy
-        alias_method :destroy, :destroy_with_transactions
-
-        alias_method :save_without_transactions, :save
-        alias_method :save, :save_with_transactions
+        [:destroy, :save, :save!].each do |method|
+          alias_method_chain method, :transactions
+        end
       end
     end
 
@@ -60,7 +55,7 @@ module ActiveRecord
     # will happen under the protected cover of a transaction. So you can use validations to check for values that the transaction
     # depend on or you can raise exceptions in the callbacks to rollback.
     #
-    # == Object-level transactions
+    # == Object-level transactions (deprecated)
     #
     # You can enable object-level transactions for Active Record objects, though. You do this by naming each of the Active Records
     # that you want to enable object-level transactions for, like this:
@@ -70,8 +65,14 @@ module ActiveRecord
     #     mary.deposit(100)
     #   end
     #
-    # If the transaction fails, David and Mary will be returned to their pre-transactional state. No money will have changed hands in
-    # neither object nor database.
+    # If the transaction fails, David and Mary will be returned to their
+    # pre-transactional state. No money will have changed hands in neither
+    # object nor database.
+    #
+    # However, useful state such as validation errors are also rolled back,
+    # limiting the usefulness of this feature. As such it is deprecated in
+    # Rails 1.2 and will be removed in the next release. Install the
+    # object_transactions plugin if you wish to continue using it.
     #
     # == Exception handling
     #
@@ -82,11 +83,14 @@ module ActiveRecord
     module ClassMethods
       def transaction(*objects, &block)
         previous_handler = trap('TERM') { raise TransactionError, "Transaction aborted" }
-        lock_mutex
-        
+        increment_open_transactions
+
         begin
-          objects.each { |o| o.extend(Transaction::Simple) }
-          objects.each { |o| o.start_transaction }
+          unless objects.empty?
+            ActiveSupport::Deprecation.warn "Object transactions are deprecated and will be removed from Rails 2.0.  See http://www.rubyonrails.org/deprecation for details.", caller
+            objects.each { |o| o.extend(Transaction::Simple) }
+            objects.each { |o| o.start_transaction }
+          end
 
           result = connection.transaction(Thread.current['start_db_transaction'], &block)
 
@@ -96,22 +100,21 @@ module ActiveRecord
           objects.each { |o| o.abort_transaction }
           raise
         ensure
-          unlock_mutex
+          decrement_open_transactions
           trap('TERM', previous_handler)
         end
       end
-      
-      def lock_mutex#:nodoc:
-        Thread.current['open_transactions'] ||= 0
-        TRANSACTION_MUTEX.lock if Thread.current['open_transactions'] == 0
-        Thread.current['start_db_transaction'] = (Thread.current['open_transactions'] == 0)
-        Thread.current['open_transactions'] += 1
-      end
-      
-      def unlock_mutex#:nodoc:
-        Thread.current['open_transactions'] -= 1
-        TRANSACTION_MUTEX.unlock if Thread.current['open_transactions'] == 0
-      end
+
+      private
+        def increment_open_transactions #:nodoc:
+          open = Thread.current['open_transactions'] ||= 0
+          Thread.current['start_db_transaction'] = open.zero?
+          Thread.current['open_transactions'] = open + 1
+        end
+
+        def decrement_open_transactions #:nodoc:
+          Thread.current['open_transactions'] -= 1
+        end
     end
 
     def transaction(*objects, &block)
@@ -121,9 +124,13 @@ module ActiveRecord
     def destroy_with_transactions #:nodoc:
       transaction { destroy_without_transactions }
     end
-    
+
     def save_with_transactions(perform_validation = true) #:nodoc:
       transaction { save_without_transactions(perform_validation) }
+    end
+
+    def save_with_transactions! #:nodoc:
+      transaction { save_without_transactions! }
     end
   end
 end

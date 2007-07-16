@@ -161,6 +161,33 @@ class NewRenderTestController < ActionController::Base
     render :text =>  "How's there? #{render_to_string("test/list")}"
   end
   
+  def render_to_string_with_assigns
+    @before = "i'm before the render"
+    render_to_string :text => "foo"
+    @after = "i'm after the render"
+    render :action => "test/hello_world"
+  end
+
+ def render_to_string_with_partial
+    @partial_only = render_to_string :partial => "partial_only"
+    @partial_with_locals = render_to_string :partial => "customer", :locals => { :customer => Customer.new("david") }     
+    render :action => "test/hello_world"  
+  end  
+  
+  def render_to_string_with_exception
+    render_to_string :file => "exception that will not be caught - this will certainly not work", :use_full_path => true
+  end
+  
+  def render_to_string_with_caught_exception
+    @before = "i'm before the render"
+    begin
+      render_to_string :file => "exception that will be caught- hope my future instance vars still work!", :use_full_path => true
+    rescue
+    end
+    @after = "i'm after the render"
+    render :action => "test/hello_world"
+  end
+
   def accessing_params_in_template
     render :inline =>  "Hello: <%= params[:name] %>"
   end
@@ -187,6 +214,11 @@ class NewRenderTestController < ActionController::Base
     render :text => "hello"
     redirect_to :action => "double_render"
   end
+  
+  def render_to_string_and_render
+    @stuff = render_to_string :text => "here is some cached stuff"
+    render :text => "Hi web users! #{@stuff}"
+  end
 
   def rendering_with_conflicting_local_vars
     @name = "David"
@@ -200,6 +232,30 @@ class NewRenderTestController < ActionController::Base
 
   def hello_world_from_rxml_using_template
     render :template => "test/hello_world.rxml"
+  end
+
+  def head_with_location_header
+    head :location => "/foo"
+  end
+
+  def head_with_symbolic_status
+    head :status => params[:status].intern
+  end
+
+  def head_with_integer_status
+    head :status => params[:status].to_i
+  end
+
+  def head_with_string_status
+    head :status => params[:status]
+  end
+
+  def head_with_custom_header
+    head :x_custom_header => "something"
+  end
+
+  def head_with_status_code_first
+    head :forbidden, :x_custom_header => "something"
   end
 
   helper NewRenderTestHelper
@@ -261,6 +317,11 @@ class NewRenderTestController < ActionController::Base
 
   def yield_content_for
     render :action => "content_for", :layout => "yield"
+  end
+
+  def render_content_type_from_body
+    response.content_type = Mime::RSS
+    render :text => "hello world!"
   end
 
   def rescue_action(e) raise end
@@ -393,18 +454,26 @@ class NewRenderTest < Test::Unit::TestCase
     ActionController::Base.protected_variables_cache = nil
 
     get :hello_world
-    assert_nil(assigns["request"])
+    assert !assigns.include?('request'), 'request should not be in assigns'
 
     ActionController::Base.view_controller_internals = true
     ActionController::Base.protected_variables_cache = nil
 
     get :hello_world
-    assert_kind_of ActionController::AbstractRequest, assigns["request"]
+    assert assigns.include?('request'), 'request should be in assigns'
+    assert_deprecated 'request' do
+      assert_kind_of ActionController::AbstractRequest, assigns['request']
+    end
+    assert_not_deprecated do
+      assert_kind_of ActionController::AbstractRequest, @response.template.request
+      assert_kind_of ActionController::AbstractRequest, assigns['_request']
+    end
 
+  ensure
     ActionController::Base.view_controller_internals = view_internals_old_value
     ActionController::Base.protected_variables_cache = nil
   end
-  
+
   def test_render_xml
     get :render_xml_hello
     assert_equal "<html>\n  <p>Hello David</p>\n<p>This is grand!</p>\n</html>\n", @response.body
@@ -429,17 +498,17 @@ EOS
 
   def test_render_rjs_with_default
     get :delete_with_js
-    assert_equal %!["person"].each(Element.remove);\nnew Effect.Highlight(\"project-4\",{});!, @response.body
+    assert_equal %!Element.remove("person");\nnew Effect.Highlight(\"project-4\",{});!, @response.body
   end
 
   def test_render_rjs_template_explicitly
     get :render_js_with_explicit_template
-    assert_equal %!["person"].each(Element.remove);\nnew Effect.Highlight(\"project-4\",{});!, @response.body
+    assert_equal %!Element.remove("person");\nnew Effect.Highlight(\"project-4\",{});!, @response.body
   end
 
   def test_rendering_rjs_action_explicitly
     get :render_js_with_explicit_action_template
-    assert_equal %!["person"].each(Element.remove);\nnew Effect.Highlight(\"project-4\",{});!, @response.body
+    assert_equal %!Element.remove("person");\nnew Effect.Highlight(\"project-4\",{});!, @response.body
   end
 
   def test_layout_rendering
@@ -483,8 +552,30 @@ EOS
   end
 
   def test_render_to_string
-    get :hello_in_a_string
+    assert_not_deprecated { get :hello_in_a_string }
     assert_equal "How's there? goodbyeHello: davidHello: marygoodbye\n", @response.body
+  end
+  
+  def test_render_to_string_doesnt_break_assigns
+    get :render_to_string_with_assigns
+    assert_equal "i'm before the render", assigns(:before)
+    assert_equal "i'm after the render", assigns(:after)
+  end
+
+  def test_render_to_string_partial
+    get :render_to_string_with_partial
+    assert_equal "only partial", assigns(:partial_only)
+    assert_equal "Hello: david", assigns(:partial_with_locals)
+  end  
+
+  def test_bad_render_to_string_still_throws_exception
+    assert_raises(ActionController::MissingTemplate) { get :render_to_string_with_exception }
+  end
+  
+  def test_render_to_string_that_throws_caught_exception_doesnt_break_assigns
+    assert_nothing_raised { get :render_to_string_with_caught_exception }
+    assert_equal "i'm before the render", assigns(:before)
+    assert_equal "i'm after the render", assigns(:after)
   end
 
   def test_nested_rendering
@@ -503,7 +594,7 @@ EOS
   end
 
   def test_render_with_explicit_template
-    get :render_with_explicit_template
+    assert_deprecated(/render/) { get :render_with_explicit_template }
     assert_response :success
   end
 
@@ -517,6 +608,12 @@ EOS
 
   def test_render_and_redirect
     assert_raises(ActionController::DoubleRenderError) { get :render_and_redirect }
+  end
+  
+  # specify the one exception to double render rule - render_to_string followed by render
+  def test_render_to_string_and_render
+    get :render_to_string_and_render
+    assert_equal("Hi web users! here is some cached stuff", @response.body)
   end
 
   def test_rendering_with_conflicting_local_vars
@@ -572,20 +669,20 @@ EOS
   def test_update_page
     get :update_page
     assert_template nil
-    assert_equal 'text/javascript; charset=UTF-8', @response.headers['Content-Type']
+    assert_equal 'text/javascript; charset=utf-8', @response.headers['Content-Type']
     assert_equal 2, @response.body.split($/).length
   end
   
   def test_update_page_with_instance_variables
     get :update_page_with_instance_variables
     assert_template nil
-    assert_equal 'text/javascript; charset=UTF-8', @response.headers['Content-Type']
+    assert_equal 'text/javascript; charset=utf-8', @response.headers['Content-Type']
     assert_match /balance/, @response.body
     assert_match /\$37/, @response.body
   end
   
   def test_yield_content_for
-    get :yield_content_for
+    assert_not_deprecated { get :yield_content_for }
     assert_equal "<title>Putting stuff in the title!</title>\n\nGreat stuff!\n", @response.body
   end
 
@@ -596,5 +693,58 @@ EOS
 
     get :hello_world_from_rxml_using_action
     assert_equal "<html>\n  <p>Hello</p>\n</html>\n", @response.body
+  end
+
+
+  def test_head_with_location_header
+    get :head_with_location_header
+    assert @response.body.blank?
+    assert_equal "/foo", @response.headers["Location"]
+    assert_response :ok
+  end
+
+  def test_head_with_custom_header
+    get :head_with_custom_header
+    assert @response.body.blank?
+    assert_equal "something", @response.headers["X-Custom-Header"]
+    assert_response :ok
+  end
+
+  def test_head_with_symbolic_status
+    get :head_with_symbolic_status, :status => "ok"
+    assert_equal "200 OK", @response.headers["Status"]
+    assert_response :ok
+
+    get :head_with_symbolic_status, :status => "not_found"
+    assert_equal "404 Not Found", @response.headers["Status"]
+    assert_response :not_found
+
+    ActionController::StatusCodes::SYMBOL_TO_STATUS_CODE.each do |status, code|
+      get :head_with_symbolic_status, :status => status.to_s
+      assert_equal code, @response.response_code
+      assert_response status
+    end
+  end
+
+  def test_head_with_integer_status
+    ActionController::StatusCodes::STATUS_CODES.each do |code, message|
+      get :head_with_integer_status, :status => code.to_s
+      assert_equal message, @response.message
+    end
+  end
+
+  def test_head_with_string_status
+    get :head_with_string_status, :status => "404 Eat Dirt"
+    assert_equal 404, @response.response_code
+    assert_equal "Eat Dirt", @response.message
+    assert_response :not_found
+  end
+
+  def test_head_with_status_code_first
+    get :head_with_status_code_first
+    assert_equal 403, @response.response_code
+    assert_equal "Forbidden", @response.message
+    assert_equal "something", @response.headers["X-Custom-Header"]
+    assert_response :forbidden
   end
 end

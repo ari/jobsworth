@@ -69,17 +69,8 @@ module ActionController #:nodoc:
             logger.info "Streaming file #{path}" unless logger.nil?
             len = options[:buffer_size] || 4096
             File.open(path, 'rb') do |file|
-              if output.respond_to?(:syswrite)
-                begin
-                  while true
-                    output.syswrite(file.sysread(len))
-                  end
-                rescue EOFError
-                end
-              else
-                while buf = file.read(len)
-                  output.write(buf)
-                end
+              while buf = file.read(len)
+                output.write(buf)
               end
             end
           }
@@ -97,8 +88,8 @@ module ActionController #:nodoc:
       # * <tt>:type</tt> - specifies an HTTP content type.
       #   Defaults to 'application/octet-stream'.
       # * <tt>:disposition</tt> - specifies whether the file will be shown inline or downloaded.  
-      # * <tt>:status</tt> - specifies the status code to send with the response. Defaults to '200 OK'.
       #   Valid values are 'inline' and 'attachment' (default).
+      # * <tt>:status</tt> - specifies the status code to send with the response. Defaults to '200 OK'.
       #
       # Generic data download:
       #   send_data buffer
@@ -125,10 +116,10 @@ module ActionController #:nodoc:
         end
 
         disposition = options[:disposition].dup || 'attachment'
-        
+
         disposition <<= %(; filename="#{options[:filename]}") if options[:filename]
 
-        @headers.update(
+        headers.update(
           'Content-Length'            => options[:length],
           'Content-Type'              => options[:type].strip,  # fixes a problem with extra '\r' with some browsers
           'Content-Disposition'       => disposition,
@@ -141,7 +132,7 @@ module ActionController #:nodoc:
         # after it displays the "open/save" dialog, which means that if you 
         # hit "open" the file isn't there anymore when the application that 
         # is called for handling the download is run, so let's workaround that
-        @headers['Cache-Control'] = 'private' if @headers['Cache-Control'] == 'no-cache'
+        headers['Cache-Control'] = 'private' if headers['Cache-Control'] == 'no-cache'
       end
   end
 end

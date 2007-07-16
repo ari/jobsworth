@@ -12,7 +12,7 @@ module ActionWebService # :nodoc:
   #     web_service_api PersonAPI
   #
   #     def find_person(criteria)
-  #       Person.find_all [...]
+  #       Person.find(:all) [...]
   #     end
   #
   #     def delete_person(id)
@@ -33,7 +33,7 @@ module ActionWebService # :nodoc:
   class Base
     # Action WebService subclasses should be reloaded by the dispatcher in Rails
     # when Dependencies.mechanism = :load.
-    include Reloadable::Subclasses
+    include Reloadable::Deprecated
 
     # Whether to report exceptions back to the caller in the protocol's exception
     # format

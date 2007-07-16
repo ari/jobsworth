@@ -3,8 +3,7 @@ require 'optparse'
 module Rails
   module Generator
     module Options
-      def self.append_features(base)
-        super
+      def self.included(base)
         base.extend(ClassMethods)
         class << base
           if respond_to?(:inherited)
@@ -119,6 +118,11 @@ module Rails
         # Adds general options like -h and --quiet.  Usually don't override.
         def add_general_options!(opt)
           opt.separator ''
+          opt.separator 'Rails Info:'
+          opt.on('-v', '--version', 'Show the Rails version number and quit.')
+          opt.on('-h', '--help', 'Show this help message and quit.') { |v| options[:help] = v }
+
+          opt.separator ''
           opt.separator 'General Options:'
 
           opt.on('-p', '--pretend', 'Run but do not make any changes.') { |v| options[:pretend] = v }
@@ -126,7 +130,6 @@ module Rails
           opt.on('-s', '--skip', 'Skip files that already exist.') { options[:collision] = :skip }
           opt.on('-q', '--quiet', 'Suppress normal output.') { |v| options[:quiet] = v }
           opt.on('-t', '--backtrace', 'Debugging: show backtrace on errors.') { |v| options[:backtrace] = v }
-          opt.on('-h', '--help', 'Show this help message.') { |v| options[:help] = v }
           opt.on('-c', '--svn', 'Modify files with subversion. (Note: svn must be in path)') do
             options[:svn] = `svn status`.inject({}) do |opt, e|
               opt[e.chomp[7..-1]] = true

@@ -8,17 +8,27 @@ class CalculationsTest < Test::Unit::TestCase
   fixtures :companies, :accounts, :topics
 
   def test_should_sum_field
-    assert_equal 265, Account.sum(:credit_limit)
+    assert_equal 318, Account.sum(:credit_limit)
   end
 
   def test_should_average_field
     value = Account.average(:credit_limit)
-    assert_equal 53, value
     assert_kind_of Float, value
+    assert_in_delta 53.0, value, 0.001
   end
 
   def test_should_get_maximum_of_field
     assert_equal 60, Account.maximum(:credit_limit)
+  end
+
+  def test_should_get_maximum_of_field_with_include
+    assert_equal 50, Account.maximum(:credit_limit, :include => :firm, :conditions => "companies.name != 'Summit'")
+  end
+
+  def test_should_get_maximum_of_field_with_scoped_include
+    Account.with_scope :find => { :include => :firm, :conditions => "companies.name != 'Summit'" } do
+      assert_equal 50, Account.maximum(:credit_limit)
+    end
   end
 
   def test_should_get_minimum_of_field
@@ -39,13 +49,13 @@ class CalculationsTest < Test::Unit::TestCase
 
   def test_should_order_by_grouped_field
     c = Account.sum(:credit_limit, :group => :firm_id, :order => "firm_id")
-    assert_equal [1, 2, 6], c.keys.compact
+    assert_equal [1, 2, 6, 9], c.keys.compact
   end
 
   def test_should_order_by_calculation
     c = Account.sum(:credit_limit, :group => :firm_id, :order => "sum_credit_limit desc, firm_id")
-    assert_equal [105, 60, 50, 50], c.keys.collect { |k| c[k] }
-    assert_equal [6, 2, 1], c.keys.compact
+    assert_equal [105, 60, 53, 50, 50], c.keys.collect { |k| c[k] }
+    assert_equal [6, 2, 9, 1], c.keys.compact
   end
 
   def test_should_limit_calculation
@@ -104,8 +114,8 @@ class CalculationsTest < Test::Unit::TestCase
   end
   
   def test_should_calculate_with_invalid_field
-    assert_equal 5, Account.calculate(:count, '*')
-    assert_equal 5, Account.calculate(:count, :all)
+    assert_equal 6, Account.calculate(:count, '*')
+    assert_equal 6, Account.calculate(:count, :all)
   end
   
   def test_should_calculate_grouped_with_invalid_field
@@ -121,9 +131,17 @@ class CalculationsTest < Test::Unit::TestCase
     assert_equal 2, c[companies(:rails_core)]
     assert_equal 1, c[companies(:first_client)]
   end
+  
+  def test_should_not_modify_options_when_using_includes
+    options = {:conditions => 'companies.id > 1', :include => :firm}
+    options_copy = options.dup
+    
+    Account.count(:all, options)
+    assert_equal options_copy, options
+  end
 
   def test_should_calculate_grouped_by_function
-    c = Company.count(:all, :group => 'UPPER(type)')
+    c = Company.count(:all, :group => "UPPER(#{QUOTED_TYPE})")
     assert_equal 2, c[nil]
     assert_equal 1, c['DEPENDENTFIRM']
     assert_equal 3, c['CLIENT']
@@ -131,11 +149,15 @@ class CalculationsTest < Test::Unit::TestCase
   end
   
   def test_should_calculate_grouped_by_function_with_table_alias
-    c = Company.count(:all, :group => 'UPPER(companies.type)')
+    c = Company.count(:all, :group => "UPPER(companies.#{QUOTED_TYPE})")
     assert_equal 2, c[nil]
     assert_equal 1, c['DEPENDENTFIRM']
     assert_equal 3, c['CLIENT']
     assert_equal 2, c['FIRM']
+  end
+  
+  def test_should_not_overshadow_enumerable_sum
+    assert_equal 6, [1, 2, 3].sum(&:abs)
   end
 
   def test_should_sum_scoped_field
@@ -174,8 +196,24 @@ class CalculationsTest < Test::Unit::TestCase
       Company.send(:validate_calculation_options, :count, :include => true)
     end
     
-    assert_raises(ArgumentError) { Company.send(:validate_calculation_options, :sum,   :include => :posts) }
     assert_raises(ArgumentError) { Company.send(:validate_calculation_options, :sum,   :foo => :bar) }
     assert_raises(ArgumentError) { Company.send(:validate_calculation_options, :count, :foo => :bar) }
+  end
+
+  def test_should_count_selected_field_with_include
+    assert_equal 6, Account.count(:distinct => true, :include => :firm)
+    assert_equal 4, Account.count(:distinct => true, :include => :firm, :select => :credit_limit)
+  end
+
+  def test_deprecated_count_with_string_parameters
+    assert_deprecated('count') { Account.count('credit_limit > 50') }
+  end
+
+  def test_count_with_no_parameters_isnt_deprecated
+    assert_not_deprecated { Account.count }
+  end
+
+  def test_count_with_too_many_parameters_raises
+    assert_raise(ArgumentError) { Account.count(1, 2, 3) }
   end
 end

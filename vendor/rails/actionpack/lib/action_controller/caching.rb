@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'uri'
 
 module ActionController #:nodoc:
   # Caching is a cheap way of speeding up slow applications by keeping the result of calculations, renderings, and database calls
@@ -117,24 +118,24 @@ module ActionController #:nodoc:
         return unless perform_caching
         if options[:action].is_a?(Array)
           options[:action].dup.each do |action|
-            self.class.expire_page(url_for(options.merge({ :only_path => true, :skip_relative_url_root => true, :action => action })))
+            self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :action => action)))
           end
         else
-          self.class.expire_page(url_for(options.merge({ :only_path => true, :skip_relative_url_root => true })))
+          self.class.expire_page(url_for(options.merge(:only_path => true, :skip_relative_url_root => true)))
         end
       end
 
-      # Manually cache the +content+ in the key determined by +options+. If no content is provided, the contents of @response.body is used
+      # Manually cache the +content+ in the key determined by +options+. If no content is provided, the contents of response.body is used
       # If no options are provided, the current +options+ for this action is used. Example:
       #   cache_page "I'm the cached content", :controller => "lists", :action => "show"
       def cache_page(content = nil, options = {})
         return unless perform_caching && caching_allowed
-        self.class.cache_page(content || @response.body, url_for(options.merge({ :only_path => true, :skip_relative_url_root => true })))
+        self.class.cache_page(content || response.body, url_for(options.merge(:only_path => true, :skip_relative_url_root => true, :format => params[:format])))
       end
 
       private
         def caching_allowed
-          !@request.post? && @response.headers['Status'] && @response.headers['Status'].to_i < 400
+          request.get? && response.headers['Status'].to_i == 200
         end
     end
 
@@ -155,9 +156,12 @@ module ActionController #:nodoc:
     # the current host and the path. So a page that is accessed at http://david.somewhere.com/lists/show/1 will result in a fragment named
     # "david.somewhere.com/lists/show/1". This allows the cacher to differentiate between "david.somewhere.com/lists/" and
     # "jamis.somewhere.com/lists/" -- which is a helpful way of assisting the subdomain-as-account-key pattern.
+    #
+    # Different representations of the same resource, e.g. <tt>http://david.somewhere.com/lists</tt> and <tt>http://david.somewhere.com/lists.xml</tt>
+    # are treated like separate requests and so are cached separately. Keep in mind when expiring an action cache that <tt>:action => 'lists'</tt> is not the same
+    # as <tt>:action => 'list', :format => :xml</tt>.
     module Actions
-      def self.append_features(base) #:nodoc:
-        super
+      def self.included(base) #:nodoc:
         base.extend(ClassMethods)
         base.send(:attr_accessor, :rendered_action_cache)
       end
@@ -173,22 +177,24 @@ module ActionController #:nodoc:
         return unless perform_caching
         if options[:action].is_a?(Array)
           options[:action].dup.each do |action|
-            expire_fragment(url_for(options.merge({ :action => action })).split("://").last)
+            expire_fragment(ActionCachePath.path_for(self, options.merge({ :action => action })))
           end
         else
-          expire_fragment(url_for(options).split("://").last)
+          expire_fragment(ActionCachePath.path_for(self, options))
         end
       end
 
       class ActionCacheFilter #:nodoc:
-        def initialize(*actions)
+        def initialize(*actions, &block)
           @actions = actions
         end
 
         def before(controller)
           return unless @actions.include?(controller.action_name.intern)
-          if cache = controller.read_fragment(controller.url_for.split("://").last)
+          action_cache_path = ActionCachePath.new(controller)
+          if cache = controller.read_fragment(action_cache_path.path)
             controller.rendered_action_cache = true
+            set_content_type!(action_cache_path)
             controller.send(:render_text, cache)
             false
           end
@@ -196,8 +202,60 @@ module ActionController #:nodoc:
 
         def after(controller)
           return if !@actions.include?(controller.action_name.intern) || controller.rendered_action_cache
-          controller.write_fragment(controller.url_for.split("://").last, controller.response.body)
+          controller.write_fragment(ActionCachePath.path_for(controller), controller.response.body)
         end
+        
+        private
+          
+          def set_content_type!(action_cache_path)
+            if extention = action_cache_path.extension
+              content_type = Mime::EXTENSION_LOOKUP[extention]
+              action_cache_path.controller.response.content_type = content_type.to_s
+            end
+          end
+          
+      end
+      
+      class ActionCachePath
+        attr_reader :controller, :options
+        
+        class << self
+          def path_for(*args, &block)
+            new(*args).path
+          end
+        end
+        
+        def initialize(controller, options = {})
+          @controller = controller
+          @options    = options
+        end
+        
+        def path
+          return @path if @path
+          @path = controller.url_for(options).split('://').last
+          normalize!
+          add_extension!
+          URI.unescape(@path)
+        end
+        
+        def extension
+          @extension ||= extract_extension(controller.request.path)
+        end
+        
+        private
+          def normalize!
+            @path << 'index' if @path.last == '/'
+          end
+        
+          def add_extension!
+            @path << ".#{extension}" if extension
+          end
+          
+          def extract_extension(file_path)
+            # Don't want just what comes after the last '.' to accomodate multi part extensions
+            # such as tar.gz.
+            file_path[/^[^.]+\.(.+)$/, 1]
+          end
       end
     end
 
@@ -208,7 +266,7 @@ module ActionController #:nodoc:
     #   <b>Hello <%= @name %></b>
     #   <% cache do %>
     #     All the topics in the system:
-    #     <%= render_collection_of_partials "topic", Topic.find_all %>
+    #     <%= render :partial => "topic", :collection => Topic.find(:all) %>
     #   <% end %>
     #
     # This cache will bind to the name of action that called it. So you would be able to invalidate it using
@@ -246,8 +304,7 @@ module ActionController #:nodoc:
     #   ActionController::Base.fragment_cache_store = :mem_cache_store, "localhost"
     #   ActionController::Base.fragment_cache_store = MyOwnStore.new("parameter")
     module Fragments
-      def self.append_features(base) #:nodoc:
-        super
+      def self.included(base) #:nodoc:
         base.class_eval do
           @@fragment_cache_store = MemoryStore.new
           cattr_reader :fragment_cache_store
@@ -306,7 +363,12 @@ module ActionController #:nodoc:
       # Name can take one of three forms:
       # * String: This would normally take the form of a path like "pages/45/notes"
       # * Hash: Is treated as an implicit call to url_for, like { :controller => "pages", :action => "notes", :id => 45 }
-      # * Regexp: Will destroy all the matched fragments, example: %r{pages/\d*/notes} Ensure you do not specify start and finish in the regex (^$) because the actual filename matched looks like ./cache/filename/path.cache
+      # * Regexp: Will destroy all the matched fragments, example:
+      #     %r{pages/\d*/notes}
+      #   Ensure you do not specify start and finish in the regex (^$) because
+      #   the actual filename matched looks like ./cache/filename/path.cache
+      #   Regexp expiration is not supported on caches which can't iterate over
+      #   all keys, such as memcached.
       def expire_fragment(name, options = nil)
         return unless perform_caching
 
@@ -327,6 +389,7 @@ module ActionController #:nodoc:
       def expire_matched_fragments(matcher = /.*/, options = nil) #:nodoc:
         expire_fragment(matcher, options)
       end
+      deprecate :expire_matched_fragments => :expire_fragment
 
 
       class UnthreadedMemoryStore #:nodoc:
@@ -430,7 +493,7 @@ module ActionController #:nodoc:
             if f =~ matcher
               begin
                 File.delete(f)
-              rescue Object => e
+              rescue SystemCallError => e
                 # If there's no cache, then there's nothing to complain about
               end
             end
@@ -493,8 +556,7 @@ module ActionController #:nodoc:
     #
     # In the example above, four actions are cached and three actions are responsible for expiring those caches.
     module Sweeping
-      def self.append_features(base) #:nodoc:
-        super
+      def self.included(base) #:nodoc:
         base.extend(ClassMethods)
       end
 
@@ -503,8 +565,7 @@ module ActionController #:nodoc:
           return unless perform_caching
           configuration = sweepers.last.is_a?(Hash) ? sweepers.pop : {}
           sweepers.each do |sweeper|
-            observer(sweeper)
-
+            ActiveRecord::Base.observers << sweeper if defined?(ActiveRecord) and defined?(ActiveRecord::Base)
             sweeper_instance = Object.const_get(Inflector.classify(sweeper)).instance
 
             if sweeper_instance.is_a?(Sweeper)
@@ -523,7 +584,7 @@ module ActionController #:nodoc:
 
         # ActiveRecord::Observer will mark this class as reloadable even though it should not be.
         # However, subclasses of ActionController::Caching::Sweeper should be Reloadable
-        include Reloadable::Subclasses
+        include Reloadable::Deprecated
         
         def before(controller)
           self.controller = controller

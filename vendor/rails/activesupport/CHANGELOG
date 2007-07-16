@@ -1,4 +1,251 @@
-*1.3.1* (April 6th, 2005)
+*1.4.2* (March 12th, 2007)
+
+* Ruby 1.8.6 and 1.9 define private Time#to_date and #to_datetime; make them
+public for compatibility.  [Jeremy Kemper]
+
+* Deprecation: warn on stderr if RAILS_DEFAULT_LOGGER isn't set yet.  [Jeremy Kemper]
+
+
+*1.4.1* (February 5th, 2007)
+
+* Optimize Class Inheritable Attributes so that unnecessary hashes are not created.  Closes #7472 [Bruce Perens]
+
+* Added :instance_writer option to #mattr_writer/accessor, #cattr_writer/accessor, and #class_inheritable_writer to skip the creation of the instance writer.  [Rick]
+
+* Full test coverage for Inflector.  #7228 [Dan Kubb]
+
+
+*1.4.0* (January 16th, 2007)
+
+* Document Inflector.ordinalize and merge docs from String inflections.  #7023 [smeade]
+
+* Unbundle flexmock.  [Jeremy Kemper]
+
+* Fix Dependencies.autoloaded? to ignore anonymous modules. Closes #6561. [Nicholas Seckar]
+
+* Update load once paths to prevent nested once constants from being detected and claimed by an external non-once load. [Nicholas Seckar]
+
+* Deprecation: silence warnings when reporting test errors.  [Jeremy Kemper]
+
+* Fix remove_constant to correctly handle constant names of the form "::A::...". References #6720. [Nicholas Seckar]
+
+* Fixed Array#to_xml when it contains a series of hashes (each piece would get its own XML declaration) #6610 [thkarcher/cyu]
+
+* Hash#to_xml handles keys with the same name as Kernel methods.  #6613 [Catfish]
+
+* Don't quote hash keys in Hash#to_json if they're valid JavaScript identifiers.  Disable this with ActiveSupport::JSON.unquote_hash_key_identifiers = false if you need strict JSON compliance. [Sam Stephenson]
+
+* Lazily load the Unicode Database in the UTF-8 Handler [Rick Olson]
+
+* Update dependencies to delete partially loaded constants. [Nicholas Seckar]
+
+* Fix unicode JSON regexp for Onigurama compatibility.  #6494 [whitley]
+
+* Update XmlSimple to 1.0.10. Closes #6532. [nicksieger]
+
+* Update dependencies to allow constants to be defined alongside their siblings. A common case for this is AR model classes with STI; user.rb might define User, Administrator and Guest for example. [Nicholas Seckar]
+
+* next_week respects DST changes.  #6483, #5617, #2353, #2509, #4551 [marclove, rabiedenharn, rails@roetzel.de, jsolson@damogran.org, drbrain@segment7.net]
+
+* Expose methods added to Enumerable in the documentation, such as group_by. Closes #6170. [sergeykojin@gmail.com, Marcel Molina Jr.]
+
+* Ensure Chars#tidy_bytes only tidies broken bytes. Closes #6397 [Manfred Stienstra]
+
+* Add 'unloadable', a method used to mark any constant as requiring an unload after each request. [Nicholas Seckar]
+
+* Make core_ext/string/access.rb multibyte safe. Closes #6388 [Manfred Stienstra]
+
+* Make String#chars slicing behaviour consistent with String. Closes #6387 [Manfred Stienstra]
+
+* Pull in latest multibye patch. Closes #6346 [Manfred Stienstra]
+
+* Add ActiveSupport::Multibyte.  Provides String#chars which lets you deal with strings as a sequence of chars, not of bytes. Closes #6242 [Julian Tarkhanov, Manfred Stienstra, Thijs van der Vossen & Jan Behrens]
+
+* Fix issue with #class_inheritable_accessor saving updates to the parent class when initialized with an Array or Hash [mojombo]
+
+* Hash#to_xml supports Bignum and BigDecimal.  #6313 [edibiase]
+
+* Don't undefine #class in OptionMerger [Rick]
+
+* Hash.create_from_xml has been renamed to Hash.from_xml, alias will exist until Rails 2.0 [DHH]
+
+* alias_method_chain works with accessor= methods also.  #6153 [Caio Chassot]
+
+* Fix loadable_constants_for_path to handle load paths that do not end with a slash. [Nicholas Seckar]
+
+* Fix logic error in determining what was loaded by a given file. Closes #6039. [Nicholas Seckar]
+
+* Equate Kernel.const_missing with Object.const_missing. Fixes #5988. [Nicholas Seckar]
+
+* Don't pad remaining places with in_groups_of if specified padding value is false. [Marcel Molina Jr.]
+
+* Fix cases where empty xml nodes weren't being translated to nil in Hash.create_from_xml [Rick Olso n]
+
+  <written-on type="date"></written-on> # => { :type => 'date' } # WRONG
+  <written-on type="date"></written-on> # => nil # RIGHT
+
+* Tighten rescue clauses.  #5985 [james@grayproductions.net]
+
+* Inflections: don't singularize -ies plurals.  [foamdino@gmail.com, Mark Van Holstyn]
+
+* Update Initializer to use load_once_paths to avoid plugin reloading. References #5852. [Nicholas Seckar]
+
+* Use Array#assoc in ActiveSupport::OrderedHash. [Mauricio Fernandez]
+
+* Greatly increased performance of String.to_json, which speeds up RJS considerably on large pages, fixes #3473 [Shugo Maeda]
+
+* Detect missing_constants calls from removed modules and fail accordingly. [Nicholas Seckar]
+
+* Stop using defined? in Dependencies.qualified_const_defined? since defined? may invoke const_missing. [Nicholas Seckar]
+
+* Dependencies can autoload directories of nested classes. [Jeremy Kemper]
+    Example:
+      invoice.rb            class Invoice
+      invoice/lineitem.rb   class Invoice::Lineitem
+
+* Add Deprecation.silence so that Reloadable does not scold itself. [Nicholas Seckar]
+
+* Add debugging logging to Dependencies. Currently can be enabled with Dependencies.log_activity = true; adding to Initializer and documenting is forthcoming. [Nicholas Seckar]
+
+* Replace Reloadable with improvements to the Dependencies mechanism. [Nicholas Seckar]
+
+* DateTime#to_time gives hour/minute/second resolution.  #5747 [jon.evans@pobox.com]
+
+* attr_internal to support namespacing and deprecation. Like attr_* except backed by internally-named instance variable. Set attr_internal_naming_format to change the format from the default '@_%s'. [Jeremy Kemper]
+    # def foo()   @foo__rofl      end
+    # def foo=(v) @foo__rofl = v  end
+    self.attr_internal_naming_format = '@%s__rofl'
+    attr_internal :foo
+
+* Raise fully qualified names upon name errors. #5533 [lars@pinds.com, Nicholas Seckar]
+
+* Add extention to obtain the missing constant from NameError instances. [Nicholas Seckar]
+
+* Added Module#alias_attribute [Jamis/DHH]. Example:
+
+    class Content < ActiveRecord::Base
+      # has a title attribute
+    end
+ 
+    class Email < ActiveRecord::Base
+      alias_attribute :subject, :title
+    end
+ 
+    e = Email.find(1)
+    e.title    # => "Superstars"
+    e.subject  # => "Superstars"
+    e.subject? # => true
+    e.subject = "Megastars"
+    e.title    # => "Megastars"
+
+* Deprecation: easier to work with warning behavior as procs; default behaviors for each environment so users needn't update env.rb; and testing pleasure with assert_deprecated, assert_not_deprecated. [Jeremy Kemper]
+  By default, test prints to $stderr, dev logs, production ignores.
+  Provide your own per-environment in e.g. config/environments/development.rb:
+    ActiveSupport::Deprecation.behavior = Proc.new { |message| raise message }
+
+* First cut of the Rails Deprecation system.   [Koz]
+
+* Strip boolean XML content before checking for 'true' [Rick Olson]
+
+* Customize default BigDecimal formatting. References #5672 [dave@pragprog.com]
+
+* Correctly convert <foo nil="true"> to nil when using Hash.create_from_xml.  [Rick]
+
+* Optional identity for Enumerable#sum defaults to zero. #5657 [gensym@mac.com]
+
+* HashWithIndifferentAccess shouldn't confuse false and nil. #5601 [shugo@ruby-lang.org]
+
+* Fixed HashWithIndifferentAccess#default #5586 [chris@seagul.co.uk]
+
+* More compatible Hash.create_from_xml. #5523 [nunemaker@gmail.com]
+
+* Added Enumerable#sum for calculating a sum from the elements [DHH, jonathan@daikini.com]. Examples:
+
+    [1, 2, 3].sum
+    payments.sum { |p| p.price * p.tax_rate }
+    payments.sum(&:price)
+
+  This is instead of payments.inject(0) { |sum, p| sum + p.price }
+
+* Correct and clarify Array#to_sentence docs.  #5458 [brad@madriska.com]
+
+* alias_method_chain preserves method punctuation so foo, foo?, and foo! may be chained with the same feature. [Jeremy Kemper]
+    Example:
+      alias_method_chain :save!, :validation
+    is equivalent to
+      alias_method :save_without_validation!, :save!
+      alias_method :save!, :save_with_validation!
+
+* Enhance Symbol#to_proc so it works with list objects, such as multi-dimensional arrays. Closes #5295 [nov@yo.rim.or.jp].  Example:
+
+    {1 => "one", 2 => "two", 3 => "three"}.sort_by(&:first).map(&:last)
+    #=> ["one", "two", "three"]
+
+* Added Hash.create_from_xml(string) which will create a hash from a XML string and even typecast if possible [DHH]. Example:
+
+    Hash.create_from_xml <<-EOT
+      <note>
+        <title>This is a note</title>
+        <created-at type="date">2004-10-10</created-at>
+      </note>
+    EOT
+  
+  ...would return:
+  
+    { :note => { :title => "This is a note", :created_at => Date.new(2004, 10, 10) } }
+
+* Added Jim Weirich's excellent FlexMock class to vendor (Copyright 2003, 2004 by Jim Weirich (jim@weriichhouse.org)) -- it's not automatically required, though, so require 'flexmock' is still necessary [DHH]
+
+* Fixed that Module#alias_method_chain should work with both foo? foo! and foo at the same time #4954 [anna@wota.jp]
+
+* to_xml fixes, features, and speedup: introduce :dasherize option that converts updated_at to updated-at if true (the existing default); binary columns get encoding="base64" attribute; nil values get nil="true" attribute to distinguish empty values; add type information for float columns; allow arbitrarily deep :include; include SQL type information as the type attribute.  #4989 [Blair Zajac <blair@orcaware.com>]
+
+* Add OrderedHash#values. [Sam Stephenson]
+
+* Added Array#to_s(:db) that'll produce a comma-separated list of ids [DHH]. Example:
+    
+    Purchase.find(:all, :conditions => "product_id IN (#{shops.products.to_s(:db)})"
+
+* Normalize classify's argument to a String so that it plays nice with Symbols. [Marcel Molina Jr.] 
+
+* Strip out leading schema name in classify. References #5139. [schoenm@earthlink.net]
+
+* Remove Enumerable#first_match since break(value) handles the use case well enough. [Nicholas Seckar]
+
+  Enumerable#first_match was like detect, but instead of returning the matching element, the yielded value returned. For example:
+  
+    user_xml = adapters(:from => User, :to => Xml).first_match do |adapter|
+      adapter.adapt @user
+    end
+  
+  But this is just as easily done with:
+  
+    user_xml = adapters(:from => User, :to => Xml).each do
+      break adapter.adapt(@user)
+    end
+  
+* Make Array#in_groups_of just return the grouped collection if a block isn't given. [Marcel Molina Jr.] 
+
+* Don't destroy a HashWithIndifferentAccess if symbolize_keys! or  stringify_keys! is called on it. Closes #5076. [Marcel Molina Jr., guy.naor@famundo.com]
+
+* Document Module::delegate. #5002 [pergesu@gmail.com]
+
+* Replace alias method chaining with Module#alias_method_chain. [Marcel Molina Jr.]
+
+* Strip out punctuation on predicates or bang methods being aliased with alias_method_chain since target?_without_feature is not a valid method name. Add tests for Module#alias_method_chain. [Marcel Molina Jr.]
+
+* Replace Ruby's deprecated append_features in favor of included. [Marcel Molina Jr.]
+
+* Allow default options in with_options to be overridden. Closes #4480. [murphy@cYcnus.de] 
+
+* Added Module#alias_method_chain [Jamis Buck]
+
+* Updated to Builder 2.0 [DHH]
+
+* Add Array#split for dividing arrays into one or more subarrays by value or block. [Sam Stephenson]
+
+
+*1.3.1* (April 6th, 2006)
 
 * Clean paths inside of exception messages and traces. [Nicholas Seckar]
 
@@ -7,7 +254,7 @@
 * provide an empty Dependencies::LoadingModule.load which prints deprecation warnings.  Lets 1.0 applications function with .13-style environment.rb.
 
 
-*1.3.0* (March 27th, 2005)
+*1.3.0* (March 27th, 2006)
 
 * When possible, avoid incorrectly obtaining constants from parent modules. Fixes #4221. [Nicholas Seckar]
 

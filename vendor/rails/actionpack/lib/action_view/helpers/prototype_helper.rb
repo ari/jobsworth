@@ -1,4 +1,3 @@
-require File.dirname(__FILE__) + '/javascript_helper'
 require 'set'
 
 module ActionView
@@ -39,7 +38,7 @@ module ActionView
       # XMLHttpRequest. The result of that request can then be inserted into a
       # DOM object whose id can be specified with <tt>options[:update]</tt>. 
       # Usually, the result would be a partial prepared by the controller with
-      # either render_partial or render_partial_collection. 
+      # render :partial. 
       #
       # Examples:
       #   link_to_remote "Delete this post", :update => "posts", 
@@ -59,6 +58,12 @@ module ActionView
       # Optionally, you can use the <tt>options[:position]</tt> parameter to 
       # influence how the target DOM element is updated. It must be one of 
       # <tt>:before</tt>, <tt>:top</tt>, <tt>:bottom</tt>, or <tt>:after</tt>.
+      #
+      # The method used is by default POST. You can also specify GET or you
+      # can simulate PUT or DELETE over POST. All specified with <tt>options[:method]</tt>
+      #
+      # Example:
+      #   link_to_remote "Destroy", :url => person_url(:id => person), :method => :delete
       #
       # By default, these remote requests are processed asynchronous during 
       # which various JavaScript callbacks can be triggered (for progress 
@@ -159,15 +164,20 @@ module ActionView
       #
       # By default the fall-through action is the same as the one specified in 
       # the :url (and the default method is :post).
-      def form_remote_tag(options = {})
+      #
+      # form_remote_tag also takes a block, like form_tag:
+      #   <% form_remote_tag :url => '/posts' do -%>
+      #     <div><%= submit_tag 'Save' %></div>
+      #   <% end -%>
+      def form_remote_tag(options = {}, &block)
         options[:form] = true
 
         options[:html] ||= {}
-        options[:html][:onsubmit] = "#{remote_function(options)}; return false;"
-        options[:html][:action] = options[:html][:action] || url_for(options[:url])
-        options[:html][:method] = options[:html][:method] || "post"
+        options[:html][:onsubmit] = 
+          (options[:html][:onsubmit] ? options[:html][:onsubmit] + "; " : "") + 
+          "#{remote_function(options)}; return false;"
 
-        tag("form", options[:html], true)
+        form_tag(options[:html].delete(:action) || url_for(options[:url]), options[:html], &block)
       end
 
       # Works like form_remote_tag, but uses form_for semantics.
@@ -194,81 +204,6 @@ module ActionView
         tag("input", options[:html], false)
       end
       
-      # Returns a JavaScript function (or expression) that'll update a DOM 
-      # element according to the options passed.
-      #
-      # * <tt>:content</tt>: The content to use for updating. Can be left out
-      #   if using block, see example.
-      # * <tt>:action</tt>: Valid options are :update (assumed by default), 
-      #   :empty, :remove
-      # * <tt>:position</tt> If the :action is :update, you can optionally 
-      #   specify one of the following positions: :before, :top, :bottom, 
-      #   :after.
-      #
-      # Examples:
-      #   <%= javascript_tag(update_element_function("products", 
-      #     :position => :bottom, :content => "<p>New product!</p>")) %>
-      #
-      #   <% replacement_function = update_element_function("products") do %>
-      #     <p>Product 1</p>
-      #     <p>Product 2</p>
-      #   <% end %>
-      #   <%= javascript_tag(replacement_function) %>
-      #
-      # This method can also be used in combination with remote method call 
-      # where the result is evaluated afterwards to cause multiple updates on
-      # a page. Example:
-      #
-      #   # Calling view
-      #   <%= form_remote_tag :url => { :action => "buy" }, 
-      #     :complete => evaluate_remote_response %>
-      #   all the inputs here...
-      #
-      #   # Controller action
-      #   def buy
-      #     @product = Product.find(1)
-      #   end
-      #
-      #   # Returning view
-      #   <%= update_element_function(
-      #         "cart", :action => :update, :position => :bottom, 
-      #         :content => "<p>New Product: #{@product.name}</p>")) %>
-      #   <% update_element_function("status", :binding => binding) do %>
-      #     You've bought a new product!
-      #   <% end %>
-      #
-      # Notice how the second call doesn't need to be in an ERb output block
-      # since it uses a block and passes in the binding to render directly. 
-      # This trick will however only work in ERb (not Builder or other 
-      # template forms).
-      #
-      # See also JavaScriptGenerator and update_page.
-      def update_element_function(element_id, options = {}, &block)
-        content = escape_javascript(options[:content] || '')
-        content = escape_javascript(capture(&block)) if block
-        
-        javascript_function = case (options[:action] || :update)
-          when :update
-            if options[:position]
-              "new Insertion.#{options[:position].to_s.camelize}('#{element_id}','#{content}')"
-            else
-              "$('#{element_id}').innerHTML = '#{content}'"
-            end
-          
-          when :empty
-            "$('#{element_id}').innerHTML = ''"
-          
-          when :remove
-            "Element.remove('#{element_id}')"
-          
-          else
-            raise ArgumentError, "Invalid action, choose one of :update, :remove, :empty"
-        end
-        
-        javascript_function << ";\n"
-        options[:binding] ? concat(javascript_function, options[:binding]) : javascript_function
-      end
-      
       # Returns 'eval(request.responseText)' which is the JavaScript function
       # that form_remote_tag can call in :complete to evaluate a multiple
       # update return document using update_element_function calls.
@@ -289,7 +224,7 @@ module ActionView
         javascript_options = options_for_ajax(options)
 
         update = ''
-        if options[:update] and options[:update].is_a?Hash
+        if options[:update] && options[:update].is_a?(Hash)
           update  = []
           update << "success:'#{options[:update][:success]}'" if options[:update][:success]
           update << "failure:'#{options[:update][:failure]}'" if options[:update][:failure]
@@ -303,7 +238,7 @@ module ActionView
           "new Ajax.Updater(#{update}, "
 
         url_options = options[:url]
-        url_options = url_options.merge(:escape => false) if url_options.is_a? Hash
+        url_options = url_options.merge(:escape => false) if url_options.is_a?(Hash)
         function << "'#{url_for(url_options)}'"
         function << ", #{javascript_options})"
 
@@ -438,7 +373,7 @@ module ActionView
               if ActionView::Base.debug_rjs
                 source = javascript.dup
                 javascript.replace "try {\n#{source}\n} catch (e) "
-                javascript << "{ alert('RJS error:\\n\\n' + e.toString()); alert('#{source.gsub(/\r\n|\n|\r/, "\\n").gsub(/["']/) { |m| "\\#{m}" }}'); throw e }"
+                javascript << "{ alert('RJS error:\\n\\n' + e.toString()); alert('#{source.gsub('\\','\0\0').gsub(/\r\n|\n|\r/, "\\n").gsub(/["']/) { |m| "\\#{m}" }}'); throw e }"
               end
             end
           end
@@ -451,6 +386,12 @@ module ActionView
           #   page['blank_slate'].show('first').up # => $('blank_slate').show('first').up();
           def [](id)
             JavaScriptElementProxy.new(self, id)
+          end
+          
+          # Returns an object whose <tt>#to_json</tt> evaluates to +code+. Use this to pass a literal JavaScript 
+          # expression as an argument to another JavaScriptGenerator method.
+          def literal(code)
+            ActiveSupport::JSON::Variable.new(code.to_s)
           end
           
           # Returns a collection reference by finding it through a CSS +pattern+ in the DOM. This collection can then be
@@ -526,7 +467,7 @@ module ActionView
           #
           #   # Replace the DOM element having ID 'person-45' with the
           #   # 'person' partial for the appropriate object.
-          #   replace_html 'person-45', :partial => 'person', :object => @person
+          #   replace 'person-45', :partial => 'person', :object => @person
           #
           # This allows the same partial that is used for the +insert_html+ to
           # be also used for the input to +replace+ without resorting to
@@ -550,22 +491,22 @@ module ActionView
           
           # Removes the DOM elements with the given +ids+ from the page.
           def remove(*ids)
-            record "#{javascript_object_for(ids)}.each(Element.remove)"
+            loop_on_multiple_args 'Element.remove', ids
           end
           
           # Shows hidden DOM elements with the given +ids+.
           def show(*ids)
-            call 'Element.show', *ids
+            loop_on_multiple_args 'Element.show', ids
           end
           
           # Hides the visible DOM elements with the given +ids+.
           def hide(*ids)
-            call 'Element.hide', *ids
+            loop_on_multiple_args 'Element.hide', ids           
           end
           
           # Toggles the visibility of the DOM elements with the given +ids+.
           def toggle(*ids)
-            call 'Element.toggle', *ids
+            loop_on_multiple_args 'Element.toggle', ids            
           end
           
           # Displays an alert dialog with the given +message+.
@@ -573,16 +514,18 @@ module ActionView
             call 'alert', message
           end
           
-          # Redirects the browser to the given +location+, in the same form as
-          # +url_for+.
+          # Redirects the browser to the given +location+, in the same form as +url_for+.
           def redirect_to(location)
             assign 'window.location.href', @context.url_for(location)
           end
           
-          # Calls the JavaScript +function+, optionally with the given 
-          # +arguments+.
-          def call(function, *arguments)
-            record "#{function}(#{arguments_for_call(arguments)})"
+          # Calls the JavaScript +function+, optionally with the given +arguments+.
+          #
+          # If a block is given, the block will be passed to a new JavaScriptGenerator;
+          # the resulting JavaScript code will then be wrapped inside <tt>function() { ... }</tt> 
+          # and passed as the called function's final argument.
+          def call(function, *arguments, &block)
+            record "#{function}(#{arguments_for_call(arguments, block)})"
           end
           
           # Assigns the JavaScript +variable+ the given +value+.
@@ -633,12 +576,18 @@ module ActionView
           end
           
           private
+            def loop_on_multiple_args(method, ids)
+              record(ids.size>1 ? 
+                "#{javascript_object_for(ids)}.each(#{method})" : 
+                "#{method}(#{ids.first.to_json})")
+            end
+              
             def page
               self
             end
           
             def record(line)
-              returning line = "#{line.to_s.chomp.gsub /\;$/, ''};" do
+              returning line = "#{line.to_s.chomp.gsub(/\;\z/, '')};" do
                 self << line
               end
             end
@@ -653,10 +602,16 @@ module ActionView
               object.respond_to?(:to_json) ? object.to_json : object.inspect
             end
           
-            def arguments_for_call(arguments)
+            def arguments_for_call(arguments, block = nil)
+              arguments << block_to_function(block) if block
               arguments.map { |argument| javascript_object_for(argument) }.join ', '
             end
             
+            def block_to_function(block)
+              generator = self.class.new(@context, &block)
+              literal("function() { #{generator.to_s} }")
+            end  
+
             def method_missing(method, *arguments)
               JavaScriptProxy.new(self, method.to_s.camelize)
             end
@@ -673,8 +628,11 @@ module ActionView
       # Works like update_page but wraps the generated JavaScript in a <script>
       # tag. Use this to include generated JavaScript in an ERb template.
       # See JavaScriptGenerator for more information.
-      def update_page_tag(&block)
-        javascript_tag update_page(&block)
+      #
+      # +html_options+ may be a hash of <script> attributes to be passed
+      # to ActionView::Helpers::JavaScriptHelper#javascript_tag.  
+      def update_page_tag(html_options = {}, &block)
+        javascript_tag update_page(&block), html_options
       end
 
     protected
@@ -738,16 +696,16 @@ module ActionView
       end
 
       private
-        def method_missing(method, *arguments)
+        def method_missing(method, *arguments, &block)
           if method.to_s =~ /(.*)=$/
             assign($1, arguments.first)
           else
-            call("#{method.to_s.camelize(:lower)}", *arguments)
+            call("#{method.to_s.camelize(:lower)}", *arguments, &block)
           end
         end
       
-        def call(function, *arguments)
-          append_to_function_chain!("#{function}(#{@generator.send(:arguments_for_call, arguments)})")
+        def call(function, *arguments, &block)
+          append_to_function_chain!("#{function}(#{@generator.send(:arguments_for_call, arguments, block)})")
           self
         end
 
@@ -756,7 +714,7 @@ module ActionView
         end
         
         def function_chain
-          @function_chain ||= @generator.instance_variable_get("@lines")
+          @function_chain ||= @generator.instance_variable_get(:@lines)
         end
         
         def append_to_function_chain!(call)
@@ -771,6 +729,21 @@ module ActionView
         super(generator, "$(#{id.to_json})")
       end
       
+      # Allows access of element attributes through +attribute+. Examples:
+      #
+      #   page['foo']['style']                  # => $('foo').style;
+      #   page['foo']['style']['color']         # => $('blank_slate').style.color;
+      #   page['foo']['style']['color'] = 'red' # => $('blank_slate').style.color = 'red';
+      #   page['foo']['style'].color = 'red'    # => $('blank_slate').style.color = 'red';
+      def [](attribute)
+        append_to_function_chain!(attribute)
+        self
+      end
+      
+      def []=(variable, value)
+        assign(variable, value)
+      end
+      
       def replace_html(*options_for_render)
         call 'update', @generator.send(:render, *options_for_render)
       end
@@ -779,8 +752,8 @@ module ActionView
         call 'replace', @generator.send(:render, *options_for_render)
       end
       
-      def reload
-        replace :partial => @id.to_s
+      def reload(options_for_replace = {})
+        replace(options_for_replace.merge({ :partial => @id.to_s }))
       end
       
     end
@@ -811,8 +784,8 @@ module ActionView
     end
 
     class JavaScriptCollectionProxy < JavaScriptProxy #:nodoc:
-      ENUMERABLE_METHODS_WITH_RETURN = [:all, :any, :collect, :map, :detect, :find, :find_all, :select, :max, :min, :partition, :reject, :sort_by]
-      ENUMERABLE_METHODS = ENUMERABLE_METHODS_WITH_RETURN + [:each]
+      ENUMERABLE_METHODS_WITH_RETURN = [:all, :any, :collect, :map, :detect, :find, :find_all, :select, :max, :min, :partition, :reject, :sort_by] unless defined? ENUMERABLE_METHODS_WITH_RETURN
+      ENUMERABLE_METHODS = ENUMERABLE_METHODS_WITH_RETURN + [:each] unless defined? ENUMERABLE_METHODS
       attr_reader :generator
       delegate :arguments_for_call, :to => :generator
 
@@ -899,3 +872,5 @@ module ActionView
     end
   end
 end
+
+require File.dirname(__FILE__) + '/javascript_helper'

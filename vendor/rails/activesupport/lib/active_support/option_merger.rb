@@ -1,7 +1,7 @@
 module ActiveSupport
   class OptionMerger #:nodoc:
     instance_methods.each do |method| 
-      undef_method(method) if method !~ /^(__|instance_eval)/
+      undef_method(method) if method !~ /^(__|instance_eval|class)/
     end
     
     def initialize(context, options)
@@ -15,8 +15,8 @@ module ActiveSupport
       end
       
       def merge_argument_options!(arguments)
-        arguments << if arguments.last.respond_to? :merge!
-          arguments.pop.dup.merge!(@options)
+        arguments << if arguments.last.respond_to? :to_hash
+          @options.merge(arguments.pop)
         else
           @options.dup
         end  

@@ -3,12 +3,13 @@ module ActionController #:nodoc:
     def self.included(base)
       base.extend(ClassMethods)
       base.class_eval do
+        # NOTE: Can't use alias_method_chain here because +render_without_layout+ is already
+        # defined as a publicly exposed method
         alias_method :render_with_no_layout, :render
         alias_method :render, :render_with_a_layout
 
         class << self
-          alias_method :inherited_without_layout, :inherited
-          alias_method :inherited, :inherited_with_layout
+          alias_method_chain :inherited, :layout
         end
       end
     end
@@ -26,9 +27,9 @@ module ActionController #:nodoc:
     # With layouts, you can flip it around and have the common structure know where to insert changing content. This means
     # that the header and footer are only mentioned in one place, like this:
     #
-    #   <!-- The header part of this layout -->
+    #   // The header part of this layout
     #   <%= yield %>
-    #   <!-- The footer part of this layout -->
+    #   // The footer part of this layout -->
     #
     # And then you have content pages that look like this:
     #
@@ -37,9 +38,9 @@ module ActionController #:nodoc:
     # Not a word about common structures. At rendering time, the content page is computed and then inserted in the layout, 
     # like this:
     #
-    #   <!-- The header part of this layout -->
+    #   // The header part of this layout
     #   hello world
-    #   <!-- The footer part of this layout -->
+    #   // The footer part of this layout -->
     #
     # == Accessing shared variables
     #
@@ -182,7 +183,6 @@ module ActionController #:nodoc:
       private
         def inherited_with_layout(child)
           inherited_without_layout(child)
-          child.send :include, Reloadable
           layout_match = child.name.underscore.sub(/_controller$/, '').sub(/^controllers\//, '')
           child.layout(layout_match) unless layout_list.grep(%r{layouts/#{layout_match}\.[a-z][0-9a-z]*$}).empty?
         end
@@ -235,6 +235,8 @@ module ActionController #:nodoc:
       template_with_options = options.is_a?(Hash)
 
       if apply_layout?(template_with_options, options) && (layout = pick_layout(template_with_options, options, deprecated_layout))
+        assert_existence_of_template_file(layout)
+
         options = options.merge :layout => false if template_with_options
         logger.info("Rendering #{options} within #{layout}") if logger
 
@@ -248,6 +250,7 @@ module ActionController #:nodoc:
         erase_render_results
         add_variables_to_assigns
         @template.instance_variable_set("@content_for_layout", content_for_layout)
+        response.layout = layout
         render_text(@template.render_file(layout, true), deprecated_status)
       else
         render_with_no_layout(options, deprecated_status, &block)
@@ -263,7 +266,7 @@ module ActionController #:nodoc:
 
       def candidate_for_layout?(options)
         (options.has_key?(:layout) && options[:layout] != false) || 
-        options.values_at(:text, :xml, :file, :inline, :partial, :nothing).compact.empty? &&
+        options.values_at(:text, :xml, :json, :file, :inline, :partial, :nothing).compact.empty? &&
         !template_exempt_from_layout?(default_template_name(options[:action] || options[:template]))
       end
 

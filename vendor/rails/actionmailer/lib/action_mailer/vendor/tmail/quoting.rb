@@ -49,25 +49,31 @@ module TMail
     class << self
       def unquote_and_convert_to(text, to_charset, from_charset = "iso-8859-1", preserve_underscores=false)
         return "" if text.nil?
-        if text =~ /^=\?(.*?)\?(.)\?(.*)\?=$/
-          from_charset = $1
-          quoting_method = $2
-          text = $3
-          case quoting_method.upcase
-            when "Q" then
-              unquote_quoted_printable_and_convert_to(text, to_charset, from_charset, preserve_underscores)
-            when "B" then
-              unquote_base64_and_convert_to(text, to_charset, from_charset)
-            else
-              raise "unknown quoting method #{quoting_method.inspect}"
-          end
-        else
-          convert_to(text, to_charset, from_charset)
+        text.gsub(/(.*?)(?:(?:=\?(.*?)\?(.)\?(.*?)\?=)|$)/) do
+          before = $1
+          from_charset = $2
+          quoting_method = $3
+          text = $4
+
+          before = convert_to(before, to_charset, from_charset) if before.length > 0
+          before + case quoting_method
+              when "q", "Q" then
+                unquote_quoted_printable_and_convert_to(text, to_charset, from_charset, preserve_underscores)
+              when "b", "B" then
+                unquote_base64_and_convert_to(text, to_charset, from_charset)
+              when nil then
+                # will be nil at the end of the string, due to the nature of
+                # the regex used.
+                ""
+              else
+                raise "unknown quoting method #{quoting_method.inspect}"
+            end
         end
       end
  
       def unquote_quoted_printable_and_convert_to(text, to, from, preserve_underscores=false)
         text = text.gsub(/_/, " ") unless preserve_underscores
+        text = text.gsub(/\r\n|\r/, "\n") # normalize newlines
         convert_to(text.unpack("M*").first, to, from)
       end
  
@@ -80,7 +86,7 @@ module TMail
         def convert_to(text, to, from)
           return text unless to && from
           text ? Iconv.iconv(to, from, text).first : ""
-        rescue Iconv::IllegalSequence, Errno::EINVAL
+        rescue Iconv::IllegalSequence, Iconv::InvalidEncoding, Errno::EINVAL
           # the 'from' parameter specifies a charset other than what the text
           # actually is...not much we can do in this case but just return the
           # unconverted text.

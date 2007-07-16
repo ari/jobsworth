@@ -252,7 +252,7 @@ class Fixtures < YAML::Omap
       end               
       all_loaded_fixtures.merge! fixtures_map  
 
-      connection.transaction do
+      connection.transaction(Thread.current['open_transactions'] == 0) do
         fixtures.reverse.each { |fixture| fixture.delete_existing_fixtures }
         fixtures.each { |fixture| fixture.insert_fixtures }
 
@@ -276,6 +276,8 @@ class Fixtures < YAML::Omap
     @class_name = class_name || 
                   (ActiveRecord::Base.pluralize_table_names ? @table_name.singularize.camelize : @table_name.camelize)
     @table_name = ActiveRecord::Base.table_name_prefix + @table_name + ActiveRecord::Base.table_name_suffix
+    @table_name = class_name.table_name if class_name.respond_to?(:table_name)
+    @connection = class_name.connection if class_name.respond_to?(:connection)
     read_fixture_files
   end
 
@@ -294,21 +296,36 @@ class Fixtures < YAML::Omap
     def read_fixture_files
       if File.file?(yaml_file_path)
         # YAML fixtures
-        begin
-          yaml_string = ""
-          Dir["#{@fixture_path}/**/*.yml"].select {|f| test(?f,f) }.each do |subfixture_path|
-            yaml_string << IO.read(subfixture_path)
-          end
-          yaml_string << IO.read(yaml_file_path)
+        yaml_string = ""
+        Dir["#{@fixture_path}/**/*.yml"].select {|f| test(?f,f) }.each do |subfixture_path|
+          yaml_string << IO.read(subfixture_path)
+        end
+        yaml_string << IO.read(yaml_file_path)
 
-          if yaml = YAML::load(erb_render(yaml_string))
-            yaml = yaml.value if yaml.respond_to?(:type_id) and yaml.respond_to?(:value)
-            yaml.each do |name, data|
+        begin
+          yaml = YAML::load(erb_render(yaml_string))
+        rescue Exception=>boom
+          raise Fixture::FormatError, "a YAML error occurred parsing #{yaml_file_path}. Please note that YAML must be consistently indented using spaces. Tabs are not allowed. Please have a look at http://www.yaml.org/faq.html\nThe exact error was:\n  #{boom.class}: #{boom}"
+        end
+
+        if yaml
+          # If the file is an ordered map, extract its children.
+          yaml_value =
+            if yaml.respond_to?(:type_id) && yaml.respond_to?(:value)
+              yaml.value
+            else
+              [yaml]
+            end
+
+          yaml_value.each do |fixture|
+            fixture.each do |name, data|
+              unless data
+                raise Fixture::FormatError, "Bad data for #{@class_name} fixture named #{name} (nil)"
+              end
+
               self[name] = Fixture.new(data, @class_name)
             end
           end
-        rescue Exception=>boom
-          raise Fixture::FormatError, "a YAML error occured parsing #{yaml_file_path}. Please note that YAML must be consistently indented using spaces. Tabs are not allowed. Please have a look at http://www.yaml.org/faq.html\nThe exact error was:\n  #{boom.class}: #{boom}"
         end
       elsif File.file?(csv_file_path)
         # CSV fixtures
@@ -368,7 +385,7 @@ class Fixture #:nodoc:
       when String
         @fixture = read_fixture_file(fixture)
       else
-        raise ArgumentError, "Bad fixture argument #{fixture.inspect}"
+        raise ArgumentError, "Bad fixture argument #{fixture.inspect} during creation of #{class_name} fixture"
     end
 
     @class_name = class_name
@@ -392,7 +409,13 @@ class Fixture #:nodoc:
   end
 
   def value_list
-    @fixture.values.map { |v| ActiveRecord::Base.connection.quote(v).gsub('\\n', "\n").gsub('\\r', "\r") }.join(", ")
+    klass = @class_name.constantize rescue nil
+
+    list = @fixture.inject([]) do |fixtures, (key, value)|
+      col = klass.columns_hash[key] if klass.kind_of?(ActiveRecord::Base)
+      fixtures << ActiveRecord::Base.connection.quote(value, col).gsub('[^\]\\n', "\n").gsub('[^\]\\r', "\r")
+    end
+    list * ', '
   end
 
   def find
@@ -460,7 +483,7 @@ module Test #:nodoc:
           file_name = table_name.to_s
           file_name = file_name.singularize if ActiveRecord::Base.pluralize_table_names
           begin
-            require file_name
+            require_dependency file_name
           rescue LoadError
             # Let's hope the developer has included it himself
           end
@@ -484,12 +507,13 @@ module Test #:nodoc:
       end
 
       def self.uses_transaction(*methods)
-        @uses_transaction ||= []
-        @uses_transaction.concat methods.map { |m| m.to_s }
+        @uses_transaction = [] unless defined?(@uses_transaction)
+        @uses_transaction.concat methods.map(&:to_s)
       end
 
       def self.uses_transaction?(method)
-        @uses_transaction && @uses_transaction.include?(method.to_s)
+        @uses_transaction = [] unless defined?(@uses_transaction)
+        @uses_transaction.include?(method.to_s)
       end
 
       def use_transactional_fixtures?
@@ -498,6 +522,8 @@ module Test #:nodoc:
       end
 
       def setup_with_fixtures
+        return unless defined?(ActiveRecord::Base) && !ActiveRecord::Base.configurations.blank?
+
         if pre_loaded_fixtures && !use_transactional_fixtures
           raise RuntimeError, 'pre_loaded_fixtures requires use_transactional_fixtures' 
         end
@@ -512,7 +538,7 @@ module Test #:nodoc:
             load_fixtures
             @@already_loaded_fixtures[self.class] = @loaded_fixtures
           end
-          ActiveRecord::Base.lock_mutex
+          ActiveRecord::Base.send :increment_open_transactions
           ActiveRecord::Base.connection.begin_db_transaction
 
         # Load fixtures for every test.
@@ -528,10 +554,12 @@ module Test #:nodoc:
       alias_method :setup, :setup_with_fixtures
 
       def teardown_with_fixtures
-        # Rollback changes.
-        if use_transactional_fixtures?
+        return unless defined?(ActiveRecord::Base) && !ActiveRecord::Base.configurations.blank?
+
+        # Rollback changes if a transaction is active.
+        if use_transactional_fixtures? && Thread.current['open_transactions'] != 0
           ActiveRecord::Base.connection.rollback_db_transaction
-          ActiveRecord::Base.unlock_mutex
+          Thread.current['open_transactions'] = 0
         end
         ActiveRecord::Base.verify_active_connections!
       end

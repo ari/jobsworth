@@ -47,14 +47,6 @@ begin
             end
           end
         end
-        
-        def select_all(sql, name = nil)
-          select(sql, name)
-        end
-
-        def select_one(sql, name = nil)
-          select(sql, name).first
-        end
 
         def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
           execute(sql, name = nil)
@@ -71,9 +63,6 @@ begin
           end
           rows_affected
         end
-
-        alias_method :update, :execute
-        alias_method :delete, :execute
 
         def begin_db_transaction
           @connection.set_auto_commit_off
@@ -162,6 +151,7 @@ begin
             :text        => { :name => 'clob', :limit => 32768 },
             :integer     => { :name => 'int' },
             :float       => { :name => 'float' },
+            :decimal     => { :name => 'decimal' },
             :datetime    => { :name => 'timestamp' },
             :timestamp   => { :name => 'timestamp' },
             :time        => { :name => 'time' },

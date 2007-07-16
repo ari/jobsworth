@@ -1,5 +1,8 @@
 require 'active_record/connection_adapters/abstract_adapter'
 
+require 'bigdecimal'
+require 'bigdecimal/util'
+
 # sqlserver_adapter.rb -- ActiveRecord adapter for Microsoft SQL Server
 #
 # Author: Joey Gibson <joey@joeygibson.com>
@@ -10,12 +13,14 @@ require 'active_record/connection_adapters/abstract_adapter'
 #
 # Modifications (ODBC): Mark Imbriaco <mark.imbriaco@pobox.com>
 # Date: 6/26/2005
-#
-# Current maintainer: Ryan Tomayko <rtomayko@gmail.com>
-#
+
 # Modifications (Migrations): Tom Ward <tom@popdog.net>
 # Date: 27/10/2005
 #
+# Modifications (Numerous fixes as maintainer): Ryan Tomayko <rtomayko@gmail.com>
+# Date: Up to July 2006
+
+# Current maintainer: Tom Ward <tom@popdog.net>
 
 module ActiveRecord
   class Base
@@ -45,58 +50,49 @@ module ActiveRecord
   end # class Base
 
   module ConnectionAdapters
-    class ColumnWithIdentity < Column# :nodoc:
-      attr_reader :identity, :is_special, :scale
+    class SQLServerColumn < Column# :nodoc:
+      attr_reader :identity, :is_special
 
-      def initialize(name, default, sql_type = nil, is_identity = false, null = true, scale_value = 0)
+      def initialize(name, default, sql_type = nil, identity = false, null = true) # TODO: check ok to remove scale_value = 0
         super(name, default, sql_type, null)
-        @identity = is_identity
-        @is_special = sql_type =~ /text|ntext|image/i ? true : false
-        @scale = scale_value
+        @identity = identity
+        @is_special = sql_type =~ /text|ntext|image/i
+        # TODO: check ok to remove @scale = scale_value
         # SQL Server only supports limits on *char and float types
         @limit = nil unless @type == :float or @type == :string
       end
 
       def simplified_type(field_type)
         case field_type
-          when /int|bigint|smallint|tinyint/i                        then :integer
-          when /float|double|decimal|money|numeric|real|smallmoney/i then @scale == 0 ? :integer : :float
-          when /datetime|smalldatetime/i                             then :datetime
-          when /timestamp/i                                          then :timestamp
-          when /time/i                                               then :time
-          when /text|ntext/i                                         then :text
-          when /binary|image|varbinary/i                             then :binary
-          when /char|nchar|nvarchar|string|varchar/i                 then :string
-          when /bit/i                                                then :boolean
-          when /uniqueidentifier/i                                   then :string
+          when /money/i             then :decimal
+          when /image/i             then :binary
+          when /bit/i               then :boolean
+          when /uniqueidentifier/i  then :string
+          else super
         end
       end
 
       def type_cast(value)
-        return nil if value.nil? || value =~ /^\s*null\s*$/i
+        return nil if value.nil?
         case type
-        when :string    then value
-        when :integer   then value == true || value == false ? value == true ? 1 : 0 : value.to_i
-        when :float     then value.to_f
         when :datetime  then cast_to_datetime(value)
         when :timestamp then cast_to_time(value)
         when :time      then cast_to_time(value)
         when :date      then cast_to_datetime(value)
         when :boolean   then value == true or (value =~ /^t(rue)?$/i) == 0 or value.to_s == '1'
-        else value
+        else super
         end
       end
-
+      
       def cast_to_time(value)
         return value if value.is_a?(Time)
         time_array = ParseDate.parsedate(value)
-        time_array[0] ||= 2000
-        time_array[1] ||= 1
-        time_array[2] ||= 1
         Time.send(Base.default_timezone, *time_array) rescue nil
       end
 
       def cast_to_datetime(value)
+        return value.to_time if value.is_a?(DBI::Timestamp)
+        
         if value.is_a?(Time)
           if value.year != 0 and value.month != 0 and value.day != 0
             return value
@@ -104,8 +100,23 @@ module ActiveRecord
             return Time.mktime(2000, 1, 1, value.hour, value.min, value.sec) rescue nil
           end
         end
+   
+        if value.is_a?(DateTime)
+          return Time.mktime(value.year, value.mon, value.day, value.hour, value.min, value.sec)
+        end
+        
         return cast_to_time(value) if value.is_a?(Date) or value.is_a?(String) rescue nil
         value
+      end
+      
+      # TODO: Find less hack way to convert DateTime objects into Times
+      
+      def self.string_to_time(value)
+        if value.is_a?(DateTime)
+          return Time.mktime(value.year, value.mon, value.day, value.hour, value.min, value.sec)
+        else
+          super
+        end
       end
 
       # These methods will only allow the adapter to insert binary data with a length of 7K or less
@@ -187,6 +198,7 @@ module ActiveRecord
           :text        => { :name => "text" },
           :integer     => { :name => "int" },
           :float       => { :name => "float", :limit => 8 },
+          :decimal     => { :name => "decimal" },
           :datetime    => { :name => "datetime" },
           :timestamp   => { :name => "datetime" },
           :time        => { :name => "datetime" },
@@ -204,11 +216,23 @@ module ActiveRecord
         true
       end
 
+      def type_to_sql(type, limit = nil, precision = nil, scale = nil) #:nodoc:
+        return super unless type.to_s == 'integer'
+
+        if limit.nil? || limit == 4
+          'integer'
+        elsif limit < 4
+          'smallint'
+        else
+          'bigint'
+        end
+      end
+
       # CONNECTION MANAGEMENT ====================================#
 
       # Returns true if the connection is active.
       def active?
-        @connection.execute("SELECT 1") { }
+        @connection.execute("SELECT 1").finish
         true
       rescue DBI::DatabaseError, DBI::InterfaceError
         false
@@ -229,21 +253,25 @@ module ActiveRecord
         @connection.disconnect rescue nil
       end
 
-      def select_all(sql, name = nil)
-        select(sql, name)
-      end
-
-      def select_one(sql, name = nil)
-        add_limit!(sql, :limit => 1)
-        result = select(sql, name)
-        result.nil? ? nil : result.first
-      end
-
       def columns(table_name, name = nil)
         return [] if table_name.blank?
         table_name = table_name.to_s if table_name.is_a?(Symbol)
         table_name = table_name.split('.')[-1] unless table_name.nil?
-        sql = "SELECT COLUMN_NAME as ColName, COLUMN_DEFAULT as DefaultValue, DATA_TYPE as ColType, IS_NULLABLE As IsNullable, COL_LENGTH('#{table_name}', COLUMN_NAME) as Length, COLUMNPROPERTY(OBJECT_ID('#{table_name}'), COLUMN_NAME, 'IsIdentity') as IsIdentity, NUMERIC_SCALE as Scale FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '#{table_name}'"
+        table_name = table_name.gsub(/[\[\]]/, '')
+        sql = %Q{
+          SELECT 
+            cols.COLUMN_NAME as ColName,  
+            cols.COLUMN_DEFAULT as DefaultValue,
+            cols.NUMERIC_SCALE as numeric_scale,
+            cols.NUMERIC_PRECISION as numeric_precision, 
+            cols.DATA_TYPE as ColType, 
+            cols.IS_NULLABLE As IsNullable,  
+            COL_LENGTH(cols.TABLE_NAME, cols.COLUMN_NAME) as Length,  
+            COLUMNPROPERTY(OBJECT_ID(cols.TABLE_NAME), cols.COLUMN_NAME, 'IsIdentity') as IsIdentity,  
+            cols.NUMERIC_SCALE as Scale 
+          FROM INFORMATION_SCHEMA.COLUMNS cols 
+          WHERE cols.TABLE_NAME = '#{table_name}'   
+        }
         # Comment out if you want to have the Columns select statment logged.
         # Personally, I think it adds unnecessary bloat to the log. 
         # If you do comment it out, make sure to un-comment the "result" line that follows
@@ -252,62 +280,48 @@ module ActiveRecord
         columns = []
         result.each do |field|
           default = field[:DefaultValue].to_s.gsub!(/[()\']/,"") =~ /null/ ? nil : field[:DefaultValue]
-          type = "#{field[:ColType]}(#{field[:Length]})"
+          if field[:ColType] =~ /numeric|decimal/i
+            type = "#{field[:ColType]}(#{field[:numeric_precision]},#{field[:numeric_scale]})"
+          else
+            type = "#{field[:ColType]}(#{field[:Length]})"
+          end
           is_identity = field[:IsIdentity] == 1
           is_nullable = field[:IsNullable] == 'YES'
-          columns << ColumnWithIdentity.new(field[:ColName], default, type, is_identity, is_nullable, field[:Scale])
+          columns << SQLServerColumn.new(field[:ColName], default, type, is_identity, is_nullable)
         end
         columns
       end
 
       def insert(sql, name = nil, pk = nil, id_value = nil, sequence_name = nil)
-        begin
-          table_name = get_table_name(sql)
-          col = get_identity_column(table_name)
-          ii_enabled = false
-
-          if col != nil
-            if query_contains_identity_column(sql, col)
-              begin
-                execute enable_identity_insert(table_name, true)
-                ii_enabled = true
-              rescue Exception => e
-                raise ActiveRecordError, "IDENTITY_INSERT could not be turned ON"
-              end
-            end
-          end
-          log(sql, name) do
-            @connection.execute(sql)
-            id_value || select_one("SELECT @@IDENTITY AS Ident")["Ident"]
-          end
-        ensure
-          if ii_enabled
-            begin
-              execute enable_identity_insert(table_name, false)
-            rescue Exception => e
-              raise ActiveRecordError, "IDENTITY_INSERT could not be turned OFF"
-            end
-          end
-        end
-      end
-
-      def execute(sql, name = nil)
-        if sql =~ /^\s*INSERT/i
-          insert(sql, name)
-        elsif sql =~ /^\s*UPDATE|^\s*DELETE/i
-          log(sql, name) do
-            @connection.execute(sql)
-            retVal = select_one("SELECT @@ROWCOUNT AS AffectedRows")["AffectedRows"]
-          end
-        else
-          log(sql, name) { @connection.execute(sql) }
-        end
+        execute(sql, name)
+        id_value || select_one("SELECT @@IDENTITY AS Ident")["Ident"]
       end
 
       def update(sql, name = nil)
-        execute(sql, name)
+        execute(sql, name) do |handle|
+          handle.rows
+        end || select_one("SELECT @@ROWCOUNT AS AffectedRows")["AffectedRows"]        
       end
+      
       alias_method :delete, :update
+
+      def execute(sql, name = nil)
+        if sql =~ /^\s*INSERT/i && (table_name = query_requires_identity_insert?(sql))
+          log(sql, name) do
+            with_identity_insert_enabled(table_name) do 
+              @connection.execute(sql) do |handle|
+                yield(handle) if block_given?
+              end
+            end
+          end
+        else
+          log(sql, name) do
+            @connection.execute(sql) do |handle|
+              yield(handle) if block_given?
+            end
+          end
+        end
+      end
 
       def begin_db_transaction
         @connection["AutoCommit"] = false
@@ -328,33 +342,19 @@ module ActiveRecord
       end
 
       def quote(value, column = nil)
+        return value.quoted_id if value.respond_to?(:quoted_id)
+
         case value
-          when String                
-            if column && column.type == :binary && column.class.respond_to?(:string_to_binary)
-              "'#{quote_string(column.class.string_to_binary(value))}'"
-            else
-              "'#{quote_string(value)}'"
-            end
-          when NilClass              then "NULL"
           when TrueClass             then '1'
           when FalseClass            then '0'
-          when Float, Fixnum, Bignum then value.to_s
-          when Date                  then "'#{value.to_s}'" 
-          when Time, DateTime        then "'#{value.strftime("%Y-%m-%d %H:%M:%S")}'"
-          else                            "'#{quote_string(value.to_yaml)}'"
+          when Time, DateTime        then "'#{value.strftime("%Y%m%d %H:%M:%S")}'"
+          when Date                  then "'#{value.strftime("%Y%m%d")}'"
+          else                       super
         end
       end
 
       def quote_string(string)
         string.gsub(/\'/, "''")
-      end
-
-      def quoted_true
-        "1"
-      end
-      
-      def quoted_false
-        "0"
       end
 
       def quote_column_name(name)
@@ -363,11 +363,11 @@ module ActiveRecord
 
       def add_limit_offset!(sql, options)
         if options[:limit] and options[:offset]
-          total_rows = @connection.select_all("SELECT count(*) as TotalRows from (#{sql.gsub(/\bSELECT\b/i, "SELECT TOP 1000000000")}) tally")[0][:TotalRows].to_i
+          total_rows = @connection.select_all("SELECT count(*) as TotalRows from (#{sql.gsub(/\bSELECT(\s+DISTINCT)?\b/i, "SELECT#{$1} TOP 1000000000")}) tally")[0][:TotalRows].to_i
           if (options[:limit] + options[:offset]) >= total_rows
             options[:limit] = (total_rows - options[:offset] >= 0) ? (total_rows - options[:offset]) : 0
           end
-          sql.sub!(/^\s*SELECT/i, "SELECT * FROM (SELECT TOP #{options[:limit]} * FROM (SELECT TOP #{options[:limit] + options[:offset]} ")
+          sql.sub!(/^\s*SELECT(\s+DISTINCT)?/i, "SELECT * FROM (SELECT TOP #{options[:limit]} * FROM (SELECT#{$1} TOP #{options[:limit] + options[:offset]} ")
           sql << ") AS tmp1"
           if options[:order]
             options[:order] = options[:order].split(',').map do |field|
@@ -378,7 +378,9 @@ module ActiveRecord
                 tc << '\\]'
               end
               if sql =~ /#{tc} AS (t\d_r\d\d?)/
-                  parts[0] = $1
+                parts[0] = $1
+              elsif parts[0] =~ /\w+\.(\w+)/
+                parts[0] = $1
               end
               parts.join(' ')
             end.join(', ')
@@ -387,7 +389,7 @@ module ActiveRecord
             sql << " ) AS tmp2"
           end
         elsif sql !~ /^\s*SELECT (@@|COUNT\()/i
-          sql.sub!(/^\s*SELECT([\s]*distinct)?/i) do
+          sql.sub!(/^\s*SELECT(\s+DISTINCT)?/i) do
             "SELECT#{$1} TOP #{options[:limit]}"
           end unless options[:limit].nil?
         end
@@ -411,42 +413,55 @@ module ActiveRecord
       end
 
       def tables(name = nil)
-        execute("SELECT table_name from information_schema.tables WHERE table_type = 'BASE TABLE'", name).inject([]) do |tables, field|
-          table_name = field[0]
-          tables << table_name unless table_name == 'dtproperties'
-          tables
+        execute("SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE'", name) do |sth|
+          sth.inject([]) do |tables, field|
+            table_name = field[0]
+            tables << table_name unless table_name == 'dtproperties'
+            tables
+          end
         end
       end
 
       def indexes(table_name, name = nil)
-        indexes = []
-        execute("EXEC sp_helpindex #{table_name}", name).each do |index| 
-          unique = index[1] =~ /unique/
-          primary = index[1] =~ /primary key/
-          if !primary
-            indexes << IndexDefinition.new(table_name, index[0], unique, index[2].split(", "))
+        ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = false
+        indexes = []        
+        execute("EXEC sp_helpindex '#{table_name}'", name) do |sth|
+          sth.each do |index| 
+            unique = index[1] =~ /unique/
+            primary = index[1] =~ /primary key/
+            if !primary
+              indexes << IndexDefinition.new(table_name, index[0], unique, index[2].split(", "))
+            end
           end
         end
         indexes
+        ensure
+          ActiveRecord::Base.connection.instance_variable_get("@connection")["AutoCommit"] = true
       end
             
       def rename_table(name, new_name)
         execute "EXEC sp_rename '#{name}', '#{new_name}'"
       end
       
-      def remove_column(table_name, column_name)
-        execute "ALTER TABLE #{table_name} DROP COLUMN #{column_name}"
-      end 
-      
+      # Adds a new column to the named table.
+      # See TableDefinition#column for details of the options you can use.
+      def add_column(table_name, column_name, type, options = {})
+        add_column_sql = "ALTER TABLE #{table_name} ADD #{quote_column_name(column_name)} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"
+        add_column_options!(add_column_sql, options)
+        # TODO: Add support to mimic date columns, using constraints to mark them as such in the database
+        # add_column_sql << " CONSTRAINT ck__#{table_name}__#{column_name}__date_only CHECK ( CONVERT(CHAR(12), #{quote_column_name(column_name)}, 14)='00:00:00:000' )" if type == :date       
+        execute(add_column_sql)
+      end
+       
       def rename_column(table, column, new_column_name)
         execute "EXEC sp_rename '#{table}.#{column}', '#{new_column_name}'"
       end
       
       def change_column(table_name, column_name, type, options = {}) #:nodoc:
-        sql_commands = ["ALTER TABLE #{table_name} ALTER COLUMN #{column_name} #{type_to_sql(type, options[:limit])}"]
-        if options[:default]
+        sql_commands = ["ALTER TABLE #{table_name} ALTER COLUMN #{column_name} #{type_to_sql(type, options[:limit], options[:precision], options[:scale])}"]
+        if options_include_default?(options)
           remove_default_constraint(table_name, column_name)
-          sql_commands << "ALTER TABLE #{table_name} ADD CONSTRAINT DF_#{table_name}_#{column_name} DEFAULT #{options[:default]} FOR #{column_name}"
+          sql_commands << "ALTER TABLE #{table_name} ADD CONSTRAINT DF_#{table_name}_#{column_name} DEFAULT #{quote(options[:default], options[:column])} FOR #{column_name}"
         end
         sql_commands.each {|c|
           execute(c)
@@ -454,51 +469,66 @@ module ActiveRecord
       end
       
       def remove_column(table_name, column_name)
+        remove_check_constraints(table_name, column_name)
         remove_default_constraint(table_name, column_name)
-        execute "ALTER TABLE #{table_name} DROP COLUMN #{column_name}"
+        execute "ALTER TABLE [#{table_name}] DROP COLUMN [#{column_name}]"
       end
       
       def remove_default_constraint(table_name, column_name)
-        defaults = select "select def.name from sysobjects def, syscolumns col, sysobjects tab where col.cdefault = def.id and col.name = '#{column_name}' and tab.name = '#{table_name}' and col.id = tab.id"
-        defaults.each {|constraint|
+        constraints = select "select def.name from sysobjects def, syscolumns col, sysobjects tab where col.cdefault = def.id and col.name = '#{column_name}' and tab.name = '#{table_name}' and col.id = tab.id"
+        
+        constraints.each do |constraint|
           execute "ALTER TABLE #{table_name} DROP CONSTRAINT #{constraint["name"]}"
-        }
+        end
+      end
+      
+      def remove_check_constraints(table_name, column_name)
+        # TODO remove all constraints in single method
+        constraints = select "SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE where TABLE_NAME = '#{table_name}' and COLUMN_NAME = '#{column_name}'"
+        constraints.each do |constraint|
+          execute "ALTER TABLE #{table_name} DROP CONSTRAINT #{constraint["CONSTRAINT_NAME"]}"
+        end
       end
       
       def remove_index(table_name, options = {})
-        execute "DROP INDEX #{table_name}.#{index_name(table_name, options)}"
+        execute "DROP INDEX #{table_name}.#{quote_column_name(index_name(table_name, options))}"
       end
 
-      def type_to_sql(type, limit = nil) #:nodoc:
-        native = native_database_types[type]
-        # if there's no :limit in the default type definition, assume that type doesn't support limits
-        limit = limit || native[:limit]
-        column_type_sql = native[:name]
-        column_type_sql << "(#{limit})" if limit
-        column_type_sql
-      end
-
-      private
+      private 
         def select(sql, name = nil)
-          rows = []
           repair_special_columns(sql)
-          log(sql, name) do
-            @connection.select_all(sql) do |row|
-              record = {}
-              row.column_names.each do |col|
-                record[col] = row[col]
-                record[col] = record[col].to_time if record[col].is_a? DBI::Timestamp
+
+          result = []          
+          execute(sql) do |handle|
+            handle.each do |row|
+              row_hash = {}
+              row.each_with_index do |value, i|
+                if value.is_a? DBI::Timestamp
+                  value = DateTime.new(value.year, value.month, value.day, value.hour, value.minute, value.sec)
+                end
+                row_hash[handle.column_names[i]] = value
               end
-              rows << record
+              result << row_hash
             end
           end
-          rows
+          result
         end
 
-        def enable_identity_insert(table_name, enable = true)
-          if has_identity_column(table_name)
-            "SET IDENTITY_INSERT #{table_name} #{enable ? 'ON' : 'OFF'}"
-          end
+        # Turns IDENTITY_INSERT ON for table during execution of the block
+        # N.B. This sets the state of IDENTITY_INSERT to OFF after the
+        # block has been executed without regard to its previous state
+
+        def with_identity_insert_enabled(table_name, &block)
+          set_identity_insert(table_name, true)
+          yield
+        ensure
+          set_identity_insert(table_name, false)  
+        end
+        
+        def set_identity_insert(table_name, enable = true)
+          execute "SET IDENTITY_INSERT #{table_name} #{enable ? 'ON' : 'OFF'}"
+        rescue Exception => e
+          raise ActiveRecordError, "IDENTITY_INSERT could not be turned #{enable ? 'ON' : 'OFF'} for table #{table_name}"  
         end
 
         def get_table_name(sql)
@@ -511,11 +541,7 @@ module ActiveRecord
           end
         end
 
-        def has_identity_column(table_name)
-          !get_identity_column(table_name).nil?
-        end
-
-        def get_identity_column(table_name)
+        def identity_column(table_name)
           @table_columns = {} unless @table_columns
           @table_columns[table_name] = columns(table_name) if @table_columns[table_name] == nil
           @table_columns[table_name].each do |col|
@@ -525,8 +551,10 @@ module ActiveRecord
           return nil
         end
 
-        def query_contains_identity_column(sql, col)
-          sql =~ /\[#{col}\]/
+        def query_requires_identity_insert?(sql)
+          table_name = get_table_name(sql)
+          id_column = identity_column(table_name)
+          sql =~ /\[#{id_column}\]/ ? table_name : nil
         end
 
         def change_order_direction(order)

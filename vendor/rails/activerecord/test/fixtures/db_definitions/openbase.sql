@@ -280,3 +280,23 @@ CREATE TABLE legacy_things (
 go
 CREATE PRIMARY KEY legacy_things (id)
 go
+
+CREATE TABLE numeric_data (
+  id INTEGER NOT NULL DEFAULT _rowid,
+  bank_balance DECIMAL(10,2),
+  big_bank_balance DECIMAL(15,2),
+  world_population DECIMAL(10),
+  my_house_population DECIMAL(2),
+  decimal_number_with_default DECIMAL(3,2) DEFAULT 2.78
+);
+go
+CREATE PRIMARY KEY numeric_data (id)
+go
+
+CREATE TABLE mixed_case_monkeys (
+  monkeyID INTEGER NOT NULL DEFAULT _rowid,
+  fleaCount INTEGER
+);
+go
+CREATE PRIMARY KEY mixed_case_monkeys (monkeyID)
+go

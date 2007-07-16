@@ -1,4 +1,5 @@
 require 'rbconfig'
+require 'commands/servers/base'
 
 unless RUBY_PLATFORM !~ /mswin/ && !silence_stderr { `lighttpd -version` }.blank?
   puts "PROBLEM: Lighttpd is not available on your system (or not in your path)"
@@ -17,8 +18,10 @@ default_config_file = config_file = Pathname.new("#{RAILS_ROOT}/config/lighttpd.
 require 'optparse'
 
 detach = false
+command_line_port = nil
 
 ARGV.options do |opt|
+  opt.on("-p", "--port=port", "Changes the server.port number in the config/lighttpd.conf") { |port| command_line_port = port }
   opt.on('-c', "--config=#{config_file}", 'Specify a different lighttpd config file.') { |path| config_file = path }
   opt.on('-h', '--help', 'Show this message.') { puts opt; exit 0 }
   opt.on('-d', '-d', 'Call with -d to detach') { detach = true; puts "=> Configuration in config/lighttpd.conf" }
@@ -40,11 +43,26 @@ unless File.exist?(config_file)
   FileUtils.cp(source, config_file)
 end
 
+# open the config/lighttpd.conf file and add the current user defined port setting to it
+if command_line_port
+  File.open(config_file, 'r+') do |config|
+    lines = config.readlines
+
+    lines.each do |line|
+      line.gsub!(/^\s*server.port\s*=\s*(\d+)/, "server.port = #{command_line_port}")
+    end
+
+    config.rewind
+    config.print(lines)
+    config.truncate(config.pos)
+  end
+end
+
 config = IO.read(config_file)
 default_port, default_ip = 3000, '0.0.0.0'
 port = config.scan(/^\s*server.port\s*=\s*(\d+)/).first rescue default_port
 ip   = config.scan(/^\s*server.bind\s*=\s*"([^"]+)"/).first rescue default_ip
-puts "=> Rails application started on http://#{ip || default_ip}:#{port || default_port}"
+puts "=> Rails application starting on http://#{ip || default_ip}:#{port || default_port}"
 
 tail_thread = nil
 
@@ -52,23 +70,7 @@ if !detach
   puts "=> Call with -d to detach"
   puts "=> Ctrl-C to shutdown server (see config/lighttpd.conf for options)"
   detach = false
-
-  cursor = File.size(configuration.log_path)
-  last_checked = Time.now
-  tail_thread = Thread.new do
-    File.open(configuration.log_path, 'r') do |f|
-      loop do
-        f.seek cursor
-        if f.mtime > last_checked
-          last_checked = f.mtime
-          contents = f.read
-          cursor += contents.length
-          print contents
-        end
-        sleep 1
-      end
-    end
-  end
+  tail_thread = tail(configuration.log_path)
 end
 
 trap(:INT) { exit }

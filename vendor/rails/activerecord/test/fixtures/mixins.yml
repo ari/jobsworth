@@ -39,6 +39,26 @@ tree_without_order_2:
   type: TreeMixinWithoutOrder
   parent_id:
 
+recursively_cascaded_tree_1:
+  id: 5005
+  type: RecursivelyCascadedTreeMixin
+  parent_id:
+
+recursively_cascaded_tree_2:
+  id: 5006
+  type: RecursivelyCascadedTreeMixin
+  parent_id: 5005
+
+recursively_cascaded_tree_3:
+  id: 5007
+  type: RecursivelyCascadedTreeMixin
+  parent_id: 5006
+
+recursively_cascaded_tree_4:
+  id: 5008
+  type: RecursivelyCascadedTreeMixin
+  parent_id: 5007
+
 # List mixins
 
 <% (1..4).each do |counter| %>  
@@ -55,6 +75,24 @@ list_<%= counter %>:
 set_<%= counter %>:
   id: <%= counter+3000 %>
   type: NestedSet
+<% end %>
+
+# Nested set with STI
+<%
+[ [3100,    0, 1, 10, "NestedSetSuperclass"],
+  [3101, 3100, 2, 5, "NestedSetSubclass"],
+  [3102, 3101, 3, 4, "NestedSetSuperclass"],
+  [3103, 3100, 6, 9, "NestedSetSuperclass"],
+  [3104, 3103, 7, 8, "NestedSetSubclass"]
+].each do |sti| %>
+sti_set_<%= sti[0] %>:
+  id: <%= sti[0] %>
+  parent_id: <%= sti[1] %>
+  lft: <%= sti[2] %>
+  rgt: <%= sti[3] %>
+  type: <%= sti[4] %>
+  root_id: 3100
+  
 <% end %>
 
 # Big old set
