@@ -61,7 +61,7 @@ input, textarea, select { border: 1px solid #AAA; }
 <div id="container">
 
   <div align="center">
-  <% if @flash[:notice] %><div id="notice" align="center"><%= @flash[:notice] %><% flash.clear %></div><% end %>
+  <% if flash[:notice] %><div id="notice" align="center"><%= flash[:notice] %><% flash.clear %></div><% end %>
   <table width="400px" style="border: 1px solid #666666;" cellpadding="0" cellspacing="0">
   <tr><td align="center" id="menu" style="padding-top:2em;padding-bottom:2em;">
   <% if @internal && @internal.logo? %>
@@ -115,7 +115,7 @@ document.forms[0].username.focus();
     </td>
 
     <td valign="top">
-  <% if @flash[:notice] %><div id=notice><%= @flash[:notice] %><% flash.clear %></div><br />
+  <% if flash[:notice] %><div id=notice><%= flash[:notice] %><% flash.clear %></div><br />
   <% else %>
   <div style="padding-top:1em;padding-right:1em;"><strong>After introducing <span style="color:#fba105;">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align="right" style="padding-right:1em;"><em>-- Erlend Simonsen</em></div>
 

@@ -1,35 +1,27 @@
 
 <table cellspacing=0 cellpadding=0 class="content" width=100% style="margin-left: 1em; margin-right:1em;">
     <tr>
-      <td colspan=6 align=left class="page_header"><%=session[:user].company.name %> <%=_ 'File', 2 %></td></tr>
-<tr><td colspan=6>&nbsp;</td></tr>
+      <td align=left class="page_header">
+         <div style="float:left;"><%=session[:user].company.name %> <%=_ 'File', 2 %></div>
+         <div style="float:right;padding-top:0.1em"><%= link_to _('New File'), :action => 'new' %> / <%= link_to _('New Folder'), :action => 'new_folder' %></div> </td></tr>
+<tr><td >&nbsp;</td></tr>
   <tr>
-<%
-  cols = 0
-  first_row = 1
-if @project_files
+    <td id="files">
+<% @project_folders = ['ClockingIT', 'Ellie', 'Fudgie'].sort %>
+<% for folder in @project_folders %>
+  <%= render_partial 'folder_cell', {:folder => folder } %>
+<% end %>
+
+<% if @project_files
   for project_files in @project_files
-  if cols > 4
-     cols = 0
-     first_row = 0
-  %>
-</tr>
-<tr>
-<% end
-    cols += 1
 %>
     <%= render_partial 'file_cell', {:project_files => project_files}%>
 <% end %>
-
-<% while cols <= 4 && first_row == 0
-    cols += 1
-%>
-    <td>&nbsp;</td>
 <% end %>
-<% end %>
+    </td>
   </tr>
   <tr><td colspan=6>&nbsp;</td></tr>
-  <tr><td colspan=6><%= link_to _('[New File]'), :action => 'new' %></td></tr>
+  <tr><td colspan=6></td></tr>
   </table>
 
 

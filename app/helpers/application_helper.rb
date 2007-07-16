@@ -4,7 +4,7 @@ module ApplicationHelper
   include Misc
 
   def tz
-    Timezone.get(@session[:user].time_zone)
+    Timezone.get(session[:user].time_zone)
   end
 
   def online_users
@@ -16,7 +16,7 @@ module ApplicationHelper
   end
 
   def current_user
-    @session[:user]
+    session[:user]
   end
 
   def user_name

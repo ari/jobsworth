@@ -33,6 +33,8 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
 
+  belongs_to    :project_folder
+
   has_one       :binary
   has_one       :thumbnail
 

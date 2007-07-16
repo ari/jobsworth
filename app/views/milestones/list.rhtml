@@ -4,7 +4,7 @@
         <table cellpadding=0 width=100% cellspacing=0 class="content">
           <tr>
             <td align="left" class="page_header">
-              <%= @session[:project].name if @session[:project] %> Milestones
+              <%= session[:project].name if session[:project] %> Milestones
             </td>
           </tr>
           <% for milestone in @milestones %>
@@ -15,8 +15,8 @@
             <td class="milestone" style="padding-top: 1em;">
               <strong>Unassigned</strong>
               <%
-              completed = Task.count( ["project_id = ? AND completed_at is not null AND milestone_id is null ", @session[:project].id] ) * 1.0
-              total = Task.count( ["project_id = ? AND milestone_id is null", @session[:project].id] ) * 1.0
+              completed = Task.count( ["project_id = ? AND completed_at is not null AND milestone_id is null ", session[:project].id] ) * 1.0
+              total = Task.count( ["project_id = ? AND milestone_id is null", session[:project].id] ) * 1.0
               percent = (completed / total) * 100.0
               percent = 0.0 if total == 0.0
               if total > 0.0

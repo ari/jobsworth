@@ -2,7 +2,7 @@
 class PagesController < ApplicationController
 
   def show
-    @page = Page.find(@params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
 
     @body = RedCloth.new(@page.body).to_html
 
@@ -13,7 +13,7 @@ class PagesController < ApplicationController
   end
 
   def create
-    @page = Page.new(@params[:page])
+    @page = Page.new(params[:page])
 
     @page.user = session[:user]
     @page.company = session[:user].company
@@ -41,17 +41,17 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @page = Page.find(@params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
   end
 
   def update
-    @page = Page.find(@params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
 
     old_name = @page.name
     old_body = @page.body
     old_project = @page.project_id
 
-    if @page.update_attributes(@params[:page])
+    if @page.update_attributes(params[:page])
 
       worklog = WorkLog.new
       worklog.user = session[:user]
@@ -76,7 +76,7 @@ class PagesController < ApplicationController
   end
 
   def destroy
-    @page = Page.find(@params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
 
     worklog = WorkLog.new
     worklog.user = session[:user]

@@ -16,11 +16,11 @@ class ProjectFilesController < ApplicationController
   end
 
   def show
-    @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
 
     if @project_files.thumbnail?
-      image = Magick::Image.read(@project_files.file_path ).first
-      send_data image.to_blob, :filename => @project_files.filename, :type => image.mime_type, :disposition => 'inline'
+#      image = Magick::Image.read(@project_files.file_path ).first
+      send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => 'inline'
       GC.start
     else
       send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
@@ -29,17 +29,17 @@ class ProjectFilesController < ApplicationController
 
   # Show the thumbnail for a given image
   def thumbnail
-    @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
 
     if @project_files.thumbnail?
-      image = Magick::Image.read( @project_files.thumbnail_path ).first
-      send_data image.to_blob, :filename => "thumb_" + @project_files.filename, :type => image.mime_type, :disposition => 'inline'
+#      image = Magick::Image.read( @project_files.thumbnail_path ).first
+      send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
       GC.start
     end
   end
 
   def download
-    @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
     send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
   end
 
@@ -65,13 +65,13 @@ class ProjectFilesController < ApplicationController
     filename = filename.split("/").last
     filename = filename.split("\\").last
 
-    @params['project_files']['filename'] = filename.gsub(/[^a-zA-Z0-9.]/, '_')
+    params['project_files']['filename'] = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
-    tmp_file = @params['project_files']['tmp_file']
+    tmp_file = params['project_files']['tmp_file']
 
-    @params['project_files'].delete('tmp_file')
+    params['project_files'].delete('tmp_file')
 
-    @project_files = ProjectFile.new(@params[:project_files])
+    @project_files = ProjectFile.new(params[:project_files])
 
     @project_files.company = session[:user].company
     @project_files.customer = @project_files.project.customer
@@ -103,6 +103,7 @@ class ProjectFilesController < ApplicationController
 
         if image.columns > 0
           @project_files.file_type = ProjectFile::FILETYPE_IMG
+          @project_files.mime_type = image.mime_type
 
           if image.columns > 124 or image.rows > 124
 
@@ -183,12 +184,12 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit
-    @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
   end
 
   def update
-    @project_files = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
-    if @project_files.update_attributes(@params[:project_files])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    if @project_files.update_attributes(params[:project_files])
       redirect_to :action => 'list'
     else
       render_action 'edit'
@@ -196,7 +197,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy
-    @file = ProjectFile.find(@params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
 
     begin
       File.delete(@file.file_path)
@@ -216,8 +217,8 @@ class ProjectFilesController < ApplicationController
     y2 = h + 5
 
     # blur margin
-    x4 = w + 15
-    y4 = h + 15
+    x4 = w + 8
+    y4 = h + 8
 
     c = "White"
     base = Magick::Image.new( x4, y4 ) { self.background_color = c }

@@ -14,7 +14,7 @@ class CustomersController < ApplicationController
   end
 
   def show
-    @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
   end
 
   def new
@@ -22,7 +22,7 @@ class CustomersController < ApplicationController
   end
 
   def create
-    @customer = Customer.new(@params[:customer])
+    @customer = Customer.new(params[:customer])
     @customer.company = session[:user].company
     if @customer.save
       flash['notice'] = _('Client was successfully created.')
@@ -33,12 +33,12 @@ class CustomersController < ApplicationController
   end
 
   def edit
-    @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
   end
 
   def update
-    @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
-    if @customer.update_attributes(@params[:customer])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    if @customer.update_attributes(params[:customer])
       flash['notice'] = _('Client was successfully updated.')
       redirect_to :action => 'list'
     else
@@ -47,7 +47,7 @@ class CustomersController < ApplicationController
   end
 
   def destroy
-    @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     if @customer.projects.count > 0
       flash['notice'] = _('Please delete all projects for %s before deleting it.', @customer.name)
     else
@@ -61,10 +61,10 @@ class CustomersController < ApplicationController
   end
 
   def upload_css
-    filename = @params['customer']['tmp_file'].original_filename
-    @customer = Customer.find(@params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
-    @customer.css = @params['customer']['tmp_file'].read
-    @params['customer'].delete('tmp_file')
+    filename = params['customer']['tmp_file'].original_filename
+    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer.css = params['customer']['tmp_file'].read
+    params['customer'].delete('tmp_file')
 
     if @customer.save
       flash['notice'] = _('CSS successfully uploaded.')
@@ -76,8 +76,8 @@ class CustomersController < ApplicationController
 
 
   def upload_logo
-    filename = @params['customer']['tmp_file'].original_filename
-    @customer = Customer.find(@params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
+    filename = params['customer']['tmp_file'].original_filename
+    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
 
     if @customer.logo?
       File.delete(@customer.logo_path) rescue begin
@@ -146,7 +146,7 @@ class CustomersController < ApplicationController
   end
 
   def delete_logo
-    @customer = Customer.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @customer = Customer.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     if !@customer.nil?
       File.delete(@customer.logo_path) rescue begin end
       @customer.save
@@ -159,9 +159,9 @@ class CustomersController < ApplicationController
 
     if request.subdomains && request.subdomains.first != 'www'
       company = Company.find(:first, :conditions => ["subdomain = ?", request.subdomains.first])
-      @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", company.id])
+      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", company.id])
     else
-      @customer = Customer.find(@params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
     end
 
     unless @customer.logo?
@@ -171,7 +171,7 @@ class CustomersController < ApplicationController
 
     image = Magick::Image.read( @customer.logo_path ).first
     if image
-      send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+      send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
     else
       render :nothing => true
     end

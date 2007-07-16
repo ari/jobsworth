@@ -1,5 +1,5 @@
 <% if session[:user].can?(task.project, 'work') %>
-<% if @session[:sheet] && @session[:sheet].task.id == task.id -%>
+<% if session[:sheet] && session[:sheet].task.id == task.id -%>
 <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
 <% else -%>
 <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name) ),
@@ -9,5 +9,5 @@
 <% end -%>
 <%= link_to(image_tag("add.png", :border => 0, :class => "tooltip work_icon", :title => _("Add earlier work to <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'add_work', :id => task})  -%>
 <% end -%>
-<%= task.issue_num %> <%= task.name %> (<%= "#{task.status_type}" %>) <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if @session[:user].option_tracktime == 1 %>
+<%= task.issue_num %> <%= task.name %> (<%= "#{task.status_type}" %>) <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if session[:user].option_tracktime == 1 %>
 

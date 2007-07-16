@@ -19,9 +19,9 @@ class ApplicationController < ActionController::Base
 
   # Force UTF-8 for all text Content-Types
   def set_charset
-    content_type = @headers["Content-Type"] || 'text/html'
+    content_type = headers["Content-Type"] || 'text/html'
     if /^text\//.match(content_type)
-      @headers["Content-Type"] = "#{content_type}; charset=\"utf-8\""
+      headers["Content-Type"] = "#{content_type}; charset=\"utf-8\""
     end
 
   end

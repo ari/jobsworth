@@ -16,7 +16,7 @@
       <%= render :partial => "left_column" %>
     <td valign="top">
 
-  <% if @flash[:notice] %><div id=notice><h3>Registration Problems</h3><%= @flash[:notice] %></div><br />
+  <% if flash[:notice] %><div id=notice><h3>Registration Problems</h3><%= flash[:notice] %></div><br />
   <% end %>
   </strong></p>
     <div style="padding-top:1em;"><img src="/images/portal/box_top.gif" border=0></div>
@@ -67,7 +67,7 @@
   </table>
 </div>
 <script>
-<% if @flash[:notice].nil? %>
+<% if flash[:notice].nil? %>
   set_select('user_time_zone', get_tz_name());
 <% elsif params[:user] %>
   set_select('user_time_zone', '<%=params[:user][:time_zone]%>');

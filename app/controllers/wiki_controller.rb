@@ -50,4 +50,8 @@ class WikiController < ApplicationController
 
   end
 
+  def cancel_create
+    redirect_from_last
+  end
+
 end

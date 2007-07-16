@@ -7,7 +7,7 @@
         %></p>
 
 <p><label for="milestone_user_id"><%=_ 'Owner' %></label><%= select 'milestone', 'user_id', User.find(:all, :order => 'name',
-    :conditions => ['company_id = ?', @session[:user].company.id] ).collect {|c| [ c.name, c.id ] }, :include_blank => true  %></p>
+    :conditions => ['company_id = ?', session[:user].company.id] ).collect {|c| [ c.name, c.id ] }, :include_blank => true  %></p>
 
 <p><label for="milestone_description"><%=_ 'Description' %></label><%= text_area 'milestone', 'description', :rows => 10  %></p>
 
