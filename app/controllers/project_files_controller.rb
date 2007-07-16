@@ -21,7 +21,7 @@ class ProjectFilesController < ApplicationController
       up = ProjectFolder.new
       up.name = ".."
       up.created_at = Time.now.utc
-      up.parent_id = @current_folder.parent_id
+      up.id = @current_folder.parent_id
       up.project = @current_folder.project
       @project_folders = [up] + @project_folders
     end
@@ -60,8 +60,10 @@ class ProjectFilesController < ApplicationController
     if session[:user].projects.nil? || session[:user].projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
+      current_folder = ProjectFolder.find_by_id(params['id'])
       @project_files = ProjectFile.new
       @project_files.project_folder_id = params[:id]
+      @project_files.project_id = current_folder.nil? ? nil : current_folder.project_id
     end
   end
 
@@ -79,13 +81,14 @@ class ProjectFilesController < ApplicationController
 
       @project_folder = ProjectFolder.new
       @project_folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
+      @project_folder.project_id = @parent_folder.nil? ? nil : @parent_folder.project_id
     end
   end
 
   def create_folder
-    @folder = ProjectFolder.new(params[:project_folder])
-    @folder.company_id = session[:user].company_id
-    if @folder.parent_id.to_i > 0
+    @project_folder = ProjectFolder.new(params[:project_folder])
+    @project_folder.company_id = session[:user].company_id
+    if @project_folder.parent_id.to_i > 0
       parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
       if parent.nil?
         flash['notice'] = _('Unable to find selected parent folder.')
@@ -93,9 +96,12 @@ class ProjectFilesController < ApplicationController
         return
       end
     end
-    @folder.save
-    flash['notice'] = 'Folder successfully created.'
-    redirect_to :action => 'list'
+    if @project_folder.save
+      flash['notice'] = 'Folder successfully created.'
+      redirect_to :action => 'list', :id => @project_folder.parent_id
+    else
+      render :action => 'new_folder', :id => params[:id]
+    end
   end
 
   def upload

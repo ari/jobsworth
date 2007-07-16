@@ -1,7 +1,7 @@
 <div id="folder_cell_<%= folder.id %>" class="file_cell">
   <center>
   <div class="file_cell_img">
-  <%= link_to image_tag("folder_big.png", :border => 0), {:action => 'list', :id => folder.parent_id || nil} %><br />
+  <%= link_to image_tag("folder_big.png", :border => 0), {:action => 'list', :id => folder || nil} %><br />
   </div>
   </center>
   <div class="folder_cell-handle">
@@ -9,7 +9,7 @@
   <%= h folder.project.name %><br />
 
   <div style="padding-left:0.5em;padding-right:0.5em;"><small><%= folder.created_at.strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= "4 files, 409 MB" %> </small></div>
-<% unless folder.id.nil? %>
+<% unless folder.new_record? %>
   <%= link_to _('Enter'), :action => 'list', :id => folder %>
   | <%= link_to _('Edit'), :action => 'edit_folder', :id => folder %>
   | <%= link_to _('Delete'), {:action => 'destroy_folder', :id => folder}, :confirm => _("Are you sure?") %>
@@ -26,6 +26,6 @@
          :before => 'Element.hide(element)'
 %>
 
-<% unless folder.id.nil? %>
+<% unless folder.new_record? %>
 <%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false, :handle => "folder_cell-handle" } %>
 <% end %>
