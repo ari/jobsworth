@@ -1,0 +1,9 @@
+<fieldset>
+<legend><%=_ 'Create New Folder' %></legend>
+
+<%= start_form_tag({ :action => 'create_folder'} ) %>
+  <%= render_partial "form_folder" %>
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
+<%= end_form_tag %>
+
+</fieldset>

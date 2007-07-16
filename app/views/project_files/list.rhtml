@@ -3,11 +3,10 @@
     <tr>
       <td align=left class="page_header">
          <div style="float:left;"><%=session[:user].company.name %> <%=_ 'File', 2 %></div>
-         <div style="float:right;padding-top:0.1em"><%= link_to _('New File'), :action => 'new' %> / <%= link_to _('New Folder'), :action => 'new_folder' %></div> </td></tr>
+         <div style="float:right;padding-top:0.1em"><%= link_to _('New File'), :action => 'new', :id => @current_folder %> / <%= link_to _('New Folder'), :action => 'new_folder', :id => @current_folder %></div> </td></tr>
 <tr><td >&nbsp;</td></tr>
   <tr>
     <td id="files">
-<% @project_folders = ['ClockingIT', 'Ellie', 'Fudgie'].sort %>
 <% for folder in @project_folders %>
   <%= render_partial 'folder_cell', {:folder => folder } %>
 <% end %>

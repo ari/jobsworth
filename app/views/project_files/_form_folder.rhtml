@@ -1,0 +1,9 @@
+<% if @project_folder.parent_id.nil? %>
+<p><label for="project_files_project_id"><%=_ 'Project' %></label><%= select 'project_folder', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
+<% else %>
+<%= hidden_field 'project_folder', 'project_id' %>
+<% end %>
+<p><label for="project_files_name"><%=_ 'Name' %></label><%= text_field 'project_folder', 'name'  %></p>
+<%= hidden_field 'project_folder', 'parent_id' %>
+<br>
+

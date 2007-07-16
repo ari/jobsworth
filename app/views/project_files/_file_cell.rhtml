@@ -1,10 +1,4 @@
 <div id="file_cell_<%= project_files.id%>" class="file_cell">
-  <div class="handle">
-  <strong><%=h project_files.name %></strong><br/>
-  <small> (<%=h project_files.filename %>)</small><br />
-  <%= h project_files.project.name %><br />
-  </div>
-
   <center>
   <div class="file_cell_img">
   <% if project_files.file_type == ProjectFile::FILETYPE_IMG %>
@@ -15,9 +9,16 @@
   </div>
   </center>
 
-  <strong><%=h project_files.created_at.strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= human_size(project_files.file_size) %> </strong><br />
+  <% filename = (project_files.name.nil? || project_files.name.empty?) ? project_files.filename : project_files.name %>
+
+  <div class="file_cell-handle">
+  <strong><%=h filename %></strong><br/>
+  <%= h project_files.project.name %><br />
+
+  <small><%=h project_files.created_at.strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= human_size(project_files.file_size) %> </small><br />
   <%= link_to _('Download'), :action => 'download', :id => project_files %>
   | <%= link_to _('Edit'), :action => 'edit', :id => project_files %>
-  | <%= link_to _('Delete'), {:action => 'destroy', :id => project_files}, :confirm => "Are you sure?" %>
+  | <%= link_to _('Delete'), {:action => 'destroy', :id => project_files}, :confirm => _("Are you sure?") %>
+  </div>
 </div>
-<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => "handle" } %>
+<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => "file_cell-handle" } %>

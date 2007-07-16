@@ -1270,3 +1270,41 @@ li.help {
 #recent_activities_page_header a {
   padding-right: 0.2em;
 }
+
+.file_cell-handle {
+  background-color: #c5cacf;
+  color: #566ca5;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.folder_cell-handle {
+  background-color:#E7E0C4;
+  color: #566ca5;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+.folder-active {
+  background-color: #fff2d4;
+}
+
+.file_cell {
+  border: 1px solid #cfcfcf;
+  float: left;
+  margin: 1em 0.5em 1em 0.5em;
+  text-align: center;
+ }
+
+.file_cell:hover {
+  border: 1px solid black;
+}
+
+.file_cell_img {
+  padding-top: 0.5em;
+  height: 145px;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
+  padding-left: 15px;
+}

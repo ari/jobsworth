@@ -12,7 +12,19 @@ class ProjectFilesController < ApplicationController
   end
 
   def list
-    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id is NULL", session[:user].company.id])
+    folder = params[:id]
+    @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
+    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", session[:user].company_id])
+    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", session[:user].company_id])
+
+    unless folder.nil?
+      up = ProjectFolder.new
+      up.name = ".."
+      up.created_at = Time.now.utc
+      up.parent_id = @current_folder.parent_id
+      up.project = @current_folder.project
+      @project_folders = [up] + @project_folders
+    end
   end
 
   def show
@@ -49,7 +61,41 @@ class ProjectFilesController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
     else
       @project_files = ProjectFile.new
+      @project_files.project_folder_id = params[:id]
     end
+  end
+
+  def new_folder
+    if session[:user].projects.nil? || session[:user].projects.size == 0
+      redirect_to :controller => 'projects', :action => 'new'
+    else
+
+      @parent_folder = ProjectFolder.find_by_id(params[:id])
+      if params[:id].to_i > 0 && @parent_folder.nil?
+        flash['notice'] = _('Unable to find parent folder.')
+        redirect_to :action => list
+        return
+      end
+
+      @project_folder = ProjectFolder.new
+      @project_folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
+    end
+  end
+
+  def create_folder
+    @folder = ProjectFolder.new(params[:project_folder])
+    @folder.company_id = session[:user].company_id
+    if @folder.parent_id.to_i > 0
+      parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+      if parent.nil?
+        flash['notice'] = _('Unable to find selected parent folder.')
+        redirect_to :action => list
+        return
+      end
+    end
+    @folder.save
+    flash['notice'] = 'Folder successfully created.'
+    redirect_to :action => 'list'
   end
 
   def upload
@@ -57,7 +103,7 @@ class ProjectFilesController < ApplicationController
 
     if filename.nil? || filename.strip.length == 0
       flash['notice'] = _('No file selected for upload.')
-      redirect_to :action => 'list'
+      redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
       return
     end
 
@@ -73,24 +119,24 @@ class ProjectFilesController < ApplicationController
 
     @project_files = ProjectFile.new(params[:project_files])
 
-    @project_files.company = session[:user].company
-    @project_files.customer = @project_files.project.customer
+    @project_files.company_id = session[:user].company_id
+    @project_files.customer_id = @project_files.project.customer_id
 
     @project_files.save
     @project_files.reload
 
     if !File.exist?(@project_files.path) || !File.directory?(@project_files.path)
       Dir.mkdir(@project_files.path, 0755) rescue begin
-                                                   @project_files.destroy
-                                                   flash['notice'] = _('Unable to create storage directory.')
-                                                   redirect_to :action => 'list'
-                                                   return
-                                                 end
+                                                    @project_files.destroy
+                                                    flash['notice'] = _('Unable to create storage directory.')
+                                                    redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+                                                    return
+                                                  end
     end
     File.open(@project_files.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
                                                                                               @project_files.destroy
                                                                                               flash['notice'] = _("Permission denied while saving file.")
-                                                                                              redirect_to :action => 'list'
+                                                                                              redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
                                                                                               return
                                                                                             end
 
@@ -170,14 +216,14 @@ class ProjectFilesController < ApplicationController
 
       if @project_files.save
         flash['notice'] = _('File successfully uploaded.')
-        redirect_to :action => 'list'
+        redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
       else
         render_action 'new'
       end
 
     else
       flash['notice'] = _('Empty file.')
-      redirect_to :action => 'list'
+      redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
       return
     end
 
@@ -217,8 +263,8 @@ class ProjectFilesController < ApplicationController
     y2 = h + 5
 
     # blur margin
-    x4 = w + 8
-    y4 = h + 8
+    x4 = w + 15
+    y4 = h + 15
 
     c = "White"
     base = Magick::Image.new( x4, y4 ) { self.background_color = c }
@@ -231,7 +277,9 @@ class ProjectFilesController < ApplicationController
     # requires RMagick 1.6.1 or later.
     base = base.gaussian_blur_channel( 2, 8, Magick::AllChannels )
     base = base.gaussian_blur_channel( 3, 8, Magick::AllChannels )
+
     base.composite( image, Magick::NorthWestGravity, Magick::OverCompositeOp )
+
   end
 
 
