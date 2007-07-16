@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 75) do
+ActiveRecord::Schema.define(:version => 77) do
 
   create_table "binaries", :force => true do |t|
     t.column "data", :binary
@@ -100,9 +100,22 @@ ActiveRecord::Schema.define(:version => 75) do
     t.column "thumbnail_id", :integer
     t.column "file_size", :integer
     t.column "task_id", :integer
+    t.column "project_folder_id", :integer, :default => 0
+    t.column "mime_type", :string, :default => "application/octet-stream"
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
+
+  create_table "project_folders", :force => true do |t|
+    t.column "name", :string
+    t.column "project_id", :integer
+    t.column "parent_id", :integer
+    t.column "lft", :integer
+    t.column "rgt", :integer
+    t.column "created_at", :datetime
+  end
+
+  add_index "project_folders", ["project_id"], :name => "project_folders_project_id_index"
 
   create_table "project_permissions", :force => true do |t|
     t.column "company_id", :integer
