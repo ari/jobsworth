@@ -289,4 +289,52 @@ class ProjectFilesController < ApplicationController
   end
 
 
+  def move
+    elements = params[:id].split(' ')
+
+    drag_id = elements[0].split('_')[2]
+    drop_id = elements[1].split('_')[2]
+
+    if elements[0].include?('folder')
+      @drag = ProjectFolder.find_by_id(drag_id)
+
+      if @drag.nil?
+        render :nothing => true
+        return
+      end
+
+      @drop = ProjectFolder.find_by_id(drop_id) if drop_id.to_i > 0
+      if @drop.nil?
+        # Moving to root
+        @drag.parent_id = nil
+        @folder = ProjectFolder.new(:name => "..", :project => @drag.project)
+      else
+
+        @drag.parent_id = (@drop.parent_id == @drag.parent_id) ? @drop.id : @drop.parent_id
+        @folder = @drop
+      end
+      @drag.save
+    else
+
+      @file = ProjectFile.find_by_id(drag_id)
+      if @file.nil?
+        render :nothing => true
+        return
+      end
+
+      @folder = ProjectFolder.find_by_id(drop_id) if drop_id.to_i > 0
+      if @folder.nil?
+        # Move to root directory
+        @file.project_folder_id = nil
+
+        @folder = ProjectFolder.new(:name => "..", :project => @file.project)
+      else
+        @file.project_folder_id = @folder.id
+      end
+      @file.save
+    end
+
+  end
+
+
 end

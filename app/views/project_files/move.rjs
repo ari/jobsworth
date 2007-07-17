@@ -1,0 +1,3 @@
+page.replace_html "folder_info_#{@folder.id}", :partial => "folder_info", :locals => {:folder => @folder}
+#page.visual_effect(:highlight, "folder_cell_#{@folder.id}", :duration => 2.0)
+

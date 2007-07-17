@@ -1,31 +1,33 @@
-<div id="folder_cell_<%= folder.id %>" class="file_cell">
+<div id="folder_cell_<%= folder.id %>" class="file_cell project-<%= folder.project_id %>">
   <center>
-  <div class="file_cell_img">
-  <%= link_to image_tag("folder_big.png", :border => 0), {:action => 'list', :id => folder || nil} %><br />
-  </div>
+    <div class="file_cell_img">
+      <%= link_to image_tag("folder_big.png", :border => 0), {:action => 'list', :id => folder || nil} %><br />
+    </div>
   </center>
   <div class="folder_cell-handle">
-  <strong><%=h folder.name %></strong><br/>
-  <%= h folder.project.name %><br />
+    <strong><%=link_to( h(folder.name), {:action => 'list', :id => folder }) %></strong><br/>
+    <%= h folder.project.name %><br />
 
-  <div style="padding-left:0.5em;padding-right:0.5em;"><small><%= folder.created_at.strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= "4 files, 409 MB" %> </small></div>
-<% unless folder.new_record? %>
-  <%= link_to _('Enter'), :action => 'list', :id => folder %>
-  | <%= link_to _('Edit'), :action => 'edit_folder', :id => folder %>
-  | <%= link_to _('Delete'), {:action => 'destroy_folder', :id => folder}, :confirm => _("Are you sure?") %>
-<% else %>
-<span>&nbsp;</span>
-<% end %>
+    <div style="padding-left:0.5em;padding-right:0.5em;" id="folder_info_<%= folder.id %>">
+<%= render :partial => "folder_info", :locals => {:folder => folder} %>
+    </div>
   </div>
 </div>
+<script type="text/javascript">
+//<![CDATA[
+Droppables.add("folder_cell_<%=folder.id%>", {accept:'project-<%=folder.project_id%>', hoverclass:'folder-active', onDrop:function(element, dropElement){Element.hide(element); new Ajax.Request('/project_files/move', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
+//]]>
+</script>
 
-<%= drop_receiving_element "folder_cell_#{folder}",
+<%#= drop_receiving_element "folder_cell_#{folder.id}",
+         :url => { :controller => 'project_files', :action => 'move' },
+         :accept => "project-#{folder.project_id}",
          :loading => "Element.show('loading');",
          :complete => "Element.hide('loading');",
          :hoverclass => 'folder-active',
          :before => 'Element.hide(element)'
 %>
 
-<% unless folder.new_record? %>
-<%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false, :handle => "folder_cell-handle" } %>
+<% unless folder.new_record?  %>
+<%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false } %>
 <% end %>

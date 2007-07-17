@@ -1294,6 +1294,7 @@ li.help {
   float: left;
   margin: 1em 0.5em 1em 0.5em;
   text-align: center;
+  cursor: move;
  }
 
 .file_cell:hover {
@@ -1307,4 +1308,12 @@ li.help {
   vertical-align: middle;
   display: table-cell;
   padding-left: 15px;
+}
+
+.file_cell_icon {
+  padding-top: 0.5em;
+  height: 145px;
+  text-align: center;
+  vertical-align: middle;
+  display: table-cell;
 }
