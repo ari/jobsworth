@@ -32,15 +32,20 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many       :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => "task_num"
   has_and_belongs_to_many       :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => "task_num"
 
+  has_one       :ical_entry
+
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
+  after_save { |r|
+    r.ical_entry.destroy if r.ical_entry
+  }
 
-# w: 1, next day-of-week: Every _Sunday_
-# m: 1, next day-of-month: On the _10th_ day of every month
-# n: 2, nth day-of-week: On the _1st_ _Sunday_ of each month
-# y: 2, day-of-year: On _1_/_20_ of each year (mm/dd)
-# a: 1, add-days: _14_ days after each time the task is completed
+  # w: 1, next day-of-week: Every _Sunday_
+  # m: 1, next day-of-month: On the _10th_ day of every month
+  # n: 2, nth day-of-week: On the _1st_ _Sunday_ of each month
+  # y: 2, day-of-year: On _1_/_20_ of each year (mm/dd)
+  # a: 1, add-days: _14_ days after each time the task is completed
 
   def next_repeat_date
     @date = nil

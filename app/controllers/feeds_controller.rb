@@ -81,6 +81,7 @@ class FeedsController < ApplicationController
 
   end
 
+
   def to_localtime(tz, time)
     DateTime.parse(tz.utc_to_local(time).to_s)
   end
@@ -111,8 +112,12 @@ class FeedsController < ApplicationController
 
     tz = TZInfo::Timezone.get(user.time_zone)
 
+    cached = ""
+
     # Find all Project ids this user has access to
     pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+
+
 
     # Find 50 last WorkLogs of the Projects
     unless pids.nil? || pids.empty?
@@ -123,14 +128,14 @@ class FeedsController < ApplicationController
           logger.info("selecting logs")
           @activities = WorkLog.find(:all,
                                      :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", WorkLog::TASK_WORK_ADDED],
-                                     :include => [ :user, { :task => :users, :task => :tags }  ] )
+                                     :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting tasks")
           @tasks = Task.find(:all,
                              :conditions => ["tasks.project_id IN (#{pids})" ],
-                             :include => [:milestone, :tags, :task_owners, :users ])
+                             :include => [:milestone, :tags, :task_owners, :users, :ical_entry ])
         end
 
       else
@@ -139,14 +144,14 @@ class FeedsController < ApplicationController
           logger.info("selecting personal logs")
           @activities = WorkLog.find(:all,
                                      :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, WorkLog::TASK_WORK_ADDED],
-                                     :include => [ :user, { :task => :users, :task => :tags }  ] )
+                                     :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting personal tasks")
           @tasks = user.tasks.find(:all,
                                    :conditions => ["tasks.project_id IN (#{pids})" ],
-                                   :include => [:milestone, :tags, :task_owners, :users ])
+                                   :include => [:milestone, :tags, :task_owners, :users, :ical_entry ])
         end
       end
 
@@ -186,6 +191,12 @@ class FeedsController < ApplicationController
 
 
     @tasks.each do |t|
+
+      if t.ical_entry
+        cached += t.ical_entry.body
+        next
+      end
+
       todo = cal.todo
 
       unless t.completed_at
@@ -223,10 +234,23 @@ class FeedsController < ApplicationController
       event.summary = "#{t.status_type} #{t.issue_name} (#{t.owners})" if t.done?
       event.description = todo.description
       event.categories = t.tags.collect{ |tag| tag.name.upcase } if(t.tags.size > 0)
+
+
+      unless t.ical_entry
+        cache = IcalEntry.new( :body => "#{event.to_ical}#{todo.to_ical}", :task_id => t.id )
+        cache.save
+      end
+
     end
 
 
     @activities.each do |log|
+
+      if log.ical_entry
+        cached += log.ical_entry.body
+        next
+      end
+
       event = cal.event
       event.start = to_localtime(tz, log.started_at)
 #      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
@@ -246,9 +270,15 @@ class FeedsController < ApplicationController
       event.description = description if description && description.length > 0
 
       event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
+
+      unless log.ical_entry
+        cache = IcalEntry.new( :body => "#{event.to_ical}", :work_log_id => log.id )
+        cache.save
+      end
+
     end
 
-    render :inline => cal.to_ical.gsub(/^PERCENT:/, 'PERCENT-COMPLETE:'), :layout => false
+    render :inline => cal.to_ical.gsub(/END:VCALENDAR/,"#{cached}END:VALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:'), :layout => false
 
   end
 

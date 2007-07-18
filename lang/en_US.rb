@@ -17,5 +17,7 @@ Localization.define('en_US') do |l|
   l.store 'about %d hour', ['about %d hour', 'about %d hours']
 
   l.store 'File', ['File', 'Files']
+  l.store '%d folder', ['%d folder', '%d folders']
+  l.store '%d file', ['%d file', '%d files']
 
 end

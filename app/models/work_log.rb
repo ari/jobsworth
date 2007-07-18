@@ -9,6 +9,8 @@ class WorkLog < ActiveRecord::Base
   belongs_to :task
   belongs_to :scm_changeset
 
+  has_one    :ical_entry
+
   TASK_CREATED       = 1
   TASK_COMPLETED     = 2
   TASK_REVERTED      = 3
@@ -38,6 +40,10 @@ class WorkLog < ActiveRecord::Base
   MILESTONE_COMPLETED = 51
   PROJECT_REVERTED   = 52
   MILESTONE_REVERTED = 53
+
+  after_save { |r|
+    r.ical_entry.destroy if r.ical_entry
+  }
 
   def self.full_text_search(q, options = {})
     return nil if q.nil? or q==""

@@ -465,4 +465,9 @@ Localization.define('no_NO') do |l|
   # Activities
   l.store 'Subscribe to the recent activities RSS feed', 'Abonner på alle aktiviteter via RSS'
 
+  # Project Files
+  l.store '%d folder', ['%d mappe', '%d mapper']
+  l.store '%d file', ['%d fil', '%d filer']
+
+
 end
