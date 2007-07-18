@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+
+  require 'digest/md5'
+
   belongs_to    :company
   has_many      :projects, :through => :project_permissions
   has_many      :project_permissions, :dependent => :destroy
@@ -32,7 +35,7 @@ class User < ActiveRecord::Base
   before_create                 :generate_uuid
 
   def generate_uuid
-    @attributes['uuid'] = MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
+    @attributes['uuid'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
   def login(subdomain = nil)
