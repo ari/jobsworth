@@ -21,7 +21,7 @@ class LoginController < ApplicationController
       if !@company.nil?
         render :action => 'login', :layout => false
       else
-        redirect_to "http://www.clockingit.com"
+        redirect_to "http://www.#{$CONFIG[:domain]}"
       end
     end
   end
@@ -221,7 +221,7 @@ class LoginController < ApplicationController
         @company.users << @user
 
         Signup::deliver_signup(@user, @company) rescue flash[:notice] = "Error sending registration email. Account still created.<br/>"
-        redirect_to "http://#{@company.subdomain}.clockingit.com"
+        redirect_to "http://#{@company.subdomain}.#{$CONFIG[:domain]}"
       end
 
     else

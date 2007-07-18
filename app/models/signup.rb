@@ -4,7 +4,7 @@ class Signup < ActionMailer::Base
     @subject    = '[ClockingIT] Account Registration'
     @body       = {:user => user, :company => company}
     @recipients = user.email
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -13,7 +13,7 @@ class Signup < ActionMailer::Base
     @subject    = "[ClockingIT] #{user.company.name} Account Information"
     @body       = {:user => user}
     @recipients = user.email
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -22,7 +22,7 @@ class Signup < ActionMailer::Base
     @subject    = "[ClockingIT] Invitation from #{created_by.name}"
     @body       = {:user => user, :created_by => created_by, :welcome_message => welcome_message}
     @recipients = user.email
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -31,7 +31,7 @@ class Signup < ActionMailer::Base
     @subject    = "[ClockingIT] New version"
     @body       = {:user => user}
     @recipients = user.email
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -40,7 +40,7 @@ class Signup < ActionMailer::Base
     @subject    = "[ClockingIT] #{user.company.name} - Login URL changed"
     @body       = {:user => user}
     @recipients = user.email
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end

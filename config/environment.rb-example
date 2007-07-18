@@ -53,12 +53,15 @@ end
 require 'tzinfo'
 include TZInfo
 
-# Include your application configuration below
+# -- ClockingIT Configuration
+$CONFIG = { :domain => "clockingit.com" }
+
 ActionMailer::Base.smtp_settings = {
   :address  => "localhost",
   :port  => 25,
   :domain  => 'clockingit.com'
 }
+# -- end Configuration
 
 class ActiveRecord::Base
   def dom_id(prefix=nil)

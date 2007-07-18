@@ -11,7 +11,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -27,7 +27,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -43,7 +43,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -59,7 +59,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -75,7 +75,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end
@@ -92,7 +92,7 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
 
@@ -104,7 +104,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = [user.email]
 
-    @from       = 'admin@clockingit.com'
+    @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
     @headers    = {}
   end

@@ -100,7 +100,7 @@ document.forms[0].username.focus();
   <div style="padding-right:280px;height: 95px;"><a href="http://www.clockingit.com"><img id="logo" src="/images/portal/logo.jpg" border="0" style="padding-top:12px;" /></a></div>
 
   <div id="menu" style="position:absolute;top:78px;width:100%;">
-  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com/login/signup">Sign Up</a></div>
+  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.<%= $CONFIG[:domain] %>/login/signup">Sign Up</a></div>
   <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://forum.clockingit.com/">Forum</a></div>
   <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://wiki.clockingit.com/">Wiki</a></div>
   <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com/login/about">About</a></div>
@@ -132,7 +132,7 @@ document.forms[0].username.focus();
     <img id="screenshot" style="padding-left:10px;" src="/images/portal/screen_1.png" border="0"/>
     </div>
     <div style="background: url(/images/portal/lower_bkg.gif) top left repeat-x;height: 56px;" align="right">
-      <div style="padding-right:10px; padding-top:10px; width: 275px;"><a href="http://www.clockingit.com/login/signup"><img src="/images/portal/signup.gif" border="0" /></a></div>
+      <div style="padding-right:10px; padding-top:10px; width: 275px;"><a href="http://www.<%= $CONFIG[:domain] %>/login/signup"><img src="/images/portal/signup.gif" border="0" /></a></div>
     </div>
     </td>
 </tr>

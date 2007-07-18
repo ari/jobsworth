@@ -1,12 +1,12 @@
-<%= @user.company.name %> has moved to 
+<%= @user.company.name %> has moved to
 
-http://<%= @user.company.subdomain %>.clockingit.com 
+http://<%= @user.company.subdomain %>.<%= $CONFIG[:domain] %>
 
-Use this link to log in to ClockingIT from now on. 
+Use this link to log in to ClockingIT from now on.
 
 Account Information
 -------------------
-In case you've forgotten your account details, here they are: 
+In case you've forgotten your account details, here they are:
 Username: <%= @user.username %>
 Password: <%= @user.password %>
 

@@ -1,13 +1,13 @@
 Welcome to Clocking IT!
 
-Your site is located at http://<%= @company.subdomain %>.clockingit.com
+Your site is located at http://<%= @company.subdomain %>.<%= $CONFIG[:domain] %>
 
 Your login information
 ----------------------
 Username: <%= @user.username %>
 Password: <%= @user.password %>
 
-If other people from <%= @company.name %> would like to participate, 
+If other people from <%= @company.name %> would like to participate,
 you can add them from inside Clocking IT, on the Users page. If they try to
 sign up themselves, they'll end up in a different company.
 

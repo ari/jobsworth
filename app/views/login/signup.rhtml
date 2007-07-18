@@ -40,7 +40,7 @@
       <legend>Company / Organization / Group</legend>
       <table width=100% cellpadding=2 cellspacing=0>
       <tr><td align="right" width="150px" valign="top"><label for="company">Name</label></td><td><%= text_field_tag 'company', @params[:company]  %><div id="company_check"></div></td></tr>
-      <tr><td align="right" valign="top"><label for="subdomain">Site at http://</label></td><td><%= text_field_tag 'subdomain', @params[:subdomain]  %>.clockingit.com<div id="subdomain_check"></div></td></tr>
+      <tr><td align="right" valign="top"><label for="subdomain">Site at http://</label></td><td><%= text_field_tag 'subdomain', @params[:subdomain]  %>.<%= $CONFIG[:domain] %><div id="subdomain_check"></div></td></tr>
       </table>
       </fieldset>
       <br/>
@@ -59,7 +59,7 @@
       it will be to inform you of a major new version.</p>
       </div>
     <div style="background: url(/images/portal/lower_bkg.gif) top left repeat-x;height: 56px;" align="right">
-  <div style="padding-right:10px; padding-top:10px; width: 275px;font-size:112%;"><a href="http://www.clockingit.com/login/forgotten_password">Forgotten your login information?</a></div>
+  <div style="padding-right:10px; padding-top:10px; width: 275px;font-size:112%;"><a href="http://www.<%= $CONFIG[:domain] %>/login/forgotten_password">Forgotten your login information?</a></div>
     </div>
 
       </td>

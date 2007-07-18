@@ -1,5 +1,7 @@
 module Misc
 
+  $CONFIG ||= { :domain => "clockingit.com" }
+
   # Format minutes => <tt>1w 2d 3h 3m</tt>
   def format_duration(minutes, duration_format, day_duration)
     res = ''

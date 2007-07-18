@@ -59,7 +59,7 @@ class FeedsController < ApplicationController
     # Create the RSS
     content = RSS::Maker.make("2.0") do |m|
       m.channel.title = "#{user.company.name} Activities"
-      m.channel.link = "http://#{user.company.subdomain}.clockingit.com/activities/list"
+      m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/activities/list"
       m.channel.description = "Last changes from ClockingIT for #{user.name}@#{user.company.name}."
       m.items.do_sort = true # sort items by date
 
@@ -69,7 +69,7 @@ class FeedsController < ApplicationController
         i = m.items.new_item
         i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
         i.title ||= "#{action}"
-        i.link = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{log.task.task_num}" unless log.task.nil?
+        i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
         i.description = log.body unless log.body.nil? || log.body.empty?
         i.date = log.started_at
         i.author = log.user.name unless log.user.nil?
@@ -177,9 +177,9 @@ class FeedsController < ApplicationController
         event.start = to_localtime(tz, m.due_at)
       end
       event.duration = "PT1M"
-      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
+      event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{m.user.email}"
-      event.url = "http://#{user.company.subdomain}.clockingit.com/views/select_milestone/#{m.id}"
+      event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/views/select_milestone/#{m.id}"
       event.summary = "Milestone: #{m.name}"
 
       description = m.description.gsub(/<[^>]*>/,'') if m.description
@@ -212,9 +212,9 @@ class FeedsController < ApplicationController
       end
 
       todo.created = to_localtime(tz, t.created_at)
-      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
+      todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
-      todo.url = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{t.task_num}"
+      todo.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{t.task_num}"
       todo.summary = "#{t.issue_name}"
 
       description = t.description.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if t.description
@@ -227,7 +227,7 @@ class FeedsController < ApplicationController
       event.start = todo.start
       event.duration = "PT1M"
       event.created = todo.created
-      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.clockingit.com"
+      event.uid =  "te#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = todo.organizer
       event.url = todo.url
       event.summary = "#{t.issue_name} - #{t.owners}" unless t.done?
@@ -256,10 +256,10 @@ class FeedsController < ApplicationController
 #      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
-      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.clockingit.com"
+      event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{log.user.email}"
 
-      event.url = "http://#{user.company.subdomain}.clockingit.com/tasks/view/#{log.task.task_num}"
+      event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}"
 
       action = get_action(log)
 
