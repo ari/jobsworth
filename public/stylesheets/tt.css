@@ -737,18 +737,40 @@ pre.auto_generated {
 
 #view_tags_auto_complete ul
 {
-        padding: 0;
-        margin: 0;
+  padding: 0;
+  margin: 0;
 }
 
 #view_tags_auto_complete ul li
 {
-        border-left: none;
-        margin-left: 1px;
-        padding: 0px;
+  border-left: none;
+  margin-left: 1px;
+  padding: 0px;
 }
 
 #view_tags_auto_complete ul li.selected { background-color: #ffb; }
+
+#dependencies_input_auto_complete {
+}
+
+#dependencies_input_auto_complete ul
+{
+  border: 1px solid #ccc;
+  width: 354px;
+  padding: 0;
+  margin: 0;
+}
+
+#dependencies_input_auto_complete ul li
+{
+  border-left: none;
+  margin: 0 2px 0 2px;
+  padding: 0px;
+  width: 350px;
+
+}
+
+#dependencies_input_auto_complete ul li.selected { background-color: #ffb; }
 
 
 div.auto_complete {

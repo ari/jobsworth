@@ -191,4 +191,15 @@ class ApplicationController < ActionController::Base
     format_duration(minutes, session[:user].duration_format, session[:user].workday_duration)
   end
 
+  def highlight( text, k )
+    text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>')
+  end
+
+  def highlight_all( text, keys )
+    keys.each do |k|
+      text = highlight(text, k)
+    end
+    text
+  end
+
 end

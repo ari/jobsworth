@@ -116,6 +116,29 @@ class TasksController < ApplicationController
     render :text => res
   end
 
+  def dependency_targets
+    value = params[:dependencies][0]
+    value.gsub!(/#/, '')
+
+    query = ""
+    @keys = value.split(' ')
+    @keys.each do |k|
+      query << "+issue_name:#{k}* "
+    end
+
+    # Append project id's the user has access to
+    projects = ""
+    current_projects.each do |p|
+      projects << "|" unless projects == ""
+      projects << "#{p.id}"
+    end
+    projects = "+project_id:\"#{projects}\"" unless projects == ""
+
+    # Find the tasks
+    @tasks = Task.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 13})
+    render :inline => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
+  end
+
   # Return a json formatted list of users to refresh the User dropdown
   # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners
@@ -714,7 +737,7 @@ class TasksController < ApplicationController
 
     sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
     if sheet
-	session[:sheet] = sheet
+        session[:sheet] = sheet
         flash['notice'] = "You're already working on #{sheet.task.name}. Please stop or cancel it first."
         redirect_from_last
         return

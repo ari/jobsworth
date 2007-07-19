@@ -191,8 +191,10 @@ function add_dependency() {
 
         <label><%=_ 'Depends on'%> #</label>
         <% if perms['prioritize'].empty? %>
-        <input name="dependencies[]" size="12" type="text" >
-          <div style="float:right;"><a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a></div>
+        <input name="dependencies[]" size="12" type="text" id="dependencies_input">
+        <div style="float:right;"><a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a></div>
+        <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value' } %>
         <% else %>
         <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>
