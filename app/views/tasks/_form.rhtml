@@ -138,10 +138,6 @@ function reset_owners() {
       }
     }
 }
-
-function add_dependency() {
-  new Insertion.Before("dep_separator", '<label>Task #</label><input name=\"dependencies[]\" size=\"12\" type=\"text\"');
-}
 </script>
 
        <%= owner_string %>
@@ -189,12 +185,11 @@ function add_dependency() {
       <fieldset id="task_dependencies" style="padding-right:0;">
         <legend><%=_ "Dependencies"%></legend>
 
-        <label><%=_ 'Depends on'%> #</label>
+        <label for="dependencies_input"><%=_ 'Depends on'%> #</label>
         <% if perms['prioritize'].empty? %>
-        <input name="dependencies[]" size="12" type="text" id="dependencies_input">
-        <div style="float:right;"><a href="#" onclick="javascript:add_dependency(); false;" ><img src="/images/add.png" border="0" title="<%=_ 'Add another dependency' %>" class="tooltip"></a></div>
+        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Enter task numbers, separated by commas. Type text to search.")%>" class="tooltip" >
         <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
-        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value' } %>
+        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value', :tokens => ',' } %>
         <% else %>
         <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>

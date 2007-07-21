@@ -207,10 +207,14 @@ class TasksController < ApplicationController
 
       if params[:dependencies]
         params[:dependencies].each do |d|
-          next if d.to_i == 0
-          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, d.to_i])
-          unless t.nil?
-            @task.dependencies << t
+          deps = d.split(',')
+          deps.each do |dep|
+            dep.strip!
+            next if dep.to_i == 0
+            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, dep])
+            unless t.nil?
+              @task.dependencies << t
+            end
           end
         end
         @task.save
@@ -389,10 +393,14 @@ class TasksController < ApplicationController
       if params[:dependencies]
         @task.dependencies.delete @task.dependencies
         params[:dependencies].each do |d|
-          next if d.to_i == 0
-          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, d.to_i])
-          unless t.nil?
-            @task.dependencies << t
+          deps = d.split(',')
+          deps.each do |dep|
+            dep.strip!
+            next if dep.to_i == 0
+            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, dep])
+            unless t.nil?
+              @task.dependencies << t
+            end
           end
         end
       end
