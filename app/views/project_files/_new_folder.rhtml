@@ -1,0 +1,13 @@
+<fieldset id="new_folder">
+<legend><%=_ 'Create New Folder' %></legend>
+
+<%= form_remote_tag :url => {:action => 'create_folder' },
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');"
+
+ %>
+  <%= render_partial "form_folder" %>
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
+<% end_form_tag %>
+
+</fieldset>

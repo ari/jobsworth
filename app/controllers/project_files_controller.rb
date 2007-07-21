@@ -56,14 +56,14 @@ class ProjectFilesController < ApplicationController
   end
 
 
-  def new
+  def new_file
     if session[:user].projects.nil? || session[:user].projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
       current_folder = ProjectFolder.find_by_id(params['id'])
-      @project_files = ProjectFile.new
-      @project_files.project_folder_id = params[:id]
-      @project_files.project_id = current_folder.nil? ? nil : current_folder.project_id
+      @file = ProjectFile.new
+      @file.project_folder_id = params[:id]
+      @file.project_id = current_folder.nil? ? nil : current_folder.project_id
     end
   end
 
@@ -79,16 +79,16 @@ class ProjectFilesController < ApplicationController
         return
       end
 
-      @project_folder = ProjectFolder.new
-      @project_folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
-      @project_folder.project_id = @parent_folder.nil? ? nil : @parent_folder.project_id
+      @folder = ProjectFolder.new
+      @folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
+      @folder.project_id = @parent_folder.nil? ? nil : @parent_folder.project_id
     end
   end
 
   def create_folder
-    @project_folder = ProjectFolder.new(params[:project_folder])
-    @project_folder.company_id = session[:user].company_id
-    if @project_folder.parent_id.to_i > 0
+    @folder = ProjectFolder.new(params[:folder])
+    @folder.company_id = session[:user].company_id
+    if @folder.parent_id.to_i > 0
       parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
       if parent.nil?
         flash['notice'] = _('Unable to find selected parent folder.')
@@ -96,20 +96,17 @@ class ProjectFilesController < ApplicationController
         return
       end
     end
-    if @project_folder.save
-      flash['notice'] = 'Folder successfully created.'
-      redirect_to :action => 'list', :id => @project_folder.parent_id
-    else
-      render :action => 'new_folder', :id => params[:id]
+    unless @folder.save
+      render :action => 'list'
     end
   end
 
   def upload
-    filename = params['project_files']['tmp_file'].original_filename if params['project_files']
+    filename = params['file']['tmp_file'].original_filename if params['file']
 
     if filename.nil? || filename.strip.length == 0
       flash['notice'] = _('No file selected for upload.')
-      redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+      redirect_to :action => 'list', :id => params[:file][:project_folder_id]
       return
     end
 
@@ -117,13 +114,13 @@ class ProjectFilesController < ApplicationController
     filename = filename.split("/").last
     filename = filename.split("\\").last
 
-    params['project_files']['filename'] = filename.gsub(/[^a-zA-Z0-9.]/, '_')
+    params['file']['filename'] = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
-    tmp_file = params['project_files']['tmp_file']
+    tmp_file = params['file']['tmp_file']
 
-    params['project_files'].delete('tmp_file')
+    params['file'].delete('tmp_file')
 
-    @project_files = ProjectFile.new(params[:project_files])
+    @project_files = ProjectFile.new(params[:file])
 
     @project_files.company_id = session[:user].company_id
     @project_files.customer_id = @project_files.project.customer_id
@@ -135,14 +132,14 @@ class ProjectFilesController < ApplicationController
       Dir.mkdir(@project_files.path, 0755) rescue begin
                                                     @project_files.destroy
                                                     flash['notice'] = _('Unable to create storage directory.')
-                                                    redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+                                                    redirect_to :action => 'list', :id => params[:file][:project_folder_id]
                                                     return
                                                   end
     end
     File.open(@project_files.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
                                                                                               @project_files.destroy
                                                                                               flash['notice'] = _("Permission denied while saving file.")
-                                                                                              redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+                                                                                              redirect_to :action => 'list', :id => params[:file][:project_folder_id]
                                                                                               return
                                                                                             end
 
@@ -220,16 +217,22 @@ class ProjectFilesController < ApplicationController
         end
       end
 
-      if @project_files.save
-        flash['notice'] = _('File successfully uploaded.')
-        redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+      unless @project_files.save
+        flash['notice'] = _('Unable to save file.')
+        redirect_to :action => 'list', :id => params[:file][:project_folder_id]
       else
-        render_action 'new'
+        responds_to_parent do
+          render :update do |page|
+            page.hide('inline_form')
+            page.insert_html :after, 'dir_sep', :partial => 'file_cell',  :locals => { :project_files => @project_files }
+            page.effect(:highlight => "file_cell_#{@project_files.id}", :duration => 2.0)
+          end
+        end
       end
 
     else
       flash['notice'] = _('Empty file.')
-      redirect_to :action => 'list', :id => params[:project_files][:project_folder_id]
+      redirect_to :action => 'list', :id => params[:file][:project_folder_id]
       return
     end
 
@@ -263,7 +266,6 @@ class ProjectFilesController < ApplicationController
     rescue
     end
     @file.destroy
-    redirect_to :action => 'list'
   end
 
   def destroy_folder
@@ -327,9 +329,10 @@ class ProjectFilesController < ApplicationController
         # Moving to root
         @drag.parent_id = nil
         @folder = ProjectFolder.new(:name => "..", :project => @drag.project)
+        @up = false
       else
-
         @drag.parent_id = (@drop.parent_id == @drag.parent_id) ? @drop.id : @drop.parent_id
+        @up = @drop.id != @drag.parent_id
         @folder = @drop
       end
       @drag.save
@@ -345,9 +348,10 @@ class ProjectFilesController < ApplicationController
       if @folder.nil?
         # Move to root directory
         @file.project_folder_id = nil
-
         @folder = ProjectFolder.new(:name => "..", :project => @file.project)
+        @up = false
       else
+        @up = ( @file.project_folder_id.to_i > 0 && (@file.project_folder_id > 0 && @file.project_folder.parent_id == @folder.id))
         @file.project_folder_id = @folder.id
       end
       @file.save

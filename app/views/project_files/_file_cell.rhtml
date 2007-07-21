@@ -1,25 +1,30 @@
 <div id="file_cell_<%= project_files.id%>" class="file_cell project-<%= project_files.project_id %>">
-  <center>
+  <div style="text-align:center;height:145px;width:100%;" class="handle"><center>
   <% if project_files.file_type == ProjectFile::FILETYPE_IMG %>
   <div class="file_cell_img">
-  <%= tag("img", {:src => "/project_files/thumbnail/#{project_files.id}", :border => 0 } ) %><br />
+  <a href="#"><%= tag("img", {:src => "/project_files/thumbnail/#{project_files.id}", :border => 0 } ) %></a><br />
   <% else %>
   <div class="file_cell_icon">
-  <%= image_tag(file_type_image(project_files), :border => 0) %><br />
+  <a href="#"><%= image_tag(file_type_image(project_files), :border => 0) %></a><br />
   <% end %>
+  </div></center>
   </div>
-  </center>
 
   <% filename = (project_files.name.nil? || project_files.name.empty?) ? project_files.filename : project_files.name %>
 
-  <div class="file_cell-handle">
+  <div class="file_cell-info">
   <strong><%= link_to( h(filename), {:action => 'download', :id => project_files}) %></strong><br/>
   <%= h project_files.project.name %><br />
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= human_size(project_files.file_size) %> </small><br />
   <%= link_to _('Show'), :action => 'show', :id => project_files %>
   | <%= link_to _('Edit'), :action => 'edit', :id => project_files %>
-  | <%= link_to _('Delete'), {:action => 'destroy', :id => project_files}, :confirm => _("Are you sure?") %>
+  | <%= link_to_remote _('Delete'),
+                                   :url => { :action => 'destroy', :id => project_files},
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');",
+                                   :confirm => _("Are you sure?")
+     %>
   </div>
 </div>
-<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false } %>
+<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => 'handle', :onclick => "function(element){location.href='#{url_for(:action => 'show', :id => project_files)}';}" } %>

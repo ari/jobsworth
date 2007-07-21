@@ -1,5 +1,5 @@
       <small>
-      <% unless folder.new_record? %>
+      <% if !folder.new_record? && (@up.nil? || @up == false) %>
       <%   info = []
            if folder.num_folders > 0
              info += ["#{_('%d folder', folder.num_folders)}"]
@@ -21,9 +21,14 @@
       &nbsp;
       <% end %>
       </small><br />
-<% unless folder.new_record? %>
+  <% if !folder.new_record? && (@up.nil? || @up == false) %>
   <%= link_to _('Edit'), :action => 'edit_folder', :id => folder %>
-  | <%= link_to _('Delete'), {:action => 'destroy_folder', :id => folder}, :confirm => _("Are you sure?") %>
+  | <%= link_to_remote _('Delete'),
+                                   :url => { :action => 'destroy_folder', :id => folder},
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');",
+                                   :confirm => _("Are you sure?")
+     %>
 <% else %>
 <span>&nbsp;</span>
 <% end %>

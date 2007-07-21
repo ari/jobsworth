@@ -1,0 +1,2 @@
+page.visual_effect(:fade, "file_cell_#{@file.id}", :duration => 1.0)
+

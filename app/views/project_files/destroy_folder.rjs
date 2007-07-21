@@ -1,0 +1,1 @@
+page.visual_effect(:fade, "folder_cell_#{@folder.id}", :duration => 1.0)

@@ -1,9 +1,0 @@
-<fieldset>
-<legend><%=_ 'Upload New File' %></legend>
-
-<%= start_form_tag({ :action => 'upload'}, { :multipart => "true" }) %>
-  <%= render_partial "form" %>
-  <%= submit_tag _("Upload"), :class => 'nolabel' %>
-<%= end_form_tag %>
-
-</fieldset>
