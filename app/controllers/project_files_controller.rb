@@ -28,7 +28,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def show
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
 
     if @project_files.thumbnail?
 #      image = Magick::Image.read(@project_files.file_path ).first
@@ -236,11 +236,11 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
   end
 
   def update
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
     if @project_files.update_attributes(params[:project_files])
       redirect_to :action => 'list'
     else
@@ -249,7 +249,13 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy
-    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company.id])
+    @file = ProjectFile.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+
+    if @file.nil?
+      flash['notice'] = _("No such file.")
+      redirect_to :action => 'list'
+      return
+    end
 
     begin
       File.delete(@file.file_path)
@@ -260,6 +266,19 @@ class ProjectFilesController < ApplicationController
     redirect_to :action => 'list'
   end
 
+  def destroy_folder
+    @folder = ProjectFolder.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id] )
+
+    if @folder.nil?
+      flash['notice'] = _("No such folder.")
+      redirect_to :action => 'list'
+      return
+    end
+
+    @folder.destroy
+
+    redirect_to :action => 'list', :id => @folder.parent_id
+  end
 
   def shadow( image )
     w = image.columns

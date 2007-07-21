@@ -2,7 +2,13 @@ class ProjectFolder < ActiveRecord::Base
   acts_as_tree :order => 'created_at'
 
   belongs_to :project
-  has_many   :project_files
+  has_many   :project_files, :dependent => :destroy
+
+  before_destroy { |r|
+    r.children.each do |f|
+      f.destroy
+    end
+  }
 
   def total_files
     total = 0
