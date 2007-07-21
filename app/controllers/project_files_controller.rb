@@ -278,8 +278,6 @@ class ProjectFilesController < ApplicationController
     end
 
     @folder.destroy
-
-    redirect_to :action => 'list', :id => @folder.parent_id
   end
 
   def shadow( image )

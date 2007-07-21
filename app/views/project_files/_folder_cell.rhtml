@@ -1,7 +1,7 @@
 <div id="folder_cell_<%= folder.id %>" class="file_cell project-<%= folder.project_id %>" >
   <center>
-    <div class="file_cell_icon handle">
-      <a href="#"<%= " location.href='#{url_for(:action => 'list', :id => folder)}'" if folder.new_record? %>><img src="/images/folder_big.png" border="0" ></a><br />
+    <div class="file_cell_icon<%= " handle" unless folder.new_record?%>"<%= " onclick=\"location.href='#{url_for(:action => 'list', :id => folder)}'\"" if folder.new_record? %> >
+      <a href="#"><img src="/images/folder_big.png" border="0" ></a><br />
     </div>
   </center>
   <div class="folder_cell-info">

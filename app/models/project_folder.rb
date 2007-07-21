@@ -30,7 +30,7 @@ class ProjectFolder < ActiveRecord::Base
   def total_size
     total = 0
     project_files.each do |f|
-      total += f.file_size
+      total += f.file_size unless f.file_size.nil?
     end
     self.children.each do |f|
       total += f.total_size
