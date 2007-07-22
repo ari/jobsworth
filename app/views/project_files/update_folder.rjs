@@ -1,0 +1,2 @@
+page.hide('inline_form')
+page.replace "folder_cell_#{@folder.id}", :partial => 'folder_cell', :locals => { :folder => @folder }

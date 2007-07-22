@@ -1,4 +1,4 @@
-<% if @folder.parent_id.nil? %>
+<% if @folder.parent_id.nil? && (@folder.new_record? || (@folder.num_files == 0 && @folder.num_folders == 0) )%>
 <p><label for="folder_project_id"><%=_ 'Project' %></label><%= select 'folder', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
 <% else %>
 <%= hidden_field 'folder', 'project_id' %>
