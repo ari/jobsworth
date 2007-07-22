@@ -1,0 +1,3 @@
+page.hide('inline_form')
+page.replace "file_cell_#{@file.id}", :partial => 'file_cell', :locals => { :project_files => @file }
+page.visual_effect :highlight, "file_cell_#{@file.id}", :duration => 2.0

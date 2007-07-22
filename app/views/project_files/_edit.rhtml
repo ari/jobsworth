@@ -1,0 +1,12 @@
+<fieldset id="edit_file">
+<legend>Editing Project File</legend>
+
+<%= form_remote_tag :url => {:action => 'update', :id => @file },
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');"
+
+ %>
+  <%= render_partial "form_edit" %>
+  <%= submit_tag "Edit", :class => 'nolabel' %>
+<%= end_form_tag %>
+</fieldset>

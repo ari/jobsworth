@@ -18,7 +18,11 @@
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") %> - <%= human_size(project_files.file_size) %> </small><br />
   <%= link_to _('Show'), :action => 'show', :id => project_files %>
-  | <%= link_to _('Edit'), :action => 'edit', :id => project_files %>
+  | <%= link_to_remote _('Edit'),
+                                   :url => { :action => 'edit', :id => project_files},
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');"
+     %>
   | <%= link_to_remote _('Delete'),
                                    :url => { :action => 'destroy', :id => project_files},
                                    :loading => "Element.show('loading');",

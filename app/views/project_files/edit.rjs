@@ -1,0 +1,3 @@
+page.replace_html "inline_form", :partial => "edit"
+page.show 'inline_form'
+page.visual_effect(:highlight, 'edit_file', :duration => 1.0)
