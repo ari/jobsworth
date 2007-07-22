@@ -1,2 +1,0 @@
-page.hide('inline_form')
-page.insert_html :after, 'dir_sep', :partial => 'file_cell', :locals => { :project_files => @project_files }

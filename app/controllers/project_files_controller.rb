@@ -225,13 +225,14 @@ class ProjectFilesController < ApplicationController
           render :update do |page|
             page.hide('inline_form')
             page.insert_html :after, 'dir_sep', :partial => 'file_cell',  :locals => { :project_files => @project_files }
-            page.effect(:highlight => "file_cell_#{@project_files.id}", :duration => 2.0)
+            page.visual_effect(:highlight, "file_cell_#{@project_files.id}", :duration => 2.0)
           end
         end
       end
 
     else
       flash['notice'] = _('Empty file.')
+      @project_files.destroy
       redirect_to :action => 'list', :id => params[:file][:project_folder_id]
       return
     end
