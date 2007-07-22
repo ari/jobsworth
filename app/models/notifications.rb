@@ -13,7 +13,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
   def changed(task, user, change, note = "", sent_at = Time.now)
@@ -29,7 +29,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
   def commented(task, user, note = "", sent_at = Time.now)
@@ -45,7 +45,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
   def completed(task, user, note = "", sent_at = Time.now)
@@ -61,7 +61,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
   def reverted(task, user, note = "", sent_at = Time.now)
@@ -77,7 +77,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
   def assigned(task, user, owners, old, note = "", sent_at = Time.now)
@@ -94,8 +94,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
-
+    @headers    = {'Reply-To' => user.email}
   end
 
   def reminder(tasks, user, sent_at = Time.now)
@@ -106,7 +105,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => user.email}
   end
 
 end

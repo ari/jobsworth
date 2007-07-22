@@ -24,7 +24,7 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
+    @headers    = {'Reply-To' => created_by.email}
   end
 
   def mass_email(user, sent_at = Time.now)
