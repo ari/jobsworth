@@ -85,6 +85,24 @@ class ProjectFilesController < ApplicationController
     end
   end
 
+  def edit_folder
+    if session[:user].projects.nil? || session[:user].projects.size == 0
+      redirect_to :controller => 'projects', :action => 'new'
+    else
+      @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    end
+  end
+
+  def update_folder
+    @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    unless @folder.update_attributes(params[:folder])
+      flash['notice'] = _('Unable to update folder.')
+      redirect_to :action => 'list', :id => @folder.parent_id
+      return
+    end
+
+  end
+
   def create_folder
     @folder = ProjectFolder.new(params[:folder])
     @folder.company_id = session[:user].company_id
@@ -240,15 +258,14 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
   end
 
   def update
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
-    if @project_files.update_attributes(params[:project_files])
-      redirect_to :action => 'list'
-    else
-      render_action 'edit'
+    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    unless @file.update_attributes(params[:file])
+      flash['notice'] = _('Unable to update file')
+      redirect_to :action => 'list', :id => @file.project_folder_id
     end
   end
 
