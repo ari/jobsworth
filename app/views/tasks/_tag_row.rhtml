@@ -7,7 +7,7 @@
     if g.is_a? Hash
 
       only_hashes = true
-      for k in g.keys
+      g.each_key do |k|
 
         if (g[k].is_a? Array)
           for j in g[k]
@@ -17,15 +17,15 @@
           end
         end
 
-        if only_hashes
+#        if only_hashes
 %>
-<%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => parent + k.capitalize + " / "} %>
-<%      else %>
+<%#= render :partial => "tag_row", :locals => { :groups => g[k], :parent => parent + k.capitalize + " / "} %>
+<%#      else %>
 <ul><li class="tag_header"><%= parent + k.capitalize %></li>
 <%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => ""} %>
 </ul>
 <%
-        end
+   #     end
       end
     end
 

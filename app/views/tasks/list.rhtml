@@ -4,7 +4,8 @@
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
           <td align="left" class="page_header">
-            <%= _ 'Tasks' %> <%= " / #{_(session[:view].name)}" unless session[:view].nil? %>
+            <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{_(session[:view].name)}" unless session[:view].nil? %></div>
+            <% if session[:view].nil? %><div style="float:right;"><%= link_to( _("[Save as View]"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div><% end %>
           </td>
         </tr>
         <tr>
@@ -31,8 +32,8 @@
 
             filter_count = 0
             if session[:view].nil?
-
             %>
+            <fieldset style="padding-bottom:0.2em;"><legend>Filter</legend>
             <%= start_form_tag( :controller => 'tasks', :action => 'filter' ) %>
 
             <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
@@ -82,12 +83,21 @@
               %>
               <%= options_for_select @status, session[:filter_status] %>
             </select>
+                <br/>
 
-            <input type="checkbox" name="group_tags" id="group_tags" value="1" <%= session[:group_tags].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> <%=_ 'Group Tags'%>
-            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"> <%=_ 'Hide Waiting Tasks'%>
+            <select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
 
-            <span class="optional"><small><%= link_to( _("[Save as View]"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></small></span>
+              <%
+                 @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"]]
+              %>
+              <%= options_for_select @group_by, session[:group_by] %>
+            </select>
+
+
+            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;"> <%=_ 'Hide Waiting Tasks'%></div>
             <%= end_form_tag %>
+            </fieldset>
             <% end %>
           </td>
         </tr>

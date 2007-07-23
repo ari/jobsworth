@@ -75,7 +75,15 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
   <label for="view_filter_type_id"><%=_ 'Type' %></label><%= select 'view', 'filter_type_id', [[_('[Any Type]'), '-1'],[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], :selected => @view.filter_type_id %><br/>
   <label for="view_filter_status"><%=_ 'Status' %></label><%= select 'view', 'filter_status', [[_('[Any Status]'), '-1'],[_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3],[_('Invalid'),4],[_('Duplicate'),5], [_('Archived'), -2]], :selected => @view.filter_status %><br/>
 
-  <label for="view_auto_group"><%=_ 'Group Tags' %></label><input type="checkbox" name="view[auto_group]" id="view_auto_group" value="1" <%= @view.auto_group.to_i > 0 ? "checked" : "" %>><br/>
+  <label for="view_auto_group"><%=_ 'Group By' %></label>
+          <select name="view[auto_group]" id="view_auto_group">
+              <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
+
+              <%
+                 @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"]]
+              %>
+              <%= options_for_select @group_by, @view.auto_group.to_i %>
+            </select>
   <label for="view_hide_dependencies"><%=_ 'Hide Waiting Tasks' %></label><input type="checkbox" name="view[hide_dependencies]" id="view_hide_dependencies" value="1" <%= @view.hide_dependencies.to_i > 0 ? "checked" : "" %>><br/>
   <label for="view_shared"><%=_ 'Shared' %></label><input type="checkbox" name="view[shared]" id="view_shared" value="1" <%= @view.shared.to_i > 0 ? "checked" : "" %>><br/>
 

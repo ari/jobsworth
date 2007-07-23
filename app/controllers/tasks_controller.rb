@@ -95,12 +95,37 @@ class TasksController < ApplicationController
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
 
-    if session[:group_tags].to_i > 0
+    if session[:group_by].to_i == 1 # tags
       @tag_names = @all_tags.collect{|i,j| i}
       @groups = Task.tag_groups(session[:user].company_id, @tag_names, @tasks)
+    elsif session[:group_by].to_i == 2 # Clients
+      items = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect(&:name).sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.project.customer.name == i }
+    elsif session[:group_by].to_i == 3 # Projects
+      items = User.find(session[:user].id).projects.collect(&:name).sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.project.name == i }
+    elsif session[:group_by].to_i == 4 # Milestones
+      items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect(&:name)
+      @groups = Task.group_by(@tasks, items) { |t,i| t.milestone.name == i if t.milestone }
+    elsif session[:group_by].to_i == 5 # Users
+      items = session[:user].company.users.collect(&:name).sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.users.collect(&:name).include? i }
+    elsif session[:group_by].to_i == 6 # Task Type
+      items = Task.issue_types.sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.issue_type == i }
+    elsif session[:group_by].to_i == 7 # Status
+      items = Task.status_types
+      @groups = Task.group_by(@tasks, items) { |t,i| t.status_type == i }
+    elsif session[:group_by].to_i == 8 # Severity
+      items = Task.severity_types.sort.collect{ |v| v[1] }.reverse
+      @groups = Task.group_by(@tasks, items) { |t,i| t.severity_type == i }
+    elsif session[:group_by].to_i == 9 # Priority
+      items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
+      @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     else
       @groups = [@tasks]
     end
+
 
 
   end
@@ -912,14 +937,9 @@ class TasksController < ApplicationController
       session[:filter_project] = f[1..-1]
     end
 
-
-
-    session[:filter_user] = params[:filter_user]
-    session[:filter_hidden] = params[:filter_hidden]
-    session[:filter_status] = params[:filter_status]
-
-    session[:group_tags] = params[:group_tags]
-    session[:hide_dependencies] = params[:hide_dependencies]
+    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies].each do |filter|
+      session[filter] = params[filter]
+    end
 
     session[:user].last_filter = session[:filter_hidden]
     session[:user].last_milestone_id = session[:filter_milestone]

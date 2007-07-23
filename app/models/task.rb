@@ -294,46 +294,35 @@ class Task < ActiveRecord::Base
   end
 
   def issue_type
-    case self.type_id
-      when 0 then "Task"
-      when 1 then "New Feature"
-      when 2 then "Defect"
-      when 3 then "Improvement"
-    end
+    Task.issue_types[self.type_id]
+  end
 
+  def Task.issue_types
+    ["Task", "New Feature", "Defect", "Improvement"]
   end
 
   def status_type
-    case self.status
-      when 0 then "Open"
-      when 1 then "In Progress"
-      when 2 then "Closed"
-      when 3 then "Won't fix"
-      when 4 then "Invalid"
-      when 5 then "Duplicate"
-    end
+    Task.status_types[self.status]
+  end
+
+  def Task.status_types
+    ["Open", "In Progress", "Closed", "Won't fix", "Invalid", "Duplicate"]
   end
 
   def priority_type
-    case self.priority
-      when -2 then "Lowest"
-      when -1 then "Low"
-      when 0 then "Normal"
-      when 1 then "High"
-      when 2 then "Urgent"
-      when 3 then "Critical"
-    end
+    Task.priority_types[self.priority]
+  end
+
+  def Task.priority_types
+    {  -2 => "Lowest", -1 => "Low", 0 => "Normal", 1 => "High", 2 => "Urgent", 3 => "Critical" }
   end
 
   def severity_type
-    case self.severity_id
-      when -2 then "Trivial"
-      when -1 then "Minor"
-      when 0 then "Normal"
-      when 1 then "Major"
-      when 2 then "Critical"
-      when 3 then "Blocker"
-    end
+    Task.severity_types[self.severity_id]
+  end
+
+  def Task.severity_types
+    { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
   end
 
   def owners
@@ -389,7 +378,7 @@ class Task < ActiveRecord::Base
 
 
   def Task.group_by_tags(tasks, tags, done_tags, depth)
-    groups = {}
+    groups = { }
     num_matching = 0
 
     #print "[#{depth}]Tags: #{done_tags.join(' / ')} | #{tags.join(' / ')}\n"
@@ -415,7 +404,7 @@ class Task < ActiveRecord::Base
 
     end
     if groups.keys.size > 0 && !tasks.nil? && tasks.size > 0
-      [tasks,groups]
+      [tasks, groups]
     elsif groups.keys.size > 0
       [groups]
     else
@@ -424,10 +413,29 @@ class Task < ActiveRecord::Base
   end
 
   def Task.tag_groups(company_id, tags, tasks)
+    Task.group_by_tags(tasks,tags,[], 0)
+  end
 
-    groups = Task.group_by_tags(tasks,tags,[], 0)
+  def Task.group_by(tasks, items, done_items = [], depth = 0)
+    groups = OrderedHash.new
+    num_matching = 0
 
-    groups
+    items -= done_items
+    items.each do |item|
+      unless tasks.nil?
+        matching_tasks = tasks.select do |t|
+          yield(t,item)
+        end
+      end
+      tasks -= matching_tasks
+      groups[item] = matching_tasks unless matching_tasks.empty?
+    end
+
+    if groups.keys.size > 0
+      [tasks, groups]
+    else
+      [tasks]
+    end
   end
 
   def Task.tagged_with(tag, options = {})
