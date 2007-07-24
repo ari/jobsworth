@@ -7,7 +7,12 @@
 
  %>
   <%= render_partial "form_folder" %>
-  <%= submit_tag _("Update"), :class => 'nolabel' %>
+  <%= submit_tag _("Update"), :style => 'margin-left:11.6em;' %>
+    <div style="padding-top:0.2em;"> <%= _("or") %>
+    <%= link_to_function _("Cancel") do |page|
+          page.hide 'inline_form'
+        end
+    %></div>
 <% end_form_tag %>
 
 </fieldset>
