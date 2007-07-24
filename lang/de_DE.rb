@@ -119,7 +119,7 @@ Localization.define('de_DE') do |l|
   l.store 'Really delete %s?', '%s? wirklich löschen?'
   l.store 'New Task', 'Neue Aufgabe'
   l.store 'Create', 'Anlegen'
-  l.store 'Send notification emails', 'Benachrichtigungsemail verschicken'
+  l.store 'Send notification emails', 'Benachrichtigungs-E-Mail verschicken'
   l.store 'Created', 'Angelegt'
   l.store 'by', 'von' # Created by
   l.store 'Last Updated', 'Zuletzt aktualisiert'
@@ -127,17 +127,17 @@ Localization.define('de_DE') do |l|
   l.store 'and', 'und' # Save and ...
 
   l.store "Leave Open",'Offen lassen'
-  l.store "Revert to Open",'Auf Offen zurückversetzen'
-  l.store "Set in Progress",'In Bearbeitung versetzen'
-  l.store "Leave as in Progress",'In Bearbeitung belassen'
+  l.store "Revert to Open",'Auf \'Offen\' zurückversetzen'
+  l.store "Set in Progress",'\'In Bearbeitung\' versetzen'
+  l.store "Leave as in Progress",'\'In Bearbeitung\' belassen'
   l.store "Close",'Abschließen'
   l.store "Leave Closed",'Abgeschlossen lassen'
-  l.store "Set as Won't Fix",'Auf Wird nicht korrigiert setzen'
-  l.store "Leave as Won't Fix",'Als Wird nicht korrigiert lassen'
-  l.store "Set as Invalid",'Auf Ungültig setzen'
-  l.store "Leave as Invalid",'Als Ungültig lassen'
-  l.store "Set as Duplicate",'Auf Duplikat setzen'
-  l.store "Leave as Duplicate",'Als Duplikat lassen'
+  l.store "Set as Won't Fix",'Auf \'Wird nicht korrigiert\' setzen'
+  l.store "Leave as Won't Fix",'Als \'Wird nicht korrigiert\' lassen'
+  l.store "Set as Invalid",'Auf \'ungültig\' setzen'
+  l.store "Leave as Invalid",'Als \'ungültig\' lassen'
+  l.store "Set as Duplicate",'Auf \'Duplikat\' setzen'
+  l.store "Leave as Duplicate",'Als \'Duplikat\' lassen'
   l.store 'History', 'Verlauf'
   l.store 'Edit Log Entry', 'Berichtseintrag bearbeiten'
   l.store 'Delete Log Entry', 'Berichtseintrag löschen'
@@ -225,7 +225,7 @@ Localization.define('de_DE') do |l|
   l.store 'Assign', 'Zuweisen'
   l.store 'Prioritize', 'Priorisieren'
   l.store 'Grant', 'Gewähren'  #
-  l.store "Remove all access for <b>%s</b>?", 'Gesamten Zugriff für <b>%s</b>entziehen?'
+  l.store "Remove all access for <b>%s</b>?", 'Gesamten Zugriff für <b>%s</b> entziehen?'
   l.store "Grant %s access for <b>%s</b>?", '%s Zugriff gewähren für <b>%s</b>?'
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Man kann weder <b>sich selbst</b> noch <b>den Projekturheber</b> entfernen!'
   l.store "Grant access to <b>%s</b>?", 'Zugriff gewähren für <b>%s</b>?'
@@ -279,7 +279,7 @@ Localization.define('de_DE') do |l|
   l.store 'Custom Logo', 'Selbstdefiniertes Markenzeichen'
   l.store 'Current logo', 'Gegenwärtiges Markenzeichen'
   l.store 'New logo', 'Neues Markenzeichen'
-  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px wird gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px sollte gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
 
   # Notes / Pages
   l.store 'Body', 'Inhalt'
@@ -308,7 +308,7 @@ Localization.define('de_DE') do |l|
   # Customers Controller
   l.store 'Client was successfully created.', 'Kunde wurde erfolgreich angelegt.'
   l.store 'Client was successfully updated.', 'Kunde wurde erfolgreich aktualisiert.'
-  l.store 'Please delete all projects for %s before deleting it.', 'Bitte vor den Löschen von %s all dessen Projekte löschen.'
+  l.store 'Please delete all projects for %s before deleting it.', 'Bitte vor dem Löschen von %s all dessen Projekte löschen.'
   l.store "You can't delete your own company.", 'Die eigene Firma kann nicht gelöscht werden.'
   l.store 'CSS successfully uploaded.', 'CSS erfolgreich hochgeladen.'
   l.store 'Logo successfully uploaded.', 'Markenzeichen erfolgreich hochgeladen.'
@@ -325,7 +325,7 @@ Localization.define('de_DE') do |l|
 
   # Project Files Controller
   l.store 'No file selected for upload.', 'Keine Datei zum Hochladen ausgewählt.'
-  l.store 'File too big.', 'Datei ist zu groß'
+  l.store 'File too big.', 'Datei ist zu groß.'
   l.store 'File successfully uploaded.', 'Datei erfolgreich hochgeladen.'
 
   # Projects Controller
@@ -344,14 +344,14 @@ Localization.define('de_DE') do |l|
   l.store 'Invalid due date ignored.', 'Abgabetermin wurde wegen Ungültigkeit ignoriert.'
   l.store 'Task was successfully created.', 'Aufgabe wurde erfolgreich angelegt.'
   l.store 'Task was successfully updated.', 'Aufgabe wurde erfolgreich aktualisiert.'
-  l.store 'Log entry saved...', 'Protokolleintrag wurde gespeichert.'
+  l.store 'Log entry saved...', 'Protokolleintrag wurde gespeichert...'
   l.store "Unable to save log entry...", 'Protokolleintrag wurde <b>nicht</b> gespeichert...'
   l.store "Log entry already saved from another browser instance.", 'Protokolleintrag wurde schon von einer anderen Browser-Instanz gespeichert.'
   l.store 'Log entry deleted...', 'Protokolleintrag wurde gelöscht...'
 
   # Users Controller
   l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Benutzer wurde erfolgreich angelegt. Bitte nicht vergessen, dem Benutzer Zugriff auf die gewünschten Projekte zu gewähren.'
-  l.store "Error sending creation email. Account still created.", 'Fehler beim Versenden der Benutzeranlage-eMail. Der Benutzer wurde trotzdem angelegt.'
+  l.store "Error sending creation email. Account still created.", 'Fehler beim Versenden der Benutzeranlage-E-Mail. Der Benutzer wurde trotzdem angelegt.'
   l.store 'User was successfully updated.', 'Benutzer wurde erfolgreich aktualisiert.'
   l.store 'Preferences successfully updated.', 'Einstellungen wurden erfolgreich aktualisiert.'
 
@@ -362,4 +362,100 @@ Localization.define('de_DE') do |l|
 
   # Reports
   l.store 'Today','Heute'
+  l.store 'Week', 'Woche'
+
+  # Dates
+  l.store 'January', 'Januar'
+  l.store 'February', 'Februar'
+  l.store 'March', 'März'
+  l.store 'April', 'April'
+  l.store 'May', 'Mai'
+  l.store 'June', 'Juni'
+  l.store 'July', 'Juli'
+  l.store 'August', 'August'
+  l.store 'September', 'September'
+  l.store 'October', 'Oktober'
+  l.store 'November', 'November'
+  l.store 'December', 'Dezember'
+
+  l.store 'Jan', 'Jan'
+  l.store 'Feb', 'Feb'
+  l.store 'Mar', 'Mrz'
+  l.store 'Apr', 'Apr'
+  l.store 'May', 'Mai'
+  l.store 'Jun', 'Jun'
+  l.store 'Jul', 'Jul'
+  l.store 'Aug', 'Aug'
+  l.store 'Sep', 'Sep'
+  l.store 'Oct', 'Okt'
+  l.store 'Nov', 'Nov'
+  l.store 'Dec', 'Dez'
+
+  l.store 'Sunday', 'Sonntag'
+  l.store 'Monday', 'Montag'
+  l.store 'Tuesday', 'Dienstag'
+  l.store 'Wednesday', 'Mittwoch'
+  l.store 'Thursday', 'Donnerstag'
+  l.store 'Friday', 'Freitag'
+  l.store 'Saturday', 'Samstag'
+
+  l.store 'Sun', 'So'
+  l.store 'Mon', 'Mo'
+  l.store 'Tue', 'Di'
+  l.store 'Wed', 'Mi'
+  l.store 'Thu', 'Do'
+  l.store 'Fri', 'Fr'
+  l.store 'Sat', 'Sa'
+
+  # worked_nice
+  l.store '[wdhm]', '[WTSM]'
+  l.store 'w', 'W'
+  l.store 'd', 'T'
+  l.store 'h', 'S'
+  l.store 'm', 'M'
+
+  # Preferences
+  l.store 'Duration Format', 'Zeitdauer-Format'
+  l.store 'Workday Length', 'Arbeitstag-Länge'
+
+  # Tasks filter
+  l.store '[Without Milestone]', '[Ohne Meilenstein]'
+
+  # Task tooltip
+  l.store 'Progress', 'Fortschritt'
+
+  # User Permissions
+  l.store 'All', 'Alle'
+
+  # Reports filter
+  l.store '[Any Priority]', '[Alle Prioritäten]'
+  l.store '[Any Severity]', '[Alle Schweregrade]'
+
+  # Preferences
+  l.store '1w 2d 3h 4m', '1W 2T 3S 4M'
+  l.store '1w2d3h4m', '1W2T3S4M'
+
+  # Task
+  l.store 'Attachments', 'Anhänge'
+  l.store 'Dependencies', 'Abhängigkeiten'
+  l.store 'Add another dependency', "Weitere Abhängigkeit hinzufügen"
+  l.store 'Remove dependency', 'Abhängigkeit entfernen'
+  l.store 'every', 'jeden' # every thursday
+  l.store '[Any Task]', '[Jede Aufgabe]'
+
+  l.store 'day', 'Tag' #every day
+  l.store 'days', 'Tage' #every 2 days
+  l.store 'last', 'letzten' #every last thursday
+
+  l.store 'Hide Waiting Tasks', 'Verstecke wartende Aufgaben'
+  l.store 'Signup Message', 'Anmeldenachricht'
+  l.store 'The message will be included in the signup email.', 'Diese Nachricht wird in die Anmelde-E-Mail eingefügt.'
+  l.store 'Depends on', 'Hängt ab von'
+
+  # Activities
+  l.store 'Subscribe to the recent activities RSS feed', 'Abonniere RSS-Feed für neueste Aktivitäten'
+
+  # Project Files
+  l.store '%d folder', ['%d Verzeichnis, %d Verzeichnisse']
+  l.store '%d file', ['%d Datei', '%d Dateien']
 end
