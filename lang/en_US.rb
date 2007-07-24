@@ -19,5 +19,4 @@ Localization.define('en_US') do |l|
   l.store 'File', ['File', 'Files']
   l.store '%d folder', ['%d folder', '%d folders']
   l.store '%d file', ['%d file', '%d files']
-
 end

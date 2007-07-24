@@ -446,4 +446,28 @@ Localization.define('nl_NL') do |l|
   l.store '1w 2d 3h 4m', '1w 2d 3u 4m'
   l.store '1w2d3h4m', '1w2d3u4m'
 
+  # Task
+  l.store 'Attachments', 'Attachments'
+  l.store 'Dependencies', 'Dependencies'
+  l.store 'Add another dependency', "Add another dependency"
+  l.store 'Remove dependency', 'Remove dependency'
+  l.store 'every', 'every' # every thursday
+  l.store '[Any Task]', '[Any Task]'
+
+  l.store 'day', 'day' #every day
+  l.store 'days', 'days' #every 2 days
+  l.store 'last', 'last' #every last thursday
+
+  l.store 'Hide Waiting Tasks', 'Hide Waiting Tasks'
+  l.store 'Signup Message', 'Signup Message'
+  l.store 'The message will be included in the signup email.', 'The message will be included in the signup email.'
+  l.store 'Depends on', 'Depends on'
+
+  # Activities
+  l.store 'Subscribe to the recent activities RSS feed', 'Subscribe to the recent activities RSS feed'
+
+  # Project Files
+  l.store '%d folder', ['%d folder, %d folders']
+  l.store '%d file', ['%d file', '%d files']
+
 end
