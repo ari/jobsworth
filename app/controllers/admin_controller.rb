@@ -52,8 +52,12 @@ class AdminController < ApplicationController
   # Show a single logo
   def show_logo
     @customer = Customer.find(@params[:id])
-    image = Magick::Image.from_blob( @customer.binary.data ).first
-    send_data image.to_blob, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+    image = Magick::Image.read( @customer.logo_path ).first
+    if image
+      send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+    else
+      render :nothing => true
+    end
   end
 
   def stats
