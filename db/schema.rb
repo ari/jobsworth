@@ -2,12 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 79) do
-
-  create_table "binaries", :force => true do |t|
-    t.column "data",            :binary
-    t.column "project_file_id", :integer
-  end
+ActiveRecord::Schema.define(:version => 80) do
 
   create_table "companies", :force => true do |t|
     t.column "name",          :string,   :limit => 200, :default => "", :null => false
@@ -284,11 +279,6 @@ ActiveRecord::Schema.define(:version => 79) do
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
-
-  create_table "thumbnails", :force => true do |t|
-    t.column "data",            :binary
-    t.column "project_file_id", :integer
-  end
 
   create_table "users", :force => true do |t|
     t.column "name",                   :string,   :limit => 200, :default => "",      :null => false
