@@ -408,11 +408,11 @@ Localization.define('de_DE') do |l|
   l.store 'Sat', 'Sa'
 
   # worked_nice
-  l.store '[wdhm]', '[WTSM]'
-  l.store 'w', 'W'
-  l.store 'd', 'T'
-  l.store 'h', 'S'
-  l.store 'm', 'M'
+  l.store '[wdhm]', '[wtsm]'
+  l.store 'w', 'w'
+  l.store 'd', 't'
+  l.store 'h', 's'
+  l.store 'm', 'm'
 
   # Preferences
   l.store 'Duration Format', 'Zeitdauer-Format'
@@ -432,8 +432,8 @@ Localization.define('de_DE') do |l|
   l.store '[Any Severity]', '[Alle Schweregrade]'
 
   # Preferences
-  l.store '1w 2d 3h 4m', '1W 2T 3S 4M'
-  l.store '1w2d3h4m', '1W2T3S4M'
+  l.store '1w 2d 3h 4m', '1w 2t 3s 4m'
+  l.store '1w2d3h4m', '1w2t3s4m'
 
   # Task
   l.store 'Attachments', 'Anhänge'
