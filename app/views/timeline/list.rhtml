@@ -26,8 +26,19 @@
 
             <% if @projects.size > 1 %>
             <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
-              <% @projects = [[_("[Any Project]"), "0"]] + @projects  %>
-              <%= options_for_select @projects, params[:filter_project] %>
+              <option value="0" class="select_default"><%= _("[Any Project]") %></option>
+              <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
+              <% @clients.each do |c| %>
+              <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+              <% if @client_projects.size > 0 %>
+              <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
+              <% @client_projects.each do |p| %>
+              <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id == params[:filter_project] %>><%= p.name %></option>
+              <% end %>
+              <% end %>
+
+              <% end %>
+
             </select>
             <% end %>
 
