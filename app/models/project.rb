@@ -17,7 +17,7 @@ class Project < ActiveRecord::Base
   validates_presence_of         :name
 
   def full_name
-    "#{name}"
+    "#{customer.name} / #{name}"
   end
 
   def to_css_name
