@@ -102,8 +102,8 @@ class TasksController < ApplicationController
       items = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect(&:name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.customer.name == i }
     elsif session[:group_by].to_i == 3 # Projects
-      items = User.find(session[:user].id).projects.collect(&:name).sort
-      @groups = Task.group_by(@tasks, items) { |t,i| t.project.name == i }
+      items = User.find(session[:user].id).projects.collect(&:full_name).sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
       items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect(&:name)
       @groups = Task.group_by(@tasks, items) { |t,i| t.milestone.name == i if t.milestone }
