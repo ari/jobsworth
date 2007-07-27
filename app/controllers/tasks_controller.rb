@@ -915,7 +915,7 @@ class TasksController < ApplicationController
 
     f = params[:filter]
 
-    if f == "0"
+    if f.nil || f.empty? || f == "0"
       session[:filter_customer] = "0"
       session[:filter_milestone] = "0"
       session[:filter_project] = "0"
