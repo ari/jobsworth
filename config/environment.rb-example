@@ -72,6 +72,22 @@ class ActiveRecord::Base
   end
 end
 
+
+LoggedExceptionsController.class_eval do
+
+  before_filter :authorized
+
+  # optional, sets the application name for the rss feeds
+  self.application_name = "ClockingIT"
+
+  protected
+  # only allow admins
+  def authorized
+    session[:user] && session[:user].admin > 0
+  end
+end
+
+
 ActiveRecord::Base.verification_timeout = 14400
 
 Localization.load

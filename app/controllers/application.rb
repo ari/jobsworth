@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
 
   include Misc, ExceptionLoggable
 
+  helper_method :last_active
+
 #  model :user
 #  model :company
 #  model :project
@@ -220,6 +222,17 @@ class ApplicationController < ActionController::Base
 
   def current_user
     session[:user]
+  end
+
+  def render_500(exception)
+    respond_to do |type|
+      type.html { render :file => "#{RAILS_ROOT}/public/500.html", :status => "500 Error" }
+      type.all  { render :nothing => true, :status => "500 Error" }
+    end
+  end
+
+  def last_active
+    session[:last_active] ||= Time.now.utc
   end
 
 end
