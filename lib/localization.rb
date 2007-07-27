@@ -35,11 +35,22 @@ end
 
 class Date
   def self.translate_strings
-    Date::MONTHNAMES.replace([nil, _('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')])
-    Date::DAYNAMES.replace([_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')])
-    Date::ABBR_MONTHNAMES.replace([nil, _('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')])
-    Date::ABBR_DAYNAMES.replace([_('Sun'), _('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat')])
+#    Date::MONTHNAMES.replace(["", _('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')])
+#    Date::DAYNAMES.replace([_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')])
+#    Date::ABBR_MONTHNAMES.replace([nil, _('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')])
+#    Date::ABBR_DAYNAMES.replace([_('Sun'), _('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat')])
   end
+
+  alias :strftime_nolocale :strftime
+  def strftime(format)
+    format = format.dup
+    format.gsub!(/%a/, _(Date::ABBR_DAYNAMES[self.wday]))
+    format.gsub!(/%A/, _(Date::DAYNAMES[self.wday]))
+    format.gsub!(/%b/, _(Date::ABBR_MONTHNAMES[self.mon]))
+    format.gsub!(/%B/, _(Date::MONTHNAMES[self.mon]))
+    self.strftime_nolocale(format)
+  end
+
 end
 
 
@@ -48,12 +59,13 @@ class Time
 
   def strftime(format)
     format = format.dup
-    format.gsub!(/%a/, Date::ABBR_DAYNAMES[self.wday])
-    format.gsub!(/%A/, Date::DAYNAMES[self.wday])
-    format.gsub!(/%b/, Date::ABBR_MONTHNAMES[self.mon])
-    format.gsub!(/%B/, Date::MONTHNAMES[self.mon])
+    format.gsub!(/%a/, _(Date::ABBR_DAYNAMES[self.wday]))
+    format.gsub!(/%A/, _(Date::DAYNAMES[self.wday]))
+    format.gsub!(/%b/, _(Date::ABBR_MONTHNAMES[self.mon]))
+    format.gsub!(/%B/, _(Date::MONTHNAMES[self.mon]))
     self.strftime_nolocale(format)
   end
+
 end
 
 
