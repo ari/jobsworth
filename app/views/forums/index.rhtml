@@ -10,8 +10,11 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide forums">
   <tr>
-    <th class="la" width="70%" colspan="3"><%= session[:user].company.name + _(' Forums') %></th>
-    <th class="la" width="30%" colspan="1"><%= 'Last Post' %></th>
+    <th class="la" width="70%" colspan="2"><%= session[:user].company.name + _(' Forums') %></th>
+<% if admin? %>
+    <th class="la" colspan="1"></th>
+<% end %>
+    <th class="la" width="29%" colspan="1"><%= 'Last Post' %></th>
   </tr>
 <% for forum in @forums.select{ |f| f.company_id } do %>
   <tr>
@@ -33,11 +36,12 @@
         </p>
       <div class="posts"><%= forum.project_id.nil? ? "Open to everyone from #{session[:user].company.name}" : "Open to #{forum.project.full_name} users" %></div>
     </td>
+<% if admin? %>
     <td class="c3">
       <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if admin? %><br/>
       <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if admin? %>
     </td>
-
+<% end %>
     <td class="inv lp">
       <% if forum.posts.last %>
         <%= time_ago_in_words(forum.posts.last.created_at) %><br />
@@ -49,7 +53,10 @@
 <% end %>
   <tr><td colspan="4" class="spacer">&nbsp;</td></tr>
   <tr>
-    <th class="la" width="70%" colspan="3"><%= 'Public Forums' %></th>
+    <th class="la" width="70%" colspan="2"><%= 'Public Forums' %></th>
+<% if admin? %>
+    <th class="la" colspan="1"></th>
+<% end %>
     <th class="la" width="30%" colspan="1"><%= 'Last Post' %></th>
   </tr>
 <% for forum in @forums.select{ |f| f.company_id.nil? } do %>
@@ -73,10 +80,11 @@
       <div class="posts"><%= "Open to everyone using ClockingIT" %></div>
     </td>
     <td class="c3 public">
+<% if session[:user].admin > 1 %>
       <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if session[:user].admin > 1 %><br/>
       <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if session[:user].admin > 1 %>
+<% end %>
     </td>
-
     <td class="inv lp">
       <% if forum.posts.last %>
         <%= time_ago_in_words(forum.posts.last.created_at) %><br />
