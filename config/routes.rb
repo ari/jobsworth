@@ -4,9 +4,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.home '/forums/index', :controller => 'forums', :action => 'index'
 
-  map.resources :users, :member => { :admin => :post } do |user|
-    user.resources :moderators
-  end
+#  map.resources :users, :member => { :admin => :post } do |user|
+#    user.resources :moderators
+#  end
 
   map.resources :forums do |forum|
     forum.resources :topics, :name_prefix => nil do |topic|

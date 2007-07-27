@@ -1,19 +1,6 @@
 <% @page_title = @topic.title %>
 <% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', session[:user].id, @topic.id, true]).zero? %>
 
-<% content_for :right do -%>
-
-<h5><%= 'Voices' %></h5>
-<ul class="flat talking">
-<% @topic.voices.each do | user | %>
-  <li><%= link_to h(user.name), user_path(user) %></li>
-<% end %>
-</ul>
-
-
-<% end # right content -%>
-
-
 <% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>

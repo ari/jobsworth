@@ -36,7 +36,7 @@
     </div>
 
     <%= avatar_for @users[post.user_id] %>
-    <span class="fn"><%= link_to truncate(h(@users[post.user_id].display_name), 15), user_path(post.user_id) %></span>
+    <span class="fn"><%= truncate(h(@users[post.user_id].display_name), 15) %></span>
        <span class="posts"><%= "#{count=@users[post.user_id].posts_count; number_with_delimiter(count)} post(s)" %></span>
   </td>
   <td class="body entry-content">
