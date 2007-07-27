@@ -1,5 +1,19 @@
 <% if @folder.parent_id.nil? && (@folder.new_record? || (@folder.num_files == 0 && @folder.num_folders == 0) )%>
-<p><label for="folder_project_id"><%=_ 'Project' %></label><%= select 'folder', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
+
+<p><label for="folder_project_id"><%=_ 'Project' %></label>
+<select name="folder[project_id]" id="folder_project_id">
+<% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
+<% @clients.each do |c| %>
+  <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+  <% if @client_projects.size > 0 %>
+    <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
+    <% @client_projects.each do |p| %>
+      <option value="<%=p.id%>" class="select_item"><%= p.name %></option>
+    <% end %>
+  <% end %>
+<% end %>
+</select>
+
 <% else %>
 <%= hidden_field 'folder', 'project_id' %>
 <% end %>
