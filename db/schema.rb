@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 80) do
+ActiveRecord::Schema.define(:version => 82) do
 
   create_table "companies", :force => true do |t|
     t.column "name",          :string,   :limit => 200, :default => "", :null => false
@@ -34,8 +34,21 @@ ActiveRecord::Schema.define(:version => 80) do
     t.column "dependency_id", :integer
   end
 
-  add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
-  add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
+  add_index "dependencies", ["task_id"], :name => "index_dependencies_on_task_id"
+  add_index "dependencies", ["dependency_id"], :name => "index_dependencies_on_dependency_id"
+
+  create_table "forums", :force => true do |t|
+    t.column "company_id",       :integer
+    t.column "project_id",       :integer
+    t.column "name",             :string
+    t.column "description",      :string
+    t.column "topics_count",     :integer, :default => 0
+    t.column "posts_count",      :integer, :default => 0
+    t.column "position",         :integer
+    t.column "description_html", :text
+  end
+
+  add_index "forums", ["company_id"], :name => "index_forums_on_company_id"
 
   create_table "generated_reports", :force => true do |t|
     t.column "company_id", :integer
@@ -54,6 +67,17 @@ ActiveRecord::Schema.define(:version => 80) do
   add_index "ical_entries", ["task_id"], :name => "index_ical_entries_on_task_id"
   add_index "ical_entries", ["work_log_id"], :name => "index_ical_entries_on_work_log_id"
 
+  create_table "logged_exceptions", :force => true do |t|
+    t.column "exception_class", :string
+    t.column "controller_name", :string
+    t.column "action_name",     :string
+    t.column "message",         :string
+    t.column "backtrace",       :text
+    t.column "environment",     :text
+    t.column "request",         :text
+    t.column "created_at",      :datetime
+  end
+
   create_table "milestones", :force => true do |t|
     t.column "company_id",   :integer
     t.column "project_id",   :integer
@@ -67,6 +91,19 @@ ActiveRecord::Schema.define(:version => 80) do
 
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
   add_index "milestones", ["project_id"], :name => "milestones_project_id_index"
+
+  create_table "moderatorships", :force => true do |t|
+    t.column "forum_id", :integer
+    t.column "user_id",  :integer
+  end
+
+  add_index "moderatorships", ["forum_id"], :name => "index_moderatorships_on_forum_id"
+
+  create_table "monitorships", :force => true do |t|
+    t.column "topic_id", :integer
+    t.column "user_id",  :integer
+    t.column "active",   :boolean, :default => true
+  end
 
   create_table "news_items", :force => true do |t|
     t.column "created_at", :datetime
@@ -90,6 +127,19 @@ ActiveRecord::Schema.define(:version => 80) do
   end
 
   add_index "pages", ["company_id"], :name => "pages_company_id_index"
+
+  create_table "posts", :force => true do |t|
+    t.column "user_id",    :integer
+    t.column "topic_id",   :integer
+    t.column "body",       :text
+    t.column "created_at", :datetime
+    t.column "updated_at", :datetime
+    t.column "forum_id",   :integer
+    t.column "body_html",  :text
+  end
+
+  add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
+  add_index "posts", ["user_id", "created_at"], :name => "index_posts_on_user_id"
 
   create_table "project_files", :force => true do |t|
     t.column "company_id",        :integer,                 :default => 0,                          :null => false
@@ -280,6 +330,25 @@ ActiveRecord::Schema.define(:version => 80) do
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
 
+  create_table "topics", :force => true do |t|
+    t.column "forum_id",     :integer
+    t.column "user_id",      :integer
+    t.column "title",        :string
+    t.column "created_at",   :datetime
+    t.column "updated_at",   :datetime
+    t.column "hits",         :integer,  :default => 0
+    t.column "sticky",       :integer,  :default => 0
+    t.column "posts_count",  :integer,  :default => 0
+    t.column "replied_at",   :datetime
+    t.column "locked",       :boolean,  :default => false
+    t.column "replied_by",   :integer
+    t.column "last_post_id", :integer
+  end
+
+  add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
+  add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
+  add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
+
   create_table "users", :force => true do |t|
     t.column "name",                   :string,   :limit => 200, :default => "",      :null => false
     t.column "username",               :string,   :limit => 200, :default => "",      :null => false
@@ -310,11 +379,13 @@ ActiveRecord::Schema.define(:version => 80) do
     t.column "locale",                 :string,                  :default => "en_US"
     t.column "duration_format",        :integer,                 :default => 0
     t.column "workday_duration",       :integer,                 :default => 480
+    t.column "posts_count",            :integer,                 :default => 0
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
   add_index "users", ["username"], :name => "users_username_index"
   add_index "users", ["company_id"], :name => "users_company_id_index"
+  add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
 
   create_table "views", :force => true do |t|
     t.column "name",                :string

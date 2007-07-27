@@ -1,0 +1,8 @@
+<%
+  feed_params = [:id, :query, :date_ranges_filter, :exception_names_filter, :controller_actions_filter].inject({:format => 'rss'}) do |p, key| 
+    params[key].blank? ? p : p.update(key => params[key])
+  end
+-%>
+<ul id="feed" class="filters">
+  <li><%= link_to 'Rss Feed', feed_params %></li>
+</ul>

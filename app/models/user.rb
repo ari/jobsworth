@@ -14,6 +14,14 @@ class User < ActiveRecord::Base
   has_many      :notifications, :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
 
+  has_many      :forums, :through => :moderatorships, :order => 'forums.name'
+
+  has_many      :posts
+  has_many      :topics
+  has_many      :monitorships
+  has_many      :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+
+
 #  composed_of  :tz, :class_name => 'TZInfo::Timezone',
 #               :mapping => %w(time_zone time_zone)
 
@@ -38,6 +46,14 @@ class User < ActiveRecord::Base
     @attributes['uuid'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
+  def avatar_url(size=32)
+    "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email)}&rating=PG&size=#{size}"
+  end
+
+  def display_name
+    self.name
+  end
+
   def login(subdomain = nil)
     unless (subdomain.nil? || ['www'].include?(subdomain))
       company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
@@ -53,6 +69,18 @@ class User < ActiveRecord::Base
         return p.can?(perm) if p.project_id == project.id
     end
     return false
+  end
+
+  def admin?
+    self.admin > 0
+  end
+
+  def currently_online
+    User.find(:all, :conditions => ["company_id = ? AND last_seen_at > ?", self.company, Time.now.utc-5.minutes])
+  end
+
+  def moderator_of?(forum)
+    moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)]) == 1
   end
 
 end

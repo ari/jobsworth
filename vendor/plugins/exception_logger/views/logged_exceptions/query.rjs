@@ -1,0 +1,3 @@
+page[:exceptions].replace :partial => "exceptions"
+page[:showpage].hide
+page[:feed].replace :partial => 'feed'

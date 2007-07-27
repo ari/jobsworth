@@ -1,0 +1,29 @@
+<div class="tools">
+<%= link_to_remote 'Delete', {:url => { :action => 'destroy', :id => @exc }} , :class => "util" %>
+<span class="pipe">|</span>
+<%= link_to_function "Close", "$('showpage').style.display='none';", :class => "util" %>
+	
+</div>
+
+<div class="date">
+	<%= @exc.created_at.strftime("%A, %b %d, %Y at %l:%M %p") %>
+</div>
+<h1>
+<%= @exc.exception_class %> in <%= @exc.controller_name.camelcase %>/<%= @exc.action_name %>
+</h1>
+
+<h2>Request</h2>
+
+<%= textilize(@exc.request) %>
+
+<h2>Backtrace</h2>
+
+<%= content_tag 'p', @exc.message, :class => 'intro' %>
+
+<div id="backtrace">
+<%=h(@exc.backtrace).gsub(/\n/,"<br />") %>
+</div>
+
+<h2>Environment</h2>
+
+<%= textilize(@exc.environment) %>

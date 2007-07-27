@@ -813,27 +813,16 @@ div.auto_complete {
 #report_tags_auto_complete ul li.selected { background-color: #ffb; }
 
 
-#content li.tag_header
+#content .tag_header
 {
   border-left: solid 4px #8cacbb;
   margin-bottom: 2px;
-  margin-top: 1em;
   font-size: 13px;
   color: #47525a;
   font-weight: bold;
+  padding-left: 4px;
 }
 
-
-#content li.task
-{
-  border-left: solid 4px #b0d295;
-  position: relative;
-  clear: both;
-  font-size: 11px;
-<!--[if IE 6]>
-  height: 2.3em;
-<![endif]-->
-}
 
 
 .description
@@ -870,40 +859,44 @@ a.description {
 }
 
 
-
-#content li.task_done {
-  border-left: solid 4px #EEEEEE;
-<!--[if IE 6]>
+#content .task
+{
+  margin-left: 8px;
+  border-left: solid 4px #b0d295;
+  clear: both;
+  font-size: 11px;
   height: 2.3em;
-<![endif]-->
+  margin-bottom: 2px;
 }
 
-#content li.task_active {
+
+#content .task_done {
+  border-left: solid 4px #EEEEEE;
+}
+
+#content .task_active {
   border-left: solid 4px #8cacbb;
   color: #000000;
   background-color: #EEEEEE;
-<!--[if IE 6]>
-  height: 2.3em;
-<![endif]-->
 }
 
-#content li.task_lowest_pri {
+#content .task_lowest_pri {
   border-left: solid 4px #F3F3F3;
 }
 
-#content li.task_low_pri {
+#content .task_low_pri {
   border-left: solid 4px #e7e0c4;
 }
 
-#content li.task_crit_pri {
+#content .task_crit_pri {
   border-left: solid 4px #FF6666;
 }
 
-#content li.task_high_pri {
+#content .task_high_pri {
   border-left: solid 4px #f2ab99;
 }
 
-#content li.task_raised_pri {
+#content .task_raised_pri {
   border-left: solid 4px #FFC266;
 }
 
@@ -1043,23 +1036,7 @@ a.description {
   background-position:100% -25px;
 }
 
-#filter_date {
-  font-size: 10px;
-}
-
-#filter_status {
-  font-size: 10px;
-}
-
-#filter_user {
-  font-size: 10px;
-}
-
-#group_by {
-  font-size: 10px;
-}
-
-#filter {
+#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date {
   font-size: 10px;
 }
 
@@ -1122,12 +1099,6 @@ li.help {
 
 .task_info {
   font-size: 9px;
-  padding-left: 3.9em;
-}
-
-.task_info_no_icon {
-  font-size: 9px;
-  padding-left: 2.3em;
 }
 
 #tutorial .welcome {

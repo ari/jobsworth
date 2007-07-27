@@ -2,7 +2,7 @@
 # Likewise will all the methods added be available for all controllers.
 class ApplicationController < ActionController::Base
 
-  include Misc
+  include Misc, ExceptionLoggable
 
 #  model :user
 #  model :company
@@ -200,6 +200,26 @@ class ApplicationController < ActionController::Base
       text = highlight(text, k)
     end
     text
+  end
+
+  def rescue_action(exception)
+    exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
+  end
+
+  def render_invalid_record(record)
+    render :action => (record.new_record? ? 'new' : 'edit')
+  end
+
+  def admin?
+    session[:user].admin > 0
+  end
+
+  def logged_in?
+    true
+  end
+
+  def current_user
+    session[:user]
   end
 
 end

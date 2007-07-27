@@ -102,13 +102,13 @@ class Task < ActiveRecord::Base
     case code
       when ''
       when 'w'
-      "#{_'every'} #{Date::DAYNAMES[args[1].to_i].downcase}"
+      "#{_'every'} #{_(Date::DAYNAMES[args[1].to_i]).downcase}"
       when 'm'
       "#{_'every'} #{Task::REPEAT_DATE[args[1].to_i][0]}"
       when 'n'
-      "#{_'every'} #{Task::REPEAT_DATE[args[1].to_i][0]} #{Date::DAYNAMES[args[2].to_i].downcase}"
+      "#{_'every'} #{Task::REPEAT_DATE[args[1].to_i][0]} #{_(Date::DAYNAMES[args[2].to_i]).downcase}"
       when 'l'
-      "#{_'every'} #{_'last'} #{Date::DAYNAMES[args[2].to_i].downcase}"
+      "#{_'every'} #{_'last'} #{_(Date::DAYNAMES[args[2].to_i]).downcase}"
       when 'y'
       "#{_'every'} #{args[1].to_i}/#{args[2].to_i}"
       when 'a'

@@ -1,0 +1,115 @@
+
+<h1 style="margin-top:0;"><%= 'Forums' %></h1>
+<p class="subtitle">
+<%= feed_icon_tag "Recent Posts", formatted_all_posts_path(:format => 'rss') %>
+<%= "#{count=Topic.count; number_with_delimiter(count)} topic(s)" %>,
+<%= "#{count=Post.count; number_with_delimiter(count)} posts(s)" %>,
+<%= "#{count=User.count(:conditions => "posts_count > 0"); number_with_delimiter(count)} voice(s)" %>
+
+</p>
+
+<table border="0" cellspacing="0" cellpadding="0" class="wide forums">
+  <tr>
+    <th class="la" width="70%" colspan="3"><%= session[:user].company.name + _(' Forums') %></th>
+    <th class="la" width="30%" colspan="1"><%= 'Last Post' %></th>
+  </tr>
+<% for forum in @forums.select{ |f| f.company_id } do %>
+  <tr>
+    <td class="vat c1">
+
+      <% if recent_forum_activity(forum) %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => 'Recent activity' %>
+      <% else %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
+      <% end %>
+    </td>
+    <td class="c2 vat">
+      <%= link_to h(forum.name), forum_path(forum), :class => "title" %>
+      <div class="posts">
+        <%= "#{count=forum.topics_count; number_with_delimiter(count)} topic(s)" %>,
+          <%= "#{count=forum.posts_count; number_with_delimiter(count)} post(s)" %>
+      </div>
+      <p class="desc"><%= forum.description_html %>
+        </p>
+      <div class="posts"><%= forum.project_id.nil? ? "Open to everyone from #{session[:user].company.name}" : "Open to #{forum.project.full_name} users" %></div>
+    </td>
+    <td class="c3">
+      <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if admin? %><br/>
+      <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if admin? %>
+    </td>
+
+    <td class="inv lp">
+      <% if forum.posts.last %>
+        <%= time_ago_in_words(forum.posts.last.created_at) %><br />
+        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %>
+        <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+  <tr><td colspan="4" class="spacer">&nbsp;</td></tr>
+  <tr>
+    <th class="la" width="70%" colspan="3"><%= 'Public Forums' %></th>
+    <th class="la" width="30%" colspan="1"><%= 'Last Post' %></th>
+  </tr>
+<% for forum in @forums.select{ |f| f.company_id.nil? } do %>
+  <tr>
+    <td class="vat c1">
+
+      <% if recent_forum_activity(forum) %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => 'Recent activity' %>
+      <% else %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
+      <% end %>
+    </td>
+    <td class="c2 vat public">
+      <%= link_to h(forum.name), forum_path(forum), :class => "title" %>
+      <div class="posts">
+        <%= "#{count=forum.topics_count; number_with_delimiter(count)} topic(s)" %>,
+          <%= "#{count=forum.posts_count; number_with_delimiter(count)} post(s)" %>
+      </div>
+      <p class="desc"><%= forum.description_html %>
+        </p>
+      <div class="posts"><%= "Open to everyone using ClockingIT" %></div>
+    </td>
+    <td class="c3 public">
+      <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if session[:user].admin > 1 %><br/>
+      <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if session[:user].admin > 1 %>
+    </td>
+
+    <td class="inv lp">
+      <% if forum.posts.last %>
+        <%= time_ago_in_words(forum.posts.last.created_at) %><br />
+        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %>
+        <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+      <% end %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+<div style="float:left;">
+  <%= link_to 'Recent posts', all_posts_path %>
+</div>
+
+
+<% if admin? %>
+<div style="float:right"><%= link_to 'Create New Forum', new_forum_path, :class => "utility" %></div>
+<% end %>
+
+<div id="footer" style="clear:both;padding-top:1em;">
+<p class="disclaim">
+<strong>
+  <%
+  footers=["Two's company. Three's a forum. More's a Beast."
+  ]
+  %>
+  <%= footers[rand(footers.size)]%>
+  </strong>
+</p>
+<p class="credit">
+  <%= 'Powered by' %> <a href="http://beast.caboo.se/">Beast</a><br />
+  &copy; 2006 <a href="http://www.workingwithrails.com/person/5337-josh-goebel" class="subtle">Josh Goebel</a> <%= 'and' %> <a href="http://weblog.techno-weenie.net" class="subtle">Rick Olson</a>
+</p>
+<br style="clear:both;" />
+</div>

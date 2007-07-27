@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Logged Exceptions</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <%= javascript_include_tag 'prototype','effects' %>
+  <script type="text/javascript">
+<%= IO.read(File.join(RAILS_ROOT, 'vendor/plugins/exception_logger/assets/exception_logger.js')) %>
+  </script>
+  <style type="text/css">
+<%= IO.read(File.join(RAILS_ROOT, 'vendor/plugins/exception_logger/assets/style.css')) %>
+  </style>
+</head>
+<body>
+<div id="container">
+
+
+<div id="right">
+
+<h3>Filters</h3>
+
+<ul id="all_exceptions" class="filters">
+  <li><%= link_to 'Latest Exceptions', :action => 'index', :id => nil %></li>
+</ul>
+
+<h4>Exception</h4>
+
+<ul id="exception_names" class="filters">
+<% @exception_names.each do |name| -%>
+  <li><%= link_to_function name, "ExceptionLogger.setFilter('exception_names','#{escape_javascript name}')" %></li>
+<% end -%>
+</ul>
+
+<h4>Controller / Action</h4>
+
+<ul id="controller_actions" class="filters">
+<% @controller_actions.each do |action| -%>
+  <li><%= link_to_function action, "ExceptionLogger.setFilter('controller_actions','#{escape_javascript action}')" %></li>
+<% end -%>
+</ul>
+
+<h4>Dates</h4>
+
+<ul id="date_ranges" class="filters">
+	<li><a title="1" onclick="ExceptionLogger.setFilter('date_ranges', 1)">Today</a></li>
+	<li><a title="3" onclick="ExceptionLogger.setFilter('date_ranges', 3)">Last few days</a></li>
+	<li><a title="7" onclick="ExceptionLogger.setFilter('date_ranges', 7)">Last 7 days</a></li>
+	<li><a title="30" onclick="ExceptionLogger.setFilter('date_ranges', 30)">Last 30 days</a></li>
+</ul>
+
+
+<div id="search">
+  <%= form_remote_tag :url => { :action => 'query' }, :html => { :id => 'query-form' } %>
+    <div>
+
+      <%= text_field_tag :query, "", :size => 17 %>
+      <%= submit_tag :Find %>
+
+      <%= hidden_field_tag :exception_names_filter %>
+			<%= hidden_field_tag :date_ranges_filter %>
+			<%= hidden_field_tag :controller_actions_filter %>
+      <%= hidden_field_tag :page, params[:page] %>
+    </div>
+  </form>
+</div>
+
+<%= render :partial => 'feed' %>
+
+</div> <!-- right -->
+
+<div id="left">
+	<div class="page" id="showpage" style="display:none; margin-bottom:1em;">
+		
+	</div>
+	<div class="page">
+		<%= render :partial => "exceptions" %>
+	</div>
+</div>
+
+  <div id="activity" style="display:none">Busy...</div>
+
+</div> <!-- container -->
+<xbr style="clear:both" />
+</body>
+</html>

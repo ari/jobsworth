@@ -6,8 +6,10 @@
     <%= javascript_include_merged :base %>
     <%= javascript_include_merged :tt %>
 
-    <%= stylesheet_link_merged :tt %>
+    <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
 
+    <%= stylesheet_link_merged :tt %>
+    <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => session[:user].uuid }) %>
 
@@ -101,6 +103,12 @@
                 <li><%= link_to "<span class=\"active\">#{_('Wiki')}</span>", {:controller => 'wiki', :action => 'show'}, :class => "active" %></li>
                 <% else %>
                 <li><%= link_to "<span>#{_('Wiki')}</span>", :controller => 'wiki', :action => 'show' %></li>
+                <% end %>
+
+                <% if ['forums', 'posts', 'topics'].include? controller.controller_name  %>
+                <li><%= link_to "<span class=\"active\">#{_('Forums')}</span>", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
+                <% else %>
+                <li><%= link_to "<span>#{_('Forums')}</span>", :controller => 'forums', :action => 'index' %></li>
                 <% end %>
 
 
@@ -238,7 +246,7 @@
                   <td align=left class="pages_item" colspan=2><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></td>
                 </tr>
           <% end %>
-               <tr><td colspan=2>&nbsp;</td></tr>
+               <tr><td colspan=2></td></tr>
               </table>
             </td></tr>
           </table>

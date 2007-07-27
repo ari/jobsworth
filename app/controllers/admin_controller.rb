@@ -46,7 +46,7 @@ class AdminController < ApplicationController
 
   # List all logos uploaded
   def logos
-    @customers = Customer.find(:all, :conditions => ["binary_id > 0 "])
+    @customers = Customer.find(:all)
   end
 
   # Show a single logo

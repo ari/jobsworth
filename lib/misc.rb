@@ -39,6 +39,19 @@ module Misc
     res.strip
   end
 
+  # Returns an array of languages codes that the client accepts sorted after
+  # priority. Returns an empty array if the HTTP_ACCEPT_LANGUAGE header is
+  # not present.
+  def accept_locales
+    return [] unless request.env.include? 'HTTP_ACCEPT_LANGUAGE'
+    languages = request.env['HTTP_ACCEPT_LANGUAGE'].split(',').map do |al|
+      al.gsub!(/-/, '_')
+      al = al.split(';')
+      (al.size == 1) ? [al.first, 1.0] : [al.first, al.last.split('=').last.to_f]
+    end
+    languages.reject {|x| x.last == 0 }.sort {|x,y| -(x.last <=> y.last) }.map {|x| x.first }
+  end
+
 end
 
 class OrderedHash < Hash

@@ -1,0 +1,2 @@
+page["exception-#{params[:id]}"].addClassName('deleted')
+page[:showpage].hide

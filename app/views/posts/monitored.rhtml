@@ -1,0 +1,63 @@
+<% @page_title = "Posts that {user} is monitoring"[:posts_user_is_monitoring, h(@user.display_name)] -%>
+
+<% content_for :right do %>
+
+<h4><%= "{name}'s Monitored Topics"[:users_monitored_topics, link_to(h(@user.display_name), user_path(@user))] %></h4>
+<ul class="flat">
+<% @user.monitored_topics.find(:all, :limit => 25).each do |topic| %>
+  <li><%= link_to topic.title, topic_path(topic.forum_id, topic) %></li>
+<% end %>
+</ul>
+
+<% end -%>
+
+<h1><%= @page_title %></h1>
+<p class="subtitle">
+  <%= feed_icon_tag @page_title, formatted_monitored_posts_path(:user_id => @user, :format => 'rss') %>
+  <%= '{count} post(s) found'[(count=@post_pages.item_count)==1 ? :post_count_found : :posts_count_found, number_with_delimiter(count)] %>
+</p>
+
+<% if @post_pages.page_count > 1 -%>
+<p class="pages"><%= 'Pages'[:pages_title] %>: <strong><%= pagination_links @post_pages, :window_size => 10, :params => params %></strong></p>
+<% end -%>
+
+<table border="0" cellspacing="0" cellpadding="0" class="posts wide">
+<% for post in @posts do %>
+<% unless post == @posts.first %>
+<tr class="spacer">
+  <td colspan="2">&nbsp;</td>
+</tr>
+<% end %>
+<tr class="post hentry" id="<%= post.dom_id %>">
+  <td class="author vcard">
+    <div class="date">
+      <abbr class="updated" title="<%= post.created_at.xmlschema %>">
+      <% if post.created_at > Time.now.utc-24.hours%>
+      <%= time_ago_in_words(post.created_at).sub(/about /, '') %>
+      <% else %>
+      <%= post.created_at.strftime("%b %e, %Y"[:date_format])%>
+      <% end %>
+      </abbr>
+    </div>
+
+    <%= avatar_for post.user %>
+    <span class="fn"><%= link_to truncate(h(post.user.display_name), 15), user_path(post.user), :class => (post.user == @posts.first.user ? "admin" : nil) %></span>
+    <span class="posts"><%= '{count} post(s)'[(count=post.user.posts_count)==1 ? :post_count : :posts_count, number_with_delimiter(count)] %></span>
+  </td>
+  <td class="body entry-content">
+    <p class="topic"><%= 'Topic'[:topic_title] %>: <%= link_to h(post.topic_title), topic_path(post.forum_id, post.topic_id) %></p>
+    
+    <%= post.body_html %>
+  </td>
+</tr>
+
+<% end %>
+</table>
+
+<% if @post_pages and @post_pages.current.next %>
+<p style="float:right;"><%= link_to 'Next page'[], { :page => @post_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
+<% end %>
+
+<% if @post_pages.page_count > 1 -%>
+<p class="pages"><%= 'Pages'[:pages_title] %>: <strong><%= pagination_links @post_pages, :window_size => 10, :params => params %></strong></p>
+<% end -%>

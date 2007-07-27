@@ -9,7 +9,9 @@
   </tr>
 
   <% @customers.each do |c| %>
-  <tr><td><img src="/admin/show_logo/<%= c.id %>"></td></tr>
+  <% if c.logo? %>
+  <tr><td><%= c.name %></td><td><img src="/admin/show_logo/<%= c.id %>"></td></tr>
+  <% end %>
   <% end %>
 
 </table>

@@ -1,0 +1,2 @@
+page[:exceptions].replace :partial => "exceptions"
+page[:showpage].hide

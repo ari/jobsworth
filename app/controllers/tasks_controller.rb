@@ -955,7 +955,6 @@ class TasksController < ApplicationController
     @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     @log.started_at = tz.utc_to_local(@log.started_at)
     @task = @log.task
-    render :action => 'edit_log'
   end
 
   def destroy_log

@@ -33,7 +33,7 @@
             filter_count = 0
             if session[:view].nil?
             %>
-            <fieldset style="padding-bottom:0.2em;"><legend>Filter</legend>
+            <fieldset style="padding-bottom:0.2em;margin-bottom:1em;"><legend>Filter</legend>
             <%= start_form_tag( :controller => 'tasks', :action => 'filter' ) %>
 
             <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">

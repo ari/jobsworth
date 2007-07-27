@@ -35,6 +35,7 @@
 (^|/)semantic\.cache$
 (^|/)autom4te\.cache($|/)
 (^|/)index($|/)
+(^|/)store($|/)
 (^|/)log($|/)
 (^|/)database\.yml$
 (^|/)juggernaut_config\.yml$
