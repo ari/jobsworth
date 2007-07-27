@@ -205,6 +205,7 @@ class ApplicationController < ActionController::Base
   end
 
   def rescue_action(exception)
+    log_exception(exception)
     exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
   end
 
@@ -222,13 +223,6 @@ class ApplicationController < ActionController::Base
 
   def current_user
     session[:user]
-  end
-
-  def render_500(exception)
-    respond_to do |type|
-      type.html { render :file => "#{RAILS_ROOT}/public/500.html", :status => "500 Error" }
-      type.all  { render :nothing => true, :status => "500 Error" }
-    end
   end
 
   def last_active

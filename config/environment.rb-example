@@ -82,11 +82,13 @@ LoggedExceptionsController.class_eval do
 
   protected
   # only allow admins
+  # this obviously depends on how your auth system works
   def authorized
-    session[:user] && session[:user].admin > 0
+    unless session[:user] && session[:user].admin > 0
+      redirect_to :controller => 'login', :action => 'login'
+    end
   end
 end
-
 
 ActiveRecord::Base.verification_timeout = 14400
 
