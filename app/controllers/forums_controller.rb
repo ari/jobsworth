@@ -34,6 +34,10 @@ class ForumsController < ApplicationController
   end
 
   def update
+    return unless session[:user].admin > 0
+    return if session[:user].admin < 2 && @forum.company_id.nil?
+    return if session[:user].company_id != @forum.company_id && session[:user].admin < 2
+
     @forum.update_attributes!(params[:forum])
     respond_to do |format|
       format.html { redirect_to forums_path }
@@ -42,6 +46,19 @@ class ForumsController < ApplicationController
   end
 
   def destroy
+    unless session[:user].admin > 0
+      redirect_to forums_path
+      return
+    end
+    if session[:user].admin < 2 && @forum.company_id.nil?
+      redirect_to forums_path
+      return
+    end
+    if session[:user].company_id != @forum.company_id && session[:user].admin < 2
+      redirect_to forums_path
+      return
+    end
+
     @forum.destroy
     respond_to do |format|
       format.html { redirect_to forums_path }

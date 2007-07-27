@@ -74,7 +74,7 @@
     <span class="fn"><span class="<%= (post.user == @posts.first.user ? "threadauthor" : "") %>"><%= truncate(h(post.user.display_name), 15)%></span>
     <% if post.user.admin? or post.forum.moderators.include?(post.user) %>
     <span class="admin">
-      <% if post.user.admin? %>
+      <% if((post.forum.company_id.nil? && post.user.admin > 1) || (!post.forum.company_id.nil? && post.user.admin?)) %>
       <%= 'Administator' %>
       <% elsif post.forum.moderators.include?(post.user) %>
       <%= 'Moderator' %>

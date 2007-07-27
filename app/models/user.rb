@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   end
 
   def avatar_url(size=32)
-    "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email)}&rating=PG&size=#{size}"
+    "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
   end
 
   def display_name

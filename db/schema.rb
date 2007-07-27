@@ -34,8 +34,8 @@ ActiveRecord::Schema.define(:version => 82) do
     t.column "dependency_id", :integer
   end
 
-  add_index "dependencies", ["task_id"], :name => "index_dependencies_on_task_id"
-  add_index "dependencies", ["dependency_id"], :name => "index_dependencies_on_dependency_id"
+  add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
+  add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
 
   create_table "forums", :force => true do |t|
     t.column "company_id",       :integer

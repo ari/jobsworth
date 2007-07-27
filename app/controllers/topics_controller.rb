@@ -44,6 +44,10 @@ class TopicsController < ApplicationController
   end
 
   def update
+    if @topic.user_id != current_user.id && !admin? && !current_user.moderator_of?(@topic.forum)
+      redirect_to topic_path(@forum, @topic)
+      return
+    end
     @topic.attributes = params[:topic]
     assign_protected
     @topic.save!
@@ -54,6 +58,11 @@ class TopicsController < ApplicationController
   end
 
   def destroy
+    if session[:user].id != @topic.user_id && !admin? && !current_user.moderator_of?(@topic.forum)
+      redirect_to forums_path
+      return
+    end
+
     @topic.destroy
     flash[:notice] = "Topic '{title}' was deleted."[:topic_deleted_message, CGI::escapeHTML(@topic.title)]
     respond_to do |format|

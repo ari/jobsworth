@@ -20,8 +20,9 @@ ActiveRecord::Base.class_eval do
     
     def body_html_with_formatting
       body_html = auto_link body { |text| truncate(text, 50) }
-      textilized = RedCloth.new(body_html, [ :hard_breaks ])
-      textilized.hard_breaks = true if textilized.respond_to?("hard_breaks=")
+      textilized = RedCloth.new(body_html) #, [ :hard_breaks ])
+#      textilized.hard_breaks = true if textilized.respond_to?("hard_breaks=")
+      logger.info(textilized.to_html)
       white_list(textilized.to_html)
     end
 end
