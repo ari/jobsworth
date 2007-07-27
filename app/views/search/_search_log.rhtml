@@ -31,7 +31,7 @@
 
   <% end %>
   </td>
-  <td class="log" valign="top"><strong>
+  <td class="log" valign="top"><div style="float:left;"><strong>
 <% if log.task && log.task_id > 0  %>
 <%= link_to_task_with_highlight(log.task, @keys) %>
 <% elsif log.scm_changeset && log.scm_changeset_id.to_i > 0 %>
@@ -42,8 +42,9 @@
             <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user%>
             <%= "<small><span class=\"otheruser\">[#{log.scm_changeset.author}]</span></small>" if log.scm_changeset && !log.user %>
 
-  </strong><br/>
-  <div style="padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
+  </strong></div>
+  <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
+  <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
 <% if log.body && log.body.length > 0 %>
       <%= highlight_all(wrap_text(log.body, 100).gsub(/\n/, "<br>"), @keys) if log.body %>
 <% end %>
