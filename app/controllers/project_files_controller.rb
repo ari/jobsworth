@@ -284,6 +284,11 @@ class ProjectFilesController < ApplicationController
     rescue
     end
     @file.destroy
+
+    return if request.xhr?
+
+    redirect_from_last
+
   end
 
   def destroy_folder
