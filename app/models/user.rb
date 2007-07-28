@@ -21,6 +21,9 @@ class User < ActiveRecord::Base
   has_many      :monitorships
   has_many      :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
 
+  has_many :moderatorships, :dependent => :destroy
+  has_many :forums, :through => :moderatorships, :order => 'forums.name'
+
 
 #  composed_of  :tz, :class_name => 'TZInfo::Timezone',
 #               :mapping => %w(time_zone time_zone)
