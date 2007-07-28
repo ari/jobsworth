@@ -60,21 +60,6 @@ class CustomersController < ApplicationController
     redirect_to :action => 'list'
   end
 
-  def upload_css
-    filename = params['customer']['tmp_file'].original_filename
-    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
-    @customer.css = params['customer']['tmp_file'].read
-    params['customer'].delete('tmp_file')
-
-    if @customer.save
-      flash['notice'] = _('CSS successfully uploaded.')
-      redirect_to :action => 'list'
-    else
-      render_action 'edit'
-    end
-  end
-
-
   def upload_logo
     filename = params['customer']['tmp_file'].original_filename
     @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
@@ -149,7 +134,6 @@ class CustomersController < ApplicationController
     @customer = Customer.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
     if !@customer.nil?
       File.delete(@customer.logo_path) rescue begin end
-      @customer.save
     end
     redirect_from_last
   end

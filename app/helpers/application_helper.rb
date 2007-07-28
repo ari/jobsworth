@@ -426,7 +426,7 @@ module ApplicationHelper
 
   def avatar_for(user, size=32)
     if session[:user].option_avatars == 1
-      return image_tag( user.avatar_url, :size => "#{size}x#{size}", :class => 'photo')
+      return "<img src=\"#{user.avatar_url(size)}\" class=\"photo\" />"
     end
     ""
   end

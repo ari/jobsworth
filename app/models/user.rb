@@ -43,14 +43,46 @@ class User < ActiveRecord::Base
 
   validates_presence_of         :company_id
 
+  after_destroy { |r|
+    begin
+      File.delete(r.avatar_path)
+      File.delete(r.avatar_large_path)
+    rescue
+    end
+  }
+
   before_create                 :generate_uuid
+
+  def path
+    File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)
+  end
+
+  def avatar_path
+    File.join(self.path, "#{self.id}")
+  end
+
+  def avatar_large_path
+    File.join(self.path, "#{self.id}_large")
+  end
+
+  def avatar?
+    File.exist? self.avatar_path
+  end
 
   def generate_uuid
     @attributes['uuid'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
   def avatar_url(size=32)
-    "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+    if avatar?
+      if size > 25
+        "/users/avatar/#{self.id}?large=1"
+      else
+        "/users/avatar/#{self.id}"
+      end
+    else
+      "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+    end
   end
 
   def display_name
