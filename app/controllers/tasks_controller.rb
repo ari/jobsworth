@@ -270,6 +270,11 @@ class TasksController < ApplicationController
         task_file.save
         task_file.reload
 
+        if !File.directory?(task_file.path)
+          Dir.mkdir(task_file.path, 0755) rescue begin
+                                                 end
+        end
+
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
