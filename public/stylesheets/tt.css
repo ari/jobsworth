@@ -78,9 +78,15 @@ h3 {
 }
 
 .project_customer {
-  padding-top: 0.5em;
+  padding-top: 0.3em;
   color:#423f54;
   font-size: 13px;
+}
+
+.project_customer a {
+  color: #423F54;
+  font-size: 13px;
+  font-weight: bold;
 }
 
 .project_completed {

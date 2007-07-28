@@ -18,6 +18,7 @@
 \.orig$
 (^|/)vssver\.scc$
 \.swp$
+\.git$
 (^|/)MT($|/)
 (^|/)\{arch\}($|/)
 (^|/).arch-ids($|/)

@@ -80,4 +80,9 @@ class ActivitiesController < ApplicationController
     redirect_to :controller => 'activities', :action => 'list'
   end
 
+  def toggle_display
+    session[:collapse_projects] ||= {}
+    session[:collapse_projects][params[:id]] = 1 - session[:collapse_projects][params[:id]].to_i
+  end
+
 end

@@ -1,0 +1,1 @@
+session[:collapse_projects][params[:id]].to_i == 1 ? page["projects_customer_#{params[:id]}"].hide : page["projects_customer_#{params[:id]}"].show

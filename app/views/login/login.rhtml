@@ -116,8 +116,52 @@ document.forms[0].username.focus();
 
     <td valign="top">
   <% if flash[:notice] %><div id=notice><%= flash[:notice] %><% flash.clear %></div><br />
-  <% else %>
-  <div style="padding-top:1em;padding-right:1em;"><strong>After introducing <span style="color:#fba105;">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align="right" style="padding-right:1em;"><em>-- Erlend Simonsen</em></div>
+  <% else %>]
+  <% lines = [
+    "<strong>After introducing <span style=\"color:#fba105;\">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align=\"right\" style=\"padding-right:1em;\"><em>-- Erlend Simonsen</em>",
+    "<strong>Firstly, let me add my voice to the many telling you your application is wonderful!</strong>",
+    "<strong>I, like everyone else, love ClockingIT</strong>",
+    "<strong>You're doing a fantastic job!</strong>",
+    "<strong>your tool it's awasome, i hope you have time to improve it, i really think that can become the best tool in his category</strong>",
+    "<strong>really, really, really great! It's more...the best i've ever seen.</strong>",
+    "<strong>I've worked with a lot of PM systems. MS Project, OpenWorkbench, Basecamp, etc...but clockingit have sthg that I was looking for...simplicity.</strong>",
+    "<strong>All of the clients I've shown it to to get an idea if they liked, actually loved it!</strong>",
+    "<strong>First of all, i'd like to thank you soooo much for your magnificent work and dedication; you are indeed developing a grand and most usable application in groupware trends.</strong>",
+    "<strong>Only a quick note to let you know how impressed I am with this project, both technically and philosophically.</strong>",
+    "<strong>Must say Clocking IT is very cool and unique.</strong>",
+    "<strong>I am really quite impressed with your time tracker</strong>",
+    "<strong>In my 8 years of consulting, 3 hours has got to be fastest turn-around time for a feature request that I've ever seen. Thanks.</strong>",
+    "<strong>Thanks so much this is great!!!</strong>",
+    "<strong>Your site looks great - and for free, no less.</strong>",
+    "<strong>Actually, great was probably an understatement - after exploring it a bit more it looks smarter and more intuitive than any other project management software I've seen.</strong>",
+    "<strong>Well done to you and your team.</strong>",
+    "<strong>The main thing in software projects is the task management and the measurement of the time we have to spend. You combine this in a really awesome design, like Apple does: not to overloaded and still very powerfull.</strong>",
+    "<strong>I have been looking for a good project management package for years and this is the best I've seen.</strong>",
+    "<strong>WELL DONE!</strong>",
+    "<strong>Whoa, that was quick! Thank you!</strong>",
+    "<strong>I was reminded how refreshing and heartening you and your wife's attitude is compared to the ignorance, arrogance and contempt for others of some other software developers</strong>",
+    "<strong>I'm totally blown away - this is by FAR the best project tracking system that we have ever seen!!!</strong>",
+    "<strong>So very nice!  Thanks so much for building this.  It's really great!</strong>",
+    "<strong>LOVING your product.  SO GOOD.  Wow.</strong>",
+    "<strong>I love the program. Thanks for making it free. </strong>",
+    "<strong>I've used various things in the past to record my working day including a Yahoo widget but this is by far the best.</strong>",
+    "<strong>Looks like so far you've created a great project. Very simple and to the point and very fast!! </strong>",
+    "<strong>I'm greatly surprised every day with your new improvements...</strong>",
+    "<strong>We just started using clockingit this week and are SO PLEASED with finding a program that does just what we want.</strong>",
+    "<strong>I love the easy to use interface and especially the ease of keeping track of time on each task. Great job!</strong>",
+    "<strong>Thanks a lot for creating such a wonderfull tool and for deciding to open-source it !</strong>",
+    "<strong>Thanks again for such an amazing application!!!</strong>",
+    "<strong>Having a blast working with your software - you have no idea how much this has helped our little startup!</strong>",
+    "<strong>We're now accurately able to track hours in each task and we'll be using that to bill our clients, so it's AWESOME!</strong>",
+
+    #04/19/2007 - Done.
+
+
+    ] %>
+
+
+
+  <div style="padding-top:1em;padding-right:1em;"><%= lines[rand(lines.size)]</div>
 
   <% end %>
 
