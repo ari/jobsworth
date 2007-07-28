@@ -352,7 +352,7 @@ Localization.define('nl_NL') do |l|
   l.store 'Log entry deleted...', 'Werk-log item verwijderd...'
 
   # Users Controller
-  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Gebruiker aangemaakt Geef deze gebruiker rechten tot de benodigde projecten.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Gebruiker aangemaakt Geef deze gebruiker rechten tot de benodigde projecten.'
   l.store "Error sending creation email. Account still created.", 'Fout bij het versturen van de welkomst-email. Het account is wel aangemaakt.'
   l.store 'User was successfully updated.', 'Gebruiker gewijzigd.'
   l.store 'Preferences successfully updated.', 'Instellingen opgeslagen.'

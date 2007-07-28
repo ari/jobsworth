@@ -350,7 +350,7 @@ Localization.define('de_DE') do |l|
   l.store 'Log entry deleted...', 'Protokolleintrag wurde gelöscht...'
 
   # Users Controller
-  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Benutzer wurde erfolgreich angelegt. Bitte nicht vergessen, dem Benutzer Zugriff auf die gewünschten Projekte zu gewähren.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Benutzer wurde erfolgreich angelegt. Bitte nicht vergessen, dem Benutzer Zugriff auf die gewünschten Projekte zu gewähren.'
   l.store "Error sending creation email. Account still created.", 'Fehler beim Versenden der Benutzeranlage-E-Mail. Der Benutzer wurde trotzdem angelegt.'
   l.store 'User was successfully updated.', 'Benutzer wurde erfolgreich aktualisiert.'
   l.store 'Preferences successfully updated.', 'Einstellungen wurden erfolgreich aktualisiert.'

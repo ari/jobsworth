@@ -36,7 +36,7 @@ class UsersController < ApplicationController
     @user.time_format = "%H:%M"
 
     if @user.save
-      flash['notice'] = _('User was successfully created. Remeber to give this user access to needed projects.')
+      flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
       Signup::deliver_account_created(@user, session[:user], params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'list'
     else

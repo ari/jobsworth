@@ -352,7 +352,7 @@ Localization.define('pt_BR') do |l|
   l.store 'Log entry deleted...', 'Entrada de histórico removida...'
 
   # Users Controller
-  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Usuário criado com sucesso. Lembre de dar acesso a este usuário aos projetos necessários.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Usuário criado com sucesso. Lembre de dar acesso a este usuário aos projetos necessários.'
   l.store "Error sending creation email. Account still created.", 'Erro ao enviar email de criação. Conta criada.'
   l.store 'User was successfully updated.', 'Usuário modificado com sucesso.'
   l.store 'Preferences successfully updated.', 'Preferências modificadas com sucesso.'

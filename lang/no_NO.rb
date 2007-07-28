@@ -352,7 +352,7 @@ Localization.define('no_NO') do |l|
   l.store 'Log entry deleted...', 'Arbeidslogg slettet...'
 
   # Users Controller
-  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Bruker opprettet. Husk å gi brukeren tilgang til prosjekter.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Bruker opprettet. Husk å gi brukeren tilgang til prosjekter.'
   l.store "Error sending creation email. Account still created.", 'Feil under sending av varslingsepost. Kontoen ble opprettet alikevel.'
   l.store 'User was successfully updated.', 'Bruker oppdatert.'
   l.store 'Preferences successfully updated.', 'Innstillinger oppdatert.'
