@@ -97,7 +97,7 @@
             <select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
               <%
-                 @sort = [[_("Due / Priority"), "1"],[_("Age"), "2"],[_("Name"), "3"]]
+                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"]]
               %>
               <%= options_for_select @sort, session[:sort] %>
             </select>
