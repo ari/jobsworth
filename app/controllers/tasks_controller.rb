@@ -266,14 +266,14 @@ class TasksController < ApplicationController
         task_file.filename = filename
         task_file.name = filename
         task_file.save
+        task_file.file_size = params['task_file'].size
+        task_file.save
         task_file.reload
 
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
                                                                                                       end
-        task_file.file_size = File.size?( task_file.file_path )
-        task_file.save
 
         #TODO Add notification
       end
