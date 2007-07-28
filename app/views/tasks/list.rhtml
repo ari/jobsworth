@@ -103,7 +103,7 @@
             </select>
 
 
-            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;"> <%=_ 'Hide Waiting Tasks'%></div>
+            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks with unmet dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks with unmet dependencies') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <%= end_form_tag %>
             </fieldset>
             <% end %>
