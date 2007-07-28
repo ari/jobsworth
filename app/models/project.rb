@@ -13,8 +13,18 @@ class Project < ActiveRecord::Base
   has_many      :project_files, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy
 
+  has_many      :forums, :dependent => :destroy
+
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
+
+  after_create { |r|
+    f = Forum.new
+    f.company_id = r.company_id
+    f.project_id = r.id
+    f.name = r.full_name
+    f.save
+  }
 
   def full_name
     "#{customer.name} / #{name}"

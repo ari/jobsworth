@@ -11,6 +11,23 @@ class FeedsController < ApplicationController
 
   session :off
 
+  def unsubscribe
+    return if params[:id].nil? || params[:id].empty?
+
+    user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
+
+    if user.nil?
+      render :nothing => true, :layout => false
+      return
+    end
+
+    user.newsletter = 0
+    user.save
+
+    render :text => "You're now unsubscribed.. <br/><a href=\"http://www.clockingit.com\">ClockingIT</a>"
+
+  end
+
   def get_action(log)
     if log.task && log.task_id > 0
       action = "Completed" if log.log_type == WorkLog::TASK_COMPLETED
