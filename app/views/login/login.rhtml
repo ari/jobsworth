@@ -116,7 +116,7 @@ document.forms[0].username.focus();
 
     <td valign="top">
   <% if flash[:notice] %><div id=notice><%= flash[:notice] %><% flash.clear %></div><br />
-  <% else %>]
+  <% else %>
   <% lines = [
     "<strong>After introducing <span style=\"color:#fba105;\">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align=\"right\" style=\"padding-right:1em;\"><em>-- Erlend Simonsen</em>",
     "<strong>Firstly, let me add my voice to the many telling you your application is wonderful!</strong>",
@@ -152,16 +152,14 @@ document.forms[0].username.focus();
     "<strong>Thanks a lot for creating such a wonderfull tool and for deciding to open-source it !</strong>",
     "<strong>Thanks again for such an amazing application!!!</strong>",
     "<strong>Having a blast working with your software - you have no idea how much this has helped our little startup!</strong>",
-    "<strong>We're now accurately able to track hours in each task and we'll be using that to bill our clients, so it's AWESOME!</strong>",
-
+    "<strong>We're now accurately able to track hours in each task and we'll be using that to bill our clients, so it's AWESOME!</strong>"
+    ]
     #04/19/2007 - Done.
-
-
-    ] %>
+    %>
 
 
 
-  <div style="padding-top:1em;padding-right:1em;"><%= lines[rand(lines.size)]</div>
+  <div style="padding-top:1em;padding-right:1em;">&quot;<%= lines[rand(lines.size)]%>&quot;</div>
 
   <% end %>
 
