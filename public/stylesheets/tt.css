@@ -1042,7 +1042,7 @@ a.description {
   background-position:100% -25px;
 }
 
-#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date {
+#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort {
   font-size: 10px;
 }
 

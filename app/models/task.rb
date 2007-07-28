@@ -477,7 +477,7 @@ class Task < ActiveRecord::Base
     sql << " AND projects.customer_id = #{options[:filter_customer]}" if options[:filter_customer].to_i > 0
     sql << " GROUP BY tasks.id"
     sql << " HAVING COUNT(tasks.id) = #{tags.size}"
-    sql << " ORDER BY tasks.completed_at is NOT NULL, tasks.completed_at desc, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.completed_at DESC, tasks.name"
+    sql << " ORDER BY tasks.completed_at is NOT NULL, tasks.completed_at desc, #{options[:sort]}"
 
     find_by_sql(sql)
   end

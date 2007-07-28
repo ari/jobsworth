@@ -94,6 +94,14 @@
               <%= options_for_select @group_by, session[:group_by] %>
             </select>
 
+            <select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
+              <%
+                 @sort = [[_("Due / Priority"), "1"],[_("Age"), "2"],[_("Name"), "3"]]
+              %>
+              <%= options_for_select @sort, session[:sort] %>
+            </select>
+
 
             <input type="checkbox" name="hide_dependencies" id="hide_dependencies" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;"> <%=_ 'Hide Waiting Tasks'%></div>
             <%= end_form_tag %>

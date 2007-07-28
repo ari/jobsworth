@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 82) do
+ActiveRecord::Schema.define(:version => 83) do
 
   create_table "companies", :force => true do |t|
     t.column "name",          :string,   :limit => 200, :default => "", :null => false
@@ -401,6 +401,7 @@ ActiveRecord::Schema.define(:version => 82) do
     t.column "filter_status",       :integer, :default => 0
     t.column "filter_type_id",      :integer, :default => 0
     t.column "hide_dependencies",   :integer
+    t.column "sort",                :integer, :default => 0
   end
 
   add_index "views", ["company_id"], :name => "views_company_id_index"
