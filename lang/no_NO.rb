@@ -84,7 +84,7 @@ Localization.define('no_NO') do |l|
   l.store 'Duplicate', 'Dublett'
   l.store 'Archived', 'Arkivert'
   l.store 'Group Tags', 'Grupper Tagger'
-  l.store '[Save as View]', '[Lagre som Utsnitt]'
+  l.store 'Save as View', 'Lagre som Utsnitt'
   l.store 'Tags', 'Tagger'
   l.store '[All Tags]', '[Alle Tagger]'
   l.store 'Close <b>%s</b>', 'Lukk <b>%s</b>'
@@ -298,7 +298,7 @@ Localization.define('no_NO') do |l|
 
   # Clients
   l.store 'Contact', 'Kontakt'
-  l.store '[New Client]', '[Ny Kunde]'
+  l.store 'New Client', 'Ny Kunde'
   l.store 'Contact email', 'Kontakt epost'
   l.store 'Contact name', 'Kontakt navn'
   l.store 'Client CSS', 'Kundens CSS'

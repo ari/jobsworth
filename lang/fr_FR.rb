@@ -84,7 +84,7 @@ Localization.define('fr_FR') do |l|
   l.store 'Duplicate', 'Doublon'
   l.store 'Archived', 'Archivé'
   l.store 'Group Tags', 'Regrouper par tags'
-  l.store '[Save as View]', '[Sauvegarder comme vue]'
+  l.store 'Save as View', 'Sauvegarder comme vue'
   l.store 'Tags', 'Tags'
   l.store '[All Tags]', '[Tous les tags]'
   l.store 'Close <b>%s</b>', 'Classer <b>%s</b>'
@@ -298,7 +298,7 @@ Localization.define('fr_FR') do |l|
 
   # Clients
   l.store 'Contact', 'Contact'
-  l.store '[New Client]', '[Nouveau client]'
+  l.store 'New Client', 'Nouveau client'
   l.store 'Contact email', 'E-Mail du contact'
   l.store 'Contact name', 'Nom du contact'
   l.store 'Client CSS', 'CSS client'

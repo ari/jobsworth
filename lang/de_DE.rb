@@ -82,7 +82,7 @@ Localization.define('de_DE') do |l|
   l.store 'Duplicate', 'Duplikat'
   l.store 'Archived', 'Archiviert'
   l.store 'Group Tags', 'Kennzeichen gruppieren'
-  l.store '[Save as View]', '[Als Ansicht speichern]'
+  l.store 'Save as View', 'Als Ansicht speichern'
   l.store 'Tags', 'Kennzeichen'
   l.store '[All Tags]', '[Alle Kennzeichen]'
   l.store 'Close <b>%s</b>', '<b>%s</b> schließen'
@@ -296,7 +296,7 @@ Localization.define('de_DE') do |l|
 
   # Clients
   l.store 'Contact', 'Kontakt'
-  l.store '[New Client]', '[Neuer Kunde]'
+  l.store 'New Client', 'Neuer Kunde'
   l.store 'Contact email', 'E-Mail des Kontaktes'
   l.store 'Contact name', 'Name des Kontaktes'
   l.store 'Client CSS', 'Kunden-CSS'

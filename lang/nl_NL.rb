@@ -82,7 +82,7 @@ Localization.define('nl_NL') do |l|
   l.store 'Duplicate', 'Dubbele'
   l.store 'Archived', 'Gearchiveerd'
   l.store 'Group Tags', 'Groepeer op Tags'
-  l.store '[Save as View]', '[Sla op als Overzicht]'
+  l.store 'Save as View', 'Sla op als Overzicht'
   l.store 'Tags', 'Tags'
   l.store '[All Tags]', '[Alle Tags]'
   l.store 'Close <b>%s</b>', 'Sluit <b>%s</b>'

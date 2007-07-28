@@ -85,7 +85,7 @@ Localization.define('pt_BR') do |l|
   l.store 'Duplicate', 'Duplicada'
   l.store 'Archived', 'Arquivada'
   l.store 'Group Tags', 'Agrupar Tags'
-  l.store '[Save as View]', '[Salvar como Visualização]'
+  l.store 'Save as View', 'Salvar como Visualização'
   l.store 'Tags', 'Tags'
   l.store '[All Tags]', '[Todas Tags]'
   l.store 'Close <b>%s</b>', 'Fechar <b>%s</b>'
@@ -298,7 +298,7 @@ Localization.define('pt_BR') do |l|
 
   # Clients
   l.store 'Contact', 'Contato'
-  l.store '[New Client]', '[Novo Cliente]'
+  l.store 'New Client', 'Novo Cliente'
   l.store 'Contact email', 'Email para contato'
   l.store 'Contact name', 'Nome para contato'
   l.store 'Client CSS', 'CSS do Cliente'
