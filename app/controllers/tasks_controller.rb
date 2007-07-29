@@ -129,8 +129,10 @@ class TasksController < ApplicationController
       items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
-      items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect{ |m| "#{m.project.name} / #{m.name}" }
-      @groups = Task.group_by(@tasks, items) { |t,i| "#{t.project.name} / #{t.milestone.name}" == i if t.milestone }
+      items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect{ |m| "#{m.project.name} / #{m.name}" }.flatten
+      items += User.find(session[:user].id).projects.collect(&:name)
+      items = items.uniq.sort
+      @groups = Task.group_by(@tasks, items) { |t,i| t.milestone ? ("#{t.project.name} / #{t.milestone.name}" == i) : (t.project.name == i)  }
     else
       @groups = [@tasks]
     end
