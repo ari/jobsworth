@@ -166,18 +166,22 @@ class ApplicationController < ActionController::Base
 
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
-    @current_projects ||= User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
+    begin
+      @current_projects ||= User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
                                                            :conditions => [ "projects.company_id = ? AND completed_at IS NULL", session[:user].company_id ], :include => :customer )
+    rescue
+      @current_projects = []
+    end
   end
 
 
   # List of current Project ids, joined with ,
   def current_project_ids
     projects = current_projects
-    if projects.empty?
-      @current_project_ids ||= "0"
+    if projects.nil? || projects.empty?
+      @current_project_ids = "0"
     else
-      @current_project_ids ||= projects.collect{|p|p.id}.join(',')
+      @current_project_ids = projects.collect{|p|p.id}.join(',')
     end
     @current_project_ids
   end
