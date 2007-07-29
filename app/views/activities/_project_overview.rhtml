@@ -12,7 +12,14 @@
                </td></tr></table></td></tr>
                 <% end %>
 
-               <tr><td colspan=2 align=left class="project_customer"><%= link_to_remote (project.customer.name == 'Internal' ? session[:user].company.name : project.customer.name),
+               <%
+                  collapse = " <span id=\"indicator_#{project.customer_id}\" class=\"collapse-indicator\">"
+                  collapse << ((session[:collapse_projects] && session[:collapse_projects][project.customer_id.to_s].to_i == 1) ? image_tag('collapsed.png', :border => 0) : image_tag('expanded.png', :border => 0))
+                  collapse << "</span> "
+                  collapse << (project.customer.name == 'Internal' ? session[:user].company.name : project.customer.name)
+                %>
+
+               <tr><td colspan=2 align=left class="project_customer"><%= link_to_remote collapse,
                                               :url => { :action => 'toggle_display', :id => project.customer_id },
                                               :loading => "Element.show('loading');",
                                               :complete => "Element.hide('loading');"

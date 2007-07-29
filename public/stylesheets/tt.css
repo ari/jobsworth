@@ -89,6 +89,10 @@ h3 {
   font-weight: bold;
 }
 
+.project_customer img {
+  padding-bottom: 1px;
+}
+
 .project_completed {
   padding-top: 1.5em;
   font-size: smaller;
@@ -259,6 +263,11 @@ img {
 .optional {
   color: #a6a6a6;
   font-style: italic;
+  font-size: 80%;
+}
+
+.collapse-indicator {
+  color: #a6a6a6;
   font-size: 80%;
 }
 
