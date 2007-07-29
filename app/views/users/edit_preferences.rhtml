@@ -17,7 +17,7 @@
 
 <%= start_form_tag({ :controller => 'users', :action => 'upload_avatar', :id => @user.id}, { :multipart => "true" }) %>
 <p><label for="users_tmp_file"><%=_ 'New Avatar' %></label><%= file_field 'user', 'tmp_file' %></p><br/>
-<label for="options_text"></label><span class="optional" style="clear:both;"><%=_ "(25x25px - will be resized.)" %></span></p>
+<label for="options_text"></label><span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span></p>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
 <%= end_form_tag %>
 </fieldset>
