@@ -61,6 +61,11 @@ class CustomersController < ApplicationController
   end
 
   def upload_logo
+    if params['customer'].nil? || params['customer']['tmp_file'].nil? || !params['customer']['tmp_file'].respond_to?('original_filename')
+      flash['notice'] = _('No file selected.')
+      redirect_from_last
+      return
+    end
     filename = params['customer']['tmp_file'].original_filename
     @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
 

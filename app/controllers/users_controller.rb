@@ -107,6 +107,11 @@ class UsersController < ApplicationController
   end
 
   def upload_avatar
+    if params['user'].nil? || params['user']['tmp_file'].nil? || !params['user']['tmp_file'].respond_to?('original_filename')
+      flash['notice'] = _('No file selected.')
+      redirect_from_last
+      return
+    end
     filename = params['user']['tmp_file'].original_filename
     @user = User.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
 

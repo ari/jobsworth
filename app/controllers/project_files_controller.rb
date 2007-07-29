@@ -120,6 +120,11 @@ class ProjectFilesController < ApplicationController
   end
 
   def upload
+    if params['file'].nil? || params['file']['tmp_file'].nil? || !params['file']['tmp_file'].respond_to?('original_filename')
+      flash['notice'] = _('No file selected.')
+      redirect_from_last
+      return
+    end
     filename = params['file']['tmp_file'].original_filename if params['file']
 
     if filename.nil? || filename.strip.length == 0

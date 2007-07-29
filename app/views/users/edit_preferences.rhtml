@@ -19,6 +19,7 @@
 <p><label for="users_tmp_file"><%=_ 'New Avatar' %></label><%= file_field 'user', 'tmp_file' %></p><br/>
 <label for="options_text"></label><span class="optional" style="clear:both;"><%=_ "(25x25px - will be resized.)" %></span></p>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
+<%= end_form_tag %>
 </fieldset>
 
 
@@ -34,6 +35,7 @@
 <label for="options_text"></label><span class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></span></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
+<%= end_form_tag %>
 </fieldset>
 
 <% end %>
