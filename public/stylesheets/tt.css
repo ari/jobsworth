@@ -89,10 +89,6 @@ h3 {
   font-weight: bold;
 }
 
-.project_customer img {
-  padding-bottom: 1px;
-}
-
 .project_completed {
   padding-top: 1.5em;
   font-size: smaller;
@@ -266,9 +262,26 @@ img {
   font-size: 80%;
 }
 
-.collapse-indicator {
+.collapse-indicator-open {
+  width: 13px;
+  height: 13px;
+  background: url(/images/expand-indicator.png) 0px 0px no-repeat;
   color: #a6a6a6;
   font-size: 80%;
+  float: left;
+  padding-right: 2px;
+  margin-top: 1px;
+}
+
+.collapse-indicator-closed {
+  width: 13px;
+  height: 13px;
+  background: url(/images/expand-indicator.png) 0px -13px no-repeat;
+  color: #a6a6a6;
+  font-size: 80%;
+  float: left;
+  padding-right: 2px;
+  margin-top: 1px;
 }
 
 .help {

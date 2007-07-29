@@ -1,7 +1,7 @@
 if session[:collapse_projects][params[:id]].to_i == 1
   page["projects_customer_#{params[:id]}"].hide
-  page["indicator_#{params[:id]}"].replace_html(image_tag('collapsed.png', :border => 0))
+  page["indicator_#{params[:id]}"].className = 'collapse-indicator-closed'
 else
   page["projects_customer_#{params[:id]}"].show
-  page["indicator_#{params[:id]}"].replace_html(image_tag('expanded.png', :border => 0))
+  page["indicator_#{params[:id]}"].className = 'collapse-indicator-open'
 end
