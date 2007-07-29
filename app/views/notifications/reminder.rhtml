@@ -1,14 +1,15 @@
-<% if @tasks && @tasks.size > 0 %>
+<% if @tasks && @tasks.size > 0 -%>
 Tasks due today:
+----------------
 <% @tasks.each do |t| %>
 <%= t.issue_name %>
 <%= t.full_name_without_links %>
 http://<%= @user.company.subdomain%>.<%= $CONFIG[:domain] %>/tasks/view/<%=t.task_num%>
 <% end %>
 <% end %>
-
-<% if @tasks_tomorrow && @tasks_tomorrow.size > 0 %>
+<% if @tasks_tomorrow && @tasks_tomorrow.size > 0 -%>
 Tasks due tomorrow:
+-------------------
 <% @tasks_tomorrow.each do |t| %>
 <%= t.issue_name %>
 <%= t.full_name_without_links %>
