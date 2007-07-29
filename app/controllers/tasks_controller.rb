@@ -187,7 +187,7 @@ class TasksController < ApplicationController
     res << ", #{@options}" unless @options.nil? || @options.empty?
     res << ']}'
 
-    render :inline => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\">#{@resource_string}</select>';</script>"
+    render :inline => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
   end
 
   def create

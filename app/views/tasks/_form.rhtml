@@ -72,12 +72,10 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 </script>
           <script type="text/javascript">
 //<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('users[]', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onSuccess:function(request){reset_owners()}, parameters:'project_id=' + value, insertion: updateSelect})})
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })})
 //]]>
 </script>
 
-          <%#= observe_field 'task_project_id', { :url => { :controller => 'tasks', :action => 'get_milestones' }, :update => 'task_milestone_id', :with => 'project_id', :loading => "Element.show('loading');", :complete => "Element.hide('loading');", :insertion => "updateSelect" } %>
-          <%#= observe_field 'task_project_id', { :url => { :controller => 'tasks', :action => 'get_owners' }, :update => 'users[]', :with => 'project_id', :success => 'reset_owners()', :insertion => "updateSelect" } %>
           <label for="task_milestone_id"><%=_ 'Milestone' %></label>
           <% unless @task.id.nil? %>
             <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
@@ -89,7 +87,7 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 
 users = Project.find(selected_project).users.find(:all, :order => 'name' )
 
-resource_string = select_tag 'users[]', "<option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join(''), perms['reassign']
+resource_string = "<select id=\"task_users\" name=\"users[]\" #{"disabled=\"disabled\"" if @task.project && !session[:user].can?( @task.project, 'reassign' )}><option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('') + "</select>"
 resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
 owner_string = ''
@@ -98,7 +96,7 @@ unless @task.users.empty?
   @task.users.each do |u|
     owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>" if num == 0
     owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\"></label>" if num != 0
-    owner_string <<  select_tag('users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'"), perms['reassign'])
+    owner_string <<  "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !session[:user].can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'") + "</select>" #, perms['reassign'] )
 
     if( perms['reassign'].keys.size == 0 )
       owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num == 0
@@ -109,7 +107,7 @@ unless @task.users.empty?
   end
   owner_string = owner_string.split(/\n/).join('')
 else
-  owner_string = select_tag 'users[]', "<option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{"selected" if (us.id == session[:user].id && @task.created_at.nil?) }>#{us.name}</option>"}.join(''), perms['reassign']
+  owner_string = "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !session[:user].can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{"selected" if (us.id == session[:user].id && @task.created_at.nil?) }>#{us.name}</option>"}.join('') + "</select>" #, perms['reassign']
   owner_string = owner_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
 
   if perms['reassign'].keys.size == 0
@@ -126,9 +124,25 @@ end
 <script type="text/javascript">
 var num = <%=num%>;
 var resource = '<%= resource_string %>'
+var selected_user = "0"
 function add_owner() {
         new Insertion.Before("owner_separator", '<div id="owner_' + num + '"><label for="dummy"></label>' + resource + '<a href="#" onclick="javascript:new Element.remove(\'owner_' + num + '\');return false;"><img src="/images/user_delete.png" border="0" style="padding:0;margin:0;"/></a></div>');
         num = num + 1;
+}
+
+function remember_user() {
+  for( var i = 1; i < num; i++ ) {
+      if( $("owner_" + i) ) {
+         new Element.remove("owner_" + i);
+      }
+  }
+
+  var element = $('task_users');
+  if( typeof element == 'array' ) {
+     selected_user = "0"
+   } else {
+     selected_user = element.value
+   }
 }
 
 function reset_owners() {
@@ -136,7 +150,8 @@ function reset_owners() {
       if( $("owner_" + i) ) {
          new Element.remove("owner_" + i);
       }
-    }
+  }
+  $('task_users').value = selected_user;
 }
 </script>
 
