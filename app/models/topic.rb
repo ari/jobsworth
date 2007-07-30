@@ -11,7 +11,7 @@ class Topic < ActiveRecord::Base
   end
 
   belongs_to :replied_by_user, :foreign_key => "replied_by", :class_name => "User"
-  
+
   validates_presence_of :forum, :user, :title
   before_create :set_default_replied_at_and_sticky
   before_save   :check_for_changing_forums
@@ -33,12 +33,12 @@ class Topic < ActiveRecord::Base
   def voice_count
     posts.count(:select => "DISTINCT user_id")
   end
-  
+
   def voices
     # TODO - optimize
     posts.map { |p| p.user }.uniq
   end
-  
+
   def hit!
     self.class.increment_counter :hits, id
   end
@@ -48,15 +48,16 @@ class Topic < ActiveRecord::Base
   def views() hits end
 
   def paged?() posts_count > 25 end
-  
+
   def last_page
     (posts_count.to_f / 25.0).ceil.to_i
   end
 
   def editable_by?(user)
-    user && (user.id == user_id || user.admin? || user.moderator_of?(forum_id))
+#    user && (user.id == user_id || user.admin? || user.moderator_of?(forum_id))
+    user && (user.id == user_id || (user.admin? && forum.company_id == user.company_id) || user.admin > 2 || user.moderator_of?(forum_id))
   end
-  
+
   protected
     def set_default_replied_at_and_sticky
       self.replied_at = Time.now.utc
