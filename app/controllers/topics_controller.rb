@@ -63,8 +63,13 @@ class TopicsController < ApplicationController
       return
     end
 
+    if session[:user].admin < 2 && @topic.forum.company_id != session[:user].company_id
+      redirect_to forums_path
+      return
+    end
+
     @topic.destroy
-    flash[:notice] = "Topic '{title}' was deleted."[:topic_deleted_message, CGI::escapeHTML(@topic.title)]
+    flash[:notice] = "Topic '#{CGI::escapeHTML(@topic.title)}' was deleted."
     respond_to do |format|
       format.html { redirect_to forum_path(@forum) }
       format.xml  { head 200 }
