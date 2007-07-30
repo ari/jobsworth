@@ -396,7 +396,7 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong><a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task_classes(task)}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(task.name)}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task_classes(task)}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(task.name)}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)
