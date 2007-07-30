@@ -244,7 +244,7 @@ class LoginController < ApplicationController
   end
 
   def subdomain_check
-    if params[:subdomain].empty?
+    if params[:subdomain].nil? || params[:subdomain].empty?
       render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
     else
       subdomain = Company.count(["subdomain = ?", params[:subdomain]])
