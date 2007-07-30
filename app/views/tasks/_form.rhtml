@@ -50,7 +50,7 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
         <legend><%=_ 'Target' %></legend>
           <label for="task_project_id"><%=_ 'Project' %></label>
 
-          <select name="task[project_id]" id="task_project_id" <%= perms['reassign'] %>>
+	  <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
           <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
           <% @clients.each do |c| %>
           <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
