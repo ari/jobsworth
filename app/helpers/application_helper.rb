@@ -115,23 +115,25 @@ module ApplicationHelper
     css = ""
 
     due_date = nil
-    due_date = task.milestone.due_at unless task.milestone.nil? || task.milestone.due_at.nil?
+    due_date = task.milestone.due_at if !task.milestone_id.to_i == 0 && !task.milestone.due_at.nil?
     due_date = task.due_at unless task.due_at.nil?
 
     if due_date
-      if tz.utc_to_local(due_date) > tz.now
-        res = due_time( tz.now, tz.utc_to_local(due_date) )
-        if (tz.utc_to_local(due_date) - tz.now) > 7.days
+      utc_due = tz.utc_to_local(due_date)
+      tz_now = tz.now
+      if utc_due > tz_now
+        res = due_time( tz_now, utc_due )
+        if (utc_due - tz_now) > 7.days
           css = "due_distant"
-        elsif (tz.utc_to_local(due_date) - tz.now) >= 2.days
+        elsif (utc_due - tz_now) >= 2.days
           css = "due_soon"
-        elsif (tz.utc_to_local(due_date) - tz.now) >= 1.days
+        elsif (utc_due - tz_now) >= 1.days
           css = "due_tomorrow"
         else
           css = "due"
         end
       else
-        res = overdue_time( tz.now, tz.utc_to_local(due_date) )
+        res = overdue_time( tz_now, utc_due )
         css = "due_overdue"
       end
     end
@@ -141,7 +143,7 @@ module ApplicationHelper
     end
 
     if res.length > 0
-      res = "<span class=\"" + css + "\">[" + res + "]</span>"
+      res = "<span class=\"#{css}\">[#{res}]</span>"
     end
   end
 
@@ -153,12 +155,14 @@ module ApplicationHelper
     due_date = task.due_at unless task.due_at.nil?
 
     if due_date
-      if tz.utc_to_local(due_date) > tz.now
-        if (tz.utc_to_local(due_date) - tz.now) > 7.days
+      utc_due = tz.utc_to_local(due_date)
+      tz_now = tz.now
+      if utc_due > tz_now
+        if (utc_due - tz_now) > 7.days
           css = "due_distant"
-        elsif (tz.utc_to_local(due_date) - tz.now) >= 2.days
+        elsif (utc_due - tz_now) >= 2.days
           css = "due_soon"
-        elsif (tz.utc_to_local(due_date) - tz.now) >= 1.days
+        elsif (utc_due - tz_now) >= 1.days
           css = "due_tomorrow"
         else
           css = "due"
@@ -392,7 +396,7 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( h(task.name), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})})
+    "<strong><small>#{task.issue_num}</small></strong><a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task_classes(task)}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(task.name)}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)

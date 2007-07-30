@@ -66,7 +66,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
 
    <small>
      <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (session[:user].option_tracktime == 1 && task.duration.to_i > 0) %>
-     <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone.nil? -%>
+     <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
    </small>
    <br/>
    <% name = _("No one")

@@ -95,7 +95,7 @@ class TasksController < ApplicationController
     else
       # Looking for tasks based on filters
       @selected_tags = []
-      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:tags, :work_logs, :milestone, :project])
+      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants ])
     end
 
     # Most popular tags, currently unlimited.
@@ -215,10 +215,10 @@ class TasksController < ApplicationController
     end
 
     @task.company_id = session[:user].company_id
-    @task.duration = parse_time(params[:task][:duration])
     @task.updated_by_id = session[:user].id
     @task.creator_id = session[:user].id
-    @task.set_tags(params[:task][:set_tags])
+    @task.duration = parse_time(params[:task][:duration])  if params[:task]
+    @task.set_tags(params[:task][:set_tags]) if params[:task]
     @task.set_task_num(session[:user].company_id)
     @task.duration = 0 if @task.duration.nil?
 
