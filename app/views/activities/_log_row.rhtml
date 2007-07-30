@@ -7,7 +7,7 @@
   <%= link_to "#{worked_nice(log.duration)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0)%>
   </td>
   <td align="center" width="36px" valign="top">
-  <% if log.task && log.task_id > 0 %>
+  <% if log.task_id.to_i > 0 %>
 
   <%= image_tag('accept.png', :alt => "Complete") if log.log_type == WorkLog::TASK_COMPLETED %>
   <%= image_tag('cancel.png', :alt => "Reverted") if log.log_type == WorkLog::TASK_REVERTED %>
@@ -32,15 +32,15 @@
   <% end %>
   </td>
   <td  valign="top" width="90%"><div style="float:left;"><strong>
-<% if log.task && log.task_id > 0 %>
+<% if log.task_id.to_i > 0 %>
 <%= link_to_task log.task %>
-<% elsif log.scm_changeset && log.scm_changeset_id.to_i > 0 %>
+<% elsif log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
           <br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>
 
 <% end %>
-    <%= "<br/>" if (log.task && log.task_id > 0) %>
-            <%= "<span class=\"optional\">#{log.task.full_name}</span> " if log.task && log.task_id > 0 %>
+    <%= "<br/>" if (log.task_id.to_i > 0) %>
+            <%= "<span class=\"optional\">#{log.task.full_name}</span> " if log.task_id.to_i > 0 %>
             <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
             <%= "<small><span class=\"otheruser\">[#{log.scm_changeset.author}]</span></small>" if log.scm_changeset && !log.user %>
   </strong></div>
