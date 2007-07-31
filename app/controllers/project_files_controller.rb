@@ -7,11 +7,21 @@ class ProjectFilesController < ApplicationController
 #  upload_status_for :upload
 
   def index
+    if User.find(session[:user].id).projects.empty?
+      flash['notice'] = _('Please create a project to attach files / folders to.')
+      redirect_to :controller => 'projects', :action => 'new'
+      return
+    end
     list
     render_action 'list'
   end
 
   def list
+    if User.find(session[:user].id).projects.empty?
+      flash['notice'] = _('Please create a project to attach files / folders to.')
+      redirect_to :controller => 'projects', :action => 'new'
+      return
+    end
     folder = params[:id]
     @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
     @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", session[:user].company_id])
