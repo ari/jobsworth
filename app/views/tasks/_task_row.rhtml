@@ -46,7 +46,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% end %>
 
-    <% if session[:user].option_tracktime == 1 && can_work.size == 0 -%>
+    <% if session[:user].option_tracktime.to_i == 1 && can_work.size == 0 -%>
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
       <% else -%>
@@ -65,7 +65,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
    <%= link_to_task(task) -%>
 
    <small>
-     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (session[:user].option_tracktime == 1 && task.duration.to_i > 0) %>
+     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (session[:user].option_tracktime.to_i == 1 && task.duration.to_i > 0) %>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
    </small>
    <br/>

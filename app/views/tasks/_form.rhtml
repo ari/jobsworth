@@ -170,7 +170,7 @@ function reset_owners() {
         <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
       <label for="task_severity_id"><%=_ 'Severity' %></label>
         <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
-      <% if session[:user].option_tracktime == 1%>
+      <% if session[:user].option_tracktime.to_i == 1%>
        <label for="task_duration"><%=_ 'Time Estimate' %></label>
       <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => '2w 3d 1h'}.merge(perms['prioritize']) %><br/>
       <label for="task_due_at"><%=_ 'Due Date' %></label>

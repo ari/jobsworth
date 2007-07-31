@@ -71,7 +71,7 @@
                 <li><%= link_to "<span>#{_('Browse')}</span>", :controller => 'views', :action => 'browse' %></li>
                 <% end %>
 
-                <% if session[:user].option_tracktime == 1%>
+                <% if session[:user].option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "timeline" && controller.action_name == "list" %>
                   <li><%= link_to "<span class=\"active\">#{_('Timeline')}</span>", { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
                   <% else %>
@@ -85,7 +85,7 @@
                 <li><%= link_to "<span>#{_('Files')}</span>", :controller => 'project_files', :action => 'list' %> </li>
                 <% end %>
 
-                <% if session[:user].option_tracktime == 1%>
+                <% if session[:user].option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "reports"  %>
                   <li><%= link_to "<span class=\"active\">#{_('Reports')}</span>", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
                   <% else %>
@@ -265,7 +265,7 @@
 // <![CDATA[
 var userId=<%=session[:user].id%>;
 init_shout();
-<% if session[:user].option_tooltips.nil? || session[:user].option_tooltips == 1 %>
+<% if session[:user].option_tooltips.to_i == 1 %>
 makeTooltips(1);
 <% else %>
 makeTooltips(0);
