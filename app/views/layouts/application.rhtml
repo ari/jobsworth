@@ -127,7 +127,7 @@
 
                 <% if session[:user].admin > 0 %>
 
-                <% if session[:user].option_externalclients == 1%>
+                <% if session[:user].option_externalclients.to_i == 1%>
                 <% if controller.controller_name == "customers" %>
                   <li class="right"><%= link_to "<span class=\"active\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
                   <% else %>

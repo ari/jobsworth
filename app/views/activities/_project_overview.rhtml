@@ -5,7 +5,7 @@
           <%
              last_customer = 0
              for project in @projects
-               if last_customer != project.customer_id && session[:user].option_externalclients > 0
+               if last_customer != project.customer_id && session[:user].option_externalclients.to_i > 0
                  if last_customer != 0
                  %>
 
