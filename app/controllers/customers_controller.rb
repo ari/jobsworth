@@ -123,13 +123,13 @@ class CustomersController < ApplicationController
                                                                                            end
 
       end
-      GC.start
     else
       flash['notice'] = _('Empty file.')
       File.delete(@customer.logo_path) rescue begin end
       redirect_from_last
       return
     end
+    GC.start
 
     flash['notice'] = _('Logo successfully uploaded.')
     redirect_from_last
@@ -164,6 +164,8 @@ class CustomersController < ApplicationController
     else
       render :nothing => true
     end
+    image = nil
+    GC.start
   end
 
 end

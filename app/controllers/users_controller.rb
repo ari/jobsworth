@@ -165,11 +165,18 @@ class UsersController < ApplicationController
         File.open(@user.avatar_path, "wb", 0777) { |f| f.write( small.to_blob ) }
         File.open(@user.avatar_large_path, "wb", 0777) { |f| f.write( large.to_blob ) }
       rescue
+        image = nil
+        large = nil
+        small = nil
+        GC.start
+
         flash['notice'] = _("Permission denied while saving resized file.")
         redirect_to :action => 'edit_preferences'
         return
       end
-
+      image = nil
+      large = nil
+      small = nil
       GC.start
     else
       flash['notice'] = _('Empty file.')
@@ -181,7 +188,7 @@ class UsersController < ApplicationController
       redirect_from_last
       return
     end
-
+    GC.start
     flash['notice'] = _('Avatar successfully uploaded.')
     redirect_from_last
   end
