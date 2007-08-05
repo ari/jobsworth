@@ -192,6 +192,19 @@ class TasksController < ApplicationController
     render :inline => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
   end
 
+  def get_watchers
+
+    @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
+
+    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
+    res = '{"options":['
+    res << "#{@options}" unless @options.nil? || @options.empty?
+    res << ']}'
+
+    render :inline => "#{res}"
+  end
+
+
   def create
 
     @task = Task.new(params[:task])

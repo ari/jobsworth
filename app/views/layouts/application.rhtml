@@ -113,7 +113,7 @@
 
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li><%= link_to "<span class=\"active\">#{_('New')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> </li>
+                <li><%= link_to "<span class=\"active\">#{_('New Task')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> </li>
                 <% else %>
                 <li><%= link_to "<span>#{_('New Task')}</span>", :controller => 'tasks', :action => 'new' %> </li>
                 <% end %>
@@ -212,8 +212,11 @@
                 <tr><td class="views_item" colspan="2"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
                 <tr><td class="views_item" colspan="2"><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
                 <tr><td class="views_item" colspan="2"><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
-                <% project_ids = current_project_ids
-                   views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", session[:user].company_id, session[:user].id], :order => "shared, name")
+                <% project_ids = current_project_ids %>
+                <% client_ids = current_projects.collect(&:customer_id).join(',')
+                   client_ids = "0" if client_ids.nil? || client_ids.empty?
+
+                   views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", session[:user].company_id, session[:user].id], :order => "shared, name")
                    for view in views %>
                 <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[#{_('Shared')}]" if view.user_id != session[:user].id %></td></tr>
                    <% end %>

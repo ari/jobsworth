@@ -67,12 +67,9 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 
           <script type="text/javascript">
 //<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })})
-//]]>
-</script>
-          <script type="text/javascript">
-//<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })})
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('watchers[]', '/tasks/get_watchers', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
 //]]>
 </script>
 
@@ -250,8 +247,8 @@ function reset_owners() {
         <legend><%=_ 'Notification' %></legend>
 
         <% watchers = @task.watchers.collect {|t| t.id } %>
-        <label for="task[notification_ids][]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'To:' %></label>
-        <%= select_tag "watchers[]", User.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect {|u| "<option value=#{u.id} #{(watchers.include?(u.id) ? 'selected=\"selected\"' : '')} >#{u.name}</option>"}.join(''), {:multiple => true, :size => 8, :class => 'tooltip', :title => 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.'}.merge(perms['edit']) %><br/>
+        <label for="watchers[]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'To:' %></label>
+        <%= select_tag "watchers[]", users.collect {|u| "<option value=#{u.id} #{(watchers.include?(u.id) ? 'selected=\"selected\"' : '')} >#{u.name}</option>"}.join(''), {:multiple => true, :size => 8, :class => 'tooltip', :title => 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.'}.merge(perms['edit']) %><br/>
         <label for="task[notify_emails]" class="tooltip" title="Comma-separated list of emails to notify">Cc:</label>
         <%= text_area 'task', 'notify_emails', { :cols => 15, :rows => 3, :class => 'tooltip', :title => 'Comma-separated list of emails to notify'}.merge(perms['edit']) %><br/>
       </fieldset>
