@@ -26,7 +26,19 @@
             else
               project_ids = @all_projects.collect {|p| p.id}.join(',')
               project_ids = "0" if project_ids.empty?
-              @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
+
+              @user_ids = []
+              @all_projects.each do |p|
+                @user_ids << p.users.collect(&:id)
+              end
+
+              @user_ids.uniq!
+
+              @user_ids = [0] if @user_ids.size == 0
+
+              @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
+
+#              @users = current_projects.collect().collect {|c| [ c.name, c.id.to_s ] }
               @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND project_id IN (#{project_ids}) AND completed_at IS NULL", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
             end
 
@@ -56,24 +68,12 @@
                   <% end -%>
                 <% end %>
             </select>
-            <%
-              filter_count += 1
-              %>
 
-            <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Any User]") %></option>
               <%= options_for_select @users, session[:filter_user] %>
               <option value="-1" class="select_default"<%= " selected" if session[:filter_user].to_i == -1 %>><%= _("[Unassigned]") %></option>
             </select>
-            <%
-              filter_count += 1
-              end
-              %>
-            <% if filter_count > 2 %>
-              <br />
-            <% filter_count = 0
-                end %>
 
             <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
               <option value="-1" class="select_default"><%= _("[Any Status]") %></option>
@@ -83,7 +83,7 @@
               %>
               <%= options_for_select @status, session[:filter_status] %>
             </select>
-                <br/>
+            <br/>
 
             <select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
