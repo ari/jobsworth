@@ -245,7 +245,7 @@ function reset_owners() {
 
       <fieldset id="task_notify" style="padding-right:0;">
         <legend><%=_ 'Notification' %></legend>
-        <% users = Project.find(selected_project).users.find(:all, :order => 'name' )
+        <% users = Project.find(selected_project).users.find(:all, :order => 'name' ) %>
 
         <% watchers = @task.watchers.collect {|t| t.id } %>
         <label for="watchers[]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'To:' %></label>
