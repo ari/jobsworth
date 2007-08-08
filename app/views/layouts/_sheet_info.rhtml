@@ -1,9 +1,7 @@
-<% title_string = "ClockingIT" %>
 <% if session[:sheet] -%>
   <%= link_to( session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id ) %> <br />
   <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => _("Done working on <b>%s</b> for now.", session[:sheet].task.name) ), {:controller => 'tasks', :action => 'stop_work'} )  -%>
   <%= time_ago_in_words(session[:sheet].created_at) -%>
-  <% title_string = worked_nice(((Time.now.utc - session[:sheet].created_at) / 60).to_i) + session[:sheet].task.issue_name + " / Clocking IT" %>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>
@@ -11,7 +9,7 @@
 <% end %>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= title_string %>";
+document.title = "<%= (session[:sheet] ? (worked_nice(((Time.now.utc - session[:sheet].created_at) / 60).to_i) + session[:sheet].task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 updateTooltips();
 </script>
 

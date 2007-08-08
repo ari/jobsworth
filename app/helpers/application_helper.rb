@@ -22,7 +22,7 @@ module ApplicationHelper
   end
 
   def user_name
-    @user_name = current_user.name
+    current_user.name
   end
 
   def company_name
@@ -70,7 +70,7 @@ module ApplicationHelper
     total = total + l.duration
     }
 
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task.id])
+    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task_id])
       total = total + ((Time.now.utc - sheet.created_at) / 60).to_i
     end
 

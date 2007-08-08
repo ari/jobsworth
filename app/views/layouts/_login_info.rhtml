@@ -1,1 +1,1 @@
-<%= user_name + " / " + company_name if session[:user] %><br /><small><%=tz.now.strftime("#{session[:user].time_format} #{session[:user].date_format}")%></small> <%= "<small>[#{online_users} #{_('Online')}]</small>" if session[:user] %>
+<%= session[:user].name + " / " + session[:user].company.name if session[:user] %><br /><small><%=tz.now.strftime("#{session[:user].time_format} #{session[:user].date_format}")%></small> <%= "<small>[#{online_users} #{_('Online')}]</small>" if session[:user] %>
