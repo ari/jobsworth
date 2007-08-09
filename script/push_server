@@ -10,6 +10,8 @@ require "monitor"
 
 require "rubygems"
 require 'eventmachine'
+require "json"
+require 'json/add/rails'
 
 
 module Juggernaut
