@@ -500,7 +500,7 @@ class Task < ActiveRecord::Base
     res << "<tr><td><strong>#{_('Tags')}</strong></td><td>&nbsp;#{self.full_tags}</td></tr>"
     res << "<tr><td><strong>#{_('Assigned To')}</strong></td><td>&nbsp;#{owners}</td></tr>"
     res << "<tr><td><strong>#{_('Status')}</strong></td><td>&nbsp;#{_(self.status_type)}</td></tr>"
-
+    res << "<tr><td><strong>#{_('Milestone')}</strong></td><td>&nbsp;#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
     unless self.dependencies.empty?
       res << "<tr><td><strong>#{_('Dependencies')}</strong></td><td>&nbsp;#{self.dependencies.collect { |t| t.issue_num}.join(', ')}</td></tr>"
     end
