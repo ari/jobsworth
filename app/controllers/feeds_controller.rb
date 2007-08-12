@@ -199,18 +199,18 @@ class FeedsController < ApplicationController
       event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/views/select_milestone/#{m.id}"
       event.summary = "Milestone: #{m.name}"
 
-      description = m.description.gsub(/<[^>]*>/,'') if m.description
-      description = description.gsub(/[\r]/, '')
-
-      event.description = description if description && description.length > 0
-
+      if m.description
+        description = m.description.gsub(/<[^>]*>/,'')
+        description.gsub!(/\r/, '') if description
+        event.description = description if description && description.length > 0
+      end
     end
 
 
     @tasks.each do |t|
 
       if t.ical_entry
-        cached += t.ical_entry.body
+        cached << t.ical_entry.body
         next
       end
 
@@ -264,7 +264,7 @@ class FeedsController < ApplicationController
     @activities.each do |log|
 
       if log.ical_entry
-        cached += log.ical_entry.body
+        cached << log.ical_entry.body
         next
       end
 
@@ -295,7 +295,20 @@ class FeedsController < ApplicationController
 
     end
 
-    render :inline => cal.to_ical.gsub(/END:VCALENDAR/,"#{cached}END:VALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:'), :layout => false
+    ical_feed = cal.to_ical
+    ical_feed.gsub!(/END:VCALENDAR/,"#{cached}END:VCALENDAR")
+    ical_feed.gsub!(/^PERCENT:/, 'PERCENT-COMPLETE:')
+    render :text => ical_feed
+
+    ical_feed = nil
+    @activities = nil
+    @tasks = nil
+    @milestones = nil
+    tz = nil
+    cached = ""
+    cal = nil
+
+    GC.start
 
   end
 
