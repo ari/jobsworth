@@ -19,7 +19,7 @@
     <td valign="top">
       <fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
         <label for="task_name"><%=_ 'Summary' %></label>
-        <%= text_field 'task', 'name', { :size => 47, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
+        <%= text_field 'task', 'name', { :size => 47, :maxlength => 200, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
         <label for="task_set_tags"><%=_ 'Tags' %></label>
         <%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
         <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
