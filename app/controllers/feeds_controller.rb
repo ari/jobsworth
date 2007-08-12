@@ -94,7 +94,7 @@ class FeedsController < ApplicationController
     end
 
     # Render it inline
-    render :inline => content.to_s, :layout => false
+    render :text => content.to_s
 
   end
 

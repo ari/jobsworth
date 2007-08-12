@@ -172,7 +172,7 @@ class TasksController < ApplicationController
 
     # Find the tasks
     @tasks = Task.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 13})
-    render :inline => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
+    render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
   end
 
   # Return a json formatted list of users to refresh the User dropdown
@@ -189,7 +189,7 @@ class TasksController < ApplicationController
     res << ", #{@options}" unless @options.nil? || @options.empty?
     res << ']}'
 
-    render :inline => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
+    render :text => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
   end
 
   def get_watchers
@@ -201,7 +201,7 @@ class TasksController < ApplicationController
     res << "#{@options}" unless @options.nil? || @options.empty?
     res << ']}'
 
-    render :inline => "#{res}"
+    render :text => "#{res}"
   end
 
 

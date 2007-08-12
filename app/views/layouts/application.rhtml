@@ -221,7 +221,6 @@
                 <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[#{_('Shared')}]" if view.user_id != session[:user].id %></td></tr>
                    <% end %>
                 <tr><td colspan=2>&nbsp;</td></tr>
-        <% cache( :controller => "application", :action => "chat", :action_suffix => "#{session[:user].company_id}_#{session[:user].id}") do %>
                 <tr>
                   <td align=left style="margin-bottom:4px;" class="page_header" colspan=2>
                     <%=_ 'Chat'%>
@@ -238,7 +237,6 @@
                 <tr><td colspan=2>
                         <%= text_field 'shout', 'body' %>
                 <tr><td colspan=2>&nbsp;</td></tr>
-        <% end %>
                 <tr>
                   <td align=left class="page_header" width="100%" colspan="2">
                     <div style="float:left;"><%=_ 'Notes'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div></td>

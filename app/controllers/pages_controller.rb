@@ -98,7 +98,7 @@ class PagesController < ApplicationController
   def preview
     if params[:body]
       r = RedCloth.new params[:body]
-      render :inline => r.to_html
+      render :text => r.to_html
     else
       render :nothing => true
     end
