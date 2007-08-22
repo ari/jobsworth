@@ -56,7 +56,7 @@
           %>
     <tr class="milestone" id="project_<%=project.id%>" onMouseOver="javascript:Hover('project', '<%=project.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
         <div style="position: absolute; z-index:10; width: 16px;">
-          <% if session[:user].can?(project, 'grant') %>
+          <% if session[:user].can?(project, 'grant') || session[:user].can?(project, 'milestone') %>
           <span id="edit_project_<%= project.id%>" style="display: none;">
             <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
