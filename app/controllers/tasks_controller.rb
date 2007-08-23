@@ -2,9 +2,12 @@
 # Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 #
 class TasksController < ApplicationController
- cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
-    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
-    :cancel_work_ajax, :destroy_log ]
+
+#  cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
+#    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
+#    :cancel_work_ajax, :destroy_log ]
+
+  require 'fastercsv'
 
   def new
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
@@ -1043,5 +1046,56 @@ class TasksController < ApplicationController
     redirect_from_last
   end
 
+  def get_csv
+    list
+
+    filename = "clockingit_tasks"
+
+    if session[:filter_customer].to_i > 0
+      filename << "_"
+      filename << Customer.find( session[:filter_customer] ).name
+    end
+
+    if session[:filter_project].to_i > 0
+      p = Project.find( session[:filter_project] )
+      filename << "_"
+      filename << "#{p.customer.name}_#{p.name}"
+    end
+
+    if session[:filter_milestone].to_i > 0
+      m = Milestone.find( session[:filter_milestone] )
+      filename << "_"
+      filename << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
+    end
+
+    if session[:filter_user].to_i > 0
+      filename << "_"
+      filename <<  User.find(session[:filter_user]).name
+    end
+
+    if session[:filter_status].to_i > 0
+      filename << "_"
+      filename << Task.status_type(session[:filter_status].to_i)
+    end
+
+    filename = filename.gsub(/ /, "_").gsub(/["']/, '').downcase
+    filename << ".csv"
+
+    csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
+
+      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
+      csv << header
+
+      for t in @tasks
+        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
+      end
+
+    end
+    logger.info("Seinding[#{filename}]")
+
+    send_data(csv_string,
+              :type => 'text/csv; charset=utf-8; header=present',
+              :filename => filename)
+  end
 
 end

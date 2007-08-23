@@ -305,6 +305,10 @@ class Task < ActiveRecord::Base
     Task.status_types[self.status]
   end
 
+  def Task.status_type(type)
+    Task.status_types[type]
+  end
+
   def Task.status_types
     ["Open", "In Progress", "Closed", "Won't fix", "Invalid", "Duplicate"]
   end

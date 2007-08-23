@@ -5,6 +5,7 @@
         <tr>
           <td align="left" class="page_header">
             <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{_(session[:view].name)}" unless session[:view].nil? %></div>
+              <div style="float:right;"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
             <% if session[:view].nil? %><div style="float:right;"><%= link_to( _("Save as View"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div><% end %>
           </td>
         </tr>
