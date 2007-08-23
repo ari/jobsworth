@@ -456,6 +456,6 @@ Localization.define('de_DE') do |l|
   l.store 'Subscribe to the recent activities RSS feed', 'Abonniere RSS-Feed für neueste Aktivitäten'
 
   # Project Files
-  l.store '%d folder', ['%d Verzeichnis, %d Verzeichnisse']
+  l.store '%d folder', ['%d Verzeichnis', '%d Verzeichnisse']
   l.store '%d file', ['%d Datei', '%d Dateien']
 end
