@@ -1343,3 +1343,8 @@ li.help {
   text-align: center;
   vertical-align: middle;
 }
+
+.group-active {
+  padding-bottom: 24px;
+  background-color: #efefef;
+}

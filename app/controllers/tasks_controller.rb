@@ -103,32 +103,53 @@ class TasksController < ApplicationController
 
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
-
+    @group_ids = { }
     if session[:group_by].to_i == 1 # tags
       @tag_names = @all_tags.collect{|i,j| i}
       @groups = Task.tag_groups(session[:user].company_id, @tag_names, @tasks)
     elsif session[:group_by].to_i == 2 # Clients
-      items = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect(&:name).sort
+      clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name")
+      clients.each { |c| @group_ids[c.name] = c.id }
+      items = clients.collect(&:name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.customer.name == i }
     elsif session[:group_by].to_i == 3 # Projects
-      items = User.find(session[:user].id).projects.collect(&:full_name).sort
+      projects = User.find(session[:user].id).projects
+      projects.each { |p| @group_ids[p.full_name] = p.id }
+      items = projects.collect(&:full_name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
-      items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect(&:name)
-      @groups = Task.group_by(@tasks, items) { |t,i| t.milestone.name == i if t.milestone }
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name")
+      milestones.each { |m| @group_ids[m.name] = m.id }
+      @group_ids['Unassigned'] = 0
+      items = ["Unassigned"] +  milestones.collect(&:name)
+      @groups = Task.group_by(@tasks, items) { |t,i| (t.milestone ? t.milestone.name : "Unassigned" ) == i }
     elsif session[:group_by].to_i == 5 # Users
-      items = session[:user].company.users.collect(&:name).sort
-      @groups = Task.group_by(@tasks, items) { |t,i| t.users.collect(&:name).include? i }
+      users = session[:user].company.users
+      users.each { |u| @group_ids[u.name] = u.id }
+      @group_ids['Unassigned'] = 0
+      items = ["Unassigned"] + users.collect(&:name).sort
+      @groups = Task.group_by(@tasks, items) { |t,i|
+        if t.users.size > 0
+          res = t.users.collect(&:name).include? i
+        else
+          res = ("Unassigned" == i)
+        end
+        res
+      }
     elsif session[:group_by].to_i == 6 # Task Type
+      0.upto(3) { |i| @group_ids[ Task.issue_types[i] ] = i }
       items = Task.issue_types.sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.issue_type == i }
     elsif session[:group_by].to_i == 7 # Status
+      0.upto(5) { |i| @group_ids[ Task.status_types[i] ] = i }
       items = Task.status_types
       @groups = Task.group_by(@tasks, items) { |t,i| t.status_type == i }
     elsif session[:group_by].to_i == 8 # Severity
+      -2.upto(3) { |i| @group_ids[Task.severity_types[i]] = i }
       items = Task.severity_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.severity_type == i }
     elsif session[:group_by].to_i == 9 # Priority
+      -2.upto(3) { |i| @group_ids[Task.priority_types[i]] = i }
       items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones

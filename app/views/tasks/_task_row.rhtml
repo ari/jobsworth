@@ -110,3 +110,5 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
 
 <div style="clear:both;"></div>
 <% end %>
+
+<%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>

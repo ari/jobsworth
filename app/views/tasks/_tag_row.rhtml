@@ -2,31 +2,28 @@
 
   # Check for only hashes, if so, pass this name further in
   printed_done_sep = false
+  printed_droppable = false
   depth ||= 0
 
   for g in groups
     if g.is_a? Hash
-
-      only_hashes = true
       g.each_key do |k|
-
-        if (g[k].is_a? Array)
-          for j in g[k]
-            if j.is_a? Array
-              only_hashes = false
-            end
-          end
-        end
-
-        if only_hashes
 %>
+
+<div class="task-group" id="task-group_<%=@group_ids[k]%>">
+
 <div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= parent + k %></div>
 <%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => "", :depth => depth + 1} %>
-     <% else %>
-<div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= parent + k %></div>
-<%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => "", :depth => depth + 1} %>
+
+</div>
+<script type="text/javascript">
+//<![CDATA[
+Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', onDrop:function(element, dropElement){Element.hide(element); new Ajax.Request('/tasks/move', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
+//]]>
+</script>
+
+
 <%
-        end
       end
     end
 
@@ -37,13 +34,11 @@
         @tags_total += 1
       end
 
-    if session[:group_tags].to_i == 0 && session[:filter_hidden] != 2 && !g.completed_at.nil? && !printed_done_sep
-%>
-    <div id="done_sep_0" style="display:none; clear: both;"></div>
-<% printed_done_sep = true %>
-<% end %>
+    if session[:group_tags].to_i == 0 && session[:filter_hidden] != 2 && !g.completed_at.nil? && !printed_done_sep %>
+      <div id="done_sep_0" style="display:none; clear: both;"></div>
+    <% printed_done_sep = true %>
+    <% end %>
   <%= render :partial => "task_row", :locals => { :task => g, :depth => depth } %>
-
   <% end %>
   <% if g.is_a? Array %>
    <%= render :partial => 'tag_row', :locals => { :groups => g, :parent => "", :depth => depth } %>
@@ -51,3 +46,5 @@
 
 
 <% end %>
+
+

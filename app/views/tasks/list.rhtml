@@ -19,6 +19,8 @@
             else
               @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"])
             end
+
+
             @projects = @all_projects.collect {|p| [p.name, p.id.to_s]}
 
             if session[:filter_project].to_i > 0

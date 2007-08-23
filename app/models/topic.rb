@@ -54,7 +54,6 @@ class Topic < ActiveRecord::Base
   end
 
   def editable_by?(user)
-#    user && (user.id == user_id || user.admin? || user.moderator_of?(forum_id))
     user && (user.id == user_id || (user.admin? && forum.company_id == user.company_id) || user.admin > 2 || user.moderator_of?(forum_id))
   end
 
