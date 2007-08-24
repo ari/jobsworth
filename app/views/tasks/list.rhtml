@@ -11,6 +11,7 @@
         </tr>
         <tr>
           <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
+
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
 
@@ -109,6 +110,14 @@
             <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks with unmet dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks with unmet dependencies') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <%= end_form_tag %>
             </fieldset>
+            <% end %>
+            <% if session[:group_by].to_i > 2 %>
+            <div style="float:right;">
+            <small>
+            <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');">Organize Tasks</a>
+            <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});">Organizing Done</a>
+            </small>
+            </div>
             <% end %>
           </td>
         </tr>

@@ -1346,5 +1346,5 @@ li.help {
 
 .group-active {
   padding-bottom: 24px;
-  background-color: #efefef;
+  border-left: 3px solid #FF9900;
 }

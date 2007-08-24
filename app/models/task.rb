@@ -432,7 +432,11 @@ class Task < ActiveRecord::Base
         end
       end
       tasks -= matching_tasks
-      groups[item] = matching_tasks unless matching_tasks.empty?
+      unless matching_tasks.empty?
+        groups[item] = matching_tasks
+      else
+        groups[item] = []
+      end
     end
 
     if groups.keys.size > 0

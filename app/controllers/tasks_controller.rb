@@ -119,10 +119,10 @@ class TasksController < ApplicationController
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
       milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name")
-      milestones.each { |m| @group_ids[m.name] = m.id }
+      milestones.each { |m| @group_ids[m.name + " / " + m.project.name] = m.id }
       @group_ids['Unassigned'] = 0
-      items = ["Unassigned"] +  milestones.collect(&:name)
-      @groups = Task.group_by(@tasks, items) { |t,i| (t.milestone ? t.milestone.name : "Unassigned" ) == i }
+      items = ["Unassigned"] +  milestones.collect{ |m| m.name + " / " + m.project.name }
+      @groups = Task.group_by(@tasks, items) { |t,i| (t.milestone ? (t.milestone.name + " / " + t.project.name) : "Unassigned" ) == i }
     elsif session[:group_by].to_i == 5 # Users
       users = session[:user].company.users
       users.each { |u| @group_ids[u.name] = u.id }
@@ -153,9 +153,16 @@ class TasksController < ApplicationController
       items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
-      items = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name").collect{ |m| "#{m.project.name} / #{m.name}" }.flatten
-      items += User.find(session[:user].id).projects.collect(&:name)
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name")
+      projects = User.find(session[:user].id).projects
+
+      milestones.each { |m| @group_ids["#{m.project.name} / #{m.name}"] = "#{m.project_id}_#{m.id}" }
+      projects.each { |p| @group_ids["#{p.name}"] = p.id }
+
+      items = milestones.collect{ |m| "#{m.project.name} / #{m.name}" }.flatten
+      items += projects.collect(&:name)
       items = items.uniq.sort
+
       @groups = Task.group_by(@tasks, items) { |t,i| t.milestone ? ("#{t.project.name} / #{t.milestone.name}" == i) : (t.project.name == i)  }
     else
       @groups = [@tasks]
@@ -532,6 +539,7 @@ class TasksController < ApplicationController
       if old_project_id != @task.project_id
         body = body + "- <strong>Project</strong>: #{old_project_name} -> #{@task.project.name}\n"
         WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+        ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       end
 
       if @old_task.duration != @task.duration
@@ -1119,6 +1127,87 @@ class TasksController < ApplicationController
     send_data(csv_string,
               :type => 'text/csv; charset=utf-8; header=present',
               :filename => filename)
+  end
+
+  def move
+    begin
+      elems = params[:id].split(' ')
+      element = elems[0].split('_')[1]
+
+      @group = elems[1].split('_')[1].to_i
+
+      @task = Task.find(element, :conditions => ["project_id IN (#{current_project_ids})"])
+
+      case session[:group_by].to_i
+      when 3
+        # Project
+      when 4
+        # Milestone
+        milestone = Milestone.find(@group, :conditions => ["project_id IN (#{current_project_ids})"]) if @group > 0
+
+        if( milestone && milestone.project_id != @task.project_id )
+          @task.project_id = milestone.project_id
+          WorkLog.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
+          ProjectFile.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
+        end
+        @task.milestone = milestone
+
+        @task.save
+      when 5
+        # User
+        @task.task_owners.destroy_all
+        if @group > 0
+          u = User.find(@group, :conditions => ["company_id = ?", session[:user].company_id])
+          to = TaskOwner.new(:user => u, :task => @task)
+          to.save
+        end
+        @task.save
+      when 6
+        # Task Type
+        @task.type_id = @group
+        @task.save
+      when 7
+        # Status
+        @task.status = @group
+        if @group < 2
+          @task.completed_at = nil
+        else
+          @task.completed_at = Time.now.utc
+        end
+        @task.save
+      when 8
+        # Severity
+        @task.severity_id = @group
+        @task.save
+      when 9
+        # Priority
+        @task.priority = @group
+        @task.save
+      when 10
+        # Project / Milestone
+        # task-group_44_15
+        @task.project_id = @group
+        project = User.find(session[:user].id).projects.find(@group)
+
+        if elems[1].split('_').size > 2
+          milestone = elems[1].split('_')[2]
+          @task.milestone_id = milestone
+          @group = "#{@group}_#{milestone}"
+        else
+          @task.milestone_id = nil
+        end
+
+
+        WorkLog.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
+        ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
+
+        @task.save
+
+
+      end
+
+    end
+
   end
 
 end

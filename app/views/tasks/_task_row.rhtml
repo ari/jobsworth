@@ -34,6 +34,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
 
 <% @task = task %>
 
+  <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle">Drag</div>
 
   <div style="float:left; padding-left:0.4em;">
     <% unless task.done? %>
@@ -106,9 +107,6 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
       <% end -%>
   </div>
   </div>
-
-
-<div style="clear:both;"></div>
 <% end %>
 
 <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>
