@@ -34,7 +34,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
 
 <% @task = task %>
 
-  <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle">Drag</div>
+  <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><img src="/images/drag.gif" border=0 /></div>
 
   <div style="float:left; padding-left:0.4em;">
     <% unless task.done? %>
