@@ -100,11 +100,18 @@ class User < ActiveRecord::Base
   end
 
   def can?(project, perm)
-    return if self.project_permissions.nil?
+    return false if self.project_permissions.nil?
     self.project_permissions.each do | p |
         return p.can?(perm) if p.project_id == project.id
     end
     return false
+  end
+
+  def can_all?(projects, perm)
+    projects.each do |p|
+      return false unless self.can?(p, perm)
+    end
+    true
   end
 
   def admin?
