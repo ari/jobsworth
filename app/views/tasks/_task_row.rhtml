@@ -109,4 +109,6 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
   </div>
 <% end %>
 
-<%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>
+<% if session[:group_by].to_i > 2 %>
+  <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>
+<% end %>

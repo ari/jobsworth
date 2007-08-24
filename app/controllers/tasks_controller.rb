@@ -118,7 +118,7 @@ class TasksController < ApplicationController
       items = projects.collect(&:full_name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name")
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", session[:user].company_id], :order => "due_at, name")
       milestones.each { |m| @group_ids[m.name + " / " + m.project.name] = m.id }
       @group_ids['Unassigned'] = 0
       items = ["Unassigned"] +  milestones.collect{ |m| m.name + " / " + m.project.name }
@@ -153,7 +153,7 @@ class TasksController < ApplicationController
       items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id], :order => "due_at, name")
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", session[:user].company_id], :order => "due_at, name")
       projects = User.find(session[:user].id).projects
 
       milestones.each { |m| @group_ids["#{m.project.name} / #{m.name}"] = "#{m.project_id}_#{m.id}" }
