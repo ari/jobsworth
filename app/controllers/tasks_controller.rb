@@ -660,7 +660,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment])
+        Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) if params['notify'].to_i == 1
       end
 
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
