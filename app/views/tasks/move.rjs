@@ -1,0 +1,4 @@
+page.insert_html :bottom, "task-group_#{@group}", :partial => 'task_row',  :locals => {:task => @task }
+page["task-handle-#{@task.id}"].show
+page.visual_effect :highlight, "task-group_#{@group}", :duration => 1.5
+page.call("updateTooltips")
