@@ -1131,6 +1131,7 @@ class TasksController < ApplicationController
 
   def move
     begin
+      body = ""
       elems = params[:id].split(' ')
       element = elems[0].split('_')[1]
 
@@ -1138,72 +1139,151 @@ class TasksController < ApplicationController
 
       @task = Task.find(element, :conditions => ["project_id IN (#{current_project_ids})"])
 
+      worklog = WorkLog.new
+      worklog.log_type = WorkLog::TASK_MODIFIED
+
       case session[:group_by].to_i
       when 3
         # Project
+        project = User.find(session[:user]).projects.find(@group)
+        if @task.project_id != project.id
+          body = "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
+          if @task.milestone
+            body << "- <strong>Milestone</strong>: #{@task.milestone.name} -> None"
+            @task.milestone_id = nil
+          end
+          @task.project_id = project.id
+          @task.save
+        end
       when 4
         # Milestone
         milestone = Milestone.find(@group, :conditions => ["project_id IN (#{current_project_ids})"]) if @group > 0
 
-        if( milestone && milestone.project_id != @task.project_id )
-          @task.project_id = milestone.project_id
-          WorkLog.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
-          ProjectFile.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
-        end
-        @task.milestone = milestone
+        if(@task.milestone_id.to_i) != @group
+          if( milestone && milestone.project_id != @task.project_id )
+            body << "- <strong>Project</strong>: #{@task.project.name} -> #{milestone.project.name}\n"
+            @task.project_id = milestone.project_id
+            WorkLog.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
+            ProjectFile.update_all("customer_id = #{milestone.project.customer_id}, project_id = #{milestone.project_id}", "task_id = #{@task.id}")
+          end
 
-        @task.save
+          if @task.milestone_id != @group
+            old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
+            new_milestone = milestone.nil? ? "None" : milestone.name
+
+            body << "- <strong>Milestone</strong>: #{old_milestone} -> #{new_milestone}"
+
+            @task.milestone = milestone
+            @task.save
+          end
+        end
       when 5
         # User
+
+        old_users = @task.users.collect{ |u| u.id}.sort.join(',')
+        old_users = "0" if old_users.nil? || old_users.empty?
+
         @task.task_owners.destroy_all
         if @group > 0
           u = User.find(@group, :conditions => ["company_id = ?", session[:user].company_id])
           to = TaskOwner.new(:user => u, :task => @task)
           to.save
+
+          if( old_users != u.name )
+            new_name = u.name
+            body = "- <strong>Assignment</strong>: #{new_name}\n"
+            @task.users.reload
+            Notifications::deliver_assigned( @task, session[:user], @task.users, old_users, "" ) rescue begin end
+          end
+
         end
         @task.save
       when 6
         # Task Type
-        @task.type_id = @group
-        @task.save
+        if @task.type_id != @group
+          body << "- <strong>Type</strong>: #{@task.issue_type} -> #{Task.issue_types[@group]}\n"
+          @task.type_id = @group
+          @task.save
+        end
       when 7
         # Status
-        @task.status = @group
-        if @group < 2
-          @task.completed_at = nil
-        else
-          @task.completed_at = Time.now.utc
+        if( @task.status != @group )
+          if @group < 2
+            @task.completed_at = nil
+            worklog.log_type = WorkLog::TASK_REVERTED if @task.status > 1
+          else
+            worklog.log_type = WorkLog::TASK_COMPLETED if @task.status < 2
+            @task.completed_at = Time.now.utc if @task.completed_at.nil?
+          end
+          body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
+          @task.status = @group
+          @task.save
         end
-        @task.save
       when 8
         # Severity
-        @task.severity_id = @group
-        @task.save
+        if @task.severity_id != @group
+          body << "- <strong>Severity</strong>: #{@task.severity_type} -> #{Task.severity_types[@group]}\n"
+          @task.severity_id = @group
+          @task.save
+        end
       when 9
         # Priority
-        @task.priority = @group
-        @task.save
+        if @task.priority != @group
+          body << "- <strong>Priority</strong>: #{@task.priority_type} -> #{Task.priority_types[@group]}\n"
+          @task.priority = @group
+          @task.save
+        end
       when 10
         # Project / Milestone
         # task-group_44_15
-        @task.project_id = @group
+
         project = User.find(session[:user].id).projects.find(@group)
 
-        if elems[1].split('_').size > 2
-          milestone = elems[1].split('_')[2]
-          @task.milestone_id = milestone
-          @group = "#{@group}_#{milestone}"
-        else
-          @task.milestone_id = nil
+        if @task.project_id != @group
+          body << "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
+          @task.project_id = @group
         end
 
+        if elems[1].split('_').size > 2
+          milestone = Milestone.find(elems[1].split('_')[2], :conditions => ["project_id IN (#{current_project_ids})"])
+
+          if @task.milestone_id != milestone.id
+            old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
+            new_milestone = milestone.nil? ? "None" : milestone.name
+            body << "- <strong>Milestone</strong>: #{old_milestone} -> #{new_milestone}"
+
+            @task.milestone_id = milestone.id
+
+          end
+          @group = "#{@group}_#{milestone.id}"
+        else
+          unless @task.milestone_id.nil?
+            old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
+            new_milestone = "None"
+            body << "- <strong>Milestone</strong>: #{old_milestone} -> #{new_milestone}"
+            @task.milestone_id = nil
+          end
+        end
 
         WorkLog.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
         ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
 
         @task.save
 
+      end
 
+
+      if body.length > 0
+        @task.reload
+        worklog.user = session[:user]
+        worklog.company = @task.project.company
+        worklog.customer = @task.project.customer
+        worklog.project = @task.project
+        worklog.task = @task
+        worklog.started_at = Time.now.utc
+        worklog.duration = 0
+        worklog.body = body
+        worklog.save
       end
 
     end
