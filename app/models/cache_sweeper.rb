@@ -19,7 +19,7 @@ class CacheSweeper < ActionController::Caching::Sweeper
     end
 
     def expire_milestone(record)
-        tasks = Task.find(:all, :conditions => ["milestone_id = ? AND completed_at is null", record.id], :order => "component_id")
+        tasks = Task.find(:all, :conditions => ["milestone_id = ? AND completed_at is null", record.id])
 
         tasks.each do |t|
           expire_fragment( %r{tasks/task_row\.action_suffix=#{t.id}_.*} )
