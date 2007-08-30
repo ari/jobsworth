@@ -520,4 +520,16 @@ class Task < ActiveRecord::Base
     res << "</table>"
     res.gsub(/\"/,'&quot;')
   end
+
+  def css_classes
+    res = ""
+    if self.status == 1
+      res << " in_progress"
+    elsif self.status == 2
+      res << " closed"
+    elsif self.status > 2
+      res << " invalid"
+    end
+  end
+
 end

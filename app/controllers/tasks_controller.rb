@@ -352,7 +352,7 @@ class TasksController < ApplicationController
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
 
-      flash['notice'] ||= _('Task was successfully created.')
+      flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
       redirect_from_last
     else
       @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
@@ -678,7 +678,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
 
-      flash['notice'] ||= _('Task was successfully updated.')
+      flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully updated.')}"
       redirect_from_last
     else
       render_action 'edit'
@@ -841,7 +841,7 @@ class TasksController < ApplicationController
     sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
     if sheet
         session[:sheet] = sheet
-        flash['notice'] = "You're already working on #{sheet.task.name}. Please stop or cancel it first."
+        flash['notice'] = "You're already working on #{link_to_task(sheet.task)}. Please stop or cancel it first."
         redirect_from_last
         return
     end

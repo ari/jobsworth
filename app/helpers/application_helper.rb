@@ -384,19 +384,8 @@ module ApplicationHelper
     text
   end
 
-  def task_classes(task)
-    res = ""
-    if task.status == 1
-      res << " in_progress"
-    elsif task.status == 2
-      res << " closed"
-    elsif task.status > 2
-      res << " invalid"
-    end
-  end
-
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task_classes(task)}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(truncate(task.name,80))}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(truncate(task.name,80))}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)

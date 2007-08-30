@@ -233,4 +233,8 @@ class ApplicationController < ActionController::Base
     session[:last_active] ||= Time.now.utc
   end
 
+  def link_to_task(task)
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{task.name}</a>"
+  end
+
 end
