@@ -195,7 +195,7 @@ class FeedsController < ApplicationController
       end
       event.duration = "PT1M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
-      event.organizer = "MAILTO:#{m.user.email}"
+      event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/views/select_milestone/#{m.id}"
       event.summary = "Milestone: #{m.name}"
 

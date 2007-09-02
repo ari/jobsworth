@@ -25,7 +25,11 @@ class MilestonesController < ApplicationController
 
 
     if !@params[:milestone][:due_at].nil? && @params[:milestone][:due_at].length > 0
-      due_date = DateTime.strptime( @params[:milestone][:due_at], session[:user].date_format )
+      begin
+        due_date = DateTime.strptime( @params[:milestone][:due_at], session[:user].date_format )
+      rescue
+        due_date = nil
+      end
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
 

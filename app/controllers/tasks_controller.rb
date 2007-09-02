@@ -1046,8 +1046,13 @@ class TasksController < ApplicationController
     if @log.update_attributes(params[:log])
 
       if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
-        due_date = DateTime.strptime( params[:log][:started_at], "#{session[:user].date_format} #{session[:user].time_format}" )
-        @log.started_at = tz.local_to_utc(due_date)
+        begin
+          due_date = DateTime.strptime( params[:log][:started_at], "#{session[:user].date_format} #{session[:user].time_format}" )
+          @log.started_at = tz.local_to_utc(due_date)
+        rescue
+          @log.started_at = Time.now.utc
+        end
+
       end
       @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
 
