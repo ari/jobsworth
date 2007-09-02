@@ -73,6 +73,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{session[:user].company_id} AND creator_id = #{@user.id}")
     @user.destroy
     redirect_to :action => 'list'
   end
