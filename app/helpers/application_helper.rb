@@ -389,7 +389,7 @@ module ApplicationHelper
   end
 
   def link_to_task_with_highlight(task, keys)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task_classes(task)}", :title => highlight_all(task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration}), keys)})
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task.css_classes}", :title => highlight_all(task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration}), keys)})
   end
 
   def milestone_classes(m)
