@@ -485,7 +485,8 @@ class Task < ActiveRecord::Base
     sql << " AND projects.customer_id = #{options[:filter_customer]}" if options[:filter_customer].to_i > 0
     sql << " GROUP BY tasks.id"
     sql << " HAVING COUNT(tasks.id) = #{tags.size}"
-    sql << " ORDER BY tasks.completed_at is NOT NULL, tasks.completed_at desc, #{options[:sort]}"
+    sql << " ORDER BY tasks.completed_at is NOT NULL, tasks.completed_at DESC"
+    sql << ", #{options[:sort]}" if options[:sort] && options[:sort].length > 0
 
     find_by_sql(sql)
   end
