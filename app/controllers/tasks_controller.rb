@@ -1298,7 +1298,7 @@ class TasksController < ApplicationController
   end
 
   def toggle_history
-    session[:only_comments] ||= 1
+    session[:only_comments] ||= 0
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
