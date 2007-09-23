@@ -33,7 +33,7 @@
               <% if @client_projects.size > 0 %>
               <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
               <% @client_projects.each do |p| %>
-              <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id == params[:filter_project] %>><%= p.name %></option>
+              <option value="<%=p.id%>" class="select_item"<%= " selected" if p.id.to_s == params[:filter_project] %>><%= p.name %></option>
               <% end %>
               <% end %>
 
