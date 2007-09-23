@@ -120,8 +120,8 @@ end
 
 <script type="text/javascript">
 var num = <%=num%>;
-var resource = '<%= resource_string %>'
-var selected_user = "0"
+var resource = '<%= resource_string %>';
+var selected_user = "0";
 function add_owner() {
         new Insertion.Before("owner_separator", '<div id="owner_' + num + '"><label for="dummy"></label>' + resource + '<a href="#" onclick="javascript:new Element.remove(\'owner_' + num + '\');return false;"><img src="/images/user_delete.png" border="0" style="padding:0;margin:0;"/></a></div>');
         num = num + 1;

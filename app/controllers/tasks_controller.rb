@@ -63,6 +63,8 @@ class TasksController < ApplicationController
     unless session[:filter_status].to_i == -1 || session[:filter_status].to_i == -2
       if session[:filter_status].to_i == 0
         filter << "(tasks.status = 0 OR tasks.status = 1) AND "
+      elsif session[:filter_status].to_i == 2
+        filter << "(tasks.status > 1) AND "
       else
         filter << "tasks.status = #{session[:filter_status].to_i} AND "
       end
@@ -370,7 +372,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}] )
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
     @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
-    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ?", @task.id], :include => [:user, :task, :project])
+    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND work_logs.log_type=6" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
       @logs = []
     end
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
@@ -1293,6 +1295,21 @@ class TasksController < ApplicationController
 
     end
 
+  end
+
+  def toggle_history
+    session[:only_comments] ||= 1
+    session[:only_comments] = 1 - session[:only_comments]
+
+    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND work_logs.log_type=6" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
+      @logs = []
+    end
+
+    render :update do |page|
+      page.replace_html 'task_history', :partial => 'history'
+      page.visual_effect(:highlight, "task_history", :duration => 2.0)
+    end
   end
 
 end
