@@ -1348,3 +1348,14 @@ li.help {
   padding-bottom: 24px;
   border-left: 3px solid #FF9900;
 }
+
+#right-menu-collapse  {
+  background-color:#efefef;
+  background-image: url(/images/collapse_menu.gif);
+  background-repeat:none;
+  width:3px;
+  margin:0;
+  padding:0;
+  cursor:pointer;
+}
+

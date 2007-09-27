@@ -202,8 +202,10 @@
           <table width="100%">
           <tr><td valign="top" id="main_col" style="height:100%;">
           <%= @content_for_layout %>
-          </td><td align="right" valign="top" style="border-left: 1px solid #e8e8e8;" width="10%" id="left_menu">
-            <table align="left" width="10%" class="projects" cellspacing=0 cellpadding=0>
+          </td>
+          <td id="right-menu-collapse" class="open" onclick="new Ajax.Request('/activities/toggle_menu', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;">&nbsp;</td>
+          <td align="right" valign="top" style="width:10%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
+            <table align="left" style="width:100%;" class="projects" cellspacing=0 cellpadding=0>
               <tr>
                 <td align="left" class="page_header"colspan="2" width="100%">
                   <div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
@@ -235,7 +237,7 @@
                   </td>
                 </tr>
                 <tr><td colspan=2>
-                        <%= text_field 'shout', 'body' %>
+                        <%= text_field 'shout', 'body', :size => 25 %>
                 <tr><td colspan=2>&nbsp;</td></tr>
                 <tr>
                   <td align=left class="page_header" width="100%" colspan="2">
