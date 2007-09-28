@@ -80,7 +80,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
    <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done?%>
    </div>
   </div>
-  <div style="float:right;"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
+  <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
 
   <div id="edit_task_<%=task.id%>" style="position: relative; left: -59px; top: -2.29em; z-index:10; width:55px; padding-right:2px; display: none;" align="right">
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>

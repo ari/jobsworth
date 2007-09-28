@@ -1359,3 +1359,6 @@ li.help {
   cursor:pointer;
 }
 
+#print_title {
+  display: none;
+}

@@ -38,6 +38,10 @@
   display: none;
 }
 
+.avatar {
+  display: none;
+}
+
 #task_info {
   font-size: 9pt;
   padding-left: 0pt;
@@ -103,9 +107,19 @@ ul {
 }
 
 .task {
-  margin-bottom: 1em;
+  height: 2.7em;
 }
 
+.task_info a {
+  color: #999;
+  font-weight: normal;
+}
+
+.task_info {
+  color: #999;
+  font-weight: normal;
+  font-size: smaller;
+}
 
 #task_info {
   padding-top: 3pt;
@@ -120,3 +134,6 @@ ul {
   font-size: 8pt;
 }
 
+#print_title {
+  display: block;
+}
