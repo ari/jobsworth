@@ -511,10 +511,10 @@ class Task < ActiveRecord::Base
     res << "<tr><td><strong>#{_('Status')}</strong></td><td>&nbsp;#{_(self.status_type)}</td></tr>"
     res << "<tr><td><strong>#{_('Milestone')}</strong></td><td>&nbsp;#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
     unless self.dependencies.empty?
-      res << "<tr><td><strong>#{_('Dependencies')}</strong></td><td>&nbsp;#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
+      res << "<tr><td valign=\"top\"><strong>#{_('Dependencies')}</strong></td><td>&nbsp;#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
     end
     unless self.dependants.empty?
-      res << "<tr><td><strong>#{_('Depended on by')}</strong></td><td>&nbsp;#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
+      res << "<tr><td valign=\"top\"><strong>#{_('Depended on by')}</strong></td><td>&nbsp;#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
     end
     res << "<tr><td><strong>#{_('Progress')}</strong></td><td>&nbsp;#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}</tr>"
     res << "<tr><td colspan=\"2\"><div class=tip_description>#{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div></td></tr>" if( self.description && self.description.strip.length > 0)
