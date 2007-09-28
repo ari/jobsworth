@@ -77,19 +77,19 @@ ul {
   color: #000;
   font-weight: bold;
   background: #CCCCCC;
-  font-size: 12pt;
+  font-size: 10pt;
 }
 
 .task_high_pri a {
   font-weight: bold;
   color: #666;
-  font-size: 12pt;
+  font-size: 10pt;
 }
 
 .task_raised_pri a {
   color: #666;
   font-weight: normal;
-  font-size: 12pt;
+  font-size: 10pt;
 }
 
 .task_low_pri a {
@@ -100,6 +100,10 @@ ul {
 .task_lowest_pri a {
   font-weight: normal;
   color: #cccccc;
+}
+
+.task {
+  margin-bottom: 1em;
 }
 
 
