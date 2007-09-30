@@ -32,7 +32,7 @@ module TasksHelper
       filters << User.find(session[:filter_user].to_i).name
     end
 
-    filters = session[:user].company.name if filters.empty?
+    filters << session[:user].company.name if filters.empty?
 
     title << filters.join(' / ')
 
