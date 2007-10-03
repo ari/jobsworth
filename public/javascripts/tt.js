@@ -19,7 +19,7 @@ function Hover(prefix, element) {
 
 function ClearHover() {
   if( lastElement != null ) {
-    if( $('edit' + '_' + lastPrefix + '_' + element) ) {
+    if( $('edit' + '_' + lastPrefix + '_' + lastElement) ) {
         Element.hide('edit' + '_' + lastPrefix + '_' + lastElement);
     }
     $(lastPrefix + '_' + lastElement).style.backgroundColor = lastColor;
