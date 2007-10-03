@@ -8,7 +8,9 @@ var show_tooltips = 1;
 
 function Hover(prefix, element) {
   ClearHover();
-  Element.show('edit' + '_' + prefix + '_' + element);
+  if( $('edit' + '_' + prefix + '_' + element) ) {
+    Element.show('edit' + '_' + prefix + '_' + element);
+  }
   lastColor = $(prefix + '_' + element).style.backgroundColor;
   $(prefix + '_' + element).style.backgroundColor = "#fff2d4";
   lastElement = element;
@@ -17,7 +19,9 @@ function Hover(prefix, element) {
 
 function ClearHover() {
   if( lastElement != null ) {
-    Element.hide('edit' + '_' + lastPrefix + '_' + lastElement);
+    if( $('edit' + '_' + prefix + '_' + element) ) {
+        Element.hide('edit' + '_' + lastPrefix + '_' + lastElement);
+    }
     $(lastPrefix + '_' + lastElement).style.backgroundColor = lastColor;
   }
   lastElement = null;
