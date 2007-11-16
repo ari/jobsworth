@@ -437,6 +437,10 @@ fieldset select {
   width: 10em;
 }
 
+#quick_add_container select {
+  width: 8em;
+}
+
 fieldset input.file {
   float: left;
   clear: right;
