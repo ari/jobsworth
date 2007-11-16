@@ -10,11 +10,11 @@ module ApplicationHelper
   end
 
   def online_users
-    User.count( ["last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}"] )
+    User.count( ["last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}"] )
   end
 
   def user_online?(user_id)
-    return User.count( ["id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}"] ) > 0
+    User.count( ["id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}"] ) > 0
   end
 
   def current_user

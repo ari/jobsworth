@@ -91,6 +91,7 @@ class TasksController < ApplicationController
            when 1: "CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
            when 2: "tasks.created_at, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
            when 3: "tasks.name, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.created_at"
+           when 4: "CASE WHEN tasks.updated_at IS NULL THEN tasks.created_at ELSE tasks.updated_at END desc, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
              end
 
     if params[:tag] && params[:tag].length > 0
@@ -350,15 +351,18 @@ class TasksController < ApplicationController
         Notifications::deliver_created( @task, session[:user], params[:comment]) rescue begin end
       end
 
-      return if request.xhr?
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
 
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
+
+      return if request.xhr?
+
       redirect_from_last
     else
       @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
       @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
+      return if request.xhr?
       render_action 'new'
     end
   end
@@ -1311,5 +1315,34 @@ class TasksController < ApplicationController
       page.visual_effect(:highlight, "task_history", :duration => 2.0)
     end
   end
+
+  def quick_add
+    self.new
+    render :update do |page|
+      page.replace_html 'quick_add_container', :partial => 'quick_add'
+      page.show('quick_add_container')
+      page.visual_effect(:highlight, "quick-add-task", :duration => 0.5)
+    end
+
+  end
+
+  def create_ajax
+    self.create
+    unless @task.id
+      render :update do |page|
+        page.visual_effect(:highlight, "quick-add-task", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    else
+      @task.reload
+      render :update do |page|
+        page.insert_html :top, "task_list", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
+        page.call 'Form.reset', 'quick-add-form'
+        page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
+        page << "$('task_name').focus();"
+        page.call("updateTooltips")
+      end
+    end
+  end
+
 
 end

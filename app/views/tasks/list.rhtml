@@ -5,12 +5,20 @@
         <tr>
           <td align="left" class="page_header">
             <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{_(session[:view].name)}" unless session[:view].nil? %></div>
-              <div style="float:right;"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
+            <div style="float:right;">
+              <%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' },
+              :loading => "Element.show('loading');",
+              :complete => "Element.hide('loading');"
+              %>
+            </div>
+            <div style="float:right;"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
             <% if session[:view].nil? %><div style="float:right;"><%= link_to( _("Save as View"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div><% end %>
           </td>
         </tr>
         <tr>
           <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
+
+            <div id="quick_add_container" style="display:none;"></div>
 
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
@@ -101,7 +109,7 @@
             <select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
               <%
-                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"]]
+                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"], [_("Recent"), "4"]]
               %>
               <%= options_for_select @sort, session[:sort] %>
             </select>

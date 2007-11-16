@@ -352,6 +352,20 @@ fieldset label {
   color: #423f54;
 }
 
+#quick_add_container {
+
+}
+
+#quick_add_container label {
+  width: 5.4em;
+  font-weight: bold;
+  color: #423f54;
+  cursor: pointer;
+  cursor: hand;
+  font-size: 12px;
+}
+
+
 #task_attr label {
   width: 7em;
 }
@@ -439,6 +453,7 @@ fieldset input.nolabel {
   margin-left: 11.6em;
   display: block;
 }
+
 
 fieldset form br {
         clear: both;
