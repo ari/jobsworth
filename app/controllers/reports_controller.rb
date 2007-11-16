@@ -36,7 +36,7 @@ class ReportsController < ApplicationController
   def key_from_worklog(w, r)
     case r
     when 1
-      "#{w.customer.name} #{w.project.name} #{w.task.name}"
+      "#{w.customer.name} #{w.project.name} #{w.task.name} #{w.task.task_num}"
     when 2
       w.is_a?(Tag) ? w.id : 0
 
@@ -141,7 +141,7 @@ class ReportsController < ApplicationController
   def do_column(w, key)
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
-    if @row_value == 2 && !w.task.tags.empty? && @type == 1
+    if @row_value == 2 && !w.task.tags.empty? && (@type == 1 || @type == 4)
       w.task.tags.each do |tag|
         rkey = key_from_worklog(tag, @row_value).to_s
         row_name = name_from_worklog(tag, @row_value)
@@ -209,94 +209,167 @@ class ReportsController < ApplicationController
       task_severity = filter[:severity_id].to_i
       task_tags = filter[:tags]
 
-      filename << "_" + ["pivot", "audit", "time_sheet"][@type-1]
+      filename << "_" + ["pivot", "audit", "time_sheet", "workload"][@type-1]
 
-      if customer_id.to_i > 0
-        sql_filter = sql_filter + " AND work_logs.customer_id = #{customer_id}"
-        filename << "_" + Customer.find(customer_id).name.gsub(/ /, "-").downcase
-      end
-
-      if project_id.to_i > 0
-        sql_filter = sql_filter + " AND work_logs.project_id = #{project_id}"
-        filename << "_" + Project.find(project_id).name.gsub(/ /, "-").downcase
-      end
-
-      if user_id.to_i > 0
-        sql_filter = sql_filter + " AND work_logs.user_id = #{user_id}"
-        filename << "_" + User.find(user_id).name.gsub(/ /, "-").downcase
-      end
-
-
-      case @range.to_i
-      when 0
-        # Today
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + tz.now.at_midnight.strftime("%Y%m%d") + "-" + tz.now.strftime("%Y%m%d")
-      when 1
-        # This Week
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + tz.now.beginning_of_week.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
-      when 2
-        # Last Week
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.week).beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + 1.week.ago.beginning_of_week.strftime("%Y%m%d")
-        filename << "-" + tz.now.beginning_of_week.strftime("%Y%m%d")
-      when 3
-        # This Month
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
-      when 4
-        # Last Month
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + tz.now.last_month.beginning_of_month.strftime("%Y%m%d")
-        filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")
-      when 5
-        # This Year
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
-      when 6
-        # Last Year
-        date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
-        filename << "_" + tz.now.last_year.beginning_of_year.strftime("%Y%m%d")
-        filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")
-      when 7
-        if filter[:stop_date] && filter[:start_date].length > 1
-          start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
-          date_filter = date_filter + " AND work_logs.started_at > '#{tz.local_to_utc(start_date).strftime("%Y-%m-%d 00:00:00")}'"
+      if @type != 4
+        # Pivot, Timesheet, Audit
+        if customer_id.to_i > 0
+          sql_filter = sql_filter + " AND work_logs.customer_id = #{customer_id}"
+          filename << "_" + Customer.find(customer_id).name.gsub(/ /, "-").downcase
         end
 
-        if filter[:stop_date] && filter[:stop_date].length > 1
-          end_date = DateTime.strptime( filter[:stop_date], session[:user].date_format ).to_time
-          date_filter = date_filter + " AND work_logs.started_at < '#{tz.local_to_utc(end_date).strftime("%Y-%m-%d 23:59:59")}'"
+        if project_id.to_i > 0
+          sql_filter = sql_filter + " AND work_logs.project_id = #{project_id}"
+          filename << "_" + Project.find(project_id).name.gsub(/ /, "-").downcase
         end
 
-        filename << "_" + start_date.strftime("%Y%m%d") if start_date
-        filename << "_" + end_date.strftime("%Y%m%d") if end_date
+        if user_id.to_i > 0
+          sql_filter = sql_filter + " AND work_logs.user_id = #{user_id}"
+          filename << "_" + User.find(user_id).name.gsub(/ /, "-").downcase
+        end
 
-      end
+        case @range.to_i
+        when 0
+          # Today
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.at_midnight).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "_" + tz.now.at_midnight.strftime("%Y%m%d") + "-" + tz.now.strftime("%Y%m%d")
+        when 1
+          # This Week
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "_" + tz.now.beginning_of_week.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
+        when 2
+          # Last Week
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.week).beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "_" + 1.week.ago.beginning_of_week.strftime("%Y%m%d")
+          filename << "-" + tz.now.beginning_of_week.strftime("%Y%m%d")
+        when 3
+          # This Month
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
+        when 4
+          # Last Month
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "_" + tz.now.last_month.beginning_of_month.strftime("%Y%m%d")
+          filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")
+        when 5
+          # This Year
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
+        when 6
+          # Last Year
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.local_to_utc(tz.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+          filename << "_" + tz.now.last_year.beginning_of_year.strftime("%Y%m%d")
+          filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")
+        when 7
+          if filter[:stop_date] && filter[:start_date].length > 1
+            start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
+            date_filter = date_filter + " AND work_logs.started_at > '#{tz.local_to_utc(start_date).strftime("%Y-%m-%d 00:00:00")}'"
+          end
 
-      join = ""
-      if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
-        join << " AND tasks.status = #{task_status}" if task_status > -1
-        join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
-        join << " AND tasks.priority = #{task_priority}" if task_priority > -3
-        join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
-      end
+          if filter[:stop_date] && filter[:stop_date].length > 1
+            end_date = DateTime.strptime( filter[:stop_date], session[:user].date_format ).to_time
+            date_filter = date_filter + " AND work_logs.started_at < '#{tz.local_to_utc(end_date).strftime("%Y-%m-%d 23:59:59")}'"
+          end
 
-      unless task_tags.nil? || task_tags.empty?
-        task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
-        task_ids = "0" if task_ids.empty?
-        sql_filter << " AND work_logs.task_id IN (#{task_ids})"
-      end
+          filename << "_" + start_date.strftime("%Y%m%d") if start_date
+          filename << "_" + end_date.strftime("%Y%m%d") if end_date
 
-      @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
-      @logs = []
-      @projects.each do |p|
-        if join != ""
-          @logs += p.work_logs.find(:all, :select => "work_logs.*", :order => "work_logs.project_id", :joins => "LEFT JOIN tasks ON tasks.id = work_logs.task_id", :conditions => ["work_logs.company_id = ? AND work_logs.duration > 0" + sql_filter + date_filter + join, session[:user].company.id])
-        else
-          @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, session[:user].company.id])
+        end
+
+        join = ""
+        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+          join << " AND tasks.status = #{task_status}" if task_status > -1
+          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
+          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
+          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
+        end
+
+        unless task_tags.nil? || task_tags.empty?
+          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
+          task_ids = "0" if task_ids.empty?
+          sql_filter << " AND work_logs.task_id IN (#{task_ids})"
+        end
+
+        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
+        @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
+        @logs = []
+        @projects.each do |p|
+          if join != ""
+            @logs += p.work_logs.find(:all, :select => "work_logs.*", :order => "work_logs.project_id", :joins => "LEFT JOIN tasks ON tasks.id = work_logs.task_id", :conditions => ["work_logs.company_id = ? AND work_logs.duration > 0" + sql_filter + date_filter + join, session[:user].company.id])
+          else
+            @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, session[:user].company.id])
+          end
+        end
+
+      else
+        # Workload report
+
+        if customer_id.to_i > 0
+          sql_filter = sql_filter + " AND tasks.customer_id = #{customer_id}"
+          filename << "_" + Customer.find(customer_id).name.gsub(/ /, "-").downcase
+        end
+
+        if project_id.to_i > 0
+          sql_filter = sql_filter + " AND tasks.project_id = #{project_id}"
+          filename << "_" + Project.find(project_id).name.gsub(/ /, "-").downcase
+        end
+
+        if user_id.to_i > 0
+          task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
+          if task_ids == ''
+            sql_filter << "AND tasks.id IN (0) "
+          else
+            sql_filter << "AND tasks.id IN (#{task_ids}) "
+          end
+          filename << "_" + User.find(user_id).name.gsub(/ /, "-").downcase
+        end
+
+        join = ""
+        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+          join << " AND tasks.status = #{task_status}" if task_status > -1
+          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
+          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
+          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
+        end
+
+        unless task_tags.nil? || task_tags.empty?
+          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
+          task_ids = "0" if task_ids.empty?
+          sql_filter << " AND tasks.task_id IN (#{task_ids})"
+        end
+
+        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
+        @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
+        @tasks = []
+        @projects.each do |p|
+          @tasks += p.tasks.find(:all, :order => "tasks.project_id", :conditions => ["tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status < 2 " + sql_filter + date_filter + join, session[:user].company_id], :include => [:project, :users, :milestone, :company, :tags])
+        end
+
+        @logs = []
+        @tasks.each do |t|
+          if t.users.size > 0
+            t.users.each do |u|
+              w = WorkLog.new
+              w.task = t
+              w.user_id = u.id
+              w.company = t.company
+              w.customer = t.project.customer
+              w.project = t.project
+              w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
+              w.duration = t.duration.to_i > 0 ? t.duration : 60
+              @logs << w
+            end
+          else
+            w = WorkLog.new
+            w.task_id = t.id
+            w.company_id = t.company_id
+            w.customer_id = t.project.customer_id
+            w.project_id = t.project_id
+            w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
+            w.duration = t.duration.to_i > 0 ? t.duration : 60
+            @logs << w
+          end
+
         end
       end
 
@@ -339,7 +412,7 @@ class ReportsController < ApplicationController
 
         case @type
 
-        when 1
+        when 1, 4
           # Pivot
           if @column_value == 2 && !w.task.tags.empty?
             w.task.tags.each do |tag|

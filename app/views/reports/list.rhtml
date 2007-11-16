@@ -86,14 +86,14 @@
                 [_("Pivot"), "1"],
                 [_("Audit"), "2"],
                 [_("Time sheet"), "3"],
-#                ["Progress", "4"],
-#                ["Workload", "5"],
+                [_("Workload"), "4"],
+#                ["Progress", "5"],
 #                ["Statistics", "6"]
                 ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") ) %><br/>
 
-<label for="report_range"><%=_ 'Time Range' %></label><%= select("report", "range", [[_("Today"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"],[_("Custom"),"7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/>
+<div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>><label for="report_range"><%=_ 'Time Range' %></label><%= select("report", "range", [[_("Today"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"],[_("Custom"),"7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/></div>
 
-<% if params[:report] && params[:report][:type] == "1" || params[:report].nil? %>
+<% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
 <div id="pivot_config">
 <% else %>
 <div id="pivot_config" style="display:none;">
@@ -217,10 +217,16 @@ if( $('report_range').value == "7" ) {
 );
 
 Event.observe($('report_type'), "change", function(e) {
-  if( $('report_type').value == "1" ) {
+  if( $('report_type').value == "1" || $('report_type').value == "4" ) {
     Element.show('pivot_config');
   } else {
      Element.hide('pivot_config');
+  }
+
+  if( $('report_type').value == "4" ) {
+    Element.hide('date-select');
+  } else {
+    Element.show('date-select');
   }
 
   if( $('report_type').value == "3" || $('report_type').value == "2" ) {
