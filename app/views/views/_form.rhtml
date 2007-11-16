@@ -89,7 +89,7 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
             <select name="view[sort]" id="view_sort">
               <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
               <%
-                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"]]
+                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"], [_("Recent"), "4"] ]
               %>
               <%= options_for_select @sort, @view.sort.to_s %>
             </select>
