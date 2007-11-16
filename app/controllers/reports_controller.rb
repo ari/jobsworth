@@ -335,7 +335,7 @@ class ReportsController < ApplicationController
         unless task_tags.nil? || task_tags.empty?
           task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
           task_ids = "0" if task_ids.empty?
-          sql_filter << " AND tasks.task_id IN (#{task_ids})"
+          sql_filter << " AND tasks.id IN (#{task_ids})"
         end
 
         @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
