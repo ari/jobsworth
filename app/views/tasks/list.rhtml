@@ -18,8 +18,6 @@
         <tr>
           <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
 
-            <div id="quick_add_container" style="display:none;"></div>
-
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
 
@@ -119,6 +117,8 @@
             <%= end_form_tag %>
             </fieldset>
             <% end %>
+            <div id="quick_add_container" style="display:none;"></div>
+
             <% if session[:group_by].to_i > 2 %>
 
             <%   gb = session[:group_by].to_i
