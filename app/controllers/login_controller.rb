@@ -42,6 +42,7 @@ class LoginController < ApplicationController
     session[:filter_status] = nil
     session[:group_tags] = nil
     session[:channels] = nil
+    session[:hide_dependencies] = nil
     redirect_to "/"
   end
 
@@ -70,6 +71,7 @@ class LoginController < ApplicationController
       session[:filter_hidden] = logged_in.last_filter.to_s
       session[:filter_status] = "0"
       session[:group_tags] = "0"
+      session[:hide_dependencies] = "1"
 
       unless logged_in.last_milestone_id.nil? && session[:project].nil?
         begin
