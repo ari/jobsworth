@@ -35,8 +35,6 @@ class TasksController < ApplicationController
       project_ids = session[:filter_project]
     end
 
-    session[:hide_dependencies] = 1 if session[:hide_dependencies].nil?
-
     filter = ""
 
     if session[:filter_user].to_i > 0
