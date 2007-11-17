@@ -10,8 +10,10 @@ class UsersController < ApplicationController
   def list
     if session[:user].admin == 10
       @user_pages, @users = paginate :user, :per_page => 50, :order => "last_login_at DESC"
-    else
+    elsif session[:user].admin > 0
       @user_pages, @users = paginate :user, :per_page => 50, :conditions => ["company_id = ?", session[:user].company.id], :order => "name"
+    else
+      redirect_to :action => 'edit_preferences'
     end
   end
 
@@ -45,6 +47,12 @@ class UsersController < ApplicationController
   end
 
   def update
+    if session[:user].admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
     @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     if @user.update_attributes(@params[:user])
       session[:user] = @user if @user.id == session[:user].id
@@ -72,6 +80,18 @@ class UsersController < ApplicationController
   end
 
   def destroy
+    if session[:user].admin == 0
+      flash['notice'] = _("Only admins can delete users")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
+    if session[:user].id == params[:id].to_i
+      flash['notice'] = _("You can't delete yourself.")
+      redirect_to :action => 'list'
+      return
+    end
+
     @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{session[:user].company_id} AND creator_id = #{@user.id}")
     @user.destroy
