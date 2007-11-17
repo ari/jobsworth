@@ -441,7 +441,11 @@ class TasksController < ApplicationController
     old_project_name = @task.project.name
     @old_task = @task.clone
 
-    params[:task][:status] = @task.status if params[:task][:status].to_i == 6 # We're hiding the task.
+    if params[:task][:status].to_i == 6
+      params[:task][:status] = @task.status  # We're hiding the task.
+    else
+      params[:task][:hide_until] = nil
+    end
 
     if @task.update_attributes(params[:task])
 
