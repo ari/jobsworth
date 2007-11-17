@@ -35,7 +35,7 @@ class TasksController < ApplicationController
       project_ids = session[:filter_project]
     end
 
-    session[:hide_waiting] = 1 if session[:hide_waiting].nil?
+    session[:hide_dependencies] = 1 if session[:hide_dependencies].nil?
 
     filter = ""
 
