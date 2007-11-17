@@ -223,7 +223,7 @@ class Task < ActiveRecord::Base
   end
 
   def ready?
-    self.dependencies.reject{ |t| t.done? }.empty?
+    self.dependencies.reject{ |t| t.done? }.empty? && (self.hide_until.nil? || self.hide_until < Time.now.utc)
   end
 
   def set_task_num(company_id)

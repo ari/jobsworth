@@ -35,6 +35,7 @@ class TasksController < ApplicationController
       project_ids = session[:filter_project]
     end
 
+    session[:hide_waiting] = 1 if session[:hide_waiting].nil?
 
     filter = ""
 
@@ -442,7 +443,11 @@ class TasksController < ApplicationController
     old_project_name = @task.project.name
     @old_task = @task.clone
 
+    params[:task][:status] = @task.status if params[:task][:status].to_i == 6 # We're hiding the task.
+
     if @task.update_attributes(params[:task])
+
+      @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
