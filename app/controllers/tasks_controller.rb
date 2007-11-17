@@ -444,7 +444,7 @@ class TasksController < ApplicationController
     if params[:task][:status].to_i == 6
       params[:task][:status] = @task.status  # We're hiding the task.
     else
-      params[:task][:hide_until] = nil
+      params[:task][:hide_until] = @task.hide_until
     end
 
     if @task.update_attributes(params[:task])
