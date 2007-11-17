@@ -315,7 +315,7 @@ class ReportsController < ApplicationController
         end
 
         if user_id.to_i > 0
-          task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
+          task_ids = User.find(user_id.to_i).tasks.collect { |t| t.id }.join(',')
           if task_ids == ''
             sql_filter << "AND tasks.id IN (0) "
           else
