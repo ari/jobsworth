@@ -1,0 +1,8 @@
+if session[:collapse_milestones][params[:id]].to_i == 1
+  page << "$$('tr.project_#{params[:id]}').each(function(item) { item.hide(); }); "
+  
+  page["small_indicator_#{params[:id]}"].className = 'small-collapse-indicator-closed'
+else
+  page << "$$('tr.project_#{params[:id]}').each(function(item) { item.show(); }); "
+  page["small_indicator_#{params[:id]}"].className = 'small-collapse-indicator-open'
+end
