@@ -84,8 +84,6 @@ module TasksHelper
 
     return if @printed_ids.include? t.id
 
-    @printed_ids << t.id
-
     shown = task_shown?(t)
 
 #    logger.info("#{t.name}[#{shown}]")
@@ -93,28 +91,33 @@ module TasksHelper
     unless root_present
       parents = []
       p = t
+      root = nil
       while p.dependencies.size > 0
-        parent = nil
         p.dependencies.each do |p|
-          parent = p unless p.done?
+          root = p unless p.done?
         end
-        parent ||= p.dependencies.first
-        parents << parent
-        p = parent
+        root ||= p.dependencies.first
+#        parents << parent
+        p = root
         logger.info("New parent[#{p.name}")
       end
 
-      parents.reverse.each_with_index do |parent, index|
-        res << render(:partial => "task_row", :locals => { :task => parent, :depth => depth + index + 1, :override_filter => true })
-      end
-      depth = depth + parents.size + 1
-    end
+      res << render_task_dependants(root, depth, true)
 
-    res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
-    if t.dependants.size > 0
-      t.dependants.each do |child|
-        next if @printed_ids.include? child.id
-        res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+#      parents.reverse.each_with_index do |parent, index|
+#        res << render(:partial => "task_row", :locals => { :task => parent, :depth => depth + index + 1, :override_filter => true })
+#      end
+#      depth = depth + parents.size + 1
+    else
+      res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
+
+      @printed_ids << t.id
+
+      if t.dependants.size > 0
+        t.dependants.each do |child|
+          next if @printed_ids.include? child.id
+          res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+        end
       end
     end
     res
