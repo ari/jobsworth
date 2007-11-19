@@ -356,7 +356,10 @@ fieldset label {
   border: 1px solid #dcdcdc;
   background-color: #fafafa;
   color: #000000;
-  padding: 0.5em;
+  padding-top: 0.5em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  margin-bottom: 0.5em;
   font-size: 11px;
 }
 

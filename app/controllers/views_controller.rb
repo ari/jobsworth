@@ -161,7 +161,7 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
-    session[:hide_dependencies] = "0"
+    session[:hide_dependencies] = "1"
     session[:filter_customer] = "0"
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -177,7 +177,7 @@ class ViewsController < ApplicationController
     session[:filter_status] = "1"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
-    session[:hide_dependencies] = "0"
+    session[:hide_dependencies] = "1"
     session[:filter_customer] = "0"
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -203,6 +203,7 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
+    session[:hide_dependencies] = "1"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
