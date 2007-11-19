@@ -47,7 +47,7 @@ class ReportsController < ApplicationController
     when 5
       w.project_id
     when 6
-      w.task.milestone.nil? ? 0 : w.task.milestone_id
+      w.task.milestone.nil? ? 0 : w.task.milestone.name
     when 7
       get_date_key(w)
     when 8
