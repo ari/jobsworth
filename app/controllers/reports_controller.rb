@@ -88,7 +88,7 @@ class ReportsController < ApplicationController
     when 2
       w.is_a?(Tag) ? "#{w.name}" : "none"
     when 3
-      "#{w.user.name}"
+      "#{w.user ? w.user.name : _("Unassigned")}"
     when 4
       "#{w.customer.name}"
     when 5
@@ -305,7 +305,7 @@ class ReportsController < ApplicationController
         # Workload report
 
         if customer_id.to_i > 0
-          sql_filter = sql_filter + " AND tasks.customer_id = #{customer_id}"
+          sql_filter = sql_filter + " AND tasks.project_id IN (#{Project.find(:all, :conditions => ["customer_id = ?", customer_id]).collect{|p| p.id}.join(',') || '0' })"
           filename << "_" + Customer.find(customer_id).name.gsub(/ /, "-").downcase
         end
 
@@ -317,9 +317,9 @@ class ReportsController < ApplicationController
         if user_id.to_i > 0
           task_ids = User.find(user_id.to_i).tasks.collect { |t| t.id }.join(',')
           if task_ids == ''
-            sql_filter << "AND tasks.id IN (0) "
+            sql_filter << " AND tasks.id IN (0) "
           else
-            sql_filter << "AND tasks.id IN (#{task_ids}) "
+            sql_filter << " AND tasks.id IN (#{task_ids}) "
           end
           filename << "_" + User.find(user_id).name.gsub(/ /, "-").downcase
         end
@@ -356,6 +356,7 @@ class ReportsController < ApplicationController
               w.customer = t.project.customer
               w.project = t.project
               w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
+	      w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
               w.duration = t.duration.to_i > 0 ? t.duration : 60
               @logs << w
             end
@@ -366,6 +367,7 @@ class ReportsController < ApplicationController
             w.customer_id = t.project.customer_id
             w.project_id = t.project_id
             w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
+	    w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
             w.duration = t.duration.to_i > 0 ? t.duration : 60
             @logs << w
           end
@@ -375,8 +377,9 @@ class ReportsController < ApplicationController
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
-        start_date = tz.utc_to_local(w.started_at) if start_date.nil? || tz.utc_to_local(w.started_at) < start_date
-        end_date = tz.utc_to_local(w.started_at) if end_date.nil? || tz.utc_to_local(w.started_at) > end_date
+	logger.info( "#{w.started_at} -> #{tz.utc_to_local(w.started_at)} < #{start_date}")
+        start_date = tz.utc_to_local(w.started_at) if(start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
+        end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
       end
 
       if start_date && end_date
