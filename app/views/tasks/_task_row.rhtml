@@ -18,7 +18,7 @@
  can_work ||= {}
 
  priority << " #{task.project.to_css_name}"
- priority << " waiting_dependency" unless task.ready?
+ priority << " override_filter" if override_filter
  priority << " waiting_deferred" unless task.active?
 
 %>

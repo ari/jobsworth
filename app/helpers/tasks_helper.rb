@@ -42,16 +42,79 @@ module TasksHelper
 
   end
 
-  def render_task_dependants(t, depth)
+  def task_shown?(t)
+
+    shown = true
+
+    if session[:filter_status].to_i >= 0
+      if session[:filter_status].to_i == 0
+        shown = ( t.status == 0 || t.status == 1 ) if shown
+      elsif session[:filter_status].to_i == 2
+        shown = t.status > 1 if shown
+      else
+        shown = session[:filter_status].to_i == t.status if shown
+      end
+    end
+
+    if session[:filter_milestone].to_i > 0 && shown
+      shown = session[:filter_milestone].to_i == t.milestone_id if shown
+    end
+
+    if session[:filter_customer].to_i > 0 && shown
+      shown = session[:filter_customer].to_i == t.project.customer_id if shown
+    end
+
+    if session[:filter_project].to_i > 0 && shown
+      shown = session[:filter_project].to_i == t.project_id if shown
+    end
+
+    if session[:filter_user].to_i > 0 && shown
+      shown = t.users.collect(&:id).include?( session[:filter_user].to_i ) if shown
+    elsif session[:filter_user].to_i < 0 && shown
+      shown = t.users.empty?
+    end
+
+
+    shown
+  end
+
+  def render_task_dependants(t, depth, root_present)
     res = ""
     @printed_ids ||= []
-    @printed_ids << t.id
-    res << render(:partial => "task_row", :locals => { :task => t, :depth => depth})
 
+    return if @printed_ids.include? t.id
+
+    @printed_ids << t.id
+
+    shown = task_shown?(t)
+
+#    logger.info("#{t.name}[#{shown}]")
+
+    unless root_present
+      parents = []
+      p = t
+      while p.dependencies.size > 0
+        parent = nil
+        p.dependencies.each do |p|
+          parent = p unless p.done?
+        end
+        parent ||= p.dependencies.first
+        parents << parent
+        p = parent
+        logger.info("New parent[#{p.name}")
+      end
+
+      parents.reverse.each_with_index do |parent, index|
+        res << render(:partial => "task_row", :locals => { :task => parent, :depth => depth + index + 1, :override_filter => true })
+      end
+      depth = depth + parents.size + 1
+    end
+
+    res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
     if t.dependants.size > 0
       t.dependants.each do |child|
         next if @printed_ids.include? child.id
-        res << render_task_dependants(child, depth == 0 ? depth + 2 : depth + 1)
+        res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
       end
     end
     res

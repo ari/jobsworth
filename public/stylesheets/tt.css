@@ -253,13 +253,6 @@ img {
   font-size: 10px;
 }
 
-.waiting_dependency a, .waiting_dependency small {
-}
-
-.waiting_deferred a, .waiting_deferred small {
-  color: #a6a6a6;
-}
-
 .optional {
   color: #a6a6a6;
   font-style: italic;
@@ -1415,3 +1408,16 @@ li.help {
 #print_title {
   display: none;
 }
+
+.override_filter {
+  background-color: #ececec;
+}
+
+.override_filter a, .override_filter small, .override_filter .description {
+  color: #a6a6a6;
+}
+
+.waiting_deferred a, .waiting_deferred small {
+  color: #a6a6a6;
+}
+

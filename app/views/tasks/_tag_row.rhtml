@@ -3,11 +3,16 @@
   # Check for only hashes, if so, pass this name further in
   printed_done_sep = false
   depth ||= 0
-  printed_tasks = []
+  @root_ids ||= []
+  @root_ids += groups.collect { |t|
+   if(t.is_a?(Task) && t.ready?)
+     t.id
+   end
+  }.compact
 
-  for g in groups
-    if g.is_a? Hash
-      g.each_key do |k|
+for g in groups
+  if g.is_a? Hash
+    g.each_key do |k|
 %>
 
 <div class="task-group" id="task-group_<%=@group_ids[k]%>">
@@ -31,20 +36,20 @@ Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', onDr
     end
 
     if g.is_a? Task
-      printed_tasks << g.id if g.ready?
-
       g.tags.each do |t|
         @tags[t.name] ||= 0
         @tags[t.name] += 1
         @tags_total += 1
       end
 
+    root_present = @root_ids.include?(g.id)
+
     if session[:group_tags].to_i == 0 && session[:filter_hidden] != 2 && !g.completed_at.nil? && !printed_done_sep %>
       <div id="done_sep_0" style="display:none; clear: both;"></div>
     <% printed_done_sep = true %>
     <% end %>
 
-    <%= render_task_dependants(g, depth) if g.ready? %>
+    <%= render_task_dependants(g, depth, root_present) if( g.ready? || !root_present) %>
 
   <% end %>
 
