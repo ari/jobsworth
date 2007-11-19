@@ -353,16 +353,24 @@ fieldset label {
 }
 
 #quick_add_container {
+  border: 1px solid #dcdcdc;
+  background-color: #fafafa;
+  color: #000000;
+  padding: 0.5em;
+  font-size: 11px;
+}
 
+#quick_add_container select {
+  font-size: 11px;
+  width: 10em;
 }
 
 #quick_add_container label {
-  width: 5.4em;
   font-weight: bold;
   color: #423f54;
   cursor: pointer;
   cursor: hand;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 
@@ -435,10 +443,6 @@ fieldset select {
   margin-right: 0.5em;
   margin-bottom: 0.2em;
   width: 10em;
-}
-
-#quick_add_container select {
-  width: 8em;
 }
 
 fieldset input.file {

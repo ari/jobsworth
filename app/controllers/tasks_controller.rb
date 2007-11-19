@@ -1328,7 +1328,7 @@ class TasksController < ApplicationController
     render :update do |page|
       page.replace_html 'quick_add_container', :partial => 'quick_add'
       page.show('quick_add_container')
-      page.visual_effect(:highlight, "quick-add-task", :duration => 0.5)
+      page.visual_effect(:highlight, "quick_add_container", :duration => 0.5)
     end
 
   end
@@ -1337,13 +1337,15 @@ class TasksController < ApplicationController
     self.create
     unless @task.id
       render :update do |page|
-        page.visual_effect(:highlight, "quick-add-task", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "'#ff9999'")
       end
     else
       @task.reload
       render :update do |page|
         page.insert_html :top, "task_list", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
-        page.call 'Form.reset', 'quick-add-form'
+        ['task_name', 'task_set_tags', 'task_description', 'dependencies_input', 'task_duration'].each do |el|
+          page.call "$('#{el}').clear"
+        end
         page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
         page << "$('task_name').focus();"
         page.call("updateTooltips")
