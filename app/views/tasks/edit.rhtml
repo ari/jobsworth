@@ -52,12 +52,12 @@
  can_close ||= {}
 
  defer_options = []
- defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days)  ]
- defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days)  ]
- defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days) ]
- defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days) ]
- defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month)]
- defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight)]
+ defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
+ defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
+ defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
+ defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
+ defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
+ defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
 
 %>
 

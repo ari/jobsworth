@@ -2,8 +2,8 @@
 
   # Check for only hashes, if so, pass this name further in
   printed_done_sep = false
-  printed_droppable = false
   depth ||= 0
+  printed_tasks = []
 
   for g in groups
     if g.is_a? Hash
@@ -31,6 +31,8 @@ Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', onDr
     end
 
     if g.is_a? Task
+      printed_tasks << g.id if g.ready?
+
       g.tags.each do |t|
         @tags[t.name] ||= 0
         @tags[t.name] += 1
@@ -41,7 +43,9 @@ Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', onDr
       <div id="done_sep_0" style="display:none; clear: both;"></div>
     <% printed_done_sep = true %>
     <% end %>
-  <%= render :partial => "task_row", :locals => { :task => g, :depth => depth } %>
+
+    <%= render_task_dependants(g, depth) if g.ready? %>
+
   <% end %>
 
   <% if g.is_a? Array %>

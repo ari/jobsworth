@@ -42,4 +42,19 @@ module TasksHelper
 
   end
 
+  def render_task_dependants(t, depth)
+    res = ""
+    @printed_ids ||= []
+    @printed_ids << t.id
+    res << render(:partial => "task_row", :locals => { :task => t, :depth => depth})
+
+    if t.dependants.size > 0
+      t.dependants.each do |child|
+        next if @printed_ids.include? child.id
+        res << render_task_dependants(child, depth == 0 ? depth + 2 : depth + 1)
+      end
+    end
+    res
+  end
+
 end

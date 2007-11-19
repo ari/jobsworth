@@ -1,4 +1,4 @@
-<% if session[:hide_dependencies].to_i == 0 || task.ready? %>
+<% if session[:hide_dependencies].to_i == 0 || task.active? %>
 <div id="task_<%=task.id%>"
 
 <%
@@ -18,8 +18,8 @@
  can_work ||= {}
 
  priority << " #{task.project.to_css_name}"
-
  priority << " waiting_dependency" unless task.ready?
+ priority << " waiting_deferred" unless task.active?
 
 %>
 
@@ -30,7 +30,7 @@ class="task task_done <%=priority%>"
 <% else %>
 class="task <%=priority%>"
 <% end %>
-style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover('task', '<%=task.id%>')" onMouseOut="javascript:ClearHover()">
+style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName('task-highlight');<%=" this.down('div.popout').show();" if has_popout?(task)%> " onMouseOut="this.removeClassName('task-highlight');<%=" this.down('div.popout').hide();" if has_popout?(task)%>">
 
 <% @task = task %>
 
@@ -82,7 +82,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="javascript:Hover(
   </div>
   <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
 
-  <div id="edit_task_<%=task.id%>" style="position: relative; left: -59px; top: -2.29em; z-index:10; width:55px; padding-right:2px; display: none;" align="right">
+  <div class="popout" id="edit_task_<%=task.id%>" style="position: relative; left: -59px; top: -2.29em; z-index:10; width:55px; padding-right:2px; display: none;" align="right">
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },

@@ -60,6 +60,9 @@ h3 {
   background-color: #fcfc99;
 }
 
+.task-highlight {
+  background-color: #fff2d4 !IMPORTANT;
+}
 
 .projects  {
   color: #666666;
@@ -251,8 +254,10 @@ img {
 }
 
 .waiting_dependency a, .waiting_dependency small {
-  color: #bbb;
-  font-style: italic;
+}
+
+.waiting_deferred a, .waiting_deferred small {
+  color: #a6a6a6;
 }
 
 .optional {

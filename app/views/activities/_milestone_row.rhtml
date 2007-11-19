@@ -2,11 +2,11 @@
                total_count = milestone.total_tasks
                done_percent = milestone.percent_complete
 %>
-    <tr class="milestone project_<%= milestone.project.id %>" id="milestone_<%=milestone.id%>"<%= " style=\"display:none;\"" if (session[:collapse_milestones] && session[:collapse_milestones][milestone.project.id.to_s].to_i == 1) %> onMouseOver="javascript:Hover('milestone', '<%=milestone.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
+    <tr class="milestone project_<%= milestone.project.id %>" id="milestone_<%=milestone.id%>"<%= " style=\"display:none;\"" if (session[:collapse_milestones] && session[:collapse_milestones][milestone.project.id.to_s].to_i == 1) %> onMouseOver="this.addClassName('task-highlight'); this.down('span.popout').show();" onMouseOut="this.removeClassName('task-highlight'); this.down('span.popout').hide();"><td colspan="2">
         <div style="height:16px;">
           <div style="position: absolute; z-index:10; width: 16px;">
             <% if session[:user].can?(milestone.project, 'milestone') %>
-            <span id="edit_milestone_<%= milestone.id%>" style="display: none;">
+            <span class="popout" id="edit_milestone_<%= milestone.id%>" style="display: none;">
             <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", milestone.name), :class => "tooltip"),
                   { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
             </span>

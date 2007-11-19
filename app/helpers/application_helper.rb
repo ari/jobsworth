@@ -468,4 +468,19 @@ module ApplicationHelper
     session[:user]
   end
 
+# def time_ago_or_time_stamp(from_time, to_time = Time.now, include_seconds = true, detail = false)
+#   [from_time, to_time].each {|t| t = t.to_time if t.respond_to?(:to_time)}
+#   if (((to_time - from_time).abs)/60).round > 2880 && detail
+#     return timestamp(from_time)
+#   else
+#     return distance_of_time_in_words(from_time, to_time, include_seconds)
+#   end
+# end
+
+  def has_popout?(t)
+    if t.is_a? Task
+      (session[:sheet] && session[:sheet].task_id == t.id) || t.done?
+    end
+  end
+
 end

@@ -56,10 +56,10 @@
                collapse << ((session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) ? "small-collapse-indicator-closed" : "small-collapse-indicator-open")
                collapse << "\" </div> "
           %>
-    <tr class="milestone" id="project_<%=project.id%>" onMouseOver="javascript:Hover('project', '<%=project.id%>')" onMouseOut="javascript:ClearHover()"><td colspan="2">
+    <tr class="milestone" id="project_<%=project.id%>" onMouseOver="this.addClassName('task-highlight'); this.down('span.popout').show();" onMouseOut="this.removeClassName('task-highlight'); this.down('span.popout').hide();"><td colspan="2">
         <div style="position: absolute; z-index:10; width: 16px;">
           <% if session[:user].can?(project, 'grant') || session[:user].can?(project, 'milestone') %>
-          <span id="edit_project_<%= project.id%>" style="display: none;">
+          <span class="popout" id="edit_project_<%= project.id%>" style="display: none;">
             <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
           </span>
