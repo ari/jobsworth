@@ -1,0 +1,1 @@
+<div id="shout_<%=@shout.id%>" class="channel-message<%=" channel-message-mine" if @shout.user_id == session[:user].id%>"><div class="channel-user"><%=@shout.nick%></div><div class="channel-message"><%= @shout.body %></div></div>

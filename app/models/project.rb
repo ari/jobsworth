@@ -15,6 +15,7 @@ class Project < ActiveRecord::Base
   has_many      :milestones, :dependent => :destroy
 
   has_many      :forums, :dependent => :destroy
+  has_many      :shout_channels, :dependent => :destroy
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name

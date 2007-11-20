@@ -126,34 +126,11 @@ function init_shout() {
   Event.observe($('shout_body'), "keypress", function(e) {
       switch( e.keyCode ) {
       case Event.KEY_RETURN:
-        var params = Form.Element.serialize($('shout_body'));
+        $('shout-input').onsubmit();
         $('shout_body').value = '';
-        new Ajax.Request('/shout/add_ajax', {asynchronous:true, evalScripts:true, parameters: params, onComplete:function(request){Element.hide('loading');update_chat(request);}, onLoading:function(request){Element.show('loading');}}); return false;
       }
-      return true;
+      return false;
   });
-}
-
-function update_chat(t) {
-  if( last_shout == null ) {
-    last_shout = t.responseText;
-  } else {
-    if( last_shout != t.responseText && t.responseText.indexOf('table') > 0 ) {
-      last_shout = t.responseText;
-    }
-  }
-}
-
-function check_chat(t) {
-  if( last_shout == null ) {
-    last_shout = t.responseText;
-  } else {
-    if( last_shout != t.responseText && t.responseText.indexOf('table') > 0 ) {
-      last_shout = t.responseText;
-      new Effect.Pulsate( 'shouts', { duration: 2.0 } );
-      //alert( "'" + t.responseText + "'" );
-    }
-  }
 }
 
 function HideAjax() {

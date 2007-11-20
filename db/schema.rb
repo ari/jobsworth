@@ -271,15 +271,29 @@ ActiveRecord::Schema.define(:version => 86) do
     t.column "body",       :text
   end
 
+  create_table "shout_channels", :force => true do |t|
+    t.column "company_id",  :integer
+    t.column "project_id",  :integer
+    t.column "name",        :string
+    t.column "description", :text
+    t.column "public",      :integer
+  end
+
+  add_index "shout_channels", ["company_id"], :name => "index_shout_channels_on_company_id"
+
   create_table "shouts", :force => true do |t|
-    t.column "company_id", :integer
-    t.column "user_id",    :integer
-    t.column "created_at", :datetime
-    t.column "body",       :text
+    t.column "company_id",       :integer
+    t.column "user_id",          :integer
+    t.column "created_at",       :datetime
+    t.column "body",             :text
+    t.column "shout_channel_id", :integer
+    t.column "message_type",     :integer,  :default => 0
+    t.column "nick",             :string
   end
 
   add_index "shouts", ["created_at"], :name => "shouts_created_at_index"
   add_index "shouts", ["company_id"], :name => "shouts_company_id_index"
+  add_index "shouts", ["shout_channel_id"], :name => "index_shouts_on_shout_channel_id"
 
   create_table "tags", :force => true do |t|
     t.column "company_id", :integer

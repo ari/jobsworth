@@ -105,6 +105,12 @@
                 <li><%= link_to "<span>#{_('Wiki')}</span>", :controller => 'wiki', :action => 'show' %></li>
                 <% end %>
 
+                <% if controller.controller_name == "chat"  %>
+                <li><%= link_to "<span class=\"active\">#{_('Chat')}</span>", {:controller => 'shout', :action => 'list'}, :class => "active" %></li>
+                <% else %>
+                <li><%= link_to "<span>#{_('Chat')}</span>", :controller => 'shout', :action => 'list' %></li>
+                <% end %>
+
                 <% if ['forums', 'posts', 'topics'].include? controller.controller_name  %>
                 <li><%= link_to "<span class=\"active\">#{_('Forums')}</span>", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
                 <% else %>
@@ -204,7 +210,7 @@
           <%= @content_for_layout %>
           </td>
           <td id="right-menu-collapse" class="open" onclick="new Ajax.Request('/activities/toggle_menu', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;">&nbsp;</td>
-          <td align="right" valign="top" style="width:10%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
+          <td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
             <table align="left" style="width:100%;" class="projects" cellspacing=0 cellpadding=0>
               <tr>
                 <td align="left" class="page_header"colspan="2" width="100%">
@@ -222,22 +228,6 @@
                    for view in views %>
                 <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[#{_('Shared')}]" if view.user_id != session[:user].id %></td></tr>
                    <% end %>
-                <tr><td colspan=2>&nbsp;</td></tr>
-                <tr>
-                  <td align=left style="margin-bottom:4px;" class="page_header" colspan=2>
-                    <%=_ 'Chat'%>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan=2 style="padding-top:0.5em;" id="shouts_container">
-                  <ul id="shouts" class="shout" style="padding-left:0px;">
-                  <% @shouts = Shout.find(:all, :conditions => ["shouts.company_id = ?", session[:user].company.id], :limit => 7, :order => "shouts.id desc", :include => "user" )%>
-                  <%= render :partial => "shout/shouts", :locals => { :shouts => @shouts } %>
-                  </ul>
-                  </td>
-                </tr>
-                <tr><td colspan=2>
-                        <%= text_field 'shout', 'body', :size => 25 %>
                 <tr><td colspan=2>&nbsp;</td></tr>
                 <tr>
                   <td align=left class="page_header" width="100%" colspan="2">

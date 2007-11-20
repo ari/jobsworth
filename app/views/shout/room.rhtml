@@ -1,0 +1,38 @@
+  <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="2" class="page_header">
+      <div style="float:left;"><%= @room.name %></div>
+      <div style="float:right;padding-top:0.1em;"><%= link_to _('Leave'),  :action => 'leave', :id => @room.id %></div>
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr>
+     <td style="height:100%;">
+       <div id="shout-list">
+<% for @shout in @room.shouts %>
+     <%= render :partial => 'shout' %>
+<% end %>
+       </div>
+     </td>
+     <td width="20%">
+       Right bar..
+     </td>
+  </tr>
+
+
+</table>
+
+
+<br />
+
+<div class="channel-input">
+<%= form_remote_tag :url => { :action => 'chat_ajax', :id => @room.id } ,
+       :loading => "Element.show('loading');",
+       :complete => "Element.hide('loading');$('shout_body').clear();$('shout_body').focus();",
+       :html => { :id => "shout-input" }
+%>
+<textarea name="shout[body]" id="shout_body" style="width:80%" rows="2"></textarea><input type="submit" name="Send" value="Send" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div>
+
+<script type="text/javascript">
+$('shout_body').focus();
+</script>

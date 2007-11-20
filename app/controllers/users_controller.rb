@@ -28,7 +28,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(@params[:user])
+    @user = User.new(params[:user])
     @user.company = session[:user].company
     @user.date_format = "%d/%m/%Y"
     @user.time_format = "%H:%M"
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
   end
 
   def update
@@ -53,8 +53,8 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
-    if @user.update_attributes(@params[:user])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    if @user.update_attributes(params[:user])
       session[:user] = @user if @user.id == session[:user].id
       flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
@@ -68,8 +68,8 @@ class UsersController < ApplicationController
   end
 
   def update_preferences
-    @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
-    if @user.update_attributes(@params[:user])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    if @user.update_attributes(params[:user])
       session[:user] = @user if @user.id == session[:user].id
       Localization.lang(session[:user].locale || 'en_US')
       flash['notice'] = _('Preferences successfully updated.')
@@ -92,7 +92,7 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.find(@params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
     ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{session[:user].company_id} AND creator_id = #{@user.id}")
     @user.destroy
     redirect_to :action => 'list'
@@ -101,7 +101,7 @@ class UsersController < ApplicationController
   # Used while debugging
   def impersonate
     if session[:user].admin > 9
-      @user = User.find(@params[:id])
+      @user = User.find(params[:id])
       if @user != nil
         session[:user] = @user
         session[:project] = nil

@@ -1421,3 +1421,67 @@ li.help {
   color: #a6a6a6;
 }
 
+.channel {
+  background-color: #ececec;
+  padding:1em;
+  margin: 4px;
+  float: left;
+  width: 40%;
+}
+
+.channel-title {
+  color: #333333;
+  font-weight: bold;
+  border-bottom: 2px solid #FFC266;
+  font-size: 14px;
+}
+
+.channel-last-active {
+  color: #a6a6a6;
+  font-style: italic;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+.channel-description {
+  color: #a6a6a6;
+  padding-top: 0.5em;
+}
+
+.channel-users {
+  color: #333333;
+  font-size: small;
+}
+
+.channel-user {
+  clear: both;
+  font-weight: bold;
+  border-bottom: 1px dashed gray;
+  float: left;
+  margin-right: 1em;
+}
+
+.channel-message {
+  padding-bottom: 0.5em;
+}
+
+.channel-message-mine {
+  background-color: #fefeec;
+}
+
+.channel-input {
+  float: left;
+  width: 80%;
+  margin-top: 1em;
+  background-color: #ececec;
+  padding: 1em;
+  position: fixed;
+  bottom: 0;
+  z-index: 50;
+}
+
+#shout-list {
+  height: 80%;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
