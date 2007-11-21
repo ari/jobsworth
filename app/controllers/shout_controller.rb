@@ -98,7 +98,7 @@ class ShoutController < ApplicationController
         page['channel-add-container'].hide
       end
       Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["#{['lobby', @channel.company_id].compact.join('_')}"] )
-      res
+      render :text => res
     else
       render :update do |page|
         page.visual_effect(:highlight, "channel-add-container", :duration => 0.5, :startcolor => "'#ff9999'")
@@ -123,6 +123,7 @@ class ShoutController < ApplicationController
     @shout.nick = shout_nick(session[:user].name)
     @shout.company_id = room.company_id
     if @shout.body && @shout.body.length > 0
+
       if @shout.save
         res = render_to_string :update do |page|
           page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => last }
@@ -210,9 +211,10 @@ class ShoutController < ApplicationController
 
   def double_escape(txt)
     res = txt.gsub(/channel-message-mine/,'')
-    res = res.gsub(/\\n|\n/,'')
-    res = res.gsub(/[']/, '\\\\\'')
-    res.gsub(/\\"/, '\\\\\"')
+    res = res.gsub(/\\n|\n/,'') # remove linefeeds
+    res = res.gsub(/'/, "\\\\'") # escape ' to \'
+    res = res.gsub(/"/, '\\\\"')
+    res
   end
 
 end
