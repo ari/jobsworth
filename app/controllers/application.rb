@@ -55,7 +55,7 @@ class ApplicationController < ActionController::Base
       session[:channels] = ["info_#{session[:user].company_id}"]
 
       session[:user].shout_channels.each do |ch|
-        session[:channels] << "channel_#{ch.id}"
+        session[:channels] << "channel_offline_#{ch.id}"
       end
 
       # Refresh work sheet

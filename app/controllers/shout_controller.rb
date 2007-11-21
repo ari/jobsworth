@@ -33,6 +33,7 @@ class ShoutController < ApplicationController
 
     end
     session[:channels] << "channel_#{@room.id}" unless session[:channels].include?("channel_#{@room.id}")
+    session[:channels] << "channel_offline_#{@room.id}" if session[:channels].include?("channel_offline_#{@room.id}")
 
   end
 
