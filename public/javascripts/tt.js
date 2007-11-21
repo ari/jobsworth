@@ -126,11 +126,30 @@ function init_shout() {
   Event.observe($('shout_body'), "keypress", function(e) {
       switch( e.keyCode ) {
       case Event.KEY_RETURN:
-        $('shout-input').onsubmit();
-        $('shout_body').value = '';
+        if (e.shiftKey) {
+          return;
+        } else {
+          if($('shout_body').value.length > 0) {
+            if(e.ctrlKey || e.metaKey) {
+              $('shout-input').onsubmit();
+              $('shout_body').value = '';
+            } else {
+              $('shout-input').onsubmit();
+              $('shout_body').value = '';
+            }
+          }
+          Event.stop(e);
+        }
       }
-      return false;
-  });
+    });
+}
+
+function inline_image(el) {
+  $(el).setStyle({width:'auto', visibility:'hidden'});
+  if (el.width > 500) {
+    el.style.width = '500px';
+  }
+  el.style.visibility = 'visible';
 }
 
 function HideAjax() {

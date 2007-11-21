@@ -5,12 +5,24 @@ class ShoutController < ApplicationController
   def list
     @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
                                :order => "company_id, name")
+    session[:channels] << "lobby"
+    session[:channels] << "lobby_#{session[:user].company_id}"
+  end
+
+  def update_channel
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+                              :order => "company_id, name")
+    render :update do |page|
+      page.replace "channel_#{room.id}", :partial => 'channel', :locals => { :channel => room }
+      page.visual_effect(:highlight, "channel_#{room.id}", :duration => 0.5)
+    end
   end
 
   def room
     @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
-    unless @room
+    if @room.nil?
       redirect_to :action => 'list'
+      return
     end
 
     unless User.find(session[:user].id).shout_channels.include?(@room)
@@ -30,6 +42,8 @@ class ShoutController < ApplicationController
       shout.save
 
       broadcast_shout(shout)
+
+      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => @room.id)}');", ["#{['lobby', @room.company_id].compact.join('_')}"] )
 
     end
     session[:channels] << "channel_#{@room.id}" unless session[:channels].include?("channel_#{@room.id}")
@@ -57,6 +71,9 @@ class ShoutController < ApplicationController
 
       check_timestamp(room.id)
       broadcast_shout(shout)
+
+      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => room.id)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
+
     end
 
     redirect_to :action => 'list'
@@ -75,12 +92,13 @@ class ShoutController < ApplicationController
     @channel = ShoutChannel.new(params[:channel])
     @channel.company = session[:user].company
     if @channel.save
-      render :update do |page|
+      res = render_to_string :update do |page|
         page.insert_html :top, "channel-list", :partial => 'channel', :locals => { :room => @channel }
         page.visual_effect(:highlight, "channel_#{@channel.id}", :duration => 1.5)
         page['channel-add-container'].hide
       end
-
+      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["#{['lobby', @channel.company_id].compact.join('_')}"] )
+      res
     else
       render :update do |page|
         page.visual_effect(:highlight, "channel-add-container", :duration => 0.5, :startcolor => "'#ff9999'")
@@ -106,21 +124,17 @@ class ShoutController < ApplicationController
     @shout.company_id = room.company_id
     if @shout.body && @shout.body.length > 0
       if @shout.save
-        orig = render_to_string :update do |page|
+        res = render_to_string :update do |page|
           page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => last }
           page.call 'Element.scrollTo', "shout_#{@shout.id}"
           page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
         end
 
         # Horrible escaping... Bah.
-        res = orig.gsub(/channel-message-mine/,'')
-        res = res.gsub(/\\n|\n/,'')
-        res = res.gsub(/[']/, '\\\\\'')
-        res = res.gsub(/\\"/, '\\\\\"')
 
-        Juggernaut.send("do_execute(#{session[:user].id}, '#{res}');", ["channel_#{room.id}"])
+        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["channel_#{room.id}"])
 
-        render :text => date_stamp + orig
+        render :text => date_stamp + res
       else
         render :nothing => true
       end
@@ -133,9 +147,9 @@ class ShoutController < ApplicationController
 #    render :nothing => true
   end
 
-  def list_ajax
-    @shouts = Shout.find(:all, :conditions => ["company_id = ?", session[:user].company.id], :limit => 7, :order => "id desc")
-  end
+#  def list_ajax
+#    @shouts = Shout.find(:all, :conditions => ["company_id = ?", session[:user].company.id], :limit => 7, :order => "id desc")
+#  end
 
   def shout_nick(name)
     n = nil
@@ -192,6 +206,13 @@ class ShoutController < ApplicationController
     response.headers["Content-Type"] = 'text/html'
 
     orig
+  end
+
+  def double_escape(txt)
+    res = txt.gsub(/channel-message-mine/,'')
+    res = res.gsub(/\\n|\n/,'')
+    res = res.gsub(/[']/, '\\\\\'')
+    res.gsub(/\\"/, '\\\\\"')
   end
 
 end

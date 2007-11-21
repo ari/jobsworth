@@ -1,9 +1,9 @@
 module ShoutHelper
   def format_message(m)
-    m.gsub(/\n/,'<br />')
     m = Juggernaut.html_escape(m)
+    m.gsub!(/\n/,'<br />')
 
-    wrap_text(m)
+    wrap_text(m, 300)
 
   end
 

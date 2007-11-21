@@ -3,6 +3,8 @@ module ApplicationHelper
 
   require 'digest/md5'
 
+  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)/i
+
   include Misc
 
   def tz
@@ -356,9 +358,15 @@ module ApplicationHelper
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
-    txt.gsub!(/(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)/i, "<a href=\"\\0\" target=\"_blank\">\\0</a>")
-
-
+    txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\"><img src=\"\\0\" border=\"0\" onload=\"inline_image(this);\"/></a>")
+    txt.gsub!(URL_MATCH) {|m|
+      if(m.match(/\.(jpe?g|gif|png)/))
+        m
+      else
+        elems = m.match(URL_MATCH).to_a
+        "<a href=\"#{elems[0]}\" target=\"_blank\">#{elems[0]}</a>"
+      end
+    }
 
     txt.gsub( WikiRevision::WIKI_LINK ) { |m|
       match = m.match(WikiRevision::WIKI_LINK)
