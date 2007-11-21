@@ -1,1 +1,13 @@
-<div id="shout_<%=@shout.id%>" class="channel-message<%=" channel-message-mine" if @shout.user_id == session[:user].id%>"><div class="channel-user"><%=@shout.nick%></div><div class="channel-message"><%= @shout.body %></div></div>
+<%
+  channel_classes = ["channel-message"]
+  channel_classes << "channel-message-mine" if @shout.user_id == session[:user].id
+  channel_classes << "channel-message-system" if @shout.message_type > 0
+  channel_classes << "channel-message-entered" if @shout.message_type == 1
+  channel_classes << "channel-message-left" if @shout.message_type == 2
+  channel_classes << "channel-message-time" if @shout.message_type == 3
+%>
+
+<tr id="shout_<%=@shout.id%>" class="<%= channel_classes.join(' ') %>">
+<td class="channel-user" nowrap><%= @shout.nick if( last.nil? || (last && last.user_id != @shout.user_id) || (@shout.message_type != 0 || last.message_type != 0))%></td>
+<td class="channel-body"><%= format_message(@shout.body) %></td>
+</tr>

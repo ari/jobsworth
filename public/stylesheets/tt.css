@@ -1436,6 +1436,13 @@ li.help {
   font-size: 14px;
 }
 
+.channel-public a{
+  color: #b0d295;
+  font-weight: bold;
+  border-bottom: 2px solid #FFC266;
+  font-size: 14px;
+}
+
 .channel-last-active {
   color: #a6a6a6;
   font-style: italic;
@@ -1446,6 +1453,7 @@ li.help {
 .channel-description {
   color: #a6a6a6;
   padding-top: 0.5em;
+  padding-bottom: 1em;
 }
 
 .channel-users {
@@ -1453,35 +1461,87 @@ li.help {
   font-size: small;
 }
 
-.channel-user {
-  clear: both;
-  font-weight: bold;
-  border-bottom: 1px dashed gray;
-  float: left;
-  margin-right: 1em;
+.channel-message {
+  padding: 0.2em;
+  width: 100%;
 }
 
-.channel-message {
-  padding-bottom: 0.5em;
+.channel-user {
+  font-weight: bold;
+  padding-right: 0.5em;
+  padding-left: 1em;
+  width: 1%;
+  text-align: right;
+  vertical-align: top;
+}
+
+.channel-nick-change {
+  border-bottom: 1px dotted #cecece;
+}
+
+.channel-body {
+
 }
 
 .channel-message-mine {
   background-color: #fefeec;
 }
 
+.channel-message-system {
+  background-color: #ecfeec;
+}
+
+.channel-message-system .channel-body{
+  font-weight: bold;
+}
+
+.channel-message-entered {
+
+}
+
+.channel-message-left {
+  background-color: #ececfe;
+
+}
+
+.channel-message-time {
+  background-color: #ffffff;
+  color: #acacac;
+}
+
+.channel-right-bar {
+  margin-left: 1em;
+  vertical-align: top;
+}
+
+#channel-right-bar h2 {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
+  padding:0;
+  margin:0;
+  padding-left: 0.3em;
+  margin-bottom: 0.3em;
+  font-size: 14px;
+}
+
 .channel-input {
   float: left;
-  width: 80%;
-  margin-top: 1em;
-  background-color: #ececec;
-  padding: 1em;
   position: fixed;
+  display: block;
+  width: 100%;
+  margin-top: 1em;
+  background: #ececec none repeat scroll 0%;
+  padding: 1em;
   bottom: 0;
-  z-index: 50;
+  left: 0;
+  z-index: 5;
 }
 
 #shout-list {
-  height: 80%;
-  overflow-y: auto;
-  margin-bottom: 10px;
+  height: 100%;
+  padding-bottom: 5em;
+  border-right: 1px solid #ececec;
+  margin-left: 1em;
+  padding-right: 1em;
 }

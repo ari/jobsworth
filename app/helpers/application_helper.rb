@@ -355,6 +355,11 @@ module ApplicationHelper
 
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
+    txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
+    txt.gsub!(/(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)/i, "<a href=\"\\0\" target=\"_blank\">\\0</a>")
+
+
+
     txt.gsub( WikiRevision::WIKI_LINK ) { |m|
       match = m.match(WikiRevision::WIKI_LINK)
       name = text = match[1]

@@ -226,6 +226,7 @@ function do_update(user, url) {
 
 function do_execute(user, code) {
   if( user != userId ) {
+//    alert(code);
     eval(code);
   }
 }

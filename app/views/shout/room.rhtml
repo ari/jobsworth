@@ -8,23 +8,31 @@
     <tr><td colspan="2">&nbsp;</td></tr>
     <tr>
      <td style="height:100%;">
-       <div id="shout-list">
+       <table id="shout-list" width="100%" cellspacing="0">
+<% last = nil %>
 <% for @shout in @room.shouts %>
-     <%= render :partial => 'shout' %>
+  <%= render :partial => 'shout', :locals => {:last => last} %>
+  <% last = @shout %>
 <% end %>
-       </div>
+       </table>
      </td>
-     <td width="20%">
-       Right bar..
+     <td width="20%" valign="top">
+       <div id="channel-right-bar" class="channel-right-bar">
+         <div class="channel-description"><%= @room.description if @room.description %></div>
+         <h2>Users</h2>
+         <div id="channel-users">
+           <% @room.subscribers.each do |u| %>
+             <div id="channel-user-<%= u.id %>"><%= u.name %></div>
+           <% end %>
+         </div>
+       </div>
      </td>
   </tr>
 
 
 </table>
 
-
-<br />
-
+<div id="bottom"></div>
 <div class="channel-input">
 <%= form_remote_tag :url => { :action => 'chat_ajax', :id => @room.id } ,
        :loading => "Element.show('loading');",

@@ -51,8 +51,12 @@ class ApplicationController < ActionController::Base
     else
       # Refresh the User object
       session[:user] = User.find(session[:user].id)
-      # Subscribe to chat and general info channels
-      session[:channels] = ["chat_#{session[:user].company_id}", "info_#{session[:user].company_id}"]
+      # Subscribe general info channel
+      session[:channels] = ["info_#{session[:user].company_id}"]
+
+      session[:user].shout_channels.each do |ch|
+        session[:channels] << "channel_#{ch.id}"
+      end
 
       # Refresh work sheet
       session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => 'id')

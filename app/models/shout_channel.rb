@@ -4,6 +4,9 @@ class ShoutChannel < ActiveRecord::Base
 
   has_many   :shouts, :dependent => :destroy, :order => "created_at"
 
+  has_many   :shout_channel_subscriptions, :dependent => :destroy
+  has_many   :subscribers, :through => :shout_channel_subscriptions, :source => :user
+
   def last_active
     s = Shout.find(:first, :conditions => ["shout_channel_id = ?", self.id], :order => "id desc")
     s ? s.created_at : nil

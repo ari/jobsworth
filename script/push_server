@@ -76,6 +76,14 @@ module Juggernaut
       end
     end
 
+    def unsubscribe_all(connection)
+      synchronize do
+        @channels.values.each do |channel|
+          channel.unsubscribe(connection)
+        end
+      end
+    end
+
     def broadcast(channel_name, data)
       channel = nil
       synchronize do
@@ -102,7 +110,7 @@ module Juggernaut
     end
 
     def unsubscribe(connection)
-      @subscribers.delete connection
+      @subscribers.delete connection if @subscribers.include?(connection)
     end
 
     def broadcast(data)
@@ -148,6 +156,7 @@ module Juggernaut
     def unbind
       Logger.info "#{@host}:#{@port} closed."
       dispatch_request
+      @@channels.unsubscribe_all(self)
     end
 
     def dispatch_request
