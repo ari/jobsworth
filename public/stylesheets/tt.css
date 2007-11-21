@@ -1480,7 +1480,7 @@ li.help {
 }
 
 .channel-body {
-
+  vertical-align: top;
 }
 
 .channel-message-mine {
