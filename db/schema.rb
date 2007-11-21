@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 86) do
+ActiveRecord::Schema.define(:version => 88) do
 
   create_table "companies", :force => true do |t|
     t.column "name",          :string,   :limit => 200, :default => "", :null => false
@@ -270,6 +270,14 @@ ActiveRecord::Schema.define(:version => 86) do
     t.column "created_at", :datetime
     t.column "body",       :text
   end
+
+  create_table "shout_channel_subscriptions", :force => true do |t|
+    t.column "shout_channel_id", :integer
+    t.column "user_id",          :integer
+  end
+
+  add_index "shout_channel_subscriptions", ["shout_channel_id"], :name => "index_shout_channel_subscriptions_on_shout_channel_id"
+  add_index "shout_channel_subscriptions", ["user_id"], :name => "index_shout_channel_subscriptions_on_user_id"
 
   create_table "shout_channels", :force => true do |t|
     t.column "company_id",  :integer
