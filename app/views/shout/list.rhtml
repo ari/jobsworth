@@ -26,3 +26,4 @@
 
 <br />
 
+<%= periodically_call_remote(:url => { :action => 'refresh_channels' }, :frequency => 300 ) -%>

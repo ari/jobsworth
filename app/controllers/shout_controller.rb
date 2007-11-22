@@ -31,8 +31,8 @@ class ShoutController < ApplicationController
 
     @shouts = Shout.find(:all, :conditions => ["shout_channel_id = ? AND shouts.created_at > ? AND shouts.created_at < ?", @room.id, "#{params[:day]} 00:00:00", "#{params[:day]} 23:59:59"], :include => [:user])
 
-    @prev = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at < ?", @room.id, "#{params[:day]} 00:00:00"])
-    @next = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at > ?", @room.id, "#{params[:day]} 23:59:59"])
+    @prev = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at < ? AND message_type = 0", @room.id, "#{params[:day]} 00:00:00"])
+    @next = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at > ? AND message_type = 0", @room.id, "#{params[:day]} 23:59:59"])
   end
 
   def room
@@ -157,6 +157,8 @@ class ShoutController < ApplicationController
         render :nothing => true
     end
 
+
+
 #    partial_to_string = render_to_string(:action => "list_ajax")
     #    Juggernaut.send("#{partial_to_string}", ["chat_#{session[:user].company_id}_#{room.id}"])
 #    render :nothing => true
@@ -165,6 +167,18 @@ class ShoutController < ApplicationController
 #  def list_ajax
 #    @shouts = Shout.find(:all, :conditions => ["company_id = ?", session[:user].company.id], :limit => 7, :order => "id desc")
 #  end
+
+  def refresh_channels
+    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+                               :order => "company_id, name")
+    render :update do |page|
+      @rooms.each do |room|
+        page << "if($('channel_#{room.id}')){"
+        page.replace "channel_#{room.id}", :partial => 'channel', :locals => { :channel => room }
+        page << "}"
+      end
+    end
+  end
 
   def shout_nick(name)
     n = nil
@@ -248,7 +262,7 @@ class ShoutController < ApplicationController
 
   def double_escape(txt)
     res = txt.gsub(/channel-message-mine/,'channel-message-others')
-    res = res.gsub(/\\n|\n/,'') # remove linefeeds
+    res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
     res = res.gsub(/'/, "\\\\'") # escape ' to \'
     res = res.gsub(/"/, '\\\\"')
     res

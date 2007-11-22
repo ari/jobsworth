@@ -2,6 +2,7 @@
   <tr>
     <td colspan="2" class="page_header">
       <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Chat Transcripts' %></div>
+      <div style="float:right;padding-top:0.1em;"><%= link_to _('Chat Rooms'), :action => 'list' %></div>
       </td>
     </tr>
     <tr><td colspan="2">&nbsp;</td></tr>

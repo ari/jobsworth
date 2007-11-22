@@ -519,8 +519,8 @@ input.button {
 }
 
 .calendar {
-  margin:0
-  padding: 0
+  margin:0;
+  padding: 0;
   border: none;
   font-size: 9px;
 }
