@@ -1,0 +1,29 @@
+= ActiveRecordBaseWithoutTable
+
+If you find this plugin useful, please consider a donation to show your support!
+
+  http://www.paypal.com/cgi-bin/webscr?cmd=_send-money
+  
+  Email address: jonathan.viney@gmail.com
+  
+== Instructions
+
+* For edge Rails r7315 or above use http://svn.viney.net.nz/things/branches/active_record_base_without_table
+
+Get the power of ActiveRecord models, including validation, without having a table in the database.
+
+  class Contact < ActiveRecord::BaseWithoutTable
+    column :name, :string
+    column :email_address, :string
+    column :message, :text
+    
+    validates_presence_of :name, :email_address, :string
+  end
+  
+This model can be used just like a regular model based on a table, except it will never be saved to the database.
+
+There is a good blog post available on the plugin:
+
+  http://www.kangarooit.com/developer_blog/2007/02/email-form-validation-in-ruby-on-rails.php
+
+Any bugs, questions, comments please feel free to email me: jonathan.viney@gmail.com
