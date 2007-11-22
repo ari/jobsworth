@@ -19,7 +19,7 @@
      <td width="20%" valign="top">
        <div id="channel-right-bar" class="channel-right-bar">
          <div class="channel-description"><%= @room.description if @room.description %></div>
-         <h2>Users</h2>
+         <h2><%= _('Participants') %></h2>
          <div id="channel-users">
            <% @room.subscribers.each do |u| %>
              <div id="channel-user-<%= u.id %>"><%= u.name %></div>

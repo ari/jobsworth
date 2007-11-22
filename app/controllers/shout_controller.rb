@@ -18,6 +18,10 @@ class ShoutController < ApplicationController
     end
   end
 
+  def transcripts
+    @transcripts = Transcript.find_all(session[:user].company_id)
+  end
+
   def room
     @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
     if @room.nil?
@@ -47,13 +51,14 @@ class ShoutController < ApplicationController
 
     end
     session[:channels] << "channel_#{@room.id}" unless session[:channels].include?("channel_#{@room.id}")
-    session[:channels] << "channel_offline_#{@room.id}" if session[:channels].include?("channel_offline_#{@room.id}")
+    session[:channels] -= ["channel_passive_#{@room.id}"] if session[:channels].include?("channel_passive_#{@room.id}")
 
   end
 
   def leave
     room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
     session[:channels] -= ["channel_#{params[:id]}"]
+    session[:channels] -= ["channel_passive_#{params[:id]}"]
     subs = ShoutChannelSubscription.find(:all, :conditions => ["user_id = ? AND shout_channel_id = ?", session[:user].id, params[:id]])
     unless subs.empty?
       subs.each do |s|
@@ -125,17 +130,13 @@ class ShoutController < ApplicationController
     if @shout.body && @shout.body.length > 0
 
       if @shout.save
-        res = render_to_string :update do |page|
-          page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => last }
-          page.call 'Element.scrollTo', "shout_#{@shout.id}"
-          page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
-        end
+        present = render_present(@shout, last)
+        passive = render_passive(@shout, last)
 
-        # Horrible escaping... Bah.
+        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(present)}');", ["channel_#{room.id}"])
+        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(passive)}');", ["channel_passive_#{room.id}"])
 
-        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["channel_#{room.id}"])
-
-        render :text => date_stamp + res
+        render :text => date_stamp + present
       else
         render :nothing => true
       end
@@ -179,12 +180,12 @@ class ShoutController < ApplicationController
     return ""
   end
 
-  def broadcast_shout(shout)
+  def broadcast_shout(shout, last = nil)
     @shout = shout
     orig = render_to_string :update do |page|
-      page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => nil }
-      page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
+      page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => last }
       page.call 'Element.scrollTo', "shout_#{@shout.id}"
+      page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
 
       case shout.message_type
       when 1
@@ -195,22 +196,45 @@ class ShoutController < ApplicationController
       end
     end
 
-    # Horrible escaping... Bah.
-    res = orig.gsub(/channel-message-mine/,'')
-    res = res.gsub(/\\n|\n/,'')
-    res = res.gsub(/[']/, '\\\\\'')
-    res = res.gsub(/\\"/, '\\\\\"')
-
-    Juggernaut.send("do_execute(#{session[:user].id}, '#{res}');", ["channel_#{shout.shout_channel_id}"])
+    passive = render_passive(@shout)
+    Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(orig)}');", ["channel_#{shout.shout_channel_id}"])
+    Juggernaut.send("do_execute(0, '#{double_escape(passive)}');", ["channel_passive_#{shout.shout_channel_id}"])
 
     # Back to text/html
-    response.headers["Content-Type"] = 'text/html'
+    response.headers["Content-Type"] = 'text/html' unless request.xhr?
 
     orig
   end
 
+  def render_present(shout, last = nil)
+    @shout = shout
+    present = render_to_string :update do |page|
+      page.insert_html :bottom, "shout-list", :partial => 'shout', :locals => { :last => last }
+      page.call 'Element.scrollTo', "shout_#{@shout.id}"
+      page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
+    end
+  end
+
+
+  def render_passive(shout, last = nil)
+    @shout = shout
+    passive = render_to_string :update do |page|
+      page.insert_html :bottom, "passive-chat", :partial => "shout", :locals => { :last => nil, :passive => true }
+      page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
+      page.visual_effect(:appear, 'passive-chat-container', :duration => 0.5)
+      page.delay(4.0) do
+        page["shout_#{@shout.id}"].remove
+        page << "if($$('#passive-chat .channel-message').length == 0) {"
+        page.hide 'passive-chat-container'
+        page << "}"
+      end
+    end
+    passive = passive.gsub(/channel-message-others/, '') if @shout.message_type != 0
+    passive
+  end
+
   def double_escape(txt)
-    res = txt.gsub(/channel-message-mine/,'')
+    res = txt.gsub(/channel-message-mine/,'channel-message-others')
     res = res.gsub(/\\n|\n/,'') # remove linefeeds
     res = res.gsub(/'/, "\\\\'") # escape ' to \'
     res = res.gsub(/"/, '\\\\"')

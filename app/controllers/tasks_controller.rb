@@ -368,7 +368,11 @@ class TasksController < ApplicationController
 
   def view
     @task = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", params[:id]])
-    redirect_to :action => 'edit', :id => @task.id
+    if @task
+      redirect_to :action => 'edit', :id => @task.id
+    else
+      redirect_to :controller => 'views', :action => 'browse'
+    end
   end
 
   def edit

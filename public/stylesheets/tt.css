@@ -1451,9 +1451,15 @@ li.help {
 }
 
 .channel-description {
-  color: #a6a6a6;
   padding-top: 0.5em;
   padding-bottom: 1em;
+}
+
+.channel-access {
+  color: #a6a6a6;
+  padding-top: 0.5em;
+  font-size: 8px;
+  font-style: italic;
 }
 
 .channel-users {
@@ -1468,19 +1474,23 @@ li.help {
 
 .channel-user {
   font-weight: bold;
-  padding-right: 0.5em;
+  padding-right: 0.4em;
   padding-left: 1em;
   width: 1%;
   text-align: right;
   vertical-align: top;
+  font-size: 13px;
+  border-right: 1px solid #ececec;
 }
 
-.channel-nick-change {
-  border-bottom: 1px dotted #cecece;
+.channel-message-others .channel-user {
+  background-color: #f6f6f6;
 }
 
 .channel-body {
+  padding-left: 0.4em;
   vertical-align: top;
+  font-size: 13px;
 }
 
 .channel-message-mine {
@@ -1495,8 +1505,12 @@ li.help {
   font-weight: bold;
 }
 
-.channel-message-entered {
+.channel-message-system td {
+  border-right: none;
+}
 
+.channel-message-entered, .channel-message-mine .channel-message-entered {
+  background-color: #ecfeec;
 }
 
 .channel-message-left {
@@ -1507,6 +1521,28 @@ li.help {
 .channel-message-time {
   background-color: #ffffff;
   color: #acacac;
+}
+
+.channel-message-nick-change td {
+  border-top: 1px solid #ececec;
+}
+
+#passive-chat-container {
+  position:fixed;
+  top:5%;
+  left:5%;
+  z-index:100;
+  height:auto;
+  width:90%;
+  background-color:#ffffff;
+  border: 1px solid black;
+  padding: 1px;
+}
+
+.channel-passive {
+  width: 5%;
+  text-align: right;
+  vertical-align: top;
 }
 
 .channel-right-bar {
@@ -1523,6 +1559,27 @@ li.help {
   padding-left: 0.3em;
   margin-bottom: 0.3em;
   font-size: 14px;
+}
+
+.transcript {
+  padding: 1em;
+  margin: 0.5em;
+}
+
+.transcript-channel {
+  color: #333333;
+  font-weight: bold;
+  border-bottom: 2px solid #FFC266;
+  font-size: 14px;
+ }
+
+.transcript-participants {
+  margin-top: 1em;
+  color: #a9a9a9;
+}
+
+.transcript-users {
+  color: #333;
 }
 
 .channel-input {
