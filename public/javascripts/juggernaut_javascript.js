@@ -23,26 +23,25 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
-function myFlash_DoFSCommand(command, args)                {
-  var myFlashObj = InternetExplorer ? myFlash : document.myFlash;
-  flashData (args);
-}
+//function myFlash_DoFSCommand(command, args)                {
+//  flashData (args);
+//}
 
 function juggernautInit() {
-if (navigator.appName && navigator.appName.indexOf("Microsoft") != -1 &&
-  navigator.userAgent.indexOf("Windows") != -1 && navigator.userAgent.indexOf("Windows 3.1") == -1) {
-  document.write('<SCRIPT LANGUAGE=VBScript\> \n');
-  document.write('on error resume next \n');
-  document.write('Sub myFlash_FSCommand(ByVal command, ByVal args)\n');
-  document.write(' call myFlash_DoFSCommand(command, args)\n');
-  document.write('end sub\n');
-  document.write('</SCRIPT\> \n');
-}
+  //if (navigator.appName && navigator.appName.indexOf("Microsoft") != -1 &&
+  //  navigator.userAgent.indexOf("Windows") != -1 && navigator.userAgent.indexOf("Windows 3.1") == -1) {
+  //  document.write('<SCRIPT LANGUAGE=VBScript\> \n');
+  //  document.write('on error resume next \n');
+  //  document.write('Sub myFlash_FSCommand(ByVal command, ByVal args)\n');
+  //  document.write(' call myFlash_DoFSCommand(command, args)\n');
+  //  document.write('end sub\n');
+  //  document.write('</SCRIPT\> \n');
+  //}
 }
 
-function flashData(data) {
-//alert(decode64(data)); // For debugging
-eval(utf8to16(decode64(data)));
+function receiveData(data) {
+  //  alert(decode64(data)); // For debugging
+  eval(utf8to16(decode64(data)));
 }
 
 function flashConnected() {
