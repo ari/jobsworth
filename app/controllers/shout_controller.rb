@@ -22,6 +22,19 @@ class ShoutController < ApplicationController
     @transcripts = Transcript.find_all(session[:user].company_id)
   end
 
+  def transcript
+    @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
+    if @room.nil?
+      redirect_to :action => 'list'
+      return
+    end
+
+    @shouts = Shout.find(:all, :conditions => ["shout_channel_id = ? AND shouts.created_at > ? AND shouts.created_at < ?", @room.id, "#{params[:day]} 00:00:00", "#{params[:day]} 23:59:59"], :include => [:user])
+
+    @prev = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at < ?", @room.id, "#{params[:day]} 00:00:00"])
+    @next = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at > ?", @room.id, "#{params[:day]} 23:59:59"])
+  end
+
   def room
     @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
     if @room.nil?

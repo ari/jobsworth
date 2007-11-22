@@ -15,14 +15,14 @@
 
    entries = {}
 
-   for t in @transcripts 
+   for t in @transcripts
      next if t.user_id.to_i == 0
      key = "#{t.year}-#{'%02d' % t.month}-#{'%02d' % t.day}-#{t.shout_channel.name}"
      entries[key] ||= {}
      entries[key]['users'] ||= []
      entries[key]['users'] << t.user.name
-     entries[key]['channel'] = t.shout_channel
-     entries[key]['date'] = Date.new(t.year.to_i, t.month.to_i, t.day.to_i).to_time
+     entries[key]['channel'] ||= t.shout_channel
+     entries[key]['date'] ||= Date.new(t.year.to_i, t.month.to_i, t.day.to_i).to_time
    end
 
    last_date = nil
@@ -33,7 +33,7 @@
      <div class="log_header"><%= last_date.strftime("%A, %d %B %Y") %></div>
 <%   end %>
 <div class="transcript">
-<span class="transcript-channel"><%= v['channel'].name %></span><br/>
+<span class="transcript-channel"><%= link_to v['channel'].name, :action => 'transcript', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') %></span><br/>
 <div class="transcript-participants">Participants <span class="transcript-users"><%= v['users'].sort.join(', ') %></span></div>
 </div>
 <% end %>

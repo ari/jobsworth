@@ -1582,6 +1582,10 @@ li.help {
   color: #333;
 }
 
+.transcript-navigation {
+  padding-bottom: 1em;
+}
+
 .channel-input {
   float: left;
   position: fixed;
