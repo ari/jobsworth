@@ -256,7 +256,6 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
 var userId=<%=session[:user].id%>;
-init_shout();
 <% if session[:user].option_tooltips.to_i == 1 %>
 makeTooltips(1);
 <% else %>
@@ -264,6 +263,7 @@ makeTooltips(0);
 <% end %>
 
 <% if controller.controller_name == 'shout' && controller.action_name == 'room' %>
+init_shout();
 $('bottom').scrollTo();
 window.scrollBy(0,200);
 <% end %>
