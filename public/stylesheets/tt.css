@@ -1534,7 +1534,7 @@ li.help {
 
 #passive-chat-container {
   position:fixed;
-  top:1em;
+  bottom:1em;
   left:5%;
   z-index:100;
   height:auto;
@@ -1564,6 +1564,16 @@ li.help {
   padding-left: 0.3em;
   margin-bottom: 0.3em;
   font-size: 14px;
+}
+
+.channel-delete {
+  float: right;
+}
+
+.channel-delete a {
+  color: #FF6666;
+  font-size: 9px;
+  border: none;
 }
 
 .transcript {

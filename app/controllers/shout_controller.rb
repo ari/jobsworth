@@ -61,7 +61,7 @@ class ShoutController < ApplicationController
       shout.nick = shout_nick(session[:user].name)
       shout.shout_channel_id = @room.id
       shout.message_type = 1
-      shout.body = "entered..."
+      shout.body = "joined the room..."
       shout.save
 
       broadcast_shout(shout)
@@ -90,7 +90,7 @@ class ShoutController < ApplicationController
       shout.company_id = room.company_id
       shout.shout_channel_id = room.id
       shout.message_type = 2
-      shout.body = "left..."
+      shout.body = "left the room..."
       shout.save
 
       check_timestamp(room.id)
@@ -131,6 +131,33 @@ class ShoutController < ApplicationController
       end
     end
   end
+
+  def destroy_ajax
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+                              :order => "company_id, name")
+
+    if room.nil? || (room.project_id.to_i == 0 && (!session[:user].admin?)) || ((room.project_id.to_i > 0) && (!session[:user].can?(room.project, 'grant')) )
+      render :update do |page|
+        page.visual_effect(:highlight, "channel_#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    else
+      redir = render_to_string :update do |page|
+        page.redirect_to :action => 'list'
+      end
+
+      res = render :update do |page|
+        page << "if($('channel_#{room.id}')){"
+        page.visual_effect(:fade, "channel_#{room.id}")
+        page << "}"
+      end
+
+      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
+      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(redir)}');", ["channel_#{room.id}"] )
+
+      room.destroy
+    end
+  end
+
 
   def chat_ajax
     room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])

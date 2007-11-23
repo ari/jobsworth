@@ -211,7 +211,7 @@
           <%= @content_for_layout %>
           </td>
           <td id="right-menu-collapse" class="open" onclick="new Ajax.Request('/activities/toggle_menu', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;">&nbsp;</td>
-          <td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
+          <td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>padding-left:1em;" id="left_menu">
             <table align="left" style="width:100%;" class="projects" cellspacing=0 cellpadding=0>
               <tr>
                 <td align="left" class="page_header"colspan="2" width="100%">

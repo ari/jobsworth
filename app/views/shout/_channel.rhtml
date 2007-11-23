@@ -1,5 +1,16 @@
 <div id="channel_<%= channel.id %>" class="channel<%=" channel-public" if channel.public.to_i > 0 %>">
 <span class="channel-title"><%= link_to channel.name, :action => 'room', :id => channel.id %></span><% if channel.last_active %><span class="channel-last-active" id="active_<%= channel.id %>"> - Last active <%= time_ago_in_words(channel.last_active) %> ago</span><% end %>
+<% if channel.company_id.to_i > 0 && (session[:user].admin? || ( channel.project_id.to_i > 0 && session[:user].can?(channel.project, 'grant') ) )  %>
+<div id="channel_delete_<%=channel.id%>" class="channel-delete" style="display:none;"><%= link_to_remote _('Delete Room'), :url => { :action => 'destroy_ajax', :id => channel.id },
+              :loading => "Element.show('loading');",
+              :complete => "Element.hide('loading');",
+              :confirm => _("Really delete room and all transcripts?")
+              %></div>
+<script type="text/javascript" language="javascript" charset="utf-8">
+  Event.observe($('channel_<%=channel.id%>'), "mousemove", function(e) {Element.show( $('channel_delete_<%=channel.id%>') );} );
+  Event.observe($('channel_<%=channel.id%>'), "mouseout", function(e) {Element.hide( $('channel_delete_<%=channel.id%>') );} );
+</script>
+<% end %>
 
 <div class="channel-access">
   <%= "#{_('Open to everyone')}.<br />" if channel.company_id.to_i == 0 %>

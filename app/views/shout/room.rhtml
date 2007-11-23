@@ -39,7 +39,7 @@
        :complete => "Element.hide('loading');$('shout_body').clear();$('shout_body').focus();",
        :html => { :id => "shout-input" }
 %>
-<textarea name="shout[body]" id="shout_body" style="width:80%" rows="2"></textarea><input type="submit" name="Send" value="Send" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div>
+<div style="float:left;width:80%;"><textarea name="shout[body]" id="shout_body" style="width:100%" rows="2"></textarea></div><div style="float:left;"><div style="padding-left:0.5em;"><input type="submit" name="Send" value="Send" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div><div style="margin-left:1em;margin-top:1em;"><%= link_to _('Leave Room'),  :action => 'leave', :id => @room.id %></div></div>
 
 <script type="text/javascript">
 $('shout_body').focus();

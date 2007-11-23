@@ -2,11 +2,13 @@
   <tr>
     <td colspan="2" class="page_header">
       <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Chat Rooms' %></div>
+      <% if( (session[:user].admin > 0) || (session[:user].projects.size > 0) ) %>
       <div style="float:right;padding-top:0.1em;"><%= link_to_remote _('New Room'), :url => { :action => 'new_ajax' },
               :loading => "Element.show('loading');",
               :complete => "Element.hide('loading');"
               %>
       </div>
+      <% end %>
       <div style="float:right;padding-top:0.1em;"><%= link_to _('Transcripts'), :action => 'transcripts' %></div>
     </td>
   </tr>

@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
-  has_many      :shouts, :dependent => :destroy
+  has_many      :shouts, :dependent => :nullify
 
   has_many      :notifications, :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
@@ -129,9 +129,9 @@ class User < ActiveRecord::Base
   end
 
   def online_status_name
-    if self.last_ping_at < 3.minutes.ago.utc
+    if self.last_ping_at.nil? || self.last_ping_at < 3.minutes.ago.utc
       return "<span class=\"status-offline\">#{self.name} (offline)</span>"
-    elsif self.last_seen_at < 10.minutes.ago.utc
+    elsif self.last_seen_at.nil? || self.last_seen_at < 10.minutes.ago.utc
       return "<span class=\"status-idle\">#{self.name} (idle)</span>"
     end
     "<span class=\"status-online\">#{self.name}</span>"
