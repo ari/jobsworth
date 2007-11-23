@@ -11,7 +11,7 @@
        <table width="100%" cellspacing="0">
          <tbody id="shout-list">
 <% last = nil %>
-<% for @shout in @room.shouts %>
+<% for @shout in @room.shouts.find(:all, :conditions => ["created_at > ?", tz.now.utc.midnight]) %>
   <%= render :partial => 'shout', :locals => {:last => last} %>
   <% last = @shout %>
 <% end %>
