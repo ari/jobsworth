@@ -30,23 +30,28 @@ function ClearHover() {
 
 function updateLoading(event){
 
-  scrollposY=0;
-  if (window.pageYOffset){
-    scrollposY = window.pageYOffset;
-  }
-  else if (document.documentElement && document.documentElement.scrollTop){
-    scrollposY = document.documentElement.scrollTop
-  }
-  else if (document.getElementById("body").scrollTop){
-    scrollposY = document.getElementById("body").scrollTop;
-  }
+  if($('loading').visible) {
 
-  $("loading").style.top = (scrollposY + event.clientY - 8) + "px";
-  $("loading").style.left = event.clientX + 10 +"px";
-  $("loading").style.zIndex=9;
+    scrollposY=0;
+    if (window.pageYOffset){
+      scrollposY = window.pageYOffset;
+    }
+    else if (document.documentElement && document.documentElement.scrollTop){
+      scrollposY = document.documentElement.scrollTop
+        }
+    else if (document.getElementById("body").scrollTop){
+      scrollposY = document.getElementById("body").scrollTop;
+    }
+
+    $("loading").style.top = (scrollposY + event.clientY - 8) + "px";
+    $("loading").style.left = event.clientX + 10 +"px";
+    $("loading").style.zIndex=9;
+  }
 }
 
-Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
+Event.observe(window, "load", function(e) {
+    Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
+  });
 
 
 function tip(myEvent){
