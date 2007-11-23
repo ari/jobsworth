@@ -23,9 +23,10 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
-//function myFlash_DoFSCommand(command, args)                {
-//  flashData (args);
-//}
+function myFlash_DoFSCommand(command, args)                {
+//  var myFlashObj = InternetExplorer ? myFlash : document.myFlash;
+  flashData (args);
+}
 
 function juggernautInit() {
   //if (navigator.appName && navigator.appName.indexOf("Microsoft") != -1 &&
