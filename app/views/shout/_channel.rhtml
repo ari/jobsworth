@@ -3,14 +3,14 @@
 
 <div class="channel-access">
   <%= "#{_('Open to everyone')}.<br />" if channel.company_id.to_i == 0 %>
-  <%= "#{_('Open to everyone from')} #{channel.company.name} #{_('and external users')}.<br />" if(channel.company_id.to_i != 0 && channel.public == 1) %>
-  <%= "#{_('Open to everyone from')} #{channel.company.name}.<br />" if(channel.company_id.to_i > 0 && channel.public == 0) %>
-  <%= "#{_('Open to everyone in')} #{channel.project.name} .<br />" if(channel.company_id.to_i > 0 && channel.public == 0 && channel.project_id.to_i > 0) %>
+  <%= "#{_('Open to everyone from')} #{channel.company.name} #{_('and external users')}.<br />" if(channel.company_id.to_i != 0 && channel.public.to_i == 1) %>
+  <%= "#{_('Open to everyone from')} #{channel.company.name}.<br />" if(channel.company_id.to_i > 0 && channel.public.to_i == 0 && channel.project_id.to_i == 0) %>
+  <%= "#{_('Open to everyone from')} #{channel.project.name} .<br />" if(channel.company_id.to_i > 0 && channel.public.to_i == 0 && channel.project_id.to_i > 0) %>
 </div>
 <div class="channel-description">
   <%= channel.description %>
 </div>
 <div class="channel-users">
-  <%= channel.subscribers.collect(&:name).join(', ') %>
+  <%= channel.subscribers.collect{|u| "#{u.online_status_name}"}.join(', ') %>
 </div>
 </div>

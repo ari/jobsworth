@@ -5,6 +5,7 @@ class SearchController < ApplicationController
 
     @tasks = []
     @logs = []
+    @shouts = []
 
     return if params[:query].nil? || params[:query].length == 0
 
@@ -35,6 +36,19 @@ class SearchController < ApplicationController
 
     # Find the worklogs
     @logs = WorkLog.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 1000})
+
+    rooms = ""
+    ShoutChannel.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+                      :order => "company_id, project_id, name").each do |r|
+      rooms << "|" unless rooms == ""
+      rooms << "#{r.id}"
+    end
+
+    rooms = "0" if rooms == ""
+
+    rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
+
+    @shouts = Shout.find_by_contents("+company_id:#{session[:user].company_id} #{rooms} #{query}", {:limit => 1000})
 
   end
 end

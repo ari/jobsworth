@@ -62,7 +62,11 @@ class ApplicationController < ActionController::Base
       session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => 'id')
 
       # Update last seen, to track online users
-      ActiveRecord::Base.connection.execute("update users set last_ping_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
+      if request.path_parameters['action'] == 'update_sheet_info'
+        ActiveRecord::Base.connection.execute("UPDATE users SET last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
+      else
+        ActiveRecord::Base.connection.execute("UPDATE users SET last_seen_at='#{Time.now.utc.to_s(:db)}', last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
+      end
 
       # Set current locale
       Localization.lang(session[:user].locale || 'en_US')

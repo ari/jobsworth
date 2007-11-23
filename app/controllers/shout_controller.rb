@@ -4,7 +4,7 @@ class ShoutController < ApplicationController
 
   def list
     @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
-                               :order => "company_id, name")
+                               :order => "company_id, project_id, name")
     session[:channels] << "lobby"
     session[:channels] << "lobby_#{session[:user].company_id}"
   end
@@ -12,14 +12,20 @@ class ShoutController < ApplicationController
   def update_channel
     room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
                               :order => "company_id, name")
-    render :update do |page|
-      page.replace "channel_#{room.id}", :partial => 'channel', :locals => { :channel => room }
-      page.visual_effect(:highlight, "channel_#{room.id}", :duration => 0.5)
+    if room
+      render :update do |page|
+        page.replace "channel_#{room.id}", :partial => 'channel', :locals => { :channel => room }
+        page.visual_effect(:highlight, "channel_#{room.id}", :duration => 0.5)
+      end
+    else
+      render :nothing => true
     end
   end
 
   def transcripts
-    @transcripts = Transcript.find_all(session[:user].company_id)
+    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+                               :order => "company_id, name")
+    @transcripts = Transcript.find_all(session[:user].company_id, @rooms.collect(&:id) )
   end
 
   def transcript
@@ -31,8 +37,8 @@ class ShoutController < ApplicationController
 
     @shouts = Shout.find(:all, :conditions => ["shout_channel_id = ? AND shouts.created_at > ? AND shouts.created_at < ?", @room.id, "#{params[:day]} 00:00:00", "#{params[:day]} 23:59:59"], :include => [:user])
 
-    @prev = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at < ? AND message_type = 0", @room.id, "#{params[:day]} 00:00:00"])
-    @next = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at > ? AND message_type = 0", @room.id, "#{params[:day]} 23:59:59"])
+    @prev = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at < ? AND message_type = 0", @room.id, "#{params[:day]} 00:00:00"], :order => 'created_at desc')
+    @next = Shout.find(:first, :conditions => ["shout_channel_id = ? AND created_at > ? AND message_type = 0", @room.id, "#{params[:day]} 23:59:59"], :order => 'created_at')
   end
 
   def room
@@ -109,6 +115,8 @@ class ShoutController < ApplicationController
   def create_ajax
     @channel = ShoutChannel.new(params[:channel])
     @channel.company = session[:user].company
+    @channel.public = 0
+    @channel.project_id = nil if @channel.project_id == 0
     if @channel.save
       res = render_to_string :update do |page|
         page.insert_html :top, "channel-list", :partial => 'channel', :locals => { :room => @channel }
@@ -249,7 +257,7 @@ class ShoutController < ApplicationController
       page.insert_html :bottom, "passive-chat", :partial => "shout", :locals => { :last => nil, :passive => true }
       page.visual_effect(:highlight, "shout_#{@shout.id}", :duration => 0.5)
       page.visual_effect(:appear, 'passive-chat-container', :duration => 0.5)
-      page.delay(4.0) do
+      page.delay(5.0) do
         page["shout_#{@shout.id}"].remove
         page << "if($$('#passive-chat .channel-message').length == 0) {"
         page.hide 'passive-chat-container'

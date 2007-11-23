@@ -52,7 +52,6 @@ class LoginController < ApplicationController
     subdomain = request.subdomains.first if request.subdomains
     if logged_in = @user.login(subdomain)
       logged_in.last_login_at = Time.now.utc
-      logged_in.last_seen_at = Time.now.utc
       logged_in.save
       session[:user] = logged_in
 

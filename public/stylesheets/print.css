@@ -137,3 +137,30 @@ ul {
 #print_title {
   display: block;
 }
+
+.channel-input {
+  display: none;
+}
+
+.transcript-navigation {
+  .display: none;
+}
+
+.channel-message {
+  font-size: large;
+}
+
+.channel-message-system td {
+  font-style: italic;
+}
+
+.channel-message-time td {
+  font-size: small;
+  padding-top: 1em;
+  font-weight: bold;
+}
+
+
+.channel-user {
+  text-align: right;
+}

@@ -17,9 +17,7 @@ class PagesController < ApplicationController
 
     @page.user = session[:user]
     @page.company = session[:user].company
-
-    if @page.save
-
+    if((@page.project_id.to_i > 0) && @page.save )
       worklog = WorkLog.new
       worklog.user = session[:user]
       worklog.project = @page.project

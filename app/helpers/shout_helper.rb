@@ -5,7 +5,6 @@ module ShoutHelper
     m.gsub!(/\r/,'')
 
     wrap_text(m, 300)
-
   end
 
 end

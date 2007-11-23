@@ -10,6 +10,21 @@
   <fieldset>
     <legend>New Room</legend>
     <label for="channel_name"><%=_ 'Name' %></label><%= text_field 'channel', 'name', { :size => 17, :maxlength => 200 } %><br />
+    <label for="channel_project_id"><%=_ 'Project'%></label>
+<select name="channel[project_id]" id="channel_project_id">
+<option value="" class="select_default" selected><%= _("[Any Project]") %></option>
+<% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
+<% @clients.each do |c| %>
+  <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+  <% if @client_projects.size > 0 %>
+    <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
+    <% @client_projects.each do |p| %>
+      <option value="<%=p.id%>" class="select_item"><%= p.name %></option>
+    <% end %>
+  <% end %>
+<% end %>
+</select>
+
     <label for="channel_description"><%=_ 'Description' %></label><%= text_area 'channel', 'description', { :cols => 17, :rows => 4 } %><br />
 <%= submit_tag _("Create"), :style => "clear:left;margin-left:11.6em;" %><div style="float:left;margin-top:0.3em;"> or <a href="#" onclick="$('channel-add-container').hide();false;">Cancel</a></div>
   </fieldset>

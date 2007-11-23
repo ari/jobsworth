@@ -128,4 +128,13 @@ class User < ActiveRecord::Base
     moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)]) == 1
   end
 
+  def online_status_name
+    if self.last_ping_at < 3.minutes.ago.utc
+      return "<span class=\"status-offline\">#{self.name} (offline)</span>"
+    elsif self.last_seen_at < 10.minutes.ago.utc
+      return "<span class=\"status-idle\">#{self.name} (idle)</span>"
+    end
+    "<span class=\"status-online\">#{self.name}</span>"
+  end
+
 end

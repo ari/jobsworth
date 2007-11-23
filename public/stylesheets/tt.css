@@ -1526,7 +1526,7 @@ li.help {
 
 #passive-chat-container {
   position:fixed;
-  top:5%;
+  top:1em;
   left:5%;
   z-index:100;
   height:auto;
@@ -1602,4 +1602,16 @@ li.help {
   border-right: 1px solid #ececec;
   margin-left: 1em;
   padding-right: 1em;
+}
+
+.status-offline {
+  color: #a9a9a9;
+}
+
+.status-idle {
+  font-style: italic;
+}
+
+.status-online {
+  font-weight: bold;
 }
