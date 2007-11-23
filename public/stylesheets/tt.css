@@ -702,10 +702,9 @@ pre.auto_generated {
   font-weight: bold;
 }
 
-.fieldWithErrors {
-  padding: 2px;
+.fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select {
   background-color: red;
-  display: table;
+  border: 2px solid red;
 }
 
 #ErrorExplanation {
@@ -1425,8 +1424,6 @@ li.help {
   background-color: #ececec;
   padding:1em;
   margin: 4px;
-  float: left;
-  width: 40%;
 }
 
 .channel-title {

@@ -128,25 +128,27 @@ function updateTooltips() {
 }
 
 function init_shout() {
-  Event.observe($('shout_body'), "keypress", function(e) {
-      switch( e.keyCode ) {
-      case Event.KEY_RETURN:
-        if (e.shiftKey) {
-          return;
-        } else {
-          if($('shout_body').value.length > 0) {
-            if(e.ctrlKey || e.metaKey) {
-              $('shout-input').onsubmit();
-              $('shout_body').value = '';
-            } else {
-              $('shout-input').onsubmit();
-              $('shout_body').value = '';
+  if($('shout_body')) {
+    Event.observe($('shout_body'), "keypress", function(e) {
+        switch( e.keyCode ) {
+        case Event.KEY_RETURN:
+          if (e.shiftKey) {
+            return;
+          } else {
+            if($('shout_body').value.length > 0) {
+              if(e.ctrlKey || e.metaKey) {
+                $('shout-input').onsubmit();
+                $('shout_body').value = '';
+              } else {
+                $('shout-input').onsubmit();
+                $('shout_body').value = '';
+              }
             }
+            Event.stop(e);
           }
-          Event.stop(e);
         }
-      }
-    });
+      });
+  }
 }
 
 function inline_image(el) {
