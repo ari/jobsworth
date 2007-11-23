@@ -10,6 +10,6 @@
 %>
 
 <tr id="shout_<%=@shout.id%>" class="<%= channel_classes.join(' ') %>">
-<td class="channel-user" nowrap><%= link_to("#{@shout.shout_channel.name} / #{@shout.nick}", :controller => 'shout', :action => 'transcript', :id => @shout.shout_channel_id, :day => @shout.created_at.strftime('%y-%m-%d'))  %></td>
+<td class="channel-user" nowrap><%= link_to("#{@shout.shout_channel.name} / #{@shout.nick}", :controller => 'shout', :action => 'transcript', :id => @shout.shout_channel_id, :day => @shout.created_at.strftime('%y-%m-%d'), :anchor => "shout_#{@shout.id}")  %></td>
 <td class="channel-body"><%= highlight_all(format_message(@shout.body), @keys || []) %></td>
 </tr>
