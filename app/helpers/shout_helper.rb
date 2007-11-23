@@ -1,6 +1,11 @@
 module ShoutHelper
   def format_message(m)
-    m = Juggernaut.html_escape(m)
+
+    if m.count("\n") > 0
+      m = "<pre><code>#{Juggernaut.html_escape(m)}</code></pre>"
+    else
+      m = Juggernaut.html_escape(m)
+    end
     m.gsub!(/\n/,'<br />')
     m.gsub!(/\r/,'')
 

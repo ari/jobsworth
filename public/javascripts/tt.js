@@ -53,7 +53,6 @@ Event.observe(window, "load", function(e) {
     Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
   });
 
-
 function tip(myEvent){
 
   var n = null;

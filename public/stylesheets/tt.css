@@ -1490,6 +1490,14 @@ li.help {
   font-size: 13px;
 }
 
+.channel-body pre {
+  border-left: 1px solid #b0d295;
+  padding-left:1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+
+
 .channel-message-mine {
   background-color: #fefeec;
 }
