@@ -66,7 +66,10 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
    <%= link_to_task(task) -%>
 
    <small>
-     <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (session[:user].option_tracktime.to_i == 1 && task.duration.to_i > 0) %>
+     <%  if session[:user].option_tracktime.to_i == 1 -%>
+       <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
+       <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
+     <% end -%>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
    </small>
    <br/>
@@ -106,7 +109,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
         <% end -%>
       <% end -%>
   </div>
-  </div>
+</div>
 
 <% if session[:group_by].to_i > 2 %>
   <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>

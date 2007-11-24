@@ -53,7 +53,6 @@ class ShoutController < ApplicationController
       return
     end
 
-
     unless User.find(session[:user].id).shout_channels.include?(@room)
 
       s = ShoutChannelSubscription.new( :user_id => session[:user].id, :shout_channel_id => @room.id)

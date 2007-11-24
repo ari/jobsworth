@@ -1,7 +1,16 @@
 <% if session[:sheet] -%>
+<%
+   info = []
+   info << "#{worked_nice(session[:sheet].task.worked_minutes + ((Time.now.utc - session[:sheet].created_at) / 60).to_i)}" if session[:sheet].task.worked_minutes > 0
+   info << "#{worked_nice(session[:sheet].task.duration)}" if session[:sheet].task.duration.to_i > 0
+
+   info_string = " (#{info.join(" / ")})" if info.size > 0
+   info_string ||= ""
+
+-%>
   <%= link_to( session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id ) %> <br />
   <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => _("Done working on <b>%s</b> for now.", session[:sheet].task.name) ), {:controller => 'tasks', :action => 'stop_work'} )  -%>
-  <%= time_ago_in_words(session[:sheet].created_at) -%>
+  <%= time_ago_in_words(session[:sheet].created_at) -%><%= info_string -%>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>
