@@ -22,6 +22,6 @@
   <%= channel.description %>
 </div>
 <div class="channel-users">
-  <%= channel.subscribers.collect{|u| "#{u.online_status_name}"}.join(', ') %>
+  <%= channel.subscribers.collect{|u| "#{u.online_status_name}" if u.online? }.compact.sort.join(', ') %>
 </div>
 </div>
