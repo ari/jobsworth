@@ -1455,7 +1455,7 @@ li.help {
 .channel-access {
   color: #a6a6a6;
   padding-top: 0.5em;
-  font-size: 8px;
+  font-size: 10px;
   font-style: italic;
 }
 
@@ -1589,7 +1589,6 @@ li.help {
  }
 
 .transcript-participants {
-  margin-top: 1em;
   color: #a9a9a9;
 }
 
@@ -1599,6 +1598,15 @@ li.help {
 
 .transcript-navigation {
   padding-bottom: 1em;
+}
+
+#transcript-filter {
+  float: right;
+  margin-right:4px;
+}
+
+#transcript-filter-select {
+  font-size: 10px;
 }
 
 .channel-input {

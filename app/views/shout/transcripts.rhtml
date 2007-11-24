@@ -1,15 +1,3 @@
-<table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-  <tr>
-    <td colspan="2" class="page_header">
-      <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Chat Transcripts' %></div>
-      <div style="float:right;padding-top:0.1em;"><%= link_to _('Chat Rooms'), :action => 'list' %></div>
-      </td>
-    </tr>
-    <tr><td colspan="2">&nbsp;</td></tr>
-    <tr>
-     <td colspan="2">
-       <div id="transcript-list">
-
 <% users = []
    channel = nil
    date = nil
@@ -26,14 +14,31 @@
      entries[key]['date'] ||= Date.new(t.year.to_i, t.month.to_i, t.day.to_i).to_time
    end
 
+%>
+<table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
+  <tr>
+    <td colspan="2" class="page_header">
+      <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Chat Transcripts' %></div>
+      <div style="float:right;padding-top:0.1em;"><%= link_to _('Chat Rooms'), :action => 'list' %></div>
+      </td>
+    </tr>
+    <tr><td colspan="2">&nbsp;</td></tr>
+    <tr>
+     <td colspan="2">
+       <div id="transcript-filter"><select name="transcript-filter-select" id="transcript-filter-select" onchange="javascript:filter_transcripts();true;">
+           <option value="0" class="select_default" selected>[<%=_'Any Room'%>]</option><%= entries.values.collect{|c| c['channel']}.uniq.collect{|c| "<option value=\"#{c.id}\">#{c.name}</option>"}.join %>
+       </select></div>
+       <div id="transcript-list">
+<%
    last_date = nil
    entries.sort.reverse.each do |k,v|
+     channel = v['channel']
      if last_date.nil? || (last_date.strftime('%y-%m-%d') != v['date'].strftime('%y-%m-%d'))
         last_date = v['date']
 %>
      <div class="log_header"><%= last_date.strftime("%A, %d %B %Y") %></div>
 <%   end %>
-<div class="transcript" id="transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d') %>">
+<div class="transcript channel channel-<%= v['channel'].id %>" id="transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d') %>">
 <span class="transcript-channel"><%= link_to v['channel'].name, :action => 'transcript', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') %></span><br/>
 <% if v['channel'].company_id.to_i > 0 && (session[:user].admin? || ( v['channel'].project_id.to_i > 0 && session[:user].can?(v['channel'].project, 'grant') ) )  %>
 <div id="transcript_delete_<%=v['channel'].id%>_<%= v['date'].strftime('%y-%m-%d') %>" class="channel-delete" style="display:none;"><%= link_to_remote _('Delete Transcript'), :url => { :action => 'destroy_transcript_ajax', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') },
@@ -46,6 +51,15 @@
   Event.observe($('transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>'), "mouseout", function(e) {Element.hide( $('transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>') );} );
 </script>
 <% end %>
+<div class="channel-access">
+  <%= "#{_('Open to everyone')}.<br />" if channel.company_id.to_i == 0 %>
+  <%= "#{_('Open to everyone from')} #{channel.company.name} #{_('and external users')}.<br />" if(channel.company_id.to_i != 0 && channel.public.to_i == 1) %>
+  <%= "#{_('Open to everyone from')} #{channel.company.name}.<br />" if(channel.company_id.to_i > 0 && channel.public.to_i == 0 && channel.project_id.to_i == 0) %>
+  <%= "#{_('Open to everyone from')} #{channel.project.name} .<br />" if(channel.company_id.to_i > 0 && channel.public.to_i == 0 && channel.project_id.to_i > 0) %>
+</div>
+<div class="channel-description">
+  <%= channel.description %>
+</div>
 <div class="transcript-participants">Participants <span class="transcript-users"><%= v['users'].sort.join(', ') %></span></div>
 </div>
 <% end %>
@@ -56,3 +70,16 @@
 
 <br />
 
+<script type="text/javascript" language="javascript" charset="utf-8">
+
+function filter_transcripts() {
+  var val = $('transcript-filter-select').value;
+  if( val == "0" ) {
+     $$('#transcript-list .transcript').each(function(el) { Element.show(el); });
+  } else {
+     $$('#transcript-list .transcript').each(function(el) { Element.hide(el); });
+     $$("#transcript-list .channel-" + val).each(function(el) { Element.show(el); });
+  }
+}
+
+</script>
