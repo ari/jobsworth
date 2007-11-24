@@ -11,7 +11,7 @@
 
 <tr id="shout_<%=@shout.id%>" class="<%= channel_classes.join(' ') %>">
 <td class="channel-user" nowrap><%= @shout.nick if( last.nil? || (last && last.user_id != @shout.user_id) || (@shout.message_type != 0 || last.message_type != 0))%></td>
-<td class="channel-body"><%= format_message(@shout.body) %></td>
+<td class="channel-body"><%= format_message(@shout.body) %><%= " UTC" if @shout.message_type == 3 %></td>
 <% if defined?(passive) && passive %>
 <td class="channel-passive"><%= link_to "[#{@shout.shout_channel.name}]", :controller => 'shout', :action => 'room', :id => @shout.shout_channel_id %></td>
 <% end %>
