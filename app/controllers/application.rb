@@ -62,7 +62,7 @@ class ApplicationController < ActionController::Base
       session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => 'id')
 
       # Update last seen, to track online users
-      if request.path_parameters['action'] == 'update_sheet_info'
+      if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
         ActiveRecord::Base.connection.execute("UPDATE users SET last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
       else
         ActiveRecord::Base.connection.execute("UPDATE users SET last_seen_at='#{Time.now.utc.to_s(:db)}', last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
