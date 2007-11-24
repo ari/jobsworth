@@ -265,7 +265,7 @@ class ShoutController < ApplicationController
       shout.shout_channel_id = room.id
       shout.company_id = room.company_id
       shout.message_type = 3
-      shout.body = "#{stamp.strftime('%H:%M')}"
+      shout.body = "#{stamp.strftime('%H:%M')} UTC"
       shout.created_at = stamp.to_s(:db)
       shout.save
       return broadcast_shout(shout)
