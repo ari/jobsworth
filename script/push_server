@@ -56,6 +56,8 @@ module Juggernaut
 
   class Channels < Monitor
 
+    attr_accessor :channels
+
     def initialize
       @channels = {}
       super
@@ -72,14 +74,18 @@ module Juggernaut
       synchronize do
         if channel = @channels[channel_name]
           channel.unsubscribe(connection)
+          @channels.delete channel_name if channel.subscribers.empty?
         end
       end
     end
 
     def unsubscribe_all(connection)
       synchronize do
-        @channels.values.each do |channel|
+        @channels.each_pair do |name, channel|
           channel.unsubscribe(connection)
+          if channel.subscribers.empty?
+            @channels.delete name
+          end
         end
       end
     end
@@ -99,6 +105,10 @@ module Juggernaut
   end
 
   class Channel < Monitor
+
+    attr_accessor :subscribers
+    attr_reader   :name
+
     def initialize(name)
       @name = name
       @subscribers = []
