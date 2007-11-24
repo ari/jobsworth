@@ -23,8 +23,13 @@ class ShoutController < ApplicationController
   end
 
   def transcripts
-    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
-                               :order => "company_id, name")
+    if session[:user].admin > 9
+      @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+                                 :order => "company_id, name")
+    else
+      @rooms = ShoutChannel.find(:all, :conditions => ["company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+                                 :order => "company_id, name")
+    end
     @transcripts = Transcript.find_all(session[:user].company_id, @rooms.collect(&:id) )
   end
 
@@ -48,12 +53,12 @@ class ShoutController < ApplicationController
       return
     end
 
+    check_timestamp(@room.id)
+
     unless User.find(session[:user].id).shout_channels.include?(@room)
 
       s = ShoutChannelSubscription.new( :user_id => session[:user].id, :shout_channel_id => @room.id)
       s.save
-
-      check_timestamp(@room.id)
 
       shout = Shout.new
       shout.user_id = session[:user].id
