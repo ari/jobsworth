@@ -53,12 +53,13 @@ class ShoutController < ApplicationController
       return
     end
 
-    check_timestamp(@room.id)
 
     unless User.find(session[:user].id).shout_channels.include?(@room)
 
       s = ShoutChannelSubscription.new( :user_id => session[:user].id, :shout_channel_id => @room.id)
       s.save
+
+      check_timestamp(@room.id)
 
       shout = Shout.new
       shout.user_id = session[:user].id
@@ -74,6 +75,13 @@ class ShoutController < ApplicationController
       Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => @room.id)}');", ["#{['lobby', @room.company_id].compact.join('_')}"] )
 
     end
+
+    last = Shout.find(:first, :conditions => ["shout_channel_id = ? AND shouts.created_at > ?", @room.id, tz.now.utc.midnight.to_s(:db)])
+    unless last
+      check_timestamp(@room.id)
+    end
+
+
     session[:channels] << "channel_#{@room.id}" unless session[:channels].include?("channel_#{@room.id}")
     session[:channels] -= ["channel_passive_#{@room.id}"] if session[:channels].include?("channel_passive_#{@room.id}")
 

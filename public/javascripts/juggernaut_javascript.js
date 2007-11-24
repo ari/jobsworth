@@ -23,6 +23,8 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 var InternetExplorer = navigator.appName.indexOf("Microsoft") != -1;
+var connected = false;
+
 function myFlash_DoFSCommand(command, args)                {
 //  var myFlashObj = InternetExplorer ? myFlash : document.myFlash;
   flashData (args);
@@ -46,6 +48,7 @@ eval(utf8to16(decode64(data)));
 }
 
 function flashConnected() {
+  connected = true;
 //alert('You have been connected');
 }
 
@@ -65,6 +68,13 @@ function flashConnectionLost(){
 // public domain.  It would be nice if you left this header intact.
 // Base64 code from Tyler Akins -- http://rumkin.com
 
+function checkConnection() {
+  if( !connected ) {
+    Element.update('flash_message', 'Unable to connect to push server, make sure flash is enabled for this site and SSL traffic is allowed...<br />You won\'t be able to see what others are saying.');
+    Element.show('flash');
+    new Effect.Highlight('flash_message', { duration:5.0, startcolor:'#ff9999'});
+  }
+}
 
 
 function decode64(input) {
