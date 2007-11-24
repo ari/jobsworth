@@ -158,6 +158,25 @@ class ShoutController < ApplicationController
     end
   end
 
+  def destroy_transcript_ajax
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+                              :order => "company_id, name")
+
+    if room.nil? || params[:day].nil? || params[:day].empty? || (room.project_id.to_i == 0 && (!session[:user].admin?)) || ((room.project_id.to_i > 0) && (!session[:user].can?(room.project, 'grant')) )
+      render :update do |page|
+        page.visual_effect(:highlight, "transcript_#{params[:id]}_#{params[:day]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    else
+
+      Shout.destroy_all(["shout_channel_id = ? AND shouts.created_at > ? AND shouts.created_at < ?", room.id, "#{params[:day]} 00:00:00", "#{params[:day]} 23:59:59"])
+
+      render :update do |page|
+        page.visual_effect(:fade, "transcript_#{room.id}_#{params[:day]}")
+      end
+
+    end
+  end
+
 
   def chat_ajax
     room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])

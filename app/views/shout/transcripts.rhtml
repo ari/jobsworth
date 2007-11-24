@@ -33,8 +33,19 @@
 %>
      <div class="log_header"><%= last_date.strftime("%A, %d %B %Y") %></div>
 <%   end %>
-<div class="transcript">
+<div class="transcript" id="transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d') %>">
 <span class="transcript-channel"><%= link_to v['channel'].name, :action => 'transcript', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') %></span><br/>
+<% if v['channel'].company_id.to_i > 0 && (session[:user].admin? || ( v['channel'].project_id.to_i > 0 && session[:user].can?(v['channel'].project, 'grant') ) )  %>
+<div id="transcript_delete_<%=v['channel'].id%>_<%= v['date'].strftime('%y-%m-%d') %>" class="channel-delete" style="display:none;"><%= link_to_remote _('Delete Transcript'), :url => { :action => 'destroy_transcript_ajax', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') },
+              :loading => "Element.show('loading');",
+              :complete => "Element.hide('loading');",
+              :confirm => _("Really delete transcript?")
+              %></div>
+<script type="text/javascript" language="javascript" charset="utf-8">
+  Event.observe($('transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>'), "mousemove", function(e) {Element.show( $('transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>') );} );
+  Event.observe($('transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>'), "mouseout", function(e) {Element.hide( $('transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>') );} );
+</script>
+<% end %>
 <div class="transcript-participants">Participants <span class="transcript-users"><%= v['users'].sort.join(', ') %></span></div>
 </div>
 <% end %>
