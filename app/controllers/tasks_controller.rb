@@ -686,7 +686,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if(params['notify'].to_i == 1) && (!sent_comment)
+        if(params['notify'].to_i == 1) && (!@sent_comment)
           Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
         end
       end
@@ -906,6 +906,12 @@ class TasksController < ApplicationController
     if sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
 
       @old_task = sheet.task
+
+      if @old_task.nil?
+        sheet.destroy
+        redirect_from_last
+      end
+
       @old_task.updated_by_id = session[:user].id
       @old_task.save
 
