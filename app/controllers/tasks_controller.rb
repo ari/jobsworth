@@ -663,15 +663,16 @@ class TasksController < ApplicationController
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
-
+      @sent_comment = false
       if params[:comment] && params[:comment].length > 0
         worklog.log_type = WorkLog::TASK_COMMENT if body.length ==  0
         if (body.length == 0 and params['notify'].to_i == 1)
           Notifications::deliver_commented( @task, session[:user], params[:comment] ) rescue begin end
+          @sent_comment = true
         end
 
         body << "<br/>" if body.length > 0
-        body << CGI::escapeHTML(params[:comment]) if body.length > 0
+        body << CGI::escapeHTML(params[:comment])
       end
 
       if body.length > 0
@@ -685,7 +686,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if params['notify'].to_i == 1
+        if(params['notify'].to_i == 1) && (!sent_comment)
           Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
         end
       end
