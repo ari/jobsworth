@@ -671,7 +671,7 @@ class TasksController < ApplicationController
         end
 
         body << "<br/>" if body.length > 0
-        body << CGI::escapeHTML(params[:comment])
+        body << CGI::escapeHTML(params[:comment]) if body.length > 0
       end
 
       if body.length > 0
