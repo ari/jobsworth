@@ -644,6 +644,7 @@ class TasksController < ApplicationController
       worklog.log_type = WorkLog::TASK_MODIFIED
 
 
+      @sent_completed = false
       if @old_task.status != @task.status
         body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
@@ -653,6 +654,7 @@ class TasksController < ApplicationController
         if( @task.status > 1 && @old_task.status != @task.status )
           if params['notify'].to_i == 1
             Notifications::deliver_completed( @task, session[:user], params[:comment] ) rescue begin end
+            @sent_completed = true
           end
         end
 
@@ -693,7 +695,7 @@ class TasksController < ApplicationController
       end
 
       @sent_comment = false
-      if params[:comment] && params[:comment].length > 0
+      if params[:comment] && params[:comment].length > 0 && !@sent_completed
         worklog.log_type = WorkLog::TASK_COMMENT if body.length ==  0
         if (body.length == 0 and params['notify'].to_i == 1)
           Notifications::deliver_commented( @task, session[:user], params[:comment] ) rescue begin end
@@ -715,7 +717,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if(params['notify'].to_i == 1) && (!@sent_comment)
+        if(params['notify'].to_i == 1) && (!@sent_comment) && !@sent_completed
           Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
         end
       end
