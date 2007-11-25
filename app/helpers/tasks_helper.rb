@@ -91,18 +91,18 @@ module TasksHelper
     unless root_present
       parents = []
       p = t
-      root = nil
-      while p.dependencies.size > 0
+      root = p.dependencies.first
+      while(p && p.dependencies.size > 0)
         p.dependencies.each do |p|
-          root = p unless p.done?
+          root = p if((!p.done?) && (p.id != root.id) )
         end
-        root ||= p.dependencies.first
+        root ||= p.dependencies.first if p.dependencies.first.id != t.id
 #        parents << parent
         p = root
-        logger.info("New parent[#{p.name}")
+        logger.info("New parent[#{p.name}") if p
       end
 
-      res << render_task_dependants(root, depth, true)
+      res << render_task_dependants(root, depth, true) if root
 
 #      parents.reverse.each_with_index do |parent, index|
 #        res << render(:partial => "task_row", :locals => { :task => parent, :depth => depth + index + 1, :override_filter => true })
