@@ -845,6 +845,21 @@ pre.auto_generated {
 
 #dependencies_input_auto_complete ul li.selected { background-color: #ffb; }
 
+#notification-autocomplete ul
+{
+  padding: 0;
+  margin: 0;
+  border: 1px solid #dcdcdc;
+}
+
+#notification-autocomplete ul li
+{
+  border-left: none;
+  padding-left: 2px;
+  margin:0;
+}
+
+#notification-autocomplete ul li.selected { background-color: #ffb; }
 
 div.auto_complete {
   position:absolute;
@@ -1641,4 +1656,14 @@ li.help {
 
 .status-online {
   font-weight: bold;
+}
+
+.notify-user {
+  float: left;
+  font-weight: bold;
+  color: #333;
+}
+
+.notify-row {
+  clear:both;
 }

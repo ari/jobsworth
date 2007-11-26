@@ -69,7 +69,6 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 //<![CDATA[
 new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
 new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('watchers[]', '/tasks/get_watchers', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
 //]]>
 </script>
 
@@ -247,10 +246,56 @@ function reset_owners() {
         <% users = Project.find(selected_project).users.find(:all, :order => 'name' ) %>
 
         <% watchers = @task.watchers.collect {|t| t.id } %>
+
+<!---
         <label for="watchers[]" class="tooltip" title="<%=_ "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle." %>"><%=_ 'To:' %></label>
         <%= select_tag "watchers[]", users.collect {|u| "<option value=\"#{u.id}\" #{(watchers.include?(u.id) ? 'selected=\"selected\"' : '')} >#{u.name}</option>"}.join(''), {:multiple => true, :size => 8, :class => 'tooltip', :title => 'Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.'}.merge(perms['edit']) %><br/>
         <label for="task[notify_emails]" class="tooltip" title="Comma-separated list of emails to notify">Cc:</label>
         <%= text_area 'task', 'notify_emails', { :cols => 15, :rows => 3, :class => 'tooltip', :title => 'Comma-separated list of emails to notify'}.merge(perms['edit']) %><br/>
+--->
+        <label for="notification-input">Name / Email</label><input type="text" size="17" name="new_notification" id="notification-input">
+        <div style="clear:both; display:none;overflow:hidden;" id="notification-autocomplete"></div>
+        <div style="clear:both;" id="notifications"></div>
+<script type="text/javascript">
+var watchers = <%= watchers.size + (@task.notify_emails.nil? ? 0 : @task.notify_emails.count(',')) %>;
+
+function updateList(text) {
+   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/delete.png" border="0" title="<%=_ 'Remove notification'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
+   watchers += 1;
+}
+
+function addNotification(el) {
+   updateList(Element.collectTextNodesIgnoreClass(el, 'informal'));
+   $('notification-input').clear();
+   return false;
+}
+
+function maybeAddNotification(event) {
+      switch(event.keyCode) {
+       case Event.KEY_TAB:
+       case Event.KEY_RETURN:
+          if($('notification-input').value.length > 0 && !$('notification-autocomplete').visible() ) {
+             updateList($('notification-input').value);
+             $('notification-input').clear();
+             Event.stop(event);
+          }
+     }
+}
+
+Event.observe($('notification-input'), "keypress", maybeAddNotification);
+
+new Autocompleter.Local('notification-input', 'notification-autocomplete', [<%= @notify_targets.collect {|n| "'#{n.gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:1, frequency: 0, choices: 15, fullSearch:true, updateElement:addNotification});
+
+<% @task.notify_emails.split(',').sort.each do |w| %>
+updateList('<%= w.gsub(/'/, "\\\\\'") %>');
+<% end %>
+<% @task.watchers.collect(&:name).sort.each do |w| %>
+updateList('<%= w.gsub(/'/, "\\\\\'") %>');
+<% end %>
+
+
+</script>
+
       </fieldset>
 
       <% if @task.attachments.size > 0 %>

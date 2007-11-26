@@ -20,6 +20,9 @@ class TasksController < ApplicationController
       @task.duration = 0
       @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     end
+
+    @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
+    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',') }.flatten.uniq
   end
 
   def list
@@ -225,17 +228,17 @@ class TasksController < ApplicationController
     render :text => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
   end
 
-  def get_watchers
-
-    @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
-
-    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
-    res = '{"options":['
-    res << "#{@options}" unless @options.nil? || @options.empty?
-    res << ']}'
-
-    render :text => "#{res}"
-  end
+#  def get_watchers
+#
+#    @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
+#
+#    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
+#    res = '{"options":['
+#    res << "#{@options}" unless @options.nil? || @options.empty?
+#    res << ']}'
+#
+#    render :text => "#{res}"
+#  end
 
 
   def create
@@ -272,10 +275,22 @@ class TasksController < ApplicationController
 
       if params[:watchers]
         params[:watchers].each do |w|
-          u = User.find(w.to_i, :conditions => ["company_id = ?", session[:user].company_id])
-          n = Notification.new(:user => u, :task => @task)
-          n.save
+          u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
+          unless u.nil?
+            # Found user
+            n = Notification.new(:user => u, :task => @task)
+            n.save
+          else
+            # Not a user, check for email address
+            if w.include?('@')
+              @task.notify_emails ||= ""
+              @task.notify_emails << "," unless @task.notify_emails.empty?
+              @task.notify_emails << w
+            end
+
+          end
         end
+        @task.save
       end
 
       if params[:users]
@@ -383,6 +398,10 @@ class TasksController < ApplicationController
       @logs = []
     end
     @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+
+    @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
+    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',') }.flatten.uniq
+
   end
 
 #  def edit_ajax
@@ -473,12 +492,24 @@ class TasksController < ApplicationController
         @task.repeat = nil
       end
 
+      @task.notifications.destroy_all if @task.notifications.size > 0
+      @task.notify_emails = nil
       unless params[:watchers].nil?
-        @task.notifications.destroy_all
         params[:watchers].each do |w|
-          u = User.find(w.to_i, :conditions => ["company_id = ?", session[:user].company_id])
-          n = Notification.new(:user => u, :task => @task)
-          n.save
+          u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
+          unless u.nil?
+            # Found user
+            n = Notification.new(:user => u, :task => @task)
+            n.save
+          else
+            # Not a user, check for email address
+            if w.include?('@')
+              @task.notify_emails ||= ""
+              @task.notify_emails << "," unless @task.notify_emails.empty?
+              @task.notify_emails << w
+            end
+
+          end
         end
       end
 
