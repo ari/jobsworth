@@ -847,16 +847,18 @@ pre.auto_generated {
 
 #notification-autocomplete ul
 {
+  border: 1px solid #ccc;
   padding: 0;
   margin: 0;
-  border: 1px solid #dcdcdc;
+  width: 189px;
 }
 
 #notification-autocomplete ul li
 {
   border-left: none;
-  padding-left: 2px;
+  margin: 0 2px 0 2px;
   margin:0;
+  width: 185px;
 }
 
 #notification-autocomplete ul li.selected { background-color: #ffb; }

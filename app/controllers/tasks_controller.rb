@@ -274,7 +274,7 @@ class TasksController < ApplicationController
     if @task.save
 
       if params[:watchers]
-        params[:watchers].each do |w|
+        params[:watchers].uniq.each do |w|
           u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
           unless u.nil?
             # Found user
@@ -495,7 +495,7 @@ class TasksController < ApplicationController
       @task.notifications.destroy_all if @task.notifications.size > 0
       @task.notify_emails = nil
       unless params[:watchers].nil?
-        params[:watchers].each do |w|
+        params[:watchers].uniq.each do |w|
           u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
           unless u.nil?
             # Found user
