@@ -280,8 +280,10 @@ Event.observe($('notification-input'), "keypress", maybeAddNotification);
 
 new Autocompleter.Local('notification-input', 'notification-autocomplete', [<%= @notify_targets.collect {|n| "'#{n.gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:1, frequency: 0, choices: 15, fullSearch:true, updateElement:addNotification});
 
-<% @task.notify_emails.split(',').sort.each do |w| %>
+<% if @task.notify_emails %>
+  <% @task.notify_emails.split(',').sort.each do |w| %>
 updateList('<%= w.gsub(/'/, "\\\\\'") %>');
+  <% end %>
 <% end %>
 <% @task.watchers.collect(&:name).sort.each do |w| %>
 updateList('<%= w.gsub(/'/, "\\\\\'") %>');
