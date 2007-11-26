@@ -86,32 +86,24 @@ module TasksHelper
 
     shown = task_shown?(t)
 
-#    logger.info("#{t.name}[#{shown}]")
-
     @deps = []
 
     unless root_present
+      root = nil
       parents = []
       p = t
       while(!p.nil? && p.dependencies.size > 0)
         root = nil
-        p.dependencies.each do |p|
-          root = p if((!p.done?) && (!@deps.include?(p.id) ) )
+        p.dependencies.each do |dep|
+          root = dep if((!dep.done?) && (!@deps.include?(dep.id) ) )
         end
         root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
-#        parents << parent
         p = root
         @deps << root.id
         logger.info("New parent[#{p.name}]") unless p.nil?
-#        logger.info("#{p.name} vs #{p.dependencies.first.name}") unless p.nil?
       end
-
       res << render_task_dependants(root, depth, true) unless root.nil?
 
-#      parents.reverse.each_with_index do |parent, index|
-#        res << render(:partial => "task_row", :locals => { :task => parent, :depth => depth + index + 1, :override_filter => true })
-#      end
-#      depth = depth + parents.size + 1
     else
       res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
 
