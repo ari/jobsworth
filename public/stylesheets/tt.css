@@ -242,11 +242,6 @@ img {
   display: inline-block;
 }
 
-.task_active {
-  background-color: #eeeeee;
-  color: #000000;
-}
-
 .task_done {
   color: #a6a6a6;
   background-color: #fbfbfb;
@@ -416,6 +411,7 @@ fieldset label {
 #task_project_selection label {
   width: 7em;
 }
+
 #task_information label {
   width: 6em;
 }
@@ -859,6 +855,7 @@ pre.auto_generated {
   margin: 0 2px 0 2px;
   margin:0;
   width: 185px;
+  overflow: hidden;
 }
 
 #notification-autocomplete ul li.selected { background-color: #ffb; }
@@ -967,8 +964,16 @@ a.description {
 #content .task_active {
   border-left: solid 4px #8cacbb;
   color: #000000;
-  background-color: #EEEEEE;
+  background-color: #E3E3FF;
 }
+
+#content .task_paused {
+  border-left: solid 4px #8cacbb;
+  color: #000000;
+  background-color: #F3F3F3;
+}
+
+
 
 #content .task_lowest_pri {
   border-left: solid 4px #F3F3F3;

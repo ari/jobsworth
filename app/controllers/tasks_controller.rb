@@ -173,8 +173,6 @@ class TasksController < ApplicationController
       @groups = [@tasks]
     end
 
-
-
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
@@ -953,7 +951,8 @@ class TasksController < ApplicationController
       worklog.task = sheet.task
       worklog.customer = sheet.project.customer
       worklog.started_at = sheet.created_at
-      worklog.duration = ((Time.now.utc - sheet.created_at) / 60).to_i
+      worklog.duration = sheet.duration
+      worklog.paused_duration = sheet.paused_duration
       worklog.body = sheet.body
       worklog.log_type = WorkLog::TASK_WORK_ADDED
       if worklog.save
@@ -1001,7 +1000,8 @@ class TasksController < ApplicationController
       worklog.task = sheet.task
       worklog.customer = sheet.project.customer
       worklog.started_at = sheet.created_at
-      worklog.duration = ((Time.now.utc - sheet.created_at) / 60).to_i
+      worklog.duration = sheet.duration
+      worklog.paused_duration = sheet.paused_duration
       worklog.body = sheet.body
       worklog.log_type = WorkLog::TASK_WORK_ADDED
 
@@ -1395,5 +1395,22 @@ class TasksController < ApplicationController
     end
   end
 
+  def shortlist
+    @tasks = User.find(session[:user].id).tasks.find(:all, :conditions => ["completed_at IS NULL"])
+    render :layout => 'shortlist'
+  end
+
+  def pause_work_ajax
+    if @sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+      if @sheet.paused_at
+        @sheet.paused_duration += ((Time.now.utc - @sheet.paused_at) / 60).to_i
+        @sheet.paused_at = nil
+      else
+        @sheet.paused_at = Time.now.utc
+      end
+      @sheet.save
+      session[:sheet] = @sheet
+    end
+  end
 
 end

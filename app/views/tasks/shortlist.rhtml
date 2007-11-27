@@ -1,0 +1,7 @@
+<div id="content">
+<div id="shortlist-header" style="height:75px;"></div>
+
+<% @tasks.each do |task| %>
+<%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} %>
+<% end %>
+</div>

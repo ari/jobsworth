@@ -54,4 +54,8 @@ class WorkLog < ActiveRecord::Base
     return [results.total_hits, results]
   end
 
+  def ended_at
+    self.started_at + self.duration.minutes + self.paused_duration.minutes
+  end
+
 end

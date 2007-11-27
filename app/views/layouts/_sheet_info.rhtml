@@ -1,16 +1,27 @@
 <% if session[:sheet] -%>
 <%
    info = []
-   info << "#{worked_nice(session[:sheet].task.worked_minutes + ((Time.now.utc - session[:sheet].created_at) / 60).to_i)}" if session[:sheet].task.worked_minutes > 0
+   info << "#{worked_nice(session[:sheet].task.worked_minutes + session[:sheet].duration)}"
    info << "#{worked_nice(session[:sheet].task.duration)}" if session[:sheet].task.duration.to_i > 0
 
    info_string = " (#{info.join(" / ")})" if info.size > 0
    info_string ||= ""
 
 -%>
-  <%= link_to( session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id ) %> <br />
   <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => _("Done working on <b>%s</b> for now.", session[:sheet].task.name) ), {:controller => 'tasks', :action => 'stop_work'} )  -%>
-  <%= time_ago_in_words(session[:sheet].created_at) -%><%= info_string -%>
+  <%= link_to( session[:sheet].task.issue_name + " - " + session[:sheet].project.name + " / " + session[:sheet].task.full_tags, :controller => 'tasks', :action => 'edit', :id => session[:sheet].task.id ) %> <br />
+  <% if session[:sheet].paused? %>
+    <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
+        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task },
+        :loading => "Element.show('loading');",
+        :complete => "Element.hide('loading');" -%>
+  <% else %>
+    <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
+        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task },
+        :loading => "Element.show('loading');",
+        :complete => "Element.hide('loading');" -%>
+  <% end %>
+  <%= worked_nice(session[:sheet].duration) -%><%= info_string -%>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>
@@ -18,7 +29,7 @@
 <% end %>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (session[:sheet] ? (worked_nice(((Time.now.utc - session[:sheet].created_at) / 60).to_i) + session[:sheet].task.issue_name + " / ClockingIT") : "ClockingIT") %>";
+document.title = "<%= (session[:sheet] ? (worked_nice(session[:sheet].duration) + session[:sheet].task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 updateTooltips();
 </script>
 

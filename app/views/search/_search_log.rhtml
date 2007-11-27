@@ -2,7 +2,7 @@
 <% date_format = "#{session[:user].date_format} #{session[:user].time_format}" %>
 
 <tr class="hoverrow">
-  <td align="right" width="70px" valign="top"><%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %>-<%= "#{tz.utc_to_local(log.started_at + log.duration.minutes).strftime("%H:%M")}"%><% end %>
+  <td align="right" width="70px" valign="top"><%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %>-<%= "#{tz.utc_to_local(log.ended_at).strftime("%H:%M")}"%><% end %>
   <%= link_to "#{worked_nice(log.duration)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0)%>
   </td>
   <td align="center" width="20px" valign="top">

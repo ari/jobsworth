@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+  <head>
+    <%= javascript_include_merged :base %>
+    <%= javascript_include_merged :tt %>
+    <%= stylesheet_link_merged :tt %>
+    <%= stylesheet_link_tag "print", { :media => "print" } %>
+    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => session[:user].uuid }) %>
+
+    <title><%= controller.controller_name + " / " + controller.action_name %></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", session[:user].company.name, session[:user].company.id]) %>
+
+<% if session[:project] && session[:project].customer.css && session[:project].customer.css.length > 0 %>
+
+<style type="text/css">
+<%= session[:project].customer.css %>
+</style>
+
+<% elsif !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
+
+<style type="text/css">
+<%= @internal.css %>
+</style>
+
+<% end %>
+
+  </head>
+
+  <body id="body" style="height:100%;">
+    <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><img src="/images/spinner.gif" border="0"></div>
+    <div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;color:#666666;z-index:60;"><table border="0"><tr><td style="background-color:#ffffff;color:#666666;border:1px solid #CCCCCC;padding:0.2em;" id="message"><br/></td></tr></table></div>
+    <div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="top" width="100%">
+          <%= @content_for_layout %>
+        </td>
+      </tr>
+    </table>
+    <span id="contact" class="contact">Clocking IT v0.99.2 - <%=_ 'Feedback? Suggestions? Ideas? Bugs?'%> <a href="mailto:feedback@clockingit.com"><%=_ 'Let me know'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if session[:user].admin == 10 %></span>
+
+<%#= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
+
+<%= flash_plugin(session[:channels]) %>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+var userId=<%=session[:user].id%>;
+Event.observe(window, "load", function(e) {
+<% if session[:user].option_tooltips.to_i == 1 %>
+  makeTooltips(1);
+<% else %>
+  makeTooltips(0);
+<% end %>
+});
+// ]]>
+</script>
+
+</body>
+</html>

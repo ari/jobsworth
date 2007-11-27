@@ -1,12 +1,12 @@
-if params[:id].to_i != session[:sheet].task.id 
-	page.visual_effect(:shake, "task_#{params[:id]}")
-else 
-  	unless @old_task.nil?
-	  page.replace "task_#{@old_task.id}", :partial => "task_row", :locals => {:task => @old_task }
-	end 
-  	page.replace "task_#{session[:sheet].task.id}", :partial => "task_row", :locals => {:task => session[:sheet].task }
-	page.replace_html "menu_info", :partial => "layouts/sheet_info"
-#	page.visual_effect(:highlight, "task_#{session[:sheet].task.id}", :duration => 2.0)
-	page.call "UpdateDnD"
+if params[:id].to_i != session[:sheet].task.id
+  page.visual_effect(:shake, "task_#{params[:id]}")
+else
+  unless @old_task.nil?
+    page.replace "task_#{@old_task.id}", :partial => "task_row", :locals => {:task => @old_task }
+  end
+  page.replace "task_#{session[:sheet].task.id}", :partial => "task_row", :locals => {:task => session[:sheet].task, :depth => params[:depth].to_i || 0 }
+  page.replace_html "menu_info", :partial => "layouts/sheet_info"
+  page.visual_effect(:highlight, "task_#{session[:sheet].task_id}", :duration => 2.0)
+  page.call "UpdateDnD"
 end
 

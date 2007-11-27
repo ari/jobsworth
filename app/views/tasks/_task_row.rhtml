@@ -1,15 +1,14 @@
 <% if session[:hide_dependencies].to_i == 0 || task.active? %>
 <div id="task_<%=task.id%>"
-
 <%
  depth ||= 1
  depth = 1 if depth < 1
- priority = ""
- priority = " task_raised_pri" if (task.priority + task.severity_id)/2.0 >= 0.1 && !task.done?
- priority = " task_high_pri" if (task.priority + task.severity_id)/2.0 >= 0.51 && !task.done?
- priority = " task_crit_pri" if (task.priority + task.severity_id)/2.0 >= 1.5 && !task.done?
- priority = " task_low_pri" if (task.priority + task.severity_id)/2 < -0.51 && !task.done?
- priority = " task_lowest_pri" if (task.priority + task.severity_id)/2 < -1.5 && !task.done?
+ classes = ""
+ classes = " task_raised_pri" if (task.priority + task.severity_id)/2.0 >= 0.1 && !task.done?
+ classes = " task_high_pri" if (task.priority + task.severity_id)/2.0 >= 0.51 && !task.done?
+ classes = " task_crit_pri" if (task.priority + task.severity_id)/2.0 >= 1.5 && !task.done?
+ classes = " task_low_pri" if (task.priority + task.severity_id)/2 < -0.51 && !task.done?
+ classes = " task_lowest_pri" if (task.priority + task.severity_id)/2 < -1.5 && !task.done?
 
  can_complete = { :disabled => "disabled" } unless session[:user].can?(task.project, 'close')
  can_complete ||= {}
@@ -17,20 +16,15 @@
  can_work = { :disabled => "disabled" } unless session[:user].can?(task.project, 'work')
  can_work ||= {}
 
- priority << " #{task.project.to_css_name}"
- priority << " override_filter" if override_filter
- priority << " waiting_deferred" unless task.active?
+ classes << " #{task.project.to_css_name}"
+ classes << " override_filter" if defined?(override_filter) && override_filter
+ classes << " waiting_deferred" unless task.active?
 
-%>
-
-<% if session[:sheet] && session[:sheet].task.id == task.id %>
-class="task task_active <%=priority%>"
-<% elsif task.done? %>
-class="task task_done <%=priority%>"
-<% else %>
-class="task <%=priority%>"
-<% end %>
-style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName('task-highlight');<%=" this.down('div.popout').show();" if has_popout?(task)%> " onMouseOut="this.removeClassName('task-highlight');<%=" this.down('div.popout').hide();" if has_popout?(task)%>">
+ classes << " task_active" if session[:sheet] && session[:sheet].task_id == task.id
+ classes << " task_done" if task.done?
+ classes << " task_paused" if session[:sheet] && session[:sheet].task_id == task.id && session[:sheet].paused?
+-%>
+class="task <%=classes%>" style="margin-left:<%= 8 + (depth - 1) * 16%>px">
 
 <% @task = task %>
 
@@ -52,7 +46,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
       <% else -%>
         <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name)),
-                        :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
+                        :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task, :depth => depth },
                         :loading => "Element.show('loading');",
                         :complete => "Element.hide('loading');") -%>
       <% end -%>
@@ -88,9 +82,20 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
   <div class="popout" id="edit_task_<%=task.id%>" style="position: relative; left: -59px; top: -2.29em; z-index:10; width:55px; padding-right:2px; display: none;" align="right">
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
-          :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },
+          :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
           :loading => "Element.show('loading');",
           :complete => "Element.hide('loading');" -%>
+        <% if session[:sheet].paused? %>
+          <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
+            :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
+            :loading => "Element.show('loading');",
+            :complete => "Element.hide('loading');" -%>
+        <% else %>
+          <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
+            :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
+            :loading => "Element.show('loading');",
+            :complete => "Element.hide('loading');" -%>
+        <% end %>
       <% else -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
@@ -109,6 +114,7 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
         <% end -%>
       <% end -%>
   </div>
+
 </div>
 
 <% if session[:group_by].to_i > 2 %>
@@ -117,5 +123,23 @@ style="margin-left:<%= 8 + (depth - 1) * 16%>px"  onMouseOver="this.addClassName
 
 <div style="clear:both;"></div>
 
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+Event.observe('task_<%= task.id %>', "mouseover", function(e) {
+  $('task_<%=task.id%>').addClassName('task-highlight');
+<% if has_popout?(task) %>
+  $('edit_task_<%=task.id%>').show();
 <% end %>
+});
+Event.observe('task_<%= task.id %>', "mouseout", function(e) {
+  $('task_<%=task.id%>').removeClassName('task-highlight');
+<% if has_popout?(task) %>
+  $('edit_task_<%=task.id%>').hide();
+<% end %>
+});
+// ]]>
+</script>
 
+
+
+<% end %>
