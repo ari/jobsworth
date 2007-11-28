@@ -38,6 +38,14 @@
   margin: 0;
 }
 
+.task img {
+  margin: 0;
+}
+
+fieldset input.button {
+  margin-right: 2px;
+}
+
 #short_info {
   padding: 1em;
   color: #423f54;
