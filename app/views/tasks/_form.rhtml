@@ -247,7 +247,7 @@ function reset_owners() {
 
         <%# watchers = @task.watchers.collect {|t| t.id } %>
 
-        <label for="notification-input">Name / Email</label><input type="text" size="12" name="new_notification" id="notification-input">
+        <label for="notification-input">Name / Email</label><input type="text" size="12" name="watchers[]" id="notification-input">
         <div style="clear:both; display:none;" id="notification-autocomplete"></div>
         <div style="clear:both;" id="notifications"></div>
 <script type="text/javascript">

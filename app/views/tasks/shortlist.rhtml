@@ -1,7 +1,8 @@
 <div id="content">
-<div id="shortlist-header" style="height:75px;"></div>
-
+<fieldset id="shortlist">
+<legend>2h3m</legend>
 <% @tasks.each do |task| %>
 <%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} %>
 <% end %>
 </div>
+</fieldset>

@@ -7,6 +7,7 @@
     <%= javascript_include_merged :tt %>
     <%= stylesheet_link_merged :tt %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
+    <%= stylesheet_link_tag "shortlist" %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => session[:user].uuid }) %>
 
     <title><%= controller.controller_name + " / " + controller.action_name %></title>
@@ -26,8 +27,7 @@
 </style>
 
 <% end %>
-
-  </head>
+</head>
 
   <body id="body" style="height:100%;">
     <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><img src="/images/spinner.gif" border="0"></div>

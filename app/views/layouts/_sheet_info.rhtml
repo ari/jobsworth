@@ -14,7 +14,7 @@
     <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
         :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task },
         :loading => "Element.show('loading');",
-        :complete => "Element.hide('loading');" -%>
+        :complete => "Element.hide('loading');" -%> [<%= _('Paused') %>]
   <% else %>
     <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
         :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task },

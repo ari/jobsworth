@@ -2,7 +2,7 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 88) do
+ActiveRecord::Schema.define(:version => 89) do
 
   create_table "companies", :force => true do |t|
     t.column "name",          :string,   :limit => 200, :default => "", :null => false
@@ -264,11 +264,13 @@ ActiveRecord::Schema.define(:version => 88) do
   add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
 
   create_table "sheets", :force => true do |t|
-    t.column "user_id",    :integer,  :default => 0, :null => false
-    t.column "task_id",    :integer,  :default => 0, :null => false
-    t.column "project_id", :integer,  :default => 0, :null => false
-    t.column "created_at", :datetime
-    t.column "body",       :text
+    t.column "user_id",         :integer,  :default => 0, :null => false
+    t.column "task_id",         :integer,  :default => 0, :null => false
+    t.column "project_id",      :integer,  :default => 0, :null => false
+    t.column "created_at",      :datetime
+    t.column "body",            :text
+    t.column "paused_at",       :datetime
+    t.column "paused_duration", :integer,  :default => 0
   end
 
   create_table "shout_channel_subscriptions", :force => true do |t|
@@ -471,6 +473,7 @@ ActiveRecord::Schema.define(:version => 88) do
     t.column "body",             :text
     t.column "log_type",         :integer,  :default => 0
     t.column "scm_changeset_id", :integer
+    t.column "paused_duration",  :integer,  :default => 0
   end
 
   add_index "work_logs", ["user_id"], :name => "work_logs_user_id"
