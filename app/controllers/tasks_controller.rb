@@ -1094,7 +1094,22 @@ class TasksController < ApplicationController
   end
 
   def filter_shortlist
+
+    tmp = { }
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+      tmp[v] = session[v]
+    end
+
     do_filter
+
+    session[:filter_project_short] = session[:filter_project]
+    session[:filter_customer_short] = session[:filter_customer]
+    session[:filter_milestone_short] = session[:filter_milestone]
+
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+      session[v] = tmp[v]
+    end
+
     redirect_to :controller => 'tasks', :action => 'shortlist'
   end
 
@@ -1417,8 +1432,95 @@ class TasksController < ApplicationController
     end
   end
 
+  def create_shortlist_ajax
+
+    if !params[:task][:name] || params[:task][:name].empty?
+      render :update do |page|
+        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+
+    @task = Task.new
+    @task.name = params[:task][:name]
+    @task.company_id = session[:user].company_id
+    @task.updated_by_id = session[:user].id
+    @task.creator_id = session[:user].id
+    @task.duration = 0
+    @task.set_task_num(session[:user].company_id)
+
+    if session[:filter_milestone_short]
+      @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_milestone_short]]).project
+      @task.milestone_id = session[:filter_milestone_short].to_i
+    else
+      @task.project_id = session[:filter_project_short].to_i
+      @task.milestone_id = nil
+    end
+
+    @task.save
+    @task.reload
+
+    unless @task.id
+      render :update do |page|
+        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    else
+      to = TaskOwner.new(:user => session[:user], :task => @task)
+      to.save
+
+      worklog = WorkLog.new
+      worklog.user = session[:user]
+      worklog.company = @task.project.company
+      worklog.customer = @task.project.customer
+      worklog.project = @task.project
+      worklog.task = @task
+      worklog.started_at = Time.now.utc
+      worklog.duration = 0
+      worklog.log_type = WorkLog::TASK_CREATED
+      worklog.body = ""
+      worklog.save
+      if params['notify'].to_i == 1
+        Notifications::deliver_created( @task, session[:user], params[:comment]) rescue begin end
+      end
+
+      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+
+      render :update do |page|
+        page.insert_html :bottom, "shortlist-tasks", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
+        page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
+        page << "$('task_name').focus();"
+        page.call("fixShortLinks")
+        page.call("updateTooltips")
+      end
+    end
+  end
+
   def shortlist
+    tmp = { }
+    # Save filtering
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+      tmp[v] = session[v]
+    end
+    do_filter
+
+    session[:filter_project] = session[:filter_project_short]
+    session[:filter_customer] = session[:filter_customer_short]
+    session[:filter_milestone] = session[:filter_milestone_short]
+    session[:filter_user] = session[:user].id.to_s
+    session[:filter_hidden] = "0"
+    session[:filter_status] = "0"
+    session[:group_by] = "0"
+    session[:hide_dependencies] = "1"
+    session[:sort] = "0"
+
     self.list
+
+    # Restore filtering
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+      session[v] = tmp[v]
+    end
+
     render :layout => 'shortlist'
   end
 

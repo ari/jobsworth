@@ -12,28 +12,54 @@
       <% @clients.each do |c| %>
         <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"], :order => "name") %>
         <% if @client_projects.size > 0 %>
-          <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
+          <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer_short].to_i %>><%= c[0] %></option>
           <% @client_projects.each do |p| %>
-            <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>>&nbsp;&nbsp;<%= p.name %></option>
+            <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project_short].to_i && -1 != session[:filter_milestone_short].to_i) %>>&nbsp;&nbsp;<%= p.name %></option>
             <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p.id} AND completed_at IS NULL"], :order => "due_at, name") %>
             <% if @project_milestones.size > 0 -%>
               <% @project_milestones.each do |m| -%>
-                <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
+                <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone_short].to_i%>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
               <% end -%>
-              <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
+              <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone_short].to_i == -1 && session[:filter_project_short].to_i == p.id %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
             <% end -%>
           <% end -%>
         <% end -%>
       <% end %>
     </select>
     <%= end_form_tag %>
+    <div id="shortlist-tasks">
     <% @tasks.each do |task| -%>
       <%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} -%>
     <% end -%>
+    </div>
+    <% if session[:filter_project_short].to_i > 0 || session[:filter_milestone_short].to_i > 0 %>
+<%= form_remote_tag :url => { :action => 'create_shortlist_ajax' } ,
+       :loading => "Element.show('loading');",
+       :complete => "Element.hide('loading');",
+       :success => "$('task_name').clear();"
+%>
+    <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
+<% end_form_tag %>
+    <% end %>
   </fieldset>
 </div>
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
 fixShortLinks();
+Element.observe('task_name', 'focus', function(e) {
+  var el = Event.element(e);
+  if(el.value == '<%= _'New Task' %>') {
+    Event.element(e).clear();
+    el.removeClassName('initial');
+  }
+});
+
+Event.observe(window, "load", function(e) {
+  var el = $('task_name');
+  if( el.value == '<%= _'New Task' %>') {
+    el.addClassName('initial');
+  }
+});
+
 // ]]>
 </script>

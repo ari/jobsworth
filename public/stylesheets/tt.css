@@ -189,6 +189,10 @@ body, p, ol, ul, td, tr {
   font-size: 11px;
 }
 
+.task-name {
+  float: left;
+}
+
 .task input {
   margin: 0 0 1px 0px;
 }
@@ -1673,4 +1677,9 @@ li.help {
 
 .notify-row {
   clear:both;
+}
+
+.informal {
+  font-weight: normal;
+  font-style: underline;
 }

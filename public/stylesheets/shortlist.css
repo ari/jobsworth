@@ -9,6 +9,7 @@
 #content .task-name {
   padding-top: 0.2em;
   overflow: hidden;
+  float: none;
 }
 
 .task a {
@@ -53,8 +54,18 @@ fieldset input.button {
   border: 1px solid #b7b7b7;
 }
 
-
-
 .popout {
   display: none;
+}
+
+#task_name {
+  float: none;
+  margin-top: 1em;
+  margin-right: 1em;
+  padding: 0px 0px;
+  width: 100%;
+}
+
+.initial {
+  color: #acacac;
 }
