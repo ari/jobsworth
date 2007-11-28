@@ -88,8 +88,6 @@ function tip(myEvent){
   document.getElementById("tip").style.visibility="visible";
 }
 
-
-
 function hide(e){
         document.getElementById("tip").style.visibility="hidden";
         self.status="ClockingIT v0.99";
@@ -281,4 +279,22 @@ function updateSelect(sel, response) {
    for( var i=0; i<opts.length; i++ ) {
      sel.options[i] = new Option(opts[i].text,opts[i].value,null,false);
    }
+}
+
+function fixShortLinks() {
+  $$('.task-name a').each(function(e) {
+      e.target = '_blank';
+    });
+
+  $$('a.stop-work-link').each(function(e) {
+      if( e.href != '#' ) {
+        Event.observe(e, "click", function(e) {
+            new Ajax.Request('/tasks/stop_work_shortlist', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});
+            return false;
+          });
+        e.href = '#';
+      }
+
+    });
+
 }

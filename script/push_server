@@ -124,6 +124,7 @@ module Juggernaut
     end
 
     def broadcast(data)
+      puts "Sending[#{data}]"
       receivers = nil
       synchronize do
         receivers = @subscribers.dup

@@ -43,7 +43,7 @@ class="task <%=classes%>" style="margin-left:<%= 8 + (depth - 1) * 16%>px">
 
     <% if session[:user].option_tracktime.to_i == 1 && can_work.size == 0 -%>
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>
-        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
       <% else -%>
         <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name)),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task, :depth => depth },
@@ -55,7 +55,7 @@ class="task <%=classes%>" style="margin-left:<%= 8 + (depth - 1) * 16%>px">
    <% end -%>
    </div>
 
-   <div class="task-name" style="padding-left:2px;float:left;">
+   <div class="task-name" style="padding-left:2px;">
 
    <%= link_to_task(task) -%>
 

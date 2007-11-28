@@ -1,2 +1,9 @@
+page << "if($('menu_info')) {"
 page.replace_html 'menu_info', :partial => 'layouts/sheet_info'
 page.replace_html 'menu_login', :partial => 'layouts/login_info'
+page << "}"
+
+page << "if($('shortlist-legend')) {"
+page.replace_html "shortlist-legend", :partial => "short_legend"
+page.call "UpdateDnD"
+page << "}"

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
 #  model :sheet
 #  model :task
 
-  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :ical, :ical_all, :about, :company_check, :subdomain_check, :unsubscribe ]
+  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :ical, :ical_all, :about, :company_check, :subdomain_check, :unsubscribe, :shortlist_auth ]
 
   after_filter :set_charset
   after_filter OutputCompressionFilter

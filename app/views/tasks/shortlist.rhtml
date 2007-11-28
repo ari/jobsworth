@@ -1,8 +1,39 @@
 <div id="content">
-<fieldset id="shortlist">
-<legend>2h3m</legend>
-<% @tasks.each do |task| %>
-<%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} %>
-<% end %>
+  <div id="short_info">
+    <%= render :partial => "layouts/short_info" %>
+  </div>
+  <fieldset id="shortlist">
+    <legend id="shortlist-legend"><%= render :partial => 'short_legend' %></legend>
+    <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]} %>
+    <%= start_form_tag( :controller => 'tasks', :action => 'filter_shortlist' ) %>
+    <select name="filter" id="filter" onchange="javascript:document.forms[0].submit();">
+      <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
+
+      <% @clients.each do |c| %>
+        <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"], :order => "name") %>
+        <% if @client_projects.size > 0 %>
+          <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
+          <% @client_projects.each do |p| %>
+            <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>>&nbsp;&nbsp;<%= p.name %></option>
+            <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p.id} AND completed_at IS NULL"], :order => "due_at, name") %>
+            <% if @project_milestones.size > 0 -%>
+              <% @project_milestones.each do |m| -%>
+                <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
+              <% end -%>
+              <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
+            <% end -%>
+          <% end -%>
+        <% end -%>
+      <% end %>
+    </select>
+    <%= end_form_tag %>
+    <% @tasks.each do |task| -%>
+      <%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} -%>
+    <% end -%>
+  </fieldset>
 </div>
-</fieldset>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+fixShortLinks();
+// ]]>
+</script>

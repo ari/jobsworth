@@ -1032,6 +1032,18 @@ class TasksController < ApplicationController
 
   end
 
+  def stop_work_shortlist
+    unless session[:sheet]
+      render :nothing => true
+      return
+    end
+
+    @task = session[:sheet].task
+    swap_work_ajax
+#    redirect_to :action => 'shortlist'
+  end
+
+
   def update_sheet_info
   end
 
@@ -1040,7 +1052,7 @@ class TasksController < ApplicationController
     ActiveRecord::Base.connection.execute("update users set last_seen_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
   end
 
-  def filter
+  def do_filter
 
     f = params[:filter]
 
@@ -1074,10 +1086,16 @@ class TasksController < ApplicationController
     session[:user].last_milestone_id = session[:filter_milestone]
     session[:user].last_project_id = session[:filter_project]
     session[:user].save
+  end
 
+  def filter
+    do_filter
     redirect_to :controller => 'tasks', :action => 'list'
+  end
 
-
+  def filter_shortlist
+    do_filter
+    redirect_to :controller => 'tasks', :action => 'shortlist'
   end
 
   def edit_log
@@ -1400,7 +1418,7 @@ class TasksController < ApplicationController
   end
 
   def shortlist
-    @tasks = User.find(session[:user].id).tasks.find(:all, :conditions => ["completed_at IS NULL"])
+    self.list
     render :layout => 'shortlist'
   end
 

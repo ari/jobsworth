@@ -66,17 +66,18 @@ module ApplicationHelper
   end
 
   def total_today
-    @logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", session[:user].id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
-    total = 0
-    @logs.each { |l|
-    total = total + l.duration
+    return @total if @total
+    @total = 0
+    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", session[:user].id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
+    logs.each { |l|
+      @total = @total + l.duration
     }
 
     if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task_id])
-      total = total + ((Time.now.utc - sheet.created_at) / 60).to_i
+      @total = @total + sheet.duration
     end
 
-    total
+    @total
   end
 
   def due_time(from_time, to_time = 0)

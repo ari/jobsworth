@@ -264,4 +264,20 @@ class LoginController < ApplicationController
     end
   end
 
+  def shortlist_auth
+    return if params[:id].nil? || params[:id].empty?
+    user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
+
+    if user.nil?
+      render :nothing => true, :layout => false
+      return
+    end
+
+    session[:user] = user
+    authorize
+
+    redirect_to :controller => 'tasks', :action => 'shortlist'
+
+  end
+
 end
