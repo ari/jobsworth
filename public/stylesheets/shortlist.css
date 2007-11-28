@@ -1,0 +1,29 @@
+.task_info  {
+  display: none;
+}
+
+#content .task {
+  height: 16px;
+  overflow: hidden;
+}
+
+#content .task-name {
+  padding-top: 0.2em;
+}
+
+.task a {
+  font-size: 12px;
+}
+
+.avatar {
+  display: none;
+}
+
+.task small {
+  font-size: 12px;
+}
+
+#content legend {
+  font-size: 16px;
+  padding: 5px;
+}
