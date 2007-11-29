@@ -20,7 +20,7 @@
     <%
     end
     %>
-    <%= render_partial 'activities/log_row', { :log => log } %>
+    <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
   <% end %>
   </table>
   <% end %>

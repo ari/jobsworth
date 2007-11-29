@@ -14,7 +14,7 @@
     </tr>
 </table>
 <table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0" id="content">
-<%= render_partial "form" %>
+<%= render :partial => "form" %>
 <tr><td colspan="1" valign="top">
 <%= submit_tag _("Create"), :class => "nolabel" %>
 <%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %><%=_ 'Send notification emails'%><br/>

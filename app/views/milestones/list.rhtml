@@ -8,7 +8,7 @@
             </td>
           </tr>
           <% for milestone in @milestones %>
-          <%= render_partial 'milestone_row', { :milestone => milestone } %>
+          <%= render :partial => 'milestone_row', :locals => { :milestone => milestone } %>
           <% end %>
 
           <tr>

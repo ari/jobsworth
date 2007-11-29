@@ -5,7 +5,7 @@
           <legend><%=_ 'Edit Project' %></legend>
 
           <%= start_form_tag :action => 'update', :id => @project %>
-          <%= render_partial "form" %>
+          <%= render :partial => "form" %>
           <%= submit_tag _("Edit"), :class => 'nolabel' %>
           <%= end_form_tag %>
           <br />

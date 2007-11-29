@@ -4,7 +4,7 @@
 <% form_for(:file, :url => {:action => 'upload' },
      :html => {:multipart => "true", :target => 'up_frame'} ) do |f|
  %>
-  <%= render_partial "form" %>
+  <%= render :partial => "form" %>
   <%= submit_tag _("Upload"), :style => 'margin-left:11.6em;' %>
     <div style="padding-top:0.2em;"> <%= _("or") %>
     <%= link_to_function _("Cancel") do |page|

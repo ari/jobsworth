@@ -2,7 +2,7 @@
 <legend><%=_ 'Edit Client' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @customer %>
-  <%= render_partial "form" %>
+  <%= render :partial => "form" %>
   <%= submit_tag _("Edit"), :class => "nolabel" %>
 <%= end_form_tag %>
 </fieldset>

@@ -2,7 +2,7 @@
 <legend><%=_ 'Edit Log Entry' %></legend>
 
 <%= start_form_tag :action => 'save_log', :id => @log %>
-  <%= render_partial "form_edit_log" %>
+  <%= render :partial => "form_edit_log" %>
 <%
 
  options = []

@@ -2,7 +2,7 @@
 <legend><%=_ 'Preferences' %></legend>
 
 <%= start_form_tag :action => 'update_preferences', :id => @user %>
-  <%= render_partial "preferences" %>
+  <%= render :partial => "preferences" %>
   <%= submit_tag _("Save"), :class => 'nolabel' %>
 <%= end_form_tag %>
 

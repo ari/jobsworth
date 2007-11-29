@@ -2,7 +2,7 @@
 <legend><%=_ 'Edit Milestone' %></legend>
 
 <%= start_form_tag :action => 'update', :id => @milestone %>
-  <%= render_partial 'form' %>
+  <%= render :partial => 'form' %>
   <%= submit_tag _('Edit'), :class => 'nolabel' %>
 <%= end_form_tag %>
 <br/>

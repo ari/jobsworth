@@ -18,13 +18,13 @@
   <tr>
     <td id="files">
 <% for folder in @project_folders %>
-  <%= render_partial 'folder_cell', {:folder => folder } %>
+  <%= render :partial => 'folder_cell', :locals => {:folder => folder } %>
 <% end %>
 <div id="dir_sep" style="display:none; float:left;">&nbsp;</div>
 <% if @project_files
   for project_files in @project_files
 %>
-    <%= render_partial 'file_cell', {:project_files => project_files}%>
+    <%= render :partial => 'file_cell', :locals => {:project_files => project_files}%>
 <% end %>
 <% end %>
     </td>
