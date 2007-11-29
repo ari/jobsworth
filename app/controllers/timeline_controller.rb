@@ -49,12 +49,11 @@ class TimelineController < ApplicationController
 
       end
 
-    @offset = params[:page].to_i * 100
+#    @offset = params[:page].to_i * 100
 
-    @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", session[:user].company_id], :include => [:user, {:task => [ :tags ]}, :project, ],
-                         :limit => 100, :offset => @offset )
+    @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", session[:user].company_id], :include => [:user, {:task => [ :tags ]}, :project, ], :per_page => 100, :page => params[:page] )
 
-    @count = WorkLog.count(:conditions => ["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", session[:user].company_id])
+#    @count = WorkLog.count(:conditions => ["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", session[:user].company_id])
   end
 
 end

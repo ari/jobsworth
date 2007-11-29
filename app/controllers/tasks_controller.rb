@@ -1507,11 +1507,10 @@ class TasksController < ApplicationController
     [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
       tmp[v] = session[v]
     end
-    do_filter
 
-    session[:filter_project] = session[:filter_project_short]
-    session[:filter_customer] = session[:filter_customer_short]
-    session[:filter_milestone] = session[:filter_milestone_short]
+    session[:filter_project] = session[:filter_project_short] if session[:filter_project_short]
+    session[:filter_customer] = session[:filter_customer_short] if session[:filter_project_short]
+    session[:filter_milestone] = session[:filter_milestone_short] if session[:filter_project_short]
     session[:filter_user] = session[:user].id.to_s
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"

@@ -70,16 +70,8 @@
 
           <tr><td colspan="3">&nbsp;</td></tr>
           <tr><td colspan="3">
-              <% offset = "#{@logs.size}" if @offset == 0
-                 offset = "#{@offset + 1} - #{@offset + 100}" if @offset > 0
-                 offset = "#{@offset + 1} - #{@count}" if (@offset + 100 > @count && @count > 0)
-              %>
               <span class="paging_header">
-              <%= link_to(_('[Prev]'), { :action => 'list', :page => params[:page].to_i - 1, :filter_status => params[:filter_status], :filter_user => params[:filter_user],
-                          :filter_project => params[:filter_project], :filter_date => params[:filter_date] }) if (@offset > 0) %>
-              <%= offset %> <%=_ 'of' %> <%= @count %> <%=_ 'entries..' %>
-              <%= link_to('[Next]', { :action => 'list', :page => params[:page].to_i + 1, :filter_status => params[:filter_status], :filter_user => params[:filter_user],
-                          :filter_project => params[:filter_project], :filter_date => params[:filter_date]}) if (@offset+100 < @count) %>
+                <%= will_paginate @logs %>
               </span>
             </td>
           </tr>
