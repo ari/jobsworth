@@ -1,10 +1,10 @@
 <table border="0" cellspacing="0" cellpadding="2" id="add-channel">
 <tr>
   <td valign="top">
-<%= form_remote_tag :url => { :action => 'create_ajax' } ,
+<% form_remote_tag :url => { :action => 'create_ajax' } ,
        :loading => "Element.show('loading');",
        :complete => "Element.hide('loading');",
-       :html => { :id => 'channel-add-form' }
+       :html => { :id => 'channel-add-form' } do
 %>
 
   <fieldset>
@@ -28,7 +28,7 @@
     <label for="channel_description"><%=_ 'Description' %></label><%= text_area 'channel', 'description', { :cols => 17, :rows => 4 } %><br />
 <%= submit_tag _("Create"), :style => "clear:left;margin-left:11.6em;" %><div style="float:left;margin-top:0.3em;"> or <a href="#" onclick="$('channel-add-container').hide();false;">Cancel</a></div>
   </fieldset>
-<%= end_form_tag %>
+<% end %>
   </td>
   <td valign="top" width="20%" class="optional">
     <p>You can have as many chat rooms as you like. They can be limited to a project or public across all your users.</p>

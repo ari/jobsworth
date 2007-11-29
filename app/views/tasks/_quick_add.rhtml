@@ -11,10 +11,10 @@
 
 %>
 
-<%= form_remote_tag :url => { :action => 'create_ajax' } ,
+<% form_remote_tag :url => { :action => 'create_ajax' } ,
        :loading => "Element.show('loading');",
        :complete => "Element.hide('loading');",
-       :html => { :id => 'quick-add-form' }
+       :html => { :id => 'quick-add-form' } do
 %>
 
 <table border="0" cellspacing="0" cellpadding="2" id="quick-add-task">
@@ -159,7 +159,7 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 </table>
 <%= submit_tag _("Create"), :class => "nolabel" %> or <a href="#" onclick="$('quick_add_container').hide();false;">Cancel</a>
 <%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
-<%= end_form_tag %>
+<% end %>
 <script type="text/javascript">
 $('task_name').focus();
 </script>
