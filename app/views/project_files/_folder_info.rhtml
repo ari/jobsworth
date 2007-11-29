@@ -9,7 +9,7 @@
            end
 
            if folder.total_size > 0
-             info += ["#{human_size(folder.total_size)}"]
+             info += ["#{number_to_human_size(folder.total_size)}"]
            end
 
            if info.size == 0
