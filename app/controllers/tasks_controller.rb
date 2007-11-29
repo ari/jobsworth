@@ -1449,12 +1449,17 @@ class TasksController < ApplicationController
     @task.duration = 0
     @task.set_task_num(session[:user].company_id)
 
-    if session[:filter_milestone_short]
+    if session[:filter_milestone_short].to_i > 0
       @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_milestone_short]]).project
       @task.milestone_id = session[:filter_milestone_short].to_i
-    else
+    elsif session[:filter_project_short].to_i > 0
       @task.project_id = session[:filter_project_short].to_i
       @task.milestone_id = nil
+    else
+      render :update do |page|
+        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
     end
 
     @task.save
