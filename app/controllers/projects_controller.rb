@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = User.find(session[:user].id).projects.find(@params[:id], :conditions => ["projects.company_id = ?", session[:user].company_id])
+    @project = User.find(session[:user].id).projects.find(params[:id], :conditions => ["projects.company_id = ?", session[:user].company_id])
     if @project.nil?
       redirect_to :controller => 'activities', :action => 'list'
       return false
@@ -96,10 +96,10 @@ class ProjectsController < ApplicationController
   end
 
   def update
-    @project = User.find(session[:user].id).projects.find(@params[:id])
+    @project = User.find(session[:user].id).projects.find(params[:id])
     old_client = @project.customer_id
 
-    if @project.update_attributes(@params[:project])
+    if @project.update_attributes(params[:project])
 
       # Need to update work-sheet entries?
       if @project.customer_id != old_client
@@ -114,7 +114,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = User.find(session[:user].id).projects.find(@params[:id])
+    @project = User.find(session[:user].id).projects.find(params[:id])
     @project.pages.destroy_all
     @project.sheets.destroy_all
     @project.tasks.destroy_all
@@ -136,7 +136,7 @@ class ProjectsController < ApplicationController
 
   def select
     user = User.find(session[:user].id)
-    @project = user.projects.find(@params[:id])
+    @project = user.projects.find(params[:id])
     if user.respond_to?(:last_project_id)
       user.last_project_id = @project.id
       user.save

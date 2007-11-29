@@ -19,14 +19,14 @@ class MilestonesController < ApplicationController
   end
 
   def create
-    @params_milestone = @params[:milestone]
+    params_milestone = params[:milestone]
 
     @milestone = Milestone.new(params[:milestone])
 
 
-    if !@params[:milestone][:due_at].nil? && @params[:milestone][:due_at].length > 0
+    if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       begin
-        due_date = DateTime.strptime( @params[:milestone][:due_at], session[:user].date_format )
+        due_date = DateTime.strptime( params[:milestone][:due_at], session[:user].date_format )
       rescue
         due_date = nil
       end
@@ -52,8 +52,8 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
 
     @milestone.attributes = params[:milestone]
-    if !@params[:milestone][:due_at].nil? && @params[:milestone][:due_at].length > 0
-      due_date = DateTime.strptime( @params[:milestone][:due_at], session[:user].date_format )
+    if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
+      due_date = DateTime.strptime( params[:milestone][:due_at], session[:user].date_format )
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
     if @milestone.save

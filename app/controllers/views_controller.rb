@@ -22,15 +22,15 @@ class ViewsController < ApplicationController
   end
 
   def edit
-    @view = View.find(@params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
+    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
     @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids })
   end
 
   def update
-    @view = View.find(@params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
-    @view.attributes = @params[:view]
-    @view.shared = 0 if @params[:view][:shared].nil?
-    @view.auto_group = 0 unless @params[:view][:auto_group]
+    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
+    @view.attributes = params[:view]
+    @view.shared = 0 if params[:view][:shared].nil?
+    @view.auto_group = 0 unless params[:view][:auto_group]
     @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
       unless t.length == 0
         t.strip.downcase
@@ -70,7 +70,7 @@ class ViewsController < ApplicationController
   end
 
   def destroy
-    @view = View.find(@params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
+    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", session[:user].company_id, session[:user].id])
     flash['notice'] = _("View '%s' was deleted.", @view.name)
     @view.destroy
     redirect_from_last

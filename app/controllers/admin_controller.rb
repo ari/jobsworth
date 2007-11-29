@@ -26,12 +26,12 @@ class AdminController < ApplicationController
   end
 
   def edit_news
-    @news = NewsItem.find(@params[:id])
+    @news = NewsItem.find(params[:id])
   end
 
   def update_news
-    @news = NewsItem.find(@params[:id])
-    if @news.update_attributes(@params[:news])
+    @news = NewsItem.find(params[:id])
+    if @news.update_attributes(params[:news])
       flash['notice'] = 'NewsItem was successfully updated.'
       redirect_to :action => 'news'
     else
@@ -40,7 +40,7 @@ class AdminController < ApplicationController
   end
 
   def delete_news
-      NewsItem.find(@params[:id]).destroy
+      NewsItem.find(params[:id]).destroy
       redirect_to :action => 'news'
   end
 
@@ -51,7 +51,7 @@ class AdminController < ApplicationController
 
   # Show a single logo
   def show_logo
-    @customer = Customer.find(@params[:id])
+    @customer = Customer.find(params[:id])
     image = Magick::Image.read( @customer.logo_path ).first
     if image
       send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'

@@ -47,7 +47,7 @@ class LoginController < ApplicationController
   end
 
   def validate
-    @user = User.new(@params[:user])
+    @user = User.new(params[:user])
     subdomain = 'www'
     subdomain = request.subdomains.first if request.subdomains
     if logged_in = @user.login(subdomain)
@@ -101,10 +101,10 @@ class LoginController < ApplicationController
     flash[:notice] = ""
     error = 0
 
-    if @params[:email].length == 0
+    if params[:email].length == 0
       flash[:notice] += "* Enter your email<br/>"
       error = 1
-    elsif User.count(["email = ?", @params[:email]]) == 0
+    elsif User.count(["email = ?", params[:email]]) == 0
       flash[:notice] += "* No such email<br/>"
       error = 1
     end
@@ -129,7 +129,7 @@ class LoginController < ApplicationController
 
     error = 0
 
-    unless @params[:username]
+    unless params[:username]
       @user = User.new
       @company = Company.new
       render :action => 'signup'
@@ -140,51 +140,51 @@ class LoginController < ApplicationController
 
 
     # FIXME: Use models validation instead
-    if @params[:username].length == 0
+    if params[:username].length == 0
       flash[:notice] += "* Enter username<br/>"
       error = 1
     end
 
-    if @params[:password].length == 0
+    if params[:password].length == 0
       flash[:notice] += "* Enter password<br/>"
       error = 1
     end
 
-    if @params[:password_again].length == 0
+    if params[:password_again].length == 0
       flash[:notice] += "* Enter password again<br/>"
       error = 1
     end
 
-    if @params[:password_again] != @params[:password]
+    if params[:password_again] != params[:password]
       flash[:notice] += "* Password and Password Again don't match<br/>"
       error = 1
     end
 
-    if @params[:name].length == 0
+    if params[:name].length == 0
       flash[:notice] += "* Enter your name<br/>"
       error = 1
     end
 
-    if @params[:email].length == 0
+    if params[:email].length == 0
       flash[:notice] += "* Enter your email<br/>"
       error = 1
     end
 
-    if @params[:company].length == 0
+    if params[:company].length == 0
       flash[:notice] += "* Enter your company name<br/>"
       error = 1
-    elsif Company.count(["name = ?", @params[:company]]) > 0
+    elsif Company.count(["name = ?", params[:company]]) > 0
       flash[:notice] += "* Company name taken. If someone at your company is using Clocking IT, have them create an account for you so you end up in the same company.<br/>"
       error = 1
     end
 
-    if @params[:subdomain].length == 0
+    if params[:subdomain].length == 0
       flash[:notice] += "* Enter your preferred URL for company access<br/>"
       error = 1
-    elsif @params[:subdomain].match(/[\W _]/) != nil
+    elsif params[:subdomain].match(/[\W _]/) != nil
       flash[:notice] += "* Login URL can only contain letters and numbers, no spaces."
       error = 1
-    elsif Company.count(["subdomain = ?", @params[:subdomain]]) > 0
+    elsif Company.count(["subdomain = ?", params[:subdomain]]) > 0
       flash[:notice] += "* Login url already taken. Please choose another one."
       error = 1
     end
@@ -194,12 +194,12 @@ class LoginController < ApplicationController
       @user = User.new
       @company = Company.new
 
-      @user.name = @params[:name]
-      @user.username = @params[:username]
-      @user.password = @params[:password]
-      @user.email = @params[:email]
-      @user.time_zone = @params[:user][:time_zone]
-      @user.locale = @params[:user][:locale]
+      @user.name = params[:name]
+      @user.username = params[:username]
+      @user.password = params[:password]
+      @user.email = params[:email]
+      @user.time_zone = params[:user][:time_zone]
+      @user.locale = params[:user][:locale]
       @user.option_externalclients = 1
       @user.option_tracktime = 1
       @user.option_showcalendar = 1
@@ -208,10 +208,10 @@ class LoginController < ApplicationController
       @user.time_format = "%H:%M"
       @user.admin = 1
 
-      @company.name = @params[:company]
-      @company.contact_email = @params[:email]
-      @company.contact_name = @params[:name]
-      @company.subdomain = @params[:subdomain].downcase
+      @company.name = params[:company]
+      @company.contact_email = params[:email]
+      @company.contact_name = params[:name]
+      @company.subdomain = params[:subdomain].downcase
 
 
       if @company.save
