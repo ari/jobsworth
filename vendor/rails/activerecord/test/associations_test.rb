@@ -10,6 +10,8 @@ require 'fixtures/order'
 require 'fixtures/category'
 require 'fixtures/post'
 require 'fixtures/author'
+require 'fixtures/person'
+require 'fixtures/reader'
 
 
 class AssociationsTest < Test::Unit::TestCase
@@ -20,6 +22,14 @@ class AssociationsTest < Test::Unit::TestCase
     assert_raise(ArgumentError, 'ActiveRecord should have barked on bad collection keys') do
       Class.new(ActiveRecord::Base).has_many(:wheels, :name => 'wheels')
     end
+  end
+  
+  def test_should_construct_new_finder_sql_after_create
+    person = Person.new
+    assert_equal [], person.readers.find(:all)
+    person.save!
+    reader = Reader.create! :person => person, :post => Post.new(:title => "foo", :body => "bar")
+    assert_equal [reader], person.readers.find(:all)
   end
 
   def test_force_reload
@@ -67,8 +77,8 @@ class AssociationsTest < Test::Unit::TestCase
 end
 
 class AssociationProxyTest < Test::Unit::TestCase
-  fixtures :authors, :posts
-  
+  fixtures :authors, :posts, :developers, :projects, :developers_projects
+
   def test_proxy_accessors
     welcome = posts(:welcome)
     assert_equal  welcome, welcome.author.proxy_owner
@@ -86,6 +96,19 @@ class AssociationProxyTest < Test::Unit::TestCase
     assert_equal  david.class.reflect_on_association(:posts_with_extension), david.posts_with_extension.testing_proxy_reflection
     david.posts_with_extension.first   # force load target
     assert_equal  david.posts_with_extension, david.posts_with_extension.testing_proxy_target
+  end
+
+  def test_save_on_parent_does_not_load_target
+    david = developers(:david)
+
+    assert !david.projects.loaded?
+    david.update_attribute(:created_at, Time.now)
+    assert !david.projects.loaded?
+  end
+
+  def test_save_on_parent_saves_children
+    developer = Developer.create :name => "Bryan", :salary => 50_000
+    assert_equal 1, developer.reload.audit_logs.size
   end
 end
 
@@ -583,6 +606,13 @@ class HasManyAssociationsTest < Test::Unit::TestCase
     assert_equal 3, first_firm.plain_clients.size
   end
   
+  def test_regular_create_on_has_many_when_parent_is_new_raises
+    assert_deprecated(/.build instead/) do
+      firm = Firm.new
+      firm.plain_clients.create :name=>"Whoever"
+    end
+  end
+
   def test_adding_a_mismatch_class
     assert_raises(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << nil }
     assert_raises(ActiveRecord::AssociationTypeMismatch) { companies(:first_firm).clients_of_firm << 1 }
@@ -1007,7 +1037,20 @@ class BelongsToAssociationsTest < Test::Unit::TestCase
     citibank.firm = apple
     assert_equal apple.id, citibank.firm_id
   end
-  
+
+  def test_no_unexpected_aliasing
+    first_firm = companies(:first_firm)
+    another_firm = companies(:another_firm)
+
+    citibank = Account.create("credit_limit" => 10)
+    citibank.firm = first_firm
+    original_proxy = citibank.firm
+    citibank.firm = another_firm
+
+    assert_equal first_firm.object_id, original_proxy.object_id
+    assert_equal another_firm.object_id, citibank.firm.object_id
+  end
+
   def test_creating_the_belonging_object
     citibank = Account.create("credit_limit" => 10)
     apple    = citibank.create_firm("name" => "Apple")
@@ -1805,5 +1848,70 @@ class HasAndBelongsToManyAssociationsTest < Test::Unit::TestCase
     join_dep  = ActiveRecord::Associations::ClassMethods::JoinDependency.new(join_base, :developers, nil)
     projects  = Project.send(:select_limited_ids_list, {:order => 'developers.created_at'}, join_dep)
     assert_equal %w(1 2), projects.scan(/\d/).sort
+  end
+end
+
+
+class OverridingAssociationsTest < Test::Unit::TestCase
+  class Person < ActiveRecord::Base; end
+  class DifferentPerson < ActiveRecord::Base; end
+
+  class PeopleList < ActiveRecord::Base
+    has_and_belongs_to_many :has_and_belongs_to_many, :before_add => :enlist
+    has_many :has_many, :before_add => :enlist
+    belongs_to :belongs_to
+    has_one :has_one
+  end
+
+  class DifferentPeopleList < PeopleList
+    # Different association with the same name, callbacks should be omitted here.
+    has_and_belongs_to_many :has_and_belongs_to_many, :class_name => 'DifferentPerson'
+    has_many :has_many, :class_name => 'DifferentPerson'
+    belongs_to :belongs_to, :class_name => 'DifferentPerson', :foreign_key => 'belongs_to_id'
+    has_one :has_one, :class_name => 'DifferentPerson'
+  end
+
+  def test_habtm_association_redefinition_callbacks_should_differ_and_not_inherited
+    # redeclared association on AR descendant should not inherit callbacks from superclass
+    callbacks = PeopleList.read_inheritable_attribute(:before_add_for_has_and_belongs_to_many)
+    assert_equal([:enlist], callbacks)
+    callbacks = DifferentPeopleList.read_inheritable_attribute(:before_add_for_has_and_belongs_to_many)
+    assert_equal([], callbacks)
+  end
+
+  def test_has_many_association_redefinition_callbacks_should_differ_and_not_inherited
+    # redeclared association on AR descendant should not inherit callbacks from superclass
+    callbacks = PeopleList.read_inheritable_attribute(:before_add_for_has_many)
+    assert_equal([:enlist], callbacks)
+    callbacks = DifferentPeopleList.read_inheritable_attribute(:before_add_for_has_many)
+    assert_equal([], callbacks)
+  end
+
+  def test_habtm_association_redefinition_reflections_should_differ_and_not_inherited
+    assert_not_equal(
+      PeopleList.reflect_on_association(:has_and_belongs_to_many),
+      DifferentPeopleList.reflect_on_association(:has_and_belongs_to_many)
+    )
+  end
+
+  def test_has_many_association_redefinition_reflections_should_differ_and_not_inherited
+    assert_not_equal(
+      PeopleList.reflect_on_association(:has_many),
+      DifferentPeopleList.reflect_on_association(:has_many)
+    )
+  end
+
+  def test_belongs_to_association_redefinition_reflections_should_differ_and_not_inherited
+    assert_not_equal(
+      PeopleList.reflect_on_association(:belongs_to),
+      DifferentPeopleList.reflect_on_association(:belongs_to)
+    )
+  end
+
+  def test_has_one_association_redefinition_reflections_should_differ_and_not_inherited
+    assert_not_equal(
+      PeopleList.reflect_on_association(:has_one),
+      DifferentPeopleList.reflect_on_association(:has_one)
+    )
   end
 end

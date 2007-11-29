@@ -8,10 +8,12 @@ require 'fixtures/category'
 require 'fixtures/categorization'
 require 'fixtures/vertex'
 require 'fixtures/edge'
+require 'fixtures/book'
+require 'fixtures/citation'
 
 class AssociationsJoinModelTest < Test::Unit::TestCase
   self.use_transactional_fixtures = false
-  fixtures :posts, :authors, :categories, :categorizations, :comments, :tags, :taggings, :author_favorites, :vertices
+  fixtures :posts, :authors, :categories, :categorizations, :comments, :tags, :taggings, :author_favorites, :vertices, :books
 
   def test_has_many
     assert authors(:david).categories.include?(categories(:general))
@@ -29,7 +31,16 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
     assert_equal 2, authors(:mary).categorized_posts.size
     assert_equal 1, authors(:mary).unique_categorized_posts.size
   end
-
+  
+  def test_has_many_uniq_through_count
+    author = authors(:mary)
+    assert !authors(:mary).unique_categorized_posts.loaded?
+    assert_queries(1) { assert_equal 1, author.unique_categorized_posts.count }
+    assert_queries(1) { assert_equal 1, author.unique_categorized_posts.count(:title, {}) }
+    assert_queries(1) { assert_equal 0, author.unique_categorized_posts.count(:title, { :conditions => "title is NULL" }) }
+    assert !authors(:mary).unique_categorized_posts.loaded?
+  end
+  
   def test_polymorphic_has_many
     assert posts(:welcome).taggings.include?(taggings(:welcome_general))
   end
@@ -441,7 +452,21 @@ class AssociationsJoinModelTest < Test::Unit::TestCase
     tags = posts(:thinking).tags
     assert_equal tags, posts(:thinking).tags.push(tags(:general))
   end
+  
+  def test_delete_associate_when_deleting_from_has_many_through_with_non_standard_id
+    count = books(:awdr).references.count
+    references_before = books(:awdr).references
+    book = Book.create!(:name => 'Getting Real')
+    book_awdr = books(:awdr)
+    book_awdr.references << book
+    assert_equal(count + 1, book_awdr.references(true).size)
 
+    assert_nothing_raised { book_awdr.references.delete(book) }
+    assert_equal(count, book_awdr.references.size)
+    assert_equal(count, book_awdr.references(true).size)
+    assert_equal(references_before.sort, book_awdr.references.sort)
+  end
+  
   def test_delete_associate_when_deleting_from_has_many_through
     count = posts(:thinking).tags.count
     tags_before = posts(:thinking).tags
