@@ -64,6 +64,7 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
           <% end %>
 
            </select>
+           <br/>
 
           <script type="text/javascript">
 //<![CDATA[
@@ -127,6 +128,7 @@ function add_owner() {
 }
 
 function remember_user() {
+
   for( var i = 1; i < num; i++ ) {
       if( $("owner_" + i) ) {
          new Element.remove("owner_" + i);
@@ -139,6 +141,8 @@ function remember_user() {
    } else {
      selected_user = element.value
    }
+
+
 }
 
 function reset_owners() {
