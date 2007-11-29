@@ -10,7 +10,7 @@ class CustomersController < ApplicationController
   end
 
   def list
-    @customer_pages, @customers = paginate :customer, :per_page => 15, :conditions => ["company_id = ?", session[:user].company_id]
+    @customers = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name")
   end
 
   def show
