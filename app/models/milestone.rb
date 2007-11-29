@@ -26,13 +26,14 @@ class Milestone < ActiveRecord::Base
   end
 
   def to_tip(options = { })
-    res = ""
-    res << "<strong>#{_('Name')}</strong> #{self.name}<br />"
-    res << "<strong>#{_('Due Date')}</strong> #{self.due_at.strftime("%A, %d %B %Y")}<br/>" unless self.due_at.nil?
-    res << "<strong>#{_('Owner')}</strong> #{self.user.name}<br />" unless self.user.nil?
-    res << "<strong>#{_('Progress')}</strong> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}"
-    res << "<div class=tip_description> #{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</div>" if( self.description && self.description.strip.length > 0)
-    res
+    res = "<table cellpadding=0 cellspacing=0>"
+    res << "<tr><th>#{_('Name')}</th><td> #{self.name}</td></tr>"
+    res << "<tr><th>#{_('Due Date')}</th><td> #{self.due_at.strftime("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
+    res << "<tr><th>#{_('Owner')}</th><td> #{self.user.name}</td></tr>" unless self.user.nil?
+    res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
+    res << "<tr><th>#{_('Description')}></th><td class=\"tip_description\">#{self.description.gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+    res << "</table>"
+    res.gsub(/\"/,'&quot;')
   end
 
 

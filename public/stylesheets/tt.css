@@ -222,8 +222,6 @@ a.invalid:hover {
 }
 
 .tip_description {
-  margin-top: 0.3em;
-  background-color: #eee;
 }
 
 fieldset {
@@ -1682,4 +1680,17 @@ li.help {
 .informal {
   font-weight: normal;
   font-style: underline;
+}
+
+#tip td {
+  vertical-align: top;
+  padding-left: 0.1em;
+}
+
+#tip th {
+  vertical-align: top;
+  text-align: right;
+  background-color: #efefef;
+  font-weight: bold;
+  padding-right: 0.1em;
 }
