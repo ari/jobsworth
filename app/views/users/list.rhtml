@@ -35,8 +35,7 @@
 <% end %>
 <tr><td colspan=6>&nbsp;</td></tr>
 <tr><td colspan=6>
-<%= link_to _("[Previous page]"), :page => @user_pages.current.previous if @user_pages.current.previous %>
-<%= link_to _("[Next page]"), :page => @user_pages.current.next  if @user_pages.current.next %>
+<%= will_paginate @users %>
 </td></tr>
 
 </table>

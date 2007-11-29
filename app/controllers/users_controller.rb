@@ -9,9 +9,9 @@ class UsersController < ApplicationController
 
   def list
     if session[:user].admin == 10
-      @user_pages, @users = paginate :user, :per_page => 50, :order => "last_login_at DESC"
+      @users = User.paginate(:order => "last_login_at desc", :page => params[:page])
     elsif session[:user].admin > 0
-      @user_pages, @users = paginate :user, :per_page => 50, :conditions => ["company_id = ?", session[:user].company.id], :order => "name"
+      @users = User.paginate(:order => "last_login_at desc", :conditions => ["company_id = ?", session[:user].company_id], :page => params[:page])
     else
       redirect_to :action => 'edit_preferences'
     end

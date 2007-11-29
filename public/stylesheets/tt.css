@@ -1695,3 +1695,32 @@ li.help {
   padding-right: 0.1em;
   color: #333333;
 }
+
+.pagination {
+  padding: 3px;
+  margin: 3px;
+}
+.pagination a {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #aaaadd;
+  text-decoration: none;
+}
+.pagination a:hover, .pagination a:active {
+  border: 1px solid #FFC266;
+}
+.pagination span.current {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #a9a9a9;
+  font-weight: bold;
+  background-color: #FFC266;
+  color: #FFF;
+}
+
+.pagination span.disabled {
+  padding: 2px 5px 2px 5px;
+  margin: 2px;
+  border: 1px solid #eee;
+  color: #ddd;
+}

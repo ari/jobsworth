@@ -10,7 +10,7 @@
 
 <%= error_messages_for :topic %>
 <% form_for :topic,
-     :url  => topics_path(@forum) do |f| -%>
+     :url  => forum_topics_path(@forum) do |f| -%>
 <%= render :partial => "form", :object => f %>
 <%= submit_tag 'Post Topic', :or => link_to('Cancel', forum_path(@forum)) %>
 <% end -%>

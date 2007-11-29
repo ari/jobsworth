@@ -19,7 +19,7 @@ class TopicsController < ApplicationController
         (session[:topics] ||= {})[@topic.id] = Time.now.utc if logged_in?
         # authors of topics don't get counted towards total hits
         @topic.hit! unless @topic.user == current_user
-        @post_pages, @posts = paginate(:posts, :per_page => 25, :order => 'posts.created_at', :include => :user, :conditions => ['posts.topic_id = ?', params[:id]])
+        @posts = Post.paginate(:order => 'posts.created_at', :include => :user, :conditions => ['posts.topic_id = ?', params[:id]], :page => params[:page] || 1)
         @post   = Post.new
       end
     end
@@ -39,20 +39,20 @@ class TopicsController < ApplicationController
       @post.save!
     end
     respond_to do |format|
-      format.html { redirect_to topic_path(@forum, @topic) }
+      format.html { redirect_to forum_topic_path(@forum, @topic) }
     end
   end
 
   def update
     if @topic.user_id != current_user.id && !admin? && !current_user.moderator_of?(@topic.forum)
-      redirect_to topic_path(@forum, @topic)
+      redirect_to forum_topic_path(@forum, @topic)
       return
     end
     @topic.attributes = params[:topic]
     assign_protected
     @topic.save!
     respond_to do |format|
-      format.html { redirect_to topic_path(@forum, @topic) }
+      format.html { redirect_to forum_topic_path(@forum, @topic) }
       format.xml  { head 200 }
     end
   end
