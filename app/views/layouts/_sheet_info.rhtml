@@ -1,7 +1,7 @@
 <% if session[:sheet] -%>
 <%
    info = []
-   info << "#{worked_nice(session[:sheet].task.worked_minutes + session[:sheet].duration)}"
+   info << "#{worked_nice(session[:sheet].task.worked_minutes + session[:sheet].duration)}" if session[:sheet].task.worked_minutes > 0 || session[:sheet].task.duration > 0
    info << "#{worked_nice(session[:sheet].task.duration)}" if session[:sheet].task.duration.to_i > 0
 
    info_string = " (#{info.join(" / ")})" if info.size > 0
