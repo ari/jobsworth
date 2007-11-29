@@ -42,8 +42,61 @@ class ProjectsController < ApplicationController
         redirect_to :action => 'edit', :id => @project
       end
     else
-      render_action 'new'
+      render :action => 'new'
     end
+  end
+
+  def create_shortlist_ajax
+    if params[:project].nil? || params[:project][:name].nil? || params[:project][:name].empty?
+      render :nothing => true
+      return
+    end
+    @project = Project.new(params[:project])
+    if session[:filter_customer_short].to_i > 0
+      @project.customer_id = session[:filter_customer_short].to_i
+    elsif session[:filter_project_short].to_i > 0
+      proj = Project.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_project_short], session[:user].company_id])
+      @project.customer_id = proj.customer_id
+    elsif session[:filter_milestone_short].to_i > 0
+      proj = Milestone.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_milestone_short], session[:user].company_id]).project
+      @project.customer_id = proj.customer_id
+    elsif
+      render :nothing => true
+      return
+    end
+
+    @project.owner = session[:user]
+    @project.company_id = session[:user].company_id
+
+    if @project.save
+      @project_permission = ProjectPermission.new
+      @project_permission.user_id = session[:user].id
+      @project_permission.project_id = @project.id
+      @project_permission.company_id = session[:user].company_id
+      @project_permission.can_comment = 1
+      @project_permission.can_work = 1
+      @project_permission.can_close = 1
+      @project_permission.can_report = 1
+      @project_permission.can_create = 1
+      @project_permission.can_edit = 1
+      @project_permission.can_reassign = 1
+      @project_permission.can_prioritize = 1
+      @project_permission.can_milestone = 1
+      @project_permission.can_grant = 1
+      @project_permission.save
+
+      session[:filter_customer_short] = "0"
+      session[:filter_milestone_short] = "0"
+      session[:filter_project_short] = @project.id.to_s
+
+      render :update do |page|
+        page.redirect_to :controller => 'tasks', :action => 'shortlist'
+      end
+
+      return
+    end
+
+    render :nothing => true
   end
 
   def edit

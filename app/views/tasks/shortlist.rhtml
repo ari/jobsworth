@@ -39,6 +39,15 @@
        :success => "$('task_name').clear();" do %>
     <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
 <% end %>
+<div style="float:right;"><a href="#" onclick="Element.toggle('shortlist-new-project-container');">[<%= _('New Project')%>]</a></div>
+<div id="shortlist-new-project-container" style="display:none;">
+<% form_remote_tag :url => { :action => 'create_shortlist_ajax', :controller => 'projects' },
+       :loading => "Element.show('loading');",
+       :complete => "Element.hide('loading');",
+       :success => "$('project_name').clear();" do %>
+    <input type="text" name="project[name]" id="project_name" value="<%= _ 'New Project' %>"/>
+<% end %>
+</div>
     <% end %>
   </fieldset>
 </div>
@@ -53,9 +62,21 @@ Element.observe('task_name', 'focus', function(e) {
   }
 });
 
+Element.observe('project_name', 'focus', function(e) {
+  var el = Event.element(e);
+  if(el.value == '<%= _'New Project' %>') {
+    Event.element(e).clear();
+    el.removeClassName('initial');
+  }
+});
+
 Event.observe(window, "load", function(e) {
   var el = $('task_name');
   if( el.value == '<%= _'New Task' %>') {
+    el.addClassName('initial');
+  }
+  el = $('project_name');
+  if( el.value == '<%= _'New Project' %>') {
     el.addClassName('initial');
   }
 });

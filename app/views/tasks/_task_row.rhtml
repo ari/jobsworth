@@ -24,7 +24,7 @@
  classes << " task_done" if task.done?
  classes << " task_paused" if session[:sheet] && session[:sheet].task_id == task.id && session[:sheet].paused?
 -%>
-class="task <%=classes%>" style="margin-left:<%= 8 + (depth - 1) * 16%>px">
+class="task <%=classes%>" <% if depth > 1 %> style="margin-left:<%= 8 + (depth - 1) * 16%>px"<% end %> >
 
 <% @task = task %>
 

@@ -4,6 +4,7 @@
 
 #content .task {
   height: auto;
+  margin-left: 0;
 }
 
 #content .task-name {
@@ -58,7 +59,7 @@ fieldset input.button {
   display: none;
 }
 
-#task_name {
+#task_name, #project_name {
   float: none;
   margin-top: 1em;
   margin-right: 1em;
