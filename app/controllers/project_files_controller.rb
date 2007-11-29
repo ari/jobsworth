@@ -57,6 +57,8 @@ class ProjectFilesController < ApplicationController
 #      image = Magick::Image.read( @project_files.thumbnail_path ).first
       send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
       GC.start
+    else
+      render :nothing => true
     end
   end
 

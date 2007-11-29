@@ -23,7 +23,7 @@ class Task < ActiveRecord::Base
   has_many      :watchers, :through => :notifications, :source => :user
 
 
-  belongs_to    :creator, :class_name => "User"
+  belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
 
   belongs_to     :old_owner, :class_name => "User", :foreign_key => "user_id"
 
