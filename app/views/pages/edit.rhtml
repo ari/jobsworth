@@ -1,7 +1,7 @@
 <fieldset>
 <legend><%=_ 'Edit Note' %></legend>
 
-<%= start_form_tag :action => 'update', :id => @page %>
+<% form_tag :action => 'update', :id => @page do %>
   <%= render :partial => "form" %>
-<%= end_form_tag %>
+<% end %>
 </fieldset>

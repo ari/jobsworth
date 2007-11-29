@@ -1,7 +1,7 @@
 <h1>New</h1>
 
-<%= start_form_tag :action => 'create_news' %>
+<% form_tag :action => 'create_news' do %>
   <%= render :partial => "news_form" %>
   <%= submit_tag "Create", :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 

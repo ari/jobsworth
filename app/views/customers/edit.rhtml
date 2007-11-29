@@ -1,10 +1,10 @@
 <fieldset>
 <legend><%=_ 'Edit Client' %></legend>
 
-<%= start_form_tag :action => 'update', :id => @customer %>
+<% form_tag :action => 'update', :id => @customer do %>
   <%= render :partial => "form" %>
   <%= submit_tag _("Edit"), :class => "nolabel" %>
-<%= end_form_tag %>
+<% end %>
 </fieldset>
 
 <fieldset>
@@ -12,9 +12,9 @@
 <% if @customer.logo? -%>
 <p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
 <% end -%>
-<%= start_form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) %>
+<% form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
 <p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
 <%= submit_tag "Upload", :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 </fieldset>

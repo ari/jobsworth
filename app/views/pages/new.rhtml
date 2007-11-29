@@ -1,8 +1,8 @@
 <fieldset>
 <legend><%=_ 'New Note' %></legend>
 
-<%= start_form_tag :action => 'create' %>
+<% form_tag :action => 'create' do %>
   <%= render :partial => "form" %>
-<%= end_form_tag %>
+<% end %>
 
 </fieldset>

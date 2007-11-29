@@ -47,7 +47,7 @@
           <table width="100%" cellpadding=0 cellspacing=0 border=0  style="margin-top:0.5em;">
             <tr>
               <td valign=bottom style="padding-left:0px;" width="100%">
-              <%= start_form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'})  %>
+              <% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %>
               <div id="globalMenu" width="100%">
               <div id="menucontainer" width="100%">
               <div id="tabmenu" width="100%">
@@ -157,7 +157,7 @@
               </div>
               </div>
               </div>
-                <%= end_form_tag %>
+                <% end %>
 
               </td>
             </tr>

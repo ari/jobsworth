@@ -79,7 +79,7 @@
           </td>
 
           <td valign="top" align="right" style="width:22em;" id="reports_params">
-<%= start_form_tag :action => 'list' %>
+<% form_tag :action => 'list' do %>
 <fieldset  style="margin-right:10;" id="reports_config">
 <legend><%=_ 'Report Configuration' %></legend>
 <label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
@@ -185,7 +185,7 @@ new Autocompleter.Local('report_tags', 'report_tags_auto_complete', [<%= @tags.c
 </fieldset>
 </div>
 <div style="padding-top:0.5em;"><%= submit_tag _("Run Report") %></div>
-<%= end_form_tag %>
+<% end %>
 <div style="clear:both;"></div>
 </td>
 </tr>

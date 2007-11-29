@@ -73,14 +73,14 @@ input, textarea, select { border: 1px solid #AAA; }
   </td></tr>
   <tr><td style="padding-top:2em; background-color: #ffffff;">&nbsp;</td></tr>
   <tr><td align="center" style="background-color: #ffffff;">
-  <%= start_form_tag( {:action => 'validate'}, {:id => "loginform"}) %>
+  <% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>
   <table border="0" cellpadding="2" cellspacing="0" style="width:150px;">
   <tr><td align="right" style="padding-right:0.5em;"><label for="textfield"><strong>Username</strong></label></td><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="10" /></td></tr>
   <tr><td align="right" style="padding-right:0.5em;"><label for="label"><strong>Password</strong></label></td><td><input type="password" id="password" name="user[password]" class="inputbox" size="10" alt="password" /></td></tr>
   <tr><td>&nbsp;</td><td><input type="submit" name="Submit" class="button" value="Log in" /></td></tr>
   <tr><td style="padding-top:1.5em;">&nbsp;</td><td><small><a href="/login/forgotten_password">Forgot Login?</a></small></td></tr>
   </table>
-  <%= end_form_tag %>
+  <% end %>
   </td></tr>
   </table>
   </div>

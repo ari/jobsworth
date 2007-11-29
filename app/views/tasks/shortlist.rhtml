@@ -5,7 +5,7 @@
   <fieldset id="shortlist">
     <legend id="shortlist-legend"><%= render :partial => 'short_legend' %></legend>
     <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]} %>
-    <%= start_form_tag( :controller => 'tasks', :action => 'filter_shortlist' ) %>
+    <% form_tag( :controller => 'tasks', :action => 'filter_shortlist' ) do %>
     <select name="filter" id="filter" onchange="javascript:document.forms[0].submit();">
       <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 
@@ -26,20 +26,19 @@
         <% end -%>
       <% end %>
     </select>
-    <%= end_form_tag %>
+    <% end %>
     <div id="shortlist-tasks">
     <% @tasks.each do |task| -%>
       <%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} -%>
     <% end -%>
     </div>
     <% if session[:filter_project_short].to_i > 0 || session[:filter_milestone_short].to_i > 0 %>
-<%= form_remote_tag :url => { :action => 'create_shortlist_ajax' } ,
+<% form_remote_tag :url => { :action => 'create_shortlist_ajax' },
        :loading => "Element.show('loading');",
        :complete => "Element.hide('loading');",
-       :success => "$('task_name').clear();"
-%>
+       :success => "$('task_name').clear();" do %>
     <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
-<% end_form_tag %>
+<% end %>
     <% end %>
   </fieldset>
 </div>

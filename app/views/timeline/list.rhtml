@@ -17,7 +17,7 @@
 
             filter_count = 0
             %>
-            <%= start_form_tag( :controller => 'timeline', :action => 'list' ) %>
+            <% form_tag( :controller => 'timeline', :action => 'list' ) do %>
 
             <select name="filter_date" id="filter_date" onchange="javascript:document.forms[1].submit();">
                 <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"]] %>
@@ -64,7 +64,7 @@
               <%= options_for_select @status, params[:filter_status] %>
             </select>
 
-            <%= end_form_tag %>
+            <% end %>
             </td>
           </tr>
 

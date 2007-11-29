@@ -4,10 +4,10 @@
         <fieldset>
           <legend><%=_ 'Edit Project' %></legend>
 
-          <%= start_form_tag :action => 'update', :id => @project %>
+          <% form_tag :action => 'update', :id => @project do %>
           <%= render :partial => "form" %>
           <%= submit_tag _("Edit"), :class => 'nolabel' %>
-          <%= end_form_tag %>
+          <% end %>
           <br />
             <% if @project.user_id == session[:user].id || session[:user].admin > 0%>
             <div style="float: right;"><%= link_to( _("Delete Project"), {:controller => 'projects', :action => 'destroy', :id => @project}, :confirm => "Really delete #{@project.name}?") %></div>

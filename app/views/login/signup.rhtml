@@ -21,7 +21,7 @@
   </strong></p>
     <div style="padding-top:1em;"><img src="/images/portal/box_top.gif" border=0></div>
     <div style="background: url(/images/portal/box_bkg.gif) top left repeat-x; background-color: #fff; width: 677px; color: #000; margin:0; padding:10px;">
-      <%= start_form_tag :action => 'take_signup' %>
+      <% form_tag :action => 'take_signup' do %>
       <fieldset>
       <legend>Account Information</legend>
       <table width=100% cellpadding=2 cellspacing=0>
@@ -48,7 +48,7 @@
       <tr><td algin=right width="163px">&nbsp;</td><td><%= submit_tag "Signup", :class => 'nolabel' %></td></tr>
       </table>
 
-      <%= end_form_tag %>
+      <% end %>
 
     <%= observe_field( 'company', { :url => { :action => 'company_check'}, :update => 'company_check', :with => 'company' , :on => 'blur'} ) %>
     <%= observe_field( 'subdomain', { :url => { :action => 'subdomain_check'}, :update => 'subdomain_check', :with => 'subdomain', :on => 'blur' } ) %>

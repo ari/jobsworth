@@ -1,10 +1,10 @@
 <fieldset>
 <legend><%=_ 'Preferences' %></legend>
 
-<%= start_form_tag :action => 'update_preferences', :id => @user %>
+<% form_tag :action => 'update_preferences', :id => @user do %>
   <%= render :partial => "preferences" %>
   <%= submit_tag _("Save"), :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 
 </fieldset>
 
@@ -15,11 +15,11 @@
 <p><label for="current_logo"><%=_ 'Current Avatar' %></label><%= tag("img", {:src => "/users/avatar/#{@user.id}", :border => 0 } ) %><%= tag("img", {:src => "/users/avatar/#{@user.id}?large=1", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'users', :action => "delete_avatar", :id => "#{@user.id}" %></p>
 <% end -%>
 
-<%= start_form_tag({ :controller => 'users', :action => 'upload_avatar', :id => @user.id}, { :multipart => "true" }) %>
+<% form_tag({ :controller => 'users', :action => 'upload_avatar', :id => @user.id}, { :multipart => "true" }) do %>
 <p><label for="users_tmp_file"><%=_ 'New Avatar' %></label><%= file_field 'user', 'tmp_file' %></p><br/>
 <label for="options_text"></label><span class="optional" style="clear:both;"><%=_ "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)" %></span></p>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 </fieldset>
 
 
@@ -30,12 +30,12 @@
 <% if @customer.logo? -%>
 <p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
 <% end -%>
-<%= start_form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) %>
+<% form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) do %>
 <p><label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
 <label for="options_text"></label><span class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></span></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
 <%= submit_tag _("Upload"), :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 </fieldset>
 
 <% end %>

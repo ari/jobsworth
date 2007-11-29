@@ -1,12 +1,12 @@
 <fieldset>
 <legend>New User</legend>
 
-<%= start_form_tag :action => 'create' %>
+<% form_tag :action => 'create' do %>
   <%= render :partial => "form" %>
 
   <label for="welcome_message"><%=_('Signup Message')%></label><%= text_area_tag 'welcome_message', {}, { :rows => 10, :style => "width:80%;"} %> <br/>
   <label></label><span class="optional"><%=_('The message will be included in the signup email.')%></span>
   <%= submit_tag "Create", :class => 'nolabel' %>
-<%= end_form_tag %>
+<% end %>
 
 </fieldset>

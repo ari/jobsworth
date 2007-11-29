@@ -5,7 +5,7 @@
 
 <% if @page.revisions.empty? %>
 <h3>This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.</h3>
-<%= start_form_tag :action => 'create', :id => @page.name %>
+  <% form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;">
 h3. <%= @page.name %>
 
@@ -32,6 +32,7 @@ fn1. If you're -bored- %{color:red}inspired%.
 
 </textarea>
 <div style="clear:both;float:left;"><%= submit_tag _("Create") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>
+  <% end %>
 <% else %>
 <%= @page.to_html %>
 <br/>

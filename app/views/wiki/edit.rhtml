@@ -1,7 +1,7 @@
 <fieldset>
 <legend><%= @page.name %></legend>
 
-<%= start_form_tag :action => 'create', :id => @page.name %>
+<% form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body%></textarea>
 <div stle="float:left;"><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
 <p style="padding:0;margin:0;">h2. Header 2</p>
@@ -13,3 +13,4 @@
 
 </div>
 <div style="clear:both;float:left;"><%= submit_tag _("Save") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %></div>
+<% end %>

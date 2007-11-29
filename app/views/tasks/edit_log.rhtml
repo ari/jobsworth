@@ -1,7 +1,7 @@
 <fieldset>
 <legend><%=_ 'Edit Log Entry' %></legend>
 
-<%= start_form_tag :action => 'save_log', :id => @log %>
+<% form_tag :action => 'save_log', :id => @log do %>
   <%= render :partial => "form_edit_log" %>
 <%
 
@@ -27,7 +27,7 @@
   <%= submit_tag _("Save"), :class => 'nolabel' %>
 
 
-<%= end_form_tag %>
+<% end %>
 <br />
 <% if @log.user_id == session[:user].id %>
 <%= link_to _("Delete Log Entry"), {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => _("Really delete this log entry?")  %>

@@ -1,13 +1,4 @@
-<% if request.xhr? %>
-    <%= form_remote_tag :url => { :action => 'create_ajax' } ,
-                        :loading => "Element.show('loading');",
-                        :complete => "Element.hide('loading');"
-
-    %>
-<% else %>
-  <%= start_form_tag({ :action => 'create'}, { :multipart => "true" }) %>
-<% end %>
-
+<% form_tag({ :action => 'create'}, { :multipart => "true" }) do %>
 <table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td align="left" colspan="2" class="page_header"><div style="float:left;"><%=_ 'New Task' %></div></td>
@@ -20,7 +11,7 @@
 <%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
 </td></tr>
 </table>
-<%= end_form_tag %>
+<% end %>
 <script type="text/javascript">
 $('task_name').focus();
 </script>

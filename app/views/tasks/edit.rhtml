@@ -1,11 +1,4 @@
-<% if request.xhr? %>
-    <%= form_remote_tag :url => { :action => 'update_ajax', :id => @task } ,
-                        :loading => "Element.show('loading');",
-                        :complete => "Element.hide('loading');"
-    %>
-<% else -%>
-  <%= start_form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) %>
-<% end -%>
+<% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
   <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
     <tr>
       <td align="left" colspan="3" class="page_header" id="task_page_header">
@@ -66,7 +59,7 @@
 
 </td></tr>
 </table>
-<%= end_form_tag %>
+<% end %>
 <script type="text/javascript">
 Event.observe($('task_status'), "change", function(e) {
   if( $('task_status').value == "6" ) {
