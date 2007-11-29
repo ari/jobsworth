@@ -61,7 +61,7 @@ class LoginController < ApplicationController
 
       # Auto-filter by User if more than one Users are registered for
       # Users Company
-      if User.count("company_id = #{logged_in.company_id}") > 1
+      if User.count(:conditions => ["company_id = #{logged_in.company_id}"]) > 1
         session[:filter_user] = logged_in.id.to_s
       else
         session[:filter_user] = "0"
@@ -104,7 +104,7 @@ class LoginController < ApplicationController
     if params[:email].length == 0
       flash[:notice] += "* Enter your email<br/>"
       error = 1
-    elsif User.count(["email = ?", params[:email]]) == 0
+    elsif User.count( :conditions => ["email = ?", params[:email]]) == 0
       flash[:notice] += "* No such email<br/>"
       error = 1
     end
@@ -173,7 +173,7 @@ class LoginController < ApplicationController
     if params[:company].length == 0
       flash[:notice] += "* Enter your company name<br/>"
       error = 1
-    elsif Company.count(["name = ?", params[:company]]) > 0
+    elsif Company.count( :conditions => ["name = ?", params[:company]]) > 0
       flash[:notice] += "* Company name taken. If someone at your company is using Clocking IT, have them create an account for you so you end up in the same company.<br/>"
       error = 1
     end
@@ -184,7 +184,7 @@ class LoginController < ApplicationController
     elsif params[:subdomain].match(/[\W _]/) != nil
       flash[:notice] += "* Login URL can only contain letters and numbers, no spaces."
       error = 1
-    elsif Company.count(["subdomain = ?", params[:subdomain]]) > 0
+    elsif Company.count( :conditions => ["subdomain = ?", params[:subdomain]]) > 0
       flash[:notice] += "* Login url already taken. Please choose another one."
       error = 1
     end
@@ -232,7 +232,7 @@ class LoginController < ApplicationController
   end
 
   def company_check
-    companies = Company.count(["name = ?", params[:company]])
+    companies = Company.count( :conditions => ["name = ?", params[:company]])
     if params[:company].empty?
       render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
     else
@@ -248,7 +248,7 @@ class LoginController < ApplicationController
     if params[:subdomain].nil? || params[:subdomain].empty?
       render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
     else
-      subdomain = Company.count(["subdomain = ?", params[:subdomain]])
+      subdomain = Company.count( :conditions => ["subdomain = ?", params[:subdomain]])
       if %w( www forum wiki repo mail ftp static01 ).include?( params[:subdomain].downcase )
         subdomain = 1
       end

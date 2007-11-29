@@ -56,11 +56,11 @@ class ActivitiesController < ApplicationController
   # * Completing a Task
   # * Adding a User
   def welcome
-    @projects_count = current_projects.size
-    @tasks_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id ])
-    @work_count = WorkLog.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids} ) AND log_type = #{WorkLog::TASK_WORK_ADDED}", session[:user].company_id])
+    @projects_count  = current_projects.size
+    @tasks_count     = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id ])
+    @work_count      = WorkLog.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids} ) AND log_type = #{WorkLog::TASK_WORK_ADDED}", session[:user].company_id])
     @completed_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NOT NULL", session[:user].company_id ])
-    @users_count = User.count(:conditions => ["company_id = ?", session[:user].company_id])
+    @users_count     = User.count(:conditions => ["company_id = ?", session[:user].company_id])
 
     if @projects_count > 0 && @tasks_count > 0 && @work_count > 0 && @completed_count > 0 && @users_count > 1
       u = User.find(session[:user].id)

@@ -76,7 +76,7 @@ class ProjectsController < ApplicationController
 
 
     @project = User.find(session[:user].id).projects.find(params[:id])
-    if @project && user && ProjectPermission.count(["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
+    if @project && user && ProjectPermission.count(:conditions => ["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
       permission = ProjectPermission.new
       permission.user_id = user.id
       permission.project_id = @project.id

@@ -54,7 +54,7 @@ class TimelineController < ApplicationController
     @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", session[:user].company_id], :include => [:user, {:task => [ :tags ]}, :project, ],
                          :limit => 100, :offset => @offset )
 
-    @count = WorkLog.count(["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", session[:user].company_id])
+    @count = WorkLog.count(:conditions => ["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", session[:user].company_id])
   end
 
 end

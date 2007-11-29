@@ -30,9 +30,9 @@
                end
 
 
-               critical_count = Task.count(["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", project.id])
-               normal_count = Task.count(["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", project.id])
-               low_count = Task.count(["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", project.id])
+               critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", project.id])
+               normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", project.id])
+               low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", project.id])
                total_count = (critical_count + normal_count + low_count) * 1.0
 
                critical_percent = ((critical_count / total_count) * 100.0)
@@ -77,9 +77,9 @@
               </div>
             </td></tr>
           <%
-               total_count = Task.count(["project_id = ?", project.id]) * 1.0
+               total_count = Task.count(:conditions => ["project_id = ?", project.id]) * 1.0
              if total_count >= 1.0
-               done_count = Task.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
+               done_count = Task.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
                done_percent = (done_count/total_count) * 100.0
           %>
           <tr class="milestone project_<%= project.id %>" style="height:16px;<%= "display:none;" if (session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) %>"><td colspan="2"><div><div style="float: left;padding-top:2px;"><span class="milestones"><%=_ 'Overall Progress'%></span></div>
@@ -94,7 +94,7 @@
           %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
           <% end %>
-  <% @completed_milestones = Milestone.count(["project_id = ? AND completed_at IS NOT NULL", project.id])
+  <% @completed_milestones = Milestone.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
      if @completed_milestones > 0
   %>
   <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => project %></td></tr>
