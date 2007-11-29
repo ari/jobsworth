@@ -65,7 +65,7 @@ class MilestonesController < ApplicationController
   end
 
   def destroy
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", @session[:user].company_id])
+    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
 
     @milestone.tasks.each { |t|
       t.milestone = nil

@@ -64,7 +64,7 @@ class UsersController < ApplicationController
   end
 
   def edit_preferences
-    @user = User.find(@session[:user].id)
+    @user = User.find(session[:user].id)
   end
 
   def update_preferences
