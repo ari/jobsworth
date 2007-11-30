@@ -651,11 +651,18 @@ class TasksController < ApplicationController
         body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
         worklog.log_type = WorkLog::TASK_COMPLETED if @task.status > 1
-        worklog.log_type = WorkLog::TASK_REVERTED if @task.status == 0
+        worklog.log_type = WorkLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
 
         if( @task.status > 1 && @old_task.status != @task.status )
           if params['notify'].to_i == 1
             Notifications::deliver_completed( @task, session[:user], params[:comment] ) rescue begin end
+            @sent_completed = true
+          end
+        end
+
+        if( @task.status < 2 && @old_task.status > 1 )
+          if params['notify'].to_i == 1
+            Notifications::deliver_reverted( @task, session[:user], params[:comment] ) rescue begin end
             @sent_completed = true
           end
         end
@@ -719,7 +726,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if(params['notify'].to_i == 1) && (!@sent_comment) && !@sent_completed
+        if(params['notify'].to_i == 1) && (!@sent_comment) && (!@sent_completed)
           Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
         end
       end
