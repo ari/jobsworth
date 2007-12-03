@@ -1,6 +1,6 @@
-<% @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", session[:user].company.id, session[:user].company.name]) if @internal.nil? %>
-<% if !@internal.nil? && @internal.logo? %>
-<%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
+<% internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company_id, current_user.company.name]) %>
+<% if !internal.nil? && internal.logo? %>
+<%= tag("img", {:src => "/customers/show_logo/#{internal.id}", :border => 0 } ) %>
 <% else %>
 <%= image_tag("logo.gif", :border => 0, :title => "Clocking IT Beta") %>
 <% end %>

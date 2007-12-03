@@ -32,11 +32,11 @@ module TasksHelper
       filters << User.find(session[:filter_user].to_i).name
     end
 
-    filters << session[:user].company.name if filters.empty?
+    filters << current_user.company.name if filters.empty?
 
     title << filters.join(' / ')
 
-    title << "]</div><div style=\"float:right\">#{tz.now.strftime("#{session[:user].time_format} #{session[:user].date_format}")}</div><div style=\"clear:both\"></div>"
+    title << "]</div><div style=\"float:right\">#{tz.now.strftime("#{current_user.time_format} #{current_user.date_format}")}</div><div style=\"clear:both\"></div>"
 
     "<h3>#{title}</h3>"
 
@@ -100,7 +100,6 @@ module TasksHelper
         root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
         p = root
         @deps << root.id
-        logger.info("New parent[#{p.name}]") unless p.nil?
       end
       res << render_task_dependants(root, depth, true) unless root.nil?
 

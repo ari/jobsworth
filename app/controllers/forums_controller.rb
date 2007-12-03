@@ -2,7 +2,7 @@ class ForumsController < ApplicationController
   before_filter :find_or_initialize_forum, :except => :index
 
   def index
-    @forums = Forum.find(:all, :order => "company_id IS NULL, position, name", :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", session[:user].company_id])
+    @forums = Forum.find(:all, :order => "company_id IS NULL, position, name", :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", current_user.company_id])
     # reset the page of each forum we have visited when we go back to index
     session[:forum_page]=nil
     respond_to do |format|
@@ -25,7 +25,7 @@ class ForumsController < ApplicationController
 
   def create
     @forum.attributes = params[:forum]
-    @forum.company_id = session[:user].company_id
+    @forum.company_id = current_user.company_id
     @forum.save!
     respond_to do |format|
       format.html { redirect_to forums_path }
@@ -34,9 +34,9 @@ class ForumsController < ApplicationController
   end
 
   def update
-    return unless session[:user].admin > 0
-    return if session[:user].admin < 2 && @forum.company_id.nil?
-    return if session[:user].company_id != @forum.company_id && session[:user].admin < 2
+    return unless current_user.admin > 0
+    return if current_user.admin < 2 && @forum.company_id.nil?
+    return if current_user.company_id != @forum.company_id && current_user.admin < 2
 
     @forum.update_attributes!(params[:forum])
     respond_to do |format|
@@ -46,15 +46,15 @@ class ForumsController < ApplicationController
   end
 
   def destroy
-    unless session[:user].admin > 0
+    unless current_user.admin > 0
       redirect_to forums_path
       return
     end
-    if session[:user].admin < 2 && @forum.company_id.nil?
+    if current_user.admin < 2 && @forum.company_id.nil?
       redirect_to forums_path
       return
     end
-    if session[:user].company_id != @forum.company_id && session[:user].admin < 2
+    if current_user.company_id != @forum.company_id && current_user.admin < 2
       redirect_to forums_path
       return
     end
@@ -68,7 +68,7 @@ class ForumsController < ApplicationController
 
   protected
     def find_or_initialize_forum
-      @forum = params[:id] ? Forum.find(params[:id], :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", session[:user].company_id]) : Forum.new
+      @forum = params[:id] ? Forum.find(params[:id], :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", current_user.company_id]) : Forum.new
     end
 
     alias authorized? admin?

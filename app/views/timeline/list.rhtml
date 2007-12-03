@@ -11,9 +11,9 @@
         <tr>
           <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
             <%
-            @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
-            @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
-            @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
+            @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
+            @projects = User.find(current_user.id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
+            @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id]).collect {|c| [ c.name, c.id.to_s ] }
 
             filter_count = 0
             %>
@@ -27,9 +27,9 @@
             <% if @projects.size > 1 %>
             <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Any Project]") %></option>
-              <% @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name") %>
+              <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
               <% @clients.each do |c| %>
-              <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
+              <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
               <% if @client_projects.size > 0 %>
               <option value="" disabled="disabled" class="select_heading"><%= c.name %></option>
               <% @client_projects.each do |p| %>

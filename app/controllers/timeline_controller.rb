@@ -38,12 +38,12 @@ class TimelineController < ApplicationController
           filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
         when 7
           if filter[:stop_date] && filter[:start_date].length > 1
-            start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
+            start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time
             filter << " AND work_logs.started_at > '#{tz.utc_to_local(start_date).strftime("%Y-%m-%d 00:00:00")}'"
           end
 
           if filter[:stop_date] && filter[:stop_date].length > 1
-            end_date = DateTime.strptime( filter[:stop_date], session[:user].date_format ).to_time
+            end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time
             filter << " AND work_logs.started_at < '#{tz.utc_to_local(end_date).strftime("%Y-%m-%d 23:59:59")}'"
           end
 
@@ -51,9 +51,9 @@ class TimelineController < ApplicationController
 
 #    @offset = params[:page].to_i * 100
 
-    @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", session[:user].company_id], :include => [:user, {:task => [ :tags ]}, :project, ], :per_page => 100, :page => params[:page] )
+    @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", current_user.company_id], :include => [:user, {:task => [ :tags ]}, :project, ], :per_page => 100, :page => params[:page] )
 
-#    @count = WorkLog.count(:conditions => ["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", session[:user].company_id])
+#    @count = WorkLog.count(:conditions => ["work_logs.company_id=? AND work_logs.project_id IN (#{current_project_ids}) #{filter}", current_user.company_id])
   end
 
 end

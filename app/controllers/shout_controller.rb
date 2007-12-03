@@ -3,14 +3,14 @@ class ShoutController < ApplicationController
 #  cache_sweeper :shout_sweeper, :only => :add_ajax
 
   def list
-    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                :order => "company_id, project_id, name")
     session[:channels] << "lobby"
-    session[:channels] << "lobby_#{session[:user].company_id}"
+    session[:channels] << "lobby_#{current_user.company_id}"
   end
 
   def update_channel
-    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id],
                               :order => "company_id, name")
     if room
       render :update do |page|
@@ -23,18 +23,18 @@ class ShoutController < ApplicationController
   end
 
   def transcripts
-    if session[:user].admin > 9
-      @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+    if current_user.admin > 9
+      @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                  :order => "company_id, name")
     else
-      @rooms = ShoutChannel.find(:all, :conditions => ["company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+      @rooms = ShoutChannel.find(:all, :conditions => ["company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                  :order => "company_id, name")
     end
-    @transcripts = Transcript.find_all(session[:user].company_id, @rooms.collect(&:id) )
+    @transcripts = Transcript.find_all(current_user.company_id, @rooms.collect(&:id) )
   end
 
   def transcript
-    @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
+    @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id ])
     if @room.nil?
       redirect_to :action => 'list'
       return
@@ -47,23 +47,23 @@ class ShoutController < ApplicationController
   end
 
   def room
-    @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
+    @room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id ])
     if @room.nil?
       redirect_to :action => 'list'
       return
     end
 
-    unless User.find(session[:user].id).shout_channels.include?(@room)
+    unless current_user.shout_channels.include?(@room)
 
-      s = ShoutChannelSubscription.new( :user_id => session[:user].id, :shout_channel_id => @room.id)
+      s = ShoutChannelSubscription.new( :user_id => current_user.id, :shout_channel_id => @room.id)
       s.save
 
       check_timestamp(@room.id)
 
       shout = Shout.new
-      shout.user_id = session[:user].id
+      shout.user_id = current_user.id
       shout.company_id = @room.company_id
-      shout.nick = shout_nick(session[:user].name)
+      shout.nick = shout_nick(current_user.name)
       shout.shout_channel_id = @room.id
       shout.message_type = 1
       shout.body = "joined the room..."
@@ -71,7 +71,7 @@ class ShoutController < ApplicationController
 
       broadcast_shout(shout)
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => @room.id)}');", ["#{['lobby', @room.company_id].compact.join('_')}"] )
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => @room.id)}');", ["#{['lobby', @room.company_id].compact.join('_')}"] )
 
     end
 
@@ -87,18 +87,18 @@ class ShoutController < ApplicationController
   end
 
   def leave
-    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id ])
     session[:channels] -= ["channel_#{params[:id]}"]
     session[:channels] -= ["channel_passive_#{params[:id]}"]
-    subs = ShoutChannelSubscription.find(:all, :conditions => ["user_id = ? AND shout_channel_id = ?", session[:user].id, params[:id]])
+    subs = ShoutChannelSubscription.find(:all, :conditions => ["user_id = ? AND shout_channel_id = ?", current_user.id, params[:id]])
     unless subs.empty?
       subs.each do |s|
         s.destroy
       end
 
       shout = Shout.new
-      shout.user_id = session[:user].id
-      shout.nick = shout_nick(session[:user].name)
+      shout.user_id = current_user.id
+      shout.nick = shout_nick(current_user.name)
       shout.company_id = room.company_id
       shout.shout_channel_id = room.id
       shout.message_type = 2
@@ -108,7 +108,7 @@ class ShoutController < ApplicationController
       check_timestamp(room.id)
       broadcast_shout(shout)
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => room.id)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'shout', :action => 'update_channel', :id => room.id)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
 
     end
 
@@ -126,7 +126,7 @@ class ShoutController < ApplicationController
 
   def create_ajax
     @channel = ShoutChannel.new(params[:channel])
-    @channel.company = session[:user].company
+    @channel.company = current_user.company
     @channel.public = 0
     @channel.project_id = nil if @channel.project_id == 0
     if @channel.save
@@ -135,7 +135,7 @@ class ShoutController < ApplicationController
         page.visual_effect(:highlight, "channel_#{@channel.id}", :duration => 1.5)
         page['channel-add-container'].hide
       end
-      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["#{['lobby', @channel.company_id].compact.join('_')}"] )
+      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(res)}');", ["#{['lobby', @channel.company_id].compact.join('_')}"] )
       render :text => res
     else
       render :update do |page|
@@ -145,10 +145,10 @@ class ShoutController < ApplicationController
   end
 
   def destroy_ajax
-    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id],
                               :order => "company_id, name")
 
-    if room.nil? || (room.project_id.to_i == 0 && (!session[:user].admin?)) || ((room.project_id.to_i > 0) && (!session[:user].can?(room.project, 'grant')) )
+    if room.nil? || (room.project_id.to_i == 0 && (!current_user.admin?)) || ((room.project_id.to_i > 0) && (!current_user.can?(room.project, 'grant')) )
       render :update do |page|
         page.visual_effect(:highlight, "channel_#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
       end
@@ -163,18 +163,18 @@ class ShoutController < ApplicationController
         page << "}"
       end
 
-      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(res)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
-      Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(redir)}');", ["channel_#{room.id}"] )
+      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(res)}');", ["#{['lobby', room.company_id].compact.join('_')}"] )
+      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(redir)}');", ["channel_#{room.id}"] )
 
       room.destroy
     end
   end
 
   def destroy_transcript_ajax
-    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id],
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id],
                               :order => "company_id, name")
 
-    if room.nil? || params[:day].nil? || params[:day].empty? || (room.project_id.to_i == 0 && (!session[:user].admin?)) || ((room.project_id.to_i > 0) && (!session[:user].can?(room.project, 'grant')) )
+    if room.nil? || params[:day].nil? || params[:day].empty? || (room.project_id.to_i == 0 && (!current_user.admin?)) || ((room.project_id.to_i > 0) && (!current_user.can?(room.project, 'grant')) )
       render :update do |page|
         page.visual_effect(:highlight, "transcript_#{params[:id]}_#{params[:day]}", :duration => 0.5, :startcolor => "'#ff9999'")
       end
@@ -184,6 +184,9 @@ class ShoutController < ApplicationController
 
       render :update do |page|
         page.visual_effect(:fade, "transcript_#{room.id}_#{params[:day]}")
+        page.delay(2.0) do
+          page["transcript_#{room.id}_#{params[:day]}"].remove
+        end
       end
 
     end
@@ -191,7 +194,7 @@ class ShoutController < ApplicationController
 
 
   def chat_ajax
-    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], session[:user].company_id ])
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id ])
     if room.nil?
       render :nothing => true
       return
@@ -203,8 +206,8 @@ class ShoutController < ApplicationController
 
     @shout = Shout.new(params[:shout])
     @shout.shout_channel_id = room.id
-    @shout.user_id = session[:user].id
-    @shout.nick = shout_nick(session[:user].name)
+    @shout.user_id = current_user.id
+    @shout.nick = shout_nick(current_user.name)
     @shout.company_id = room.company_id
     if @shout.body && @shout.body.length > 0
 
@@ -212,8 +215,8 @@ class ShoutController < ApplicationController
         present = render_present(@shout, last)
         passive = render_passive(@shout, last)
 
-        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(present)}');", ["channel_#{room.id}"])
-        Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(passive)}');", ["channel_passive_#{room.id}"])
+        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(present)}');", ["channel_#{room.id}"])
+        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(passive)}');", ["channel_passive_#{room.id}"])
 
         render :text => date_stamp + present
       else
@@ -226,16 +229,16 @@ class ShoutController < ApplicationController
 
 
 #    partial_to_string = render_to_string(:action => "list_ajax")
-    #    Juggernaut.send("#{partial_to_string}", ["chat_#{session[:user].company_id}_#{room.id}"])
+    #    Juggernaut.send("#{partial_to_string}", ["chat_#{current_user.company_id}_#{room.id}"])
 #    render :nothing => true
   end
 
 #  def list_ajax
-#    @shouts = Shout.find(:all, :conditions => ["company_id = ?", session[:user].company.id], :limit => 7, :order => "id desc")
+#    @shouts = Shout.find(:all, :conditions => ["company_id = ?", current_user.company.id], :limit => 7, :order => "id desc")
 #  end
 
   def refresh_channels
-    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+    @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                :order => "company_id, name")
     render :update do |page|
       @rooms.each do |room|
@@ -290,7 +293,7 @@ class ShoutController < ApplicationController
     end
 
     passive = render_passive(@shout)
-    Juggernaut.send("do_execute(#{session[:user].id}, '#{double_escape(orig)}');", ["channel_#{shout.shout_channel_id}"])
+    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(orig)}');", ["channel_#{shout.shout_channel_id}"])
     Juggernaut.send("do_execute(0, '#{double_escape(passive)}');", ["channel_passive_#{shout.shout_channel_id}"])
 
     # Back to text/html

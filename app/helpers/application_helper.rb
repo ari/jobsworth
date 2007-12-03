@@ -7,20 +7,12 @@ module ApplicationHelper
 
   include Misc
 
-  def tz
-    Timezone.get(session[:user].time_zone)
-  end
-
   def online_users
-    User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}" )
+    User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" )
   end
 
   def user_online?(user_id)
-    User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{session[:user].company_id}" ) > 0
-  end
-
-  def current_user
-    session[:user]
+    User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" ) > 0
   end
 
   def user_name
@@ -32,7 +24,7 @@ module ApplicationHelper
   end
 
   def current_projects
-    @current_projects ||= User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
+    @current_projects ||= current_user.projects.find(:all, :order => "projects.customer_id, projects.name",
                                                            :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
   end
 
@@ -48,7 +40,7 @@ module ApplicationHelper
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
-    @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
+    @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
     @milestone_ids = "-1" if @milestone_ids == ''
     @milestone_ids
   end
@@ -62,18 +54,18 @@ module ApplicationHelper
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, session[:user].duration_format, session[:user].workday_duration)
+    format_duration(minutes, current_user.duration_format, current_user.workday_duration)
   end
 
   def total_today
     return @total if @total
     @total = 0
-    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", session[:user].id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
+    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
     logs.each { |l|
       @total = @total + l.duration
     }
 
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task_id])
+    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", current_user.id, session[:sheet].task_id])
       @total = @total + sheet.duration
     end
 
@@ -399,11 +391,11 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{h(truncate(task.name,80))}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{h(truncate(task.name,80))}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task.css_classes}", :title => highlight_all(task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration}), keys)})
+    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task.css_classes}", :title => highlight_all(task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration}), keys)})
   end
 
   def milestone_classes(m)
@@ -418,7 +410,7 @@ module ApplicationHelper
   end
 
   def link_to_milestone(milestone)
-    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => session[:user].duration_format), :workday_duration => session[:user].workday_duration})
+    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format), :workday_duration => current_user.workday_duration})
   end
 
   def submit_tag(value = "Save Changes"[], options={} )
@@ -432,7 +424,7 @@ module ApplicationHelper
   end
 
   def avatar_for(user, size=32)
-    if session[:user].option_avatars == 1
+    if current_user.option_avatars == 1
       return "<img src=\"#{user.avatar_url(size)}\" class=\"photo\" />"
     end
     ""
@@ -471,16 +463,13 @@ module ApplicationHelper
   end
 
   def admin?
-    session[:user].admin > 0
+    current_user.admin > 0
   end
 
   def logged_in?
     true
   end
 
-  def current_user
-    session[:user]
-  end
 
 # def time_ago_or_time_stamp(from_time, to_time = Time.now, include_seconds = true, detail = false)
 #   [from_time, to_time].each {|t| t = t.to_time if t.respond_to?(:to_time)}

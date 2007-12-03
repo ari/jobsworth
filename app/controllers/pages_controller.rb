@@ -2,7 +2,7 @@
 class PagesController < ApplicationController
 
   def show
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
 
     @body = RedCloth.new(@page.body).to_html
 
@@ -15,11 +15,11 @@ class PagesController < ApplicationController
   def create
     @page = Page.new(params[:page])
 
-    @page.user = session[:user]
-    @page.company = session[:user].company
+    @page.user = current_user
+    @page.company = current_user.company
     if((@page.project_id.to_i > 0) && @page.save )
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.project = @page.project
       worklog.company = @page.project.company
       worklog.customer = @page.project.customer
@@ -39,11 +39,11 @@ class PagesController < ApplicationController
   end
 
   def edit
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
   end
 
   def update
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
 
     old_name = @page.name
     old_body = @page.body
@@ -52,7 +52,7 @@ class PagesController < ApplicationController
     if @page.update_attributes(params[:page])
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.project = @page.project
       worklog.company = @page.project.company
       worklog.customer = @page.project.customer
@@ -74,10 +74,10 @@ class PagesController < ApplicationController
   end
 
   def destroy
-    @page = Page.find(params[:id], :conditions => ["company_id = ?", session[:user].company.id] )
+    @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
 
     worklog = WorkLog.new
-    worklog.user = session[:user]
+    worklog.user = current_user
     worklog.project = @page.project
     worklog.company = @page.project.company
     worklog.customer = @page.project.customer

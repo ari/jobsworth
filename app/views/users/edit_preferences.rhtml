@@ -23,8 +23,8 @@
 </fieldset>
 
 
-<% if session[:user].admin > 0 %>
-<% @customer = session[:user].company.internal_customer %>
+<% if current_user.admin > 0 %>
+<% @customer = current_user.company.internal_customer %>
 <fieldset>
 <legend><%=_ 'Custom Logo' %></legend>
 <% if @customer.logo? -%>

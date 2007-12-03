@@ -18,7 +18,7 @@
 <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
   <tr>
     <td colspan="2" class="page_header">
-      <div style="float:left;"><%= session[:user].company.name %> <%=_ 'Chat Transcripts' %></div>
+      <div style="float:left;"><%= current_user.company.name %> <%=_ 'Chat Transcripts' %></div>
       <div style="float:right;padding-top:0.1em;"><%= link_to _('Chat Rooms'), :action => 'list' %></div>
       </td>
     </tr>
@@ -40,7 +40,7 @@
 <%   end %>
 <div class="transcript channel channel-<%= v['channel'].id %>" id="transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d') %>">
 <span class="transcript-channel"><%= link_to v['channel'].name, :action => 'transcript', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') %></span><br/>
-<% if v['channel'].company_id.to_i > 0 && (session[:user].admin? || ( v['channel'].project_id.to_i > 0 && session[:user].can?(v['channel'].project, 'grant') ) )  %>
+<% if v['channel'].company_id.to_i > 0 && (current_user.admin? || ( v['channel'].project_id.to_i > 0 && current_user.can?(v['channel'].project, 'grant') ) )  %>
 <div id="transcript_delete_<%=v['channel'].id%>_<%= v['date'].strftime('%y-%m-%d') %>" class="channel-delete" style="display:none;"><%= link_to_remote _('Delete Transcript'), :url => { :action => 'destroy_transcript_ajax', :id => v['channel'].id, :day => v['date'].strftime('%y-%m-%d') },
               :loading => "Element.show('loading');",
               :complete => "Element.hide('loading');",

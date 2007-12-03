@@ -68,7 +68,7 @@ class Tag < ActiveRecord::Base
   end
 
   def to_s
-    tag.name
+    self.name
   end
 
 end

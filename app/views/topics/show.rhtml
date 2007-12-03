@@ -1,5 +1,5 @@
 <% @page_title = @topic.title %>
-<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', session[:user].id, @topic.id, true]).zero? %>
+<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero? %>
 
 <% form_tag forum_topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
@@ -33,7 +33,7 @@
   <span>(<%= 'locked' %>)</span>
   <% end %>
     <span style="display:none;" id="topic_mod">
-      <% if @topic.editable_by?(session[:user]) -%>
+      <% if @topic.editable_by?(current_user) -%>
         <%= link_to('edit', edit_forum_topic_path(@forum, @topic), :class => "utility") %> |
         <%= link_to('delete', forum_topic_path(@forum, @topic), :class => "utility", :method => :delete, :confirm => 'Delete this topic forever?') %>
       <% end -%>

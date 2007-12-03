@@ -2,7 +2,7 @@
 <table cellspacing=0 cellpadding=0 class="content" width=100% style="margin-left: 1em; margin-right:1em;">
     <tr>
       <td align=left class="page_header">
-         <div style="float:left;"><%=session[:user].company.name %> <%=_ 'File', 2 %></div>
+         <div style="float:left;"><%=current_user.company.name %> <%=_ 'File', 2 %></div>
          <div style="float:right;padding-top:0.1em">
            <%= link_to_remote _('New File'), :url => {:action => 'new_file', :id => @current_folder},
                                    :loading => "Element.show('loading');",

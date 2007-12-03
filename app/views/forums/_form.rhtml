@@ -18,7 +18,7 @@
 </p>
 <p id="forum_project_id">
   <label for="forum_project_id"><%= 'Project' %></label><br />
-  <% projects = User.find(session[:user].id).projects.map {|x| [x.name, x.id] } %>
+  <% projects = current_user.projects.map {|x| [x.name, x.id] } %>
   <%= form.select :project_id, [[_("[Any Project]"), ""]] + projects %></p>
 </p>
 <p id="forum_descripion">

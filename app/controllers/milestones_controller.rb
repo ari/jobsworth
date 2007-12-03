@@ -14,7 +14,7 @@ class MilestonesController < ApplicationController
 
   def new
     @milestone = Milestone.new
-    @milestone.user = session[:user]
+    @milestone.user = current_user
     @milestone.project_id = params[:project_id]
   end
 
@@ -26,14 +26,14 @@ class MilestonesController < ApplicationController
 
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       begin
-        due_date = DateTime.strptime( params[:milestone][:due_at], session[:user].date_format )
+        due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
       rescue
         due_date = nil
       end
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
 
-    @milestone.company_id = session[:user].company_id
+    @milestone.company_id = current_user.company_id
 
     if @milestone.save
       flash[:notice] = _('Milestone was successfully created.')
@@ -44,16 +44,16 @@ class MilestonesController < ApplicationController
   end
 
   def edit
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     @milestone.due_at = tz.utc_to_local(@milestone.due_at) unless @milestone.due_at.nil?
   end
 
   def update
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
     @milestone.attributes = params[:milestone]
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
-      due_date = DateTime.strptime( params[:milestone][:due_at], session[:user].date_format )
+      due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
     if @milestone.save
@@ -65,7 +65,7 @@ class MilestonesController < ApplicationController
   end
 
   def destroy
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
     @milestone.tasks.each { |t|
       t.milestone = nil

@@ -13,15 +13,15 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(params[:project])
-    @project.owner = session[:user]
-    @project.company_id = session[:user].company_id
+    @project.owner = current_user
+    @project.company_id = current_user.company_id
 
 
     if @project.save
       @project_permission = ProjectPermission.new
-      @project_permission.user_id = session[:user].id
+      @project_permission.user_id = current_user.id
       @project_permission.project_id = @project.id
-      @project_permission.company_id = session[:user].company_id
+      @project_permission.company_id = current_user.company_id
       @project_permission.can_comment = 1
       @project_permission.can_work = 1
       @project_permission.can_close = 1
@@ -55,24 +55,24 @@ class ProjectsController < ApplicationController
     if session[:filter_customer_short].to_i > 0
       @project.customer_id = session[:filter_customer_short].to_i
     elsif session[:filter_project_short].to_i > 0
-      proj = Project.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_project_short], session[:user].company_id])
+      proj = Project.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_project_short], current_user.company_id])
       @project.customer_id = proj.customer_id
     elsif session[:filter_milestone_short].to_i > 0
-      proj = Milestone.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_milestone_short], session[:user].company_id]).project
+      proj = Milestone.find(:first, :conditions => ["id = ? AND company_id = ?", session[:filter_milestone_short], current_user.company_id]).project
       @project.customer_id = proj.customer_id
     elsif
       render :nothing => true
       return
     end
 
-    @project.owner = session[:user]
-    @project.company_id = session[:user].company_id
+    @project.owner = current_user
+    @project.company_id = current_user.company_id
 
     if @project.save
       @project_permission = ProjectPermission.new
-      @project_permission.user_id = session[:user].id
+      @project_permission.user_id = current_user.id
       @project_permission.project_id = @project.id
-      @project_permission.company_id = session[:user].company_id
+      @project_permission.company_id = current_user.company_id
       @project_permission.can_comment = 1
       @project_permission.can_work = 1
       @project_permission.can_close = 1
@@ -100,16 +100,16 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = User.find(session[:user].id).projects.find(params[:id], :conditions => ["projects.company_id = ?", session[:user].company_id])
+    @project = current_user.projects.find(params[:id], :conditions => ["projects.company_id = ?", current_user.company_id])
     if @project.nil?
       redirect_to :controller => 'activities', :action => 'list'
       return false
     end
-    @users = User.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "users.name")
+    @users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "users.name")
   end
 
   def ajax_remove_permission
-    permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], session[:user].company_id])
+    permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id])
 
     if params[:perm].nil?
       permission.destroy
@@ -118,38 +118,38 @@ class ProjectsController < ApplicationController
       permission.save
     end
 
-    @project = User.find(session[:user].id).projects.find(params[:id])
-    @users = Company.find(session[:user].company_id).users.find(:all, :order => "users.name")
+    @project = current_user.projects.find(params[:id])
+    @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
 
     render :partial => "permission_list"
   end
 
   def ajax_add_permission
-    user = User.find(params[:user_id], :conditions => ["company_id = ?", session[:user].company_id])
+    user = User.find(params[:user_id], :conditions => ["company_id = ?", current_user.company_id])
 
 
-    @project = User.find(session[:user].id).projects.find(params[:id])
+    @project = current_user.projects.find(params[:id])
     if @project && user && ProjectPermission.count(:conditions => ["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
       permission = ProjectPermission.new
       permission.user_id = user.id
       permission.project_id = @project.id
-      permission.company_id = session[:user].company_id
+      permission.company_id = current_user.company_id
       permission.can_comment = 1
       permission.can_work = 1
       permission.can_close = 1
       permission.save
     else
-      permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], session[:user].company_id])
+      permission = ProjectPermission.find(:first, :conditions => ["user_id = ? AND project_id = ? AND company_id = ?", params[:user_id], params[:id], current_user.company_id])
       permission.set(params[:perm])
       permission.save
     end
-    @users = Company.find(session[:user].company_id).users.find(:all, :order => "users.name")
+    @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
 
     render :partial => "permission_list"
   end
 
   def update
-    @project = User.find(session[:user].id).projects.find(params[:id])
+    @project = current_user.projects.find(params[:id])
     old_client = @project.customer_id
 
     if @project.update_attributes(params[:project])
@@ -167,7 +167,7 @@ class ProjectsController < ApplicationController
   end
 
   def destroy
-    @project = User.find(session[:user].id).projects.find(params[:id])
+    @project = current_user.projects.find(params[:id])
     @project.pages.destroy_all
     @project.sheets.destroy_all
     @project.tasks.destroy_all
@@ -188,7 +188,7 @@ class ProjectsController < ApplicationController
   end
 
   def select
-    user = User.find(session[:user].id)
+    user = current_user
     @project = user.projects.find(params[:id])
     if user.respond_to?(:last_project_id)
       user.last_project_id = @project.id
@@ -198,10 +198,10 @@ class ProjectsController < ApplicationController
     session[:project] = @project
     session[:filter_milestone] = nil
 
-    session[:user].last_milestone_id = nil if session[:user].respond_to? :last_milestone_id
-    session[:user].save
+    current_user.last_milestone_id = nil if current_user.respond_to? :last_milestone_id
+    current_user.save
 
-    expire_fragment( %r{application/projects\.action_suffix=#{session[:user].company_id}_#{session[:user].id}} )
+    expire_fragment( %r{application/projects\.action_suffix=#{current_user.company_id}_#{current_user.id}} )
 
     redirect_to :controller => 'activities', :action => 'list'
   end
@@ -217,7 +217,7 @@ class ProjectsController < ApplicationController
   end
 
   def revert
-    project = User.find(session[:user].id).projects.find(params[:id], :conditions => ["completed_at IS NOT NULL"])
+    project = current_user.projects.find(params[:id], :conditions => ["completed_at IS NOT NULL"])
     unless project.nil?
       project.completed_at = nil
       project.save
@@ -227,7 +227,7 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
+    @completed_projects = current_user.projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
   end
 
 end

@@ -2,7 +2,7 @@ module ScheduleHelper
 
   def event_tip(e)
     if e.is_a?(Task) || e.is_a?(Milestone)
-      e.to_tip(:duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration)
+      e.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration)
     else
       ""
     end

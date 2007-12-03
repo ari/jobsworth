@@ -10,10 +10,10 @@
  classes = " task_low_pri" if (task.priority + task.severity_id)/2 < -0.51 && !task.done?
  classes = " task_lowest_pri" if (task.priority + task.severity_id)/2 < -1.5 && !task.done?
 
- can_complete = { :disabled => "disabled" } unless session[:user].can?(task.project, 'close')
+ can_complete = { :disabled => "disabled" } unless current_user.can?(task.project, 'close')
  can_complete ||= {}
 
- can_work = { :disabled => "disabled" } unless session[:user].can?(task.project, 'work')
+ can_work = { :disabled => "disabled" } unless current_user.can?(task.project, 'work')
  can_work ||= {}
 
  classes << " #{task.project.to_css_name}"
@@ -41,7 +41,7 @@ class="task <%=classes%>" <% if depth > 1 %> style="margin-left:<%= 8 + (depth -
                                                                 :complete => "Element.hide('loading');" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% end %>
 
-    <% if session[:user].option_tracktime.to_i == 1 && can_work.size == 0 -%>
+    <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
       <% if session[:sheet] && session[:sheet].task.id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
       <% else -%>
@@ -60,7 +60,7 @@ class="task <%=classes%>" <% if depth > 1 %> style="margin-left:<%= 8 + (depth -
    <%= link_to_task(task) -%>
 
    <small>
-     <%  if session[:user].option_tracktime.to_i == 1 -%>
+     <%  if current_user.option_tracktime.to_i == 1 -%>
        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <% end -%>

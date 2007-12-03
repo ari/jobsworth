@@ -2,22 +2,49 @@
 # Likewise will all the methods added be available for all controllers.
 class ApplicationController < ActionController::Base
 
-  include Misc, ExceptionLoggable
+  include Misc
 
   helper_method :last_active
-
-#  model :user
-#  model :company
-#  model :project
-#  model :sheet
-#  model :task
+  helper_method :render_to_string
+  helper_method :current_user
+  helper_method :tz
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :ical, :ical_all, :about, :company_check, :subdomain_check, :unsubscribe, :shortlist_auth ]
 
   after_filter :set_charset
   after_filter OutputCompressionFilter
+  after_filter :after_req_resource_usage
+  after_filter :cleanup
 
-  helper_method :render_to_string
+  def cleanup
+    @user = nil
+    @current_projects = nil
+    @current_project_ids = nil
+    @milestone_ids = nil
+    @tz = nil
+  end
+
+  def current_user
+    unless @user
+      @user = User.find(session[:user_id])
+    end
+    @user
+  end
+
+  def tz
+    unless @tz
+      @tz = Timezone.get(current_user.time_zone)
+    end
+    @tz
+  end
+
+
+
+  def after_req_resource_usage
+    ps_info = `ps -o psr,etime,pcpu,pmem,rss,vsz -p #{Process.pid} | grep -v CPU`
+    ignore, psr, elapsed, pcpu, pmem, rss, vsz = ps_info.split(/\s+/)
+    logger.info("pid=#{Process.pid} pcpu=#{pcpu} pmem=#{pmem} rss=#{rss} vsz=#{vsz}")
+  end
 
   # Force UTF-8 for all text Content-Types
   def set_charset
@@ -37,7 +64,10 @@ class ApplicationController < ActionController::Base
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-    if session[:user].nil?
+#    session[:user_id] = User.find(:first, :offset => rand(1000)).id
+#    session[:user_id] = 1
+
+    if session[:user_id].nil?
       subdomain = request.subdomains.first
 
       # Generate a javascript redirect if user timed out without requesting a new page
@@ -50,32 +80,26 @@ class ApplicationController < ActionController::Base
       end
     else
       # Refresh the User object
-      session[:user] = User.find(session[:user].id)
       # Subscribe general info channel
-      session[:channels] = ["info_#{session[:user].company_id}"]
+      session[:channels] = ["info_#{current_user.company_id}"]
 
-      session[:user].shout_channels.each do |ch|
+      current_user.shout_channels.each do |ch|
         session[:channels] << "channel_passive_#{ch.id}"
       end
 
       # Refresh work sheet
-      session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => 'id')
+      session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'id')
 
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
-        ActiveRecord::Base.connection.execute("UPDATE users SET last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
+        ActiveRecord::Base.connection.execute("UPDATE users SET last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user_id]}")
       else
-        ActiveRecord::Base.connection.execute("UPDATE users SET last_seen_at='#{Time.now.utc.to_s(:db)}', last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user].id}")
+        ActiveRecord::Base.connection.execute("UPDATE users SET last_seen_at='#{Time.now.utc.to_s(:db)}', last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user_id]}")
       end
 
       # Set current locale
-      Localization.lang(session[:user].locale || 'en_US')
+      Localization.lang(current_user.locale || 'en_US')
     end
-  end
-
-  # Users preferred TimeZone
-  def tz
-    @tz ||= Timezone.get(session[:user].time_zone)
   end
 
 
@@ -88,8 +112,8 @@ class ApplicationController < ActionController::Base
         part = /(\d+)(\w+)/.match(e)
         if part && part.size == 3
           case  part[2]
-          when _('w') then total += e.to_i * session[:user].workday_duration * 5
-          when _('d') then total += e.to_i * session[:user].workday_duration
+          when _('w') then total += e.to_i * current_user.workday_duration * 5
+          when _('d') then total += e.to_i * current_user.workday_duration
           when _('h') then total += e.to_i * 60
           when _('m') then total += e.to_i
           end
@@ -102,8 +126,8 @@ class ApplicationController < ActionController::Base
           case times.size
           when 0 then total += time.to_i
           when 1 then total += time.to_i * 60
-          when 2 then total += time.to_i * session[:user].workday_duration
-          when 3 then total += time.to_i * session[:user].workday_duration * 5
+          when 2 then total += time.to_i * current_user.workday_duration
+          when 3 then total += time.to_i * current_user.workday_duration * 5
           end
         end
       end
@@ -164,7 +188,7 @@ class ApplicationController < ActionController::Base
     if session[:history] && session[:history].size > 0
       redirect_to(session[:history][0])
     else
-      if session[:user].seen_welcome.to_i == 0
+      if current_user.seen_welcome.to_i == 0
         redirect_to('/activities/welcome')
       else
         redirect_to('/activities/list')
@@ -174,35 +198,34 @@ class ApplicationController < ActionController::Base
 
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
-    begin
-      @current_projects ||= User.find(session[:user].id).projects.find(:all, :order => "projects.customer_id, projects.name",
-                                                           :conditions => [ "projects.company_id = ? AND completed_at IS NULL", session[:user].company_id ], :include => :customer )
-    rescue
-      @current_projects = []
+    unless @current_projects
+      @current_projects = User.find(session[:user_id]).projects.find(:all, :order => "projects.customer_id, projects.name",
+                                                   :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
     end
+    @current_projects
   end
 
 
   # List of current Project ids, joined with ,
   def current_project_ids
-    projects = current_projects
-    if projects.nil? || projects.empty?
-      @current_project_ids = "0"
-    else
-      @current_project_ids = projects.collect{|p|p.id}.join(',')
+    unless @current_project_ids
+      @current_project_ids = current_projects.collect(&:id).join(',')
+      @current_project_ids = "0" if @current_project_ids == ''
     end
     @current_project_ids
   end
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
-    @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", session[:user].company_id]).collect{ |m| m.id }.join(',')
-    @milestone_ids = "-1" if @milestone_ids == ''
+    unless @milestone_ids
+      @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
+      @milestone_ids = "-1" if @milestone_ids == ''
+    end
     @milestone_ids
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, session[:user].duration_format, session[:user].workday_duration)
+    format_duration(minutes, current_user.duration_format, current_user.workday_duration)
   end
 
   def highlight( text, k )
@@ -216,25 +239,21 @@ class ApplicationController < ActionController::Base
     text
   end
 
-  def rescue_action(exception)
-    log_exception(exception)
-    exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
-  end
+#  def rescue_action(exception)
+#    log_exception(exception)
+#    exception.is_a?(ActiveRecord::RecordInvalid) ? render_invalid_record(exception.record) : super
+#  end
 
   def render_invalid_record(record)
     render :action => (record.new_record? ? 'new' : 'edit')
   end
 
   def admin?
-    session[:user].admin > 0
+    current_user.admin > 0
   end
 
   def logged_in?
     true
-  end
-
-  def current_user
-    session[:user]
   end
 
   def last_active
@@ -242,7 +261,7 @@ class ApplicationController < ActionController::Base
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => session[:user].duration_format, :workday_duration => session[:user].workday_duration})}\">#{task.name}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{task.name}</a>"
   end
 
 end

@@ -11,11 +11,11 @@
     <%= stylesheet_link_merged :tt %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
-    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => session[:user].uuid }) %>
+    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
     <title><%= controller.controller_name + " / " + controller.action_name %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", session[:user].company.name, session[:user].company.id]) %>
+<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", current_user.company.name, current_user.company.id]) %>
 
 <% if session[:project] && session[:project].customer.css && session[:project].customer.css.length > 0 %>
 
@@ -52,7 +52,7 @@
               <div id="menucontainer" width="100%">
               <div id="tabmenu" width="100%">
               <ul>
-                <% if session[:user].seen_welcome.to_i == 0 %>
+                <% if current_user.seen_welcome.to_i == 0 %>
                   <% if controller.controller_name == "activities" && controller.action_name == 'welcome' %>
                   <li><%= link_to "<span class=\"active\">#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
                   <% else %>
@@ -72,7 +72,7 @@
                 <li><%= link_to "<span>#{_('Browse')}</span>", :controller => 'views', :action => 'browse' %></li>
                 <% end %>
 
-                <% if session[:user].option_tracktime.to_i == 1%>
+                <% if current_user.option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "timeline" && controller.action_name == "list" %>
                   <li><%= link_to "<span class=\"active\">#{_('Timeline')}</span>", { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
                   <% else %>
@@ -86,7 +86,7 @@
                 <li><%= link_to "<span>#{_('Files')}</span>", :controller => 'project_files', :action => 'list' %> </li>
                 <% end %>
 
-                <% if session[:user].option_tracktime.to_i == 1%>
+                <% if current_user.option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "reports"  %>
                   <li><%= link_to "<span class=\"active\">#{_('Reports')}</span>", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
                   <% else %>
@@ -132,9 +132,9 @@
                 <li class="right"><%= link_to "<span class=\"right\">#{_('Preferences')}</span>", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
                 <% end %>
 
-                <% if session[:user].admin > 0 %>
+                <% if current_user.admin > 0 %>
 
-                <% if session[:user].option_externalclients.to_i == 1%>
+                <% if current_user.option_externalclients.to_i == 1%>
                 <% if controller.controller_name == "customers" %>
                   <li class="right"><%= link_to "<span class=\"active\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
                   <% else %>
@@ -170,13 +170,13 @@
       <tr>
         <td valign="top" width="100%" class="rounded_content">
 
-        <% if session[:user].respond_to?(:seen_news_id)%>
-          <% news = NewsItem.find(:first, :order => "created_at desc", :conditions => ["id > ?", session[:user].seen_news_id ]) %>
+        <% if current_user.respond_to?(:seen_news_id)%>
+          <% news = NewsItem.find(:first, :order => "created_at desc", :conditions => ["id > ?", current_user.seen_news_id ]) %>
           <% unless news.nil? %>
             <div id="news">
               <div  class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
               <table class="news" id="news_table">
-                <tr><td width="1%" nowrap valign="top"><span class="news_date">[<%= tz.utc_to_local(news.created_at).strftime("#{session[:user].time_format} #{session[:user].date_format}") %>]</span></td><td><span class="news_body" id="news_body"><%= news.body %></span></td><td align="right" width="1%" >
+                <tr><td width="1%" nowrap valign="top"><span class="news_date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span></td><td><span class="news_body" id="news_body"><%= news.body %></span></td><td align="right" width="1%" >
                 <%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },
                 :success => visual_effect(:fade, "news", :duration => 0.5) %></td></tr>
               </table>
@@ -225,9 +225,9 @@
                 <% client_ids = current_projects.collect(&:customer_id).join(',')
                    client_ids = "0" if client_ids.nil? || client_ids.empty?
 
-                   views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", session[:user].company_id, session[:user].id], :order => "shared, name")
+                   views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
                    for view in views %>
-                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == session[:user].id %><%= "[#{_('Shared')}]" if view.user_id != session[:user].id %></td></tr>
+                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == current_user.id %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></td></tr>
                    <% end %>
                 <tr><td colspan=2>&nbsp;</td></tr>
                 <tr>
@@ -248,7 +248,7 @@
         </td>
       </tr>
     </table>
-    <span id="contact" class="contact">Clocking IT v0.99.2 - <%=_ 'Feedback? Suggestions? Ideas? Bugs?'%> <a href="mailto:feedback@clockingit.com"><%=_ 'Let me know'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if session[:user].admin == 10 %></span>
+    <span id="contact" class="contact">Clocking IT v0.99.2 - <%=_ 'Feedback? Suggestions? Ideas? Bugs?'%> <a href="mailto:feedback@clockingit.com"><%=_ 'Let me know'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></span>
 
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
 
@@ -256,9 +256,9 @@
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
-var userId=<%=session[:user].id%>;
+var userId=<%=current_user.id%>;
 Event.observe(window, "load", function(e) {
-<% if session[:user].option_tooltips.to_i == 1 %>
+<% if current_user.option_tooltips.to_i == 1 %>
   makeTooltips(1);
 <% else %>
   makeTooltips(0);

@@ -137,9 +137,9 @@
 <div id="date_range" style="display:none;">
 <% end %>
 <label for="report_start_date"><%=_ 'From' %></label><%= calendar_field 'report', 'start_date', { :class => 'date', :field_title => 'Start Date', :button_title => _('Show Calendar'), :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""},
-        { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
+        { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
 <label for="report_stop_date"><%=_ 'To' %></label><%= calendar_field 'report', 'stop_date', { :class => 'date', :field_title => 'Stop Date', :button_title => _('Show Calendar'), :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : "" },
-        { :ifFormat => session[:user].date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
+        { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
 </div>
 
 <div id="subtotals"<%= " style=\"display:none;\"" if params[:report].nil? || !["3", "2"].include?(params[:report][:type])  %>>
@@ -150,16 +150,16 @@
 </fieldset>
 <fieldset  style="padding-right:0;" id="reports_filter">
 <legend><%=_ 'Filter' %></legend>
-<label for="report_client_id"><%=_ 'Client' %></label><%= select 'report', 'client_id', [[_('[Any Client]'), '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"] ).collect {|c| [ "#{c.customer.name}", c.customer.id ] }.uniq, :selected => ((params[:report] && params[:report][:client_id]) ? params[:report][:client_id].to_i : session[:filter_customer].to_i) %><br/>
+<label for="report_client_id"><%=_ 'Client' %></label><%= select 'report', 'client_id', [[_('[Any Client]'), '0']] + current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"] ).collect {|c| [ "#{c.customer.name}", c.customer.id ] }.uniq, :selected => ((params[:report] && params[:report][:client_id]) ? params[:report][:client_id].to_i : session[:filter_customer].to_i) %><br/>
 
 <label for="report_project_id"><%=_ 'Project' %></label>
 <% if params[:report] && params[:report][:client_id].to_i > 0 %>
-  <%= select 'report', 'project_id', [[_('[Any Project]'), '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["customer_id = ? AND completed_at IS NULL", params[:report][:client_id]] ).collect {|c| [ "#{c.name}", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
+  <%= select 'report', 'project_id', [[_('[Any Project]'), '0']] + current_user.projects.find(:all, :order => 'name', :conditions => ["customer_id = ? AND completed_at IS NULL", params[:report][:client_id]] ).collect {|c| [ "#{c.name}", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
 <% else %>
-  <%= select 'report', 'project_id', [[_('[Any Project]'), '0']] + User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"] ).collect {|c| [ "#{c.name} / #{c.customer.name == 'Internal' ? session[:user].company.name : c.customer.name }", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
+  <%= select 'report', 'project_id', [[_('[Any Project]'), '0']] + current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"] ).collect {|c| [ "#{c.name} / #{c.customer.name == 'Internal' ? current_user.company.name : c.customer.name }", c.id ] }, :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
 <% end %>
 <label for="report_user_id"><%=_ 'User' %></label>
-<%= select 'report', 'user_id', [[_('[Any User]'), '0']] + User.find(:all, :order => 'name', :conditions => ['company_id = ?', session[:user].company_id] ).collect {|c| [ c.name, c.id ] }, :selected => ((params[:report] && params[:report][:user_id]) ? params[:report][:user_id].to_i : session[:user].id) %><br/>
+<%= select 'report', 'user_id', [[_('[Any User]'), '0']] + User.find(:all, :order => 'name', :conditions => ['company_id = ?', current_user.company_id] ).collect {|c| [ c.name, c.id ] }, :selected => ((params[:report] && params[:report][:user_id]) ? params[:report][:user_id].to_i : current_user.id) %><br/>
 <div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="$('advanced').toggle();"><%=_ 'Advanced Options' %></a></div>
 
 

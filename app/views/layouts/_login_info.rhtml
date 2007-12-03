@@ -1,4 +1,4 @@
-<%= session[:user].name + " / " + session[:user].company.name if session[:user] %><br /><small><%=tz.now.strftime("#{session[:user].time_format} #{session[:user].date_format}")%></small> <%= "<small>[#{online_users} #{_('Online')}]</small>" if session[:user] %>
-<% if session[:user].projects.size > 0 %>
-<br/><small><a href="javascript:var timerwindow=window.open('http://<%=session[:user].company.subdomain%>.<%= $CONFIG[:domain] %>:<%=request.port%>/login/shortlist_auth/<%= session[:user].uuid %>','','resizable=1,toolbar=0,location=0,status=0,menubar=0,scrollbars=1,width=300,height=650');timerwindow.focus();" style="font-size:9px;">Timer Window</a></small>
+<%= current_user.name + " / " + current_user.company.name %><br /><small><%=tz.now.strftime("#{current_user.time_format} #{current_user.date_format}")%></small> <%= "<small>[#{online_users} #{_('Online')}]</small>" %>
+<% if current_user.projects.size > 0 %>
+<br/><small><a href="javascript:var timerwindow=window.open('http://<%=current_user.company.subdomain%>.<%= $CONFIG[:domain] %>:<%=request.port%>/login/shortlist_auth/<%= current_user.uuid %>','','resizable=1,toolbar=0,location=0,status=0,menubar=0,scrollbars=1,width=300,height=650');timerwindow.focus();" style="font-size:9px;">Timer Window</a></small>
 <% end %>

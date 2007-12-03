@@ -8,7 +8,7 @@
 <%= render :partial => "form" %>
 <tr><td colspan="1" valign="top">
 <%= submit_tag _("Create"), :class => "nolabel" %>
-<%= check_box_tag 'notify', '1', (session[:user].send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
+<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
 </td></tr>
 </table>
 <% end %>

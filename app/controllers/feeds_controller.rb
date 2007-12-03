@@ -90,11 +90,15 @@ class FeedsController < ApplicationController
         i.description = log.body unless log.body.nil? || log.body.empty?
         i.date = log.started_at
         i.author = log.user.name unless log.user.nil?
+        action = nil
       end
     end
 
     # Render it inline
     render :text => content.to_s
+    @activities = nil
+    content = nil
+    user = nil
 
   end
 

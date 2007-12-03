@@ -28,10 +28,10 @@ class LoginController < ApplicationController
 
   def logout
     # Mark user as logged out
-    ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL where id = #{session[:user].id}")
+    ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL where id = #{current_user.id}")
 
     # Let other logged in Users in same Company know that User logged out.
-    Juggernaut.send("do_execute(#{session[:user].id}, \"Element.update('flash_message', '#{session[:user].username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{session[:user].company_id}"])
+    Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
 
     session[:user] = nil
     session[:project] = nil
@@ -53,7 +53,7 @@ class LoginController < ApplicationController
     if logged_in = @user.login(subdomain)
       logged_in.last_login_at = Time.now.utc
       logged_in.save
-      session[:user] = logged_in
+      session[:user_id] = logged_in.id
 
       if @sheet = Sheet.find(:first, :conditions => ["user_id = ? ", logged_in.id])
         session[:sheet] = @sheet
@@ -82,7 +82,7 @@ class LoginController < ApplicationController
       end
 
       # Let others know User logged in
-      Juggernaut.send("do_execute(#{session[:user].id}, \"Element.update('flash_message', '#{session[:user].username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{session[:user].company_id}"])
+      Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{current_user.company_id}"])
 
       redirect_from_last
     else
@@ -273,7 +273,7 @@ class LoginController < ApplicationController
       return
     end
 
-    session[:user] = user
+    session[:user_id] = user.id
     authorize
 
     redirect_to :controller => 'tasks', :action => 'shortlist'

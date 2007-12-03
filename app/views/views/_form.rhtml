@@ -1,10 +1,10 @@
 <%= error_messages_for 'view' %>
 
 <%
-  @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect {|c| [c.name, c.id]}
-  @projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name + " / " + p.customer.name, p.id.to_s]}
-  @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id]).collect {|c| [ c.name, c.id.to_s ] }
-  @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND completed_at IS NULL", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
+  @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect {|c| [c.name, c.id]}
+  @projects = current_user.projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name + " / " + p.customer.name, p.id.to_s]}
+  @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id]).collect {|c| [ c.name, c.id.to_s ] }
+  @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND completed_at IS NULL", current_user.company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
 
 %>
 

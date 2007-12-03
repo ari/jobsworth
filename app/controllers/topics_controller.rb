@@ -58,12 +58,12 @@ class TopicsController < ApplicationController
   end
 
   def destroy
-    if session[:user].id != @topic.user_id && !admin? && !current_user.moderator_of?(@topic.forum)
+    if current_user.id != @topic.user_id && !admin? && !current_user.moderator_of?(@topic.forum)
       redirect_to forums_path
       return
     end
 
-    if session[:user].admin < 2 && @topic.forum.company_id != session[:user].company_id
+    if current_user.admin < 2 && @topic.forum.company_id != current_user.company_id
       redirect_to forums_path
       return
     end
@@ -88,7 +88,7 @@ class TopicsController < ApplicationController
     end
 
     def find_forum_and_topic
-      @forum = Forum.find(params[:forum_id], :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", session[:user].company_id])
+      @forum = Forum.find(params[:forum_id], :conditions => ["company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))", current_user.company_id])
       @topic = @forum.topics.find(params[:id]) if params[:id]
     end
 

@@ -19,7 +19,7 @@
  options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
  options << [_("Leave as Duplicate"), 5] if @task.status == 5
 
- can_close = {:disabled => "disabled"} unless session[:user].can?( @task.project, 'close' )
+ can_close = {:disabled => "disabled"} unless current_user.can?( @task.project, 'close' )
  can_close ||= {}
 
 %>
@@ -29,7 +29,7 @@
 
 <% end %>
 <br />
-<% if @log.user_id == session[:user].id %>
+<% if @log.user_id == current_user.id %>
 <%= link_to _("Delete Log Entry"), {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => _("Really delete this log entry?")  %>
 <% end %>
 

@@ -30,7 +30,7 @@
 
 %>
 
-<% if user_granted && (u.id != @project.user_id && u.id != session[:user].id ) %>
+<% if user_granted && (u.id != @project.user_id && u.id != current_user.id ) %>
       <td align="center">
        <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove all access for <b>%s</b>?", u.name), :class => "tooltip centered"),
           :update => 'permission_list',

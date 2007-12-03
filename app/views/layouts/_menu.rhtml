@@ -1,4 +1,4 @@
-<%    @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", session[:user].company.id, session[:user].company.name]) if @internal.nil? %>
+<%    @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company.id, current_user.company.name]) if @internal.nil? %>
 <table width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td align=left class="menu" style="padding-right:1em;width:1%;">

@@ -10,7 +10,7 @@ class TasksController < ApplicationController
   require 'fastercsv'
 
   def new
-    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+    @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
@@ -18,7 +18,7 @@ class TasksController < ApplicationController
     else
       @task = Task.new
       @task.duration = 0
-      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
+      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     end
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
@@ -27,7 +27,7 @@ class TasksController < ApplicationController
 
   def list
     # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{session[:user].company_id}"]
+    session[:channels] += ["tasks_#{current_user.company_id}"]
 
     @tags = {}
     @tags.default = 0
@@ -48,7 +48,7 @@ class TasksController < ApplicationController
         filter = "tasks.id IN (#{task_ids}) AND "
       end
     elsif session[:filter_user].to_i < 0
-      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", session[:user].company_id]).collect { |t| t.id }.join(',')
+      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", current_user.company_id]).collect { |t| t.id }.join(',')
       if not_task_ids == ''
         filter = "tasks.id = 0 AND "
       else
@@ -99,37 +99,37 @@ class TasksController < ApplicationController
     if params[:tag] && params[:tag].length > 0
       # Looking for tasks based on tags
       @selected_tags = params[:tag].downcase.split(',').collect{|t| t.strip}
-      @tasks = Task.tagged_with(@selected_tags, { :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer], :sort => sort })
+      @tasks = Task.tagged_with(@selected_tags, { :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer], :sort => sort })
     else
       # Looking for tasks based on filters
       @selected_tags = []
-      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants ])
+      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants ])
     end
 
     # Most popular tags, currently unlimited.
-    @all_tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
+    @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
     @group_ids = { }
     if session[:group_by].to_i == 1 # tags
       @tag_names = @all_tags.collect{|i,j| i}
-      @groups = Task.tag_groups(session[:user].company_id, @tag_names, @tasks)
+      @groups = Task.tag_groups(current_user.company_id, @tag_names, @tasks)
     elsif session[:group_by].to_i == 2 # Clients
-      clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name")
+      clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
       clients.each { |c| @group_ids[c.name] = c.id }
       items = clients.collect(&:name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.customer.name == i }
     elsif session[:group_by].to_i == 3 # Projects
-      projects = User.find(session[:user].id).projects
+      projects = current_user.projects
       projects.each { |p| @group_ids[p.full_name] = p.id }
       items = projects.collect(&:full_name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", session[:user].company_id], :order => "due_at, name")
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
       milestones.each { |m| @group_ids[m.name + " / " + m.project.name] = m.id }
       @group_ids['Unassigned'] = 0
       items = ["Unassigned"] +  milestones.collect{ |m| m.name + " / " + m.project.name }
       @groups = Task.group_by(@tasks, items) { |t,i| (t.milestone ? (t.milestone.name + " / " + t.project.name) : "Unassigned" ) == i }
     elsif session[:group_by].to_i == 5 # Users
-      users = session[:user].company.users
+      users = current_user.company.users
       users.each { |u| @group_ids[u.name] = u.id }
       @group_ids['Unassigned'] = 0
       items = ["Unassigned"] + users.collect(&:name).sort
@@ -158,8 +158,8 @@ class TasksController < ApplicationController
       items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
       @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", session[:user].company_id], :order => "due_at, name")
-      projects = User.find(session[:user].id).projects
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
+      projects = current_user.projects
 
       milestones.each { |m| @group_ids["#{m.project.name} / #{m.name}"] = "#{m.project_id}_#{m.id}" }
       projects.each { |p| @group_ids["#{p.name}"] = p.id }
@@ -177,7 +177,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', session[:user].company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
@@ -205,7 +205,7 @@ class TasksController < ApplicationController
     projects = "+project_id:\"#{projects}\"" unless projects == ""
 
     # Find the tasks
-    @tasks = Task.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 13})
+    @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
     render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
   end
 
@@ -251,7 +251,7 @@ class TasksController < ApplicationController
         @task.due_at = tz.local_to_utc(@task.next_repeat_date)
       else
         @task.repeat = nil
-        due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
+        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
                                                                                                     flash['notice'] = _('Invalid due date ignored.')
                                                                                                     due_date = nil
                                                                                                   end
@@ -261,12 +261,12 @@ class TasksController < ApplicationController
       @task.repeat = nil
     end
 
-    @task.company_id = session[:user].company_id
-    @task.updated_by_id = session[:user].id
-    @task.creator_id = session[:user].id
+    @task.company_id = current_user.company_id
+    @task.updated_by_id = current_user.id
+    @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration])  if params[:task]
     @task.set_tags(params[:task][:set_tags]) if params[:task]
-    @task.set_task_num(session[:user].company_id)
+    @task.set_task_num(current_user.company_id)
     @task.duration = 0 if @task.duration.nil?
 
     if @task.save
@@ -274,7 +274,7 @@ class TasksController < ApplicationController
       if params[:watchers]
         params[:watchers].uniq.each do |elem|
           elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
+            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
             unless u.nil?
               # Found user
               n = Notification.new(:user => u, :task => @task)
@@ -295,7 +295,7 @@ class TasksController < ApplicationController
       if params[:users]
         params[:users].each do |o|
           next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", session[:user].company_id])
+          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
           to = TaskOwner.new(:user => u, :task => @task)
           to.save
         end
@@ -307,7 +307,7 @@ class TasksController < ApplicationController
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, dep])
+            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
             unless t.nil?
               @task.dependencies << t
             end
@@ -324,7 +324,7 @@ class TasksController < ApplicationController
         filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
 
         task_file = ProjectFile.new()
-        task_file.company = session[:user].company
+        task_file.company = current_user.company
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
@@ -349,7 +349,7 @@ class TasksController < ApplicationController
       end
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -361,11 +361,11 @@ class TasksController < ApplicationController
 
       worklog.save
       if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, session[:user], params[:comment]) rescue begin end
+        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
       end
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
 
@@ -373,8 +373,8 @@ class TasksController < ApplicationController
 
       redirect_from_last
     else
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
-      @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
+      @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
       return if request.xhr?
       render_action 'new'
     end
@@ -390,13 +390,13 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}] )
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] )
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
-    @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
+    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND work_logs.log_type=6" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
       @logs = []
     end
-    @projects = User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if session[:user].can?(c, 'create')  }.compact unless session[:user].projects.nil?
+    @projects = User.find(current_user.id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
@@ -421,7 +421,7 @@ class TasksController < ApplicationController
     @repeat.priority = task.priority
     @repeat.severity_id = task.severity_id
     @repeat.set_tags(task.tags.collect{|t| t.name}.join(', '))
-    @repeat.set_task_num(session[:user].company_id)
+    @repeat.set_task_num(current_user.company_id)
     @repeat.duration = task.duration
     @repeat.notify_emails = task.notify_emails
     @repeat.milestone_id = task.milestone_id
@@ -452,7 +452,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    projects = User.find(session[:user].id).projects.collect{|p|p.id}
+    projects = current_user.projects.collect{|p|p.id}
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
     old_tags = @task.tags.collect {|t| t.name}.join(', ')
@@ -481,7 +481,7 @@ class TasksController < ApplicationController
           @task.due_at = tz.local_to_utc(@task.next_repeat_date)
         else
           @task.repeat = nil
-          due_date = DateTime.strptime( params[:task][:due_at], session[:user].date_format ) rescue begin
+          due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
                                                                                                       flash['notice'] = _('Invalid due date ignored.')
                                                                                                       due_date = nil
                                                                                                     end
@@ -496,7 +496,7 @@ class TasksController < ApplicationController
       unless params[:watchers].nil?
         params[:watchers].uniq.each do |elem|
           elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", session[:user].company_id])
+            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
             unless u.nil?
               # Found user
               n = Notification.new(:user => u, :task => @task)
@@ -517,7 +517,7 @@ class TasksController < ApplicationController
         @task.task_owners.destroy_all
         params[:users].each do |o|
           next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", session[:user].company_id])
+          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
           to = TaskOwner.new(:user => u, :task => @task)
           to.save
         end
@@ -530,7 +530,7 @@ class TasksController < ApplicationController
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", session[:user].company_id, dep])
+            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
             unless t.nil?
               @task.dependencies << t
             end
@@ -539,7 +539,7 @@ class TasksController < ApplicationController
       end
 
       @task.duration = parse_time(params[:task][:duration]) if (params[:task] && params[:task][:duration])
-      @task.updated_by_id = session[:user].id
+      @task.updated_by_id = current_user.id
 
       if @task.status > 1 && @task.completed_at.nil?
         @task.completed_at = Time.now.utc
@@ -579,7 +579,7 @@ class TasksController < ApplicationController
         body = body + "- <strong>Assignment</strong>: #{new_name}\n"
 
         if params['notify'].to_i == 1
-          Notifications::deliver_assigned( @task, session[:user], @task.users, old_users, params[:comment] ) rescue begin end
+          Notifications::deliver_assigned( @task, current_user, @task.users, old_users, params[:comment] ) rescue begin end
         end
 
       end
@@ -655,14 +655,14 @@ class TasksController < ApplicationController
 
         if( @task.status > 1 && @old_task.status != @task.status )
           if params['notify'].to_i == 1
-            Notifications::deliver_completed( @task, session[:user], params[:comment] ) rescue begin end
+            Notifications::deliver_completed( @task, current_user, params[:comment] ) rescue begin end
             @sent_completed = true
           end
         end
 
         if( @task.status < 2 && @old_task.status > 1 )
           if params['notify'].to_i == 1
-            Notifications::deliver_reverted( @task, session[:user], params[:comment] ) rescue begin end
+            Notifications::deliver_reverted( @task, current_user, params[:comment] ) rescue begin end
             @sent_completed = true
           end
         end
@@ -679,7 +679,7 @@ class TasksController < ApplicationController
 
 
         task_file = ProjectFile.new()
-        task_file.company = session[:user].company
+        task_file.company = current_user.company
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
@@ -707,7 +707,7 @@ class TasksController < ApplicationController
       if params[:comment] && params[:comment].length > 0 && !@sent_completed
         worklog.log_type = WorkLog::TASK_COMMENT if body.length ==  0
         if (body.length == 0 and params['notify'].to_i == 1)
-          Notifications::deliver_commented( @task, session[:user], params[:comment] ) rescue begin end
+          Notifications::deliver_commented( @task, current_user, params[:comment] ) rescue begin end
           @sent_comment = true
         end
 
@@ -716,7 +716,7 @@ class TasksController < ApplicationController
       end
 
       if body.length > 0
-        worklog.user = session[:user]
+        worklog.user = current_user
         worklog.company = @task.project.company
         worklog.customer = @task.project.customer
         worklog.project = @task.project
@@ -727,12 +727,12 @@ class TasksController < ApplicationController
         worklog.save
 
         if(params['notify'].to_i == 1) && (!@sent_comment) && (!@sent_completed)
-          Notifications::deliver_changed( @task, session[:user], body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
+          Notifications::deliver_changed( @task, current_user, body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
         end
       end
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       return if request.xhr?
 
@@ -762,11 +762,11 @@ class TasksController < ApplicationController
 
     unless @task.hidden == 1
       @task.hidden = 1
-      @task.updated_by_id = session[:user].id
+      @task.updated_by_id = current_user.id
       @task.save
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -785,11 +785,11 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
     unless @task.hidden == 0
       @task.hidden = 0
-      @task.updated_by_id = session[:user].id
+      @task.updated_by_id = current_user.id
       @task.save
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -806,12 +806,12 @@ class TasksController < ApplicationController
 
 
   def ajax_check
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}], :include => :project)
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
 
     unless @task.completed_at
 
       @task.completed_at = Time.now.utc
-      @task.updated_by_id = session[:user].id
+      @task.updated_by_id = current_user.id
       @task.status = 2
       @task.save
       @task.reload
@@ -821,7 +821,7 @@ class TasksController < ApplicationController
       end
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -832,42 +832,40 @@ class TasksController < ApplicationController
       worklog.body = ""
       worklog.save
 
-      if session[:user].send_notifications
-        Notifications::deliver_completed( @task, session[:user] ) rescue begin end
+      if current_user.send_notifications
+        Notifications::deliver_completed( @task, current_user ) rescue begin end
       end
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
     end
 
     if session[:history] && session[:history][0] == '/activities/list'
-      @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
-      @completed_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
+      @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+      @completed_projects = current_user.projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
       @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 25, :conditions => ["work_logs.project_id IN ( #{current_project_ids} )"], :include => [:user, :project, :customer, :task])
 
-      user = User.find(session[:user].id)
-
-      @tasks = user.tasks.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
+      @tasks = current_user.tasks.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
 
       new_filter = ""
       new_filter = "AND tasks.id NOT IN (" + @tasks.collect{ |t| t.id}.join(', ') + ")" if @tasks.size > 0
 
-      @new_tasks = Task.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
+      @new_tasks = Task.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
     end
   end
 
   def ajax_uncheck
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", User.find(session[:user].id).projects.collect{|p|p.id}], :include => :project)
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
 
     unless @task.completed_at.nil?
 
       @task.completed_at = nil
       @task.status = 0
-      @task.updated_by_id = session[:user].id
+      @task.updated_by_id = current_user.id
       @task.save
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -878,25 +876,25 @@ class TasksController < ApplicationController
       worklog.body = ""
       worklog.save
 
-      if session[:user].send_notifications
-        Notifications::deliver_reverted( @task, session[:user] ) rescue begin end
+      if current_user.send_notifications
+        Notifications::deliver_reverted( @task, current_user ) rescue begin end
       end
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
     end
 
   end
 
 
   def start_work
-    sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
 
     if sheet
       self.swap_work_ajax
     end
 
-    sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
     if sheet
         session[:sheet] = sheet
         flash['notice'] = "You're already working on #{link_to_task(sheet.task)}. Please stop or cancel it first."
@@ -905,11 +903,11 @@ class TasksController < ApplicationController
     end
 
 
-    task = Task.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     sheet = Sheet.new
 
     sheet.task = task
-    sheet.user = session[:user]
+    sheet.user = current_user
     sheet.project = task.project
     sheet.save
 
@@ -932,18 +930,18 @@ class TasksController < ApplicationController
   end
 
   def cancel_work_ajax
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", session[:user].id, session[:sheet].task_id], :order => "id")
+    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", current_user.id, session[:sheet].task_id], :order => "id")
       sheet.destroy
     end
     session[:sheet] = nil
-    @task = Task.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     return if request.xhr?
     redirect_from_last
   end
 
 
   def swap_work_ajax
-    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
 
       @old_task = sheet.task
 
@@ -952,12 +950,12 @@ class TasksController < ApplicationController
         redirect_from_last
       end
 
-      @old_task.updated_by_id = session[:user].id
+      @old_task.updated_by_id = current_user.id
       @old_task.save
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
-      worklog.company = session[:user].company
+      worklog.user = current_user
+      worklog.company = current_user.company
       worklog.project = sheet.project
       worklog.task = sheet.task
       worklog.customer = sheet.project.customer
@@ -970,8 +968,8 @@ class TasksController < ApplicationController
         sheet.destroy
         session[:sheet] = nil
         flash['notice'] = _("Log entry saved...")
-        Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{session[:user].company_id}"])
-        Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{current_user.company_id}"])
+        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
       else
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
@@ -980,7 +978,7 @@ class TasksController < ApplicationController
   end
 
   def add_work
-    @task = User.find(session[:user].id, :conditions => ["company_id = ?", session[:user].company_id]).tasks.find( params['id'] )
+    @task = current_user.tasks.find( params['id'] )
 
     unless @task
       flash['notice'] = _('Unable to find task.')
@@ -988,8 +986,8 @@ class TasksController < ApplicationController
     end
 
     @log = WorkLog.new
-    @log.user = session[:user]
-    @log.company = session[:user].company
+    @log.user = current_user
+    @log.company = current_user.company
     @log.project = @task.project
     @log.task = @task
     @log.customer = @task.project.customer
@@ -1003,10 +1001,10 @@ class TasksController < ApplicationController
   end
 
   def stop_work
-    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
       worklog = WorkLog.new
-      worklog.user = session[:user]
-      worklog.company = session[:user].company
+      worklog.user = current_user
+      worklog.company = current_user.company
       worklog.project = sheet.project
       worklog.task = sheet.task
       worklog.customer = sheet.project.customer
@@ -1017,7 +1015,7 @@ class TasksController < ApplicationController
       worklog.log_type = WorkLog::TASK_WORK_ADDED
 
       if worklog.save
-        worklog.task.updated_by_id = session[:user].id
+        worklog.task.updated_by_id = current_user.id
         worklog.task.save
 
         sheet.destroy
@@ -1055,8 +1053,8 @@ class TasksController < ApplicationController
   end
 
   def update_tasks
-    @task = Task.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
-    ActiveRecord::Base.connection.execute("update users set last_seen_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{session[:user].id}")
+    @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    ActiveRecord::Base.connection.execute("update users set last_seen_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{current_user.id}")
   end
 
   def do_filter
@@ -1089,10 +1087,10 @@ class TasksController < ApplicationController
       session[filter] = params[filter]
     end
 
-    session[:user].last_filter = session[:filter_hidden]
-    session[:user].last_milestone_id = session[:filter_milestone]
-    session[:user].last_project_id = session[:filter_project]
-    session[:user].save
+    current_user.last_filter = session[:filter_hidden]
+    current_user.last_milestone_id = session[:filter_milestone]
+    current_user.last_project_id = session[:filter_project]
+    current_user.save
   end
 
   def filter
@@ -1121,13 +1119,13 @@ class TasksController < ApplicationController
   end
 
   def edit_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     @log.started_at = tz.utc_to_local(@log.started_at)
     @task = @log.task
   end
 
   def destroy_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     @log.destroy
     flash['notice'] = _("Log entry deleted...")
     redirect_from_last
@@ -1136,17 +1134,17 @@ class TasksController < ApplicationController
   def add_log
     @log = Worklog.new
     @log.started_at = tz.utc_to_local(Time.now.utc)
-    @log.task = Task.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @log.task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     render :action => 'edit_log'
   end
 
   def save_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     if @log.update_attributes(params[:log])
 
       if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
         begin
-          due_date = DateTime.strptime( params[:log][:started_at], "#{session[:user].date_format} #{session[:user].time_format}" )
+          due_date = DateTime.strptime( params[:log][:started_at], "#{current_user.date_format} #{current_user.time_format}" )
           @log.started_at = tz.local_to_utc(due_date)
         rescue
           @log.started_at = Time.now.utc
@@ -1157,16 +1155,16 @@ class TasksController < ApplicationController
 
       @log.duration = parse_time(params[:log][:duration], true)
 
-      @log.task.updated_by_id = session[:user].id
+      @log.task.updated_by_id = current_user.id
 
       if params[:task] && params[:task][:status].to_i != @log.task.status
         @log.task.status = params[:task][:status].to_i
         @log.log_type = WorkLog::TASK_COMPLETED if params[:task][:status].to_i > 1
         @log.log_type = WorkLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
-        @log.task.updated_by_id = session[:user].id
+        @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
-        if session[:user].send_notifications > 0
-            Notifications::deliver_completed( @log.task, session[:user], params[:log][:body] ) rescue begin end
+        if current_user.send_notifications > 0
+            Notifications::deliver_completed( @log.task, current_user, params[:log][:body] ) rescue begin end
         end
       end
 
@@ -1174,8 +1172,8 @@ class TasksController < ApplicationController
       @log.save
 
       flash['notice'] = _("Log entry saved...")
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
     end
     redirect_from_last
@@ -1249,7 +1247,7 @@ class TasksController < ApplicationController
       case session[:group_by].to_i
       when 3
         # Project
-        project = User.find(session[:user]).projects.find(@group)
+        project = current_user.projects.find(@group)
         if @task.project_id != project.id
           body = "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
           if @task.milestone
@@ -1289,7 +1287,7 @@ class TasksController < ApplicationController
 
         @task.task_owners.destroy_all
         if @group > 0
-          u = User.find(@group, :conditions => ["company_id = ?", session[:user].company_id])
+          u = User.find(@group, :conditions => ["company_id = ?", current_user.company_id])
           to = TaskOwner.new(:user => u, :task => @task)
           to.save
 
@@ -1297,7 +1295,7 @@ class TasksController < ApplicationController
             new_name = u.name
             body = "- <strong>Assignment</strong>: #{new_name}\n"
             @task.users.reload
-            Notifications::deliver_assigned( @task, session[:user], @task.users, old_users, "" ) rescue begin end
+            Notifications::deliver_assigned( @task, current_user, @task.users, old_users, "" ) rescue begin end
           end
 
         end
@@ -1341,7 +1339,7 @@ class TasksController < ApplicationController
         # Project / Milestone
         # task-group_44_15
 
-        project = User.find(session[:user].id).projects.find(@group)
+        project = current_user.projects.find(@group)
 
         if @task.project_id != @group
           body << "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
@@ -1379,7 +1377,7 @@ class TasksController < ApplicationController
 
       if body.length > 0
         @task.reload
-        worklog.user = session[:user]
+        worklog.user = current_user
         worklog.company = @task.project.company
         worklog.customer = @task.project.customer
         worklog.project = @task.project
@@ -1450,14 +1448,14 @@ class TasksController < ApplicationController
 
     @task = Task.new
     @task.name = params[:task][:name]
-    @task.company_id = session[:user].company_id
-    @task.updated_by_id = session[:user].id
-    @task.creator_id = session[:user].id
+    @task.company_id = current_user.company_id
+    @task.updated_by_id = current_user.id
+    @task.creator_id = current_user.id
     @task.duration = 0
-    @task.set_task_num(session[:user].company_id)
+    @task.set_task_num(current_user.company_id)
 
     if session[:filter_milestone_short].to_i > 0
-      @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_milestone_short]]).project
+      @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_milestone_short]]).project
       @task.milestone_id = session[:filter_milestone_short].to_i
     elsif session[:filter_project_short].to_i > 0
       @task.project_id = session[:filter_project_short].to_i
@@ -1477,11 +1475,11 @@ class TasksController < ApplicationController
         page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "'#ff9999'")
       end
     else
-      to = TaskOwner.new(:user => session[:user], :task => @task)
+      to = TaskOwner.new(:user => current_user, :task => @task)
       to.save
 
       worklog = WorkLog.new
-      worklog.user = session[:user]
+      worklog.user = current_user
       worklog.company = @task.project.company
       worklog.customer = @task.project.customer
       worklog.project = @task.project
@@ -1492,11 +1490,11 @@ class TasksController < ApplicationController
       worklog.body = ""
       worklog.save
       if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, session[:user], params[:comment]) rescue begin end
+        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
       end
 
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{session[:user].company_id}"])
-      Juggernaut.send( "do_update(#{session[:user].id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{session[:user].company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       render :update do |page|
         page.insert_html :bottom, "shortlist-tasks", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
@@ -1518,7 +1516,7 @@ class TasksController < ApplicationController
     session[:filter_project] = session[:filter_project_short] if session[:filter_project_short]
     session[:filter_customer] = session[:filter_customer_short] if session[:filter_project_short]
     session[:filter_milestone] = session[:filter_milestone_short] if session[:filter_project_short]
-    session[:filter_user] = session[:user].id.to_s
+    session[:filter_user] = current_user.id.to_s
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
     session[:group_by] = "0"
@@ -1536,7 +1534,7 @@ class TasksController < ApplicationController
   end
 
   def pause_work_ajax
-    if @sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user].id], :order => "id")
+    if @sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
       if @sheet.paused_at
         @sheet.paused_duration += ((Time.now.utc - @sheet.paused_at) / 60).to_i
         @sheet.paused_at = nil

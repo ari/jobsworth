@@ -112,7 +112,7 @@ class ReportsController < ApplicationController
     when 14
       "End"
     when 15
-      "#{tz.utc_to_local(w.started_at).strftime( "%a " + session[:user].date_format )}"
+      "#{tz.utc_to_local(w.started_at).strftime( "%a " + current_user.date_format )}"
     when 16
       "Start"
     when 17
@@ -139,6 +139,8 @@ class ReportsController < ApplicationController
 
 
   def do_column(w, key)
+    logger.debug("#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}")
+
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
     if @row_value == 2 && !w.task.tags.empty? && (@type == 1 || @type == 4)
@@ -159,12 +161,12 @@ class ReportsController < ApplicationController
     elsif key == "1_start"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime(session[:user].time_format)}</a>")
+      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime(current_user.time_format)}</a>")
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration.minutes).strftime(session[:user].time_format)}")
+      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration.minutes).strftime(current_user.time_format)}")
     elsif key == "3_task"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
@@ -189,7 +191,7 @@ class ReportsController < ApplicationController
     date_filter = ""
     filename = "clockingit"
 
-    @tags = Tag.top_counts({ :company_id => session[:user].company_id, :project_ids => current_project_ids})
+    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids})
 
 
     if filter = params[:report]
@@ -262,12 +264,12 @@ class ReportsController < ApplicationController
           filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")
         when 7
           if filter[:stop_date] && filter[:start_date].length > 1
-            start_date = DateTime.strptime( filter[:start_date], session[:user].date_format ).to_time
+            start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time
             date_filter = date_filter + " AND work_logs.started_at > '#{tz.local_to_utc(start_date).strftime("%Y-%m-%d 00:00:00")}'"
           end
 
           if filter[:stop_date] && filter[:stop_date].length > 1
-            end_date = DateTime.strptime( filter[:stop_date], session[:user].date_format ).to_time
+            end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time
             date_filter = date_filter + " AND work_logs.started_at < '#{tz.local_to_utc(end_date).strftime("%Y-%m-%d 23:59:59")}'"
           end
 
@@ -285,19 +287,19 @@ class ReportsController < ApplicationController
         end
 
         unless task_tags.nil? || task_tags.empty?
-          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
+          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => current_user.company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
           task_ids = "0" if task_ids.empty?
           sql_filter << " AND work_logs.task_id IN (#{task_ids})"
         end
 
-        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
-        @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
+        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id])
+        @projects = current_user.projects.find(:all, :order => 'name');
         @logs = []
         @projects.each do |p|
           if join != ""
-            @logs += p.work_logs.find(:all, :select => "work_logs.*", :order => "work_logs.project_id", :joins => "LEFT JOIN tasks ON tasks.id = work_logs.task_id", :conditions => ["work_logs.company_id = ? AND work_logs.duration > 0" + sql_filter + date_filter + join, session[:user].company.id])
+            @logs += p.work_logs.find(:all, :select => "work_logs.*", :order => "work_logs.project_id", :joins => "LEFT JOIN tasks ON tasks.id = work_logs.task_id", :conditions => ["work_logs.company_id = ? AND work_logs.duration > 0" + sql_filter + date_filter + join, current_user.company.id])
           else
-            @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, session[:user].company.id])
+            @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, current_user.company.id])
           end
         end
 
@@ -333,16 +335,16 @@ class ReportsController < ApplicationController
         end
 
         unless task_tags.nil? || task_tags.empty?
-          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => session[:user].company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
+          task_ids = Task.tagged_with(task_tags.downcase, { :company_id => current_user.company_id, :filter_status => "-1" } ).collect { |t| t.id }.join(",")
           task_ids = "0" if task_ids.empty?
           sql_filter << " AND tasks.id IN (#{task_ids})"
         end
 
-        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", session[:user].company_id])
-        @projects = User.find(session[:user].id).projects.find(:all, :order => 'name');
+        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id])
+        @projects = User.find(current_user.id).projects.find(:all, :order => 'name');
         @tasks = []
         @projects.each do |p|
-          @tasks += p.tasks.find(:all, :order => "tasks.project_id", :conditions => ["tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status < 2 " + sql_filter + date_filter + join, session[:user].company_id], :include => [:project, :users, :milestone, :company, :tags])
+          @tasks += p.tasks.find(:all, :order => "tasks.project_id", :conditions => ["tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status < 2 " + sql_filter + date_filter + join, current_user.company_id], :include => [:project, :users, :milestone, :company, :tags])
         end
 
         @logs = []
@@ -356,7 +358,7 @@ class ReportsController < ApplicationController
               w.customer = t.project.customer
               w.project = t.project
               w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
-	      w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
+              w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
               w.duration = t.duration.to_i > 0 ? t.duration : 60
               @logs << w
             end
@@ -367,7 +369,7 @@ class ReportsController < ApplicationController
             w.customer_id = t.project.customer_id
             w.project_id = t.project_id
             w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
-	    w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
+            w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
             w.duration = t.duration.to_i > 0 ? t.duration : 60
             @logs << w
           end
@@ -377,7 +379,7 @@ class ReportsController < ApplicationController
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
-	logger.info( "#{w.started_at} -> #{tz.utc_to_local(w.started_at)} < #{start_date}")
+        logger.info( "#{w.started_at} -> #{tz.utc_to_local(w.started_at)} < #{start_date}")
         start_date = tz.utc_to_local(w.started_at) if(start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
         end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
       end
@@ -402,8 +404,8 @@ class ReportsController < ApplicationController
       @rows = { }
 
       if start_date
-        @column_headers[ '__' ] = "#{start_date.strftime(session[:user].date_format)}"
-        @column_headers[ '__' ] << "- #{end_date.strftime(session[:user].date_format)}" if end_date && end_date.yday != start_date.yday
+        @column_headers[ '__' ] = "#{start_date.strftime(current_user.date_format)}"
+        @column_headers[ '__' ] << "- #{end_date.strftime(current_user.date_format)}" if end_date && end_date.yday != start_date.yday
       else
         @column_headers[ '__' ] = "&nbsp;"
       end
@@ -467,8 +469,8 @@ class ReportsController < ApplicationController
     csv = create_csv if @column_headers && @column_headers.size > 1
     unless csv.nil? || csv.empty?
       @generated_report = GeneratedReport.new
-      @generated_report.company = session[:user].company
-      @generated_report.user = session[:user]
+      @generated_report.company = current_user.company
+      @generated_report.user = current_user
       @generated_report.filename = filename + ".csv"
       @generated_report.report = csv
       @generated_report.save
@@ -523,7 +525,7 @@ class ReportsController < ApplicationController
   end
 
   def get_csv
-    @report = GeneratedReport.find(params[:id], :conditions => ["user_id = ? AND company_id = ?", session[:user].id, session[:user].company_id])
+    @report = GeneratedReport.find(params[:id], :conditions => ["user_id = ? AND company_id = ?", current_user.id, current_user.company_id])
     if @report
       send_data(@report.report,
                 :type => 'text/csv; charset=utf-8; header=present',
@@ -536,9 +538,9 @@ class ReportsController < ApplicationController
 
   def get_projects
     if params[:client_id].to_i == 0
-      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND completed_at IS NULL", session[:user].company_id ]).collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @clients = current_user.projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND completed_at IS NULL", current_user.company_id ]).collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     else
-      @clients = User.find(session[:user].id).projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ? AND completed_at IS NULL", session[:user].company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @clients = current_user.projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ? AND completed_at IS NULL", current_user.company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
     res = '{"options":[{"value":"0", "text":"' + _('[Any Project]') + '"}'

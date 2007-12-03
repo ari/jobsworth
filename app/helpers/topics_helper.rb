@@ -3,8 +3,4 @@ module TopicsHelper
     "<img src=\"#{user.avatar_url(size)}\" class=\"photo\" />"
   end
 
-  def current_user
-    session[:user]
-  end
-
 end

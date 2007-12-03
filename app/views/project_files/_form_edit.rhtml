@@ -1,7 +1,7 @@
 
 <!--[form:project_files]-->
 <% if @file.project_id.nil? %>
-<p><label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', User.find(session[:user].id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
+<p><label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
 <% else %>
 <%= hidden_field 'file', 'project_id' %>
 <% end %>

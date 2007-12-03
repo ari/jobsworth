@@ -8,10 +8,10 @@ class UsersController < ApplicationController
   end
 
   def list
-    if session[:user].admin == 10
+    if current_user.admin == 10
       @users = User.paginate(:order => "last_login_at desc", :page => params[:page])
-    elsif session[:user].admin > 0
-      @users = User.paginate(:order => "last_login_at desc", :conditions => ["company_id = ?", session[:user].company_id], :page => params[:page])
+    elsif current_user.admin > 0
+      @users = User.paginate(:order => "last_login_at desc", :conditions => ["company_id = ?", current_user.company_id], :page => params[:page])
     else
       redirect_to :action => 'edit_preferences'
     end
@@ -19,8 +19,8 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.company = session[:user].company
-    @user.time_zone = session[:user].time_zone
+    @user.company = current_user.company
+    @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
     @user.option_tracktime = 1;
     @user.option_showcalendar = 1;
@@ -29,13 +29,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    @user.company = session[:user].company
+    @user.company = current_user.company
     @user.date_format = "%d/%m/%Y"
     @user.time_format = "%H:%M"
 
     if @user.save
       flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
-      Signup::deliver_account_created(@user, session[:user], params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
+      Signup::deliver_account_created(@user, current_user, params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'list'
     else
       render_action 'new'
@@ -43,19 +43,19 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 
   def update
-    if session[:user].admin == 0
+    if current_user.admin == 0
       flash['notice'] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return
     end
 
-    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     if @user.update_attributes(params[:user])
-      session[:user] = @user if @user.id == session[:user].id
+      current_user = @user if @user.id == current_user.id
       flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
     else
@@ -64,14 +64,14 @@ class UsersController < ApplicationController
   end
 
   def edit_preferences
-    @user = User.find(session[:user].id)
+    @user = current_user
   end
 
   def update_preferences
-    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     if @user.update_attributes(params[:user])
-      session[:user] = @user if @user.id == session[:user].id
-      Localization.lang(session[:user].locale || 'en_US')
+      current_user = @user if @user.id == current_user.id
+      Localization.lang(current_user.locale || 'en_US')
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
@@ -80,30 +80,31 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    if session[:user].admin == 0
+    if current_user.admin == 0
       flash['notice'] = _("Only admins can delete users")
       redirect_to :action => 'edit_preferences'
       return
     end
 
-    if session[:user].id == params[:id].to_i
+    if current_user.id == params[:id].to_i
       flash['notice'] = _("You can't delete yourself.")
       redirect_to :action => 'list'
       return
     end
 
-    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id])
-    ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{session[:user].company_id} AND creator_id = #{@user.id}")
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{current_user.company_id} AND creator_id = #{@user.id}")
     @user.destroy
     redirect_to :action => 'list'
   end
 
   # Used while debugging
   def impersonate
-    if session[:user].admin > 9
+    if current_user.admin > 9
       @user = User.find(params[:id])
       if @user != nil
-        session[:user] = @user
+        current_user = @user
+        session[:user_id] = @user.id
         session[:project] = nil
         session[:sheet] = nil
       end
@@ -113,11 +114,10 @@ class UsersController < ApplicationController
 
   def update_seen_news
     if request.xhr?
-      @user = User.find(session[:user].id)
+      @user = current_user
       unless @user.nil?
         @user.seen_news_id = params[:id]
         @user.save
-        session[:user].seen_news_id = params[:id]
       end
     end
     render :nothing => true
@@ -130,7 +130,7 @@ class UsersController < ApplicationController
       return
     end
     filename = params['user']['tmp_file'].original_filename
-    @user = User.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @user = User.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
 
     if @user.avatar?
       File.delete(@user.avatar_path) rescue begin
@@ -215,7 +215,7 @@ class UsersController < ApplicationController
   end
 
   def delete_avatar
-    @user = User.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     unless @user.nil?
       File.delete(@user.avatar_path) rescue begin end
       File.delete(@user.avatar_large_path) rescue begin end

@@ -7,7 +7,7 @@ class ProjectFilesController < ApplicationController
 #  upload_status_for :upload
 
   def index
-    if User.find(session[:user].id).projects.empty?
+    if current_user.projects.empty?
       flash['notice'] = _('Please create a project to attach files / folders to.')
       redirect_to :controller => 'projects', :action => 'new'
       return
@@ -17,15 +17,15 @@ class ProjectFilesController < ApplicationController
   end
 
   def list
-    if User.find(session[:user].id).projects.empty?
+    if current_user.projects.empty?
       flash['notice'] = _('Please create a project to attach files / folders to.')
       redirect_to :controller => 'projects', :action => 'new'
       return
     end
     folder = params[:id]
     @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
-    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", session[:user].company_id])
-    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", session[:user].company_id])
+    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
+    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
 
     unless folder.nil?
       up = ProjectFolder.new
@@ -38,7 +38,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def show
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
     if @project_files.thumbnail?
 #      image = Magick::Image.read(@project_files.file_path ).first
@@ -51,7 +51,7 @@ class ProjectFilesController < ApplicationController
 
   # Show the thumbnail for a given image
   def thumbnail
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
     if @project_files.thumbnail?
 #      image = Magick::Image.read( @project_files.thumbnail_path ).first
@@ -63,13 +63,13 @@ class ProjectFilesController < ApplicationController
   end
 
   def download
-    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
     send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
   end
 
 
   def new_file
-    if session[:user].projects.nil? || session[:user].projects.size == 0
+    if current_user.projects.nil? || current_user.projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
       current_folder = ProjectFolder.find_by_id(params['id'])
@@ -80,7 +80,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def new_folder
-    if session[:user].projects.nil? || session[:user].projects.size == 0
+    if current_user.projects.nil? || current_user.projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
 
@@ -98,7 +98,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit_folder
-    if session[:user].projects.nil? || session[:user].projects.size == 0
+    if current_user.projects.nil? || current_user.projects.size == 0
       redirect_to :controller => 'projects', :action => 'new'
     else
       @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
@@ -117,9 +117,9 @@ class ProjectFilesController < ApplicationController
 
   def create_folder
     @folder = ProjectFolder.new(params[:folder])
-    @folder.company_id = session[:user].company_id
+    @folder.company_id = current_user.company_id
     if @folder.parent_id.to_i > 0
-      parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+      parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
       if parent.nil?
         flash['notice'] = _('Unable to find selected parent folder.')
         redirect_to :action => list
@@ -157,7 +157,7 @@ class ProjectFilesController < ApplicationController
 
     @project_files = ProjectFile.new(params[:file])
 
-    @project_files.company_id = session[:user].company_id
+    @project_files.company_id = current_user.company_id
     @project_files.customer_id = @project_files.project.customer_id
 
     @project_files.save
@@ -275,11 +275,11 @@ class ProjectFilesController < ApplicationController
   end
 
   def edit
-    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
   end
 
   def update
-    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
     unless @file.update_attributes(params[:file])
       flash['notice'] = _('Unable to update file')
       redirect_to :action => 'list', :id => @file.project_folder_id
@@ -287,7 +287,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy
-    @file = ProjectFile.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id])
+    @file = ProjectFile.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
     if @file.nil?
       flash['notice'] = _("No such file.")
@@ -309,7 +309,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def destroy_folder
-    @folder = ProjectFolder.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id] )
+    @folder = ProjectFolder.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id] )
 
     if @folder.nil?
       flash['notice'] = _("No such folder.")

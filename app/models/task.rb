@@ -289,10 +289,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def name
-    "#{self[:name]}"
-  end
-
   def status_name
     "#{self.issue_num} #{self.name}"
   end

@@ -28,19 +28,11 @@ module Localization
 
   def self.lang(locale)
     @@lang = locale
-    Date.translate_strings
   end
 
 end
 
 class Date
-  def self.translate_strings
-#    Date::MONTHNAMES.replace(["", _('January'), _('February'), _('March'), _('April'), _('May'), _('June'), _('July'), _('August'), _('September'), _('October'), _('November'), _('December')])
-#    Date::DAYNAMES.replace([_('Sunday'), _('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'), _('Saturday')])
-#    Date::ABBR_MONTHNAMES.replace([nil, _('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'), _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')])
-#    Date::ABBR_DAYNAMES.replace([_('Sun'), _('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat')])
-  end
-
   alias :strftime_nolocale :strftime
   def strftime(format)
     format = format.dup

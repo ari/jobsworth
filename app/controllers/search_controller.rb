@@ -14,7 +14,7 @@ class SearchController < ApplicationController
     # Looking up a task by number?
     task_num = params[:query][/#[0-9]+/]
     unless task_num.nil?
-      @tasks = Task.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_num = ?", session[:user].company_id, task_num[1..-1]])
+      @tasks = Task.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_num = ?", current_user.company_id, task_num[1..-1]])
       redirect_to :controller => 'tasks', :action => 'edit', :id => @tasks.first
     end
 
@@ -32,13 +32,13 @@ class SearchController < ApplicationController
     projects = "+project_id:\"#{projects}\"" unless projects == ""
 
     # Find the tasks
-    @tasks = Task.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 1000})
+    @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
 
     # Find the worklogs
-    @logs = WorkLog.find_by_contents("+company_id:#{session[:user].company_id} #{projects} #{query}", {:limit => 1000})
+    @logs = WorkLog.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
 
     rooms = ""
-    ShoutChannel.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", session[:user].company_id],
+    ShoutChannel.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                       :order => "company_id, project_id, name").each do |r|
       rooms << "|" unless rooms == ""
       rooms << "#{r.id}"
@@ -48,7 +48,7 @@ class SearchController < ApplicationController
 
     rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
 
-    @shouts = Shout.find_by_contents("+company_id:#{session[:user].company_id} #{rooms} #{query}", {:limit => 1000})
+    @shouts = Shout.find_by_contents("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 1000})
 
   end
 end

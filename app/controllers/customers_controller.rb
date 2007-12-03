@@ -10,11 +10,11 @@ class CustomersController < ApplicationController
   end
 
   def list
-    @customers = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name")
+    @customers = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
   end
 
   def show
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
   end
 
   def new
@@ -23,7 +23,7 @@ class CustomersController < ApplicationController
 
   def create
     @customer = Customer.new(params[:customer])
-    @customer.company = session[:user].company
+    @customer.company = current_user.company
     if @customer.save
       flash['notice'] = _('Client was successfully created.')
       redirect_to :action => 'list'
@@ -33,11 +33,11 @@ class CustomersController < ApplicationController
   end
 
   def edit
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
   end
 
   def update
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
     if @customer.update_attributes(params[:customer])
       flash['notice'] = _('Client was successfully updated.')
       redirect_to :action => 'list'
@@ -47,11 +47,11 @@ class CustomersController < ApplicationController
   end
 
   def destroy
-    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
     if @customer.projects.count > 0
       flash['notice'] = _('Please delete all projects for %s before deleting it.', @customer.name)
     else
-      if @customer.name == session[:user].company.name
+      if @customer.name == current_user.company.name
         flash['notice'] = _("You can't delete your own company.")
       else
         @customer.destroy
@@ -67,7 +67,7 @@ class CustomersController < ApplicationController
       return
     end
     filename = params['customer']['tmp_file'].original_filename
-    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", session[:user].company_id])
+    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", current_user.company_id])
 
     if @customer.logo?
       File.delete(@customer.logo_path) rescue begin
@@ -136,7 +136,7 @@ class CustomersController < ApplicationController
   end
 
   def delete_logo
-    @customer = Customer.find(params[:id], :conditions => ["company_id = ?", session[:user].company_id] )
+    @customer = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     if !@customer.nil?
       File.delete(@customer.logo_path) rescue begin end
     end
@@ -150,7 +150,7 @@ class CustomersController < ApplicationController
       company = Company.find(:first, :conditions => ["subdomain = ?", request.subdomains.first])
       @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", company.id])
     else
-      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", session[:user].company_id])
+      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
     end
 
     unless @customer.logo?

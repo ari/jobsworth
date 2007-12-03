@@ -6,7 +6,7 @@
   <%= submit_tag _('Edit'), :class => 'nolabel' %>
 <% end %>
 <br/>
-  <% if session[:user].can?( @milestone.project, 'milestone' ) %>
+  <% if current_user.can?( @milestone.project, 'milestone' ) %>
   <div style="float:right;"><%= link_to _("Delete Milestone"), {:controller => 'milestones', :action => 'destroy', :id => @milestone}, :confirm => "Really delete #{@milestone.name}?"  %></div>
   <div style="float:left;"><%= link_to _("Complete Milestone"), {:action => 'complete', :id => @milestone}, :confirm => "Really complete #{@milestone.name}?" %></div>
   <% end %>

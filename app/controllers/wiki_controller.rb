@@ -4,10 +4,10 @@ class WikiController < ApplicationController
 
     name = params[:id] || 'Frontpage'
 
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, name])
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, name])
     if @page.nil?
       @page = WikiPage.new
-      @page.company_id = session[:user].company_id
+      @page.company_id = current_user.company_id
       @page.name = name
       @page.project_id = nil
     end
@@ -15,11 +15,11 @@ class WikiController < ApplicationController
   end
 
   def create
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, params[:id]])
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
 
     if @page.nil?
       @page = WikiPage.new
-      @page.company_id = session[:user].company_id
+      @page.company_id = current_user.company_id
       @page.name = params[:id]
       @page.project_id = nil
     end
@@ -28,7 +28,7 @@ class WikiController < ApplicationController
 
     @rev = WikiRevision.new
     @rev.wiki_page = @page
-    @rev.user = session[:user]
+    @rev.user = current_user
     @rev.body = params[:body]
     @rev.save
 
@@ -36,13 +36,13 @@ class WikiController < ApplicationController
   end
 
   def edit
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, params[:id]])
-    @page.lock(Time.now.utc, session[:user].id)
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
+    @page.lock(Time.now.utc, current_user.id)
     @page.save
   end
 
   def cancel
-    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", session[:user].company_id, params[:id]])
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
     @page.unlock
     @page.save
 

@@ -1,5 +1,5 @@
 
-<% date_format = "#{session[:user].date_format} #{session[:user].time_format}" %>
+<% date_format = "#{current_user.date_format} #{current_user.time_format}" %>
 
 <tr class="hoverrow">
   <td align="right" width="70px" valign="top"><%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %>-<%= "#{tz.utc_to_local(log.ended_at).strftime("%H:%M")}"%><% end %>

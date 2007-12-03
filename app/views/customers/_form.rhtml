@@ -1,7 +1,7 @@
 <%= error_messages_for 'customer' %>
 
 <!--[form:customer]-->
-<% if @customer.name != 'Internal' && @customer.name != session[:user].company.name %>
+<% if @customer.name != 'Internal' && @customer.name != current_user.company.name %>
 <p><label for="customer_name"><%=_ 'Name' %></label><%= text_field 'customer', 'name'  %></p>
 <% end %>
 <p><label for="customer_contact_email"><%=_ 'Contact email' %></label><%= text_field 'customer', 'contact_email'  %></p>

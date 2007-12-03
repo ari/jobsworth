@@ -1,25 +1,26 @@
 <% if session[:sheet] -%>
 <% info = []
-   info << "#{worked_nice(session[:sheet].task.worked_minutes + session[:sheet].duration)}" if session[:sheet].task.worked_minutes > 0 || session[:sheet].task.duration > 0
-   info << "#{worked_nice(session[:sheet].task.duration)}" if session[:sheet].task.duration.to_i > 0
+   task = Task.find(session[:sheet].task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project, :work_logs] )
+   info << "#{worked_nice(task.worked_minutes + session[:sheet].duration)}" if task.worked_minutes > 0 || task.duration > 0
+   info << "#{worked_nice(task.duration)}" if task.duration.to_i > 0
 
    info_string = " (#{info.join("/")})" if info.size > 0
    info_string = "&nbsp;#{worked_nice(session[:sheet].duration)}#{info_string}"
    info_string = "[#{_'Paused'}]#{info_string} " if session[:sheet].paused?
 %>
 
-  <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
-      :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => session[:sheet].task, :depth => 0 },
+  <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
+      :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => 0 },
       :loading => "Element.show('loading');",
       :complete => "Element.hide('loading');" -%>
   <% if session[:sheet].paused? %>
-    <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
-        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task, :depth => 0 },
+    <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
+        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => 0 },
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" -%>
   <% else %>
-    <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", session[:sheet].task.name), :class => "tooltip"),
-        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => session[:sheet].task, :depth => 0 },
+    <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
+        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => 0 },
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" -%>
   <% end %>
@@ -28,5 +29,5 @@
 [<%= worked_nice(total_today) %> <%=_ 'today'%>]
 <% end %>
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (session[:sheet] ? (worked_nice(session[:sheet].duration) + session[:sheet].task.issue_name + " / ClockingIT") : "ClockingIT") %>";
+document.title = "<%= (session[:sheet] ? (worked_nice(session[:sheet].duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 </script>

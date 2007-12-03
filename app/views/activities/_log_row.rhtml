@@ -1,4 +1,4 @@
-<% date_format = session[:user].time_format %>
+<% date_format = current_user.time_format %>
 
 <tr class="hoverrow">
   <td align="right" valign="top" style="width:80px;" nowrap><%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>

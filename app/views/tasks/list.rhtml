@@ -19,20 +19,20 @@
           <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
 
             <%
-            @clients = Customer.find(:all, :conditions => ["company_id = ?", session[:user].company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
+            @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
 
             if session[:filter_customer].to_i > 0
-              @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"])
+              @all_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"])
             else
-              @all_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["completed_at IS NULL"])
+              @all_projects = current_user.projects.find(:all, :conditions => ["completed_at IS NULL"])
             end
 
 
             @projects = @all_projects.collect {|p| [p.name, p.id.to_s]}
 
             if session[:filter_project].to_i > 0
-              @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", session[:user].company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
-              @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ? AND completed_at IS NULL", session[:user].company_id, session[:filter_project]]).collect {|c| [ c.name,  c.id.to_s ] }
+              @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
+              @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ? AND completed_at IS NULL", current_user.company_id, session[:filter_project]]).collect {|c| [ c.name,  c.id.to_s ] }
             else
               project_ids = @all_projects.collect {|p| p.id}.join(',')
               project_ids = "0" if project_ids.empty?
@@ -49,7 +49,7 @@
               @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
 
 #              @users = current_projects.collect().collect {|c| [ c.name, c.id.to_s ] }
-              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND project_id IN (#{project_ids}) AND completed_at IS NULL", session[:user].company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
+              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND project_id IN (#{project_ids}) AND completed_at IS NULL", current_user.company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
             end
 
             filter_count = 0
@@ -62,7 +62,7 @@
               <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 
                 <% @clients.each do |c| %>
-                  <% @client_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"], :order => "name") %>
+                  <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"], :order => "name") %>
                   <% if @client_projects.size > 0 %>
                   <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
                     <% @client_projects.each do |p| %>
@@ -124,14 +124,14 @@
             <%   gb = session[:group_by].to_i
                  affected_projects = @tasks.collect(&:project).uniq
                  can_organize = case gb
-                                when 3: session[:user].can_all?(affected_projects, 'reassign')
-                                when 4: session[:user].can_all?(affected_projects, 'reassign')
-                                when 5: session[:user].can_all?(affected_projects, 'reassign')
-                                when 6: session[:user].can_all?(affected_projects, 'prioritize')
-                                when 7: session[:user].can_all?(affected_projects, 'close')
-                                when 8: session[:user].can_all?(affected_projects, 'prioritize')
-                                when 9: session[:user].can_all?(affected_projects, 'prioritize')
-                                when 10: session[:user].can_all?(affected_projects, 'reassign')
+                                when 3: current_user.can_all?(affected_projects, 'reassign')
+                                when 4: current_user.can_all?(affected_projects, 'reassign')
+                                when 5: current_user.can_all?(affected_projects, 'reassign')
+                                when 6: current_user.can_all?(affected_projects, 'prioritize')
+                                when 7: current_user.can_all?(affected_projects, 'close')
+                                when 8: current_user.can_all?(affected_projects, 'prioritize')
+                                when 9: current_user.can_all?(affected_projects, 'prioritize')
+                                when 10: current_user.can_all?(affected_projects, 'reassign')
                                 end
                  if can_organize
 

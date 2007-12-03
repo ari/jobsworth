@@ -18,36 +18,32 @@ class ActivitiesController < ApplicationController
   # * Progress
   def list
 
-    session[:channels] += ["activity_#{session[:user].company_id}"]
+    session[:channels] += ["activity_#{current_user.company_id}"]
 
-    user = User.find(session[:user].id, :include => [:projects])
-
-    @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
-    @completed_projects = user.projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
+    @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+    @completed_projects = current_user.projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
     @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 25, :conditions => ["work_logs.project_id IN ( #{current_project_ids} )"], :include => [:user, { :task => [:dependencies, :dependants, :users, { :project => :customer }, :tags, :work_logs, :milestone ] } ])
 
-
-    @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{session[:user].company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users ], :limit => 5  )
+    @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{current_user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users ], :limit => 5  )
 
     new_filter = ""
     new_filter = "AND tasks.id NOT IN (" + @tasks.collect{ |t| t.id}.join(', ') + ")" if @tasks.size > 0
 
-    @new_tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.company_id = #{session[:user].company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs], :limit => 5  )
+    @new_tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.company_id = #{current_user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs], :limit => 5  )
   end
 
   # Update the page, due to a Juggernaut push message
   def refresh
-    user = User.find(session[:user].id)
-    @projects = User.find(session[:user].id).projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
-    @completed_projects = User.find(session[:user].id).projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
+    @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+    @completed_projects = current_user.projects.find(:all, :conditions => ["projects.completed_at IS NOT NULL"]).size
     @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 25, :conditions => ["work_logs.project_id IN ( #{current_project_ids} )"], :include => [:user, :project, :customer, :task])
 
-    @tasks = user.tasks.find(:all, :conditions => [" tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
+    @tasks = current_user.tasks.find(:all, :conditions => [" tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END LIMIT 5", :include => [:milestone]  )
 
     new_filter = ""
     new_filter = "AND tasks.id NOT IN (" + @tasks.collect{ |t| t.id}.join(', ') + ")" if @tasks.size > 0
 
-    @new_tasks = Task.find(:all, :conditions => ["tasks.company_id = #{session[:user].company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
+    @new_tasks = Task.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{current_project_ids}) #{new_filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => "tasks.created_at desc", :include => [:milestone], :limit => 5  )
   end
 
   # Simple tutorial, guiding the user through
@@ -58,13 +54,13 @@ class ActivitiesController < ApplicationController
   # * Adding a User
   def welcome
     @projects_count  = current_projects.size
-    @tasks_count     = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", session[:user].company_id ])
-    @work_count      = WorkLog.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids} ) AND log_type = #{WorkLog::TASK_WORK_ADDED}", session[:user].company_id])
-    @completed_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NOT NULL", session[:user].company_id ])
-    @users_count     = User.count(:conditions => ["company_id = ?", session[:user].company_id])
+    @tasks_count     = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ])
+    @work_count      = WorkLog.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids} ) AND log_type = #{WorkLog::TASK_WORK_ADDED}", current_user.company_id])
+    @completed_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NOT NULL", current_user.company_id ])
+    @users_count     = User.count(:conditions => ["company_id = ?", current_user.company_id])
 
     if @projects_count > 0 && @tasks_count > 0 && @work_count > 0 && @completed_count > 0 && @users_count > 1
-      u = User.find(session[:user].id)
+      u = current_user
       u.seen_welcome = 1
       u.save
       flash['notice'] = _('Tutorial completed. It will no longer be shown in the menu.')
@@ -74,7 +70,7 @@ class ActivitiesController < ApplicationController
 
   # Skip the tutorial
   def hide_welcome
-    u = User.find(session[:user].id)
+    u = current_user
     u.seen_welcome = 1
     u.save
     flash['notice'] = _('Tutorial hidden. It will no longer be shown in the menu.')
