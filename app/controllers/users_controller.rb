@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    @user.company = current_user.company
+    @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
     @user.option_tracktime = 1;
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(params[:user])
-    @user.company = current_user.company
+    @user.company_id = current_user.company_id
     @user.date_format = "%d/%m/%Y"
     @user.time_format = "%H:%M"
 
