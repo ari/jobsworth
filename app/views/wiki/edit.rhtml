@@ -2,19 +2,31 @@
 <h1><%= @page.name %></h1>
 <fieldset style="border:none;padding:0;margin:0;">
 <% form_tag :action => 'create', :id => @page.name do %>
-<% if params[:rev].to_i > 0 %>
+<% if @page.revisions.empty? %>
+<h5 style="margin:0;">This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h5>
+<textarea name="body" rows="20" style="width:80%;"></textarea>
+<% elsif params[:rev].to_i > 0 %>
 <textarea name="body" rows="20" style="width:80%;"><%=@page.revisions[params[:rev].to_i].body || ""%></textarea>
 <% else %>
-<textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body || ""%></textarea>
+<textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body if @page.current_revision %></textarea>
 <% end %>
-<div stle="float:right;"><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
-<p style="padding:0;margin:0;">h2. Header 2</p>
-<p style="padding:0;margin:0;">@a.gsub!(/&lt;/,'')@</p>
-<p style="padding:0;margin:0;">* list item</p>
-<p style="padding:0;margin:0;"># numbered item</p>
-<p style="padding:0;margin:0;">&lt;pre&gt;monospaced&lt;/pre&gt;</p>
+<div id="wiki-quickref">
+  <p><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p>
+  <p><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
+  <p>&nbsp;</p>
+  <p>h2. Header 2</p>
+  <p>h3. Header 3</p>
+  <p>@a.gsub!(/&lt;/,'')@</p>
+  <p>* list item</p>
+  <p># numbered item</p>
+  <p>&lt;pre&gt;monospaced&lt;/pre&gt;</p>
+  <p>&nbsp;</p>
+  <p>[[AnotherPage|another page]]</p>
+  <p>[[http://google.com|Google]]</p>
+  <p>[[AnotherPage]]</p>
+  <p>AnotherPage</p>
 </div>
-<div style="clear:both;float:left;"><%= submit_tag _("Save") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %></div>
+<div style="clear:both;float:left;"><%= submit_tag _("Save") %><% unless @page.revisions.empty?%> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %></div>
 <% end %>
 </fieldset>
 </div>

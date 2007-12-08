@@ -1308,12 +1308,24 @@ li.help {
   vertical-align: top;
 }
 
+#wiki-info {
+  margin: 1em;
+  padding: 1em;
+  background-color: #fafafa;
+  border: 1px solid #dcdcdc;
+}
+
 #wiki {
   margin: 1em;
   padding: 1em;
   background-color: #fafafa;
   border: 1px solid #dcdcdc;
 }
+
+#wiki div, #wiki p, #wiki ul, #wiki ol, #wiki h1, #wiki h2, #wiki h3, #wiki h4, #wiki h5 {
+  font-family: 'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
+}
+
 
 #wiki ul
 {
@@ -1364,19 +1376,32 @@ li.help {
   background-color: #eee;
 }
 
-#wiki h1 {
+#wiki h1, h2, h3, h4 {
   color: #566ca5;
+}
+
+#wiki h1 {
   border-bottom: 2px solid #FFC266;
+  padding-left:0.2em;
+  padding-right:0.2em;
 }
 
 #wiki h2 {
-  color: #566ca5;
-  border-bottom: 1px dotted #FFC266;
+  border-bottom: 2px dotted #FFC266;
+  background-color: #e9f7fd;
+  padding-left:0.2em;
+  padding-right:0.2em;
 }
 
-#wiki h3, h4 {
-  color: #566ca5;
+#wiki h3 {
+  border-bottom: 2px dotted #FFC266;
+  padding-left:0.2em;
+  padding-right:0.2em;
 }
+
+#wiki h4 {
+}
+
 
 #wiki .external a {
   text-decoration: underline;
@@ -1391,6 +1416,11 @@ li.help {
 
 #wiki .description a {
   font-weight: bold;
+}
+
+#wiki-quickref p {
+  margin:0;
+  padding:0;
 }
 
 .select_heading  {

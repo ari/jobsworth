@@ -101,7 +101,7 @@
                 <% end %>
 
                 <% if controller.controller_name == "wiki"  %>
-                <li><%= link_to "<span class=\"active\">#{_('Wiki')}</span>", {:controller => 'wiki', :action => 'show'}, :class => "active" %></li>
+                <li><%= link_to "<span class=\"active\">#{_('Wiki')}</span>", {:controller => 'wiki', :action => 'show', :id => nil}, :class => "active" %></li>
                 <% else %>
                 <li><%= link_to "<span>#{_('Wiki')}</span>", :controller => 'wiki', :action => 'show' %></li>
                 <% end %>

@@ -1,7 +1,6 @@
 class WikiController < ApplicationController
 
   def show
-
     name = params[:id] || 'Frontpage'
 
     @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, name])
@@ -10,6 +9,7 @@ class WikiController < ApplicationController
       @page.company_id = current_user.company_id
       @page.name = name
       @page.project_id = nil
+      render :action => 'edit', :id => name
     end
 
   end
@@ -37,14 +37,25 @@ class WikiController < ApplicationController
 
   def edit
     @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
-    @page.lock(Time.now.utc, current_user.id)
-    @page.save
+    if @page.nil?
+      @page = WikiPage.new
+      @page.company_id = current_user.company_id
+      @page.name = params[:id]
+      @page.project_id = nil
+    end
+
+    unless @page.new_record?
+      @page.lock(Time.now.utc, current_user.id)
+      @page.save
+    end
   end
 
   def cancel
     @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
-    @page.unlock
-    @page.save
+    if @page
+      @page.unlock
+      @page.save
+    end
 
     redirect_to :action => 'show', :id => params[:id]
 
