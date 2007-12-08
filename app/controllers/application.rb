@@ -25,11 +25,17 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    User.find(session[:user_id])
+    unless @user
+      @user = User.find(session[:user_id])
+    end
+    @user
   end
 
   def tz
-    Timezone.get(current_user.time_zone)
+    unless @tz
+      @tz = Timezone.get(current_user.time_zone)
+    end
+    @tz
   end
 
 
@@ -54,7 +60,7 @@ class ApplicationController < ActionController::Base
     session[:history] ||= []
 
     # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || request.request_uri.include?('/timeline')) && !request.xhr?
+    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || request.request_uri.include?('/timeline') ) && !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
@@ -197,23 +203,30 @@ class ApplicationController < ActionController::Base
 
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
-    User.find(session[:user_id]).projects.find(:all, :order => "projects.customer_id, projects.name",
-                                                   :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
+    unless @current_projects
+      @current_projects = User.find(session[:user_id]).projects.find(:all, :order => "projects.customer_id, projects.name",
+                                                                     :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
+    end
+    @current_projects
   end
 
 
   # List of current Project ids, joined with ,
   def current_project_ids
-    current_project_ids = current_projects.collect(&:id).join(',')
-    current_project_ids = "0" if current_project_ids == ''
-    current_project_ids
+    unless @current_project_ids
+      @current_project_ids = current_projects.collect(&:id).join(',')
+      @current_project_ids = "0" if @current_project_ids == ''
+    end
+    @current_project_ids
   end
 
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
-    milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
-    milestone_ids = "-1" if milestone_ids == ''
-    milestone_ids
+    unless @milestone_ids
+      @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
+      @milestone_ids = "-1" if @milestone_ids == ''
+    end
+    @milestone_ids
   end
 
   def worked_nice(minutes)
