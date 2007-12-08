@@ -38,4 +38,8 @@ class ProjectFolder < ActiveRecord::Base
     total
   end
 
+  def full_path
+    self.parent ? "#{self.parent.full_path}/#{self.name}" : "/#{self.name}"
+  end
+
 end
