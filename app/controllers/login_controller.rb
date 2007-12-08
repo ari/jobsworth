@@ -232,10 +232,10 @@ class LoginController < ApplicationController
   end
 
   def company_check
-    companies = Company.count( :conditions => ["name = ?", params[:company]])
-    if params[:company].empty?
+    if params[:company].blank?
       render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
     else
+      companies = Company.count( :conditions => ["name = ?", params[:company]])
       if companies > 0
         render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name already taken, have someone from that company create your account, or choose a different name.</small>"
       else

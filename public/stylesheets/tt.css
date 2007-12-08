@@ -29,6 +29,10 @@ h2 {
 }
 
 h3 {
+  font-size: 16px;
+}
+
+h4 {
   font-size: 14px;
 }
 
@@ -1304,6 +1308,13 @@ li.help {
   vertical-align: top;
 }
 
+#wiki {
+  margin: 1em;
+  padding: 1em;
+  background-color: #fafafa;
+  border: 1px solid #dcdcdc;
+}
+
 #wiki ul
 {
   list-style-type: disc;
@@ -1353,6 +1364,20 @@ li.help {
   background-color: #eee;
 }
 
+#wiki h1 {
+  color: #566ca5;
+  border-bottom: 2px solid #FFC266;
+}
+
+#wiki h2 {
+  color: #566ca5;
+  border-bottom: 1px dotted #FFC266;
+}
+
+#wiki h3, h4 {
+  color: #566ca5;
+}
+
 #wiki .external a {
   text-decoration: underline;
   background: url(/images/icon_world.gif) no-repeat 0% 0;
@@ -1362,6 +1387,10 @@ li.help {
 
 #wiki .internal_missing a {
   color: #f00;
+}
+
+#wiki .description a {
+  font-weight: bold;
 }
 
 .select_heading  {

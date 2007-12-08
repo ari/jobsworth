@@ -28,9 +28,6 @@ class User < ActiveRecord::Base
   has_many      :shout_channel_subscriptions, :dependent => :destroy
   has_many      :shout_channels, :through => :shout_channel_subscriptions, :source => :shout_channel
 
-#  composed_of  :tz, :class_name => 'TZInfo::Timezone',
-#               :mapping => %w(time_zone time_zone)
-
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 

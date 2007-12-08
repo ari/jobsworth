@@ -51,7 +51,7 @@ class WikiRevision < ActiveRecord::Base
   end
 
   def to_html
-
+    return "" if body.blank?
     body.gsub!( EXPR ) { |m|
       match = m.match(WIKI_LINK)
       if match

@@ -1,51 +1,30 @@
 <div id="wiki">
-
-<fieldset>
-<legend><%= @page.name %></legend>
+<h1><%= @page.name %></h1>
 
 <% if @page.revisions.empty? %>
-<h3>This wiki page doesn't exist yet. Create it by replacing this text and clicking the button below.</h3>
+<h4>This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h4>
   <% form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;">
-h3. <%= @page.name %>
-
-Use [[AnotherPage|another page]] or [[AnotherPage]] to link to and create other pages.
-
-
-h4. Other things to do[1]
-
-* Create lists
-* [[http://google.com|Google]]
-** _Experiment_
-** *Add emphasis*
-* And have fun!
-
-|_. This |_. Is |
-| pretty | fun  |
-| and not too | hard|
-
-@A man once said...@
-
-fn1. If you're -bored- %{color:red}inspired%.
-
-!http://www.clockingit.com/images/logo.gif!
-
 </textarea>
 <div style="clear:both;float:left;"><%= submit_tag _("Create") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>
   <% end %>
 <% else %>
-<%= @page.to_html %>
+<%= @page.to_html(params[:rev].to_i) %>
 <br/>
 <% if @page.pages_linking_here.size > 0 %>
 <div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ') %></div>
 <% end %>
-      <div class="description"><%=_ 'Revision' %>: <%= "#{@page.revisions.size}, " + tz.utc_to_local(@page.current_revision.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.current_revision.user.name}" %></div>
+      <div class="description"><%= link_to _('Revision') + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.current_revision.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.current_revision.user.name}" %></div>
 <% if @page.locked? %>
   <strong><%=_ 'Under revision by' %> <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
 <% end %>
 
 <% if !@page.locked? || @page.locked_by.id == current_user.id %>
+  <% if params[:rev].to_i > 0 %>
+  <%= link_to _("Edit"), :controller => "wiki", :action => "edit", :id => @page.name, :rev => params[:rev] %>
+  <% else %>
   <%= link_to _("Edit"), :controller => "wiki", :action => "edit", :id => @page.name %>
+  <% end %>
 <% end %>
 
 <% end %>

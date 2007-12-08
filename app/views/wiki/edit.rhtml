@@ -1,16 +1,20 @@
-<fieldset>
-<legend><%= @page.name %></legend>
-
+<div id="wiki">
+<h1><%= @page.name %></h1>
+<fieldset style="border:none;padding:0;margin:0;">
 <% form_tag :action => 'create', :id => @page.name do %>
-<textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body%></textarea>
-<div stle="float:left;"><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
+<% if params[:rev].to_i > 0 %>
+<textarea name="body" rows="20" style="width:80%;"><%=@page.revisions[params[:rev].to_i].body || ""%></textarea>
+<% else %>
+<textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body || ""%></textarea>
+<% end %>
+<div stle="float:right;"><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p><p style="padding:0;margin:0;"><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
 <p style="padding:0;margin:0;">h2. Header 2</p>
 <p style="padding:0;margin:0;">@a.gsub!(/&lt;/,'')@</p>
 <p style="padding:0;margin:0;">* list item</p>
 <p style="padding:0;margin:0;"># numbered item</p>
 <p style="padding:0;margin:0;">&lt;pre&gt;monospaced&lt;/pre&gt;</p>
-
-
 </div>
 <div style="clear:both;float:left;"><%= submit_tag _("Save") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %></div>
 <% end %>
+</fieldset>
+</div>

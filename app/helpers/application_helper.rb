@@ -7,6 +7,10 @@ module ApplicationHelper
 
   include Misc
 
+  def tz
+    Timezone.get(current_user.time_zone)
+  end
+
   def online_users
     User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" )
   end

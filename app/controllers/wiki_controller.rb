@@ -54,4 +54,8 @@ class WikiController < ApplicationController
     redirect_from_last
   end
 
+  def versions
+    @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]] )
+  end
+
 end

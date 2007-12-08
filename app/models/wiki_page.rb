@@ -35,8 +35,12 @@ class WikiPage < ActiveRecord::Base
     "<a href=\"/wiki/show/#{URI.encode(name)}\">#{name}</a>"
   end
 
-  def to_html
-    current_revision.to_html
+  def to_html(rev = 0)
+    if rev > 0
+      self.revisions[rev].to_html
+    else
+      current_revision.to_html
+    end
   end
 
 end
