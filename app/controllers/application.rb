@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   after_filter :cleanup
 
   def cleanup
-    @user = nil
+    @current_user = nil
     @current_projects = nil
     @current_project_ids = nil
     @milestone_ids = nil
@@ -25,10 +25,10 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    unless @user
-      @user = User.find(session[:user_id])
+    unless @current_user
+      @current_user = User.find(session[:user_id], :include => [:company])
     end
-    @user
+    @current_user
   end
 
   def tz
