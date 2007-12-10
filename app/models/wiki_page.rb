@@ -37,7 +37,7 @@ class WikiPage < ActiveRecord::Base
 
   def to_html(rev = 0)
     if rev > 0
-      self.revisions[rev].to_html
+      self.revisions[rev-1].to_html
     else
       current_revision.to_html
     end
