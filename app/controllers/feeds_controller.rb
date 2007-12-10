@@ -4,12 +4,14 @@
 #
 class FeedsController < ApplicationController
 
-  require 'rss/maker'
-  require 'icalendar'
+  require_dependency 'rss/maker'
+  require_dependency 'icalendar'
 
   include Icalendar
 
   session :off
+
+  skip_before_filter :authenticate
 
   def unsubscribe
     return if params[:id].nil? || params[:id].empty?
@@ -52,7 +54,7 @@ class FeedsController < ApplicationController
   def rss
     return if params[:id].empty? || params[:id].nil?
 
-    @headers["Content-Type"] = "application/rss+xml"
+    headers["Content-Type"] = "application/rss+xml"
 
     # Lookup user based on the secret key
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
@@ -121,7 +123,7 @@ class FeedsController < ApplicationController
 
     Localization.lang('en_US')
 
-    @headers["Content-Type"] = "text/calendar"
+    headers["Content-Type"] = "text/calendar"
 
     # Lookup user based on the secret key
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])

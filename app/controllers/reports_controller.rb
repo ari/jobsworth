@@ -3,7 +3,7 @@
 #
 class ReportsController < ApplicationController
 
-  require 'fastercsv'
+  require_dependency 'fastercsv'
 
   def get_date_header(w)
     if [0,1,2].include? @range.to_i

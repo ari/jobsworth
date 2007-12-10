@@ -7,7 +7,7 @@ class TasksController < ApplicationController
 #    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
 #    :cancel_work_ajax, :destroy_log ]
 
-  require 'fastercsv'
+  require_dependency 'fastercsv'
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?

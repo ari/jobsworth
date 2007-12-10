@@ -89,6 +89,10 @@ class ApplicationController < ActionController::Base
 
       # Refresh work sheet
       session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'id')
+      if session[:sheet] && session[:sheet].task.nil?
+        session[:sheet].destroy
+        session[:sheet] = nil
+      end
 
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
@@ -100,6 +104,7 @@ class ApplicationController < ActionController::Base
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
     end
+    true
   end
 
 
@@ -229,7 +234,7 @@ class ApplicationController < ActionController::Base
   end
 
   def highlight( text, k )
-    text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>')
+    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>')
   end
 
   def highlight_all( text, keys )
@@ -261,7 +266,7 @@ class ApplicationController < ActionController::Base
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{task.name}</a>"
+    t = "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{task.name}</a>"
   end
 
 end

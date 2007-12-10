@@ -2,7 +2,7 @@
 
 class AdminController < ApplicationController
 
-  require 'RMagick'
+  require_dependency 'RMagick'
 
 
   before_filter :authorize

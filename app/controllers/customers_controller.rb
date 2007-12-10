@@ -2,7 +2,7 @@
 #
 # Logo and CSS should be used when printing reports, or generating a PDF of a report.
 class CustomersController < ApplicationController
-  require 'RMagick'
+  require_dependency 'RMagick'
 
   def index
     list

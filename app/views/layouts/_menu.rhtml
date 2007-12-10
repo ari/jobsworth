@@ -5,7 +5,7 @@
     <% if !@internal.nil? && @internal.logo? %>
     <%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
     <% else %>
-    <%= image_tag("logo.gif", :border => 0, :title => "Clocking IT Beta") %>
+    <%= image_tag("logo.gif", :border => 0, :alt => "Clocking IT Beta" ) %>
     <% end %>
     </td>
     <td align=left class="menu" id="menu_info"> <%= render :partial => "layouts/sheet_info" %></td>

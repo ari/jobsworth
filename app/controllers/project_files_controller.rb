@@ -2,7 +2,7 @@
 # If it's not an image, try and find an appropriate stock icon
 #
 class ProjectFilesController < ApplicationController
-  require 'RMagick'
+  require_dependency 'RMagick'
 #  enable_upload_progress
 #  upload_status_for :upload
 

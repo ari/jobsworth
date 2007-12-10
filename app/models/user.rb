@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  require 'digest/md5'
+  require_dependency 'digest/md5'
 
   belongs_to    :company
   has_many      :projects, :through => :project_permissions
