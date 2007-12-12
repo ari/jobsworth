@@ -19,15 +19,6 @@ Droppables.add("folder_cell_<%=folder.id%>", {accept:'project-<%=folder.project_
 //]]>
 </script>
 
-<%#= drop_receiving_element "folder_cell_#{folder.id}",
-         :url => { :controller => 'project_files', :action => 'move' },
-         :accept => "project-#{folder.project_id}",
-         :loading => "Element.show('loading');",
-         :complete => "Element.hide('loading');",
-         :hoverclass => 'folder-active',
-         :before => 'Element.hide(element)'
-%>
-
 <% unless folder.new_record?  %>
-  <%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false, :handle => 'handle', :onclick => "function(element){location.href='#{url_for(:action => 'list', :id => folder)}';}" } %>
+  <%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false, :handle => "'handle'", :onclick => "function(element){location.href='#{url_for(:action => 'list', :id => folder)}';}" } %>
 <% end %>

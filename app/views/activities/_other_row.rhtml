@@ -1,0 +1,29 @@
+<% date_format = current_user.time_format %>
+
+<tr class="hoverrow">
+  <td align="right" valign="top" style="width:80px;" nowrap><%= "#{tz.utc_to_local(log.created_at).strftime(date_format)}"%></td>
+  <td align="center" width="36px" valign="top">
+  <%= image_tag('page_add.png', :alt => "Wiki page added") if log.event_type == EventLog::WIKI_CREATED %>
+  <%= image_tag('page_edit.png', :alt => "Wiki page modified") if log.event_type == EventLog::WIKI_MODIFIED %>
+  <%= image_tag('package_add.png', :alt => "File added") if log.event_type == EventLog::FILE_UPLOADED %>
+  <%= image_tag('comments_add.png', :alt => "Post added") if log.event_type == EventLog::FORUM_NEW_POST %>
+  </td>
+  <td  valign="top" width="90%"><div style="float:left;"><strong>
+<% if log.target.is_a? Post %>
+<%= link_to "#{log.target.forum.name} / #{log.target.topic.title}", topic_path (log.target.forum_id, log.target.topic_id) %>
+<% elsif log.target.is_a? WikiPage %>
+<%= log.target.to_url %>
+<% elsif log.target.is_a? ProjectFile %>
+<%= "<a href=\"/project_files/show/#{log.target_id}\" title=\"<img src=/project_files/thumbnail/#{log.target_id}>\" class=\"tooltip\">#{log.target.full_name}</a>" %>
+<% end %>
+    <%= "<br/>" if(log.target.respond_to?(:user) && log.target.user) %>
+    <%= "<small><span class=\"otheruser\">[#{log.target.user.name}]</span></small>" if log.target.respond_to?(:user) && log.target.user %>
+  </strong></div>
+  <div style="float:right;"><%= avatar_for log.target.user, 25 if log.target.respond_to?(:user) && log.target.user %></div>
+  <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
+<% if log.target.is_a?(Post) && log.target.body && log.target.body.length > 0 %>
+<%= wrap_text(log.target.body, 100).gsub(/\n/, "<br>")  %>
+<% end %>
+  </div>
+  </td>
+</tr>

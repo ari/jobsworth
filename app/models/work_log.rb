@@ -1,6 +1,6 @@
 class WorkLog < ActiveRecord::Base
 
-  acts_as_ferret :fields => ['body', 'company_id', 'project_id']
+  acts_as_ferret({ :fields => ['body', 'company_id', 'project_id'], :remote => true })
 
   belongs_to :user
   belongs_to :company
@@ -11,38 +11,23 @@ class WorkLog < ActiveRecord::Base
 
   has_one    :ical_entry
 
-  TASK_CREATED       = 1
-  TASK_COMPLETED     = 2
-  TASK_REVERTED      = 3
-  TASK_DELETED       = 4
-  TASK_MODIFIED      = 5
-  TASK_COMMENT       = 6
-  TASK_WORK_ADDED    = 7
-  TASK_ASSIGNED      = 8
-  TASK_ARCHIVED      = 9
-  TASK_RESTORED      = 14
+  has_one   :event_log, :as => :target, :dependent => :destroy
 
-
-  PAGE_CREATED       = 10
-  PAGE_DELETED       = 11
-  PAGE_RENAMED       = 12
-  PAGE_MODIFIED      = 13
-
-  FILE_UPLOADED      = 20
-  FILE_DELETED       = 21
-
-  ACCESS_GRANTED     = 30
-  ACCESS_REVOKED     = 31
-
-  SCM_COMMIT         = 40
-
-  PROJECT_COMPLETED  = 50
-  MILESTONE_COMPLETED = 51
-  PROJECT_REVERTED   = 52
-  MILESTONE_REVERTED = 53
-
-  after_save { |r|
+  after_update { |r|
     r.ical_entry.destroy if r.ical_entry
+    l = r.event_log
+    l.created_at = r.started_at
+    l.save
+  }
+
+  after_create { |r|
+    l = r.create_event_log
+    l.company_id = r.company_id
+    l.project_id = r.project_id
+    l.user_id = r.user_id
+    l.event_type = r.log_type
+    l.created_at = r.started_at
+    l.save
   }
 
   def self.full_text_search(q, options = {})

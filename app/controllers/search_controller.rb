@@ -45,10 +45,19 @@ class SearchController < ApplicationController
     end
 
     rooms = "0" if rooms == ""
-
     rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
+    @shouts = Shout.find_by_contents("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 100})
 
-    @shouts = Shout.find_by_contents("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 1000})
+    @wiki_pages = WikiPage.find_by_contents("+company_id:#{current_user.company_id} #{query}", {:limit => 100})
+
+    forums = ""
+    Forum.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
+                      :order => "company_id, project_id, name").each do |f|
+      forums << "|" unless forums == ""
+      forums << "#{f.id}"
+    end
+    forums = "+forum_id:\"#{forums}\""
+    @posts = Post.find_by_contents("+company_id:#{current_user.company_id} #{forums} #{query}", {:limit => 100})
 
   end
 end

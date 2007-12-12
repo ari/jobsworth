@@ -22,6 +22,9 @@ project's config/environment.rb:
 
 <tt>require 'acts_as_ferret'</tt>
 
+Call the aaf_install script inside your project directory to install the sample
+config file and the drb server start/stop script.
+
 
 == Usage
 

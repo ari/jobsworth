@@ -11,8 +11,7 @@ def install(file)
   end
 end
 
-install File.join( 'script', 'ferret_start' )
-install File.join( 'script', 'ferret_stop' )
+install File.join( 'script', 'ferret_server' )
 install File.join( 'config', 'ferret_server.yml' )
 
 puts IO.read(File.join(File.dirname(__FILE__), 'README'))

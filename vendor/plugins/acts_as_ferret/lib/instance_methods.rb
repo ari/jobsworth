@@ -31,20 +31,36 @@ module ActsAsFerret #:nodoc:
       self.class.aaf_index.highlight(id, self.class.name, query, options)
     end
     
-    # re-eneable ferret indexing after a call to #disable_ferret
-    def ferret_enable; @ferret_disabled = nil end
+    # re-eneable ferret indexing for this instance after a call to #disable_ferret
+    def enable_ferret  
+      @ferret_disabled = nil 
+    end
+    alias ferret_enable enable_ferret  # compatibility
     
-    # returns true if ferret indexing is enabled
-    # the optional parameter will be true if the method is called by rebuild_index, 
-    # and false otherwise. I.e. useful to enable a model only for indexing during 
-    # scheduled reindex runs.
-    def ferret_enabled?(is_rebuild = false); @ferret_disabled.nil? end
+    # returns true if ferret indexing is enabled for this record.
+    #
+    # The optional is_bulk_index parameter will be true if the method is called
+    # by rebuild_index or bulk_index, and false otherwise.
+    #
+    # If is_bulk_index is true, the class level ferret_enabled state will be
+    # ignored by this method (per-instance ferret_enabled checks however will 
+    # take place, so if you override this method to forbid indexing of certain 
+    # records you're still safe).
+    def ferret_enabled?(is_bulk_index = false)
+      @ferret_disabled.nil? && (is_bulk_index || self.class.ferret_enabled?)
+    end
 
-    # Disable Ferret for a specified amount of time. ::once will disable
-    # Ferret for the next call to #save (this is the default), ::always will 
-    # do so for all subsequent calls.
-    # To manually trigger reindexing of a record, you can call #ferret_update 
-    # directly. 
+    # Disable Ferret for this record for a specified amount of time. ::once will 
+    # disable Ferret for the next call to #save (this is the default), ::always 
+    # will do so for all subsequent calls. 
+    #
+    # Note that this will turn off only the create and update hooks, but not the 
+    # destroy hook. I think that's reasonable, if you think the opposite, please 
+    # tell me.
+    #
+    # To manually trigger reindexing of a record after you're finished modifying 
+    # it, you can call #ferret_update directly instead of #save (remember to
+    # enable ferret again before).
     #
     # When given a block, this will be executed without any ferret indexing of 
     # this object taking place. The optional argument in this case can be used 
@@ -52,6 +68,7 @@ module ActsAsFerret #:nodoc:
     # (::index_when_finished). Automatic Ferret indexing of this object will be 
     # turned on after the block has been executed. If passed ::index_when_true, 
     # the index will only be updated if the block evaluated not to false or nil.
+    #
     def disable_ferret(option = :once)
       if block_given?
         @ferret_disabled = :always
@@ -94,7 +111,7 @@ module ActsAsFerret #:nodoc:
     # fieldname => value pairs)
     def to_doc
       logger.debug "creating doc for class: #{self.class.name}, id: #{self.id}"
-      returning doc = Ferret::Document.new do
+      returning Ferret::Document.new do |doc|
         # store the id of each item
         doc[:id] = self.id
 
@@ -104,6 +121,14 @@ module ActsAsFerret #:nodoc:
         # iterate through the fields and add them to the document
         aaf_configuration[:ferret_fields].each_pair do |field, config|
           doc[field] = self.send("#{field}_to_ferret") unless config[:ignore]
+        end
+        if aaf_configuration[:boost]
+          if self.respond_to?(aaf_configuration[:boost])
+            boost = self.send aaf_configuration[:boost]
+            doc.boost = boost.to_i if boost
+          else
+            logger.error "boost option should point to an instance method: #{aaf_configuration[:boost]}"
+          end
         end
       end
     end
@@ -116,8 +141,13 @@ module ActsAsFerret #:nodoc:
       self.class.aaf_index.query_for_record(id, self.class.name)
     end
 
-    def content_for_field_name(field)
-      self[field] || self.instance_variable_get("@#{field.to_s}".to_sym) || self.send(field.to_sym)
+    def content_for_field_name(field, dynamic_boost = nil)
+      field_data = self[field] || self.instance_variable_get("@#{field.to_s}".to_sym) || self.send(field.to_sym)
+      if (dynamic_boost && boost_value = self.send(dynamic_boost))
+        field_data = Ferret::Field.new(field_data)
+        field_data.boost = boost_value.to_i
+      end
+      field_data
     end
 
 

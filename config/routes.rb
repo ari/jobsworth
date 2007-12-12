@@ -26,8 +26,6 @@ ActionController::Routing::Routes.draw do |map|
     map.monitored_posts           'users/:user_id/monitored'
   end
 
-  map.exceptions 'logged_exceptions/:action/:id', :controller => 'logged_exceptions', :action => 'index', :id => nil
-
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   map.connect ':controller/:action/:id.:format'

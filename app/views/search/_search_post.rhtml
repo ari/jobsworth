@@ -1,0 +1,4 @@
+<tr id="post_<%=@post.id%>">
+<td class="post-search"><%= link_to(highlight_all(@post.topic.title, @keys || []), topic_path(@post.forum, @post.topic))  %></td>
+<td width="80%" class="post-search-body"><%= highlight_all(excerpt(@post.body, @keys[0]), @keys || []) %></td>
+</tr>

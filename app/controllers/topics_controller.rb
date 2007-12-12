@@ -39,20 +39,20 @@ class TopicsController < ApplicationController
       @post.save!
     end
     respond_to do |format|
-      format.html { redirect_to forum_topic_path(@forum, @topic) }
+      format.html { redirect_to topic_path(@forum, @topic) }
     end
   end
 
   def update
     if @topic.user_id != current_user.id && !admin? && !current_user.moderator_of?(@topic.forum)
-      redirect_to forum_topic_path(@forum, @topic)
+      redirect_to topic_path(@forum, @topic)
       return
     end
     @topic.attributes = params[:topic]
     assign_protected
     @topic.save!
     respond_to do |format|
-      format.html { redirect_to forum_topic_path(@forum, @topic) }
+      format.html { redirect_to topic_path(@forum, @topic) }
       format.xml  { head 200 }
     end
   end

@@ -1,0 +1,17 @@
+***************
+*** 94,99 ****
+  
+      assert_equal '/people.xml?gender=male', Person.collection_path('gender' => 'male')
+      assert_equal '/people.xml?gender=male&student=true', Person.collection_path(:gender => 'male', :student => true)
+  
+      assert_equal '/people.xml?name[]=bob&name[]=your+uncle%2Bme&name[]=&name[]=false', Person.collection_path(:name => ['bob', 'your uncle+me', nil, false])
+    end
+--- 94,101 ----
+  
+      assert_equal '/people.xml?gender=male', Person.collection_path('gender' => 'male')
+      assert_equal '/people.xml?gender=male&student=true', Person.collection_path(:gender => 'male', :student => true)
++     # Make sure query parameters are listed in alphabetical order
++     assert_equal '/people.xml?age=21&gender=male&student=true', Person.collection_path(:student => true, :age => 21, :gender => 'male')
+  
+      assert_equal '/people.xml?name[]=bob&name[]=your+uncle%2Bme&name[]=&name[]=false', Person.collection_path(:name => ['bob', 'your uncle+me', nil, false])
+    end

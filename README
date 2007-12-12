@@ -22,12 +22,12 @@ setup script or web page at a later stage.
         Make sure you have ImageMagick installed.
 
 2. mysql -u root -p
-   create database cit_dev;
+   create database cit;
    grant all on cit.* to cit@localhost identified by '<password>';
    flush privileges;
 
 3. Copy config/database.yml-example to config/database.yml and modify it
-4. Copy config/jusggernaut_config.yml-example to
+4. Copy config/juggernaut_config.yml-example to
    config/juggernaut_config.yml and modify it
 5. Copy config/environment.rb-example to config/environment.rb
    and modify it
@@ -39,8 +39,8 @@ setup script or web page at a later stage.
    127.0.0.1 <subdomain>.clockingit.com
 
 9. sudo ./script/push_server
-   sudo RAILS_ENV=production ./script/runner "load './lib/daemons/ferret_server'"
-   ./script/server
+   sudo ./script/ferret_server -e production start
+   ./script/server -e production
    Create the initial account at http://www.clockingit.com:3000/login/signup
 
 10.Sign in from http://<subdomain>.clockingit.com:3000/

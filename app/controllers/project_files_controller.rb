@@ -58,7 +58,7 @@ class ProjectFilesController < ApplicationController
       send_file @project_files.thumbnail_path, :filename => "thumb_" + @project_files.filename, :type => "image/jpeg", :disposition => 'inline'
       GC.start
     else
-      render :nothing => true
+      send_file "#{RAILS_ROOT}/public/images/unknown.png", :filename => "thumb_" + @project_files.filename, :type => "image/png", :disposition => 'inline'
     end
   end
 
@@ -159,6 +159,7 @@ class ProjectFilesController < ApplicationController
 
     @project_files.company_id = current_user.company_id
     @project_files.customer_id = @project_files.project.customer_id
+    @project_files.user_id = current_user.id
 
     @project_files.save
     @project_files.reload
@@ -300,6 +301,14 @@ class ProjectFilesController < ApplicationController
       File.delete(@file.thumbnail_path)
     rescue
     end
+    l = @file.event_logs.new
+    l.company_id = @file.company_id
+    l.project_id = @file.project_id
+    l.user_id = current_user.id
+    l.event_type = EventLog::FILE_DELETED
+    l.title = "{@file.name} deleted"
+    l.save
+
     @file.destroy
 
     return if request.xhr?

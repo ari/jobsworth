@@ -1,1 +1,0 @@
-LoggedExceptionsController.template_root = File.join(directory, 'views')

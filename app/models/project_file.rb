@@ -41,6 +41,18 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :binary
   belongs_to    :thumbnail
 
+  has_many   :event_logs, :as => :target, :dependent => :destroy
+
+  after_create { |r|
+    l = r.event_logs.new
+    l.company_id = r.company_id
+    l.project_id = r.project_id
+    l.user_id = r.user_id
+    l.event_type = EventLog::FILE_UPLOADED
+    l.created_at = r.created_at
+    l.save
+  }
+
   after_destroy { |r|
     File.delete(r.file_path) rescue begin end
     File.delete(r.thumbnail_path) rescue begin end
@@ -64,6 +76,18 @@ class ProjectFile < ActiveRecord::Base
 
   def thumbnail?
     File.exist?(thumbnail_path)
+  end
+
+  def name
+    @attributes['name'].blank? ? filename : @attributes['name']
+  end
+
+  def full_name
+    if project_folder
+      "#{project_folder.full_path}/#{name}"
+    else
+      "/#{name}"
+    end
   end
 
 end

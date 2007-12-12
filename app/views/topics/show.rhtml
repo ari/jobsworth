@@ -1,10 +1,10 @@
 <% @page_title = @topic.title %>
 <% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero? %>
 
-<% form_tag forum_topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
+<% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
-    onclick="if (this.checked) {<%= remote_function :url => forum_topic_monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => forum_topic_monitorship_path(@forum, @topic), :method => :delete %>}" />
+    onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => monitorship_path(@forum, @topic), :method => :delete %>}" />
   <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring topic' : 'Monitor topic' %></label>
   <%= hidden_field_tag '_method', 'delete' if @monitoring %>
   <%= submit_tag :Set, :id => 'monitor_submit' %>
@@ -34,8 +34,8 @@
   <% end %>
     <span style="display:none;" id="topic_mod">
       <% if @topic.editable_by?(current_user) -%>
-        <%= link_to('edit', edit_forum_topic_path(@forum, @topic), :class => "utility") %> |
-        <%= link_to('delete', forum_topic_path(@forum, @topic), :class => "utility", :method => :delete, :confirm => 'Delete this topic forever?') %>
+        <%= link_to('edit', edit_topic_path(@forum, @topic), :class => "utility") %> |
+        <%= link_to('delete', topic_path(@forum, @topic), :class => "utility", :method => :delete, :confirm => 'Delete this topic forever?') %>
       <% end -%>
     </span>
 </h1>
@@ -87,9 +87,9 @@
       <span class="edit">
         <%= ajax_spinner_for "edit-post-#{post.id}", "spinner_bounce.gif" %>
         <%= link_to_remote('Edit post',
-              {:url => edit_forum_topic_post_path(:forum_id => @forum, :topic_id => @topic, :id => post), :method => :get,
+              {:url => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post), :method => :get,
                :before => "EditForm.init(#{post.id});", :condition => "!EditForm.isEditing(#{post.id})" },
-              {:href => edit_forum_topic_post_path(:forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]), :class => "utility"}) %>
+              {:href => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]), :class => "utility"}) %>
       </span>
     </p>
     <% end -%>
@@ -120,7 +120,7 @@
 <div id="reply" class="editbox">
 <div class="container">
   <%= content_tag 'p', h(flash[:bad_reply]), :class => 'notice' if flash[:bad_reply] %>
-  <% form_for :post, :url => forum_topic_posts_path(:forum_id => @forum, :topic_id => @topic, :page => @topic.last_page) do |f| -%>
+  <% form_for :post, :url => posts_path(:forum_id => @forum, :topic_id => @topic, :page => @topic.last_page) do |f| -%>
   <table width="100%" border="0" cellpadding="0" cellspacing="0">
     <tr>
       <td rowspan="2" width="70%">

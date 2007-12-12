@@ -37,3 +37,5 @@ end
     end
 
 end
+
+ActionView::Base::load_helpers

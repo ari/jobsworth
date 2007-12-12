@@ -1,7 +1,7 @@
 require 'set'
-require File.dirname(__FILE__) + '/core_ext/module/attribute_accessors'
-require File.dirname(__FILE__) + '/core_ext/load_error'
-require File.dirname(__FILE__) + '/core_ext/kernel'
+require 'active_support/core_ext/module/attribute_accessors'
+require 'active_support/core_ext/load_error'
+require 'active_support/core_ext/kernel'
 
 module Dependencies #:nodoc:
   extend self
@@ -114,7 +114,7 @@ module Dependencies #:nodoc:
     raise NameError, "#{path.inspect} is not a valid constant name!" unless
       /^(::)?([A-Z]\w*)(::[A-Z]\w*)*$/ =~ path
     
-    names = path.split('::')
+    names = path.to_s.split('::')
     names.shift if names.first.empty?
     
     # We can't use defined? because it will invoke const_missing for the parent
@@ -229,10 +229,10 @@ module Dependencies #:nodoc:
         from_mod = Object
       end
     end
-    
+
     # If we have an anonymous module, all we can do is attempt to load from Object.
-    from_mod = Object if from_mod.name.empty?
-    
+    from_mod = Object if from_mod.name.blank?
+
     unless qualified_const_defined?(from_mod.name) && from_mod.name.constantize.object_id == from_mod.object_id
       raise ArgumentError, "A copy of #{from_mod} has been removed from the module tree but is still active!"
     end
@@ -383,7 +383,7 @@ module Dependencies #:nodoc:
   
   class LoadingModule #:nodoc:
     # Old style environment.rb referenced this method directly.  Please note, it doesn't
-    # actualy *do* anything any more.
+    # actually *do* anything any more.
     def self.root(*args)
       if defined?(RAILS_DEFAULT_LOGGER)
         RAILS_DEFAULT_LOGGER.warn "Your environment.rb uses the old syntax, it may not continue to work in future releases."
@@ -392,11 +392,9 @@ module Dependencies #:nodoc:
     end
   end
 
-protected
-  
   # Convert the provided const desc to a qualified constant name (as a string).
   # A module, class, symbol, or string may be provided.
-  def to_constant_name(desc)
+  def to_constant_name(desc) #:nodoc:
     name = case desc
       when String then desc.starts_with?('::') ? desc[2..-1] : desc
       when Symbol then desc.to_s
@@ -406,23 +404,24 @@ protected
       else raise TypeError, "Not a valid constant descriptor: #{desc.inspect}"
     end
   end
-  
-  def remove_constant(const)
+
+  def remove_constant(const) #:nodoc:
     return false unless qualified_const_defined? const
-    
+
     const = $1 if /\A::(.*)\Z/ =~ const.to_s
-    names = const.split('::')
+    names = const.to_s.split('::')
     if names.size == 1 # It's under Object
       parent = Object
     else
       parent = (names[0..-2] * '::').constantize
     end
-    
+
     log "removing constant #{const}"
-    parent.send :remove_const, names.last
+    parent.instance_eval { remove_const names.last }
     return true
   end
-  
+
+protected
   def log_call(*args)
     arg_str = args.collect(&:inspect) * ', '
     /in `([a-z_\?\!]+)'/ =~ caller(1).first
@@ -438,9 +437,11 @@ protected
   
 end
 
-Object.send(:define_method, :require_or_load)     { |file_name| Dependencies.require_or_load(file_name) } unless Object.respond_to?(:require_or_load)
-Object.send(:define_method, :require_dependency)  { |file_name| Dependencies.depend_on(file_name) }       unless Object.respond_to?(:require_dependency)
-Object.send(:define_method, :require_association) { |file_name| Dependencies.associate_with(file_name) }  unless Object.respond_to?(:require_association)
+Object.instance_eval do
+  define_method(:require_or_load)     { |file_name| Dependencies.require_or_load(file_name) } unless Object.respond_to?(:require_or_load)
+  define_method(:require_dependency)  { |file_name| Dependencies.depend_on(file_name) }       unless Object.respond_to?(:require_dependency)
+  define_method(:require_association) { |file_name| Dependencies.associate_with(file_name) }  unless Object.respond_to?(:require_association)
+end
 
 class Module #:nodoc:
   # Rename the original handler so we can chain it to the new one
@@ -480,18 +481,18 @@ class Class
   end
 end
 
-class Object #:nodoc:
+class Object
   
   alias_method :load_without_new_constant_marking, :load
   
-  def load(file, *extras)
+  def load(file, *extras) #:nodoc:
     Dependencies.new_constants_in(Object) { super(file, *extras) }
   rescue Exception => exception  # errors from loading file
     exception.blame_file! file
     raise
   end
 
-  def require(file, *extras)
+  def require(file, *extras) #:nodoc:
     Dependencies.new_constants_in(Object) { super(file, *extras) }
   rescue Exception => exception  # errors from required file
     exception.blame_file! file

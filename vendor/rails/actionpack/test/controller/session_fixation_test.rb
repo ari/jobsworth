@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/../abstract_unit'
 
+
 class SessionFixationTest < Test::Unit::TestCase
   class MockCGI < CGI #:nodoc:
     attr_accessor :stdoutput, :env_table
@@ -7,12 +8,12 @@ class SessionFixationTest < Test::Unit::TestCase
     def initialize(env, data = '')
       self.env_table = env
       self.stdoutput = StringIO.new
-      super(StringIO.new(data))
+      super(nil, StringIO.new(data))
     end
   end
 
   class TestController < ActionController::Base
-    session :session_key => '_myapp_session_id', :secret => 'secret', :except => :default_session_key
+    session :session_key => '_myapp_session_id', :secret => CGI::Session.generate_unique_id, :except => :default_session_key
     session :cookie_only => false, :only => :allow_session_fixation
 
     def default_session_key
@@ -38,7 +39,7 @@ class SessionFixationTest < Test::Unit::TestCase
     cgi = mock_cgi_for_request_to(:custom_session_key, :id => 1)
 
     assert_nothing_raised do
-      @controller.send(:process, mock_request(cgi), ActionController::CgiResponse.new(cgi))
+      @controller.send(:process, ActionController::CgiRequest.new(cgi, {}), ActionController::CgiResponse.new(cgi))
     end
     assert_equal 'custom_session_key: 1', @controller.response.body
     assert_not_nil @controller.session
@@ -48,7 +49,7 @@ class SessionFixationTest < Test::Unit::TestCase
     cgi = mock_cgi_for_request_to(:custom_session_key, :_myapp_session_id => 42)
 
     assert_raises ActionController::CgiRequest::SessionFixationAttempt do
-      @controller.send(:process, mock_request(cgi), ActionController::CgiResponse.new(cgi))
+      @controller.send(:process, ActionController::CgiRequest.new(cgi, {}), ActionController::CgiResponse.new(cgi))
     end
     assert_nil @controller.session
   end
@@ -57,9 +58,9 @@ class SessionFixationTest < Test::Unit::TestCase
     cgi = mock_cgi_for_request_to(:allow_session_fixation, :_myapp_session_id => 42)
 
     assert_nothing_raised do
-      @controller.send(:process, mock_request(cgi), ActionController::CgiResponse.new(cgi))
+      @controller.send(:process, ActionController::CgiRequest.new(cgi, {}), ActionController::CgiResponse.new(cgi))
     end
-    assert !@controller.response.body.blank?
+    assert ! @controller.response.body.blank?
     assert_not_nil @controller.session
   end
 
@@ -68,7 +69,7 @@ class SessionFixationTest < Test::Unit::TestCase
     cgi = mock_cgi_for_request_to(:default_session_key, :_session_id => 42)
 
     assert_raises ActionController::CgiRequest::SessionFixationAttempt do
-      @controller.send(:process, mock_request(cgi) , ActionController::CgiResponse.new(cgi))
+      @controller.send(:process, ActionController::CgiRequest.new(cgi, {}), ActionController::CgiResponse.new(cgi))
     end
     assert @controller.response.body.blank?
     assert_nil @controller.session
@@ -83,10 +84,6 @@ private
       "REQUEST_URI"    => "/",
       "SERVER_PORT"    => "80",
       "HTTP_HOST"      => "testdomain.com" }, '')
-  end
-
-  def mock_request(cgi)
-    ActionController::CgiRequest.new(cgi, {})
   end
 
 end

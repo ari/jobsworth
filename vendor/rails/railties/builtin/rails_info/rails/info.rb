@@ -19,7 +19,7 @@ module Rails
       end
 
       def components
-        %w( active_record action_pack action_web_service action_mailer active_support )
+        %w( active_record action_pack active_resource action_mailer active_support )
       end
       
       def component_version(component)
@@ -89,7 +89,7 @@ module Rails
     end
   
     # Versions of each Rails component (Active Record, Action Pack, 
-    # Action Web Service, Action Mailer, and Active Support).
+    # Active Resource, Action Mailer, and Active Support).
     components.each do |component|
       property "#{component.titlecase} version" do 
         component_version(component)

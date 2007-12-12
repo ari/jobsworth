@@ -52,12 +52,12 @@
             <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
               <%
                  @status = [[_("[Any Type]"), "-1"],
-                            [_("Closed"), WorkLog::TASK_COMPLETED.to_s],
-                            [_("Work Log"), WorkLog::TASK_WORK_ADDED.to_s],
-                            [_("Status Change"), WorkLog::TASK_REVERTED.to_s],
-                            [_("Created"), WorkLog::TASK_CREATED.to_s],
-                            [_("Comment"), WorkLog::TASK_COMMENT.to_s],
-                            [_("Modified"), WorkLog::TASK_MODIFIED.to_s]
+                            [_("Closed"), EventLog::TASK_COMPLETED.to_s],
+                            [_("Work Log"), EventLog::TASK_WORK_ADDED.to_s],
+                            [_("Status Change"), EventLog::TASK_REVERTED.to_s],
+                            [_("Created"), EventLog::TASK_CREATED.to_s],
+                            [_("Comment"), EventLog::TASK_COMMENT.to_s],
+                            [_("Modified"), EventLog::TASK_MODIFIED.to_s]
                            ]
 
               %>

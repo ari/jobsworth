@@ -21,9 +21,13 @@
 require 'active_support'
 require 'active_record'
 require 'set'
+require 'enumerator'
 require 'ferret'
 
+require 'bulk_indexer'
+require 'ferret_extensions'
 require 'act_methods'
+require 'search_results'
 require 'class_methods'
 require 'shared_index_class_methods'
 require 'ferret_result'
@@ -65,34 +69,21 @@ require 'ferret_server'
 #
 module ActsAsFerret
 
-    # global Hash containing all multi indexes created by all classes using the plugin
-    # key is the concatenation of alphabetically sorted names of the classes the
-    # searcher searches.
-    @@multi_indexes = Hash.new
-    def self.multi_indexes; @@multi_indexes end
+  # global Hash containing all multi indexes created by all classes using the plugin
+  # key is the concatenation of alphabetically sorted names of the classes the
+  # searcher searches.
+  @@multi_indexes = Hash.new
+  def self.multi_indexes; @@multi_indexes end
 
-    # global Hash containing the ferret indexes of all classes using the plugin
-    # key is the index directory.
-    @@ferret_indexes = Hash.new
-    def self.ferret_indexes; @@ferret_indexes end
+  # global Hash containing the ferret indexes of all classes using the plugin
+  # key is the index directory.
+  @@ferret_indexes = Hash.new
+  def self.ferret_indexes; @@ferret_indexes end
+
  
-  # decorator that adds a total_hits accessor to search result arrays
-  class SearchResults
-    attr_reader :total_hits
-    def initialize(results, total_hits)
-      @results = results
-      @total_hits = total_hits
-    end
-    def method_missing(symbol, *args, &block)
-      @results.send(symbol, *args, &block)
-    end
-    def respond_to?(name)
-      self.methods.include?(name) || @results.respond_to?(name)
-    end
-  end
   
   def self.ensure_directory(dir)
-    FileUtils.mkdir_p dir unless File.directory? dir
+    FileUtils.mkdir_p dir unless (File.directory?(dir) || File.symlink?(dir))
   end
   
   # make sure the default index base dir exists. by default, all indexes are created
@@ -110,37 +101,51 @@ module ActsAsFerret
     base.extend(ClassMethods)
   end
   
+  # builds a FieldInfos instance for creation of an index containing fields
+  # for the given model classes.
+  def self.field_infos(models)
+    # default attributes for fields
+    fi = Ferret::Index::FieldInfos.new(:store => :no, 
+                                        :index => :yes, 
+                                        :term_vector => :no,
+                                        :boost => 1.0)
+    # primary key
+    fi.add_field(:id, :store => :yes, :index => :untokenized) 
+    fields = {}
+    have_class_name = false
+    models.each do |model|
+      fields.update(model.aaf_configuration[:ferret_fields])
+      # class_name
+      if !have_class_name && model.aaf_configuration[:store_class_name]
+        fi.add_field(:class_name, :store => :yes, :index => :untokenized) 
+        have_class_name = true
+      end
+    end
+    fields.each_pair do |field, options|
+      options = options.dup
+      options.delete(:boost) if options[:boost].is_a?(Symbol)
+      fi.add_field(field, { :store => :no, 
+                            :index => :yes }.update(options)) 
+    end
+    return fi
+  end
+
+  def self.close_multi_indexes
+    # close combined index readers, just in case
+    # this seems to fix a strange test failure that seems to relate to a
+    # multi_index looking at an old version of the content_base index.
+    multi_indexes.each_pair do |key, index|
+      # puts "#{key} -- #{self.name}"
+      # TODO only close those where necessary (watch inheritance, where
+      # self.name is base class of a class where key is made from)
+      index.close #if key =~ /#{self.name}/
+    end
+    multi_indexes.clear
+  end
+
 end
 
 # include acts_as_ferret method into ActiveRecord::Base
 ActiveRecord::Base.extend ActsAsFerret::ActMethods
 
-
-# small Ferret monkey patch
-# TODO check if this is still necessary
-class Ferret::Index::MultiReader
-  def latest?
-    # TODO: Exception handling added to resolve ticket #6. 
-    # It should be clarified wether this is a bug in Ferret
-    # in which case a bug report should be posted on the Ferret Trac. 
-    begin
-      @sub_readers.each { |r| return false unless r.latest? }
-    rescue
-      return false
-    end
-    true
-  end
-end
-
-# add marshalling support to SortFields
-class Ferret::Search::SortField
-  def _dump(depth)
-    to_s
-  end
-
-  def self._load(string)
-    raise "invalid value: #{string}" unless string =~ /^(\w+):<(\w+)>(\!)?$/
-    new($1.to_sym, :type => $2.to_sym, :reverse => !$3.nil?)
-  end
-end
 

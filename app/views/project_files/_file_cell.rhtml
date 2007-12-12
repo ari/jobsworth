@@ -31,4 +31,4 @@
      %>
   </div>
 </div>
-<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => 'handle', :onclick => "function(element){location.href='#{url_for(:action => 'show', :id => project_files)}';}" } %>
+<%= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => "'handle'", :onclick => "function(element){location.href='#{url_for(:action => 'show', :id => project_files)}';}" } %>

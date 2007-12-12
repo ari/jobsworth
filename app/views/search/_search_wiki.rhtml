@@ -1,0 +1,4 @@
+<tr id="wiki_<%=@page.id%>">
+<td class="wiki-search"><%= "<a href=\"/wiki/show/#{URI.encode(@page.name)}\">#{highlight_all(@page.name, @keys || [])}</a>" %></td>
+<td class="wiki-search-body"><%= highlight_all(excerpt(@page.body, @keys[0]), @keys || []) %></td>
+</tr>

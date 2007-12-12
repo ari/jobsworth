@@ -4,6 +4,10 @@ class WikiPage < ActiveRecord::Base
   has_one  :current_revision, :class_name => 'WikiRevision', :order => 'id DESC'
   belongs_to :company
 
+  has_many   :event_logs, :as => :target, :dependent => :destroy, :order => 'id DESC'
+
+  acts_as_ferret :fields => ['company_id', 'project_id', 'name', 'body']
+
   LOCKING_PERIOD = 30.minutes
 
   def lock(time, locked_by)
@@ -33,6 +37,14 @@ class WikiPage < ActiveRecord::Base
 
   def to_url
     "<a href=\"/wiki/show/#{URI.encode(name)}\">#{name}</a>"
+  end
+
+  def body
+    current_revision.body
+  end
+
+  def user
+    current_revision.user
   end
 
   def to_html(rev = 0)

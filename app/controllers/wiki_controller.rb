@@ -24,13 +24,21 @@ class WikiController < ApplicationController
       @page.project_id = nil
     end
     @page.unlock
-    @page.save
 
     @rev = WikiRevision.new
     @rev.wiki_page = @page
     @rev.user = current_user
     @rev.body = params[:body]
     @rev.save
+
+    # Create event log
+    l = @page.event_logs.new
+    l.company_id = @page.company_id
+    l.project_id = @page.project_id
+    l.user_id = current_user.id
+    l.event_type = @page.revisions.size < 2 ? EventLog::WIKI_CREATED : EventLog::WIKI_MODIFIED
+    l.created_at = @rev.created_at
+    l.save
 
     redirect_to :action => 'show', :id => @page.name
   end
@@ -46,7 +54,6 @@ class WikiController < ApplicationController
 
     unless @page.new_record?
       @page.lock(Time.now.utc, current_user.id)
-      @page.save
     end
   end
 
@@ -54,7 +61,6 @@ class WikiController < ApplicationController
     @page = WikiPage.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:id]])
     if @page
       @page.unlock
-      @page.save
     end
 
     redirect_to :action => 'show', :id => params[:id]

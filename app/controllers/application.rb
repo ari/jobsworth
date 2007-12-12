@@ -4,24 +4,54 @@ class ApplicationController < ActionController::Base
 
   include Misc
 
+#  helper :all
+
   helper_method :last_active
   helper_method :render_to_string
   helper_method :current_user
   helper_method :tz
+  helper_method :current_projects
+  helper_method :current_project_ids
+  helper_method :completed_milestone_ids
+  helper_method :worked_nice
 
-  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password, :take_forgotten, :show_logo, :rss, :ical, :ical_all, :about, :company_check, :subdomain_check, :unsubscribe, :shortlist_auth ]
-
+  before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
+                                         :take_forgotten, :show_logo, :about,
+                                         :company_check, :subdomain_check, :unsubscribe, :shortlist_auth ]
   after_filter :set_charset
   after_filter OutputCompressionFilter
-  after_filter :after_req_resource_usage
-  after_filter :cleanup
 
-  def cleanup
-    @current_user = nil
-    @current_projects = nil
-    @current_project_ids = nil
-    @milestone_ids = nil
-    @tz = nil
+#  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
+
+  def self.stats controller
+    GC.start
+    n_req = @number_of_requests
+    n_obj = ObjectSpace.each_object{}
+    n_sym = Symbol.all_symbols.size
+    pid = Process.pid
+
+    ps_info = `ps -o psr,etime,pcpu,pmem,rss,vsz -p #{Process.pid} | grep -v CPU`
+    ignore, psr, elapsed, pcpu, pmem, rsize, vsize = ps_info.split(/\s+/)
+    "n_req: #{ n_req }, n_obj: #{ n_obj }, n_sym: #{ n_sym }, pid: #{ pid }, vsize: #{ vsize }, rsize: #{ rsize }"
+  end
+
+  before_filter do |controller|
+    @number_of_requests ||= 0
+
+    if @number_of_requests % 20 == 0
+      @before = "@@ >> #{ stats controller }"
+    end
+  end
+
+  after_filter do |controller|
+    if @number_of_requests % 20 == 0
+      @after = "@@ << #{ stats controller }"
+      controller.logger.info @before
+      controller.logger.info @after
+      @before = @after = @before_symbols = @after_symbols = nil
+    end
+
+    @number_of_requests += 1
   end
 
   def current_user
@@ -36,14 +66,6 @@ class ApplicationController < ActionController::Base
       @tz = Timezone.get(current_user.time_zone)
     end
     @tz
-  end
-
-
-
-  def after_req_resource_usage
-    ps_info = `ps -o psr,etime,pcpu,pmem,rss,vsz -p #{Process.pid} | grep -v CPU`
-    ignore, psr, elapsed, pcpu, pmem, rss, vsz = ps_info.split(/\s+/)
-    logger.info("pid=#{Process.pid} pcpu=#{pcpu} pmem=#{pmem} rss=#{rss} vsz=#{vsz}")
   end
 
   # Force UTF-8 for all text Content-Types
@@ -64,7 +86,7 @@ class ApplicationController < ActionController::Base
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-#    session[:user_id] = User.find(:first, :offset => rand(1000)).id
+#    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
 
     if session[:user_id].nil?
@@ -266,7 +288,7 @@ class ApplicationController < ActionController::Base
   end
 
   def link_to_task(task)
-    t = "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{task.name}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration})}\">#{task.name}</a>"
   end
 
 end

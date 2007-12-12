@@ -46,8 +46,8 @@ module ActiveRecord
       alias :sql_conditions :conditions
       
       def reset
-        @target = nil
         @loaded = false
+        @target = nil
       end
 
       def reload
@@ -72,9 +72,14 @@ module ActiveRecord
         loaded
       end
       
+      def inspect
+        reload unless loaded?
+        @target.inspect
+      end
+
       protected
         def dependent?
-          @reflection.options[:dependent] || false
+          @reflection.options[:dependent]
         end
         
         def quoted_record_ids(records)
@@ -91,10 +96,6 @@ module ActiveRecord
 
         def sanitize_sql(sql)
           @reflection.klass.send(:sanitize_sql, sql)
-        end
-
-        def extract_options_from_args!(args)
-          @owner.send(:extract_options_from_args!, args)
         end
 
         def set_belongs_to_association_for(record)
@@ -138,14 +139,14 @@ module ActiveRecord
         end
 
         # Can be overwritten by associations that might have the foreign key available for an association without
-        # having the object itself (and still being a new record). Currently, only belongs_to present this scenario.
+        # having the object itself (and still being a new record). Currently, only belongs_to presents this scenario.
         def foreign_key_present
           false
         end
 
         def raise_on_type_mismatch(record)
           unless record.is_a?(@reflection.klass)
-            raise ActiveRecord::AssociationTypeMismatch, "#{@reflection.class_name} expected, got #{record.class}"
+            raise ActiveRecord::AssociationTypeMismatch, "#{@reflection.klass} expected, got #{record.class}"
           end
         end
 

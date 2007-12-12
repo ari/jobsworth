@@ -70,7 +70,7 @@ module Rails
           end
 
           def current_migration_number
-            Dir.glob("#{@migration_directory}/[0-9]*.rb").inject(0) do |max, file_path|
+            Dir.glob("#{RAILS_ROOT}/#{@migration_directory}/[0-9]*_*.rb").inject(0) do |max, file_path|
               n = File.basename(file_path).split('_', 2).first.to_i
               if n > max then n else max end
             end
@@ -93,9 +93,9 @@ module Rails
         private
           # Ask the user interactively whether to force collision.
           def force_file_collision?(destination, src, dst, file_options = {}, &block)
-            $stdout.print "overwrite #{destination}? [Ynaqd] "
-            case $stdin.gets
-              when /d/i
+            $stdout.print "overwrite #{destination}? (enter \"h\" for help) [Ynaqdh] "
+            case $stdin.gets.chomp
+              when /\Ad\z/i
                 Tempfile.open(File.basename(destination), File.dirname(dst)) do |temp|
                   temp.write render_file(src, file_options, &block)
                   temp.rewind
@@ -103,14 +103,24 @@ module Rails
                 end
                 puts "retrying"
                 raise 'retry diff'
-              when /a/i
+              when /\Aa\z/i
                 $stdout.puts "forcing #{spec.name}"
                 options[:collision] = :force
-              when /q/i
+              when /\Aq\z/i
                 $stdout.puts "aborting #{spec.name}"
                 raise SystemExit
-              when /n/i then :skip
-              else :force
+              when /\An\z/i then :skip
+              when /\Ay\z/i then :force
+              else
+                $stdout.puts <<-HELP
+Y - yes, overwrite
+n - no, do not overwrite
+a - all, overwrite this and all others
+q - quit, abort
+d - diff, show the differences between the old and the new
+h - help, show this help
+HELP
+                raise 'retry'
             end
           rescue
             retry
@@ -260,7 +270,7 @@ module Rails
         end
 
         # Generate a file for a Rails application using an ERuby template.
-        # Looks up and evalutes a template by name and writes the result.
+        # Looks up and evaluates a template by name and writes the result.
         #
         # The ERB template uses explicit trim mode to best control the
         # proliferation of whitespace in generated code.  <%- trims leading
@@ -559,7 +569,7 @@ end_message
              return
            end
 
-           logger.refreshing "#{template_options[:insert].gsub(/\.rhtml/,'')} inside #{relative_destination}"
+           logger.refreshing "#{template_options[:insert].gsub(/\.erb/,'')} inside #{relative_destination}"
 
            begin_mark = Regexp.quote(template_part_mark(template_options[:begin_mark], template_options[:mark_id]))
            end_mark = Regexp.quote(template_part_mark(template_options[:end_mark], template_options[:mark_id]))

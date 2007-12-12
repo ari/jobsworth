@@ -1377,7 +1377,7 @@ li.help {
 }
 
 #wiki h1, h2, h3, h4 {
-  color: #566ca5;
+  color: #333333;
 }
 
 #wiki h1 {
@@ -1388,7 +1388,7 @@ li.help {
 
 #wiki h2 {
   border-bottom: 2px dotted #FFC266;
-  background-color: #e9f7fd;
+  background-color: #ececec;
   padding-left:0.2em;
   padding-right:0.2em;
 }

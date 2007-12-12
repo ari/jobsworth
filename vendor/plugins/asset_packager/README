@@ -5,7 +5,7 @@ JavaScript and CSS Asset Compression for Production Rails Apps
 == Description
 
 When it comes time to deploy your new web application, instead of 
-sending down a dozen javascript and css files full of formatting 
+sending down a dozen JavaScript and CSS files full of formatting 
 and comments, this Rails plugin makes it simple to merge and 
 compress JavaScript and CSS down into one or more files, increasing 
 speed and saving bandwidth.
@@ -13,7 +13,7 @@ speed and saving bandwidth.
 When in development, it allows you to use your original versions 
 and retain formatting and comments for readability and debugging.
 
-Because not all browsers will dependably cache javascript and css 
+Because not all browsers will dependably cache JavaScript and CSS 
 files with query string parameters, AssetPackager writes a timestamp 
 or subversion revision stamp (if available) into the merged file names. 
 Therefore files are correctly cached by the browser AND your users 
@@ -28,16 +28,16 @@ I’d like to know so I can add them back in. Thanks!
 == Credit
 
 This Rails Plugin was inspired by Cal Henderson's article 
-"Serving Javascript Fast" on Vitamin:
+"Serving JavaScript Fast" on Vitamin:
 http://www.thinkvitamin.com/features/webapps/serving-javascript-fast
 
-It also uses the Ruby Javascript Minifier created by 
+It also uses the Ruby JavaScript Minifier created by 
 Douglas Crockford.
 http://www.crockford.com/javascript/jsmin.html
 
 == Key Features
 
-* Merges and compresses javascript and css when running in production.
+* Merges and compresses JavaScript and CSS when running in production.
 * Uses uncompressed originals when running in development.
 * Handles caching correctly. (No querystring parameters - filename timestamps)
 * Versions each package individually. Updates to files in one won't re-trigger downloading the others.
@@ -46,21 +46,26 @@ http://www.crockford.com/javascript/jsmin.html
 
 == Components
 
-* Rake Task for merging and compressing javascript and css files.
-* Helper functions for including these javascript and css files in your RHTML.
-* YAML configuration file for mapping javascript and css files to merged versions.
-* Rake Task for auto-generating the YAML file from your existing javascript files.
+* Rake Task for merging and compressing JavaScript and CSS files.
+* Helper functions for including these JavaScript and CSS files in your views.
+* YAML configuration file for mapping JavaScript and CSS files to merged versions.
+* Rake Task for auto-generating the YAML file from your existing JavaScript files.
 
 == How to Use:
 
 1. Download and install the plugin:
    ./script/plugin install http://sbecker.net/shared/plugins/asset_packager
 
-2. Run the rake task "asset:packager:create_yml" to generate the /config/asset_packages.yml file the first time. You 
-will need to reorder files under 'base' so dependencies are loaded in correct order. Feel free 
-to rename or create new file packages.
+2. Run the rake task "asset:packager:create_yml" to generate the /config/asset_packages.yml
+file the first time. You will need to reorder files under 'base' so dependencies are loaded 
+in correct order. Feel free to rename or create new file packages.
 
-Example from a fresh rails app after running the rake task. (Stylesheets is blank because a default rails app has no stylesheets yet.):
+IMPORTANT: JavaScript files can break once compressed if each statement doesn't end with a semi-colon.
+The minifier puts multiple statements on one line, so if the semi-colon is missing, the statement may no 
+longer makes sense and cause a syntax error.
+
+Example from a fresh rails app after running the rake task. (Stylesheets is blank because a 
+default rails app has no stylesheets yet.):
 
 --- 
 javascripts: 
@@ -94,13 +99,17 @@ stylesheets:
   - foo
   - bar
 
-3. Run the rake task "asset:packager:build_all" to generate the compressed, merged versions for each package. Whenever you rearrange the yaml file, you'll need to run this task again. Merging and compressing is expensive, so this is something we want to do once, not every time your app starts. Thats why its a rake task.
+3. Run the rake task "asset:packager:build_all" to generate the compressed, merged versions
+for each package. Whenever you rearrange the yaml file, you'll need to run this task again. 
+Merging and compressing is expensive, so this is something we want to do once, not every time
+your app starts. Thats why its a rake task.
 
 4. Use the helper functions whenever including these files in your application. See below for examples.
 
-5. Potential warning: css compressor function currently removes css comments. This might blow away some css hackery. To disable comment removal, comment out /lib/synthesis/asset_package.rb line 167.
+5. Potential warning: css compressor function currently removes CSS comments. This might blow
+away some CSS hackery. To disable comment removal, comment out /lib/synthesis/asset_package.rb line 176.
 
-== Javascript Examples
+== JavaScript Examples
 
 Example call:  
   <%= javascript_include_merged 'prototype', 'effects', 'controls', 'dragdrop', 'application', 'foo', 'bar' %>
@@ -119,8 +128,8 @@ In production, this generates:
   <script type="text/javascript" src="/javascripts/secondary_1150729166.js"></script>
 
 Now supports symbols and :defaults as well:
-<%= javascript_include_merged :defaults %>
-<%= javascript_include_merged :foo, :bar %>
+  <%= javascript_include_merged :defaults %>
+  <%= javascript_include_merged :foo, :bar %>
 
 == Stylesheet Examples
 
@@ -134,8 +143,28 @@ In development, this generates:
 In production this generates:
   <link href="/stylesheets/base_1150729166.css" media="screen" rel="Stylesheet" type="text/css" />
 
+== Different CSS Media
+
+All options for stylesheet_link_tag still work, so if you want to specify a different media type:
+  <%= stylesheet_link_merged :secondary, 'media' => 'print' %>
+
+== Running the tests
+
+So you want to run the tests eh? Ok, then listen:
+
+This plugin has a full suite of tests. But since they
+depend on rails, it has to be run in the context of a
+rails app, in the vendor/plugins directory. Observe:
+
+> rails newtestapp
+> cd newtestapp
+> ./script/plugin install http://sbecker.net/shared/plugins/asset_packager
+> cd vendor/plugins/asset_packager/
+> rake # all tests pass
+
 == License
 Copyright (c) 2006 Scott Becker - http://synthesis.sbecker.net
+Contact Email: becker.scott@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

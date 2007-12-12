@@ -14,7 +14,7 @@ module ActsAsFerret
         
         if original_query.is_a? String
           model_query = options[:models].map(&:name).join '|'
-          q << %{ +class_name:"#{model_query}"}
+          q += %{ +class_name:"#{model_query}"}
         else
           q = Ferret::Search::BooleanQuery.new
           q.add_query(original_query, :must)

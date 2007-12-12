@@ -55,12 +55,15 @@ if PKG_VERSION
     s.platform        = Gem::Platform::RUBY
     s.summary         = "acts_as_ferret - Ferret based full text search for any ActiveRecord model"
     s.files  = Dir.glob('**/*', File::FNM_DOTMATCH).reject do |f| 
-      [ /\.$/, /sqlite$/, /\.log$/, /^pkg/, /\.svn/,
-      /\~$/, /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
+      [ /\.$/, /sqlite$/, /\.log$/, /^pkg/, /\.svn/, /\.\w+\.sw.$/,
+        /^html/, /\~$/, /\/\._/, /\/#/ ].any? {|regex| f =~ regex }
     end
     #s.files           = FileList["{lib,test}/**/*"].to_a + %w(README MIT-LICENSE CHANGELOG)
   # s.files.delete  ...    
     s.require_path    = 'lib'
+    s.bindir          = "bin"
+    s.executables     = ["aaf_install"]
+    s.default_executable = "aaf_install"
     s.autorequire     = 'acts_as_ferret'
     s.has_rdoc        = true
   # s.test_files      = Dir['test/**/*_test.rb']
@@ -69,7 +72,7 @@ if PKG_VERSION
     s.homepage        = "http://projects.jkraemer.net/acts_as_ferret"
   end
 
-  Rake::GemPackageTask.new(spec) do |pkg|
+  package_task = Rake::GemPackageTask.new(spec) do |pkg|
     pkg.need_tar = true
   end
 
@@ -92,8 +95,8 @@ if PKG_VERSION
         fail "SVK status is not clean ... do you have unchecked-in files?"
       end
       announce "No outstanding checkins found ... OK"
-      announce "Pushing to svn..."
-      `svk push .`
+#      announce "Pushing to svn..."
+#      `svk push .`
     end
   end
   
@@ -114,8 +117,7 @@ if PKG_VERSION
   
   # Upload release to rubyforge
   desc "Upload release to rubyforge"
-  task :prel => [ :tag, :prerelease ] do
-  #task :prel do
+  task :prel => [ :tag, :prerelease, :package ] do
     `rubyforge login`
     release_command = "rubyforge add_release #{RUBYFORGE_PROJECT} #{PKG_NAME} '#{PKG_VERSION}' pkg/#{PKG_NAME}-#{PKG_VERSION}.gem"
     puts release_command

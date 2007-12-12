@@ -7,25 +7,25 @@
   <td align="center" width="36px" valign="top">
   <% if log.task_id.to_i > 0 %>
 
-  <%= image_tag('accept.png', :alt => "Complete") if log.log_type == WorkLog::TASK_COMPLETED %>
-  <%= image_tag('cancel.png', :alt => "Reverted") if log.log_type == WorkLog::TASK_REVERTED %>
-  <%= image_tag('add.png', :alt => "New Task") if log.task.type_id != 2 && log.task.type_id != 1 && log.log_type == WorkLog::TASK_CREATED %>
-  <%= image_tag('bug_add.png', :alt => "New Defect") if log.task.type_id == 2 && log.log_type == WorkLog::TASK_CREATED %>
-  <%= image_tag('application_add.png', :alt => "New Feature") if log.task.type_id == 1 && log.log_type ==  WorkLog::TASK_CREATED %>
-  <%= image_tag('application_form_edit.png', :alt => "Edit") if log.log_type == WorkLog::TASK_MODIFIED %>
-  <%= image_tag('comment_add.png', :alt => "New Comment") if log.log_type == WorkLog::TASK_COMMENT %>
-  <%= image_tag('time_add.png', :alt => "Work done") if log.log_type == WorkLog::TASK_WORK_ADDED %>
-  <%= image_tag('folder_add.png', :alt => "Archived") if log.log_type == WorkLog::TASK_ARCHIVED %>
-  <%= image_tag('folder_go.png', :alt => "Archived") if log.log_type == WorkLog::TASK_RESTORED %>
+  <%= image_tag('accept.png', :alt => "Complete") if log.log_type == EventLog::TASK_COMPLETED %>
+  <%= image_tag('cancel.png', :alt => "Reverted") if log.log_type == EventLog::TASK_REVERTED %>
+  <%= image_tag('add.png', :alt => "New Task") if log.task.type_id != 2 && log.task.type_id != 1 && log.log_type == EventLog::TASK_CREATED %>
+  <%= image_tag('bug_add.png', :alt => "New Defect") if log.task.type_id == 2 && log.log_type == EventLog::TASK_CREATED %>
+  <%= image_tag('application_add.png', :alt => "New Feature") if log.task.type_id == 1 && log.log_type ==  EventLog::TASK_CREATED %>
+  <%= image_tag('application_form_edit.png', :alt => "Edit") if log.log_type == EventLog::TASK_MODIFIED %>
+  <%= image_tag('comment_add.png', :alt => "New Comment") if log.log_type == EventLog::TASK_COMMENT %>
+  <%= image_tag('time_add.png', :alt => "Work done") if log.log_type == EventLog::TASK_WORK_ADDED %>
+  <%= image_tag('folder_add.png', :alt => "Archived") if log.log_type == EventLog::TASK_ARCHIVED %>
+  <%= image_tag('folder_go.png', :alt => "Archived") if log.log_type == EventLog::TASK_RESTORED %>
 
   <% else %>
 
-  <%= image_tag('page_add.png', :alt => "Page added") if log.log_type == WorkLog::PAGE_CREATED %>
-  <%= image_tag('page_delete.png', :alt => "Page deleted") if log.log_type == WorkLog::PAGE_DELETED %>
-  <%= image_tag('page_edit.png', :alt => "Page modified") if log.log_type == WorkLog::PAGE_MODIFIED %>
-  <%= image_tag('delete.png', :alt => "Task Deleted") if log.log_type == WorkLog::TASK_DELETED %>
+  <%= image_tag('page_add.png', :alt => "Page added") if log.log_type == EventLog::PAGE_CREATED %>
+  <%= image_tag('page_delete.png', :alt => "Page deleted") if log.log_type == EventLog::PAGE_DELETED %>
+  <%= image_tag('page_edit.png', :alt => "Page modified") if log.log_type == EventLog::PAGE_MODIFIED %>
+  <%= image_tag('delete.png', :alt => "Task Deleted") if log.log_type == EventLog::TASK_DELETED %>
 
-  <%= image_tag('package.png', :alt => "Commit") if log.log_type == WorkLog::SCM_COMMIT %>
+  <%= image_tag('package.png', :alt => "Commit") if log.log_type == EventLog::SCM_COMMIT %>
 
   <% end %>
   </td>

@@ -3,12 +3,13 @@ class Shout < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
 
-  acts_as_ferret :fields => { 'company_id' => {},
+  acts_as_ferret({ :fields => { 'company_id' => {},
     'shout_channel_id' => {},
     'body' => { :boost => 1.5 },
     'message_type' => {},
     'nick' => { }
-  }
+	 }, :remote => true
+  })
 
 
   def self.full_text_search(q, options = {})

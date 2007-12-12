@@ -55,7 +55,6 @@ class UsersController < ApplicationController
 
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     if @user.update_attributes(params[:user])
-      current_user = @user if @user.id == current_user.id
       flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
     else
@@ -70,8 +69,6 @@ class UsersController < ApplicationController
   def update_preferences
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     if @user.update_attributes(params[:user])
-      current_user = @user if @user.id == current_user.id
-      Localization.lang(current_user.locale || 'en_US')
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else

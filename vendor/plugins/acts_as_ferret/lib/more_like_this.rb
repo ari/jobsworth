@@ -29,8 +29,9 @@ module ActsAsFerret #:nodoc:
         #                                           equals Ferret's internal similarity implementation)
         # :analyzer => 'Ferret::Analysis::StandardAnalyzer' # class name of the analyzer to use
         # :append_to_query => nil # proc taking a query object as argument, which will be called after generating the query. can be used to further manipulate the query used to find related documents, i.e. to constrain the search to a given class in single table inheritance scenarios
-        # find_options : options handed over to find_by_contents
-        def more_like_this(options = {}, find_options = {})
+        # ferret_options : Ferret options handed over to find_by_contents (i.e. for limits and sorting)
+        # ar_options : options handed over to find_by_contents for AR scoping
+        def more_like_this(options = {}, ferret_options = {}, ar_options = {})
           options = {
             :field_names => nil,  # Default field names
             :min_term_freq => 2,  # Ignore terms with less than this frequency in the source doc.
@@ -52,13 +53,16 @@ module ActsAsFerret #:nodoc:
           options[:base_class] = clazz.name
           query = clazz.aaf_index.build_more_like_this_query(self.id, self.class.name, options)
           options[:append_to_query].call(query) if options[:append_to_query]
-          clazz.find_by_contents(query, find_options)
+          clazz.find_by_contents(query, ferret_options, ar_options)
         end
 
       end
 
       module IndexMethods
 
+        # TODO to allow morelikethis for unsaved records, we have to give the
+        # unsaved record's data to this method. check how this will work out
+        # via drb...
         def build_more_like_this_query(id, class_name, options)
           [:similarity, :analyzer].each { |sym| options[sym] = options[sym].constantize.new }
           ferret_index.synchronize do # avoid that concurrent writes close our reader
@@ -103,7 +107,8 @@ module ActsAsFerret #:nodoc:
         # creates a term/term_frequency map for terms from the fields
         # given in options[:field_names]
         def retrieve_terms(id, class_name, reader, options)
-          document_number = document_number(id, class_name)
+          raise "more_like_this atm only works on saved records" if id.nil?
+          document_number = document_number(id, class_name) rescue nil
           field_names = options[:field_names]
           max_num_tokens = options[:max_num_tokens]
           term_freq_map = Hash.new(0)
@@ -111,7 +116,7 @@ module ActsAsFerret #:nodoc:
           record = nil
           field_names.each do |field|
             #puts "field: #{field}"
-            term_freq_vector = reader.term_vector(document_number, field)
+            term_freq_vector = reader.term_vector(document_number, field) if document_number
             #if false
             if term_freq_vector
               # use stored term vector
@@ -123,8 +128,11 @@ module ActsAsFerret #:nodoc:
               # puts 'no stored term vector'
               # no term vector stored, but we have stored the contents in the index
               # -> extract terms from there
-              doc = reader[doc_number]
-              content = doc[field]
+              content = nil
+              if document_number
+                doc = reader[document_number]
+                content = doc[field]
+              end
               unless content
                 # no term vector, no stored content, so try content from this instance
                 record ||= options[:base_class].constantize.find(id)

@@ -117,7 +117,7 @@ class="task <%=classes%>" <% if depth > 1 %> style="margin-left:<%= 8 + (depth -
 </div>
 
 <% if session[:group_by].to_i > 2 %>
-  <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => 'handle', :constraint => 'vertical' } %>
+  <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => "'handle'", :constraint => "'vertical'" } %>
 <% end %>
 
 <div style="clear:both;"></div>

@@ -11,16 +11,20 @@
     </tr>
     <%
     for log in @activities
-      if day != tz.utc_to_local(log.started_at).yday
-         day = tz.utc_to_local(log.started_at).yday
+      if day != tz.utc_to_local(log.created_at).yday
+         day = tz.utc_to_local(log.created_at).yday
     %>
     <tr>
-      <td colspan="3"><div class="log_header"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></div></td>
+      <td colspan="3"><div class="log_header"><%= tz.utc_to_local(log.created_at).strftime("%A, %d %B %Y") %></div></td>
     </tr>
     <%
     end
     %>
-    <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
+    <% if log.target.is_a? WorkLog %>
+    <%= render :partial => 'activities/log_row', :locals => { :log => log.target } %>
+    <% else %>
+    <%= render :partial => 'activities/other_row', :locals => { :log => log } %>
+    <% end %>
   <% end %>
   </table>
   <% end %>

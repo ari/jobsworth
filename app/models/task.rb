@@ -2,13 +2,15 @@ class Task < ActiveRecord::Base
 
   include Misc
 
-  acts_as_ferret :fields => { 'company_id' => {},
-    'project_id' => {},
-    'full_name' => { :boost => 1.5 },
-    'name' => { :boost => 2.0 },
-    'issue_name' => { :boost => 0.8 },
-    'description' => { :boost => 1.7}
-  }
+  acts_as_ferret( { :fields => { 'company_id' => {},
+                      'project_id' => {},
+                      'full_name' => { :boost => 1.5 },
+                      'name' => { :boost => 2.0 },
+                      'issue_name' => { :boost => 0.8 },
+                      'description' => { :boost => 1.7}
+                    },
+                    :remote => true
+                  } )
 
   belongs_to    :company
   belongs_to    :project
@@ -22,22 +24,21 @@ class Task < ActiveRecord::Base
   has_many      :notifications, :dependent => :destroy
   has_many      :watchers, :through => :notifications, :source => :user
 
-
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
 
-  belongs_to     :old_owner, :class_name => "User", :foreign_key => "user_id"
+  belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
 
-  has_and_belongs_to_many      :tags, :join_table => :task_tags
+  has_and_belongs_to_many  :tags, :join_table => :task_tags
 
-  has_and_belongs_to_many       :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => "task_num"
-  has_and_belongs_to_many       :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => "task_num"
+  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => "task_num"
+  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => "task_num"
 
   has_one       :ical_entry
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
-  after_save { |r|
+  after_update { |r|
     r.ical_entry.destroy if r.ical_entry
   }
 

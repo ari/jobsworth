@@ -7,16 +7,12 @@ module ApplicationHelper
 
   include Misc
 
-  def tz
-    Timezone.get(current_user.time_zone)
-  end
-
   def online_users
-    User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" )
+    c = User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" )
   end
 
   def user_online?(user_id)
-    User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" ) > 0
+    c = User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" ) > 0
   end
 
   def user_name
@@ -27,38 +23,12 @@ module ApplicationHelper
     current_user.company.name
   end
 
-  def current_projects
-    @current_projects ||= current_user.projects.find(:all, :order => "projects.customer_id, projects.name",
-                                                           :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
-  end
-
-  def current_project_ids
-    projects = current_projects
-    if projects.empty?
-      @current_project_ids ||= "0"
-    else
-      @current_project_ids ||= projects.collect{|p|p.id}.join(',')
-    end
-    @current_project_ids
-  end
-
-  # List of completed milestone ids, joined with ,
-  def completed_milestone_ids
-    @milestone_ids ||= Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", current_user.company_id]).collect{ |m| m.id }.join(',')
-    @milestone_ids = "-1" if @milestone_ids == ''
-    @milestone_ids
-  end
-
   def current_pages
-    @pages ||= Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
+    pages = Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
   end
 
   def urlize(name)
     name.to_s.gsub(/ /, "-").downcase
-  end
-
-  def worked_nice(minutes)
-    format_duration(minutes, current_user.duration_format, current_user.workday_duration)
   end
 
   def total_today
@@ -284,6 +254,7 @@ module ApplicationHelper
       remove_option(button_options, :field_title)
       remove_option(button_options, :size)
       calendar = image_tag(button_image, button_options)
+#      calendar = image_tag(button_image, :id => calendar_id)
     else
       calendar = "<div id=\"#{calendar_id}\" class=\"#{html_options[:class]}\"></div>"
     end
@@ -450,9 +421,9 @@ module ApplicationHelper
   def topic_title_link(topic, options)
     if topic.title =~ /^\[([^\]]{1,15})\]((\s+)\w+.*)/
       "<span class='flag'>#{$1}</span>" +
-      link_to(h($2.strip), forum_topic_path(@forum, topic), options)
+      link_to(h($2.strip), topic_path(@forum, topic), options)
     else
-      link_to(h(topic.title), forum_topic_path(@forum, topic), options)
+      link_to(h(topic.title), topic_path(@forum, topic), options)
     end
   end
 
@@ -490,4 +461,27 @@ module ApplicationHelper
     end
   end
 
+
+
+def flash_plugin(channels = ["default"])
+  config = Juggernaut.config
+  host = config["PUSH_HELPER_HOST"]
+  port = config["PUSH_PORT"]
+  crossdomain = config["CROSSDOMAIN"]
+  juggernaut_data =  CGI.escape('"' + channels.join('","') + '"')
+
+<<-"END_OF_HTML"
+<script type="text/javascript">
+juggernautInit();
+</script>
+<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+ codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0"
+ WIDTH="1" HEIGHT="1" id="myFlash" name="myFlash">
+ <PARAM NAME=movie VALUE="/socket_server.swf?host=#{host}&port=#{port}&crossdomain=#{crossdomain}&juggernaut_data=#{juggernaut_data}"> <PARAM NAME=quality VALUE=high>
+ <EMBED src="/socket_server.swf?host=#{host}&port=#{port}&crossdomain=#{crossdomain}&juggernaut_data=#{juggernaut_data}" quality=high  WIDTH="1" HEIGHT="1" NAME="myFlash" swLiveConnect="true" TYPE="application/x-shockwave-flash" PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED>
+</OBJECT>
+END_OF_HTML
+  end
 end
+
+

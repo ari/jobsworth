@@ -328,6 +328,7 @@ class TasksController < ApplicationController
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
+        task_file.user_id = current_user.id
         task_file.filename = filename
         task_file.name = filename
         task_file.save
@@ -356,7 +357,7 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::TASK_CREATED
+      worklog.log_type = EventLog::TASK_CREATED
       worklog.body = params[:comment] if (!params[:comment].nil? && params[:comment].length > 0)
 
       worklog.save
@@ -643,15 +644,15 @@ class TasksController < ApplicationController
       end
 
       worklog = WorkLog.new
-      worklog.log_type = WorkLog::TASK_MODIFIED
+      worklog.log_type = EventLog::TASK_MODIFIED
 
 
       @sent_completed = false
       if @old_task.status != @task.status
         body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
-        worklog.log_type = WorkLog::TASK_COMPLETED if @task.status > 1
-        worklog.log_type = WorkLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
+        worklog.log_type = EventLog::TASK_COMPLETED if @task.status > 1
+        worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
 
         if( @task.status > 1 && @old_task.status != @task.status )
           if params['notify'].to_i == 1
@@ -683,6 +684,7 @@ class TasksController < ApplicationController
         task_file.customer = @task.project.customer
         task_file.project = @task.project
         task_file.task_id = @task.id
+        task_file.user_id = current_user.id
         task_file.filename = filename
         task_file.name = filename
         task_file.file_size = params['task_file'].size
@@ -705,7 +707,7 @@ class TasksController < ApplicationController
 
       @sent_comment = false
       if params[:comment] && params[:comment].length > 0 && !@sent_completed
-        worklog.log_type = WorkLog::TASK_COMMENT if body.length ==  0
+        worklog.log_type = EventLog::TASK_COMMENT if body.length ==  0
         if (body.length == 0 and params['notify'].to_i == 1)
           Notifications::deliver_commented( @task, current_user, params[:comment] ) rescue begin end
           @sent_comment = true
@@ -773,7 +775,7 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::TASK_ARCHIVED
+      worklog.log_type = EventLog::TASK_ARCHIVED
       worklog.body = ""
       worklog.save
     end
@@ -797,7 +799,7 @@ class TasksController < ApplicationController
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.log_type = 1
-      worklog.log_type = WorkLog::TASK_RESTORED
+      worklog.log_type = EventLog::TASK_RESTORED
       worklog.body = ""
       worklog.save
     end
@@ -828,7 +830,7 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::TASK_COMPLETED
+      worklog.log_type = EventLog::TASK_COMPLETED
       worklog.body = ""
       worklog.save
 
@@ -872,7 +874,7 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::TASK_REVERTED
+      worklog.log_type = EventLog::TASK_REVERTED
       worklog.body = ""
       worklog.save
 
@@ -963,7 +965,7 @@ class TasksController < ApplicationController
       worklog.duration = sheet.duration
       worklog.paused_duration = sheet.paused_duration
       worklog.body = sheet.body
-      worklog.log_type = WorkLog::TASK_WORK_ADDED
+      worklog.log_type = EventLog::TASK_WORK_ADDED
       if worklog.save
         sheet.destroy
         session[:sheet] = nil
@@ -993,7 +995,7 @@ class TasksController < ApplicationController
     @log.customer = @task.project.customer
     @log.started_at = tz.utc_to_local(Time.now.utc)
     @log.duration = 0
-    @log.log_type = WorkLog::TASK_WORK_ADDED
+    @log.log_type = EventLog::TASK_WORK_ADDED
 
     @log.save
 
@@ -1012,7 +1014,7 @@ class TasksController < ApplicationController
       worklog.duration = sheet.duration
       worklog.paused_duration = sheet.paused_duration
       worklog.body = sheet.body
-      worklog.log_type = WorkLog::TASK_WORK_ADDED
+      worklog.log_type = EventLog::TASK_WORK_ADDED
 
       if worklog.save
         worklog.task.updated_by_id = current_user.id
@@ -1159,8 +1161,8 @@ class TasksController < ApplicationController
 
       if params[:task] && params[:task][:status].to_i != @log.task.status
         @log.task.status = params[:task][:status].to_i
-        @log.log_type = WorkLog::TASK_COMPLETED if params[:task][:status].to_i > 1
-        @log.log_type = WorkLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
+        @log.log_type = EventLog::TASK_COMPLETED if params[:task][:status].to_i > 1
+        @log.log_type = EventLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
         if current_user.send_notifications > 0
@@ -1242,7 +1244,7 @@ class TasksController < ApplicationController
       @task = Task.find(element, :conditions => ["project_id IN (#{current_project_ids})"])
 
       worklog = WorkLog.new
-      worklog.log_type = WorkLog::TASK_MODIFIED
+      worklog.log_type = EventLog::TASK_MODIFIED
 
       case session[:group_by].to_i
       when 3
@@ -1312,9 +1314,9 @@ class TasksController < ApplicationController
         if( @task.status != @group )
           if @group < 2
             @task.completed_at = nil
-            worklog.log_type = WorkLog::TASK_REVERTED if @task.status > 1
+            worklog.log_type = EventLog::TASK_REVERTED if @task.status > 1
           else
-            worklog.log_type = WorkLog::TASK_COMPLETED if @task.status < 2
+            worklog.log_type = EventLog::TASK_COMPLETED if @task.status < 2
             @task.completed_at = Time.now.utc if @task.completed_at.nil?
           end
           body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
@@ -1486,7 +1488,7 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::TASK_CREATED
+      worklog.log_type = EventLog::TASK_CREATED
       worklog.body = ""
       worklog.save
       if params['notify'].to_i == 1

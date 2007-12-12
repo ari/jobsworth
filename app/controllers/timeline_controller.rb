@@ -10,12 +10,12 @@ class TimelineController < ApplicationController
       filter << " AND work_logs.project_id IN (#{current_project_ids})"
     end
     filter << " AND work_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
-    filter << " AND work_logs.log_type = #{WorkLog::TASK_CREATED}" if params[:filter_status].to_i == WorkLog::TASK_CREATED
-    filter << " AND work_logs.log_type IN (#{WorkLog::TASK_CREATED},#{WorkLog::TASK_REVERTED},#{WorkLog::TASK_COMPLETED})" if params[:filter_status].to_i == WorkLog::TASK_REVERTED
-    filter << " AND work_logs.log_type = #{WorkLog::TASK_COMPLETED}" if params[:filter_status].to_i == WorkLog::TASK_COMPLETED
-    filter << " AND work_logs.log_type = #{WorkLog::TASK_COMMENT}" if params[:filter_status].to_i == WorkLog::TASK_COMMENT
-    filter << " AND work_logs.log_type = #{WorkLog::TASK_MODIFIED}" if params[:filter_status].to_i == WorkLog::TASK_MODIFIED
-    filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == WorkLog::TASK_WORK_ADDED
+    filter << " AND work_logs.log_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
+    filter << " AND work_logs.log_type IN (#{EventLog::TASK_CREATED},#{EventLog::TASK_REVERTED},#{EventLog::TASK_COMPLETED})" if params[:filter_status].to_i == EventLog::TASK_REVERTED
+    filter << " AND work_logs.log_type = #{EventLog::TASK_COMPLETED}" if params[:filter_status].to_i == EventLog::TASK_COMPLETED
+    filter << " AND work_logs.log_type = #{EventLog::TASK_COMMENT}" if params[:filter_status].to_i == EventLog::TASK_COMMENT
+    filter << " AND work_logs.log_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
+    filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
 
    case params[:filter_date].to_i
         when 1

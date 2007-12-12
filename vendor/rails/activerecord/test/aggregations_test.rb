@@ -20,7 +20,7 @@ class AggregationsTest < Test::Unit::TestCase
   def test_change_single_value_object
     customers(:david).balance = Money.new(100)
     customers(:david).save
-    assert_equal 100, Customer.find(1).balance.amount
+    assert_equal 100, customers(:david).reload.balance.amount
   end
   
   def test_immutable_value_objects
@@ -91,6 +91,21 @@ class AggregationsTest < Test::Unit::TestCase
   
   def test_nil_raises_error_when_allow_nil_is_false
     assert_raises(NoMethodError) { customers(:david).balance = nil }
+  end
+
+  def test_allow_nil_address_loaded_when_only_some_attributes_are_nil
+    customers(:zaphod).address_street = nil
+    customers(:zaphod).save
+    customers(:zaphod).reload
+    assert_kind_of Address, customers(:zaphod).address
+    assert customers(:zaphod).address.street.nil?
+  end
+
+  def test_nil_assignment_results_in_nil
+    customers(:david).gps_location = GpsLocation.new('39x111')
+    assert_not_equal nil, customers(:david).gps_location
+    customers(:david).gps_location = nil
+    assert_equal nil, customers(:david).gps_location
   end
 end
 

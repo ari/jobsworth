@@ -27,7 +27,7 @@ class PagesController < ApplicationController
       worklog.task_id = 0
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::PAGE_CREATED
+      worklog.log_type = EventLog::PAGE_CREATED
       worklog.body = "- #{@page.name} Created"
       worklog.save
 
@@ -60,7 +60,7 @@ class PagesController < ApplicationController
       worklog.task_id = 0
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = WorkLog::PAGE_MODIFIED
+      worklog.log_type = EventLog::PAGE_MODIFIED
       worklog.body = ""
       worklog.body << "- #{old_name} -> #{@page.name}\n" if old_name != @page.name
       worklog.body << "- #{@page.name} Modified\n" if old_body != @page.body
@@ -85,7 +85,7 @@ class PagesController < ApplicationController
     worklog.task_id = 0
     worklog.started_at = Time.now.utc
     worklog.duration = 0
-    worklog.log_type = WorkLog::PAGE_DELETED
+    worklog.log_type = EventLog::PAGE_DELETED
     worklog.body = "- #{@page.name} Deleted"
     worklog.save
 

@@ -76,7 +76,7 @@ class TimeZone
     # Create a new TimeZone instance with the given name and offset.
     def create(name, offset)
       zone = allocate
-      zone.send :initialize, name, offset
+      zone.send!(:initialize, name, offset)
       zone
     end
 
@@ -98,8 +98,8 @@ class TimeZone
          [-36_000, "Hawaii" ],
          [-32_400, "Alaska" ],
          [-28_800, "Pacific Time (US & Canada)", "Tijuana" ],
-         [-25_200, "Mountain Time (US & Canada)", "Chihuahua", "La Paz",
-                   "Mazatlan", "Arizona" ],
+         [-25_200, "Mountain Time (US & Canada)", "Chihuahua", "Mazatlan", 
+                   "Arizona" ],
          [-21_600, "Central Time (US & Canada)", "Saskatchewan", "Guadalajara",
                    "Mexico City", "Monterrey", "Central America" ],
          [-18_000, "Eastern Time (US & Canada)", "Indiana (East)", "Bogota",
