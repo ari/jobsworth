@@ -266,7 +266,7 @@ class LoginController < ApplicationController
 
   def shortlist_auth
     return if params[:id].nil? || params[:id].empty?
-    user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
+    user = User.find(:first, :conditions => ["autologin = ?", params[:id]])
 
     if user.nil?
       render :nothing => true, :layout => false

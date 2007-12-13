@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 93) do
+ActiveRecord::Schema.define(:version => 94) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -431,12 +431,14 @@ ActiveRecord::Schema.define(:version => 93) do
     t.integer  "posts_count",                           :default => 0
     t.integer  "newsletter",                            :default => 1
     t.integer  "option_avatars",                        :default => 1
+    t.string   "autologin"
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
   add_index "users", ["username"], :name => "users_username_index"
   add_index "users", ["company_id"], :name => "users_company_id_index"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
+  add_index "users", ["autologin"], :name => "index_users_on_autologin"
 
   create_table "views", :force => true do |t|
     t.string  "name"

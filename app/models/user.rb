@@ -71,6 +71,7 @@ class User < ActiveRecord::Base
 
   def generate_uuid
     @attributes['uuid'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
+    @attributes['autologin'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
   def avatar_url(size=32)
