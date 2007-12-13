@@ -24,7 +24,9 @@
          <h2><%= _('Participants') %></h2>
          <div id="channel-users">
            <% @room.subscribers.each do |u| %>
+             <% if u.online? %>
              <div id="channel-user-<%= u.id %>"><%= "#{u.online_status_name}" %></div>
+             <% end %>
            <% end %>
          </div>
        </div>
