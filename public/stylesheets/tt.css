@@ -353,7 +353,10 @@ div#loading {
 body > div#loading { position: fixed; }
 
 input:focus, textarea:focus { border: 1px solid #FC0; }
-input, textarea, select { border: 1px solid #dcdcdc; }
+input, textarea, select {
+  border: 1px solid #dcdcdc;
+/*  background: #FFFFFF url(/images/bg.png) repeat-x 0 0 ; */
+}
 input, textarea {
   padding: 0px 2px 0px 2px;
 }
@@ -1784,17 +1787,18 @@ li.help {
   margin: 3px;
 }
 .pagination a {
-  padding: 2px 5px 2px 5px;
-  margin: 2px;
-  border: 1px solid #aaaadd;
+  padding: 1px 4px 1px 4px;
+  margin: 1px;
+  border: 1px solid #b7b7b7;
   text-decoration: none;
 }
 .pagination a:hover, .pagination a:active {
   border: 1px solid #FFC266;
+  text-decoration: underline;
 }
 .pagination span.current {
-  padding: 2px 5px 2px 5px;
-  margin: 2px;
+  padding: 1px 4px 1px 4px;
+  margin: 1px;
   border: 1px solid #a9a9a9;
   font-weight: bold;
   background-color: #FFC266;
@@ -1802,8 +1806,8 @@ li.help {
 }
 
 .pagination span.disabled {
-  padding: 2px 5px 2px 5px;
-  margin: 2px;
+  padding: 1px 4px 1px 4px;
+  margin: 1px;
   border: 1px solid #eee;
   color: #ddd;
 }
