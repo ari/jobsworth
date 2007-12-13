@@ -54,6 +54,12 @@ class PostsController < ApplicationController
     @post  = @topic.posts.build(params[:post])
     @post.user = current_user
     @post.save!
+
+    # Send notification emails to thread participants / monitors
+    if @post.topic.posts.size > 1
+      Notifications::deliver_forum_post(current_user, @post) rescue nil
+    end
+
     respond_to do |format|
       format.html do
         redirect_to topic_path(:forum_id => params[:forum_id], :id => params[:topic_id], :anchor => @post.dom_id, :page => params[:page] || '1')
