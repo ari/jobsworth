@@ -1807,3 +1807,20 @@ li.help {
   border: 1px solid #eee;
   color: #ddd;
 }
+
+.wiki-search {
+  font-weight: bold;
+  padding-right: 0.4em;
+  padding-left: 1em;
+  width: 1%;
+  text-align: right;
+  vertical-align: top;
+  font-size: 13px;
+  border-right: 1px solid #ececec;
+}
+
+.wiki-search-body {
+  padding-left: 0.4em;
+  vertical-align: top;
+}
+
