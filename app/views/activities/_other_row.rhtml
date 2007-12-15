@@ -10,7 +10,7 @@
   </td>
   <td  valign="top" width="90%"><div style="float:left;"><strong>
 <% if log.target.is_a? Post %>
-<%= link_to "#{log.target.forum.name} / #{log.target.topic.title}", topic_path (log.target.forum_id, log.target.topic_id) %>
+<%= link_to "#{log.target.forum.name} / #{log.target.topic.title}", topic_path(log.target.forum_id, log.target.topic_id) %>
 <% elsif log.target.is_a? WikiPage %>
 <%= log.target.to_url %>
 <% elsif log.target.is_a? ProjectFile %>
