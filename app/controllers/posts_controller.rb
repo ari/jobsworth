@@ -56,7 +56,7 @@ class PostsController < ApplicationController
     @post.save!
 
     # Send notification emails to thread participants / monitors
-    if @post.topic.posts.size > 1
+    if @topic.posts.size > 0
       Notifications::deliver_forum_post(current_user, @post) rescue nil
     end
 
