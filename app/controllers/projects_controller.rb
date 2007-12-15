@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
 
   def index
     list
-    render_action 'list'
+    render :action => 'list'
   end
   def new
     @project = Project.new
@@ -162,7 +162,7 @@ class ProjectsController < ApplicationController
       flash['notice'] = _('Project was successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
-      render_action 'edit'
+      render :action => 'edit'
     end
   end
 

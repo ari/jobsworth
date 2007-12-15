@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def index
     list
-    render_action 'list'
+    render :action => 'list'
   end
 
   def list
@@ -38,7 +38,7 @@ class UsersController < ApplicationController
       Signup::deliver_account_created(@user, current_user, params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'list'
     else
-      render_action 'new'
+      render :action => 'new'
     end
   end
 
@@ -58,7 +58,7 @@ class UsersController < ApplicationController
       flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
     else
-      render_action 'edit'
+      render :action => 'edit'
     end
   end
 
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
-      render_action 'edit'
+      render :action => 'edit'
     end
   end
 

@@ -34,7 +34,7 @@ class PagesController < ApplicationController
       flash['notice'] = _('Note was successfully created.')
       redirect_to :action => 'show', :id => @page.id
     else
-      render_action 'new'
+      render :action => 'new'
     end
   end
 
@@ -69,7 +69,7 @@ class PagesController < ApplicationController
       flash['notice'] = _('Note was successfully updated.')
       redirect_to :action => 'show', :id => @page
     else
-      render_action 'edit'
+      render :action => 'edit'
     end
   end
 

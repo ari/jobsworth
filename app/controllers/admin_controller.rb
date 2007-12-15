@@ -35,7 +35,7 @@ class AdminController < ApplicationController
       flash['notice'] = 'NewsItem was successfully updated.'
       redirect_to :action => 'news'
     else
-      render_action 'edit_news'
+      render :action => 'edit_news'
     end
   end
 

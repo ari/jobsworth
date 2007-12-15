@@ -13,7 +13,7 @@ class ProjectFilesController < ApplicationController
       return
     end
     list
-    render_action 'list'
+    render :action => 'list'
   end
 
   def list

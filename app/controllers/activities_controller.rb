@@ -6,7 +6,7 @@ class ActivitiesController < ApplicationController
   # Redirect to list
   def index
     list
-    render_action 'list'
+    render :action => 'list'
   end
 
   # Show the overview page including

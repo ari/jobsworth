@@ -377,7 +377,7 @@ class TasksController < ApplicationController
       @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
       @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
       return if request.xhr?
-      render_action 'new'
+      render :action => 'new'
     end
   end
 
@@ -741,7 +741,7 @@ class TasksController < ApplicationController
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully updated.')}"
       redirect_from_last
     else
-      render_action 'edit'
+      render :action => 'edit'
     end
   end
 
@@ -999,7 +999,7 @@ class TasksController < ApplicationController
 
     @log.save
 
-    render_action 'edit_log'
+    render :action => 'edit_log'
   end
 
   def stop_work
@@ -1026,7 +1026,7 @@ class TasksController < ApplicationController
         @log = worklog
         @log.started_at = tz.utc_to_local(@log.started_at)
         @task = @log.task
-        render_action 'edit_log'
+        render :action => 'edit_log'
       else
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last

@@ -226,7 +226,7 @@ class LoginController < ApplicationController
       end
 
     else
-      render_action 'signup'
+      render :action => 'signup'
     end
 
   end
