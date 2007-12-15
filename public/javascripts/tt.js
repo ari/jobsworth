@@ -7,25 +7,9 @@ var last_shout = null;
 var show_tooltips = 1;
 
 function Hover(prefix, element) {
-  ClearHover();
-  if( $('edit' + '_' + prefix + '_' + element) ) {
-    Element.show('edit' + '_' + prefix + '_' + element);
-  }
-  lastColor = $(prefix + '_' + element).style.backgroundColor;
-  $(prefix + '_' + element).style.backgroundColor = "#fff2d4";
-  lastElement = element;
-  lastPrefix = prefix;
 }
 
 function ClearHover() {
-  if( lastElement != null ) {
-    if( $('edit' + '_' + lastPrefix + '_' + lastElement) ) {
-        Element.hide('edit' + '_' + lastPrefix + '_' + lastElement);
-    }
-    $(lastPrefix + '_' + lastElement).style.backgroundColor = lastColor;
-  }
-  lastElement = null;
-  lastPrefix = null;
 }
 
 function updateLoading(event){
@@ -51,7 +35,7 @@ function updateLoading(event){
 
 Event.observe(window, "load", function(e) {
     Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
-  });
+});
 
 function tip(myEvent){
 

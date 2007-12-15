@@ -3,13 +3,11 @@
                done_percent = milestone.percent_complete
 %>
     <tr class="milestone project_<%= milestone.project.id %>" id="milestone_<%=milestone.id%>"<%= " style=\"display:none;\"" if (session[:collapse_milestones] && session[:collapse_milestones][milestone.project.id.to_s].to_i == 1) %> onMouseOver="this.addClassName('task-highlight'); this.down('span.popout').show();" onMouseOut="this.removeClassName('task-highlight'); this.down('span.popout').hide();"><td colspan="2">
-        <div style="height:16px;">
-          <div style="position: absolute; z-index:10; width: 16px;">
+        <div style="height:16px; position:relative;">
+          <div class="popout" id="edit_milestone_<%= milestone.id%>" style="position: absolute; z-index:10; top:0; left: 0; width: 16px; display: none;">
             <% if current_user.can?(milestone.project, 'milestone') %>
-            <span class="popout" id="edit_milestone_<%= milestone.id%>" style="display: none;">
             <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit milestone <b>%s</b>", milestone.name), :class => "tooltip"),
                   { :controller => 'milestones', :action => 'edit', :id => milestone } -%>
-            </span>
             <% end %>
           </div>
           <div style="float: left;padding-top:2px;"><span class="milestones"><%= link_to_milestone milestone %></span></div>
@@ -20,3 +18,15 @@
         </div>
       </td>
     </tr>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+<% if current_user.can?(milestone.project, 'milestone') %>
+Event.observe('milestone_<%= milestone.id %>', "mouseover", function(e) {
+  $('edit_milestone_<%=milestone.id%>').show();
+});
+Event.observe('milestone_<%= milestone.id %>', "mouseout", function(e) {
+  $('edit_milestone_<%=milestone.id%>').hide();
+});
+<% end %>
+// ]]>
+</script>
