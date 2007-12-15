@@ -11,7 +11,7 @@ class FeedsController < ApplicationController
 
   session :off
 
-  skip_before_filter :authenticate
+  skip_before_filter :authorize
 
   def unsubscribe
     return if params[:id].nil? || params[:id].empty?
