@@ -17,33 +17,31 @@ For now, you'll have to do these steps manually, but there will be a
 setup script or web page at a later stage.
 
 1. sudo gem install tzinfo RedCloth rake ferret fastercsv\
-   eventmachine rmagick icalendar
+   eventmachine rmagick icalendar mongrel
 
-        Make sure you have ImageMagick installed.
+   Make sure you have ImageMagick installed.
 
 2. mysql -u root -p
    create database cit;
    grant all on cit.* to cit@localhost identified by '<password>';
    flush privileges;
 
-3. Copy config/database.yml-example to config/database.yml and modify it
-4. Copy config/juggernaut_config.yml-example to
-   config/juggernaut_config.yml and modify it
-5. Copy config/environment.rb-example to config/environment.rb
-   and modify it
+3. Copy config/*.yml-example to config/*.yml and modify as needed
 
-6. mkdir index log store; chmod a+rwx log index store tmp/*
-7. rake db:schema:load
-8. sudo vim /etc/hosts
-   127.0.0.1 www.clockingit.com
-   127.0.0.1 <subdomain>.clockingit.com
+4. mkdir index log store; chmod a+rwx log index store tmp/*
+5. rake db:schema:load
+6. Edit /etc/hosts on a machine with a web-browser and add:
+   ip.to.clockingit.server www.clockingit.com
+   ip.to.clockingit.server <subdomain>.clockingit.com
 
-9. sudo ./script/push_server
+7. Start the different systems:
+   sudo ./script/push_server
    sudo ./script/ferret_server -e production start
+   ./lib/daemons/mail_sender.rb (if you want daily reminder emails)
    ./script/server -e production
    Create the initial account at http://www.clockingit.com:3000/login/signup
 
-10.Sign in from http://<subdomain>.clockingit.com:3000/
+8.Sign in from http://<subdomain>.clockingit.com:3000/
 
 == Support
 
