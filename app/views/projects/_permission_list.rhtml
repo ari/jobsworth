@@ -17,7 +17,7 @@
     </tr>
 
 <% for u in @users %>
-<tr class="hoverrow">
+<tr class="hoverrow" id="user-<%= u.id %>">
 <td align="center"><%= if user_online?( u.id ) then image_tag('status_online.png', :title => 'Online', :class => 'centered') else image_tag('status_offline.png', :title => 'Offline', :class => 'centered') end %></td>
 <td><%= u.name %></td>
 

@@ -127,8 +127,14 @@ class ProjectsController < ApplicationController
   def ajax_add_permission
     user = User.find(params[:user_id], :conditions => ["company_id = ?", current_user.company_id])
 
+    begin
+      @project = current_user.projects.find(params[:id])
+    rescue
+      render :update do |page|
+        page.visual_effect(:highlight, "user-#{params[:user_id]}", :duration => 1.0, :startcolor => "'#ff9999'")
+      end
+    end
 
-    @project = current_user.projects.find(params[:id])
     if @project && user && ProjectPermission.count(:conditions => ["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
       permission = ProjectPermission.new
       permission.user_id = user.id
