@@ -5,6 +5,7 @@
   <fieldset id="shortlist">
     <legend id="shortlist-legend"><%= render :partial => 'short_legend' %></legend>
     <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]} %>
+    <div id="shortlist-filter">
     <% form_tag( :controller => 'tasks', :action => 'filter_shortlist' ) do %>
     <select name="filter" id="filter" onchange="javascript:document.forms[0].submit();">
       <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
@@ -26,6 +27,7 @@
         <% end -%>
       <% end %>
     </select>
+    </div>
     <% end %>
     <div id="shortlist-tasks">
     <% @tasks.each do |task| -%>

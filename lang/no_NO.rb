@@ -469,5 +469,9 @@ Localization.define('no_NO') do |l|
   l.store '%d folder', ['%d mappe', '%d mapper']
   l.store '%d file', ['%d fil', '%d filer']
 
-
+  # Email
+  l.store 'Resolved', "Resolved"
+  l.store 'Updated', "Updated"
+  l.store 'Reverted', "Reverted"
+  l.store 'Reassigned', "Reassigned"
 end

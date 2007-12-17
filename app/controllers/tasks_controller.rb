@@ -455,17 +455,19 @@ class TasksController < ApplicationController
   def update
     projects = current_user.projects.collect{|p|p.id}
 
+    update_type = :updated
+
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
     old_tags = @task.tags.collect {|t| t.name}.join(', ')
     old_deps = @task.dependencies.collect { |t| t.issue_num }.join(', ')
     old_users = @task.users.collect{ |u| u.id}.sort.join(',')
-    old_users = "0" if old_users.nil? || old_users.empty?
+    old_users ||= "0"
     old_project_id = @task.project_id
     old_project_name = @task.project.name
     @old_task = @task.clone
 
     if params[:task][:status].to_i == 6
-      params[:task][:status] = @task.status  # We're hiding the task.
+      params[:task][:status] = @task.status  # We're hiding the task, set the status to what is was.
     else
       params[:task][:hide_until] = @task.hide_until
     end
@@ -564,35 +566,28 @@ class TasksController < ApplicationController
 
       body = ""
       if @old_task[:name] != @task[:name]
-        body = body + "- <strong>Name</strong>: #{@old_task[:name]} -> #{@task[:name]}\n"
+        body << "- <strong>Name</strong>: #{@old_task[:name]} -> #{@task[:name]}\n"
       end
 
-      if @old_task.description != @task.description
-        body = body + "- <strong>Description</strong> changed\n"
+      if(@old_task.description != @task.description)
+        body << "- <strong>Description</strong> changed\n"
       end
 
       if params[:users] && old_users != params[:users].collect{|u| u.to_i}.sort.join(',')
-
         @task.users.reload
-
         new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
-
-        body = body + "- <strong>Assignment</strong>: #{new_name}\n"
-
-        if params['notify'].to_i == 1
-          Notifications::deliver_assigned( @task, current_user, @task.users, old_users, params[:comment] ) rescue begin end
-        end
-
+        body << "- <strong>Assignment</strong>: #{new_name}\n"
+        update_type = :reassigned
       end
 
       if old_project_id != @task.project_id
-        body = body + "- <strong>Project</strong>: #{old_project_name} -> #{@task.project.name}\n"
+        body << "- <strong>Project</strong>: #{old_project_name} -> #{@task.project.name}\n"
         WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
         ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       end
 
       if @old_task.duration != @task.duration
-        body = body + "- <strong>Estimate</strong>: #{worked_nice(@old_task.duration).strip} -> #{worked_nice(@task.duration)}\n"
+        body << "- <strong>Estimate</strong>: #{worked_nice(@old_task.duration).strip} -> #{worked_nice(@task.duration)}\n"
       end
 
       if @old_task.milestone != @task.milestone
@@ -615,23 +610,9 @@ class TasksController < ApplicationController
         body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
       end
 
-
-      if @old_task.priority != @task.priority
-        body << "- <strong>Priority</strong>: #{@old_task.priority_type} -> #{@task.priority_type}\n"
-      end
-
-      if @old_task.severity_id != @task.severity_id
-        old_severity = @old_task.severity_type
-        new_severity = @task.severity_type
-
-        body << "- <strong>Severity</strong>: #{old_severity} -> #{new_severity}\n"
-      end
-
-
-      if @old_task.type_id != @task.type_id
-
-        body << "- <strong>Type</strong>: #{@old_task.issue_type} -> #{@task.issue_type}\n"
-      end
+      body << "- <strong>Priority</strong>: #{@old_task.priority_type} -> #{@task.priority_type}\n" if @old_task.priority != @task.priority
+      body << "- <strong>Severity</strong>: #{@old_task.severity_type} -> #{@task.severity_type}\n" if @old_task.severity_id != @task.severity_id
+      body << "- <strong>Type</strong>: #{@old_task.issue_type} -> #{@task.issue_type}\n" if @old_task.type_id != @task.type_id
 
       new_tags = @task.tags.collect {|t| t.name}.join(', ')
       if old_tags != new_tags
@@ -647,7 +628,6 @@ class TasksController < ApplicationController
       worklog.log_type = EventLog::TASK_MODIFIED
 
 
-      @sent_completed = false
       if @old_task.status != @task.status
         body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
@@ -655,17 +635,15 @@ class TasksController < ApplicationController
         worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
 
         if( @task.status > 1 && @old_task.status != @task.status )
-          if params['notify'].to_i == 1
-            Notifications::deliver_completed( @task, current_user, params[:comment] ) rescue begin end
-            @sent_completed = true
-          end
+          update_type = :status
+        end
+
+        if( @task.completed_at && @old_task.completed_at.nil?)
+          update_type = :completed
         end
 
         if( @task.status < 2 && @old_task.status > 1 )
-          if params['notify'].to_i == 1
-            Notifications::deliver_reverted( @task, current_user, params[:comment] ) rescue begin end
-            @sent_completed = true
-          end
+          update_type = :reverted
         end
 
       end
@@ -700,20 +678,18 @@ class TasksController < ApplicationController
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
+                                                                                                        filename = nil
                                                                                                       end
-
-        body << "- <strong>Attached</strong>: #{filename}\n"
+        if filename
+          body << "- <strong>Attached</strong>: #{filename}\n"
+        end
       end
 
-      @sent_comment = false
-      if params[:comment] && params[:comment].length > 0 && !@sent_completed
-        worklog.log_type = EventLog::TASK_COMMENT if body.length ==  0
-        if (body.length == 0 and params['notify'].to_i == 1)
-          Notifications::deliver_commented( @task, current_user, params[:comment] ) rescue begin end
-          @sent_comment = true
-        end
+      if params[:comment] && params[:comment].length > 0
+        update_type = :comment if body.length == 0
 
-        body << "<br/>" if body.length > 0
+        body << "\n" if body.length > 0
+        body << current_user.name << ":\n"
         body << CGI::escapeHTML(params[:comment])
       end
 
@@ -728,8 +704,8 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if(params['notify'].to_i == 1) && (!@sent_comment) && (!@sent_completed)
-          Notifications::deliver_changed( @task, current_user, body.gsub(/<[^>]*>/,''), params[:comment]) rescue begin end
+        if(params['notify'].to_i == 1)
+          Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
         end
       end
 
@@ -1455,6 +1431,7 @@ class TasksController < ApplicationController
     @task.creator_id = current_user.id
     @task.duration = 0
     @task.set_task_num(current_user.company_id)
+    @task.description = ""
 
     if session[:filter_milestone_short].to_i > 0
       @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_milestone_short]]).project
