@@ -1,3 +1,22 @@
+*2.0.2* (December 16th, 2007)
+
+* Changed the default database from mysql to sqlite3, so now running "rails myapp" will have a config/database.yml that's setup for SQLite3 (which in OS X Leopard is installed by default, so is the gem, so everything Just Works with no database configuration at all). To get a Rails application preconfigured for MySQL, just run "rails -d mysql myapp" [DHH]
+
+* Turned on ActionView::Base.cache_template_loading by default in config/environments/production.rb to prevent file system stat calls for every template loading to see if it changed (this means that you have to restart the application to see template changes in production mode) [DHH]
+
+* Introduce `rake secret` to output a crytographically secure secret key for use with cookie sessions #10363 [revans]
+
+* Fixed that local database creation should consider 127.0.0.1 local #9026 [parcelbrat]
+
+* Fixed that functional tests generated for scaffolds should use fixture calls instead of hard-coded IDs #10435 [boone]
+
+* Added db:migrate:redo and db:migrate:reset for rerunning existing migrations #10431, #10432  [matt]
+
+* RAILS_GEM_VERSION may be double-quoted also.  #10443 [James Cox]
+
+* Update rails:freeze:gems to work with RubyGems 0.9.5.  [Jeremy Kemper]
+
+
 *2.0.1* (December 7th, 2007)
 
 * Fixed Active Record bug
@@ -21,7 +40,7 @@
 
 * Introduce SecretKeyGenerator for more secure session secrets than CGI::Session's pseudo-random id generator. Consider extracting to Active Support later.  #10286 [Hongli Lai]
 
-* RAILS_GEM_VERSION may be set to any valid gem version specifier.  #10057 [Chad Woolley, Chu Yeow]
+* RAILS_GEM_VERSION may be set to any valid gem version specifier.  #10057 [Chad Woolley, Cheah Chu Yeow]
 
 * Load config/preinitializer.rb, if present, before loading the environment.  #9943 [Chad Woolley]
 
@@ -35,7 +54,7 @@
 
 * Refactor Plugin Loader.  Add plugin lib paths early, and add lots of tests.  Closes #9795 [lazyatom]
 
-* Added --skip-timestamps to generators that produce models #10036 [tpope]
+* Added --skip-timestamps to generators that produce models #10036 [Tim Pope]
 
 * Update Prototype to 1.6.0 and script.aculo.us to 1.8.0.  [sam, madrobby]
 
@@ -93,7 +112,7 @@ databases on localhost.  #9753 [Trevor Wennblom]
 
 * Removed web_service generator [Koz]
 
-* Added the :all option to config.plugins that'll include the rest of the plugins not already explicitly named #9613 [fcheung]. Example:
+* Added the :all option to config.plugins that'll include the rest of the plugins not already explicitly named #9613 [Frederick Cheung]. Example:
 
     # Loads :classic_pagination before all the other plugins
     config.plugins = [ :classic_pagination, :all ]
@@ -106,7 +125,7 @@ databases on localhost.  #9753 [Trevor Wennblom]
 
 * Added db:drop:all to drop all databases declared in config/database.yml [DHH]
 
-* Use attribute pairs instead of the migration name to create add and remove column migrations.  Closes #9166 [lifofifo]
+* Use attribute pairs instead of the migration name to create add and remove column migrations.  Closes #9166 [Pratik Naik]
 
 	For example:
 
@@ -124,7 +143,7 @@ databases on localhost.  #9753 [Trevor Wennblom]
 
 * Default to plural table name in Rails Generator if ActiveRecord is not present.  Closes #8963 [evan]
 
-* Added rake routes for listing all the defined routes in the system #8795 [josh]
+* Added rake routes for listing all the defined routes in the system.  #8795 [Josh Peek]
 
 * db:create creates the database for the current environment if it's on localhost. db:create:all creates local databases for all environments.  #8783 [matt]
 
@@ -136,7 +155,7 @@ databases on localhost.  #9753 [Trevor Wennblom]
 
 * Added --skip-migration option to scaffold and resource generators #8656 [Michael Glaesemann]
 
-* Fix that FCGIs would leave log files open when asked to shut down by USR2 #3028 [sebastian.kanthak/josh]
+* Fix that FCGIs would leave log files open when asked to shut down by USR2.  #3028 [Sebastian Kanthak, Josh Peek]
 
 * Fixed that dispatcher preparation callbacks only run once in production mode.  Mock Routes.reload so that dispatcher preparation callback tests run. [Rick]
 
@@ -158,7 +177,7 @@ databases on localhost.  #9753 [Trevor Wennblom]
 
 * Scaffold generator tests.  #8443 [pelle]
 
-* Generated scaffold functional tests use assert_difference.  #8421 [norbert]
+* Generated scaffold functional tests use assert_difference.  #8421 [Norbert Crombach]
 
 * Update to Prototype 1.5.1.  [Sam Stephenson]
 

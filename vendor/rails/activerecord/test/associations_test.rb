@@ -55,7 +55,7 @@ class AssociationsTest < Test::Unit::TestCase
   def test_storing_in_pstore
     require "tmpdir"
     store_filename = File.join(Dir.tmpdir, "ar-pstore-association-test")
-    File.delete(store_filename) if File.exists?(store_filename)
+    File.delete(store_filename) if File.exist?(store_filename)
     require "pstore"
     apple = Firm.create("name" => "Apple")
     natural = Client.new("name" => "Natural Company")
@@ -131,6 +131,13 @@ class AssociationProxyTest < Test::Unit::TestCase
   def test_failed_reset_returns_nil
     p = setup_dangling_association
     assert_nil p.author.reset
+  end
+
+  def test_reload_returns_assocition
+    david = developers(:david)
+    assert_nothing_raised do
+      assert_equal david.projects, david.projects.reload.reload
+    end
   end
 
   def setup_dangling_association

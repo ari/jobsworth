@@ -223,7 +223,6 @@ class AssetTagHelperTest < Test::Unit::TestCase
     assert_equal copy, source
   end
 
-
   def test_caching_javascript_include_tag_when_caching_on
     ENV["RAILS_ASSET_ID"] = ""
     ActionController::Base.asset_host = 'http://a%d.example.com'
@@ -234,20 +233,37 @@ class AssetTagHelperTest < Test::Unit::TestCase
       javascript_include_tag(:all, :cache => true)
     )
 
-    assert File.exists?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
     
     assert_dom_equal(
       %(<script src="http://a2.example.com/javascripts/money.js" type="text/javascript"></script>),
       javascript_include_tag(:all, :cache => "money")
     )
 
-    assert File.exists?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
 
   ensure
     File.delete(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
     File.delete(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
   end
-  
+
+  def test_caching_javascript_include_tag_when_caching_on_with_proc_asset_host
+    ENV["RAILS_ASSET_ID"] = ""
+    ActionController::Base.asset_host = Proc.new { |source| "http://a#{source.length}.example.com" }
+    ActionController::Base.perform_caching = true
+
+    assert_equal '/javascripts/scripts.js'.length, 23
+    assert_dom_equal(
+      %(<script src="http://a23.example.com/javascripts/scripts.js" type="text/javascript"></script>),
+      javascript_include_tag(:all, :cache => 'scripts')
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'scripts.js'))
+
+  ensure
+    File.delete(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'scripts.js'))
+  end
+
   def test_caching_javascript_include_tag_when_caching_on_and_using_subdirectory
     ENV["RAILS_ASSET_ID"] = ""
     ActionController::Base.asset_host = 'http://a%d.example.com'
@@ -258,7 +274,7 @@ class AssetTagHelperTest < Test::Unit::TestCase
       javascript_include_tag(:all, :cache => "cache/money")
     )
 
-    assert File.exists?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'cache', 'money.js'))
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'cache', 'money.js'))
   ensure
     File.delete(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'cache', 'money.js'))
   end
@@ -272,14 +288,14 @@ class AssetTagHelperTest < Test::Unit::TestCase
       javascript_include_tag(:all, :cache => true)
     )
 
-    assert !File.exists?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
+    assert !File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'all.js'))
     
     assert_dom_equal(
       %(<script src="/javascripts/application.js" type="text/javascript"></script>\n<script src="/javascripts/bank.js" type="text/javascript"></script>\n<script src="/javascripts/robber.js" type="text/javascript"></script>),
       javascript_include_tag(:all, :cache => "money")
     )
 
-    assert !File.exists?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
+    assert !File.exist?(File.join(ActionView::Helpers::AssetTagHelper::JAVASCRIPTS_DIR, 'money.js'))
   end
 
   def test_caching_stylesheet_link_tag_when_caching_on
@@ -292,19 +308,36 @@ class AssetTagHelperTest < Test::Unit::TestCase
       stylesheet_link_tag(:all, :cache => true)
     )
 
-    assert File.exists?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
 
     assert_dom_equal(
       %(<link href="http://a3.example.com/stylesheets/money.css" media="screen" rel="stylesheet" type="text/css" />),
       stylesheet_link_tag(:all, :cache => "money")
     )
 
-    assert File.exists?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
   ensure
     File.delete(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
     File.delete(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
   end
-  
+
+  def test_caching_stylesheet_link_tag_when_caching_on_with_proc_asset_host
+    ENV["RAILS_ASSET_ID"] = ""
+    ActionController::Base.asset_host = Proc.new { |source| "http://a#{source.length}.example.com" }
+    ActionController::Base.perform_caching = true
+
+    assert_equal '/stylesheets/styles.css'.length, 23
+    assert_dom_equal(
+      %(<link href="http://a23.example.com/stylesheets/styles.css" media="screen" rel="stylesheet" type="text/css" />),
+      stylesheet_link_tag(:all, :cache => 'styles')
+    )
+
+    assert File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'styles.css'))
+
+  ensure
+    File.delete(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'styles.css'))
+  end
+
   def test_caching_stylesheet_include_tag_when_caching_off
     ENV["RAILS_ASSET_ID"] = ""
     ActionController::Base.perform_caching = false
@@ -314,14 +347,14 @@ class AssetTagHelperTest < Test::Unit::TestCase
       stylesheet_link_tag(:all, :cache => true)
     )
 
-    assert !File.exists?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
+    assert !File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'all.css'))
     
     assert_dom_equal(
       %(<link href="/stylesheets/bank.css" media="screen" rel="stylesheet" type="text/css" />\n<link href="/stylesheets/robber.css" media="screen" rel="stylesheet" type="text/css" />),
       stylesheet_link_tag(:all, :cache => "money")
     )
 
-    assert !File.exists?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
+    assert !File.exist?(File.join(ActionView::Helpers::AssetTagHelper::STYLESHEETS_DIR, 'money.css'))
   end
 end
 
