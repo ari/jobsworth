@@ -1216,6 +1216,8 @@ class TasksController < ApplicationController
       worklog = WorkLog.new
       worklog.log_type = EventLog::TASK_MODIFIED
 
+      update_type = :updated
+
       case session[:group_by].to_i
       when 3
         # Project
@@ -1267,7 +1269,7 @@ class TasksController < ApplicationController
             new_name = u.name
             body = "- <strong>Assignment</strong>: #{new_name}\n"
             @task.users.reload
-            Notifications::deliver_assigned( @task, current_user, @task.users, old_users, "" ) rescue begin end
+            update_type = :reassigned
           end
 
         end
@@ -1284,10 +1286,16 @@ class TasksController < ApplicationController
         if( @task.status != @group )
           if @group < 2
             @task.completed_at = nil
-            worklog.log_type = EventLog::TASK_REVERTED if @task.status > 1
+            if @task.status > 1
+              worklog.log_type = EventLog::TASK_REVERTED
+              update_type = :reverted
+            end
           else
-            worklog.log_type = EventLog::TASK_COMPLETED if @task.status < 2
             @task.completed_at = Time.now.utc if @task.completed_at.nil?
+            if @task.status < 2
+              worklog.log_type = EventLog::TASK_COMPLETED
+              update_type = :completed
+            end
           end
           body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
           @task.status = @group
@@ -1358,6 +1366,7 @@ class TasksController < ApplicationController
         worklog.duration = 0
         worklog.body = body
         worklog.save
+        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
         Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       end
 
@@ -1612,6 +1621,33 @@ class TasksController < ApplicationController
       page.visual_effect(:highlight, "todo-#{@task.dom_id}")
     end
     Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+  end
+
+  def todo_delete_ajax
+    begin
+      @todo = Todo.find(params[:id])
+    rescue
+      render :update do |page|
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", @todo.task_id])
+
+    if @task
+      render :update do |page|
+        page.visual_effect :fade, @todo.dom_id
+        page.delay(1.0) do
+          page.remove @todo.dom_id
+        end
+      end
+      @todo.destroy
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+    else
+      render :update do |page|
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    end
   end
 
 end
