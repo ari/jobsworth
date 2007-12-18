@@ -43,6 +43,8 @@ class Notifications < ActionMailer::Base
   def commented(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
 
+    @subject    = "[ClockingIT] #{_'Comment'}: #{task.issue_name} (#{user.name})"
+
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
     @recipients += task.users.collect{ |u| u.email if u.receive_notifications > 0 } unless task.users.empty?
@@ -57,6 +59,8 @@ class Notifications < ActionMailer::Base
 
   def completed(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
+
+    @subject    = "[ClockingIT] #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} (#{user.name})"
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
@@ -73,6 +77,8 @@ class Notifications < ActionMailer::Base
   def reverted(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
 
+    @subject    = "[ClockingIT] #{_'Reverted'}: #{task.issue_name} (#{user.name})"
+
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
     @recipients += task.users.collect{ |u| u.email if u.receive_notifications > 0 } unless task.users.empty?
@@ -87,6 +93,8 @@ class Notifications < ActionMailer::Base
 
   def assigned(task, user, owners, old, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :owners => owners, :note => note}
+
+    @subject    = "[ClockingIT] #{_'Reassigned'}: #{task.issue_name} (#{task.owners})"
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
