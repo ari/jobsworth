@@ -30,7 +30,7 @@
 <% end %>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (session[:sheet] ? (worked_nice(session[:sheet].duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
+document.title = "<%= (session[:sheet] ? ((session[:sheet].paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(session[:sheet].duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 updateTooltips();
 </script>
 
