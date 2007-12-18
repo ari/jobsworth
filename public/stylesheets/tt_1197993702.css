@@ -1,0 +1,348 @@
+div.calendar {position: relative}
+.calendar, .calendar table {border: 1px solid #eeeeee; background-color: #FFFFFF; font-size: 9px; color: #000; cursor: default; font-family: tahoma,verdana,sans-serif}
+.calendar .button {text-align: center; padding: 2px}
+.calendar .nav {background: #778 url(/images/menuarrow.gif) no-repeat 100% 100%}
+.calendar thead .title {font-weight: bold; text-align: center; background: #fff; color: #000; padding: 2px}
+.calendar thead .headrow {background: #778; color: #fff}
+.calendar thead .daynames {background: #8cacbb}
+.calendar thead .name {border-bottom: 1px solid #556; padding: 2px; text-align: center; color: #000}
+.calendar thead .weekend {color: #a66}
+.calendar thead .hilite {background-color: #aaf; color: #000; border: 1px solid #04f; padding: 1px}
+.calendar thead .active {background-color: #77c; padding: 2px 0px 0px 2px}
+.calendar tbody .day {width: 2em; color: #456; text-align: right; padding: 2px 4px 2px 2px}
+.calendar tbody .day.othermonth {font-size: 80%; color: #bbb}
+.calendar tbody .day.othermonth.oweekend {color: #fbb}
+.calendar table .wn {padding: 2px 3px 2px 2px; border-right: 1px solid #000; background: #8cacbb}
+.calendar tbody .rowhilite td {background: #def}
+.calendar tbody .rowhilite td.wn {background: #eef}
+.calendar tbody td.hilite {background: #def; padding: 1px 3px 1px 1px; border: 1px solid #bbb}
+.calendar tbody td.active {background: #cde; padding: 2px 2px 0px 2px}
+.calendar tbody td.selected {font-weight: bold; border: 1px solid #000; padding: 1px 3px 1px 1px; background: #fff; color: #000}
+.calendar tbody td.weekend {color: #a66}
+.calendar tbody td.today {font-weight: bold; color: #00f}
+.calendar tbody .disabled {color: #999}
+.calendar tbody .emptycell {visibility: hidden}
+.calendar tbody .emptyrow {display: none}
+.calendar tfoot .footrow {text-align: center; background: #556; color: #fff}
+.calendar tfoot .ttip {background: #fff; color: #445; border-top: 1px solid #556; padding: 1px}
+.calendar tfoot .hilite {background: #aaf; border: 1px solid #04f; color: #000; padding: 1px}
+.calendar tfoot .active {background: #77c; padding: 2px 0px 0px 2px}
+.calendar .combo {position: absolute; display: none; top: 0px; left: 0px; width: 4em; cursor: default; border: 1px solid #655; background: #def; color: #000; font-size: 90%; z-index: 100}
+.calendar .combo .label, .calendar .combo .label-IEfix {text-align: center; padding: 1px}
+.calendar .combo .label-IEfix {width: 4em}
+.calendar .combo .hilite {background: #acf}
+.calendar .combo .active {border-top: 1px solid #46a; border-bottom: 1px solid #46a; background: #eef; font-weight: bold}
+.calendar td.time {border-top: 1px solid #000; padding: 1px 0px; text-align: center; background-color: #f4f0e8}
+.calendar td.time .hour, .calendar td.time .minute, .calendar td.time .ampm {padding: 0px 3px 0px 4px; border: 1px solid #889; font-weight: bold; background-color: #fff}
+.calendar td.time .ampm {text-align: center}
+.calendar td.time .colon {padding: 0px 2px 0px 3px; font-weight: bold}
+.calendar td.time span.hilite {border-color: #000; background-color: #667; color: #fff}
+.calendar td.time span.active {border-color: #f00; background-color: #000; color: #0f0}
+body {background-color: #FFFFFF; color: #333333; background-image: url(/images/bg_grad.jpg); background-repeat: repeat-x; border: none}
+a {color: #566ca5; text-decoration: none; font-weight: bold}
+a:hover {text-decoration: underline}
+.milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {background-color: #fff2d4}
+h1 {font-size: 26px}
+h2 {font-size: 20px}
+h3 {font-size: 16px}
+h4 {font-size: 14px}
+#menu {color: #423f54; font-size: 14px; font-weight: bold; background-color: #c5cacf; padding: 0.5em; border: 1px solid #b7b7b7}
+#menu a {color: #566ca5; text-decoration: none; font-weight: bold}
+#menu a:hover {text-decoration: underline}
+.amenu {background-color: #fcfcfc}
+.highlight {background-color: #fcfc99}
+.task-highlight {background-color: #fff2d4 !IMPORTANT}
+.projects {color: #666666; font-size: 14px; font-weight: bold; padding-right: 0.5em}
+.milestones {color: #CCCCCC; font-size: 11px; font-weight: bold; padding-left: 2.5em; padding-right: 1.5em}
+.project_customer {padding-top: 0.3em; color:#423f54; font-size: 13px}
+.project_customer a {color: #423F54; font-size: 13px; font-weight: bold}
+.project_completed {padding-top: 1.5em; font-size: smaller}
+.milestone_completed {padding-top: 0.5em; font-size: smaller}
+.views_item {font-size: 12px; font-weight: bold; padding-left: 0.5em; text-align: left}
+.pages_item {font-size: 12px; font-weight: bold; padding-left: 0.5em}
+.shout_body {}
+.shout_name {color: #666666; font-weight: bold}
+.shout_time {color: #666666; font-weight: bold}
+.page_header {font-size: 14px; text-transform: uppercase; font-weight: bold; border: 1px solid #e8e8e8; color: #423f54; padding-left: 1em; padding-bottom: 0.17em; letter-spacing: 0.15em; padding-top: 0.29em; background-image: url(/images/header_bkg.gif); background-repeat: repeat-x; width: 100%}
+.page_header a {font-size: 11px; letter-spacing: 0em; text-transform: capitalize; padding-right: 1em}
+.tasks_updated_by {color: #666666; padding-left: 1em; padding-bottom: 0.27em}
+.pages {color: #666666; font-size: 14px; font-weight: bold; background-color: #ffffff; padding-left: 0.5em; padding-right: 0.5em}
+.menu a{ color: #000000; font-size: 12px; font-weight: bold}
+body, p, ol, ul, td, tr {font-family: arial, verdana, helvetica, sans-serif; font-size: 12px}
+.content {background-color: #ffffff}
+.task {font-size: 11px}
+.task-name {float: left}
+.task input {margin: 0 0 1px 0px}
+.task_done input {margin: 0 0 1px 0px}
+.task_active input {margin: 0 0 1px 0px}
+.in_progress {font-style: italic}
+.closed {}
+.invalid {text-decoration: line-through}
+a.invalid:hover {text-decoration: line-through underline}
+.tip_description {}
+fieldset {border: 1px solid #dcdcdc; background-color: #fafafa; color: #000000; margin-top: 0.5em}
+legend {font-size: 14px; font-weight: bold; color: #423f54}
+img {vertical-align: bottom; padding: 0; margin: 0; display: inline-block}
+.task_done {color: #a6a6a6; background-color: #fbfbfb; font-size: 10px}
+.optional {color: #a6a6a6; font-style: italic; font-size: 80%}
+.collapse-indicator-open {width: 13px; height: 13px; background: url(/images/expand-indicator.png) 0px 0px no-repeat; color: #a6a6a6; font-size: 80%; float: left; padding-right: 2px; margin-top: 1px}
+.collapse-indicator-closed {width: 13px; height: 13px; background: url(/images/expand-indicator.png) 0px -13px no-repeat; color: #a6a6a6; font-size: 80%; float: left; padding-right: 2px; margin-top: 1px}
+.small-collapse-indicator-open {height: 13px; background: url(/images/expand-indicator-small.png) 10px 0px no-repeat; color: #a6a6a6; font-size: 80%; float: left; padding-right: 2px; padding-left: 20px; margin-top: 1px}
+.small-collapse-indicator-closed {height: 13px; background: url(/images/expand-indicator-small.png) 10px -13px no-repeat; color: #a6a6a6; font-size: 80%; float: left; padding-right: 2px; padding-left: 20px; margin-top: 1px}
+.help {background-color: #ffffff; color: #000000; font-size: 14px; margin-left: 1em; margin-right: 1em}
+.help a{ color: #436976; font-size: 12px; font-weight: bold}
+.flash {background-color: #ffffff; color: #000000; font-size: 14px; margin-left: 1em; margin-right: 1em}
+.news {background-color: #ffffff; color: #666666; font-size: 14px; margin-left: 1em; margin-right: 1em}
+.news_date {font-weight: bold}
+.news a{ font-weight: bold}
+.ajax {}
+div#loading {position: absolute}
+body > div#loading {position: fixed}
+input:focus, textarea:focus {border: 1px solid #FC0}
+input, textarea, select {border: 1px solid #dcdcdc}
+input, textarea {padding: 0px 2px 0px 2px}
+fieldset label {float: left; clear: both; text-align: right; width: 12.4em; margin-right: 0.5em; margin-top: 0.2em; font-weight: bold; cursor: pointer; cursor: hand; font-size: 12px; color: #423f54}
+#quick_add_container {border: 1px solid #dcdcdc; background-color: #fafafa; color: #000000; padding-top: 0.5em; padding-left: 0.5em; padding-right: 0.5em; margin-bottom: 0.5em; font-size: 11px}
+#quick_add_container select {font-size: 11px; width: 10em}
+#quick_add_container label {font-weight: bold; color: #423f54; cursor: pointer; cursor: hand; font-size: 11px}
+#task_attr label {width: 7em}
+#task_notify label {width: 7em}
+#task_dependencies label {width: 7em}
+#task_attachments label {width: 7em}
+#task_project_selection label {width: 7em}
+#task_information label {width: 6em}
+#reports_filter label, #reports_config label{ width: 7em}
+fieldset input {float: left; clear: right; text-align: left; margin-right: 0.1em; margin-bottom: 0.2em}
+fieldset img {float: left; clear: right; margin-right: 0.5em; margin-bottom: 0.2em}
+fieldset img.centered {float: none; clear: both}
+fieldset input.button {border: none; margin-right: 0.5em; margin-bottom: 0.2em}
+fieldset textarea {float: left; clear: right; text-align: left; margin-right: 0.5em; margin-bottom: 0.2em}
+fieldset select {float: left; clear: right; text-align: left; margin-right: 0.5em; margin-bottom: 0.2em; width: 10em}
+fieldset input.file {float: left; clear: right; text-align: left; font-size: 95%; width: 50%; padding-right: 1em}
+fieldset input.nolabel {position: relative; clear: both; float: none; margin-left: 11.6em; display: block}
+fieldset form br {clear: both}
+input.button {border: none}
+.otheruser {color: #333333}
+.due_distant {color: #BBBBBB}
+.due_soon {color: #22dd22}
+.due_tomorrow {color: #FF8800}
+.due {color: #FF0000}
+.due_overdue {color: #FC5C04}
+.calendar {margin:0; padding: 0; border: none; font-size: 9px}
+.day {font-size: 9px}
+#schedule {padding: 0; margin: 0; border-collapse: collapse}
+.scheduleEmpty {overflow: hidden; height: 11px; margin-bottom: 2px}
+.scheduleTask {background-color: #ececec; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.scheduleTaskComplete {background-color: #b0d295; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.scheduleTaskOverdue {background-color: #f2ab99; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.scheduleMilestone {background-color: #ececec; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.scheduleMilestoneOverdue {background-color: #f2ab99; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.scheduleMilestoneComplete {background-color: #b0d295; overflow: hidden; height: 13px; white-space: nowrap; padding-left: 2px; padding-right: 2px}
+.weekend {background-color: #e5eaef}
+.monthName {font-size: 9pt; height: 1em}
+.dayName {font-size: smaller; height: 1em; border: 1px solid #CCCCCC}
+.scheduleDayHeader {padding-right: 3px; padding-top: 1px; padding-bottom: 1px; background-color: #e5eaef}
+.scheduleDay {border: 1px solid #CCCCCC; font-size: 9px; width: 130px; vertical-align: top; height: 80px; min-height: 60px}
+.scheduleDue {font-size: 9px; background-color: #FFB200; vertical-align: top; height: 80px; min-height: 60px}
+.scheduleDueToday {font-size: 9px; background-color: #FFFF00; vertical-align: top; height: 80px; min-height: 60px}
+.scheduleToday {border: 1px solid #CCCCCC; font-size: 9px; vertical-align: top; height: 80px; min-height: 60px}
+.scheduleToday div.scheduleDayHeader{ background-color: #8CACBB; font-weight: bold}
+.box td {padding-left: 5px; padding-right: 5px}
+.milestonebar {background-color: #22dd22}
+.milestone {padding-left: 0.5em; padding-right: 0.5em}
+.task_milestone {color: #888888}
+.separator {color: #BBBBBB}
+th {color: #423f54; font-weight: bold; background-color: #e5eaef}
+pre {padding: 1em; font-size: 11px}
+pre.auto_generated {}
+.contact {color: #CCCCCC; font-size: 9px; padding-top: 1em; padding-left: 2em}
+.contact a {color: #CCCCCC; font-size: 9px; font-weight: bold}
+.fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select {background-color: red; border: 2px solid red}
+#ErrorExplanation {width: 400px; border: 2px solid red; padding: 7px; padding-bottom: 12px; margin-bottom: 20px; background-color: #f0f0f0}
+#ErrorExplanation h2 {text-align: left; font-weight: bold; padding: 5px 5px 5px 15px; font-size: 12px; margin: -7px; background-color: #c00; color: #fff}
+#ErrorExplanation p {color: #333; margin-bottom: 0; padding: 5px}
+#ErrorExplanation ul li {font-size: 12px; list-style: square}
+#content ul {list-style: none; padding: 0; margin: 0; display: block; clear: both; min-height: 1px}
+#content li {list-style: none; clear: both; padding: 0; margin: 0 0 0 0; display: block; position: relative; font-size: 10px}
+.todo-container {padding: 0 0 0 2.0em; font-size: 10px}
+.todo {}
+.todo-completed {color: #a6a6a6; text-decoration: strike-through}
+#content .empty {margin-top: 0px; padding-left: 0px; margin-left: 5px; border-left: none; list-style: none}
+#content li.noborder {border-left: none; list-style: none; padding-left: 1em; margin-left: 2px; padding-right: 16px; clear: both; display: block; position: relative}
+#content li.ajax {border-left: none}
+.tag {font-size: 11px; padding-right: 0.3em}
+.tag a {font-weight: normal}
+.tag_active {font-size: 13px; padding-right: 0.3em}
+.tag_active a {}
+#view_tags_auto_complete ul {padding: 0; margin: 0}
+#view_tags_auto_complete ul li {border-left: none; margin-left: 1px; padding: 0px}
+#view_tags_auto_complete ul li.selected {background-color: #ffb}
+#dependencies_input_auto_complete {}
+#dependencies_input_auto_complete ul {border: 1px solid #ccc; width: 354px; padding: 0; margin: 0}
+#dependencies_input_auto_complete ul li {border-left: none; margin: 0 2px 0 2px; padding: 0px; width: 350px}
+#dependencies_input_auto_complete ul li.selected {background-color: #ffb}
+#notification-autocomplete ul {border: 1px solid #ccc; padding: 0; margin: 0; width: 189px}
+#notification-autocomplete ul li {border-left: none; margin: 0 2px 0 2px; margin:0; width: 185px; overflow: hidden}
+#notification-autocomplete ul li.selected {background-color: #ffb}
+div.auto_complete {position:absolute; width:250px; background-color:white; border:1px solid #888; margin:0px; padding:0px}
+#task_set_tags_auto_complete ul {padding: 0; margin: 0}
+#task_set_tags_auto_complete ul li {border-left: none; margin-left: 1px; padding: 0px}
+#task_set_tags_auto_complete ul li.selected {background-color: #ffb}
+#report_tags_auto_complete ul {padding: 0; margin: 0}
+#report_tags_auto_complete ul li {border-left: none; margin-left: 1px; padding: 0px}
+#report_tags_auto_complete ul li.selected {background-color: #ffb}
+#content .tag_header {border-left: solid 4px #8cacbb; margin-bottom: 2px; font-size: 13px; color: #47525a; font-weight: bold; padding-left: 4px}
+.description {color: #5e6b71; font-size: 10px}
+a.description {color: #5e6b71; font-weight: normal}
+#tip a {color: #5e6b71; font-weight: normal}
+#shouts {font-size: 10px; font-weight: normal; border-left: none; list-style: none; padding-left: 0px; padding-top: 0px; margin-top: 0px}
+#shouts li {border-left: none; padding-left: 0px; margin-left: 0px; text-align: left}
+#content .task {margin-left: 8px; border-left: solid 4px #b0d295; clear: both; font-size: 11px; margin-bottom: 2px}
+#content .task_done {border-left: solid 4px #EEEEEE}
+#content .task_active {border-left: solid 4px #8cacbb; color: #000000; background-color: #E3E3FF}
+#content .task_paused {border-left: solid 4px #8cacbb; color: #000000; background-color: #F3F3F3}
+#content .task_lowest_pri {border-left: solid 4px #F3F3F3}
+#content .task_low_pri {border-left: solid 4px #e7e0c4}
+#content .task_crit_pri {border-left: solid 4px #FF6666}
+#content .task_high_pri {border-left: solid 4px #f2ab99}
+#content .task_raised_pri {border-left: solid 4px #FFC266}
+.handle {cursor: move}
+.handle_comp {cursor: move}
+.hidden {display: none}
+.dnd_border {border: 1px dotted gray}
+.dnd_hover {border: 1px dotted black}
+.rounded {background-color: #8cacbb}
+.rounded_content {}
+.rounded_content_body {background-color: #FFFFFF}
+.log_header {padding-left: 1em; margin-bottom: 0.5em; color: #666666; font-size: 11px; font-weight: bold; padding-top: 8px; border-bottom: 1px solid #e8e8e8}
+.paging_header {padding-left: 1em; margin-bottom: 0.5em; color: #666666; font-size: 11px; font-weight: bold; padding-top: 8px}
+#globalMenu{ position : relative; width : 100%; height : 23px; color : #cccccc; padding : 0px; margin : 0px; background-image: url(/images/menuback.gif) ; background-repeat: repeat-x; border: 1px solid #c8c8c8}
+#menucontainer {position: relative; width: 100%; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; float: left}
+#tabmenu {background:#8cacbb; font-size:93%; line-height:normal}
+#tabmenu ul {margin:0; padding:0px 0px 0px 0px; list-style:none}
+#tabmenu li {float: left; margin:0; padding:0}
+#tabmenu li.right {float: right}
+#tabmenu a {display: block; text-decoration:none; font-weight: bold}
+#tabmenu span {display:block; margin:0; background:url("/images/tabright.gif") no-repeat right top; padding:4px 6px 4px 6px; color:#423f54; font-weight: bold}
+#tabmenu input {margin: 0; padding: 0; height: 11px}
+#tabmenu a span {float:none;}
+#tabmenu a:hover span {}
+#tabmenu a:hover span {background-position:100% -25px}
+#tabmenu a:hover span.last {background-position:99% -25px}
+#tabmenu span.last {background-position:99% 0%}
+#tabmenu span.active {color:#FF9900; background-position:100% -25px}
+#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort {font-size: 10px}
+#task_description {font-size: 11px}
+#task_comment {font-size: 11px}
+.prog-border {width: 115px; background: #fff; border: 1px solid silver; margin: 1px; padding: 0px}
+.prog-bar-high {height: 100%; margin: 0; padding: 0; background: #f2ab99; float: left}
+.prog-bar-medium {height: 100%; margin: 0; padding: 0; background-color: #b0d295; float: left}
+.prog-bar-low {height: 100%; margin: 0; padding: 0; background-color:#e7e0c4; float: left}
+li.help {font-size: 10px; color: #a6a6a6; background-color: #fbfbfb}
+#flash_message {color: #666666}
+#page {padding-left: 0; list-style: disc; margin: 0}
+.task_info {font-size: 9px}
+#tutorial .welcome {padding: 1em; margin: 1em; background-color: #fffed6; border-top: 1px solid #b7b7b7; border-bottom: 1px solid #b7b7b7; font-size: large; text-align: center}
+#tutorial a {text-decoration: underline}
+#tutorial .welcome a {font-size: small; text-decoration: underline}
+#tutorial .tutorial {padding: 1em; margin: 0.5em; border-top: 1px solid #b7b7b7; border-bottom: 1px solid #b7b7b7; font-size: larger}
+#tutorial .complete, #tutorial .complete a {color: #b0d295; border: none; background-color: #deffd6}
+#tutorial .todo {color: #cccccc; background-color: #fcfcfc; border: none}
+#tutorial .todo a {color: #cccccc}
+#reports .row_header {color: #000000; font-weight: bold}
+#reports .column_header {color: #000000; font-size: smaller; text-align: center}
+#reports .row_heading {color: #000000; font-weight:bold; padding-right: 0.5em; vertical-align: top}
+#reports .row_value {color: #000000; border-left: 1px solid #CCCCCC; text-align: right; vertical-align: top}
+#reports .audit {text-align: left}
+#reports .task {text-align: left}
+#reports .even {background-color: #fff}
+#reports .odd {background-color: #f7f7f7}
+#reports .row_total {background-color: #fcfc99; border-left: 1px solid #CCCCCC; text-align: right; vertical-align: top}
+#reports .row_subtotal {background-color: #b0d295; border-left: 1px solid #CCCCCC; text-align: right; vertical-align: top}
+#reports .row_subtotal_heading {text-align: left; vertical-align: top}
+#wiki-info {margin: 1em; padding: 1em; background-color: #fafafa; border: 1px solid #dcdcdc}
+#wiki {margin: 1em; padding: 1em; background-color: #fafafa; border: 1px solid #dcdcdc}
+#wiki div, #wiki p, #wiki ul, #wiki ol, #wiki h1, #wiki h2, #wiki h3, #wiki h4, #wiki h5 {font-family: 'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif}
+#wiki ul {list-style-type: disc; padding-left: 1.3em; margin-left: 1px; min-height: 1px; list-style-position: outside}
+#wiki li {list-style-type: disc; list-style-position: outside; list-style-image: none; border-left: none; margin-left: 8px; padding-left: 4px; position: relative; margin-bottom: 2px}
+#wiki ol {list-style-type: decimal; list-style-position: outside; list-style-image: none; border-left: none; margin-left: 8px; padding-left: 4px; position: relative; margin-bottom: 2px}
+#wiki ol li {list-style-type: decimal; list-style-position: outside; list-style-image: none; border-left: none; margin-left: 8px; padding-left: 4px; position: relative; margin-bottom: 2px}
+#wiki pre {background-color: #eee}
+#wiki h1, h2, h3, h4 {color: #333333}
+#wiki h1 {border-bottom: 2px solid #FFC266; padding-left:0.2em; padding-right:0.2em}
+#wiki h2 {border-bottom: 2px dotted #FFC266; background-color: #ececec; padding-left:0.2em; padding-right:0.2em}
+#wiki h3 {border-bottom: 2px dotted #FFC266; padding-left:0.2em; padding-right:0.2em}
+#wiki h4 {}
+#wiki .external a {text-decoration: underline; background: url(/images/icon_world.gif) no-repeat 0% 0; padding: 0 0 0 16px}
+#wiki .internal_missing a {color: #f00}
+#wiki .description a {font-weight: bold}
+#wiki-quickref p {margin:0; padding:0}
+.select_heading {color:#566CA5; font-weight: bold}
+.select_default {color: #FFC266; font-weight: bold}
+.select_item {}
+.select_subitem {font-style: italic}
+#task_page_header a {padding-right: 0.4em}
+#recent_activities_page_header a {padding-right: 0.2em}
+.file_cell-info {background-color: #e9e9e9; color: #566ca5; padding-left: 0.5em; padding-right: 0.5em}
+.folder_cell-info {background-color:#E7E0C4; color: #566ca5; padding-left: 0.5em; padding-right: 0.5em}
+.folder-active {background-color: #fff2d4}
+.file_cell {border: 1px solid #cfcfcf; float: left; margin: 1em 0.5em 1em 0.5em; text-align: center}
+.file_cell:hover {border: 1px solid black}
+.file_cell_img {display: table-cell; padding-top: 0.5em; height: 145px; width: 100%; text-align: center; vertical-align: middle; padding-left: 14px}
+.file_cell_icon {display: table-cell; padding-top: 0.5em; height: 145px; width: 100%; text-align: center; vertical-align: middle}
+.group-active {padding-bottom: 24px; border-left: 3px solid #FF9900}
+#right-menu-collapse {background-color:#efefef; background-image: url(/images/collapse_menu.gif); background-repeat:none; width:3px; margin:0; padding:0; cursor:pointer}
+#print_title {display: none}
+.override_filter {background-color: #ececec}
+.override_filter a, .override_filter small, .override_filter .description {color: #a6a6a6}
+.waiting_deferred a, .waiting_deferred small {color: #a6a6a6}
+.channel {background-color: #ececec; padding:1em; margin: 4px}
+.channel-title {color: #333333; font-weight: bold; border-bottom: 2px solid #FFC266; font-size: 14px}
+.channel-public a{ color: #b0d295; font-weight: bold; border-bottom: 2px solid #FFC266; font-size: 14px}
+.channel-last-active {color: #a6a6a6; font-style: italic; padding-top: 0.5em; padding-bottom: 0.5em}
+.channel-description {padding-top: 0.5em; padding-bottom: 1em}
+.channel-access {color: #a6a6a6; padding-top: 0.5em; font-size: 10px; font-style: italic}
+.channel-users {color: #333333; font-size: small}
+.channel-message {padding: 0.2em; width: 100%}
+.channel-user {font-weight: bold; padding-right: 0.4em; padding-left: 1em; width: 1%; text-align: right; vertical-align: top; font-size: 13px; border-right: 1px solid #ececec}
+.channel-message-others .channel-user {background-color: #f6f6f6}
+.channel-body {padding-left: 0.4em; vertical-align: top; font-size: 13px}
+.channel-body pre {border-left: 1px solid #b0d295; padding-left:1em; padding-top: 0.2em; padding-bottom: 0.2em; overflow: auto}
+.channel-message-mine {background-color: #fefeec}
+.channel-message-system {background-color: #ecfeec}
+.channel-message-system .channel-body{ font-weight: bold}
+.channel-message-system td {border-right: none}
+.channel-message-entered, .channel-message-mine .channel-message-entered {background-color: #ecfeec}
+.channel-message-left {background-color: #ececfe}
+.channel-message-time {background-color: #ffffff; color: #acacac}
+.channel-message-nick-change td {border-top: 1px solid #ececec}
+#passive-chat-container {position:fixed; bottom:1em; left:5%; z-index:100; height:auto; width:90%; background-color:#ffffff; border: 1px solid black; padding: 1px}
+.channel-passive {width: 5%; text-align: right; vertical-align: top}
+.channel-right-bar {margin-left: 1em; vertical-align: top}
+#channel-right-bar h2 {background-color: #f5f5f5; border-bottom: 1px solid #dcdcdc; border-right: 1px solid #dcdcdc; padding:0; margin:0; padding-left: 0.3em; margin-bottom: 0.3em; font-size: 14px}
+.channel-delete {float: right}
+.channel-delete a {color: #FF6666; font-size: 9px; border: none}
+.transcript {padding: 1em; margin: 0.5em}
+.transcript-channel {color: #333333; font-weight: bold; border-bottom: 2px solid #FFC266; font-size: 14px}
+.transcript-participants {color: #a9a9a9}
+.transcript-users {color: #333}
+.transcript-navigation {padding-bottom: 1em}
+#transcript-filter {float: right; margin-right:4px}
+#transcript-filter-select {font-size: 10px}
+.channel-input {float: left; position: fixed; display: block; width: 100%; margin-top: 1em; background: #ececec none repeat scroll 0%; padding: 1em; bottom: 0; left: 0; z-index: 5}
+#shout-list {height: 100%; padding-bottom: 5em; border-right: 1px solid #ececec; margin-left: 1em; padding-right: 1em}
+.status-offline {color: #a9a9a9}
+.status-idle {font-style: italic}
+.status-online {font-weight: bold}
+.notify-user {float: left; font-weight: bold; color: #333}
+.notify-row {clear:both}
+.informal {font-weight: normal; font-style: underline}
+#tip td {vertical-align: top; padding-left: 0.1em}
+#tip th {vertical-align: top; text-align: right; background-color: #efefef; font-weight: bold; padding-right: 0.1em; color: #333333}
+.pagination {padding: 3px; margin: 3px}
+.pagination a {padding: 1px 4px 1px 4px; margin: 1px; border: 1px solid #b7b7b7; text-decoration: none}
+.pagination a:hover, .pagination a:active {border: 1px solid #FFC266; text-decoration: underline}
+.pagination span.current {padding: 1px 4px 1px 4px; margin: 1px; border: 1px solid #a9a9a9; font-weight: bold; background-color: #FFC266; color: #FFF}
+.pagination span.disabled {padding: 1px 4px 1px 4px; margin: 1px; border: 1px solid #eee; color: #ddd}
+.wiki-search {font-weight: bold; padding-right: 0.4em; padding-left: 1em; width: 1%; text-align: right; vertical-align: top; font-size: 13px; border-right: 1px solid #ececec}
+.wiki-search-body {padding-left: 0.4em; vertical-align: top}

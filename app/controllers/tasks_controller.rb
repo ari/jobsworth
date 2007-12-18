@@ -725,16 +725,6 @@ class TasksController < ApplicationController
     self.update
   end
 
-#  def destroy
-#    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-#    @task.work_logs.destroy_all
-#    @task.destroy
-#
-#    return if request.xhr?
-#
-#    redirect_from_last
-#  end
-
   def ajax_hide
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
 
@@ -1523,6 +1513,82 @@ class TasksController < ApplicationController
       @sheet.save
       session[:sheet] = @sheet
     end
+  end
+
+
+  def create_todo_ajax
+
+    if params[:todo][:name].blank?
+      render :update do |page|
+        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", params[:id]])
+    unless @task
+      render :update do |page|
+        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+    todo = Todo.new
+    todo.name = params[:todo][:name]
+    todo.creator_id = current_user.id
+    todo.task_id = @task.id
+
+    unless todo.save
+      render :update do |page|
+        page.visual_effect(:highlight, "todo-form-tasks-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    else
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+
+      render :update do |page|
+        page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page["todo-form-#{@task.dom_id}"].show
+        page << "$('todo_text_#{@task.id}').clear();"
+        page << "$('todo_text_#{@task.id}').focus();"
+        page.call("updateTooltips")
+      end
+    end
+  end
+
+  def todo_check_ajax
+    begin
+      todo = Todo.find(params[:id])
+    rescue
+      render :nothing => true
+      return
+    end
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", todo.task_id])
+    unless @task
+      render :update do |page|
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+
+    if todo.completed_at
+      todo.completed_at = nil
+    else
+      todo.completed_at = Time.now.utc
+    end
+    if todo.save
+      render :update do |page|
+        page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page.delay(0.2) do
+          page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 1.5)
+        end
+        page.call("updateTooltips")
+      end
+    else
+      render :update do |page|
+        page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    end
+
   end
 
 end

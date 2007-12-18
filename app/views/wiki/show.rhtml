@@ -16,7 +16,7 @@
 <% if @page.pages_linking_here.size > 0 %>
 <div class="description"><%=_ 'Linked from' %>: <%= @page.pages_linking_here.collect {|p| p.to_url }.join(', ') %></div>
 <% end %>
-<%= link_to _('Revision') + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.current_revision.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.current_revision.user.name}" %></div>
+<%= link_to _('Revision') + " #{(params[:rev].to_i > 0) ? params[:rev].to_i : @page.revisions.size}", :controller => 'wiki', :action => 'versions', :id => @page.name %>, <%= tz.utc_to_local(@page.current_revision.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") + " #{_('by')} #{@page.current_revision.user ? @page.current_revision.user.name : "Unknown"}" %></div>
 <% if @page.locked? %>
   <strong><%=_ 'Under revision by' %> <%= @page.locked_by.name %> [<%= tz.utc_to_local(@page.locked_at).strftime(current_user.time_format) %>]</strong><br/>
 <% end %>

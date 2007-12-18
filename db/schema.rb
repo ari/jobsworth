@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 94) do
+ActiveRecord::Schema.define(:version => 95) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -378,6 +378,18 @@ ActiveRecord::Schema.define(:version => 94) do
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
+
+  create_table "todos", :force => true do |t|
+    t.integer  "task_id"
+    t.string   "name"
+    t.integer  "position"
+    t.integer  "creator_id"
+    t.datetime "completed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "todos", ["task_id"], :name => "index_todos_on_task_id"
 
   create_table "topics", :force => true do |t|
     t.integer  "forum_id"

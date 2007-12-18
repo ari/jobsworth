@@ -22,7 +22,7 @@ for g in groups
 <% if session[:group_by].to_i > 2 -%>
 <script type="text/javascript">
 //<![CDATA[
-Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', onDrop:function(element, dropElement){Element.remove(element); new Ajax.Request('/tasks/move', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
+Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', accept:'task', greedy:true, onDrop:function(element, dropElement){Element.remove(element); new Ajax.Request('/tasks/move', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
 //]]>
 </script>
 <% end -%>

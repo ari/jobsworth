@@ -35,6 +35,8 @@ class Task < ActiveRecord::Base
 
   has_one       :ical_entry
 
+  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
+
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
@@ -532,6 +534,10 @@ class Task < ActiveRecord::Base
     elsif self.status > 2
       res << " invalid"
     end
+  end
+
+  def todo_status
+    "(#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)})"
   end
 
 end
