@@ -138,7 +138,7 @@ class="task <%=classes%>" style="position:relative;min-height:2.3em;;<% if depth
 %>
     <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <%= link_to_function(_("Cancel"), "Element.hide('todo-form-#{task.dom_id}');$('new-todo-#{task.dom_id}').show();") %>
 <% end %>
-    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').toggle();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
+    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
    </div>
 </div>
 
