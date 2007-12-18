@@ -540,4 +540,8 @@ class Task < ActiveRecord::Base
     "(#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)})"
   end
 
+  def todo_count
+    "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
+  end
+
 end

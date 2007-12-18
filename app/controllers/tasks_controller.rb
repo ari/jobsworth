@@ -1547,6 +1547,7 @@ class TasksController < ApplicationController
 
       render :update do |page|
         page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page.show("todo-container-#{@task.dom_id}")
         page["todo-form-#{@task.dom_id}"].show
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
@@ -1578,6 +1579,8 @@ class TasksController < ApplicationController
     if todo.save
       render :update do |page|
         page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page.show("todo-container-#{@task.dom_id}")
+
         page.delay(0.2) do
           page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 1.5)
         end
@@ -1589,6 +1592,17 @@ class TasksController < ApplicationController
       end
     end
 
+  end
+
+  def order_todos
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", params[:id]])
+    @task.todos.find(:all, :conditions => ["completed_at IS NULL"]).each do |todo|
+      todo.position = params["todo-tasks-#{@task.id}"].index(todo.id.to_s) + 1
+      todo.save
+    end
+    render :update do |page|
+      page.visual_effect(:highlight, "todo-#{@task.dom_id}")
+    end
   end
 
 end

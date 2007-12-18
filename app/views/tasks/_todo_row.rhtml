@@ -3,5 +3,5 @@
                                                                        :loading => "Element.show('loading');",
                                                                        :complete => "Element.hide('loading');" ) } )
   -%>
-  <%= @todo.name %></li>
+  <%= @todo.name %> <%= "[#{tz.utc_to_local(@todo.completed_at).strftime("#{current_user.time_format} #{current_user.date_format}")}]" if @todo.done? %></li>
 
