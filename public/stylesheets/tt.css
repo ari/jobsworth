@@ -984,18 +984,17 @@ a.description {
   border-left: solid 4px #EEEEEE;
 }
 
-#content .task_active {
-  color: #000000;
-  background-color: #ececfe;
-}
-
 #content .task_active_others {
   color: #000000;
   background-color: #ecfeec;
 }
 
+#content .task_active {
+  color: #000000;
+  background-color: #ececfe;
+}
+
 #content .task_paused {
-  border-left: solid 4px #8cacbb;
   color: #000000;
   background-color: #F3F3F3;
 }
