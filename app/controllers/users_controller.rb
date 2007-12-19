@@ -43,6 +43,11 @@ class UsersController < ApplicationController
   end
 
   def edit
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 
