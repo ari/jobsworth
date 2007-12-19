@@ -1,4 +1,4 @@
-<li id="<%=@todo.dom_id%>" class="<%=@todo.css_classes%>"><%= check_box("todo", "done", { "title" => _("Close <b>%s</b>", @todo.name),  :class => "button tooltip", :id => "button_#{@todo.id}",
+<li id="<%=@todo.dom_id%>" class="<%=@todo.css_classes%>"><%= check_box("todo", "done", { "title" => (@todo.done? ? _('Open <b>%s</b>', @todo.name) : _("Close <b>%s</b>", @todo.name)),  :class => "button tooltip", :id => "button_#{@todo.id}",
                                            :onclick => remote_function(:url => { :controller => 'tasks', :action => 'todo_check_ajax', :id => @todo.id },
                                                                        :loading => "Element.show('loading');",
                                                                        :complete => "Element.hide('loading');" ) } )

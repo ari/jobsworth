@@ -100,9 +100,11 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <%= link_to_task(task) -%>
 
    <small>
+     <span id="todo-status-<%= task.dom_id %>">
      <% unless task.todos.empty? %>
      <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');") %>
      <% end %>
+     </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
@@ -126,7 +128,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless session[:sheet] && session[:sheet].task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
     <ul id="todo-<%=task.dom_id%>" class="task-todo">
        <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
-<%= render :partial => "tasks/todo_row", :locals => { :depth => depth } %>
+<%= render :partial => "tasks/todo_row" %>
       <% end %>
     </ul>
 <% form_remote_tag :url => { :action => 'create_todo_ajax', :id => task.id, :depth => depth  } ,
@@ -141,7 +143,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
     <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
     <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
       <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
-<%= render :partial => "tasks/todo_row", :locals => { :depth => depth } %>
+<%= render :partial => "tasks/todo_row" %>
       <% end %>
     </ul>
 <%= sortable_element "todo-#{task.dom_id}", :url => { :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>

@@ -1633,13 +1633,15 @@ class TasksController < ApplicationController
     @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", @todo.task_id])
 
     if @task
+      element = @todo.dom_id
+      @todo.destroy
       render :update do |page|
-        page.visual_effect :fade, @todo.dom_id
+        page.visual_effect :fade, element
+        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
         page.delay(1.0) do
-          page.remove @todo.dom_id
+          page.remove element
         end
       end
-      @todo.destroy
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
     else
       render :update do |page|
