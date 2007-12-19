@@ -975,7 +975,7 @@ a.description {
   border-left: solid 4px #b0d295;
   clear: both;
   font-size: 11px;
-/*  height: 2.3em; */
+  min-height: 2.3em;
   margin-bottom: 2px;
 }
 
@@ -1019,6 +1019,10 @@ a.description {
 
 #content .task_raised_pri {
   border-left: solid 4px #FFC266;
+}
+
+#content .task-row {
+  min-height: 2.3em;
 }
 
 .handle {

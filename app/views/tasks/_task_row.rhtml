@@ -25,9 +25,9 @@
  classes << " task_done" if task.done?
  classes << " task_paused" if session[:sheet] && session[:sheet].task_id == task.id && session[:sheet].paused?
 -%>
-class="task <%=classes%>" style="position:relative;min-height:2.3em;;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
+class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
-<div id="row-<%=task.dom_id%>" style="min-height:2.3em;width:100%;">
+<div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
   <% if(session[:sheet] && session[:sheet].task.id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
     <% if(session[:sheet] && session[:sheet].task.id == task.id) -%>
@@ -93,6 +93,8 @@ class="task <%=classes%>" style="position:relative;min-height:2.3em;;<% if depth
    <% end -%>
    </div>
 
+   <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
+   <div class="add-todo-link" style="float:right;display:none;margin-right:1em;"><small><%= link_to_function( _('Add To-do'), "$('todo-container-#{task.dom_id}').toggle();$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></div>
    <div class="task-name" style="padding-left:2px;">
 
    <%= link_to_task(task) -%>
@@ -119,8 +121,7 @@ class="task <%=classes%>" style="position:relative;min-height:2.3em;;<% if depth
    <% end %>
    </div>
    </div>
-   <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
-   <div class="add-todo-link" style="float:right;display:none;margin-right:1em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-container-#{task.dom_id}').toggle();$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></div>
+
    </div>
    <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless session[:sheet] && session[:sheet].task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
     <ul id="todo-<%=task.dom_id%>" class="task-todo">
