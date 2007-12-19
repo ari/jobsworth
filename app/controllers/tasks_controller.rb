@@ -1562,6 +1562,7 @@ class TasksController < ApplicationController
       render :update do |page|
         page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
         page.show("todo-container-#{@task.dom_id}")
+        page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 1.5)
         page["todo-form-#{@task.dom_id}"].show
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
@@ -1635,13 +1636,15 @@ class TasksController < ApplicationController
     @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", @todo.task_id])
 
     if @task
+      element = @todo.dom_id
+      @todo.destroy
       render :update do |page|
-        page.visual_effect :fade, @todo.dom_id
+        page.visual_effect :fade, element
+        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
         page.delay(1.0) do
-          page.remove @todo.dom_id
+          page.remove element
         end
       end
-      @todo.destroy
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
     else
       render :update do |page|
