@@ -125,11 +125,10 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    </div>
    <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless session[:sheet] && session[:sheet].task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
     <ul id="todo-<%=task.dom_id%>" class="task-todo">
-      <% task.todos.each do |@todo| %>
+       <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
 <%= render :partial => "tasks/todo_row", :locals => { :depth => depth } %>
       <% end %>
     </ul>
-<%= sortable_element "todo-#{task.dom_id}", :url => { :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>
 <% form_remote_tag :url => { :action => 'create_todo_ajax', :id => task.id, :depth => depth  } ,
        :loading => "Element.show('loading');",
        :complete => "Element.hide('loading');",
@@ -140,6 +139,12 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
     <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <%= link_to_function(_("Cancel"), "Element.hide('todo-form-#{task.dom_id}');$('new-todo-#{task.dom_id}').show();") %>
 <% end %>
     <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
+    <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
+      <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
+<%= render :partial => "tasks/todo_row", :locals => { :depth => depth } %>
+      <% end %>
+    </ul>
+<%= sortable_element "todo-#{task.dom_id}", :url => { :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>
    </div>
 </div>
 

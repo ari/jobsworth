@@ -1546,12 +1546,12 @@ class TasksController < ApplicationController
       end
       return
     end
-    todo = Todo.new
-    todo.name = params[:todo][:name]
-    todo.creator_id = current_user.id
-    todo.task_id = @task.id
+    @todo = Todo.new
+    @todo.name = params[:todo][:name]
+    @todo.creator_id = current_user.id
+    @todo.task_id = @task.id
 
-    unless todo.save
+    unless @todo.save
       render :update do |page|
         page.visual_effect(:highlight, "todo-form-tasks-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
       end
@@ -1560,9 +1560,7 @@ class TasksController < ApplicationController
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       render :update do |page|
-        page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
-        page.show("todo-container-#{@task.dom_id}")
-        page["todo-form-#{@task.dom_id}"].show
+        page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
