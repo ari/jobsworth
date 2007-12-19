@@ -70,7 +70,7 @@ module ActionController #:nodoc:
   end
 
   class DoubleRenderError < ActionControllerError #:nodoc:
-    DEFAULT_MESSAGE = "Render and/or redirect were called multiple times in this action. Please note that you may only call render OR redirect, and at most once per action. Also note that neither redirect nor render terminate execution of the action, so if you want to exit an action after redirecting, you need to do something like \"redirect_to(...) and return\". Finally, note that to cause a before filter to halt execution of the rest of the filter chain, the filter must return false, explicitly, so \"render(...) and return false\"."
+    DEFAULT_MESSAGE = "Render and/or redirect were called multiple times in this action. Please note that you may only call render OR redirect, and at most once per action. Also note that neither redirect nor render terminate execution of the action, so if you want to exit an action after redirecting, you need to do something like \"redirect_to(...) and return\"."
 
     def initialize(message = nil)
       super(message || DEFAULT_MESSAGE)
@@ -862,7 +862,7 @@ module ActionController #:nodoc:
 
           elsif inline = options[:inline]
             add_variables_to_assigns
-            render_for_text(@template.render_template(options[:type] || :erb, inline, nil, options[:locals] || {}), options[:status])
+            render_for_text(@template.render_template(options[:type], inline, nil, options[:locals] || {}), options[:status])
 
           elsif action_name = options[:action]
             template = default_template_name(action_name.to_s)
@@ -873,13 +873,13 @@ module ActionController #:nodoc:
             end            
 
           elsif xml = options[:xml]
-            response.content_type = Mime::XML
+            response.content_type ||= Mime::XML
             render_for_text(xml.respond_to?(:to_xml) ? xml.to_xml : xml, options[:status])
 
           elsif json = options[:json]
             json = json.to_json unless json.is_a?(String)
             json = "#{options[:callback]}(#{json})" unless options[:callback].blank?
-            response.content_type = Mime::JSON
+            response.content_type ||= Mime::JSON
             render_for_text(json, options[:status])
 
           elsif partial = options[:partial]
@@ -943,19 +943,9 @@ module ActionController #:nodoc:
           raise ArgumentError, "too many arguments to head"
         elsif args.empty?
           raise ArgumentError, "too few arguments to head"
-        elsif args.length == 2
-          status = args.shift
-          options = args.shift
-        elsif args.first.is_a?(Hash)
-          options = args.first
-        else
-          status = args.first
-          options = {}
         end
-
-        raise ArgumentError, "head requires an options hash" if !options.is_a?(Hash)
-
-        status = interpret_status(status || options.delete(:status) || :ok)
+        options = args.extract_options!
+        status = interpret_status(args.shift || options.delete(:status) || :ok)
 
         options.each do |key, value|
           headers[key.to_s.dasherize.split(/-/).map { |v| v.capitalize }.join("-")] = value.to_s

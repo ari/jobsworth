@@ -16,7 +16,7 @@ namespace :db do
         #    <<: *defaults
         next unless config['database']
         # Only connect to local databases
-        if config['host'] == 'localhost' || config['host'].blank?
+        if %w( 127.0.0.1 localhost ).include?(config['host']) || config['host'].blank?
           create_database(config)
         else
           p "This task only creates local databases. #{config['database']} is on a remote host."
@@ -86,6 +86,14 @@ namespace :db do
     Rake::Task["db:schema:dump"].invoke if ActiveRecord::Base.schema_format == :ruby
   end
 
+  namespace :migrate do
+    desc  'Rollbacks the database one migration and re migrate up. If you want to rollback more than one step, define STEP=x'
+    task :redo => [ 'db:rollback', 'db:migrate' ]
+
+    desc 'Resets your database using your migrations for the current environment'
+    task :reset => ["db:drop", "db:create", "db:migrate"]
+  end
+
   desc 'Rolls the schema back to the previous version. Specify the number of steps with STEP=n'
   task :rollback => :environment do
     step = ENV['STEP'] ? ENV['STEP'].to_i : 1
@@ -127,14 +135,16 @@ namespace :db do
 
   desc "Raises an error if there are pending migrations"
   task :abort_if_pending_migrations => :environment do
-    pending_migrations = ActiveRecord::Migrator.new(:up, 'db/migrate').pending_migrations
+    if defined? ActiveRecord
+      pending_migrations = ActiveRecord::Migrator.new(:up, 'db/migrate').pending_migrations
 
-    if pending_migrations.any?
-      puts "You have #{pending_migrations.size} pending migrations:"
-      pending_migrations.each do |pending_migration|
-        puts '  %4d %s' % [pending_migration.version, pending_migration.name]
+      if pending_migrations.any?
+        puts "You have #{pending_migrations.size} pending migrations:"
+        pending_migrations.each do |pending_migration|
+          puts '  %4d %s' % [pending_migration.version, pending_migration.name]
+        end
+        abort "Run `rake db:migrate` to update your database then try again."
       end
-      abort "Run `rake db:migrate` to update your database then try again."
     end
   end
 
@@ -304,7 +314,7 @@ namespace :db do
 
     desc 'Prepare the test database and load the schema'
     task :prepare => %w(environment db:abort_if_pending_migrations) do
-      if defined?(ActiveRecord::Base) && !ActiveRecord::Base.configurations.blank?
+      if defined?(ActiveRecord) && !ActiveRecord::Base.configurations.blank?
         Rake::Task[{ :sql  => "db:test:clone_structure", :ruby => "db:test:clone" }[ActiveRecord::Base.schema_format]].invoke
       end
     end

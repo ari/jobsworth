@@ -1,3 +1,4 @@
+# FIXME: helper { ... } is broken on Ruby 1.9
 module ActionController #:nodoc:
   module Helpers #:nodoc:
     HELPERS_DIR = (defined?(RAILS_ROOT) ? "#{RAILS_ROOT}/app/helpers" : "app/helpers")
@@ -120,7 +121,7 @@ module ActionController #:nodoc:
               begin
                 require_dependency(file_name)
               rescue LoadError => load_error
-                requiree = / -- (.*?)(\.rb)?$/.match(load_error).to_a[1]
+                requiree = / -- (.*?)(\.rb)?$/.match(load_error.message).to_a[1]
                 if requiree == file_name
                   msg = "Missing helper file helpers/#{file_name}.rb"
                   raise LoadError.new(msg).copy_blame!(load_error)
@@ -177,10 +178,8 @@ module ActionController #:nodoc:
           end
         rescue MissingSourceFile => e
           raise unless e.is_missing? module_path
-          logger.debug("#{name}: missing default helper path #{module_path}") if logger
         rescue NameError => e
           raise unless e.missing_name? module_name
-          logger.debug("#{name}: missing default helper module #{module_name}") if logger
         end
 
         def inherited_with_helper(child)

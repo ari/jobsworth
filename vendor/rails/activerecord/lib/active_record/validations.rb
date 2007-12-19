@@ -297,7 +297,33 @@ module ActiveRecord
                                   :equal_to => '==', :less_than => '<', :less_than_or_equal_to => '<=',
                                   :odd => 'odd?', :even => 'even?' }.freeze
 
-
+      # Adds a validation method or block to the class. This is useful when
+      # overriding the #validate instance method becomes too unwieldly and
+      # you're looking for more descriptive declaration of your validations.
+      #
+      # This can be done with a symbol pointing to a method:
+      #
+      #   class Comment < ActiveRecord::Base
+      #     validate :must_be_friends
+      #
+      #     def must_be_friends
+      #       errors.add_to_base("Must be friends to leave a comment") unless commenter.friend_of?(commentee)
+      #     end
+      #   end
+      #
+      # Or with a block which is passed the current record to be validated:
+      #
+      #   class Comment < ActiveRecord::Base
+      #     validate do |comment|
+      #       comment.must_be_friends
+      #     end
+      #
+      #     def must_be_friends
+      #       errors.add_to_base("Must be friends to leave a comment") unless commenter.friend_of?(commentee)
+      #     end
+      #   end
+      #
+      # This usage applies to #validate_on_create and #validate_on_update as well.
       def validate(*methods, &block)
         methods << block if block_given?
         write_inheritable_set(:validate, methods)
@@ -403,7 +429,7 @@ module ActiveRecord
         configuration = { :message => ActiveRecord::Errors.default_error_messages[:confirmation], :on => :save }
         configuration.update(attr_names.extract_options!)
 
-        attr_accessor *(attr_names.map { |n| "#{n}_confirmation" })
+        attr_accessor(*(attr_names.map { |n| "#{n}_confirmation" }))
 
         validates_each(attr_names, configuration) do |record, attr_name, value|
           record.errors.add(attr_name, configuration[:message]) unless record.send("#{attr_name}_confirmation").nil? or value == record.send("#{attr_name}_confirmation")
@@ -425,7 +451,8 @@ module ActiveRecord
       # * <tt>on</tt> - Specifies when this validation is active (default is :save, other options :create, :update)
       # * <tt>allow_nil</tt> - Skip validation if attribute is nil. (default is true)
       # * <tt>accept</tt> - Specifies value that is considered accepted.  The default value is a string "1", which
-      #   makes it easy to relate to an HTML checkbox.
+      #   makes it easy to relate to an HTML checkbox. This should be set to 'true' if you are validating a database
+      #   column, since the attribute is typecast from "1" to <tt>true</tt> before validation.
       # * <tt>if</tt> - Specifies a method, proc or string to call to determine if the validation should
       #   occur (e.g. :if => :allow_validation, or :if => Proc.new { |user| user.signup_step > 2 }).  The
       #   method, proc or string should return or evaluate to a true or false value.
@@ -436,7 +463,13 @@ module ActiveRecord
         configuration = { :message => ActiveRecord::Errors.default_error_messages[:accepted], :on => :save, :allow_nil => true, :accept => "1" }
         configuration.update(attr_names.extract_options!)
 
-        attr_accessor *attr_names.reject { |name| column_names.include? name.to_s }
+        db_cols = begin
+          column_names
+        rescue ActiveRecord::StatementInvalid
+          []
+        end
+        names = attr_names.reject { |name| db_cols.include?(name.to_s) }
+        attr_accessor(*names)
 
         validates_each(attr_names,configuration) do |record, attr_name, value|
           record.errors.add(attr_name, configuration[:message]) unless value == configuration[:accept]

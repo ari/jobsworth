@@ -1,4 +1,5 @@
 require File.dirname(__FILE__) + '/../abstract_unit'
+require 'action_controller/integration'
 
 class RequestTest < Test::Unit::TestCase
   def setup
@@ -315,7 +316,7 @@ class RequestTest < Test::Unit::TestCase
 
   def test_allow_method_hacking_on_post
     set_request_method_to :post
-    [:get, :head, :put, :post, :delete].each do |method|
+    [:get, :head, :options, :put, :post, :delete].each do |method|
       @request.instance_eval { @parameters = { :_method => method } ; @request_method = nil }
       assert_equal(method == :head ? :get : method, @request.method)
     end

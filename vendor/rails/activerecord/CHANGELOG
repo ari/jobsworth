@@ -1,3 +1,18 @@
+*2.0.2* (December 16th, 2007)
+
+* Ensure optimistic locking handles nil #lock_version values properly.  Closes #10510 [rick]
+
+* Make the Fixtures Test::Unit enhancements more supporting for double-loaded test cases.  Closes #10379 [brynary]
+
+* Fix that validates_acceptance_of still works for non-existent tables (useful for bootstrapping new databases).  Closes #10474 [hasmanyjosh]
+
+* Ensure that the :uniq option for has_many :through associations retains the order.  #10463 [remvee]
+
+* Base.exists? doesn't rescue exceptions to avoid hiding SQL errors.  #10458 [Michael Klishin]
+
+* Documentation: Active Record exceptions, destroy_all and delete_all.  #10444, #10447 [Michael Klishin]
+
+
 *2.0.1* (December 7th, 2007)
 
 * Removed query cache rescue as it could cause code to be run twice (closes #10408) [DHH]
@@ -9,7 +24,8 @@
 
 * Fixed that the Query Cache should just be ignored if the database is misconfigured (so that the "About your applications environment" works even before the database has been created) [DHH]
 
-* Fixed that the truncation of strings longer than 50 chars should use inspect so newlines etc are escaped #10385 [norbert]
+* Fixed that the truncation of strings longer than 50 chars should use inspect
+so newlines etc are escaped #10385 [Norbert Crombach]
 
 * Fixed that habtm associations should be able to set :select as part of their definition and have that honored [DHH]
 
@@ -25,7 +41,7 @@
 
     render :partial => @client.becomes(Company) # renders companies/company instead of clients/client
 
-* Fixed that to_xml should not automatically pass :procs to associations included with :include #10162 [chuyeow]
+* Fixed that to_xml should not automatically pass :procs to associations included with :include #10162 [Cheah Chu Yeow]
 
 * Fix documentation typo introduced in [8250]. Closes #10339 [Henrik N]
 
@@ -59,13 +75,13 @@
 
 * Enhance explanation with more examples for attr_accessible macro. Closes #8095 [fearoffish, Marcel Molina]
 
-* Update association/method mapping table to refected latest collection methods for has_many :through. Closes #8772 [lifofifo]
+* Update association/method mapping table to refected latest collection methods for has_many :through. Closes #8772 [Pratik Naik]
 
 * Explain semantics of having several different AR instances in a transaction block. Closes #9036 [jacobat, Marcel Molina]
 
 * Update Schema documentation to use updated sexy migration notation. Closes #10086 [sjgman9]
 
-* Make fixtures work with the new test subclasses. [tarmo, Koz]
+* Make fixtures work with the new test subclasses. [Tarmo Tänav, Koz]
 
 * Introduce finder :joins with associations. Same :include syntax but with inner rather than outer joins.  #10012 [RubyRedRick]
     # Find users with an avatar
@@ -74,7 +90,7 @@
     # Find posts with a high-rated comment.
     Post.find(:all, :joins => :comments, :conditions => 'comments.rating > 3')
 
-* Associations: speedup duplicate record check.  #10011 [lifofifo]
+* Associations: speedup duplicate record check.  #10011 [Pratik Naik]
 
 * Make sure that << works on has_many associations on unsaved records.  Closes #9989 [hasmanyjosh]
 
@@ -93,13 +109,13 @@
 
 * Add docs explaining how to protect all attributes using attr_accessible with no arguments. Closes #9631 [boone, rmm5t]
 
-* Update add_index documentation to use new options api. Closes #9787 [kamal]
+* Update add_index documentation to use new options api. Closes #9787 [Kamal Fariz Mahyuddin]
 
 * Allow find on a has_many association defined with :finder_sql to accept id arguments as strings like regular find does. Closes #9916 [krishna]
 
 * Use VALID_FIND_OPTIONS when resolving :find scoping rather than hard coding the list of valid find options. Closes #9443 [sur]
 
-* Limited eager loading no longer ignores scoped :order. Closes #9561 [danger, josh]
+* Limited eager loading no longer ignores scoped :order. Closes #9561 [danger, Josh Peek]
 
 * Assigning an instance of a foreign class to a composed_of aggregate calls an optional conversion block. Refactor and simplify composed_of implementation.  #6322 [brandon, Chris Cruft]
 
@@ -116,11 +132,11 @@
 
 * Fix regression where the association would not construct new finder SQL on save causing bogus queries for "WHERE owner_id = NULL" even after owner was saved.  #8713 [Bryan Helmkamp]
 
-* Refactor association create and build so before & after callbacks behave consistently.  #8854 [lifofifo, mortent]
+* Refactor association create and build so before & after callbacks behave consistently.  #8854 [Pratik Naik, mortent]
 
 * Quote table names. Defaults to column quoting.  #4593 [Justin Lynn, gwcoffey, eadz, Dmitry V. Sabanin, Jeremy Kemper]
 
-* Alias association #build to #new so it behaves predictably.  #8787 [lifofifo]
+* Alias association #build to #new so it behaves predictably.  #8787 [Pratik Naik]
 
 * Add notes to documentation regarding attr_readonly behavior with counter caches and polymorphic associations.  Closes #9835 [saimonmoore, rick]
 
@@ -141,9 +157,9 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Speedup database date/time parsing.  [Jeremy Kemper, Tarmo Tänav]
 
-* Fix calling .clear on a has_many :dependent=>:delete_all association. [tarmo]
+* Fix calling .clear on a has_many :dependent=>:delete_all association. [Tarmo Tänav]
 
-* Allow change_column to set NOT NULL in the PostgreSQL adapter [tarmo]
+* Allow change_column to set NOT NULL in the PostgreSQL adapter [Tarmo Tänav]
 
 * Fix that ActiveRecord would create attribute methods and override custom attribute getters if the method is also defined in Kernel.methods. [Rick]
 
@@ -171,7 +187,7 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Extract Oracle, SQLServer, and Sybase adapters into gems.  [Jeremy Kemper]
 
-* Added fixture caching that'll speed up a normal fixture-powered test suite between 50% and 100% #9682 [frederick.cheung@gmail.com]
+* Added fixture caching that'll speed up a normal fixture-powered test suite between 50% and 100% #9682 [Frederick Cheung]
 
 * Correctly quote id list for limited eager loading.  #7482 [tmacedo]
 
@@ -179,9 +195,9 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Fixed rename_column for SQLite when using symbols for the column names #8616 [drodriguez]
 
-* Added the possibility of using symbols in addition to concrete classes with ActiveRecord::Observer#observe #3998 [robbyrussell/tarmo]
+* Added the possibility of using symbols in addition to concrete classes with ActiveRecord::Observer#observe.  #3998 [Robby Russell, Tarmo Tänav]
 
-* Added ActiveRecord::Base#to_json/from_json [DHH/chuyeow]
+* Added ActiveRecord::Base#to_json/from_json [DHH, Cheah Chu Yeow]
 
 * Added ActiveRecord::Base#from_xml [DHH]. Example:
 
@@ -210,11 +226,11 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * OpenBase: update for new lib and latest Rails. Support migrations.  #8748 [dcsesq]
 
-* Moved acts_as_tree into a plugin of the same name on the official Rails svn #9514 [lifofifo]
+* Moved acts_as_tree into a plugin of the same name on the official Rails svn.  #9514 [Pratik Naik]
 
-* Moved acts_as_nested_set into a plugin of the same name on the official Rails svn #9516 [josh]
+* Moved acts_as_nested_set into a plugin of the same name on the official Rails svn.  #9516 [Josh Peek]
 
-* Moved acts_as_list into a plugin of the same name on the official Rails svn [josh]
+* Moved acts_as_list into a plugin of the same name on the official Rails svn.  [Josh Peek]
 
 * Explicitly require active_record/query_cache before using it.  [Jeremy Kemper]
 
@@ -240,7 +256,7 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Perform a deep #dup on query cache results so that modifying activerecord attributes does not modify the cached attributes.  [Rick]
 
-# Ensure that has_many :through associations use a count query instead of loading the target when #size is called.  Closes #8800 [lifo]
+# Ensure that has_many :through associations use a count query instead of loading the target when #size is called.  Closes #8800 [Pratik Naik]
 
 * Added :unless clause to validations #8003 [monki]. Example: 
 
@@ -252,11 +268,11 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
     validates_presence_of :username, :unless => using_open_id?
     validates_presence_of :password, :unless => using_open_id?
 
-* Fix #count on a has_many :through association so that it recognizes the :uniq option.  Closes #8801 [lifofifo]
+* Fix #count on a has_many :through association so that it recognizes the :uniq option.  Closes #8801 [Pratik Naik]
 
-* Fix and properly document/test count(column_name) usage. Closes #8999 [lifofifo]
+* Fix and properly document/test count(column_name) usage. Closes #8999 [Pratik Naik]
 
-* Remove deprecated count(conditions=nil, joins=nil) usage.  Closes #8993 [lifofifo]
+* Remove deprecated count(conditions=nil, joins=nil) usage.  Closes #8993 [Pratik Naik]
 
 * Change belongs_to so that the foreign_key assumption is taken from the association name, not the class name.  Closes #8992 [hasmanyjosh]
 
@@ -266,25 +282,25 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
   NEW
     belongs_to :visitor, :class_name => 'User' # => inferred foreign_key is visitor_id
 
-* Remove spurious tests from deprecated_associations_test, most of these aren't deprecated, and are duplicated in associations_test.  Closes #8987 [lifofifo]
+* Remove spurious tests from deprecated_associations_test, most of these aren't deprecated, and are duplicated in associations_test.  Closes #8987 [Pratik Naik]
 
-* Make create! on a has_many :through association return the association object.  Not the collection.  Closes #8786 [lifofifo]
+* Make create! on a has_many :through association return the association object.  Not the collection.  Closes #8786 [Pratik Naik]
 
 * Move from select * to select tablename.* to avoid clobbering IDs. Closes #8889 [dasil003]
 
 * Don't call unsupported methods on associated objects when using :include, :method with to_xml #7307, [manfred, jwilger]
 
-* Define collection singular ids method for has_many :through associations.  #8763 [lifofifo]
+* Define collection singular ids method for has_many :through associations.  #8763 [Pratik Naik]
 
-* Array attribute conditions work with proxied association collections.  #8318 [kamal, theamazingrando]
+* Array attribute conditions work with proxied association collections.  #8318 [Kamal Fariz Mahyuddin, theamazingrando]
 
-* Fix polymorphic has_one associations declared in an abstract class.  #8638 [lifofifo, daxhuiberts]
+* Fix polymorphic has_one associations declared in an abstract class.  #8638 [Pratik Naik, Dax Huiberts]
 
-* Fixed validates_associated should not stop on the first error #4276 [mrj/manfred/josh]
+* Fixed validates_associated should not stop on the first error.  #4276 [mrj, Manfred Stienstra, Josh Peek]
 
 * Rollback if commit raises an exception.  #8642 [kik, Jeremy Kemper]
 
-* Update tests' use of fixtures for the new collections api.  #8726 [kamal]
+* Update tests' use of fixtures for the new collections api.  #8726 [Kamal Fariz Mahyuddin]
 
 * Save associated records only if the association is already loaded.  #8713 [blaine]
 
@@ -294,7 +310,7 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Fixtures: people(:technomancy, :josh) returns both fixtures.  #7880 [technomancy, Josh Peek]
 
-* Calculations support non-numeric foreign keys.  #8154 [kamal]
+* Calculations support non-numeric foreign keys.  #8154 [Kamal Fariz Mahyuddin]
 
 * with_scope is protected.  #8524 [Josh Peek]
 
@@ -330,7 +346,7 @@ single-table inheritance.  #3833, #9886 [Gabriel Gironda, rramdas, François Bea
 
 * Load database adapters on demand. Eliminates config.connection_adapters and RAILS_CONNECTION_ADAPTERS. Add your lib directory to the $LOAD_PATH and put your custom adapter in lib/active_record/connection_adapters/adaptername_adapter.rb. This way you can provide custom adapters as plugins or gems without modifying Rails. [Jeremy Kemper]
 
-* Ensure that associations with :dependent => :delete_all respect :conditions option.  Closes #8034 [danger, joshpeek, Rick]
+* Ensure that associations with :dependent => :delete_all respect :conditions option.  Closes #8034 [danger, Josh Peek, Rick]
 
 * belongs_to assignment creates a new proxy rather than modifying its target in-place.  #8412 [mmangino@elevatedrails.com]
 
@@ -733,7 +749,7 @@ during calendar reform.  #7649, #7724 [fedot, Geoff Buesing]
 
 * Fixed to_xml with :include misbehaviors when invoked on array of model instances #5690 [alexkwolfe@gmail.com]
 
-* Added support for conditions on Base.exists? #5689 [josh@joshpeek.com]. Examples:
+* Added support for conditions on Base.exists? #5689 [Josh Peek]. Examples:
 
     assert (Topic.exists?(:author_name => "David")) 
  	  assert (Topic.exists?(:author_name => "Mary", :approved => true)) 
@@ -1190,7 +1206,7 @@ during calendar reform.  #7649, #7724 [fedot, Geoff Buesing]
 
 * Fixed to_xml with :include misbehaviors when invoked on array of model instances #5690 [alexkwolfe@gmail.com]
 
-* Added support for conditions on Base.exists? #5689 [josh@joshpeek.com]. Examples:
+* Added support for conditions on Base.exists? #5689 [Josh Peek]. Examples:
 
     assert (Topic.exists?(:author_name => "David")) 
  	  assert (Topic.exists?(:author_name => "Mary", :approved => true)) 
