@@ -34,7 +34,8 @@ module ApplicationHelper
   def total_today
     return @total if @total
     @total = 0
-    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, tz.local_to_utc(Time.now.at_midnight), tz.local_to_utc(Time.now.tomorrow.at_midnight)])
+    start = tz.local_to_utc(tz.now.at_midnight)
+    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, start, start + 1.day])
     logs.each { |l|
       @total = @total + l.duration
     }
