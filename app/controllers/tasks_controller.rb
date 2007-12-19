@@ -1403,7 +1403,7 @@ class TasksController < ApplicationController
     self.create
     unless @task.id
       render :update do |page|
-        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "#ff9999")
       end
     else
       @task.reload
@@ -1423,7 +1423,7 @@ class TasksController < ApplicationController
 
     if !params[:task][:name] || params[:task][:name].empty?
       render :update do |page|
-        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
@@ -1445,7 +1445,7 @@ class TasksController < ApplicationController
       @task.milestone_id = nil
     else
       render :update do |page|
-        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
@@ -1455,7 +1455,7 @@ class TasksController < ApplicationController
 
     unless @task.id
       render :update do |page|
-        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "#ff9999")
       end
     else
       to = TaskOwner.new(:user => current_user, :task => @task)
@@ -1534,7 +1534,7 @@ class TasksController < ApplicationController
 
     if params[:todo][:name].blank?
       render :update do |page|
-        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
@@ -1542,7 +1542,7 @@ class TasksController < ApplicationController
     @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", params[:id]])
     unless @task
       render :update do |page|
-        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
@@ -1553,7 +1553,7 @@ class TasksController < ApplicationController
 
     unless @todo.save
       render :update do |page|
-        page.visual_effect(:highlight, "todo-form-tasks-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todo-form-tasks-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
     else
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
@@ -1561,9 +1561,12 @@ class TasksController < ApplicationController
 
       render :update do |page|
         page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
+        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
+        page.visual_effect :highlight, @todo.dom_id
+        page << "Sortable.create('todo-#{@task.dom_id}', {containment:'todo-#{@task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-#{@task.dom_id}')})}, only:'todo-active'})"
       end
     end
 
@@ -1571,39 +1574,45 @@ class TasksController < ApplicationController
 
   def todo_check_ajax
     begin
-      todo = Todo.find(params[:id])
+      @todo = Todo.find(params[:id])
     rescue
       render :nothing => true
       return
     end
-    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", todo.task_id])
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", @todo.task_id])
     unless @task
       render :update do |page|
-        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
 
-    if todo.completed_at
-      todo.completed_at = nil
+    if @todo.completed_at
+      @todo.completed_at = nil
     else
-      todo.completed_at = Time.now.utc
+      @todo.completed_at = Time.now.utc
     end
-    if todo.save
+    if @todo.save
       render :update do |page|
-        page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
-        page.show("todo-container-#{@task.dom_id}")
-
-        page.delay(0.2) do
-          page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 1.5)
+        if @todo.completed_at
+          page.remove @todo.dom_id
+          page.insert_html :top, "todo-done-#{@task.dom_id}", :partial => "tasks/todo_row"
+          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
+        else
+          @todo.move_to_bottom
+          page.remove @todo.dom_id
+          page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
+          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
         end
+        page << "Sortable.create('todo-#{@task.dom_id}', {containment:'todo-#{@task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-#{@task.dom_id}')})}, only:'todo-active'})"
         page.call("updateTooltips")
+        page.visual_effect(:highlight, "#{@todo.dom_id}", :duration => 1.5)
       end
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
     else
       render :update do |page|
-        page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "#{@todo.dom_id}", :duration => 0.5, :startcolor => "#ff9999")
       end
     end
 
@@ -1626,7 +1635,7 @@ class TasksController < ApplicationController
       @todo = Todo.find(params[:id])
     rescue
       render :update do |page|
-        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
       return
     end
@@ -1645,7 +1654,7 @@ class TasksController < ApplicationController
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
     else
       render :update do |page|
-        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
       end
     end
   end
