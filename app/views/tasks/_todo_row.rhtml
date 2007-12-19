@@ -3,5 +3,10 @@
                                                                        :loading => "Element.show('loading');",
                                                                        :complete => "Element.hide('loading');" ) } )
   -%>
-  <%= @todo.name %></li>
+ <%= @todo.name %> <%= "[#{tz.utc_to_local(@todo.completed_at).strftime("#{current_user.time_format} #{current_user.date_format}")}]" if @todo.done? %>
+&nbsp;<%= link_to_remote image_tag("cross_small.png", :border => 0, :title => _("Delete <b>%s</b>.", @todo.name), :class => "tooltip"),
+                  :url => { :controller => 'tasks', :action => 'todo_delete_ajax', :id => @todo.id },
+                  :loading => "Element.show('loading');",
+                  :complete => "Element.hide('loading');" -%>
+</li>
 

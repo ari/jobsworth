@@ -36,6 +36,7 @@ class Task < ActiveRecord::Base
   has_one       :ical_entry
 
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
+  has_many      :sheets
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
@@ -231,6 +232,10 @@ class Task < ActiveRecord::Base
 
   def active?
     self.hide_until.nil? || self.hide_until < Time.now.utc
+  end
+
+  def worked_on?
+    self.sheets.size > 0
   end
 
   def set_task_num(company_id)
@@ -538,6 +543,10 @@ class Task < ActiveRecord::Base
 
   def todo_status
     "(#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)})"
+  end
+
+  def todo_count
+    "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
   end
 
 end

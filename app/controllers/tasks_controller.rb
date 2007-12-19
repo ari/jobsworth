@@ -365,7 +365,6 @@ class TasksController < ApplicationController
         Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
       end
 
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
@@ -884,6 +883,7 @@ class TasksController < ApplicationController
 
     session[:sheet] = sheet
 
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
 
     return if request.xhr?
     redirect_from_last
@@ -903,6 +903,7 @@ class TasksController < ApplicationController
     end
     session[:sheet] = nil
     @task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
     return if request.xhr?
     redirect_from_last
   end
@@ -942,6 +943,7 @@ class TasksController < ApplicationController
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
       end
+
     end
   end
 
@@ -964,6 +966,7 @@ class TasksController < ApplicationController
     @log.log_type = EventLog::TASK_WORK_ADDED
 
     @log.save
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
 
     render :action => 'edit_log'
   end
@@ -993,6 +996,7 @@ class TasksController < ApplicationController
         @log.started_at = tz.utc_to_local(@log.started_at)
         @task = @log.task
         render :action => 'edit_log'
+        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       else
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
@@ -1013,6 +1017,7 @@ class TasksController < ApplicationController
 
     @task = session[:sheet].task
     swap_work_ajax
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
 #    redirect_to :action => 'shortlist'
   end
 
@@ -1022,7 +1027,6 @@ class TasksController < ApplicationController
 
   def update_tasks
     @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    ActiveRecord::Base.connection.execute("update users set last_seen_at = '#{Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")}' where id = #{current_user.id}")
   end
 
   def do_filter
@@ -1212,6 +1216,8 @@ class TasksController < ApplicationController
       worklog = WorkLog.new
       worklog.log_type = EventLog::TASK_MODIFIED
 
+      update_type = :updated
+
       case session[:group_by].to_i
       when 3
         # Project
@@ -1263,7 +1269,7 @@ class TasksController < ApplicationController
             new_name = u.name
             body = "- <strong>Assignment</strong>: #{new_name}\n"
             @task.users.reload
-            Notifications::deliver_assigned( @task, current_user, @task.users, old_users, "" ) rescue begin end
+            update_type = :reassigned
           end
 
         end
@@ -1280,10 +1286,16 @@ class TasksController < ApplicationController
         if( @task.status != @group )
           if @group < 2
             @task.completed_at = nil
-            worklog.log_type = EventLog::TASK_REVERTED if @task.status > 1
+            if @task.status > 1
+              worklog.log_type = EventLog::TASK_REVERTED
+              update_type = :reverted
+            end
           else
-            worklog.log_type = EventLog::TASK_COMPLETED if @task.status < 2
             @task.completed_at = Time.now.utc if @task.completed_at.nil?
+            if @task.status < 2
+              worklog.log_type = EventLog::TASK_COMPLETED
+              update_type = :completed
+            end
           end
           body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
           @task.status = @group
@@ -1354,6 +1366,8 @@ class TasksController < ApplicationController
         worklog.duration = 0
         worklog.body = body
         worklog.save
+        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
+        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       end
 
     end
@@ -1547,12 +1561,14 @@ class TasksController < ApplicationController
 
       render :update do |page|
         page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page.show("todo-container-#{@task.dom_id}")
         page["todo-form-#{@task.dom_id}"].show
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
       end
     end
+
   end
 
   def todo_check_ajax
@@ -1578,17 +1594,60 @@ class TasksController < ApplicationController
     if todo.save
       render :update do |page|
         page.replace "task_#{@task.id}", :partial => "task_row", :locals => { :task => @task, :depth => params[:depth].to_i }
+        page.show("todo-container-#{@task.dom_id}")
+
         page.delay(0.2) do
           page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 1.5)
         end
         page.call("updateTooltips")
       end
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
     else
       render :update do |page|
         page.visual_effect(:highlight, "#{todo.dom_id}", :duration => 0.5, :startcolor => "'#ff9999'")
       end
     end
 
+  end
+
+  def order_todos
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", params[:id]])
+    @task.todos.find(:all, :conditions => ["completed_at IS NULL"]).each do |todo|
+      todo.position = params["todo-tasks-#{@task.id}"].index(todo.id.to_s) + 1
+      todo.save
+    end
+    render :update do |page|
+      page.visual_effect(:highlight, "todo-#{@task.dom_id}")
+    end
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+  end
+
+  def todo_delete_ajax
+    begin
+      @todo = Todo.find(params[:id])
+    rescue
+      render :update do |page|
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+      return
+    end
+    @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", @todo.task_id])
+
+    if @task
+      render :update do |page|
+        page.visual_effect :fade, @todo.dom_id
+        page.delay(1.0) do
+          page.remove @todo.dom_id
+        end
+      end
+      @todo.destroy
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+    else
+      render :update do |page|
+        page.visual_effect(:highlight, "todos-#{params[:id]}", :duration => 0.5, :startcolor => "'#ff9999'")
+      end
+    end
   end
 
 end
