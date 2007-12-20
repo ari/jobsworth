@@ -8,11 +8,17 @@
     <tr><td colspan="3" class="tasks_updated_by"><span class="optional">
      <%
         creator = nil
-        creator = User.find(@task.creator_id) if @task.creator_id.to_i > 0
+        begin
+          creator = User.find(@task.creator_id) if @task.creator_id.to_i > 0
+        rescue
+        end
         creator_name = (creator.nil? ? "Unknown" : creator.name)
 
         updator = nil
-        updator = User.find(@task.updated_by_id) if @task.updated_by_id.to_i > 0
+        begin
+          updator = User.find(@task.updated_by_id) if @task.updated_by_id.to_i > 0
+        rescue
+        end
         updator_name = (updator.nil? ? "Unknown" : updator.name)
 
      %>
