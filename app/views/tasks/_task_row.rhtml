@@ -99,10 +99,10 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
    <%= link_to_task(task) -%>
 
-   <small>
+     <small>
      <span id="todo-status-<%= task.dom_id %>">
      <% unless task.todos.empty? %>
-     <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');") %>
+     <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');", :class => "todo-status-link") %>
      <% end %>
      </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
@@ -131,7 +131,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 <%= render :partial => "tasks/todo_row" %>
       <% end %>
     </ul>
-<% form_remote_tag :url => { :action => 'create_todo_ajax', :id => task.id, :depth => depth  } ,
+<% form_remote_tag :url => { :controller => 'tasks', :action => 'create_todo_ajax', :id => task.id, :depth => depth  } ,
        :loading => "Element.show('loading');",
        :complete => "Element.hide('loading');",
        :html => { :id => "todo-form-#{task.dom_id}",
@@ -146,7 +146,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 <%= render :partial => "tasks/todo_row" %>
       <% end %>
     </ul>
-<%= sortable_element "todo-#{task.dom_id}", :url => { :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>
+<%= sortable_element "todo-#{task.dom_id}", :url => { :controller => 'tasks', :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>
    </div>
 </div>
 

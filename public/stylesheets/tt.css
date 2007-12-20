@@ -1849,3 +1849,6 @@ li.help {
   vertical-align: top;
 }
 
+.todo-status-link {
+  background-color: #c1e6a3;
+}

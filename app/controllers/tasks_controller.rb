@@ -1597,7 +1597,7 @@ class TasksController < ApplicationController
         if @todo.completed_at
           page.remove @todo.dom_id
           page.insert_html :top, "todo-done-#{@task.dom_id}", :partial => "tasks/todo_row"
-          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
+          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => "todo-status-link")
         else
           @todo.move_to_bottom
           page.remove @todo.dom_id
