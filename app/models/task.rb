@@ -501,18 +501,27 @@ class Task < ActiveRecord::Base
     return [results.total_hits, results]
   end
 
+  def due
+    due = self.due_at
+    due = self.milestone.due_at if(due.nil? && self.milestone)
+    due
+  end
+
   def to_tip(options = { })
     owners = "No one"
     owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
+
     res = "<table cellpadding=0 cellspacing=0>"
     res << "<tr><th>#{_('Summary')}</td><td>#{self.name}</tr>"
     res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
-    res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>"
+    res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
     res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
     res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
     res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
+    res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime(options[:user].date_format)}</td></tr>" if self.completed_at
+    res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime(options[:user].date_format)}</td></tr>" if self.due
     unless self.dependencies.empty?
-      res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.status_name }.join('<br />')}</td></tr>"
+      res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
     end
     unless self.dependants.empty?
       res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.status_name }.join('<br />')}</td></tr>"

@@ -139,4 +139,12 @@ class User < ActiveRecord::Base
     "<span class=\"status-online\">#{self.name}</span>"
   end
 
+  def tz
+    unless @tz
+      @tz = Timezone.get(self.time_zone)
+    end
+    @tz
+  end
+
+
 end
