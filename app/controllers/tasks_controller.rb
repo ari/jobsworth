@@ -948,10 +948,10 @@ class TasksController < ApplicationController
   end
 
   def add_work
-    @task = current_user.tasks.find( params['id'] )
-
-    unless @task
-      flash['notice'] = _('Unable to find task.')
+    begin
+      @task = current_user.tasks.find( params['id'] )
+    rescue
+      flash['notice'] = _('Unable to find task belonging to you with that ID.')
       redirect_from_last
     end
 
