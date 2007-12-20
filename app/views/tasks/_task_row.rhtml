@@ -94,16 +94,13 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
-   <div class="add-todo-link" style="float:right;display:none;margin-right:1em;"><small><%= link_to_function( _('Add To-do'), "$('todo-container-#{task.dom_id}').toggle();$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></div>
    <div class="task-name" style="padding-left:2px;">
 
    <%= link_to_task(task) -%>
 
      <small>
      <span id="todo-status-<%= task.dom_id %>">
-     <% unless task.todos.empty? %>
-     <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');", :class => "todo-status-link") %>
-     <% end %>
+     <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');", :class => (task.todos.empty? ? "todo-status-link-empty" :"todo-status-link") ) %>
      </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
@@ -140,7 +137,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 %>
     <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <%= link_to_function(_("Cancel"), "Element.hide('todo-form-#{task.dom_id}');$('new-todo-#{task.dom_id}').show();") %>
 <% end %>
-    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
+    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('New To-do Item'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
     <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
       <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
 <%= render :partial => "tasks/todo_row" %>
@@ -160,11 +157,9 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 // <![CDATA[
 Event.observe('row-<%= task.dom_id %>', "mouseover", function(e) {
   $('row-<%=task.dom_id%>').addClassName('task-highlight');
-  $$('#task_<%=task.id%> div.add-todo-link').each( function(id) { Element.show(id) });
 });
 Event.observe('row-<%= task.dom_id %>', "mouseout", function(e) {
   $('row-<%=task.dom_id%>').removeClassName('task-highlight');
-  $$('#task_<%=task.id%> div.add-todo-link').each( function(id) { Element.hide(id) });
 });
 // ]]>
 </script>

@@ -1561,7 +1561,7 @@ class TasksController < ApplicationController
 
       render :update do |page|
         page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
-        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
+        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
         page << "$('todo_text_#{@task.id}').clear();"
         page << "$('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
@@ -1597,12 +1597,12 @@ class TasksController < ApplicationController
         if @todo.completed_at
           page.remove @todo.dom_id
           page.insert_html :top, "todo-done-#{@task.dom_id}", :partial => "tasks/todo_row"
-          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => "todo-status-link")
+          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
         else
           @todo.move_to_bottom
           page.remove @todo.dom_id
           page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
-          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
+          page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
         end
         page << "Sortable.create('todo-#{@task.dom_id}', {containment:'todo-#{@task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-#{@task.dom_id}')})}, only:'todo-active'})"
         page.call("updateTooltips")
@@ -1646,7 +1646,7 @@ class TasksController < ApplicationController
       @todo.destroy
       render :update do |page|
         page.visual_effect :fade, element
-        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');")
+        page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
         page.delay(1.0) do
           page.remove element
         end

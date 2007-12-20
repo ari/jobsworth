@@ -551,7 +551,7 @@ class Task < ActiveRecord::Base
   end
 
   def todo_status
-    todos.empty? ? "" : "(#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)})"
+    todos.empty? ? "[To-do]" : "[#{sprintf("%.2f%%", todos.select{|t| t.completed_at }.size / todos.size.to_f * 100.0)}]"
   end
 
   def todo_count
