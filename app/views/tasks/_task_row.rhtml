@@ -20,15 +20,17 @@
  classes << " override_filter" if defined?(override_filter) && override_filter
  classes << " waiting_deferred" unless task.active?
 
+ classes << " task_active_others" if task.worked_on?
  classes << " task_active" if session[:sheet] && session[:sheet].task_id == task.id
  classes << " task_done" if task.done?
  classes << " task_paused" if session[:sheet] && session[:sheet].task_id == task.id && session[:sheet].paused?
 -%>
-class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>" >
-
+class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
-  <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px; display: none;" align="right">
-      <% if session[:sheet] && session[:sheet].task.id == task.id -%>
+<div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
+  <% if(session[:sheet] && session[:sheet].task.id == task.id) || task.done? -%>
+    <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
+    <% if(session[:sheet] && session[:sheet].task.id == task.id) -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
           :loading => "Element.show('loading');",
@@ -44,7 +46,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
             :loading => "Element.show('loading');",
             :complete => "Element.hide('loading');" -%>
         <% end %>
-      <% else -%>
+    <% else -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
             <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
@@ -61,7 +63,8 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
           <% end -%>
         <% end -%>
       <% end -%>
-  </div>
+     </div>
+    <% end -%>
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><img src="/images/drag.gif" border="0" /></div>
 
@@ -90,11 +93,18 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <% end -%>
    </div>
 
+   <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
+   <div class="add-todo-link" style="float:right;display:none;margin-right:1em;"><small><%= link_to_function( _('Add To-do'), "$('todo-container-#{task.dom_id}').toggle();$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></div>
    <div class="task-name" style="padding-left:2px;">
 
    <%= link_to_task(task) -%>
 
    <small>
+     <span id="todo-status-<%= task.dom_id %>">
+     <% unless task.todos.empty? %>
+     <%= link_to_function( "#{task.todo_status}", "Element.toggle('todo-container-#{task.dom_id}');") %>
+     <% end %>
+     </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
        <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
@@ -109,11 +119,35 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <%= task.full_name %>
    <%= "<span class=\"otheruser\">[#{name}]</span>" %>
    <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done?%>
+   <% unless task.todos.empty? %>
+   <% end %>
    </div>
-  </div>
-  <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
+   </div>
 
-
+   </div>
+   <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless session[:sheet] && session[:sheet].task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
+    <ul id="todo-<%=task.dom_id%>" class="task-todo">
+       <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
+<%= render :partial => "tasks/todo_row" %>
+      <% end %>
+    </ul>
+<% form_remote_tag :url => { :action => 'create_todo_ajax', :id => task.id, :depth => depth  } ,
+       :loading => "Element.show('loading');",
+       :complete => "Element.hide('loading');",
+       :html => { :id => "todo-form-#{task.dom_id}",
+                  :style => "display:none;"
+                } do
+%>
+    <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <%= link_to_function(_("Cancel"), "Element.hide('todo-form-#{task.dom_id}');$('new-todo-#{task.dom_id}').show();") %>
+<% end %>
+    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><%= link_to_function( _('Add New To-do'), "$('todo-form-#{task.dom_id}').show();$('new-todo-#{task.dom_id}').hide();$('todo_text_#{task.id}').focus();") -%></small></span>
+    <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
+      <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
+<%= render :partial => "tasks/todo_row" %>
+      <% end %>
+    </ul>
+<%= sortable_element "todo-#{task.dom_id}", :url => { :action => 'order_todos', :id => task.id }, :format => "/^[^-]*-(.*)$/", :containment => "todo-#{task.dom_id}", :only => "todo-active" %>
+   </div>
 </div>
 
 <% if session[:group_by].to_i > 2 %>
@@ -124,17 +158,13 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
-Event.observe('task_<%= task.id %>', "mouseover", function(e) {
-  $('task_<%=task.id%>').addClassName('task-highlight');
-<% if has_popout?(task) %>
-  $('edit_task_<%=task.id%>').show();
-<% end %>
+Event.observe('row-<%= task.dom_id %>', "mouseover", function(e) {
+  $('row-<%=task.dom_id%>').addClassName('task-highlight');
+  $$('#task_<%=task.id%> div.add-todo-link').each( function(id) { Element.show(id) });
 });
-Event.observe('task_<%= task.id %>', "mouseout", function(e) {
-  $('task_<%=task.id%>').removeClassName('task-highlight');
-<% if has_popout?(task) %>
-  $('edit_task_<%=task.id%>').hide();
-<% end %>
+Event.observe('row-<%= task.dom_id %>', "mouseout", function(e) {
+  $('row-<%=task.dom_id%>').removeClassName('task-highlight');
+  $$('#task_<%=task.id%> div.add-todo-link').each( function(id) { Element.hide(id) });
 });
 // ]]>
 </script>
