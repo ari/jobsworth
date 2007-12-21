@@ -29,7 +29,7 @@
              <% end %>
            <% end %>
          </div>
-         <% if @invite_targets.size > 0 && @room.company_id.to_i > 0 %>
+         <% if @invite_targets.size > 0 %>
          <br/>
          <%= link_to_function _('Invite another user'), "Element.toggle('channel-invite');$('channel-invite-user').focus();" %>
          <div id="channel-invite" style="display:none;">
