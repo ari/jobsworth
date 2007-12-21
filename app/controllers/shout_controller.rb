@@ -84,6 +84,12 @@ class ShoutController < ApplicationController
     session[:channels] << "channel_#{@room.id}" unless session[:channels].include?("channel_#{@room.id}")
     session[:channels] -= ["channel_passive_#{@room.id}"] if session[:channels].include?("channel_passive_#{@room.id}")
 
+    if @room.project
+      @invite_targets = @room.project.users.collect(&:name).flatten.uniq - [current_user.name]
+    else
+      @invite_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq - [current_user.name]
+    end
+
   end
 
   def leave
@@ -245,6 +251,32 @@ class ShoutController < ApplicationController
         page << "if($('channel_#{room.id}')){"
         page.replace "channel_#{room.id}", :partial => 'channel', :locals => { :channel => room }
         page << "}"
+      end
+    end
+  end
+
+  def invite_ajax
+    u = User.find(:first, :conditions => ["company_id = ? AND name = ?", current_user.company_id, params[:invite_user]])
+    room = ShoutChannel.find(:first, :conditions => ["id = ? AND (company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", params[:id], current_user.company_id ])
+    if(u && room)
+      begin
+        Notifications::deliver_chat_invitation(current_user, u, room)
+      rescue
+        render :update do |page|
+          page.insert_html :top, "channel-invite", "<div id=\"invite-#{u.dom_id}\">Unable to email #{u.name}.</div>"
+          page.visual_effect :highlight, "invite-#{u.dom_id}", :startcolor => "#ff9999"
+        end
+        return
+      end
+
+      render :update do |page|
+        page.insert_html :top, "channel-invite", "<div id=\"invite-#{u.dom_id}\">#{u.name} invited.</div>"
+        page.visual_effect :highlight, "invite-#{u.dom_id}"
+      end
+
+    else
+      render :update do |page|
+        page.visual_effect :highlight, "channel-invite", :startcolor => "#ff9999"
       end
     end
   end

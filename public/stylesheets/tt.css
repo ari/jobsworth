@@ -883,6 +883,26 @@ pre.auto_generated {
 
 #notification-autocomplete ul li.selected { background-color: #ffb; }
 
+#invite-autocomplete ul
+{
+  border: 1px solid #ccc;
+  padding: 0;
+  margin: 0;
+  width: 189px;
+}
+
+#invite-autocomplete ul li
+{
+  border-left: none;
+  margin: 0 2px 0 2px;
+  margin:0;
+  width: 185px;
+  overflow: hidden;
+}
+
+#invite-autocomplete ul li.selected { background-color: #ffb; }
+
+
 div.auto_complete {
   position:absolute;
   width:250px;

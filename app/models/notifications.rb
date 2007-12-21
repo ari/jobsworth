@@ -131,4 +131,16 @@ class Notifications < ActionMailer::Base
     @headers    = {'Reply-To' => user.email}
   end
 
+  def chat_invitation(user, target, room)
+    @body       = {:user => user, :room => room }
+    @subject    = "[ClockingIT] Invitation to chat: #{room.name} (#{user.name})"
+
+    @recipients = target.email
+
+    @from       = "admin@#{$CONFIG[:domain]}"
+    @sent_on    = Time.now
+    @headers    = {'Reply-To' => user.email}
+
+  end
+
 end
