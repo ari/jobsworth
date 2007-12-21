@@ -34,7 +34,9 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
           :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');" -%>
+          :complete => "Element.hide('loading');",
+          :confirm => _("Really abort work?")
+            -%>
         <% if session[:sheet].paused? %>
           <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
