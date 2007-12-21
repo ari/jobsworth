@@ -31,7 +31,7 @@
          </div>
          <% if @invite_targets.size > 0 %>
          <br/>
-         <%= link_to_function _('Invite another user'), "Element.toggle('channel-invite');$('channel-invite-user').focus();" %>
+         <%= link_to_function _('Invite a user'), "Element.toggle('channel-invite');$('channel-invite-user').focus();" %>
          <div id="channel-invite" style="display:none;">
            <%= form_remote_tag :url => { :action => 'invite_ajax', :id => @room.id } ,
            :loading => "Element.show('loading');",
