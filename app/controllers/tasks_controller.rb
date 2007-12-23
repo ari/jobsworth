@@ -338,10 +338,12 @@ class TasksController < ApplicationController
         task_file.reload
 
         if !File.directory?(task_file.path)
+          File.umask(0)
           Dir.mkdir(task_file.path, 0777) rescue begin
                                                  end
         end
 
+        File.umask(0)
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
@@ -671,10 +673,12 @@ class TasksController < ApplicationController
         task_file.reload
 
         if !File.directory?(task_file.path)
+          File.umask(0)
           Dir.mkdir(task_file.path, 0777) rescue begin
                                                  end
         end
 
+        File.umask(0)
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
                                                                                                         flash['notice'] = _("Permission denied while saving file.")

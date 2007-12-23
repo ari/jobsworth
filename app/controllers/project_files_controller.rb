@@ -165,6 +165,7 @@ class ProjectFilesController < ApplicationController
     @project_files.reload
 
     if !File.exist?(@project_files.path) || !File.directory?(@project_files.path)
+      File.umask(0)
       Dir.mkdir(@project_files.path, 0777) rescue begin
                                                     @project_files.destroy
                                                     flash['notice'] = _('Unable to create storage directory.')
@@ -172,6 +173,7 @@ class ProjectFilesController < ApplicationController
                                                     return
                                                   end
     end
+    File.umask(0)
     File.open(@project_files.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
                                                                                               @project_files.destroy
                                                                                               flash['notice'] = _("Permission denied while saving file.")
@@ -204,6 +206,7 @@ class ProjectFilesController < ApplicationController
           thumb = shadow(image)
           thumb.format = 'jpg'
 
+          File.umask(0)
           t = File.new(@project_files.thumbnail_path, "w", 0777)
           t.write(thumb.to_blob)
           t.close
