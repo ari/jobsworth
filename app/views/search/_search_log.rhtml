@@ -38,7 +38,9 @@
           <br /><%= "<span class=\"optional\">#{highlight_all(log.scm_changeset.full_name, @keys)}</span> " %>
 <% end %>
             <%= "<br/>" if log.task_id.to_i > 0 %><%= "<span class=\"optional\">#{highlight_all(log.task.full_name, @keys)}</span> " if log.task_id.to_i > 0 %>
-            <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user%>
+
+            <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
+            <%= "<small><span class=\"otheruser\">[#{log.event_log.user}]</span></small>" if log.user.nil? && log.event_log.user %>
             <%= "<small><span class=\"otheruser\">[#{log.scm_changeset.author}]</span></small>" if log.scm_changeset && !log.user %>
 
   </strong></div>
