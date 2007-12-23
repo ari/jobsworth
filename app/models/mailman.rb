@@ -80,7 +80,7 @@ class Mailman < ActionMailer::Base
             task_file.reload
 
             if !File.directory?(task_file.path)
-              Dir.mkdir(task_file.path, 0755) rescue nil
+              Dir.mkdir(task_file.path, 0777) rescue nil
             end
 
             File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) } rescue begin

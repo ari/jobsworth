@@ -165,7 +165,7 @@ class ProjectFilesController < ApplicationController
     @project_files.reload
 
     if !File.exist?(@project_files.path) || !File.directory?(@project_files.path)
-      Dir.mkdir(@project_files.path, 0755) rescue begin
+      Dir.mkdir(@project_files.path, 0777) rescue begin
                                                     @project_files.destroy
                                                     flash['notice'] = _('Unable to create storage directory.')
                                                     redirect_to :action => 'list', :id => params[:file][:project_folder_id]
