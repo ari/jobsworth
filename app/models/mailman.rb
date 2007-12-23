@@ -111,7 +111,7 @@ class Mailman < ActionMailer::Base
         w.body = e.body
         w.save
 
-        w.event_log.user = email.from
+        w.event_log.user = email.from.first
         w.event_log.save
 
         user = nil
