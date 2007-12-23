@@ -1,8 +1,13 @@
 <% date_format = current_user.time_format %>
 
 <tr class="hoverrow">
-  <td align="right" valign="top" style="width:80px;" nowrap><%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
-  <%= link_to "#{worked_nice(log.duration)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0)%>
+  <td align="right" valign="top" style="width:80px;" nowrap>
+    <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
+    <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %><br/>
+    <% else %>
+    <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
+    <% end %>
+  <%= link_to "#{worked_nice(log.duration)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" width="36px" valign="top">
   <% if log.task_id.to_i > 0 %>
@@ -30,7 +35,7 @@
   <% end %>
   </td>
   <td  valign="top" width="90%"><div style="float:left;"><strong>
-<% if log.task_id.to_i > 0 %>
+<% if log.task %>
 <%= link_to_task log.task %>
 <% elsif log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
@@ -40,6 +45,7 @@
     <%= "<br/>" if (log.task_id.to_i > 0) %>
             <%= "<span class=\"optional\">#{log.task.full_name}</span> " if log.task_id.to_i > 0 %>
             <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
+            <%= "<small><span class=\"otheruser\">[#{log.event_log.user}]</span></small>" if log.user.nil? && log.event_log.user %>
             <%= "<small><span class=\"otheruser\">[#{log.scm_changeset.author}]</span></small>" if log.scm_changeset && !log.user %>
   </strong></div>
   <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>

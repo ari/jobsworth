@@ -32,13 +32,14 @@ class ProjectFile < ActiveRecord::Base
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
+  belongs_to    :user
+  belongs_to    :task
 
   belongs_to    :project_folder
 
   has_one       :binary
   has_one       :thumbnail
 
-  belongs_to    :binary
   belongs_to    :thumbnail
 
   has_many   :event_logs, :as => :target, :dependent => :destroy

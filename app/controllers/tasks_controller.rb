@@ -22,7 +22,8 @@ class TasksController < ApplicationController
     end
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
+    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
+    @notify_targets = @notify_targets.flatten.uniq
   end
 
   def list
@@ -686,6 +687,7 @@ class TasksController < ApplicationController
 
       if params[:comment] && params[:comment].length > 0
         update_type = :comment if body.length == 0
+        worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
 
         body << "\n" if body.length > 0
         body << current_user.name << ":\n"

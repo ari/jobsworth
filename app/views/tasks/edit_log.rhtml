@@ -23,13 +23,15 @@
  can_close ||= {}
 
 %>
+<% if @log.log_type != EventLog::TASK_COMMENT %>
 <p><label for="task_status"><%=_ 'Status' %></label><%= select 'task', 'status', options, {:selected => @task.status}, can_close %></p>
+<% end %>
   <%= submit_tag _("Save"), :class => 'nolabel' %>
 
 
 <% end %>
 <br />
-<% if @log.user_id == current_user.id %>
+<% if @log.user_id.to_i == current_user.id || current_user.admin? %>
 <%= link_to _("Delete Log Entry"), {:controller => 'tasks', :action => 'destroy_log', :id => @log}, :confirm => _("Really delete this log entry?")  %>
 <% end %>
 

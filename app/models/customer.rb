@@ -9,9 +9,6 @@ class Customer < ActiveRecord::Base
 
   validates_presence_of         :company_id
 
-  has_one :binary
-  belongs_to :binary
-
   after_destroy { |r|
     File.delete(r.logo_path) rescue begin end
   }
