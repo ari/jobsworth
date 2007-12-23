@@ -674,8 +674,7 @@ class TasksController < ApplicationController
 
         if !File.directory?(task_file.path)
           File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue begin
-                                                 end
+          Dir.mkdir(task_file.path, 0777) rescue nil
         end
 
         File.umask(0)
@@ -689,13 +688,17 @@ class TasksController < ApplicationController
         end
       end
 
+      email_body = body
+
       if params[:comment] && params[:comment].length > 0
         update_type = :comment if body.length == 0
         worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
 
         body << "\n" if body.length > 0
-        body << current_user.name << ":\n"
+        email_body = body + current_user.name + ":\n"
+
         body << CGI::escapeHTML(params[:comment])
+        email_body << CGI::escapeHTML(params[:comment])
       end
 
       if body.length > 0
@@ -710,7 +713,7 @@ class TasksController < ApplicationController
         worklog.save
 
         if(params['notify'].to_i == 1)
-          Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
+          Notifications::deliver_changed( update_type, @task, current_user, email_body.gsub(/<[^>]*>/,'')) rescue nil
         end
       end
 
