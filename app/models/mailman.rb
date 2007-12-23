@@ -80,9 +80,11 @@ class Mailman < ActionMailer::Base
             task_file.reload
 
             if !File.directory?(task_file.path)
+              File.umask(0)
               Dir.mkdir(task_file.path, 0777) rescue nil
             end
 
+            File.umask(0)
             File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) } rescue begin
                                                                                           puts "Unable to save attachment.."
                                                                                           task_file.destroy
