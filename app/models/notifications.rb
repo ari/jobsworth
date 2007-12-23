@@ -13,7 +13,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def changed(update_type, task, user, change, sent_at = Time.now)
@@ -37,7 +37,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def commented(task, user, note = "", sent_at = Time.now)
@@ -54,7 +54,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def completed(task, user, note = "", sent_at = Time.now)
@@ -71,7 +71,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def reverted(task, user, note = "", sent_at = Time.now)
@@ -88,7 +88,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def assigned(task, user, owners, old, note = "", sent_at = Time.now)
@@ -106,7 +106,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
   def reminder(tasks, tasks_tomorrow, user, sent_at = Time.now)
