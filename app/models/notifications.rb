@@ -143,4 +143,14 @@ class Notifications < ActionMailer::Base
 
   end
 
+  def unknown_from_address(from, subdomain)
+    @body       = {:from => from, :subdomain => subdomain }
+    @subject    = "[ClockingIT] Unknown email address: #{from}"
+
+    @recipients = from
+
+    @from       = "admin@#{$CONFIG[:domain]}"
+    @sent_on    = Time.now
+  end
+
 end

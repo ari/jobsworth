@@ -119,13 +119,16 @@ class Mailman < ActionMailer::Base
           user = User.new
           user.name = email.from.first
           user.email = email.from.first
-          user.receive_notifications = 0
+          user.receive_notifications = 1
         else
           user = e.user
         end
 
-        Notifications::deliver_commented(target, user, e.body)
+        Notifications::deliver_commented(target, user, e.body) rescue nil
 
+      else
+        # Unknown email
+        Notifications::deliver_unknown_from_address(email.from.first, subdomain) rescue nil
       end
     end
 
