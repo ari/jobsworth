@@ -341,7 +341,7 @@ class ReportsController < ApplicationController
         end
 
         @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id])
-        @projects = User.find(current_user.id).projects.find(:all, :order => 'name');
+        @projects = User.find(current_user.id).projects.find(:all, :conditions => ["completed_at IS NULL"], :order => 'name');
         @tasks = []
         @projects.each do |p|
           @tasks += p.tasks.find(:all, :order => "tasks.project_id", :conditions => ["tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status < 2 " + sql_filter + date_filter + join, current_user.company_id], :include => [:project, :users, :milestone, :company, :tags])
