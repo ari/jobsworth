@@ -1,6 +1,3 @@
-
-
-
 Localization.define('eu_ES') do |l|
 
   # Main menu
@@ -364,4 +361,118 @@ Localization.define('eu_ES') do |l|
   l.store "View '%s' was successfully created.", "'%s' Bista egoki sortu da."
   l.store "View '%s' was successfully updated.", "'%s' Bista egoki aldatu da."
   l.store "View '%s' was deleted.", "'%s' Bista ezabatuta."
+
+  # Wiki
+  l.store 'Quick Reference', 'Erreferentzia Laburra'
+  l.store 'Full Reference', 'Erreferentzia Osoa'
+  l.store 'or', 'edo'
+  l.store 'Under revision by', '-(e)k berrikusten'
+  l.store 'Revision', 'Berrikuspena'
+  l.store 'Linked from', 'Hurrengo orritik erreferentziatuta'
+
+  # Reports
+  l.store 'Today', 'Gaur'
+  l.store 'Week', 'Astea'
+
+  # Dates
+  l.store 'January', 'Urtarrila'
+  l.store 'February', 'Otsaila'
+  l.store 'March', 'Martxoa'
+  l.store 'April', 'Apirila'
+  l.store 'May', 'Maiatza'
+  l.store 'June', 'Ekaina'
+  l.store 'July', 'Uztaila'
+  l.store 'August', 'Abuztua'
+  l.store 'September', 'Iraila'
+  l.store 'October', 'Urria'
+  l.store 'November', 'Azaroa'
+  l.store 'December', 'Abendua'
+
+  l.store 'Jan', 'Urt'
+  l.store 'Feb', 'Ots'
+  l.store 'Mar', 'Mar'
+  l.store 'Apr', 'Api'
+  l.store 'May', 'Mai'
+  l.store 'Jun', 'Eka'
+  l.store 'Jul', 'Uzt'
+  l.store 'Aug', 'Abu'
+  l.store 'Sep', 'Ira'
+  l.store 'Oct', 'Urr'
+  l.store 'Nov', 'Aza'
+  l.store 'Dec', 'Abe'
+
+  l.store 'Sunday', 'Igandea'
+  l.store 'Monday', 'Astelehena'
+  l.store 'Tuesday', 'Asteartea'
+  l.store 'Wednesday', 'Asteazkena'
+  l.store 'Thursday', 'Osteguna'
+  l.store 'Friday', 'Ostirala'
+  l.store 'Saturday', 'Larunbata'
+
+  l.store 'Sun', 'Iga'
+  l.store 'Mon', 'Asl'
+  l.store 'Tue', 'Asa'
+  l.store 'Wed', 'Asz'
+  l.store 'Thu', 'Ost'
+  l.store 'Fri', 'Osi'
+  l.store 'Sat', 'Lar'
+
+  # worked_nice
+  l.store '[wdhm]', '[aeom]'
+  l.store 'w', 'a'
+  l.store 'd', 'e'
+  l.store 'h', 'o'
+  l.store 'm', 'm'
+
+  # Preferences
+  l.store 'Duration Format', 'Iraupen Formatua'
+  l.store 'Workday Length', 'Egunaren Iraupena'
+
+  # Tasks filter
+  l.store '[Without Milestone]', '[Zedarri gabe]'
+
+  # Task tooltip
+  l.store 'Progress', 'Aurrerapena'
+
+  # User Permissions
+  l.store 'All', 'Denak'
+
+  # Reports filter
+  l.store '[Any Priority]', '[Edozein Lehentasun]'
+  l.store '[Any Severity]', '[Edozein Garrantzia]'
+
+  # Preferences
+  l.store '1w 2d 3h 4m', '1a 2e 3o 4m'
+  l.store '1w2d3h4m', '1a2e3o4m'
+
+  # Task
+  l.store "Attachments", "Erantsitakoak"
+  l.store "Dependencies", "Dependentziak"
+  l.store 'Add another dependency', "Beste dependentzia bat gehitu"
+  l.store 'Remove dependency', "Ezabatu dependentzia"
+  l.store "every", 'denak'
+  l.store "[Any Task]", "[Edozein Ataza]"
+
+  l.store 'day', 'egun' # every day
+  l.store 'days', 'egun' # every 14 days
+  l.store 'last', 'azken' # every last thursday
+
+  l.store 'Hide Waiting Tasks', 'Ezkutatu hasi gabeko atazak'
+  l.store 'Signup Message', 'Mezua Sinatu'
+  l.store 'The message will be included in the signup email.', 'Mezua e-postaren sinaduran gehituko da.'
+  l.store 'Depends on', 'Menpe dago'
+
+  # Activities
+  l.store 'Subscribe to the recent activities RSS feed', 'Azken aktibitateetara RSS bidez harpidetu'
+
+  # Project Files
+  l.store '%d folder', ['%d karpeta', '%d karpetak']
+  l.store '%d file', ['%d fitxategia', '%d fitxategiak']
+
+  # Email
+  l.store 'Resolved', "Soluzionatua"
+  l.store 'Updated', "Eguneratua"
+  l.store 'Reverted', "Berriz jarria"
+  l.store 'Reassigned', "Berriz esleitua"
+
 end
