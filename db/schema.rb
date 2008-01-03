@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 95) do
+ActiveRecord::Schema.define(:version => 96) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -44,6 +44,17 @@ ActiveRecord::Schema.define(:version => 95) do
   add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
   add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
 
+  create_table "emails", :force => true do |t|
+    t.string   "from"
+    t.string   "to"
+    t.string   "subject"
+    t.text     "body"
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "event_logs", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -55,6 +66,7 @@ ActiveRecord::Schema.define(:version => 95) do
     t.text     "body"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user"
   end
 
   add_index "event_logs", ["company_id", "project_id"], :name => "index_event_logs_on_company_id_and_project_id"
