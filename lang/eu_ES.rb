@@ -9,7 +9,7 @@ Localization.define('eu_ES') do |l|
   l.store "Reports", "Txostenak"
   l.store "Schedule", "Agenda"
   l.store "New Task", "Ataza berria"
-  l.store "Preferences", "Konfigurazioa"
+  l.store "Preferences", "Aukerak"
   l.store "Log Out", "Irten"
   l.store "Clients", "Bezeroak"
   l.store "Client", "Bezeroa"
@@ -27,7 +27,7 @@ Localization.define('eu_ES') do |l|
   l.store 'Shared', 'Partekatutakoak'
   l.store 'Edit', 'Editatu'
   l.store 'New', 'Berria'
-  l.store 'Chat', 'Chata'
+  l.store 'Chat', 'Txata'
   l.store 'Notes', 'Oharrak'
   l.store 'Feedback? Suggestions? Ideas? Bugs?', '¿Iruzkinak? ¿Iradokizunak? ¿Ideiak? ¿Akatsak?'
   l.store 'Let me know', 'Jakinarazi iezadazu'
@@ -102,8 +102,8 @@ Localization.define('eu_ES') do |l|
   l.store 'Project', 'Proiektua'
   l.store 'Milestone', 'Zedarria'
   l.store '[None]', '[Batere ez]'
-  l.store 'Assigned To', '-ri esleitua'
-  l.store 'Requested By', '-k eskatua'
+  l.store 'Assigned To', 'Nori esleitua'
+  l.store 'Requested By', 'Nork eskatua'
   l.store 'Attributes', 'Ezaugarriak'
 
   l.store 'Type', 'Mota'
@@ -274,7 +274,7 @@ Localization.define('eu_ES') do |l|
   l.store 'Password', 'Pasahitza'
 
   # Preferences
-  l.store 'Preferences', 'Lehentasunak'
+  l.store 'Preferences', 'Aukerak'
   l.store 'Language', 'Hizkuntza'
   l.store 'Time Format', 'Orduaren formatua'
   l.store 'Date Format', 'Dataren formatua'
@@ -355,7 +355,7 @@ Localization.define('eu_ES') do |l|
   l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Erabiltzailea egoki sortu da. Gogoratu ezazu beharrezko proiektuetan baimena ematea.'
   l.store "Error sending creation email. Account still created.", 'Sortze e-posta ezin izan da bidali. Kontua aurretik sortua da.'
   l.store 'User was successfully updated.', 'Erabiltzailea egoki aldatuta.'
-  l.store 'Preferences successfully updated.', 'Lehentasunak egoki aldatu dira.'
+  l.store 'Preferences successfully updated.', 'Aukerak egoki aldatu dira.'
 
   # Views Controller
   l.store "View '%s' was successfully created.", "'%s' Bista egoki sortu da."
@@ -372,7 +372,7 @@ Localization.define('eu_ES') do |l|
 
   # Reports
   l.store 'Today', 'Gaur'
-  l.store 'Week', 'Astea'
+  l.store 'Week', 'astea'
 
   # Dates
   l.store 'January', 'Urtarrila'
