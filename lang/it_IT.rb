@@ -33,7 +33,7 @@ Localization.define('it_IT') do |l|
   l.store 'Let me know', 'Lasciaci sapere'
   l.store 'worked today', 'svolti oggi'
   l.store 'Online', 'Inlinea'
-  l.store 'Done working on <b>%s</b> for now.', 'Arbetat klart med <b>%s</b> fˆr tillf‰llet.' # %s = @task.name
+  l.store 'Done working on <b>%s</b> for now.', 'Arbetat klart med <b>%s</b> f√∂r tillf√§llet.' # %s = @task.name
   l.store 'ago', 'fa' # X days ago
 
   # Application Helper
@@ -57,7 +57,7 @@ Localization.define('it_IT') do |l|
   # Activities
   l.store 'Top Tasks', 'Incarichi principali'
   l.store 'Newest Tasks', 'Nuovi incarichi'
-  l.store 'Recent Activities', 'Attivit‡ recenti'
+  l.store 'Recent Activities', 'Attivit√† recenti'
   l.store 'Projects', 'Progetti'
   l.store 'Overall Progress', 'Avanzamento complessivo'
   l.store '%d completed milestone', ['Un milestone completo', '%d milestone completi']
@@ -76,7 +76,7 @@ Localization.define('it_IT') do |l|
   l.store 'Open', 'Aperto'
   l.store 'In Progress', 'In esecuzione'
   l.store 'Closed', 'Chiuso'
-  l.store 'Won\'t Fix', 'Non verr‡ risolto'
+  l.store 'Won\'t Fix', 'Non verr√† risolto'
   l.store 'Invalid', 'Non valido'
   l.store 'Duplicate', 'Doppio'
   l.store 'Archived', 'Archiviato'
@@ -106,8 +106,8 @@ Localization.define('it_IT') do |l|
   l.store 'Attributes', 'Attributi'
 
   l.store 'Type', 'Tipo'
-  l.store 'Priority', 'Priorit‡'
-  l.store 'Severity', 'Gravit‡'
+  l.store 'Priority', 'Priorit√†'
+  l.store 'Severity', 'Gravit√†'
   l.store 'Time Estimate', 'Tempo stimato'
   l.store 'Due Date', 'Termine'
   l.store 'Show Calendar', 'Mostra calendario'
@@ -143,7 +143,7 @@ Localization.define('it_IT') do |l|
   l.store 'Really delete this log entry?', 'Sicuro di voler cancellare questa voce di diario?'
 
   l.store 'Task', 'Incarico'
-  l.store 'New Feature', 'Nuova funzionalit‡'
+  l.store 'New Feature', 'Nuova funzionalit√†'
   l.store 'Defect', 'Difetto'
   l.store 'Improvement', 'Miglioramento'
   l.store 'Critical', 'Critico'
@@ -151,7 +151,7 @@ Localization.define('it_IT') do |l|
   l.store 'High', 'Importante'
   l.store 'Normal', 'Normale'
   l.store 'Low', 'Basso'
-  l.store 'Lowest', 'Pi˘ basso'
+  l.store 'Lowest', 'Pi√π basso'
   l.store 'Blocker', 'Bloccanti'
   l.store 'Major', 'Maggiore'
   l.store 'Minor', 'Minore'
@@ -202,8 +202,8 @@ Localization.define('it_IT') do |l|
   l.store "Date", 'Data'
   l.store 'Task Status', 'Stato dell\'incarico'
   l.store "Task Type", 'Tipo d\'incarico'
-  l.store "Task Priority", 'Priorit‡ d\'incarico'
-  l.store "Task Severity", 'Criticit‡ d\'incarico'
+  l.store "Task Priority", 'Priorit√† d\'incarico'
+  l.store "Task Severity", 'Criticit√† d\'incarico'
   l.store 'From', 'Da' # From Date
   l.store 'To', 'A' # To Date
   l.store 'Sub-totals', 'Subtotali'
@@ -216,18 +216,18 @@ Localization.define('it_IT') do |l|
 
   # Search
   l.store 'Search Results', 'Cerca risultati'
-  l.store 'Activities', 'Attivit‡'
+  l.store 'Activities', 'Attivit√†'
 
   # Project list
   l.store 'Read', 'Leggi'
   l.store 'Work', 'Lavoro'
   l.store 'Assign', 'Assegna'
-  l.store 'Prioritize', 'Priorit‡'
+  l.store 'Prioritize', 'Priorit√†'
   l.store 'Grant', 'Autorizza'
   l.store "Remove all access for <b>%s</b>?", 'Rimuovere tutto l\'accesso per <b>%s</b>?'
 
   l.store "Grant %s access for <b>%s</b>?", 'Concedi %s l\'accesso a <b>%s</b>?'
-  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Non Ë possibile cancellare <b>te</b> o il <b>creatore del progetto</b>!'
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Non √® possibile cancellare <b>te</b> o il <b>creatore del progetto</b>!'
   l.store "Grant access to <b>%s</b>?", 'Concedere l\'accesso a <b>%s</b>?'
   l.store 'Edit Project', 'Modifica Progetto'
   l.store 'Delete Project', 'Elimina Progetto'
@@ -258,7 +258,7 @@ Localization.define('it_IT') do |l|
   l.store 'Edit User', 'Modifica Utente'
 
   l.store 'Options', 'Opzioni'
-  l.store 'Location', 'Localit‡'
+  l.store 'Location', 'Localit√†'
   l.store 'Administrator', 'Amministratore'
   l.store 'Track Time', 'Traccia tempo'
   l.store 'Use External Clients', 'Usa clienti esterni'
@@ -279,7 +279,7 @@ Localization.define('it_IT') do |l|
   l.store 'Custom Logo', 'Logo personalizzato'
   l.store 'Current logo', 'Logo corrente'
   l.store 'New logo', 'Nuovo logo'
-  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px dovrebbe avere un bell\'aspetto. Il logo verr‡ visualizzato in alto in sostizione a quello ClockingIT, e, sulla tua pagina di login.)"
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px dovrebbe avere un bell\'aspetto. Il logo verr√† visualizzato in alto in sostizione a quello ClockingIT, e, sulla tua pagina di login.)"
 
   # Notes / Pages
   l.store 'Body', 'Corpo'
@@ -302,63 +302,63 @@ Localization.define('it_IT') do |l|
   l.store 'Client CSS', 'CSS contatto'
 
   # Activities Controller
-  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Tutorial completato. Non sar‡ pi˘ visualizzato nel menu.'
-  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Tutorial nascosto. Non sar‡ pi˘ visualizzato nel menu.'
+  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Tutorial completato. Non sar√† pi√π visualizzato nel menu.'
+  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Tutorial nascosto. Non sar√† pi√π visualizzato nel menu.'
 
   # Customers Controller
-  l.store 'Client was successfully created.', 'Il Cliente Ë stato creato con successo.'
-  l.store 'Client was successfully updated.', 'Il Cliente Ë stato aggiornato con successo.'
-  l.store 'Please delete all projects for %s before deleting it.', '» necessario cancellare tutti i progetti di %s prima di poterlo eliminare.'
+  l.store 'Client was successfully created.', 'Il Cliente √® stato creato con successo.'
+  l.store 'Client was successfully updated.', 'Il Cliente √® stato aggiornato con successo.'
+  l.store 'Please delete all projects for %s before deleting it.', '√à necessario cancellare tutti i progetti di %s prima di poterlo eliminare.'
   l.store "You can't delete your own company.", 'Non puoi cancellare la tua stessa ditta.'
-  l.store 'CSS successfully uploaded.', 'CSS Ë stato caricato con successo.'
-  l.store 'Logo successfully uploaded.', 'Il Logo Ë stato caricato con successo.'
+  l.store 'CSS successfully uploaded.', 'CSS √® stato caricato con successo.'
+  l.store 'Logo successfully uploaded.', 'Il Logo √® stato caricato con successo.'
 
   # Milestones Controller
-  l.store 'Milestone was successfully created.', 'Il Milestone Ë stato creato con successo.'
-  l.store 'Milestone was successfully updated.', 'Il Milestone Ë stato aggiornato con successo.'
+  l.store 'Milestone was successfully created.', 'Il Milestone √® stato creato con successo.'
+  l.store 'Milestone was successfully updated.', 'Il Milestone √® stato aggiornato con successo.'
   l.store '%s / %s completed.', '%s / %s completato.' # Project name / Milestone name completed.
   l.store '%s / %s reverted.', '%s / %s ripristinato.' # Project name / Milestone name reverted.
 
   # Pages / Notes Controller
-  l.store 'Note was successfully created.', 'La Nota Ë stata create con successo.'
-  l.store 'Note was successfully updated.', 'La Nota Ë stata aggiornata con successo.'
+  l.store 'Note was successfully created.', 'La Nota √® stata create con successo.'
+  l.store 'Note was successfully updated.', 'La Nota √® stata aggiornata con successo.'
 
   # Project Files Controller
-  l.store 'No file selected for upload.', 'Non Ë stato selezionato alcun file per l\'upload.'
+  l.store 'No file selected for upload.', 'Non √® stato selezionato alcun file per l\'upload.'
   l.store 'File too big.', 'File troppo grosso.'
-  l.store 'File successfully uploaded.', 'Il file Ë stato caricato con successo.'
+  l.store 'File successfully uploaded.', 'Il file √® stato caricato con successo.'
 
   # Projects Controller
-  l.store 'Project was successfully created.', 'Il Progetto Ë stato creato con successo.'
-  l.store 'Project was successfully created. Add users who need access to this project.', 'Il Progetto Ë stato creato con successo. Aggiungi gli utenti che devono accedere a questo progetto.'
-  l.store 'Project was successfully updated.', 'Il Progetto Ë stato aggiornato con successo.'
-  l.store 'Project was deleted.', 'Il Progetto Ë stato eliminato.'
+  l.store 'Project was successfully created.', 'Il Progetto √® stato creato con successo.'
+  l.store 'Project was successfully created. Add users who need access to this project.', 'Il Progetto √® stato creato con successo. Aggiungi gli utenti che devono accedere a questo progetto.'
+  l.store 'Project was successfully updated.', 'Il Progetto √® stato aggiornato con successo.'
+  l.store 'Project was deleted.', 'Il Progetto √® stato eliminato.'
   l.store '%s completed.', '%s completato.'
   l.store '%s reverted.', '%s ripristinato.'
 
   # Reports Controller
-  l.store "Empty report, log more work!", 'Il report Ë vuoto, Ë necessario inserire pi˘ lavoro!'
+  l.store "Empty report, log more work!", 'Il report √® vuoto, √® necessario inserire pi√π lavoro!'
 
   # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du mÂste skapa ett projekt fˆr att samla dina uppgifter i eller fÂ tillÂtelse att skapa uppgifter i ett befintligt projekt...'
-  l.store 'Invalid due date ignored.', 'Data di scadenza non valida, verr‡ ignorata.'
-  l.store 'Task was successfully created.', 'L\'Incarico Ë stato creato con successo.'
-  l.store 'Task was successfully updated.', 'L\'Incarico Ë stato aggiornato con successo.'
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du m√•ste skapa ett projekt f√∂r att samla dina uppgifter i eller f√• till√•telse att skapa uppgifter i ett befintligt projekt...'
+  l.store 'Invalid due date ignored.', 'Data di scadenza non valida, verr√† ignorata.'
+  l.store 'Task was successfully created.', 'L\'Incarico √® stato creato con successo.'
+  l.store 'Task was successfully updated.', 'L\'Incarico √® stato aggiornato con successo.'
   l.store 'Log entry saved...', 'Voce di diario salvata...'
   l.store "Unable to save log entry...", 'Impossibile salvare la voce di diario...'
-  l.store "Log entry already saved from another browser instance.", 'Voce di diario gi‡ salvata da un altra istanza del browser.'
+  l.store "Log entry already saved from another browser instance.", 'Voce di diario gi√† salvata da un altra istanza del browser.'
   l.store 'Log entry deleted...', 'Voce di diario cancellata...'
 
   # Users Controller
-  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'L\'utente Ë stato creato con successo. RIcorda di autorizzare questo utente ad i propri progetti.'
-  l.store "Error sending creation email. Account still created.", 'C\'Ë stato un errore inviando la email. L\'utente Ë stato creato ugualmente.'
-  l.store 'User was successfully updated.', 'L\'utente Ë stato aggiornato con successo.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'L\'utente √® stato creato con successo. RIcorda di autorizzare questo utente ad i propri progetti.'
+  l.store "Error sending creation email. Account still created.", 'C\'√® stato un errore inviando la email. L\'utente √® stato creato ugualmente.'
+  l.store 'User was successfully updated.', 'L\'utente √® stato aggiornato con successo.'
   l.store 'Preferences successfully updated.', 'Le preferenze sono state aggiornate con successo.'
 
   # Views Controller
-  l.store "View '%s' was successfully created.", "La vista '%s' Ë stata creata con successo."
-  l.store "View '%s' was successfully updated.", "La vista '%s' Ë stata aggiornata con successo."
-  l.store "View '%s' was deleted.", "La vista '%s' Ë stata cancellata."
+  l.store "View '%s' was successfully created.", "La vista '%s' √® stata creata con successo."
+  l.store "View '%s' was successfully updated.", "La vista '%s' √® stata aggiornata con successo."
+  l.store "View '%s' was deleted.", "La vista '%s' √® stata cancellata."
 
   # Wiki
   l.store 'Quick Reference', 'Riferimento rapido'
@@ -400,11 +400,11 @@ Localization.define('it_IT') do |l|
   l.store 'Dec', 'Dic'
 
   l.store 'Sunday', 'Domenica'
-  l.store 'Monday', 'LunedÏ'
-  l.store 'Tuesday', 'MartedÏ'
-  l.store 'Wednesday', 'MercoledÏ'
-  l.store 'Thursday', 'GiovedÏ'
-  l.store 'Friday', 'VenerdÏ'
+  l.store 'Monday', 'Luned√¨'
+  l.store 'Tuesday', 'Marted√¨'
+  l.store 'Wednesday', 'Mercoled√¨'
+  l.store 'Thursday', 'Gioved√¨'
+  l.store 'Friday', 'Venerd√¨'
   l.store 'Saturday', 'Sabato'
 
   l.store 'Sun', 'Dom'
@@ -436,8 +436,8 @@ Localization.define('it_IT') do |l|
   l.store 'All', 'Tutti'
 
   # Reports filter
-  l.store '[Any Priority]', '[Qualunque priorit‡]'
-  l.store '[Any Severity]', '[Qualunque criticit‡]'
+  l.store '[Any Priority]', '[Qualunque priorit√†]'
+  l.store '[Any Severity]', '[Qualunque criticit√†]'
 
   # Preferences
   l.store '1w 2d 3h 4m', '1s 2g 3o 4m'
@@ -457,11 +457,11 @@ Localization.define('it_IT') do |l|
 
   l.store 'Hide Waiting Tasks', 'Nascondi incarichi in attesa'
   l.store 'Signup Message', 'Accetta messaggio'
-  l.store 'The message will be included in the signup email.', 'Il messaggio verr‡ allegato nell\'email accettata.'
+  l.store 'The message will be included in the signup email.', 'Il messaggio verr√† allegato nell\'email accettata.'
   l.store 'Depends on', 'Dipende da'
 
   # Activities
-  l.store 'Subscribe to the recent activities RSS feed', 'Iscriviti alla feed RSS relativa alle attivit‡ recenti'
+  l.store 'Subscribe to the recent activities RSS feed', 'Iscriviti alla feed RSS relativa alle attivit√† recenti'
 
   # Project Files
   l.store '%d folder', ['%d cartella', '%d cartelle']
