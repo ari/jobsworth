@@ -5,18 +5,11 @@ class Milestone < ActiveRecord::Base
 
   has_many :tasks, :dependent => :nullify
 
-  def completed_tasks
-    @completed ||= Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", self.id] ) * 1.0
-  end
-  def total_tasks
-    @total ||= Task.count( :conditions => ["milestone_id = ?", self.id] ) * 1.0
-  end
-
   def percent_complete
     p = 0.0
 
-    complete = self.completed_tasks
-    total =  self.total_tasks
+    complete = self.completed_tasks * 1.0
+    total =  self.total_tasks * 1.0
     return 0.0 if total == 0
     p = (complete / total) * 100.0
   end

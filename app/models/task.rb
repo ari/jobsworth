@@ -41,8 +41,20 @@ class Task < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
-  after_update { |r|
+  after_save { |r|
     r.ical_entry.destroy if r.ical_entry
+
+    r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project_id])
+    r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project_id])
+    r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project_id])
+    r.project.save
+
+    if r.milestone
+      r.milestone.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", r.milestone_id] )
+      r.milestone.total_tasks = Task.count( :conditions => ["milestone_id = ?", r.milestone_id] )
+      r.milestone.save
+    end
+
   }
 
   # w: 1, next day-of-week: Every _Sunday_

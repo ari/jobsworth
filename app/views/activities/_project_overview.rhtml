@@ -30,9 +30,9 @@
                end
 
 
-               critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", project.id])
-               normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", project.id])
-               low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", project.id])
+               critical_count = project.critical_count
+               normal_count = project.normal_count
+               low_count = project.low_count
                total_count = (critical_count + normal_count + low_count) * 1.0
 
                critical_percent = ((critical_count / total_count) * 100.0)
