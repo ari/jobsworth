@@ -1,14 +1,14 @@
 Localization.define('it_IT') do |l|
 
   # Main menu
-  l.store "Overview", "Panoramica"
+  l.store "Overview", "Riepilogo"
   l.store "Tutorial", "Introduzione"
   l.store "Browse", "Naviga"
-  l.store "Timeline", "Linea temporale"
+  l.store "Timeline", "Timeline"
   l.store "Files", "File"
   l.store "Reports", "Rapporto"
   l.store "Schedule", "Programma"
-  l.store "New Task", "Nuovo incarico"
+  l.store "New Task", "Nuovo task"
   l.store "Preferences", "Preferenze"
   l.store "Log Out", "Esci"
   l.store "Clients", "Clienti"
@@ -20,10 +20,10 @@ Localization.define('it_IT') do |l|
   # Main layout
   l.store 'Hide', 'Nascondi'
   l.store 'Views', 'Viste'
-  l.store 'Open Tasks', 'Incarichi aperti'
-  l.store 'My Open Tasks', 'I miei incarichi aperti'
-  l.store 'My In Progress Tasks', 'I miei incarichi in lavorazione'
-  l.store 'Unassigned Tasks', 'INcarichi non assegnati'
+  l.store 'Open Tasks', 'Task aperti'
+  l.store 'My Open Tasks', 'I miei task aperti'
+  l.store 'My In Progress Tasks', 'I miei task in lavorazione'
+  l.store 'Unassigned Tasks', 'Task non assegnati'
   l.store 'Shared', 'Condiviso'
   l.store 'Edit', 'Modifica'
   l.store 'New', 'Nuovo'
@@ -33,7 +33,7 @@ Localization.define('it_IT') do |l|
   l.store 'Let me know', 'Lasciaci sapere'
   l.store 'worked today', 'svolti oggi'
   l.store 'Online', 'Inlinea'
-  l.store 'Done working on <b>%s</b> for now.', 'Arbetat klart med <b>%s</b> för tillfället.' # %s = @task.name
+  l.store 'Done working on <b>%s</b> for now.', 'Lavori svolti per <b>%s</b> finora.' # %s = @task.name
   l.store 'ago', 'fa' # X days ago
 
   # Application Helper
@@ -55,8 +55,8 @@ Localization.define('it_IT') do |l|
   l.store 'about %d hour', ['almeno un ora', 'almeno %d ore']
 
   # Activities
-  l.store 'Top Tasks', 'Incarichi principali'
-  l.store 'Newest Tasks', 'Nuovi incarichi'
+  l.store 'Top Tasks', 'Task principali'
+  l.store 'Newest Tasks', 'Nuovi Task'
   l.store 'Recent Activities', 'Attività recenti'
   l.store 'Projects', 'Progetti'
   l.store 'Overall Progress', 'Avanzamento complessivo'
@@ -66,7 +66,7 @@ Localization.define('it_IT') do |l|
   l.store 'Edit milestone <b>%s</b>', 'Modifica milestone <b>%s</b>'
 
   # Tasks
-  l.store 'Tasks', 'Incarico'
+  l.store 'Tasks', 'Task'
   l.store '[Any Client]', '[Qualunque cliente]'
   l.store '[Any Project]', '[Qualunque progetto]'
   l.store '[Any User]', '[Qualunque utente]'
@@ -112,11 +112,11 @@ Localization.define('it_IT') do |l|
   l.store 'Due Date', 'Termine'
   l.store 'Show Calendar', 'Mostra calendario'
   l.store 'Notification', 'Notica'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Ulteriori persone verranno avvisate sulle variazioni d\'incarico<br/>oltre a colui che le definisce o le assegna<br/><br/>Ctrl-click per attivare.'
+  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Ulteriori persone verranno avvisate sulle variazioni di Task<br/>oltre a colui che le definisce o le assegna<br/><br/>Ctrl-click per attivare.'
   l.store 'To:', 'A:'
   l.store '[Delete]', '[Elimina]'
   l.store 'Really delete %s?', 'Conferma eliminazione %s?'
-  l.store 'New Task', 'Nuovo incarico'
+  l.store 'New Task', 'Nuovo Task'
   l.store 'Create', 'Crea'
   l.store 'Send notification emails', 'Manda notifiche email'
   l.store 'Created', 'Creato'
@@ -142,7 +142,7 @@ Localization.define('it_IT') do |l|
   l.store 'Delete Log Entry', 'Elimina voce di diario'
   l.store 'Really delete this log entry?', 'Sicuro di voler cancellare questa voce di diario?'
 
-  l.store 'Task', 'Incarico'
+  l.store 'Task', 'Task'
   l.store 'New Feature', 'Nuova funzionalità'
   l.store 'Defect', 'Difetto'
   l.store 'Improvement', 'Miglioramento'
@@ -200,10 +200,10 @@ Localization.define('it_IT') do |l|
   l.store 'Columns', 'Colonne'
   l.store "Milestones", 'Milestone'
   l.store "Date", 'Data'
-  l.store 'Task Status', 'Stato dell\'incarico'
-  l.store "Task Type", 'Tipo d\'incarico'
-  l.store "Task Priority", 'Priorità d\'incarico'
-  l.store "Task Severity", 'Criticità d\'incarico'
+  l.store 'Task Status', 'Stato del Task'
+  l.store "Task Type", 'Tipo di Task'
+  l.store "Task Priority", 'Priorità del Task'
+  l.store "Task Severity", 'Criticità del Task'
   l.store 'From', 'Da' # From Date
   l.store 'To', 'A' # To Date
   l.store 'Sub-totals', 'Subtotali'
@@ -342,8 +342,8 @@ Localization.define('it_IT') do |l|
   # Tasks Controller
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du måste skapa ett projekt för att samla dina uppgifter i eller få tillåtelse att skapa uppgifter i ett befintligt projekt...'
   l.store 'Invalid due date ignored.', 'Data di scadenza non valida, verrà ignorata.'
-  l.store 'Task was successfully created.', 'L\'Incarico è stato creato con successo.'
-  l.store 'Task was successfully updated.', 'L\'Incarico è stato aggiornato con successo.'
+  l.store 'Task was successfully created.', 'Il Task è stato creato con successo.'
+  l.store 'Task was successfully updated.', 'Il Task è stato aggiornato con successo.'
   l.store 'Log entry saved...', 'Voce di diario salvata...'
   l.store "Unable to save log entry...", 'Impossibile salvare la voce di diario...'
   l.store "Log entry already saved from another browser instance.", 'Voce di diario già salvata da un altra istanza del browser.'
@@ -449,13 +449,13 @@ Localization.define('it_IT') do |l|
   l.store 'Add another dependency', "Tutte le altre dipendenze"
   l.store 'Remove dependency', "Rimuovi dipendenza"
   l.store "every", 'tutti'
-  l.store "[Any Task]", "[Qualunque incarico]"
+  l.store "[Any Task]", "[Qualunque Task]"
 
   l.store 'day', 'giorno' # every day
   l.store 'days', 'guirni' # every 14 days
   l.store 'last', 'ultimo' # every last thursday
 
-  l.store 'Hide Waiting Tasks', 'Nascondi incarichi in attesa'
+  l.store 'Hide Waiting Tasks', 'Nascondi Task in attesa'
   l.store 'Signup Message', 'Accetta messaggio'
   l.store 'The message will be included in the signup email.', 'Il messaggio verrà allegato nell\'email accettata.'
   l.store 'Depends on', 'Dipende da'
@@ -465,7 +465,7 @@ Localization.define('it_IT') do |l|
 
   # Project Files
   l.store '%d folder', ['%d cartella', '%d cartelle']
-  l.store '%d file', ['%d file']
+  l.store '%d file', '%d file'
 
   # Email
   l.store 'Resolved', "Risolto"
