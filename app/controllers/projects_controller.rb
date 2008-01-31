@@ -162,7 +162,7 @@ class ProjectsController < ApplicationController
     if @project.update_attributes(params[:project])
       # Need to update forum names?
       forums = Forum.find(:all, :conditions => ["project_id = ?", params[:id]])
-      if (forums.size > 0 and (@project.name != old_name))
+      if(forums.size > 0 and (@project.name != old_name))
 
         # Regexp to match any forum named after our project
         forum_name = Regexp.new("\\b#{old_name}\\b")
