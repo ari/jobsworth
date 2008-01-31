@@ -18,7 +18,7 @@
 <%= "<a href=\"/project_files/show/#{log.target_id}\" title=\"<img src=/project_files/thumbnail/#{log.target_id}>\" class=\"tooltip\">#{log.target.full_name}</a>" %>
 <%= "]" if log.target.task %>
 <% end %>
-    <%= "<br/>" if((log.target.respond_to?(:user) || log.target.respond_to?(:task)) && (log.target.user || log.target.task) ) %>
+    <%= "<br/>" if((log.target.respond_to?(:user) && log.target.user) || (log.target.respond_to?(:task) && log.target.task) ) %>
     <%= "<span class=\"optional\">#{log.target.task.full_name}</span> " if( log.target.respond_to?(:task) && log.target.task )%>
     <%= "<small><span class=\"otheruser\">[#{log.target.user.name}]</span></small>" if log.target.respond_to?(:user) && log.target.user %>
   </strong></div>
