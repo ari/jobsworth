@@ -29,19 +29,22 @@ setup script or web page at a later stage.
 3. Copy config/*.yml-example to config/*.yml and modify as needed
 
 4. mkdir index log store; chmod a+rwx log index store tmp/*
-5. rake db:schema:load
+5. export RAILS_ENV=production; rake db:schema:load
 6. Edit /etc/hosts on a machine with a web-browser and add:
    ip.to.clockingit.server www.clockingit.com
    ip.to.clockingit.server <subdomain>.clockingit.com
 
-7. Start the different systems:
+7. rake asset:packager:build_all
+
+8. Start the different systems:
+	 Make sure that your RAILS_ENV is set properly
    sudo ./script/push_server
    sudo ./script/ferret_server -e production start
    ./lib/daemons/mail_sender.rb (if you want daily reminder emails)
    ./script/server -e production
    Create the initial account at http://www.clockingit.com:3000/login/signup
 
-8.Sign in from http://<subdomain>.clockingit.com:3000/
+9.Sign in from http://<subdomain>.clockingit.com:3000/
 
 == Support
 
