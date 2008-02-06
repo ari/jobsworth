@@ -1,5 +1,10 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_project:
+test_project:
   id: 1
-another_project:
-  id: 2
+  name: Test Project
+  user_id: 1
+  company_id: 1
+  customer_id: 1
+  completed_at: null
+  critical_count: 0
+  normal_count: 0
+  low_count: 0

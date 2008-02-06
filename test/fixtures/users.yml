@@ -1,5 +1,67 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_user:
+admin:
   id: 1
-another_user:
+  name: Erlend Simonsen
+  username: test
+  password: password
+  company_id: 1
+  email: admin@clockingit.com
+  last_login_at: null
+  admin: 10
+  time_zone: Europe/Oslo
+  option_tracktime: 1
+  option_externalclients: 1
+  option_showcalendar: 1
+  option_tooltips: 1
+  seen_news_id: null
+  last_project_id: null
+  last_seen_at: null
+  last_ping_at: null
+  last_milestone_id: 0
+  last_filter: 0
+  date_format: %d/%m/%Y
+  time_format: %H:%M
+  send_notifications: 1
+  receive_notifications: 1
+  uuid: 1234567890abcdefghijklmnopqrstuv
+  seen_welcome: 1
+  locale: en_EN
+  duration_format: 3
+  workday_duration: 450
+  posts_count: 1
+  newsletter: 1
+  option_avatars: 1
+  autologin: 2234567890abcdefghijklmnopqrstuv
+fudge:
   id: 2
+  name: Fudgie
+  username: test
+  password: password
+  company_id: 2
+  email: mr@fudgie.org
+  last_login_at: null
+  admin: 0
+  time_zone: Europe/London
+  option_tracktime: 1
+  option_externalclients: 1
+  option_showcalendar: 1
+  option_tooltips: 1
+  seen_news_id: null
+  last_project_id: null
+  last_seen_at: null
+  last_ping_at: null
+  last_milestone_id: 0
+  last_filter: 0
+  date_format: %d/%m/%Y
+  time_format: %H:%M
+  send_notifications: 1
+  receive_notifications: 1
+  uuid: 3234567890abcdefghijklmnopqrstuv
+  seen_welcome: 1
+  locale: en_EN
+  duration_format: 3
+  workday_duration: 450
+  posts_count: 0
+  newsletter: 1
+  option_avatars: 1
+  autologin: 4234567890abcdefghijklmnopqrstuv

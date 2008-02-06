@@ -4,6 +4,7 @@ require 'notifications'
 class NotificationsTest < Test::Unit::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
+  fixtures :users, :tasks, :projects, :customers
 
   include ActionMailer::Quoting
 
@@ -21,7 +22,7 @@ class NotificationsTest < Test::Unit::TestCase
     @expected.body    = read_fixture('created')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_created(@expected.date).encoded
+    assert_equal @expected.encoded, Notifications.create_created(Task.find(1), User.find(1)).encoded
   end
 
   def test_changed
@@ -29,31 +30,7 @@ class NotificationsTest < Test::Unit::TestCase
     @expected.body    = read_fixture('changed')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_changed(@expected.date).encoded
-  end
-
-  def test_commented
-    @expected.subject = 'Notifications#commented'
-    @expected.body    = read_fixture('commented')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_commented(@expected.date).encoded
-  end
-
-  def test_completed
-    @expected.subject = 'Notifications#completed'
-    @expected.body    = read_fixture('completed')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_completed(@expected.date).encoded
-  end
-
-  def test_assigned
-    @expected.subject = 'Notifications#assigned'
-    @expected.body    = read_fixture('assigned')
-    @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_assigned(@expected.date).encoded
+    assert_equal @expected.encoded, Notifications.create_changed(:completed, Task.find(1), User.find(1), "Task Changed").encoded
   end
 
   private

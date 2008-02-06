@@ -21,7 +21,7 @@ class SignupTest < Test::Unit::TestCase
     @expected.body    = read_fixture('signup')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Signup.create_signup(@expected.date).encoded
+    assert_equal @expected.encoded, Signup.create_signup(User.find(1), Company.find(1)).encoded
   end
 
   def test_forgot_password
@@ -29,7 +29,7 @@ class SignupTest < Test::Unit::TestCase
     @expected.body    = read_fixture('forgot_password')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Signup.create_forgot_password(@expected.date).encoded
+    assert_equal @expected.encoded, Signup.create_forgot_password(User.find(1)).encoded
   end
 
   def test_account_created
@@ -37,7 +37,7 @@ class SignupTest < Test::Unit::TestCase
     @expected.body    = read_fixture('account_created')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Signup.create_account_created(@expected.date).encoded
+    assert_equal @expected.encoded, Signup.create_account_created(User.find(1), User.find(1), "Welcome Message").encoded
   end
 
   private

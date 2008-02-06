@@ -1,5 +1,47 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-first_task:
+normal_task:
   id: 1
-another_task:
+  name: Test
+  project_id: 1
+  position: 0
+  due_at: null
+  completed_at: null
+  duration: 60
+  hidden: null
+  milestone_id: null
+  description: Just a normal Task
+  company_id: 1
+  priority: 0
+  updated_by_id: 1
+  severity_id: 0
+  type_id: 0
+  task_num: 1
+  status: 0
+  requested_by: null
+  creator_id: 1
+  notify_emails: null
+  repeat: null
+  hide_until: null
+milestone_task:
   id: 2
+  name: Test Milestone Task
+  project_id: 1
+  position: 0
+  due_at: null
+  completed_at: null
+  duration: 60
+  hidden: null
+  milestone_id: 1
+  description: Just a milestone Task
+  company_id: 1
+  priority: 0
+  updated_by_id: 1
+  severity_id: 1
+  type_id: 0
+  task_num: 2
+  status: 0
+  requested_by: null
+  creator_id: 1
+  notify_emails: null
+  repeat: null
+  hide_until: null
