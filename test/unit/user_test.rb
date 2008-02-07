@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < Test::Unit::TestCase
-  fixtures :users
+  fixtures :users, :projects, :project_permissions
 
   def setup
     @user = User.find(1)
@@ -11,4 +11,117 @@ class UserTest < Test::Unit::TestCase
   def test_truth
     assert_kind_of User,  @user
   end
+  
+  def test_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1'), @user.path
+  end
+  
+  def test_avatar_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1', '1'), @user.avatar_path
+  end
+  
+  def test_avatar_large_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1', '1_large'), @user.avatar_large_path
+  end
+  
+  def test_generate_uuid
+    user = User.new
+    user.generate_uuid
+
+    assert_not_nil user.uuid
+    assert_not_nil user.autologin
+    
+    assert user.uuid.length == 32
+    assert user.autologin.length == 32
+  end
+
+  def test_avatar_url
+    if @user.avatar?
+      assert_equal "/users/avatar/1?large=1", @user.avatar_url
+      assert_equal "/users/avatar/1", @user.avatar_url(25)
+    else 
+      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=32", @user.avatar_url
+      assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=25", @user.avatar_url(25)
+    end
+  end
+
+  def test_display_name
+    assert_equal "Erlend Simonsen", @user.name
+  end
+
+  def test_login
+    assert_equal @user, @user.login('cit')
+    assert_nil   @user.login
+    assert_nil   @user.login('www')
+    assert_nil   User.new.login('cit')
+    assert_nil   User.find(2).login('cit')
+  end
+  
+  def test_can?
+    project = Project.find(1)
+    normal = User.find(3)
+    limited = User.find(4)
+    other = User.find(2)
+    
+    %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
+      assert normal.can?(project, perm)
+      assert !other.can?(project, perm)
+      if %w(comment work).include? perm
+        assert limited.can?(project, perm)
+      else 
+        assert !limited.can?(project, perm)
+      end
+    end
+  end
+  
+  def test_can_all?
+    projects = [Project.find(1), Project.find(3)]
+    normal = User.find(3)
+    limited = User.find(4)
+    other = User.find(2)
+
+    %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
+      assert normal.can_all?(projects, perm)
+      assert !other.can_all?(projects, perm)
+      assert !limited.can_all?(projects, perm)
+    end 
+  end
+  
+  def test_admin?
+    assert @user.admin?
+    assert !User.find(2).admin?
+    assert !User.new.admin?
+  end
+
+  def test_currently_online
+    assert_equal [@user], @user.currently_online
+    assert_equal [], User.find(2).currently_online
+  end
+
+  def test_moderator_of?
+    # TODO
+  end
+  
+  def test_online?
+    @user.last_ping_at = Time.now.utc
+    
+    assert @user.online?
+    assert !User.find(2).online?
+    
+  end
+
+  def test_online_status_name
+    @user.last_ping_at = Time.now.utc 
+    @user.last_seen_at = Time.now.utc 
+    assert_match /status-online/, @user.online_status_name
+
+    @user.last_ping_at = Time.now.utc - 4.minutes
+    @user.last_seen_at = Time.now.utc 
+    assert_match /status-offline/, @user.online_status_name
+    
+    @user.last_ping_at = Time.now.utc - 1.minutes
+    @user.last_seen_at = Time.now.utc - 10.minutes
+    assert_match /status-idle/, @user.online_status_name
+  end
+  
 end

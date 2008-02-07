@@ -6,7 +6,7 @@ admin:
   password: password
   company_id: 1
   email: admin@clockingit.com
-  last_login_at: null
+  last_login_at: <%= Time.now.utc.to_s(:db) %>
   admin: 10
   time_zone: Europe/Oslo
   option_tracktime: 1
@@ -15,8 +15,8 @@ admin:
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
-  last_seen_at: null
-  last_ping_at: null
+  last_seen_at: <%= Time.now.utc.to_s(:db) %>
+  last_ping_at: <%= Time.now.utc.to_s(:db) %>
   last_milestone_id: 0
   last_filter: 0
   date_format: %d/%m/%Y
@@ -35,7 +35,7 @@ admin:
 fudge:
   id: 2
   name: Fudgie
-  username: test
+  username: fudge
   password: password
   company_id: 2
   email: mr@fudgie.org
@@ -65,3 +65,69 @@ fudge:
   newsletter: 1
   option_avatars: 1
   autologin: 4234567890abcdefghijklmnopqrstuv
+user:
+  id: 3
+  name: Test User
+  username: tester
+  password: password
+  company_id: 1
+  email: test@clockingit.com
+  last_login_at: null
+  admin: 0
+  time_zone: Europe/Oslo
+  option_tracktime: 1
+  option_externalclients: 1
+  option_showcalendar: 1
+  option_tooltips: 1
+  seen_news_id: null
+  last_project_id: null
+  last_seen_at: null
+  last_ping_at: null
+  last_milestone_id: 0
+  last_filter: 0
+  date_format: %d/%m/%Y
+  time_format: %H:%M
+  send_notifications: 1
+  receive_notifications: 1
+  uuid: 5234567890abcdefghijklmnopqrstuv
+  seen_welcome: 1
+  locale: en_EN
+  duration_format: 3
+  workday_duration: 450
+  posts_count: 1
+  newsletter: 1
+  option_avatars: 1
+  autologin: 6234567890abcdefghijklmnopqrstuv
+user_limited:
+  id: 4
+  name: Test User Limited
+  username: tester_limited
+  password: password
+  company_id: 1
+  email: tester@clockingit.com
+  last_login_at: null
+  admin: 0
+  time_zone: Europe/Oslo
+  option_tracktime: 1
+  option_externalclients: 1
+  option_showcalendar: 1
+  option_tooltips: 1
+  seen_news_id: null
+  last_project_id: null
+  last_seen_at: null
+  last_ping_at: null
+  last_milestone_id: 0
+  last_filter: 0
+  date_format: %d/%m/%Y
+  time_format: %H:%M
+  send_notifications: 1
+  receive_notifications: 1
+  uuid: 7234567890abcdefghijklmnopqrstuv
+  seen_welcome: 1
+  locale: en_EN
+  duration_format: 3
+  workday_duration: 450
+  posts_count: 1
+  newsletter: 1
+  option_avatars: 1
+  autologin: 8234567890abcdefghijklmnopqrstuv

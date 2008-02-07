@@ -8,3 +8,23 @@ test_project:
   critical_count: 0
   normal_count: 0
   low_count: 0
+tester_project:
+  id: 2
+  name: Tester Project
+  user_id: 2
+  company_id: 2
+  customer_id: 3
+  completed_at: null
+  critical_count: 0
+  normal_count: 0
+  low_count: 0
+completed_project:
+  id: 3
+  name: Completed Project
+  user_id: 1
+  company_id: 1
+  customer_id: 1
+  completed_at: <%= Time.now.utc - 1.day %>
+  critical_count: 0
+  normal_count: 0
+  low_count: 0

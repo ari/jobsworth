@@ -14,3 +14,11 @@ external_customer:
   contact_name: Erlend Simonsen
   css: #menu {color: red;}
   binary_id: nil
+fudge_internal_customer:
+  id: 3
+  company_id: 2
+  name: Internal
+  contact_email: mr@fudgie.org
+  contact_name: Erlend Simonsen
+  css: #menu {color: blue;}
+  binary_id: nil
