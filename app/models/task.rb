@@ -41,6 +41,8 @@ class Task < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
+  validates_presence_of			  :project
+
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
 
