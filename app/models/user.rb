@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
       company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
       User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, company.id ] )
     else
-      User.find( :first, :conditions => [ 'username = ? AND password = ?', self.username, self.password ] )
+      nil
     end
   end
 
