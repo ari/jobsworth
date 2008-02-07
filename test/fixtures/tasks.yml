@@ -45,3 +45,26 @@ milestone_task:
   notify_emails: null
   repeat: null
   hide_until: null
+completed_task:
+  id: 3
+  name: Test Completed
+  project_id: 1
+  position: 0
+  due_at: null
+  completed_at: <%= Time.now.utc.to_s(:db) %>
+  duration: 60
+  hidden: null
+  milestone_id: null
+  description: Just a normal Task
+  company_id: 1
+  priority: 0
+  updated_by_id: 1
+  severity_id: 0
+  type_id: 0
+  task_num: 1
+  status: 2
+  requested_by: null
+  creator_id: 1
+  notify_emails: null
+  repeat: null
+  hide_until: null

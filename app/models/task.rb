@@ -38,10 +38,11 @@ class Task < ActiveRecord::Base
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
   has_many      :sheets
 
-  validates_length_of           :name,  :maximum=>200
+  validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
-  validates_presence_of			  :project
+  validates_presence_of		:company
+  validates_presence_of		:project
 
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
