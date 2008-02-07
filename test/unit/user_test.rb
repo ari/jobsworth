@@ -11,7 +11,92 @@ class UserTest < Test::Unit::TestCase
   def test_truth
     assert_kind_of User,  @user
   end
+
+  def test_before_create
+    u = User.new
+    u.name = "a"
+    u.username = "a"
+    u.password = "a"
+    u.email = "a@a.com"
+    u.company_id = 1
+    u.save
+    
+    assert_not_nil u.uuid
+    assert_not_nil u.autologin
+    
+    assert u.uuid.length == 32
+    assert u.autologin.length == 32
+  end
+
+  def test_validate_name
+    u = User.new
+    u.username = "a"
+    u.password = "a"
+    u.email = "a@a.com"
+    u.company_id = 1
+
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "can't be blank", u.errors['name'] 
+    
+  end
   
+  def test_validate_username
+    u = User.new
+    u.name = "a"
+    u.password = "a"
+    u.email = "a@a.com"
+    u.company_id = 1
+
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "can't be blank", u.errors['username'] 
+
+    u.username = 'test'
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "has already been taken", u.errors['username'] 
+    
+  end
+
+  def test_validate_password
+    u = User.new
+    u.name = "a"
+    u.username = "a"
+    u.email = "a@a.com"
+    u.company_id = 1
+
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "can't be blank", u.errors['password'] 
+    
+  end
+
+  def test_validate_email
+    u = User.new
+    u.name = "a"
+    u.username = "a"
+    u.password = "a"
+    u.company_id = 1
+
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "can't be blank", u.errors['email']
+  end
+
+  def test_validate_company_id
+    u = User.new
+    u.name = "a"
+    u.username = "a"
+    u.password = "a"
+    u.email = "a@a.com"
+
+    assert !u.save
+    assert_equal 1, u.errors.size
+    assert_equal "can't be blank", u.errors['company'] 
+  end
+
+
   def test_path
     assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1'), @user.path
   end
