@@ -18,19 +18,27 @@ class NotificationsTest < Test::Unit::TestCase
   end
 
   def test_created
-    @expected.subject = 'Notifications#created'
+    @expected.subject = '[ClockingIT] Created: [#1] Test (Unassigned)'
+    @expected.from    = 'admin@clockingit.com'
+    @expected['Reply-To'] = 'task-1@cit.clockingit.com'
+    @expected.to      = 'admin@clockingit.com'
+    @expected['Mime-Version'] = '1.0'
     @expected.body    = read_fixture('created')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_created(Task.find(1), User.find(1)).encoded
+    assert_equal @expected.encoded, Notifications.create_created(Task.find(1), User.find(1), "", @expected.date).encoded
   end
 
   def test_changed
-    @expected.subject = 'Notifications#changed'
+    @expected.subject = '[ClockingIT] Resolved: [#1] Test -> Open (Erlend Simonsen)'
+    @expected.from    = 'admin@clockingit.com'
+    @expected['Reply-To'] = 'task-1@cit.clockingit.com'
+    @expected.to      = 'admin@clockingit.com'
+    @expected['Mime-Version'] = '1.0'
     @expected.body    = read_fixture('changed')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_changed(:completed, Task.find(1), User.find(1), "Task Changed").encoded
+    assert_equal @expected.encoded, Notifications.create_changed(:completed, Task.find(1), User.find(1), "Task Changed", @expected.date).encoded
   end
 
   private
