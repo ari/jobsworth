@@ -1,14 +1,32 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class CustomerTest < Test::Unit::TestCase
-  fixtures :customers
+  fixtures :companies, :customers
 
   def setup
-    @customer = Customer.find(1)
+    @internal = Customer.find(1)
+    @external = Customer.find(2)
   end
 
-  # Replace this with your real tests.
   def test_truth
-    assert_kind_of Customer,  @customer
+    assert_kind_of Customer,  @internal
   end
+  
+  def test_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', '1'), @internal.path
+  end
+
+  def test_store_name
+    assert_equal "logo_1", @internal.store_name
+  end
+
+  def test_logo_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', '1', 'logo_1'), @internal.logo_path
+  end
+  
+  def test_full_name
+    assert_equal "ClockingIT", @internal.full_name
+    assert_not_equal "ClockingIT", @external.full_name
+  end
+  
 end
