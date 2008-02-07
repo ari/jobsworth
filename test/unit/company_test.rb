@@ -2,7 +2,7 @@
 #                 classname: asrt / meth =  ratio%
 #                   Company:    0 /    1 =   0.00%
 
-require 'test/unit' unless defined? $ZENTEST and $ZENTEST
+require File.dirname(__FILE__) + '/../test_helper'
 
 class CompanyTest < Test::Unit::TestCase
   fixtures :companies, :customers
