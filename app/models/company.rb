@@ -10,7 +10,6 @@ class Company < ActiveRecord::Base
   has_many      :tasks
   has_many      :pages
   has_many      :work_logs
-  has_many      :activities, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
   has_many      :tags, :dependent => :destroy
