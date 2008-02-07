@@ -4,7 +4,7 @@ require 'notifications'
 class NotificationsTest < Test::Unit::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
-  fixtures :users, :tasks, :projects, :customers
+  fixtures :users, :tasks, :projects, :customers, :companies
 
   include ActionMailer::Quoting
 
