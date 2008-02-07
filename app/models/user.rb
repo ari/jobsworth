@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   validates_length_of           :email,  :maximum=>200
   validates_presence_of         :email
 
-  validates_presence_of         :company_id
+  validates_presence_of         :company
 
   after_destroy { |r|
     begin
