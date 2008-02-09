@@ -43,31 +43,13 @@ while($running) do
   grabuser(tasks_tomorrow, user_tasks_tomorrow, user_ids)
   grabuser(tasks, user_tasks, user_ids)
  
-  puts "\n\n"
   user_ids = user_ids.compact.uniq
-  puts "Found #{user_ids.size.to_s} users"
+  puts "Processing #{user_ids.size.to_s} users"
   
   user_ids.each do |u|
     user = User.find(u)
     puts "Handling tasks for #{user.name} / #{user.company.name}"
-    if user_tasks_overdue.key?(u)
-      user_tasks_overdue[u].each do |t|
-        puts "Overdue: #{t.name}"
-      end
-    end
     
-    if user_tasks_tomorrow.key?(u) 
-      user_tasks_tomorrow[u].each do |t|
-        puts "Due Tomorrow: #{t.name}"
-      end
-    end
-    
-    if user_tasks.key?(u)      
-      user_tasks[u].each do |t|
-        puts "Due Today: #{t.name}"
-      end
-    end
-       
     begin
       Notifications::deliver_reminder(user_tasks[u], user_tasks_tomorrow[u], user_tasks_overdue[u], user)
     rescue
