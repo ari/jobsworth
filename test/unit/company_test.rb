@@ -10,7 +10,7 @@ class CompanyTest < Test::Unit::TestCase
   def setup
     @company = Company.find(1)
   end
-  
+
   def test_truth
     assert_kind_of Company,  @company
   end
@@ -19,7 +19,16 @@ class CompanyTest < Test::Unit::TestCase
     assert_equal 1, @company.internal_customer.id
     assert_equal "Internal", @company.internal_customer.name
   end
-  
+
+  def test_subdomain_uniqueness
+    company = Company.new
+    company.name = "Test"
+    company.subdomain = 'cit'
+    assert_equal false, company.save
+    assert_equal 1, company.errors.size
+    assert_equal "has already been taken", company.errors['subdomain']
+  end
+
 end
 
 # Number of errors detected: 52
