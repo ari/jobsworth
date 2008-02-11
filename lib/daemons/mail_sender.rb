@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 #You might want to change this
-ENV["RAILS_ENV"] ||= "development"
+#ENV["RAILS_ENV"] ||= "development"
 
 require File.dirname(__FILE__) + "/../../config/environment"
 
@@ -9,6 +9,20 @@ $running = true;
 Signal.trap("TERM") do
   $running = false
 end
+
+def grabuser(tasks, user_tasks, user_ids)
+  tasks.each do |t|
+    t.users.each do |u|
+      if u.receive_notifications.to_i > 0
+        user_ids.push(u.id)
+        if !user_tasks.key?(u.id)
+          user_tasks[u.id] = []
+        end                                 
+        user_tasks[u.id].push(t)
+      end
+    end
+  end 
+end         
 
 while($running) do
 
@@ -18,43 +32,28 @@ while($running) do
 
   tasks = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => "company_id")
   tasks_tomorrow = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day], :order => "company_id")
-
-  if tasks.size > 0
-    puts "Got reminders to send.. #{tasks.size} tasks."
-
-    user_ids = []
-    tasks.each do |t|
-      if t.users.size > 0
-        user_ids += t.users.collect { |u| u.id if u.receive_notifications.to_i > 0 }
-      end
-    end
-    tasks_tomorrow.each do |t|
-      if t.users.size > 0
-        user_ids += t.users.collect { |u| u.id if u.receive_notifications.to_i > 0 }
-      end
-    end
-    user_ids = user_ids.compact.uniq
-    puts "Users involved: " + user_ids.size.to_s
-
-    user_ids.each do |u|
-      user = User.find(u)
-      puts "Handling tasks for #{user.name} / #{user.company.name}"
-      user_tasks = user.tasks.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => 'project_id, name')
-      user_tasks_tomorrow = user.tasks.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day], :order => 'project_id, name')
-
-      user_tasks.each do |ut|
-        puts "  [#{ut.id}] ##{ut.task_num} #{ut.name}"
-      end
-      user_tasks_tomorrow.each do |ut|
-        puts "  [#{ut.id}] ##{ut.task_num} #{ut.name} <tomorrow>"
-      end
-
-      begin
-        Notifications::deliver_reminder(user_tasks, user_tasks_tomorrow, user)
-      rescue
-        puts "  [#{user.id}] #{user.email} failed."
-      end
-
+  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) and due_at < ? and completed_at IS NULL", date.change(:min => 59), date], :order => "company_id")
+                   
+  user_ids = []      
+  user_tasks = {}
+  user_tasks_overdue = {}
+  user_tasks_tomorrow = {}
+  
+  grabuser(tasks_overdue, user_tasks_overdue, user_ids)
+  grabuser(tasks_tomorrow, user_tasks_tomorrow, user_ids)
+  grabuser(tasks, user_tasks, user_ids)
+ 
+  user_ids = user_ids.compact.uniq
+  puts "Processing #{user_ids.size.to_s} users"
+  
+  user_ids.each do |u|
+    user = User.find(u)
+    puts "Handling tasks for #{user.name} / #{user.company.name}"
+    
+    begin
+      Notifications::deliver_reminder(user_tasks[u], user_tasks_tomorrow[u], user_tasks_overdue[u], user)
+    rescue
+      puts "  [#{user.id}] #{user.email} failed."
     end
   end
 

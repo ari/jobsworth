@@ -109,8 +109,8 @@ class Notifications < ActionMailer::Base
     @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
   end
 
-  def reminder(tasks, tasks_tomorrow, user, sent_at = Time.now)
-    @body       = {:tasks => tasks, :tasks_tomorrow => tasks_tomorrow, :user => user}
+  def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
+    @body       = {:tasks => tasks, :tasks_tomorrow => tasks_tomorrow, :tasks_overdue => tasks_overdue, :user => user}
     @subject    = "[ClockingIT] Tasks due"
 
     @recipients = [user.email]

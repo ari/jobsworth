@@ -61,7 +61,7 @@ completed_task:
   updated_by_id: 1
   severity_id: 0
   type_id: 0
-  task_num: 1
+  task_num: 3
   status: 2
   requested_by: null
   creator_id: 1
