@@ -21,10 +21,8 @@ ActionController::Routing::Routes.draw do |map|
     map.resources :posts, :name_prefix => "#{attr}_", :path_prefix => "/#{attr.pluralize}/:#{attr}_id"
   end
 
-  map.with_options :controller => 'posts', :action => 'monitored' do |map|
-    map.formatted_monitored_posts 'users/:user_id/monitored.:format'
-    map.monitored_posts           'users/:user_id/monitored'
-  end
+  map.formatted_monitored_posts 'users/:user_id/monitored.:format', :controller => 'posts', :action => 'monitored'
+  map.monitored_posts           'users/:user_id/monitored', :controller => 'posts', :action => 'monitored'
 
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
