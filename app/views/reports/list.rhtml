@@ -91,7 +91,7 @@
 #                ["Statistics", "6"]
                 ], :selected => ((params[:report] && params[:report][:type]) ? params[:report][:type] : "1") ) %><br/>
 
-<div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>><label for="report_range"><%=_ 'Time Range' %></label><%= select("report", "range", [[_("Today"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"],[_("Custom"),"7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/></div>
+<div id="date-select" <%= "style=\"display:none;\"" if params[:report] && params[:report][:type].to_i == 4 %>><label for="report_range"><%=_ 'Time Range' %></label><%= select("report", "range", [[_("Today"), "0"],[_("Yesterday"),"8"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"],[_("Custom"),"7"]], :selected => ((params[:report] && params[:report][:range]) ? params[:report][:range] : "1" )) %><br/></div>
 
 <% if( params[:report] && (["1", "4"].include? params[:report][:type]) ) || params[:report].nil? %>
 <div id="pivot_config">

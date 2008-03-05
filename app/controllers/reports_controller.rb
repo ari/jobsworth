@@ -235,6 +235,10 @@ class ReportsController < ApplicationController
           # Today
           date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.at_midnight).to_s(:db)}'"
           filename << "_" + tz.now.at_midnight.strftime("%Y%m%d") + "-" + tz.now.strftime("%Y%m%d")
+        when 8
+          # Yesterday
+          date_filter = " work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.day).at_midnight).to_s(:db)}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.at_midnight).to_s(:db)}'"
+          filename << "_" + (tz.now - 1.day).at_midnight.strftime("%Y%m%d") + "-" + tz.now.at_midnight.strftime("%Y%m%d")
         when 1
           # This Week
           date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_week).to_s(:db)}'"
