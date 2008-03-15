@@ -237,7 +237,7 @@ class ReportsController < ApplicationController
           filename << "_" + tz.now.at_midnight.strftime("%Y%m%d") + "-" + tz.now.strftime("%Y%m%d")
         when 8
           # Yesterday
-          date_filter = " work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.day).at_midnight).to_s(:db)}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.at_midnight).to_s(:db)}'"
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc((tz.now - 1.day).at_midnight).to_s(:db)}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.at_midnight).to_s(:db)}'"
           filename << "_" + (tz.now - 1.day).at_midnight.strftime("%Y%m%d") + "-" + tz.now.at_midnight.strftime("%Y%m%d")
         when 1
           # This Week
@@ -250,7 +250,7 @@ class ReportsController < ApplicationController
           filename << "-" + tz.now.beginning_of_week.strftime("%Y%m%d")
         when 3
           # This Month
-          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_month).to_s(:db)}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)}"
+          date_filter = " AND work_logs.started_at > '#{tz.local_to_utc(tz.now.beginning_of_month).to_s(:db)}' AND work_logs.started_at < '#{tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)}'"
           filename << "-" + tz.now.beginning_of_month.strftime("%Y%m%d")  + "-" + tz.now.strftime("%Y%m%d")
         when 4
           # Last Month
