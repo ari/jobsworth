@@ -53,6 +53,8 @@ class User < ActiveRecord::Base
 
   before_create                 :generate_uuid
 
+  attr_protected :password, :admin, :uuid, :autologin
+
   def path
     File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)
   end
