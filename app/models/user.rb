@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   require_dependency 'digest/md5'
 
   belongs_to    :company
-  has_many      :projects, :through => :project_permissions
+  has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL']
   has_many      :project_permissions, :dependent => :destroy
   has_many      :pages, :dependent => :nullify
   has_many      :tasks, :through => :task_owners
