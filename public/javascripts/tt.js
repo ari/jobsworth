@@ -37,21 +37,8 @@ Event.observe(window, "load", function(e) {
     Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
 });
 
-function tip(myEvent){
-
-  var n = null;
-
-  for( var i = 0; i < tooltipids.length; i++ ) {
-    if( tooltipids[i] == Event.element(myEvent) ) {
-      n = i;
-      break;
-    }
-  }
-
-  if( n == null )
-    return;
-
-  self.status=tooltips[n];
+function tip(myEvent,tip){
+  self.status=tip;
   scrollposY=0;
   if (window.pageYOffset){
     scrollposY = window.pageYOffset;
@@ -63,7 +50,7 @@ function tip(myEvent){
     scrollposY = document.getElementById("body").scrollTop;
   }
 
-  document.getElementById("message").innerHTML= tooltips[n];
+  document.getElementById("message").innerHTML= tip;
   document.getElementById("tip").style.top = scrollposY + myEvent.clientY + 15+"px";
   var left = myEvent.clientX - 25;
   if( left < 0 ) left = 0;
@@ -79,33 +66,22 @@ function hide(e){
 
 
 function makeTooltips(show) {
-  var a = document.getElementsByClassName( 'tooltip' );
-  for( var i = 0; i < a.length; i++ ) {
-    if( show == 1 ) {
-      tooltips[tooltips.length] = a[i].title;
-      tooltipids[tooltipids.length] = a[i];
-      Element.removeClassName(a[i], 'tooltip');
-      Event.observe(a[i], "mousemove", function(e) { tip(e); });
-      Event.observe(a[i], "mouseout", function(e) { hide(e); });
-    }
-    a[i].title = '';
-  }
+  $$('.tooltip').each( function(el) {
+      if( show == 1 ) {
+        var tooltip = el.title.replace(/&quot;/, "\"").replace(/&gt;/,"<").replace(/&lt;/,">");
+        Event.observe(el, "mousemove", function(e) { tip(e, tooltip ) });
+        Event.observe(el, "mouseout", function(e) { hide(e); });
+      }
+      el.title = '';
+      Element.removeClassName(el, 'tooltip');
+    } );
+
   Event.observe(document, "mousedown", function(e) {hide(e);} );
   show_tooltips = show;
 }
 
 function updateTooltips() {
-  var a = document.getElementsByClassName( 'tooltip' );
-  for( var i = 0; i < a.length; i++ ) {
-    if( show_tooltips == 1 ) {
-      tooltips[tooltips.length] = a[i].title;
-      tooltipids[tooltipids.length] = a[i];
-      Element.removeClassName(a[i], 'tooltip');
-      Event.observe(a[i], "mousemove", function(e) { tip(e); });
-      Event.observe(a[i], "mouseout", function(e) { hide(e); });
-    }
-    a[i].title = '';
-  }
+  makeTooltips(show_tooltips);
 }
 
 function init_shout() {
@@ -266,7 +242,7 @@ function updateSelect(sel, response) {
 }
 
 function fixShortLinks() {
-  $$('.task-name a').each(function(e) {
+  $$('.task-name a').each( function(e) {
       e.target = '_blank';
     });
 
