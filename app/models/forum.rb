@@ -10,6 +10,9 @@ class Forum < ActiveRecord::Base
   has_many :moderatorships, :dependent => :destroy
   has_many :moderators, :through => :moderatorships, :source => :user, :order => 'users.name'
 
+  has_many :monitorships, :as => :monitorship, :dependent => :destroy
+  has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.last_login_at'
+
   has_many :topics, :order => 'sticky desc, replied_at desc', :dependent => :destroy do
     def first
       @first_topic ||= find(:first)

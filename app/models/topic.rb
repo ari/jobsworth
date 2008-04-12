@@ -1,7 +1,7 @@
 class Topic < ActiveRecord::Base
   belongs_to :forum, :counter_cache => true
   belongs_to :user
-  has_many :monitorships
+  has_many :monitorships, :as => :monitorship
   has_many :monitors, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :source => :user, :order => 'users.last_login_at'
 
   has_many :posts, :order => 'posts.created_at', :dependent => :destroy do
