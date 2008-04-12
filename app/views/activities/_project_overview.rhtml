@@ -89,22 +89,8 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
                 </div>
               </div>
     </div></td></tr>
-          <%
-               total_count = Task.count(:conditions => ["project_id = ?", project.id]) * 1.0
-             if total_count >= 1.0
-               done_count = Task.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
-               done_percent = (done_count/total_count) * 100.0
-          %>
-          <tr class="milestone project_<%= project.id %>" style="height:16px;<%= "display:none;" if (session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) %>"><td colspan="2"><div><div style="float: left;padding-top:2px;"><span class="milestones"><%=_ 'Overall Progress'%></span></div>
-              <div class="prog-border"  style="float: right; height: 10px;margin-top:2px;">
-                  <div class="prog-bar-medium tooltip " style="width: <%= number_to_percentage( done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( done_percent, :precision => 0) %> (<%= "#{done_count.to_i} / #{total_count.to_i}"%>)  Complete"> </div>
-                  <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( 100-done_percent, :precision => 0)  %>;" title="<%= number_to_percentage( 100-done_percent, :precision => 0) %> (<%= "#{total_count.to_i - done_count.to_i} / #{total_count.to_i}"%>) Remaining"> </div>
-                </div>
-              </div>
-            </td></tr>
-          <% end
-             for milestone in project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, milestones.name", :include => [:user])
-          %>
+          <%= render :partial => "overall_progress", :locals => { :project => project } %>
+          <% for milestone in project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, milestones.name", :include => [:user]) %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
           <% end %>
   <% @completed_milestones = Milestone.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
