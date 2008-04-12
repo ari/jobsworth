@@ -251,7 +251,7 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = current_user.projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
+    @completed_projects = current_user.completed_projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
   end
 
 end
