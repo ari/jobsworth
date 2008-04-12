@@ -23,7 +23,6 @@ class MilestonesController < ApplicationController
 
     @milestone = Milestone.new(params[:milestone])
 
-
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       begin
         due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
@@ -37,7 +36,7 @@ class MilestonesController < ApplicationController
 
     if @milestone.save
       flash[:notice] = _('Milestone was successfully created.')
-      redirect_from_last
+      redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
     else
       render :action => 'new'
     end
