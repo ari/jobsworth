@@ -9,7 +9,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 96) do
+ActiveRecord::Schema.define(:version => 98) do
+
+  create_table "activities", :force => true do |t|
+    t.integer  "user_id",       :default => 0,  :null => false
+    t.integer  "company_id",    :default => 0,  :null => false
+    t.integer  "customer_id",   :default => 0,  :null => false
+    t.integer  "project_id",    :default => 0,  :null => false
+    t.integer  "activity_type", :default => 0,  :null => false
+    t.string   "body",          :default => "", :null => false
+    t.datetime "created_at",                    :null => false
+  end
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -122,10 +132,13 @@ ActiveRecord::Schema.define(:version => 96) do
     t.datetime "due_at"
     t.integer  "position"
     t.datetime "completed_at"
+    t.integer  "total_tasks",     :default => 0
+    t.integer  "completed_tasks", :default => 0
   end
 
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
   add_index "milestones", ["project_id"], :name => "milestones_project_id_index"
+  add_index "milestones", ["company_id", "project_id"], :name => "milestones_company_project_index"
 
   create_table "moderatorships", :force => true do |t|
     t.integer "forum_id"
@@ -135,9 +148,10 @@ ActiveRecord::Schema.define(:version => 96) do
   add_index "moderatorships", ["forum_id"], :name => "index_moderatorships_on_forum_id"
 
   create_table "monitorships", :force => true do |t|
-    t.integer "topic_id"
+    t.integer "monitorship_id"
     t.integer "user_id"
-    t.boolean "active",   :default => true
+    t.boolean "active",           :default => true
+    t.string  "monitorship_type"
   end
 
   create_table "news_items", :force => true do |t|
@@ -227,13 +241,16 @@ ActiveRecord::Schema.define(:version => 96) do
   add_index "project_permissions", ["user_id"], :name => "project_permissions_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",         :limit => 200, :default => "", :null => false
-    t.integer  "user_id",                     :default => 0,  :null => false
-    t.integer  "company_id",                  :default => 0,  :null => false
-    t.integer  "customer_id",                 :default => 0,  :null => false
+    t.string   "name",           :limit => 200, :default => "", :null => false
+    t.integer  "user_id",                       :default => 0,  :null => false
+    t.integer  "company_id",                    :default => 0,  :null => false
+    t.integer  "customer_id",                   :default => 0,  :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
+    t.integer  "critical_count",                :default => 0
+    t.integer  "normal_count",                  :default => 0
+    t.integer  "low_count",                     :default => 0
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
@@ -390,6 +407,7 @@ ActiveRecord::Schema.define(:version => 96) do
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
+  add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
 
   create_table "todos", :force => true do |t|
     t.integer  "task_id"
@@ -526,7 +544,6 @@ ActiveRecord::Schema.define(:version => 96) do
     t.integer  "paused_duration",  :default => 0
   end
 
-  add_index "work_logs", ["user_id"], :name => "work_logs_user_id"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
   add_index "work_logs", ["task_id", "log_type"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
