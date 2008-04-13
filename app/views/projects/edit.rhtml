@@ -27,7 +27,7 @@
         <tr>
           <td align="left" colspan="2" class="page_header"><div style="float:left;"><%=_ 'Milestones' %></div>
             <% if current_user.can?( @project, 'milestone' ) %>
-            <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "milestones", :action => 'new' %></div></td>
+            <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div></td>
           <% end %>
         </tr>
         <tr>

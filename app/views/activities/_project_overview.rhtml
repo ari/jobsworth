@@ -89,7 +89,7 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
                 </div>
               </div>
     </div></td></tr>
-          <%= render :partial => "overall_progress", :locals => { :project => project } %>
+          <%= render :partial => "activities/overall_progress", :locals => { :project => project } %>
           <% for milestone in project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, milestones.name", :include => [:user]) %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
           <% end %>
