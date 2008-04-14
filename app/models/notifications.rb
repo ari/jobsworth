@@ -120,11 +120,22 @@ class Notifications < ActionMailer::Base
     @headers    = {'Reply-To' => user.email}
   end
 
-  def forum_post(user, post, sent_at = Time.now)
+  def forum_reply(user, post, sent_at = Time.now)
     @body       = {:user => user, :post => post}
     @subject    = "[ClockingIT] Reply to #{post.topic.title}"
 
-    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email)).uniq - [user.email]
+    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq - [user.email]
+
+    @from       = "admin@#{$CONFIG[:domain]}"
+    @sent_on    = sent_at
+    @headers    = {'Reply-To' => user.email}
+  end
+
+  def forum_post(user, post, sent_at = Time.now)
+    @body       = {:user => user, :post => post}
+    @subject    = "[ClockingIT] New topic in #{post.forum.name}"
+
+    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq - [user.email]
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at

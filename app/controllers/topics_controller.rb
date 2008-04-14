@@ -37,6 +37,8 @@ class TopicsController < ApplicationController
       @topic.body = @post.body # incase save fails and we go back to the form
       @topic.save! if @post.valid?
       @post.save!
+
+      Notifications::deliver_forum_post(current_user, @post) rescue nil
     end
     respond_to do |format|
       format.html { redirect_to topic_path(@forum, @topic) }

@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   require_dependency 'digest/md5'
 
   belongs_to    :company
-  has_many      :projects, :through => :project_permissions
+  has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL']
   has_many      :project_permissions, :dependent => :destroy
   has_many      :pages, :dependent => :nullify
   has_many      :tasks, :through => :task_owners
@@ -19,8 +19,10 @@ class User < ActiveRecord::Base
 
   has_many      :posts, :dependent => :destroy
   has_many      :topics, :dependent => :destroy
-  has_many      :monitorships, :dependent => :destroy
-  has_many      :monitored_topics, :through => :monitorships, :conditions => ['monitorships.active = ?', true], :order => 'topics.replied_at desc', :source => :topic
+
+  has_many      :monitorships,:dependent => :destroy
+  has_many      :monitored_topics, :through => :monitorships, :source => 'topic', :conditions => ['monitorships.active = ? AND monitorship_type = ?', true, 'topic'], :order => 'topics.replied_at desc'
+  has_many      :monitored_forums, :through => :monitorships, :source => 'forum', :conditions => ['monitorships.active = ? AND monitorship_type = ?', true, 'forum'], :order => 'forums.position'
 
   has_many      :moderatorships, :dependent => :destroy
   has_many      :forums, :through => :moderatorships, :order => 'forums.name'
@@ -52,6 +54,8 @@ class User < ActiveRecord::Base
   }
 
   before_create                 :generate_uuid
+
+  attr_protected :admin, :uuid, :autologin
 
   def path
     File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)

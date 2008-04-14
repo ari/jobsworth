@@ -3,10 +3,6 @@ class ProjectsController < ApplicationController
 
   cache_sweeper :project_sweeper, :only => [ :create, :edit, :update, :destroy, :ajax_remove_permission, :ajax_add_permission ]
 
-  def index
-    list
-    render :action => 'list'
-  end
   def new
     @project = Project.new
   end
@@ -15,7 +11,6 @@ class ProjectsController < ApplicationController
     @project = Project.new(params[:project])
     @project.owner = current_user
     @project.company_id = current_user.company_id
-
 
     if @project.save
       @project_permission = ProjectPermission.new
@@ -158,7 +153,7 @@ class ProjectsController < ApplicationController
     @project = current_user.projects.find(params[:id])
     old_client = @project.customer_id
     old_name = @project.name
-    
+
     if @project.update_attributes(params[:project])
       # Need to update forum names?
       forums = Forum.find(:all, :conditions => ["project_id = ?", params[:id]])
@@ -251,7 +246,7 @@ class ProjectsController < ApplicationController
   end
 
   def list_completed
-    @completed_projects = current_user.projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
+    @completed_projects = current_user.completed_projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
   end
 
 end

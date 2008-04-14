@@ -1,10 +1,10 @@
 <% @page_title = @topic.title %>
-<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and topic_id = ? and active = ?', current_user.id, @topic.id, true]).zero? %>
+<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic']).zero? %>
 
-<% form_tag monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
+<% form_tag topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
-    onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => monitorship_path(@forum, @topic), :method => :delete %>}" />
+    onclick="if (this.checked) {<%= remote_function :url => topic_monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => topic_monitorship_path(@forum, @topic), :method => :delete %>}" />
   <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring topic' : 'Monitor topic' %></label>
   <%= hidden_field_tag '_method', 'delete' if @monitoring %>
   <%= submit_tag :Set, :id => 'monitor_submit' %>

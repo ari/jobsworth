@@ -21,6 +21,17 @@
 <% end %>
 
 <% @page_title = @forum.name %>
+<% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @forum.id, true, 'forum']).zero? %>
+
+<% form_tag monitorship_path(@forum), :style => 'margin-top:0em; float:right;' do -%>
+<div>
+  <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
+    onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum) %>} else {<%= remote_function :url => monitorship_path(@forum), :method => :delete %>}" />
+  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring forum' : 'Monitor forum' %></label>
+  <%= hidden_field_tag '_method', 'delete' if @monitoring %>
+  <%= submit_tag :Set, :id => 'monitor_submit' %>
+</div>
+<% end -%>
 
 <div class="crumbs">
 <%= link_to 'Forums', home_path %> <span class="arrow">&rarr;</span>
