@@ -25,7 +25,7 @@ admin:
   receive_notifications: 1
   uuid: 1234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
-  locale: en_EN
+  locale: en_US
   duration_format: 3
   workday_duration: 450
   posts_count: 1
@@ -58,7 +58,7 @@ fudge:
   receive_notifications: 1
   uuid: 3234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
-  locale: en_EN
+  locale: en_US
   duration_format: 3
   workday_duration: 450
   posts_count: 0
@@ -91,7 +91,7 @@ user:
   receive_notifications: 1
   uuid: 5234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
-  locale: en_EN
+  locale: en_US
   duration_format: 3
   workday_duration: 450
   posts_count: 1
@@ -124,7 +124,7 @@ user_limited:
   receive_notifications: 1
   uuid: 7234567890abcdefghijklmnopqrstuv
   seen_welcome: 1
-  locale: en_EN
+  locale: en_US
   duration_format: 3
   workday_duration: 450
   posts_count: 1
