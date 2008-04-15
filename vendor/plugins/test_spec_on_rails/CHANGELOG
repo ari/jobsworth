@@ -1,0 +1,3 @@
+02/08/08 - Added support for route checking (i.e. assert_generates) [Jason Rudolph]
+
+01/10/08 - Added CHANGELOG and LICENSE [Matthew Bass]

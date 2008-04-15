@@ -1104,9 +1104,11 @@ a.description {
   color                   : #cccccc;
   padding                 : 0px;
   margin                  : 0px;
-  background-image: url(/images/menuback.gif) ;
+  background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
-  border: 1px solid #c8c8c8;
+  border-top: 1px solid #c8c8c8;
+  border-left: 1px solid #c8c8c8;
+/*  border-bottom: 1px solid #c8c8c8; */
 }
 
 #menucontainer {
@@ -1117,72 +1119,140 @@ a.description {
       float: left;
 }
 
-#tabmenu {
-      background:#8cacbb;
-      font-size:93%;
-      line-height:normal;
+#tabmenu { 
+  font-size: 93%;
 }
 
-#tabmenu ul {
-      margin:0;
-      padding:0px 0px 0px 0px;
-      list-style:none;
+#tabmenu a:hover { 
+  text-decoration: none;
 }
 
-#tabmenu li {
-      float: left;
-      margin:0;
-      padding:0;
-}
-
-#tabmenu li.right {
-      float: right;
-}
-
-#tabmenu a {
+#tabmenu ul { 
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: auto;
   display: block;
-  text-decoration:none;
-  font-weight: bold;
 }
 
 
-#tabmenu span {
-  display:block;
-  margin:0;
-  background:url("/images/tabright.gif") no-repeat right top;
-  padding:4px 6px 4px 6px;
-  color:#423f54;
-  font-weight: bold;
-}
-
-#tabmenu input {
+#tabmenu input { 
   margin: 0;
   padding: 0;
   height: 11px;
 }
 
-
-/* Commented Backslash Hack hides rule from IE5-Mac \*/
-#tabmenu a span {float:none;}
-/* End IE5-Mac hack */
-#tabmenu a:hover span {
-}
-#tabmenu a:hover span {
-  background-position:100% -25px;
-}
-
-#tabmenu a:hover span.last {
-  background-position:99% -25px;
+#tabmenu li {
+  /*float the main list items*/
+  margin: 0;
+  float: left;
+  width: auto;
+  display: block;
+  padding-right: 0px;
 }
 
-#tabmenu span.last {
-  background-position:99% 0%;
+#tabmenu li a, #tabmenu #search_menu {
+  /*for all links in the list*/
+  color: #423f54;
+  font-weight: bold;
+  display: block;
+  height: 16px;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #eee;
+  border-bottom: none;
+  padding: 4px 3px 3px 3px;
+  float: left;
 }
 
-#tabmenu span.active {
-  color:#FF9900;
-  background-position:100% -25px;
+#tabmenu #search_menu { 
+  float: right;
 }
+
+#tabmenu li.right { 
+  float: right;
+}
+
+#tabmenu li ul {
+  /*put the subnavs below and hide them all*/
+  display: none;
+  position: absolute;
+  top: 15px;
+  margin-top: 8px;
+  margin-left: -1px;
+  width: auto;
+
+  background-color: #fcfcfc;
+  border-left: 1px solid #ddd;
+  border-bottom: 1px solid #d8d8d8;
+  border-right: 1px solid #d8d8d8;
+}
+
+#tabmenu li.active a {
+  /*change border color for active topic area*/
+/*#  border: 1px solid #f90; */
+  color: #FF9900;
+  background-color: #f0f0f0;
+}
+
+#tabmenu li.active li a { 
+  border: 0;
+}
+
+#tabmenu li ul li { 
+  clear: both;
+  float: none;
+  width: auto;
+  display: block;
+}
+
+#tabmenu li ul a {
+  /*  cancel inherit of border
+      on subnav of active topic */
+  font-size: 9px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin: 0;
+  border: 0;
+}
+
+/* #tabmenu li.active ul { */
+  /*display active subnav list*/
+/*   display: block; */
+/* } */
+
+#tabmenu li a:hover, #tabmenu li:hover a {
+  background: #fff;
+  color: #ff9900;
+}
+
+#tabmenu li ul a {
+/*  float: left; */
+  /*ie doesn't inherit the float*/
+  border: 0;
+  color: #423f54;
+  width: auto;
+  margin-right: 0;
+  display: block;
+}
+
+/* #tabmenu li.active ul { */
+  /*display the current topic*/
+/*   display: block; */
+/* } */
+
+#tabmenu li:hover ul {
+  display: block;
+  z-index: 6000;
+}
+
+#tabmenu li:hover ul a { 
+  color: #423f54;
+}
+
+#tabmenu li ul li a:hover { 
+  text-decoration: underline;
+}
+
 
 #filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort {
   font-size: 10px;
