@@ -1,7 +1,7 @@
 module Test::Spec::Rails
   class DummyResponse < TestDummy
 
-    attr_reader :body, :headers
+    attr_reader :body, :headers, :content_type
 
     def initialize(body, headers=nil)
       if headers.nil?

@@ -70,6 +70,13 @@ URL testing
   url.should.be :controller => "users", :action => "show", :user_id => 1
       
 
+Difference
+----------
+  Wrapper for assert_difference:
+  
+  Article.should.differ(:count).by(2) { blah }
+
+
 Routing to set of url options from a given path (i.e., #assert_generates)
 -------------------------------------------------------------------------
 

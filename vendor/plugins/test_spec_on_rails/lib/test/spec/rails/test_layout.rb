@@ -2,8 +2,8 @@ module Test::Spec::Rails
   class TestLayout < TestDummy
 
     def should_equal(expected, message=nil)
-      layout = @response.layout.gsub(/layouts\//, '')
-      assert_equal layout, expected, message
+      layout = @response.layout.gsub(/layouts\//, '') if @response.layout
+      assert_equal expected, layout, message
     end
     alias :should_be :should_equal
     
