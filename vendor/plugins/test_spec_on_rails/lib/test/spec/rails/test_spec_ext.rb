@@ -12,6 +12,17 @@ class Test::Spec::Should
   end
   
   alias :have :be
+  
+  def differ(method)
+    @initial_value = @object.send(@method = method)
+    self
+  end
+
+  def by(value)
+    yield
+    # TODO this should use #should_equal if available
+    assert_equal @initial_value + value, @object.send(@method)
+  end
 end
 
 class Test::Spec::ShouldNot
