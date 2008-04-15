@@ -51,26 +51,47 @@
               <div id="globalMenu" width="100%">
               <div id="menucontainer" width="100%">
               <div id="tabmenu" width="100%">
-              <ul>
+              <ul id="primary">
                 <% if current_user.seen_welcome.to_i == 0 %>
                   <% if controller.controller_name == "activities" && controller.action_name == 'welcome' %>
-                  <li><%= link_to "<span class=\"active\">#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
+                  <li><%= link_to "#{_('Tutorial')}", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
                   <% else %>
                   <li><%= link_to "<span>#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'} %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "activities" && controller.action_name != 'welcome' %>
-                        <li><%= link_to "<span class=\"active\">#{_('Overview') }</span>", { :controller => 'activities', :action => 'list'}, :class => "active"%></li>
+                <li class="active"><%= link_to "#{_('Overview') }", { :controller => 'activities', :action => 'list'}, :class => "active"%>
                 <% else %>
-                <li><%= link_to "<span>#{_('Overview')}</span>", { :controller => 'activities', :action => 'list'} %></li>
-                <% end %>
+                <li><%= link_to "#{_('Overview')}", { :controller => 'activities', :action => 'list'} %>                
+		<% end %>
+		  <ul>
+  		    <li><a href="#">Customize Layout</a></li>
+		    <li><a href="#">Add Widget</a></li>
+		  </ul>
+		</li>
 
                 <% if controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name) %>
-                <li><%= link_to "<span class=\"active\">#{_('Browse')}</span>", { :controller => 'views', :action => 'browse'}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Browse')}", { :controller => 'views', :action => 'browse'}, :class => "active" %>
                 <% else %>
-                <li><%= link_to "<span>#{_('Browse')}</span>", :controller => 'views', :action => 'browse' %></li>
+                <li><%= link_to "#{_('Browse')}", :controller => 'views', :action => 'browse' %>
                 <% end %>
+		  <ul>
+		    <li><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></li>
+                    <li><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></li>
+                    <li><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></li>
+                    <li><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></li>
+                    <% project_ids = current_project_ids %>
+                    <% client_ids = current_projects.collect(&:customer_id).join(',')
+                       client_ids = "0" if client_ids.nil? || client_ids.empty?
+
+                       views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
+                    for view in views %>
+                    <li><%= link_to(view.name, { :controller => 'views', :action => 'select', :id => view }) %><%= link_to("[#{_('Edit')}]", {:controller => 'views', :action => 'edit', :id => view}) if view.user_id == current_user.id %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></li>
+		    <% end %>
+		    <li><%= link_to "[#{_('New View')}]",  :controller => 'views', :action => 'new' %></li>
+		  </ul>
+		</li>
 
                 <% if current_user.option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "timeline" && controller.action_name == "list" %>
@@ -144,14 +165,14 @@
 
 
                 <% if controller.controller_name == "users" && controller.action_name != "edit_preferences" %>
-                   <li class="right"><%= link_to "<span class=\"right active\">#{_('Users')}</span>", { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
+                   <li class="active right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
                 <% else %>
-                   <li class="right"><%= link_to "<span class=\"right\">#{_('Users')}</span>", { :controller => 'users', :action => 'list'}, :class => "right" %></li>
+                   <li class="right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right" %></li>
                 <% end %>
 
                 <% end %>
 
-                  <li class="right" id="search_menu"><span class="right"><%=_ 'Search' %> <%= text_field_tag 'query', "", {:size => 10, :style => "font-size:9px;"}%></span></li>
+                <li class="right" id="search_menu"><%=_ 'Search' %> <%= text_field_tag 'query', "", {:size => 10, :style => "font-size:9px;"}%></li>
 
                 </ul>
               </div>
