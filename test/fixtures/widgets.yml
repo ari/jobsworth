@@ -1,0 +1,11 @@
+top:
+  id: 1
+  company_id: 1
+  user_id: 1
+  name: Top Tasks
+  widget_type: 0
+  number: 0
+  order_by: priority
+  collapsed: false
+  column: 0
+  position: 0
