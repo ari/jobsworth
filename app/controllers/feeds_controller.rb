@@ -15,7 +15,10 @@ class FeedsController < ApplicationController
   skip_before_filter :authorize
 
   def unsubscribe
-    return if params[:id].nil? || params[:id].empty?
+    if params[:id].nil? || params[:id].empty?
+      render :nothing => true, :layout => false
+      return
+    end 
 
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
 
