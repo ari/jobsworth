@@ -6,6 +6,7 @@ class FeedsController < ApplicationController
 
   require_dependency 'rss/maker'
   require_dependency 'icalendar'
+  require_dependency 'google_chart'
 
   include Icalendar
 
@@ -14,7 +15,10 @@ class FeedsController < ApplicationController
   skip_before_filter :authorize
 
   def unsubscribe
-    return if params[:id].nil? || params[:id].empty?
+    if params[:id].nil? || params[:id].empty?
+      render :nothing => true, :layout => false
+      return
+    end 
 
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
 
@@ -316,6 +320,138 @@ class FeedsController < ApplicationController
 
     GC.start
 
+    ical_feed = nil
+    @activities = nil
+    @tasks = nil
+    @milestones = nil
+    tz = nil
+    cached = ""
+    cal = nil
+
+    GC.start
+
+  end
+
+
+  def igoogle
+    render :layout => false
+  end
+
+  def igoogle_feed
+    if params[:up_uid].nil? || params[:up_uid].empty?
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"http://www.clockingit.com\">ClockingIT</a> preferences page.", :layout => false
+      return
+    end
+
+    user = User.find(:first, :conditions => ["autologin = ?", params[:up_uid]])
+    if user.nil?
+      render :text => "Wrong Widget key (found on your preferences page)", :layout => false
+      return
+    end
+    tz = TZInfo::Timezone.get(user.time_zone)
+
+    limit = params[:up_show_number] || "5"
+
+    @current_user = user
+
+    @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+    pids = @projects.collect(&:id).join(',')
+    if pids.nil? || pids.empty?
+        pids = "0"
+    end
+
+
+    if params[:up_show_order] && params[:up_show_order] == "Newest Tasks"
+      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
+      else
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i )
+      end
+    elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
+      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ], :limit => limit.to_i  )
+      else
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ], :limit => limit.to_i  )
+      end
+    elsif params[:up_show_order] && params[:up_show_order] == "Status Pie-Chart"
+      completed = 0
+      open = 0
+      in_progress = 0
+
+      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
+        @projects.each do |p|
+          open += p.tasks.count(:conditions => ["completed_at IS NULL"])
+          completed += p.tasks.count(:conditions => ["completed_at IS NOT NULL"])
+          in_progress += p.tasks.count(:conditions => ["completed_at IS NULL AND status = 1"])
+        end
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Status", false) do |pc|
+          pc.data "Open", open
+          pc.data "Closed", completed
+          pc.data "In Progress", in_progress
+          @chart = pc.to_url
+        end
+      else
+        open = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids})"])
+        completed = user.tasks.count(:conditions => ["completed_at IS NOT NULL AND project_id IN (#{pids})"])
+        in_progress = user.tasks.count(:conditions => ["completed_at IS NULL AND status = 1 AND project_id IN (#{pids})"])
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Status", false) do |pc|
+          pc.data "Open", open
+          pc.data "Closed", completed
+          pc.data "In Progress", in_progress
+          @chart = pc.to_url
+        end
+      end
+    elsif params[:up_show_order] && params[:up_show_order] == "Priority Pie-Chart"
+      critical = 0
+      normal = 0
+      low = 0
+
+      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
+        @projects.each do |p|
+          critical += p.critical_count
+          normal += p.normal_count
+          low += p.low_count
+        end
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Priorities", false) do |pc|
+          pc.data "Critical", critical
+          pc.data "Normal", normal
+          pc.data "Low", low
+          @chart = pc.to_url
+        end
+      else
+        critical = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 > 0"])
+        normal = user.tasks.count(:conditions => ["completed_at IS NOT NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 = 0"])
+        low = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 < 0 "])
+        GoogleChart::PieChart.new('280x200', "#{user.name} Priorities", false) do |pc|
+          pc.data "Critical", critical
+          pc.data "Normal", normal
+          pc.data "Low", low
+          @chart = pc.to_url
+        end
+      end
+    else
+      completed = 0
+      open = 0
+      in_progress = 0
+
+      if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Projects", false) do |pc|
+          @projects.each do |p|
+            pc.data p.name, (p.critical_count + p.normal_count + p.low_count)
+          end
+          @chart = pc.to_url
+        end
+      else
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Projects", false) do |pc|
+          @projects.each do |p|
+            pc.data p.name, user.tasks.count(:conditions => ["project_id = ? AND completed_at IS NULL", p.id])
+          end
+          @chart = pc.to_url
+        end
+      end
+    end
+
+    render :layout => false
   end
 
 end

@@ -1,4 +1,4 @@
-<% if session[:sheet] -%>
+<% if session[:sheet] && session[:sheet].task -%>
 <%
    task = Task.find(session[:sheet].task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project, :work_logs] )
    info = []

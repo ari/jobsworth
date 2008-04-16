@@ -11,16 +11,6 @@
 
 ActiveRecord::Schema.define(:version => 98) do
 
-  create_table "activities", :force => true do |t|
-    t.integer  "user_id",       :default => 0,  :null => false
-    t.integer  "company_id",    :default => 0,  :null => false
-    t.integer  "customer_id",   :default => 0,  :null => false
-    t.integer  "project_id",    :default => 0,  :null => false
-    t.integer  "activity_type", :default => 0,  :null => false
-    t.string   "body",          :default => "", :null => false
-    t.datetime "created_at",                    :null => false
-  end
-
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
     t.string   "contact_email", :limit => 200
