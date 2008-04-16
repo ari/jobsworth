@@ -29,5 +29,16 @@ class Milestone < ActiveRecord::Base
     res.gsub(/\"/,'&quot;')
   end
 
+  def due_date
+    unless @due_date
+      if due_at.nil?
+        last = self.tasks.collect{ |t| t.due_at.to_time.to_f if t.due_at }.compact.sort.last
+        @due_date = Time.at(last).to_datetime if last
+      else
+        @due_date = due_at
+      end
+    end
+    @due_date
+  end
 
 end
