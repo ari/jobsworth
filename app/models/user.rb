@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
 
   belongs_to    :company
   has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL']
+  has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project
   has_many      :project_permissions, :dependent => :destroy
   has_many      :pages, :dependent => :nullify
   has_many      :tasks, :through => :task_owners
