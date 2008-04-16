@@ -1,8 +1,8 @@
+require 'test/spec'
+
 module Test::Spec::Rails
   VERSION = "0.1"
 end
-
-require 'test/spec'
 
 %w(
   test_spec_ext
@@ -18,6 +18,7 @@ require 'test/spec'
   should_route
   should_select
   should_validate
+  should_validate_presence_of
   
   use_controller
   
