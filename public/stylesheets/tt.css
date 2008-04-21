@@ -304,6 +304,28 @@ img {
   margin-top: 1px;
 }
 
+.widget-open {
+  height: 13px;
+  width: 13px;
+  background: url(/images/expand-indicator-small.png) 0px 0px no-repeat;
+  color: #a6a6a6;
+  font-size: 80%;
+  padding-right: 2px;
+  padding-left: 0px;
+  margin-top: 1px;
+}
+
+.widget-collapsed {
+  height: 13px;
+  width: 13px;
+  background: url(/images/expand-indicator-small.png) 0px -13px no-repeat;
+  color: #a6a6a6;
+  font-size: 80%;
+  padding-right: 2px;
+  padding-left: 0px;
+  margin-top: 1px;
+}
+
 
 .help {
   background-color: #ffffff;

@@ -1,39 +1,43 @@
   <table width="100%" cellpadding=0 cellspacing=0 id="content" >
     <tr>
       <td valign="top" align="left">
-        <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
-          <tr>
-            <td align="left" colspan="2" class="page_header"><div style="float:left;"><%=_ 'Top Tasks'%></div></td>
-          </tr>
-          <tr>
-            <td colspan=2>
-              <ul style="padding-left: 0; margin-left:0;" id="top_tasks">
-              <%= render :partial => "tasks/task_list", :locals => {:tasks => @tasks}%>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td align="left" colspan="2" class="page_header"><div style="float:left;"><%=_ 'Newest Tasks'%></div></td>
-          </tr>
-          <tr>
-            <td colspan=2>
-              <ul style="padding-left: 0; margin-left:0;" id="new_tasks">
-                <%= render :partial => "tasks/task_list", :locals => {:tasks => @new_tasks}%>
-              </ul>
-            </td>
-          </tr>
-        </table>
+    <ul id="left-col">
+          <%  column = 0
+	      current_user.widgets.each do |@widget| 
+               collapsed = (@widget.collapsed? ? "widget-collapsed" : "widget-open")
+	%>
+
+          <% if column == 0 && @widget.column > 0
+                column = 1
+          %>
+	</ul>
       </td>
-      <td valign="top" align="left" id="project_overview">
-        <%= render :partial => 'project_overview' %>
-      </td>
-    </tr>
-    <tr><td valign="top" align="left" width="100%" colspan="2" style="padding-right:1em;">
-        <div id="recent_work">
-          <%= render :partial => 'recent_work' %>
-        </div>
+      <td valign="top" align="left">
+        <ul id="right-col">
+      <% end %>
+	<li id="container-<%= @widget.dom_id %>" class="widget-container">
+      <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
+	<tr>
+	  <td align="left" class="page_header"><div id="header-<%= @widget.dom_id %>" style="float:left;" class="<%= collapsed %>"><%= link_to_remote "", :url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
+	    <%= render :partial => "widgets/widget_#{@widget.widget_type}_header" %></td>
+	</tr>
+	<tr><td><div id="<%= @widget.dom_id %>"<%= " style=\"display:none;\"" if @widget.collapsed? %>><span class="optional">Loading...</span></div></td></tr>
+      </table>
+	  </li>
+      <% end %>
+	</ul>
       </td>
     </tr>
   </table>
 
   <br />
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+<% current_user.widgets.each do |widget| %>
+new Ajax.Request('/widgets/show/<%=widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});
+<% end %>
+// ]]>
+</script>
+<%= sortable_element("left-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>
+<%= sortable_element("right-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>

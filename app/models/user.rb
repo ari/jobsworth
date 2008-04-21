@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many      :shout_channel_subscriptions, :dependent => :destroy
   has_many      :shout_channels, :through => :shout_channel_subscriptions, :source => :shout_channel
 
-  has_many      :widgets
+  has_many      :widgets, :order => "widgets.column, widgets.position"
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name

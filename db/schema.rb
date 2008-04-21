@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 98) do
+ActiveRecord::Schema.define(:version => 99) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -490,6 +490,25 @@ ActiveRecord::Schema.define(:version => 98) do
   end
 
   add_index "views", ["company_id"], :name => "views_company_id_index"
+
+  create_table "widgets", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "widget_type"
+    t.integer  "number"
+    t.string   "order_by"
+    t.string   "group_by"
+    t.string   "filter_by"
+    t.boolean  "collapsed"
+    t.integer  "column"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "widgets", ["company_id"], :name => "index_widgets_on_company_id"
+  add_index "widgets", ["user_id"], :name => "index_widgets_on_user_id"
 
   create_table "wiki_pages", :force => true do |t|
     t.integer  "company_id"
