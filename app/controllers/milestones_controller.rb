@@ -23,6 +23,7 @@ class MilestonesController < ApplicationController
 
     @milestone = Milestone.new(params[:milestone])
 
+    due_date = nil
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       begin
         due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
@@ -37,6 +38,7 @@ class MilestonesController < ApplicationController
     if @milestone.save
       flash[:notice] = _('Milestone was successfully created.')
       redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
+      Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date)
     else
       render :action => 'new'
     end
@@ -50,12 +52,24 @@ class MilestonesController < ApplicationController
   def update
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
+    @old = @milestone.clone
+    
     @milestone.attributes = params[:milestone]
+    due_date = nil
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
     if @milestone.save
+      
+      if(@old.due_at != @milestone.due_at || @old.name != @milestone.name || @old.description != @milestone.description )
+        if( @old.name != @milestone.name)
+          Notifications::deliver_milestone_changed(current_user, @milestone, 'renamed', @milestone.due_at, @old.name)
+        else 
+          Notifications::deliver_milestone_changed(current_user, @milestone, 'updated', @milestone.due_at)
+        end 
+      end 
+      
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_from_last
     else
@@ -75,6 +89,7 @@ class MilestonesController < ApplicationController
       session[:filter_milestone] = "0"
     end
 
+    Notifications::deliver_milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at)
     @milestone.destroy
 
     redirect_from_last
@@ -85,6 +100,8 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = Time.now.utc
       milestone.save
+
+      Notifications::deliver_milestone_changed(current_user, milestone, 'completed', milestone.due_at)
       flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
@@ -95,6 +112,7 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = nil
       milestone.save
+      Notifications::deliver_milestone_changed(current_user, milestone, 'reverted', milestone.due_at)
       flash[:notice] = _("%s / %s reverted.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'
