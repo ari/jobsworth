@@ -1,5 +1,5 @@
 <div id="file_cell_<%= project_files.id%>" class="file_cell project-<%= project_files.project_id %>">
-  <div style="text-align:center;height:145px;width:100%;" class="handle"><center>
+  <div style="text-align:center;height:145px;" class="handle"><center>
   <% if project_files.file_type == ProjectFile::FILETYPE_IMG %>
   <div class="file_cell_img">
   <a href="#"><%= tag("img", {:src => "/project_files/thumbnail/#{project_files.id}", :border => 0 } ) %></a><br />
