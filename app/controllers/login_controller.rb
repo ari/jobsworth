@@ -33,7 +33,7 @@ class LoginController < ApplicationController
     # Let other logged in Users in same Company know that User logged out.
     Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
 
-    session[:user] = nil
+    session[:user_id] = nil
     session[:project] = nil
     session[:sheet] = nil
     session[:filter_user] = nil
@@ -43,6 +43,7 @@ class LoginController < ApplicationController
     session[:group_tags] = nil
     session[:channels] = nil
     session[:hide_dependencies] = nil
+    session.delete
     redirect_to "/"
   end
 
