@@ -124,7 +124,7 @@ class Notifications < ActionMailer::Base
     @body       = {:user => user, :post => post}
     @subject    = "[ClockingIT] Reply to #{post.topic.title}"
 
-    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq - [user.email]
+    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
@@ -135,7 +135,7 @@ class Notifications < ActionMailer::Base
     @body       = {:user => user, :post => post}
     @subject    = "[ClockingIT] New topic in #{post.forum.name}"
 
-    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq - [user.email]
+    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
 
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
