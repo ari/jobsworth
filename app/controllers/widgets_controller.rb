@@ -36,11 +36,11 @@ class WidgetsController < ApplicationController
     render :update do |page|
       case @widget.widget_type
       when 0
-        page.replace_html @widget.dom_id, :partial => 'tasks/task_list', :locals => { :tasks => @items }
+        page.replace_html "content_#{@widget.dom_id}", :partial => 'tasks/task_list', :locals => { :tasks => @items }
       when 1
-        page.replace_html @widget.dom_id, :partial => 'activities/project_overview'
+        page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
       when 2
-        page.replace_html @widget.dom_id, :partial => 'activities/recent_work'
+        page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
       end
 
       page.call("updateTooltips")
@@ -67,11 +67,13 @@ class WidgetsController < ApplicationController
     
     render :update do |page|
       if @widget.collapsed?
-        page.hide @widget.dom_id
-        page["header-#{@widget.dom_id}"].className = "widget-collapsed"
+        page.hide "content_#{@widget.dom_id}"
+        page << "Element.removeClassName($('indicator-#{@widget.dom_id}'), 'widget-open');"
+        page << "Element.addClassName($('indicator-#{@widget.dom_id}'), 'widget-collapsed');"
       else 
-        page.show @widget.dom_id
-        page["header-#{@widget.dom_id}"].className = "widget-open"
+        page.show "content_#{@widget.dom_id}"
+        page << "Element.removeClassName($('indicator-#{@widget.dom_id}'), 'widget-collapsed');"
+        page << "Element.addClassName($('indicator-#{@widget.dom_id}'), 'widget-open');"
       end
     end
     

@@ -1,31 +1,13 @@
+
   <table width="100%" cellpadding=0 cellspacing=0 id="content" >
     <tr>
       <td valign="top" align="left">
-    <ul id="left-col">
-          <%  column = 0
-	      current_user.widgets.each do |@widget| 
-               collapsed = (@widget.collapsed? ? "widget-collapsed" : "widget-open")
-	%>
-
-          <% if column == 0 && @widget.column > 0
-                column = 1
-          %>
-	</ul>
-      </td>
-      <td valign="top" align="left">
-        <ul id="right-col">
-      <% end %>
-	<li id="container-<%= @widget.dom_id %>" class="widget-container">
-      <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
-	<tr>
-	  <td align="left" class="page_header"><div id="header-<%= @widget.dom_id %>" style="float:left;" class="<%= collapsed %>"><%= link_to_remote "", :url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
-	    <%= render :partial => "widgets/widget_#{@widget.widget_type}_header" %></td>
-	</tr>
-	<tr><td><div id="<%= @widget.dom_id %>"<%= " style=\"display:none;\"" if @widget.collapsed? %>><span class="optional">Loading...</span></div></td></tr>
-      </table>
-	  </li>
-      <% end %>
-	</ul>
+      <div id="widget_col_0">
+      </div>
+    </td>
+    <td valign="top" align="left">
+      <div id="widget_col_1">
+      </div>
       </td>
     </tr>
   </table>
@@ -34,10 +16,20 @@
 
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
-<% current_user.widgets.each do |widget| %>
-new Ajax.Request('/widgets/show/<%=widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});
+var portal = new Xilinus.Portal("#content div");
+
+<% current_user.widgets.each do |@widget| %>
+var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
+
+var title = '<%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" }, { :class => "widget-open", :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
+title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %>';
+
+widget.setTitle(title);
+widget.setContent('<span class="optional"><br/>Loading...</span>');
+portal.add(widget, <%=@widget.column%>);
+new Ajax.Request('/widgets/show/<%=@widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});
 <% end %>
 // ]]>
 </script>
-<%= sortable_element("left-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>
-<%= sortable_element("right-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>
+<%#= sortable_element("left-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>
+<%#= sortable_element("right-col", :url => {:action => 'order'}, :format => "/^[^-]*-(.*)$/", :dropOnEmpty => true, :containment => ["left-col", "right-col"], :handle => "page_header", :only => 'widget-container') %>
