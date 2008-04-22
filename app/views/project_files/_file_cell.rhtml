@@ -1,5 +1,5 @@
 <div id="file_cell_<%= project_files.id%>" class="file_cell project-<%= project_files.project_id %>">
-  <div style="text-align:center;height:145px;" class="handle"><center>
+  <div style="text-align:center;min-height:145px;" class="handle"><center>
   <% if project_files.file_type == ProjectFile::FILETYPE_IMG %>
   <div class="file_cell_img">
   <a href="#"><%= tag("img", {:src => "/project_files/thumbnail/#{project_files.id}", :border => 0 } ) %></a><br />
@@ -13,7 +13,7 @@
   <% filename = (project_files.name.nil? || project_files.name.empty?) ? project_files.filename : project_files.name %>
 
   <div class="file_cell-info">
-  <strong><%= link_to( h(filename), {:action => 'download', :id => project_files}) %></strong><br/>
+  <strong><%= link_to( h(truncate(filename,32)), {:action => 'download', :id => project_files}) %></strong><br/>
   <%= h project_files.project.name %><br />
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %> - <%= number_to_human_size(project_files.file_size) %> </small><br />

@@ -1586,8 +1586,11 @@ li.help {
 .file_cell {
   border: 1px solid #cfcfcf;
   float: left;
-  margin: 1em 0.5em 1em 0.5em;
+  margin: 1em 0.5em 0em 0.5em;
   text-align: center;
+  width: 200px;
+  height: 199px;
+  background-color: #fff;
  }
 
 .file_cell:hover {
@@ -1598,7 +1601,7 @@ li.help {
   display: table-cell;
   padding-top: 0.5em;
   height: 145px;
-  width: 100%;
+  width: 175px;
   text-align: center;
   vertical-align: middle;
   padding-left: 14px;
@@ -1608,7 +1611,7 @@ li.help {
   display: table-cell;
   padding-top: 0.5em;
   height: 145px;
-  width: 100%;
+  width: 175px;
   text-align: center;
   vertical-align: middle;
 }
