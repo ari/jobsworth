@@ -55,13 +55,11 @@ function flashConnected() {
 function flashErrorConnecting() {
   Element.update('flash_message', 'Unable to connect to push server...');
   Element.show('flash');
-  new Effect.Highlight('flash_message', {duration:2.0});
 }
 
 function flashConnectionLost(){
   Element.update('flash_message', 'Connection to push server lost. Please reload the page...');
   Element.show('flash');
-  new Effect.Highlight('flash_message', {duration:2.0});
 }
 
 // This code was written by Tyler Akins and has been placed in the
@@ -72,7 +70,6 @@ function checkConnection() {
   if( !connected ) {
     Element.update('flash_message', 'Unable to connect to push server, make sure flash is enabled for this site and SSL traffic is allowed...<br />You won\'t be able to see what others are saying.');
     Element.show('flash');
-    new Effect.Highlight('flash_message', { duration:5.0, startcolor:'#ff9999'});
   }
 }
 

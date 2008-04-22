@@ -195,36 +195,19 @@
           <% news = NewsItem.find(:first, :order => "created_at desc", :conditions => ["id > ?", current_user.seen_news_id ]) %>
           <% unless news.nil? %>
             <div id="news">
-              <div  class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
               <table class="news" id="news_table">
                 <tr><td width="1%" nowrap valign="top"><span class="news_date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span></td><td><span class="news_body" id="news_body"><%= news.body %></span></td><td align="right" width="1%" >
                 <%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },
                 :success => visual_effect(:fade, "news", :duration => 0.5) %></td></tr>
               </table>
-              </div><div style="background-color: rgb(238, 238, 238);"><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span></div></div>
-              <br />
-              </div>
             </div>
-              <script type="text/javascript" language="javascript" charset="utf-8">
-      new Effect.Highlight('news_table', {duration: 3.0});
-              </script>
 
           <% end %>
           <% end %>
 
-            <div id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
-              <div  class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
-                <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
-              </div><div style="background-color: rgb(238, 238, 238);"><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span></div></div>
-              <br />
-              </div>
-            </div>
-
-      <% if flash['notice'] %>
-              <script type="text/javascript" language="javascript" charset="utf-8">
-      new Effect.Highlight('flash_body', {duration: 1.5});
-              </script>
-      <% end %>
+          <div id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
+            <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
+          </div>
 
           <div class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
           <table width="100%">

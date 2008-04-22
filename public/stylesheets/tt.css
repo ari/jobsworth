@@ -320,19 +320,23 @@ img {
 }
 
 .flash {
-  background-color: #ffffff;
+  background-color: #ffff99;
   color: #000000;
   font-size: 14px;
-  margin-left: 1em;
-  margin-right: 1em;
+  padding: 0.2em 1em 0.2em 1em;
+  border-top: 1px solid #b7b7b7;
+  border-bottom: 1px solid #b7b7b7;
+  margin-bottom: 1em;
 }
 
 .news {
-  background-color: #ffffff;
+  background-color: #B0D295;
   color: #666666;
   font-size: 14px;
-  margin-left: 1em;
-  margin-right: 1em;
+  padding: 0.2em 1em 0.2em 1em;
+  border-top: 1px solid #b7b7b7;
+  border-bottom: 1px solid #b7b7b7;
+  margin-bottom: 1em;
 }
 
 .news_date {
