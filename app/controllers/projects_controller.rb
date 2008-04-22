@@ -236,7 +236,7 @@ class ProjectsController < ApplicationController
   end
 
   def revert
-    project = current_user.projects.find(params[:id], :conditions => ["completed_at IS NOT NULL"])
+    project = current_user.completed_projects.find(params[:id])
     unless project.nil?
       project.completed_at = nil
       project.save

@@ -342,19 +342,23 @@ img {
 }
 
 .flash {
-  background-color: #ffffff;
+  background-color: #ffff99;
   color: #000000;
   font-size: 14px;
-  margin-left: 1em;
-  margin-right: 1em;
+  padding: 0.2em 1em 0.2em 1em;
+  border-top: 1px solid #b7b7b7;
+  border-bottom: 1px solid #b7b7b7;
+  margin-bottom: 1em;
 }
 
 .news {
-  background-color: #ffffff;
+  background-color: #B0D295;
   color: #666666;
   font-size: 14px;
-  margin-left: 1em;
-  margin-right: 1em;
+  padding: 0.2em 1em 0.2em 1em;
+  border-top: 1px solid #b7b7b7;
+  border-bottom: 1px solid #b7b7b7;
+  margin-bottom: 1em;
 }
 
 .news_date {
@@ -1608,8 +1612,11 @@ li.help {
 .file_cell {
   border: 1px solid #cfcfcf;
   float: left;
-  margin: 1em 0.5em 1em 0.5em;
+  margin: 1em 0.5em 0em 0.5em;
   text-align: center;
+  width: 200px;
+  height: 200px;
+  background-color: #fff;
  }
 
 .file_cell:hover {
@@ -1620,7 +1627,7 @@ li.help {
   display: table-cell;
   padding-top: 0.5em;
   height: 145px;
-  width: 100%;
+  width: 175px;
   text-align: center;
   vertical-align: middle;
   padding-left: 14px;
@@ -1630,7 +1637,7 @@ li.help {
   display: table-cell;
   padding-top: 0.5em;
   height: 145px;
-  width: 100%;
+  width: 175px;
   text-align: center;
   vertical-align: middle;
 }

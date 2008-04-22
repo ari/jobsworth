@@ -94,6 +94,8 @@ class ApplicationController < ActionController::Base
     if session[:user_id].nil?
       subdomain = request.subdomains.first
 
+      session[:redirect] = request.request_uri unless request.request_uri.include?('/login/login')
+      
       # Generate a javascript redirect if user timed out without requesting a new page
       if request.xhr?
         render :update do |page|
@@ -127,6 +129,11 @@ class ApplicationController < ActionController::Base
 
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
+      
+      if session[:redirect]
+        redirect_to session[:redirect]
+        session[:redirect] = nil
+      end
     end
     true
   end
