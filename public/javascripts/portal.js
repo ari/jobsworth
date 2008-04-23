@@ -364,12 +364,22 @@ Object.extend(Xilinus.Portal.prototype, {
   // PRIVATE FUNCTIONS
   _updateColumnsHeight: function() {      
     var h = 25;
-    this._columns.each(function(col) {
-      h = Math.max(h, col.immediateDescendants().inject(0, function(sum, element) { 
-        return sum + element.getHeight(); 
-      }));
-    })
-    this._columns.invoke("setStyle", {height: h + 'px'})
+    h = Math.max(h, this._columns[0].immediateDescendants().inject(0, function(sum, element) { 
+	  return sum + element.getHeight(); 
+	}));
+    h = Math.max(h, this._columns[1].immediateDescendants().inject(0, function(sum, element) { 
+	  return sum + element.getHeight(); 
+	}));
+
+    this._columns[0].setStyle({height: h + 'px'});
+    this._columns[1].setStyle({height: h + 'px'});
+
+    h = 25;
+    h = Math.max(h, this._columns[2].immediateDescendants().inject(0, function(sum, element) { 
+	  return sum + element.getHeight(); 
+	}));
+    this._columns[2].setStyle({height: h + 'px'});
+
   },
   
   _clearTimer: function() {

@@ -54,6 +54,20 @@ class WidgetsController < ApplicationController
 
   def list
   end
+
+  def save_order
+    [0,1,2].each do |c|
+      pos = 0
+      params["widget_col_#{c}"].each do |id|
+        w = current_user.widgets.find(id.split(/-/)[1])
+        w.column = c
+        w.position = pos
+        w.save
+        pos += 1
+      end
+    end 
+    render :nothing => true
+  end
   
   def toggle_display
     begin

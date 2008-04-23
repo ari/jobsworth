@@ -49,8 +49,8 @@ class CreateWidgets < ActiveRecord::Migration
         w.widget_type = 2
         w.number = 20
         w.collapsed = 0
-        w.column = 0
-        w.position = 2
+        w.column = 2
+        w.position = 0
         w.save
 
         w = Widget.new

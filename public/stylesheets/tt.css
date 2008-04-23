@@ -77,7 +77,7 @@ h4 {
 
 .milestones  {
   color: #CCCCCC;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: bold;
   padding-left: 2.5em;
   padding-right: 1.5em;
@@ -1987,14 +1987,14 @@ li.help {
   padding-bottom: 1em;
  }
 
-.widget a {
+.widget_title a {
   font-size: 11px;
   letter-spacing: 0em;
   text-transform: capitalize;
   padding-right: 1em;
 }
 
-#widget_col_0 { 
+#widget_col_0, #widget_col_2 { 
   padding-left: 1em;
  }
 
