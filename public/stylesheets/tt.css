@@ -1976,7 +1976,7 @@ li.help {
   background-image: url(/images/header_bkg.gif);
   background-repeat: repeat-x;
   margin-right: 1em;
-  padding-left: 1em;
+  padding-left: 0.2em;
 }
 
 .widget_content { 
