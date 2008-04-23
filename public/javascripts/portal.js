@@ -209,6 +209,7 @@ Object.extend(Xilinus.Portal.prototype, {
     for (var index = 0, len = this._widgets.length; index < len; ++index) {
        this._widgets[index].updateHeight();
     }
+    this._updateColumnsHeight();
   },
   
   // EVENTS CALLBACKS
@@ -239,6 +240,9 @@ Object.extend(Xilinus.Portal.prototype, {
   // DRAGGABLE OBSERVER CALLBACKS
   startDrag: function(eventName, draggable) { 
 
+    $('left_col').setStyle({width: "50%"});
+    $('right_col').setStyle({width: "50%"});
+
     var widget = draggable.element;
     
     if (!this._widgets.find(function(w) {return w == widget.widget}))
@@ -267,6 +271,9 @@ Object.extend(Xilinus.Portal.prototype, {
   },   
 
   endDrag: function(eventName, draggable) {
+    $('left_col').setStyle({width: null});
+    $('right_col').setStyle({width: null});
+
     var widget = draggable.element;      
     if (!this._widgets.find(function(w) {return w == widget.widget}))
       return;
@@ -293,11 +300,12 @@ Object.extend(Xilinus.Portal.prototype, {
       if (this.options.onUpdate)
         this.options.onUpdate(this);
     }
+    this.refreshHeights();
   },
 
   onHover: function(dragWidget, dropon, overlap) {  
     var offset = Position.cumulativeOffset(dropon);
-    var x = offset[0] + 10;
+    var x = offset[0] + 20;
     var y = offset[1] + (1 - overlap) * dropon.getHeight();
 
     // Check over ghost widget
@@ -348,7 +356,7 @@ Object.extend(Xilinus.Portal.prototype, {
       }
     }  
     if (moved && this.options.onChange) 
-      this.options.onChange(this)            
+      this.options.onChange(this)
 
     this._updateColumnsHeight();
   },                

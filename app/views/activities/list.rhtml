@@ -1,11 +1,11 @@
 
   <table width="100%" cellpadding=0 cellspacing=0 id="content" >
     <tr>
-      <td valign="top" align="left">
+      <td valign="top" align="left" id="left_col">
       <div id="widget_col_0">
       </div>
     </td>
-    <td valign="top" align="left">
+    <td valign="top" align="left" id="right_col">
       <div id="widget_col_1">
       </div>
       </td>
@@ -21,13 +21,15 @@ var portal = new Xilinus.Portal("#content div");
 <% current_user.widgets.each do |@widget| %>
 var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
 
-var title = '<%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" }, { :class => "widget-open", :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
+var title = '<%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" }, { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
 title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %>';
 
 widget.setTitle(title);
 widget.setContent('<span class="optional"><br/>Loading...</span>');
 portal.add(widget, <%=@widget.column%>);
 new Ajax.Request('/widgets/show/<%=@widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});
+<%= "$('content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
+
 <% end %>
 // ]]>
 </script>

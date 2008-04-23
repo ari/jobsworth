@@ -75,6 +75,7 @@ class WidgetsController < ApplicationController
         page << "Element.removeClassName($('indicator-#{@widget.dom_id}'), 'widget-collapsed');"
         page << "Element.addClassName($('indicator-#{@widget.dom_id}'), 'widget-open');"
       end
+      page << "portal.refreshHeights();"
     end
     
     @widget.save
