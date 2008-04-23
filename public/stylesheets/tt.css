@@ -1961,6 +1961,7 @@ li.help {
   border: 3px dashed #F00;      
   margin:0px;
   padding:0;  
+  margin-right: 1em;
 }
 
 .widget_title {
