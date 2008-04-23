@@ -1052,7 +1052,7 @@ a.description {
   min-height: 2.3em;
 }
 
-.handle {
+.handle, .widget_draggable {
           cursor: move;
 }
 
