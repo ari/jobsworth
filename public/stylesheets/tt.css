@@ -1184,6 +1184,7 @@ a.description {
   margin-top: 8px;
   margin-left: -1px;
   width: auto;
+  clear: left;
 
   background-color: #fcfcfc;
   border-left: 1px solid #ddd;
