@@ -53,7 +53,7 @@
                collapse << ((session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) ? "small-collapse-indicator-closed" : "small-collapse-indicator-open")
                collapse << "\" </div> "
           %>
-    <tr class="milestone" id="project_<%=project.id%>" onMouseOver="this.addClassName('task-highlight');" onMouseOut="this.removeClassName('task-highlight');"><td colspan="2"><div style="position:relative;">
+    <tr class="milestone" id="project_<%=project.id%>"><td colspan="2"><div style="position:relative;height:16px;">
         <div id="edit_project_<%= project.id%>" class="popout" style="position: absolute; z-index:10; left:0; top:0; width: 16px; display:none; ">
           <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
             <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),

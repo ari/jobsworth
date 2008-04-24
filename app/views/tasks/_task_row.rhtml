@@ -155,17 +155,5 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
 <div style="clear:both;"></div>
 
-<script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
-Event.observe('row-<%= task.dom_id %>', "mouseover", function(e) {
-  $('row-<%=task.dom_id%>').addClassName('task-highlight');
-});
-Event.observe('row-<%= task.dom_id %>', "mouseout", function(e) {
-  $('row-<%=task.dom_id%>').removeClassName('task-highlight');
-});
-// ]]>
-</script>
-
-
 
 <% end %>
