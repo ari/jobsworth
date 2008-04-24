@@ -77,7 +77,8 @@ class WidgetsController < ApplicationController
 
     if @widget.update_attributes(params[:widget])
       render :update do |page|
-        page.remove "config-#{widget.dom_id}"
+        page.remove "config-#{@widget.dom_id}"
+        page.replace_html "name-#{@widget.dom_id}", _(@widget.name)
         page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});"
       end
     end
