@@ -16,8 +16,8 @@ a:hover {
   text-decoration: underline;
 }
 
-.milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
-  background-color: #fff2d4;
+.task-row:hover, .milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
+  background-color: #ececfe !IMPORTANT;
 }
 
 h1 {

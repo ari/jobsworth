@@ -3,8 +3,7 @@
                                    :loading => "Element.show('loading');",
                                    :complete => "Element.hide('loading');" do  %>
 <label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
-<label for="widget_number"><%= _("Tasks") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30].collect{|i| [i.to_s, i]}) %>
-<label for="widget_order_by"><%= _("Type") %></label><%= select( 'widget', 'order_by', [[_('Recent'),'date'],[_('Priority'),'priority']]) %>
+<label for="widget_number"><%= _("Activities") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30,50].collect{|i| [i.to_s, i]}) %>
 <%= submit_tag _("Save"), :class => "nolabel" %> or <%= link_to_function('Cancel', "Element.remove($('config-#{@widget.dom_id}'));") %>
 <% end %>
 </div>

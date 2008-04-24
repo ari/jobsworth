@@ -11,7 +11,11 @@
     <%= stylesheet_link_merged :tt %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= javascript_include_tag "builder" if ['activities'].include? controller.controller_name %>
-    <%= javascript_include_tag "portal" if ['activities'].include? controller.controller_name %>
+    <% if ['activities'].include? controller.controller_name %>
+      <%= javascript_include_tag "portal" %>
+      <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
+      <%= javascript_include_tag "flotr" %>
+    <% end %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
@@ -68,8 +72,7 @@
                 <li><%= link_to "#{_('Overview')}", { :controller => 'activities', :action => 'list'} %>                
 		<% end %>
 		  <ul>
-  		    <li><a href="#">Customize Layout</a></li>
-		    <li><a href="#">Add Widget</a></li>
+		    <li><a href="/widgets/add">Add New Widget</a></li>
 		  </ul>
 		</li>
 
@@ -149,6 +152,8 @@
                 <% end %>
 		  <ul>
 	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
+	            <li><%= link_to _("New View"), :controller => 'views', :action => 'new' %></li>
+	            <li><%= link_to _("New Note"), :controller => 'pages', :action => 'new' %></li>
 		  </ul>
 		</li>
 
