@@ -1113,14 +1113,16 @@ a.description {
   border-top: 1px solid #c8c8c8;
   border-left: 1px solid #c8c8c8;
 /*  border-bottom: 1px solid #c8c8c8; */
+  z-index: 2;
 }
 
 #menucontainer {
-      position: relative;
-      width: 100%;
-      padding: 0px 0px 0px 0px;
-      margin: 0px 0px 0px 0px;
-      float: left;
+  width: 100%;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  float: left;
+  position: relative;
+  z-index: 2;
 }
 
 #tabmenu { 
@@ -1220,19 +1222,12 @@ a.description {
   border: 0;
 }
 
-/* #tabmenu li.active ul { */
-  /*display active subnav list*/
-/*   display: block; */
-/* } */
-
 #tabmenu li a:hover, #tabmenu li:hover a {
   background: #fff;
   color: #ff9900;
 }
 
 #tabmenu li ul a {
-/*  float: left; */
-  /*ie doesn't inherit the float*/
   border: 0;
   color: #423f54;
   width: auto;
@@ -1240,10 +1235,6 @@ a.description {
   display: block;
 }
 
-/* #tabmenu li.active ul { */
-  /*display the current topic*/
-/*   display: block; */
-/* } */
 
 #tabmenu li:hover ul {
   display: block;
@@ -1982,10 +1973,12 @@ li.help {
 
 .widget_content { 
   margin-right: 1em;
+  z-index: 1;
 } 
 
 .widget { 
   padding-bottom: 1em;
+  z-index: 1;
  }
 
 .widget_title a {
