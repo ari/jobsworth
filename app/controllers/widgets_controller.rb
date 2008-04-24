@@ -50,11 +50,39 @@ class WidgetsController < ApplicationController
   end
 
   def edit
+    begin
+      @widget = Widget.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    rescue
+      render :nothing => true
+      return
+    end
+
+    render :update do |page|
+      page << "if(! $('config-#{@widget.dom_id}' ) ) {"
+      page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
+      page.visual_effect :slide_down, "config-#{@widget.dom_id}"
+      page << "} else {"
+      page.visual_effect :highlight, "config-#{@widget.dom_id}"
+      page << "}"
+    end
   end
 
-  def list
-  end
+  def update
+    begin
+      @widget = Widget.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    rescue
+      render :nothing => true
+      return
+    end
 
+    if @widget.update_attributes(params[:widget])
+      render :update do |page|
+        page.remove "config-#{widget.dom_id}"
+        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});"
+      end
+    end
+  end
+  
   def save_order
     [0,1,2].each do |c|
       pos = 0

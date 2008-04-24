@@ -16,12 +16,12 @@ function updateLoading(event){
 
   if($('loading').visible) {
 
-    scrollposY=0;
+    var scrollposY=0;
     if (window.pageYOffset){
       scrollposY = window.pageYOffset;
     }
     else if (document.documentElement && document.documentElement.scrollTop){
-      scrollposY = document.documentElement.scrollTop
+      scrollposY = document.documentElement.scrollTop;
         }
     else if (document.getElementById("body").scrollTop){
       scrollposY = document.getElementById("body").scrollTop;
@@ -38,13 +38,13 @@ Event.observe(window, "load", function(e) {
 });
 
 function tip(myEvent,tip){
-  self.status=tip;
-  scrollposY=0;
+//  self.status=tip;
+  var scrollposY=0;
   if (window.pageYOffset){
     scrollposY = window.pageYOffset;
   }
   else if (document.documentElement && document.documentElement.scrollTop){
-    scrollposY = document.documentElement.scrollTop
+    scrollposY = document.documentElement.scrollTop;
   }
   else if (document.getElementById("body").scrollTop){
     scrollposY = document.getElementById("body").scrollTop;
@@ -61,7 +61,7 @@ function tip(myEvent,tip){
 
 function hide(e){
         document.getElementById("tip").style.visibility="hidden";
-        self.status="ClockingIT v0.99";
+//        self.status="ClockingIT v0.99";
 }
 
 
@@ -69,7 +69,7 @@ function makeTooltips(show) {
   $$('.tooltip').each( function(el) {
       if( show == 1 ) {
         var tooltip = el.title.replace(/&quot;/, "\"").replace(/&gt;/,"<").replace(/&lt;/,">");
-        Event.observe(el, "mousemove", function(e) { tip(e, tooltip ) });
+        Event.observe(el, "mousemove", function(e) { tip(e, tooltip ); });
         Event.observe(el, "mouseout", function(e) { hide(e); });
       }
       el.title = '';
@@ -174,8 +174,8 @@ function UpdateDnD() {
 function EnableDND() {
   Element.hide('enable_dnd');
   HideMenus();
-  Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("components_sortable")})}, only:'component', tree:true});
-  Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("tasks_sortable")})}, only:'task', tree:true});
+  Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("components_sortable")});}, only:'component', tree:true});
+  Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("tasks_sortable")});}, only:'task', tree:true});
   var h = document.getElementsByClassName( 'handle', 'img' );;
   for( var i = 0; i < h.length; i++ ) {
     Element.show( h[i] );

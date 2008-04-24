@@ -143,10 +143,14 @@
 
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li><%= link_to "<span class=\"active\">#{_('New Task')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> </li>
+                <li><%= link_to "<span class=\"active\">#{_('New Task')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
                 <% else %>
-                <li><%= link_to "<span>#{_('New Task')}</span>", :controller => 'tasks', :action => 'new' %> </li>
+                <li><%= link_to "<span>#{_('New Task')}</span>", :controller => 'tasks', :action => 'new' %> 
                 <% end %>
+		  <ul>
+	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
+		  </ul>
+		</li>
 
                 <li class="right"><%= link_to "<span class=\"last\">#{_('Log Out')}</span>", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
                 <% if controller.controller_name == "users" && controller.action_name == "edit_preferences" %>

@@ -2022,3 +2022,17 @@ a.widget-collapsed {
   margin-top: 1px;
 }
 
+.widget-config { 
+  border: 1px solid #dcdcdc;
+  background-color: #fafafa;
+  color: #333;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-right: 14px;
+ }
+
+.widget-config label { 
+  padding-right: 0.3em;
+  font-weight: bold;
+}
