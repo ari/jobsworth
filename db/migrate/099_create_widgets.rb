@@ -56,17 +56,29 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
+        w.name =  "My Open Tasks"
+        w.widget_type = 3
+        w.number = 7
+        w.filter_by = 'me'
+        w.collapsed = 0
+        w.column = 1
+        w.position = 0
+        w.save
+
+        w = Widget.new
+        w.user = u
+        w.company_id = u.company_id
         w.name =  "Projects"
         w.widget_type = 1
         w.number = 0
         w.collapsed = 0
         w.column = 1
-        w.position = 0
+        w.position = 1
         w.save
+
       end
     end
     
-    add_index :widgets, :company_id
     add_index :widgets, :user_id
   end
 
