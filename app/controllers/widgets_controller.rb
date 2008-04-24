@@ -87,12 +87,14 @@ class WidgetsController < ApplicationController
   def save_order
     [0,1,2].each do |c|
       pos = 0
-      params["widget_col_#{c}"].each do |id|
-        w = current_user.widgets.find(id.split(/-/)[1])
-        w.column = c
-        w.position = pos
-        w.save
-        pos += 1
+      if params["widget_col_#{c}"]
+        params["widget_col_#{c}"].each do |id|
+          w = current_user.widgets.find(id.split(/-/)[1])
+          w.column = c
+          w.position = pos
+          w.save
+          pos += 1
+        end
       end
     end 
     render :nothing => true
