@@ -79,10 +79,10 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
                                               :url => { :controller => 'activities', :action => 'toggle_display_milestones', :id => project.id },
                                               :loading => "Element.show('loading');",
                                               :complete => "Element.hide('loading');" %> <%= link_to project.name, { :controller => 'views', :action => 'select_project', :id => project.id} %></span></div>
-              <div class="prog-border"  style="float: right; height: 15px;">
-                  <div class="prog-bar-high tooltip" style="width: <%= number_to_percentage( critical_percent, :precision => 0)  %>;" title="<%= number_to_percentage( critical_percent, :precision => 0) + " (#{critical_count}/#{total_count.to_i})" %>  High Priority"> </div>
-                  <div class="prog-bar-medium tooltip" style="width: <%= number_to_percentage( normal_percent, :precision => 0)  %>;" title="<%= number_to_percentage( normal_percent, :precision => 0) + " (#{normal_count}/#{total_count.to_i})"%>  Normal"> </div>
-                  <div class="prog-bar-low tooltip" style="width: <%= number_to_percentage( low_percent, :precision => 0)  %>;" title="<%= number_to_percentage( low_percent, :precision => 0) + " (#{low_count}/#{total_count.to_i})" %>  Low Priority "> </div>
+              <div class="prog-border"  style="float: right; height: 15px;position:relative;">
+                  <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= number_to_percentage( critical_percent, :precision => 0) + " (#{critical_count}/#{total_count.to_i})" %>  High Priority"> </div>
+                  <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= number_to_percentage( normal_percent, :precision => 0) + " (#{normal_count}/#{total_count.to_i})"%>  Normal"> </div>
+                  <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= number_to_percentage( low_percent, :precision => 0) + " (#{low_count}/#{total_count.to_i})" %>  Low Priority "> </div>
                 </div>
               </div>
     </div></td></tr>
