@@ -1215,7 +1215,7 @@ a.description {
 #tabmenu li ul a {
   /*  cancel inherit of border
       on subnav of active topic */
-  font-size: 9px;
+  font-size: 11px;
   padding-top: 1px;
   padding-bottom: 1px;
   margin: 0;
@@ -1248,7 +1248,6 @@ a.description {
 #tabmenu li ul li a:hover { 
   text-decoration: underline;
 }
-
 
 #filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort {
   font-size: 10px;
@@ -2029,4 +2028,57 @@ a.widget-collapsed {
 .widget-config label { 
   padding-right: 0.3em;
   font-weight: bold;
+}
+
+.user-block { 
+  position: relative;
+  margin: 1em 1em 1em 0;
+  padding-bottom: 1em;
+}
+
+.user-heading { 
+  clear: both;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-bottom: 1px solid #ccc;
+  position: relative;
+  height: 32px;
+}
+
+.user-avatar { 
+  position: absolute;
+  padding-right: 1em;
+  top:4px;
+}
+
+.user-name { 
+  position: absolute;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  bottom:0;
+  left: 60px;
+}
+ 
+
+.user-action { 
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.user-information { 
+  clear: both;
+}
+
+.user-information-header { 
+  clear: both;
+  float:left;
+  width: 8em;
+  text-align: right;
+  padding-right: 0.5em;
+  color: #666;
+}
+
+.user-information-value { 
 }

@@ -1,43 +1,49 @@
-  <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-    <tr>
-      <td colspan="6" class="page_header">
+<table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
+  <tr>
+    <td class="page_header">
       <div style="float:left;"><%= current_user.company.name %> <%=_ 'Users' %></div>
       <div style="float:right;padding-top:0.1em;"><%= link_to _('New User'), :action => 'new' %></div>
-      </td>
-    </tr>
-    <tr><td colspan="6">&nbsp;</td></tr>
-    <tr>
-     <th><%=_ 'Online' %></th>
-     <th><%=_ 'Name' %></th>
-     <th><%=_ 'Company' %></th>
-     <th><%=_ 'Email' %></th>
-     <th><%=_ 'Last Login' %></th>
-     <th>&nbsp;</th>
-
-  </tr>
-
-<% for user in @users %>
-  <tr class="hoverrow">
-    <td align="center"><%= if user_online?( user.id ) then image_tag('status_online.png', :alt => _('Online')) else image_tag('status_offline.png', :alt => _('Offline')) end %></td>
-    <td><%=h user.name %></td>
-    <td><%=h user.company.name %></td>
-    <td><%=h user.email %></td>
-    <td><strong><%=h tz.utc_to_local(user.last_login_at).strftime("#{current_user.time_format} #{current_user.date_format}") if user.last_login_at %></strong></td>
-    <td><%= link_to _('Edit'), :controller => 'users', :action => 'edit', :id => user %>
-          <% if user.id != current_user.id && !user_online?( user.id) %>
-          | <%= link_to _('Delete'), { :controller => 'users', :action => 'destroy', :id => user}, :confirm => _("Are you sure?") %>
-          <% end %>
-<% if current_user.admin > 1 %>
-          | <%= link_to 'Switch', :controller => 'users', :action => 'impersonate', :id => user %>
-<% end %>
     </td>
   </tr>
-<% end %>
-<tr><td colspan=6>&nbsp;</td></tr>
-<tr><td colspan=6>
-<%= will_paginate @users %>
-</td></tr>
+  <tr>
+    <td>
+      <% for user in @users %>
+      <div id="<%=user.dom_id%>" class="user-block">
+	<div class="user-heading hoverrow">
+	  <div style="float:left;" class="user-avatar"><%= "<img src=\"#{user.avatar_url(32)}\" class=\"photo\" />" %></div>
+	  <div style="float:right;" class="user-action">
+	    <%= link_to image_tag("user_edit.png", :border => 0, :title => _("Edit <b>%s</b>", user.name), :class => "tooltip"), :controller => 'users', :action => 'edit', :id => user %> 
+	    <%  if(user.id != current_user.id && !user_online?( user.id)) %>
+              | <%= link_to(image_tag("user_delete.png", :border => 0, :title => _("Delete <b>%s</b>", user.name), :class => "tooltip"), { :controller => 'users', :action => 'destroy', :id => user}, :confirm => _("Are you sure?")) %>
+	    <% end %>
+	    <% if current_user.admin > 1 %>
+              | <%= link_to 'Switch', :controller => 'users', :action => 'impersonate', :id => user %>
+	    <% end %>
+	    <%= if user_online?( user.id ) then image_tag('status_online.png', :title => _('Online'), :class => 'tooltip') else image_tag('status_offline.png', :title => _('Offline'), :class => 'tooltip') end %>
+	  </div>
+	  <div class="user-name"><%= h(user.name) %></div>
+	</div>
+	<div class="user-information">
+	  <div class="user-information-header"><%= _('Email') %></div>
+	  <div class="user-information-value"><%= h user.email %></div>
+	  
+	  <div class="user-information-header"><%= _('Local Time') %></div>
+	  <div class="user-information-value"><%= user.tz.now.strftime( (user.tz.now.yday == current_user.tz.now.yday ? "#{current_user.time_format}" : "#{current_user.time_format} #{current_user.date_format}") ) %></div>
 
+	  <div class="user-information-header"><%= _('Last Login') %></div>
+	  <div class="user-information-value">
+	    <% if user.last_login_at %>
+	      <%= _('%s ago', time_ago_in_words(user.last_login_at, false)) %>
+	    <% else %>
+	      Never 
+            <% end %>
+	  </div>
+	</div>
+      </div>
+      <% end %>
+    </td>
+  </tr>
+  <tr><td><%= will_paginate @users %></td></tr>
 </table>
 
 
