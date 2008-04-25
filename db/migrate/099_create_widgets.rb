@@ -12,7 +12,8 @@ class CreateWidgets < ActiveRecord::Migration
       t.boolean  :collapsed, :default => false
       t.integer  :column, :default => 0
       t.integer  :position, :default => 0
-
+      t.boolean  :configured, :default => false
+      
       t.timestamps
     end
 
@@ -28,6 +29,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.collapsed = 0
         w.column = 0
         w.position = 0
+        w.configured = true
         w.save
 
         w = Widget.new
@@ -40,6 +42,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.collapsed = 0
         w.column = 0
         w.position = 1
+        w.configured = true
         w.save
 
         w = Widget.new
@@ -51,6 +54,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.collapsed = 0
         w.column = 2
         w.position = 0
+        w.configured = true
         w.save
 
         w = Widget.new
@@ -63,6 +67,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.collapsed = 0
         w.column = 1
         w.position = 0
+        w.configured = true
         w.save
 
         w = Widget.new
@@ -74,6 +79,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.collapsed = 0
         w.column = 1
         w.position = 1
+        w.configured = true
         w.save
 
       end

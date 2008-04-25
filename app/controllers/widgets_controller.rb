@@ -30,17 +30,20 @@ class WidgetsController < ApplicationController
       case @widget.number
       when 7
         start = tz.local_to_utc(6.days.ago.midnight)
-        interval = 1.day
+        step = 1
+        interval = 1.day / step
         range = 7
         tick = "%a"
       when 30 
         start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
-        interval = 1.week
+        step = 2
+        interval = 1.week / step
         range = 6
         tick = _("Week") + " %W"
       when 180
         start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
-        interval = 1.month
+        step = 4
+        interval = 1.month / step
         range = 6
         tick = "%b"
       end
@@ -48,17 +51,21 @@ class WidgetsController < ApplicationController
       @items = []
       @dates = []
       @range = []
-      0.upto(range) do |d|
+      0.upto(range * step) do |d|
+          
         if @widget.filter_by != 'me'
-          @items[d] = current_user.company.tasks.count(:conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval , start + d*interval])
+          @items[d] = current_user.company.tasks.count(:conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval])
         else 
-          @items[d] = current_user.tasks.count(:conditions => ["created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval , start + d*interval])
+          @items[d] = current_user.tasks.count(:conditions => ["created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval])
         end
-        @dates[d] = tz.utc_to_local(start + d * interval - 1.hour).strftime(tick)
+        
+        @dates[d] = tz.utc_to_local(start + d * interval - 1.hour).strftime(tick) if(d % step == 0)
         @range[0] ||= @items[d]
         @range[1] ||= @items[d]
         @range[0] = @items[d] if @range[0] > @items[d]
         @range[1] = @items[d] if @range[1] < @items[d]
+
+          
       end
     when 4
         # Active Tasks
