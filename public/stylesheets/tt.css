@@ -2046,8 +2046,9 @@ a.widget-collapsed {
 }
 
 .user-avatar { 
+  border: 2px solid #ddd;
   position: absolute;
-  padding-right: 1em;
+  margin-right: 1em;
   top:4px;
 }
 
