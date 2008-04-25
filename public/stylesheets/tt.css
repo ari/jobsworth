@@ -2073,7 +2073,7 @@ a.widget-collapsed {
 }
 
 .user-information-header { 
-  clear: both;
+  clear: left;
   float:left;
   width: 8em;
   text-align: right;

@@ -26,18 +26,27 @@
 	<div class="user-information">
 	  <div class="user-information-header"><%= _('Email') %></div>
 	  <div class="user-information-value"><%= h user.email %></div>
-	  
+
 	  <div class="user-information-header"><%= _('Local Time') %></div>
 	  <div class="user-information-value"><%= user.tz.now.strftime( (user.tz.now.yday == current_user.tz.now.yday ? "#{current_user.time_format}" : "#{current_user.time_format} #{current_user.date_format}") ) %></div>
 
 	  <div class="user-information-header"><%= _('Last Login') %></div>
 	  <div class="user-information-value">
+
 	    <% if user.last_login_at %>
 	      <%= _('%s ago', time_ago_in_words(user.last_login_at, false)) %>
 	    <% else %>
 	      Never 
             <% end %>
 	  </div>
+
+	  <% if user.projects.size > 0 %>
+	  <div>
+	    <div class="user-information-header"><%= _('Projects') %></div>
+	    <div class="user-information-value" style="float:left;"><%= user.projects.collect{|p| "<a href=\"/views/select_project/#{p.id}\">#{h(p.full_name)}</a>"}.join("<br/> ") %></div>
+	  </div>
+	  <% end %>
+	  
 	</div>
       </div>
       <% end %>
