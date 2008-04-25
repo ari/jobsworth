@@ -3,7 +3,7 @@ module ApplicationHelper
 
   require_dependency 'digest/md5'
 
-  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w\/_\.-]*(\?\S+)?)?)?)/i
+  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-]*(\?\S+)?)?)?)/i
 
   include Misc
 
