@@ -132,6 +132,34 @@ class ViewsController < ApplicationController
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
+  def select_user
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    session[:filter_user] = @user.id.to_s
+    session[:filter_project] = "0"
+    session[:filter_milestone] = "0"
+    session[:hide_dependencies] = "0"
+    session[:filter_hidden] = "0"
+    session[:filter_status] = "0"
+    session[:filter_type] = "-1"
+    session[:filter_customer] = "0"
+    session[:view] = nil
+    redirect_to :controller => 'tasks', :action => 'list'
+  end
+
+  def select_client
+    @client = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    session[:filter_user] = "0"
+    session[:filter_project] = "0"
+    session[:filter_milestone] = "0"
+    session[:hide_dependencies] = "0"
+    session[:filter_hidden] = "0"
+    session[:filter_status] = "0"
+    session[:filter_type] = "-1"
+    session[:filter_customer] = @client.id
+    session[:view] = nil
+    redirect_to :controller => 'tasks', :action => 'list'
+  end
+
   def all_tasks
 
     @view = View.new

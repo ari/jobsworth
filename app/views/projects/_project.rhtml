@@ -1,0 +1,24 @@
+<div id="<%=@project.dom_id%>" class="project-block">
+  <div class="project-heading hoverrow">
+    <div style="float:right;" class="project-action">
+      <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit <b>%s</b>", @project.name), :class => "tooltip"), :controller => 'projects', :action => 'edit', :id => @project %> 
+      <%= link_to(image_tag("delete.png", :border => 0, :title => _("Delete <b>%s</b>", @project.name), :class => "tooltip"), { :controller => 'projects', :action => 'destroy', :id => @project}, :confirm => _("Are you sure?")) %>
+    </div>
+    <div class="project-name"><%= "<a href=\"/views/select_project/#{@project.id}\">#{h(@project.name)}</a>" %></div>
+  </div>
+  <div class="information-block">
+    <% if @project.users.size > 0 %>
+    <div>
+      <div class="information-header"><%= _('Members') %></div>
+      <div class="information-value" style="float:left;"><%= @project.users.collect{|u| "<a href=\"/views/select_user/#{u.id}\" class=\"tooltip\" title=\"#{_('Tasks')}: #{u.tasks.count(:conditions => ["project_id=? AND completed_at IS NULL",@project.id])}\"  >#{h(u.name)}</a>"}.join(", ") %></div>
+    </div>
+    <% end %>
+    <div style="clear:both;"></div>
+    <div class="information-header"><%= _('Created') %></div>
+    <div class="information-value"><%= tz.utc_to_local(@project.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %></div>
+
+    <div class="information-header"><%= _('Tasks') %></div>
+    <div class="information-value"><%= @project.tasks.count(:conditions => ["completed_at IS NULL"]) %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
+	  
+  </div>
+</div>

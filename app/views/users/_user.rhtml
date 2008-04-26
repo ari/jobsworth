@@ -1,0 +1,41 @@
+      <div id="<%=@user.dom_id%>" class="user-block">
+	<div class="user-heading hoverrow">
+	  <div style="float:left;" class="user-avatar"><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %></div>
+	  <div style="float:right;" class="user-action">
+	    <%= link_to image_tag("user_edit.png", :border => 0, :title => _("Edit <b>%s</b>", @user.name), :class => "tooltip"), :controller => 'users', :action => 'edit', :id => @user %> 
+	    <%  if(@user.id != current_user.id && !user_online?( @user.id)) %>
+              <%= link_to(image_tag("user_delete.png", :border => 0, :title => _("Delete <b>%s</b>", @user.name), :class => "tooltip"), { :controller => 'users', :action => 'destroy', :id => @user}, :confirm => _("Are you sure?")) %>
+	    <% end %>
+	    <% if current_user.admin > 1 %>
+              <%= link_to 'Switch', :controller => 'users', :action => 'impersonate', :id => @user %>
+	    <% end %>
+	    <%= if user_online?( @user.id ) then image_tag('status_online.png', :title => _('Online'), :class => 'tooltip') else image_tag('status_offline.png', :title => _('Offline'), :class => 'tooltip') end %>
+	  </div>
+	  <div class="user-name"><%= h(@user.name) %></div>
+	</div>
+	<div class="information-block">
+	  <div class="information-header"><%= _('Email') %></div>
+	  <div class="information-value"><%= h @user.email %></div>
+
+	  <div class="information-header"><%= _('Local Time') %></div>
+	  <div class="information-value"><%= @user.tz.now.strftime( (@user.tz.now.yday == current_user.tz.now.yday ? "#{current_user.time_format}" : "#{current_user.time_format} #{current_user.date_format}") ) %></div>
+
+	  <div class="information-header"><%= _('Last Login') %></div>
+	  <div class="information-value">
+
+	    <% if @user.last_login_at %>
+	      <%= _('%s ago', time_ago_in_words(@user.last_login_at, false)) %>
+	    <% else %>
+	      Never 
+            <% end %>
+	  </div>
+
+	  <% if @user.projects.size > 0 %>
+	  <div>
+	    <div class="information-header"><%= _('Projects') %></div>
+	    <div class="information-value" style="float:left;"><%= @user.projects.collect{|p| "<a href=\"/views/select_project/#{p.id}\">#{h(p.full_name)}</a>"}.join("<br/> ") %></div>
+	  </div>
+	  <% end %>
+	  
+	</div>
+      </div>

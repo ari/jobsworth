@@ -179,7 +179,7 @@ class ProjectsController < ApplicationController
       end
 
       flash['notice'] = _('Project was successfully updated.')
-      redirect_to :controller => 'activities', :action => 'list'
+      redirect_from_last
     else
       render :action => 'edit'
     end
@@ -203,26 +203,7 @@ class ProjectsController < ApplicationController
 
     @project.destroy
     flash['notice'] = _('Project was deleted.')
-    redirect_to :controller => 'activities', :action => 'list'
-  end
-
-  def select
-    user = current_user
-    @project = user.projects.find(params[:id])
-    if user.respond_to?(:last_project_id)
-      user.last_project_id = @project.id
-      user.save
-    end
-
-    session[:project] = @project
-    session[:filter_milestone] = nil
-
-    current_user.last_milestone_id = nil if current_user.respond_to? :last_milestone_id
-    current_user.save
-
-    expire_fragment( %r{application/projects\.action_suffix=#{current_user.company_id}_#{current_user.id}} )
-
-    redirect_to :controller => 'activities', :action => 'list'
+    redirect_from_last
   end
 
   def complete
@@ -249,4 +230,9 @@ class ProjectsController < ApplicationController
     @completed_projects = current_user.completed_projects.find(:all, :conditions => ["completed_at IS NOT NULL"], :order => "completed_at DESC")
   end
 
+  def list
+    @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :include => [ :customer, :milestones]);
+    @completed_projects = current_user.completed_projects.find(:all)
+  end
+  
 end
