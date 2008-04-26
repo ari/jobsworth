@@ -19,6 +19,27 @@
 
     <div class="information-header"><%= _('Tasks') %></div>
     <div class="information-value"><%= @project.tasks.count(:conditions => ["completed_at IS NULL"]) %> <%=_ 'Open' %> / <%= @project.tasks.count %> <%= _ 'Total' %></div>
-	  
+
+    <% done = @project.tasks.sum('work_logs.duration', :conditions => ['completed_at IS NULL'], :include => :work_logs )
+       total = @project.tasks.sum('duration', :conditions => ["completed_at IS NULL"])
+       completed = @project.tasks.sum('work_logs.duration', :conditions => ['completed_at IS NOT NULL'], :include => :work_logs )
+       completed_total = @project.tasks.sum('duration', :conditions => ["completed_at IS NOT NULL"])
+    %>
+
+    <div class="information-header"><%= _('Remaining Work') %></div>
+    <div class="information-value">
+      <% if total - done < 0 %>
+      -<%= format_duration(-(total-done), current_user.duration_format, current_user.workday_duration) %> 
+      <% else %>
+      <%= format_duration(total-done, current_user.duration_format, current_user.workday_duration) %> 
+      <% end %>
+      [<%= format_duration(total, current_user.duration_format, current_user.workday_duration) %> <%= _ 'Estimated' %>]</div>
+
+    <div class="information-header"><%= _('Work Done') %></div>
+    <div class="information-value"><%= format_duration(completed, current_user.duration_format, current_user.workday_duration) %> [<%= format_duration(completed_total, current_user.duration_format, current_user.workday_duration) %> <%= _ 'Estimated' %>]</div>
+
+    <div class="information-header">&nbsp;</div>
+    <div><p style="margin-bottom:0;"><%= @project.description %></p></div>
+
   </div>
 </div>
