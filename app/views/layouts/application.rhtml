@@ -63,9 +63,9 @@
               <ul id="primary">
                 <% if current_user.seen_welcome.to_i == 0 %>
                   <% if controller.controller_name == "activities" && controller.action_name == 'welcome' %>
-                  <li><%= link_to "#{_('Tutorial')}", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
+                  <li class="active"><%= link_to "#{_('Tutorial')}", { :controller => 'activities', :action => 'welcome'}, :class => "active"%></li>
                   <% else %>
-                  <li><%= link_to "<span>#{_('Tutorial')}</span>", { :controller => 'activities', :action => 'welcome'} %></li>
+                  <li><%= link_to "<span>#{_('Tutorial')}", { :controller => 'activities', :action => 'welcome'} %></li>
                   <% end %>
                 <% end %>
 
@@ -75,7 +75,7 @@
                 <li><%= link_to "#{_('Overview')}", { :controller => 'activities', :action => 'list'} %>                
 		<% end %>
 		  <ul>
-		    <li><a href="/widgets/add">Add New Widget</a></li>
+		    <li><%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %></li>
 		  </ul>
 		</li>
 
@@ -103,55 +103,65 @@
 
                 <% if current_user.option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "timeline" && controller.action_name == "list" %>
-                  <li><%= link_to "<span class=\"active\">#{_('Timeline')}</span>", { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
+                  <li class="active"><%= link_to "#{_('Timeline')}", { :controller => 'timeline', :action => 'list'}, :class => "active" %></li>
                   <% else %>
-                  <li><%= link_to "<span>#{_('Timeline')}</span>", :controller => 'timeline', :action => 'list' %></li>
+                  <li><%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'list' %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "project_files"  %>
-                <li><%= link_to "<span class=\"active\">#{_('Files')}</span>", {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
+                <li class="active"><%= link_to "#{_('Files')}", {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
                 <% else %>
-                <li><%= link_to "<span>#{_('Files')}</span>", :controller => 'project_files', :action => 'list' %> </li>
+                <li><%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %> </li>
                 <% end %>
 
                 <% if current_user.option_tracktime.to_i == 1%>
                   <% if controller.controller_name == "reports"  %>
-                  <li><%= link_to "<span class=\"active\">#{_('Reports')}</span>", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
+                  <li class="active"><%= link_to "#{_('Reports')}", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
                   <% else %>
-                  <li><%= link_to "<span>#{_('Reports')}</span>", :controller => 'reports', :action => 'list' %></li>
+                  <li><%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'list' %></li>
                   <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "schedule"  %>
-                <li><%= link_to "<span class=\"active\">#{_('Schedule')}</span>", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Schedule')}", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to "<span>#{_('Schedule')}</span>", :controller => 'schedule', :action => 'list' %></li>
+                <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %></li>
                 <% end %>
 
                 <% if controller.controller_name == "wiki"  %>
-                <li><%= link_to "<span class=\"active\">#{_('Wiki')}</span>", {:controller => 'wiki', :action => 'show', :id => nil}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Wiki')}", {:controller => 'wiki', :action => 'show', :id => nil}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to "<span>#{_('Wiki')}</span>", :controller => 'wiki', :action => 'show' %></li>
+                <li><%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show' %></li>
                 <% end %>
 
                 <% if controller.controller_name == "shout"  %>
-                <li><%= link_to "<span class=\"active\">#{_('Chat')}</span>", {:controller => 'shout', :action => 'list'}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Chat')}", {:controller => 'shout', :action => 'list'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to "<span>#{_('Chat')}</span>", :controller => 'shout', :action => 'list' %></li>
+                <li><%= link_to "#{_('Chat')}", :controller => 'shout', :action => 'list' %></li>
                 <% end %>
 
                 <% if ['forums', 'posts', 'topics'].include? controller.controller_name  %>
-                <li><%= link_to "<span class=\"active\">#{_('Forums')}</span>", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Forums')}", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to "<span>#{_('Forums')}</span>", :controller => 'forums', :action => 'index' %></li>
+                <li><%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %></li>
                 <% end %>
 
 
-                <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li><%= link_to "<span class=\"active\">#{_('New Task')}</span>", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
+                <% if controller.controller_name == "projects" %>
+                <li class="active"><%= link_to "#{_('Projects')}", {:controller => 'projects', :action => 'list'}, :class => "active" %> 
                 <% else %>
-                <li><%= link_to "<span>#{_('New Task')}</span>", :controller => 'tasks', :action => 'new' %> 
+                <li><%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %> 
+                <% end %>
+		  <ul>
+	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
+		  </ul>
+		</li>
+
+                <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
+                <li class="active"><%= link_to "#{_('New Task')}", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
+                <% else %>
+                <li><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'} %> 
                 <% end %>
 		  <ul>
 	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
@@ -160,20 +170,20 @@
 		  </ul>
 		</li>
 
-                <li class="right"><%= link_to "<span class=\"last\">#{_('Log Out')}</span>", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
+                <li class="right"><%= link_to "#{_('Log Out')}", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
                 <% if controller.controller_name == "users" && controller.action_name == "edit_preferences" %>
-                <li class="right"><%= link_to "<span class=\"right active\">#{_('Preferences')}</span>", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%></li>
+                <li class="right active"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%></li>
                 <% else %>
-                <li class="right"><%= link_to "<span class=\"right\">#{_('Preferences')}</span>", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
+                <li class="right"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
                 <% end %>
 
                 <% if current_user.admin > 0 %>
 
                 <% if current_user.option_externalclients.to_i == 1%>
                 <% if controller.controller_name == "customers" %>
-                  <li class="right"><%= link_to "<span class=\"active\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
+                  <li class="right active"><%= link_to "#{_('Clients')}", { :controller => 'customers', :action => 'list'}, :class => "active"%></li>
                   <% else %>
-                  <li class="right"><%= link_to "<span class=\"right\">#{_('Clients')}</span>", { :controller => 'customers', :action => 'list'}, :class => "right" %></li>
+                  <li class="right"><%= link_to "#{_('Clients')}", { :controller => 'customers', :action => 'list'}, :class => "right" %></li>
                 <% end %>
                 <% end %>
 
@@ -186,7 +196,7 @@
 
                 <% end %>
 
-                <li class="right" id="search_menu"><%=_ 'Search' %> <%= text_field_tag 'query', "", {:size => 10, :style => "font-size:9px;"}%></li>
+                <li class="right" id="search_menu"><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if($('query').value == '#{_('Search')}') {$('query').value = ''; $('query').removeClassName('optional');};"  }%></li>
 
                 </ul>
               </div>
