@@ -8,6 +8,14 @@ class WidgetsController < ApplicationController
       return
     end
 
+    unless @widget.configured?
+      render :update do |page|
+        page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
+        page.show "config-#{@widget.dom_id}"
+      end
+      return
+    end
+    
     case @widget.widget_type
     when 0
       # Tasks
@@ -91,6 +99,68 @@ class WidgetsController < ApplicationController
 
   end
 
+  
+  
+  def add
+    render :update do |page|
+      page << "if(! $('add-widget' ) ) {"
+      page.insert_html :top, "left_col", :partial => "widgets/add"
+      page.visual_effect :appear, "add-widget"
+      page << "} else {"
+      page.visual_effect :highlight, "add-widget"
+      page << "}"
+    end
+  end
+
+  def destroy
+    begin
+      @widget = Widget.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    rescue
+      render :nothing => true
+      return
+    end
+    render :update do |page|
+      page << "var widget = $('#{@widget.dom_id}').widget;"
+      page << "portal.remove(widget);"
+    end
+    @widget.destroy
+  end
+  
+  def create
+    @widget = Widget.new(params[:widget])
+    @widget.user = current_user
+    @widget.company = current_user.company
+    @widget.configured = false
+    @widget.column = 0
+    @widget.position = 0
+    @widget.collapsed = false
+    
+    unless @widget.save
+      render :update do |page|
+        page.visual_effect :shake, 'add-widget'
+      end
+      return
+    else 
+      render :update do |page|
+        page.remove 'add-widget'
+        page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
+        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/edit/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/destroy/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
+
+        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"new Ajax.Request(\\\'/widgets/toggle_display/#{@widget.id}\\\',{asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide(\\\'loading\\\');portal.refreshHeights();}, onLoading:function(request){Element.show(\\\'loading\\\');}});\">&nbsp;</a>';"
+        page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
+        page.<< "widget.setTitle(title);"
+        page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
+        page << "portal.add(widget, #{@widget.column});"
+        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});"
+
+        page << "updateTooltips();"
+        page << "portal.refreshHeights();"
+      end 
+    end
+
+  
+  end
+
   def edit
     begin
       @widget = Widget.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
@@ -117,6 +187,8 @@ class WidgetsController < ApplicationController
       return
     end
 
+    @widget.configured = true
+    
     if @widget.update_attributes(params[:widget])
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"

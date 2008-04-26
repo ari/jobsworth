@@ -1,0 +1,10 @@
+<div id="add-widget" style="display:none;margin-bottom:1em;margin-left:1em;padding-top:1em;padding-bottom:1em;" class="widget-config">
+<% form_remote_tag :url => {:controller => 'widgets', :action => 'create' },
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');" do  %>
+
+<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 15} %> 
+<label for="widget_widget_type"><%= _("Type") %></label><%= select( 'widget', 'widget_type', [[_('Tasks'),0],[_('Projects'),1],[_('Recent Activities'),2],[_('Tasks / Day graph'),3]]) %>
+<%= submit_tag _("Add"), :class => "nolabel" %> or <%= link_to_function('Cancel', "Element.remove($('add-widget'));") %>
+<% end %>
+</div>
