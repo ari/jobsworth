@@ -34,7 +34,7 @@ class WidgetsController < ApplicationController
       # Activities
       @activities = EventLog.find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number, :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)", current_user.company_id] )
     when 3
-      # Tasks / Day
+      # Tasks Graph
       case @widget.number
       when 7
         start = tz.local_to_utc(6.days.ago.midnight)
@@ -72,13 +72,53 @@ class WidgetsController < ApplicationController
         @range[1] ||= @items[d]
         @range[0] = @items[d] if @range[0] > @items[d]
         @range[1] = @items[d] if @range[1] < @items[d]
-
-          
       end
     when 4
-        # Active Tasks
+      # Burndown
+      case @widget.number
+      when 7
+        start = tz.local_to_utc(6.days.ago.midnight)
+        step = 1
+        interval = 1.day / step
+        range = 7
+        tick = "%a"
+      when 30 
+        start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
+        step = 2
+        interval = 1.week / step
+        range = 6
+        tick = _("Week") + " %W"
+      when 180
+        start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
+        step = 4
+        interval = 1.month / step
+        range = 6
+        tick = "%b"
+      end
+
+      @items = []
+      @dates = []
+      @range = []
+      0.upto(range * step) do |d|
+        
+        if @widget.filter_by != 'me'
+          @items[d] = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+        else 
+          @items[d] = current_user.tasks.sum('duration', :conditions => ["created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+        end
+        
+        @dates[d] = tz.utc_to_local(start + d * interval - 1.hour).strftime(tick) if(d % step == 0)
+        @range[0] ||= @items[d]
+        @range[1] ||= @items[d]
+        @range[0] = @items[d] if @range[0] > @items[d]
+        @range[1] = @items[d] if @range[1] < @items[d]
+      end
     when 5
-        # Schedule
+      # Active Tasks
+    when 6
+      # Schedule
+    when 7 
+      # Chat 
     end
 
     render :update do |page|
@@ -89,8 +129,8 @@ class WidgetsController < ApplicationController
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
       when 2
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
-      when 3
-        page.replace_html "content_#{@widget.dom_id}", :partial => 'widgets/widget_3'
+      when 3..6
+        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       end
 
       page.call("updateTooltips")
