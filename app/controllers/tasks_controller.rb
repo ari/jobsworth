@@ -15,6 +15,7 @@ class TasksController < ApplicationController
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
+      return
     else
       @task = Task.new
       @task.duration = 0
@@ -1411,7 +1412,6 @@ class TasksController < ApplicationController
       page.show('quick_add_container')
       page.visual_effect(:highlight, "quick_add_container", :duration => 0.5)
     end
-
   end
 
   def create_ajax
