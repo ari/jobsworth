@@ -30,11 +30,27 @@ var f = Flotr.draw(
 	    lines: {show: true, fill: false},
 	    points: {show: false}
         
+	},
+	{ 
+	    data: [ 
+              <% data = []
+                 @totals.each_with_index do |i,j| 
+		     data << "[#{j},#{i}]"
+	         end -%>
+              <%= data.join(',') -%>
+	      ],
+	    label: "Target",
+	    lines: {show: true, fill: false},
+	    points: {show: false}
+        
 	}
 
 
     ], 
-        {
+        {   legend: {
+             position: 'ne',
+             backgroundOpacity: 0.5
+            },
             xaxis: { 
               ticks: [
               <% data = []
