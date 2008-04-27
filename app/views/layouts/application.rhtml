@@ -71,12 +71,12 @@
 
                 <% if controller.controller_name == "activities" && controller.action_name != 'welcome' %>
                 <li class="active"><%= link_to "#{_('Overview') }", { :controller => 'activities', :action => 'list'}, :class => "active"%>
-                <% else %>
-                <li><%= link_to "#{_('Overview')}", { :controller => 'activities', :action => 'list'} %>                
-		<% end %>
 		  <ul>
 		    <li><%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %></li>
 		  </ul>
+                <% else %>
+                <li><%= link_to "#{_('Overview')}", { :controller => 'activities', :action => 'list'} %>                
+		<% end %>
 		</li>
 
                 <% if controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name) %>
@@ -109,10 +109,10 @@
                   <% end %>
                 <% end %>
 
-                <% if controller.controller_name == "project_files"  %>
-                <li class="active"><%= link_to "#{_('Files')}", {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
+                <% if controller.controller_name == "schedule"  %>
+                <li class="active"><%= link_to "#{_('Schedule')}", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
                 <% else %>
-                <li><%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %> </li>
+                <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %></li>
                 <% end %>
 
                 <% if current_user.option_tracktime.to_i == 1%>
@@ -121,12 +121,6 @@
                   <% else %>
                   <li><%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'list' %></li>
                   <% end %>
-                <% end %>
-
-                <% if controller.controller_name == "schedule"  %>
-                <li class="active"><%= link_to "#{_('Schedule')}", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
-                <% else %>
-                <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %></li>
                 <% end %>
 
                 <% if controller.controller_name == "wiki"  %>
@@ -147,11 +141,16 @@
                 <li><%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %></li>
                 <% end %>
 
+                <% if controller.controller_name == "project_files"  %>
+                <li class="active"><%= link_to "#{_('Files')}", {:controller => 'project_files', :action => 'list'}, :class => "active" %> </li>
+                <% else %>
+                <li><%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %> </li>
+                <% end %>
 
                 <% if controller.controller_name == "projects" %>
                 <li class="active"><%= link_to "#{_('Projects')}", {:controller => 'projects', :action => 'list'}, :class => "active" %> 
                 <% else %>
-                <li><%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %> 
+                <li><%= link_to "#{_('Projects')}", {:controller => 'projects', :action => 'list'} %> 
                 <% end %>
 		  <ul>
 	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
@@ -159,7 +158,7 @@
 		</li>
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li class="active"><%= link_to "#{_('New Task')}", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
+                <li class="active"><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
                 <% else %>
                 <li><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'} %> 
                 <% end %>
