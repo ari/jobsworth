@@ -386,7 +386,7 @@ module ApplicationHelper
   end
 
   def link_to_milestone(milestone)
-    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format), :workday_duration => current_user.workday_duration})
+    link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :user => current_user)})
   end
 
   def submit_tag(value = "Save Changes"[], options={} )

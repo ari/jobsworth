@@ -21,7 +21,7 @@ class Milestone < ActiveRecord::Base
   def to_tip(options = { })
     res = "<table cellpadding=0 cellspacing=0>"
     res << "<tr><th>#{_('Name')}</th><td> #{self.name}</td></tr>"
-    res << "<tr><th>#{_('Due Date')}</th><td> #{self.due_at.strftime("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
+    res << "<tr><th>#{_('Due Date')}</th><td> #{options[:user].tz.utc_to_local(due_at).strftime("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
     res << "<tr><th>#{_('Owner')}</th><td> #{self.user.name}</td></tr>" unless self.user.nil?
     res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
     res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
