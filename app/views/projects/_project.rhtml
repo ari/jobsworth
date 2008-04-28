@@ -24,6 +24,8 @@
        total = @project.tasks.sum('duration', :conditions => ["completed_at IS NULL"])
        completed = @project.tasks.sum('work_logs.duration', :conditions => ['completed_at IS NOT NULL'], :include => :work_logs )
        completed_total = @project.tasks.sum('duration', :conditions => ["completed_at IS NOT NULL"])
+       total ||= 0
+       done ||= 0
     %>
 
     <div class="information-header"><%= _('Remaining Work') %></div>
