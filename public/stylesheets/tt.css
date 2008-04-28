@@ -492,8 +492,20 @@ fieldset input.nolabel {
   float: none;
   margin-left: 11.6em;
   display: block;
+
+  background-color: #fafafa;
+  border-color:#FF9900 #AA6600 #AA6600 #FF9900;
+  border-style:solid;
+  border-width:1px;
+  color:#333;
+  cursor:pointer;
+  font-family:Tahoma,sans-serif;
+  overflow:visible;
 }
 
+fieldset input.nolabel:hover {
+  color: #ff9900;
+}
 
 fieldset form br {
         clear: both;
@@ -1195,8 +1207,6 @@ a.description {
 }
 
 #tabmenu li.active a {
-  /*change border color for active topic area*/
-/*#  border: 1px solid #f90; */
   color: #FF9900;
   background-color: #f0f0f0;
 }
@@ -1213,8 +1223,6 @@ a.description {
 }
 
 #tabmenu li ul a {
-  /*  cancel inherit of border
-      on subnav of active topic */
   font-size: 11px;
   padding-top: 1px;
   padding-bottom: 1px;
