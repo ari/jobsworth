@@ -6,6 +6,7 @@ class CreateWidgets < ActiveRecord::Migration
       t.string   :name
       t.integer  :widget_type, :default => 0
       t.integer  :number, :default => 5
+      t.boolean   :mine
       t.string   :order_by
       t.string   :group_by
       t.string   :filter_by
@@ -25,6 +26,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.name =  "Top Tasks"
         w.widget_type = 0
         w.number = 5
+        w.mine = true
         w.order_by = "priority"
         w.collapsed = 0
         w.column = 0
@@ -38,6 +40,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.name =  "Newest Tasks"
         w.widget_type = 0
         w.number = 5
+        w.mine = false
         w.order_by = "date"
         w.collapsed = 0
         w.column = 0
@@ -63,7 +66,7 @@ class CreateWidgets < ActiveRecord::Migration
         w.name =  "My Open Tasks"
         w.widget_type = 3
         w.number = 7
-        w.filter_by = 'me'
+        w.mine = true
         w.collapsed = 0
         w.column = 1
         w.position = 0

@@ -406,9 +406,6 @@ class Task < ActiveRecord::Base
 
   def Task.group_by_tags(tasks, tags, done_tags, depth)
     groups = { }
-    num_matching = 0
-
-    #print "[#{depth}]Tags: #{done_tags.join(' / ')} | #{tags.join(' / ')}\n"
 
     tags -= done_tags
     tags.each do |tag|
@@ -445,7 +442,6 @@ class Task < ActiveRecord::Base
 
   def Task.group_by(tasks, items, done_items = [], depth = 0)
     groups = OrderedHash.new
-    num_matching = 0
 
     items -= done_items
     items.each do |item|
@@ -530,39 +526,44 @@ class Task < ActiveRecord::Base
   end
 
   def to_tip(options = { })
-    owners = "No one"
-    owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
+    unless @tip
+      owners = "No one"
+      owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
 
-    res = "<table cellpadding=0 cellspacing=0>"
-    res << "<tr><th>#{_('Summary')}</td><td>#{self.name}</tr>"
-    res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
-    res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
-    res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
-    res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
-    res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
-    res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime(options[:user].date_format)}</td></tr>" if self.completed_at
-    res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime(options[:user].date_format)}</td></tr>" if self.due
-    unless self.dependencies.empty?
-      res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
-    end
-    unless self.dependants.empty?
-      res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.status_name }.join('<br />')}</td></tr>"
-    end
-    res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}</tr>"
-    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
-    res << "</table>"
-    res.gsub(/\"/,'&quot;')
+      res = "<table cellpadding=0 cellspacing=0>"
+      res << "<tr><th>#{_('Summary')}</td><td>#{self.name}</tr>"
+      res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
+      res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
+      res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
+      res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
+      res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
+      res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime(options[:user].date_format)}</td></tr>" if self.completed_at
+      res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime(options[:user].date_format)}</td></tr>" if self.due
+      unless self.dependencies.empty?
+        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
+      end
+      unless self.dependants.empty?
+        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.status_name }.join('<br />')}</td></tr>"
+      end
+      res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration] )}</tr>"
+      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+      res << "</table>"
+      @tip = res.gsub(/\"/,'&quot;')
+    end 
+    @tip
   end
 
   def css_classes
-    res = ""
-    if self.status == 1
-      res << " in_progress"
-    elsif self.status == 2
-      res << " closed"
-    elsif self.status > 2
-      res << " invalid"
-    end
+    unless @css
+      @css = case self.status
+      when 0 then ""
+      when 1 then " in_progress"
+      when 2 then " closed"
+      else 
+        " invalid"
+      end
+    end   
+    @css
   end
 
   def todo_status

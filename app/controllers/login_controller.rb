@@ -15,15 +15,18 @@ class LoginController < ApplicationController
   def login
     subdomain = 'www'
     subdomain = request.subdomains.first if request.subdomains
-
-    if subdomain != 'www'
-      @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-      if !@company.nil?
-        render :action => 'login', :layout => false
-      else
-        redirect_to "http://www.#{$CONFIG[:domain]}"
+    if session[:user_id]
+      redirect_to :controller => 'activities', :action => 'list'
+    else
+      if subdomain != 'www'
+        @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
+        if !@company.nil?
+          render :action => 'login', :layout => false
+        else
+          redirect_to "http://www.#{$CONFIG[:domain]}"
+        end
       end
-    end
+    end   
   end
 
   def logout
@@ -53,9 +56,16 @@ class LoginController < ApplicationController
     subdomain = request.subdomains.first if request.subdomains
     if logged_in = @user.login(subdomain)
       logged_in.last_login_at = Time.now.utc
+      
+      if params[:remember].to_i == 1
+        logged_in.remember_until = Time.now.utc + 1.week
+      else 
+        logged_in.remember_until = Time.now.utc + 1.hour
+      end
+      
       logged_in.save
       session[:user_id] = logged_in.id
-
+      
       if @sheet = Sheet.find(:first, :conditions => ["user_id = ? ", logged_in.id])
         session[:sheet] = @sheet
       end

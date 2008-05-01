@@ -162,11 +162,6 @@
                 <% else %>
                 <li><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'} %> 
                 <% end %>
-		  <ul>
-	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
-	            <li><%= link_to _("New View"), :controller => 'views', :action => 'new' %></li>
-	            <li><%= link_to _("New Note"), :controller => 'pages', :action => 'new' %></li>
-		  </ul>
 		</li>
 
                 <li class="right"><%= link_to "#{_('Log Out')}", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>

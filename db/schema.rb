@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 100) do
+ActiveRecord::Schema.define(:version => 101) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -465,6 +465,7 @@ ActiveRecord::Schema.define(:version => 100) do
     t.integer  "newsletter",                            :default => 1
     t.integer  "option_avatars",                        :default => 1
     t.string   "autologin"
+    t.datetime "remember_until"
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
@@ -498,6 +499,7 @@ ActiveRecord::Schema.define(:version => 100) do
     t.string   "name"
     t.integer  "widget_type", :default => 0
     t.integer  "number",      :default => 5
+    t.boolean  "mine"
     t.string   "order_by"
     t.string   "group_by"
     t.string   "filter_by"

@@ -88,6 +88,11 @@ class ApplicationController < ActionController::Base
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
 
+    if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
+      session[:user_id] = nil
+      reset_session
+    end
+    
     if session[:user_id].nil?
       session[:redirect] = request.request_uri unless request.request_uri.include?('/login/login')
       
@@ -117,10 +122,14 @@ class ApplicationController < ActionController::Base
 
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
-        ActiveRecord::Base.connection.execute("UPDATE users SET last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user_id]}")
-      else
-        ActiveRecord::Base.connection.execute("UPDATE users SET last_seen_at='#{Time.now.utc.to_s(:db)}', last_ping_at='#{Time.now.utc.to_s(:db)}' WHERE id = #{session[:user_id]}")
+        current_user.last_ping_at = Time.now.utc
       end
+      current_user.last_seen_at = Time.now.utc
+      
+      current_user.remember_until ||= Time.now.utc + 1.hour
+      
+      current_user.remember_until = Time.now.utc + 1.hour if(current_user.remember_until < Time.now.utc + 1.hour)
+      current_user.save
 
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
