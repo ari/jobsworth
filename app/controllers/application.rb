@@ -92,8 +92,6 @@ class ApplicationController < ActionController::Base
 #    session[:user_id] = 1
 
     if session[:user_id].nil?
-      subdomain = request.subdomains.first
-
       session[:redirect] = request.request_uri unless request.request_uri.include?('/login/login')
       
       # Generate a javascript redirect if user timed out without requesting a new page
