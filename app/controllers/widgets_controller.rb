@@ -25,14 +25,20 @@ class WidgetsController < ApplicationController
               when 'date':
                   "tasks.created_at desc"
               end
-      @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{current_user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => @widget.number  )
+      unless @widget.mine?
+        @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{current_user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => @widget.number  )
+      else 
+        @items = current_user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :work_logs, :todos], :limit => @widget.number  )
+      end
     when 1
       # Project List
       @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])
       @completed_projects = current_user.completed_projects.size
     when 2
       # Activities
-      @activities = EventLog.find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number, :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)", current_user.company_id] )
+      @activities = EventLog.find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number, 
+          :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)", current_user.company_id]
+        )
     when 3
       # Tasks Graph
       case @widget.number
@@ -56,15 +62,30 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+        when 'c'
+           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact } )"
+        when 'p'
+           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+        when 'm'
+           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+        when 'u'
+          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+        else 
+          ""
+        end
+      end
+      
       @items = []
       @dates = []
       @range = []
       0.upto(range * step) do |d|
           
-        if @widget.filter_by != 'me'
-          @items[d] = current_user.company.tasks.count(:conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval])
+        unless @widget.mine?
+          @items[d] = current_user.company.tasks.count(:conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?) #{filter}", start + d*interval, start + d*interval])
         else 
-          @items[d] = current_user.tasks.count(:conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval])
+          @items[d] = current_user.tasks.count(:conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?) #{filter}", start + d*interval, start + d*interval])
         end
         
         @dates[d] = tz.utc_to_local(start + d * interval - 1.hour).strftime(tick) if(d % step == 0)
@@ -96,21 +117,35 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+        when 'c'
+           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact } )"
+        when 'p'
+           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+        when 'm'
+           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+        when 'u'
+          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+        else 
+          ""
+        end
+      end
+
       @items = []
       @dates = []
       @range = []
       velocity = 0
       0.upto(range * step) do |d|
         
-        if @widget.filter_by != 'me'
-          @items[d] = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
-
-          worked = current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) AND tasks.duration > 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
+        unless @widget.mine?
+          @items[d] = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?) #{filter}", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          worked = current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) #{filter} AND tasks.duration > 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
           @items[d] = (@items[d] - worked > 0) ? (@items[d] - worked) : 0
           
         else 
-          @items[d] = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?)", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
-          worked = current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) AND tasks.duration > 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
+          @items[d] = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at < ? AND (completed_at IS NULL OR completed_at > ?) #{filter}", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          worked = current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) #{filter} AND tasks.duration > 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
           @items[d] = (@items[d] - worked > 0) ? (@items[d] - worked) : 0
         end
         
@@ -157,6 +192,21 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+        when 'c'
+           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact } )"
+        when 'p'
+           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+        when 'm'
+           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+        when 'u'
+          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+        else 
+          ""
+        end
+      end
+
       @items  = []
       @totals = []
       @dates  = []
@@ -164,17 +214,18 @@ class WidgetsController < ApplicationController
       velocity = 0
       0.upto(range * step) do |d|
         
-        if @widget.filter_by != 'me'
-          @totals[d]  = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) AND created_at < ?", start + d*interval]).to_f / current_user.workday_duration
-          @totals[d] += current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids})  AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
-          @items[d] = current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ?  AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
-          @items[d] += current_user.company.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids})  AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+        unless @widget.mine? 
+          @totals[d]  = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) #{filter} AND created_at < ?", start + d*interval]).to_f / current_user.workday_duration
+          @totals[d] += current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
+
+          @items[d] = current_user.company.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter}  AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] += current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
         else 
-          @totals[d]  = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at < ?", start + d*interval]).to_f / current_user.workday_duration
-          @totals[d] += current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
+          @totals[d]  = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND created_at < ?", start + d*interval]).to_f / current_user.workday_duration
+          @totals[d] += current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
           
-          @items[d] = current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ?  AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
-          @items[d] += current_user.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] = current_user.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] += current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ?  AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / current_user.workday_duration
         end
         
         @dates[d] = tz.utc_to_local(start + d * interval - 1.hour).strftime(tick) if(d % step == 0)
