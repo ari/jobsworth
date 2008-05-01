@@ -25,33 +25,30 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
-  def self.stats controller
+  def self.stats(controller)
     GC.start
-    n_req = @number_of_requests
-    n_obj = ObjectSpace.each_object{}
-    n_sym = Symbol.all_symbols.size
     pid = Process.pid
 
     ps_info = `ps -o psr,etime,pcpu,pmem,rss,vsz -p #{Process.pid} | grep -v CPU`
     ignore, psr, elapsed, pcpu, pmem, rsize, vsize = ps_info.split(/\s+/)
-    "n_req: #{ n_req }, n_obj: #{ n_obj }, n_sym: #{ n_sym }, pid: #{ pid }, vsize: #{ vsize }, rsize: #{ rsize }"
+    [pid, rsize.to_i, vsize.to_i]
   end
 
   before_filter do |controller|
     @number_of_requests ||= 0
 
-    if @number_of_requests % 20 == 0
-      @before = "@@ >> #{ stats controller }"
-    end
+#    if @number_of_requests % 20 == 0
+      @before = stats(controller)
+#    end
   end
 
   after_filter do |controller|
-    if @number_of_requests % 20 == 0
-      @after = "@@ << #{ stats controller }"
-      controller.logger.info @before
-      controller.logger.info @after
+#    if @number_of_requests % 20 == 0
+     @after = stats(controller)
+     controller.logger.info "@@ ++ #{controller.request.request_uri}: n_req: #{ @number_of_requests }, pid: #{ @after[0] }, +vsize: #{ @after[1] - @before[1] }, +rsize: +#{ @after[2] - @before[2] }"
+     controller.logger.info "@@ >> #{controller.request.request_uri}: n_req: #{ @number_of_requests }, pid: #{ @after[0] }, vsize: #{ @after[1] }, rsize: #{ @after[2] }"
       @before = @after = @before_symbols = @after_symbols = nil
-    end
+#    end
 
     @number_of_requests += 1
   end
