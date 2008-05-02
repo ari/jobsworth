@@ -2042,6 +2042,14 @@ a.widget-collapsed {
   font-weight: bold;
 }
 
+.widget-config { 
+  font-size: 9px;
+}
+
+.widget select, input { 
+  font-size: 9px;
+}
+
 .user-block { 
   margin: 1em 1em 1em 0;
   padding-bottom: 1em;

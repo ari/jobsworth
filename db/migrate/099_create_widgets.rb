@@ -63,7 +63,7 @@ class CreateWidgets < ActiveRecord::Migration
         w = Widget.new
         w.user = u
         w.company_id = u.company_id
-        w.name =  "My Open Tasks"
+        w.name =  "Open Tasks"
         w.widget_type = 3
         w.number = 7
         w.mine = true

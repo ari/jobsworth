@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
   has_many      :shout_channel_subscriptions, :dependent => :destroy
   has_many      :shout_channels, :through => :shout_channel_subscriptions, :source => :shout_channel
 
-  has_many      :widgets, :order => "widgets.column, widgets.position"
+  has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
@@ -58,6 +58,8 @@ class User < ActiveRecord::Base
 
   before_create                 :generate_uuid
 
+  after_create			:generate_widgets
+  
   attr_protected :admin, :uuid, :autologin
 
   def path
@@ -81,6 +83,57 @@ class User < ActiveRecord::Base
     @attributes['autologin'] = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)
   end
 
+  def new_widget
+    Widget.new(:user => self, :company_id => self.company_id, :collapsed => 0, :configured => true)
+  end
+  
+  def generate_widgets
+    w = new_widget
+    w.name =  "Top Tasks"
+    w.widget_type = 0
+    w.number = 5
+    w.mine = true
+    w.order_by = "priority"
+    w.column = 0
+    w.position = 0
+    w.save
+    
+    w = new_widget
+    w.name =  "Newest Tasks"
+    w.widget_type = 0
+    w.number = 5
+    w.mine = false
+    w.order_by = "date"
+    w.column = 0
+    w.position = 1
+    w.save
+    
+    w = new_widget
+    w.name =  "Recent Activities"
+    w.widget_type = 2
+    w.number = 20
+    w.column = 2
+    w.position = 0
+    w.save
+    
+    w = new_widget
+    w.name =  "Open Tasks"
+    w.widget_type = 3
+    w.number = 7
+    w.mine = true
+    w.column = 1
+    w.position = 0
+    w.save
+    
+    w = new_widget
+    w.name =  "Projects"
+    w.widget_type = 1
+    w.number = 0
+    w.column = 1
+    w.position = 1
+    w.save
+  end
+  
   def avatar_url(size=32)
     if avatar?
       if size > 25
