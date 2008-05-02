@@ -42,6 +42,8 @@ Rails::Initializer.run do |config|
   config.logger = Logger.new("#{RAILS_ROOT}/log/#{ENV['RAILS_ENV']}.log", 5)
 end
 
+ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
+#
 # Add new inflection rules using the following format
 # (all these examples are active by default):
 # Inflector.inflections do |inflect|
