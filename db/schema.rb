@@ -128,7 +128,6 @@ ActiveRecord::Schema.define(:version => 101) do
 
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
   add_index "milestones", ["project_id"], :name => "milestones_project_id_index"
-  add_index "milestones", ["company_id", "project_id"], :name => "milestones_company_project_index"
 
   create_table "moderatorships", :force => true do |t|
     t.integer "forum_id"
@@ -398,7 +397,6 @@ ActiveRecord::Schema.define(:version => 101) do
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
-  add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
 
   create_table "todos", :force => true do |t|
     t.integer  "task_id"
@@ -556,6 +554,7 @@ ActiveRecord::Schema.define(:version => 101) do
     t.integer  "paused_duration",  :default => 0
   end
 
+  add_index "work_logs", ["user_id"], :name => "work_logs_user_id"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
   add_index "work_logs", ["task_id", "log_type"], :name => "work_logs_task_id_index"
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"
