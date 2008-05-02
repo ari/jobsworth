@@ -12,7 +12,7 @@ class UserTest < Test::Unit::TestCase
     assert_kind_of User,  @user
   end
 
-  def test_before_create
+  def test_create
     u = User.new
     u.name = "a"
     u.username = "a"
@@ -26,6 +26,8 @@ class UserTest < Test::Unit::TestCase
     
     assert u.uuid.length == 32
     assert u.autologin.length == 32
+    
+    assert u.widgets.size == 5
   end
 
   def test_validate_name
