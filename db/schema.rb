@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 101) do
+ActiveRecord::Schema.define(:version => 102) do
 
   create_table "companies", :force => true do |t|
     t.string   "name",          :limit => 200, :default => "", :null => false
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(:version => 101) do
     t.string  "monitorship_type"
   end
 
+  add_index "monitorships", ["user_id"], :name => "index_monitorships_on_user_id"
+
   create_table "news_items", :force => true do |t|
     t.datetime "created_at"
     t.text     "body"
@@ -152,6 +154,9 @@ ActiveRecord::Schema.define(:version => 101) do
     t.integer "task_id"
     t.integer "user_id"
   end
+
+  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
+  add_index "notifications", ["task_id"], :name => "index_notifications_on_task_id"
 
   create_table "pages", :force => true do |t|
     t.string   "name",       :limit => 200, :default => "", :null => false
@@ -178,6 +183,7 @@ ActiveRecord::Schema.define(:version => 101) do
 
   add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
   add_index "posts", ["user_id", "created_at"], :name => "index_posts_on_user_id"
+  add_index "posts", ["topic_id"], :name => "index_posts_on_topic_id"
 
   create_table "project_files", :force => true do |t|
     t.integer  "company_id",                       :default => 0,                          :null => false
@@ -198,6 +204,8 @@ ActiveRecord::Schema.define(:version => 101) do
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
+  add_index "project_files", ["project_folder_id"], :name => "index_project_files_on_project_folder_id"
+  add_index "project_files", ["task_id"], :name => "index_project_files_on_task_id"
 
   create_table "project_folders", :force => true do |t|
     t.string   "name"
@@ -208,6 +216,7 @@ ActiveRecord::Schema.define(:version => 101) do
   end
 
   add_index "project_folders", ["project_id"], :name => "index_project_folders_on_project_id"
+  add_index "project_folders", ["parent_id"], :name => "index_project_folders_on_parent_id"
 
   create_table "project_permissions", :force => true do |t|
     t.integer  "company_id"
@@ -316,6 +325,9 @@ ActiveRecord::Schema.define(:version => 101) do
     t.integer  "paused_duration", :default => 0
   end
 
+  add_index "sheets", ["task_id"], :name => "index_sheets_on_task_id"
+  add_index "sheets", ["user_id"], :name => "index_sheets_on_user_id"
+
   create_table "shout_channel_subscriptions", :force => true do |t|
     t.integer "shout_channel_id"
     t.integer "user_id"
@@ -397,6 +409,7 @@ ActiveRecord::Schema.define(:version => 101) do
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
+  add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
 
   create_table "todos", :force => true do |t|
     t.integer  "task_id"
@@ -529,6 +542,8 @@ ActiveRecord::Schema.define(:version => 101) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "wiki_references", ["wiki_page_id"], :name => "index_wiki_references_on_wiki_page_id"
 
   create_table "wiki_revisions", :force => true do |t|
     t.integer  "wiki_page_id"
