@@ -34,7 +34,7 @@ var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onO
 <% current_user.widgets.each do |@widget| %>
 var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
 
-var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="new Ajax.Request(\'/widgets/edit/<%=@widget.id%>\', {asynchronous:true, evalScripts:true}); return false;"><img src="/images/configure.png" border="0"/></a><a href="#" onclick="new Ajax.Request(\'/widgets/destroy/<%=@widget.id%>\', {asynchronous:true, evalScripts:true}); return false;"><img src="/images/delete.png" border="0"/></a></div>';
+var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="new Ajax.Request(\'/widgets/edit/<%=@widget.id%>\', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide(\'loading\');}, onLoading:function(request){Element.show(\'loading\');}}); return false;"><img src="/images/configure.png" border="0"/></a><a href="#" onclick="new Ajax.Request(\'/widgets/destroy/<%=@widget.id%>\', {asynchronous:true, evalScripts:true}); return false;"><img src="/images/delete.png" border="0"/></a></div>';
 title += '<div><%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" }, { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
 title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %></div>';
 
