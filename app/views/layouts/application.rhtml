@@ -158,9 +158,9 @@
 		</li>
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
-                <li class="active"><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
+                <li class="active"><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="14">'}", {:controller => 'tasks', :action => 'new'}, :class => "active" %> 
                 <% else %>
-                <li><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="15">'}", {:controller => 'tasks', :action => 'new'} %> 
+                <li><%= link_to "#{_('New Task') +'<img src="/images/tick.png" border="0" height="14">'}", {:controller => 'tasks', :action => 'new'} %> 
                 <% end %>
 		</li>
 
