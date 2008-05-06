@@ -26,6 +26,8 @@
        completed_total = @project.tasks.sum('duration', :conditions => ["completed_at IS NOT NULL"])
        total ||= 0
        done ||= 0
+       completed ||= 0
+       completed_total ||= 0
     %>
 
     <div class="information-header"><%= _('Remaining Work') %></div>
