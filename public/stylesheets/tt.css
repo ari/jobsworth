@@ -2042,11 +2042,11 @@ a.widget-collapsed {
   font-weight: bold;
 }
 
-.widget-config { 
+.widget-config, .widget-config select, .widget-config input { 
   font-size: 9px;
 }
 
-.widget select, input { 
+.widget select, .widget input { 
   font-size: 9px;
 }
 
