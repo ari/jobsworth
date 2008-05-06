@@ -13,7 +13,7 @@
             <div class="tutorial<%= " complete" if @projects_count > 0%>">
               The first step is to <%= link_to 'create a project', :controller => 'projects', :action => 'new' %>. Don't worry about entering real data, you can always delete the project
               you create and start over, once you get the hang of things. <br /><br />
-                  <smaller>To create a project outside of this welcome page, click New on the header of the project list on the <%= link_to 'Overview page', :controller => 'activities', :action => 'list' %>.</smaller>
+                  <smaller>To create a project outside of this welcome page, click New Project in the Projects menu entry.</smaller>
             </div>
 
             <div class="tutorial<%= " complete" if @tasks_count > 0 %><%= " todo" if @projects_count == 0%>">
