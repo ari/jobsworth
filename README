@@ -18,7 +18,7 @@ setup script or web page at a later stage.
 
 1. sudo gem install tzinfo RedCloth rake ferret fastercsv \
    eventmachine rmagick icalendar mongrel ZenTest gchartrb \
-	test-spec
+	test-spec json
 
    Make sure you have ImageMagick installed.
 
