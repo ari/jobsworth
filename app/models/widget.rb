@@ -23,9 +23,10 @@ class Widget < ActiveRecord::Base
                  ""
                end 
       rescue
-        _("Invalid Filter")
+        res << _("Invalid Filter")
       end 
-      res << " [#{_'Mine'}]" if self.mine?
+    end 
+    res << " [#{_'Mine'}]" if self.mine?
     res
   end
   
