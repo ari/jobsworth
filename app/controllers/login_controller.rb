@@ -70,27 +70,14 @@ class LoginController < ApplicationController
         session[:sheet] = @sheet
       end
 
-      # Auto-filter by User if more than one Users are registered for
-      # Users Company
-      if User.count(:conditions => ["company_id = #{logged_in.company_id}"]) > 1
-        session[:filter_user] = logged_in.id.to_s
-      else
-        session[:filter_user] = "0"
-      end
-
-      session[:filter_hidden] = logged_in.last_filter.to_s
-      session[:filter_status] = "0"
-      session[:group_tags] = "0"
-      session[:hide_dependencies] = "1"
-
-      unless logged_in.last_milestone_id.nil? && session[:project].nil?
-        begin
-          milestone = session[:project].milestones.find(logged_in.last_milestone_id)
-          session[:filter_milestone] = milestone.id.to_s
-        rescue
-          session[:filter_milestone] = "0"
-        end
-      end
+      session[:filter_user] ||= current_user.id.to_s
+      session[:filter_project] ||= "0"
+      session[:filter_milestone] ||= "0"
+      session[:filter_status] ||= "0"
+      session[:filter_hidden] ||= "0"
+      session[:filter_type] ||= "-1"
+      session[:hide_dependencies] ||= "1"
+      session[:filter_customer] ||= "0"
 
       # Let others know User logged in
       Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{current_user.company_id}"])
