@@ -107,7 +107,10 @@ class TasksController < ApplicationController
       # Looking for tasks based on filters
       @selected_tags = []
 #      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :todos ])
-      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants])
+
+#      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :milestone, :todos, :dependencies, :dependants, :sheets ], :joins => [:project => :customer])
+
+      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants, :users, :tags, :project])
     end
 
     # Most popular tags, currently unlimited.
