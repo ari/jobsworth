@@ -276,11 +276,9 @@ class Task < ActiveRecord::Base
   end
 
   def worked_minutes
-    @minutes ||= 0
-    return @minutes if @minutes > 0
-    self.work_logs.each do | work |
-        @minutes += work.duration
-    end
+    if @minutes.nil?
+      @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id])
+    end 
     @minutes
   end
 
