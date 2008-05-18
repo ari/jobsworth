@@ -40,7 +40,7 @@ class Task < ActiveRecord::Base
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
-
+  
   validates_presence_of		:company
   validates_presence_of		:project
 
@@ -283,7 +283,11 @@ class Task < ActiveRecord::Base
   end
 
   def full_name
-    [self.project.full_name, self.full_tags].join(' / ')
+    if self.project
+      [self.project.full_name, self.full_tags].join(' / ')
+    else 
+      ""
+    end 
   end
 
   def full_tags
