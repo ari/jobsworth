@@ -6,7 +6,7 @@ class Widget < ActiveRecord::Base
 
   def name
     res = "#{@attributes['name']}"
-    if self.filter_by?
+    if self.filter_by && self.filter_by != ""
       res << " - "
       begin
         res << case self.filter_by[0..0]
