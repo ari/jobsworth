@@ -1,6 +1,6 @@
-page << "if($('task_#{@sheet.task_id}')) {"
-page.replace "task_#{@sheet.task_id}", :partial => "task_row", :locals => {:task => @sheet.task, :depth => params[:depth].to_i || 0 }
-page << "}"
+page.select(".#{session[:sheet].task.dom_id}").each do |t|
+  page.replace t, :partial => "task_row", :locals => {:task => session[:sheet].task, :depth => params[:depth].to_i || 0 }
+end
 
 page << "if($('menu_info')) {"
 page.replace_html "menu_info", :partial => "layouts/sheet_info"
@@ -9,5 +9,6 @@ page << "if($('shortlist-legend')) {"
 page.replace_html "shortlist-legend", :partial => "tasks/short_legend"
 page.call "fixShortLinks"
 page << "}"
+
 page.call "UpdateDnD"
 
