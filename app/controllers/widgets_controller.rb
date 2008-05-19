@@ -175,7 +175,7 @@ class WidgetsController < ApplicationController
       end
       
       velocity = (@items[0] - @items[-1]) / ((interval * range * step) / 1.day)
-#      velocity = velocity * (interval / 1.day)
+      velocity = velocity * (interval / 1.day)
       
       logger.info("Burndown Velocity: #{velocity}")
 
@@ -266,7 +266,7 @@ class WidgetsController < ApplicationController
       end
       
       velocity = (@items[0] - @items[-1]) / ((interval * range * step) / 1.day)
-#      velocity = velocity * (interval / 1.day)
+      velocity = velocity * (interval/1.day)
       
       logger.info("Burnup Velocity: #{velocity}")
       @end_date = nil
