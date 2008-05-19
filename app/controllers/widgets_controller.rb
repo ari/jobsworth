@@ -183,6 +183,7 @@ class WidgetsController < ApplicationController
       if velocity > 0.0
         days_left = @items[-1] / (velocity)
         @end_date = Time.now + days_left.days
+        logger.info("Burndown Velocity left #{@items[-1]}")
         logger.info("Burndown Velocity days: #{days_left}")
         logger.info("Burndown Velocity End date: #{@end_date}")
       end
@@ -272,6 +273,7 @@ class WidgetsController < ApplicationController
       if velocity < 0.0
         days_left = (@totals[-1] - @items[-1]) / (-velocity)
         @end_date = Time.now + days_left.days
+        logger.info("Burnup Velocity left: #{@totals[-1] - @items[-1]}")
         logger.info("Burnup Velocity days: #{days_left}")
         logger.info("Burnup Velocity End date: #{@end_date}")
       end
