@@ -1,11 +1,6 @@
-
 <h1 style="margin-top:0;"><%= 'Forums' %></h1>
 <p class="subtitle">
 <%= feed_icon_tag "Recent Posts", formatted_all_posts_path(:format => 'rss') %>
-<%= "#{count=Topic.count; number_with_delimiter(count)} topic(s)" %>,
-<%= "#{count=Post.count; number_with_delimiter(count)} posts(s)" %>,
-<%= "#{count=User.count(:conditions => "posts_count > 0"); number_with_delimiter(count)} voice(s)" %>
-
 </p>
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide forums">
@@ -44,9 +39,12 @@
 <% end %>
     <td class="inv lp">
       <% if forum.posts.last %>
-        <%= time_ago_in_words(forum.posts.last.created_at) %><br />
-        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %>
+        <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
+        <%= truncate(forum.posts.last.topic.title, 40) %><br />
+        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
+        <%= time_ago_in_words(forum.posts.last.created_at) %> <%= _('ago') %>
         <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+	</div>
       <% end %>
     </td>
   </tr>
@@ -87,19 +85,17 @@
     </td>
     <td class="inv lp">
       <% if forum.posts.last %>
-        <%= time_ago_in_words(forum.posts.last.created_at) %><br />
-        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %>
+        <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
+        <%= truncate(forum.posts.last.topic.title, 40) %><br />
+        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
+        <%= time_ago_in_words(forum.posts.last.created_at) %> <%= _('ago') %>
         <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+	</div>
       <% end %>
     </td>
   </tr>
 <% end %>
 </table>
-
-<div style="float:left;">
-  <%= link_to 'Recent posts', all_posts_path %>
-</div>
-
 
 <% if admin? %>
 <div style="float:right"><%= link_to 'Create New Forum', new_forum_path, :class => "utility" %></div>
