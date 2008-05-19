@@ -285,8 +285,15 @@ class WidgetsController < ApplicationController
         @velocity[d] = start - velocity * d
       end 
     when 6
+      # Comments
+      if @widget.mine?
+        @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_owners ON work_logs.task_id = task_owners.task_id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND work_logs.log_type = ? AND task_owners.user_id = ?", EventLog::TASK_COMMENT, current_user.id], :order => "started_at desc", :limit => @widget.number)
+      else 
+        @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND work_logs.log_type = ?", EventLog::TASK_COMMENT], :order => "started_at desc", :limit => @widget.number)
+      end
+    when 7
       # Schedule
-    when 7 
+    when 8 
       # Chat 
     end
 
@@ -298,7 +305,7 @@ class WidgetsController < ApplicationController
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
       when 2
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
-      when 3..7
+      when 3..8
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       end
 

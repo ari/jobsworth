@@ -1,0 +1,20 @@
+ <%
+   if @items.size > 0
+     day = 0
+  %>
+  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em;">
+    <%
+    for log in @items
+      if day != tz.utc_to_local(log.started_at).yday
+         day = tz.utc_to_local(log.started_at).yday
+    %>
+    <tr>
+      <td colspan="3"><div class="log_header"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></div></td>
+    </tr>
+    <%
+    end
+    %>
+    <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
+  <% end %>
+  </table>
+  <% end %>

@@ -5,9 +5,8 @@ class Widget < ActiveRecord::Base
   validates_presence_of :name
 
   def name
-    res = "#{@attributes['name']}"
-    if self.filter_by && self.filter_by != ""
-      res << " - "
+    res = ""
+    if self.filter_by && self.filter_by.length > 0
       begin
         res << case self.filter_by[0..0]
                when 'c'
@@ -27,7 +26,7 @@ class Widget < ActiveRecord::Base
       end 
     end 
     res << " [#{_'Mine'}]" if self.mine?
-    res
+    "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
   end
   
   def name=(arg)
