@@ -70,7 +70,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
      </div>
     <% end -%>
 
-  <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><img src="/images/drag.gif" border="0" /></div>
+  <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
 
   <div style="float:left; padding-left:0.4em;">
     <% unless task.done? %>
