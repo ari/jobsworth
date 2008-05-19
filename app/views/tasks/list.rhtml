@@ -24,39 +24,27 @@
             if session[:filter_customer].to_i > 0
               @all_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"])
             else
-              @all_projects = current_user.projects.find(:all, :conditions => ["completed_at IS NULL"])
+              @all_projects = current_user.projects
             end
-
-
-            @projects = @all_projects.collect {|p| [p.name, p.id.to_s]}
 
             if session[:filter_project].to_i > 0
               @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
-              @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["company_id = ? AND project_id = ? AND completed_at IS NULL", current_user.company_id, session[:filter_project]]).collect {|c| [ c.name,  c.id.to_s ] }
             else
-              project_ids = @all_projects.collect {|p| p.id}.join(',')
-              project_ids = "0" if project_ids.empty?
-
               @user_ids = []
               @all_projects.each do |p|
                 @user_ids << p.users.collect(&:id)
               end
 
               @user_ids.uniq!
-
               @user_ids = [0] if @user_ids.size == 0
-
               @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
-
-#              @users = current_projects.collect().collect {|c| [ c.name, c.id.to_s ] }
-              @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND project_id IN (#{project_ids}) AND completed_at IS NULL", current_user.company_id]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
             end
 
             filter_count = 0
             if session[:view].nil?
             %>
             <fieldset style="padding-bottom:0.2em;margin-bottom:1em;"><legend>Filter</legend>
-            <% form_tag( :controller => 'tasks', :action => 'filter' ) do %>
+	      <form action="/tasks/filter" method="post">
 
             <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
@@ -114,7 +102,6 @@
 
 
             <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
-            <% end %>
             </fieldset>
             <% end %>
             <div id="quick_add_container" style="display:none;"></div>
@@ -163,7 +150,7 @@
           </td>
         </tr>
       <% unless @selected_tags.empty? %>
-      <tr><td align="right"><span class="tag_active"><%= link_to _('[All Tags]'), :action => "list" %> </span></td></tr>
+      <tr><td align="right"><span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span></td></tr>
       <% end %>
 
       <% for tag in @all_tags
@@ -177,7 +164,7 @@
 
       %>
 
-      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><%= link_to tag[0], :action => "list", :tag => link %> (<%= @tags[tag[0]] %>)</span></td></tr>
+      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><a href="/tasks/list?tag=<%=URI.encode(link)%>"><%= tag[0] %></a> (<%= @tags[tag[0]] %>)</span></td></tr>
       <% end %>
       </table>
     </td>

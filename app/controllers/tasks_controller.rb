@@ -89,7 +89,7 @@ class TasksController < ApplicationController
       filter << "projects.customer_id = #{session[:filter_customer]} AND "
     end
 
-    filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) AND "
+    filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
 
     sort = case session[:sort].to_i
            when 0: "tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
@@ -108,9 +108,9 @@ class TasksController < ApplicationController
       @selected_tags = []
 #      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :todos ])
 
-#      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :users, :tags, :milestone, :todos, :dependencies, :dependants, :sheets ], :joins => [:project => :customer])
+#      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :milestone, :dependencies, :dependants, :users, :tags, :todos, :sheets ], :joins => [:project => :customer])
 
-      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants, :users, :tags, :project])
+      @tasks = Task.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids}) AND " + filter],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants, :users, :tags, :project, :sheets])
     end
 
     # Most popular tags, currently unlimited.
