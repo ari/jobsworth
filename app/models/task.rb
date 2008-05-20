@@ -7,7 +7,8 @@ class Task < ActiveRecord::Base
                       'full_name' => { :boost => 1.5 },
                       'name' => { :boost => 2.0 },
                       'issue_name' => { :boost => 0.8 },
-                      'description' => { :boost => 1.7}
+                      'description' => { :boost => 1.7},
+                      'requested_by' => { :boost => 0.7 }
                     },
                     :remote => true
                   } )
@@ -537,6 +538,7 @@ class Task < ActiveRecord::Base
       res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
       res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
+      res << "<tr><th>#{_('Requested By')}</td><td>#{self.requested_by}</td></tr>" unless self.requested_by.blank?
       res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
       res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime(options[:user].date_format)}</td></tr>" if self.completed_at
