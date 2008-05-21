@@ -26,7 +26,7 @@ class Widget < ActiveRecord::Base
       end 
     end 
     res << " [#{_'Mine'}]" if self.mine?
-    "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
+    "#{_(@attributes['name'])}#{ res.empty? ? "" : " - #{res}"}"
   end
   
   def name=(arg)
