@@ -70,8 +70,8 @@ class ApplicationController < ActionController::Base
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-    session[:user_id] = 1
+#    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
+#    session[:user_id] = 1
     session[:filter_user] ||= current_user.id.to_s
     session[:filter_project] ||= "0"
     session[:filter_milestone] ||= "0"
