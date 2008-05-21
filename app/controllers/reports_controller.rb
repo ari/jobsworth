@@ -192,8 +192,8 @@ class ReportsController < ApplicationController
     filename = "clockingit"
 
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids})
-
-
+    @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
+    
     if filter = params[:report]
       @type = filter[:type].to_i
       @range = filter[:range]
@@ -296,8 +296,8 @@ class ReportsController < ApplicationController
           sql_filter << " AND work_logs.task_id IN (#{task_ids})"
         end
 
-        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id])
-        @projects = current_user.projects.find(:all, :order => 'name');
+        @projects = current_user.projects.find(:all, :order => 'name') 
+        @projects += current_user.completed_projects.find(:all, :order => 'name') if(project_id.to_i == -1 || project_id.to_i > 0)
         @logs = []
         @projects.each do |p|
           if join != ""
@@ -344,8 +344,8 @@ class ReportsController < ApplicationController
           sql_filter << " AND tasks.id IN (#{task_ids})"
         end
 
-        @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id])
-        @projects = User.find(current_user.id).projects.find(:all, :conditions => ["completed_at IS NULL"], :order => 'name');
+        @projects = current_user.projects
+        @projects += current_user.completed_projects if( project_id.to_i == -1 || project_id.to_i > 0 )
         @tasks = []
         @projects.each do |p|
           @tasks += p.tasks.find(:all, :order => "tasks.project_id", :conditions => ["tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status < 2 " + sql_filter + date_filter + join, current_user.company_id], :include => [:project, :users, :milestone, :company, :tags])
@@ -542,14 +542,17 @@ class ReportsController < ApplicationController
 
   def get_projects
     if params[:client_id].to_i == 0
-      @clients = current_user.projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND completed_at IS NULL", current_user.company_id ]).collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @projects = (current_user.projects.find(:all, :order => 'name').collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" } +
+        current_user.completed_projects.find(:all, :order => 'name').collect {|p| "{\"text\":\"#{(p.name + " / " + p.customer.name + " - " + _('Completed')).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }).join(',')
     else
-      @clients = current_user.projects.find(:all, :order => 'name' , :conditions => ["projects.company_id = ? AND projects.customer_id = ? AND completed_at IS NULL", current_user.company_id, params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @projects = (current_user.projects.find(:all, :order => 'name' , :conditions => ["projects.customer_id = ?", params[:client_id] ]).collect {|p| "{\"text\":\"#{p.name.gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" } +
+                   current_user.completed_projects.find(:all, :order => 'name' , :conditions => ["projects.customer_id = ?", params[:client_id] ]).collect {|p| "{\"text\":\"#{(p.name + " - " + _('Completed')).gsub(/"/,'\"')}\", \"value\":\"#{p.id.to_s}\"}" }
+                   ).join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"' + _('[Any Project]') + '"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Active Projects]') + '"},{"value":"-1", "text":"' + _('[Any Project]') + '"}'
 
-    res << ", #{@clients}" unless @clients.nil? || @clients.empty?
+    res << ", #{@projects}" unless @projects.nil? || @projects.empty?
     res << ']}'
     render :text => res
   end
