@@ -139,7 +139,7 @@ class FeedsController < ApplicationController
 
     tz = TZInfo::Timezone.get(user.time_zone)
 
-    cached = ""
+    cached = []
 
     # Find all Project ids this user has access to
     pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
@@ -220,7 +220,7 @@ class FeedsController < ApplicationController
     @tasks.each do |t|
 
       if t.ical_entry
-        cached << t.ical_entry.body
+        cached << [t.ical_entry.body]
         next
       end
 
@@ -274,7 +274,7 @@ class FeedsController < ApplicationController
     @activities.each do |log|
 
       if log.ical_entry
-        cached << log.ical_entry.body
+        cached << [log.ical_entry.body]
         next
       end
 
@@ -306,7 +306,7 @@ class FeedsController < ApplicationController
     end
 
     ical_feed = cal.to_ical
-    ical_feed.gsub!(/END:VCALENDAR/,"#{cached}END:VCALENDAR")
+    ical_feed.gsub!(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR")
     ical_feed.gsub!(/^PERCENT:/, 'PERCENT-COMPLETE:')
     render :text => ical_feed
 
