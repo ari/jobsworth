@@ -188,7 +188,7 @@ Localization.define('it_IT') do |l|
 
   # Reports
   l.store 'Download CSV file of this report', 'Scarica file CVS di questo report.'
-  l.store 'Total', ['Totale', 'Totali']
+  l.store 'Total', 'Totale'
   l.store 'Report Configuration', 'Configura report'
   l.store 'Report Type', 'Tipo di report'
   l.store 'Pivot', 'Pivot'
