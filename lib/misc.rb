@@ -7,6 +7,9 @@ module Misc
     res = ''
     weeks = days = hours = 0
 
+    day_duration ||= 480
+    minutes ||= 0
+
     if minutes >= 60
 
       days = minutes / day_duration
