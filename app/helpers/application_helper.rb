@@ -40,8 +40,8 @@ module ApplicationHelper
       @total_today = @total_today + l.duration
     }
 
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", current_user.id, session[:sheet].task_id])
-      @total_today = @total_today + sheet.duration
+    if @current_sheet
+      @total_today = @total_today + @current_sheet.duration
     end
 
     @total_today
@@ -458,7 +458,7 @@ module ApplicationHelper
 
   def has_popout?(t)
     if t.is_a? Task
-      (session[:sheet] && session[:sheet].task_id == t.id) || t.done?
+      (@current_sheet && @current_sheet.task_id == t.id) || t.done?
     end
   end
 

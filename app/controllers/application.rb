@@ -25,41 +25,26 @@ class ApplicationController < ActionController::Base
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
-  def self.stats(controller)
-    GC.start
-    pid = Process.pid
-
-    ps_info = `ps -o psr,etime,pcpu,pmem,rss,vsz -p #{Process.pid} | grep -v CPU`
-    ignore, psr, elapsed, pcpu, pmem, rsize, vsize = ps_info.split(/\s+/)
-    [pid, rsize.to_i, vsize.to_i]
-  end
-
-  before_filter do |controller|
-    @number_of_requests ||= 0
-
-#    if @number_of_requests % 20 == 0
-      @before = stats(controller)
-#    end
-  end
-
-  after_filter do |controller|
-#    if @number_of_requests % 20 == 0
-     @after = stats(controller)
-     controller.logger.info "@@ ++ #{controller.request.request_uri}: n_req: #{ @number_of_requests }, pid: #{ @after[0] }, +vsize: #{ @after[1] - @before[1] }, +rsize: +#{ @after[2] - @before[2] }"
-     controller.logger.info "@@ >> #{controller.request.request_uri}: n_req: #{ @number_of_requests }, pid: #{ @after[0] }, vsize: #{ @after[1] }, rsize: #{ @after[2] }"
-      @before = @after = @before_symbols = @after_symbols = nil
-#    end
-
-    @number_of_requests += 1
-  end
-
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id], :include => [:company])
+      @current_user = User.find(session[:user_id], :include => [:company, :projects])
     end
     @current_user
   end
 
+  def current_sheet
+    unless @current_sheet
+      @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'id', :include => :task)
+      unless @current_sheet.nil?
+        if @current_sheet.task.nil?
+          @current_sheet.destroy
+          @current_sheet = nil
+        end
+      end
+    end
+    @current_sheet
+  end
+  
   def tz
     unless @tz
       @tz = Timezone.get(current_user.time_zone)
@@ -87,14 +72,26 @@ class ApplicationController < ActionController::Base
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
-
+    session[:filter_user] ||= current_user.id.to_s
+    session[:filter_project] ||= "0"
+    session[:filter_milestone] ||= "0"
+    session[:filter_status] ||= "0"
+    session[:filter_hidden] ||= "0"
+    session[:filter_type] ||= "-1"
+    session[:hide_dependencies] ||= "1"
+    session[:filter_customer] ||= "0"
+    
     if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
       session[:user_id] = nil
       reset_session
     end
     
     if session[:user_id].nil?
-      session[:redirect] = request.request_uri unless request.request_uri.include?('/login/login')
+      if !request.request_uri.include?('/login/login') && !request.request_uri.include?('update_sheet_info')
+        session[:redirect] = request.request_uri 
+      elsif session[:history] && session[:history].size > 0
+        session[:redirect] = session[:history][0]
+      end 
       
       # Generate a javascript redirect if user timed out without requesting a new page
       if request.xhr?
@@ -113,13 +110,6 @@ class ApplicationController < ActionController::Base
         session[:channels] << "channel_passive_#{ch.id}"
       end
 
-      # Refresh work sheet
-      session[:sheet] = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'id')
-      if session[:sheet] && session[:sheet].task.nil?
-        session[:sheet].destroy
-        session[:sheet] = nil
-      end
-
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
         current_user.last_ping_at = Time.now.utc
@@ -131,6 +121,8 @@ class ApplicationController < ActionController::Base
       current_user.remember_until = Time.now.utc + 1.hour if(current_user.remember_until < Time.now.utc + 1.hour)
       current_user.save
 
+      current_sheet
+      
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
       

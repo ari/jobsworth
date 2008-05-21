@@ -1,5 +1,5 @@
 <% if current_user.can?(task.project, 'work') %>
-<% if session[:sheet] && session[:sheet].task_id == task.id -%>
+<% if @current_sheet && @current_sheet.task_id == task.id -%>
 <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'})  -%>
 <% else -%>
 <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name) ),

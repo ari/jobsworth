@@ -1,4 +1,4 @@
-if params[:id].to_i != session[:sheet].task_id
+if params[:id].to_i != @current_sheet.task_id
   page.visual_effect(:shake, "task_#{params[:id]}")
 else
   unless @old_task.nil?
@@ -7,8 +7,8 @@ else
     end
   end
 
-  page.select(".#{session[:sheet].task.dom_id}").each do |t|
-    page.replace t, :partial => "task_row", :locals => {:task => session[:sheet].task, :depth => params[:depth].to_i || 0 }
+  page.select(".#{@current_sheet.task.dom_id}").each do |t|
+    page.replace t, :partial => "task_row", :locals => {:task => @current_sheet.task, :depth => params[:depth].to_i || 0 }
   end
   
   page << "if($('menu_info')) {"

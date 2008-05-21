@@ -66,10 +66,7 @@ class LoginController < ApplicationController
       logged_in.save
       session[:user_id] = logged_in.id
       
-      if @sheet = Sheet.find(:first, :conditions => ["user_id = ? ", logged_in.id])
-        session[:sheet] = @sheet
-      end
-
+      session[:sheet] = nil
       session[:filter_user] ||= current_user.id.to_s
       session[:filter_project] ||= "0"
       session[:filter_milestone] ||= "0"

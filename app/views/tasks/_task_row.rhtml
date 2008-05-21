@@ -22,24 +22,24 @@
  classes << " waiting_deferred" unless task.active?
 
  classes << " task_active_others" if task.worked_on?
- classes << " task_active" if session[:sheet] && session[:sheet].task_id == task.id
+ classes << " task_active" if @current_sheet && @current_sheet.task_id == task.id
  classes << " task_done" if task.done?
- classes << " task_paused" if session[:sheet] && session[:sheet].task_id == task.id && session[:sheet].paused?
+ classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
  classes << " #{task.dom_id}"
 -%>
 class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
-  <% if(session[:sheet] && session[:sheet].task_id == task.id) || task.done? -%>
+  <% if(@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
-    <% if(session[:sheet] && session[:sheet].task_id == task.id) -%>
+    <% if(@current_sheet && @current_sheet.task_id == task.id) -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
           :loading => "Element.show('loading');",
           :complete => "Element.hide('loading');",
           :confirm => _("Really abort work?")
             -%>
-        <% if session[:sheet].paused? %>
+        <% if @current_sheet.paused? %>
           <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
             :loading => "Element.show('loading');",
@@ -82,7 +82,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
     <% end %>
 
     <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
-      <% if session[:sheet] && session[:sheet].task_id == task.id -%>
+      <% if @current_sheet && @current_sheet.task_id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
       <% else -%>
         <a href="#" onclick="new Ajax.Request('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
@@ -119,7 +119,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    </div>
 
    </div>
-   <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless session[:sheet] && session[:sheet].task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
+   <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless @current_sheet && @current_sheet.task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
     <ul id="todo-<%=task.dom_id%>" class="task-todo">
        <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
          <%= render :partial => "tasks/todo_row" %>

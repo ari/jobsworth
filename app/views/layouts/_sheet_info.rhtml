@@ -1,8 +1,8 @@
-<% if session[:sheet] && session[:sheet].task -%>
+<% if @current_sheet && @current_sheet.task -%>
 <%
-   task = Task.find(session[:sheet].task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project, :work_logs] )
+   task = Task.find(@current_sheet.task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project] )
    info = []
-   info << "#{worked_nice(task.worked_minutes + session[:sheet].duration)}" if task.worked_minutes > 0 || task.duration > 0
+   info << "#{worked_nice(task.worked_minutes + @current_sheet.duration)}" if task.worked_minutes > 0 || task.duration > 0
    info << "#{worked_nice(task.duration)}" if task.duration.to_i > 0
 
    info_string = " (#{info.join(" / ")})" if info.size > 0
@@ -11,7 +11,7 @@
 -%>
   <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => _("Done working on <b>%s</b> for now.", task.name) ), {:controller => 'tasks', :action => 'stop_work'} )  -%>
   <%= link_to( task.issue_name + " - " + task.project.name + " / " + task.full_tags, :controller => 'tasks', :action => 'edit', :id => task ) %> <br />
-  <% if session[:sheet].paused? %>
+  <% if @current_sheet.paused? %>
     <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
         :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task },
         :loading => "Element.show('loading');",
@@ -22,7 +22,7 @@
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" -%>
   <% end %>
-  <%= worked_nice(session[:sheet].duration) -%><%= info_string -%>
+  <%= worked_nice(@current_sheet.duration) -%><%= info_string -%>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>
@@ -30,7 +30,7 @@
 <% end %>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (session[:sheet] ? ((session[:sheet].paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(session[:sheet].duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
+document.title = "<%= (@current_sheet ? ((@current_sheet.paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(@current_sheet.duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 updateTooltips();
 </script>
 

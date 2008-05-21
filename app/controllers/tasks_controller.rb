@@ -862,21 +862,10 @@ class TasksController < ApplicationController
 
 
   def start_work
-    sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
-
-    if sheet
+    if @current_sheet
       self.swap_work_ajax
     end
-
-    sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
-    if sheet
-        session[:sheet] = sheet
-        flash['notice'] = "You're already working on #{link_to_task(sheet.task)}. Please stop or cancel it first."
-        redirect_from_last
-        return
-    end
-
-
+    
     task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     sheet = Sheet.new
 
@@ -888,7 +877,7 @@ class TasksController < ApplicationController
     task.status = 1 if task.status == 0
     task.save
 
-    session[:sheet] = sheet
+    @current_sheet = sheet
 
     Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
 
@@ -905,24 +894,25 @@ class TasksController < ApplicationController
   end
 
   def cancel_work_ajax
-    if session[:sheet] && sheet = Sheet.find(:first, :conditions => ["user_id = ? AND task_id = ?", current_user.id, session[:sheet].task_id], :order => "id")
-      sheet.destroy
+    if @current_sheet
+      @task = @current_sheet.task
+      @current_sheet.destroy
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
+      @current_sheet = nil
     end
-    session[:sheet] = nil
-    @task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
     return if request.xhr?
     redirect_from_last
   end
 
 
   def swap_work_ajax
-    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
+    if @current_sheet
 
-      @old_task = sheet.task
+      @old_task = @current_sheet.task
 
       if @old_task.nil?
-        sheet.destroy
+        @current_sheet.destroy
+        @current_sheet = nil
         redirect_from_last
       end
 
@@ -932,20 +922,20 @@ class TasksController < ApplicationController
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = current_user.company
-      worklog.project = sheet.project
-      worklog.task = sheet.task
-      worklog.customer = sheet.project.customer
-      worklog.started_at = sheet.created_at
-      worklog.duration = sheet.duration
-      worklog.paused_duration = sheet.paused_duration
-      worklog.body = sheet.body
+      worklog.project = @current_sheet.project
+      worklog.task = @current_sheet.task
+      worklog.customer = @current_sheet.project.customer
+      worklog.started_at = @current_sheet.created_at
+      worklog.duration = @current_sheet.duration
+      worklog.paused_duration = @current_sheet.paused_duration
+      worklog.body = @current_sheet.body
       worklog.log_type = EventLog::TASK_WORK_ADDED
       if worklog.save
-        sheet.destroy
-        session[:sheet] = nil
+        @current_sheet.destroy
         flash['notice'] = _("Log entry saved...")
         Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{current_user.company_id}"])
         Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+        @current_sheet = nil
       else
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
@@ -980,25 +970,24 @@ class TasksController < ApplicationController
   end
 
   def stop_work
-    if sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
+    if @current_sheet
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = current_user.company
-      worklog.project = sheet.project
-      worklog.task = sheet.task
-      worklog.customer = sheet.project.customer
-      worklog.started_at = sheet.created_at
-      worklog.duration = sheet.duration
-      worklog.paused_duration = sheet.paused_duration
-      worklog.body = sheet.body
+      worklog.project = @current_sheet.project
+      worklog.task = @current_sheet.task
+      worklog.customer = @current_sheet.project.customer
+      worklog.started_at = @current_sheet.created_at
+      worklog.duration = @current_sheet.duration
+      worklog.paused_duration = @current_sheet.paused_duration
+      worklog.body = @current_sheet.body
       worklog.log_type = EventLog::TASK_WORK_ADDED
 
       if worklog.save
         worklog.task.updated_by_id = current_user.id
         worklog.task.save
 
-        sheet.destroy
-        session[:sheet] = nil
+        @current_sheet.destroy
         flash['notice'] = _("Log entry saved...")
         @log = worklog
         @log.started_at = tz.utc_to_local(@log.started_at)
@@ -1010,7 +999,7 @@ class TasksController < ApplicationController
         redirect_from_last
       end
     else
-      session[:sheet] = nil
+      @current_sheet = nil
       flash['notice'] = _("Log entry already saved from another browser instance.")
       redirect_from_last
     end
@@ -1018,12 +1007,12 @@ class TasksController < ApplicationController
   end
 
   def stop_work_shortlist
-    unless session[:sheet]
+    unless @current_sheet
       render :nothing => true
       return
     end
 
-    @task = session[:sheet].task
+    @task = @current_sheet.task
     swap_work_ajax
     Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
 #    redirect_to :action => 'shortlist'
@@ -1524,15 +1513,14 @@ class TasksController < ApplicationController
   end
 
   def pause_work_ajax
-    if @sheet = Sheet.find(:first, :conditions => ["user_id = ?", current_user.id], :order => "id")
-      if @sheet.paused_at
-        @sheet.paused_duration += ((Time.now.utc - @sheet.paused_at) / 60).to_i
-        @sheet.paused_at = nil
+    if @current_sheet
+      if @current_sheet.paused_at
+        @current_sheet.paused_duration += ((Time.now.utc - @current_sheet.paused_at) / 60).to_i
+        @current_sheet.paused_at = nil
       else
-        @sheet.paused_at = Time.now.utc
+        @current_sheet.paused_at = Time.now.utc
       end
-      @sheet.save
-      session[:sheet] = @sheet
+      @current_sheet.save
     end
   end
 
