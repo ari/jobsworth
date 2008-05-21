@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
 
   def current_sheet
     unless @current_sheet
-      @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'id', :include => :task)
+      @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'sheets.id', :include => :task)
       unless @current_sheet.nil?
         if @current_sheet.task.nil?
           @current_sheet.destroy
@@ -70,8 +70,8 @@ class ApplicationController < ActionController::Base
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-#    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-#    session[:user_id] = 1
+    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
+    session[:user_id] = 1
     session[:filter_user] ||= current_user.id.to_s
     session[:filter_project] ||= "0"
     session[:filter_milestone] ||= "0"
