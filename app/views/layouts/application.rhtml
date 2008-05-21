@@ -115,7 +115,7 @@
                 <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %></li>
                 <% end %>
 
-                <% if current_user.option_tracktime.to_i == 1%>
+                <% if current_user.option_tracktime.to_i == 1 && current_user.can_any?(current_user.projects, 'report') %>
                   <% if controller.controller_name == "reports"  %>
                   <li class="active"><%= link_to "#{_('Reports')}", {:controller => 'reports', :action => 'list'}, :class => "active" %></li>
                   <% else %>

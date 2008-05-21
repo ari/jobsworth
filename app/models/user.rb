@@ -174,6 +174,13 @@ class User < ActiveRecord::Base
     true
   end
 
+  def can_any?(project, perm)
+    projects.each do |p|
+      return true if self.can?(p, perm)
+    end
+    false
+  end
+  
   def admin?
     self.admin > 0
   end
