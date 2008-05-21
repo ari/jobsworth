@@ -72,15 +72,6 @@ class ApplicationController < ActionController::Base
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
-    session[:filter_user] ||= current_user.id.to_s
-    session[:filter_project] ||= "0"
-    session[:filter_milestone] ||= "0"
-    session[:filter_status] ||= "0"
-    session[:filter_hidden] ||= "0"
-    session[:filter_type] ||= "-1"
-    session[:hide_dependencies] ||= "1"
-    session[:filter_customer] ||= "0"
-    
     if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
       session[:user_id] = nil
       reset_session
@@ -109,6 +100,16 @@ class ApplicationController < ActionController::Base
       current_user.shout_channels.each do |ch|
         session[:channels] << "channel_passive_#{ch.id}"
       end
+
+      # Set default filters
+      session[:filter_user] ||= current_user.id.to_s
+      session[:filter_project] ||= "0"
+      session[:filter_milestone] ||= "0"
+      session[:filter_status] ||= "0"
+      session[:filter_hidden] ||= "0"
+      session[:filter_type] ||= "-1"
+      session[:hide_dependencies] ||= "1"
+      session[:filter_customer] ||= "0"
 
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
