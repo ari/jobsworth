@@ -8,8 +8,7 @@ class Project < ActiveRecord::Base
   has_many      :pages, :dependent => :destroy
   has_many      :tasks
   has_many      :sheets
-  has_many      :work_logs
-  has_many      :activities
+  has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
   has_many      :project_folders, :dependent => :destroy
   has_many      :milestones, :dependent => :destroy
