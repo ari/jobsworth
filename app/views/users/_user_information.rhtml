@@ -4,4 +4,7 @@
 <p><label for="user_username"><%=_ 'Username' %></label><%= text_field 'user', 'username'  %></p>
 <p><label for="user_password"><%=_ 'Password' %></label><%= password_field 'user', 'password'  %></p>
 <p><label for="user_email"><%=_ 'Email' %></label><%= text_field 'user', 'email'  %></p>
+<% if @user.autologin && !@user.autologin.empty? %>
+<p><label><%=_ 'Widget Key' %></label><div style="float:left;margin-top:3px;"><%= @user.autologin %></div></p>
+<% end %>
 </fieldset>
