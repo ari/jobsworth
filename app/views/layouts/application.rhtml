@@ -123,22 +123,28 @@
                   <% end %>
                 <% end %>
 
-                <% if controller.controller_name == "wiki"  %>
-                <li class="active"><%= link_to "#{_('Wiki')}", {:controller => 'wiki', :action => 'show', :id => nil}, :class => "active" %></li>
-                <% else %>
-                <li><%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show' %></li>
-                <% end %>
+	        <% if current_user.company.show_wiki? %>
+		  <% if controller.controller_name == "wiki"  %>
+                    <li class="active"><%= link_to "#{_('Wiki')}", {:controller => 'wiki', :action => 'show', :id => nil}, :class => "active" %></li>
+                  <% else %>
+                    <li><%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show' %></li>
+                  <% end %>
+	        <% end %>
 
-                <% if controller.controller_name == "shout"  %>
-                <li class="active"><%= link_to "#{_('Chat')}", {:controller => 'shout', :action => 'list'}, :class => "active" %></li>
-                <% else %>
-                <li><%= link_to "#{_('Chat')}", :controller => 'shout', :action => 'list' %></li>
-                <% end %>
+	        <% if current_user.company.show_chat? %>
+                  <% if controller.controller_name == "shout"  %>
+                    <li class="active"><%= link_to "#{_('Chat')}", {:controller => 'shout', :action => 'list'}, :class => "active" %></li>
+                  <% else %>
+                    <li><%= link_to "#{_('Chat')}", :controller => 'shout', :action => 'list' %></li>
+                  <% end %>
+		<% end %>
 
-                <% if ['forums', 'posts', 'topics'].include? controller.controller_name  %>
-                <li class="active"><%= link_to "#{_('Forums')}", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
-                <% else %>
-                <li><%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %></li>
+	        <% if current_user.company.show_forum? %>
+                  <% if ['forums', 'posts', 'topics'].include? controller.controller_name  %>
+                    <li class="active"><%= link_to "#{_('Forums')}", {:controller => 'forums', :action => 'index'}, :class => "active" %></li>
+                  <% else %>
+                    <li><%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %></li>
+                  <% end %>
                 <% end %>
 
                 <% if controller.controller_name == "project_files"  %>
@@ -166,10 +172,16 @@
 
                 <li class="right"><%= link_to "#{_('Log Out')}", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
                 <% if controller.controller_name == "users" && controller.action_name == "edit_preferences" %>
-                <li class="right active"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%></li>
+                <li class="right active"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%>
                 <% else %>
-                <li class="right"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %></li>
+                <li class="right"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right" %>
                 <% end %>
+                <% if current_user.admin > 0 %>
+		   <ul>
+                     <li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
+                   </ul>
+                <% end %>
+                </li>				 
 
                 <% if current_user.admin > 0 %>
 

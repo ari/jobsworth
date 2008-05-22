@@ -88,7 +88,7 @@ class CustomersController < ApplicationController
 
     unless params['customer']['tmp_file'].size > 0
       flash['notice'] = _('Empty file uploaded.')
-      redirect_to :action => 'list'
+      redirect_from_last
       return
     end
 

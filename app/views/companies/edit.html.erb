@@ -1,0 +1,24 @@
+<fieldset>
+<legend><%=_ 'Company Settings' %></legend>
+<% form_tag :action => 'update' do %>
+  <%= render :partial => "settings" %>
+  <%= submit_tag _("Save"), :class => 'nolabel' %>
+<% end %>
+
+</fieldset>
+
+<% @customer = current_user.company.internal_customer %>
+<fieldset>
+<legend><%=_ 'Custom Logo' %></legend>
+<% if @customer.logo? -%>
+  <p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %></p>
+<% end -%>
+
+<% form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) do %>
+  <p><label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
+  <label for="options_text"></label><span class="optional"><%=_ "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></span></p><br/>
+  <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
+  <%= submit_tag _("Upload"), :class => 'nolabel' %>
+<% end %>
+</fieldset>
+
