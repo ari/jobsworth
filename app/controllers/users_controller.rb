@@ -23,7 +23,6 @@ class UsersController < ApplicationController
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
     @user.option_tracktime = 1;
-    @user.option_showcalendar = 1;
     @user.option_tooltips = 1;
   end
 
