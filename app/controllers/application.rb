@@ -101,16 +101,6 @@ class ApplicationController < ActionController::Base
         session[:channels] << "channel_passive_#{ch.id}"
       end
 
-      # Set default filters
-      session[:filter_user] ||= current_user.id.to_s
-      session[:filter_project] ||= "0"
-      session[:filter_milestone] ||= "0"
-      session[:filter_status] ||= "0"
-      session[:filter_hidden] ||= "0"
-      session[:filter_type] ||= "-1"
-      session[:hide_dependencies] ||= "1"
-      session[:filter_customer] ||= "0"
-
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
         current_user.last_ping_at = Time.now.utc
