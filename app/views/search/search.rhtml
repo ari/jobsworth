@@ -17,7 +17,7 @@
 
 
 <% for task in @tasks %>
-<%= render :partial => 'search_task', :locals => {:task => task } %>
+<%= render :partial => 'tasks/task_row', :locals => {:task => task } %>
 <% end %>
       </ul></td></tr>
 

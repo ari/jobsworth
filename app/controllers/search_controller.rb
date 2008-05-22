@@ -10,7 +10,8 @@ class SearchController < ApplicationController
     return if params[:query].nil? || params[:query].length == 0
 
     @keys = params[:query].split(' ')
-
+    @keys ||= []
+    
     # Looking up a task by number?
     task_num = params[:query][/#[0-9]+/]
     unless task_num.nil?

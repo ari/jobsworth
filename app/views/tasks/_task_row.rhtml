@@ -1,4 +1,4 @@
-<% if session[:hide_dependencies].to_i == 0 || task.active? %>
+<% if session[:hide_dependencies].to_i == 0 || task.active? -%>
 <div id="task_<%=task.id%>"
 <%
  depth ||= 1
@@ -95,8 +95,11 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
    <div class="task-name" style="padding-left:2px;">
 
-   <%= link_to_task(task) -%>
-
+   <% if controller.controller_name != 'search' %>
+     <%= link_to_task(task) -%>
+   <% else %>
+     <%= link_to_task_with_highlight(task, @keys)  -%>
+   <% end %>
      <small>
      <span id="todo-status-<%= task.dom_id %>">
        <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="Element.toggle('todo-container-<%=task.dom_id%>'); return false;"><%=task.todo_status%></a>
@@ -112,7 +115,11 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    %>
 
    <div class="task_info description">
+   <% if controller.controller_name != 'search' %>
    <%= task.full_name %>
+   <% else %>
+   <%= highlight_all(task.full_name_without_links, @keys) %>
+   <% end %>
    <%= "<span class=\"otheruser\">[#{name}]</span>" %>
    <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done?%>
    </div>
