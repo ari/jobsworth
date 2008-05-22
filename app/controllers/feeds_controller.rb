@@ -123,7 +123,10 @@ class FeedsController < ApplicationController
 
   def ical(mode = :personal)
 
-    return if params[:id].nil? || params[:id].empty?
+    if params[:id].nil? || params[:id].empty?
+      render :nothing => true
+      return
+    end 
 
     Localization.lang('en_US')
 
