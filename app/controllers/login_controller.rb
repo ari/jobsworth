@@ -197,7 +197,6 @@ class LoginController < ApplicationController
       @user.locale = params[:user][:locale]
       @user.option_externalclients = 1
       @user.option_tracktime = 1
-      @user.option_showcalendar = 1
       @user.option_tooltips = 1
       @user.date_format = "%d/%m/%Y"
       @user.time_format = "%H:%M"
