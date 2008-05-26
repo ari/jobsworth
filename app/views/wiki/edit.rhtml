@@ -10,6 +10,7 @@
 <% else %>
 <textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body if @page.current_revision %></textarea>
 <% end %>
+
 <div id="wiki-quickref">
   <p><a href="http://hobix.com/textile/quick.html" target="_new"><%=_ 'Quick Reference' %></a></p>
   <p><a href="http://hobix.com/textile/" target="_new"><%=_ 'Full Reference' %></a></p>
@@ -26,6 +27,7 @@
   <p>[[AnotherPage]]</p>
   <p>AnotherPage</p>
 </div>
+<div style="clear:both;float:left;"><label for="change" style="float:left;width:auto;"><%= _('Edit Summary')%></label><input type="text" name="change" /></div>
 <div style="clear:both;float:left;"><%= submit_tag _("Save") %><% unless @page.revisions.empty?%> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %></div>
 <% end %>
 </fieldset>

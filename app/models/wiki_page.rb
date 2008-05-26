@@ -55,4 +55,8 @@ class WikiPage < ActiveRecord::Base
     end
   end
 
+  def started_at
+    self.created_at
+  end
+  
 end

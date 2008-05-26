@@ -15,7 +15,7 @@
   rev_num = @page.revisions.size
   @page.revisions.reverse.each do |revision|
 %>
-<li><%= link_to "Revision #{rev_num}", :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num %> - <%= _('%s ago', time_ago_in_words( revision.created_at, false ) ) + " #{_('by')} <strong>#{revision.user.name}</strong>" %></li>
+<li><%= link_to "Revision #{rev_num}", :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num %> - <%= _('%s ago', time_ago_in_words( revision.created_at, false ) ) + " #{_('by')} <strong>#{revision.user.name}</strong>" %><%= " <small> - #{h(revision.change)}</small>" unless revision.change.nil? %></li>
 <%
   rev_num = rev_num - 1
   end

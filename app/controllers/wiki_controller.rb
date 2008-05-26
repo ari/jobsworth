@@ -29,6 +29,7 @@ class WikiController < ApplicationController
     @rev.wiki_page = @page
     @rev.user = current_user
     @rev.body = params[:body]
+    @rev.change = params[:change]
     @rev.save
 
     # Create event log
@@ -38,6 +39,7 @@ class WikiController < ApplicationController
     l.user_id = current_user.id
     l.event_type = @page.revisions.size < 2 ? EventLog::WIKI_CREATED : EventLog::WIKI_MODIFIED
     l.created_at = @rev.created_at
+    l.body = params[:change]
     l.save
 
     redirect_to :action => 'show', :id => @page.name
