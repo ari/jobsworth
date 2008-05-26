@@ -40,11 +40,15 @@ class Post < ActiveRecord::Base
   end
 
   def company_id
-    forum.company_id
+    self.forum.company_id
   end
 
   def project_id
-    forum.project_id
+    self.forum.project_id
   end
 
+  def started_at
+    self.created_at
+  end
+  
 end

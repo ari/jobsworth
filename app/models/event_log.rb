@@ -10,7 +10,7 @@ class EventLog < ActiveRecord::Base
   TASK_WORK_ADDED    = 7
   TASK_ASSIGNED      = 8
   TASK_ARCHIVED      = 9
-  TASK_RESTORED      = 14
+  TASK_RESTORED      = 16
 
   PAGE_CREATED       = 10
   PAGE_DELETED       = 11
@@ -35,4 +35,8 @@ class EventLog < ActiveRecord::Base
 
   FORUM_NEW_POST      = 60
 
+  def started_at
+    self.target.started_at
+  end
+  
 end
