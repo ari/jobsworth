@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   helper_method :last_active
   helper_method :render_to_string
   helper_method :current_user
+  helper_method :current_users
+  helper_method :all_users
   helper_method :tz
   helper_method :current_projects
   helper_method :current_project_ids
@@ -32,6 +34,20 @@ class ApplicationController < ActionController::Base
     @current_user
   end
 
+  def current_users
+    unless @current_users
+      @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' OR last_seen_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}')", :order => "name" )
+    end 
+    @current_users
+  end
+
+  def all_users
+    unless @all_users
+      @all_users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
+    end
+    @all_users
+  end
+  
   def current_sheet
     unless @current_sheet
       @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'sheets.id', :include => :task)
@@ -95,7 +111,7 @@ class ApplicationController < ActionController::Base
     else
       # Refresh the User object
       # Subscribe general info channel
-      session[:channels] = ["info_#{current_user.company_id}"]
+      session[:channels] = ["info_#{current_user.company_id}", "user_#{current_user.id}"]
 
       current_user.shout_channels.each do |ch|
         session[:channels] << "channel_passive_#{ch.id}"
@@ -104,8 +120,10 @@ class ApplicationController < ActionController::Base
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
         current_user.last_ping_at = Time.now.utc
-      end
-      current_user.last_seen_at = Time.now.utc
+      else 
+        current_user.last_seen_at = Time.now.utc
+        current_user.last_ping_at = Time.now.utc
+      end 
       
       current_user.remember_until ||= Time.now.utc + 1.hour
       
@@ -286,5 +304,14 @@ class ApplicationController < ActionController::Base
   def link_to_task(task)
     "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :user => current_user })}\">#{task.name}</a>"
   end
+
+  def double_escape(txt)
+    res = txt.gsub(/channel-message-mine/,'channel-message-others')
+    res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
+    res = res.gsub(/'/, "\\\\'") # escape ' to \'
+    res = res.gsub(/"/, '\\\\"')
+    res
+  end
+
 
 end

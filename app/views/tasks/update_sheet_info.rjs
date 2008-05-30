@@ -7,4 +7,16 @@ page << "if($('shortlist-legend')) {"
 page.replace_html "shortlist-legend", :partial => "short_legend"
 page << "}"
 
+page << "if($('presence-online')) {"
+page.replace_html 'presence-online', (online_users).to_s
+
+current_user.chats.each do |@chat|
+  @user = @chat.target
+  page << "if($('presence-toggle-#{@user.dom_id}')) {"
+  page.replace_html "presence-toggle-#{@user.dom_id}", "#{h(truncate(@user.shout_nick,14))} <img src=\"#{@user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+  page << "}"
+end
+
+page << "}"
+
 page.call "UpdateDnD"

@@ -1,0 +1,5 @@
+<div style="padding:2px;" class="presence-info">
+<% if user.tz.utc_to_local(@message.created_at).day != user.tz.now.day %>
+  <%= user.tz.utc_to_local(@message.created_at).strftime(user.date_format.gsub(/\/%Y/,'').gsub(/%Y-/,'') )%>
+<% end %>
+<%= user.tz.utc_to_local(@message.created_at).strftime(user.time_format)%> <%= @message.user.shout_nick %></div>

@@ -1,0 +1,40 @@
+<div class="presence-section<%= " presence-section-pending" if( @chat.chat_messages.size > 0 && @chat.chat_messages.first.id > @chat.last_seen )%>" id="presence-<%= @user.dom_id %>">
+  <div id="presence-<%= @user.dom_id%>-popup" class="presence-popup" style="display:none;">
+    <div style="background-color: #eee; border-bottom:1px solid #ccc; font-size:14px; padding: 3px; font-weight:bold;"><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= @user.name %></div>
+    <div id="presence-chat-<%= @user.dom_id %>" class="presence-chat-area">
+      <% @last_message = nil
+         @chat.chat_messages.reverse.each do |@message| %>
+      <%= render :partial => "shout/chat_info", :locals => {:user => current_user} if(@last_message.nil? || @last_message.user_id != @message.user_id || @message.created_at - @last_message.created_at > 10.minutes) %>
+      <%= render :partial => "shout/chat_message" %>
+      <% @last_message = @message
+         end 
+      %>
+    </div>
+    <div style="height:20px;margin: 2px;padding-top:2px;text-align:center;border-top:1px solid #ccc;">
+      <form action="#" id="chat-form-<%=@user.dom_id%>" method="post">
+	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;">
+      </form>
+    </div>
+  </div>
+  
+  <div class="presence-bar-text" style="padding-left: 0.5em;float:right;"><a href="#" onclick="$('presence-<%=@user.dom_id%>').remove();new Ajax.Request('/shout/chat_close/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;">
+      <img src="/images/cross_small_gray.png" border="0" class="presence-img" style="margin-top:2px;"/>
+    </a></div>
+  <div class="presence-bar-text presence-toggle" id="presence-toggle-<%=@user.dom_id%>"><%= h(truncate(@user.shout_nick,14)) %> <img src="<%= @user.online_status_icon %>" border="0" class="presence-img"/></div>
+</div>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+Event.observe($('presence-toggle-<%=@user.dom_id%>'), "click", function(ev) { 
+          toggleChatPopupEvent(ev); 
+          });
+
+Event.observe($('chat-<%= @user.dom_id %>'), "keypress", function(e) {
+  switch( e.keyCode ) {
+    case Event.KEY_RETURN:
+      new Ajax.Request('/shout/chat_message/<%=@user.id%>', {asynchronous:true, evalScripts:true, parameters:Form.serialize( Event.element(e).up() ) });
+      $('chat-<%=@user.dom_id%>').clear();
+      Event.stop(e);
+  }
+});
+
+</script>

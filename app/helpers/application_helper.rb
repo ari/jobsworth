@@ -8,7 +8,7 @@ module ApplicationHelper
   include Misc
 
   def online_users
-    c = User.count( :conditions => "last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" )
+    c = User.count( :conditions => "company_id=#{current_user.company_id} AND last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}'" )
   end
 
   def user_online?(user_id)

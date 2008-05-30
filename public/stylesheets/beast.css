@@ -868,6 +868,7 @@ div.editbox
         left:0;
         width:100%;
         padding:6px 0 7px;
+        margin-bottom: 30px;
         z-index:50;
 }
 

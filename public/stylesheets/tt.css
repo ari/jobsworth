@@ -1851,6 +1851,7 @@ li.help {
   bottom: 0;
   left: 0;
   z-index: 5;
+  padding-bottom:30px;
 }
 
 #shout-list {
@@ -2139,4 +2140,132 @@ a.widget-collapsed {
   font-weight: bold;
 }
 
+#presence { 
+  float: left;
+  position: fixed;
+  display: block;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  height: 23px;
+}
 
+#presence.full { 
+  margin-right: 0;
+  margin-left: 0;
+  width: 100%;
+}
+
+
+#presence.full #presence-ui { 
+  margin-right: 1em;
+  margin-left: 1em;
+  background-color: #eee;
+  background-image: url(/images/header_bkg.gif) repeat-x;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  height: 23px;
+}
+
+#presence-bar { 
+  float: right;
+}
+
+.presence-section { 
+  float: left;
+  padding-left: 2px;
+  padding-right: 2px;
+  position: relative;
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  padding-top: 4px;
+  width: 120px;
+}
+
+.presence-section img { 
+  padding-bottom: 3px;
+}
+
+.presence-bar-text { 
+  height:100%;
+  display: block;
+  font-weight: bold;
+}
+
+.presence-section:hover { 
+  background-color: #fff;
+}
+
+.presence-section:hover .presence-bar-text { 
+  text-decoration: underline;
+ }
+
+.presence-section-active { 
+  background-color: #fff !important;
+  border-top: 1px solid #fff !important;
+  border-bottom: 1px solid #ccc !important;
+}
+
+.presence-section-pending { 
+  background-color: #ff9900 !important;
+}
+
+.presence-popup { 
+  bottom: 23px;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  margin-left: -129px;
+  z-index: 10;
+  display: block;
+  width: 250px;
+  background-color: #fff;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+
+.presence-chat-area { 
+  max-height: 500px;
+  overflow: auto;
+ }
+
+.presence-toggle { 
+  cursor: pointer;
+}
+
+.presence-user-row { 
+  padding: 2px;
+}
+
+.presence-user-row a { 
+  font-size: 12px;
+}
+
+.presence-user-row img { 
+  vertical-align: top;
+}
+
+.presence-user-row-idle { 
+  font-style: italic;
+}
+
+.presence-user-row-offline { 
+  color: #999;
+  font-style: italic;
+}
+
+.presence-info {
+  font-weight: bold;
+  padding-right: 0.4em;
+  vertical-align: top;
+  font-size: 13px;
+  background-color: #f6f6f6;
+}
+
+.presence-info-other { 
+ }
+
+.presence-info-mine { 
+ }

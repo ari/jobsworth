@@ -33,6 +33,8 @@ class User < ActiveRecord::Base
 
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
+  has_many      :chats, :conditions => ["active = 0 OR active = 1"], :dependent => :destroy
+  
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
@@ -197,6 +199,14 @@ class User < ActiveRecord::Base
     (!self.last_ping_at.nil? && self.last_ping_at > 3.minutes.ago.utc)
   end
 
+  def offline?
+    !self.online?
+  end
+  
+  def idle?
+    ( (!self.last_ping_at.nil?) && (self.last_ping_at > 3.minutes.ago.utc) && (self.last_seen_at.nil? || self.last_seen_at < 10.minutes.ago.utc))
+  end
+  
   def online_status_name
     if self.last_ping_at.nil? || self.last_ping_at < 3.minutes.ago.utc
       return "<span class=\"status-offline\">#{self.name} (offline)</span>"
@@ -213,5 +223,23 @@ class User < ActiveRecord::Base
     @tz
   end
 
+  def shout_nick
+    n = nil
+    n = name.gsub(/[^\s\w]+/, '').split(" ") if name
+    n = ["Anonymous"] if(n.nil? || n.empty?)
+
+    "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + "."}.join(' ')}".strip
+  end
+
+  def online_status_icon
+    if self.idle?
+      "/images/presence-idle.png"
+    elsif self.online?
+      "/images/presence-online.png"
+    else 
+      "/images/presence-offline.png"
+    end
+  end
+  
 
 end

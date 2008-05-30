@@ -63,7 +63,7 @@ class ShoutController < ApplicationController
       shout = Shout.new
       shout.user_id = current_user.id
       shout.company_id = @room.company_id
-      shout.nick = shout_nick(current_user.name)
+      shout.nick = current_user.shout_nick
       shout.shout_channel_id = @room.id
       shout.message_type = 1
       shout.body = "joined the room..."
@@ -104,7 +104,7 @@ class ShoutController < ApplicationController
 
       shout = Shout.new
       shout.user_id = current_user.id
-      shout.nick = shout_nick(current_user.name)
+      shout.nick = current_user.shout_nick
       shout.company_id = room.company_id
       shout.shout_channel_id = room.id
       shout.message_type = 2
@@ -213,7 +213,7 @@ class ShoutController < ApplicationController
     @shout = Shout.new(params[:shout])
     @shout.shout_channel_id = room.id
     @shout.user_id = current_user.id
-    @shout.nick = shout_nick(current_user.name)
+    @shout.nick = current_user.shout_nick
     @shout.company_id = room.company_id
     if @shout.body && @shout.body.length > 0
 
@@ -281,14 +281,6 @@ class ShoutController < ApplicationController
     end
   end
 
-  def shout_nick(name)
-    n = nil
-    n = name.gsub(/[^\s\w]+/, '').split(" ") if name
-    n = ["Anonymous"] if(n.nil? || n.empty?)
-
-    "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + "."}.join(' ')}".strip
-  end
-
   def check_timestamp(rid)
     stamp = Time.at((Time.now.to_i / 300) * 300).utc
     room = ShoutChannel.find(rid)
@@ -330,7 +322,7 @@ class ShoutController < ApplicationController
 
     # Back to text/html
     response.headers["Content-Type"] = 'text/html' unless request.xhr?
-
+    
     orig
   end
 
@@ -361,12 +353,169 @@ class ShoutController < ApplicationController
     passive
   end
 
-  def double_escape(txt)
-    res = txt.gsub(/channel-message-mine/,'channel-message-others')
-    res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
-    res = res.gsub(/'/, "\\\\'") # escape ' to \'
-    res = res.gsub(/"/, '\\\\"')
-    res
+  def chat_refresh
+    if params[:id] == 'presence-users'
+      render :update do |page|
+        page.replace_html 'presence-users-popup', :partial => 'chat_userlist'
+        page.replace_html 'presence-online', (online_users).to_s
+      end
+    else 
+      id = params[:id].split(/-/).last
+      begin
+        @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id])
+      rescue
+        render :nothing => true
+        return
+      end 
+      
+      render :update do |page|
+        page << "if($('presence-toggle-#{@user.dom_id}')) {"
+        page.replace_html "presence-toggle-#{@user.dom_id}", "#{h(truncate(@user.shout_nick,14))} <img src=\"#{@user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+        page << "}"
+      end
+    end
   end
 
+  def chat_close 
+    id = params[:id].split(/-/).last
+    @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
+    @chat = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", current_user.id, @user.id])
+    @chat.active = -1
+    @chat.save
+    render :nothing => true
+  end
+  
+  def chat_show
+    render :nothing => true
+
+    id = params[:id].split(/-/).last.to_i
+    return if id == 0
+
+    @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
+    Chat.update_all({:active => 0}, :user_id => current_user.id, :active => 1)
+    @chat = Chat.find(:first, :conditions => ["user_id = ? and target_id = ?", current_user.id, @user.id])
+    @chat.active = 1
+    @chat.last_seen = @chat.chat_messages.first.id if @chat.chat_messages.size > 0
+    @chat.save
+  end
+  
+  def chat_hide
+    render :nothing => true
+
+    id = params[:id].split(/-/).last.to_i
+    return if id == 0
+
+    @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
+    @chat = Chat.find(:first, :conditions => ["user_id = ? and target_id = ?", current_user.id, @user.id])
+    @chat.active = 0
+    @chat.save
+  end
+  
+  def chat_add
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    @chat = Chat.find(:first, :conditions => ["user_id = ? and target_id = ?", current_user.id, @user.id])
+    if @chat.nil?
+      @chat = Chat.new
+      @chat.target_id = @user.id
+      @chat.user_id = current_user.id
+    end
+    
+    if @chat.save
+      render :update do |page|
+        page << "if(! $('presence-#{@user.dom_id}')) {"
+        page.insert_html :top, 'presence-buttons', :partial => 'chat_user'
+        page << "}"
+        page.delay(0.1) do 
+          page << "toggleChatPopup($('presence-toggle-#{@user.dom_id}'));"
+          page << "$('chat-#{@user.dom_id}').focus();"
+        end
+      end
+    else 
+      render :nothing => true
+    end 
+  end
+
+  def chat_message
+    @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    @chat = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", current_user.id, @user.id])
+    
+    if params[:chat].nil? || params[:chat][@user.id.to_s].nil? || params[:chat][@user.id.to_s].empty?
+      render :nothing => true
+      return
+    end
+    
+    @target = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", @user.id, current_user.id])
+    if @target.nil?
+      @target = Chat.new
+      @target.user_id = @user.id
+      @target.target_id = current_user.id
+      @target.active = -1
+      @target.save
+    end
+
+    if @target.active == -1
+      # insert chat tab on target
+      @target.active = 0
+      @target.save
+      
+      @target_user = @user
+      @user = current_user
+      
+      @current_chat = @chat
+      @chat = @target
+      
+      target_tab = render_to_string :update do |page|
+        page.insert_html :top, 'presence-buttons', :partial => 'shout/chat_user'
+      end
+      @user = @target_user
+      @chat = @current_chat
+      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_tab)}');", ["user_#{@user.id}"])
+    end
+
+    @last_message = @chat.chat_messages.first
+    
+    @message = ChatMessage.new
+    @message.chat = @target
+    @message.user = current_user
+    @message.body = params[:chat][@user.id.to_s]
+    @message.save
+
+    target_message = render_to_string :update do |page|
+      if @last_message.nil? || @last_message.user_id != @message.user_id || @last_message.created_at < 10.minutes.ago.utc
+        page.insert_html :bottom, "presence-chat-#{current_user.dom_id}", :partial => "shout/chat_info", :locals => { :user => @user }
+      end
+      page.insert_html :bottom, "presence-chat-#{current_user.dom_id}", :partial => "shout/chat_message"
+      page << "$('presence-chat-#{current_user.dom_id}').scrollTop = $('#{@message.dom_id}').offsetTop;"
+      
+      if @target.active == 0
+        page << "if( !Element.hasClassName( $('presence-#{current_user.dom_id}'), 'presence-section-pending') ) {"
+        page << " Element.addClassName($('presence-#{current_user.dom_id}'), 'presence-section-pending'); "
+        page << "}"
+        page << "new Effect.Highlight('presence-#{current_user.dom_id}', {duration:2.0, endcolor:'#ff9900'});"
+      elsif @target.active == 1
+        page << "new Effect.Highlight('presence-#{current_user.dom_id}');"
+      end 
+      
+      
+    end
+    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_message)}');", ["user_#{@user.id}"])
+    
+    @message = ChatMessage.new
+    @message.chat = @chat
+    @message.user = current_user
+    @message.body = params[:chat][@user.id.to_s]
+    @message.save
+
+    
+    render :update do |page|
+      page << "if($('presence-#{@user.dom_id}-popup')) {"
+      if @last_message.nil? || @last_message.user_id != @message.user_id || @last_message.created_at < 10.minutes.ago.utc
+        page.insert_html :bottom, "presence-chat-#{@user.dom_id}", :partial => "shout/chat_info", :locals => { :user => current_user }
+      end
+      page.insert_html :bottom, "presence-chat-#{@user.dom_id}", :partial => "shout/chat_message"
+      page << "$('presence-chat-#{@user.dom_id}').scrollTop = $('#{@message.dom_id}').offsetTop;"
+      page << "}"
+    end
+  end
+  
 end

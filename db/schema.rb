@@ -9,15 +9,52 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 102) do
+ActiveRecord::Schema.define(:version => 110) do
 
-  create_table "companies", :force => true do |t|
-    t.string   "name",          :limit => 200, :default => "", :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+  create_table "activities", :force => true do |t|
+    t.integer  "user_id",       :default => 0,  :null => false
+    t.integer  "company_id",    :default => 0,  :null => false
+    t.integer  "customer_id",   :default => 0,  :null => false
+    t.integer  "project_id",    :default => 0,  :null => false
+    t.integer  "activity_type", :default => 0,  :null => false
+    t.string   "body",          :default => "", :null => false
+    t.datetime "created_at",                    :null => false
+  end
+
+  create_table "chat_messages", :force => true do |t|
+    t.integer  "chat_id"
+    t.integer  "user_id"
+    t.string   "body"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                    :default => "", :null => false
+  end
+
+  add_index "chat_messages", ["chat_id", "created_at"], :name => "index_chat_messages_on_chat_id_and_created_at"
+
+  create_table "chats", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "target_id"
+    t.integer  "active",     :default => 1
+    t.integer  "position",   :default => 0
+    t.integer  "last_seen",  :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "chats", ["user_id", "target_id"], :name => "index_chats_on_user_id_and_target_id"
+  add_index "chats", ["user_id", "position"], :name => "index_chats_on_user_id_and_position"
+
+  create_table "companies", :force => true do |t|
+    t.string   "name",           :limit => 200, :default => "",   :null => false
+    t.string   "contact_email",  :limit => 200
+    t.string   "contact_name",   :limit => 200
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "subdomain",                     :default => "",   :null => false
+    t.boolean  "show_wiki",                     :default => true
+    t.boolean  "show_forum",                    :default => true
+    t.boolean  "show_chat",                     :default => true
+    t.boolean  "show_messaging",                :default => true
   end
 
   add_index "companies", ["name"], :name => "name", :unique => true
@@ -315,6 +352,7 @@ ActiveRecord::Schema.define(:version => 102) do
   end
 
   add_index "sessions", ["session_id"], :name => "sessions_session_id_index"
+  add_index "sessions", ["updated_at"], :name => "sessions_updated_at"
 
   create_table "sheets", :force => true do |t|
     t.integer  "user_id",         :default => 0, :null => false
@@ -366,6 +404,8 @@ ActiveRecord::Schema.define(:version => 102) do
     t.string  "name"
   end
 
+  add_index "tags", ["company_id", "name"], :name => "index_tags_on_company_id_and_name"
+
   create_table "task_owners", :force => true do |t|
     t.integer "user_id"
     t.integer "task_id"
@@ -412,6 +452,7 @@ ActiveRecord::Schema.define(:version => 102) do
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
+  add_index "tasks", ["due_at"], :name => "tasks_due_at_idx"
 
   create_table "todos", :force => true do |t|
     t.integer  "task_id"
@@ -457,7 +498,6 @@ ActiveRecord::Schema.define(:version => 102) do
     t.string   "time_zone"
     t.integer  "option_tracktime"
     t.integer  "option_externalclients"
-    t.integer  "option_showcalendar"
     t.integer  "option_tooltips"
     t.integer  "seen_news_id",                          :default => 0
     t.integer  "last_project_id"
@@ -553,6 +593,7 @@ ActiveRecord::Schema.define(:version => 102) do
     t.datetime "updated_at"
     t.text     "body"
     t.integer  "user_id"
+    t.string   "change"
   end
 
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"

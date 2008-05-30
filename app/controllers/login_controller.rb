@@ -31,10 +31,25 @@ class LoginController < ApplicationController
 
   def logout
     # Mark user as logged out
-    ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL where id = #{current_user.id}")
+    ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL, last_seen_at = NULL where id = #{current_user.id}")
 
+    current_user.last_seen_at = nil
+    current_user.last_ping_at = nil
+    
     # Let other logged in Users in same Company know that User logged out.
     Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
+
+    chat_update = render_to_string :update do |page|
+      page << "if($('presence-online')) {"
+      page.replace_html 'presence-online', (online_users).to_s
+      page << "if($('presence-toggle-#{current_user.dom_id}')) {"
+      page.replace_html "presence-toggle-#{current_user.dom_id}", "#{h(truncate(current_user.shout_nick,14))} <img src=\"#{current_user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+      page << "}"
+      page << "}"
+    end
+    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(chat_update)}');", ["info_#{current_user.company_id}"])
+
+    response.headers["Content-Type"] = 'text/html'
 
     session[:user_id] = nil
     session[:project] = nil
@@ -62,6 +77,8 @@ class LoginController < ApplicationController
       else 
         logged_in.remember_until = Time.now.utc + 1.hour
       end
+      logged_in.last_seen_at = Time.now.utc
+      logged_in.last_ping_at = Time.now.utc
       
       logged_in.save
       session[:user_id] = logged_in.id
@@ -77,8 +94,21 @@ class LoginController < ApplicationController
       session[:filter_customer] ||= "0"
 
       # Let others know User logged in
-      Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{current_user.company_id}"])
+      Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
 
+      chat_update = render_to_string :update do |page|
+        page << "if($('presence-online')) {"
+        page.replace_html 'presence-online', (online_users).to_s
+        page << "if($('presence-toggle-#{logged_in.dom_id}')) {"
+        page.replace_html "presence-toggle-#{logged_in.dom_id}", "#{h(truncate(logged_in.shout_nick,14))} <img src=\"#{logged_in.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+        page << "}"
+        page << "}"
+      end
+      
+      Juggernaut.send("do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');", ["info_#{logged_in.company_id}"])
+
+      response.headers["Content-Type"] = 'text/html'
+      
       redirect_from_last
     else
       flash[:notice] = "Username or password is wrong..."

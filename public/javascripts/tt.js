@@ -258,3 +258,36 @@ function fixShortLinks() {
     });
 
 }
+
+function toggleChatPopupEvent(e) {
+  var el = Event.element(e);
+  toggleChatPopup(el);
+}
+
+function toggleChatPopup(el) {
+  if( Element.hasClassName(el.up(), 'presence-section-active') ) {
+    Element.removeClassName(el.up(), 'presence-section-active');
+    $$("#" + el.up().id + " .presence-popup").each(function(e) { Element.hide(e); });
+    new Ajax.Request('/shout/chat_hide/' + el.up().id, {asynchronous:true, evalScripts:true});
+  } else if(Element.hasClassName(el.up(), 'presence-section')) {
+    $$('.presence-section-active').each(function(el) {
+					  Element.removeClassName(el, 'presence-section-active');
+					  $$(".presence-popup").each(function(el) { Element.hide(el); });
+					});
+    Element.addClassName(el.up(), 'presence-section-active');
+
+    if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
+      Element.removeClassName(el.up(), 'presence-section-pending');
+    }
+    $$("#" + el.up().id + " .presence-popup").each(function(e) { Element.show(e); });
+    $$("#" + el.up().id + " input").each(function(e) { e.focus(); });
+
+    new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});
+    new Ajax.Request('/shout/chat_refresh/' + el.up().id, {asynchronous:true, evalScripts:true});
+  }
+}
+
+function closeChat(el) {
+  new Ajax.Request('/shout/chat_close/' + el.up().id, {asynchronous:true, evalScripts:true});
+  Element.remove(el);
+}
