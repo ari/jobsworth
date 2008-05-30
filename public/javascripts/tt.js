@@ -283,7 +283,6 @@ function toggleChatPopup(el) {
     $$("#" + el.up().id + " input").each(function(e) { e.focus(); });
 
     new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});
-    new Ajax.Request('/shout/chat_refresh/' + el.up().id, {asynchronous:true, evalScripts:true});
   }
 }
 

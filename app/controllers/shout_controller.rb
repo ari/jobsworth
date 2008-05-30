@@ -353,29 +353,6 @@ class ShoutController < ApplicationController
     passive
   end
 
-  def chat_refresh
-    if params[:id] == 'presence-users'
-      render :update do |page|
-        page.replace_html 'presence-users-popup', :partial => 'chat_userlist'
-        page.replace_html 'presence-online', (online_users).to_s
-      end
-    else 
-      id = params[:id].split(/-/).last
-      begin
-        @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id])
-      rescue
-        render :nothing => true
-        return
-      end 
-      
-      render :update do |page|
-        page << "if($('presence-toggle-#{@user.dom_id}')) {"
-        page.replace_html "presence-toggle-#{@user.dom_id}", :partial => "shout/chat_tab_status", :locals => { :user => @user }
-        page << "}"
-      end
-    end
-  end
-
   def chat_close 
     id = params[:id].split(/-/).last
     @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
@@ -386,17 +363,34 @@ class ShoutController < ApplicationController
   end
   
   def chat_show
-    render :nothing => true
+    if params[:id] == 'presence-users'
+      render :update do |page|
+        page.replace_html 'presence-users-popup', :partial => 'chat_userlist'
+        page.replace_html 'presence-online', (online_users).to_s
+      end
+      return
+    end 
 
     id = params[:id].split(/-/).last.to_i
-    return if id == 0
 
-    @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
-    Chat.update_all({:active => 0}, :user_id => current_user.id, :active => 1)
-    @chat = Chat.find(:first, :conditions => ["user_id = ? and target_id = ?", current_user.id, @user.id])
-    @chat.active = 1
-    @chat.last_seen = @chat.chat_messages.first.id if @chat.chat_messages.size > 0
-    @chat.save
+    begin
+      @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
+      Chat.update_all({:active => 0}, :user_id => current_user.id, :active => 1)
+      @chat = Chat.find(:first, :conditions => ["user_id = ? and target_id = ?", current_user.id, @user.id])
+      @chat.active = 1
+      @chat.last_seen = @chat.chat_messages.first.id if @chat.chat_messages.size > 0
+      @chat.save
+    rescue
+      render :nothing => true
+      return
+    end 
+
+    render :update do |page|
+      page << "if($('presence-toggle-#{@user.dom_id}')) {"
+      page.replace_html "presence-toggle-#{@user.dom_id}", :partial => "shout/chat_tab_status", :locals => { :user => @user }
+      page << "$('presence-chat-#{@user.dom_id}').scrollTop = $('#{@chat.chat_messages.first.dom_id}').offsetTop;" if @chat.chat_messages && @chat.chat_messages.size > 0
+      page << "}"
+    end
   end
   
   def chat_hide
