@@ -370,7 +370,7 @@ class ShoutController < ApplicationController
       
       render :update do |page|
         page << "if($('presence-toggle-#{@user.dom_id}')) {"
-        page.replace_html "presence-toggle-#{@user.dom_id}", "#{h(truncate(@user.shout_nick,14))} <img src=\"#{@user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+        page.replace_html "presence-toggle-#{@user.dom_id}", "#{h(truncate(@user.shout_nick,14))} <span id=\"presence-unread-#{@user.dom_id}\"></span> <img src=\"#{@user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
         page << "}"
       end
     end
@@ -491,9 +491,8 @@ class ShoutController < ApplicationController
         page << "if( !Element.hasClassName( $('presence-#{current_user.dom_id}'), 'presence-section-pending') ) {"
         page << " Element.addClassName($('presence-#{current_user.dom_id}'), 'presence-section-pending'); "
         page << "}"
-        page << "new Effect.Highlight('presence-#{current_user.dom_id}', {duration:2.0, endcolor:'#ff9900'});"
-      elsif @target.active == 1
-        page << "new Effect.Highlight('presence-#{current_user.dom_id}');"
+        page << "new Effect.Highlight('presence-toggle-#{current_user.dom_id}', {duration:0.2, startcolor:'#ffdba4', endcolor:'#ff9900'});"
+        page.replace_html "presence-unread-#{current_user.dom_id}", "(#{@target.unread}) "
       end 
       
       
@@ -506,6 +505,8 @@ class ShoutController < ApplicationController
     @message.body = params[:chat][@user.id.to_s]
     @message.save
 
+    @chat.last_seen = @message.id
+    @chat.save
     
     render :update do |page|
       page << "if($('presence-#{@user.dom_id}-popup')) {"

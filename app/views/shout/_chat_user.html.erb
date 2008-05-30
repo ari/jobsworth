@@ -20,7 +20,7 @@
   <div class="presence-bar-text" style="padding-left: 0.5em;float:right;"><a href="#" onclick="$('presence-<%=@user.dom_id%>').remove();new Ajax.Request('/shout/chat_close/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;">
       <img src="/images/cross_small_gray.png" border="0" class="presence-img" style="margin-top:2px;"/>
     </a></div>
-  <div class="presence-bar-text presence-toggle" id="presence-toggle-<%=@user.dom_id%>"><%= h(truncate(@user.shout_nick,14)) %> <img src="<%= @user.online_status_icon %>" border="0" class="presence-img"/></div>
+  <div class="presence-bar-text presence-toggle" id="presence-toggle-<%=@user.dom_id%>"><%= h(truncate(@user.shout_nick,14)) %> <span id="presence-unread-<%=@user.dom_id%>"><%= "(#{@chat.unread})" if @chat.unread > 0%></span> <img src="<%= @user.online_status_icon %>" border="0" class="presence-img"/></div>
 </div>
 
 <script type="text/javascript" language="javascript" charset="utf-8">

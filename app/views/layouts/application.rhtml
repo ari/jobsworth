@@ -248,8 +248,8 @@
           <td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
             <table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
               <tr>
-                <td align="left" class="page_header" colspan="2" width="100%">
-                  <div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
+                <td align="left" class="page_header" colspan="2" width="100%"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
+	      </tr>
 
                 <tr><td class="views_item" style="padding-top: 0.2em;" colspan="2"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
                 <tr><td class="views_item" colspan="2"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
