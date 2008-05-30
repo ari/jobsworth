@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
   has_many      :chats, :conditions => ["active = 0 OR active = 1"], :dependent => :destroy
+  has_many      :chat_requests, :foreign_key => 'target_id', :class_name => 'Chat', :dependent => :destroy
   
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
@@ -56,6 +57,9 @@ class User < ActiveRecord::Base
       File.delete(r.avatar_large_path)
     rescue
     end
+
+
+    
   }
 
   before_create                 :generate_uuid
