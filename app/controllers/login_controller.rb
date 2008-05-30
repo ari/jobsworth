@@ -43,7 +43,7 @@ class LoginController < ApplicationController
       page << "if($('presence-online')) {"
       page.replace_html 'presence-online', (online_users).to_s
       page << "if($('presence-toggle-#{current_user.dom_id}')) {"
-      page.replace_html "presence-toggle-#{current_user.dom_id}", "#{h(truncate(current_user.shout_nick,14))} <img src=\"#{current_user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+      page << "$('presence-img-#{current_user.dom_id}').src=\"#{current_user.online_status_icon}\";"
       page << "}"
       page << "}"
     end
@@ -100,7 +100,7 @@ class LoginController < ApplicationController
         page << "if($('presence-online')) {"
         page.replace_html 'presence-online', (online_users).to_s
         page << "if($('presence-toggle-#{logged_in.dom_id}')) {"
-        page.replace_html "presence-toggle-#{logged_in.dom_id}", "#{h(truncate(logged_in.shout_nick,14))} <img src=\"#{logged_in.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+        page << "$('presence-img-#{logged_in.dom_id}').src=\"#{logged_in.online_status_icon}\";"
         page << "}"
         page << "}"
       end

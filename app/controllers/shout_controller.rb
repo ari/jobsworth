@@ -370,7 +370,7 @@ class ShoutController < ApplicationController
       
       render :update do |page|
         page << "if($('presence-toggle-#{@user.dom_id}')) {"
-        page.replace_html "presence-toggle-#{@user.dom_id}", "#{h(truncate(@user.shout_nick,14))} <span id=\"presence-unread-#{@user.dom_id}\"></span> <img src=\"#{@user.online_status_icon}\" border=\"0\" class=\"presence-img\"/>"
+        page.replace_html "presence-toggle-#{@user.dom_id}", :partial => "shout/chat_tab_status", :locals => { :user => @user }
         page << "}"
       end
     end

@@ -1,0 +1,1 @@
+<%= h(truncate(user.shout_nick,14)) %> <span id="presence-unread-<%=user.dom_id%>"><%= "(#{@chat.unread})" if @chat.unread > 0%></span> <img id="presence-img-<%=user.dom_id%>" src="<%= user.online_status_icon %>" border="0" class="presence-img"/>
