@@ -2148,7 +2148,7 @@ a.widget-collapsed {
   bottom: 0;
   left: 0;
   z-index: 99;
-  height: 23px;
+  height: 26px;
 }
 
 #presence.full { 
@@ -2165,7 +2165,7 @@ a.widget-collapsed {
   background-image: url(/images/header_bkg.gif) repeat-x;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
-  height: 23px;
+  height: 26px;
 }
 
 #presence-bar { 
@@ -2181,6 +2181,7 @@ a.widget-collapsed {
   border-left: 1px solid #ccc;
   padding-top: 4px;
   width: 120px;
+  height:21px;
 }
 
 .presence-section img { 
@@ -2212,10 +2213,10 @@ a.widget-collapsed {
 }
 
 .presence-popup { 
-  bottom: 23px;
+  bottom: 26px;
   padding: 0;
   margin: 0;
-  position: fixed;
+  position: absolute;
   margin-left: -129px;
   z-index: 10;
   display: block;

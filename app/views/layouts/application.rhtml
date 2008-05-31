@@ -18,6 +18,11 @@
     <% end %>
     <!--[if lt IE 7]>
       <%= javascript_include_tag "IE7" %>
+<style type="text/css">
+#presence {
+      position:relative;
+}
+</style>
     <![endif]-->
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
@@ -31,7 +36,6 @@
 <style type="text/css">
 <%= session[:project].customer.css %>
 </style>
-
 <% elsif !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
 
 <style type="text/css">
@@ -39,6 +43,7 @@
 </style>
 
 <% end %>
+
 
   </head>
 
