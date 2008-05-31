@@ -487,6 +487,13 @@ class ShoutController < ApplicationController
         page << "}"
         page << "new Effect.Highlight('presence-toggle-#{current_user.dom_id}', {duration:0.2, startcolor:'#ffdba4', endcolor:'#ff9900'});"
         page.replace_html "presence-unread-#{current_user.dom_id}", "(#{@target.unread}) "
+      elsif @target.active == 1
+        page << "if($('presence-toggle-#{current_user.dom_id}')) {"
+        page << "$('presence-img-#{current_user.dom_id}').src=\"#{current_user.online_status_icon}\";"
+        page << "}"
+
+        @target.last_seen = @message.id
+        @target.save
       end 
       
       
