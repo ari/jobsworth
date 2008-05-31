@@ -2,7 +2,7 @@ class Notifications < ActionMailer::Base
 
   def created(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
-    @subject    = "[ClockingIT] Created: #{task.issue_name} (#{(task.users.empty? ? 'Unassigned' : task.users.collect{|u| u.name}.join(', '))})"
+    @subject    = "[ClockingIT] Created: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? 'Unassigned' : task.users.collect{|u| u.name}.join(', '))})"
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
@@ -18,12 +18,12 @@ class Notifications < ActionMailer::Base
 
   def changed(update_type, task, user, change, sent_at = Time.now)
     @subject = case update_type
-               when :completed  : "[ClockingIT] #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} (#{user.name})"
-               when :status     : "[ClockingIT] #{_'Status'}: #{task.issue_name} -> #{_(task.status_type)} (#{user.name})"
-               when :updated    : "[ClockingIT] #{_'Updated'}: #{task.issue_name} (#{user.name})"
-               when :comment    : "[ClockingIT] #{_'Comment'}: #{task.issue_name} (#{user.name})"
-               when :reverted   : "[ClockingIT] #{_'Reverted'}: #{task.issue_name} (#{user.name})"
-               when :reassigned : "[ClockingIT] #{_'Reassigned'}: #{task.issue_name} (#{task.owners})"
+               when :completed  : "[ClockingIT] #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
+               when :status     : "[ClockingIT] #{_'Status'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
+               when :updated    : "[ClockingIT] #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :comment    : "[ClockingIT] #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :reverted   : "[ClockingIT] #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :reassigned : "[ClockingIT] #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})"
                end
 
     @body       = {:task => task, :user => user, :change => change}

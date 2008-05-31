@@ -32,7 +32,7 @@ while($running) do
 
   tasks = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => "company_id")
   tasks_tomorrow = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day], :order => "company_id")
-  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) and due_at < ? and completed_at IS NULL", date.change(:min => 59), date], :order => "company_id")
+  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) AND due_at < ? AND due_at > ? AND completed_at IS NULL", date.change(:min => 59), date, 1.month.ago.utc], :order => "company_id")
                    
   user_ids = []      
   user_tasks = {}
