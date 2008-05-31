@@ -31,25 +31,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", current_user.company.name, current_user.company.id]) %>
 
-<% if session[:project] && session[:project].customer.css && session[:project].customer.css.length > 0 %>
-
 <style type="text/css">
-<%= session[:project].customer.css %>
-</style>
-<% elsif !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-
-<style type="text/css">
+<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
 <%= @internal.css %>
-</style>
-
 <% end %>
-
-
-  </head>
-
-  <body id="body" style="height:100%;">
-    <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
-    <div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;color:#666666;z-index:60;overflow:hidden;"><table border="0"><tr><td style="background-color:#ffffff;color:#666666;border:1px solid #CCCCCC;padding:0.1em;" id="message"><br/></td></tr></table></div>
+<% unless current_user.option_floating_chat %>
+#presence {
+      position:relative;
+}
+<% end %>
+</style>
+</head>
+<body id="body" style="height:100%;">
+  <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
+    <div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;"><table border="0"><tr><td style="" id="message"><br/></td></tr></table></div>
     <div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
     <table width="100%" cellspacing="0" cellpadding="0">
       <tr>

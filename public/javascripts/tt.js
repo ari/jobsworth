@@ -39,6 +39,9 @@ Event.observe(window, "load", function(e) {
 
 function tip(myEvent,tip){
 //  self.status=tip;
+
+
+
   var scrollposY=0;
   if (window.pageYOffset){
     scrollposY = window.pageYOffset;
@@ -51,11 +54,29 @@ function tip(myEvent,tip){
   }
 
   document.getElementById("message").innerHTML= tip;
-  document.getElementById("tip").style.top = scrollposY + myEvent.clientY + 15+"px";
+
+  var height = $("message").offsetHeight;
+  var width = $("message").offsetWidth;
+  var winwidth = (typeof(window.innerWidth) != 'undefined') ? window.innerWidth + self.pageXOffset - 20 : document.documentElement.clientWidth + document.documentElement.scrollLeft;
+  var winBottom = (typeof(window.innerHeight) != 'undefined') ? window.innerHeight + self.pageYOffset - 20 : document.documentElement.clientHeight + document.documentElement.scrollTop;
+
+  var top = scrollposY + myEvent.clientY + 15;
+
+  if((top + height) > winBottom ) {
+    top = top - height - 25;
+  }
+
+  document.getElementById("tip").style.top = top + "px";
+
   var left = myEvent.clientX - 25;
   if( left < 0 ) left = 0;
+
+  if( (left + width) > winwidth ) {
+    left = left - (left+width - winwidth);
+  }
+
   document.getElementById("tip").style.left = left +"px";
-  document.getElementById("tip").style.zIndex=9;
+  document.getElementById("tip").style.zIndex=99;
   document.getElementById("tip").style.visibility="visible";
 }
 

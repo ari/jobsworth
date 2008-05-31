@@ -985,6 +985,19 @@ a.description {
   font-weight: normal;
 }
 
+#tip { 
+  color:#666666;
+  z-index:100;
+  overflow:hidden;
+}
+
+#message { 
+  background-color:#ffffff;
+  color:#666666;
+  border:1px solid #CCCCCC;
+  padding:0.1em;
+}
+
 #tip a {
   color: #5e6b71;
   font-weight: normal;
@@ -2147,7 +2160,7 @@ a.widget-collapsed {
   width: 100%;
   bottom: 0;
   left: 0;
-  z-index: 99;
+  z-index: 9;
   height: 26px;
 }
 
