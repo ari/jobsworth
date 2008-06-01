@@ -244,8 +244,10 @@ Object.extend(Xilinus.Portal.prototype, {
   // DRAGGABLE OBSERVER CALLBACKS
   startDrag: function(eventName, draggable) {
 
-    $('left_col').setStyle({width: "50%"});
-    $('right_col').setStyle({width: "50%"});
+    $('left_col').setStyle({width: "50%", border: "1px dashed #e0e0ff"});
+    $('right_col').setStyle({width: "50%", border: "1px dashed #e0e0ff"});
+    $('bottom_col').setStyle({border: "1px dashed #e0e0ff"});
+
 
     var widget = draggable.element;
 
@@ -275,8 +277,9 @@ Object.extend(Xilinus.Portal.prototype, {
   },
 
   endDrag: function(eventName, draggable) {
-    $('left_col').setStyle({width: null});
-    $('right_col').setStyle({width: null});
+    $('left_col').setStyle({width: null, border: null});
+    $('right_col').setStyle({width: null, border: null});
+    $('bottom_col').setStyle({border: null});
 
     var widget = draggable.element;
     if (!this._widgets.find(function(w) {return w == widget.widget;}))
