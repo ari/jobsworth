@@ -15,9 +15,7 @@ def grabuser(tasks, user_tasks, user_ids)
     t.users.each do |u|
       if u.receive_notifications.to_i > 0
         user_ids.push(u.id)
-        if !user_tasks.key?(u.id)
-          user_tasks[u.id] = []
-        end                                 
+        user_tasks[u.id] ||= []
         user_tasks[u.id].push(t)
       end
     end
@@ -32,7 +30,7 @@ while($running) do
 
   tasks = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date, date + 1.hours], :order => "company_id")
   tasks_tomorrow = Task.find(:all, :conditions => ["due_at > ? AND due_at < ? AND completed_at IS NULL", date + 1.day, date + 1.hours + 1.day], :order => "company_id")
-  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) AND due_at < ? AND due_at > ? AND completed_at IS NULL", date.change(:min => 59), date, 1.month.ago.utc], :order => "company_id")
+  tasks_overdue = Task.find(:all, :conditions => ["time(due_at) = time(?) AND due_at < ? AND due_at > ? AND completed_at IS NULL", date.change(:min => 59), date, 1.month.ago.utc], :order => "company_id, due_at")
                    
   user_ids = []      
   user_tasks = {}
