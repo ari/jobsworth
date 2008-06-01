@@ -819,7 +819,7 @@ class TasksController < ApplicationController
       worklog.save
 
       if current_user.send_notifications
-        Notifications::deliver_completed( @task, current_user ) rescue begin end
+        Notifications::deliver_changed(:completed, @task, current_user, "" ) rescue begin end
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -851,7 +851,7 @@ class TasksController < ApplicationController
       worklog.save
 
       if current_user.send_notifications
-        Notifications::deliver_reverted( @task, current_user ) rescue begin end
+        Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
