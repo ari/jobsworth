@@ -6,7 +6,7 @@ class TimelineController < ApplicationController
     filter = ""
     work_log = false
     
-    if( [EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i )
+    if( [EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i || params[:filter_status].nil? )
       filter << " AND event_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
       filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
       filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
