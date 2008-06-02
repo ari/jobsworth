@@ -420,7 +420,7 @@ class WidgetsController < ApplicationController
       pos = 0
       if params["widget_col_#{c}"]
         params["widget_col_#{c}"].each do |id|
-          w = current_user.widgets.find(id.split(/-/)[1])
+          w = current_user.widgets.find(id.split(/-/)[1]) rescue next
           w.column = c
           w.position = pos
           w.save
