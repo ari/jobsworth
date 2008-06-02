@@ -545,7 +545,7 @@ class TasksController < ApplicationController
           deps = d.split(',')
           deps.each do |dep|
             dep.strip!
-            next if dep.to_i == 0
+            next if [0, @task.id].include? dep.to_i
             new_dependencies << [dep.to_i]
           end
         end
