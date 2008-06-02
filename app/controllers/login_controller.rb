@@ -126,7 +126,7 @@ class LoginController < ApplicationController
     flash[:notice] = ""
     error = 0
 
-    if params[:email].length == 0
+    if params[:email].nil? || params[:email].length == 0
       flash[:notice] += "* Enter your email<br/>"
       error = 1
     elsif User.count( :conditions => ["email = ?", params[:email]]) == 0
