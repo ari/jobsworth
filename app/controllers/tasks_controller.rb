@@ -540,17 +540,23 @@ class TasksController < ApplicationController
 
       if params[:dependencies]
         @task.dependencies.delete @task.dependencies
+        new_dependencies = []
         params[:dependencies].each do |d|
           deps = d.split(',')
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
-            unless t.nil?
-              @task.dependencies << t
-            end
+            new_dependencies << [dep.to_i]
           end
         end
+        
+        new_dependencies.compact.uniq.each do |dep|
+          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+          unless t.nil?
+            @task.dependencies << t
+          end
+        end
+
       end
 
       @task.duration = parse_time(params[:task][:duration]) if (params[:task] && params[:task][:duration])
@@ -631,9 +637,9 @@ class TasksController < ApplicationController
         body << "- <strong>Tags</strong>: #{new_tags}\n"
       end
 
-      new_deps = @task.dependencies.collect { |t| t.issue_num}.join(', ')
+      new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.join(", ")
       if old_deps != new_deps
-        body << "- <strong>Dependencies</strong>: #{new_deps}"
+        body << "- <strong>Dependencies</strong>: #{(new_deps.length > 0) ? new_deps : _("None")}"
       end
 
       worklog = WorkLog.new
