@@ -30,22 +30,22 @@ class TimelineController < ApplicationController
     case params[:filter_date].to_i
     when 1
       # This Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 2
       # Last Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 3
       # This Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 4
       # Last Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 5
       # This Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 6
       # Last Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
     when 7
       if filter[:stop_date] && filter[:start_date].length > 1
         start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time
@@ -61,6 +61,7 @@ class TimelineController < ApplicationController
 
     if( ([EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i) || work_log == false)
       filter.gsub!(/work_logs/, 'event_logs')
+      filter.gsub!(/started_at/, 'created_at')
       @logs = EventLog.paginate(:all, :order => "event_logs.id desc", :conditions => ["event_logs.company_id = ? #{filter}", current_user.company_id], :per_page => 100, :page => params[:page] )
     else 
       if params[:filter_project].to_i > 0
