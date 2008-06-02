@@ -819,7 +819,7 @@ class TasksController < ApplicationController
       worklog.save
 
       if current_user.send_notifications
-        Notifications::deliver_changed(:completed, @task, current_user, "" ) rescue begin end
+        Notifications::deliver_changed(:completed, @task, current_user, "" ) rescue nil
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -894,7 +894,7 @@ class TasksController < ApplicationController
   end
 
   def cancel_work_ajax
-    if @current_sheet
+    if @current_sheet 
       @task = @current_sheet.task
       @current_sheet.destroy
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
@@ -1513,7 +1513,7 @@ class TasksController < ApplicationController
   end
 
   def pause_work_ajax
-    if @current_sheet
+    if @current_sheet 
       if @current_sheet.paused_at
         @current_sheet.paused_duration += ((Time.now.utc - @current_sheet.paused_at) / 60).to_i
         @current_sheet.paused_at = nil
@@ -1521,6 +1521,10 @@ class TasksController < ApplicationController
         @current_sheet.paused_at = Time.now.utc
       end
       @current_sheet.save
+    else 
+      render :nothing => true
+      Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
+      return
     end
   end
 
