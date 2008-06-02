@@ -8,7 +8,7 @@ var captions = ["",
   "Find the needle in the haystack.",
   "It's about time...",
   "Keep project related files accessible.",
-  "Find the tasks that you need."
+  "Chat with coworkers."
 ];
 var numimages = 9;
 var currentimage = 1;
