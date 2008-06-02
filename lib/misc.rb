@@ -3,7 +3,7 @@ module Misc
   $CONFIG ||= { :domain => "clockingit.com" }
 
   # Format minutes => <tt>1w 2d 3h 3m</tt>
-  def format_duration(minutes, duration_format, day_duration)
+  def format_duration(minutes, duration_format, day_duration, days_per_week = 5)
     res = ''
     weeks = days = hours = 0
 
@@ -15,7 +15,7 @@ module Misc
       days = minutes / day_duration
       minutes = minutes - (days * day_duration) if days > 0
 
-      weeks = days / 5
+      weeks = days / days_per_week
       days = days - (weeks * 5) if weeks > 0
 
       hours = minutes / 60
@@ -36,7 +36,7 @@ module Misc
               format("%d:%02d", hours, minutes)
             end
     elsif( duration_format == 3 )
-      res = format("%d:%02d", ((weeks * day_duration * 5) + (days * day_duration))/60 + hours, minutes)
+      res = format("%d:%02d", ((weeks * day_duration * days_per_week) + (days * day_duration))/60 + hours, minutes)
     end
 
     res.strip

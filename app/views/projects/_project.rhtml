@@ -33,14 +33,14 @@
     <div class="information-header"><%= _('Remaining Work') %></div>
     <div class="information-value">
       <% if total - done < 0 %>
-      -<%= format_duration(-(total-done), current_user.duration_format, current_user.workday_duration) %> 
+      -<%= format_duration(-(total-done), current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> 
       <% else %>
-      <%= format_duration(total-done, current_user.duration_format, current_user.workday_duration) %> 
+      <%= format_duration(total-done, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> 
       <% end %>
-      [<%= format_duration(total, current_user.duration_format, current_user.workday_duration) %> <%= _ 'Estimated' %>]</div>
+      [<%= format_duration(total, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> <%= _ 'Estimated' %>]</div>
 
     <div class="information-header"><%= _('Work Done') %></div>
-    <div class="information-value"><%= format_duration(completed, current_user.duration_format, current_user.workday_duration) %> [<%= format_duration(completed_total, current_user.duration_format, current_user.workday_duration) %> <%= _ 'Estimated' %>]</div>
+    <div class="information-value"><%= format_duration(completed, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> [<%= format_duration(completed_total, current_user.duration_format, current_user.workday_duration, current_user.days_per_week) %> <%= _ 'Estimated' %>]</div>
 
     <div class="information-header">&nbsp;</div>
     <div><p style="margin-bottom:0;"><%= @project.description %></p></div>

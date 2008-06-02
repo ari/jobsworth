@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
         part = /(\d+)(\w+)/.match(e)
         if part && part.size == 3
           case  part[2]
-          when _('w') then total += e.to_i * current_user.workday_duration * 5
+          when _('w') then total += e.to_i * current_user.workday_duration * current_user.days_per_week
           when _('d') then total += e.to_i * current_user.workday_duration
           when _('h') then total += e.to_i * 60
           when _('m') then total += e.to_i
@@ -168,7 +168,7 @@ class ApplicationController < ActionController::Base
           when 0 then total += time.to_i
           when 1 then total += time.to_i * 60
           when 2 then total += time.to_i * current_user.workday_duration
-          when 3 then total += time.to_i * current_user.workday_duration * 5
+          when 3 then total += time.to_i * current_user.workday_duration * current_user.days_per_week
           end
         end
       end
@@ -266,7 +266,7 @@ class ApplicationController < ActionController::Base
   end
 
   def worked_nice(minutes)
-    format_duration(minutes, current_user.duration_format, current_user.workday_duration)
+    format_duration(minutes, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)
   end
 
   def highlight( text, k )
@@ -302,7 +302,7 @@ class ApplicationController < ActionController::Base
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :user => current_user })}\">#{task.name}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{task.name}</a>"
   end
 
   def double_escape(txt)

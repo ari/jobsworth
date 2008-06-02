@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 111) do
+ActiveRecord::Schema.define(:version => 112) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -57,7 +57,6 @@ ActiveRecord::Schema.define(:version => 111) do
     t.boolean  "show_messaging",                :default => true
   end
 
-  add_index "companies", ["name"], :name => "name", :unique => true
   add_index "companies", ["subdomain"], :name => "companies_subdomain_index", :unique => true
 
   create_table "customers", :force => true do |t|
@@ -520,6 +519,7 @@ ActiveRecord::Schema.define(:version => 111) do
     t.string   "autologin"
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                  :default => true
+    t.integer  "days_per_week",                         :default => 5
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
