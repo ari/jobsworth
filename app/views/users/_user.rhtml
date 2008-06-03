@@ -24,7 +24,7 @@
 	  <div class="information-value">
 
 	    <% if @user.last_login_at %>
-	      <%= _('%s ago', time_ago_in_words(tz.utc_to_local(@user.last_login_at), false)) %>
+	      <%= _('%s ago', distance_of_time_in_words(@user.last_login_at, Time.now.utc)) %>
 	    <% else %>
 	      Never 
             <% end %>
