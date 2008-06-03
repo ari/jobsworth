@@ -367,7 +367,10 @@ class TasksController < ApplicationController
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.log_type = EventLog::TASK_CREATED
-      worklog.body = params[:comment] if (!params[:comment].nil? && params[:comment].length > 0)
+      if (!params[:comment].nil? && params[:comment].length > 0)
+        worklog.body = params[:comment] 
+        worklog.comment = true
+      end 
 
       worklog.save
       if params['notify'].to_i == 1
@@ -709,7 +712,8 @@ class TasksController < ApplicationController
       if params[:comment] && params[:comment].length > 0
         update_type = :comment if body.length == 0
         worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
-
+        worklog.comment = true
+        
         body << "\n" if body.length > 0
         email_body = body + current_user.name + ":\n"
 
@@ -935,6 +939,7 @@ class TasksController < ApplicationController
       worklog.duration = @current_sheet.duration
       worklog.paused_duration = @current_sheet.paused_duration
       worklog.body = @current_sheet.body
+      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0
       worklog.log_type = EventLog::TASK_WORK_ADDED
       if worklog.save
         @current_sheet.destroy
@@ -968,7 +973,7 @@ class TasksController < ApplicationController
     @log.started_at = tz.utc_to_local(Time.now.utc)
     @log.duration = 0
     @log.log_type = EventLog::TASK_WORK_ADDED
-
+    
     @log.save
     Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
 
@@ -988,7 +993,8 @@ class TasksController < ApplicationController
       worklog.paused_duration = @current_sheet.paused_duration
       worklog.body = @current_sheet.body
       worklog.log_type = EventLog::TASK_WORK_ADDED
-
+      worklog.comment = true if @current_sheet.body && @current_sheet.body.lenght > 0 
+      
       if worklog.save
         worklog.task.updated_by_id = current_user.id
         worklog.task.save
@@ -1382,7 +1388,7 @@ class TasksController < ApplicationController
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND work_logs.log_type=6" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
+    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
       @logs = []
     end
 
