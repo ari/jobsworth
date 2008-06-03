@@ -23,7 +23,7 @@ Localization.define('pt_BR') do |l|
   # Main layout
   l.store 'Hide', 'Ocultar'
   l.store 'Views', 'Visualizações'
-  l.store 'Open Tasks', 'Abrir tarefa'
+  l.store 'Open Tasks', 'Tarefas abertas'
   l.store 'My Open Tasks', 'Minhas Tarefas Abertas'
   l.store 'My In Progress Tasks', 'Minhas tarefas Correntes'
   l.store 'Unassigned Tasks', 'Tarefas Não Alocadas' #review
