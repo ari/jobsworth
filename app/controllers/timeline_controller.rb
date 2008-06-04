@@ -25,8 +25,6 @@ class TimelineController < ApplicationController
       work_log = true
     end
 
-    filter << " AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)" unless work_log
-    
     case params[:filter_date].to_i
     when 1
       # This Week
@@ -59,16 +57,18 @@ class TimelineController < ApplicationController
       
     end
 
+    if params[:filter_project].to_i > 0
+      filter = " AND work_logs.project_id = #{params[:filter_project]}" + filter
+    else
+      filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL)" + filter
+    end
+    
     if( ([EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i) || work_log == false)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
+      
       @logs = EventLog.paginate(:all, :order => "event_logs.id desc", :conditions => ["event_logs.company_id = ? #{filter}", current_user.company_id], :per_page => 100, :page => params[:page] )
     else 
-      if params[:filter_project].to_i > 0
-        filter = " AND work_logs.project_id = #{params[:filter_project]}" + filter
-      else
-        filter = " AND work_logs.project_id IN (#{current_project_ids})" + filter
-      end
       @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", current_user.company_id], :include => [:user, {:task => [ :tags ]}, :project, ], :per_page => 100, :page => params[:page] )
     end 
   end
