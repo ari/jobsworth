@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
 
   after_create			:generate_widgets
   
-  attr_protected :admin, :uuid, :autologin
+  attr_protected :uuid, :autologin
 
   def path
     File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)
