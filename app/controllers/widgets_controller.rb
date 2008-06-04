@@ -434,11 +434,14 @@ class WidgetsController < ApplicationController
     end
 
     render :update do |page|
-      page << "if(! $('config-#{@widget.dom_id}' ) ) {"
+      page << "if(!$('config-#{@widget.dom_id}' ) ) {"
       page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
       page.visual_effect :slide_down, "config-#{@widget.dom_id}"
       page << "} else {"
-      page.visual_effect :highlight, "config-#{@widget.dom_id}"
+      page.visual_effect :slide_up, "config-#{@widget.dom_id}"
+      page.delay(1) do 
+        page.remove "config-#{@widget.dom_id}"
+      end
       page << "}"
     end
   end
