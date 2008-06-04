@@ -239,11 +239,7 @@ class ApplicationController < ActionController::Base
 
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
-    unless @current_projects
-      @current_projects = User.find(session[:user_id]).projects.find(:all, :order => "projects.customer_id, projects.name",
-                                                                     :conditions => [ "projects.company_id = ? AND completed_at IS NULL", current_user.company_id ], :include => :customer )
-    end
-    @current_projects
+    current_user.projects
   end
 
 
@@ -256,6 +252,12 @@ class ApplicationController < ActionController::Base
     @current_project_ids
   end
 
+  def all_projects
+    current_user.all_projects
+  end
+
+  
+  
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
     unless @milestone_ids

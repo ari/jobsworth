@@ -26,7 +26,15 @@ class SearchController < ApplicationController
 
     # Append project id's the user has access to
     projects = ""
-    current_projects.each do |p|
+
+    session[:completed_projects] = params[:completed_projects] if request.post?
+    
+    if session[:completed_projects].to_i == 1 
+      target_projects = all_projects
+    end
+    target_projects ||= current_projects
+
+    target_projects.each do |p|
       projects << "|" unless projects == ""
       projects << "#{p.id}"
     end

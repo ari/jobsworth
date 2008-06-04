@@ -4,8 +4,11 @@
       <%=_ 'Search Results' %>
     </td>
   </tr>
-  <tr><td>&nbsp;</td></tr>
-
+  <tr><td align="right" style="padding-right:1em;">
+  <form action="<%=request.url%>" method="post">
+    <input type="checkbox" name="completed_projects" value="1" <%= "checked=\"checked\"" if session[:completed_projects].to_i == 1%> onclick="javascript:document.forms[1].submit();"/> Include completed projects
+  </form>
+</td></tr>
 
 <% if @tasks.size > 0 %>
   <tr>
