@@ -8,9 +8,7 @@ class UsersController < ApplicationController
   end
 
   def list
-    if current_user.admin == 10
-      @users = User.paginate(:order => "users.name", :page => params[:page], :include => { :projects => :customer })
-    elsif current_user.admin > 0
+    if current_user.admin > 0
       @users = User.paginate(:order => "users.name", :conditions => ["users.company_id = ?", current_user.company_id], :page => params[:page], :include => { :projects => :customer } )
     else
       redirect_to :action => 'edit_preferences'
@@ -58,6 +56,11 @@ class UsersController < ApplicationController
     end
 
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+
+    if params[:user][:admin].to_i > current_user.admin
+      params[:user][:admin] = current_user.admin
+    end
+    
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
       redirect_to :action => 'list'
