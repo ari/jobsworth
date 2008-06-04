@@ -1,7 +1,7 @@
 <% 0.upto(4) do |i| %>
   <% unless @tasks[i].nil? %>
 
-    <div class="tag_header" style="margin-left:8px;margin-top:0.5em;"><%= schedule_header(i) %></div>
+    <div class="tag_header" style="margin-left:8px;margin-top:0.5em;"><%= _(schedule_header(i)) %></div>
     <% @tasks[i].each_with_index do |t,j| %>
       <% if j == @widget.number %>
         <div id="<%=@widget.dom_id%>_<%=i%>_toggle" style="display:none;">
