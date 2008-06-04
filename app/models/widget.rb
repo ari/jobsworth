@@ -32,5 +32,6 @@ class Widget < ActiveRecord::Base
   def name=(arg)
     @attributes['name'] = arg
   end
+
   
 end

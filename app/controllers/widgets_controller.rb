@@ -1,5 +1,11 @@
 class WidgetsController < ApplicationController
 
+  OVERDUE    = 0
+  TODAY      = 1
+  TOMORROW   = 2
+  THIS_WEEK  = 3
+  NEXT_WEEK  = 4
+
   def show
     begin
       @widget = Widget.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
@@ -293,6 +299,49 @@ class WidgetsController < ApplicationController
       end
     when 7
       # Schedule
+
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+        when 'c'
+           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+        when 'p'
+           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+        when 'm'
+           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+        when 'u'
+          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+        else 
+          ""
+        end
+      end
+
+      if @widget.mine?
+        tasks = current_user.tasks.find(:all, :include => :milestone, :conditions => ["tasks.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+      else 
+        tasks = Task.find(:all, :include => :milestone, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+      end
+
+      @tasks = []
+      
+      tasks.each do |t|
+        if t.overdue?
+          (@tasks[OVERDUE] ||= []) << t
+          logger.info("Overdue: #{t.name} - #{t.due_date}")
+        elsif t.due_date < (tz.now.utc.tomorrow.midnight)
+          (@tasks[TODAY] ||= []) << t
+          logger.info("Today: #{t.name} - #{t.due_date}")
+        elsif t.due_date < (tz.now.utc.since(2.days).midnight)
+          (@tasks[TOMORROW] ||= []) << t
+          logger.info("Tomorrow: #{t.name} - #{t.due_date}")
+        elsif t.due_date < (tz.now.utc.next_week.beginning_of_week)
+          (@tasks[THIS_WEEK] ||= []) << t
+          logger.info("This Week: #{t.name} - #{t.due_date}")
+        elsif t.due_date < (tz.now.utc.since(2.weeks).beginning_of_week)
+          (@tasks[NEXT_WEEK] ||= []) << t
+          logger.info("Next Week: #{t.name} - #{t.due_date}")
+        end
+      end
+      
     when 8 
       # Chat 
     end

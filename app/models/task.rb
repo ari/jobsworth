@@ -267,15 +267,21 @@ class Task < ActiveRecord::Base
   end
 
   def overdue?
-    res = 0
-    if self.due_at != nil
-      if self.due_at <= Time.now.utc
-        res = 1
-      end
-    end
-    res
+    return self.due_date <= Time.now.utc if self.due_date
+    false
   end
 
+  def due_date
+    if self.due_at?
+      self.due_at
+    elsif milestone && milestone.due_at?
+      milestone.due_at
+    else 
+      nil
+    end 
+      
+  end
+  
   def worked_minutes
     if @minutes.nil?
       @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]) || 0
