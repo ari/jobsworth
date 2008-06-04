@@ -6,7 +6,7 @@
   </tr>
   <tr><td align="right" style="padding-right:1em;">
   <form action="<%=request.url%>" method="post">
-    <input type="checkbox" name="completed_projects" value="1" <%= "checked=\"checked\"" if session[:completed_projects].to_i == 1%> onclick="javascript:document.forms[1].submit();"/> Include completed projects
+    <input type="checkbox" name="completed_projects" value="1" <%= "checked=\"checked\"" if session[:completed_projects].to_i == 1%> onclick="javascript:document.forms[1].submit();"/><%= _'Include completed projects' %>
   </form>
 </td></tr>
 
