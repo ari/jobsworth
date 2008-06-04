@@ -328,19 +328,14 @@ class WidgetsController < ApplicationController
         
         if t.overdue?
           (@tasks[OVERDUE] ||= []) << t
-          logger.info("Overdue: #{t.name} - #{t.due_date}")
         elsif t.due_date < (tz.now.utc.tomorrow.midnight)
           (@tasks[TODAY] ||= []) << t
-          logger.info("Today: #{t.name} - #{t.due_date}")
         elsif t.due_date < (tz.now.utc.since(2.days).midnight)
           (@tasks[TOMORROW] ||= []) << t
-          logger.info("Tomorrow: #{t.name} - #{t.due_date}")
         elsif t.due_date < (tz.now.utc.next_week.beginning_of_week)
           (@tasks[THIS_WEEK] ||= []) << t
-          logger.info("This Week: #{t.name} - #{t.due_date}")
         elsif t.due_date < (tz.now.utc.since(2.weeks).beginning_of_week)
           (@tasks[NEXT_WEEK] ||= []) << t
-          logger.info("Next Week: #{t.name} - #{t.due_date}")
         end
       end
       
