@@ -84,10 +84,8 @@ module ApplicationHelper
     res = ""
     css = ""
 
-    due_date = nil
-    due_date = task.milestone.due_at if !task.milestone_id.to_i == 0 && !task.milestone.due_at.nil?
-    due_date = task.due_at unless task.due_at.nil?
-
+    due_date = task.due_date
+    
     if due_date
       utc_due = tz.utc_to_local(due_date)
       tz_now = tz.now

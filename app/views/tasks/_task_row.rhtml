@@ -121,7 +121,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <%= highlight_all(task.full_name_without_links, @keys) %>
    <% end %>
    <%= "<span class=\"otheruser\">[#{name}]</span>" %>
-   <%= due_in_words(task) if (task.due_at != nil || task.milestone_id.to_i > 0) && !task.done?%>
+   <%= due_in_words(task) unless task.due_date && task.done?%>
    </div>
    </div>
 
