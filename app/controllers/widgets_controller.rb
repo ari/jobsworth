@@ -324,6 +324,8 @@ class WidgetsController < ApplicationController
       @tasks = []
       
       tasks.each do |t|
+        next if t.due_date.nil?
+        
         if t.overdue?
           (@tasks[OVERDUE] ||= []) << t
           logger.info("Overdue: #{t.name} - #{t.due_date}")
