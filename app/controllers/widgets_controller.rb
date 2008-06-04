@@ -370,7 +370,7 @@ class WidgetsController < ApplicationController
       page.insert_html :top, "left_col", :partial => "widgets/add"
       page.visual_effect :appear, "add-widget"
       page << "} else {"
-      page.visual_effect :highlight, "add-widget"
+      page.visual_effect :fade, "add-widget"
       page << "}"
     end
   end
@@ -418,6 +418,7 @@ class WidgetsController < ApplicationController
 
         page << "updateTooltips();"
         page << "portal.refreshHeights();"
+        page << "Element.scrollTo('#{@widget.dom_id}');"
       end 
     end
 
