@@ -111,7 +111,8 @@
            [_("Task Status"), "8"],
            [_("Task Type"), "9"],
            [_("Task Priority"), "11"],
-           [_("Task Severity"), "10"]
+           [_("Task Severity"), "10"],
+           [_("Requested By"), "20"]
           ],
           :selected => ((params[:report] && params[:report][:rows]) ? params[:report][:rows] : "1") ) %><br/>
 <label for="report_columns"><%=_ 'Columns' %></label>
@@ -127,7 +128,8 @@
             [_("Task Status"), "8"],
             [_("Task Type"), "9"],
             [_("Task Priority"), "11"],
-            [_("Task Severity"), "10"]
+            [_("Task Severity"), "10"],
+            [_("Requested By"), "20"]
            ],
            :selected => ((params[:report] && params[:report][:columns]) ? params[:report][:columns] : "7") ) %><br/>
 </div>

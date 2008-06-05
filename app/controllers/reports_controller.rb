@@ -78,7 +78,10 @@ class ReportsController < ApplicationController
       "3_task"
     when 19
       "4_note"
+    when 20
+      "#{w.task.requested_by}"
     end
+    
   end
 
   def name_from_worklog(w,r)
@@ -121,6 +124,8 @@ class ReportsController < ApplicationController
       "Task"
     when 19
       "Note"
+    when 20 
+      "#{w.task.requested_by}"
     end
 
   end
