@@ -28,6 +28,10 @@ class TasksController < ApplicationController
     @notify_targets ||= []
   end
 
+  def index
+    redirect_to :list
+  end
+  
   def list
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
@@ -623,10 +627,10 @@ class TasksController < ApplicationController
 
       if @old_task.due_at != @task.due_at
         old_name = "None"
-        old_name = @old_task.due_at.strftime("%A, %d %B %Y") unless @old_task.due_at.nil?
+        old_name = current_user.tz.utc_to_local(@old_task.due_at).strftime("%A, %d %B %Y") unless @old_task.due_at.nil?
 
         new_name = "None"
-        new_name = @task.due_at.strftime("%A, %d %B %Y") unless @task.due_at.nil?
+        new_name = current_user.tz.utc_to_local(@task.due_at).strftime("%A, %d %B %Y") unless @task.due_at.nil?
 
         body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
       end
