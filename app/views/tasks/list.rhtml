@@ -35,9 +35,8 @@
                 @user_ids << p.users.collect(&:id)
               end
 
-              @user_ids.uniq!
               @user_ids = [0] if @user_ids.size == 0
-              @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
+              @users = User.find(:all, :conditions => ["id IN (#{@user_ids.uniq.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
             end
 
             filter_count = 0
@@ -102,6 +101,7 @@
 
 
             <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
+	    </form>
             </fieldset>
             <% end %>
             <div id="quick_add_container" style="display:none;"></div>
