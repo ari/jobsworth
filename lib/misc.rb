@@ -16,7 +16,7 @@ module Misc
       minutes = minutes - (days * day_duration) if days > 0
 
       weeks = days / days_per_week
-      days = days - (weeks * 5) if weeks > 0
+      days = days - (weeks * days_per_week) if weeks > 0
 
       hours = minutes / 60
       minutes = minutes - (hours * 60) if hours > 0
