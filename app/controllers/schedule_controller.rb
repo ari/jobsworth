@@ -303,7 +303,7 @@ class ScheduleController < ApplicationController
       @task.duration = parse_time(params[:duration])
     end 
     
-    if params[:due]
+    if params[:due] && params[:due].length > 0
       begin
         @task.due_at = DateTime.strptime( params[:due], current_user.date_format )
       rescue
@@ -312,9 +312,7 @@ class ScheduleController < ApplicationController
         end
         return
       end 
-    end 
-    
-    if params[:due].nil? && params[:duration].nil?
+    elsif params[:due]
       @task.due_at = nil
     end
     
