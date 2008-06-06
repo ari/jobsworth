@@ -314,6 +314,10 @@ class ScheduleController < ApplicationController
       end 
     end 
     
+    if params[:due].nil? && params[:duration].nil?
+      @task.due_at = nil
+    end
+    
     @task.save
 
     gantt
