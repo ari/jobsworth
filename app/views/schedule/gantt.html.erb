@@ -1,4 +1,4 @@
-<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;">Does not send out notifications or log changes done in Activities. Changes are applied continuously.</div>
+<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;">This is a preview! It does not send out notifications or log changes done to the Activity log. Changes are applied continuously.</div>
 <table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
 <tr>
     <td valign="top" style="padding-right:0.3em;">
@@ -19,8 +19,8 @@
 <tr>
     <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;"><%= link_to_task(@t) %></div></td>
     <td width="1%" style="text-align:right;padding-right:0.5em;"><%= worked_nice(@t.worked_minutes)%></td>
-    <td style="text-align:right;"><input tabindex="<%=i%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.duration)%>" /></td>
-    <td style="padding-left:0.5em;"><input class="date" tabindex="<%=i+1%>" id="due-<%=@t.dom_id%>" name="due" size="9" type="text" style="font-size:11px;" value="<%= @t.due_at.strftime(current_user.date_format) if @t.due_at %>" /><img alt="Calendar" class="date" id="due-<%=@t.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/><script type="text/javascript">  Calendar.setup({ inputField:"due-<%=@t.dom_id%>",step:1,firstDay:1,button:"due-<%=@t.dom_id%>-calendar",ifFormat:"<%=current_user.date_format%>",range:[2006, 2010],showOthers:true, onUpdate:function(){new Ajax.Request('/schedule/reschedule/<%=@t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=@t.dom_id%>').value });} })</script></td>
+    <td style="text-align:right;"><% if current_user.can?(@t.project,'prioritize')%><input tabindex="<%=i%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
+    <td style="padding-left:0.5em;"><% if current_user.can?(@t.project,'prioritize')%><input class="date" tabindex="<%=i+1%>" id="due-<%=@t.dom_id%>" name="due" size="9" type="text" style="font-size:11px;" value="<%= @t.due_at.strftime(current_user.date_format) if @t.due_at %>" /><img alt="Calendar" class="date" id="due-<%=@t.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/><script type="text/javascript">  Calendar.setup({ inputField:"due-<%=@t.dom_id%>",step:1,firstDay:1,button:"due-<%=@t.dom_id%>-calendar",ifFormat:"<%=current_user.date_format%>",range:[2006, 2010],showOthers:true, onUpdate:function(){new Ajax.Request('/schedule/reschedule/<%=@t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=@t.dom_id%>').value });} })</script><%else%><%= @t.due_at.strftime(current_user.date_format) if @t.due_at %><% end %></td>
 </tr>
 
 	<% i += 2
