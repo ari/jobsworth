@@ -17,6 +17,7 @@
               <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
                 <div style="float: left;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "&nbsp;" if @project.user_id == current_user.id %></div>
               <% end %>
+	      <div style="text-align:center;"><%= link_to( _("View Tasks"), {:controller => 'views', :action => 'select_project', :id => @project}) %>
             </fieldset>
             </td>
           </tr>
