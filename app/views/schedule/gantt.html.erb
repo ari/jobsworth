@@ -1,0 +1,93 @@
+<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;">Does not send out notifications or log changes done in Activities. Changes are applied continuously.</div>
+<table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
+<tr>
+    <td valign="top" style="padding-right:0.3em;">
+      <table width="100%" cellpadding="0" cellspacing="0">
+	<tr>
+	  <th style="height:20px;" colspan="4"></th>
+	</tr>
+	<tr>
+	  <th style="height:20px;">Task</th>
+	  <th>Done</th>
+	  <th>Estimate</th>
+	  <th>Due</th>
+	</tr>
+	<% i = 1
+	date_tooltip = _("Enter task due date, or click calendar button.")
+	@tasks.each do |@t| 
+	%>
+<tr>
+    <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;"><%= link_to_task(@t) %></div></td>
+    <td width="1%" style="text-align:right;padding-right:0.5em;"><%= worked_nice(@t.worked_minutes)%></td>
+    <td style="text-align:right;"><input tabindex="<%=i%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.duration)%>" /></td>
+    <td style="padding-left:0.5em;"><input class="date" tabindex="<%=i+1%>" id="due-<%=@t.dom_id%>" name="due" size="9" type="text" style="font-size:11px;" value="<%= @t.due_at.strftime(current_user.date_format) if @t.due_at %>" /><img alt="Calendar" class="date" id="due-<%=@t.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/><script type="text/javascript">  Calendar.setup({ inputField:"due-<%=@t.dom_id%>",step:1,firstDay:1,button:"due-<%=@t.dom_id%>-calendar",ifFormat:"<%=current_user.date_format%>",range:[2006, 2010],showOthers:true, onUpdate:function(){new Ajax.Request('/schedule/reschedule/<%=@t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=@t.dom_id%>').value });} })</script></td>
+</tr>
+
+	<% i += 2
+	end %>
+</table>
+    </td>
+    <td width="60%" valign="top" style="padding-left:0.3em;">
+
+<div style="width:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #eee;border-right:1px solid #eee;position:relative;">
+<div style="height:20px;position:relative;">
+       <% s = @range[0]
+	  left = 0
+          while s < @range[1] do %>
+	<% if s.next_month.beginning_of_month < @range[1] 
+                w = ((s.next_month.beginning_of_month.to_i - s.midnight.to_i)/1.day) * 16 -1
+		style = "width:#{w}px;border-right:1px solid #ccc;"
+           else 
+                style = ""
+           end 
+
+	   %>
+       <div style="<%= style %>text-align:center;position:absolute;left:<%=left%>px;top:0;height:20px;">
+	  <%= s.strftime("%B") %>
+       </div>
+       <%   s = s.next_month.beginning_of_month
+           left += w - 1
+          end %>
+</div>
+<div style="clear:both;height:20px;position:relative;">
+       <% s = @range[0]
+	  w = 0
+          while s < @range[1] do 
+	  %>
+       <div style="position:absolute;left:<%=w%>px;top:0;;width:15px;border-right:1px solid #ccc;text-align:center;<%="background-color:#999;" if s.wday == 0 || s.wday == 6%>height:20px;">
+	  <%= s.day %>
+       </div>
+       <%   s += 1.day
+	  w+= 16;
+          end %>
+</div>
+
+<% @tasks.each do |t| %>
+<div style="vertical-align:top;position:relative;height:20px;clear:both;">
+      <div id="offset-<%=t.dom_id%>" style="position:relative;left:<%=gantt_offset(@start[t.id])%>;padding-top:3px;">
+	<div id="width-<%=t.dom_id%>" style="float:left;background-color:#00f;width:<%=gantt_width(@start[t.id], @end[t.id])%>;margin-right:0.3em;">
+	  &nbsp;
+	</div>
+	<div style="float:left;">
+	  <small><%= ((t.users.size > 0) ? t.users.collect(&:name).join(',') : "[No one]") %></small>
+	</div>
+      </div>
+</div>
+<% end %>
+<div>&nbsp;</div>
+</div>
+    </td>
+  </tr>
+</table>
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+<% @tasks.each do |t| %>
+Event.observe($('duration-<%=t.dom_id%>'), "change", function(ev) { 
+  new Ajax.Request('/schedule/reschedule/<%=t.id%>', {asynchronous: true, evalScripts: true, parameters:'duration='+$('duration-<%=t.dom_id%>').value });
+          });
+Event.observe($('due-<%=t.dom_id%>'), "change", function(ev) { 
+  new Ajax.Request('/schedule/reschedule/<%=t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=t.dom_id%>').value });
+          });
+<% end %>
+// ]]>
+</script>

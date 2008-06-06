@@ -289,6 +289,12 @@ class Task < ActiveRecord::Base
     @minutes
   end
 
+  def minutes_left
+    d = self.duration - self.worked_minutes 
+    d = 0 if d < 0
+    d
+  end
+  
   def full_name
     if self.project
       [self.project.full_name, self.full_tags].join(' / ')

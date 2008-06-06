@@ -7,7 +7,7 @@ module ScheduleHelper
       ""
     end
   end
-
+  
   def show_calendar(options = {}, &block)
     raise ArgumentError, "No year given"  unless defined? options[:year]
     raise ArgumentError, "No month given" unless defined? options[:month]

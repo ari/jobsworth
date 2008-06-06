@@ -110,10 +110,15 @@
                 <% end %>
 
                 <% if controller.controller_name == "schedule"  %>
-                <li class="active"><%= link_to "#{_('Schedule')}", {:controller => 'schedule', :action => 'list'}, :class => "active" %></li>
+                <li class="active"><%= link_to "#{_('Schedule')}", {:controller => 'schedule', :action => 'list'}, :class => "active" %>
                 <% else %>
-                <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %></li>
+                <li><%= link_to "#{_('Schedule')}", :controller => 'schedule', :action => 'list' %>
                 <% end %>
+                  <ul>
+		    <li><%= link_to "#{_('Plan / GANTT')}", :controller => 'schedule', :action => 'gantt'%></li>
+                  </ul>                    
+                </li>
+
 
                 <% if current_user.option_tracktime.to_i == 1 && current_user.can_any?(current_user.projects, 'report') %>
                   <% if controller.controller_name == "reports"  %>
