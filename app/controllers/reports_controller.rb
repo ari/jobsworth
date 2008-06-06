@@ -301,8 +301,9 @@ class ReportsController < ApplicationController
           sql_filter << " AND work_logs.task_id IN (#{task_ids})"
         end
 
-        @projects = current_user.projects.find(:all, :order => 'name') 
-        @projects += current_user.completed_projects.find(:all, :order => 'name') if(project_id.to_i == -1 || project_id.to_i > 0)
+        @projects = []
+        @projects = current_user.projects.find(:all, :order => 'name') unless project_id.to_i == -2
+        @projects += current_user.completed_projects.find(:all, :order => 'name') if(project_id.to_i < 0 || project_id.to_i > 0)
         @logs = []
         @projects.each do |p|
           if join != ""
@@ -555,7 +556,7 @@ class ReportsController < ApplicationController
                    ).join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"' + _('[Active Projects]') + '"},{"value":"-1", "text":"' + _('[Any Project]') + '"}'
+    res = '{"options":[{"value":"0", "text":"' + _('[Active Projects]') + '"},{"value":"-1", "text":"' + _('[Any Project]') + '"},{"value":"-2", "text":"' + _('[Closed Projects]') + '"}'
 
     res << ", #{@projects}" unless @projects.nil? || @projects.empty?
     res << ']}'

@@ -159,12 +159,12 @@
 
 <label for="report_project_id"><%=_ 'Project' %></label>
 <% if params[:report] && params[:report][:client_id].to_i > 0 %>
-  <%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1]] + 
+  <%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1], [_('[Closed Projects]'), -2]] + 
 		current_user.projects.find(:all, :order => 'name', :conditions => ["customer_id = ?", params[:report][:client_id]] ).collect {|c| [ "#{c.name}", c.id ] } + 
 		current_user.completed_projects.find(:all, :order => 'name', :conditions => ["customer_id = ?", params[:report][:client_id]] ).collect {|c| [ "#{c.name} - #{_'Completed'}", c.id ] }, 
 		:selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
 <% else %>
-  <%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1]] + 
+  <%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1], [_('[Closed Projects]'), -2]] + 
 		current_user.projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name == 'Internal' ? current_user.company.name : c.customer.name }", c.id ] } + 
                 current_user.completed_projects.find(:all, :order => 'name').collect {|c| [ "#{c.name} / #{c.customer.name == 'Internal' ? current_user.company.name : c.customer.name }" + " - #{_'Completed'}", c.id ] }, 
 	        :selected => ((params[:report] && params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %><br/>
