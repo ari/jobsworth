@@ -343,8 +343,6 @@ class ScheduleController < ApplicationController
     days = (e.to_i - s.to_i) / 1.day
     rem = ((e.to_i - s.to_i) - days.days) / 1.minute
 
-    logger.info("d[#{days}], r[#{rem}] (#{s}->#{e})")
-    
     w = days * 16.0 + (rem.to_f / current_user.workday_duration) * 16.0
     w = 2 if w < 2
 
