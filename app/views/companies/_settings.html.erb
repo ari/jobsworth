@@ -1,5 +1,5 @@
 <%= error_messages_for 'company' %>
-<p><label for="company_name"><%=_ 'Company Name' %></label><%= 'company', 'name' %></p>
+<p><label for="company_name"><%=_ 'Company Name' %></label><%= text_field 'company', 'name' %></p>
 <p><label for="company_show_wiki"><%=_ 'Use Wiki' %></label><%= check_box 'company', 'show_wiki' %></p>
 <p><label for="company_show_forum"><%=_ 'Use Forum' %></label><%= check_box 'company', 'show_forum' %></p>
 <p><label for="company_show_chat"><%=_ 'Use Chat' %></label><%= check_box 'company', 'show_chat' %></p>
