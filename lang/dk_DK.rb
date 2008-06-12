@@ -1,6 +1,5 @@
 
 
-
 Localization.define('dk_DK') do |l|
 
   # Main menu
@@ -16,27 +15,27 @@ Localization.define('dk_DK') do |l|
   l.store "Log Out", "Log ud"
   l.store "Clients", "Kunder"
   l.store "Client", "Kunde"
-  l.store 'Search', 'Søg'
+  l.store 'Search', 'SÃ¸g'
   l.store 'Users', 'Brugere'
   l.store 'User', 'Bruger'
 
   # Main layout
   l.store 'Hide', 'Skjul'
   l.store 'Views', 'Visninger'
-  l.store 'Open Tasks', 'Åbne Opgaver'
-  l.store 'My Open Tasks', 'Mine åbne Opgaver'
-  l.store 'My In Progress Tasks', 'Mine igangværende opgaver'
+  l.store 'Open Tasks', 'Ã…bne Opgaver'
+  l.store 'My Open Tasks', 'Mine Ã¥bne Opgaver'
+  l.store 'My In Progress Tasks', 'Mine igangvÃ¦rende opgaver'
   l.store 'Unassigned Tasks', 'Opgaver uden ansvarlig'
   l.store 'Shared', 'Delt'
   l.store 'Edit', 'Ret'
   l.store 'New', 'Ny'
   l.store 'Chat', 'Chat'
   l.store 'Notes', 'Notater'
-  l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Tilbagemeldinger? Forslag? Idéer? Fejlrapportering?'
+  l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Tilbagemeldinger? Forslag? IdÃ©er? Fejlrapportering?'
   l.store 'Let me know', 'Lad mig vide det'
   l.store 'worked today', 'arbejdede i dag'
   l.store 'Online', 'Online'
-  l.store 'Done working on <b>%s</b> for now.', 'Er færdig med at arbejde på <b>%s</b> i denne omgang.' # %s = @task.name
+  l.store 'Done working on <b>%s</b> for now.', 'Er fÃ¦rdig med at arbejde pÃ¥ <b>%s</b> i denne omgang.' # %s = @task.name
   l.store 'ago', 'siden' # X days ago
 
   # Application Helper
@@ -44,11 +43,11 @@ Localization.define('dk_DK') do |l|
   l.store 'tomorrow', 'i morgen'
   l.store '%d day', ['en dag', '%d dage']
   l.store '%d week', ['en uge', '%d uger']
-  l.store '%d month', ['en måned', '%d måneder']
-  l.store 'yesterday', 'i går'
+  l.store '%d month', ['en mÃ¥ned', '%d mÃ¥neder']
+  l.store 'yesterday', 'i gÃ¥r'
   l.store '%d day ago', ['en dag siden', '%d dage siden']
   l.store '%d week ago', ['en uge siden', '%d uger siden']
-  l.store '%d month ago', ['en måned siden', '%d måneder siden']
+  l.store '%d month ago', ['en mÃ¥ned siden', '%d mÃ¥neder siden']
 
   # DateHelper
   l.store 'less than a minute', 'mindre end et minut'
@@ -63,20 +62,20 @@ Localization.define('dk_DK') do |l|
   l.store 'Recent Activities', 'Seneste aktiviteter'
   l.store 'Projects', 'Projekter'
   l.store 'Overall Progress', 'Samlet fremskridt'
-  l.store '%d completed milestone', ['en færdig milepæl', '%d færdige milepæle']
-  l.store '%d completed project', ['et færdigt projekt', '%d færdige projekter']
+  l.store '%d completed milestone', ['en fÃ¦rdig milepÃ¦l', '%d fÃ¦rdige milepÃ¦le']
+  l.store '%d completed project', ['et fÃ¦rdigt projekt', '%d fÃ¦rdige projekter']
   l.store 'Edit project <b>%s</b>', 'Ret projektet <b>%s</b>'
-  l.store 'Edit milestone <b>%s</b>', 'Ret milepælen <b>%s</b>'
+  l.store 'Edit milestone <b>%s</b>', 'Ret milepÃ¦len <b>%s</b>'
 
   # Tasks
   l.store 'Tasks', 'Opgaver'
   l.store '[Any Client]', '[Alle Kunder]'
   l.store '[Any Project]', '[Alle Projekter]'
   l.store '[Any User]', '[Alle Brugere]'
-  l.store '[Any Milestone]', '[Alle Milepæle]'
+  l.store '[Any Milestone]', '[Alle MilepÃ¦le]'
   l.store '[Any Status]', '[Alle Statusser]'
   l.store '[Unassigned]','[Uden Ansvarlig]'
-  l.store 'Open', 'Åbn'
+  l.store 'Open', 'Ã…bn'
   l.store 'In Progress', 'Under Udvikling'
   l.store 'Closed', 'Lukket'
   l.store 'Won\'t Fix', 'Vil ikke udbedre'
@@ -89,9 +88,9 @@ Localization.define('dk_DK') do |l|
   l.store '[All Tags]', '[Alle Tags]'
   l.store 'Close <b>%s</b>', 'Luk <b>%s</b>'
   l.store "Stop working on <b>%s</b>.", 'Afslut arbejdet med <b>%s</b>.'
-  l.store "Start working on <b>%s</b>. Click again when done.", 'Start med at arbejde på <b>%s</b>. Klik igen for at afslutte.'
+  l.store "Start working on <b>%s</b>. Click again when done.", 'Start med at arbejde pÃ¥ <b>%s</b>. Klik igen for at afslutte.'
   l.store 'No one', 'Ingen'
-  l.store "Revert <b>%s</b> to not completed status.", 'Sæt <b>%s</b> til ufærdig'
+  l.store "Revert <b>%s</b> to not completed status.", 'SÃ¦t <b>%s</b> til ufÃ¦rdig'
   l.store "Cancel working on <b>%s</b>.", 'Afbryd arbejdet med <b>%s</b>.'
   l.store "Move <b>%s</b> to the Archive.", 'Flyt <b>%s</b> til Arkivet.'
   l.store "Restore <b>%s</b> from the Archive.", 'Hent <b>%s</b> fra Arkivet.'
@@ -99,10 +98,10 @@ Localization.define('dk_DK') do |l|
   l.store 'Summary', 'Opsummering'
   l.store 'Description', 'Beskrivelse'
   l.store 'Comment', 'Kommentar'
-  l.store 'Attach file', 'Vedhæft fil'
-  l.store 'Target', 'Mål'
+  l.store 'Attach file', 'VedhÃ¦ft fil'
+  l.store 'Target', 'MÃ¥l'
   l.store 'Project', 'Projekt'
-  l.store 'Milestone', 'Milepæl'
+  l.store 'Milestone', 'MilepÃ¦l'
   l.store '[None]', '[Ingen]'
   l.store 'Assigned To', 'Ansvarlig'
   l.store 'Requested By', 'Efterspurg af'
@@ -115,7 +114,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Due Date', 'Deadline'
   l.store 'Show Calendar', 'Vis Kalender'
   l.store 'Notification', 'Varsling'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andre som skal varsles ved ændringer<br/>ud over personen der har oprettet og den som er ansvarlig<br/><br/>Ctrl-klik for at vælge.'
+  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andre som skal varsles ved Ã¦ndringer<br/>ud over personen der har oprettet og den som er ansvarlig<br/><br/>Ctrl-klik for at vÃ¦lge.'
   l.store 'To:', 'Til:'
   l.store '[Delete]', '[Slet]'
   l.store 'Really delete %s?', 'Vil du virkelig slette %s?'
@@ -128,17 +127,17 @@ Localization.define('dk_DK') do |l|
   l.store 'Save', 'Gem'
   l.store 'and', 'og' # Save and ...
 
-  l.store "Leave Open",'Hold åben'
-  l.store "Revert to Open",'Åbn igen'
-  l.store "Set in Progress",'Sæt i gang'
+  l.store "Leave Open",'Hold Ã¥ben'
+  l.store "Revert to Open",'Ã…bn igen'
+  l.store "Set in Progress",'SÃ¦t i gang'
   l.store "Leave as in Progress",'Hold i gang'
   l.store "Close",'Luk'
   l.store "Leave Closed",'Hold lukket'
-  l.store "Set as Won't Fix",'Sæt som Vil Ikke Udbedre'
+  l.store "Set as Won't Fix",'SÃ¦t som Vil Ikke Udbedre'
   l.store "Leave as Won't Fix",'Behold som Vil Ikke Udbedre'
-  l.store "Set as Invalid",'Sæt som Ugyldig'
+  l.store "Set as Invalid",'SÃ¦t som Ugyldig'
   l.store "Leave as Invalid",'Behold som Ugyldig'
-  l.store "Set as Duplicate",'Sæt som Kopi'
+  l.store "Set as Duplicate",'SÃ¦t som Kopi'
   l.store "Leave as Duplicate",'Behold som Kopi'
   l.store 'History', 'Historik'
   l.store 'Edit Log Entry', 'Ret i loggen'
@@ -151,11 +150,11 @@ Localization.define('dk_DK') do |l|
   l.store 'Improvement', 'Forbedring'
   l.store 'Critical', 'Kritisk'
   l.store 'Urgent', 'Haster'
-  l.store 'High', 'Høj'
+  l.store 'High', 'HÃ¸j'
   l.store 'Normal', 'Normal'
   l.store 'Low', 'Lav'
   l.store 'Lowest', 'Lavest'
-  l.store 'Blocker', 'Blokér'
+  l.store 'Blocker', 'BlokÃ©r'
   l.store 'Major', 'Stor'
   l.store 'Minor', 'Lillen'
   l.store 'Trivial', 'Triviel'
@@ -167,16 +166,16 @@ Localization.define('dk_DK') do |l|
   l.store '[All Time]', '[Al Tid]'
   l.store 'This Week', 'Denne Uge'
   l.store 'Last Week', 'Sidste Uge'
-  l.store 'This Month', 'Denne Måned'
-  l.store 'Last Month', 'Sidste Måned'
-  l.store 'This Year', 'Dette År'
-  l.store 'Last Year', 'Sidte År'
+  l.store 'This Month', 'Denne MÃ¥ned'
+  l.store 'Last Month', 'Sidste MÃ¥ned'
+  l.store 'This Year', 'Dette Ã…r'
+  l.store 'Last Year', 'Sidte Ã…r'
   l.store '[Any Type]', '[Alle Typer]'
   l.store 'Work Log', 'Arbejdslog'
-  l.store 'Status Change', 'Ændring af status'
-  l.store 'Modified', 'Ændret'
+  l.store 'Status Change', 'Ã†ndring af status'
+  l.store 'Modified', 'Ã†ndret'
   l.store '[Prev]', '[Forrige]' # [Prev] 100 of 2000 entries [Next]
-  l.store '[Next]', '[Næste]' # [Prev] 100 of 2000 entries [Next]
+  l.store '[Next]', '[NÃ¦ste]' # [Prev] 100 of 2000 entries [Next]
   l.store 'of', 'af' # 100 of 2000 entries
   l.store 'entries..', 'elementer..' # 100 of 2000 entries
 
@@ -199,9 +198,9 @@ Localization.define('dk_DK') do |l|
   l.store 'Time sheet', 'Timeseddel'
   l.store 'Time Range', 'Tidsrum'
   l.store 'Custom', 'Brugerdefineret'
-  l.store 'Rows', 'Rækker'
+  l.store 'Rows', 'RÃ¦kker'
   l.store 'Columns', 'Kolonner'
-  l.store "Milestones", 'Milepæle'
+  l.store "Milestones", 'MilepÃ¦le'
   l.store "Date", 'Dato'
   l.store 'Task Status', 'Opgave Status'
   l.store "Task Type", 'Opgave Type'
@@ -213,16 +212,16 @@ Localization.define('dk_DK') do |l|
   l.store 'Filter', 'Filter'
   l.store 'Advanced Options', 'Avancerede muligheder'
   l.store 'Status', 'Status'
-  l.store 'Run Report', 'Kør Rapport'
+  l.store 'Run Report', 'KÃ¸r Rapport'
 
   # Schedule
 
   # Search
-  l.store 'Search Results', 'Søgeresultater'
+  l.store 'Search Results', 'SÃ¸geresultater'
   l.store 'Activities', 'Aktiviteter'
 
   # Project list
-  l.store 'Read', 'Læs'
+  l.store 'Read', 'LÃ¦s'
   l.store 'Work', 'Arbejde'
   l.store 'Assign', 'Tildel'
   l.store 'Prioritize', 'Prioritere'
@@ -234,7 +233,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Edit Project', 'Ret Projektet'
   l.store 'Delete Project', 'Slet Projekt'
   l.store 'Complete Project', 'Afslut Projekt'
-  l.store 'New Milestone', 'Ny Milepæl'
+  l.store 'New Milestone', 'Ny MilepÃ¦l'
   l.store 'Access To Project', 'Tilgang til Projektet'
   l.store 'Completed', 'Afsluttet'
   l.store 'Completed Projects', 'Afsluttede Projekter'
@@ -243,10 +242,10 @@ Localization.define('dk_DK') do |l|
 
   # Milestones
   l.store 'Owner', 'Ansvarlig'
-  l.store 'Edit Milestone', 'Ret Milepæl'
-  l.store 'Delete Milestone', 'Slet Milepæl'
-  l.store 'Complete Milestone', 'Afslut Milepæl'
-  l.store 'Completed Milestones', 'Afsluttede Milepæle'
+  l.store 'Edit Milestone', 'Ret MilepÃ¦l'
+  l.store 'Delete Milestone', 'Slet MilepÃ¦l'
+  l.store 'Complete Milestone', 'Afslut MilepÃ¦l'
+  l.store 'Completed Milestones', 'Afsluttede MilepÃ¦le'
 
   # Users
   l.store 'Email', 'Email'
@@ -256,7 +255,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Company', 'Firma'
   l.store '[New User]', '[Ny Bruger]'
   l.store '[Previous page]', '[Forrige side]'
-  l.store '[Next page]', '[Næste side]'
+  l.store '[Next page]', '[NÃ¦ste side]'
   l.store 'Edit User', 'Ret Bruger'
 
   l.store 'Options', 'Valg'
@@ -265,7 +264,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Track Time', 'Registrer tid'
   l.store 'Use External Clients', 'Brug eksterne kunder'
   l.store 'Show Calendar', 'Vis kalender'
-  l.store 'Show Tooltips', 'Vis hjælpebobler'
+  l.store 'Show Tooltips', 'Vis hjÃ¦lpebobler'
   l.store 'Send Notifications', 'Send beskeder'
   l.store 'Receive Notifications', 'Modtag beskeder'
 
@@ -279,9 +278,9 @@ Localization.define('dk_DK') do |l|
   l.store 'Time Format', 'Tidsformat'
   l.store 'Date Format', 'Datoformat'
   l.store 'Custom Logo', 'Brugerdefineret Logo'
-  l.store 'Current logo', 'Nuværende Logo'
+  l.store 'Current logo', 'NuvÃ¦rende Logo'
   l.store 'New logo', 'Nyt logo'
-  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se ok ud. Logoet vil blive vist i øverste venstre hjørne på din side.)"
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se ok ud. Logoet vil blive vist i Ã¸verste venstre hjÃ¸rne pÃ¥ din side.)"
 
   # Notes / Pages
   l.store 'Body', 'Indhold'
@@ -304,20 +303,20 @@ Localization.define('dk_DK') do |l|
   l.store 'Client CSS', 'Kundens CSS'
 
   # Activities Controller
-  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Introduktion er gennemført. Den vil ikke længere blive vist i menuen.'
-  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Introduktionen er skjult. Den vil ikke længere blive vist i menuen.'
+  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Introduktion er gennemfÃ¸rt. Den vil ikke lÃ¦ngere blive vist i menuen.'
+  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Introduktionen er skjult. Den vil ikke lÃ¦ngere blive vist i menuen.'
 
   # Customers Controller
   l.store 'Client was successfully created.', 'Kunde registreret.'
   l.store 'Client was successfully updated.', 'Kunde opdateret.'
-  l.store 'Please delete all projects for %s before deleting it.', 'Slet alle projekter for %s før du sletter.'
+  l.store 'Please delete all projects for %s before deleting it.', 'Slet alle projekter for %s fÃ¸r du sletter.'
   l.store "You can't delete your own company.", 'Du kan ikke slette dit eget firma.'
   l.store 'CSS successfully uploaded.', 'CSS uploadet.'
   l.store 'Logo successfully uploaded.', 'Logo uploadet.'
 
   # Milestones Controller
-  l.store 'Milestone was successfully created.', 'Milepæl oprettet.'
-  l.store 'Milestone was successfully updated.', 'Milepæl opdateret.'
+  l.store 'Milestone was successfully created.', 'MilepÃ¦l oprettet.'
+  l.store 'Milestone was successfully updated.', 'MilepÃ¦l opdateret.'
   l.store '%s / %s completed.', '%s / %s er afsluttet.' # Project name / Milestone name completed.
   l.store '%s / %s reverted.', '%s / %s er blevet genskabt.' # Project name / Milestone name reverted.
 
@@ -332,17 +331,17 @@ Localization.define('dk_DK') do |l|
 
   # Projects Controller
   l.store 'Project was successfully created.', 'Projektet er oprettet.'
-  l.store 'Project was successfully created. Add users who need access to this project.', 'Projektet blev oprettet. Giv adgang til brugere som skal være med i projektet.'
+  l.store 'Project was successfully created. Add users who need access to this project.', 'Projektet blev oprettet. Giv adgang til brugere som skal vÃ¦re med i projektet.'
   l.store 'Project was successfully updated.', 'Projektet er blevet opdateret.'
   l.store 'Project was deleted.', 'Projektet blev slettet.'
   l.store '%s completed.', '%s afsluttet.'
   l.store '%s reverted.', '%s genskabt.'
 
   # Reports Controller
-  l.store "Empty report, log more work!", 'Tøm rapport, registrer mere tid!'
+  l.store "Empty report, log more work!", 'TÃ¸m rapport, registrer mere tid!'
 
   # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du er nød til at oprette et projekt, som kan indeholde dine opgaver. Ellers skal du have adgang til at oprette opgaver i et eksiterende projekt...'
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du er nÃ¸d til at oprette et projekt, som kan indeholde dine opgaver. Ellers skal du have adgang til at oprette opgaver i et eksiterende projekt...'
   l.store 'Invalid due date ignored.', 'Ignererer ugyldig deadline-dato.'
   l.store 'Task was successfully created.', 'Opgave oprettet.'
   l.store 'Task was successfully updated.', 'Opgave opdateret.'
@@ -352,7 +351,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Log entry deleted...', 'Registreringen i arbejdsloggen er nu slettet...'
 
   # Users Controller
-  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Brugeren er blevet oprettet. Husk at give brugeren tilladelse til de nødvendige projekter.'
+  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Brugeren er blevet oprettet. Husk at give brugeren tilladelse til de nÃ¸dvendige projekter.'
   l.store "Error sending creation email. Account still created.", 'Det skete en fejl under afsendelsen af emailen men konto blev oprettet alligevel.'
   l.store 'User was successfully updated.', 'Brugeren er blevet opdateret.'
   l.store 'Preferences successfully updated.', 'Indstillingerne er blevet opdateret.'
@@ -401,21 +400,21 @@ Localization.define('dk_DK') do |l|
   l.store 'Nov', 'Nov'
   l.store 'Dec', 'Dec'
 
-  l.store 'Sunday', 'Søndag'
+  l.store 'Sunday', 'SÃ¸ndag'
   l.store 'Monday', 'Mandag'
   l.store 'Tuesday', 'Tirsdag'
   l.store 'Wednesday', 'Onsdag'
   l.store 'Thursday', 'Torsdag'
   l.store 'Friday', 'Fredag'
-  l.store 'Saturday', 'Lørdag'
+  l.store 'Saturday', 'LÃ¸rdag'
 
-  l.store 'Sun', 'Søn'
+  l.store 'Sun', 'SÃ¸n'
   l.store 'Mon', 'Man'
   l.store 'Tue', 'Tir'
   l.store 'Wed', 'Ons'
   l.store 'Thu', 'Tor'
   l.store 'Fri', 'Fre'
-  l.store 'Sat', 'Lør'
+  l.store 'Sat', 'LÃ¸r'
 
   # worked_nice
   l.store '[wdhm]', '[udtm]'
@@ -429,7 +428,7 @@ Localization.define('dk_DK') do |l|
   l.store 'Workday Length', 'Arbejdsdag'
 
   # Tasks filter
-  l.store '[Without Milestone]', '[Uden Milepæl]'
+  l.store '[Without Milestone]', '[Uden MilepÃ¦l]'
 
   # Task tooltip
   l.store 'Progress', 'Fremskridt'
@@ -446,10 +445,10 @@ Localization.define('dk_DK') do |l|
   l.store '1w2d3h4m', '1u2d3t4m'
 
   # Task
-  l.store "Attachments", "Vedhæftninger"
-  l.store "Dependencies", "Afhængig af"
-  l.store 'Add another dependency', "Ny afhængighed"
-  l.store 'Remove dependency', "Fjern afhængighed"
+  l.store "Attachments", "VedhÃ¦ftninger"
+  l.store "Dependencies", "AfhÃ¦ngig af"
+  l.store 'Add another dependency', "Ny afhÃ¦ngighed"
+  l.store 'Remove dependency', "Fjern afhÃ¦ngighed"
   l.store "every", 'hver'
   l.store "[Any Task]", "[Alle Opgaver]"
 
@@ -459,18 +458,18 @@ Localization.define('dk_DK') do |l|
 
   l.store 'Hide Waiting Tasks', 'Skjul ventende opgaver'
   l.store 'Signup Message', 'Personlig Besked'
-  l.store 'The message will be included in the signup email.', 'Beskeden vil blive inkluderet i bekræftelses mailen der sendes ud.'
-  l.store 'Depends on', 'Afhængig af'
+  l.store 'The message will be included in the signup email.', 'Beskeden vil blive inkluderet i bekrÃ¦ftelses mailen der sendes ud.'
+  l.store 'Depends on', 'AfhÃ¦ngig af'
 
   # Activities
-  l.store 'Subscribe to the recent activities RSS feed', 'Abonner på alle aktiviteter via RSS'
+  l.store 'Subscribe to the recent activities RSS feed', 'Abonner pÃ¥ alle aktiviteter via RSS'
 
   # Project Files
   l.store '%d folder', ['%d mappe', '%d mapper']
   l.store '%d file', ['%d fil', '%d filer']
 
   # Email
-  l.store 'Resolved', "Løst"
+  l.store 'Resolved', "LÃ¸st"
   l.store 'Updated', "Opdateret"
   l.store 'Reverted', "Genskabt"
   l.store 'Reassigned', "Tildelt"
