@@ -1,7 +1,7 @@
 
 
 
-Localization.define('no_NO') do |l|
+Localization.define('dk_DK') do |l|
 
   # Main menu
   l.store "Overview", "Overblik"
@@ -128,13 +128,13 @@ Localization.define('no_NO') do |l|
   l.store 'Save', 'Gem'
   l.store 'and', 'og' # Save and ...
 
-  l.store "Leave Open",'Hold åben
+  l.store "Leave Open",'Hold åben'
   l.store "Revert to Open",'Åbn igen'
   l.store "Set in Progress",'Sæt i gang'
   l.store "Leave as in Progress",'Hold i gang'
   l.store "Close",'Luk'
   l.store "Leave Closed",'Hold lukket'
-  l.store "Set as Won't Fix",''Sæt som Vil Ikke Udbedre'
+  l.store "Set as Won't Fix",'Sæt som Vil Ikke Udbedre'
   l.store "Leave as Won't Fix",'Behold som Vil Ikke Udbedre'
   l.store "Set as Invalid",'Sæt som Ugyldig'
   l.store "Leave as Invalid",'Behold som Ugyldig'
@@ -169,7 +169,7 @@ Localization.define('no_NO') do |l|
   l.store 'Last Week', 'Sidste Uge'
   l.store 'This Month', 'Denne Måned'
   l.store 'Last Month', 'Sidste Måned'
-  l.store 'This Year', 'Dette År
+  l.store 'This Year', 'Dette År'
   l.store 'Last Year', 'Sidte År'
   l.store '[Any Type]', '[Alle Typer]'
   l.store 'Work Log', 'Arbejdslog'
