@@ -17,7 +17,7 @@ a:hover {
 }
 
 .task-row:hover, .milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
-  background-color: #ececfe !IMPORTANT;
+  background-color: #e0e0ff !IMPORTANT;
 }
 
 h1 {
@@ -65,7 +65,7 @@ h4 {
 }
 
 .task-highlight {
-  background-color: #ececfe !IMPORTANT;
+  background-color: #e0e0ff !IMPORTANT;
 }
 
 .projects  {
@@ -2283,3 +2283,7 @@ a.widget-collapsed {
 
 .presence-info-mine { 
  }
+
+#task_list {
+  padding-bottom: 25px;
+}
