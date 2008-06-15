@@ -822,7 +822,7 @@ class TasksController < ApplicationController
           repeat_task(@task)
       end
 
-      body << "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n"
+      body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n"
 
       worklog = WorkLog.new
       worklog.user = current_user
