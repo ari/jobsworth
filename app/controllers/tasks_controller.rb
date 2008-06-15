@@ -823,7 +823,8 @@ class TasksController < ApplicationController
       end
 
       body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n"
-
+      email_body = body.gsub(/<[^>]*>/,'')
+      
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = @task.project.company
@@ -838,7 +839,7 @@ class TasksController < ApplicationController
 
 
       if current_user.send_notifications
-        Notifications::deliver_changed(:completed, @task, current_user, body ) rescue nil
+        Notifications::deliver_changed(:completed, @task, current_user, email_body ) rescue nil
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
