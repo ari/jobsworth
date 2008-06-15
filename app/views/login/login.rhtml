@@ -26,11 +26,13 @@ a:hover {
 }
 
 #container {
-  width:600px;
+  width:715px;
+  height: 538px;
   position:relative;
   left:50%;
-  margin-left:-300px;
-  margin-top: 100px;
+  margin-left:-357px;
+  background-color: #F8F4EE;
+  background: url(/images/login_box.jpg) no-repeat 0% 0;
 }
 input:focus, textarea:focus { border: 1px solid #FC0; }
 input, textarea, select { border: 1px solid #AAA; }
@@ -53,46 +55,76 @@ input, textarea, select { border: 1px solid #AAA; }
 <% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
 <%= @internal.css %>
 <% end %>
+
+body {
+  background: none;
+  background-color: #F8F4EE;
+}
+
+table, td, tr {
+  background: none;
+  color: #fff;
+}
+
+label {
+  color: #fff;
+  font-size: 18px;
+}
+
+.inputbox {
+  font-size: 20px;
+}
+
+#header {
+  height: 75px;
+}
+
+#notice {
+  color: #000;
+}
+
 </style>
 
 
 </head>
 
+<body>
+  <div id="header">
+    <div style="float: left;">
+        <img src="/images/login_logo.png" />
+    </div>
+    <div style="padding-top:24px;color:#999;letter-spacing:0.2em;text-transform:uppercase;font-size:8px;">&copy; 2005-2008 <a href="http://www.clockingit.com">ClockingIT 0.99.3</a><br /><a href="mailto:admin@clockingit.com">Erlend &amp; Ellen Simonsen</a></div>
+  </div>
 <div id="container">
-
-  <div align="center">
-  <% if flash[:notice] %><div id="notice" align="center"><%= flash[:notice] %><% flash.clear %></div><% end %>
-  <table width="400px" style="border: 1px solid #666666;" cellpadding="0" cellspacing="0">
-  <tr><td align="center" id="menu" style="padding-top:2em;padding-bottom:2em;">
-  <% if @internal && @internal.logo? %>
-  <%= tag("img", {:src => "/customers/show_logo/#{@internal.id}", :border => 0 } ) %>
-  <% else %>
-  <span style="font-size:120%;"><%= @company.name %></span>
-  <% end %>
-  <br/>
-  </td></tr>
-  <tr><td style="padding-top:2em; background-color: #ffffff;">&nbsp;</td></tr>
-  <tr><td align="center" style="background-color: #ffffff;">
+  <div style="font-size:24px;font-weight:bold;text-align:center;padding-top:171px;font-style:italic;padding-left:0;padding-right:0;"><%= @company.name %></div>
+  <div style="position:absolute;top:210px;left:160px;">
+  <table width="450px" cellpadding="0" cellspacing="0" id="login_box">
+  <tr><td align="center">
   <% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>
-  <table border="0" cellpadding="2" cellspacing="0" style="width:200px;">
-  <tr><td align="right" style="padding-right:0.5em;"><label for="username"><strong>Username</strong></label></td><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="10" /></td></tr>
-  <tr><td align="right" style="padding-right:0.5em;"><label for="password"><strong>Password</strong></label></td><td><input type="password" id="password" name="user[password]" class="inputbox" size="10" alt="password" /></td></tr>
-  <tr><td align="right" style="padding-right:0.5em;"><label for="remember"><strong><small>Remember me on this computer</small></strong></label></td><td><input type="checkbox" id="remember" name="remember" class="inputbox" value="1" /></td></tr>
-  <tr><td>&nbsp;</td><td><input type="submit" name="Submit" class="button" value="Log in" /></td></tr>
-  <tr><td style="padding-top:1.5em;">&nbsp;</td><td><small><a href="/login/forgotten_password">Forgot Login?</a></small></td></tr>
+  <table border="0" cellpadding="2" cellspacing="0" style="width:250px;">
+  <tr><td align="left"><label for="username"><strong>Username</strong></label></td></tr>
+  <tr><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="12" tabindex="1" /></td></tr>
+  <tr><td align="left"><label for="password"><strong>Password</strong></label></td></tr>
+  <tr><td><input type="password" id="password" name="user[password]" class="inputbox" size="12" alt="password" tabindex="2"/> <small><a href="/login/forgotten_password" tabindex="5">Forgot?</a></small></td></tr>
+  <tr><td align="left"><label for="remember"></label></td></tr>
+  <tr><td style="padding-top:26px;">
+         <button type="submit" name="Submit" value="Log in" style="background:none;border:none;cursor:pointer;" tabindex="4"><img src="/images/button_login.png" style="vertical-align:middle;"/></button> 
+         <input type="checkbox" id="remember" name="remember" class="inputbox" value="1" tabindex="3"/><strong><small>Remember me</small></strong></td></tr>
+  <tr><td style="padding-top:1.5em;">&nbsp;</td></tr>
+  <tr><td></td></tr>
   </table>
+  <% if flash[:notice] %><div id="notice" align="center"><%= flash[:notice] %><% flash.clear %></div><% end %>
   <% end %>
   </td></tr>
   </table>
   </div>
 </div>
 <div id="footer">
-&copy; 2005-2006 <a href="http://www.clockingit.com">Clocking IT v0.99.3</a> - by Erlend &amp; Ellen Simonsen (support@clockingit.com)<br/>
 </div>
 <script type="text/javascript">
 document.forms[0].username.focus();
 </script>
-
+</body>
 
 <% else %>
 
