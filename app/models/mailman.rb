@@ -28,7 +28,7 @@ class Mailman < ActionMailer::Base
 
     company = nil
     email.to.each do |to|
-      next unless to.include?("clockingit.com")
+      next unless to.include?($CONFIG[:domain])
       subdomain = to.split('@')[1].split('.')[0]
       puts "Looking for #{subdomain}.."
       company = Company.find_by_subdomain(subdomain)
@@ -41,7 +41,7 @@ class Mailman < ActionMailer::Base
 
     e.save
 
-    return if(e.from.downcase.include? 'clockingit.com' || company.nil?)
+    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 
     target = nil
     email.to.each do |to|
