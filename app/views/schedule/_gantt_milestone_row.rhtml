@@ -1,5 +1,5 @@
 <tr style="background-color:#eee;">
-    <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;font-weight:bold;"><img src="/images/bullet_black.png" /><%= @t.milestone.name %></div></td>
+    <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;font-weight:bold;"><img src="/images/bullet_black.png" /><%= @t.milestone.name %> [<%= @t.project.name %>]</div></td>
     <td width="1%" style="text-align:right;padding-right:0.5em;font-weight:bold;"><%= worked_nice(@t.milestone.worked_minutes)%></td>
     <td id="duration-<%=@t.milestone.dom_id%>" width="1%" style="text-align:right;font-weight:bold;"><%= worked_nice(@t.milestone.duration)%></td>
     <td style="padding-left:0.5em;text-align:right;">
