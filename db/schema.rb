@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 114) do
+ActiveRecord::Schema.define(:version => 115) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -276,10 +276,10 @@ ActiveRecord::Schema.define(:version => 114) do
   add_index "project_permissions", ["user_id"], :name => "project_permissions_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",           :limit => 200, :default => "", :null => false
-    t.integer  "user_id",                       :default => 0,  :null => false
-    t.integer  "company_id",                    :default => 0,  :null => false
-    t.integer  "customer_id",                   :default => 0,  :null => false
+    t.string   "name",           :limit => 200, :default => "",   :null => false
+    t.integer  "user_id",                       :default => 0,    :null => false
+    t.integer  "company_id",                    :default => 0,    :null => false
+    t.integer  "customer_id",                   :default => 0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(:version => 114) do
     t.integer  "normal_count",                  :default => 0
     t.integer  "low_count",                     :default => 0
     t.text     "description"
+    t.boolean  "create_forum",                  :default => true
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
