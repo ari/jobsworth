@@ -35,15 +35,9 @@ module ApplicationHelper
     return @total_today if @total_today
     @total_today = 0
     start = tz.local_to_utc(tz.now.at_midnight)
-    logs = WorkLog.find(:all, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, start, start + 1.day])
-    logs.each { |l|
-      @total_today = @total_today + l.duration
-    }
-
-    if @current_sheet
-      @total_today = @total_today + @current_sheet.duration
-    end
-
+    @total_today = WorkLog.sum(:conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, start, start + 1.day]).to_i / 60
+    
+    return (@total_today + @current_sheet.duration) if @current_sheet
     @total_today
   end
 
