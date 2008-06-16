@@ -19,11 +19,13 @@ class Project < ActiveRecord::Base
   validates_presence_of         :name
 
   after_create { |r|
-    f = Forum.new
-    f.company_id = r.company_id
-    f.project_id = r.id
-    f.name = r.full_name
-    f.save
+    if r.create_forum
+      f = Forum.new
+      f.company_id = r.company_id
+      f.project_id = r.id
+      f.name = r.full_name
+      f.save
+    end
   }
 
   def full_name
