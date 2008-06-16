@@ -4,6 +4,7 @@ development:
   host: localhost
   username: cit
   password: cit
+  encoding: utf8
 
 test:
   adapter: mysql
@@ -11,6 +12,7 @@ test:
   host: localhost
   username: cit
   password: cit
+  encoding: utf8
 
 production:
   adapter: mysql
@@ -18,3 +20,4 @@ production:
   host: localhost
   username: cit
   password: cit
+  encoding: utf8
