@@ -19,7 +19,7 @@ class Project < ActiveRecord::Base
   validates_presence_of         :name
 
   after_create { |r|
-    if r.create_forum
+    if r.create_forum && r.company.show_forum
       f = Forum.new
       f.company_id = r.company_id
       f.project_id = r.id
