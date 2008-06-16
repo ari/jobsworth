@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 112) do
+ActiveRecord::Schema.define(:version => 114) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -600,17 +600,18 @@ ActiveRecord::Schema.define(:version => 112) do
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"
 
   create_table "work_logs", :force => true do |t|
-    t.integer  "user_id",          :default => 0, :null => false
+    t.integer  "user_id",          :default => 0,     :null => false
     t.integer  "task_id"
-    t.integer  "project_id",       :default => 0, :null => false
-    t.integer  "company_id",       :default => 0, :null => false
-    t.integer  "customer_id",      :default => 0, :null => false
-    t.datetime "started_at",                      :null => false
-    t.integer  "duration",         :default => 0, :null => false
+    t.integer  "project_id",       :default => 0,     :null => false
+    t.integer  "company_id",       :default => 0,     :null => false
+    t.integer  "customer_id",      :default => 0,     :null => false
+    t.datetime "started_at",                          :null => false
+    t.integer  "duration",         :default => 0,     :null => false
     t.text     "body"
     t.integer  "log_type",         :default => 0
     t.integer  "scm_changeset_id"
     t.integer  "paused_duration",  :default => 0
+    t.boolean  "comment",          :default => false
   end
 
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"

@@ -4,11 +4,11 @@
 <% form_tag :action => 'create', :id => @page.name do %>
 <% if @page.revisions.empty? %>
 <h5 style="margin:0;">This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h5>
-<textarea name="body" rows="20" style="width:80%;"></textarea>
+<textarea id="wiki_body" name="body" rows="20" style="width:80%;"></textarea>
 <% elsif params[:rev].to_i > 0 %>
-<textarea name="body" rows="20" style="width:80%;"><%=@page.revisions[params[:rev].to_i].body || ""%></textarea>
+<textarea id="wiki_body" name="body" rows="20" style="width:80%;"><%=@page.revisions[params[:rev].to_i].body || ""%></textarea>
 <% else %>
-<textarea name="body" rows="20" style="width:80%;"><%=@page.current_revision.body if @page.current_revision %></textarea>
+<textarea id="wiki_body" name="body" rows="20" style="width:80%;"><%=@page.current_revision.body if @page.current_revision %></textarea>
 <% end %>
 
 <div id="wiki-quickref">
@@ -32,3 +32,5 @@
 <% end %>
 </fieldset>
 </div>
+
+<%= textile_editor_initialize('wiki_body') %>

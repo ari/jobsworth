@@ -242,7 +242,7 @@ class ScheduleController < ApplicationController
   
   def gantt
 
-    sort = "tasks.due_at IS NOT NULL desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
+    sort = "tasks.milestone_id IS NOT NULL, tasks.milestone_id <> 0, milestones.due_at IS NOT NULL desc, milestones.due_at, milestones.name, tasks.due_at IS NOT NULL desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
     params[:filter_by] ||= " "
     filter = case params[:filter_by][0..0]
              when 'c'
@@ -257,7 +257,7 @@ class ScheduleController < ApplicationController
                ""
              end
 
-    @tasks = Task.find(:all, :include => [:milestone,:project, :users], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter}"], :order => sort)
+    @tasks = Task.find(:all, :include => [:milestone, :project, :users], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter}"], :order => sort)
 
     @dates = { }
     
@@ -324,12 +324,53 @@ class ScheduleController < ApplicationController
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.duration)
       page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime(current_user.date_format) : "")
 
+      if @task.milestone_id.to_i > 0
+        page.replace_html "duration-#{@task.milestone.dom_id}", worked_nice(@task.milestone.duration)
+      end
+      
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
       end
     end
   end
+
+  def reschedule_milestone
+    begin
+      @milestone = Milestone.find(params[:id], :conditions => ["milestones.project_id IN (#{current_project_ids})"] )
+    rescue
+      render :nothing => true
+      return
+    end 
+    
+    if params[:due] && params[:due].length > 0
+      begin
+        @milestone.due_at = DateTime.strptime( params[:due], current_user.date_format )
+      rescue
+        render :update do |page|
+          page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
+        end
+        return
+      end 
+    elsif params[:due]
+      @milestone.due_at = nil
+    end
+    
+    @milestone.save
+
+    gantt
+    
+    render :update do |page|
+      page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
+      page << "$('offset-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone.due_at.to_time)}'});"
+
+      @tasks.each do |t|
+        page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
+        page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
+      end
+    end
+  end
+  
   
   def gantt_offset(d)
     days = (d.to_i - Time.now.utc.midnight.to_i) / 1.day

@@ -460,6 +460,17 @@ fieldset input.button {
   margin-bottom: 0.2em;
 }
 
+fieldset input.checkbox {
+  float: left;
+  clear: right;
+  text-align: left;
+  margin-right: 0.5em;
+  margin-bottom: 0.2em;
+  padding-left: 0;
+  margin-left: 0;
+}
+
+
 fieldset textarea {
   float: left;
   clear: right;
@@ -2285,5 +2296,5 @@ a.widget-collapsed {
  }
 
 #task_list {
-  padding-bottom: 25px;
+  padding-bottom: 30px;
 }

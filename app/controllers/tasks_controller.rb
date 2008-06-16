@@ -808,6 +808,8 @@ class TasksController < ApplicationController
   def ajax_check
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
 
+    old_status = @task.status_type
+    
     unless @task.completed_at
 
       @task.completed_at = Time.now.utc
@@ -820,6 +822,8 @@ class TasksController < ApplicationController
           repeat_task(@task)
       end
 
+      body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n"
+      
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = @task.project.company
@@ -829,11 +833,11 @@ class TasksController < ApplicationController
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.log_type = EventLog::TASK_COMPLETED
-      worklog.body = ""
+      worklog.body = body
       worklog.save
 
       if current_user.send_notifications
-        Notifications::deliver_changed(:completed, @task, current_user, "" ) rescue nil
+        Notifications::deliver_changed(:completed, @task, current_user, body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
