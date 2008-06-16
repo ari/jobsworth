@@ -3,7 +3,7 @@
     <td width="1%" style="text-align:right;padding-right:0.5em;font-weight:bold;"><%= worked_nice(@t.milestone.worked_minutes)%></td>
     <td id="duration-<%=@t.milestone.dom_id%>" width="1%" style="text-align:right;font-weight:bold;"><%= worked_nice(@t.milestone.duration)%></td>
     <td style="padding-left:0.5em;text-align:right;">
-	<% if current_user.can?(@t.project,'prioritize')%>
+	<% if current_user.can?(@t.project,'milestone')%>
 	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.milestone.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.milestone.due_at.strftime(current_user.date_format) if @t.milestone.due_at %>" />
 	      <img alt="Calendar" class="date" id="due-<%=@t.milestone.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/>
 <script type="text/javascript">
