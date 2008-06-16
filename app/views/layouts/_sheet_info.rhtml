@@ -22,7 +22,7 @@
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" -%>
   <% end %>
-  <%= worked_nice(@current_sheet.duration) -%><%= info_string -%>
+  <%= worked_nice(@current_sheet.duration/60) -%><%= info_string -%>
 <% end %>
 <% daily_total = total_today * 60 %>
 <% if daily_total > 0 %>

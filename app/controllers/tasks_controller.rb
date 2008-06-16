@@ -1138,7 +1138,8 @@ class TasksController < ApplicationController
       end
       @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
 
-      @log.duration = parse_time(params[:log][:duration], true)
+      @log.duration = parse_time(params[:log][:duration])
+#      @log.duration = parse_time(params[:log][:duration], true)
 
       @log.task.updated_by_id = current_user.id
 
@@ -1531,7 +1532,8 @@ class TasksController < ApplicationController
   def pause_work_ajax
     if @current_sheet 
       if @current_sheet.paused_at
-        @current_sheet.paused_duration += ((Time.now.utc - @current_sheet.paused_at) / 60).to_i
+#        @current_sheet.paused_duration += ((Time.now.utc - @current_sheet.paused_at) / 60).to_i
+        @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
         @current_sheet.paused_at = nil
       else
         @current_sheet.paused_at = Time.now.utc

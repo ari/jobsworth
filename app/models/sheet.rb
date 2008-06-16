@@ -10,8 +10,9 @@ class Sheet < ActiveRecord::Base
   def duration
     d = (Time.now.utc - self.created_at).to_i
     d = d - (Time.now.utc - self.paused_at).to_i unless self.paused_at.nil?
-    d = d - (self.paused_duration * 60)
-    d / 60
+    d = d - (self.paused_duration)
+#    d = d - (self.paused_duration * 60)
+#    d / 60
   end
 
 end
