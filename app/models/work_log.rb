@@ -40,7 +40,7 @@ class WorkLog < ActiveRecord::Base
   end
 
   def ended_at
-    self.started_at + self.duration.minutes + self.paused_duration.minutes
+    self.started_at + self.duration + self.paused_duration
   end
 
 end

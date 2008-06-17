@@ -63,7 +63,7 @@ class ReportsController < ApplicationController
     when 13
       "#{tz.utc_to_local(w.started_at).strftime("%Y-%m-%d %H:%M")}"
     when 14
-      tz.utc_to_local(w.started_at) + w.duration.minutes
+      tz.utc_to_local(w.started_at) + w.duration
     when 15
       if w.body && !w.body.empty?
         "#{w.customer.name}_#{w.project.name}_#{w.task.name}_#{w.id}"
@@ -137,9 +137,15 @@ class ReportsController < ApplicationController
       @row_totals[rkey] ||= 0
       @rows[ rkey ]['__'] = rname
     end
-    @rows[rkey][vkey] ||= 0 if duration.is_a? Fixnum
-    @rows[rkey][vkey] ||= ""
-    @rows[rkey][vkey] += duration if duration
+    if duration.is_a? Fixnum
+      @rows[rkey][vkey] ||= 0 
+      @rows[rkey][vkey] += duration if duration
+    else 
+      @rows[rkey][vkey] ||= ""
+      @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration
+      @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration && !(duration.include?('#') || duration.include?('small'))
+      @rows[rkey][vkey] += duration if duration
+    end 
   end
 
 
@@ -171,7 +177,7 @@ class ReportsController < ApplicationController
     elsif key == "2_end"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration.minutes).strftime(current_user.time_format)}")
+      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration).strftime(current_user.time_format)}")
     elsif key == "3_task"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)

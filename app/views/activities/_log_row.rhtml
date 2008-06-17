@@ -7,7 +7,7 @@
     <% else %>
     <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
     <% end %>
-  <%= link_to "#{worked_nice(log.duration)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
+  <%= link_to "#{worked_nice(log.duration/60)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" width="36px" valign="top">
   <% if log.task_id.to_i > 0 %>

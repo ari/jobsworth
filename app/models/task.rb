@@ -267,10 +267,13 @@ class Task < ActiveRecord::Base
   end
 
   def overdue?
-    return self.due_date <= Time.now.utc if self.due_date
-    false
+    self.due_date ? (self.due_date <= Time.now.utc) : false
   end
 
+  def started?
+    worked_minutes > 0 || self.worked_on?
+  end
+  
   def due_date
     if self.due_at?
       self.due_at
@@ -291,8 +294,13 @@ class Task < ActiveRecord::Base
 
   def minutes_left
     d = self.duration - self.worked_minutes 
+    d = 240 if d < 0 && self.duration > 0
     d = 0 if d < 0
     d
+  end
+
+  def overworked?
+    ((self.duration - self.worked_minutes) < 0 && self.duration > 0)
   end
   
   def full_name

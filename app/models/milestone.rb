@@ -43,14 +43,15 @@ class Milestone < ActiveRecord::Base
 
   def worked_minutes
     if @minutes.nil?
-      @minutes = WorkLog.sum('work_logs.duration', :joins => "INNER JOIN tasks ON tasks.milestone_id = #{self.id}", :conditions => ["work_logs.task_id = tasks.id"] ) || 0
+      @minutes = WorkLog.sum('work_logs.duration', :joins => "INNER JOIN tasks ON tasks.milestone_id = #{self.id}", :conditions => ["work_logs.task_id = tasks.id AND tasks.completed_at IS NULL"] ) || 0
+      @minutes /= 60
     end 
     @minutes
   end
 
   def duration
     if @duration.nil?
-      @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ?", self.id]) || 0
+      @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id]) || 0
     end 
     @duration
   end

@@ -1129,6 +1129,9 @@ class TasksController < ApplicationController
 
   def save_log
     @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
+    
+    old_duration = @log.duration
+    
     if @log.update_attributes(params[:log])
 
       if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
@@ -1143,7 +1146,7 @@ class TasksController < ApplicationController
       @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
 
       @log.duration = parse_time(params[:log][:duration])
-#      @log.duration = parse_time(params[:log][:duration], true)
+      @log.duration = old_duration if(old_duration / 60 == @log.duration) 
 
       @log.task.updated_by_id = current_user.id
 
@@ -1536,7 +1539,6 @@ class TasksController < ApplicationController
   def pause_work_ajax
     if @current_sheet 
       if @current_sheet.paused_at
-#        @current_sheet.paused_duration += ((Time.now.utc - @current_sheet.paused_at) / 60).to_i
         @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
         @current_sheet.paused_at = nil
       else
