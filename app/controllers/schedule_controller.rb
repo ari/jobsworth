@@ -4,6 +4,7 @@ class ScheduleController < ApplicationController
 
   helper_method :gantt_offset
   helper_method :gantt_width
+  helper_method :gantt_color
   
   def list
 
@@ -266,6 +267,9 @@ class ScheduleController < ApplicationController
 
     @range = []
 
+    @milestone_start = { }
+    @milestone_end = { }
+    
     start_date = current_user.tz.now.midnight + 8.hours
 
     tasks = @tasks.select{ |t| t.due_at }
@@ -285,6 +289,14 @@ class ScheduleController < ApplicationController
       @range[1] ||= range[1]
       @range[1] = range[1] if range[1] > @range[1]
 
+      if t.milestone_id.to_i > 0
+        @milestone_start[t.milestone_id] ||= range[0]
+        @milestone_start[t.milestone_id]   = range[0] if @milestone_start[t.milestone_id] > range[0]
+        
+        @milestone_end[t.milestone_id] ||= range[1]
+        @milestone_end[t.milestone_id]   = range[1] if @milestone_end[t.milestone_id] < range[1]
+      end
+      
       logger.info "#{t.id} [#{format_duration(t.minutes_left, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)}] : #{@start[t.id]} -> #{@end[t.id]}"
       
     end
@@ -326,7 +338,11 @@ class ScheduleController < ApplicationController
 
       if @task.milestone_id.to_i > 0
         page.replace_html "duration-#{@task.milestone.dom_id}", worked_nice(@task.milestone.duration)
+        page << "$('offset-#{@task.milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[@task.milestone_id])}'});"
+        page << "$('width-#{@task.milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@task.milestone_id], @milestone_end[@task.milestone_id])}'});"
       end
+      
+      page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
       
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
@@ -362,7 +378,8 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
-      page << "$('offset-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone.due_at.to_time)}'});"
+      page << "$('offset-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[@milestone.id])}'});"
+      page << "$('width-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id])}'});"
 
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
@@ -388,6 +405,28 @@ class ScheduleController < ApplicationController
     w = 2 if w < 2
 
     "#{w.to_i}px"
+  end
+  
+  def gantt_color(t)
+    if t.overdue?
+      "#f66"
+    elsif t.due_at? 
+     if t.overworked?
+       "#ff9900"
+     elsif t.started? 
+       "#1e7002"
+     else 
+       "#00f"
+     end 
+    else 
+      if t.overworked?
+       "#ff9900"
+      elsif t.started? 
+       "#76a670"
+     else 
+       "#88f"
+     end 
+    end
   end
 
 end
