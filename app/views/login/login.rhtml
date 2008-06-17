@@ -116,10 +116,9 @@ document.forms[0].username.focus();
     </td>
 
     <td valign="top">
-  <% if flash[:notice] %><div id=notice><%= flash[:notice] %><% flash.clear %></div><br />
+  <% if flash[:notice] %><div id="notice"><%= flash[:notice] %><% flash.clear %></div><br />
   <% else %>
-  <% lines = [
-    "<strong>After introducing <span style=\"color:#fba105;\">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align=\"right\" style=\"padding-right:1em;\"><em>-- Erlend Simonsen</em>",
+  <% lines = [ "<strong>After introducing <span style=\"color:#fba105;\">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align=\"right\" style=\"padding-right:1em;\"><em>-- Erlend Simonsen</em>",
     "<strong>Firstly, let me add my voice to the many telling you your application is wonderful!</strong>",
     "<strong>I, like everyone else, love <span style=\"color:#fba105;\">ClockingIT</span></strong>",
     "<strong>You're doing a fantastic job!</strong>",
@@ -165,11 +164,13 @@ document.forms[0].username.focus();
     "<strong>Thanks again for everything - you've helped our little startup become successful!</strong>",
     "<strong>Thanks Erlend! I really love <span style=\"color:#fba105;\">ClockingIT</span>.</strong>",
     "<strong>I really love it, being a web developer myself I enjoy the simplicity of the system you have built.</strong>",
+    "<strong>Wow. Just wow!</strong>",
+    "<strong>AMAZING!</strong>",
+    "<strong>I am in LOVE with <span style=\"color:#fba105;\">ClockingIT</span>!</strong>",
+    "<strong>In my eight years of cunsulting, I've never seen a faster turn-around from feature request to completed implementation.</strong>",
     "<strong>We're now accurately able to track hours in each task and we'll be using that to bill our clients, so it's AWESOME!</strong>"
     ]
     %>
-
-
 
   <div style="padding-top:1em;padding-right:1em;">&quot;<%= lines[rand(lines.size)]%>&quot;</div>
 

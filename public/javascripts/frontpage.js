@@ -8,9 +8,10 @@ var captions = ["",
   "Find the needle in the haystack.",
   "It's about time...",
   "Keep project related files accessible.",
-  "Chat with coworkers."
+  "Chat with coworkers.",
+  "Easily plan ahead."
 ];
-var numimages = 9;
+var numimages = 10;
 var currentimage = 1;
 
 var preloader = [];
