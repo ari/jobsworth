@@ -1,15 +1,15 @@
 
 var captions = ["",
   "Never forget another task.",
-  "Organize your tasks how YOU want.",
+  "Sort, filter and browse your tasks.",
   "Ever wonder what has been done lately?",
-  "Your schedule at a glance.",
+  "Easily plan ahead.",
   "Classify your tasks and issues.",
   "Find the needle in the haystack.",
   "It's about time...",
   "Keep project related files accessible.",
   "Chat with coworkers.",
-  "Easily plan ahead."
+  "Your schedule at a glance."
 ];
 var numimages = 10;
 var currentimage = 1;
