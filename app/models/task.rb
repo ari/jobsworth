@@ -267,7 +267,7 @@ class Task < ActiveRecord::Base
   end
 
   def overdue?
-    self.due_date ? (self.due_date <= Time.now.utc) : false
+    self.due_date ? (self.due_date.to_time <= Time.now.utc) : false
   end
 
   def started?
