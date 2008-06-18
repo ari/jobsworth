@@ -34,7 +34,7 @@
 <div style="height:19px;position:relative;">
        <% s = @range[0]
 	  left = 0
-          while s < @range[1] do
+          while s && s < @range[1] do
 #	  if s.next_month.beginning_of_month < @range[1] 
                 w = ((s.next_month.beginning_of_month.to_i - s.midnight.to_i)/1.day) * 16 - 1
 		style = "width:#{w}px;border-right:1px solid #999;"
@@ -54,7 +54,7 @@
 <div style="clear:both;height:20px;position:relative;">
        <% s = @range[0]
 	  w = 0
-          while s < @range[1] do 
+          while s && s < @range[1] do 
 	  %>
        <div style="position:absolute;left:<%=w%>px;top:0;width:15px;border-right:1px solid #eee;text-align:center;height:20000px;<%="background-color:#eee;" if s.wday == 0 || s.wday == 6%>">
 	  <%= s.day %>
