@@ -93,7 +93,7 @@ class ApplicationController < ActionController::Base
       reset_session
     end
     
-    if session[:user_id].nil?
+    if session[:user_id].to_i == 0
       if !request.request_uri.include?('/login/login') && !request.request_uri.include?('update_sheet_info')
         session[:redirect] = request.request_uri 
       elsif session[:history] && session[:history].size > 0
@@ -111,8 +111,14 @@ class ApplicationController < ActionController::Base
     else
       # Refresh the User object
       # Subscribe general info channel
-      session[:channels] = ["info_#{current_user.company_id}", "user_#{current_user.id}"]
-
+      begin
+        session[:channels] = ["info_#{current_user.company_id}", "user_#{current_user.id}"]
+      rescue
+        flash['notice'] = 'Non-existing user'
+        redirect_to "/login/login"
+        return true
+      end 
+        
       current_user.shout_channels.each do |ch|
         session[:channels] << "channel_passive_#{ch.id}"
       end
