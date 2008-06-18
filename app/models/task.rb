@@ -53,8 +53,6 @@ class Task < ActiveRecord::Base
     r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project.id])
     r.project.save
 
-    logger.info("test: #{r.project.id} vs #{r.project_id}")
-    
     if r.project.id != r.project_id
       # Task has change projects, update counts of target project as well
       p = Project.find(r.project_id)
