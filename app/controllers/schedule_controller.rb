@@ -312,7 +312,7 @@ class ScheduleController < ApplicationController
     end 
     
     if params[:duration]
-      @task.duration = parse_time(params[:duration])
+      @task.duration = parse_time(params[:duration], true)
     end 
     
     if params[:due] && params[:due].length > 0
