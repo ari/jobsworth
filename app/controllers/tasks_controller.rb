@@ -1148,7 +1148,7 @@ class TasksController < ApplicationController
       @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
 
       @log.duration = parse_time(params[:log][:duration])
-      @log.duration = old_duration if(old_duration / 60 == @log.duration) 
+      @log.duration = old_duration if((old_duration / 60) == (@log.duration / 60)) 
 
       @log.task.updated_by_id = current_user.id
 
