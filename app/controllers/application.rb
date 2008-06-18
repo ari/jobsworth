@@ -114,7 +114,8 @@ class ApplicationController < ActionController::Base
       begin
         session[:channels] = ["info_#{current_user.company_id}", "user_#{current_user.id}"]
       rescue
-        flash['notice'] = 'Non-existing user'
+        flash['notice'] = 'Unable to find user'
+        session[:user_id] = nil
         redirect_to "/login/login"
         return true
       end 
