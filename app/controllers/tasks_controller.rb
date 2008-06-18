@@ -282,6 +282,8 @@ class TasksController < ApplicationController
 
     if @task.save
 
+      session[:last_project_id] = @task.project_id
+      
       if params[:watchers]
         params[:watchers].uniq.each do |elem|
           elem.split(',').each do |w|
