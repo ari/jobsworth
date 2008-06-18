@@ -1,8 +1,8 @@
 <tr>
-    <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;"><%= link_to_task(@t) %></div></td>
+    <td style="height:20px;vertical-align:top;width:260px;padding-right:0.5em;" nowrap><div style="width:250px;overflow:hidden;height:16px;" nowrap><%= link_to_task(@t) %></div></td>
     <td width="1%" style="text-align:right;padding-right:0.5em;"><%= worked_nice(@t.worked_minutes)%></td>
     <td width="1%" style="text-align:right;"><% if current_user.can?(@t.project,'prioritize')%><input tabindex="<%=tab%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
-    <td style="padding-left:0.5em;text-align:right;">
+    <td style="padding-left:0.5em;text-align:right;" nowrap>
 	<% if current_user.can?(@t.project,'prioritize')%>
 	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.due_at.strftime(current_user.date_format) if @t.due_at %>" />
 	      <img alt="Calendar" class="date" id="due-<%=@t.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/>
