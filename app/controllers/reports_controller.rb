@@ -375,7 +375,7 @@ class ReportsController < ApplicationController
               w.project = t.project
               w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
               w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
-              w.duration = t.duration.to_i > 0 ? t.duration : 60
+              w.duration = t.duration.to_i > 0 ? (t.duration*60) : 3600
               @logs << w
             end
           else
@@ -386,7 +386,7 @@ class ReportsController < ApplicationController
             w.project_id = t.project_id
             w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
             w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
-            w.duration = t.duration.to_i > 0 ? t.duration : 60
+            w.duration = t.duration.to_i > 0 ? (t.duration*60) : 3600
             @logs << w
           end
 
