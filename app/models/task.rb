@@ -48,14 +48,25 @@ class Task < ActiveRecord::Base
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
 
-    r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project_id])
-    r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project_id])
-    r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project_id])
+    r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project.id])
+    r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project.id])
+    r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project.id])
     r.project.save
 
+    logger.info("test: #{r.project.id} vs #{r.project_id}")
+    
+    if r.project.id != r.project_id
+      # Task has change projects, update counts of target project as well
+      p = Project.find(r.project_id)
+      p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
+      p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
+      p.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id])
+      p.save
+    end
+    
     if r.milestone
-      r.milestone.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", r.milestone_id] )
-      r.milestone.total_tasks = Task.count( :conditions => ["milestone_id = ?", r.milestone_id] )
+      r.milestone.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", r.milestone.id] )
+      r.milestone.total_tasks = Task.count( :conditions => ["milestone_id = ?", r.milestone.id] )
       r.milestone.save
     end
 
