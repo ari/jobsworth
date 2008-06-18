@@ -175,9 +175,10 @@ class ApplicationController < ActionController::Base
 
       if total == 0 && input.to_i > 0
         total = input.to_i
-        total = total * 60 unless minutes
       end
 
+      total = total * 60 unless minutes
+      
     end
     total
   end
