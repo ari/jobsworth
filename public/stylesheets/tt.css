@@ -769,6 +769,10 @@ pre.auto_generated {
   list-style: square;
 }
 
+#content { 
+  padding-bottom: 30px;
+}
+
 #content ul
 {
   list-style: none;
@@ -2295,6 +2299,3 @@ a.widget-collapsed {
 .presence-info-mine { 
  }
 
-#task_list {
-  padding-bottom: 30px;
-}
