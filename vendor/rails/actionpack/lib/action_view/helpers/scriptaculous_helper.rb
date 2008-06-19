@@ -166,7 +166,7 @@ module ActionView
 				options[option] = "'#{options[option]}'" if options[option]
 		   end
 
-        draggable_element_js(element_id, options).chop!)
+			javascript_tag(draggable_element_js(element_id, options).chop!)
       end
       
       def draggable_element_js(element_id, options = {}) #:nodoc:
