@@ -24,16 +24,23 @@ setup script or web page at a later stage.
 
 2. mysql -u root -p
    create database cit;
-   grant all on cit.* to cit@localhost identified by '<password>';
+   grant all on cit.* to 'cit'@'localhost' identified by '<password>';
    flush privileges;
 
 3. Copy config/*.yml-example to config/*.yml and modify as needed
+   Make sure you change:
+	$CONFIG = { :domain => "clockingit.com" }
+   in config/environment.rb to something suitable.
 
 4. mkdir index log store; chmod a+rwx log index store tmp/*
 5. export RAILS_ENV=production; rake db:schema:load
 6. Edit /etc/hosts on a machine with a web-browser and add:
-   ip.to.clockingit.server www.clockingit.com
-   ip.to.clockingit.server <subdomain>.clockingit.com
+   ip.to.cit.server <subdomain>.yourdomain.com
+
+	or
+
+	setup DNS to point <subdomain>.yourdomain.com to point
+	to the server
 
 7. rake asset:packager:build_all
 
@@ -43,7 +50,7 @@ setup script or web page at a later stage.
    sudo ./script/ferret_server -e production start
    ./lib/daemons/mail_sender.rb (if you want daily reminder emails)
    ./script/server -e production
-   Create the initial account at http://www.clockingit.com:3000/login/signup
+   Create the initial account at http://<subdomain>.clockingit.com:3000/login/signup
 
 9.Sign in from http://<subdomain>.clockingit.com:3000/
 
