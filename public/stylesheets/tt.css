@@ -242,7 +242,7 @@ legend {
 }
 
 img {
-  vertical-align: bottom;
+  vertical-align: sub;
   padding: 0;
   margin: 0;
   display: inline-block;
