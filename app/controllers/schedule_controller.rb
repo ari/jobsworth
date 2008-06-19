@@ -336,18 +336,23 @@ class ScheduleController < ApplicationController
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.duration)
       page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime(current_user.date_format) : "")
 
-      if @task.milestone_id.to_i > 0
-        page.replace_html "duration-#{@task.milestone.dom_id}", worked_nice(@task.milestone.duration)
-        page << "$('offset-#{@task.milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[@task.milestone_id])}'});"
-        page << "$('width-#{@task.milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@task.milestone_id], @milestone_end[@task.milestone_id])}'});"
-      end
-      
       page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
+
+      milestones = { }
       
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
+        milestones[t.milestone_id] = t.milestone if t.milestone_id.to_i > 0
       end
+      
+      milestones.values.each do |m|
+        page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
+        page << "$('offset-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[m.id])}'});"
+        page << "$('offset-#{m.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[m.id], @milestone_end[m.id]).to_i + 500}px'});"
+        page << "$('width-#{m.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[m.id], @milestone_end[m.id])}'});"
+      end
+      
     end
   end
 
@@ -379,12 +384,25 @@ class ScheduleController < ApplicationController
     render :update do |page|
       page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
       page << "$('offset-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[@milestone.id])}'});"
+      page << "$('offset-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id]).to_i + 500}px'});"
       page << "$('width-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id])}'});"
 
+      milestones = { }
+      
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
+        page << "$('offset-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id]).to_i + 500}px'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
+        milestones[t.milestone_id] = t.milestone if t.milestone_id.to_i > 0
       end
+
+      milestones.values.each do |m|
+        page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
+        page << "$('offset-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[m.id])}'});"
+        page << "$('offset-#{m.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[m.id], @milestone_end[m.id]).to_i + 500}px'});"
+        page << "$('width-#{m.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[m.id], @milestone_end[m.id])}'});"
+      end
+      
     end
   end
   

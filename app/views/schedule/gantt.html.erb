@@ -28,9 +28,9 @@
 	end %>
 </table>
     </td>
-    <td width="90%" valign="top" style="padding-left:0.3em;">
+    <td width="70%" valign="top" style="padding-left:0.3em;">
 
-<div style="width:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;">
+<div style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;">
 <div style="height:19px;position:relative;">
        <% s = @range[0]
 	  left = 0
@@ -65,33 +65,37 @@
 </div>
 
 <% last_milestone = nil
+   row = 2
    @tasks.each do |t|
    if t.milestone_id.to_i > 0 && t.milestone_id != last_milestone
      last_milestone = t.milestone_id
 %>
-<div style="vertical-align:top;position:relative;height:20px;clear:both;">
-      <div id="offset-<%=t.milestone.dom_id%>" style="position:relative;left:<%=gantt_offset( @milestone_start[t.milestone_id] )%>;padding-top:3px;">
-	<div id="width-<%=t.milestone.dom_id%>" style="float:left;width:<%= gantt_width(@milestone_start[t.milestone_id], @milestone_end[t.milestone_id])%>;margin-right:0.3em;vertical-align:top;background:url(/images/milestone_bar.gif) repeat-x;">
-	      <div style="float:left;"><img src="/images/milestone_end.gif" /></div>
-	      <div style="float:right;"><img src="/images/milestone_end.gif" /></div>
+<div style="clear:both;height:20px;position:relative;overflow:visible;width:100%;">
+	<div id="offset-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( @milestone_start[t.milestone_id] )%>;top:0px;padding-top:3px;width:<%= gantt_width(@milestone_start[t.milestone_id], @milestone_end[t.milestone_id]).to_i + 500%>px;">
+	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:<%= gantt_width(@milestone_start[t.milestone_id], @milestone_end[t.milestone_id])%>;margin-right:0.3em;vertical-align:top;background:url(/images/milestone_bar.gif) repeat-x;">
+	    <div style="float:left;"><img src="/images/milestone_end.gif" /></div>
+	    <div style="float:right;"><img src="/images/milestone_end.gif" /></div>
+	      &nbsp;
+	  </div>
+	  <div>
+	    <strong><%= t.milestone.name %></strong>
+	  </div>
 	</div>
-	<div style="float:left;">
-	  <strong><%= t.milestone.name %></strong>
-	</div>
-      </div>
 </div>
-<% end %>
-<div style="vertical-align:top;position:relative;height:20px;clear:both;">
-      <div id="offset-<%=t.dom_id%>" style="position:relative;left:<%=gantt_offset(@start[t.id])%>;padding-top:3px;">
+<%  row += 1
+    end %>
+<div style="clear:both;height:20px;position:relative;width:100%;">
+      <div id="offset-<%=t.dom_id%>" style="position:absolute;left:<%=gantt_offset(@start[t.id])%>;top:0px;padding-top:3px;height:20px;width:<%= gantt_width(@start[t.id], @end[t.id]).to_i + 500%>px;">
 	<div id="width-<%=t.dom_id%>" style="float:left;background-color:<%= gantt_color(t) %>;width:<%=gantt_width(@start[t.id], @end[t.id])%>;margin-right:0.3em;">
 	  &nbsp;
 	</div>
-	<div style="float:left;">
+	<div>
 	  <small><%= ((t.users.size > 0) ? t.users.collect(&:name).join(',') : "[No one]") %></small>
 	</div>
       </div>
 </div>
-<% end %>
+<% row += 1
+   end %>
 <div>&nbsp;</div>
 </div>
     </td>
