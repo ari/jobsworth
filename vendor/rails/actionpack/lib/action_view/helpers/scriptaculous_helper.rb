@@ -162,10 +162,6 @@ module ActionView
       # You can change the behaviour with various options, see
       # http://script.aculo.us for more documentation.
       def draggable_element(element_id, options = {})
-			[:constraint, :handle].each do |option|
-				options[option] = "'#{options[option]}'" if options[option]
-		   end
-
 			javascript_tag(draggable_element_js(element_id, options).chop!)
       end
       
