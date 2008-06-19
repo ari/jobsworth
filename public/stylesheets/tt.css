@@ -242,10 +242,15 @@ legend {
 }
 
 img {
-  vertical-align: bottom;
+  vertical-align: middle;
   padding: 0;
   margin: 0;
   display: inline-block;
+}
+
+input.checkbox { 
+  vertical-align: middle;
+  margin-top:2px;
 }
 
 .task_done {
