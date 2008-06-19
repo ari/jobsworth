@@ -330,6 +330,8 @@ class ScheduleController < ApplicationController
     
     @task.save
 
+    Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+
     gantt
     
     render :update do |page|
