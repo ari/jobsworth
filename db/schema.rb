@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 115) do
+ActiveRecord::Schema.define(:version => 117) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -45,16 +45,17 @@ ActiveRecord::Schema.define(:version => 115) do
   add_index "chats", ["user_id", "position"], :name => "index_chats_on_user_id_and_position"
 
   create_table "companies", :force => true do |t|
-    t.string   "name",           :limit => 200, :default => "",   :null => false
-    t.string   "contact_email",  :limit => 200
-    t.string   "contact_name",   :limit => 200
+    t.string   "name",                :limit => 200, :default => "",    :null => false
+    t.string   "contact_email",       :limit => 200
+    t.string   "contact_name",        :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                     :default => "",   :null => false
-    t.boolean  "show_wiki",                     :default => true
-    t.boolean  "show_forum",                    :default => true
-    t.boolean  "show_chat",                     :default => true
-    t.boolean  "show_messaging",                :default => true
+    t.string   "subdomain",                          :default => "",    :null => false
+    t.boolean  "show_wiki",                          :default => true
+    t.boolean  "show_forum",                         :default => true
+    t.boolean  "show_chat",                          :default => true
+    t.boolean  "show_messaging",                     :default => true
+    t.boolean  "restricted_userlist",                :default => false
   end
 
   add_index "companies", ["subdomain"], :name => "companies_subdomain_index", :unique => true

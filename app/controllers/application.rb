@@ -43,7 +43,16 @@ class ApplicationController < ActionController::Base
 
   def all_users
     unless @all_users
-      @all_users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
+      if current_user.company.restricted_userlist
+        user_ids = [current_user.id]
+        current_user.all_projects.each do |p|
+          user_ids << p.users.collect(&:id)
+        end
+
+        @all_users = User.find(:all, :conditions => ["company_id = ? AND id IN (#{user_ids.uniq.join(',')})", current_user.company_id], :order => "name")
+      else 
+        @all_users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
+      end 
     end
     @all_users
   end
