@@ -1,12 +1,4 @@
-== Welcome to ClockingIT
-
-This is a developer preview, to try and get ClockingIT into releasable
-shape.
-
-I've only done rudimentary testing, so you'll most likely to run into
-some problems. Feel free to let me know at admin@clockingit.com when
-you do, and I'll try and help you get running. I have been able to run
-this version on a pretty much clean install, so it should work.
+== Welcome to ClockingIT v0.99.3
 
 ClockingIT is relased under the terms of the MIT License, see LICENSE
 for more information.
