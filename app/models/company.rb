@@ -28,7 +28,7 @@ class Company < ActiveRecord::Base
   # A small kludge is needed,as it was previously called Internal, now it has the same
   # name as the parent company.
   def internal_customer
-    customers.find(:first, :conditions => ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id])
+    customers.find(:first, :conditions => ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id], :order => 'id')
   end
 
 end
