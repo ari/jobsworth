@@ -389,6 +389,12 @@ class ScheduleController < ApplicationController
       page << "$('offset-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id]).to_i + 500}px'});"
       page << "$('width-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id])}'});"
 
+      if @milestone.due_at
+        page << "$('offset-due-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone.due_at.midnight.to_time)}'});"
+      else 
+        page << "$('offset-due-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[@milestone.id])}'});"
+      end
+
       milestones = { }
       
       @tasks.each do |t|

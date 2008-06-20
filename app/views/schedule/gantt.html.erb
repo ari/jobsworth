@@ -77,8 +77,10 @@
 	      <div style="float:right;"><img src="/images/milestone_end.gif" /></div>
 	      &nbsp;
 	  </div>
-	  <div style="padding-top:1px;">
-	    <strong><%= t.milestone.name %></strong>
+	</div>
+	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.due_at ? t.milestone.due_at.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;">
+	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:17px;margin-right:0.3em;vertical-align:top;height:19px;">
+	      <div style="float:left;"><img src="/images/milestone.gif" class="tooltip" title="<%= (t.milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user))%>"/></div>
 	  </div>
 	</div>
 </div>
