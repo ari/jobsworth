@@ -72,7 +72,7 @@ function tip(myEvent,tip){
   if( left < 0 ) left = 0;
 
   if( (left + width) > winwidth ) {
-    left = left - (left+width - winwidth);
+    left = winwidth - width - 5;
   }
 
   document.getElementById("tip").style.left = left +"px";
