@@ -59,5 +59,7 @@
 <script type="text/javascript">
 $('shout_body').focus();
 window.setTimeout('checkConnection()', 5000.0);
+<% if @invite_targets.size > 0 %>
 new Autocompleter.Local('channel-invite-user', 'invite-autocomplete', [<%= @invite_targets.collect {|n| "'#{n.gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:1, frequency: 0, choices: 15, fullSearch:true});
+<% end %>
 </script>
