@@ -7,6 +7,8 @@ class Customer < ActiveRecord::Base
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
+  validates_uniqueness_of       :name, :scope => 'company_id'
+  
   validates_presence_of         :company_id
 
   after_destroy { |r|
