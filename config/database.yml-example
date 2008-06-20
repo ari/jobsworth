@@ -1,23 +1,23 @@
 development:
   adapter: mysql
-  database: cit_dev
+  database: DATABASE
   host: localhost
-  username: cit
-  password: cit
+  username: USERNAME
+  password: PASSWORD
   encoding: utf8
 
 test:
   adapter: mysql
-  database: cit_test
+  database: DATABASE_test
   host: localhost
-  username: cit
-  password: cit
+  username: USERNAME
+  password: PASSWORD
   encoding: utf8
 
 production:
   adapter: mysql
-  database: cit
+  database: DATABASE
   host: localhost
-  username: cit
-  password: cit
+  username: USERNAME
+  password: PASSWORD
   encoding: utf8
