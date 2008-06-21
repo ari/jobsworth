@@ -100,7 +100,14 @@ end
 
 if missing_dep
   puts "Please install required Ruby Gems:"
-  puts "  sudo gem install #{missing_deps.join(" ")}"
+  puts "  sudo gem install #{missing_deps.join(" ")} -r"
+  puts
+  if missing_deps.include? "rmagick"
+    puts "rmagick requires ImageMagick. If you're unable to install ImageMagick 6.3.0+, which the latest"
+    puts "version of rmagick requires, please install version 1.5.14 instead: "
+    puts "  sudo gem install rmagick --version=1.5.14 -r"
+  end
+  
   exit
 end
 
@@ -293,7 +300,8 @@ init_db = gets
 init_db = "n" if init_db == "\n"
 
 if init_db.include?('y') || init_db.include?('Y')
-  system("RAILS_ENV=production rake db:schema:load")
+  puts "Initializing database schema"
+  system("rake db:schema:load RAILS_ENV=production")
 end
 
 puts 
@@ -375,7 +383,7 @@ system("rake asset:packager:build_all")
 puts "Done"
 
 puts "Running any pending migrations..."
-system("rake db:migrate")
+system("rake db:migrate RAILS_ENV=production")
 puts "Done"
 
 puts 
