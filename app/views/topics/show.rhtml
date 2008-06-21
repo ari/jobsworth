@@ -5,7 +5,7 @@
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
     onclick="if (this.checked) {<%= remote_function :url => topic_monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => topic_monitorship_path(@forum, @topic), :method => :delete %>}" />
-  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring topic' : 'Monitor topic' %></label>
+  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? _('Monitoring topic') : _('Monitor topic') %></label>
   <%= hidden_field_tag '_method', 'delete' if @monitoring %>
   <%= submit_tag :Set, :id => 'monitor_submit' %>
 </div>
@@ -13,13 +13,13 @@
 
 
 <div class="crumbs">
-  <%= link_to "Forums", home_path %> <span class="arrow">&rarr;</span>
+  <%= link_to _("Forums"), home_path %> <span class="arrow">&rarr;</span>
   <%= link_to h(@topic.forum.name), forum_path(@topic.forum) %>
   <%
   page=session[:forum_page] ? session[:forum_page][@topic.forum.id] : nil
   if page and page!=1 %>
   <small style="color:#ccc">
-  (<%= link_to "page #{page}", forum_path(:id => @topic.forum, :page => page) %>)
+  (<%= link_to _("page %s", page), forum_path(:id => @topic.forum, :page => page) %>)
   </small>
   <% end %>
   <span class="arrow">&rarr;</span>
@@ -30,19 +30,19 @@
 
   <%= h @topic.title %>
   <% if @topic.locked? %>
-  <span>(<%= 'locked' %>)</span>
+  <span>(<%= _ 'locked' %>)</span>
   <% end %>
     <span style="display:none;" id="topic_mod">
       <% if @topic.editable_by?(current_user) -%>
-        <%= link_to('edit', edit_topic_path(@forum, @topic), :class => "utility") %> |
-        <%= link_to('delete', topic_path(@forum, @topic), :class => "utility", :method => :delete, :confirm => 'Delete this topic forever?') %>
+        <%= link_to(_('Edit'), edit_topic_path(@forum, @topic), :class => "utility") %> |
+        <%= link_to(_('Delete'), topic_path(@forum, @topic), :class => "utility", :method => :delete, :confirm => _('Delete this topic forever?')) %>
       <% end -%>
     </span>
 </h1>
 
 <p class="subtitle">
-  <%= "#{count=@topic.posts.count; number_with_delimiter(count)} post(s)" %>,
-  <%= "#{count=@topic.voice_count; number_with_delimiter(count)} voice(s)" %>,
+  <%= _ "%d posts", @topic.posts.count %>,
+  <%= _ "%d voices", @topic.voice_count %>
 </p>
 
 <%= will_paginate @posts %>
@@ -73,20 +73,20 @@
     <% if post.user.admin? or post.forum.moderators.include?(post.user) %>
     <span class="admin">
       <% if((post.forum.company_id.nil? && post.user.admin > 1) || (!post.forum.company_id.nil? && post.user.admin?)) %>
-      <%= 'Administator' %>
+      <%= _ 'Administator' %>
       <% elsif post.forum.moderators.include?(post.user) %>
-      <%= 'Moderator' %>
+      <%= _ 'Moderator' %>
       <% end %>
     </span>
     <% end %>
-    <span class="posts"><%= "#{count=post.user.posts_count; number_with_delimiter(count)} post(s)" %></span>
+    <span class="posts"><%= _ "%d posts", post.user.posts_count %></span>
 
 
     <% if post.editable_by?(current_user) -%>
     <p>
       <span class="edit">
         <%= ajax_spinner_for "edit-post-#{post.id}", "spinner_bounce.gif" %>
-        <%= link_to_remote('Edit post',
+        <%= link_to_remote(_('Edit post'),
               {:url => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post), :method => :get,
                :before => "EditForm.init(#{post.id});", :condition => "!EditForm.isEditing(#{post.id})" },
               {:href => edit_post_path(:forum_id => @forum, :topic_id => @topic, :id => post, :page => params[:page]), :class => "utility"}) %>
@@ -109,13 +109,13 @@
 <div id="edit"></div>
 <% if @topic.locked? %>
 <p>
-    <%= image_tag "clearbits/lock.gif", :class => "icon grey", :title => "Topic locked" %>
+    <%= image_tag "clearbits/lock.gif", :class => "icon grey", :title => _("Topic locked") %>
     <label>
-    <%= 'This topic is locked' %>.</label>
+    <%= _ 'This topic is locked' %>.</label>
 </p>
 <% else %>
 
-<p><%= link_to_function 'Reply to topic', "ReplyForm.init()", :class => "utility" %></p>
+<p><%= link_to_function _('Reply to topic'), "ReplyForm.init()", :class => "utility" %></p>
 
 <div id="reply" class="editbox">
 <div class="container">
@@ -129,23 +129,23 @@
       <td valign="top">
 
 
-        <h5><%= 'Formatting Help' %></h5>
+        <h5><%=_ 'Formatting Help' %></h5>
 
         <ul class="help">
-          <li><%= '*bold*' %>
+          <li><%= _'*bold*' %>
           &nbsp; &nbsp; &nbsp;
-          <%= '_italics_' %>
+          <%= _ '_italics_' %>
           &nbsp; &nbsp; &nbsp;<br />
-          <%= 'bq. <span>(quotes)</span>' %></li>
+          <%= "bq. <span>(#{_'quotes'})</span>" %></li>
           <li>"IBM":http://www.ibm.com</li>
-          <li><%= '* or # <span>(lists)</span>' %></li>
+          <li><%= "* or # <span>(#{_'lists'})</span>" %></li>
         </ul>
 
       </td>
     </tr>
     <tr>
       <td valign="bottom" style="padding-bottom:15px;">
-       <%= submit_tag "Save Reply" %><span class="button_or">or <%= link_to_function 'cancel', "$('reply').hide()" %></span>
+       <%= submit_tag _("Save Reply") %><span class="button_or">or <%= link_to_function _('cancel'), "$('reply').hide()" %></span>
      </td>
    </tr>
   </table>
@@ -156,6 +156,6 @@
 <% end %>
 
 <div class="crumbs" style="margin-top:1.1em;">
-  <%= link_to "Forums", home_path %> <span class="arrow">&rarr;</span>
+  <%= link_to _("Forums"), home_path %> <span class="arrow">&rarr;</span>
   <%= link_to h(@topic.forum.name), forum_path(@topic.forum) %> <span class="arrow">&rarr;</span>
 </div>

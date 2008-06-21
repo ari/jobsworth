@@ -5,11 +5,11 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="noborder nopad wide">
   <td>
-    <label><%= 'Title' %></label><br />
+    <label><%=_ 'Title' %></label><br />
     <%= form.text_field :name, :class => "primary" %>
   </td>
   <td style="text-align:right">
-    <label><%= 'Position' %></label><br />
+    <label><%=_ 'Position' %></label><br />
     <%= form.text_field :position, :size => 5 %>
 
   </td>
@@ -17,12 +17,12 @@
 
 </p>
 <p id="forum_project_id">
-  <label for="forum_project_id"><%= 'Project' %></label><br />
+  <label for="forum_project_id"><%=_ 'Project' %></label><br />
   <% projects = current_user.projects.map {|x| [x.name, x.id] } %>
   <%= form.select :project_id, [[_("[Any Project]"), ""]] + projects %></p>
 </p>
 <p id="forum_descripion">
-<label><%= 'Description' %></label><br />
+<label><%=_ 'Description' %></label><br />
 <%= form.text_area :description, :rows => 7 %></p>
 
 

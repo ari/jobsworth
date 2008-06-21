@@ -1,6 +1,6 @@
-<h1 style="margin-top:0;"><%= 'Forums' %></h1>
+<h1 style="margin-top:0;"><%= _('Forums') %></h1>
 <p class="subtitle">
-<%= feed_icon_tag "Recent Posts", formatted_all_posts_path(:format => 'rss') %>
+<%= feed_icon_tag _("Recent Posts"), formatted_all_posts_path(:format => 'rss') %>
 </p>
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide forums">
@@ -9,41 +9,41 @@
 <% if admin? %>
     <th class="la" colspan="1"></th>
 <% end %>
-    <th class="la" width="29%" colspan="1"><%= 'Last Post' %></th>
+    <th class="la" width="29%" colspan="1"><%= _ 'Last Post' %></th>
   </tr>
 <% for forum in @forums.select{ |f| f.company_id } do %>
   <tr>
     <td class="vat c1">
 
       <% if recent_forum_activity(forum) %>
-      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => 'Recent activity' %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => _('Recent activity') %>
       <% else %>
-      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => _('No recent activity') %>
       <% end %>
     </td>
     <td class="c2 vat">
       <%= link_to h(forum.name), forum_path(forum), :class => "title" %>
       <div class="posts">
-        <%= "#{count=forum.topics_count; number_with_delimiter(count)} topic(s)" %>,
-          <%= "#{count=forum.posts_count; number_with_delimiter(count)} post(s)" %>
+        <%= _("%d topics", forum.topics_count) %>,
+	<%= _("%d posts", forum.posts_count) %>
       </div>
       <p class="desc"><%= forum.description_html %>
         </p>
-      <div class="posts"><%= forum.project_id.nil? ? "Open to everyone from #{current_user.company.name}" : "Open to #{forum.project.full_name} users" %></div>
+      <div class="posts"><%= forum.project_id.nil? ? (_("Open to everyone from %s", current_user.company.name)) : (_("Open to %s users", forum.project.full_name)) %></div>
     </td>
 <% if admin? %>
     <td class="c3">
-      <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if admin? %><br/>
-      <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if admin? %>
+      <%= link_to _('Edit'), edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if admin? %><br/>
+      <%= link_to _('Destroy'), forum_path(forum), :confirm => _("Really delete %s?", forum.name), :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if admin? %>
     </td>
 <% end %>
     <td class="inv lp">
       <% if forum.posts.last %>
         <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
         <%= truncate(forum.posts.last.topic.title, 40) %><br />
-        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
+        <%= "#{_('by')} <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
         <%= time_ago_in_words(forum.posts.last.created_at) %> <%= _('ago') %>
-        <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+        <span>(<%= link_to _('View'), topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
 	</div>
       <% end %>
     </td>
@@ -51,45 +51,45 @@
 <% end %>
   <tr><td colspan="4" class="spacer">&nbsp;</td></tr>
   <tr>
-    <th class="la" width="70%" colspan="2"><%= 'Public Forums' %></th>
+    <th class="la" width="70%" colspan="2"><%=_ 'Public Forums' %></th>
 <% if admin? %>
     <th class="la" colspan="1"></th>
 <% end %>
-    <th class="la" width="30%" colspan="1"><%= 'Last Post' %></th>
+    <th class="la" width="30%" colspan="1"><%=_ 'Last Post' %></th>
   </tr>
 <% for forum in @forums.select{ |f| f.company_id.nil? } do %>
   <tr>
     <td class="vat c1">
 
       <% if recent_forum_activity(forum) %>
-      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => 'Recent activity' %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon green", :title => _('Recent activity') %>
       <% else %>
-      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => 'No recent activity' %>
+      <%= image_tag "clearbits/comment.gif", :class => "icon grey", :title => _('No recent activity') %>
       <% end %>
     </td>
     <td class="c2 vat public">
       <%= link_to h(forum.name), forum_path(forum), :class => "title" %>
       <div class="posts">
-        <%= "#{count=forum.topics_count; number_with_delimiter(count)} topic(s)" %>,
-          <%= "#{count=forum.posts_count; number_with_delimiter(count)} post(s)" %>
+        <%= _("%d topics", forum.topics_count) %>,
+        <%= _("%d posts", forum.posts_count) %>
       </div>
       <p class="desc"><%= forum.description_html %>
         </p>
-      <div class="posts"><%= "Open to everyone using ClockingIT" %></div>
+      <div class="posts"><%= _ "Open to everyone using ClockingIT" %></div>
     </td>
     <td class="c3 public">
 <% if current_user.admin > 1 %>
       <%= link_to 'Edit', edit_forum_path(forum), :class => "tiny", :rel => "directory", :style => "float:right" if current_user.admin > 1 %><br/>
-      <%= link_to 'Destroy', forum_path(forum), :confirm => "Really delete forum?", :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if current_user.admin > 1 %>
+      <%= link_to 'Destroy', forum_path(forum), :confirm => _("Really delete %s?", forum.name), :method => :delete, :class => "tiny utility", :rel => "directory", :style => "float:right" if current_user.admin > 1 %>
 <% end %>
     </td>
     <td class="inv lp">
       <% if forum.posts.last %>
         <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
         <%= truncate(forum.posts.last.topic.title, 40) %><br />
-        <%= "by <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
+        <%= "#{_'by'} <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
         <%= time_ago_in_words(forum.posts.last.created_at) %> <%= _('ago') %>
-        <span>(<%= link_to 'view', topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
+        <span>(<%= link_to _('View'), topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
 	</div>
       <% end %>
     </td>
@@ -98,7 +98,7 @@
 </table>
 
 <% if admin? %>
-<div style="float:right"><%= link_to 'Create New Forum', new_forum_path, :class => "utility" %></div>
+<div style="float:right"><%= link_to _('Create New Forum'), new_forum_path, :class => "utility" %></div>
 <% end %>
 
 <div id="footer" style="clear:both;padding-top:1em;">

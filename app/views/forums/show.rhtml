@@ -5,7 +5,7 @@
 <hr />
 <% end %>
 
-<h5 style="margin-bottom:1.0em;"><%= 'Moderators' %></h5>
+<h5 style="margin-bottom:1.0em;"><%= _ 'Moderators' %></h5>
 
 <% if @forum.moderators.any? -%>
 <ul class="flat" style="margin-top:1em;">
@@ -14,8 +14,8 @@
 <% end -%>
 </ul>
 <% else -%>
-<p><%= 'This forum is currently unmoderated.' %></p>
-<p><%= 'Please always be courteous.' %></p>
+<p><%= _ 'This forum is currently unmoderated.' %></p>
+<p><%= _ 'Please always be courteous.' %></p>
 <% end -%>
 
 <% end %>
@@ -27,14 +27,14 @@
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
     onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum) %>} else {<%= remote_function :url => monitorship_path(@forum), :method => :delete %>}" />
-  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? 'Monitoring forum' : 'Monitor forum' %></label>
+  <label id="monitor_label" for="monitor_checkbox"><%= @monitoring ? _('Monitoring forum') : _('Monitor forum') %></label>
   <%= hidden_field_tag '_method', 'delete' if @monitoring %>
   <%= submit_tag :Set, :id => 'monitor_submit' %>
 </div>
 <% end -%>
 
 <div class="crumbs">
-<%= link_to 'Forums', home_path %> <span class="arrow">&rarr;</span>
+<%= link_to _('Forums'), home_path %> <span class="arrow">&rarr;</span>
 </div>
 <h1 style="margin-top:0.5em">
   <%= h @forum.name %>
@@ -42,14 +42,14 @@
 
 <p class="subtitle">
   <%= feed_icon_tag @forum.name, formatted_forum_posts_path(@forum, :rss) %>
-  <%= "#{count=@forum.topics_count; number_with_delimiter(count)} topic(s)" %>,
-  <%= "#{count=@forum.posts_count; number_with_delimiter(count)} posts(s)" %>,
+  <%= _ "%d topics", @forum.topics_count %>,
+  <%= _ "%d posts", @forum.posts_count %>,
 </p>
 
 
 
 <% if logged_in? %>
-<p style="margin-top:0;"><%= link_to 'New topic', new_topic_path(@forum), :class => "utility" %></p>
+<p style="margin-top:0;"><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>
 <% end %>
 <% if @topics.size > 10 %>
 <p><%= will_paginate @topics %></p><br/>
@@ -57,10 +57,10 @@
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide topics">
 <tr>
-  <th class="la" colspan="2"><%= 'Topic' %></th>
-  <th width="1%"><%= 'Posts' %></th>
-  <th width="1%"><%= 'Views' %></th>
-  <th class="la"><%= 'Last post' %></th>
+  <th class="la" colspan="2"><%=_ 'Topic' %></th>
+  <th width="1%"><%=_ 'Posts' %></th>
+  <th width="1%"><%=_ 'Views' %></th>
+  <th class="la"><%=_ 'Last post' %></th>
 </tr>
 <% for topic in @topics %>
 <tr class="hentry">
@@ -70,42 +70,42 @@
     color = ""
     if topic.locked?
       icon = "lock"
-      post = ", this topic is locked."
+      post = _(", this topic is locked.")
       color = "darkgrey"
     end
     %>
     <% if recent_topic_activity(topic) %>
-    <%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => "Recent activity"+"#{post}" %>
+    <%= image_tag "clearbits/#{icon}.gif", :class => "icon green", :title => _("Recent activity")+"#{post}" %>
     <% else %>
-      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => "No recent activity"+"#{post}" %>
+      <%= image_tag "clearbits/#{icon}.gif", :class => "icon grey #{color}", :title => _("No recent activity")+"#{post}" %>
     <% end %>
   </td>
   <td class="c2">
-    <%= "Sticky"+": <strong>" if topic.sticky? %>
+    <%= _("Sticky")+": <strong>" if topic.sticky? %>
     <%= topic_title_link (topic), :class => "entry-title", :rel => "bookmark" %>
     <%#= link_to h(topic.title), topic_path(@forum, topic), :class => "entry-title", :rel => "bookmark" %>
     <%= "</strong>" if topic.sticky? %>
     <% if topic.paged? -%>
-    <small><%= link_to 'last', topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small>
+    <small><%= link_to _('last'), topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small>
     <% end -%>
   </td>
   <td class="ca inv stat"><%= topic.posts_count-1 %></td>
   <td class="ca inv stat"><%= number_with_delimiter(topic.views) %></td>
   <td class="lp">
     <abbr class="updated" title="<%= topic.replied_at.xmlschema %>"><%= time_ago_in_words(topic.replied_at) %></abbr>
-    <%= "by <span class=\"author\"><strong class=\"fn\">#{h(topic.replied_by_user.display_name)}</strong></span>" %>
-    <span><%= link_to 'view', topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}") %></span>
+    <%= "#{_('by')} <span class=\"author\"><strong class=\"fn\">#{h(topic.replied_by_user.display_name)}</strong></span>" %>
+    <span><%= link_to _('View'), topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}") %></span>
   </td>
 </tr>
 <% end %>
 </table>
 
 <% if @topic_pages and @topic_pages.current.next %>
-<p style="float:right;"><%= link_to 'Next page', { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
+<p style="float:right;"><%= link_to _('Next page'), { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
 <% end %>
 
 <p><%= will_paginate @topics %></p>
 
 <% if logged_in? %>
-<p><%= link_to 'New topic', new_topic_path(@forum), :class => "utility" %></p>
+<p><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>
 <% end%>

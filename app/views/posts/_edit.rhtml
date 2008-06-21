@@ -10,18 +10,18 @@
       </td>
       <td valign="top">
 
-        <%= link_to('delete post', post_path(:forum_id => @post.topic.forum, :topic_id => @post.topic, :id => @post, :page => params[:page]),
-              :class => "utility", :method => :delete, :confirm => "Delete this post?  Are you sure?") %>
+        <%= link_to(_('delete post'), post_path(:forum_id => @post.topic.forum, :topic_id => @post.topic, :id => @post, :page => params[:page]),
+              :class => "utility", :method => :delete, :confirm => _("Delete this post?  Are you sure?")) %>
 
 
-        <h5><%= 'Formatting Help' %></h5>
+        <h5><%= _'Formatting Help' %></h5>
 
         <ul class="help">
-          <li><%= '*bold*' %></li>
-          <li><%= '_italics_' %></li>
-          <li><%= 'bq. <span>(quotes)</span>' %></li>
+          <li><%=_ '*bold*' %></li>
+          <li><%=_ '_italics_' %></li>
+          <li><%= "bq. <span>(#{_ 'quotes'})</span>" %></li>
           <li>"IBM":http://www.ibm.com</li>
-          <li><%= '* or # <span>(lists)</span>' %></li>
+          <li><%= "* or # <span>(#{_ 'lists'})</span>" %></li>
         </ul>
 
       </td>
@@ -29,7 +29,7 @@
     <tr>
       <td valign="bottom" style="padding-bottom:15px;">
         <%= ajax_spinner_for "editbox", "spinner_black.gif" %>
-        <%= submit_tag 'Save Changes', :or => link_to_function('cancel', "EditForm.cancel()") %>
+        <%= submit_tag _('Save'), :or => link_to_function(_('cancel'), "EditForm.cancel()") %>
       </td>
     </tr>
   </table>

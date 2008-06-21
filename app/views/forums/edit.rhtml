@@ -1,12 +1,12 @@
 <div class="crumbs">
-  <%= link_to 'Forums', home_path %> <span class="arrow">&rarr;</span>
+  <%= link_to _('Forums'), home_path %> <span class="arrow">&rarr;</span>
 </div>
 
-<h1><%= 'Edit Forum' %></h1>
+<h1><%= _ 'Edit Forum' %></h1>
 
 <% form_for :forum,
      :url  => forum_path(@forum),
      :html => { :method => :put } do |f| -%>
 <%= render :partial => "form", :object => f %>
-<%= submit_tag 'Save Forum', :or => link_to('Cancel', forums_path) %>
+<%= submit_tag _('Save'), :or => link_to(_('Cancel'), forums_path) %>
 <% end -%>
