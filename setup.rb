@@ -119,11 +119,8 @@ puts "This setup script will overwrite any configuration files you've already cr
 puts "If you don't want this to happen, please press <Ctrl-c> to abort."
 puts "*******************************************************************************************"
 puts
-puts "Please create a database and user for ClockingIT by running something like this: "
-puts " echo \"CREATE DATABASE cit DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON cit.* to 'cit'@'localhost' identified by '<PASSWORD>'; FLUSH PRIVILEGES;\" | mysql -u root -p "
-puts 
 
-print "Enter name of database created for ClockingIT [cit]: "
+print "Enter MySQL database name for ClockingIT [cit]: "
 db = gets 
 db = "cit" if db == "\n"
 print "Enter username for ClockingIT MySQL account [cit]: "
@@ -141,6 +138,14 @@ puts
 puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database."
 puts
 
+
+
+puts "Please create the database and user for ClockingIT by running something like this: "
+puts " echo \"CREATE DATABASE `#{db}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `#{db}.*` TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
+puts 
+puts "Press <Return> to continue"
+gets
+puts 
 
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
