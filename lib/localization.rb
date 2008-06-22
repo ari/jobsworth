@@ -4,12 +4,30 @@ module Localization
   @@lang = :default
 
   def self.locales
-    [['English', 'en_US'], ['Dansk', 'dk_DK'], ['Deutsch', 'de_DE'], ['Euskara', 'eu_ES'], ['Español', 'es_ES'], ['Français', 'fr_FR'], ['Italian', 'it_IT'], ['Nederlands', 'nl_NL'], ['Norsk', 'no_NO'], ['Polski', 'pl_PL'], ['Português Brazilian', 'pt_BR'], ['Suomi', 'fi_FI'], ['Svensk', 'sv_SV']]
+    [['English', 'en_US'], ['Dansk', 'dk_DK'], ['Deutsch', 'de_DE'], ['Euskara', 'eu_ES'], ['Español', 'es_ES'], ['Français', 'fr_FR'], ['עברית', 'il_IL'], ['Italiano', 'it_IT'], ['Nederlands', 'nl_NL'], ['Norsk', 'no_NO'], ['Polski', 'pl_PL'], ['Português Brazilian', 'pt_BR'], ['Suomi', 'fi_FI'], ['Svensk', 'sv_SV']]
   end
 
   def self._(string_to_localize, *args)
-    translated =
-      @@l10s[@@lang][string_to_localize] || string_to_localize
+    translated = @@l10s[@@lang][string_to_localize] 
+    if translated.nil?
+      l = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", @@lang, string_to_localize])
+      if @@lang != :default && l.nil?
+        l = Locale.new
+        l.locale = @@lang
+        l.key = string_to_localize.strip
+        l.singular = string_to_localize.strip
+        l.plural = string_to_localize.strip if string_to_localize.include?('%d')
+        l.save if @@lang != 'en_US' || (@@lang == 'en_US' && l.plural != nil) rescue nil
+
+        translated = string_to_localize.strip
+      elsif @@lang != :default
+        translated = [l.singular, l.plural] if l.plural
+        translated ||= l.singular
+      else 
+        translated = string_to_localize
+      end 
+    end 
+    @@l10s[@@lang][string_to_localize] = translated
     return translated.call(*args).to_s if translated.is_a? Proc
     translated =
       translated[args[0]>1 ? 1 : 0] if translated.is_a?(Array)
@@ -26,36 +44,39 @@ module Localization
     Dir.glob("#{RAILS_ROOT}/lang/custom/*.rb"){ |t| require t }
   end
 
-  def self.lang(locale)
-    @@lang = locale
+  def self.lang(locale = nil)
+    @@lang = locale if locale
+    @@l10s[@@lang] ||= { }
+    @@lang
   end
-
+  
+  def self.l10s
+    @@l10s
+  end 
+  
 end
 
 class Date
-  alias :strftime_nolocale :strftime
-  def strftime(format)
+  def strftime_localized(format)
     format = format.dup
     format.gsub!(/%a/, _(Date::ABBR_DAYNAMES[self.wday]))
     format.gsub!(/%A/, _(Date::DAYNAMES[self.wday]))
     format.gsub!(/%b/, _(Date::ABBR_MONTHNAMES[self.mon]))
     format.gsub!(/%B/, _(Date::MONTHNAMES[self.mon]))
-    self.strftime_nolocale(format)
+    self.strftime(format)
   end
 
 end
 
 
 class Time
-  alias :strftime_nolocale :strftime
-
-  def strftime(format)
+  def strftime_localized(format)
     format = format.dup
     format.gsub!(/%a/, _(Date::ABBR_DAYNAMES[self.wday]))
     format.gsub!(/%A/, _(Date::DAYNAMES[self.wday]))
     format.gsub!(/%b/, _(Date::ABBR_MONTHNAMES[self.mon]))
     format.gsub!(/%B/, _(Date::MONTHNAMES[self.mon]))
-    self.strftime_nolocale(format)
+    self.strftime(format)
   end
 
 end
@@ -75,32 +96,4 @@ def self.generate_l10n_file
   end.uniq.flatten.collect do |g|
     g.starts_with?('#') ? "\n  #{g}" : "  l.store '#{g}', '#{g}'"
   end.uniq.join("\n") << "\nend"
-end
-
-module ActionView::Helpers::DateHelper
-  def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false)
-    from_time = from_time.to_time if from_time.respond_to?(:to_time)
-    to_time = to_time.to_time if to_time.respond_to?(:to_time)
-    distance_in_minutes = (((to_time - from_time).abs)/60).round
-    distance_in_seconds = ((to_time - from_time).abs).round
-
-    case distance_in_minutes
-    when 0..1
-      return (distance_in_minutes==0) ? _('less than a minute') : _('%d minute', 1) unless include_seconds
-      case distance_in_seconds
-      when 0..5   then _('less than %d seconds', 5)
-      when 6..10  then _('less than %d seconds', 10)
-      when 11..20 then _('less than %d seconds', 20)
-      when 21..40 then _('half a minute')
-      when 41..59 then _('less than a minute')
-      else             _('%d minute',1)
-      end
-
-    when 2..45      then _("%d minute", distance_in_minutes)
-    when 46..90     then _('about %d hour', 1)
-    when 90..1440   then _("about %d hour", (distance_in_minutes.to_f / 60.0).round)
-    when 1441..2880 then _('%d day', 1)
-    else                 _('%d day', (distance_in_minutes / 1440).round)
-    end
-  end
 end

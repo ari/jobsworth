@@ -1,4 +1,4 @@
-<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;">Changes done here will not be logged in the Activity log or sent out as notifications.</div>
+<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;"><%= _ 'Changes done here will not be logged in the Activity log or sent out as notifications.'%></div>
 <table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
 <tr>
     <td valign="top" style="padding-right:0.3em;">
@@ -7,10 +7,10 @@
 	  <th style="height:20px;" colspan="4"></th>
 	</tr>
 	<tr>
-	  <th style="height:20px;" width="200px">Task</th>
-	  <th>Done</th>
-	  <th>Estimate</th>
-	  <th>Due</th>
+	  <th style="height:20px;" width="200px"><%= _'Task'%></th>
+	  <th><%=_ 'Worked'%></th>
+	  <th><%=_ 'Estimate'%></th>
+	  <th><%=_ 'Due Date'%></th>
 	</tr>
 	<% i = 1
 	date_tooltip = _("Enter task due date, or click calendar button.")

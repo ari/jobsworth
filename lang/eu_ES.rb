@@ -1,478 +1,468 @@
 Localization.define('eu_ES') do |l|
-
-  # Main menu
-  l.store "Overview", "Orokorra"
-  l.store "Tutorial", "Tutoretza"
-  l.store "Browse", "Bistak"
-  l.store "Timeline", "Historia"
+  l.store "d", "e"
+  l.store "h", "o"
+  l.store "m", "m"
+  l.store "w", "a"
+  l.store "To", "-arte"
+  l.store "by", "-k"
+  l.store "of", "-"
+  l.store "or", "edo"
+  l.store "Age", "Age"
+  l.store "All", "Denak"
+  l.store "Apr", "Api"
+  l.store "Aug", "Abu"
+  l.store "CSV", "CSV"
+  l.store "Dec", "Abe"
+  l.store "Feb", "Ots"
+  l.store "Fri", "Osi"
+  l.store "Jan", "Urt"
+  l.store "Jul", "Uzt"
+  l.store "Jun", "Eka"
+  l.store "Low", "Baxua"
+  l.store "Mar", "Mar"
+  l.store "May", "Mai"
+  l.store "Mon", "Asl"
+  l.store "New", "Berria"
+  l.store "Nov", "Aza"
+  l.store "Oct", "Urr"
+  l.store "Sat", "Lar"
+  l.store "Sep", "Ira"
+  l.store "Sun", "Iga"
+  l.store "Thu", "Ost"
+  l.store "Tue", "Asa"
+  l.store "Wed", "Asz"
+  l.store "ago", "ago"
+  l.store "and", "eta"
+  l.store "day", "egun"
+  l.store "Body", "Edukia"
+  l.store "Chat", "Txata"
+  l.store "Date", "Data"
+  l.store "Edit", "Editatu"
+  l.store "File", ["Fitxategia", "Fitxategiak"]
+  l.store "From", "-tik"
+  l.store "Hide", "Ezkutatu"
+  l.store "High", "Handia"
+  l.store "July", "Uztaila"
+  l.store "June", "Ekaina"
+  l.store "Mine", "Mine"
+  l.store "Name", "Izena"
+  l.store "Open", "Zabalik"
+  l.store "Read", "Irakurri"
+  l.store "Rows", "Errenkadak"
+  l.store "Save", "Gorde"
+  l.store "Show", "Show"
+  l.store "Tags", "Etiketak"
+  l.store "Task", "Ataza"
+  l.store "Type", "Mota"
+  l.store "User", "Erabiltzailea"
+  l.store "View", "View"
+  l.store "Week", "astea"
+  l.store "Wiki", "Wiki"
+  l.store "Work", "Lan egin"
+  l.store "days", "egun"
+  l.store "last", "azken"
+  l.store "59:04", "59:04"
+  l.store "April", "Apirila"
+  l.store "Audit", "Auditoria"
+  l.store "Close", "Itxi"
+  l.store "Email", "E-posta"
   l.store "Files", "Fitxategia"
-  l.store "Reports", "Txostenak"
-  l.store "Schedule", "Agenda"
-  l.store "New Task", "Ataza berria"
-  l.store "Preferences", "Aukerak"
-  l.store "Log Out", "Irten"
-  l.store "Clients", "Bezeroak"
+  l.store "Grant", "Kudeatu"
+  l.store "Major", "Handiagoa"
+  l.store "March", "Martxoa"
+  l.store "Minor", "Baxuagoa"
+  l.store "Notes", "Oharrak"
+  l.store "Owner", "Jabea"
+  l.store "Pivot", "Pibot"
+  l.store "Start", "Hasi"
+  l.store "Tasks", "Atazak"
+  l.store "Today", "Gaur"
+  l.store "Total", "Denera"
+  l.store "Users", "Erabiltzaileak"
+  l.store "Views", "Bistak"
+  l.store "every", "denak"
+  l.store "today", "gaur"
+  l.store "%d day", ["egun 1", "%d egun"]
+  l.store "%s ago", "orain dela %s"
+  l.store "Assign", "Esleitu"
+  l.store "August", "Abuztua"
+  l.store "Browse", "Bistak"
+  l.store "Cancel", "Cancel"
   l.store "Client", "Bezeroa"
-  l.store 'Search', 'Bilatu'
-  l.store 'Users', 'Erabiltzaileak'
-  l.store 'User', 'Erabiltzailea'
-
-  # Main layout
-  l.store 'Hide', 'Ezkutatu'
-  l.store 'Views', 'Bistak'
-  l.store 'Open Tasks', 'Irekitako atazak'
-  l.store 'My Open Tasks', 'Nire irekitako atazak'
-  l.store 'My In Progress Tasks', 'Nire hasitako atazak'
-  l.store 'Unassigned Tasks', 'Esleitu gabeko atazak'
-  l.store 'Shared', 'Partekatutakoak'
-  l.store 'Edit', 'Editatu'
-  l.store 'New', 'Berria'
-  l.store 'Chat', 'Txata'
-  l.store 'Notes', 'Oharrak'
-  l.store 'Feedback? Suggestions? Ideas? Bugs?', '¿Iruzkinak? ¿Iradokizunak? ¿Ideiak? ¿Akatsak?'
-  l.store 'Let me know', 'Jakinarazi iezadazu'
-  l.store 'worked today', 'lanean gaur'
-  l.store 'Online', 'Konektatuta'
-  l.store 'Done working on <b>%s</b> for now.', '<b>%s</b> burututa dagoeneko' # %s = @task.name
-  l.store '%s ago', 'orain dela %s'
-
-  # Application Helper
-  l.store 'today','gaur'
-  l.store 'tomorrow', 'bihar'
-  l.store '%d day', ['egun 1', '%d egun']
-  l.store '%d week', ['aste 1', '%d aste']
-  l.store '%d month', ['hilabete 1', '%d hilabete']
-  l.store 'yesterday', 'atzo'
-  l.store '%d day ago', ['orain dela egun 1', 'orain dela %d egun']
-  l.store '%d week ago', ['orain dela aste 1', 'orain dela %d aste']
-  l.store '%d month ago', ['orain dela hilabete 1', 'orain dela %d hilabete']
-
-  # DateHelper
-  l.store 'less than a minute', 'minutu bat baino gutxiago'
-  l.store '%d minute', ['minutu 1', '%d minutu']
-  l.store 'less than %d seconds', ['segundu 1 baino gutxiago', '%d segundu baino gutxiago']
-  l.store 'half a minute', 'minutu erdi'
-  l.store 'less than a minute', 'minutu bat baino gutxiago'
-  l.store 'about %d hour', ['ordu 1 gutxi gorabehera', '%d ordu gutxi gorabehera']
-
-  # Activities
-  l.store 'Top Tasks', 'Ataza nagusiak'
-  l.store 'Newest Tasks', 'Ataza berriak'
-  l.store 'Recent Activities', 'Azken aktibitateak'
-  l.store 'Projects', 'Proiektuak'
-  l.store 'Overall Progress', 'Aurrerapen orokorra'
-  l.store '%d completed milestone', ['zedarri 1 burututa', '%d zedarri burututa']
-  l.store '%d completed project', ['proiektu 1 itxita', '%d proiektu itxita']
-  l.store 'Edit project <b>%s</b>', '<b>%s</b> proiektua editatu'
-  l.store 'Edit milestone <b>%s</b>', '<b>%s</b> zedarria editatu'
-
-  # Tasks
-  l.store 'Tasks', 'Atazak'
-  l.store '[Any Client]', '[Edozein bezero]'
-  l.store '[Any Project]', '[Edozein proiektu]'
-  l.store '[Any User]', '[Edozein erabiltzaile]'
-  l.store '[Any Milestone]', '[Edozein zedarri]'
-  l.store '[Any Status]', '[Edozein egoera]'
-  l.store '[Unassigned]','[Esleitu gabe]'
-  l.store 'Open', 'Zabalik'
-  l.store 'In Progress', 'Hasita'
-  l.store 'Closed', 'Itxita'
-  l.store 'Won\'t Fix', 'Soluzio gabe'
-  l.store 'Invalid', 'Baliogabea'
-  l.store 'Duplicate', 'Bikoiztua'
-  l.store 'Archived', 'Artxibatua'
-  l.store 'Group Tags', 'Etiketak batu'
-  l.store '[Save as View]', '[Bista bezala gorde]'
-  l.store 'Tags', 'Etiketak'
-  l.store '[All Tags]', '[Etiketa guztiak]'
-  l.store 'Close <b>%s</b>', '<b>%s</b> itxi'
-  l.store "Stop working on <b>%s</b>.", '<b>%s</b> lanean utzi.'
-  l.store "Start working on <b>%s</b>. Click again when done.", '<b>%s</b> lanean hasi. Sakatu berriz gelditzeko'
-  l.store 'No one', 'Batere ez'
-  l.store "Revert <b>%s</b> to not completed status.", 'Utzi <b>%s</b> itxi gabe.'
-  l.store "Cancel working on <b>%s</b>.", 'Cancelar trabajo en <b>%s</b> lana ezeztatu.'
-  l.store "Move <b>%s</b> to the Archive.", '<b>%s</b> artxibora bidali.'
-  l.store "Restore <b>%s</b> from the Archive.", 'Berrezarri <b>%s</b> Artxibotik.'
-  l.store 'Information', 'Informazioa'
-  l.store 'Summary', 'Laburpena'
-  l.store 'Description', 'Deskribapena'
-  l.store 'Comment', 'Iruzkina'
-  l.store 'Attach file', 'Fitxategia erantsi'
-  l.store 'Target', 'Helburua'
-  l.store 'Project', 'Proiektua'
-  l.store 'Milestone', 'Zedarria'
-  l.store '[None]', '[Batere ez]'
-  l.store 'Assigned To', 'Nori esleitua'
-  l.store 'Requested By', 'Nork eskatua'
-  l.store 'Attributes', 'Ezaugarriak'
-
-  l.store 'Type', 'Mota'
-  l.store 'Priority', 'Lehentasuna'
-  l.store 'Severity', 'Garrantzia'
-  l.store 'Time Estimate', 'Zenbatetsitako denbora'
-  l.store 'Due Date', 'Bukatze data'
-  l.store 'Show Calendar', 'Egutegia ikusi'
-  l.store 'Notification', 'Jakinarazpen'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Aldaketak <br /> arduradun eta esleitutako pertsonei gain, hurrengoei jakinaraziko zaie. .<br/><br/> Ctrl-klik aldatzeko.'
-  l.store 'Notify Users', 'Erabiltzaileei jakinarazi'
-  l.store '[Delete]', '[Ezabatu]'
-  l.store 'Really delete %s?', '¿%s ezabatu nahi al duzu?'
-  l.store 'New Task', 'Ataza berria'
-  l.store 'Create', 'Sortu'
-  l.store 'Send notification emails', 'Posta elektronikoz jakinarazi'
-  l.store 'Created', 'Sortuta'
-  l.store 'by', '-k' # Created by
-  l.store 'Last Updated', 'Azken eguneratzea'
-  l.store 'Save', 'Gorde'
-  l.store 'and', 'eta' # Save and ...
-
-  l.store "Leave Open",'Utzi zabalik'
-  l.store "Revert to Open",'Berriz ireki'
-  l.store "Set in Progress",'Lanean jarri'
-  l.store "Leave as in Progress",'Lanean utzi'
-  l.store "Close",'Itxi'
-  l.store "Leave Closed",'Itxita utzi'
-  l.store "Set as Won't Fix",'Soluzio gabe jarri'
-  l.store "Leave as Won't Fix", 'Soluzio gabe utzi'
-  l.store "Set as Invalid",'Baliogabea jarri'
-  l.store "Leave as Invalid",'Baliogabea utzi'
-  l.store "Set as Duplicate",'Bikoiztua jarri'
-  l.store "Leave as Duplicate",'Bikoiztua utzi'
-  l.store 'History', 'Historia'
-  l.store 'Edit Log Entry', 'Sarrera historikoa editatu'
-  l.store 'Delete Log Entry', 'Sarrera historikoa ezabatu'
-  l.store 'Really delete this log entry?', '¿Sarrera hau historikotik ezabatu nahi al duzu?'
-
-  l.store 'Task', 'Ataza'
-  l.store 'New Feature', 'Ezaugarri berria'
-  l.store 'Defect', 'Akatsa'
-  l.store 'Improvement', 'Hobekuntza'
-  l.store 'Critical', 'Kritikoa'
-  l.store 'Urgent', 'Urgentea'
-  l.store 'High', 'Handia'
-  l.store 'Normal', 'Normala'
-  l.store 'Low', 'Baxua'
-  l.store 'Lowest', 'Oso Baxua'
-  l.store 'Blocker', 'Altuena'
-  l.store 'Major', 'Handiagoa'
-  l.store 'Minor', 'Baxuagoa'
-  l.store 'Trivial', 'Garrantzi gabekoa'
-
-  l.store 'Start', 'Hasi'
-  l.store 'Duration Worked', 'Lan egindako denbora'
-  l.store 'Notes', 'Oharrak'
-
-  # Timeline
-  l.store '[All Time]', '[Dena]'
-  l.store 'This Week', 'Aste hau'
-  l.store 'Last Week', 'Aurreko astea'
-  l.store 'This Month', 'Hilabete hau'
-  l.store 'Last Month', 'Aurreko hilabetea'
-  l.store 'This Year', 'Urte hau'
-  l.store 'Last Year', 'Aurreko urtea'
-  l.store '[Any Type]', '[Edozein mota]'
-  l.store 'Work Log', 'Lan historia'
-  l.store 'Status Change', 'Egoera aldaketa'
-  l.store 'Modified', 'Aldatuta'
-  l.store '[Prev]', '[Aurrekoa]' # [Prev] 100 of 2000 entries [Next]
-  l.store '[Next]', '[Hurrengoa]' # [Prev] 100 of 2000 entries [Next]
-  l.store 'of', '-' # 100 of 2000 entries [In basque we must consider 2000-tik, 100 but, 100-2000 is ok]
-  l.store 'entries..', 'sarrera...' # 100 of 2000 entries
-
-  # Project Files
-  l.store 'Download', 'Jaitsi'
-  l.store 'Delete', 'Ezabatu'
-  l.store '[New File]', '[Fitxategi berria]'
-  l.store 'File', ['Fitxategia', 'Fitxategiak']
-  l.store 'Upload New File', 'Fitxategi berria igo'
-  l.store 'Name', 'Izena'
-  l.store 'Upload', 'Igo'
-
-  # Reports
-  l.store 'Reports', 'Txostenak'
-  l.store 'Download CSV file of this report', 'Txosten honen CSV fitxategia jaitsi.'
-  l.store 'Total', 'Denera'
-  l.store 'Report Configuration', 'Txostena konfiguratu'
-  l.store 'Report Type', 'Txosten mota'
-  l.store 'Pivot', 'Pibot'
-  l.store 'Audit', 'Auditoria'
-  l.store 'Timesheet', 'Denbora orria'
-  l.store 'Time Range', 'Denbora tartea'
-  l.store 'Custom', 'Pertsonalizatu'
-  l.store 'Rows', 'Errenkadak'
-  l.store 'Columns', 'Zutabeak'
-  l.store "Milestones", 'Zedarriak'
-  l.store "Date", 'Data'
-  l.store 'Task Status', 'Atazaren egoera'
-  l.store "Task Type", 'Ataza mota'
-  l.store "Task Priority", 'Atazaren lehentasuna'
-  l.store "Task Severity", 'Atazaren garrantzia'
-  l.store 'From', '-tik' # From Date [Considering date before word. From 23 = 23-tik]
-  l.store 'To', '-arte' # To Date [Considering date before word. From 23 = 23-tik]
-  l.store 'Sub-totals', 'Azpitotalak'
-  l.store 'Filter', 'Iragazki'
-  l.store 'Advanced Options', 'Aukera aurreratuak'
-  l.store 'Status', 'Egoera'
-  l.store 'Run Report', 'Txostena ikusi'
-
-  # Schedule
-
-  # Search
-  l.store 'Search Results', 'Emaitzetan bilatu'
-  l.store 'Activities', 'Aktibitateak'
-
-  # Project list
-  l.store 'Read', 'Irakurri'
-  l.store 'Work', 'Lan egin'
-  l.store 'Assign', 'Esleitu'
-  l.store 'Prioritize', 'Lehenetsi'
-  l.store 'Grant', 'Kudeatu'
-  l.store "Remove all access for <b>%s</b>?", 'Baimen guztiak kendu <b>%s</b> -(r)i?'
-  l.store "Grant %s access for <b>%s</b>?", '%s –ren baimena emana <b>%s</b> -(r)i?'
-  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", '¡ Ezin zara <b>zu zeu</b> edo <b>proiektuaren sortzailea</b>ezabatu!'
-  l.store "Grant access to <b>%s</b>?", '¿<b>%s</b> - (r)i baimena eman?'
-  l.store 'Edit Project', 'Proiektua editatu'
-  l.store 'Delete Project', 'Proiektua ezabatu'
-  l.store 'Complete Project', 'Proiektua bukatu'
-  l.store 'New Milestone', 'Zedarri berria'
-  l.store 'Access To Project', 'Proiektura sartu'
-  l.store 'Completed', 'Bukatuta'
-  l.store 'Completed Projects', 'Bukatutako proiektuak'
-  l.store 'Revert', 'Berriz jarri'
-  l.store 'Really revert %s?', '¿Berriz jarri al nahi duzu %s bezala?'
-
-  # Milestones
-  l.store 'Owner', 'Jabea'
-  l.store 'Edit Milestone', 'Zedarria Editatu'
-  l.store 'Delete Milestone', 'Zedarria Ezabatu'
-  l.store 'Complete Milestone', 'Zedarria Burutu'
-  l.store 'Completed Milestones', 'Burututako Zedarriak'
-
-  # Users
-  l.store 'Email', 'E-posta'
-  l.store 'Last Login', 'Azken sarrera'
-  l.store 'Offline', 'Deskonektatuta'
-  l.store 'Are your sure?', '¿Ziur zaude?'
-  l.store 'Company', 'Erakundea'
-  l.store '[New User]', '[Erabiltzaile berria]'
-  l.store '[Previous page]', '[Aurreko orria]'
-  l.store '[Next page]', '[Hurrengo orria]'
-  l.store 'Edit User', 'Erabiltzailea editatu'
-
-  l.store 'Options', 'Aukerak'
-  l.store 'Location', 'Herria'
-  l.store 'Administrator', 'Administratzailea'
-  l.store 'Track Time', 'Denbora Kontrola'
-  l.store 'Use External Clients', 'Kanpo bezeroak erabili'
-  l.store 'Show Calendar', 'Egutegia Ikusi'
-  l.store 'Show Tooltips', 'Laguntza Ikusi'
-  l.store 'Send Notifications', 'Jakinarazpenak Bidali'
-  l.store 'Receive Notifications', 'Jakinarazpenak Jaso'
-
-  l.store 'User Information', 'Erabiltzailearen Informazioa'
-  l.store 'Username', 'Erabiltzailearen izena'
-  l.store 'Password', 'Pasahitza'
-
-  # Preferences
-  l.store 'Preferences', 'Aukerak'
-  l.store 'Language', 'Hizkuntza'
-  l.store 'Time Format', 'Orduaren formatua'
-  l.store 'Date Format', 'Dataren formatua'
-  l.store 'Custom Logo', 'Logo pertsonalizatua'
-  l.store 'Current logo', 'Oraingo Logoa'
-  l.store 'New logo', 'Logo berria'
-  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Ez da tamainaz aldatuko, 150x150px tamainakoa egoki ikusik oda. Logoa goiburuan eta sarrerako orrian ikusiko da, ClockingIT-en ordez.)"
-
-  # Notes / Pages
-  l.store 'Body', 'Edukia'
-  l.store 'Preview', 'Aurrebista'
-  l.store 'New Note', 'Ohar Berria'
-  l.store 'Edit Note', 'Oharra Editatu'
-
-  # Views
-  l.store 'New View', 'Bista Berria'
-  l.store 'Edit View', 'Bista Editatu'
-  l.store 'Delete View', 'Bista Ezabatu'
-  l.store '[Active User]', '[Erabiltzaile Konektatua]'
-  l.store 'Shared', 'Partekatutakoak'
-
-  # Clients
-  l.store 'Contact', 'Kontaktua'
-  l.store 'New Client', 'Bezero Berria'
-  l.store 'Contact email', 'Kontakturako E-posta'
-  l.store 'Contact name', 'Kontakturako Izena'
-  l.store 'Client CSS', 'Bezeroaren CSS-a'
-
-  # Activities Controller
-  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Burututako tutoretza. Ez da berriz menuan agertuko.'
-  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Izkutatutako tutoretza. Ez da berriz menuan agertuko.'
-
-  # Customers Controller
-  l.store 'Client was successfully created.', 'Bezeroa egoki sortu da.'
-  l.store 'Client was successfully updated.', 'Bezeroa egoki aldatu da.'
-  l.store 'Please delete all projects for %s before deleting it.', 'Mesedez, ezabatu %s –(r)en proiektu guztiak bera ezabatu aurretik.'
-  l.store "You can't delete your own company.", 'Ezin duzu zure erakundea ezabatu.'
-  l.store 'CSS successfully uploaded.', 'CSS egoki igo da.'
-  l.store 'Logo successfully uploaded.', 'Logoa egoki igo da.'
-
-  # Milestones Controller
-  l.store 'Milestone was successfully created.', 'Zedarria egoki sortu da.'
-  l.store 'Milestone was successfully updated.', 'Zedarria egoki aldatu da.'
-  l.store '%s / %s completed.', '%s / %s burututa.' # Project name / Milestone name completed.
-  l.store '%s / %s reverted.', '%s / %s izena aldatu da.' # Project name / Milestone name reverted.
-
-  # Pages / Notes Controller
-  l.store 'Note was successfully created.', 'Oharra egoki sortu da.'
-  l.store 'Note was successfully updated.', 'Oharra egoki aldatu da.'
-
-  # Project Files Controller
-  l.store 'No file selected for upload.', 'Ez da fitxategirik aukeratu igotzeko.'
-  l.store 'File too big.', 'Fitxategia handiegia da.'
-  l.store 'File successfully uploaded.', 'Fitxategia egoki igo da.'
-
-  # Projects Controller
-  l.store 'Project was successfully created.', 'Proiektua egoki sortu da.'
-  l.store 'Project was successfully created. Add users who need access to this project.', 'Proiektua egoki sortu da. Gaineratu proiektuarekin lan egingo duten erabiltzaileak.'
-  l.store 'Project was successfully updated.', 'Proiektua egoki aldatu da.'
-  l.store 'Project was deleted.', 'Proiektua ezabatua izan da.'
-  l.store '%s completed.', '%s burututa.'
-  l.store '%s reverted.', '%s berriz egin da.'
-
-  # Reports Controller
-  l.store "Empty report, log more work!", 'Txostena hutsik dago, sortu lan sarrera gehiago!'
-
-  # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Atazak esleiteko proiektua sortu edo dagoeneko sortutako baten baimena izan behar duzu.'
-  l.store 'Invalid due date ignored.', 'Baliogabezko entrega-epea ez da kontutan hartu.'
-  l.store 'Task was successfully created.', 'Ataza egoki sortu da.'
-  l.store 'Task was successfully updated.', 'Ataza egoki aldatu da.'
-  l.store 'Log entry saved...', 'Sarrera historikoa gordeta...'
-  l.store "Unable to save log entry...", 'Ezinezkoa sarrera historikoa gordetzea...'
-  l.store "Log entry already saved from another browser instance.", 'Sarrera historikoa beste leiho baten sortu da.'
-  l.store 'Log entry deleted...', 'Sarrera historikoa ezabatuta...'
-
-  # Users Controller
-  l.store 'User was successfully created. Remeber to give this user access to needed projects.', 'Erabiltzailea egoki sortu da. Gogoratu ezazu beharrezko proiektuetan baimena ematea.'
-  l.store "Error sending creation email. Account still created.", 'Sortze e-posta ezin izan da bidali. Kontua aurretik sortua da.'
-  l.store 'User was successfully updated.', 'Erabiltzailea egoki aldatuta.'
-  l.store 'Preferences successfully updated.', 'Aukerak egoki aldatu dira.'
-
-  # Views Controller
+  l.store "Closed", "Itxita"
+  l.store "Create", "Sortu"
+  l.store "Custom", "Pertsonalizatu"
+  l.store "Defect", "Akatsa"
+  l.store "Delete", "Ezabatu"
+  l.store "Filter", "Iragazki"
+  l.store "Forums", "Forums"
+  l.store "Friday", "Ostirala"
+  l.store "Lowest", "Oso Baxua"
+  l.store "Monday", "Astelehena"
+  l.store "No one", "Batere ez"
+  l.store "Normal", "Normala"
+  l.store "Online", "Konektatuta"
+  l.store "Recent", "Recent"
+  l.store "Revert", "Berriz jarri"
+  l.store "Search", "Bilatu"
+  l.store "Shared", "Partekatutakoak"
+  l.store "Status", "Egoera"
+  l.store "Sunday", "Igandea"
+  l.store "Target", "Helburua"
+  l.store "Upload", "Igo"
+  l.store "Urgent", "Urgentea"
+  l.store "[Next]", "[Hurrengoa]"
+  l.store "[None]", "[Batere ez]"
+  l.store "[Prev]", "[Aurrekoa]"
+  l.store "[wdhm]", "[aeom]"
+  l.store "%d days", ["%d days", "%d days"]
+  l.store "%d file", ["%d fitxategia", "%d fitxategiak"]
+  l.store "%d week", ["aste 1", "%d aste"]
+  l.store "Blocker", "Altuena"
+  l.store "Clients", "Bezeroak"
+  l.store "Columns", "Zutabeak"
+  l.store "Comment", "Iruzkina"
+  l.store "Company", "Erakundea"
+  l.store "Contact", "Kontaktua"
+  l.store "Created", "Sortuta"
+  l.store "Destroy", "Destroy"
+  l.store "History", "Historia"
+  l.store "Invalid", "Baliogabea"
+  l.store "January", "Urtarrila"
+  l.store "Loading", "Loading"
+  l.store "Log Out", "Irten"
+  l.store "Members", "Members"
+  l.store "October", "Urria"
+  l.store "Offline", "Deskonektatuta"
+  l.store "Options", "Aukerak"
+  l.store "Preview", "Aurrebista"
+  l.store "Project", "Proiektua"
+  l.store "Reports", "Txostenak"
+  l.store "Summary", "Laburpena"
+  l.store "Trivial", "Garrantzi gabekoa"
+  l.store "Tuesday", "Asteartea"
+  l.store "Updated", "Eguneratua"
+  l.store "%d month", ["hilabete 1", "%d hilabete"]
+  l.store "%d posts", ["%d posts", "%d posts"]
+  l.store "1:2:3:04", "1:2:3:04"
+  l.store "1w2d3h4m", "1a2e3o4m"
+  l.store "Archived", "Artxibatua"
+  l.store "Complete", "Complete"
+  l.store "Critical", "Kritikoa"
+  l.store "December", "Abendua"
+  l.store "Download", "Jaitsi"
+  l.store "Due Date", "Bukatze data"
+  l.store "February", "Otsaila"
+  l.store "Language", "Hizkuntza"
+  l.store "Location", "Herria"
+  l.store "Modified", "Aldatuta"
+  l.store "New File", "New File"
+  l.store "New Note", "Ohar Berria"
+  l.store "New Room", "New Room"
+  l.store "New Task", "Ataza berria"
+  l.store "New User", "New User"
+  l.store "New View", "Bista Berria"
+  l.store "New logo", "Logo berria"
+  l.store "November", "Azaroa"
+  l.store "Overview", "Orokorra"
+  l.store "Password", "Pasahitza"
+  l.store "Priority", "Lehentasuna"
+  l.store "Progress", "Aurrerapena"
+  l.store "Projects", "Proiektuak"
+  l.store "QuickAdd", "QuickAdd"
+  l.store "Resolved", "Soluzionatua"
+  l.store "Reverted", "Berriz jarria"
+  l.store "Revision", "Berrikuspena"
+  l.store "Saturday", "Larunbata"
+  l.store "Schedule", "Agenda"
+  l.store "Severity", "Garrantzia"
+  l.store "Thursday", "Osteguna"
+  l.store "Timeline", "Historia"
+  l.store "Tutorial", "Tutoretza"
+  l.store "Use Chat", "Use Chat"
+  l.store "Use Wiki", "Use Wiki"
+  l.store "Username", "Erabiltzailearen izena"
+  l.store "Work Log", "Lan historia"
+  l.store "Workload", "Workload"
+  l.store "[Delete]", "[Ezabatu]"
+  l.store "tomorrow", "bihar"
+  l.store "%d folder", ["%d karpeta", "%d karpetak"]
+  l.store "%d minute", ["minutu 1", "%d minutu"]
+  l.store "%d topics", ["%d topics", "%d topics"]
+  l.store "Completed", "Bukatuta"
+  l.store "Duplicate", "Bikoiztua"
+  l.store "Edit Note", "Oharra Editatu"
+  l.store "Edit User", "Erabiltzailea editatu"
+  l.store "Edit View", "Bista Editatu"
+  l.store "Estimated", "Estimated"
+  l.store "Last Post", "Last Post"
+  l.store "Last Week", "Aurreko astea"
+  l.store "Last Year", "Aurreko urtea"
+  l.store "Milestone", "Zedarria"
+  l.store "Next Week", "Next Week"
+  l.store "Remaining", "Remaining"
+  l.store "September", "Iraila"
+  l.store "Task Type", "Ataza mota"
+  l.store "This Week", "Aste hau"
+  l.store "This Year", "Urte hau"
+  l.store "Timesheet", "Denbora orria"
+  l.store "Top Tasks", "Ataza nagusiak"
+  l.store "Use Forum", "Use Forum"
+  l.store "Wednesday", "Asteazkena"
+  l.store "Won't Fix", "Soluzio gabe"
+  l.store "Work Done", "Work Done"
+  l.store "Yesterday", "Yesterday"
+  l.store "entries..", "sarrera..."
+  l.store "yesterday", "atzo"
+  l.store "%d day ago", ["orain dela egun 1", "orain dela %d egun"]
+  l.store "Activities", "Aktibitateak"
+  l.store "Attributes", "Ezaugarriak"
+  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Client CSS", "Bezeroaren CSS-a"
+  l.store "Depends on", "Menpe dago"
+  l.store "Group Tags", "Etiketak batu"
+  l.store "Last Login", "Azken sarrera"
+  l.store "Last Month", "Aurreko hilabetea"
+  l.store "Leave Open", "Utzi zabalik"
+  l.store "Local Time", "Local Time"
+  l.store "Milestones", "Zedarriak"
+  l.store "New Avatar", "New Avatar"
+  l.store "New Client", "Bezero Berria"
+  l.store "New Folder", "New Folder"
+  l.store "Open Tasks", "Irekitako atazak"
+  l.store "Prioritize", "Lehenetsi"
+  l.store "Reassigned", "Berriz esleitua"
+  l.store "Run Report", "Txostena ikusi"
+  l.store "Sub-totals", "Azpitotalak"
+  l.store "This Month", "Hilabete hau"
+  l.store "Time Range", "Denbora tartea"
+  l.store "Time sheet", "Time sheet"
+  l.store "Track Time", "Denbora Kontrola"
+  l.store "Unassigned", "Unassigned"
+  l.store "Widget Key", "Widget Key"
+  l.store "[All Tags]", "[Etiketa guztiak]"
+  l.store "[All Time]", "[Dena]"
+  l.store "[Any Task]", "[Edozein Ataza]"
+  l.store "[Any Type]", "[Edozein mota]"
+  l.store "[Any User]", "[Edozein erabiltzaile]"
+  l.store "[New File]", "[Fitxategi berria]"
+  l.store "[New User]", "[Erabiltzaile berria]"
+  l.store "%d week ago", ["orain dela aste 1", "orain dela %d aste"]
+  l.store "1w 2d 3h 4m", "1a 2e 3o 4m"
+  l.store "Assigned To", "Nori esleitua"
+  l.store "Attach file", "Fitxategia erantsi"
+  l.store "Attachments", "Erantsitakoak"
+  l.store "Custom Logo", "Logo pertsonalizatua"
+  l.store "Date Format", "Dataren formatua"
+  l.store "Delete Room", "Delete Room"
+  l.store "Delete View", "Bista Ezabatu"
+  l.store "Description", "Deskribapena"
+  l.store "Forum Posts", "Forum Posts"
+  l.store "Improvement", "Hobekuntza"
+  l.store "In Progress", "Hasita"
+  l.store "Information", "Informazioa"
+  l.store "Let me know", "Jakinarazi iezadazu"
+  l.store "Linked from", "Hurrengo orritik erreferentziatuta"
+  l.store "New Feature", "Ezaugarri berria"
+  l.store "New Project", "New Project"
+  l.store "Preferences", "Aukerak"
+  l.store "Report Type", "Txosten mota"
+  l.store "Task Status", "Atazaren egoera"
+  l.store "Time Format", "Orduaren formatua"
+  l.store "Transcripts", "Transcripts"
+  l.store "[All Tasks]", "[All Tasks]"
+  l.store "[Next page]", "[Hurrengo orria]"
+  l.store "%d month ago", ["orain dela hilabete 1", "orain dela %d hilabete"]
+  l.store "%s reverted.", "%s berriz egin da."
+  l.store "Company Name", "Company Name"
+  l.store "Contact name", "Kontakturako Izena"
+  l.store "Current logo", "Oraingo Logoa"
+  l.store "Dependencies", "Dependentziak"
+  l.store "Edit Project", "Proiektua editatu"
+  l.store "Hide Waiting", "Hide Waiting"
+  l.store "Last Updated", "Azken eguneratzea"
+  l.store "Leave Closed", "Itxita utzi"
+  l.store "Newest Tasks", "Ataza berriak"
+  l.store "Notification", "Jakinarazpen"
+  l.store "Notify Users", "Erabiltzaileei jakinarazi"
+  l.store "Plan / GANTT", "Plan / GANTT"
+  l.store "Recent Posts", "Recent Posts"
+  l.store "Requested By", "Nork eskatua"
+  l.store "Save as View", "Save as View"
+  l.store "Show Avatars", "Show Avatars"
+  l.store "Wiki Changes", "Wiki Changes"
+  l.store "[Any Client]", "[Edozein bezero]"
+  l.store "[Any Status]", "[Edozein egoera]"
+  l.store "[Unassigned]", "[Esleitu gabe]"
+  l.store "worked today", "lanean gaur"
+  l.store "%s completed.", "%s burututa."
+  l.store "Administrator", "Administratzailea"
+  l.store "Are you sure?", "Are you sure?"
+  l.store "Contact email", "Kontakturako E-posta"
+  l.store "Custom Avatar", "Custom Avatar"
+  l.store "Days per Week", "Days per Week"
+  l.store "File too big.", "Fitxategia handiegia da."
+  l.store "My Open Tasks", "Nire irekitako atazak"
+  l.store "New Milestone", "Zedarri berria"
+  l.store "Public Forums", "Public Forums"
+  l.store "Show Calendar", "Egutegia Ikusi"
+  l.store "Show Tooltips", "Laguntza Ikusi"
+  l.store "Status Change", "Egoera aldaketa"
+  l.store "Task Priority", "Atazaren lehentasuna"
+  l.store "Task Severity", "Atazaren garrantzia"
+  l.store "Time Estimate", "Zenbatetsitako denbora"
+  l.store "Use Messaging", "Use Messaging"
+  l.store "[Active User]", "[Erabiltzaile Konektatua]"
+  l.store "[Any Project]", "[Edozein proiektu]"
+  l.store "[No Grouping]", "[No Grouping]"
+  l.store "about %d hour", ["ordu 1 gutxi gorabehera", "%d ordu gutxi gorabehera"]
+  l.store "half a minute", "minutu erdi"
+  l.store "Add New Widget", "Add New Widget"
+  l.store "Are your sure?", "¿Ziur zaude?"
+  l.store "Current Avatar", "Current Avatar"
+  l.store "Delete Project", "Proiektua ezabatu"
+  l.store "Depended on by", "Depended on by"
+  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Edit Log Entry", "Sarrera historikoa editatu"
+  l.store "Edit Milestone", "Zedarria Editatu"
+  l.store "Full Reference", "Erreferentzia Osoa"
+  l.store "New To-do Item", "New To-do Item"
+  l.store "Remaining Work", "Remaining Work"
+  l.store "Revert to Open", "Berriz ireki"
+  l.store "Search Results", "Emaitzetan bilatu"
+  l.store "Set as Invalid", "Baliogabea jarri"
+  l.store "Signup Message", "Mezua Sinatu"
+  l.store "Wiki Additions", "Wiki Additions"
+  l.store "Workday Length", "Egunaren Iraupena"
+  l.store "[Any Priority]", "[Edozein Lehentasun]"
+  l.store "[Any Severity]", "[Edozein Garrantzia]"
+  l.store "[Save as View]", "[Bista bezala gorde]"
+  l.store "Close <b>%s</b>", "<b>%s</b> itxi"
+  l.store "Duration Format", "Iraupen Formatua"
+  l.store "Duration Worked", "Lan egindako denbora"
+  l.store "Quick Reference", "Erreferentzia Laburra"
+  l.store "Set in Progress", "Lanean jarri"
+  l.store "Upload New File", "Fitxategi berria igo"
+  l.store "[Any Milestone]", "[Edozein zedarri]"
+  l.store "[Previous page]", "[Aurreko orria]"
+  l.store "Advanced Options", "Aukera aurreratuak"
+  l.store "Company Settings", "Company Settings"
+  l.store "Complete Project", "Proiektua bukatu"
+  l.store "Create New Forum", "Create New Forum"
+  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Delete Log Entry", "Sarrera historikoa ezabatu"
+  l.store "Delete Milestone", "Zedarria Ezabatu"
+  l.store "Leave as Invalid", "Baliogabea utzi"
+  l.store "Open to everyone", "Open to everyone"
+  l.store "Overall Progress", "Aurrerapen orokorra"
+  l.store "Set as Duplicate", "Bikoiztua jarri"
+  l.store "Set as Won't Fix", "Soluzio gabe jarri"
+  l.store "Unassigned Tasks", "Esleitu gabeko atazak"
+  l.store "User Information", "Erabiltzailearen Informazioa"
+  l.store "%s / %s reverted.", "%s / %s izena aldatu da."
+  l.store "Access To Project", "Proiektura sartu"
+  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
+  l.store "Really delete %s?", "¿%s ezabatu nahi al duzu?"
+  l.store "Really revert %s?", "¿Berriz jarri al nahi duzu %s bezala?"
+  l.store "Recent Activities", "Azken aktibitateak"
+  l.store "Remove dependency", "Ezabatu dependentzia"
+  l.store "Under revision by", "-(e)k berrikusten"
+  l.store "[Active Projects]", "[Active Projects]"
+  l.store "[Closed Projects]", "[Closed Projects]"
+  l.store "[Default Sorting]", "[Default Sorting]"
+  l.store "%s / %s completed.", "%s / %s burututa."
+  l.store "Complete Milestone", "Zedarria Burutu"
+  l.store "Completed Projects", "Bukatutako proiektuak"
+  l.store "Hide Waiting Tasks", "Ezkutatu hasi gabeko atazak"
+  l.store "Leave as Duplicate", "Bikoiztua utzi"
+  l.store "Leave as Won't Fix", "Soluzio gabe utzi"
+  l.store "Log entry saved...", "Sarrera historikoa gordeta..."
+  l.store "No recent activity", "No recent activity"
+  l.store "Receive Newsletter", "Receive Newsletter"
+  l.store "Send Notifications", "Jakinarazpenak Bidali"
+  l.store "less than a minute", "minutu bat baino gutxiago"
+  l.store "Remove notification", "Remove notification"
+  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "[Without Milestone]", "[Zedarri gabe]"
+  l.store "%d completed project", ["proiektu 1 itxita", "%d proiektu itxita"]
+  l.store "Completed Milestones", "Burututako Zedarriak"
+  l.store "Leave as in Progress", "Lanean utzi"
+  l.store "Log entry deleted...", "Sarrera historikoa ezabatuta..."
+  l.store "My In Progress Tasks", "Nire hasitako atazak"
+  l.store "Project was deleted.", "Proiektua ezabatua izan da."
+  l.store "Report Configuration", "Txostena konfiguratu"
+  l.store "Use External Clients", "Kanpo bezeroak erabili"
+  l.store "less than %d seconds", ["segundu 1 baino gutxiago", "%d segundu baino gutxiago"]
+  l.store "Open to everyone from", "Open to everyone from"
+  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Receive Notifications", "Jakinarazpenak Jaso"
+  l.store "%d completed milestone", ["zedarri 1 burututa", "%d zedarri burututa"]
+  l.store "Add another dependency", "Beste dependentzia bat gehitu"
+  l.store "Edit project <b>%s</b>", "<b>%s</b> proiektua editatu"
+  l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "View '%s' was deleted.", "'%s' Bista ezabatuta."
+  l.store "Edit milestone <b>%s</b>", "<b>%s</b> zedarria editatu"
+  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Send notification emails", "Posta elektronikoz jakinarazi"
+  l.store "Invalid due date ignored.", "Baliogabezko entrega-epea ez da kontutan hartu."
+  l.store "CSS successfully uploaded.", "CSS egoki igo da."
+  l.store "Grant access to <b>%s</b>?", "¿<b>%s</b> - (r)i baimena eman?"
+  l.store "Stop working on <b>%s</b>.", "<b>%s</b> lanean utzi."
+  l.store "File successfully uploaded.", "Fitxategia egoki igo da."
+  l.store "Logo successfully uploaded.", "Logoa egoki igo da."
+  l.store "Unable to save log entry...", "Ezinezkoa sarrera historikoa gordetzea..."
+  l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b> lana ezeztatu."
+  l.store "Empty report, log more work!", "Txostena hutsik dago, sortu lan sarrera gehiago!"
+  l.store "No file selected for upload.", "Ez da fitxategirik aukeratu igotzeko."
+  l.store "Really delete this log entry?", "¿Sarrera hau historikotik ezabatu nahi al duzu?"
+  l.store "Grant %s access for <b>%s</b>?", "%s –ren baimena emana <b>%s</b> -(r)i?"
+  l.store "Move <b>%s</b> to the Archive.", "<b>%s</b> artxibora bidali."
+  l.store "Note was successfully created.", "Oharra egoki sortu da."
+  l.store "Note was successfully updated.", "Oharra egoki aldatu da."
+  l.store "Task was successfully created.", "Ataza egoki sortu da."
+  l.store "Task was successfully updated.", "Ataza egoki aldatu da."
+  l.store "User was successfully updated.", "Erabiltzailea egoki aldatuta."
+  l.store "Client was successfully created.", "Bezeroa egoki sortu da."
+  l.store "Client was successfully updated.", "Bezeroa egoki aldatu da."
+  l.store "Download CSV file of this report", "Txosten honen CSV fitxategia jaitsi."
+  l.store "Remove all access for <b>%s</b>?", "Baimen guztiak kendu <b>%s</b> -(r)i?"
+  l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
+  l.store "Preferences successfully updated.", "Aukerak egoki aldatu dira."
+  l.store "Project was successfully created.", "Proiektua egoki sortu da."
+  l.store "Project was successfully updated.", "Proiektua egoki aldatu da."
+  l.store "Done working on <b>%s</b> for now.", "<b>%s</b> burututa dagoeneko"
+  l.store "You can't delete your own company.", "Ezin duzu zure erakundea ezabatu."
+  l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Iruzkinak? ¿Iradokizunak? ¿Ideiak? ¿Akatsak?"
+  l.store "Milestone was successfully created.", "Zedarria egoki sortu da."
+  l.store "Milestone was successfully updated.", "Zedarria egoki aldatu da."
+  l.store "Restore <b>%s</b> from the Archive.", "Berrezarri <b>%s</b> Artxibotik."
   l.store "View '%s' was successfully created.", "'%s' Bista egoki sortu da."
   l.store "View '%s' was successfully updated.", "'%s' Bista egoki aldatu da."
-  l.store "View '%s' was deleted.", "'%s' Bista ezabatuta."
-
-  # Wiki
-  l.store 'Quick Reference', 'Erreferentzia Laburra'
-  l.store 'Full Reference', 'Erreferentzia Osoa'
-  l.store 'or', 'edo'
-  l.store 'Under revision by', '-(e)k berrikusten'
-  l.store 'Revision', 'Berrikuspena'
-  l.store 'Linked from', 'Hurrengo orritik erreferentziatuta'
-
-  # Reports
-  l.store 'Today', 'Gaur'
-  l.store 'Week', 'astea'
-
-  # Dates
-  l.store 'January', 'Urtarrila'
-  l.store 'February', 'Otsaila'
-  l.store 'March', 'Martxoa'
-  l.store 'April', 'Apirila'
-  l.store 'May', 'Maiatza'
-  l.store 'June', 'Ekaina'
-  l.store 'July', 'Uztaila'
-  l.store 'August', 'Abuztua'
-  l.store 'September', 'Iraila'
-  l.store 'October', 'Urria'
-  l.store 'November', 'Azaroa'
-  l.store 'December', 'Abendua'
-
-  l.store 'Jan', 'Urt'
-  l.store 'Feb', 'Ots'
-  l.store 'Mar', 'Mar'
-  l.store 'Apr', 'Api'
-  l.store 'May', 'Mai'
-  l.store 'Jun', 'Eka'
-  l.store 'Jul', 'Uzt'
-  l.store 'Aug', 'Abu'
-  l.store 'Sep', 'Ira'
-  l.store 'Oct', 'Urr'
-  l.store 'Nov', 'Aza'
-  l.store 'Dec', 'Abe'
-
-  l.store 'Sunday', 'Igandea'
-  l.store 'Monday', 'Astelehena'
-  l.store 'Tuesday', 'Asteartea'
-  l.store 'Wednesday', 'Asteazkena'
-  l.store 'Thursday', 'Osteguna'
-  l.store 'Friday', 'Ostirala'
-  l.store 'Saturday', 'Larunbata'
-
-  l.store 'Sun', 'Iga'
-  l.store 'Mon', 'Asl'
-  l.store 'Tue', 'Asa'
-  l.store 'Wed', 'Asz'
-  l.store 'Thu', 'Ost'
-  l.store 'Fri', 'Osi'
-  l.store 'Sat', 'Lar'
-
-  # worked_nice
-  l.store '[wdhm]', '[aeom]'
-  l.store 'w', 'a'
-  l.store 'd', 'e'
-  l.store 'h', 'o'
-  l.store 'm', 'm'
-
-  # Preferences
-  l.store 'Duration Format', 'Iraupen Formatua'
-  l.store 'Workday Length', 'Egunaren Iraupena'
-
-  # Tasks filter
-  l.store '[Without Milestone]', '[Zedarri gabe]'
-
-  # Task tooltip
-  l.store 'Progress', 'Aurrerapena'
-
-  # User Permissions
-  l.store 'All', 'Denak'
-
-  # Reports filter
-  l.store '[Any Priority]', '[Edozein Lehentasun]'
-  l.store '[Any Severity]', '[Edozein Garrantzia]'
-
-  # Preferences
-  l.store '1w 2d 3h 4m', '1a 2e 3o 4m'
-  l.store '1w2d3h4m', '1a2e3o4m'
-
-  # Task
-  l.store "Attachments", "Erantsitakoak"
-  l.store "Dependencies", "Dependentziak"
-  l.store 'Add another dependency', "Beste dependentzia bat gehitu"
-  l.store 'Remove dependency', "Ezabatu dependentzia"
-  l.store "every", 'denak'
-  l.store "[Any Task]", "[Edozein Ataza]"
-
-  l.store 'day', 'egun' # every day
-  l.store 'days', 'egun' # every 14 days
-  l.store 'last', 'azken' # every last thursday
-
-  l.store 'Hide Waiting Tasks', 'Ezkutatu hasi gabeko atazak'
-  l.store 'Signup Message', 'Mezua Sinatu'
-  l.store 'The message will be included in the signup email.', 'Mezua e-postaren sinaduran gehituko da.'
-  l.store 'Depends on', 'Menpe dago'
-
-  # Activities
-  l.store 'Subscribe to the recent activities RSS feed', 'Azken aktibitateetara RSS bidez harpidetu'
-
-  # Project Files
-  l.store '%d folder', ['%d karpeta', '%d karpetak']
-  l.store '%d file', ['%d fitxategia', '%d fitxategiak']
-
-  # Email
-  l.store 'Resolved', "Soluzionatua"
-  l.store 'Updated', "Eguneratua"
-  l.store 'Reverted', "Berriz jarria"
-  l.store 'Reassigned', "Berriz esleitua"
-
+  l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
+  l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
+  l.store "Revert <b>%s</b> to not completed status.", "Utzi <b>%s</b> itxi gabe."
+  l.store "Subscribe to the recent activities RSS feed", "Azken aktibitateetara RSS bidez harpidetu"
+  l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
+  l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
+  l.store "The message will be included in the signup email.", "Mezua e-postaren sinaduran gehituko da."
+  l.store "Start working on <b>%s</b>. Click again when done.", "<b>%s</b> lanean hasi. Sakatu berriz gelditzeko"
+  l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
+  l.store "Error sending creation email. Account still created.", "Sortze e-posta ezin izan da bidali. Kontua aurretik sortua da."
+  l.store "Please delete all projects for %s before deleting it.", "Mesedez, ezabatu %s –(r)en proiektu guztiak bera ezabatu aurretik."
+  l.store "Log entry already saved from another browser instance.", "Sarrera historikoa beste leiho baten sortu da."
+  l.store "Tutorial hidden. It will no longer be shown in the menu.", "Izkutatutako tutoretza. Ez da berriz menuan agertuko."
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "¡ Ezin zara <b>zu zeu</b> edo <b>proiektuaren sortzailea</b>ezabatu!"
+  l.store "Tutorial completed. It will no longer be shown in the menu.", "Burututako tutoretza. Ez da berriz menuan agertuko."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
+  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "Project was successfully created. Add users who need access to this project.", "Proiektua egoki sortu da. Gaineratu proiektuarekin lan egingo duten erabiltzaileak."
+  l.store "User was successfully created. Remeber to give this user access to needed projects.", "Erabiltzailea egoki sortu da. Gogoratu ezazu beharrezko proiektuetan baimena ematea."
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Atazak esleiteko proiektua sortu edo dagoeneko sortutako baten baimena izan behar duzu."
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)"
+  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Aldaketak <br /> arduradun eta esleitutako pertsonei gain, hurrengoei jakinaraziko zaie. .<br/><br/> Ctrl-klik aldatzeko."
+  l.store "(Won't be resized, 150x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Ez da tamainaz aldatuko, 150x150px tamainakoa egoki ikusik oda. Logoa goiburuan eta sarrerako orrian ikusiko da, ClockingIT-en ordez.)"
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
 end

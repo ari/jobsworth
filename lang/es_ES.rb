@@ -1,472 +1,461 @@
-
-
-
 Localization.define('es_ES') do |l|
-
-  # Main menu
-  l.store "Overview", "General"
-  l.store "Tutorial", "Tutorial"
-  l.store "Browse", "Examinar" # In fact, Browse, in spanish, means like "browse the internet", or "take a look", but i think, due the page, is better "Views", because is the same page of opening a view. I THINK IS BETTER "EXAMINAR".
-  l.store "Timeline", "Historial"
+  l.store "d", "d"
+  l.store "h", "h"
+  l.store "m", "m"
+  l.store "w", "s"
+  l.store "To", "Hasta"
+  l.store "by", "por"
+  l.store "of", "de"
+  l.store "or", "o"
+  l.store "Age", "Age"
+  l.store "All", "All"
+  l.store "Apr", "Abr"
+  l.store "Aug", "Ago"
+  l.store "CSV", "CSV"
+  l.store "Dec", "Dic"
+  l.store "Feb", "Feb"
+  l.store "Fri", "Vie"
+  l.store "Jan", "Ene"
+  l.store "Jul", "Jul"
+  l.store "Jun", "Jun"
+  l.store "Low", "Baja"
+  l.store "Mar", "Mar"
+  l.store "May", "May"
+  l.store "Mon", "Lun"
+  l.store "New", "Añadir"
+  l.store "Nov", "Nov"
+  l.store "Oct", "Oct"
+  l.store "Sat", "Sáb"
+  l.store "Sep", "Sep"
+  l.store "Sun", "Dom"
+  l.store "Thu", "Jue"
+  l.store "To:", "To:"
+  l.store "Tue", "Mar"
+  l.store "Wed", "Mie"
+  l.store "ago", "ago"
+  l.store "and", "y"
+  l.store "day", "day"
+  l.store "Body", "Contenido"
+  l.store "Chat", "Chat"
+  l.store "Date", "Fecha"
+  l.store "Edit", "Editar"
+  l.store "File", ["Archivo", "Archivos"]
+  l.store "From", "Desde"
+  l.store "Hide", "Esconder"
+  l.store "High", "Alta"
+  l.store "July", "Julio"
+  l.store "June", "Junio"
+  l.store "Mine", "Mine"
+  l.store "Name", "Nombre"
+  l.store "Open", "Abierta"
+  l.store "Read", "Lectura"
+  l.store "Rows", "Filas"
+  l.store "Save", "Grabar"
+  l.store "Show", "Show"
+  l.store "Tags", "Etiquetas"
+  l.store "Task", "Tarea"
+  l.store "Type", "Tipo"
+  l.store "User", "Usuario"
+  l.store "View", "View"
+  l.store "Week", "Semana"
+  l.store "Wiki", "Wiki"
+  l.store "Work", "Trabajar"
+  l.store "days", "days"
+  l.store "last", "last"
+  l.store "59:04", "59:04"
+  l.store "April", "Abril"
+  l.store "Audit", "Auditoría"
+  l.store "Close", "Cerrar"
+  l.store "Email", "E-mail"
   l.store "Files", "Archivos"
-  l.store "Reports", "Informes"
-  l.store "Schedule", "Agenda"
-  l.store "New Task", "Nueva tarea"
-  l.store "Preferences", "Preferencias"
-  l.store "Log Out", "Salir"
-  l.store "Clients", "Clientes"
+  l.store "Grant", "Administrar"
+  l.store "Major", "Mayor"
+  l.store "March", "Marzo"
+  l.store "Minor", "Menor"
+  l.store "Notes", "Notas"
+  l.store "Owner", "Propietario"
+  l.store "Pivot", "Pivot"
+  l.store "Start", "Comienzo"
+  l.store "Tasks", "Tareas"
+  l.store "Today", "Hoy"
+  l.store "Total", "Total"
+  l.store "Users", "Usuarios"
+  l.store "Views", "Vistas"
+  l.store "every", "every"
+  l.store "today", "hoy"
+  l.store "%d day", ["un día", "%d días"]
+  l.store "%s ago", "Hace %s"
+  l.store "Assign", "Asignar"
+  l.store "August", "Agosto"
+  l.store "Browse", "Examinar"
+  l.store "Cancel", "Cancel"
   l.store "Client", "Cliente"
-  l.store 'Search', 'Buscar'
-  l.store 'Users', 'Usuarios'
-  l.store 'User', 'Usuario'
-
-  # Main layout
-  l.store 'Hide', 'Esconder'
-  l.store 'Views', 'Vistas'
-  l.store 'Open Tasks', 'Abrir tarea'# I THINK IS BETTER "ABRIR TAREA"
-  l.store 'My Open Tasks', 'Mis tareas abiertas'
-  l.store 'My In Progress Tasks', 'Mis tareas en curso'
-  l.store 'Unassigned Tasks', 'Tareas no asignadas'
-  l.store 'Shared', 'Compartida'
-  l.store 'Edit', 'Editar'
-  l.store 'New', 'Añadir'
-  l.store 'Chat', 'Chat'
-  l.store 'Notes', 'Notas'
-  l.store 'Feedback? Suggestions? Ideas? Bugs?', '¿Comentarios? ¿Sugerencias? ¿Ideas? ¿Fallos?'
-  l.store 'Let me know', 'Házmelo saber'
-  l.store 'worked today', 'de trabajo hoy'
-  l.store 'Online', 'En linea'
-  l.store 'Done working on <b>%s</b> for now.', 'Trabajado en <b>%s</b> hasta el momento.' # %s = @task.name
-  l.store '%s ago', 'Hace %s'
-
-  # Application Helper
-  l.store 'today','hoy'
-  l.store 'tomorrow', 'mañana'
-  l.store '%d day', ['un día', '%d días']
-  l.store '%d week', ['una semana', '%d semanas']
-  l.store '%d month', ['un mes', '%d meses']
-  l.store 'yesterday', 'ayer'
-  l.store '%d day ago', ['hace un día', 'hace %d días']
-  l.store '%d week ago', ['hace una semana', 'hace %d semanas']
-  l.store '%d month ago', ['hace un mes', 'hace %d meses']
-
-  # DateHelper
-  l.store 'less than a minute', 'menos de un minuto'
-  l.store '%d minute', ['un minuto', '%d minutos']
-  l.store 'less than %d seconds', ['menos de un segundo', 'menos de %d segundos']
-  l.store 'half a minute', 'medio minuto'
-  l.store 'about %d hour', ['alrededor de una hora', 'alrededor de %d horas']
-
-
-  # Activities
-  l.store 'Top Tasks', 'Tareas principales'
-  l.store 'Newest Tasks', 'Nuevas tareas'
-  l.store 'Recent Activities', 'Actividades recientes'
-  l.store 'Projects', 'Proyectos'
-  l.store 'Overall Progress', 'Progreso general'
-  l.store '%d completed milestone', ['un hito terminado', '%d hitos terminados']
-  l.store '%d completed project', ['un proyecto terminado', '%d proyectos terminados']
-  l.store 'Edit project <b>%s</b>', 'Editar proyecto <b>%s</b>'
-  l.store 'Edit milestone <b>%s</b>', 'Editar hito <b>%s</b>'
-
-  # Tasks
-  l.store 'Tasks', 'Tareas'
-  l.store '[Any Client]', '[Cualquier cliente]'
-  l.store '[Any Project]', '[Cualquier proyecto]'
-  l.store '[Any User]', '[Cualquier usuario]'
-  l.store '[Any Milestone]', '[Cualquier hito]'
-  l.store '[Any Status]', '[Cualquier estado]'
-  l.store '[Unassigned]','[Sin asignar]'
-  l.store 'Open', 'Abierta'
-  l.store 'In Progress', 'En progreso'
-  l.store 'Closed', 'Cerrada'
-  l.store 'Won\'t Fix', 'Sin solución'
-  l.store 'Invalid', 'Inválida'
-  l.store 'Duplicate', 'Duplicada'
-  l.store 'Archived', 'Archivada'
-  l.store 'Group Tags', 'Agrupar etiquetas'
-  l.store 'Save as View', 'Grabar como vista'
-  l.store 'Tags', 'Etiquetas'
-  l.store '[All Tags]', '[Todas las etiquetas]'
-  l.store 'Close <b>%s</b>', 'Cerrar <b>%s</b>'
-  l.store "Stop working on <b>%s</b>.", 'Dejar de trabajar en <b>%s</b>.'
-  l.store "Start working on <b>%s</b>. Click again when done.", 'Empezar a trabajar en <b>%s</b>. Pulse de nuevo para terminar.'
-  l.store 'No one', 'Ninguno'
-  l.store "Revert <b>%s</b> to not completed status.", 'Dejar <b>%s</b> como no terminado.'
-  l.store "Cancel working on <b>%s</b>.", 'Cancelar trabajo en <b>%s</b>.'
-  l.store "Move <b>%s</b> to the Archive.", 'Mover <b>%s</b> al Archivo.'
-  l.store "Restore <b>%s</b> from the Archive.", 'Restaurar <b>%s</b> del Archivo.'
-  l.store 'Information', 'Información'
-  l.store 'Summary', 'Resumen'
-  l.store 'Description', 'Descripción'
-  l.store 'Comment', 'Comentario'
-  l.store 'Attach file', 'Adjuntar archivo'
-  l.store 'Target', 'Objetivo'
-  l.store 'Project', 'Proyecto'
-  l.store 'Milestone', 'Hito'
-  l.store '[None]', '[Ninguno]'
-  l.store 'Assigned To', 'Asignada a '
-  l.store 'Requested By', 'Solicitada por' # I THINK IS BETTER "SOLICITADA POR"
-  l.store 'Attributes', 'Atributos'
-
-  l.store 'Type', 'Tipo'
-  l.store 'Priority', 'Prioridad'
-  l.store 'Severity', 'Importancia'
-  l.store 'Time Estimate', 'Tiempo estimado'
-  l.store 'Due Date', 'Fecha de entrega'
-  l.store 'Show Calendar', 'Ver calendario'
-  l.store 'Notification', 'Notificación'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Los cambios en la tarea se notificarán, además de a<br/>su creador y a las personas asignadas a:<br/><br/>Ctrl-click para cambiar.'
-  l.store 'To:', 'To:'
-  l.store '[Delete]', '[Borrar]'
-  l.store 'Really delete %s?', '¿De verdad desea borrar %s?'
-  l.store 'New Task', 'Nueva tarea'
-  l.store 'Create', 'Crear'
-  l.store 'Send notification emails', 'Enviar notificación por e-mail'
-  l.store 'Created', 'Creado'
-  l.store 'by', 'por' # Created by
-  l.store 'Last Updated', 'Última actualización'
-  l.store 'Save', 'Grabar'
-  l.store 'and', 'y' # Save and ...
-
-  l.store "Leave Open",'Dejar abierta'
-  l.store "Revert to Open",'Volver a abrir'
-  l.store "Set in Progress",'Poner En Progreso'
-  l.store "Leave as in Progress",'Dejar En Progreso'
-  l.store "Close",'Cerrar'
-  l.store "Leave Closed",'Dejar cerrada'
-  l.store "Set as Won't Fix",'Poner como Sin Solución'
-  l.store "Leave as Won't Fix",'Dejar como Sin Solución'
-  l.store "Set as Invalid",'Poner como Inválida'
-  l.store "Leave as Invalid",'Dejar como Inválida'
-  l.store "Set as Duplicate",'Poner como Duplicada'
-  l.store "Leave as Duplicate",'Dejar como Duplicada'
-  l.store 'History', 'Histórico'
-  l.store 'Edit Log Entry', 'Editar entrada de histórico'
-  l.store 'Delete Log Entry', 'Borrar entrada de histórico'
-  l.store 'Really delete this log entry?', '¿De verdad quiere borrar esta entrada del histórico?'
-
-  l.store 'Task', 'Tarea'
-  l.store 'New Feature', 'Nueva característica'
-  l.store 'Defect', 'Fallo'
-  l.store 'Improvement', 'Mejora'
-  l.store 'Critical', 'Crítica'
-  l.store 'Urgent', 'Urgente'
-  l.store 'High', 'Alta'
-  l.store 'Normal', 'Normal'
-  l.store 'Low', 'Baja'
-  l.store 'Lowest', 'Muy baja'
-  l.store 'Blocker', 'La más alta'
-  l.store 'Major', 'Mayor'
-  l.store 'Minor', 'Menor'
-  l.store 'Trivial', 'Mínima'
-
-  l.store 'Start', 'Comienzo'
-  l.store 'Duration Worked', 'Tiempo trabajado'
-
-  # Timeline
-  l.store '[All Time]', '[Todo]'
-  l.store 'This Week', 'Esta semana'
-  l.store 'Last Week', 'La semana pasada'
-  l.store 'This Month', 'Este mes'
-  l.store 'Last Month', 'El mes pasado'
-  l.store 'This Year', 'Este año'
-  l.store 'Last Year', 'El año pasado'
-  l.store '[Any Type]', '[Cualquier acción]'
-  l.store 'Work Log', 'Histórico de trabajo'
-  l.store 'Status Change', 'Cambio de estado'
-  l.store 'Modified', 'Modificaciones'
-  l.store '[Prev]', '[Anterior]' # [Prev] 100 of 2000 entries [Next]
-  l.store '[Next]', '[Siguiente]' # [Prev] 100 of 2000 entries [Next]
-  l.store 'of', 'de' # 100 of 2000 entries
-  l.store 'entries..', 'entradas...' # 100 of 2000 entries
-
-  # Project Files
-  l.store 'Download', 'Descargar'
-  l.store 'Delete', 'Borrar'
-  l.store '[New File]', '[Nuevo archivo]'
-  l.store 'File', ['Archivo', 'Archivos']
-  l.store 'Upload New File', 'Subir nuevo archivo'
-  l.store 'Name', 'Nombre'
-  l.store 'Upload', 'Subir'
-
-  # Reports
-  l.store 'Download CSV file of this report', 'Descargar archivo CSV de este informe.'
-  l.store 'Total', 'Total'
-  l.store 'Report Configuration', 'Configurar informe'
-  l.store 'Report Type', 'Tipo de informe'
-  l.store 'Pivot', 'Pivot'
-  l.store 'Audit', 'Auditoría'
-  l.store 'Time sheet', 'Hoja de tiempos'
-  l.store 'Time Range', 'Intervalo de tiempo'
-  l.store 'Custom', 'Personalizado'
-  l.store 'Rows', 'Filas'
-  l.store 'Columns', 'Columnas'
-  l.store "Milestones", 'Hitos'
-  l.store "Date", 'Fecha'
-  l.store 'Task Status', 'Estado de tarea'
-  l.store "Task Type", 'Tipo de tarea'
-  l.store "Task Priority", 'Prioridad de tarea'
-  l.store "Task Severity", 'Importancia de tarea'
-  l.store 'From', 'Desde' # From Date
-  l.store 'To', 'Hasta' # To Date
-  l.store 'Sub-totals', 'Subtotales'
-  l.store 'Filter', 'Filtro'
-  l.store 'Advanced Options', 'Opciones avanzadas'
-  l.store 'Status', 'Estado'
-  l.store 'Run Report', 'Ver informe'
-
-  # Schedule
-
-  # Search
-  l.store 'Search Results', 'Buscar en resultados'
-  l.store 'Activities', 'Actividades'
-
-  # Project list
-  l.store 'Read', 'Lectura'
-  l.store 'Work', 'Trabajar'
-  l.store 'Assign', 'Asignar'
-  l.store 'Prioritize', 'Priorizar'
-  l.store 'Grant', 'Administrar'
-  l.store "Remove all access for <b>%s</b>?", 'Quitar todos los permisos a <b>%s</b>?'
-  l.store "Grant %s access for <b>%s</b>?", 'Dar permisos de %s a <b>%s</b>?'
-  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", '¡No se puede eliminar <b>a usted mismo</b> a al <b>creador del proyecto</b>!'
-  l.store "Grant access to <b>%s</b>?", '¿Dar permisos a <b>%s</b>?'
-  l.store 'Edit Project', 'Editar proyecto'
-  l.store 'Delete Project', 'Borrar proyecto'
-  l.store 'Complete Project', 'Terminar proyecto'
-  l.store 'New Milestone', 'Nuevo hito'
-  l.store 'Access To Project', 'Acceder al proyecto'
-  l.store 'Completed', 'Completado'
-  l.store 'Completed Projects', 'Proyectos terminados'
-  l.store 'Revert', 'Volver a poner'
-  l.store 'Really revert %s?', '¿De verdad quiere ponerlo de nuevo como %s?'
-
-  # Milestones
-  l.store 'Owner', 'Propietario'
-  l.store 'Edit Milestone', 'Editar Hito'
-  l.store 'Delete Milestone', 'Borrar Hito'
-  l.store 'Complete Milestone', 'Completar Hito'
-  l.store 'Completed Milestones', 'Hitos completados'
-
-  # Users
-  l.store 'Email', 'E-mail'
-  l.store 'Last Login', 'Último acceso'
-  l.store 'Offline', 'Desconectado'
-  l.store 'Are your sure?', '¿Está seguro?'
-  l.store 'Company', 'Compañía'
-  l.store '[New User]', '[Nuevo usuario]'
-  l.store '[Previous page]', '[Página anterior]'
-  l.store '[Next page]', '[Página siguiente]'
-  l.store 'Edit User', 'Editar usuario'
-
-  l.store 'Options', 'Opciones'
-  l.store 'Location', 'Ciudad'
-  l.store 'Administrator', 'Administrador'
-  l.store 'Track Time', 'Contrl de tiempos'
-  l.store 'Use External Clients', 'Usar clientes externos'
-  l.store 'Show Calendar', 'Ver calendario'
-  l.store 'Show Tooltips', 'Ver ayudas'
-  l.store 'Send Notifications', 'Enviar notificaciones'
-  l.store 'Receive Notifications', 'Recibir notificaciones'
-
-  l.store 'User Information', 'Información del usuario'
-  l.store 'Username', 'Nombre de usuario'
-  l.store 'Password', 'Contraseña'
-
-  # Preferences
-  l.store 'Preferences', 'Preferencias'
-  l.store 'Language', 'Idioma'
-  l.store 'Time Format', 'Formato de hora'
-  l.store 'Date Format', 'Formato de fecha'
-  l.store 'Custom Logo', 'Logo personalizado'
-  l.store 'Current logo', 'Logo actual'
-  l.store 'New logo', 'Nuevo logo'
-  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Se recomienda un tamaño de imagen de 250x50px. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
-
-  # Notes / Pages
-  l.store 'Body', 'Contenido'
-  l.store 'Preview', 'Vista previa'
-  l.store 'New Note', 'Nueva nota'
-  l.store 'Edit Note', 'Editar nota'
-
-  # Views
-  l.store 'New View', 'Nueva vista'
-  l.store 'Edit View', 'Editar vista'
-  l.store 'Delete View', 'Borra vista'
-  l.store '[Active User]', '[Usuario conectado]'
-  l.store 'Shared', 'Compartir'
-
-  # Clients
-  l.store 'Contact', 'Contacto'
-  l.store 'New Client', 'Nuevo cliente'
-  l.store 'Contact email', 'E-mail de contacto'
-  l.store 'Contact name', 'Nombre de contacto'
-  l.store 'Client CSS', 'CSS del cliente'
-
-  # Activities Controller
-  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Tutorial completado. No se volverá a mostrar en el menú.'
-  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Tutorial escondido. No se volverá a mostrar en el menú.'
-
-  # Customers Controller
-  l.store 'Client was successfully created.', 'El cliente fue creado satisfactoriamente.'
-  l.store 'Client was successfully updated.', 'El cliente fue modificado satisfactoriamente.'
-  l.store 'Please delete all projects for %s before deleting it.', 'Por favor, elimine todos los proyectos de %s antes de borrarlo.'
-  l.store "You can't delete your own company.", 'No puede borrar su propia compañia.'
-  l.store 'CSS successfully uploaded.', 'CSS subido satisfactoriamente.'
-  l.store 'Logo successfully uploaded.', 'Logo subido satisfactoriamente.'
-
-  # Milestones Controller
-  l.store 'Milestone was successfully created.', 'Hito creado satisfactoriamente.'
-  l.store 'Milestone was successfully updated.', 'Hito modificado satisfactoriamente.'
-  l.store '%s / %s completed.', '%s / %s completado.' # Project name / Milestone name completed.
-  l.store '%s / %s reverted.', '%s / %s se ha vuelto a renombrar.' # Project name / Milestone name reverted.
-
-  # Pages / Notes Controller
-  l.store 'Note was successfully created.', 'Nota creada satisfactoriamente.'
-  l.store 'Note was successfully updated.', 'Nota modificada satisfactoriamente.'
-
-  # Project Files Controller
-  l.store 'No file selected for upload.', 'Ningún archivo seleccionado para subir.'
-  l.store 'File too big.', 'Archivo demasiado grande.'
-  l.store 'File successfully uploaded.', 'Fichero subido satisfactoriamente.'
-
-  # Projects Controller
-  l.store 'Project was successfully created.', 'Proyecto creado satisfactoriamente.'
-  l.store 'Project was successfully created. Add users who need access to this project.', 'Proyecto creado satisfactoriamente. Añada los usuarios que necesiten tener acceso a este proyecto.'
-  l.store 'Project was successfully updated.', 'Proyecto modificado satisfactoriamente.'
-  l.store 'Project was deleted.', 'El proyecto fue eliminado.'
-  l.store '%s completed.', '%s completado.'
-  l.store '%s reverted.', '%s se ha rehecho.'
-
-  # Reports Controller
-  l.store "Empty report, log more work!", 'Informe vacío, ¡Cree más entradas de trabajo!'
-
-  # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Debe crear un proyecto para asignar sus tareas, o tener permiso para crear tareas en un proyecto existente...'
-  l.store 'Invalid due date ignored.', 'Fecha de entraga inválida ignorada.'
-  l.store 'Task was successfully created.', 'Tarea creada satisfactoriamente.'
-  l.store 'Task was successfully updated.', 'Tarea modificada satisfactoriamente.'
-  l.store 'Log entry saved...', 'Entrada de histórico guardada...'
-  l.store "Unable to save log entry...", 'Imposible guardar entrada de histórico...'
-  l.store "Log entry already saved from another browser instance.", 'Entrada de histórico ya grabada desde otra ventana.'
-  l.store 'Log entry deleted...', 'Entrada de histórico eliminada...'
-
-  # Users Controller
-  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Usuario creado satisfactoriamente. Recuerde dar acceso a este usuario a los proyectos que necesite.'
-  l.store "Error sending creation email. Account still created.", 'Error al enviar e-mail de creación. La cuanta ya fue creada.'
-  l.store 'User was successfully updated.', 'Usuario modificado satisfactoriamente.'
-  l.store 'Preferences successfully updated.', 'Preferencia modificadas satisfactoriamente.'
-
-  # Views Controller
+  l.store "Closed", "Cerrada"
+  l.store "Create", "Crear"
+  l.store "Custom", "Personalizado"
+  l.store "Defect", "Fallo"
+  l.store "Delete", "Borrar"
+  l.store "Filter", "Filtro"
+  l.store "Forums", "Forums"
+  l.store "Friday", "Viernes"
+  l.store "Lowest", "Muy baja"
+  l.store "Monday", "Lunes"
+  l.store "No one", "Ninguno"
+  l.store "Normal", "Normal"
+  l.store "Online", "En linea"
+  l.store "Recent", "Recent"
+  l.store "Revert", "Volver a poner"
+  l.store "Search", "Buscar"
+  l.store "Shared", "Compartir"
+  l.store "Status", "Estado"
+  l.store "Sunday", "Domingo"
+  l.store "Target", "Objetivo"
+  l.store "Upload", "Subir"
+  l.store "Urgent", "Urgente"
+  l.store "[Next]", "[Siguiente]"
+  l.store "[None]", "[Ninguno]"
+  l.store "[Prev]", "[Anterior]"
+  l.store "[wdhm]", "[sdhm]"
+  l.store "%d days", ["%d days", "%d days"]
+  l.store "%d file", ["%d file", "%d files"]
+  l.store "%d week", ["una semana", "%d semanas"]
+  l.store "Blocker", "La más alta"
+  l.store "Clients", "Clientes"
+  l.store "Columns", "Columnas"
+  l.store "Comment", "Comentario"
+  l.store "Company", "Compañía"
+  l.store "Contact", "Contacto"
+  l.store "Created", "Creado"
+  l.store "Destroy", "Destroy"
+  l.store "History", "Histórico"
+  l.store "Invalid", "Inválida"
+  l.store "January", "Enero"
+  l.store "Loading", "Loading"
+  l.store "Log Out", "Salir"
+  l.store "Members", "Members"
+  l.store "October", "Octubre"
+  l.store "Offline", "Desconectado"
+  l.store "Options", "Opciones"
+  l.store "Preview", "Vista previa"
+  l.store "Project", "Proyecto"
+  l.store "Reports", "Informes"
+  l.store "Summary", "Resumen"
+  l.store "Trivial", "Mínima"
+  l.store "Tuesday", "Martes"
+  l.store "%d month", ["un mes", "%d meses"]
+  l.store "%d posts", ["%d posts", "%d posts"]
+  l.store "1:2:3:04", "1:2:3:04"
+  l.store "1w2d3h4m", "1s2d3h4m"
+  l.store "Archived", "Archivada"
+  l.store "Complete", "Complete"
+  l.store "Critical", "Crítica"
+  l.store "December", "Diciembre"
+  l.store "Download", "Descargar"
+  l.store "Due Date", "Fecha de entrega"
+  l.store "February", "Febrero"
+  l.store "Language", "Idioma"
+  l.store "Location", "Ciudad"
+  l.store "Modified", "Modificaciones"
+  l.store "New File", "New File"
+  l.store "New Note", "Nueva nota"
+  l.store "New Room", "New Room"
+  l.store "New Task", "Nueva tarea"
+  l.store "New User", "New User"
+  l.store "New View", "Nueva vista"
+  l.store "New logo", "Nuevo logo"
+  l.store "November", "Noviembre"
+  l.store "Overview", "General"
+  l.store "Password", "Contraseña"
+  l.store "Priority", "Prioridad"
+  l.store "Progress", "Progress"
+  l.store "Projects", "Proyectos"
+  l.store "QuickAdd", "QuickAdd"
+  l.store "Revision", "Revisión"
+  l.store "Saturday", "Sábado"
+  l.store "Schedule", "Agenda"
+  l.store "Severity", "Importancia"
+  l.store "Thursday", "Jueves"
+  l.store "Timeline", "Historial"
+  l.store "Tutorial", "Tutorial"
+  l.store "Use Chat", "Use Chat"
+  l.store "Use Wiki", "Use Wiki"
+  l.store "Username", "Nombre de usuario"
+  l.store "Work Log", "Histórico de trabajo"
+  l.store "Workload", "Workload"
+  l.store "[Delete]", "[Borrar]"
+  l.store "tomorrow", "mañana"
+  l.store "%d folder", ["%d folder", "%d folders"]
+  l.store "%d minute", ["un minuto", "%d minutos"]
+  l.store "%d topics", ["%d topics", "%d topics"]
+  l.store "Completed", "Completado"
+  l.store "Duplicate", "Duplicada"
+  l.store "Edit Note", "Editar nota"
+  l.store "Edit User", "Editar usuario"
+  l.store "Edit View", "Editar vista"
+  l.store "Estimated", "Estimated"
+  l.store "Last Post", "Last Post"
+  l.store "Last Week", "La semana pasada"
+  l.store "Last Year", "El año pasado"
+  l.store "Milestone", "Hito"
+  l.store "Next Week", "Next Week"
+  l.store "Remaining", "Remaining"
+  l.store "September", "Septiembre"
+  l.store "Task Type", "Tipo de tarea"
+  l.store "This Week", "Esta semana"
+  l.store "This Year", "Este año"
+  l.store "Top Tasks", "Tareas principales"
+  l.store "Use Forum", "Use Forum"
+  l.store "Wednesday", "Miércoles"
+  l.store "Won't Fix", "Sin solución"
+  l.store "Work Done", "Work Done"
+  l.store "Yesterday", "Yesterday"
+  l.store "entries..", "entradas..."
+  l.store "yesterday", "ayer"
+  l.store "%d day ago", ["hace un día", "hace %d días"]
+  l.store "Activities", "Actividades"
+  l.store "Attributes", "Atributos"
+  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Client CSS", "CSS del cliente"
+  l.store "Depends on", "Depends on"
+  l.store "Group Tags", "Agrupar etiquetas"
+  l.store "Last Login", "Último acceso"
+  l.store "Last Month", "El mes pasado"
+  l.store "Leave Open", "Dejar abierta"
+  l.store "Local Time", "Local Time"
+  l.store "Milestones", "Hitos"
+  l.store "New Avatar", "New Avatar"
+  l.store "New Client", "Nuevo cliente"
+  l.store "New Folder", "New Folder"
+  l.store "Open Tasks", "Abrir tarea"
+  l.store "Prioritize", "Priorizar"
+  l.store "Run Report", "Ver informe"
+  l.store "Sub-totals", "Subtotales"
+  l.store "This Month", "Este mes"
+  l.store "Time Range", "Intervalo de tiempo"
+  l.store "Time sheet", "Hoja de tiempos"
+  l.store "Track Time", "Contrl de tiempos"
+  l.store "Unassigned", "Unassigned"
+  l.store "Widget Key", "Widget Key"
+  l.store "[All Tags]", "[Todas las etiquetas]"
+  l.store "[All Time]", "[Todo]"
+  l.store "[Any Task]", "[Any Task]"
+  l.store "[Any Type]", "[Cualquier acción]"
+  l.store "[Any User]", "[Cualquier usuario]"
+  l.store "[New File]", "[Nuevo archivo]"
+  l.store "[New User]", "[Nuevo usuario]"
+  l.store "%d week ago", ["hace una semana", "hace %d semanas"]
+  l.store "1w 2d 3h 4m", "1s 2d 3h 4m"
+  l.store "Assigned To", "Asignada a "
+  l.store "Attach file", "Adjuntar archivo"
+  l.store "Attachments", "Attachments"
+  l.store "Custom Logo", "Logo personalizado"
+  l.store "Date Format", "Formato de fecha"
+  l.store "Delete Room", "Delete Room"
+  l.store "Delete View", "Borra vista"
+  l.store "Description", "Descripción"
+  l.store "Forum Posts", "Forum Posts"
+  l.store "Improvement", "Mejora"
+  l.store "In Progress", "En progreso"
+  l.store "Information", "Información"
+  l.store "Let me know", "Házmelo saber"
+  l.store "Linked from", "Referenciado desde"
+  l.store "New Feature", "Nueva característica"
+  l.store "New Project", "New Project"
+  l.store "Preferences", "Preferencias"
+  l.store "Report Type", "Tipo de informe"
+  l.store "Task Status", "Estado de tarea"
+  l.store "Time Format", "Formato de hora"
+  l.store "Transcripts", "Transcripts"
+  l.store "[All Tasks]", "[All Tasks]"
+  l.store "[Next page]", "[Página siguiente]"
+  l.store "%d month ago", ["hace un mes", "hace %d meses"]
+  l.store "%s reverted.", "%s se ha rehecho."
+  l.store "Company Name", "Company Name"
+  l.store "Contact name", "Nombre de contacto"
+  l.store "Current logo", "Logo actual"
+  l.store "Dependencies", "Dependencies"
+  l.store "Edit Project", "Editar proyecto"
+  l.store "Hide Waiting", "Hide Waiting"
+  l.store "Last Updated", "Última actualización"
+  l.store "Leave Closed", "Dejar cerrada"
+  l.store "Newest Tasks", "Nuevas tareas"
+  l.store "Notification", "Notificación"
+  l.store "Plan / GANTT", "Plan / GANTT"
+  l.store "Recent Posts", "Recent Posts"
+  l.store "Requested By", "Solicitada por"
+  l.store "Save as View", "Grabar como vista"
+  l.store "Show Avatars", "Show Avatars"
+  l.store "Wiki Changes", "Wiki Changes"
+  l.store "[Any Client]", "[Cualquier cliente]"
+  l.store "[Any Status]", "[Cualquier estado]"
+  l.store "[Unassigned]", "[Sin asignar]"
+  l.store "worked today", "de trabajo hoy"
+  l.store "%s completed.", "%s completado."
+  l.store "Administrator", "Administrador"
+  l.store "Are you sure?", "Are you sure?"
+  l.store "Contact email", "E-mail de contacto"
+  l.store "Custom Avatar", "Custom Avatar"
+  l.store "Days per Week", "Days per Week"
+  l.store "File too big.", "Archivo demasiado grande."
+  l.store "My Open Tasks", "Mis tareas abiertas"
+  l.store "New Milestone", "Nuevo hito"
+  l.store "Public Forums", "Public Forums"
+  l.store "Show Calendar", "Ver calendario"
+  l.store "Show Tooltips", "Ver ayudas"
+  l.store "Status Change", "Cambio de estado"
+  l.store "Task Priority", "Prioridad de tarea"
+  l.store "Task Severity", "Importancia de tarea"
+  l.store "Time Estimate", "Tiempo estimado"
+  l.store "Use Messaging", "Use Messaging"
+  l.store "[Active User]", "[Usuario conectado]"
+  l.store "[Any Project]", "[Cualquier proyecto]"
+  l.store "[No Grouping]", "[No Grouping]"
+  l.store "about %d hour", ["alrededor de una hora", "alrededor de %d horas"]
+  l.store "half a minute", "medio minuto"
+  l.store "Add New Widget", "Add New Widget"
+  l.store "Are your sure?", "¿Está seguro?"
+  l.store "Current Avatar", "Current Avatar"
+  l.store "Delete Project", "Borrar proyecto"
+  l.store "Depended on by", "Depended on by"
+  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Edit Log Entry", "Editar entrada de histórico"
+  l.store "Edit Milestone", "Editar Hito"
+  l.store "Full Reference", "Referencia completa"
+  l.store "New To-do Item", "New To-do Item"
+  l.store "Remaining Work", "Remaining Work"
+  l.store "Revert to Open", "Volver a abrir"
+  l.store "Search Results", "Buscar en resultados"
+  l.store "Set as Invalid", "Poner como Inválida"
+  l.store "Signup Message", "Signup Message"
+  l.store "Wiki Additions", "Wiki Additions"
+  l.store "Workday Length", "Workday Length"
+  l.store "[Any Priority]", "[Any Priority]"
+  l.store "[Any Severity]", "[Any Severity]"
+  l.store "Close <b>%s</b>", "Cerrar <b>%s</b>"
+  l.store "Duration Format", "Formato de duración"
+  l.store "Duration Worked", "Tiempo trabajado"
+  l.store "Quick Reference", "Referencia rápida"
+  l.store "Set in Progress", "Poner En Progreso"
+  l.store "Upload New File", "Subir nuevo archivo"
+  l.store "[Any Milestone]", "[Cualquier hito]"
+  l.store "[Previous page]", "[Página anterior]"
+  l.store "Advanced Options", "Opciones avanzadas"
+  l.store "Company Settings", "Company Settings"
+  l.store "Complete Project", "Terminar proyecto"
+  l.store "Create New Forum", "Create New Forum"
+  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Delete Log Entry", "Borrar entrada de histórico"
+  l.store "Delete Milestone", "Borrar Hito"
+  l.store "Leave as Invalid", "Dejar como Inválida"
+  l.store "Open to everyone", "Open to everyone"
+  l.store "Overall Progress", "Progreso general"
+  l.store "Set as Duplicate", "Poner como Duplicada"
+  l.store "Set as Won't Fix", "Poner como Sin Solución"
+  l.store "Unassigned Tasks", "Tareas no asignadas"
+  l.store "User Information", "Información del usuario"
+  l.store "%s / %s reverted.", "%s / %s se ha vuelto a renombrar."
+  l.store "Access To Project", "Acceder al proyecto"
+  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
+  l.store "Really delete %s?", "¿De verdad desea borrar %s?"
+  l.store "Really revert %s?", "¿De verdad quiere ponerlo de nuevo como %s?"
+  l.store "Recent Activities", "Actividades recientes"
+  l.store "Remove dependency", "Remove dependency"
+  l.store "Under revision by", "Está siendo revisado por"
+  l.store "[Active Projects]", "[Active Projects]"
+  l.store "[Closed Projects]", "[Closed Projects]"
+  l.store "[Default Sorting]", "[Default Sorting]"
+  l.store "%s / %s completed.", "%s / %s completado."
+  l.store "Complete Milestone", "Completar Hito"
+  l.store "Completed Projects", "Proyectos terminados"
+  l.store "Hide Waiting Tasks", "Hide Waiting Tasks"
+  l.store "Leave as Duplicate", "Dejar como Duplicada"
+  l.store "Leave as Won't Fix", "Dejar como Sin Solución"
+  l.store "Log entry saved...", "Entrada de histórico guardada..."
+  l.store "No recent activity", "No recent activity"
+  l.store "Receive Newsletter", "Receive Newsletter"
+  l.store "Send Notifications", "Enviar notificaciones"
+  l.store "less than a minute", "menos de un minuto"
+  l.store "Remove notification", "Remove notification"
+  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "[Without Milestone]", "[Without Milestone]"
+  l.store "%d completed project", ["un proyecto terminado", "%d proyectos terminados"]
+  l.store "Completed Milestones", "Hitos completados"
+  l.store "Leave as in Progress", "Dejar En Progreso"
+  l.store "Log entry deleted...", "Entrada de histórico eliminada..."
+  l.store "My In Progress Tasks", "Mis tareas en curso"
+  l.store "Project was deleted.", "El proyecto fue eliminado."
+  l.store "Report Configuration", "Configurar informe"
+  l.store "Use External Clients", "Usar clientes externos"
+  l.store "less than %d seconds", ["menos de un segundo", "menos de %d segundos"]
+  l.store "Open to everyone from", "Open to everyone from"
+  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Receive Notifications", "Recibir notificaciones"
+  l.store "%d completed milestone", ["un hito terminado", "%d hitos terminados"]
+  l.store "Add another dependency", "Add another dependency"
+  l.store "Edit project <b>%s</b>", "Editar proyecto <b>%s</b>"
+  l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "View '%s' was deleted.", "Vista '%s' eliminada."
+  l.store "Edit milestone <b>%s</b>", "Editar hito <b>%s</b>"
+  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Send notification emails", "Enviar notificación por e-mail"
+  l.store "Invalid due date ignored.", "Fecha de entraga inválida ignorada."
+  l.store "CSS successfully uploaded.", "CSS subido satisfactoriamente."
+  l.store "Grant access to <b>%s</b>?", "¿Dar permisos a <b>%s</b>?"
+  l.store "Stop working on <b>%s</b>.", "Dejar de trabajar en <b>%s</b>."
+  l.store "File successfully uploaded.", "Fichero subido satisfactoriamente."
+  l.store "Logo successfully uploaded.", "Logo subido satisfactoriamente."
+  l.store "Unable to save log entry...", "Imposible guardar entrada de histórico..."
+  l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b>."
+  l.store "Empty report, log more work!", "Informe vacío, ¡Cree más entradas de trabajo!"
+  l.store "No file selected for upload.", "Ningún archivo seleccionado para subir."
+  l.store "Really delete this log entry?", "¿De verdad quiere borrar esta entrada del histórico?"
+  l.store "Grant %s access for <b>%s</b>?", "Dar permisos de %s a <b>%s</b>?"
+  l.store "Move <b>%s</b> to the Archive.", "Mover <b>%s</b> al Archivo."
+  l.store "Note was successfully created.", "Nota creada satisfactoriamente."
+  l.store "Note was successfully updated.", "Nota modificada satisfactoriamente."
+  l.store "Task was successfully created.", "Tarea creada satisfactoriamente."
+  l.store "Task was successfully updated.", "Tarea modificada satisfactoriamente."
+  l.store "User was successfully updated.", "Usuario modificado satisfactoriamente."
+  l.store "Client was successfully created.", "El cliente fue creado satisfactoriamente."
+  l.store "Client was successfully updated.", "El cliente fue modificado satisfactoriamente."
+  l.store "Download CSV file of this report", "Descargar archivo CSV de este informe."
+  l.store "Remove all access for <b>%s</b>?", "Quitar todos los permisos a <b>%s</b>?"
+  l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
+  l.store "Preferences successfully updated.", "Preferencia modificadas satisfactoriamente."
+  l.store "Project was successfully created.", "Proyecto creado satisfactoriamente."
+  l.store "Project was successfully updated.", "Proyecto modificado satisfactoriamente."
+  l.store "Done working on <b>%s</b> for now.", "Trabajado en <b>%s</b> hasta el momento."
+  l.store "You can't delete your own company.", "No puede borrar su propia compañia."
+  l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Comentarios? ¿Sugerencias? ¿Ideas? ¿Fallos?"
+  l.store "Milestone was successfully created.", "Hito creado satisfactoriamente."
+  l.store "Milestone was successfully updated.", "Hito modificado satisfactoriamente."
+  l.store "Restore <b>%s</b> from the Archive.", "Restaurar <b>%s</b> del Archivo."
   l.store "View '%s' was successfully created.", "Vista '%s' creada satisfactoriamente."
   l.store "View '%s' was successfully updated.", "Vista '%s' modificada satisfactoriamente."
-  l.store "View '%s' was deleted.", "Vista '%s' eliminada."
-
-  # Wiki
-  l.store 'Quick Reference', 'Referencia rápida'
-  l.store 'Full Reference', 'Referencia completa'
-  l.store 'or', 'o'
-  l.store 'Under revision by', 'Está siendo revisado por'
-  l.store 'Revision', 'Revisión'
-  l.store 'Linked from', 'Referenciado desde' # Linked from in the way of href link ???
-
-  # Reports
-  l.store 'Today', 'Hoy'
-  l.store 'Week', 'Semana'
-
-  # Dates
-  l.store 'January', 'Enero'
-  l.store 'February', 'Febrero'
-  l.store 'March', 'Marzo'
-  l.store 'April', 'Abril'
-  l.store 'May', 'Mayo'
-  l.store 'June', 'Junio'
-  l.store 'July', 'Julio'
-  l.store 'August', 'Agosto'
-  l.store 'September', 'Septiembre'
-  l.store 'October', 'Octubre'
-  l.store 'November', 'Noviembre'
-  l.store 'December', 'Diciembre'
-
-  l.store 'Jan', 'Ene'
-  l.store 'Feb', 'Feb'
-  l.store 'Mar', 'Mar'
-  l.store 'Apr', 'Abr'
-  l.store 'May', 'May'
-  l.store 'Jun', 'Jun'
-  l.store 'Jul', 'Jul'
-  l.store 'Aug', 'Ago'
-  l.store 'Sep', 'Sep'
-  l.store 'Oct', 'Oct'
-  l.store 'Nov', 'Nov'
-  l.store 'Dec', 'Dic'
-
-  l.store 'Sunday', 'Domingo'
-  l.store 'Monday', 'Lunes'
-  l.store 'Tuesday', 'Martes'
-  l.store 'Wednesday', 'Miércoles'
-  l.store 'Thursday', 'Jueves'
-  l.store 'Friday', 'Viernes'
-  l.store 'Saturday', 'Sábado'
-
-  l.store 'Sun', 'Dom'
-  l.store 'Mon', 'Lun'
-  l.store 'Tue', 'Mar'
-  l.store 'Wed', 'Mie'
-  l.store 'Thu', 'Jue'
-  l.store 'Fri', 'Vie'
-  l.store 'Sat', 'Sáb'
-
-  # worked_nice
-  l.store '[wdhm]', '[sdhm]'
-  l.store 'w', 's'
-  l.store 'd', 'd'
-  l.store 'h', 'h'
-  l.store 'm', 'm'
-
-  # Preferences
-  l.store 'Duration Format', 'Formato de duración'
-  l.store 'Workday Length', 'Workday Length'
-
-  # Tasks filter
-  l.store '[Without Milestone]', '[Without Milestone]'
-
-  # Task tooltip
-  l.store 'Progress', 'Progress'
-
-  # User Permissions
-  l.store 'All', 'All'
-
-  # Reports filter
-  l.store '[Any Priority]', '[Any Priority]'
-  l.store '[Any Severity]', '[Any Severity]'
-
-  # Preferences
-  l.store '1w 2d 3h 4m', '1s 2d 3h 4m'
-  l.store '1w2d3h4m', '1s2d3h4m'
-
-  # Task
-  l.store 'Attachments', 'Attachments'
-  l.store 'Dependencies', 'Dependencies'
-  l.store 'Add another dependency', "Add another dependency"
-  l.store 'Remove dependency', 'Remove dependency'
-  l.store 'every', 'every' # every thursday
-  l.store '[Any Task]', '[Any Task]'
-
-  l.store 'day', 'day' #every day
-  l.store 'days', 'days' #every 2 days
-  l.store 'last', 'last' #every last thursday
-
-  l.store 'Hide Waiting Tasks', 'Hide Waiting Tasks'
-  l.store 'Signup Message', 'Signup Message'
-  l.store 'The message will be included in the signup email.', 'The message will be included in the signup email.'
-  l.store 'Depends on', 'Depends on'
-
-  # Activities
-  l.store 'Subscribe to the recent activities RSS feed', 'Subscribe to the recent activities RSS feed'
-
-  # Project Files
-  l.store '%d folder', ['%d folder', '%d folders']
-  l.store '%d file', ['%d file', '%d files']
+  l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
+  l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
+  l.store "Revert <b>%s</b> to not completed status.", "Dejar <b>%s</b> como no terminado."
+  l.store "Subscribe to the recent activities RSS feed", "Subscribe to the recent activities RSS feed"
+  l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
+  l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
+  l.store "The message will be included in the signup email.", "The message will be included in the signup email."
+  l.store "Start working on <b>%s</b>. Click again when done.", "Empezar a trabajar en <b>%s</b>. Pulse de nuevo para terminar."
+  l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
+  l.store "Error sending creation email. Account still created.", "Error al enviar e-mail de creación. La cuanta ya fue creada."
+  l.store "Please delete all projects for %s before deleting it.", "Por favor, elimine todos los proyectos de %s antes de borrarlo."
+  l.store "Log entry already saved from another browser instance.", "Entrada de histórico ya grabada desde otra ventana."
+  l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutorial escondido. No se volverá a mostrar en el menú."
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "¡No se puede eliminar <b>a usted mismo</b> a al <b>creador del proyecto</b>!"
+  l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutorial completado. No se volverá a mostrar en el menú."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
+  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "Project was successfully created. Add users who need access to this project.", "Proyecto creado satisfactoriamente. Añada los usuarios que necesiten tener acceso a este proyecto."
+  l.store "User was successfully created. Remember to give this user access to needed projects.", "Usuario creado satisfactoriamente. Recuerde dar acceso a este usuario a los proyectos que necesite."
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Debe crear un proyecto para asignar sus tareas, o tener permiso para crear tareas en un proyecto existente..."
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Se recomienda un tamaño de imagen de 250x50px. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
+  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Los cambios en la tarea se notificarán, además de a<br/>su creador y a las personas asignadas a:<br/><br/>Ctrl-click para cambiar."
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
 end

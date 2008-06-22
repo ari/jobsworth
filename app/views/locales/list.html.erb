@@ -1,0 +1,21 @@
+<% explanations = { 'd' => 'as in days', 'm' => 'as in minutes', 'h' => 'as in hours', 'w' => 'as in weeks' } %>
+
+<fieldset>
+<legend><%=_ 'Translate' %></legend>
+
+<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;text-align:center"><strong><%= _ 'Changes are not made live instantly.'%></strong></div>
+
+<% form_tag :action => 'update', :id => current_user.locale do %>
+
+<% @keys.each do |k| %>
+<div style="border:1px solid #ddd;padding:0.5em;margin:0.5em;<%= "background-color:#fcc;" if k.key == k.singular && current_user.locale != 'en_US' %>">
+<%= h k.key %> <%= "(#{explanations[k.key]})" if explanations[k.key] %><br />
+<input type="text" name="singular[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.singular.gsub(/"/, "&quot;")%>" size="50" maxlength="255"/><%= _('Singular') if k.plural %><br />
+<% if k.plural %><input type="text" name="plural[<%=current_user.locale%>][<%=k.id%>]" value="<%=k.plural.gsub(/"/, "&quot;")%>" size="50  maxlength="255"//><%= _('Plural') %><br /><% end %>
+</div>
+<% end %>
+
+<%= submit_tag _("Save"), :class => 'nolabel' %>
+
+<% end %>
+</fieldset>

@@ -27,7 +27,7 @@
             </div>
 
             <div class="tutorial<%= " complete" if @completed_count > 0 %><%= " todo" if @work_count == 0 %>">
-             <%= _'After working on a task, it\'s time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu. You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won\'t Fix, Invalid or Duplicate.', link_to(_('Browse'), :controller => 'views', :action => 'browse'), image_tag('time.png', :alt => 'Clock Icon')  %>
+             <%= _'After working on a task, it\'s time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.', link_to(_('Browse'), :controller => 'views', :action => 'browse') %> <%= _'You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won\'t Fix, Invalid or Duplicate.', image_tag('time.png', :alt => 'Clock Icon')  %>
             </div>
 
             <div class="tutorial<%= " complete" if @users_count > 1 %><%= " todo" if @completed_count == 0 %>">

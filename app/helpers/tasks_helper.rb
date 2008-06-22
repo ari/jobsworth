@@ -36,7 +36,7 @@ module TasksHelper
 
     title << filters.join(' / ')
 
-    title << "]</div><div style=\"float:right\">#{tz.now.strftime("#{current_user.time_format} #{current_user.date_format}")}</div><div style=\"clear:both\"></div>"
+    title << "]</div><div style=\"float:right\">#{tz.now.strftime_localized("#{current_user.time_format} #{current_user.date_format}")}</div><div style=\"clear:both\"></div>"
 
     "<h3>#{title}</h3>"
 

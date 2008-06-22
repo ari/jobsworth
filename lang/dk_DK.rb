@@ -1,476 +1,464 @@
-
-
 Localization.define('dk_DK') do |l|
-
-  # Main menu
-  l.store "Overview", "Overblik"
-  l.store "Tutorial", "Introduktion"
-  l.store "Browse", "Gennemse"
-  l.store "Timeline", "Tidslinje"
+  l.store "d", "d"
+  l.store "h", "t"
+  l.store "m", "m"
+  l.store "w", "u"
+  l.store "To", "Til"
+  l.store "by", "af"
+  l.store "of", "af"
+  l.store "or", "eller"
+  l.store "Age", "Age"
+  l.store "All", "Alle"
+  l.store "Apr", "Apr"
+  l.store "Aug", "Aug"
+  l.store "CSV", "CSV"
+  l.store "Dec", "Dec"
+  l.store "Feb", "Feb"
+  l.store "Fri", "Fre"
+  l.store "Jan", "Jan"
+  l.store "Jul", "Jul"
+  l.store "Jun", "Jun"
+  l.store "Low", "Lav"
+  l.store "Mar", "Mar"
+  l.store "May", "Maj"
+  l.store "Mon", "Man"
+  l.store "New", "Ny"
+  l.store "Nov", "Nov"
+  l.store "Oct", "Okt"
+  l.store "Sat", "Lør"
+  l.store "Sep", "Sep"
+  l.store "Sun", "Søn"
+  l.store "Thu", "Tor"
+  l.store "To:", "Til:"
+  l.store "Tue", "Tir"
+  l.store "Wed", "Ons"
+  l.store "ago", "siden"
+  l.store "and", "og"
+  l.store "day", "dag"
+  l.store "Body", "Indhold"
+  l.store "Chat", "Chat"
+  l.store "Date", "Dato"
+  l.store "Edit", "Ret"
+  l.store "File", ["Fil", "Filer"]
+  l.store "From", "Fra"
+  l.store "Hide", "Skjul"
+  l.store "High", "Høj"
+  l.store "July", "Juli"
+  l.store "June", "Juni"
+  l.store "Mine", "Mine"
+  l.store "Name", "Navn"
+  l.store "Open", "Åbn"
+  l.store "Read", "Læs"
+  l.store "Rows", "Rækker"
+  l.store "Save", "Gem"
+  l.store "Show", "Show"
+  l.store "Tags", "Tag"
+  l.store "Task", "Opgave"
+  l.store "Type", "Type"
+  l.store "User", "Bruger"
+  l.store "View", "View"
+  l.store "Week", "Uge"
+  l.store "Wiki", "Wiki"
+  l.store "Work", "Arbejde"
+  l.store "days", "dage"
+  l.store "last", "sidste"
+  l.store "59:04", "59:04"
+  l.store "April", "April"
+  l.store "Audit", "Tidstjek"
+  l.store "Close", "Luk"
+  l.store "Email", "Email"
   l.store "Files", "Filer"
-  l.store "Reports", "Rapporter"
-  l.store "Schedule", "Plan"
-  l.store "New Task", "Ny Opgave"
-  l.store "Preferences", "Indstillinger"
-  l.store "Log Out", "Log ud"
-  l.store "Clients", "Kunder"
+  l.store "Grant", "Giv adgang"
+  l.store "Major", "Stor"
+  l.store "March", "Mars"
+  l.store "Minor", "Lillen"
+  l.store "Notes", "Notater"
+  l.store "Owner", "Ansvarlig"
+  l.store "Pivot", "Pivot"
+  l.store "Start", "Start"
+  l.store "Tasks", "Opgaver"
+  l.store "Today", "I dag"
+  l.store "Total", "Total"
+  l.store "Users", "Brugere"
+  l.store "Views", "Visninger"
+  l.store "every", "hver"
+  l.store "today", "i dag"
+  l.store "%d day", ["en dag", "%d dage"]
+  l.store "%s ago", "%s ago"
+  l.store "Assign", "Tildel"
+  l.store "August", "August"
+  l.store "Browse", "Gennemse"
+  l.store "Cancel", "Cancel"
   l.store "Client", "Kunde"
-  l.store 'Search', 'Søg'
-  l.store 'Users', 'Brugere'
-  l.store 'User', 'Bruger'
-
-  # Main layout
-  l.store 'Hide', 'Skjul'
-  l.store 'Views', 'Visninger'
-  l.store 'Open Tasks', 'Åbne Opgaver'
-  l.store 'My Open Tasks', 'Mine åbne Opgaver'
-  l.store 'My In Progress Tasks', 'Mine igangværende opgaver'
-  l.store 'Unassigned Tasks', 'Opgaver uden ansvarlig'
-  l.store 'Shared', 'Delt'
-  l.store 'Edit', 'Ret'
-  l.store 'New', 'Ny'
-  l.store 'Chat', 'Chat'
-  l.store 'Notes', 'Notater'
-  l.store 'Feedback? Suggestions? Ideas? Bugs?', 'Tilbagemeldinger? Forslag? Idéer? Fejlrapportering?'
-  l.store 'Let me know', 'Lad mig vide det'
-  l.store 'worked today', 'arbejdede i dag'
-  l.store 'Online', 'Online'
-  l.store 'Done working on <b>%s</b> for now.', 'Er færdig med at arbejde på <b>%s</b> i denne omgang.' # %s = @task.name
-  l.store 'ago', 'siden' # X days ago
-
-  # Application Helper
-  l.store 'today','i dag'
-  l.store 'tomorrow', 'i morgen'
-  l.store '%d day', ['en dag', '%d dage']
-  l.store '%d week', ['en uge', '%d uger']
-  l.store '%d month', ['en måned', '%d måneder']
-  l.store 'yesterday', 'i går'
-  l.store '%d day ago', ['en dag siden', '%d dage siden']
-  l.store '%d week ago', ['en uge siden', '%d uger siden']
-  l.store '%d month ago', ['en måned siden', '%d måneder siden']
-
-  # DateHelper
-  l.store 'less than a minute', 'mindre end et minut'
-  l.store '%d minute', ['et minut', '%d minutter']
-  l.store 'less than %d seconds', 'mindre end %d sekunder'
-  l.store 'half a minute', 'et halvt minut'
-  l.store 'about %d hour', ['cirka en time', 'cirka %d timer']
-
-  # Activities
-  l.store 'Top Tasks', 'Vigtigste Opgaver'
-  l.store 'Newest Tasks', 'Nyeste Opgaver'
-  l.store 'Recent Activities', 'Seneste aktiviteter'
-  l.store 'Projects', 'Projekter'
-  l.store 'Overall Progress', 'Samlet fremskridt'
-  l.store '%d completed milestone', ['en færdig milepæl', '%d færdige milepæle']
-  l.store '%d completed project', ['et færdigt projekt', '%d færdige projekter']
-  l.store 'Edit project <b>%s</b>', 'Ret projektet <b>%s</b>'
-  l.store 'Edit milestone <b>%s</b>', 'Ret milepælen <b>%s</b>'
-
-  # Tasks
-  l.store 'Tasks', 'Opgaver'
-  l.store '[Any Client]', '[Alle Kunder]'
-  l.store '[Any Project]', '[Alle Projekter]'
-  l.store '[Any User]', '[Alle Brugere]'
-  l.store '[Any Milestone]', '[Alle Milepæle]'
-  l.store '[Any Status]', '[Alle Statusser]'
-  l.store '[Unassigned]','[Uden Ansvarlig]'
-  l.store 'Open', 'Åbn'
-  l.store 'In Progress', 'Under Udvikling'
-  l.store 'Closed', 'Lukket'
-  l.store 'Won\'t Fix', 'Vil ikke udbedre'
-  l.store 'Invalid', 'Ugyldig'
-  l.store 'Duplicate', 'Dublet'
-  l.store 'Archived', 'Arkiveret'
-  l.store 'Group Tags', 'Gruppe Tag'
-  l.store 'Save as View', 'Gem som billede'
-  l.store 'Tags', 'Tag'
-  l.store '[All Tags]', '[Alle Tags]'
-  l.store 'Close <b>%s</b>', 'Luk <b>%s</b>'
-  l.store "Stop working on <b>%s</b>.", 'Afslut arbejdet med <b>%s</b>.'
-  l.store "Start working on <b>%s</b>. Click again when done.", 'Start med at arbejde på <b>%s</b>. Klik igen for at afslutte.'
-  l.store 'No one', 'Ingen'
-  l.store "Revert <b>%s</b> to not completed status.", 'Sæt <b>%s</b> til ufærdig'
-  l.store "Cancel working on <b>%s</b>.", 'Afbryd arbejdet med <b>%s</b>.'
-  l.store "Move <b>%s</b> to the Archive.", 'Flyt <b>%s</b> til Arkivet.'
-  l.store "Restore <b>%s</b> from the Archive.", 'Hent <b>%s</b> fra Arkivet.'
-  l.store 'Information', 'Information'
-  l.store 'Summary', 'Opsummering'
-  l.store 'Description', 'Beskrivelse'
-  l.store 'Comment', 'Kommentar'
-  l.store 'Attach file', 'Vedhæft fil'
-  l.store 'Target', 'Mål'
-  l.store 'Project', 'Projekt'
-  l.store 'Milestone', 'Milepæl'
-  l.store '[None]', '[Ingen]'
-  l.store 'Assigned To', 'Ansvarlig'
-  l.store 'Requested By', 'Efterspurg af'
-  l.store 'Attributes', 'Attributter'
-
-  l.store 'Type', 'Type'
-  l.store 'Priority', 'Prioritet'
-  l.store 'Severity', 'Alvorlighed'
-  l.store 'Time Estimate', 'Forventet tidsforbrug'
-  l.store 'Due Date', 'Deadline'
-  l.store 'Show Calendar', 'Vis Kalender'
-  l.store 'Notification', 'Varsling'
-  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", 'Andre som skal varsles ved ændringer<br/>ud over personen der har oprettet og den som er ansvarlig<br/><br/>Ctrl-klik for at vælge.'
-  l.store 'To:', 'Til:'
-  l.store '[Delete]', '[Slet]'
-  l.store 'Really delete %s?', 'Vil du virkelig slette %s?'
-  l.store 'New Task', 'Ny Opgave'
-  l.store 'Create', 'Opret'
-  l.store 'Send notification emails', 'Send beked via email'
-  l.store 'Created', 'Oprettet'
-  l.store 'by', 'af' # Created by
-  l.store 'Last Updated', 'Sidst opdateret'
-  l.store 'Save', 'Gem'
-  l.store 'and', 'og' # Save and ...
-
-  l.store "Leave Open",'Hold åben'
-  l.store "Revert to Open",'Åbn igen'
-  l.store "Set in Progress",'Sæt i gang'
-  l.store "Leave as in Progress",'Hold i gang'
-  l.store "Close",'Luk'
-  l.store "Leave Closed",'Hold lukket'
-  l.store "Set as Won't Fix",'Sæt som Vil Ikke Udbedre'
-  l.store "Leave as Won't Fix",'Behold som Vil Ikke Udbedre'
-  l.store "Set as Invalid",'Sæt som Ugyldig'
-  l.store "Leave as Invalid",'Behold som Ugyldig'
-  l.store "Set as Duplicate",'Sæt som Kopi'
-  l.store "Leave as Duplicate",'Behold som Kopi'
-  l.store 'History', 'Historik'
-  l.store 'Edit Log Entry', 'Ret i loggen'
-  l.store 'Delete Log Entry', 'Slet log'
-  l.store 'Really delete this log entry?', 'Vil du virkelig slette denne log?'
-
-  l.store 'Task', 'Opgave'
-  l.store 'New Feature', 'Ny Funktion'
-  l.store 'Defect', 'Defekt'
-  l.store 'Improvement', 'Forbedring'
-  l.store 'Critical', 'Kritisk'
-  l.store 'Urgent', 'Haster'
-  l.store 'High', 'Høj'
-  l.store 'Normal', 'Normal'
-  l.store 'Low', 'Lav'
-  l.store 'Lowest', 'Lavest'
-  l.store 'Blocker', 'Blokér'
-  l.store 'Major', 'Stor'
-  l.store 'Minor', 'Lillen'
-  l.store 'Trivial', 'Triviel'
-
-  l.store 'Start', 'Start'
-  l.store 'Duration Worked', 'Arbejdedstid'
-
-  # Timeline
-  l.store '[All Time]', '[Al Tid]'
-  l.store 'This Week', 'Denne Uge'
-  l.store 'Last Week', 'Sidste Uge'
-  l.store 'This Month', 'Denne Måned'
-  l.store 'Last Month', 'Sidste Måned'
-  l.store 'This Year', 'Dette År'
-  l.store 'Last Year', 'Sidte År'
-  l.store '[Any Type]', '[Alle Typer]'
-  l.store 'Work Log', 'Arbejdslog'
-  l.store 'Status Change', 'Ændring af status'
-  l.store 'Modified', 'Ændret'
-  l.store '[Prev]', '[Forrige]' # [Prev] 100 of 2000 entries [Next]
-  l.store '[Next]', '[Næste]' # [Prev] 100 of 2000 entries [Next]
-  l.store 'of', 'af' # 100 of 2000 entries
-  l.store 'entries..', 'elementer..' # 100 of 2000 entries
-
-  # Project Files
-  l.store 'Download', 'Download'
-  l.store 'Delete', 'Slet'
-  l.store '[New File]', '[Ny Fil]'
-  l.store 'File', ['Fil', 'Filer']
-  l.store 'Upload New File', 'Upload Ny Fil'
-  l.store 'Name', 'Navn'
-  l.store 'Upload', 'Upload'
-
-  # Reports
-  l.store 'Download CSV file of this report', 'Download CSV filen til denne rapport.'
-  l.store 'Total', 'Total'
-  l.store 'Report Configuration', 'Rapportindstillinger'
-  l.store 'Report Type', 'Rapport Type'
-  l.store 'Pivot', 'Pivot'
-  l.store 'Audit', 'Tidstjek'
-  l.store 'Time sheet', 'Timeseddel'
-  l.store 'Time Range', 'Tidsrum'
-  l.store 'Custom', 'Brugerdefineret'
-  l.store 'Rows', 'Rækker'
-  l.store 'Columns', 'Kolonner'
-  l.store "Milestones", 'Milepæle'
-  l.store "Date", 'Dato'
-  l.store 'Task Status', 'Opgave Status'
-  l.store "Task Type", 'Opgave Type'
-  l.store "Task Priority", 'Opgave Prioritet'
-  l.store "Task Severity", 'Opgave Alvorlighed'
-  l.store 'From', 'Fra' # From Date
-  l.store 'To', 'Til' # To Date
-  l.store 'Sub-totals', 'Subtotaler'
-  l.store 'Filter', 'Filter'
-  l.store 'Advanced Options', 'Avancerede muligheder'
-  l.store 'Status', 'Status'
-  l.store 'Run Report', 'Kør Rapport'
-
-  # Schedule
-
-  # Search
-  l.store 'Search Results', 'Søgeresultater'
-  l.store 'Activities', 'Aktiviteter'
-
-  # Project list
-  l.store 'Read', 'Læs'
-  l.store 'Work', 'Arbejde'
-  l.store 'Assign', 'Tildel'
-  l.store 'Prioritize', 'Prioritere'
-  l.store 'Grant', 'Giv adgang'
-  l.store "Remove all access for <b>%s</b>?", 'Fjern al adgang til <b>%s</b>?'
-  l.store "Grant %s access for <b>%s</b>?", 'Giv %s adgang til <b>%s</b>?'
-  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", 'Du kan ikke fjerne <b>dig selv</b> eller <b>projekt opretteren</b>!'
-  l.store "Grant access to <b>%s</b>?", 'Giv adgagn til <b>%s</b>?'
-  l.store 'Edit Project', 'Ret Projektet'
-  l.store 'Delete Project', 'Slet Projekt'
-  l.store 'Complete Project', 'Afslut Projekt'
-  l.store 'New Milestone', 'Ny Milepæl'
-  l.store 'Access To Project', 'Tilgang til Projektet'
-  l.store 'Completed', 'Afsluttet'
-  l.store 'Completed Projects', 'Afsluttede Projekter'
-  l.store 'Revert', 'Genetabler'
-  l.store 'Really revert %s?', 'Vil du virkelig genetablere %s?'
-
-  # Milestones
-  l.store 'Owner', 'Ansvarlig'
-  l.store 'Edit Milestone', 'Ret Milepæl'
-  l.store 'Delete Milestone', 'Slet Milepæl'
-  l.store 'Complete Milestone', 'Afslut Milepæl'
-  l.store 'Completed Milestones', 'Afsluttede Milepæle'
-
-  # Users
-  l.store 'Email', 'Email'
-  l.store 'Last Login', 'Sidste login'
-  l.store 'Offline', 'Offline'
-  l.store 'Are your sure?', 'Er du sikker?'
-  l.store 'Company', 'Firma'
-  l.store '[New User]', '[Ny Bruger]'
-  l.store '[Previous page]', '[Forrige side]'
-  l.store '[Next page]', '[Næste side]'
-  l.store 'Edit User', 'Ret Bruger'
-
-  l.store 'Options', 'Valg'
-  l.store 'Location', 'Sted'
-  l.store 'Administrator', 'Administrator'
-  l.store 'Track Time', 'Registrer tid'
-  l.store 'Use External Clients', 'Brug eksterne kunder'
-  l.store 'Show Calendar', 'Vis kalender'
-  l.store 'Show Tooltips', 'Vis hjælpebobler'
-  l.store 'Send Notifications', 'Send beskeder'
-  l.store 'Receive Notifications', 'Modtag beskeder'
-
-  l.store 'User Information', 'Brugerinformation'
-  l.store 'Username', 'Brugernavn'
-  l.store 'Password', 'Password'
-
-  # Preferences
-  l.store 'Preferences', 'Indstillinger'
-  l.store 'Language', 'Sprog'
-  l.store 'Time Format', 'Tidsformat'
-  l.store 'Date Format', 'Datoformat'
-  l.store 'Custom Logo', 'Brugerdefineret Logo'
-  l.store 'Current logo', 'Nuværende Logo'
-  l.store 'New logo', 'Nyt logo'
-  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se ok ud. Logoet vil blive vist i øverste venstre hjørne på din side.)"
-
-  # Notes / Pages
-  l.store 'Body', 'Indhold'
-  l.store 'Preview', 'Vis'
-  l.store 'New Note', 'Nyt notat'
-  l.store 'Edit Note', 'Rediger notat'
-
-  # Views
-  l.store 'New View', 'Nyt visning'
-  l.store 'Edit View', 'Rediger visning'
-  l.store 'Delete View', 'Slet visning'
-  l.store '[Active User]', '[Aktiv Bruger]'
-  l.store 'Shared', 'Delt'
-
-  # Clients
-  l.store 'Contact', 'Kontakt'
-  l.store 'New Client', 'Ny Kunde'
-  l.store 'Contact email', 'Kontakt via email'
-  l.store 'Contact name', 'Kontakt navn'
-  l.store 'Client CSS', 'Kundens CSS'
-
-  # Activities Controller
-  l.store 'Tutorial completed. It will no longer be shown in the menu.', 'Introduktion er gennemført. Den vil ikke længere blive vist i menuen.'
-  l.store 'Tutorial hidden. It will no longer be shown in the menu.', 'Introduktionen er skjult. Den vil ikke længere blive vist i menuen.'
-
-  # Customers Controller
-  l.store 'Client was successfully created.', 'Kunde registreret.'
-  l.store 'Client was successfully updated.', 'Kunde opdateret.'
-  l.store 'Please delete all projects for %s before deleting it.', 'Slet alle projekter for %s før du sletter.'
-  l.store "You can't delete your own company.", 'Du kan ikke slette dit eget firma.'
-  l.store 'CSS successfully uploaded.', 'CSS uploadet.'
-  l.store 'Logo successfully uploaded.', 'Logo uploadet.'
-
-  # Milestones Controller
-  l.store 'Milestone was successfully created.', 'Milepæl oprettet.'
-  l.store 'Milestone was successfully updated.', 'Milepæl opdateret.'
-  l.store '%s / %s completed.', '%s / %s er afsluttet.' # Project name / Milestone name completed.
-  l.store '%s / %s reverted.', '%s / %s er blevet genskabt.' # Project name / Milestone name reverted.
-
-  # Pages / Notes Controller
-  l.store 'Note was successfully created.', 'Notat oprettet.'
-  l.store 'Note was successfully updated.', 'Notat opdateret.'
-
-  # Project Files Controller
-  l.store 'No file selected for upload.', 'Der er ikke valgt nogen fil til upload.'
-  l.store 'File too big.', 'Filen er for stor.'
-  l.store 'File successfully uploaded.', 'Filen er uploadet.'
-
-  # Projects Controller
-  l.store 'Project was successfully created.', 'Projektet er oprettet.'
-  l.store 'Project was successfully created. Add users who need access to this project.', 'Projektet blev oprettet. Giv adgang til brugere som skal være med i projektet.'
-  l.store 'Project was successfully updated.', 'Projektet er blevet opdateret.'
-  l.store 'Project was deleted.', 'Projektet blev slettet.'
-  l.store '%s completed.', '%s afsluttet.'
-  l.store '%s reverted.', '%s genskabt.'
-
-  # Reports Controller
-  l.store "Empty report, log more work!", 'Tøm rapport, registrer mere tid!'
-
-  # Tasks Controller
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", 'Du er nød til at oprette et projekt, som kan indeholde dine opgaver. Ellers skal du have adgang til at oprette opgaver i et eksiterende projekt...'
-  l.store 'Invalid due date ignored.', 'Ignererer ugyldig deadline-dato.'
-  l.store 'Task was successfully created.', 'Opgave oprettet.'
-  l.store 'Task was successfully updated.', 'Opgave opdateret.'
-  l.store 'Log entry saved...', 'Arbejdsloggen blev gemt...'
-  l.store "Unable to save log entry...", 'Arbejdsloggen blev <b>ikke</b> gemt...'
-  l.store "Log entry already saved from another browser instance.", 'Arbejdsloggen er allerede blevet gemt fra en anden browser.'
-  l.store 'Log entry deleted...', 'Registreringen i arbejdsloggen er nu slettet...'
-
-  # Users Controller
-  l.store 'User was successfully created. Remember to give this user access to needed projects.', 'Brugeren er blevet oprettet. Husk at give brugeren tilladelse til de nødvendige projekter.'
-  l.store "Error sending creation email. Account still created.", 'Det skete en fejl under afsendelsen af emailen men konto blev oprettet alligevel.'
-  l.store 'User was successfully updated.', 'Brugeren er blevet opdateret.'
-  l.store 'Preferences successfully updated.', 'Indstillingerne er blevet opdateret.'
-
-  # Views Controller
+  l.store "Closed", "Lukket"
+  l.store "Create", "Opret"
+  l.store "Custom", "Brugerdefineret"
+  l.store "Defect", "Defekt"
+  l.store "Delete", "Slet"
+  l.store "Filter", "Filter"
+  l.store "Forums", "Forums"
+  l.store "Friday", "Fredag"
+  l.store "Lowest", "Lavest"
+  l.store "Monday", "Mandag"
+  l.store "No one", "Ingen"
+  l.store "Normal", "Normal"
+  l.store "Online", "Online"
+  l.store "Recent", "Recent"
+  l.store "Revert", "Genetabler"
+  l.store "Search", "Søg"
+  l.store "Shared", "Delt"
+  l.store "Status", "Status"
+  l.store "Sunday", "Søndag"
+  l.store "Target", "Mål"
+  l.store "Upload", "Upload"
+  l.store "Urgent", "Haster"
+  l.store "[Next]", "[Næste]"
+  l.store "[None]", "[Ingen]"
+  l.store "[Prev]", "[Forrige]"
+  l.store "[wdhm]", "[udtm]"
+  l.store "%d file", ["%d fil", "%d filer"]
+  l.store "%d week", ["en uge", "%d uger"]
+  l.store "Blocker", "Blokér"
+  l.store "Clients", "Kunder"
+  l.store "Columns", "Kolonner"
+  l.store "Comment", "Kommentar"
+  l.store "Company", "Firma"
+  l.store "Contact", "Kontakt"
+  l.store "Created", "Oprettet"
+  l.store "Destroy", "Destroy"
+  l.store "History", "Historik"
+  l.store "Invalid", "Ugyldig"
+  l.store "January", "Januar"
+  l.store "Loading", "Loading"
+  l.store "Log Out", "Log ud"
+  l.store "Members", "Members"
+  l.store "October", "Oktober"
+  l.store "Offline", "Offline"
+  l.store "Options", "Valg"
+  l.store "Preview", "Vis"
+  l.store "Project", "Projekt"
+  l.store "Reports", "Rapporter"
+  l.store "Summary", "Opsummering"
+  l.store "Trivial", "Triviel"
+  l.store "Tuesday", "Tirsdag"
+  l.store "Updated", "Opdateret"
+  l.store "%d month", ["en måned", "%d måneder"]
+  l.store "%d posts", ["%d posts", "%d posts"]
+  l.store "1:2:3:04", "1:2:3:04"
+  l.store "1w2d3h4m", "1u2d3t4m"
+  l.store "Archived", "Arkiveret"
+  l.store "Complete", "Complete"
+  l.store "Critical", "Kritisk"
+  l.store "December", "December"
+  l.store "Download", "Download"
+  l.store "Due Date", "Deadline"
+  l.store "February", "Februar"
+  l.store "Language", "Sprog"
+  l.store "Location", "Sted"
+  l.store "Modified", "Ændret"
+  l.store "New File", "New File"
+  l.store "New Note", "Nyt notat"
+  l.store "New Room", "New Room"
+  l.store "New Task", "Ny Opgave"
+  l.store "New User", "New User"
+  l.store "New View", "Nyt visning"
+  l.store "New logo", "Nyt logo"
+  l.store "November", "November"
+  l.store "Overview", "Overblik"
+  l.store "Password", "Password"
+  l.store "Priority", "Prioritet"
+  l.store "Progress", "Fremskridt"
+  l.store "Projects", "Projekter"
+  l.store "QuickAdd", "QuickAdd"
+  l.store "Resolved", "Løst"
+  l.store "Reverted", "Genskabt"
+  l.store "Revision", "Revision"
+  l.store "Saturday", "Lørdag"
+  l.store "Schedule", "Plan"
+  l.store "Severity", "Alvorlighed"
+  l.store "Thursday", "Torsdag"
+  l.store "Timeline", "Tidslinje"
+  l.store "Tutorial", "Introduktion"
+  l.store "Use Chat", "Use Chat"
+  l.store "Use Wiki", "Use Wiki"
+  l.store "Username", "Brugernavn"
+  l.store "Work Log", "Arbejdslog"
+  l.store "Workload", "Workload"
+  l.store "[Delete]", "[Slet]"
+  l.store "tomorrow", "i morgen"
+  l.store "%d folder", ["%d mappe", "%d mapper"]
+  l.store "%d minute", ["et minut", "%d minutter"]
+  l.store "%d topics", ["%d topics", "%d topics"]
+  l.store "Completed", "Afsluttet"
+  l.store "Duplicate", "Dublet"
+  l.store "Edit Note", "Rediger notat"
+  l.store "Edit User", "Ret Bruger"
+  l.store "Edit View", "Rediger visning"
+  l.store "Estimated", "Estimated"
+  l.store "Last Post", "Last Post"
+  l.store "Last Week", "Sidste Uge"
+  l.store "Last Year", "Sidte År"
+  l.store "Milestone", "Milepæl"
+  l.store "Next Week", "Next Week"
+  l.store "Remaining", "Remaining"
+  l.store "September", "September"
+  l.store "Task Type", "Opgave Type"
+  l.store "This Week", "Denne Uge"
+  l.store "This Year", "Dette År"
+  l.store "Top Tasks", "Vigtigste Opgaver"
+  l.store "Use Forum", "Use Forum"
+  l.store "Wednesday", "Onsdag"
+  l.store "Won't Fix", "Vil ikke udbedre"
+  l.store "Work Done", "Work Done"
+  l.store "Yesterday", "Yesterday"
+  l.store "entries..", "elementer.."
+  l.store "yesterday", "i går"
+  l.store "%d day ago", ["en dag siden", "%d dage siden"]
+  l.store "Activities", "Aktiviteter"
+  l.store "Attributes", "Attributter"
+  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Client CSS", "Kundens CSS"
+  l.store "Depends on", "Afhængig af"
+  l.store "Group Tags", "Gruppe Tag"
+  l.store "Last Login", "Sidste login"
+  l.store "Last Month", "Sidste Måned"
+  l.store "Leave Open", "Hold åben"
+  l.store "Local Time", "Local Time"
+  l.store "Milestones", "Milepæle"
+  l.store "New Avatar", "New Avatar"
+  l.store "New Client", "Ny Kunde"
+  l.store "New Folder", "New Folder"
+  l.store "Open Tasks", "Åbne Opgaver"
+  l.store "Prioritize", "Prioritere"
+  l.store "Reassigned", "Tildelt"
+  l.store "Run Report", "Kør Rapport"
+  l.store "Sub-totals", "Subtotaler"
+  l.store "This Month", "Denne Måned"
+  l.store "Time Range", "Tidsrum"
+  l.store "Time sheet", "Timeseddel"
+  l.store "Track Time", "Registrer tid"
+  l.store "Unassigned", "Unassigned"
+  l.store "Widget Key", "Widget Key"
+  l.store "[All Tags]", "[Alle Tags]"
+  l.store "[All Time]", "[Al Tid]"
+  l.store "[Any Task]", "[Alle Opgaver]"
+  l.store "[Any Type]", "[Alle Typer]"
+  l.store "[Any User]", "[Alle Brugere]"
+  l.store "[New File]", "[Ny Fil]"
+  l.store "[New User]", "[Ny Bruger]"
+  l.store "%d week ago", ["en uge siden", "%d uger siden"]
+  l.store "1w 2d 3h 4m", "1u 2d 3t 4m"
+  l.store "Assigned To", "Ansvarlig"
+  l.store "Attach file", "Vedhæft fil"
+  l.store "Attachments", "Vedhæftninger"
+  l.store "Custom Logo", "Brugerdefineret Logo"
+  l.store "Date Format", "Datoformat"
+  l.store "Delete Room", "Delete Room"
+  l.store "Delete View", "Slet visning"
+  l.store "Description", "Beskrivelse"
+  l.store "Forum Posts", "Forum Posts"
+  l.store "Improvement", "Forbedring"
+  l.store "In Progress", "Under Udvikling"
+  l.store "Information", "Information"
+  l.store "Let me know", "Lad mig vide det"
+  l.store "Linked from", "Linket fra"
+  l.store "New Feature", "Ny Funktion"
+  l.store "New Project", "New Project"
+  l.store "Preferences", "Indstillinger"
+  l.store "Report Type", "Rapport Type"
+  l.store "Task Status", "Opgave Status"
+  l.store "Time Format", "Tidsformat"
+  l.store "Transcripts", "Transcripts"
+  l.store "[All Tasks]", "[All Tasks]"
+  l.store "[Next page]", "[Næste side]"
+  l.store "%d month ago", ["en måned siden", "%d måneder siden"]
+  l.store "%s reverted.", "%s genskabt."
+  l.store "Company Name", "Company Name"
+  l.store "Contact name", "Kontakt navn"
+  l.store "Current logo", "Nuværende Logo"
+  l.store "Dependencies", "Afhængig af"
+  l.store "Edit Project", "Ret Projektet"
+  l.store "Hide Waiting", "Hide Waiting"
+  l.store "Last Updated", "Sidst opdateret"
+  l.store "Leave Closed", "Hold lukket"
+  l.store "Newest Tasks", "Nyeste Opgaver"
+  l.store "Notification", "Varsling"
+  l.store "Plan / GANTT", "Plan / GANTT"
+  l.store "Recent Posts", "Recent Posts"
+  l.store "Requested By", "Efterspurg af"
+  l.store "Save as View", "Gem som billede"
+  l.store "Show Avatars", "Show Avatars"
+  l.store "Wiki Changes", "Wiki Changes"
+  l.store "[Any Client]", "[Alle Kunder]"
+  l.store "[Any Status]", "[Alle Statusser]"
+  l.store "[Unassigned]", "[Uden Ansvarlig]"
+  l.store "worked today", "arbejdede i dag"
+  l.store "%s completed.", "%s afsluttet."
+  l.store "Administrator", "Administrator"
+  l.store "Are you sure?", "Are you sure?"
+  l.store "Contact email", "Kontakt via email"
+  l.store "Custom Avatar", "Custom Avatar"
+  l.store "Days per Week", "Days per Week"
+  l.store "File too big.", "Filen er for stor."
+  l.store "My Open Tasks", "Mine åbne Opgaver"
+  l.store "New Milestone", "Ny Milepæl"
+  l.store "Public Forums", "Public Forums"
+  l.store "Show Calendar", "Vis kalender"
+  l.store "Show Tooltips", "Vis hjælpebobler"
+  l.store "Status Change", "Ændring af status"
+  l.store "Task Priority", "Opgave Prioritet"
+  l.store "Task Severity", "Opgave Alvorlighed"
+  l.store "Time Estimate", "Forventet tidsforbrug"
+  l.store "Use Messaging", "Use Messaging"
+  l.store "[Active User]", "[Aktiv Bruger]"
+  l.store "[Any Project]", "[Alle Projekter]"
+  l.store "[No Grouping]", "[No Grouping]"
+  l.store "about %d hour", ["cirka en time", "cirka %d timer"]
+  l.store "half a minute", "et halvt minut"
+  l.store "Add New Widget", "Add New Widget"
+  l.store "Are your sure?", "Er du sikker?"
+  l.store "Current Avatar", "Current Avatar"
+  l.store "Delete Project", "Slet Projekt"
+  l.store "Depended on by", "Depended on by"
+  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Edit Log Entry", "Ret i loggen"
+  l.store "Edit Milestone", "Ret Milepæl"
+  l.store "Full Reference", "Fuld Oversigt"
+  l.store "New To-do Item", "New To-do Item"
+  l.store "Remaining Work", "Remaining Work"
+  l.store "Revert to Open", "Åbn igen"
+  l.store "Search Results", "Søgeresultater"
+  l.store "Set as Invalid", "Sæt som Ugyldig"
+  l.store "Signup Message", "Personlig Besked"
+  l.store "Wiki Additions", "Wiki Additions"
+  l.store "Workday Length", "Arbejdsdag"
+  l.store "[Any Priority]", "[Alle Prioriteter]"
+  l.store "[Any Severity]", "[Alle Alvorlighedsgrader]"
+  l.store "Close <b>%s</b>", "Luk <b>%s</b>"
+  l.store "Duration Format", "Varighedsformat"
+  l.store "Duration Worked", "Arbejdedstid"
+  l.store "Quick Reference", "Hurtig Oversigt"
+  l.store "Set in Progress", "Sæt i gang"
+  l.store "Upload New File", "Upload Ny Fil"
+  l.store "[Any Milestone]", "[Alle Milepæle]"
+  l.store "[Previous page]", "[Forrige side]"
+  l.store "Advanced Options", "Avancerede muligheder"
+  l.store "Company Settings", "Company Settings"
+  l.store "Complete Project", "Afslut Projekt"
+  l.store "Create New Forum", "Create New Forum"
+  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Delete Log Entry", "Slet log"
+  l.store "Delete Milestone", "Slet Milepæl"
+  l.store "Leave as Invalid", "Behold som Ugyldig"
+  l.store "Open to everyone", "Open to everyone"
+  l.store "Overall Progress", "Samlet fremskridt"
+  l.store "Set as Duplicate", "Sæt som Kopi"
+  l.store "Set as Won't Fix", "Sæt som Vil Ikke Udbedre"
+  l.store "Unassigned Tasks", "Opgaver uden ansvarlig"
+  l.store "User Information", "Brugerinformation"
+  l.store "%s / %s reverted.", "%s / %s er blevet genskabt."
+  l.store "Access To Project", "Tilgang til Projektet"
+  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
+  l.store "Really delete %s?", "Vil du virkelig slette %s?"
+  l.store "Really revert %s?", "Vil du virkelig genetablere %s?"
+  l.store "Recent Activities", "Seneste aktiviteter"
+  l.store "Remove dependency", "Fjern afhængighed"
+  l.store "Under revision by", "Under revidering af"
+  l.store "[Active Projects]", "[Active Projects]"
+  l.store "[Closed Projects]", "[Closed Projects]"
+  l.store "[Default Sorting]", "[Default Sorting]"
+  l.store "%s / %s completed.", "%s / %s er afsluttet."
+  l.store "Complete Milestone", "Afslut Milepæl"
+  l.store "Completed Projects", "Afsluttede Projekter"
+  l.store "Hide Waiting Tasks", "Skjul ventende opgaver"
+  l.store "Leave as Duplicate", "Behold som Kopi"
+  l.store "Leave as Won't Fix", "Behold som Vil Ikke Udbedre"
+  l.store "Log entry saved...", "Arbejdsloggen blev gemt..."
+  l.store "No recent activity", "No recent activity"
+  l.store "Receive Newsletter", "Receive Newsletter"
+  l.store "Send Notifications", "Send beskeder"
+  l.store "less than a minute", "mindre end et minut"
+  l.store "Remove notification", "Remove notification"
+  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "[Without Milestone]", "[Uden Milepæl]"
+  l.store "%d completed project", ["et færdigt projekt", "%d færdige projekter"]
+  l.store "Completed Milestones", "Afsluttede Milepæle"
+  l.store "Leave as in Progress", "Hold i gang"
+  l.store "Log entry deleted...", "Registreringen i arbejdsloggen er nu slettet..."
+  l.store "My In Progress Tasks", "Mine igangværende opgaver"
+  l.store "Project was deleted.", "Projektet blev slettet."
+  l.store "Report Configuration", "Rapportindstillinger"
+  l.store "Use External Clients", "Brug eksterne kunder"
+  l.store "less than %d seconds", "mindre end %d sekunder"
+  l.store "Open to everyone from", "Open to everyone from"
+  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Receive Notifications", "Modtag beskeder"
+  l.store "%d completed milestone", ["en færdig milepæl", "%d færdige milepæle"]
+  l.store "Add another dependency", "Ny afhængighed"
+  l.store "Edit project <b>%s</b>", "Ret projektet <b>%s</b>"
+  l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "View '%s' was deleted.", "Visningen '%s' er blevet slettet."
+  l.store "Edit milestone <b>%s</b>", "Ret milepælen <b>%s</b>"
+  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Send notification emails", "Send beked via email"
+  l.store "Invalid due date ignored.", "Ignererer ugyldig deadline-dato."
+  l.store "CSS successfully uploaded.", "CSS uploadet."
+  l.store "Grant access to <b>%s</b>?", "Giv adgagn til <b>%s</b>?"
+  l.store "Stop working on <b>%s</b>.", "Afslut arbejdet med <b>%s</b>."
+  l.store "File successfully uploaded.", "Filen er uploadet."
+  l.store "Logo successfully uploaded.", "Logo uploadet."
+  l.store "Unable to save log entry...", "Arbejdsloggen blev <b>ikke</b> gemt..."
+  l.store "Cancel working on <b>%s</b>.", "Afbryd arbejdet med <b>%s</b>."
+  l.store "Empty report, log more work!", "Tøm rapport, registrer mere tid!"
+  l.store "No file selected for upload.", "Der er ikke valgt nogen fil til upload."
+  l.store "Really delete this log entry?", "Vil du virkelig slette denne log?"
+  l.store "Grant %s access for <b>%s</b>?", "Giv %s adgang til <b>%s</b>?"
+  l.store "Move <b>%s</b> to the Archive.", "Flyt <b>%s</b> til Arkivet."
+  l.store "Note was successfully created.", "Notat oprettet."
+  l.store "Note was successfully updated.", "Notat opdateret."
+  l.store "Task was successfully created.", "Opgave oprettet."
+  l.store "Task was successfully updated.", "Opgave opdateret."
+  l.store "User was successfully updated.", "Brugeren er blevet opdateret."
+  l.store "Client was successfully created.", "Kunde registreret."
+  l.store "Client was successfully updated.", "Kunde opdateret."
+  l.store "Download CSV file of this report", "Download CSV filen til denne rapport."
+  l.store "Remove all access for <b>%s</b>?", "Fjern al adgang til <b>%s</b>?"
+  l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
+  l.store "Preferences successfully updated.", "Indstillingerne er blevet opdateret."
+  l.store "Project was successfully created.", "Projektet er oprettet."
+  l.store "Project was successfully updated.", "Projektet er blevet opdateret."
+  l.store "Done working on <b>%s</b> for now.", "Er færdig med at arbejde på <b>%s</b> i denne omgang."
+  l.store "You can't delete your own company.", "Du kan ikke slette dit eget firma."
+  l.store "Feedback? Suggestions? Ideas? Bugs?", "Tilbagemeldinger? Forslag? Idéer? Fejlrapportering?"
+  l.store "Milestone was successfully created.", "Milepæl oprettet."
+  l.store "Milestone was successfully updated.", "Milepæl opdateret."
+  l.store "Restore <b>%s</b> from the Archive.", "Hent <b>%s</b> fra Arkivet."
   l.store "View '%s' was successfully created.", "Visningen '%s' er blevet oprettet."
   l.store "View '%s' was successfully updated.", "Visningen '%s' er blevet opdateret."
-  l.store "View '%s' was deleted.", "Visningen '%s' er blevet slettet."
-
-  # Wiki
-  l.store 'Quick Reference', 'Hurtig Oversigt'
-  l.store 'Full Reference', 'Fuld Oversigt'
-  l.store 'or', 'eller'
-  l.store 'Under revision by', 'Under revidering af'
-  l.store 'Revision', 'Revision'
-  l.store 'Linked from', 'Linket fra'
-
-  # Reports
-  l.store 'Today', 'I dag'
-  l.store 'Week', 'Uge'
-
-  # Dates
-  l.store 'January', 'Januar'
-  l.store 'February', 'Februar'
-  l.store 'March', 'Mars'
-  l.store 'April', 'April'
-  l.store 'May', 'Maj'
-  l.store 'June', 'Juni'
-  l.store 'July', 'Juli'
-  l.store 'August', 'August'
-  l.store 'September', 'September'
-  l.store 'October', 'Oktober'
-  l.store 'November', 'November'
-  l.store 'December', 'December'
-
-  l.store 'Jan', 'Jan'
-  l.store 'Feb', 'Feb'
-  l.store 'Mar', 'Mar'
-  l.store 'Apr', 'Apr'
-  l.store 'May', 'Maj'
-  l.store 'Jun', 'Jun'
-  l.store 'Jul', 'Jul'
-  l.store 'Aug', 'Aug'
-  l.store 'Sep', 'Sep'
-  l.store 'Oct', 'Okt'
-  l.store 'Nov', 'Nov'
-  l.store 'Dec', 'Dec'
-
-  l.store 'Sunday', 'Søndag'
-  l.store 'Monday', 'Mandag'
-  l.store 'Tuesday', 'Tirsdag'
-  l.store 'Wednesday', 'Onsdag'
-  l.store 'Thursday', 'Torsdag'
-  l.store 'Friday', 'Fredag'
-  l.store 'Saturday', 'Lørdag'
-
-  l.store 'Sun', 'Søn'
-  l.store 'Mon', 'Man'
-  l.store 'Tue', 'Tir'
-  l.store 'Wed', 'Ons'
-  l.store 'Thu', 'Tor'
-  l.store 'Fri', 'Fre'
-  l.store 'Sat', 'Lør'
-
-  # worked_nice
-  l.store '[wdhm]', '[udtm]'
-  l.store 'w', 'u'
-  l.store 'd', 'd'
-  l.store 'h', 't'
-  l.store 'm', 'm'
-
-  # Preferences
-  l.store 'Duration Format', 'Varighedsformat'
-  l.store 'Workday Length', 'Arbejdsdag'
-
-  # Tasks filter
-  l.store '[Without Milestone]', '[Uden Milepæl]'
-
-  # Task tooltip
-  l.store 'Progress', 'Fremskridt'
-
-  # User Permissions
-  l.store 'All', 'Alle'
-
-  # Reports filter
-  l.store '[Any Priority]', '[Alle Prioriteter]'
-  l.store '[Any Severity]', '[Alle Alvorlighedsgrader]'
-
-  # Preferences
-  l.store '1w 2d 3h 4m', '1u 2d 3t 4m'
-  l.store '1w2d3h4m', '1u2d3t4m'
-
-  # Task
-  l.store "Attachments", "Vedhæftninger"
-  l.store "Dependencies", "Afhængig af"
-  l.store 'Add another dependency', "Ny afhængighed"
-  l.store 'Remove dependency', "Fjern afhængighed"
-  l.store "every", 'hver'
-  l.store "[Any Task]", "[Alle Opgaver]"
-
-  l.store 'day', 'dag' # every day
-  l.store 'days', 'dage' # every 14 days
-  l.store 'last', 'sidste' # every last thursday
-
-  l.store 'Hide Waiting Tasks', 'Skjul ventende opgaver'
-  l.store 'Signup Message', 'Personlig Besked'
-  l.store 'The message will be included in the signup email.', 'Beskeden vil blive inkluderet i bekræftelses mailen der sendes ud.'
-  l.store 'Depends on', 'Afhængig af'
-
-  # Activities
-  l.store 'Subscribe to the recent activities RSS feed', 'Abonner på alle aktiviteter via RSS'
-
-  # Project Files
-  l.store '%d folder', ['%d mappe', '%d mapper']
-  l.store '%d file', ['%d fil', '%d filer']
-
-  # Email
-  l.store 'Resolved', "Løst"
-  l.store 'Updated', "Opdateret"
-  l.store 'Reverted', "Genskabt"
-  l.store 'Reassigned', "Tildelt"
+  l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
+  l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
+  l.store "Revert <b>%s</b> to not completed status.", "Sæt <b>%s</b> til ufærdig"
+  l.store "Subscribe to the recent activities RSS feed", "Abonner på alle aktiviteter via RSS"
+  l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
+  l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
+  l.store "The message will be included in the signup email.", "Beskeden vil blive inkluderet i bekræftelses mailen der sendes ud."
+  l.store "Start working on <b>%s</b>. Click again when done.", "Start med at arbejde på <b>%s</b>. Klik igen for at afslutte."
+  l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
+  l.store "Error sending creation email. Account still created.", "Det skete en fejl under afsendelsen af emailen men konto blev oprettet alligevel."
+  l.store "Please delete all projects for %s before deleting it.", "Slet alle projekter for %s før du sletter."
+  l.store "Log entry already saved from another browser instance.", "Arbejdsloggen er allerede blevet gemt fra en anden browser."
+  l.store "Tutorial hidden. It will no longer be shown in the menu.", "Introduktionen er skjult. Den vil ikke længere blive vist i menuen."
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Du kan ikke fjerne <b>dig selv</b> eller <b>projekt opretteren</b>!"
+  l.store "Tutorial completed. It will no longer be shown in the menu.", "Introduktion er gennemført. Den vil ikke længere blive vist i menuen."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
+  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "Project was successfully created. Add users who need access to this project.", "Projektet blev oprettet. Giv adgang til brugere som skal være med i projektet."
+  l.store "User was successfully created. Remember to give this user access to needed projects.", "Brugeren er blevet oprettet. Husk at give brugeren tilladelse til de nødvendige projekter."
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Du er nød til at oprette et projekt, som kan indeholde dine opgaver. Ellers skal du have adgang til at oprette opgaver i et eksiterende projekt..."
+  l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se ok ud. Logoet vil blive vist i øverste venstre hjørne på din side.)"
+  l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Andre som skal varsles ved ændringer<br/>ud over personen der har oprettet og den som er ansvarlig<br/><br/>Ctrl-klik for at vælge."
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
 end

@@ -42,11 +42,11 @@ module ScheduleHelper
     cal = <<EOF
 <table id="schedule" class="#{options[:table_class]}" cellpadding="0" cellspacing="0" border="0" >
   <thead>
-   <tr><td width="100%" colspan="7"><div align="center">#{ link_to '<<', :controller => 'schedule', :action => 'list', :year => prev_year, :month => prev_month} #{Date::MONTHNAMES[options[:month]]} #{options[:year]} #{link_to '>>', :controller => 'schedule', :action => 'list', :year => next_year, :month => next_month}</div></td></tr>
+   <tr><td width="100%" colspan="7"><div align="center">#{ link_to '<<', :controller => 'schedule', :action => 'list', :year => prev_year, :month => prev_month} #{_(Date::MONTHNAMES[options[:month]])} #{options[:year]} #{link_to '>>', :controller => 'schedule', :action => 'list', :year => next_year, :month => next_month}</div></td></tr>
 
    <tr class="#{options[:day_name_class]}">
 EOF
-    Date::DAYNAMES.each {|d| cal << "                   <th width=\"130px\">#{d[options[:abbrev]]}</th>"}
+    Date::DAYNAMES.each {|d| cal << "                   <th width=\"130px\">#{_(d[options[:abbrev]])}</th>"}
     cal << "            </tr>
         </thead>
         <tbody>

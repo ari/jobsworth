@@ -45,7 +45,7 @@
   <%= _ "%d voices", @topic.voice_count %>
 </p>
 
-<%= will_paginate @posts %>
+<%= will_paginate(@posts, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %>
 
 <a name="<%= @posts.first.dom_id %>" id="<%= @posts.first.dom_id %>">&nbsp;</a>
 
@@ -104,7 +104,7 @@
 <% end %>
 </table>
 
-<p><%= will_paginate @posts %></p>
+<p><%= will_paginate(@posts, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></p>
 
 <div id="edit"></div>
 <% if @topic.locked? %>

@@ -28,22 +28,22 @@ class TimelineController < ApplicationController
     case params[:filter_date].to_i
     when 1
       # This Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week.utc).to_s(:db)}'"
     when 2
       # Last Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week.utc).to_s(:db)}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week.utc).to_s(:db)}'"
     when 3
       # This Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month.utc).to_s(:db)}'"
     when 4
       # Last Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month.utc).to_s(:db)}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month.utc).to_s(:db)}'"
     when 5
       # This Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year.utc).to_s(:db)}'"
     when 6
       # Last Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year.utc).strftime("%Y-%m-%d %H:%M:%S")}'"
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year.utc).to_s(:db)}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year.utc).to_s(:db)}'"
     when 7
       if filter[:stop_date] && filter[:start_date].length > 1
         start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time

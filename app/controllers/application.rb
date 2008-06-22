@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   def current_users
     unless @current_users
-      @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' OR last_seen_at > '#{3.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}')", :order => "name" )
+      @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.to_s(:db)}' OR last_seen_at > '#{3.minutes.ago.utc.to_s(:db)}')", :order => "name" )
     end 
     @current_users
   end

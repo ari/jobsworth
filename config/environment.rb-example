@@ -53,6 +53,7 @@ ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 #   inflect.uncountable %w( fish sheep )
 # end
 
+require 'lib/rails_extensions.rb'
 require_dependency 'tzinfo'
 include TZInfo
 

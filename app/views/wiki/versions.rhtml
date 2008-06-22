@@ -1,9 +1,9 @@
 <div id="wiki">
 
-<h1>Revisions: <%= @page.name %></h1>
+<h1><%= _'Revisions' %>: <%= @page.name %></h1>
 
 <% if @page.revisions.empty? %>
-<h4>This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h4>
+<h4><%= _"This wiki page doesn't exist yet. Create it by entering text and clicking the button below."%></h4>
   <% form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;">
 </textarea>
@@ -15,7 +15,7 @@
   rev_num = @page.revisions.size
   @page.revisions.reverse.each do |revision|
 %>
-<li><%= link_to "Revision #{rev_num}", :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num %> - <%= _('%s ago', time_ago_in_words( revision.created_at, false ) ) + " #{_('by')} <strong>#{revision.user.name}</strong>" %><%= " <small> - #{h(revision.change)}</small>" unless revision.change.nil? %></li>
+<li><%= link_to( _("Revision %s", rev_num), :controller => "wiki", :action => "show", :id => @page.name, :rev => rev_num )%> - <%= _('%s ago', time_ago_in_words( revision.created_at, false ) ) + " #{_('by')} <strong>#{revision.user.name}</strong>" %><%= " <small> - #{h(revision.change)}</small>" if revision.change && revision.change.length > 0 %></li>
 <%
   rev_num = rev_num - 1
   end

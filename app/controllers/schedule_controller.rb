@@ -320,7 +320,7 @@ class ScheduleController < ApplicationController
         @task.due_at = DateTime.strptime( params[:due], current_user.date_format )
       rescue
         render :update do |page|
-          page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime(current_user.date_format) : "")
+          page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime_localized(current_user.date_format) : "")
         end
         return
       end 
@@ -336,7 +336,7 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.duration)
-      page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime(current_user.date_format) : "")
+      page["due-#{@task.dom_id}"].value = (@task.due_at ? @task.due_at.strftime_localized(current_user.date_format) : "")
 
       page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
 
@@ -371,7 +371,7 @@ class ScheduleController < ApplicationController
         @milestone.due_at = DateTime.strptime( params[:due], current_user.date_format )
       rescue
         render :update do |page|
-          page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
+          page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime_localized(current_user.date_format) : "")
         end
         return
       end 
@@ -384,7 +384,7 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
-      page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime(current_user.date_format) : "")
+      page["due-#{@milestone.dom_id}"].value = (@milestone.due_at ? @milestone.due_at.strftime_localized(current_user.date_format) : "")
       page << "$('offset-#{@milestone.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_start[@milestone.id])}'});"
       page << "$('offset-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id]).to_i + 500}px'});"
       page << "$('width-#{@milestone.dom_id}').setStyle({ width:'#{gantt_width(@milestone_start[@milestone.id], @milestone_end[@milestone.id])}'});"

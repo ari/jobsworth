@@ -12,7 +12,7 @@
       <% end %>
     </td>
   </tr>
-  <tr><td><%= will_paginate @users %></td></tr>
+  <tr><td><%= will_paginate(@users, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></td></tr>
 </table>
 
 

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 117) do
+ActiveRecord::Schema.define(:version => 119) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -138,6 +138,18 @@ ActiveRecord::Schema.define(:version => 117) do
 
   add_index "ical_entries", ["task_id"], :name => "index_ical_entries_on_task_id"
   add_index "ical_entries", ["work_log_id"], :name => "index_ical_entries_on_work_log_id"
+
+  create_table "locales", :force => true do |t|
+    t.string   "locale"
+    t.string   "key"
+    t.text     "singular"
+    t.text     "plural"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "locales", ["locale", "key"], :name => "index_locales_on_locale_and_key", :unique => true
 
   create_table "logged_exceptions", :force => true do |t|
     t.string   "exception_class"

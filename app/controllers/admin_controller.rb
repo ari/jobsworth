@@ -61,39 +61,39 @@ class AdminController < ApplicationController
   end
 
   def stats
-    @users_today      = User.count( :conditions => ["created_at > '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_yesterday  = User.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_this_week  = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_last_week  = User.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_this_month = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_last_month = User.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @users_this_year  = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
+    @users_today      = User.count( :conditions => ["created_at > '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @users_yesterday  = User.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @users_this_week  = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @users_last_week  = User.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @users_this_month = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @users_last_month = User.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @users_this_year  = User.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'"] )
     @users_total      = User.count
 
-    @projects_today      = Project.count( :conditions => ["created_at > '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_yesterday  = Project.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_this_week  = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_last_week  = Project.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_this_month = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_last_month = Project.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @projects_this_year  = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
+    @projects_today      = Project.count( :conditions => ["created_at > '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @projects_yesterday  = Project.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @projects_this_week  = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @projects_last_week  = Project.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @projects_this_month = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @projects_last_month = Project.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @projects_this_year  = Project.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'"] )
     @projects_total      = Project.count
 
-    @tasks_today      = Task.count( :conditions => ["created_at > '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_yesterday  = Task.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_this_week  = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_last_week  = Task.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_this_month = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_last_month = Task.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @tasks_this_year  = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
+    @tasks_today      = Task.count( :conditions => ["created_at > '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @tasks_yesterday  = Task.count( :conditions => ["created_at > '#{tz.now.yesterday.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @tasks_this_week  = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @tasks_last_week  = Task.count( :conditions => ["created_at > '#{1.week.ago.beginning_of_week.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @tasks_this_month = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @tasks_last_month = Task.count( :conditions => ["created_at > '#{1.month.ago.beginning_of_month.at_midnight.to_s(:db)}' AND created_at < '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @tasks_this_year  = Task.count( :conditions => ["created_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'"] )
     @tasks_total      = Task.count
 
-    @logged_in_today      = User.count( :conditions => ["last_login_at > '#{tz.now.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @logged_in_this_week  = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_week.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @logged_in_this_month = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_month.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
-    @logged_in_this_year  = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_year.at_midnight.strftime("%Y-%m-%d %H:%M:%S")}'"] )
+    @logged_in_today      = User.count( :conditions => ["last_login_at > '#{tz.now.at_midnight.to_s(:db)}'"] )
+    @logged_in_this_week  = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_week.at_midnight.to_s(:db)}'"] )
+    @logged_in_this_month = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
+    @logged_in_this_year  = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'"] )
 
-    @logged_in_now = User.count( :conditions => ["last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}'"] )
+    @logged_in_now = User.count( :conditions => ["last_ping_at > '#{2.minutes.ago.utc.to_s(:db)}'"] )
     @last_10_users = User.find(:all, :limit => 10, :order => "created_at desc")
   end
 

@@ -7,29 +7,29 @@ class ReportsController < ApplicationController
 
   def get_date_header(w)
     if [0,1,2].include? @range.to_i
-      tz.utc_to_local(w.started_at).strftime("%a <br/>%d/%m")
+      tz.utc_to_local(w.started_at).strftime_localized("%a <br/>%d/%m")
     elsif [3,4].include? @range.to_i
       if tz.utc_to_local(w.started_at).beginning_of_week.month != tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).month
         if tz.utc_to_local(w.started_at).beginning_of_week.month == tz.utc_to_local(w.started_at).month
-          tz.utc_to_local(w.started_at).strftime("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).end_of_month.strftime("%d/%m")
+          tz.utc_to_local(w.started_at).strftime_localized("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).end_of_month.strftime_localized("%d/%m")
         else
-          tz.utc_to_local(w.started_at).strftime("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_month.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime("%d/%m")
+          tz.utc_to_local(w.started_at).strftime_localized("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_month.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")
         end
       else
-        tz.utc_to_local(w.started_at).strftime("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime("%d/%m")
+        tz.utc_to_local(w.started_at).strftime_localized("#{_('Week')} %W <br/>") +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")
       end
     elsif @range.to_i == 5 || @range.to_i == 6
-      tz.utc_to_local(w.started_at).strftime("%b <br/>%y")
+      tz.utc_to_local(w.started_at).strftime_localized("%b <br/>%y")
     end
   end
 
   def get_date_key(w)
     if [0,1,2].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime('%u')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%u')}"
     elsif [3,4].include? @range.to_i
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime('%V')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%V')}"
     elsif @range.to_i == 5 || @range.to_i == 6
-      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime('%m')}"
+      "#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%m')}"
     end
   end
 
@@ -115,7 +115,7 @@ class ReportsController < ApplicationController
     when 14
       "End"
     when 15
-      "#{tz.utc_to_local(w.started_at).strftime( "%a " + current_user.date_format )}"
+      "#{tz.utc_to_local(w.started_at).strftime_localized( "%a " + current_user.date_format )}"
     when 16
       "Start"
     when 17
@@ -172,12 +172,12 @@ class ReportsController < ApplicationController
     elsif key == "1_start"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime(current_user.time_format)}</a>")
+      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>")
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration).strftime(current_user.time_format)}")
+      do_row(rkey, row_name, key, "#{(tz.utc_to_local(w.started_at) + w.duration).strftime_localized(current_user.time_format)}")
     elsif key == "3_task"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
@@ -420,8 +420,8 @@ class ReportsController < ApplicationController
       @rows = { }
 
       if start_date
-        @column_headers[ '__' ] = "#{start_date.strftime(current_user.date_format)}"
-        @column_headers[ '__' ] << "- #{end_date.strftime(current_user.date_format)}" if end_date && end_date.yday != start_date.yday
+        @column_headers[ '__' ] = "#{start_date.strftime_localized(current_user.date_format)}"
+        @column_headers[ '__' ] << "- #{end_date.strftime_localized(current_user.date_format)}" if end_date && end_date.yday != start_date.yday
       else
         @column_headers[ '__' ] = "&nbsp;"
       end

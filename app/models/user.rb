@@ -95,8 +95,13 @@ class User < ActiveRecord::Base
   end
   
   def generate_widgets
+
+    old_lang = Localization.lang
+
+    Localization.lang(self.locale || 'en_US')
+
     w = new_widget
-    w.name =  "Top Tasks"
+    w.name =  _("Top Tasks")
     w.widget_type = 0
     w.number = 5
     w.mine = true
@@ -106,7 +111,7 @@ class User < ActiveRecord::Base
     w.save
     
     w = new_widget
-    w.name =  "Newest Tasks"
+    w.name = _("Newest Tasks")
     w.widget_type = 0
     w.number = 5
     w.mine = false
@@ -116,7 +121,7 @@ class User < ActiveRecord::Base
     w.save
     
     w = new_widget
-    w.name =  "Recent Activities"
+    w.name = _("Recent Activities")
     w.widget_type = 2
     w.number = 20
     w.column = 2
@@ -124,7 +129,7 @@ class User < ActiveRecord::Base
     w.save
     
     w = new_widget
-    w.name =  "Open Tasks"
+    w.name = _("Open Tasks")
     w.widget_type = 3
     w.number = 7
     w.mine = true
@@ -133,12 +138,15 @@ class User < ActiveRecord::Base
     w.save
     
     w = new_widget
-    w.name =  "Projects"
+    w.name = _("Projects")
     w.widget_type = 1
     w.number = 0
     w.column = 1
     w.position = 1
     w.save
+    
+    Localization.lang(old_lang)
+
   end
   
   def avatar_url(size=32)

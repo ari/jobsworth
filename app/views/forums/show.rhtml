@@ -52,7 +52,7 @@
 <p style="margin-top:0;"><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>
 <% end %>
 <% if @topics.size > 10 %>
-<p><%= will_paginate @topics %></p><br/>
+<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></p><br/>
 <% end %>
 
 <table border="0" cellspacing="0" cellpadding="0" class="wide topics">
@@ -104,7 +104,7 @@
 <p style="float:right;"><%= link_to _('Next page'), { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
 <% end %>
 
-<p><%= will_paginate @topics %></p>
+<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></p>
 
 <% if logged_in? %>
 <p><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>

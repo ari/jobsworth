@@ -1,5 +1,5 @@
 <div id="channel_<%= channel.id %>" class="channel<%=" channel-public" if channel.public.to_i > 0 %>">
-<span class="channel-title"><%= link_to channel.name, :action => 'room', :id => channel.id %></span><% if channel.last_active %><span class="channel-last-active" id="active_<%= channel.id %>"> - Last active <%= time_ago_in_words(channel.last_active) %> ago</span><% end %>
+<span class="channel-title"><%= link_to channel.name, :action => 'room', :id => channel.id %></span><% if channel.last_active %><span class="channel-last-active" id="active_<%= channel.id %>"> - <%= _'Last active %s ago', time_ago_in_words(channel.last_active) %></span><% end %>
 <% if channel.company_id.to_i > 0 && (current_user.admin? || ( channel.project_id.to_i > 0 && current_user.can?(channel.project, 'grant') ) )  %>
 <div id="channel_delete_<%=channel.id%>" class="channel-delete" style="display:none;"><%= link_to_remote _('Delete Room'), :url => { :action => 'destroy_ajax', :id => channel.id },
               :loading => "Element.show('loading');",

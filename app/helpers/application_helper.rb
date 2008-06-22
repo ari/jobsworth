@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def user_online?(user_id)
-    c = User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.strftime("%Y-%m-%d %H:%M:%S")}' AND company_id=#{current_user.company_id}" ) > 0
+    c = User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.to_s(:db)}' AND company_id=#{current_user.company_id}" ) > 0
   end
 
   def user_name
@@ -229,7 +229,7 @@ module ApplicationHelper
 
     field_options = html_options.dup
     add_defaults(field_options,
-      :value => date && date.strftime(calendar_options[:ifFormat]),
+      :value => date && date.strftime_localized(calendar_options[:ifFormat]),
       :size => 12
     )
     rename_option(field_options, :field_title, :title)
