@@ -254,7 +254,7 @@
 	    <table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
 
               <tr>
-                <td align="left" class="page_header" colspan="2" width="100%"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
+                <td align="left" class="page_header tooltip" colspan="2" width="100%" title="<%= _'Custom saved filters showing a subset of your tasks'%>"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
 	      </tr>
 
                 <tr><td class="views_item" style="padding-top: 0.2em;" colspan="2"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
@@ -276,7 +276,7 @@
 		     <table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
 		       <tr>
 		         <td align="left" width="100%" class="page_header">
-		           <div style="float: left;"><%= _'Work Log' %></div>
+		           <div style="float: left;" class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
 			 </td>
 		       </tr>
 		       <tr>
@@ -292,7 +292,7 @@
 		 </td>
 	      </tr>
                 <tr>
-                  <td align=left class="page_header" width="100%" colspan="2">
+                  <td align=left class="page_header tooltip" width="100%" colspan="2" title="<%= _'Easy access to commonly needed information.'%>">
                     <div style="float:left;"><%=_ 'Notes'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div></td>
                 </tr>
                         <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
