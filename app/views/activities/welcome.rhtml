@@ -33,7 +33,7 @@
               <%= _'The last thing to do, is %s unless you\'re working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.', link_to(_('invite some co-workers'), :controller => 'users', :action => 'new'), link_to(_('Overview'), :controller => 'activities', :action => 'list') %>
             </div>
 
-            <div class="tutorial"><%= _'If you require further help, check the <a href="http://forum.clockingit.com" target="_new">forum</a>, <a href="http://wiki.clockingit.com" target="_new">wiki</a> or email us at <a href="mailto:support@clockingit.com">support@clockingit.com</a>.'%>
+            <div class="tutorial"><%= _('If you require further help, check the %s, %s or email us at %s', "<a href=\"http://forum.clockingit.com\" target=\"_new\">#{_'Forum'}</a>", "<a href=\"http://wiki.clockingit.com\" target=\"_new\">#{_'Wiki'}</a>", '<a href="mailto:support@clockingit.com">support@clockingit.com</a>.')%>
 
             </td>
           </tr>
