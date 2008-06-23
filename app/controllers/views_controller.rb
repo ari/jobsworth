@@ -163,7 +163,7 @@ class ViewsController < ApplicationController
   def all_tasks
 
     @view = View.new
-    @view.name = 'All Open Tasks'
+    @view.name = _('All Open Tasks')
 
     session[:view] = @view
 
@@ -180,7 +180,7 @@ class ViewsController < ApplicationController
 
   def my_tasks
     @view = View.new
-    @view.name = 'My Open Tasks'
+    @view.name = _('My Open Tasks')
 
     session[:view] = @view
     session[:filter_user] = current_user.id.to_s
@@ -196,7 +196,7 @@ class ViewsController < ApplicationController
 
   def my_in_progress_tasks
     @view = View.new
-    @view.name = 'My In Progress Tasks'
+    @view.name = _('My In Progress Tasks')
 
     session[:view] = @view
     session[:filter_user] = current_user.id.to_s
@@ -212,7 +212,7 @@ class ViewsController < ApplicationController
 
   def unassigned_tasks
     @view = View.new
-    @view.name = 'Unassigned Tasks'
+    @view.name = _('Unassigned Tasks')
 
     session[:view] = @view
     session[:filter_user] = "-1"
