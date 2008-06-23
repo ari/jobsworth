@@ -3,10 +3,12 @@ page.select(".#{@task.dom_id}").each do |t|
 end
 
 
+page << "if($('work-log')) {"
 page << "if( $('work-log').visible() ) {"
 page << "$('work-log').hide();"
 page << "}"
 page << "$('work_log_body').clear();"
+page << "}"
 
 
 page << "if($('menu_info')) {"

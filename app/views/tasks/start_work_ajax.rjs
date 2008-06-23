@@ -11,11 +11,13 @@ else
     page.replace t, :partial => "task_row", :locals => {:task => @current_sheet.task, :depth => params[:depth].to_i || 0 }
   end
 
+  page << "if($('work-log')) {"
   page << "$('worklog_body').clear();"
   page << "if(! $('work-log').visible() ) {"
   page << "$('work-log').show();"
   page << "}"
   page << "$('worklog_body').focus();"
+  page << "}"
   
   page << "if($('menu_info')) {"
   page.replace_html "menu_info", :partial => "layouts/sheet_info"
