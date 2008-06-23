@@ -1003,7 +1003,7 @@ class TasksController < ApplicationController
       worklog.paused_duration = @current_sheet.paused_duration
       worklog.body = @current_sheet.body
       worklog.log_type = EventLog::TASK_WORK_ADDED
-      worklog.comment = true if @current_sheet.body && @current_sheet.body.lenght > 0 
+      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
       
       if worklog.save
         worklog.task.updated_by_id = current_user.id
@@ -1040,7 +1040,17 @@ class TasksController < ApplicationController
 #    redirect_to :action => 'shortlist'
   end
 
+  def updatelog
+    unless @current_sheet
+      render :nothing => true
+    end 
+    @current_sheet.body = params[:body]
+    @current_sheet.save
 
+    render :text => "#{_("Saved")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
+  end
+  
+  
   def update_sheet_info
   end
 

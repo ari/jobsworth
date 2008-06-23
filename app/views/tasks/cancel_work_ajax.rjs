@@ -2,6 +2,13 @@ page.select(".#{@task.dom_id}").each do |t|
   page.replace t, :partial => "task_row", :locals => {:task => @task, :depth => params[:depth].to_i || 0 }
 end
 
+
+page << "if( $('work-log').visible() ) {"
+page << "$('work-log').hide();"
+page << "}"
+page << "$('work_log_body').clear();"
+
+
 page << "if($('menu_info')) {"
 page.replace_html "menu_info", :partial => "layouts/sheet_info"
 page << "}"
