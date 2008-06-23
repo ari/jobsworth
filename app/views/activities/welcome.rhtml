@@ -16,7 +16,7 @@
             </div>
 
             <div class="tutorial<%= " complete" if @tasks_count > 0 %><%= " todo" if @projects_count == 0%>">
-              <%= _ 'Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href="http://wiki.clockingit.com/wiki:tutorial#tasks" target="_new">the documentation</a> on the ClockingIT Wiki.', link_to(_('creating a task'), :controller => 'tasks', :action => 'new'), _('New Task') %>
+              <%= _ 'Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.', link_to(_('creating a task'), :controller => 'tasks', :action => 'new'), _('New Task'), "<a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">#{_'the documentation'}</a>"  %>
             </div>
 
             <div class="tutorial<%= " complete" if @work_count > 0 %><%= " todo" if @tasks_count == 0 %>">
