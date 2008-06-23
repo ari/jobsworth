@@ -7,7 +7,7 @@ page << "if($('work-log')) {"
 page << "if( $('work-log').visible() ) {"
 page << "$('work-log').hide();"
 page << "}"
-page << "$('work_log_body').clear();"
+page << "$('worklog_body').clear();"
 page << "}"
 
 
