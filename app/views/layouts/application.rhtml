@@ -281,8 +281,10 @@
 		       </tr>
 		       <tr>
 		         <td align="left" width="100%">
-		           <textarea name="work_log[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea>
-		           <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;"></div>
+				  <form method="post" onsubmit="return false;" id="worklog_form">
+		           <textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea>
+				  </form>
+		           <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
 			 </td>
 		       </tr>
 		     </table>
@@ -346,9 +348,6 @@
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
 
 <%= flash_plugin(session[:channels]) %>
-
-<%= observe_field( 'worklog_body', { :url => { :controller => 'tasks', :action => 'updatelog' }, :update => 'worklog-saved', :frequency => 2, :with => 'body' } ) %>
-
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
 var userId=<%=current_user.id%>;
@@ -370,6 +369,7 @@ Event.observe($('presence-toggle-users'), "click", function(ev) {
           });
 });
 
+new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});
 
 // ]]>
 </script>

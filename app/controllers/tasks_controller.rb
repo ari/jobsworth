@@ -1044,10 +1044,13 @@ class TasksController < ApplicationController
     unless @current_sheet
       render :nothing => true
     end 
-    @current_sheet.body = params[:body]
-    @current_sheet.save
-
-    render :text => "#{_("Saved")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
+    if params[:worklog] && params[:worklog][:body]
+      @current_sheet.body = params[:worklog][:body] 
+      @current_sheet.save
+      render :text => "#{_("Saved")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
+    else 
+      render :text => "#{_("Error saving")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
+    end 
   end
   
   
