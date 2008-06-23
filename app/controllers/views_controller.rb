@@ -163,7 +163,7 @@ class ViewsController < ApplicationController
   def all_tasks
 
     @view = View.new
-    @view.name = _('All Open Tasks')
+    @view.name = _('Open Tasks')
 
     session[:view] = @view
 
