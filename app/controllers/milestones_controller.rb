@@ -30,7 +30,7 @@ class MilestonesController < ApplicationController
       rescue
         due_date = nil
       end
-      @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
+      @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) if due_date
     end
 
     @milestone.company_id = current_user.company_id
