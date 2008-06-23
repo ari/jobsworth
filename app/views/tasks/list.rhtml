@@ -4,7 +4,7 @@
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
           <td align="left" class="page_header">
-            <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{_(session[:view].name)}" unless session[:view].nil? %></div>
+            <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
             <div style="float:right;">
               <%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' },
               :loading => "Element.show('loading');",
