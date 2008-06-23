@@ -29,7 +29,7 @@
 <fieldset>
 <legend><%=_ 'Preview' %></legend>
 <div id="page"><%= RedCloth.new(@page.body).to_html if @page && @page.body%> </div>
-</preview>
+</fieldset>
 <%= observe_field( 'page_body', { :url => { :action => 'preview' }, :update => 'page', :frequency => 2, :with => 'body' } ) %>
 
 
