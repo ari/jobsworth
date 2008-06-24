@@ -47,6 +47,12 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
                selected_project = current_user.projects.find(:first, :order => 'name').id
              end
 
+             @project = current_user.projects.find(selected_project) rescue begin
+                                                                      @project = current_user.projects.find(:first, :order => 'name').id
+                                                                     end
+
+             selected_project = @project.id
+
             %>
       <fieldset id="task_project_selection" style="padding-right:0;">
         <legend><%=_ 'Target' %></legend>
