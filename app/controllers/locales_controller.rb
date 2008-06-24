@@ -5,7 +5,7 @@ class LocalesController < ApplicationController
   end
   
   def list
-    @keys = Locale.find(:all, :conditions => ["locales.locale = ?", current_user.locale], :order => "locales.key = locales.singular desc, length(locales.key),locales.key")
+    @keys = Locale.find(:all, :conditions => ["locales.locale = ?", current_user.locale], :order => "locales.same = 1, locales.key = locales.singular desc, length(locales.key),locales.key")
   end
 
   def update
@@ -20,6 +20,8 @@ class LocalesController < ApplicationController
       
       singular = params[:singular][current_user.locale][i].strip 
       plural = params[:plural][current_user.locale][i].strip if l.plural && params[:plural] && params[:plural][current_user.locale][i]
+      same = 0
+      same = params[:same][current_user.locale][i] if params[:same] && params[:same][current_user.locale][i] 
       
       if l.singular != singular && singular.length > 0 && singular.split("%").size <= args
         logger.info("updating[#{current_user.locale}][#{l.singular}] => [#{params[:singular][current_user.locale][i].strip}]")
@@ -30,6 +32,12 @@ class LocalesController < ApplicationController
         l.plural = params[:plural][current_user.locale][i].strip
         modified = true
       end 
+      
+      if same.to_i > 0
+        modified = true
+        l.same = true
+      end
+      
       if modified
         l.user = current_user
         l.save
