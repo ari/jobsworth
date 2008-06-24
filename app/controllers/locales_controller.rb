@@ -9,6 +9,7 @@ class LocalesController < ApplicationController
     unless current_user.locale != 'en_US' || current_user.admin.to_i == 10
       flash['notice'] = 'Please select your preferred language from your <a href="/users/edit_preferences">Preferences</a> page.'
       redirect_to :controller => 'activities', :action => 'list' 
+    end 
   end
 
   def update
