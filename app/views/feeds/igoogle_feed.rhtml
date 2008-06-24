@@ -1,4 +1,4 @@
-<% params[:libs].split(',').each do |l| -%>
+<% (params[:libs] || "").split(',').each do |l| -%>
 <script src="http://www.google.com/ig/f/<%=l%>"></script>
 <% end -%>
 <style type="text/css">
@@ -25,6 +25,8 @@ a.description { color: #5e6b71; font-weight: normal; }
 <% else %>
 <p align="center" style="margin:0; padding:0;"><img src=<%=@chart%> border=0 /></p>
 <% end %>
+<% if params[:libs]
 <script>
 _IG_AdjustIFrameHeight();
 </script>
+<% end -%>
