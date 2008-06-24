@@ -73,7 +73,7 @@
     <% if post.user.admin? or post.forum.moderators.include?(post.user) %>
     <span class="admin">
       <% if((post.forum.company_id.nil? && post.user.admin > 1) || (!post.forum.company_id.nil? && post.user.admin?)) %>
-      <%= _ 'Administator' %>
+      <%= _ 'Administrator' %>
       <% elsif post.forum.moderators.include?(post.user) %>
       <%= _ 'Moderator' %>
       <% end %>
