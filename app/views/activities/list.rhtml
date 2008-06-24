@@ -39,7 +39,7 @@ title += '<div><%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets',
 title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %></div>';
 
 widget.setTitle(title);
-widget.setContent('<span class="optional"><br/>Loading...</span>');
+widget.setContent('<span class="optional"><br/><%= _'Loading...'%></span>');
 portal.add(widget, <%=@widget.column%>);
 <%= "$('content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
 <% end %>

@@ -1,9 +1,9 @@
 <fieldset>
-<legend>New Project</legend>
+<legend><%= _'New Project'%></legend>
 
 <% form_tag :action => 'create' do %>
   <%= render :partial => "form" %>
-  <%= submit_tag "Create", :class => 'nolabel' %>
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
 
 <% end %>
 </fieldset>
