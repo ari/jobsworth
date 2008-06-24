@@ -1,7 +1,7 @@
 <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
   <tr>
     <td colspan="2" class="page_header">
-      <div style="float:left;"><%= current_user.company.name %> <%=_ 'Chat Rooms' %></div>
+      <div style="float:left;"><%=_ 'Chat Rooms' %></div>
       <% if( (current_user.admin > 0) || (current_user.projects.size > 0) ) %>
       <div style="float:right;padding-top:0.1em;"><%= link_to_remote _('New Room'), :url => { :action => 'new_ajax' },
               :loading => "Element.show('loading');",
