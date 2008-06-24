@@ -6,6 +6,9 @@ class LocalesController < ApplicationController
   
   def list
     @keys = Locale.find(:all, :conditions => ["locales.locale = ?", current_user.locale], :order => "locales.same = 1, locales.key = locales.singular desc, length(locales.key),locales.key")
+    unless current_user.locale != 'en_US' || current_user.admin.to_i == 10
+      flash['notice'] = 'Please select your preferred language from your <a href="/users/edit_preferences">Preferences</a> page.'
+      redirect_to :controller => 'activities', :action => 'list' 
   end
 
   def update
