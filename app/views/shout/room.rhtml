@@ -54,7 +54,7 @@
        :complete => "Element.hide('loading');$('shout_body').clear();$('shout_body').focus();",
        :html => { :id => "shout-input" }
 %>
-<div style="float:left;width:80%;"><textarea name="shout[body]" id="shout_body" style="width:100%" rows="2"></textarea></div><div style="float:left;"><div style="padding-left:0.5em;"><input type="submit" name="Send" value="Send" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div><div style="margin-left:1em;margin-top:0em;"><%= link_to _('Leave room'),  :action => 'leave', :id => @room.id %><br /><%= link_to _('Change room'),  :action => 'list' %></div></div>
+<div style="float:left;width:80%;"><textarea name="shout[body]" id="shout_body" style="width:100%" rows="2"></textarea></div><div style="float:left;"><div style="padding-left:0.5em;"><input type="submit" name="Send" value="<%= _'Send Message' %>" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div><div style="margin-left:1em;margin-top:0em;"><%= link_to _('Leave room'),  :action => 'leave', :id => @room.id %><br /><%= link_to _('Change room'),  :action => 'list' %></div></div>
 </form>
 <script type="text/javascript">
 $('shout_body').focus();
