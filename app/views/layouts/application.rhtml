@@ -224,7 +224,7 @@
       <tr><td colspan="2" height="10px">&nbsp;</td></tr>
 
       <tr>
-        <td valign="top" width="100%" class="rounded_content">
+        <td valign="top" width="100%">
 
         <% if current_user.respond_to?(:seen_news_id)%>
           <% news = NewsItem.find(:first, :order => "created_at desc", :conditions => ["id > ?", current_user.seen_news_id ]) %>
@@ -244,7 +244,7 @@
             <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
           </div>
 
-          <div class="rounded_content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
+          <div class="content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
           <table width="100%">
           <tr><td valign="top" id="main_col" style="height:100%;">
           <%= @content_for_layout %>

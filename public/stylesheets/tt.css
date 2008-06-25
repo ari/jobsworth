@@ -1041,7 +1041,7 @@ a.description {
 }
 
 
-#content .task
+#content div.task
 {
   margin-left: 8px;
   border-left: solid 4px #b0d295;
@@ -1052,48 +1052,46 @@ a.description {
 }
 
 
-#content .task_done {
+#content div.task_done {
   border-left: solid 4px #EEEEEE;
 }
 
-#content .task_active_others {
+#content div.task_active_others {
   color: #000000;
   background-color: #ecfeec;
 }
 
-#content .task_active {
+#content div.task_active {
   color: #000000;
   background-color: #ececfe;
 }
 
-#content .task_paused {
+#content div.task_paused {
   color: #000000;
   background-color: #F3F3F3;
 }
 
-
-
-#content .task_lowest_pri {
+#content div.task_lowest_pri {
   border-left: solid 4px #F3F3F3;
 }
 
-#content .task_low_pri {
+#content div.task_low_pri {
   border-left: solid 4px #e7e0c4;
 }
 
-#content .task_crit_pri {
+#content div.task_crit_pri {
   border-left: solid 4px #FF6666;
 }
 
-#content .task_high_pri {
+#content div.task_high_pri {
   border-left: solid 4px #f2ab99;
 }
 
-#content .task_raised_pri {
+#content div.task_raised_pri {
   border-left: solid 4px #FFC266;
 }
 
-#content .task-row {
+#content div.task-row {
   min-height: 2.3em;
 }
 
@@ -1101,28 +1099,7 @@ a.description {
           cursor: move;
 }
 
-.handle_comp {
-          cursor: move;
-}
-
-.hidden {
-  display: none;
-}
-
-.dnd_border {
-        border: 1px dotted gray;
-}
-
-.dnd_hover {
-        border: 1px dotted black;
-}
-
-.rounded {
-           background-color: #8cacbb;
-}
-.rounded_content {
-}
-.rounded_content_body {
+.content_body {
            background-color: #FFFFFF;
 }
 
@@ -1136,6 +1113,7 @@ a.description {
   padding-top: 8px;
   border-bottom: 1px solid #e8e8e8;
 }
+
 .paging_header
 {
   padding-left: 1em;
