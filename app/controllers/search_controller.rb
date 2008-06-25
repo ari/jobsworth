@@ -46,19 +46,23 @@ class SearchController < ApplicationController
     # Find the worklogs
     @logs = WorkLog.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
 
+    # Find chat messages
     rooms = ""
     ShoutChannel.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                       :order => "company_id, project_id, name").each do |r|
       rooms << "|" unless rooms == ""
       rooms << "#{r.id}"
     end
-
     rooms = "0" if rooms == ""
     rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
     @shouts = Shout.find_by_contents("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 100})
 
+
+    # Find Wikis
     @wiki_pages = WikiPage.find_by_contents("+company_id:#{current_user.company_id} #{query}", {:limit => 100})
 
+
+    # Find posts
     forums = ""
     Forum.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                       :order => "company_id, project_id, name").each do |f|
@@ -68,5 +72,15 @@ class SearchController < ApplicationController
     forums = "+forum_id:\"#{forums}\""
     @posts = Post.find_by_contents("+company_id:#{current_user.company_id} #{forums} #{query}", {:limit => 100})
 
+    # Find instant messages
+    chats = ""
+    Chat.find(:all, :conditions => ["user_id = ?", current_user.id]).each do |c|
+      chats << "|" unless chats == ""
+      chats << "#{c.id}"
+    end
+    chats = "0" if chats == ""
+    chats = "+chat_id:\"#{chats}\""
+    @chat_messages = ChatMessage.find_by_contents("#{chats} #{query}", {:limit => 100})
+    
   end
 end

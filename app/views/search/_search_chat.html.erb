@@ -1,0 +1,1 @@
+<div id="<%=@message.dom_id%>" class="channel-body<%= " channel-message-mine" if @message.user_id == current_user.id %>"><%=(highlight_all h(@message.body), @keys)%></div>

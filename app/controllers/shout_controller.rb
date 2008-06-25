@@ -380,7 +380,7 @@ class ShoutController < ApplicationController
     id = params[:id]
     @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
     @chat = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", current_user.id, @user.id])
-    @chat.archived_messages.destroy_all
+    @chat.all_messages.destroy_all
     redirect_to :action => 'chat_browse', :id => @user.id
   end
   
