@@ -37,9 +37,9 @@ class LocalesController < ApplicationController
         modified = true
       end 
       
-      if same.to_i > 0
+      if l.same != (same.to_i == 1)
         modified = true
-        l.same = true
+        l.same = (same.to_i == 1)
       end
       
       if modified
