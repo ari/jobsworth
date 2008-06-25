@@ -361,6 +361,14 @@ class ShoutController < ApplicationController
     @chat.save
     render :nothing => true
   end
+
+  def chat_archive
+    id = params[:id].split(/-/).last
+    @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
+    @chat = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", current_user.id, @user.id])
+    ChatMessage.update_all("archived = 1", ["chat_id = ?", @chat.id])
+    render :nothing => true
+  end
   
   def chat_show
     if params[:id] == 'presence-users'

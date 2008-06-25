@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 120) do
+ActiveRecord::Schema.define(:version => 121) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 120) do
     t.string   "body"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "archived",   :default => false
   end
 
   add_index "chat_messages", ["chat_id", "created_at"], :name => "index_chat_messages_on_chat_id_and_created_at"
