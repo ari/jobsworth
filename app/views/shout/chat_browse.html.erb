@@ -2,7 +2,7 @@
   <tr>
     <td align=left class="page_header">
       <div style="float:left;"><%=_ 'Messages from %s', @user.name %></div>
-      <div style="float:right;padding-top:0.1em"><a href="/shout/chat_clear/<%= @user.id%>"><%=_ "Delete All"%></a></div>
+      <div style="float:right;padding-top:0.1em"><a href="/shout/chat_clear/<%= @user.id%>" onclick="return confirm('<%= _'Really delete whole history?' %>');" ><%=_ "Delete All"%></a></div>
     </td>
   </tr>
 
