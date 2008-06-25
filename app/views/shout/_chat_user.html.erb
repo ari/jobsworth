@@ -2,8 +2,11 @@
   <div id="presence-<%= @user.dom_id%>-popup" class="presence-popup" style="display:none;">
     <div style="background-color: #eee; border-bottom:1px solid #ccc; font-size:14px; padding: 3px; font-weight:bold;">
       <div><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= @user.name %></div>
-      <% unless @chat.chat_messages.blank? %>
-      <div style="font-size:9px;text-align:right;"><a href="#" onclick="$('presence-chat-<%=@user.dom_id%>').update('');new Ajax.Request('/shout/chat_archive/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;"><%= _'Archive Messages'%></a></div>
+      <% unless @chat.chat_messages.blank? && @chat.archived_messages.blank?%>
+      <div>
+	<% unless @chat.archived_messages.blank? %><div style="font-size:9px;float:left;"><a href="/shout/chat_browse/<%= @user.id %>"><%= _'Show History' %></a></div><% end %>
+	<div style="font-size:9px;text-align:right;"><a href="#" onclick="$('presence-chat-<%=@user.dom_id%>').update('');new Ajax.Request('/shout/chat_archive/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;"><%= _'Archive Messages'%></a></div>
+      </div>
       <% end %>
     </div>
     <div id="presence-chat-<%= @user.dom_id %>" class="presence-chat-area">
