@@ -4,8 +4,8 @@
       <div><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= @user.name %></div>
       <% unless @chat.chat_messages.blank? && @chat.archived_messages.blank?%>
       <div>
-	<% unless @chat.archived_messages.blank? %><div style="font-size:9px;float:left;"><a href="/shout/chat_browse/<%= @user.id %>"><%= _'Show History' %></a></div><% end %>
-	<div style="font-size:9px;text-align:right;"><a href="#" onclick="$('presence-chat-<%=@user.dom_id%>').update('');new Ajax.Request('/shout/chat_archive/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;"><%= _'Archive Messages'%></a></div>
+	<div id="chat-browse-<%=@user.dom_id%>" style="font-size:9px;float:left;<%= "display:none;" if @chat.archived_messages.blank? %>"><a href="/shout/chat_browse/<%= @user.id %>"><%= _'Show History' %></a></div>
+	<div style="font-size:9px;text-align:right;"><a href="#" onclick="$('presence-chat-<%=@user.dom_id%>').update('');new Ajax.Request('/shout/chat_archive/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});Element.show('chat-browse-<%=@user.dom_id%>');return false;"><%= _'Archive Messages'%></a></div>
       </div>
       <% end %>
     </div>
