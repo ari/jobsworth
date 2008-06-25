@@ -265,7 +265,7 @@ class ScheduleController < ApplicationController
     @start = { }
     @end = { }
 
-    @range = [Time.now.utc.midnight]
+    @range = [Time.now.utc.midnight, Time.now.utc.midnight + 1.day]
 
     @milestone_start = { }
     @milestone_end = { }
