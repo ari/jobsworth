@@ -91,7 +91,10 @@ class ApplicationController < ActionController::Base
     session[:history] ||= []
 
     # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ) && !request.xhr?
+    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || 
+        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') || request.request_uri.include?('/shout') || 
+        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) && 
+        !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
