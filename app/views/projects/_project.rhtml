@@ -30,6 +30,10 @@
        done ||= 0
        completed ||= 0
        completed_total ||= 0
+
+       done = done / 60
+       completed = completed / 60
+
     %>
 
     <div class="information-header"><%= _('Remaining Work') %></div>
