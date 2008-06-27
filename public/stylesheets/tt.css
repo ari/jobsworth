@@ -7,6 +7,11 @@ body {
   border: none;
 }
 
+div.content_body {  
+  background-color: #fff;
+}
+
+
 a {
   color: #566ca5;
   text-decoration: none;
