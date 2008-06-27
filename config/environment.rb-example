@@ -58,7 +58,12 @@ require_dependency 'tzinfo'
 include TZInfo
 
 # -- ClockingIT Configuration
-$CONFIG = { :domain => "clockingit.com" }
+#These settings affect how notification emails appear, see app/models/notifications.rb
+$CONFIG = { :domain => "clockingit.com",
+	    :replyto => "admin",
+	    :from => "admin",
+	    :prefix => "[ClockingIT]"
+}
 
 ActionMailer::Base.smtp_settings = {
   :address  => "localhost",
