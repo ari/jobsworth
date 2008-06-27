@@ -1,6 +1,11 @@
 module Misc
 
-  $CONFIG ||= { :domain => "clockingit.com" }
+  defaults = { :domain => "clockingit.com", :replyto => "admin", :from => "admin", :prefix => "[ClockingIT" }
+  
+  $CONFIG ||= { }
+  defaults.keys.each do |k|
+    $CONFIG[k] ||= defaults[k]
+  end
 
   # Format minutes => <tt>1w 2d 3h 3m</tt>
   def format_duration(minutes, duration_format, day_duration, days_per_week = 5)
