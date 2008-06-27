@@ -1,11 +1,11 @@
 <% if @current_sheet -%>
 <% info = []
    task = Task.find(@current_sheet.task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project, :work_logs] )
-   info << "#{worked_nice(task.worked_minutes + @current_sheet.duration)}" if task.worked_minutes > 0 || task.duration > 0
+   info << "#{worked_nice(task.worked_minutes + @current_sheet.duration / 60)}" if task.worked_minutes > 0 || task.duration > 0
    info << "#{worked_nice(task.duration)}" if task.duration.to_i > 0
 
    info_string = " (#{info.join("/")})" if info.size > 0
-   info_string = "&nbsp;#{worked_nice(@current_sheet.duration)}#{info_string}"
+   info_string = "&nbsp;#{worked_nice(@current_sheet.duration/60)}#{info_string}"
    info_string = "[#{_'Paused'}]#{info_string} " if @current_sheet.paused?
 %>
 
@@ -26,8 +26,8 @@
   <% end %>
 <%= info_string %>
 <% else %>
-[<%= worked_nice(total_today) %> <%=_ 'today'%>]
+[<%= worked_nice(total_today.minutes) %> <%=_ 'today'%>]
 <% end %>
 <script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (@current_sheet ? ((@current_sheet.paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(@current_sheet.duration) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
+document.title = "<%= (@current_sheet ? ((@current_sheet.paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(@current_sheet.duration/60) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
 </script>
