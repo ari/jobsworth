@@ -8,7 +8,7 @@
 %>
 
   <fieldset>
-    <legend>New Room</legend>
+    <legend><%= _'New Room'%></legend>
     <label for="channel_name"><%=_ 'Name' %></label><%= text_field 'channel', 'name', { :size => 17, :maxlength => 200 } %><br />
     <label for="channel_project_id"><%=_ 'Project'%></label>
 <select name="channel[project_id]" id="channel_project_id">
@@ -27,12 +27,12 @@
 </select>
 
     <label for="channel_description"><%=_ 'Description' %></label><%= text_area 'channel', 'description', { :cols => 17, :rows => 4 } %><br />
-<%= submit_tag _("Create"), :style => "clear:left;margin-left:11.6em;" %><div style="float:left;margin-top:0.3em;"> or <a href="#" onclick="$('channel-add-container').hide();false;">Cancel</a></div>
+<%= submit_tag _("Create"), :style => "clear:left;margin-left:11.6em;" %><div style="float:left;margin-top:0.3em;"> <%= _'or' %> <a href="#" onclick="$('channel-add-container').hide();false;"><%= _'Cancel'%></a></div>
   </fieldset>
 <% end %>
   </td>
   <td valign="top" width="20%" class="optional">
-    <p>You can have as many chat rooms as you like. They can be limited to a project or public across all your users.</p>
+    <p><%= _"You can have as many chat rooms as you like. They can be limited to a project or public across all your users."%></p>
   </td>
 </tr>
 </table>
