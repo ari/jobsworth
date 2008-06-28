@@ -182,29 +182,7 @@ class ScheduleController < ApplicationController
 
       rev = true
 
-      if before 
-        logger.info "--> erlend #{t.id.to_s} day[#{day.to_s}] before[#{before.to_s}] due[#{t.due_at.to_s}]"
-        
-        if ((day.nil? && before) || before < day) && (before && (t.due_at.nil? || before < t.due_at))
-          logger.info "--> #{t.id} moving back start day"
-          day = (before.midnight - days.days - rem.minutes).midnight
-        elsif t.due_at && (day.nil? || t.due_at < day) && t.due_at < before
-          logger.info "--> #{t.id} moving back start day"
-          day = (t.due_at.midnight - days.days - rem.minutes).midnight
-        end 
-        rev = true
-      end
-
-      if after 
-        if (day.nil? || after > day) && (t.due_at.nil? || after < t.due_at)
-          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
-          day = (after.midnight + days.days + rem.minutes).midnight
-        elsif (day.nil? || t.due_at > day) && (t.due_at && t.due_at > after)
-          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
-          day = (t.due_at.midnight + days.days + rem.minutes).midnight
-        end 
-        rev = false
-      end
+      day, rev = override_day(t, day, before, after, rev)
       
       if rev
         if day.wday == 0
@@ -233,27 +211,7 @@ class ScheduleController < ApplicationController
       day = (current_user.tz.now.midnight)
       rev = false
 
-      if before 
-        if (day.nil? || before < day) && (t.due_at.nil? || before < t.due_at)
-          logger.info "--> #{t.id} moving back start day"
-          day = (before.midnight - days.days - rem.minutes).midnight
-        elsif (day.nil? || t.due_at < day) && (t.due_at && t.due_at < before)
-          logger.info "--> #{t.id} moving back start day"
-          day = (t.due_at.midnight - days.days - rem.minutes).midnight
-        end 
-        rev = true
-      end
-
-      if after 
-        if (day.nil? || after > day) && (t.due_at.nil? || after < t.due_at)
-          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
-          day = (after.midnight + days.days + rem.minutes).midnight
-        elsif (day.nil? || t.due_at > day) && (t.due_at && t.due_at > after)
-          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
-          day = (t.due_at.midnight + days.days + rem.minutes).midnight
-        end 
-        rev = false
-      end
+      override_day(t,day,before,after, rev)
 
       if day.wday == 0
         day += 1.days 
@@ -274,36 +232,75 @@ class ScheduleController < ApplicationController
     return deps[t.id] if deps.keys.include?(t.id)
     return [t] if seen.include?(t)
 
-    logger.info "--> #{t.id} Collecting deps "
-
     seen << t
 
     my_deps = []
     
-    t.dependencies.each do |d|
-      my_deps += schedule_collect_deps(deps, seen, d, rev)
-      logger.info("--> #{t.id} my_deps[#{my_deps.collect{ |dep| "#{dep.id}: #{dep.task_num}]" }.join(',')}]")
-    end
-
     my_deps << t
-    
-    t.dependants.each do |d|
-      my_deps += schedule_collect_deps(deps, seen, d, rev)
-    end
+
+    if rev
+      t.dependants.each do |d|
+        my_deps += schedule_collect_deps(deps, seen, d, rev)
+      end
+    else 
+      t.dependencies.each do |d|
+        my_deps += schedule_collect_deps(deps, seen, d, rev)
+      end
+    end 
 
     seen.pop
-    logger.info "--> #{t.id} Done collecting deps "
 
-    my_deps.compact!
+    my_deps.uniq!
     
     deps[t.id] = my_deps if my_deps.size > 0
-    
+    logger.info("--> #{t.id} my_deps[#{my_deps.collect{ |dep| "#{dep.id}" }.join(',')}]") if my_deps.size > 0
     my_deps
+  end
+
+  def override_day(t, day, before, after, rev)
+
+    logger.info "--> #{t.id} override got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.due_at}], #{rev}"
+
+    days = ((t.minutes_left) / current_user.workday_duration).to_i
+    rem = t.minutes_left - (days * current_user.workday_duration)
+
+    if rev
+      if (before && before < day) && (t.due_at.nil? || before < t.due_at)
+        day = (before.midnight - days.days - rem.minutes).midnight
+        logger.info "--> #{t.id} force before #{day}"
+        rev = true
+      elsif (t.due_at && before.nil?) || (before && t.due_at && t.due_at < before)
+        day = (t.due_at.midnight - days.days - rem.minutes).midnight
+        logger.info "--> #{t.id} force before #{day} [due]"
+        rev = true
+
+        day -= 1 if day.wday == 6
+        day -= 2 if day.wday == 0
+        
+      end 
+    end
+
+    unless rev
+      if after && after > day && (t.due_at.nil? || after < (t.due_at + days.days + rem.minutes))
+        day = after.midnight
+        logger.info "--> #{t.id} force after #{day}"
+        rev = false
+      elsif (t.due_at && after.nil? ) || (after && t.due_at && (t.due_at - days.days - rem.minutes ) < after)
+        day = (t.due_at.midnight - days.days - rem.minutes).midnight
+        logger.info "--> #{t.id} force after #{day} [due]"
+        rev = true
+      end
+    end
+    
+    logger.info "--> #{t.id} override returned day[#{day.to_s}], #{rev}]"
+
+    [day,rev]
   end
   
   def schedule_gantt(dates,t, before = nil, after = nil)
 
     logger.info "--> #{t.id} scheduling #{"before " + before.to_s if before}#{"after " + after.to_s if after}"
+
 
     day, rev =  schedule_direction(dates,t,before, after)
 
@@ -319,24 +316,24 @@ class ScheduleController < ApplicationController
 
     range = []
     min_start = max_start = nil
-    
-    while !@deps[t.id].blank?
-      d = rev ? @deps[t.id].shift : @deps[t.id].shift
-      if d.id == t.id
+
+    my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 )
+#    @deps[t.id] -= my_deps
+    while !my_deps.blank? 
+      d = rev ? my_deps.pop : my_deps.pop
         if rev
           before = min_start
         else 
           after = max_start
         end
+       
+#        break unless rev
         
-        break unless rev
-        
-      end 
         
       logger.info "--> #{t.id} => depends on #{d.id}"
         
       if rev
-        range = schedule_task(dates, d, min_start)
+        range = schedule_task(dates, d, min_start, nil)
       else 
         range = schedule_task(dates, d, nil, max_start)
       end
@@ -352,7 +349,8 @@ class ScheduleController < ApplicationController
       
     end
 
-    day, rev =  schedule_direction(dates, t, before, after) if rescheduled
+
+    day, rev =  schedule_direction(dates, t, before, after)
 
     if min_start && min_start < day && rev
       before = min_start.midnight 
@@ -362,27 +360,9 @@ class ScheduleController < ApplicationController
       before = nil
     end 
     
-    logger.info "--> #{t.id} scheduling got start #{day.to_s} #{rev ? "backwards" : "forwards"}"
+    logger.info "--> #{t.id} scheduling got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.due_at}] - #{rev ? "backwards" : "forwards"}"
 
-    if (before && before < day) && (t.due_at.nil? || before < t.due_at)
-      day = before.midnight
-      logger.info "--> #{t.id} force before #{day}"
-      rev = true
-#    elsif (t.due_at && before.nil?) || (before && t.due_at < before)
-#      day = t.due_at
-#      logger.info "--> #{t.id} force before #{day} [due]"
-#      rev = true
-    end
-
-    if after && after > day && (t.due_at.nil? || after < t.due_at)
-      day = after.midnight
-      logger.info "--> #{t.id} force after #{day}"
-      rev = false
-#    elsif (t.due_at && after.nil? ) || (after && t.due_at < after)
-#      day = t.due_at.midnight
-#      logger.info "--> #{t.id} force after #{day} [due]"
-#      rev = true
-    end
+    day, rev = override_day(t, day, before, after, rev)
     
     if t.minutes_left == 0
       return [day,day]
@@ -390,6 +370,7 @@ class ScheduleController < ApplicationController
 
     found = false
     logger.info "--> #{t.id} scheduling looking #{day.to_s} #{rev ? "backwards" : "forwards"}"
+
     while found == false
       found = true
       
@@ -667,7 +648,7 @@ class ScheduleController < ApplicationController
     if t.overdue?
       "#f66"
     elsif t.due_date 
-      if @end[t.id] > t.due_date
+      if @end[t.id] > t.due_date.to_time
       "#f66"
       elsif t.overworked?
        "#ff9900"
