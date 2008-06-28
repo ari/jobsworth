@@ -1,33 +1,33 @@
 Localization.define('no_NO') do |l|
   l.store "d", "d" # Erlend Simonsen
   l.store "h", "t"
-  l.store "m", "m"
+  l.store "m", "m" # Erlend Simonsen
   l.store "w", "u"
   l.store "To", "Til"
   l.store "by", "av"
   l.store "of", "av"
   l.store "or", "eller"
-  l.store "Add", "Add"
+  l.store "Add", "Legg til" # Erlend Simonsen
   l.store "Age", "Alder"
   l.store "All", "Alle"
-  l.store "Apr", "Apr"
-  l.store "Aug", "Aug"
-  l.store "CSV", "CSV"
+  l.store "Apr", "Apr" # Erlend Simonsen
+  l.store "Aug", "Aug" # Erlend Simonsen
+  l.store "CSV", "CSV" # Erlend Simonsen
   l.store "Dec", "Des"
-  l.store "Feb", "Feb"
+  l.store "Feb", "Feb" # Erlend Simonsen
   l.store "Fri", "Fre"
-  l.store "Jan", "Jan"
-  l.store "Jul", "Jul"
-  l.store "Jun", "Jun"
+  l.store "Jan", "Jan" # Erlend Simonsen
+  l.store "Jul", "Jul" # Erlend Simonsen
+  l.store "Jun", "Jun" # Erlend Simonsen
   l.store "Low", "Lav"
-  l.store "Mar", "Mar"
+  l.store "Mar", "Mar" # Erlend Simonsen
   l.store "May", "Mai"
   l.store "Mon", "Man"
   l.store "New", "Ny"
-  l.store "Nov", "Nov"
+  l.store "Nov", "Nov" # Erlend Simonsen
   l.store "Oct", "Okt"
   l.store "Sat", "Lør"
-  l.store "Sep", "Sep"
+  l.store "Sep", "Sep" # Erlend Simonsen
   l.store "Sun", "Søn"
   l.store "Thu", "Tor"
   l.store "To:", "Til:"
@@ -39,6 +39,7 @@ Localization.define('no_NO') do |l|
   l.store "Body", "Innhold"
   l.store "Chat", "Prat"
   l.store "Date", "Dato"
+  l.store "Days", "Days"
   l.store "Edit", "Editer"
   l.store "File", ["Fil", "Filer"]
   l.store "From", "Fra"
@@ -46,7 +47,7 @@ Localization.define('no_NO') do |l|
   l.store "High", "Høy"
   l.store "July", "Juli"
   l.store "June", "Juni"
-  l.store "Mine", "Mine"
+  l.store "Mine", "Mine" # Erlend Simonsen
   l.store "Name", "Navn"
   l.store "Next", "Neste"
   l.store "Open", "Åpen"
@@ -56,45 +57,50 @@ Localization.define('no_NO') do |l|
   l.store "Show", "Vis"
   l.store "Tags", "Tagger"
   l.store "Task", "Oppgave"
-  l.store "Type", "Type"
+  l.store "Type", "Type" # Erlend Simonsen
   l.store "User", "Bruker"
   l.store "View", "Vis"
+  l.store "Wait", "Vent" # Erlend Simonsen
   l.store "Week", "Uke"
-  l.store "Wiki", "Wiki"
+  l.store "Wiki", "Wiki" # Erlend Simonsen
   l.store "Work", "Arbeid"
   l.store "days", "dager"
   l.store "last", "siste"
-  l.store "59:04", "59:04"
-  l.store "April", "April"
+  l.store "59:04", "59:04" # Erlend Simonsen
+  l.store "April", "April" # Erlend Simonsen
   l.store "Audit", "Tidssjekk"
   l.store "Close", "Avslutt"
   l.store "Email", "Epost"
   l.store "Files", "Filer"
-  l.store "Forum", "Forum"
+  l.store "Forum", "Forum" # Erlend Simonsen
   l.store "Grant", "Gi tilgang"
   l.store "Major", "Stor"
   l.store "March", "Mars"
   l.store "Minor", "Liten"
   l.store "Notes", "Notater"
   l.store "Owner", "Ansvarlig"
-  l.store "Pivot", "Pivot"
+  l.store "Pivot", "Pivot" # Erlend Simonsen
   l.store "Posts", "Innlegg"
-  l.store "Start", "Start"
+  l.store "Saved", "Saved"
+  l.store "Start", "Start" # Erlend Simonsen
   l.store "Tasks", "Oppgaver"
   l.store "Title", "Tittel"
+  l.store "To-do", "To-do"
   l.store "Today", "I dag"
   l.store "Topic", "Emne"
   l.store "Total", "Totalt"
   l.store "Users", "Brukere"
   l.store "Views", "Utsnitt"
+  l.store "Weeks", "Weeks"
   l.store "every", "hver"
   l.store "lists", "lister"
   l.store "today", "i dag"
+  l.store "until", "til" # Erlend Simonsen
   l.store "%d day", ["en dag", "%d dager"]
   l.store "%s ago", "%s siden"
   l.store "*bold*", "*fet*"
   l.store "Assign", "Tildel"
-  l.store "August", "August"
+  l.store "August", "August" # Erlend Simonsen
   l.store "Browse", "Bla"
   l.store "Cancel", "Avbryt"
   l.store "Client", "Kunde"
@@ -106,23 +112,26 @@ Localization.define('no_NO') do |l|
   l.store "Filter", "Filtrering"
   l.store "Forums", "Forumer"
   l.store "Friday", "Fredag"
-  l.store "Locked", "Locked"
+  l.store "Locked", "Låst" # Erlend Simonsen
   l.store "Lowest", "Lavest"
   l.store "Monday", "Mandag"
+  l.store "Months", "Months"
   l.store "No one", "Ingen"
   l.store "Normal", "Vanlig"
   l.store "Online", "Pålogget"
+  l.store "Paused", "Pauset" # Erlend Simonsen
   l.store "Plural", "Flertall"
   l.store "Recent", "Siste"
   l.store "Revert", "Tilbakestill"
   l.store "Search", "Søk"
   l.store "Shared", "Delt"
-  l.store "Status", "Status"
+  l.store "Status", "Status" # Erlend Simonsen
   l.store "Sticky", "Sticky"
   l.store "Sunday", "Søndag"
   l.store "Target", "Gruppering"
   l.store "Upload", "Last Opp"
   l.store "Urgent", "Haster"
+  l.store "Worked", "Arbeidet" # Erlend Simonsen
   l.store "[Next]", "[Neste]"
   l.store "[None]", "[Ingen]"
   l.store "[Prev]", "[Forrige]"
@@ -158,9 +167,11 @@ Localization.define('no_NO') do |l|
   l.store "Trivial", "Triviell"
   l.store "Tuesday", "Tirsdag"
   l.store "Updated", "Oppdatert"
+  l.store "Welcome", "Velkommen" # Erlend Simonsen
+  l.store "offline", "offline"
   l.store "%d month", ["en måned", "%d måneder"]
   l.store "%d posts", ["%d innlegg", "%d innlegg"]
-  l.store "1:2:3:04", "1:2:3:04"
+  l.store "1:2:3:04", "1:2:3:04" # Erlend Simonsen
   l.store "1w2d3h4m", "1u2d3t4m"
   l.store "Any Room", "Alle Rom"
   l.store "Archived", "Arkivert"
@@ -170,6 +181,7 @@ Localization.define('no_NO') do |l|
   l.store "December", "Desember"
   l.store "Download", "Last ned"
   l.store "Due Date", "Dato Ferdig"
+  l.store "Estimate", "Estimat" # Erlend Simonsen
   l.store "Everyone", "Alle" # Erlend Simonsen
   l.store "February", "Februar"
   l.store "Group By", "Gruppering"
@@ -183,7 +195,8 @@ Localization.define('no_NO') do |l|
   l.store "New User", "Ny Bruker"
   l.store "New View", "Nytt Utsnitt"
   l.store "New logo", "Ny logo"
-  l.store "November", "November"
+  l.store "November", "November" # Erlend Simonsen
+  l.store "One week", "En uke" # Erlend Simonsen
   l.store "Overview", "Overblikk"
   l.store "Password", "Passord"
   l.store "Previous", "Forrige"
@@ -200,6 +213,7 @@ Localization.define('no_NO') do |l|
   l.store "Singular", "Entall"
   l.store "Thursday", "Torsdag"
   l.store "Timeline", "Tidslinje"
+  l.store "Tomorrow", "I morgen" # Erlend Simonsen
   l.store "Tutorial", "Introduksjon"
   l.store "Use Chat", "Bruk Prat"
   l.store "Use Wiki", "Bruk Wiki"
@@ -227,9 +241,11 @@ Localization.define('no_NO') do |l|
   l.store "Milestone", "Milepæl"
   l.store "New topic", "Nytt emne"
   l.store "Next Week", "Neste Uke"
+  l.store "Next week", "Neste uke" # Erlend Simonsen
+  l.store "One month", "En måned" # Erlend Simonsen
   l.store "Remaining", "Gjenstående"
   l.store "Revisions", "Revisjoner"
-  l.store "September", "September"
+  l.store "September", "September" # Erlend Simonsen
   l.store "Task Type", "Oppgave Type"
   l.store "This Week", "Denne Uke"
   l.store "This Year", "Dette År"
@@ -248,18 +264,23 @@ Localization.define('no_NO') do |l|
   l.store "Attributes", "Atributter"
   l.store "Chat Rooms", "Praterom"
   l.store "Client CSS", "Kundens CSS"
+  l.store "Delete All", "Delete All"
   l.store "Depends on", "Avhengig av"
   l.store "Edit Topic", "Editer Emne"
   l.store "Group Tags", "Grupper Tagger"
   l.store "Last Login", "Sist Pålogget"
   l.store "Last Month", "Sist Måned"
   l.store "Leave Open", "Hold Åpen"
+  l.store "Leave Room", "Forlat Rom" # Erlend Simonsen
+  l.store "Leave room", "Forlat rom" # Erlend Simonsen
+  l.store "Loading...", "Laster..." # Erlend Simonsen
   l.store "Local Time", "Lokal Tid"
   l.store "Milestones", "Milepæler"
   l.store "Moderators", "Moderatorer"
   l.store "New Avatar", "Ny Avatar"
   l.store "New Client", "Ny Kunde"
   l.store "New Folder", "Ny mappe"
+  l.store "Next month", "Neste Måned" # Erlend Simonsen
   l.store "Open Tasks", "Åpne Oppgaver"
   l.store "Prioritize", "Prioritere"
   l.store "Reassigned", "Overført"
@@ -272,6 +293,7 @@ Localization.define('no_NO') do |l|
   l.store "Track Time", "Logg tid"
   l.store "Transcript", "Referat"
   l.store "Unassigned", "Uten Ansvarlig"
+  l.store "View Tasks", "View Tasks"
   l.store "Widget Key", "Widget Key"
   l.store "[All Tags]", "[Alle Tagger]"
   l.store "[All Time]", "[All Tid]"
@@ -285,12 +307,14 @@ Localization.define('no_NO') do |l|
   l.store "Assigned To", "Ansvarlig"
   l.store "Attach file", "Legg ved fil"
   l.store "Attachments", "Vedlegg"
+  l.store "Change room", "Bytt rom" # Erlend Simonsen
   l.store "Custom Logo", "Egendefinert Logo"
   l.store "Date Format", "Datoformat"
   l.store "Delete Room", "Slett Rom"
   l.store "Delete View", "Slett Utsnitt"
   l.store "Description", "Beskrivelse"
   l.store "Edit Client", "Editer Klient" # Erlend Simonsen
+  l.store "End of week", "Slutten av uka" # Erlend Simonsen
   l.store "Forum Posts", "Forum Innlegg"
   l.store "Improvement", "Forbedring"
   l.store "In Progress", "Under Utvikling"
@@ -309,7 +333,6 @@ Localization.define('no_NO') do |l|
   l.store "[Next page]", "[Neste side]"
   l.store "%d month ago", ["en måned siden", "%d måneder siden"]
   l.store "%s reverted.", "%s tilbakestilt."
-  l.store "Administator", "Administator"
   l.store "Burnup Chart", "Burnup Graf" # Erlend Simonsen
   l.store "Company Name", "Firmanavn"
   l.store "Contact name", "Kontakt navn"
@@ -321,6 +344,7 @@ Localization.define('no_NO') do |l|
   l.store "Hide Waiting", "Gjem Ventende"
   l.store "Last Updated", "Sist oppdatert"
   l.store "Leave Closed", "Hold Lukket"
+  l.store "Name / Email", "Navn / Email" # Erlend Simonsen
   l.store "Newest Tasks", "Nyeste Oppgaver"
   l.store "Notification", "Varsling"
   l.store "Participants", "Deltakere"
@@ -328,7 +352,11 @@ Localization.define('no_NO') do |l|
   l.store "Recent Posts", "Siste Innlegg"
   l.store "Requested By", "Forespurt av"
   l.store "Save as View", "Lagre som Utsnitt"
+  l.store "Send Message", "Send Message"
   l.store "Show Avatars", "Vis Avatarer"
+  l.store "Show History", "Show History"
+  l.store "Timer Window", "Tidsvindu" # Erlend Simonsen
+  l.store "Users Online", "Users Online"
   l.store "Wiki Changes", "Wiki Forandringer"
   l.store "[Any Client]", "[Alle Kunder]"
   l.store "[Any Status]", "[Alle Statuser]"
@@ -336,12 +364,13 @@ Localization.define('no_NO') do |l|
   l.store "about 1 year", "omtrent ett år"
   l.store "worked today", "jobbet i dag"
   l.store "%s completed.", "%s avsluttet."
-  l.store "Administrator", "Administrator"
+  l.store "Administrator", "Administrator" # Erlend Simonsen
   l.store "Are you sure?", "Er du sikker?"
   l.store "Contact email", "Kontakt epost"
   l.store "Custom Avatar", "Custom Avatar"
   l.store "Days per Week", "Dager per Uke"
   l.store "File too big.", "For stor fil."
+  l.store "Invite a user", "Invite a user"
   l.store "Monitor topic", "Monitorer Enbe"
   l.store "My Open Tasks", "Mine Åpne Oppgaver"
   l.store "New Milestone", "Ny Milepæle"
@@ -371,8 +400,9 @@ Localization.define('no_NO') do |l|
   l.store "Full Reference", "Full Oversikt"
   l.store "Help Translate", "Hjelp til med oversettelsen"
   l.store "New To-do Item", "Ny To-do"
+  l.store "Open <b>%s</b>", "Open <b>%s</b>"
   l.store "Remaining Work", "Gjenstående Arbeid"
-  l.store "Reply to topic", "Reply to topic"
+  l.store "Reply to topic", "Svar på emne" # Erlend Simonsen
   l.store "Revert to Open", "Åpne Igjen"
   l.store "Search Results", "Søkeresultater"
   l.store "Set as Invalid", "Sett Ugyldig"
@@ -386,11 +416,14 @@ Localization.define('no_NO') do |l|
   l.store "Duration Worked", "Arbeidet tid"
   l.store "Formatting Help", "Formatteringshjelp"
   l.store "Quick Reference", "Kjapp Oversikt"
+  l.store "Recent activity", "Recent activity"
   l.store "Set in Progress", "Sett I Gang"
   l.store "Upload New File", "Last Opp Ny Fil"
   l.store "[Any Milestone]", "[Alle Milepæler]"
   l.store "[Previous page]", "[Forrige side]"
+  l.store "creating a task", "lage en oppgave" # Erlend Simonsen
   l.store "Advanced Options", "Avanserte Valg"
+  l.store "Archive Messages", "Archive Messages"
   l.store "Chat Transcripts", "Referater"
   l.store "Company Settings", "Firma Instillinger"
   l.store "Complete Project", "Avslutt Prosjekt"
@@ -398,7 +431,9 @@ Localization.define('no_NO') do |l|
   l.store "Delete <b>%s</b>", "Slett <b>%s</b>"
   l.store "Delete Log Entry", "Slett logg"
   l.store "Delete Milestone", "Slett Milepæle"
+  l.store "Instant Messages", "Instant Messages"
   l.store "Leave as Invalid", "Hold Ugyldig"
+  l.store "Messages from %s", "Messages from %s"
   l.store "Monitoring forum", "Monitroerer forum"
   l.store "Open to everyone", "Åpent for alle"
   l.store "Overall Progress", "Progresjon"
@@ -406,6 +441,7 @@ Localization.define('no_NO') do |l|
   l.store "Set as Won't Fix", "Sett Vil Ikke Fikse"
   l.store "Unassigned Tasks", "Uten Ansvarlig"
   l.store "User Information", "Brukerinformasjon"
+  l.store "create a project", "lage et prosjekt" # Erlend Simonsen
   l.store "%s / %s reverted.", "%s / %s tilbakestilt."
   l.store "Access To Project", "Tilgang til Prosjektet"
   l.store "Create New Folder", "Lag ny mappe" # Erlend Simonsen
@@ -420,6 +456,7 @@ Localization.define('no_NO') do |l|
   l.store "[Active Projects]", "[Aktive Prosjekter]"
   l.store "[Closed Projects]", "[Lukkede Prosjekter]"
   l.store "[Default Sorting]", "[Standard Sortering]"
+  l.store "the documentation", "dukumentasjonen" # Erlend Simonsen
   l.store "%s / %s completed.", "%s / %s avsluttet."
   l.store "Complete Milestone", "Avslutt Milepæle"
   l.store "Completed Projects", "Avsluttede Prosjekter"
@@ -431,6 +468,7 @@ Localization.define('no_NO') do |l|
   l.store "No recent activity", "Ingen aktivitet i det siste"
   l.store "Really abort work?", "Virkelig avbryte arbeidet?"
   l.store "Receive Newsletter", "Motta Nyhetsbrev"
+  l.store "Same as in English", "Samme som engelsk" # Erlend Simonsen
   l.store "Send Notifications", "Send varslinger"
   l.store "less than a minute", "mindre enn ett minutt"
   l.store "Remove notification", "Remove notification"
@@ -443,16 +481,19 @@ Localization.define('no_NO') do |l|
   l.store "My In Progress Tasks", "I Gang"
   l.store "Project was deleted.", "Prosjekt slettet."
   l.store "Report Configuration", "Rapport Konfigurasjon"
+  l.store "Showing Full History", "Viser full historie" # Erlend Simonsen
   l.store "Use External Clients", "Bruk eksterne kunder"
   l.store "less than %d seconds", "mindre enn %d sekunder"
   l.store "Open to everyone from", "Åpent for alle fra"
   l.store "Projects / Milestones", "Prosjekter / Milepæler"
   l.store "Receive Notifications", "Motta varslinger"
+  l.store "Showing Only Comments", "Viser kun kommentarer" # Erlend Simonsen
   l.store "%d completed milestone", ["en ferdig milepæl", "%d ferdige milepæler"]
   l.store "Add another dependency", "Ny avhengighet"
   l.store "Edit project <b>%s</b>", "Editer prosjektet <b>%s</b>"
   l.store "Floating Messaging Bar", "Flytende Beskjed Bar"
   l.store "View '%s' was deleted.", "Utsnitt '%s' slettet."
+  l.store "invite some co-workers", "invitere noen medarbeidere" # Erlend Simonsen
   l.store "%d translations updated.", ["%d oversettelse oppdatert.", "%d oversettelser oppdatert."]
   l.store "Edit milestone <b>%s</b>", "Editer milepælen <b>%s</b>"
   l.store "Open to everyone from %s", "Åpent for alle fra %s"
@@ -462,16 +503,22 @@ Localization.define('no_NO') do |l|
   l.store "CSS successfully uploaded.", "CSS lastet opp."
   l.store "Delete this topic forever?", "Slett dette emne for alltid?"
   l.store "Grant access to <b>%s</b>?", "Gi tilgang til <b>%s</b>?"
+  l.store "Include completed projects", "Include completed projects"
   l.store "Stop working on <b>%s</b>.", "Ferdig å jobbe med <b>%s</b>."
+  l.store "Don't show this splash page", "Ikke vis denne velkomstsiden" # Erlend Simonsen
   l.store "File successfully uploaded.", "Fil lastet opp."
   l.store "Logo successfully uploaded.", "Logo lastet opp."
   l.store "Pause working on <b>%s</b>.", "Pause arbeid på <b>%s</b>."
   l.store "Please always be courteous.", "Oppfoer deg!"
+  l.store "Please configure the widget", "Please configure the widget"
   l.store "Unable to save log entry...", "Arbeidslogg <b>ikke</b> lagret..."
   l.store "Cancel working on <b>%s</b>.", "Avbryt arbeidet på <b>%s</b>."
   l.store "Empty report, log more work!", "Tom rapport, jobb mer!"
   l.store "No file selected for upload.", "Ingen fil valgt for opplastning."
+  l.store "Really delete whole history?", "Really delete whole history?"
+  l.store "Resume working on <b>%s</b>.", "Fortsett arbeid på <b>%s</b>." # Erlend Simonsen
   l.store "Really delete this log entry?", "Virkelig slette denne loggen?"
+  l.store "Add earlier work to <b>%s</b>.", "Legg til tidligere arbeid på <b>%s</b>." # Erlend Simonsen
   l.store "Grant %s access for <b>%s</b>?", "Gi tilgang til %s for <b>%s</b>?"
   l.store "Move <b>%s</b> to the Archive.", "Flytt <b>%s</b> til Arkivet."
   l.store "Note was successfully created.", "Notat opprettet."
@@ -479,6 +526,7 @@ Localization.define('no_NO') do |l|
   l.store "Task was successfully created.", "Oppgave opprettet."
   l.store "Task was successfully updated.", "Oppgave oppdatert."
   l.store "User was successfully updated.", "Bruker oppdatert."
+  l.store "Remove %s access for <b>%s</b>?", "Remove %s access for <b>%s</b>?"
   l.store "Client was successfully created.", "Kunde registrert."
   l.store "Client was successfully updated.", "Kunde oppdatert."
   l.store "Download CSV file of this report", "Last ned CSV filen til denne rapporten."
@@ -495,17 +543,20 @@ Localization.define('no_NO') do |l|
   l.store "Restore <b>%s</b> from the Archive.", "Hent <b>%s</b> fra Arkivet."
   l.store "View '%s' was successfully created.", "Utsnitt '%s' opprettet."
   l.store "View '%s' was successfully updated.", "Utsnitt '%s' oppdatert."
+  l.store "Changes are not made live instantly.", "Changes are not made live instantly."
   l.store "This forum is currently unmoderated.", "Dette forumet er ikke moderert."
   l.store "Hide tasks deferred until a later time", "Gjem oppgaver utsatt til senere"
   l.store "Limit userlist to users in same project", "Begrens brukerlisten til brukere med samme prosjekter"
   l.store "Really delete room and all transcripts?", "Slette rommet og referatene?"
   l.store "Revert <b>%s</b> to not completed status.", "Sett <b>%s</b> til uferdig"
+  l.store "Easy access to commonly needed information.", "Enkel tilgang til ofte brukte notater." # Erlend Simonsen
   l.store "Subscribe to the recent activities RSS feed", "Abonner på alle aktiviteter via RSS"
   l.store "Subscribe to the iCal feed for your projects.", "Abonner på iCalendar for dine prosjekter."
   l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
   l.store "The message will be included in the signup email.", "Beskjeden blir inkludert i registrerings emailen."
   l.store "Start working on <b>%s</b>. Click again when done.", "Begyn å jobbe med <b>%s</b>. Klikk igjen for å avslutte."
   l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
+  l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
   l.store "Error sending creation email. Account still created.", "Feil under sending av varslingsepost. Kontoen ble opprettet alikevel."
   l.store "Please delete all projects for %s before deleting it.", "Vennligst slett alle prosjekter for %s før du sletter."
   l.store "Log entry already saved from another browser instance.", "Arbeidslogg allerede lagret fra en annen nett-leser instans."
@@ -514,13 +565,26 @@ Localization.define('no_NO') do |l|
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Introduksjon ferdig. Den vil ikke vises i menyen lengre."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
   l.store "Enter task numbers, separated by commas. Type text to search.", "Skriv in oppgavenummer, separert med komma. Skriv tekst for å søke."
+  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welcome to ClockingIT. To get started, follow the steps below."
+  l.store "If you require further help, check the %s, %s or email us at %s", "If you require further help, check the %s, %s or email us at %s"
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
+  l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
   l.store "Project was successfully created. Add users who need access to this project.", "Prosjekt opprettet. Gi tilgang til brukere som skal være med på prosjektet."
+  l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Bruker opprettet. Husk å gi brukeren tilgang til prosjekter."
+  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Changes done here will not be logged in the Activity log or sent out as notifications."
   l.store "Changes done here will not go live until admin@clockingit.com is notified for verification.", "Changes done here will not go live until admin@clockingit.com is notified for verification."
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Du må opprette et prosjekt som kan holde oppgavene dine, eller få tilgang til et eksisterende prosjekt..."
+  l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "You can have as many chat rooms as you like. They can be limited to a project or public across all your users."
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px burde se bra ut. Logoen vil bli vist øverst, og på loggin siden din.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Andre som skal varsles ved forandringer<br/>i tillegg til registrator og ansvarlig<br/><br/>Ctrl-klikk for å velge."
   l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
+  l.store "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate.", "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate."
+  l.store "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.", "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu."
+  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki."
+  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things."
+  l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work."
+  l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running."
+  l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s."
 end

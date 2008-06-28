@@ -1,43 +1,45 @@
 Localization.define('de_DE') do |l|
   l.store "d", "t"
   l.store "h", "s"
-  l.store "m", "m"
-  l.store "w", "w"
+  l.store "m", "m" # Tim Zech
+  l.store "w", "w" # Tim Zech
   l.store "To", "Bis"
   l.store "by", "von"
   l.store "of", "von"
-  l.store "or", "or"
-  l.store "Age", "Age"
+  l.store "or", "oder" # Tim Zech
+  l.store "Add", "Hinzufügen" # Tim Zech
+  l.store "Age", "Alter" # Tim Zech
   l.store "All", "Alle"
-  l.store "Apr", "Apr"
-  l.store "Aug", "Aug"
-  l.store "CSV", "CSV"
+  l.store "Apr", "Apr" # Tim Zech
+  l.store "Aug", "Aug" # Tim Zech
+  l.store "CSV", "CSV" # Tim Zech
   l.store "Dec", "Dez"
-  l.store "Feb", "Feb"
+  l.store "Feb", "Feb" # Tim Zech
   l.store "Fri", "Fr"
-  l.store "Jan", "Jan"
-  l.store "Jul", "Jul"
-  l.store "Jun", "Jun"
+  l.store "Jan", "Jan" # Tim Zech
+  l.store "Jul", "Jul" # Tim Zech
+  l.store "Jun", "Jun" # Tim Zech
   l.store "Low", "Niedrig"
   l.store "Mar", "Mrz"
   l.store "May", "Mai"
   l.store "Mon", "Mo"
   l.store "New", "Neu"
-  l.store "Nov", "Nov"
+  l.store "Nov", "Nov" # Tim Zech
   l.store "Oct", "Okt"
   l.store "Sat", "Sa"
-  l.store "Sep", "Sep"
+  l.store "Sep", "Sep" # Tim Zech
   l.store "Sun", "So"
   l.store "Thu", "Do"
   l.store "To:", "An:"
   l.store "Tue", "Di"
   l.store "Wed", "Mi"
-  l.store "ago", "ago"
+  l.store "ago", "vorher" # Tim Zech
   l.store "and", "und"
   l.store "day", "Tag"
   l.store "Body", "Inhalt"
-  l.store "Chat", "Unterhaltung"
+  l.store "Chat", "Chat" # Tim Zech
   l.store "Date", "Datum"
+  l.store "Days", "Tage" # Tim Zech
   l.store "Edit", "Bearbeiten"
   l.store "File", ["Datei", "Dateien"]
   l.store "From", "Von"
@@ -45,50 +47,67 @@ Localization.define('de_DE') do |l|
   l.store "High", "Hoch"
   l.store "July", "Juli"
   l.store "June", "Juni"
-  l.store "Mine", "Mine"
-  l.store "Name", "Name"
-  l.store "Open", "Öffnen"
+  l.store "Mine", "Eigene" # Tim Zech
+  l.store "Name", "Name" # Tim Zech
+  l.store "Next", "Weiter" # Tim Zech
+  l.store "None", "Keine" # Tim Zech
+  l.store "Open", "Offen" # Tim Zech
   l.store "Read", "Lesen"
   l.store "Rows", "Zeile"
   l.store "Save", "Speichern"
-  l.store "Show", "Show"
+  l.store "Show", "Zeige" # Tim Zech
   l.store "Tags", "Kennzeichen"
   l.store "Task", "Aufgabe"
   l.store "Type", "Typ"
   l.store "User", "Benutzer"
-  l.store "View", "View"
+  l.store "View", "Anzeigen" # Tim Zech
+  l.store "Wait", "Warten" # Stefan Hofmann
   l.store "Week", "Woche"
-  l.store "Wiki", "Wiki"
+  l.store "Wiki", "Wiki" # Tim Zech
   l.store "Work", "Arbeiten"
   l.store "days", "Tage"
+  l.store "idle", "inaktiv" # Manuel Schaeidt
   l.store "last", "letzten"
-  l.store "59:04", "59:04"
-  l.store "April", "April"
+  l.store "test", "test" # Tim Zech
+  l.store "59:04", "59:04" # Tim Zech
+  l.store "April", "April" # Tim Zech
   l.store "Audit", "Überprüfung"
   l.store "Close", "Abschließen"
   l.store "Email", "E-Mail"
+  l.store "Empty", "Leer" # Tim Zech
   l.store "Files", "Dateien"
+  l.store "Forum", "Forum" # Tim Zech
   l.store "Grant", "Gewähren"
   l.store "Major", "Größer"
   l.store "March", "März"
   l.store "Minor", "Kleiner"
   l.store "Notes", "Bemerkungen"
   l.store "Owner", "Eigentümer"
-  l.store "Pivot", "Pivot"
-  l.store "Start", "Start"
+  l.store "Pivot", "Pivot" # Tim Zech
+  l.store "Posts", "Beiträge" # Tim Zech
+  l.store "Saved", "Gespeichert" # Tim Zech
+  l.store "Start", "Start" # Tim Zech
   l.store "Tasks", "Aufgaben"
+  l.store "Title", "Titel" # Tim Zech
+  l.store "To-do", "To-Do" # Tim Zech
   l.store "Today", "Heute"
+  l.store "Topic", "Thema" # Tim Zech
   l.store "Total", "Gesamtsumme"
   l.store "Users", "Benutzer"
-  l.store "Views", "Ansichten"
+  l.store "Views", "Hits" # Tim Zech
+  l.store "Weeks", "Wochen" # Tim Zech
   l.store "every", "jeden"
+  l.store "lists", "Listen" # Stefan Hofmann
   l.store "today", "heute"
-  l.store "%d day", ["ein Tag", "%d Tagen"]
-  l.store "%s ago", "vor %s"
+  l.store "until", "bis" # Tim Zech
+  l.store "%d day", ["%d Tag", "%d Tagen"] # Tim Zech
+  l.store "%s ago", "%s vorher" # Tim Zech
+  l.store "*bold*", "*fett*" # Stefan Hofmann
+  l.store "Active", "Aktiv" # Tim Zech
   l.store "Assign", "Zuweisen"
-  l.store "August", "August"
+  l.store "August", "August" # Tim Zech
   l.store "Browse", "Durchsuchen"
-  l.store "Cancel", "Cancel"
+  l.store "Cancel", "Abbrechen" # Tim Zech
   l.store "Client", "Kunde"
   l.store "Closed", "Geschlossen"
   l.store "Create", "Anlegen"
@@ -96,29 +115,37 @@ Localization.define('de_DE') do |l|
   l.store "Defect", "Fehler"
   l.store "Delete", "Löschen"
   l.store "Filter", "Filtern"
-  l.store "Forums", "Forums"
+  l.store "Forums", "Foren" # Tim Zech
   l.store "Friday", "Freitag"
-  l.store "Lowest", "Niedrigst"
+  l.store "Locked", "Gesperrt" # Tim Zech
+  l.store "Lowest", "Am niedrigsten" # Tim Zech
   l.store "Monday", "Montag"
+  l.store "Months", "Monate" # Tim Zech
   l.store "No one", "Niemand"
-  l.store "Normal", "Normal"
+  l.store "Normal", "Normal" # Tim Zech
   l.store "Online", "anwesend"
-  l.store "Plural", "Plural"
-  l.store "Recent", "Recent"
+  l.store "Paused", "Angehalten" # Tim Zech
+  l.store "Plural", "Plural" # Tim Zech
+  l.store "Recent", "Kürzlich" # Tim Zech
   l.store "Revert", "Zurückversetzen"
   l.store "Search", "Suche"
   l.store "Shared", "Geteilt"
-  l.store "Status", "Status"
+  l.store "Status", "Status" # Tim Zech
+  l.store "Sticky", "Sticky" # Tim Zech
   l.store "Sunday", "Sonntag"
   l.store "Target", "Ziel"
+  l.store "Update", "Aktualisieren" # Tim Zech
   l.store "Upload", "Hochladen"
   l.store "Urgent", "Dringend"
+  l.store "Worked", "Gearbeitet" # Tim Zech
   l.store "[Next]", "[Nächste]"
   l.store "[None]", "[Kein]"
   l.store "[Prev]", "[Vorherige]"
   l.store "[wdhm]", "[wtsm]"
-  l.store "%d days", ["%d days", "%d days"]
-  l.store "%d file", ["%d Datei", "%d Dateien"]
+  l.store "cancel", "Abbrechen" # Tim Zech
+  l.store "quotes", "Anführungszeichen" # Stefan Hofmann
+  l.store "%d days", ["einem Tag", "%d Tage"] # Tim Zech
+  l.store "%d file", ["eine Datei", "%d Dateien"] # Tim Zech
   l.store "%d week", ["eine Woche", "%d Wochen"]
   l.store "Blocker", "Blockierer"
   l.store "Clients", "Kunden"
@@ -127,122 +154,158 @@ Localization.define('de_DE') do |l|
   l.store "Company", "Firma"
   l.store "Contact", "Kontakt"
   l.store "Created", "Angelegt"
-  l.store "Destroy", "Destroy"
+  l.store "Destroy", "Löschen" # Tim Zech
   l.store "History", "Verlauf"
   l.store "Invalid", "Ungültig"
   l.store "January", "Januar"
-  l.store "Loading", "Loading"
+  l.store "Loading", "Lade" # Tim Zech
   l.store "Log Out", "Verlassen"
-  l.store "Members", "Members"
+  l.store "Members", "Mitglieder" # Tim Zech
   l.store "October", "Oktober"
   l.store "Offline", "Abwesend"
   l.store "Options", "Optionen"
+  l.store "Overdue", "Überfällig" # Tim Zech
   l.store "Preview", "Voransicht"
   l.store "Project", "Projekt"
   l.store "Reports", "Berichte"
-  l.store "Sort By", "Sort By"
+  l.store "Sort By", "Sortiere nach" # Tim Zech
   l.store "Summary", "Zusammenfassung"
-  l.store "Trivial", "Trivial"
+  l.store "Trivial", "Trivial" # Tim Zech
   l.store "Tuesday", "Dienstag"
-  l.store "%d month", ["ein Monat", "%d Monate"]
-  l.store "%d posts", ["%d posts", "%d posts"]
-  l.store "1:2:3:04", "1:2:3:04"
+  l.store "Updated", "Aktualisiert" # Tim Zech
+  l.store "Welcome", "Willkommen" # Tim Zech
+  l.store "offline", "offline" # Tim Zech
+  l.store "%d month", ["einem Monat", "%d Monate"] # Tim Zech
+  l.store "%d posts", ["ein Beitrag", "%d Beiträge"] # Tim Zech
+  l.store "1:2:3:04", "1:2:3:04" # Tim Zech
   l.store "1w2d3h4m", "1w2t3s4m"
+  l.store "Any Room", "Beliebiger Raum" # Tim Zech
   l.store "Archived", "Archiviert"
-  l.store "Complete", "Complete"
+  l.store "Aufgaben", "Aufgaben" # Tim Zech
+  l.store "Comments", "Kommentare" # Tim Zech
+  l.store "Complete", "Vollständig" # Tim Zech
   l.store "Critical", "Kritisch"
   l.store "December", "Dezember"
   l.store "Download", "Herunterladen"
   l.store "Due Date", "Abgabetermin"
+  l.store "Estimate", "Geschätzt" # Tim Zech
+  l.store "Everyone", "Jeder" # Tim Zech
   l.store "February", "Februar"
-  l.store "Group By", "Group By"
+  l.store "Group By", "Gruppiere nach" # Tim Zech
   l.store "Language", "Sprache"
   l.store "Location", "Ort"
   l.store "Modified", "Abgeändert"
-  l.store "New File", "New File"
+  l.store "New File", "Neue Datei" # Tim Zech
   l.store "New Note", "Neue Bemerkung"
-  l.store "New Room", "New Room"
+  l.store "New Room", "Neuer Raum" # Tim Zech
   l.store "New Task", "Neue Aufgabe"
-  l.store "New User", "New User"
+  l.store "New User", "Neuer Benutzer" # Tim Zech
   l.store "New View", "Neue Ansicht"
   l.store "New logo", "Neues Markenzeichen"
-  l.store "November", "November"
+  l.store "November", "November" # Tim Zech
+  l.store "One week", "Eine Woche" # Tim Zech
   l.store "Overview", "Überblick"
   l.store "Password", "Passwort"
+  l.store "Position", "Position" # Tim Zech
+  l.store "Previous", "Zurück" # Tim Zech
   l.store "Priority", "Priorität"
   l.store "Progress", "Fortschritt"
   l.store "Projects", "Projekte"
-  l.store "QuickAdd", "QuickAdd"
-  l.store "Revision", "Revision"
+  l.store "QuickAdd", "Schnell hinzufügen" # Tim Zech
+  l.store "Resolved", "Geschlossen" # andy
+  l.store "Reverted", "Zurückgesetzt" # Tim Zech
+  l.store "Revision", "Revision" # Tim Zech
   l.store "Saturday", "Samstag"
   l.store "Schedule", "Plan"
   l.store "Severity", "Schweregrad"
-  l.store "Singular", "Singular"
+  l.store "Singular", "Singular" # Tim Zech
   l.store "Thursday", "Donnerstag"
   l.store "Timeline", "Verlauf"
+  l.store "Tomorrow", "Morgen" # Tim Zech
   l.store "Tutorial", "Einführung"
-  l.store "Use Chat", "Use Chat"
-  l.store "Use Wiki", "Use Wiki"
+  l.store "Use Chat", "Chat benutzen" # Tim Zech
+  l.store "Use Wiki", "Wiki benutzen" # Tim Zech
   l.store "Username", "Benutzername"
   l.store "Work Log", "Arbeitsprotokoll"
-  l.store "Workload", "Workload"
+  l.store "Workload", "Arbeitsauslastung" # Stefan Hofmann
   l.store "[Delete]", "[Löschen]"
   l.store "tomorrow", "morgen"
-  l.store "%d folder", ["%d Verzeichnis", "%d Verzeichnisse"]
-  l.store "%d minute", ["eine Minute", "%d Minuten"]
-  l.store "%d topics", ["%d topics", "%d topics"]
+  l.store "%d folder", ["ein Verzeichnis", "%d Verzeichnisse"] # Tim Zech
+  l.store "%d minute", ["%d Minute", "%d Minuten"] # Tim Zech
+  l.store "%d topics", ["ein Thema", "%d Themen"] # Tim Zech
+  l.store "%d voices", ["eine Stimme", "%d Stimmen"] # Tim Zech
   l.store "Completed", "Abgeschlossen"
+  l.store "Due Tasks", "Fällige Aufgaben" # Tim Zech
   l.store "Duplicate", "Duplikat"
   l.store "Edit Note", "Bemerkung bearbeiten"
   l.store "Edit User", "Benutzer bearbeiten"
   l.store "Edit View", "Ansicht bearbeiten"
-  l.store "Estimated", "Estimated"
-  l.store "Last Post", "Last Post"
+  l.store "Edit post", "Beitrag bearbeiten" # Tim Zech
+  l.store "Estimated", "Geschätzt" # Tim Zech
+  l.store "Last Post", "Letzter Beitrag" # Tim Zech
   l.store "Last Week", "Letzte Woche"
   l.store "Last Year", "Letztes Jahr"
+  l.store "Last post", "Letzter Beitrag" # Tim Zech
   l.store "Milestone", "Meilenstein"
-  l.store "Next Week", "Next Week"
-  l.store "Remaining", "Remaining"
-  l.store "September", "September"
+  l.store "New Topic", "Neues Thema" # Tim Zech
+  l.store "New topic", "Neues Thema" # Tim Zech
+  l.store "Next Week", "Nächste Woche" # Tim Zech
+  l.store "Next week", "Nächste Woche" # Tim Zech
+  l.store "One month", "Ein Monat" # Tim Zech
+  l.store "Remaining", "Verbleibend" # Tim Zech
+  l.store "Revisions", "Revisionen" # Tim Zech
+  l.store "September", "September" # Tim Zech
   l.store "Task Type", "Aufgabentyp"
   l.store "This Week", "Diese Woche"
   l.store "This Year", "Dieses Jahr"
   l.store "Top Tasks", "Wichtigste Aufgaben"
-  l.store "Translate", "Translate"
-  l.store "Use Forum", "Use Forum"
+  l.store "Translate", "Übersetzen" # Tim Zech
+  l.store "Use Forum", "Forum benutzen" # Tim Zech
   l.store "Wednesday", "Mittwoch"
   l.store "Won't Fix", "Wird nicht korrigiert"
-  l.store "Work Done", "Work Done"
-  l.store "Yesterday", "Yesterday"
+  l.store "Won't fix", "Wird nicht korrigiert" # Tim Zech
+  l.store "Work Done", "Arbeit erledigt" # Tim Zech
+  l.store "Yesterday", "Gestern" # Tim Zech
+  l.store "_italics_", "_kursiv_" # Stefan Hofmann
   l.store "entries..", "Einträgen.."
   l.store "yesterday", "gestern"
-  l.store "%d day ago", ["vor einem Tag", "vor %d Tagen"]
+  l.store "%d day ago", ["%d Tag vorher", "%d Tage vorher"] # Tim Zech
   l.store "Activities", "Aktivitäten"
   l.store "Attributes", "Attribute"
-  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Chat Rooms", "Chat Räume" # Tim Zech
   l.store "Client CSS", "Kunden-CSS"
   l.store "Depends on", "Hängt ab von"
+  l.store "Edit Forum", "Forum bearbeiten" # Tim Zech
   l.store "Group Tags", "Kennzeichen gruppieren"
   l.store "Last Login", "Letzte Anwesenheit"
   l.store "Last Month", "Letzter Monat"
   l.store "Leave Open", "Offen lassen"
-  l.store "Leave Room", "Leave Room"
-  l.store "Leave room", "Leave room"
-  l.store "Local Time", "Local Time"
+  l.store "Leave Room", "Raum verlassen" # Tim Zech
+  l.store "Leave room", "Raum verlassen" # Tim Zech
+  l.store "Loading...", "Lädt..." # andy
+  l.store "Local Time", "Lokale Zeit" # Tim Zech
   l.store "Milestones", "Meilensteine"
-  l.store "New Avatar", "New Avatar"
+  l.store "Moderators", "Moderatoren" # Tim Zech
+  l.store "New Avatar", "Neuer Avatar" # Tim Zech
   l.store "New Client", "Neuer Kunde"
-  l.store "New Folder", "New Folder"
+  l.store "New Folder", "Neuer Ordner" # Tim Zech
+  l.store "Next month", "Nächster Monat" # Tim Zech
   l.store "Open Tasks", "Unerledigte Aufgaben"
+  l.store "Post Topic", "Thema erstellen" # Tim Zech
   l.store "Prioritize", "Priorisieren"
+  l.store "Reassigned", "Neu zugewiesen" # Tim Zech
   l.store "Run Report", "Bericht abrufen"
+  l.store "Save Reply", "Antwort speichern" # Tim Zech
   l.store "Sub-totals", "Zwischensummen"
   l.store "This Month", "Dieser Monat"
   l.store "Time Range", "Zeitfenster"
   l.store "Time Sheet", "Arbeitszeitnachweis"
-  l.store "Time sheet", "Time sheet"
+  l.store "Time sheet", "Arbeitsnachweis" # Tim Zech
   l.store "Track Time", "Zeit verfolgen"
-  l.store "Widget Key", "Widget Key"
+  l.store "Transcript", "Mitschrift" # Tim Zech
+  l.store "Unassigned", "Nicht zugeordnet" # Tim Zech
+  l.store "View Tasks", "Aufgaben anzeigen" # Tim Zech
+  l.store "Widget Key", "Widget Schlüssel" # Tim Zech
   l.store "[All Tags]", "[Alle Kennzeichen]"
   l.store "[All Time]", "[Ganze Zeit]"
   l.store "[Any Task]", "[Jede Aufgabe]"
@@ -250,91 +313,114 @@ Localization.define('de_DE') do |l|
   l.store "[Any User]", "[Alle Benutzer]"
   l.store "[New File]", "[Neue Datei]"
   l.store "[New User]", "[Neuer Benutzer]"
-  l.store "%d week ago", ["vor einer Woche", "vor %d Wochen"]
+  l.store "%d week ago", ["%d Woche vorher", "%d Wochen vorher"] # Tim Zech
   l.store "1w 2d 3h 4m", "1w 2t 3s 4m"
   l.store "Assigned To", "Zugewiesen an"
   l.store "Attach file", "Datei anhängen"
   l.store "Attachments", "Anhänge"
-  l.store "Change room", "Change room"
+  l.store "Change room", "Raum wechseln" # Tim Zech
   l.store "Custom Logo", "Selbstdefiniertes Markenzeichen"
   l.store "Date Format", "Datumsformat"
-  l.store "Delete Room", "Delete Room"
+  l.store "Delete Room", "Raum löschen" # Tim Zech
   l.store "Delete View", "Ansicht löschen"
   l.store "Description", "Beschreibung"
-  l.store "Forum Posts", "Forum Posts"
+  l.store "Edit Client", "Kunden Bearbeiten" # Tim Zech
+  l.store "Edit Folder", "Ordner bearbeiten" # Tim Zech
+  l.store "End of week", "Ende der Woche" # Tim Zech
+  l.store "Forum Posts", "Foren Beiträge" # Tim Zech
   l.store "Improvement", "Verbesserungsvorschlag"
   l.store "In Progress", "In Bearbeitung"
-  l.store "Information", "Information"
+  l.store "Information", "Information" # Tim Zech
   l.store "Let me know", "Laß es mich wissen"
+  l.store "Linked from", "Verlinkt von" # Tim Zech
   l.store "New Feature", "Neue Funktionalität"
-  l.store "New Project", "New Project"
+  l.store "New Project", "Neues Projekt" # Tim Zech
   l.store "Preferences", "Einstellungen"
   l.store "Report Type", "Berichtstyp"
+  l.store "Revision %s", "Revision %s" # Tim Zech
   l.store "Task Status", "Aufgabenstatus"
   l.store "Time Format", "Zeitformat"
-  l.store "Transcripts", "Transcripts"
-  l.store "[All Tasks]", "[All Tasks]"
+  l.store "Transcripts", "Mitschriften" # Tim Zech
+  l.store "[All Tasks]", "[Alle Aufgaben]" # Tim Zech
   l.store "[Next page]", "[Nächste Seite]"
-  l.store "%d month ago", ["vor einem Monat", "vor %d Monaten"]
+  l.store "delete post", "Beitrag löschen" # Tim Zech
+  l.store "%d month ago", ["%d Monat vorher", "%d Monate vorher"] # Tim Zech
   l.store "%s reverted.", "%s zurückversetzt."
-  l.store "Company Name", "Company Name"
+  l.store "Burnup Chart", "Burnup Chart" # Tim Zech
+  l.store "Company Name", "Firmen Name" # Tim Zech
   l.store "Contact name", "Name des Kontaktes"
+  l.store "Create Forum", "Forum anlegen" # Tim Zech
   l.store "Current logo", "Gegenwärtiges Markenzeichen"
   l.store "Dependencies", "Abhängigkeiten"
   l.store "Edit Project", "Projekt bearbeiten"
-  l.store "Hide Waiting", "Hide Waiting"
+  l.store "Edit Summary", "Zusammenfassung bearbeiten" # Tim Zech
+  l.store "Hide Waiting", "Wartende verstecken" # Tim Zech
   l.store "Last Updated", "Zuletzt aktualisiert"
   l.store "Leave Closed", "Abgeschlossen lassen"
+  l.store "Name / Email", "Name / E-Mail" # Tim Zech
   l.store "Newest Tasks", "Neueste Aufgaben"
   l.store "Notification", "Benachrichtigung"
-  l.store "Participants", "Participants"
-  l.store "Plan / GANTT", "Plan / GANTT"
-  l.store "Recent Posts", "Recent Posts"
+  l.store "Participants", "Teilnehmer" # Tim Zech
+  l.store "Plan / GANTT", "Plan / GANTT" # Tim Zech
+  l.store "Recent Posts", "Letzte Beiträge" # Tim Zech
   l.store "Requested By", "Angefordert von"
   l.store "Save as View", "Als Ansicht speichern"
-  l.store "Show Avatars", "Show Avatars"
-  l.store "Wiki Changes", "Wiki Changes"
+  l.store "Show Avatars", "Zeige Avatare" # Tim Zech
+  l.store "Show History", "Zeige Verlauf" # Tim Zech
+  l.store "Timer Window", "Timer Fenster" # Tim Zech
+  l.store "Users Online", "Benutzer Online" # Tim Zech
+  l.store "Wiki Changes", "Wiki Änderungen" # Tim Zech
   l.store "[Any Client]", "[Alle Kunden]"
   l.store "[Any Status]", "[Alle Stati]"
   l.store "[Unassigned]", "[Nicht zugewiesen]"
   l.store "worked today", "heute gearbeitet"
   l.store "%s completed.", "%s abgeschlossen."
-  l.store "Administrator", "Administrator"
-  l.store "Are you sure?", "Are you sure?"
+  l.store "Active %s ago", "Aktiv %s vorher" # Tim Zech
+  l.store "Administrator", "Administrator" # Tim Zech
+  l.store "Are you sure?", "Sind Sie sicher?" # Tim Zech
   l.store "Contact email", "E-Mail des Kontaktes"
-  l.store "Custom Avatar", "Custom Avatar"
-  l.store "Days per Week", "Days per Week"
+  l.store "Custom Avatar", "Benutzerdefinierter Avatar" # Tim Zech
+  l.store "Days per Week", "Tage pro Woche" # Tim Zech
   l.store "File too big.", "Datei ist zu groß."
+  l.store "Invite a user", "Benutzer einladen" # Tim Zech
+  l.store "Monitor forum", "Forum überwachen" # Tim Zech
+  l.store "Monitor topic", "Thema überwachen" # Tim Zech
   l.store "My Open Tasks", "Meine unerledigten Aufgaben"
   l.store "New Milestone", "Neuer Meilenstein"
-  l.store "Public Forums", "Public Forums"
+  l.store "Public Forums", "Öffentliche Foren" # Tim Zech
   l.store "Show Calendar", "Kalender anzeigen"
   l.store "Show Tooltips", "Kurzinfos anzeigen"
   l.store "Status Change", "Zustandswechsel"
   l.store "Task Priority", "Priorität der Aufgabe"
   l.store "Task Severity", "Schweregrad der Aufgabe"
   l.store "Time Estimate", "Geschätzte Zeit"
-  l.store "Use Messaging", "Use Messaging"
-  l.store "[Active User]", "[Active User]"
+  l.store "Use Messaging", "Messaging benutzen" # Tim Zech
+  l.store "[Active User]", "[Aktiver Benutzer]" # Tim Zech
   l.store "[Any Project]", "[Alle Projekte]"
-  l.store "[No Grouping]", "[No Grouping]"
-  l.store "about %d hour", ["zirka eine Stunde", "zirka %d Stunden"]
+  l.store "[No Grouping]", "[Keine Gruppierung]" # Tim Zech
+  l.store "about %d hour", ["zirka einer Stunde", "zirka %d Stunden"] # Tim Zech
+  l.store "about 1 month", "zirka einem Monat" # Tim Zech
   l.store "half a minute", "eine halbe Minute"
-  l.store "Add New Widget", "Add New Widget"
-  l.store "Are your sure?", "Bist Du Dir sicher?"
-  l.store "Current Avatar", "Current Avatar"
+  l.store "Add New Widget", "Neues Widget hinzufügen" # Tim Zech
+  l.store "Are your sure?", "Sind Sie sich sicher?" # Tim Zech
+  l.store "Burndown Chart", "Burndown Chart" # Tim Zech
+  l.store "Current Avatar", "Aktueller Avatar" # Tim Zech
   l.store "Delete Project", "Projekt löschen"
-  l.store "Depended on by", "Depended on by"
-  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Depended on by", "Hängt ab von" # Tim Zech
+  l.store "Edit <b>%s</b>", "Bearbeite <b>%s</b>" # Tim Zech
   l.store "Edit Log Entry", "Berichtseintrag bearbeiten"
   l.store "Edit Milestone", "Meilenstein bearbeiten"
-  l.store "New To-do Item", "New To-do Item"
-  l.store "Remaining Work", "Remaining Work"
+  l.store "Full Reference", "Vollständige Referenz" # Tim Zech
+  l.store "Help Translate", "Helfe zu übersetzen!" # Tim Zech
+  l.store "New To-do Item", "Neues To-Do Element" # Tim Zech
+  l.store "Open <b>%s</b>", "Offen <b>%s</b>" # Tim Zech
+  l.store "Remaining Work", "Verbleibende Arbeit" # Tim Zech
+  l.store "Reply to topic", "Auf das Thema antworten" # Tim Zech
   l.store "Revert to Open", "Auf 'Offen' zurückversetzen"
   l.store "Search Results", "Suchresultate"
   l.store "Set as Invalid", "Auf 'ungültig' setzen"
   l.store "Signup Message", "Anmeldenachricht"
-  l.store "Wiki Additions", "Wiki Additions"
+  l.store "Wiki Additions", "Wiki Ergänzungen" # Tim Zech
   l.store "Workday Length", "Arbeitstag-Länge"
   l.store "[Active Users]", "[Aktive Benutzer]"
   l.store "[Any Priority]", "[Alle Prioritäten]"
@@ -342,79 +428,113 @@ Localization.define('de_DE') do |l|
   l.store "Close <b>%s</b>", "<b>%s</b> schließen"
   l.store "Duration Format", "Zeitdauer-Format"
   l.store "Duration Worked", "Arbeitsdauer"
+  l.store "Formatting Help", "Formatierungshilfe" # Tim Zech
+  l.store "Quick Reference", "Schnell Referenz" # Tim Zech
+  l.store "Recent activity", "Jüngste Aktivitäten" # Tim Zech
   l.store "Set in Progress", "'In Bearbeitung' versetzen"
   l.store "Upload New File", "Neue Datei hochladen"
   l.store "[Any Milestone]", "[Alle Meilensteine]"
   l.store "[Previous page]", "[Vorherige Seite]"
+  l.store "creating a task", "Eine Aufgabe anlegen" # Tim Zech
   l.store "Advanced Options", "Erweiterte Einstellungen"
-  l.store "Company Settings", "Company Settings"
+  l.store "Archive Messages", "Archivierte Nachrichten" # Tim Zech
+  l.store "Chat Transcripts", "Chat Mitschrift" # Tim Zech
+  l.store "Company Settings", "Firmen-Einstellungen" # Tim Zech
   l.store "Complete Project", "Projekt abschließen"
-  l.store "Create New Forum", "Create New Forum"
-  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Create New Forum", "Neues Forum anlegen" # Tim Zech
+  l.store "Delete <b>%s</b>", "Lösche <b>%s</b>" # Tim Zech
   l.store "Delete Log Entry", "Berichtseintrag löschen"
   l.store "Delete Milestone", "Meilenstein löschen"
   l.store "Leave as Invalid", "Als 'ungültig' lassen"
-  l.store "Open to everyone", "Open to everyone"
+  l.store "Open to %s users", "Offen für %s Benutzer" # Tim Zech
+  l.store "Open to everyone", "Offen für jeden" # Tim Zech
   l.store "Overall Progress", "Gesamtfortschritt"
   l.store "Set as Duplicate", "Auf 'Duplikat' setzen"
   l.store "Set as Won't Fix", "Auf 'Wird nicht korrigiert' setzen"
   l.store "Unassigned Tasks", "Nicht zugewiesene Aufgaben"
   l.store "User Information", "Benutzerinformation"
+  l.store "create a project", "Ein Projekt anlegen" # Tim Zech
   l.store "%s / %s reverted.", "%s / %s zurückversetzt."
   l.store "Access To Project", "Zugriff auf Projekt"
-  l.store "Create New Folder", "Create New Folder"
-  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
-  l.store "Really delete %s?", "%s? wirklich löschen?"
+  l.store "Create New Folder", "Neuen Ordner anlegen" # Tim Zech
+  l.store "Delete <b>%s</b>.", "Lösche <b>%s</b>." # Tim Zech
+  l.store "Delete Transcript", "Mitschrift löschen?" # Tim Zech
+  l.store "No file selected.", "Keine Datei ausgewählt" # Tim Zech
+  l.store "Really delete %s?", "%s wirklich löschen?" # Tim Zech
   l.store "Really revert %s?", "%s wirklich zurückversetzen?"
   l.store "Recent Activities", "Jüngste Aktivitäten"
   l.store "Remove dependency", "Abhängigkeit entfernen"
-  l.store "[Active Projects]", "[Active Projects]"
-  l.store "[Closed Projects]", "[Closed Projects]"
-  l.store "[Default Sorting]", "[Default Sorting]"
+  l.store "Tasks / Day Chart", "Aufgaben / Tag Chart" # Tim Zech
+  l.store "[Active Projects]", "[Aktive Projekte]" # Tim Zech
+  l.store "[Closed Projects]", "[Abgeschlossene Projekte]" # Tim Zech
+  l.store "[Default Sorting]", "[Standard Sortierung]" # Tim Zech
+  l.store "the documentation", "Die Dokumentation" # Tim Zech
   l.store "%s / %s completed.", "%s / %s abgeschlossen."
   l.store "Complete Milestone", "Meilenstein abschließen"
   l.store "Completed Projects", "Abgeschlossene Projekte"
   l.store "Hide Waiting Tasks", "Verstecke wartende Aufgaben"
+  l.store "Last active %s ago", "Zuletzt aktiv vor %s" # Tim Zech
   l.store "Leave as Duplicate", "Als 'Duplikat' lassen"
   l.store "Leave as Won't Fix", "Als 'Wird nicht korrigiert' lassen"
   l.store "Log entry saved...", "Protokolleintrag wurde gespeichert..."
-  l.store "No recent activity", "No recent activity"
-  l.store "Receive Newsletter", "Receive Newsletter"
+  l.store "No recent activity", "Keine jüngsten Aktivitäten" # Tim Zech
+  l.store "Really abort work?", "Arbeit wirklich abbrechen?" # Tim Zech
+  l.store "Receive Newsletter", "Newsletter empfangen" # Tim Zech
+  l.store "Same as in English", "Gleich im Englischen" # Tim Zech
   l.store "Send Notifications", "Benachrichtigungen versenden"
   l.store "less than a minute", "weniger als eine Minute"
-  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "Remove notification", "Benachrichtigung entfernen" # Tim Zech
+  l.store "Restricted Userlist", "Eingeschränkte Benutzerliste" # Tim Zech
   l.store "[Without Milestone]", "[Ohne Meilenstein]"
-  l.store "%d completed project", ["ein abgeschlossenes Projekt", "%d abgeschlossene Projekte"]
+  l.store "%d completed project", ["Ein abgeschlossenes Projekt", "%d abgeschlossene Projekte"] # Tim Zech
+  l.store "Aufgaben -  [Eigene]", "Aufgaben -  [Eigene]" # Tim Zech
   l.store "Completed Milestones", "Abgeschlossene Meilensteine"
   l.store "Leave as in Progress", "'In Bearbeitung' belassen"
   l.store "Log entry deleted...", "Protokolleintrag wurde gelöscht..."
   l.store "My In Progress Tasks", "Meine im Moment bearbeiteten Aufgaben"
   l.store "Project was deleted.", "Projekt wurde gelöscht."
   l.store "Report Configuration", "Berichtseinstellungen"
+  l.store "Showing Full History", "Zeige den vollständigen Verlauf" # Tim Zech
   l.store "Use External Clients", "Externe Kunden benutzen"
   l.store "less than %d seconds", "weniger als %d Sekunden"
-  l.store "Open to everyone from", "Open to everyone from"
-  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Jüngste Aktivitäten", "Jüngste Aktivitäten" # Tim Zech
+  l.store "Open to everyone from", "Offen für jeden aus" # Tim Zech
+  l.store "Projects / Milestones", "Projekte / Meilensteine" # Tim Zech
   l.store "Receive Notifications", "Benachrichtigungen empfangen"
-  l.store "%d completed milestone", ["ein abgeschlossener Meilenstein", "%d abgeschlossene Meilensteine"]
+  l.store "Showing Only Comments", "Nur Kommentare anzeigen" # Tim Zech
+  l.store "%d completed milestone", ["Ein abgeschlossener Meilenstein", "%d abgeschlossene Meilensteine"] # Tim Zech
   l.store "Add another dependency", "Weitere Abhängigkeit hinzufügen"
   l.store "Edit project <b>%s</b>", "Projekt <b>%s</b> bearbeiten"
-  l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "Floating Messaging Bar", "Messaging-Bar andocken" # Tim Zech
   l.store "View '%s' was deleted.", "Ansicht '%s' wurde gelöscht."
+  l.store "invite some co-workers", "Mitarbeiter einladen" # Tim Zech
+  l.store "%d translations updated.", ["Eine Übersetzung aktualisiert.", "%d Übersetzungen aktualisiert."] # Tim Zech
+  l.store "Company settings updated", "Firmen-Einstellungen aktualisiert" # Tim Zech
   l.store "Edit milestone <b>%s</b>", "Meilenstein <b>%s</b> bearbeiten"
-  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Open to everyone from %s", "Offen für jeden aus %s" # Tim Zech
   l.store "Send notification emails", "Benachrichtigungs-E-Mail verschicken"
   l.store "Invalid due date ignored.", "Abgabetermin wurde wegen Ungültigkeit ignoriert."
+  l.store "Really delete transcript?", "Mitschrift wirklich löschen?" # Tim Zech
   l.store "CSS successfully uploaded.", "CSS erfolgreich hochgeladen."
+  l.store "Delete this topic forever?", "Dieses Thema für immer löschen?" # Tim Zech
   l.store "Grant access to <b>%s</b>?", "Zugriff gewähren für <b>%s</b>?"
+  l.store "Include completed projects", "Abgeschlossene Projekte einschließen" # Tim Zech
   l.store "Stop working on <b>%s</b>.", "Bearbeitung von <b>%s</b> beenden."
+  l.store "Don't show this splash page", "Diese Willkommensseite nicht mehr anzeigen." # Tim Zech
   l.store "File successfully uploaded.", "Datei erfolgreich hochgeladen."
   l.store "Logo successfully uploaded.", "Markenzeichen erfolgreich hochgeladen."
+  l.store "Pause working on <b>%s</b>.", "Arbeiten an <b>%s</b> anhalten." # Tim Zech
+  l.store "Please always be courteous.", "Bitte seien Sie immer höflich." # Tim Zech
+  l.store "Please configure the widget", "Bitte stellen Sie das Widget ein." # Tim Zech
   l.store "Unable to save log entry...", "Protokolleintrag wurde <b>nicht</b> gespeichert..."
   l.store "Cancel working on <b>%s</b>.", "Bearbeitung von<b>%s</b> abbrechen."
   l.store "Empty report, log more work!", "Bericht ist leer, bitte mehr Arbeit aufschreiben!"
   l.store "No file selected for upload.", "Keine Datei zum Hochladen ausgewählt."
+  l.store "Resume working on <b>%s</b>.", "Arbeiten an <b>%s</b> wiederaufnehmen." # Tim Zech
+  l.store "Avatar successfully uploaded.", "Avatar erfolgreich hochgeladen" # Tim Zech
+  l.store "Burndown Chart - Routenplaner", "Burndown Chart - Routenplaner" # Tim Zech
   l.store "Really delete this log entry?", "Diesen Berichtseintrag wirklich löschen?"
+  l.store "Add earlier work to <b>%s</b>.", "Frühere Arbeiten an <b>%s</b> hinzufügen." # Tim Zech
   l.store "Grant %s access for <b>%s</b>?", "%s Zugriff gewähren für <b>%s</b>?"
   l.store "Move <b>%s</b> to the Archive.", "<b>%s</b> im Archiv ablegen"
   l.store "Note was successfully created.", "Bemerkung wurde erfolgreich angelegt."
@@ -422,15 +542,18 @@ Localization.define('de_DE') do |l|
   l.store "Task was successfully created.", "Aufgabe wurde erfolgreich angelegt."
   l.store "Task was successfully updated.", "Aufgabe wurde erfolgreich aktualisiert."
   l.store "User was successfully updated.", "Benutzer wurde erfolgreich aktualisiert."
+  l.store "Aufgaben pro Tag - Routenplaner", "Aufgaben pro Tag - Routenplaner" # Tim Zech
+  l.store "Remove %s access for <b>%s</b>?", "%s zugriff für <b>%s</b> entfernen?" # Tim Zech
   l.store "Client was successfully created.", "Kunde wurde erfolgreich angelegt."
   l.store "Client was successfully updated.", "Kunde wurde erfolgreich aktualisiert."
+  l.store "Delete this post?  Are you sure?", "Diesen Beitrag wirklich löschen?  Sind Sie sicher?" # Tim Zech
   l.store "Download CSV file of this report", "CSV-Datei dieses Berichts herunterladen."
   l.store "Remove all access for <b>%s</b>?", "Gesamten Zugriff für <b>%s</b> entziehen?"
-  l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
+  l.store "Open to everyone using ClockingIT", "Offen für jeden der ClockingIT benutzt" # Tim Zech
   l.store "Preferences successfully updated.", "Einstellungen wurden erfolgreich aktualisiert."
   l.store "Project was successfully created.", "Projekt wurde erfolgreich angelegt."
   l.store "Project was successfully updated.", "Projekt wurde erfolgreich aktualisiert."
-  l.store "Done working on <b>%s</b> for now.", "Momentan mit Bearbeitung von <b>%s</b> fertig "
+  l.store "Done working on <b>%s</b> for now.", "Momentan mit Bearbeitung von <b>%s</b> fertig" # Tim Zech
   l.store "You can't delete your own company.", "Die eigene Firma kann nicht gelöscht werden."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Rückmeldungen? Vorschläge? Ideen? Fehler?"
   l.store "Milestone was successfully created.", "Meilenstein erfolgreich angelegt."
@@ -438,29 +561,53 @@ Localization.define('de_DE') do |l|
   l.store "Restore <b>%s</b> from the Archive.", "<b>%s</b> aus dem Archiv holen."
   l.store "View '%s' was successfully created.", "Ansicht '%s' wurde erfolgreich angelegt."
   l.store "View '%s' was successfully updated.", "Ansicht '%s' wurde erfolgreich aktualisiert."
-  l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
-  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
-  l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
+  l.store "Changes are not made live instantly.", "Änderungen werden nicht sofort übernommen." # Tim Zech
+  l.store "This forum is currently unmoderated.", "Dieses Forum wird momentan nicht Moderiert." # Tim Zech
+  l.store "Hide tasks deferred until a later time", "Gestundete Aufgaben verstecken" # Tim Zech
+  l.store "Limit userlist to users in same project", "Benutzerliste auf Benutzer im gleichen Projekt einschränken." # Tim Zech
+  l.store "Really delete room and all transcripts?", "Diesen Raum und alle Mitschriften wirklich löschen?" # Tim Zech
   l.store "Revert <b>%s</b> to not completed status.", "<b>%s</b> auf Nicht Abgeschlossen zurückversetzen."
-  l.store "Subscribe to the recent activities RSS feed", "Abonniere RSS-Feed für neueste Aktivitäten"
-  l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
+  l.store "Easy access to commonly needed information.", "Einfacher Zugriff auf häufig benötigte Informationen" # Tim Zech
+  l.store "Subscribe to the recent activities RSS feed", "Abonniere den RSS-Feed für neueste Aktivitäten" # Tim Zech
+  l.store "Subscribe to the iCal feed for your projects.", "Abonnieren Sie den iCal Feed für Ihre Projekte" # Tim Zech
+  l.store "Enter task due date, or click calendar button.", "Geben Sie das Fälligkeitsdatum ein oder klicken Sie auf das Kalender-Icon" # Tim Zech
   l.store "The message will be included in the signup email.", "Diese Nachricht wird in die Anmelde-E-Mail eingefügt."
   l.store "Start working on <b>%s</b>. Click again when done.", "Bearbeitung von <b>%s</b> beginnen. Nochmals anklicken, wenn fertig."
-  l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
+  l.store "Unable to find task belonging to you with that ID.", "Es wurde keine Ihnen zugeordnete Aufgabe mit dieser ID gefunden." # Manuel Schaeidt
+  l.store "Bookmark this link to quickly open the Timer Window", "Fügen Sie diesen Link zu den Lesezeichen hinzu um das Timer Window schnell öffnen zu können." # Tim Zech
+  l.store "Custom saved filters showing a subset of your tasks", "Benutzerdefinierte Filter zeigen eine Untermenge der Aufgaben" # Tim Zech
   l.store "Error sending creation email. Account still created.", "Fehler beim Versenden der Benutzeranlage-E-Mail. Der Benutzer wurde trotzdem angelegt."
+  l.store "Please create a project to attach files / folders to.", "Bitte lege ein Projekt an um Dateien und Ordner zuzuweisen." # Tim Zech
   l.store "Please delete all projects for %s before deleting it.", "Bitte vor dem Löschen von %s all dessen Projekte löschen."
   l.store "Log entry already saved from another browser instance.", "Protokolleintrag wurde schon von einer anderen Browser-Instanz gespeichert."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Einführung verborgen. Sie wird nicht mehr im Menü angezeigt."
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Man kann weder <b>sich selbst</b> noch <b>den Projekturheber</b> entfernen!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Einführung abgeschlossen. Sie wird nicht mehr im Menü angezeigt."
-  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
-  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
-  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Messaging-Bar am unteren Bildschirmrand andocken." # Tim Zech
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Geben Sie Aufgabennummern getrennt durch Kommas ein. Geben Sie Text  zum Suchen ein." # Tim Zech
+  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Willkommen bei ClockingIT. To get started, follow the steps below." # Tim Zech
+  l.store "If you require further help, check the %s, %s or email us at %s", "Wenn Sie weitere Hilfe benötigen, schauen Sie unter %s, %s nach oder senden Sie eine E-Mail an %s" # Tim Zech
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Die Größe wird auf 25x25 und 50x50 angepasst. Das Seitenverhältnis wird berücksichtig.)" # Tim Zech
+  l.store "Text entered will be saved automatically to your current work notes.", "Der eingegebene Text wird automatisch in den aktuellen Arbeitsnotizen gespeichert." # Tim Zech
+  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Für einen persönlichen Feed, müssen Sie <b>ical_all</b> mit <b>ical</b> in der URL ersetzen." # Tim Zech
   l.store "Project was successfully created. Add users who need access to this project.", "Projekt wurde erfolgreich angelegt. Füge Benutzer hinzu, die Zugriff auf dieses Projekt benötigen."
+  l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Um ein Projekt ausserhalb dieser Willkommensseite anzulegen, klicken Sie auf %s im %s Menüeintrag" # Tim Zech
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Benutzer wurde erfolgreich angelegt. Bitte nicht vergessen, dem Benutzer Zugriff auf die gewünschten Projekte zu gewähren."
-  l.store "Changes done here will not go live until admin@clockingit.com is notified for verification.", "Changes done here will not go live until admin@clockingit.com is notified for verification."
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Du mußt ein Projekt anlegen, welches deine Aufgaben verwaltet, oder dich um Zugriff auf ein existierendes Projekt bemühen, um Aufgaben anzulegen..."
+  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Änderungen hier werden nicht im Verlauf gespeichert oder als Benachrichtigung verschickt." # Tim Zech
+  l.store "Changes done here will not go live until admin@clockingit.com is notified for verification.", "Änderungen hier werden nicht Veröffentlicht bis admin@clockingit.com für die Verifikation benachrichtigt wurde." # Tim Zech
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Sie müssen ein Projekt anlegen, welches Ihre Aufgaben verwaltet, oder sich um Zugriff auf ein existierendes Projekt bemühen, um Aufgaben anzulegen..." # Tim Zech
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px sollte gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Andere über Änderungen an Aufgaben<br/>zusätzlich zu Urheber und Beauftragtem zu<br/>benachrichtigende Personen.<br/><br/>Strg-Mausklick zum Auswählen."
-  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Sie können ausserdem <b>?mode=tasks</b> nur für Aufgaben, <b>?mode=logs</b> nur für Arbeitsberichte, <br/>oder <b>?mode=milestones</b> nur für Meilensteine anhängen." # Tim Zech
+  l.store "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate.", "Sie können entweder die Checkbox links von %s anklicken oder die Aufgabe bearbeiten und den Status auf \"Abgeschlossen\", \"Wird nicht korrigiert\", \"Ungültig\" oder \"Duplikat\" setzen." # Tim Zech
+  l.store "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.", "Nach der Arbeit an einer Aufgabe, ist es an der Zeit diese abzuschließen. Finden Sie Ihre Aufgabe indem Sie auf %s im oberen Menü klicken, oder suchen Sie danach im Suchfeld welches Sie im gleichen Menü finden." # Tim Zech
+  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "Das nächste ist %s. Dies können Sie auch erreichen, indem Sie %s im oberen Menü anklicken. Für weitere Informationen über Aufgaben schauen sie sich %s im ClockingIT Wiki an." # Tim Zech
+  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "Der erste Schritt ist %s. Machen Sie sich keine Sorgen, wenn sie echte Daten eingeben, Sie können das Projekt immer wieder löschen und von vorne anfangen, wenn sie mal Hängen bleiben." # Tim Zech
+  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project
+              you create and start over, once you get the hang of things.", "Der erste Schritt ist %s. Machen Sie sich keine Sorgen, wenn sie echte Daten eingeben, Sie können das Projekt immer wieder löschen und von vorne anfangen, wenn sie mal Hängen bleiben." # Tim Zech
+  l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "Wenn Sie mit einer Aufgabe fertig sind, klicken sie entweder auf eine weitere %s um die Arbeit fortzusetzen aber an einer anderen Aufgabe oder benutzen sie %s um diese Arbeit zu speichern. %s hält die Stopuhr an ohne die Arbeit aufzuzeichnen." # Tim Zech
+  l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Sobald Sie einen oder mehrere Aufgaben definiert haben ist es an der Zeit an diesen zu arbeiten. Klicken Sie auf %s im oberen Menü, wählen Sie eine Aufgabe und klicken Sie auf %s daneben. Die Stopuhr für startet nun für diese Aufgabe." # Tim Zech
+  l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "Das letzte was noch getan werden muss ist %s solange Sie nicht alleine arbeiten. Sobald sie Logins angelegt haben gewähren Sie den Benutzern Zugriff auf die Projekte an denen sie arbeiten über die \"Projekt bearbeiten\" Seite welche Sie über %s erreichen." # Tim Zech
+  l.store "If you require further help, check the <a href=\"http://forum.clockingit.com\" target=\"_new\">forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">wiki</a> or email us at <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>.", "Wenn Sie weitere Hilfe benötigen, schauen Sie im <a href=\"http://forum.clockingit.com\" target=\"_new\">Forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">Wiki</a> nach oder senden Sie eine E-Mail an <a href=\"mailto:support@clockingit.com\">support" # Tim Zech
+  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki."
 end
