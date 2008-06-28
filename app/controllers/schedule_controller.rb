@@ -70,9 +70,9 @@ class ScheduleController < ApplicationController
         days -= 1
         @dates[due_date] ||= []
         @dates[due_date][slot] = t
-        due_date -= 1
-        due_date -= 1 if due_date.wday == 6
-        due_date -= 2 if due_date.wday == 0
+        due_date -= 1.days
+        due_date -= 1.days if due_date.wday == 6
+        due_date -= 2.days if due_date.wday == 0
       end
 
     end
@@ -180,7 +180,10 @@ class ScheduleController < ApplicationController
       day = nil
       day = (t.due_date.midnight - days.days - rem.minutes).midnight if t.due_date
 
-      rev = true
+      day ||= before
+      day ||= after
+      
+      rev = after.nil? ? true : false
 
       day, rev = override_day(t, day, before, after, rev)
       
@@ -203,10 +206,10 @@ class ScheduleController < ApplicationController
       if day < current_user.tz.now.midnight
         day =  current_user.tz.now.midnight
         rev = false
-        logger.info "--> #{t.id} forwards due to #{day} < #{current_user.tz.now.midnight}"
+        logger.info "--> #{t.id}[##{t.task_num}] forwards due to #{day} < #{current_user.tz.now.midnight}"
       end
       
-      logger.info("--> #{t.id}: [#{t.minutes_left}] [#{t.due_date}] => #{day} : #{rev ? "backwards" : "forwards"}")
+      logger.info("--> #{t.id}[##{t.task_num}]}: [#{t.minutes_left}] [#{t.due_date}] => #{day} : #{rev ? "backwards" : "forwards"}")
     else 
       day = (current_user.tz.now.midnight)
       rev = false
@@ -220,7 +223,7 @@ class ScheduleController < ApplicationController
         day += 2.days
       end
 
-      logger.info "--> #{t.id} forwards due to no due date"
+      logger.info "--> #{t.id}[##{t.task_num}] forwards due to no due date"
     end
     
     [day,rev]
@@ -229,16 +232,19 @@ class ScheduleController < ApplicationController
 
   def schedule_collect_deps(deps, seen, t, rev = false)
 
-    return deps[t.id] if deps.keys.include?(t.id)
+#    return deps[t.id] if deps.keys.include?(t.id)
     return [t] if seen.include?(t)
 
     seen << t
 
     my_deps = []
     
-    my_deps << t
+    unless rev
+    end
+    
 
     if rev
+      my_deps << t
       t.dependants.each do |d|
         my_deps += schedule_collect_deps(deps, seen, d, rev)
       end
@@ -246,6 +252,7 @@ class ScheduleController < ApplicationController
       t.dependencies.each do |d|
         my_deps += schedule_collect_deps(deps, seen, d, rev)
       end
+      my_deps << t
     end 
 
     seen.pop
@@ -253,7 +260,7 @@ class ScheduleController < ApplicationController
     my_deps.uniq!
     
     deps[t.id] = my_deps if my_deps.size > 0
-    logger.info("--> #{t.id} my_deps[#{my_deps.collect{ |dep| "#{dep.id}" }.join(',')}]") if my_deps.size > 0
+    logger.info("--> #{t.id} my_deps[#{my_deps.collect{ |dep| "#{dep.id}[##{dep.task_num}]" }.join(',')}] #{rev}")
     my_deps
   end
 
@@ -264,19 +271,73 @@ class ScheduleController < ApplicationController
     days = ((t.minutes_left) / current_user.workday_duration).to_i
     rem = t.minutes_left - (days * current_user.workday_duration)
 
+    dur = days.days + rem.minutes
+    if dur > 7.days
+      dur += (dur/7.days) * 2.days
+    end
+
     if rev
+      
       if (before && before < day) && (t.due_at.nil? || before < t.due_at)
         day = (before.midnight - days.days - rem.minutes).midnight
         logger.info "--> #{t.id} force before #{day}"
         rev = true
       elsif (t.due_at && before.nil?) || (before && t.due_at && t.due_at < before)
-        day = (t.due_at.midnight - days.days - rem.minutes).midnight
+        day = t.due_at.midnight - 1.days
+        day -= rem.minutes
+        logger.info "--> #{t.id} force before #{day} [due] "
+        
+        if day.wday == 0
+          day -= 2.days
+          dur += 2.days
+        end 
+        if day.wday == 6
+          day -= 1.days
+          dur += 1.days
+        end 
+
+        while days > 1
+          day -= 1.day
+          
+          logger.info "--> #{t.id} force before #{day} - #{days} left [due] "
+          
+          if day.wday == 0
+            day -= 2.days
+            dur += 2.days
+          end 
+          if day.wday == 6
+            day -= 2.days
+            dur += 2.days
+          end 
+
+          logger.info "--> #{t.id} force before #{day} - #{days} left [due] "
+          days -= 1
+        end
+
+        
+        logger.info "--> #{t.id} force before #{day.wday} -> #{(day+dur).wday} [due] "
+        
+        if day.wday == 6
+          day -= 2.days
+        end 
+        if day.wday == 0
+          day -= 2.days 
+        end 
+
+        logger.info "--> #{t.id} force before #{day} -> #{(day+dur)} [due] "
+
+        
+        if (day + dur).wday == 1
+          day -= 1.days
+        end 
+
+        logger.info "--> #{t.id} force before #{day.wday} -> #{(day+dur).wday} [due] "
+ 
+#          day -= 2.days
+#        end
+        
         logger.info "--> #{t.id} force before #{day} [due]"
         rev = true
-
-        day -= 1 if day.wday == 6
-        day -= 2 if day.wday == 0
-        
       end 
     end
 
@@ -291,10 +352,20 @@ class ScheduleController < ApplicationController
         rev = true
       end
     end
+
+    if rev
+      day -= 1.days if day.wday == 6
+      day -= 2.days if day.wday == 0
+    else 
+      day += 2.days if day.wday == 6
+      day += 1.days if day.wday == 0
+    end
+
+    
     
     logger.info "--> #{t.id} override returned day[#{day.to_s}], #{rev}]"
 
-    [day,rev]
+    [day.midnight,rev]
   end
   
   def schedule_gantt(dates,t, before = nil, after = nil)
@@ -304,7 +375,6 @@ class ScheduleController < ApplicationController
 
     day, rev =  schedule_direction(dates,t,before, after)
 
-
     @deps ||= {}
     @seen ||= []
     
@@ -312,25 +382,30 @@ class ScheduleController < ApplicationController
 
     rescheduled = @deps[t.id].size > 0 
 
-    logger.info "--> #{t.id} deps: #{@deps[t.id].size}[#{@deps[t.id].collect{|d| d.id }.join(',')}] #{rev}" unless @deps[t.id].blank?
+    logger.info "--> #{t.id} deps: #{@deps[t.id].size}[#{@deps[t.id].collect{|d| d.task_num }.join(',')}] #{rev}" unless @deps[t.id].blank?
 
     range = []
     min_start = max_start = nil
 
-    my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 )
-#    @deps[t.id] -= my_deps
+    if rev
+      my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 )
+    else 
+      my_deps = @deps[t.id].slice!( 0 .. @deps[t.id].rindex(t) )
+    end
+    
+    #    @deps[t.id] -= my_deps
+    
     while !my_deps.blank? 
-      d = rev ? my_deps.pop : my_deps.pop
-        if rev
-          before = min_start
-        else 
-          after = max_start
-        end
+      d = rev ? my_deps.pop : my_deps.shift
+      if rev
+        before = min_start.midnight if min_start && (before.nil? || min_start.midnight < before)
+      else 
+        after = max_start.midnight if max_start && (after.nil? || max_start.midnight > after)
+      end
        
-#        break unless rev
+#      break unless rev
         
-        
-      logger.info "--> #{t.id} => depends on #{d.id}"
+      logger.info "--> #{t.id}[##{t.task_num}] => depends on #{d.id}[##{d.task_num}]"
         
       if rev
         range = schedule_task(dates, d, min_start, nil)
@@ -338,8 +413,10 @@ class ScheduleController < ApplicationController
         range = schedule_task(dates, d, nil, max_start)
       end
       
-      min_start ||= range[0] if range[0]
-      min_start = range[0] if range[0] && range[0] < min_start
+      logger.info "--> #{t.id} min_start/max_start #{range.inspect}"
+      
+      min_start ||= range[0].midnight if range[0]
+      min_start = range[0].midnight if range[0] && range[0] < min_start
       
       max_start ||= range[1] if range[1]
       max_start = range[1] if range[1] && range[1] > max_start
@@ -449,7 +526,7 @@ class ScheduleController < ApplicationController
       @milestone_end[t.milestone_id]   = range[1] if @milestone_end[t.milestone_id] < range[1]
     end
     
-    logger.info "== #{t.id} [#{format_duration(t.minutes_left, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)}] : #{@start[t.id]} -> #{@end[t.id]}"
+    logger.info "== #{t.id}[##{t.task_num}] [#{format_duration(t.minutes_left, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)}] : #{@start[t.id]} -> #{@end[t.id]}"
     @stack.pop
     
     return range
