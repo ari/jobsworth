@@ -103,7 +103,7 @@ class ScheduleController < ApplicationController
   def refresh
   end
 
-  def users_gantt_free(dates, t, date, rev = false )
+  def users_gantt_free(dates, t, date, rev = false)
     free = true
     t.users.each do |u|
       next unless free
@@ -113,10 +113,13 @@ class ScheduleController < ApplicationController
       while dur > 0 && free
         day_dur = dur > u.workday_duration ? u.workday_duration : dur
 
+        logger.info("--> #{t.id}: Checking [#{date_check}] for #{day_dur}")
+
         dates[date_check] ||= { }
         dates[date_check][u.id] ||= 0
         if dates[date_check][u.id].to_i + day_dur > u.workday_duration
           free = false
+          logger.info("--> #{t.id}: Not free..")
         end
         
         date_check += 1.day
@@ -126,8 +129,12 @@ class ScheduleController < ApplicationController
         if date_check.wday == 0
           date_check += 1.days
         end
+
         
-        dur -= day_dur
+        dur -= day_dur if free
+
+        logger.info("--> #{t.id}: #{dur} left to find...")
+
       end
     end 
     free
@@ -163,45 +170,231 @@ class ScheduleController < ApplicationController
     end
     [start_date,end_date]
   end
-  
-  def schedule_gantt(dates,t)
-    if t.due_date
-      days = (t.minutes_left) / current_user.workday_duration
-      rem = t.minutes_left - (days * current_user.workday_duration)
-      
-      day = (t.due_date.midnight - days.days - rem.minutes).midnight
 
-      if day.wday == 0
-        day -= 2.days
+  def schedule_direction(dates, t, before = nil, after = nil)
+    days = ((t.minutes_left) / current_user.workday_duration).to_i
+    rem = t.minutes_left - (days * current_user.workday_duration)
+
+    if t.due_date || before || after
+
+      day = nil
+      day = (t.due_date.midnight - days.days - rem.minutes).midnight if t.due_date
+
+      rev = true
+
+      if before 
+        logger.info "--> erlend #{t.id.to_s} day[#{day.to_s}] before[#{before.to_s}] due[#{t.due_at.to_s}]"
+        
+        if ((day.nil? && before) || before < day) && (before && (t.due_at.nil? || before < t.due_at))
+          logger.info "--> #{t.id} moving back start day"
+          day = (before.midnight - days.days - rem.minutes).midnight
+        elsif t.due_at && (day.nil? || t.due_at < day) && t.due_at < before
+          logger.info "--> #{t.id} moving back start day"
+          day = (t.due_at.midnight - days.days - rem.minutes).midnight
+        end 
+        rev = true
       end
-      if day.wday == 6
-        day -= 1.days
+
+      if after 
+        if (day.nil? || after > day) && (t.due_at.nil? || after < t.due_at)
+          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
+          day = (after.midnight + days.days + rem.minutes).midnight
+        elsif (day.nil? || t.due_at > day) && (t.due_at && t.due_at > after)
+          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
+          day = (t.due_at.midnight + days.days + rem.minutes).midnight
+        end 
+        rev = false
       end
       
-      logger.info("#{t.id}: [#{t.minutes_left}] [#{t.due_date}] => #{day}")
-      rev = true
+      if rev
+        if day.wday == 0
+          day -= 2.days
+        end
+        if day.wday == 6
+          day -= 1.days
+        end
+      else 
+        if day.wday == 0
+          day += 1.days
+        end
+        if day.wday == 6
+          day += 2.days
+        end
+      end
 
       if day < current_user.tz.now.midnight
         day =  current_user.tz.now.midnight
         rev = false
+        logger.info "--> #{t.id} forwards due to #{day} < #{current_user.tz.now.midnight}"
       end
+      
+      logger.info("--> #{t.id}: [#{t.minutes_left}] [#{t.due_date}] => #{day} : #{rev ? "backwards" : "forwards"}")
     else 
       day = (current_user.tz.now.midnight)
       rev = false
+
+      if before 
+        if (day.nil? || before < day) && (t.due_at.nil? || before < t.due_at)
+          logger.info "--> #{t.id} moving back start day"
+          day = (before.midnight - days.days - rem.minutes).midnight
+        elsif (day.nil? || t.due_at < day) && (t.due_at && t.due_at < before)
+          logger.info "--> #{t.id} moving back start day"
+          day = (t.due_at.midnight - days.days - rem.minutes).midnight
+        end 
+        rev = true
+      end
+
+      if after 
+        if (day.nil? || after > day) && (t.due_at.nil? || after < t.due_at)
+          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
+          day = (after.midnight + days.days + rem.minutes).midnight
+        elsif (day.nil? || t.due_at > day) && (t.due_at && t.due_at > after)
+          logger.info "--> #{t.id} moving forward start day #{day} => #{after}"
+          day = (t.due_at.midnight + days.days + rem.minutes).midnight
+        end 
+        rev = false
+      end
+
+      if day.wday == 0
+        day += 1.days 
+      end
+      if day.wday == 6
+        day += 2.days
+      end
+
+      logger.info "--> #{t.id} forwards due to no due date"
+    end
+    
+    [day,rev]
+    
+  end
+
+  def schedule_collect_deps(deps, seen, t, rev = false)
+
+    return deps[t.id] if deps.keys.include?(t.id)
+    return [t] if seen.include?(t)
+
+    logger.info "--> #{t.id} Collecting deps "
+
+    seen << t
+
+    my_deps = []
+    
+    t.dependencies.each do |d|
+      my_deps += schedule_collect_deps(deps, seen, d, rev)
+      logger.info("--> #{t.id} my_deps[#{my_deps.collect{ |dep| "#{dep.id}: #{dep.task_num}]" }.join(',')}]")
     end
 
+    my_deps << t
+    
+    t.dependants.each do |d|
+      my_deps += schedule_collect_deps(deps, seen, d, rev)
+    end
+
+    seen.pop
+    logger.info "--> #{t.id} Done collecting deps "
+
+    my_deps.compact!
+    
+    deps[t.id] = my_deps if my_deps.size > 0
+    
+    my_deps
+  end
+  
+  def schedule_gantt(dates,t, before = nil, after = nil)
+
+    logger.info "--> #{t.id} scheduling #{"before " + before.to_s if before}#{"after " + after.to_s if after}"
+
+    day, rev =  schedule_direction(dates,t,before, after)
+
+
+    @deps ||= {}
+    @seen ||= []
+    
+    schedule_collect_deps(@deps, @seen, t, rev) 
+
+    rescheduled = @deps[t.id].size > 0 
+
+    logger.info "--> #{t.id} deps: #{@deps[t.id].size}[#{@deps[t.id].collect{|d| d.id }.join(',')}] #{rev}" unless @deps[t.id].blank?
+
+    range = []
+    min_start = max_start = nil
+    
+    while !@deps[t.id].blank?
+      d = rev ? @deps[t.id].shift : @deps[t.id].shift
+      if d.id == t.id
+        if rev
+          before = min_start
+        else 
+          after = max_start
+        end
+        
+        break unless rev
+        
+      end 
+        
+      logger.info "--> #{t.id} => depends on #{d.id}"
+        
+      if rev
+        range = schedule_task(dates, d, min_start)
+      else 
+        range = schedule_task(dates, d, nil, max_start)
+      end
+      
+      min_start ||= range[0] if range[0]
+      min_start = range[0] if range[0] && range[0] < min_start
+      
+      max_start ||= range[1] if range[1]
+      max_start = range[1] if range[1] && range[1] > max_start
+      
+      logger.info("--> #{t.id} min_start #{min_start}")
+      logger.info("--> #{t.id} max_start #{max_start}")
+      
+    end
+
+    day, rev =  schedule_direction(dates, t, before, after) if rescheduled
+
+    if min_start && min_start < day && rev
+      before = min_start.midnight 
+      after = nil
+    elsif max_start && max_start > day && !rev
+      after = max_start.midnight 
+      before = nil
+    end 
+    
+    logger.info "--> #{t.id} scheduling got start #{day.to_s} #{rev ? "backwards" : "forwards"}"
+
+    if (before && before < day) && (t.due_at.nil? || before < t.due_at)
+      day = before.midnight
+      logger.info "--> #{t.id} force before #{day}"
+      rev = true
+#    elsif (t.due_at && before.nil?) || (before && t.due_at < before)
+#      day = t.due_at
+#      logger.info "--> #{t.id} force before #{day} [due]"
+#      rev = true
+    end
+
+    if after && after > day && (t.due_at.nil? || after < t.due_at)
+      day = after.midnight
+      logger.info "--> #{t.id} force after #{day}"
+      rev = false
+#    elsif (t.due_at && after.nil? ) || (after && t.due_at < after)
+#      day = t.due_at.midnight
+#      logger.info "--> #{t.id} force after #{day} [due]"
+#      rev = true
+    end
+    
     if t.minutes_left == 0
       return [day,day]
     end
 
     found = false
+    logger.info "--> #{t.id} scheduling looking #{day.to_s} #{rev ? "backwards" : "forwards"}"
     while found == false
       found = true
       
       if users_gantt_free(dates, t, day)
-        range = users_gantt_mark(dates, t, day)
-        day = range[0]
-        end_date = range[1]
+        day, end_date = users_gantt_mark(dates, t, day)
         if t.users.empty?
           end_date = day + t.minutes_left.minutes
         end
@@ -222,6 +415,16 @@ class ScheduleController < ApplicationController
           if day < current_user.tz.now.midnight
             day = current_user.tz.now.midnight
             rev = false
+            logger.info("--> switching direction #{t.id}")
+            
+            if day.wday == 6
+              day += 2.days
+            end
+            if day.wday == 0
+              day += 1.days
+            end
+            
+            
           end
           
         else 
@@ -239,6 +442,36 @@ class ScheduleController < ApplicationController
     end
     
     
+  end
+
+  def schedule_task(dates, t, before = nil, after = nil)
+    return [@start[t.id], @end[t.id]] if @start.keys.include?(t.id) || @stack.include?(t.id)
+
+    @stack << t.id 
+    
+    range = schedule_gantt(@dates, t, before, after )
+
+    @start[t.id] = range[0]
+    @end[t.id] = range[1]
+
+    @range[0] ||= range[0]
+    @range[0] = range[0] if range[0] < @range[0]
+
+    @range[1] ||= range[1]
+    @range[1] = range[1] if range[1] > @range[1]
+
+    if t.milestone_id.to_i > 0
+      @milestone_start[t.milestone_id] ||= range[0]
+      @milestone_start[t.milestone_id]   = range[0] if @milestone_start[t.milestone_id] > range[0]
+      
+      @milestone_end[t.milestone_id] ||= range[1]
+      @milestone_end[t.milestone_id]   = range[1] if @milestone_end[t.milestone_id] < range[1]
+    end
+    
+    logger.info "== #{t.id} [#{format_duration(t.minutes_left, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)}] : #{@start[t.id]} -> #{@end[t.id]}"
+    @stack.pop
+    
+    return range
   end
   
   def gantt
@@ -272,33 +505,28 @@ class ScheduleController < ApplicationController
     
     start_date = current_user.tz.now.midnight + 8.hours
 
-    tasks = @tasks.select{ |t| t.due_at }
-    tasks += @tasks.select{ |t| t.due_at.nil? && t.milestone && t.milestone.due_at }.reverse
-    tasks += @tasks.reject{ |t| t.due_date }
+    tasks = @tasks.select{ |t| t.due_at } # all tasks with due dates
+    
+    
+    milestones = @tasks.select{ |t| t.due_at.nil? && t.milestone && t.milestone.due_at }.reverse # all tasks with milestone with due date
+    tasks += milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
+    tasks += milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
+    tasks += milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
+    tasks += milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
+
+    non_due = @tasks.reject{ |t| t.due_date } # all tasks without due date
+    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
+    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
+    tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
+    tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
+    
+    @stack = []
     
     tasks.each do |t|
-      
-      range = schedule_gantt(@dates, t)
-
-      @start[t.id] = range[0]
-      @end[t.id] = range[1]
-
-      @range[0] ||= range[0]
-      @range[0] = range[0] if range[0] < @range[0]
-
-      @range[1] ||= range[1]
-      @range[1] = range[1] if range[1] > @range[1]
-
-      if t.milestone_id.to_i > 0
-        @milestone_start[t.milestone_id] ||= range[0]
-        @milestone_start[t.milestone_id]   = range[0] if @milestone_start[t.milestone_id] > range[0]
-        
-        @milestone_end[t.milestone_id] ||= range[1]
-        @milestone_end[t.milestone_id]   = range[1] if @milestone_end[t.milestone_id] < range[1]
+      t.dependencies.each do |d|
+        schedule_task(@dates,d)
       end
-      
-      logger.info "#{t.id} [#{format_duration(t.minutes_left, current_user.duration_format, current_user.workday_duration, current_user.days_per_week)}] : #{@start[t.id]} -> #{@end[t.id]}"
-      
+      schedule_task(@dates,t)
     end
     
   end
@@ -345,6 +573,7 @@ class ScheduleController < ApplicationController
       @tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
+        page << "$('width-#{t.dom_id}').setStyle({ backgroundColor:'#{gantt_color(t)}'});"
         milestones[t.milestone_id] = t.milestone if t.milestone_id.to_i > 0
       end
       
@@ -401,6 +630,7 @@ class ScheduleController < ApplicationController
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('offset-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id]).to_i + 500}px'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
+        page << "$('width-#{t.dom_id}').setStyle({ backgroundColor:'#{gantt_color(t)}'});"
         milestones[t.milestone_id] = t.milestone if t.milestone_id.to_i > 0
       end
 
@@ -436,8 +666,10 @@ class ScheduleController < ApplicationController
   def gantt_color(t)
     if t.overdue?
       "#f66"
-    elsif t.due_at? 
-     if t.overworked?
+    elsif t.due_date 
+      if @end[t.id] > t.due_date
+      "#f66"
+      elsif t.overworked?
        "#ff9900"
      elsif t.started? 
        "#1e7002"
