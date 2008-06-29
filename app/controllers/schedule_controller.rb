@@ -243,8 +243,8 @@ class ScheduleController < ApplicationController
     end
     
 
-    if rev
-      my_deps << t
+    my_deps << t
+    if t.milestone && t.milestone.due_at
       t.dependants.each do |d|
         my_deps += schedule_collect_deps(deps, seen, d, rev)
       end
@@ -252,7 +252,6 @@ class ScheduleController < ApplicationController
       t.dependencies.each do |d|
         my_deps += schedule_collect_deps(deps, seen, d, rev)
       end
-      my_deps << t
     end 
 
     seen.pop
@@ -387,16 +386,17 @@ class ScheduleController < ApplicationController
     range = []
     min_start = max_start = nil
 
-    if rev
+#    if rev
       my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 )
-    else 
-      my_deps = @deps[t.id].slice!( 0 .. @deps[t.id].rindex(t) )
-    end
+#    else 
+#      my_deps = @deps[t.id].slice!( 0 .. @deps[t.id].rindex(t) )
+#    end
     
     #    @deps[t.id] -= my_deps
     
     while !my_deps.blank? 
-      d = rev ? my_deps.pop : my_deps.shift
+      d = rev ? my_deps.pop : my_deps.pop
+      next if d.id == t.id
       if rev
         before = min_start.midnight if min_start && (before.nil? || min_start.midnight < before)
       else 
@@ -404,7 +404,7 @@ class ScheduleController < ApplicationController
       end
        
 #      break unless rev
-        
+      
       logger.info "--> #{t.id}[##{t.task_num}] => depends on #{d.id}[##{d.task_num}]"
         
       if rev
