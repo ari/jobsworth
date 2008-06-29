@@ -1174,7 +1174,8 @@ class TasksController < ApplicationController
         end
 
       end
-      @log.started_at = Time.now.utc if(@log.started_at.nil? || (params[:log] && (params[:log][:started_at].nil? || params[:log][:started_at].empty?)) )
+
+      @log.started_at = Time.now.utc if(@log.started_at.blank? || (params[:log] && (params[:log][:started_at].blank?)) )
 
       @log.duration = parse_time(params[:log][:duration])
       @log.duration = old_duration if((old_duration / 60) == (@log.duration / 60)) 
@@ -1182,17 +1183,30 @@ class TasksController < ApplicationController
       @log.task.updated_by_id = current_user.id
 
       @log.comment = !@log.body.blank?
-      logger.info("erlends - comment[#{@log.comment}]")
       
       if params[:task] && params[:task][:status].to_i != @log.task.status
-        logger.info("erlends - updating status")
+
+        status_type = :completed
+
+        if params[:task][:status].to_i < 2
+          @log.log_type = EventLog::TASK_WORK_ADDED 
+          status_type = :updated
+        end 
+        
+        if params[:task][:status].to_i > 1 && @log.task.status < 2
+          @log.log_type = EventLog::TASK_COMPLETED 
+          status_type = :completed
+        end 
+
+        if params[:task][:status].to_i < 2 && @log.task.status > 1
+          @log.log_type = EventLog::TASK_REVERTED 
+          status_type= :reverted
+        end 
+        
         @log.task.status = params[:task][:status].to_i
-        @log.log_type = EventLog::TASK_COMPLETED if params[:task][:status].to_i > 1
-        @log.log_type = EventLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
-        logger.info("erlends - notify[#{params['notify'].to_i}]")
-        Notifications::deliver_changed( :completed, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1) rescue nil
+        Notifications::deliver_changed( status_type, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1) rescue nil
 
       elsif !params[:log][:body].blank? && params[:log][:body] != old_note &&  params['notify'].to_i == 1
         Notifications::deliver_changed( :comment, @log.task, current_user, params[:log][:body].gsub(/<[^>]*>/,'')) rescue nil
