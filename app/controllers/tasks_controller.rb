@@ -1161,6 +1161,7 @@ class TasksController < ApplicationController
     @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
     
     old_duration = @log.duration
+    old_note = @log.body
     
     if @log.update_attributes(params[:log])
 
@@ -1180,15 +1181,21 @@ class TasksController < ApplicationController
 
       @log.task.updated_by_id = current_user.id
 
+      @log.comment = !@log.body.blank?
+      logger.info("erlends - comment[#{@log.comment}]")
+      
       if params[:task] && params[:task][:status].to_i != @log.task.status
+        logger.info("erlends - updating status")
         @log.task.status = params[:task][:status].to_i
         @log.log_type = EventLog::TASK_COMPLETED if params[:task][:status].to_i > 1
         @log.log_type = EventLog::TASK_WORK_ADDED if params[:task][:status].to_i < 2
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
-        if current_user.send_notifications > 0
-            Notifications::deliver_completed( @log.task, current_user, params[:log][:body] ) rescue begin end
-        end
+        logger.info("erlends - notify[#{params['notify'].to_i}]")
+        Notifications::deliver_changed( :completed, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1)
+
+      elsif !params[:log][:body].blank? && params[:log][:body] != old_note &&  params['notify'].to_i == 1
+        Notifications::deliver_changed( :comment, @log.task, current_user, params[:log][:body].gsub(/<[^>]*>/,'')) rescue nil
       end
 
       @log.task.save
