@@ -25,7 +25,7 @@ module Rails
     end
 
     def preinitialize
-      load(preinitializer_path) if File.exists?(preinitializer_path)
+      load(preinitializer_path) if File.exist?(preinitializer_path)
     end
 
     def preinitializer_path
@@ -43,6 +43,7 @@ module Rails
   class VendorBoot < Boot
     def load_initializer
       require "#{RAILS_ROOT}/vendor/rails/railties/lib/initializer"
+      Rails::Initializer.run(:install_gem_spec_stubs)
     end
   end
 
@@ -93,7 +94,7 @@ module Rails
       end
 
       def parse_gem_version(text)
-        $1 if text =~ /^[^#]*RAILS_GEM_VERSION\s*=\s*'([!~<>=]*\s*[\d.]+)'/
+        $1 if text =~ /^[^#]*RAILS_GEM_VERSION\s*=\s*["']([!~<>=]*\s*[\d.]+)["']/
       end
 
       private
