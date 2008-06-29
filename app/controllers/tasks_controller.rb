@@ -1192,7 +1192,7 @@ class TasksController < ApplicationController
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
         logger.info("erlends - notify[#{params['notify'].to_i}]")
-        Notifications::deliver_changed( :completed, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1)
+        Notifications::deliver_changed( :completed, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1) rescue nil
 
       elsif !params[:log][:body].blank? && params[:log][:body] != old_note &&  params['notify'].to_i == 1
         Notifications::deliver_changed( :comment, @log.task, current_user, params[:log][:body].gsub(/<[^>]*>/,'')) rescue nil
