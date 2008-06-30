@@ -334,6 +334,8 @@ class ScheduleController < ApplicationController
  
 #          day -= 2.days
 #        end
+
+        day = Time.now.utc.midnight if day < Time.now.utc.midnight
         
         logger.debug "--> #{t.id} force before #{day} [due]"
         rev = true
