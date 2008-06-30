@@ -172,13 +172,10 @@ class ScheduleController < ApplicationController
   end
 
   def schedule_direction(dates, t, before = nil, after = nil)
-    days = ((t.minutes_left) / current_user.workday_duration).to_i
-    rem = t.minutes_left - (days * current_user.workday_duration)
-
     if t.due_date || before || after
 
       day = nil
-      day = (t.due_date.midnight - days.days - rem.minutes).midnight if t.due_date
+      day = (t.due_date).midnight if t.due_date
 
       day ||= before
       day ||= after
@@ -186,22 +183,6 @@ class ScheduleController < ApplicationController
       rev = after.nil? ? true : false
 
       day, rev = override_day(t, day, before, after, rev)
-      
-      if rev
-        if day.wday == 0
-          day -= 2.days
-        end
-        if day.wday == 6
-          day -= 1.days
-        end
-      else 
-        if day.wday == 0
-          day += 1.days
-        end
-        if day.wday == 6
-          day += 2.days
-        end
-      end
 
       if day < current_user.tz.now.midnight
         day =  current_user.tz.now.midnight
@@ -216,17 +197,10 @@ class ScheduleController < ApplicationController
 
       override_day(t,day,before,after, rev)
 
-      if day.wday == 0
-        day += 1.days 
-      end
-      if day.wday == 6
-        day += 2.days
-      end
-
       logger.debug "--> #{t.id}[##{t.task_num}] forwards due to no due date"
     end
     
-    [day,rev]
+    rev
     
   end
 
@@ -278,39 +252,38 @@ class ScheduleController < ApplicationController
     if rev
       
       if (before && before < day) && (t.due_at.nil? || before < t.due_at)
-        day = (before.midnight - days.days - rem.minutes).midnight
+        day = (before - days.days - rem.minutes).midnight
         logger.debug "--> #{t.id} force before #{day}"
         rev = true
-      elsif (t.due_at && before.nil?) || (before && t.due_at && t.due_at < before)
-        day = t.due_at.midnight - 1.days
-        day -= rem.minutes
+      elsif (t.due_at && before.nil?) || (before && t.due_at && t.due_at < before) || (before && t.due_date && t.due_date < before)
+        day = t.due_at ? t.due_at.midnight : t.due_date.midnight
+        
         logger.debug "--> #{t.id} force before #{day} [due] "
         
+#        if day.wday == 6
+#          day -= 1.days
+#          dur += 1.days
+#        end 
         if day.wday == 0
-          day -= 2.days
+          day -= 1.days
           dur += 2.days
         end 
-        if day.wday == 6
-          day -= 1.days
-          dur += 1.days
-        end 
 
-        while days > 1
-          day -= 1.day
-          
-          logger.debug "--> #{t.id} force before #{day} - #{days} left [due] "
-          
+        day -= rem.minutes
+
+        while days > 0
           if day.wday == 0
             day -= 2.days
             dur += 2.days
-          end 
-          if day.wday == 6
-            day -= 2.days
+          elsif day.wday == 6
+            day -= 1.days
             dur += 2.days
+            days -= 1
+          else 
+            day -= 1.day
+            days -= 1
           end 
-
           logger.debug "--> #{t.id} force before #{day} - #{days} left [due] "
-          days -= 1
         end
 
         
@@ -324,21 +297,29 @@ class ScheduleController < ApplicationController
         end 
 
         logger.debug "--> #{t.id} force before #{day} -> #{(day+dur)} [due] "
-
-        
-        if (day + dur).wday == 1
+      else 
+        if day.wday == 0
           day -= 1.days
+          dur += 2.days
         end 
 
-        logger.debug "--> #{t.id} force before #{day.wday} -> #{(day+dur).wday} [due] "
- 
-#          day -= 2.days
-#        end
+        day -= rem.minutes
 
-        day = Time.now.utc.midnight if day < Time.now.utc.midnight
-        
-        logger.debug "--> #{t.id} force before #{day} [due]"
-        rev = true
+        while days > 0
+          if day.wday == 0
+            day -= 2.days
+            dur += 2.days
+          elsif day.wday == 6
+            day -= 1.days
+            dur += 2.days
+            days -= 1
+          else 
+            day -= 1.day
+            days -= 1
+          end 
+          logger.debug "--> #{t.id} force before #{day} - #{days} left"
+        end
+
       end 
     end
 
@@ -363,6 +344,7 @@ class ScheduleController < ApplicationController
     end
 
     
+    day = Time.now.utc.midnight if day < Time.now.utc.midnight
     
     logger.debug "--> #{t.id} override returned day[#{day.to_s}], #{rev}]"
 
@@ -374,14 +356,14 @@ class ScheduleController < ApplicationController
     logger.info "--> #{t.id} scheduling #{"before " + before.to_s if before}#{"after " + after.to_s if after}"
 
 
-    day, rev =  schedule_direction(dates,t,before, after)
+    rev =  schedule_direction(dates,t,before, after)
 
     @deps ||= {}
     @seen ||= []
     
     schedule_collect_deps(@deps, @seen, t, rev) 
 
-    rescheduled = @deps[t.id].size > 0 
+#    rescheduled = @deps[t.id].size > 1
 
     logger.info "--> #{t.id} deps: #{@deps[t.id].size}[#{@deps[t.id].collect{|d| d.task_num }.join(',')}] #{rev}" unless @deps[t.id].blank?
 
@@ -429,7 +411,14 @@ class ScheduleController < ApplicationController
     end
 
 
-    day, rev =  schedule_direction(dates, t, before, after)
+    rev =  schedule_direction(dates, t, before, after) #if rescheduled
+
+    day = (t.due_date).midnight if t.due_date
+    day ||= Time.now.utc.midnight
+
+    logger.debug "--> #{t.id} scheduling got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.due_at}] - #{rev ? "backwards" : "forwards"}"
+    day, rev = override_day(t, day, before, after, rev)
+    logger.debug "--> #{t.id} scheduling got adjusted day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.due_at}] - #{rev ? "backwards" : "forwards"}"
 
     if min_start && min_start < day && rev
       before = min_start.midnight 
@@ -439,10 +428,7 @@ class ScheduleController < ApplicationController
       before = nil
     end 
     
-    logger.debug "--> #{t.id} scheduling got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.due_at}] - #{rev ? "backwards" : "forwards"}"
 
-    day, rev = override_day(t, day, before, after, rev)
-    
     if t.minutes_left == 0
       return [day,day]
     end
