@@ -93,8 +93,8 @@ class FeedsController < ApplicationController
         i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
         i.title ||= "#{action}"
         i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
-        i.description = log.body unless log.body.nil? || log.body.empty?
-        i.date = log.started_at
+        i.description = log.body unless log.body.blank?
+        i.date = user.tz.utc_to_local(log.started_at)
         i.author = log.user.name unless log.user.nil?
         action = nil
       end
@@ -114,7 +114,7 @@ class FeedsController < ApplicationController
   end
 
   def to_duration(dur)
-    format_duration(dur, 1, 8 * 60).upcase
+    format_duration(dur/60, 1, 8 * 60).upcase
   end
 
   def ical_all
