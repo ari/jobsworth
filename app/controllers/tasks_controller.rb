@@ -142,32 +142,32 @@ class TasksController < ApplicationController
     elsif session[:group_by].to_i == 5 # Users
       users = current_user.company.users
       users.each { |u| @group_ids[u.name] = u.id }
-      @group_ids['Unassigned'] = 0
-      items = ["Unassigned"] + users.collect(&:name).sort
+      @group_ids[_('Unassigned')] = 0
+      items = [_("Unassigned")] + users.collect(&:name).sort
       @groups = Task.group_by(@tasks, items) { |t,i|
         if t.users.size > 0
           res = t.users.collect(&:name).include? i
         else
-          res = ("Unassigned" == i)
+          res = (_("Unassigned") == i)
         end
         res
       }
     elsif session[:group_by].to_i == 6 # Task Type
-      0.upto(3) { |i| @group_ids[ Task.issue_types[i] ] = i }
-      items = Task.issue_types.sort
-      @groups = Task.group_by(@tasks, items) { |t,i| t.issue_type == i }
+      0.upto(3) { |i| @group_ids[ _(Task.issue_types[i]) ] = i }
+      items = Task.issue_types.collect{ |i| _(i) }.sort
+      @groups = Task.group_by(@tasks, items) { |t,i| _(t.issue_type) == i }
     elsif session[:group_by].to_i == 7 # Status
-      0.upto(5) { |i| @group_ids[ Task.status_types[i] ] = i }
-      items = Task.status_types
-      @groups = Task.group_by(@tasks, items) { |t,i| t.status_type == i }
+      0.upto(5) { |i| @group_ids[ _(Task.status_types[i]) ] = i }
+      items = Task.status_types.collect{ |i| _(i) }
+      @groups = Task.group_by(@tasks, items) { |t,i| _(t.status_type) == i }
     elsif session[:group_by].to_i == 8 # Severity
-      -2.upto(3) { |i| @group_ids[Task.severity_types[i]] = i }
-      items = Task.severity_types.sort.collect{ |v| v[1] }.reverse
-      @groups = Task.group_by(@tasks, items) { |t,i| t.severity_type == i }
+      -2.upto(3) { |i| @group_ids[_(Task.severity_types[i])] = i }
+      items = Task.severity_types.sort.collect{ |v| _(v[1]) }.reverse
+      @groups = Task.group_by(@tasks, items) { |t,i| _(t.severity_type) == i }
     elsif session[:group_by].to_i == 9 # Priority
-      -2.upto(3) { |i| @group_ids[Task.priority_types[i]] = i }
-      items = Task.priority_types.sort.collect{ |v| v[1] }.reverse
-      @groups = Task.group_by(@tasks, items) { |t,i| t.priority_type == i }
+      -2.upto(3) { |i| @group_ids[ _(Task.priority_types[i])] = i }
+      items = Task.priority_types.sort.collect{ |v| _(v[1]) }.reverse
+      @groups = Task.group_by(@tasks, items) { |t,i| _(t.priority_type) == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
       milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
       projects = current_user.projects
