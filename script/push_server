@@ -124,7 +124,6 @@ module Juggernaut
     end
 
     def broadcast(data)
-      puts "Sending[#{data}]"
       receivers = nil
       synchronize do
         receivers = @subscribers.dup
@@ -145,7 +144,6 @@ module Juggernaut
   module PushServer
 
     def receive_data(data)
-      Logger.debug  "Received: #{data}"
       @line_buffer << data
       if ["\0", "\n", "\r"].include?(data[-1, 1])
         dispatch_request
@@ -208,7 +206,6 @@ module Juggernaut
         else
           begin
             request = Juggernaut::JSON.decode(@line_buffer)
-            Logger.debug "JSON result: [#{request.inspect}]"
           rescue
             request = nil
           end

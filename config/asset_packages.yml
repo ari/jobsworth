@@ -6,11 +6,11 @@ javascripts:
   - dragdrop
   - controls
   - application
-  - rounder
   - calendar
   - calendar-en
   - calendar-setup
 - tt:
+  - swfobject
   - juggernaut_javascript
   - tt
 - portal:
