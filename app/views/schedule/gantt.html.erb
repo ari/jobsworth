@@ -110,17 +110,21 @@
      if t.milestone_id.to_i > 0 && last_milestone != t.milestone_id      
        last_milestone = t.milestone_id
   %>
+  <% if current_user.can?(t.project,'milestone')%>
 Event.observe($('due-<%=t.milestone.dom_id%>'), "change", function(ev) { 
   new Ajax.Request('/schedule/reschedule_milestone/<%=t.milestone_id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=t.milestone.dom_id%>').value });
           });
   <% end %>
+  <% end %>
 
+<% if current_user.can?(t.project,'prioritize')%>
 Event.observe($('duration-<%=t.dom_id%>'), "change", function(ev) { 
   new Ajax.Request('/schedule/reschedule/<%=t.id%>', {asynchronous: true, evalScripts: true, parameters:'duration='+$('duration-<%=t.dom_id%>').value });
           });
 Event.observe($('due-<%=t.dom_id%>'), "change", function(ev) { 
   new Ajax.Request('/schedule/reschedule/<%=t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=t.dom_id%>').value });
           });
+<% end %>
 <% end %>
 
 // ]]>

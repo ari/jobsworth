@@ -15,6 +15,7 @@ def self.send(data,chan = ["default"])
     fc = { :message => data, :secret => FS_APP_CONFIG["PUSH_SECRET"], :broadcast => 1, :channels => chan}
     @socket.print fc.to_json + "\0"
     @socket.flush
+  rescue
   ensure
     @socket.close if @socket and !@socket.closed?
   end 
