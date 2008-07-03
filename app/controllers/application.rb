@@ -148,11 +148,8 @@ class ApplicationController < ActionController::Base
         current_user.last_ping_at = Time.now.utc
       end 
       
-      current_user.remember_until ||= Time.now.utc + 1.hour
-      
-      current_user.remember_until = Time.now.utc + 1.hour if(current_user.remember_until < Time.now.utc + 1.hour)
-
-      session[:remember_until] = current_user.remember_until if session[:remember_until] != current_user.remember_until
+      session[:remember_until] ||= Time.now.utc + 1.hour
+      session[:remember_until] = Time.now.utc + 1.hour if(session[:remember_until] < Time.now.utc + 1.hour)
       
       current_user.save
 
