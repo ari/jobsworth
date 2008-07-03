@@ -519,7 +519,7 @@ class ReportsController < ApplicationController
             val = value[k].gsub(/<[a-zA-Z\/][^>]*>/,'') if val.nil? && value[k]
             row << [val]
           end
-          row << [@row_totals[key]]
+          row << [@row_totals[key]/60]
           csv << row
         end
 
@@ -531,7 +531,7 @@ class ReportsController < ApplicationController
           val = @column_totals[key]/60 if @column_totals[key] > 0
           row << [val]
         end
-        row << [@total]
+        row << [@total/60]
         csv << row
 
 
