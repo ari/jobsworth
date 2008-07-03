@@ -1,0 +1,12 @@
+<div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
+<% form_remote_tag :url => {:controller => 'widgets', :action => 'update', :id => @widget },
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');" do  %>
+<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
+<label for="widget_gadget_url"><%= _("Gadget HTML Code") %></label><%= text_field 'widget', 'gadget_url', {:size => 35} %> 
+
+<%= submit_tag _("Save"), :class => "nolabel" %> <%= _'or'%> <%= link_to_function(_('Cancel'), "Element.remove($('config-#{@widget.dom_id}'));") %>
+<% end %>
+<div align="center"><span style="optional"><a href="http://www.google.com/ig/directory?num=24&synd=open" target="_blank"><%= _'Find a Google Gadget'%></a></span></div>
+</div>
+

@@ -247,7 +247,7 @@ class WidgetsController < ApplicationController
       0.upto(range * step) do |d|
         
         unless @widget.mine? 
-          @totals[d]  = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) #{filter} AND created_at < ?", start + d*interval]).to_f / current_user.workday_duration
+          @totals[d]  = current_user.company.tasks.sum('duration', :conditions => ["project_id IN (#{current_project_ids}) #{filter} AND created_at < ? AND tasks.duration > 0", start + d*interval]).to_f / current_user.workday_duration
           @totals[d] += current_user.company.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
 
           @items[d] = current_user.company.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter}  AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
@@ -340,7 +340,8 @@ class WidgetsController < ApplicationController
       end
       
     when 8 
-      # Chat 
+      # Google Gadget
+      
     end
 
     render :update do |page|
@@ -351,8 +352,16 @@ class WidgetsController < ApplicationController
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
       when 2
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
-      when 3..8
+      when 3..7
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
+      when 8 
+        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
+        page << "document.write = function(s) {"
+        page << "$('gadget-wrapper-#{@widget.dom_id}').innerHTML += s;"
+        page << "}"
+        page << "var e = new Element('script', {id:'gadget-#{@widget.dom_id}'});"
+        page << "$('gadget-wrapper-#{@widget.dom_id}').insert({top: e});"
+        page << "$('gadget-#{@widget.dom_id}').src=#{@widget.gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,'')};"
       end
 
       page.call("updateTooltips")
@@ -457,6 +466,7 @@ class WidgetsController < ApplicationController
     @widget.configured = true
     
     if @widget.update_attributes(params[:widget])
+
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"
         page.replace_html "name-#{@widget.dom_id}", @widget.name
