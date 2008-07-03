@@ -61,7 +61,9 @@ class LoginController < ApplicationController
     session[:group_tags] = nil
     session[:channels] = nil
     session[:hide_dependencies] = nil
-    session.delete
+    session[:remember_until] = nil
+    session[:redirect] = nil
+    session[:history] = nil
     redirect_to "/"
   end
 
@@ -79,7 +81,7 @@ class LoginController < ApplicationController
       end
       logged_in.last_seen_at = Time.now.utc
       logged_in.last_ping_at = Time.now.utc
-      
+
       logged_in.save
       session[:user_id] = logged_in.id
       
@@ -92,7 +94,8 @@ class LoginController < ApplicationController
       session[:filter_type] ||= "-1"
       session[:hide_dependencies] ||= "1"
       session[:filter_customer] ||= "0"
-
+      session[:remember_until] = logged_in.remember_until
+      
       # Let others know User logged in
       Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
 

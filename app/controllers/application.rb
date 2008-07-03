@@ -100,13 +100,17 @@ class ApplicationController < ActionController::Base
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
+
+    logger.info("remember[#{session[:remember_until]}]")
+    
+    # We need to re-authenticate
     if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
       session[:user_id] = nil
-      reset_session
+      session[:remember_until] = nil
     end
     
     if session[:user_id].to_i == 0
-      if !request.request_uri.include?('/login/login') && !request.request_uri.include?('update_sheet_info')
+      if !(request.request_uri.include?('/login/login') || request.xhr?)
         session[:redirect] = request.request_uri 
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
@@ -147,6 +151,9 @@ class ApplicationController < ActionController::Base
       current_user.remember_until ||= Time.now.utc + 1.hour
       
       current_user.remember_until = Time.now.utc + 1.hour if(current_user.remember_until < Time.now.utc + 1.hour)
+
+      session[:remember_until] = current_user.remember_until if session[:remember_until] != current_user.remember_until
+      
       current_user.save
 
       current_sheet
