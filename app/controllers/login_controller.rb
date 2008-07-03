@@ -75,8 +75,10 @@ class LoginController < ApplicationController
       logged_in.last_login_at = Time.now.utc
       
       if params[:remember].to_i == 1
-        session[:remember_until] = Time.now.utc + 1.year
+        session[:remember_until] = Time.now.utc + 1.month
+        session[:remember] = 1
       else 
+        session[:remember] = 0
         session[:remember_until] = Time.now.utc + 1.hour
       end
       logged_in.last_seen_at = Time.now.utc
