@@ -97,106 +97,96 @@ document.forms[0].username.focus();
 <% else %>
 
 
-<div id="container">
-  <div style="padding-right:280px;height: 95px;"><a href="http://www.clockingit.com"><img id="logo" src="/images/portal/logo.jpg" border="0" style="padding-top:12px;" /></a></div>
+<div id="wrapper">
+  <div id="top">
+    <%= render :partial => "portal_header" %>
+    <table width="760" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="707" height="335" background="/images/portal/midten1.jpg" hight="376">
+	  <span class="text_white">ClockingIT is a free hosted application, keeping track of all </span><br />
+	  <span class="text_white">your tasks and the time you spend on them.</span>
+          <p class="text_black">&nbsp;</p>
+          <p class="text_black"><strong>Extensive features</strong><br />
+            Project Management,<br />
+            Collaboration and <br />
+            Time Tracking </p>
+          <p class="text_black">..and it's free! </p>
+          <p class="text_black">&nbsp;</p>             
+	</td>
+      </tr>
+      
+      <tr>
+        <td bgcolor="#3D3D3D" height="40"><a href="/signup" class="bar">Sign up for free!</a>
+	  <a href="/screenshots" class="bar">Screenshots</a>
+	</td>
+      </tr>
+      <tr>
+        <td>
+          <table width="759" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+              <td width="275" valign="top" bgcolor="#fff"><p class="black"><span class="orange">Plan</span> your projects, see your schedule, know if you're slipping behind and why.</p>
+                <p class="black"><span class="orange">Time Tracking</span> and extensive reports help you show your clients exactly what you've done for how long.</p>
+                <p class="black"><span class="orange">Available</span> in english, french, spanish, basque, italian, german, dutch, polish, hebrew, brazilian portuguese, swedish, danish, norwegian, finnish</p>
+                <p class="black">
+		  <img src="/images/portal/gb.png" alt="uk" width="16" height="11" class="flag" /> 
+		  <img src="/images/portal/fr.png" alt="fr" width="16" height="11" class="flag" /> 
+		  <img src="/images/portal/espania.png" alt="sp" width="16" height="11" class="flag" /> 
+		  <img src="/images/portal/basque.png" alt="ba" width="16" height="11" class="flag"  /> 
+		  <img src="/images/portal/it.png" alt="it" width="16" height="11" class="flag" />
+		  <img src="/images/portal/de.png" alt="de" width="16" height="11" class="flag" />
+		  <img src="/images/portal/nl.png" alt="nl" width="16" height="11" class="flag" />
+		  <br/>
+		  <img src="/images/portal/poland.png" alt="pl" width="16" height="11" class="flag" />
+		  <img src="/images/portal/israel.png" alt="il" width="16" height="11" class="flag" />
+		  <img src="/images/portal/brasil.png" alt="br" width="16" height="11" class="flag" />
+		  <img src="/images/portal/se.png" alt="se" width="16" height="11" class="flag" />
+		  <img src="/images/portal/dk.png" alt="dk" width="16" height="11" class="flag"  />
+		  <img src="/images/portal/norway.png" alt="no" width="16" height="11" class="flag"  />
+		  <img src="/images/portal/fi.png" width="16" height="11" class="flag" /></p>
+              </td>
+              <td width="260" valign="top" bgcolor="#F8F8F8"><p class="black"><span class="orange">Features</span><br/>
+		  - no restrictions or limits <br />
+                  - time tracking &amp; reports <br />
+                  - planning &amp; gantt chart <br />
+                  - tagging, search &amp; views <br />
+                  - timeline &amp; activity log <br />
+                  - notifications, rss &amp; ical <br />
+                  - files, wiki &amp; forum <br />
+                  - group chat &amp; instant messaging<br />
+                  - 14 languages</p>
+                <p class="black"><span class="orange">Keep it simple</span> or keep it busy, the choice is yours. Turn off what you don't need.</p>
+                <p class="black"><div align="center">
 
-  <div id="menu" style="position:absolute;top:78px;width:100%;">
-  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.<%= $CONFIG[:domain] %>/login/signup">Sign Up</a></div>
-  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://forum.clockingit.com/">Forum</a></div>
-  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://wiki.clockingit.com/">Wiki</a></div>
-  <div style="float:right;padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com/login/about">About</a></div>
-  <div style="float:right;background: url(/images/portal/menu_on.gif) left top repeat-x; padding: 10px 5px 15px 5px;height:45px;"><a href="http://www.clockingit.com">Home</a></div>
+		  <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+		    <input type="hidden" name="cmd" value="_s-xclick">
+		      <input type="image" src="/images/portal/paypal.png" width="120" height="49" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+			<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+			  <input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----">
+		  </form>
+		  </div>
+		</p>
+	      </td>
+              <td width="222" valign="top" bgcolor="#FCFCFC"><p class="text_black" align="center">Announcements</p>
+                <ul>
+		  <% NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3).each do |news| %>
+                  <li><%= news.body %></li>
+		  <% end %>
+                </ul>
+                <p class="text_black" align="center">Powered by</p>
+                <p align="center" class="text_black"><img src="/images/portal/rails.gif" alt="rails" width="65" height="84" /></p>                  
+                <p align="center" class="black">
+		  <a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.clockingit.com%2F" target="_blank"><img src="/images/portal/add_digg.gif" alt="digg" width="16" height="14" border="0" class="flag"/> </a>
+		  <a href="https://secure.del.icio.us/login?url=http%3A%2F%2Fwww.clockingit.com%2F&amp;title=ClockingIT%20-%20Online%20Project%20Management%20and%20time%20tracking" target="_blank"><img src="/images/portal/add_delicious.gif" alt="delicious" width="18" height="18" border="0" class="flag"/> </a>
+		</p>
+	      </td>
+            </tr>
+          </table>
+	  <%= render :partial => "portal_footer" %>
+        </td>
+      </tr>
+    </table>
   </div>
-  <div style="clear: both;padding-bottom:2em;"></div>
-
-  <table width="900" border="0" cellpadding="0" cellspacing="0">
-  <tr>
-    <td valign="top" style="padding-right:2em;">
-      <%= render :partial => "left_column" %>
-    </td>
-
-    <td valign="top">
-  <% if flash[:notice] %><div id="notice"><%= flash[:notice] %><% flash.clear %></div><br />
-  <% else %>
-  <% lines = [ "<strong>After introducing <span style=\"color:#fba105;\">ClockingIT</span> at work, we've stopped having status-meetings, as everyone knows who does what, at all times.</strong></div><div align=\"right\" style=\"padding-right:1em;\"><em>-- Erlend Simonsen</em>",
-    "<strong>Firstly, let me add my voice to the many telling you your application is wonderful!</strong>",
-    "<strong>I, like everyone else, love <span style=\"color:#fba105;\">ClockingIT</span></strong>",
-    "<strong>You're doing a fantastic job!</strong>",
-    "<strong>your tool it's awasome, i hope you have time to improve it, i really think that can become the best tool in his category</strong>",
-    "<strong>really, really, really great! It's more...the best i've ever seen.</strong>",
-    "<strong>I've worked with a lot of PM systems. MS Project, OpenWorkbench, Basecamp, etc...but clockingit have sthg that I was looking for...simplicity.</strong>",
-    "<strong>All of the clients I've shown it to to get an idea if they liked, actually loved it!</strong>",
-    "<strong>First of all, i'd like to thank you soooo much for your magnificent work and dedication; you are indeed developing a grand and most usable application in groupware trends.</strong>",
-    "<strong>Only a quick note to let you know how impressed I am with this project, both technically and philosophically.</strong>",
-    "<strong>Must say Clocking IT is very cool and unique.</strong>",
-    "<strong>I am really quite impressed with your time tracker</strong>",
-    "<strong>In my 8 years of consulting, 3 hours has got to be fastest turn-around time for a feature request that I've ever seen. Thanks.</strong>",
-    "<strong>Thanks so much this is great!!!</strong>",
-    "<strong>Your site looks great - and for free, no less.</strong>",
-    "<strong>Actually, great was probably an understatement - after exploring it a bit more it looks smarter and more intuitive than any other project management software I've seen.</strong>",
-    "<strong>Well done to you and your team.</strong>",
-    "<strong>The main thing in software projects is the task management and the measurement of the time we have to spend. You combine this in a really awesome design, like Apple does: not to overloaded and still very powerfull.</strong>",
-    "<strong>I have been looking for a good project management package for years and this is the best I've seen.</strong>",
-    "<strong>WELL DONE!</strong>",
-    "<strong>Whoa, that was quick! Thank you!</strong>",
-    "<strong>I was reminded how refreshing and heartening you and your wife's attitude is compared to the ignorance, arrogance and contempt for others of some other software developers</strong>",
-    "<strong>I'm totally blown away - this is by FAR the best project tracking system that we have ever seen!!!</strong>",
-    "<strong>So very nice!  Thanks so much for building this.  It's really great!</strong>",
-    "<strong>LOVING your product.  SO GOOD.  Wow.</strong>",
-    "<strong>I love the program. Thanks for making it free. </strong>",
-    "<strong>I've used various things in the past to record my working day including a Yahoo widget but this is by far the best.</strong>",
-    "<strong>Looks like so far you've created a great project. Very simple and to the point and very fast!! </strong>",
-    "<strong>I'm greatly surprised every day with your new improvements...</strong>",
-    "<strong>We just started using clockingit this week and are SO PLEASED with finding a program that does just what we want.</strong>",
-    "<strong>I love the easy to use interface and especially the ease of keeping track of time on each task. Great job!</strong>",
-    "<strong>Thanks a lot for creating such a wonderfull tool and for deciding to open-source it !</strong>",
-    "<strong>Thanks again for such an amazing application!!!</strong>",
-    "<strong>Having a blast working with your software - you have no idea how much this has helped our little startup!</strong>",
-    "<strong>Congratulations on <span style=\"color:#fba105;\">ClockingIT</span>, you have done brilliant work</strong>",
-    "<strong>You guys have done a spectacular job with Clocking IT, I can't speak highly enough about it.</strong>",
-    "<strong>after trying just about every task manager and time tracker on the web over the last month Clocking IT was the only one that was both powerful and easy to use.</strong>",
-    "<strong>I hope you don't take this as offensive, but I would love to see your effort be acquired by Google.</strong>",
-    "<strong>Thank you for this awesome project management site.</strong>",
-    "<strong>it's awesome that you're doing this free, and I love it.</strong>",
-    "<strong>I've been using this for a few weeks now and wanted to drop in a note thanking you for all the hard work. This app is designed well, works great and is exactly what I was looking for.</strong>",
-    "<strong>I have tested many software related to this kind of application, and I must say that <span style=\"color:#fba105;\">ClockingIT</span> is the best so far. It is elegant, very useful, FREE!!, and fast.</strong>",
-    "<strong>Both of you are making a great job !!! There are not thanks enough !!</strong>",
-    "<strong>Thanks again for everything - you've helped our little startup become successful!</strong>",
-    "<strong>Thanks Erlend! I really love <span style=\"color:#fba105;\">ClockingIT</span>.</strong>",
-    "<strong>I really love it, being a web developer myself I enjoy the simplicity of the system you have built.</strong>",
-    "<strong>Wow. Just wow!</strong>",
-    "<strong>AMAZING!</strong>",
-    "<strong>I am in LOVE with <span style=\"color:#fba105;\">ClockingIT</span>!</strong>",
-    "<strong>In my eight years of cunsulting, I've never seen a faster turn-around from feature request to completed implementation.</strong>",
-    "<strong>We're now accurately able to track hours in each task and we'll be using that to bill our clients, so it's AWESOME!</strong>"
-    ]
-    %>
-
-  <div style="padding-top:1em;padding-right:1em;">&quot;<%= lines[rand(lines.size)]%>&quot;</div>
-
-  <% end %>
-
-    <div style="padding-top:1em;"><img src="/images/portal/box_top.gif" border=0></div>
-    <div id="box" style="background: url(/images/portal/box_bkg.gif) top left repeat-x; background-color: #fff; width: 697px; color: #000;">
-
-    <p id="caption" style="margin: 0; padding: 10px;">Smart, easy and free...</p>
-    <div id="nav" style="margin-left:10px;margin-right:10px;">
-    <div style="float:left;"><a onclick="previous_image();" href="#" style="font-size: 13px;color:#fba105;text-decoration:underline;">Previous</a></div>
-    <div style="float:right;"><a onclick="next_image();" href="#" style="font-size: 13px;color:#fba105;text-decoration:underline;">Next</a></div>
-    </div>
-    <img id="screenshot" style="padding-left:10px;" src="/images/portal/screen_1.png" border="0"/>
-    </div>
-    <div style="background: url(/images/portal/lower_bkg.gif) top left repeat-x;height: 56px;" align="right">
-      <div style="padding-right:10px; padding-top:10px; width: 275px;"><a href="http://www.<%= $CONFIG[:domain] %>/login/signup"><img src="/images/portal/signup.gif" border="0" /></a></div>
-    </div>
-    </td>
-</tr>
-</table>
-
-
 </div>
-<script type="text/javascript">
-preload();
-</script>
+
 
 <% end %>

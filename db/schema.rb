@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 122) do
+ActiveRecord::Schema.define(:version => 124) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -200,6 +200,7 @@ ActiveRecord::Schema.define(:version => 122) do
   create_table "news_items", :force => true do |t|
     t.datetime "created_at"
     t.text     "body"
+    t.boolean  "portal",     :default => true
   end
 
   create_table "notifications", :force => true do |t|
@@ -307,6 +308,11 @@ ActiveRecord::Schema.define(:version => 122) do
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
+
+  create_table "schema_migrations", :primary_key => "version", :force => true do |t|
+  end
+
+  add_index "schema_migrations", ["version"], :name => "unique_schema_migrations", :unique => true
 
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
@@ -580,6 +586,7 @@ ActiveRecord::Schema.define(:version => 122) do
     t.boolean  "configured",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "gadget_url"
   end
 
   add_index "widgets", ["user_id"], :name => "index_widgets_on_user_id"

@@ -2,6 +2,9 @@ ActionController::Routing::Routes.draw do |map|
 
   map.connect '', :controller => 'login', :action => 'login'
 
+  map.connect '/signup', :controller => 'login', :action => 'signup'
+  map.connect '/screenshots', :controller => 'login', :action => 'screenshots'
+  
   map.home '/forums/index', :controller => 'forums', :action => 'index'
 
 #  map.resources :users, :member => { :admin => :post } do |user|

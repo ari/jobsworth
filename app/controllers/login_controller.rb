@@ -12,6 +12,9 @@ class LoginController < ApplicationController
     render :action => 'login'
   end
 
+  def screenshots
+  end
+  
   def login
     subdomain = 'www'
     subdomain = request.subdomains.first if request.subdomains
