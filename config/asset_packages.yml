@@ -10,7 +10,6 @@ javascripts:
   - calendar-en
   - calendar-setup
 - tt:
-  - swfobject
   - juggernaut_javascript
   - tt
 - portal:

@@ -7,6 +7,8 @@
     <%= javascript_include_merged :tt %>
 
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
+    <%= javascript_include_tag "swfobject" %>
+
 
     <%= stylesheet_link_merged :tt %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
