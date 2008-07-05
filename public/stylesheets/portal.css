@@ -1,5 +1,5 @@
 body {
-  background: #E3E7EA;
+  background: #e8e8e8;
   margin: 0;
   padding: 0;
   font: 10.5pt/1.3em "Trebuchet MS", Trebuchet, Helvetica, Arial;
@@ -32,7 +32,7 @@ ul li {
 /* FRAME */
 
 #wrapper{
-  width: 820px;
+  width: 970px;
   background:transparent url(/images/portal/shadow.gif) repeat-y scroll center top !important;
   margin: 0 auto;
 }
@@ -41,18 +41,18 @@ ul li {
   font-size: 106%; 
   text-decoration: none;
   color: #FCFCFC;
-  width: 780px;
+  width: 930px;
   margin-left:30px;
 }
 
 .logo {
-  margin: 50px 0 0 0;
+  margin: 20px 0 0 0;
 }
 
 a.menu_top{
 color: #000;
 text-decoration: none;
-padding: 50px 40px 0 0;
+margin: 50px 40px 0 0;
 font-weight:bold;
 float:right;
 }
@@ -60,23 +60,35 @@ float:right;
 a.menu_top_sign{
 color: #FF9900;
 text-decoration: none;
-padding: 50px 40px 0 0;
+margin: 50px 40px 0 0;
 font-weight:bold;
 float:right;
 }
+
+#top a:hover { 
+  text-decoration: underline;
+}
+
 .menu_white{
-color: #FFF;
-font-size: 1.2em; 
-font-weight:bold;
-padding-right: 20px;
-text-align:center;
+  color: #FFF;
+  font-size: 1.2em; 
+  font-weight:bold;
+  padding-right: 20px;
+  text-align:center;
 }
 
 .text_white{
-color: #FFF;
-font-size: 1.3em; 
-font-weight:bold;
-margin: 20px 20px 20px 20px;
+  color: #FFF;
+  font-size: 1.3em; 
+  font-weight:bold;
+  margin: 20px 20px 20px 20px;
+}
+
+.text_white_small{
+  color: #FFF;
+  font-size: 0.8em; 
+  font-weight:normal;
+  margin:0;
 }
 
 .text_black{

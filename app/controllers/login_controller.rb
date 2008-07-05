@@ -14,7 +14,16 @@ class LoginController < ApplicationController
 
   def screenshots
   end
+
+  def policy
+  end
+
+  def terms
+  end
   
+  def about
+  end
+
   def login
     subdomain = 'www'
     subdomain = request.subdomains.first if request.subdomains

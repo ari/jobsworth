@@ -6,13 +6,16 @@
 <style type="text/css">
 body {
   background-color: #CCCCCC;
+  margin: 0;
+  padding: 0;
 }
+
 #menu {
   color: #423f54;
   font-size: 14px;
   font-weight: bold;
   background-color: #c5cacf;
-  padding: 0.5em;
+  margin: 0.5em;
   border: 1px solid #b7b7b7;
 }
 
@@ -29,8 +32,8 @@ a:hover {
   width:715px;
   height: 538px;
   position:relative;
-  left:50%;
-  margin-left:-357px;
+  left: 50%;
+  margin-left: -357px;
   background-color: #F8F4EE;
   background: url(/images/login_box.jpg) no-repeat 0% 0;
 }
@@ -68,7 +71,7 @@ table, td, tr {
 
 label {
   color: #fff;
-  font-size: 18px;
+  font-size: 17px;
 }
 
 .inputbox {
@@ -85,6 +88,13 @@ label {
 
 </style>
 
+<!--[if IE]>
+<style type="text/css">
+.inputbox {
+  font-size: 18px;
+}
+</style>
+<![endif]-->
 
 </head>
 
@@ -96,19 +106,19 @@ label {
     <div style="padding-top:24px;color:#999;letter-spacing:0.2em;text-transform:uppercase;font-size:8px;">&copy; 2005-2008 <a href="http://www.clockingit.com">ClockingIT 0.99.3</a><br /><a href="mailto:admin@clockingit.com">Erlend &amp; Ellen Simonsen</a></div>
   </div>
 <div id="container">
-  <div style="font-size:24px;font-weight:bold;text-align:center;padding-top:171px;font-style:italic;padding-left:0;padding-right:0;"><%= @company.name %></div>
+  <div style="font-size:24px;font-weight:bold;text-align:center;padding-top:161px;font-style:italic;padding-left:0;padding-right:0;"><%= @company.name %></div>
   <div style="position:absolute;top:210px;left:160px;">
   <table width="450px" cellpadding="0" cellspacing="0" id="login_box">
   <tr><td align="center">
   <% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>
-  <table border="0" cellpadding="2" cellspacing="0" style="width:250px;">
+  <table border="0" cellpadding="2" cellspacing="0" style="width:280px;">
   <tr><td align="left"><label for="username"><strong>Username</strong></label></td></tr>
   <tr><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="12" tabindex="1" /></td></tr>
   <tr><td align="left"><label for="password"><strong>Password</strong></label></td></tr>
   <tr><td><input type="password" id="password" name="user[password]" class="inputbox" size="12" alt="password" tabindex="2"/> <small><a href="/login/forgotten_password" tabindex="5">Forgot?</a></small></td></tr>
   <tr><td align="left"><label for="remember"></label></td></tr>
   <tr><td style="padding-top:26px;">
-         <button type="submit" name="Submit" value="Log in" style="background:none;border:none;cursor:pointer;" tabindex="4"><img src="/images/button_login.png" style="vertical-align:middle;"/></button> 
+         <button type="submit" name="Submit" value="Login" style="background:none;border:none;cursor:pointer;" tabindex="4"><img src="/images/button_login.png" style="vertical-align:middle;"/></button> 
          <input type="checkbox" id="remember" name="remember" class="inputbox" value="1" tabindex="3"/><strong><small>Remember me</small></strong></td></tr>
   <tr><td style="padding-top:1.5em;">&nbsp;</td></tr>
   <tr><td></td></tr>
@@ -132,18 +142,19 @@ document.forms[0].username.focus();
 <div id="wrapper">
   <div id="top">
     <%= render :partial => "portal_header" %>
-    <table width="760" border="0" cellpadding="0" cellspacing="0">
+    <table width="909" border="0" cellpadding="0" cellspacing="0">
       <tr>
-        <td width="707" height="335" background="/images/portal/midten1.jpg" hight="376">
-	  <span class="text_white">ClockingIT is a free hosted application, keeping track of all </span><br />
-	  <span class="text_white">your tasks and the time you spend on them.</span>
-          <p class="text_black">&nbsp;</p>
+        <td width="909" height="335" background="/images/portal/midten1.jpg">
+	  <span class="text_white">ClockingIT is a free hosted application,</span><br/>
+          <span class="text_white"> keeping track of all your</span><br/>
+          <span class="text_white"> tasks and the time you</span><br/>
+          <span class="text_white">  spend on them.</span>
           <p class="text_black"><strong>Extensive features</strong><br />
             Project Management,<br />
             Collaboration and <br />
             Time Tracking </p>
-          <p class="text_black">..and it's free! </p>
-          <p class="text_black">&nbsp;</p>             
+          <p class="text_black">...and it's free! </p>
+          <div style="height:55px;">&nbsp;</div>
 	</td>
       </tr>
       
@@ -154,12 +165,12 @@ document.forms[0].username.focus();
       </tr>
       <tr>
         <td>
-          <table width="759" border="0" cellpadding="0" cellspacing="0">
+          <table width="909" border="0" cellpadding="0" cellspacing="0">
             <tr>
-              <td width="275" valign="top" bgcolor="#fff"><p class="black"><span class="orange">Plan</span> your projects, see your schedule, know if you're slipping behind and why.</p>
-                <p class="black"><span class="orange">Time Tracking</span> and extensive reports help you show your clients exactly what you've done for how long.</p>
+              <td width="303" valign="top" bgcolor="#fff"><p class="black"><span class="orange">Plan</span> your projects, see your schedule, know if you're slipping behind and why.</p>
+                <p class="black"><span class="orange">Time Tracking</span> and extensive reports help you show your clients exactly what you've done and for how long.</p>
                 <p class="black"><span class="orange">Available</span> in english, french, spanish, basque, italian, german, dutch, polish, hebrew, brazilian portuguese, swedish, danish, norwegian, finnish</p>
-                <p class="black">
+                <p class="black" align="center">
 		  <img src="/images/portal/gb.png" alt="uk" width="16" height="11" class="flag" /> 
 		  <img src="/images/portal/fr.png" alt="fr" width="16" height="11" class="flag" /> 
 		  <img src="/images/portal/espania.png" alt="sp" width="16" height="11" class="flag" /> 
@@ -176,16 +187,17 @@ document.forms[0].username.focus();
 		  <img src="/images/portal/norway.png" alt="no" width="16" height="11" class="flag"  />
 		  <img src="/images/portal/fi.png" width="16" height="11" class="flag" /></p>
               </td>
-              <td width="260" valign="top" bgcolor="#F8F8F8"><p class="black"><span class="orange">Features</span><br/>
+              <td width="303" valign="top" bgcolor="#F8F8F8"><p class="black"><span class="orange">Features</span><br/>
 		  - no restrictions or limits <br />
-                  - time tracking &amp; reports <br />
-                  - planning &amp; gantt chart <br />
-                  - tagging, search &amp; views <br />
-                  - timeline &amp; activity log <br />
-                  - notifications, rss &amp; ical <br />
-                  - files, wiki &amp; forum <br />
-                  - group chat &amp; instant messaging<br />
-                  - 14 languages</p>
+                  - one-click time tracking <br />
+                  - clean and out of the way interface <br />
+                  - interactive gantt chart &amp; scheduling <br />
+                  - flexible reporting <br />
+                  - multiple ways to communicate <br />
+                  - tracks and indexes all changes <br />
+                  - notifications via email, rss &amp; ical <br />
+                  - ajax, comet & drag and drop <br/>
+                  - translated to 14 languages</p>
                 <p class="black"><span class="orange">Keep it simple</span> or keep it busy, the choice is yours. Turn off what you don't need.</p>
                 <p class="black"><div align="center">
 
@@ -198,18 +210,17 @@ document.forms[0].username.focus();
 		  </div>
 		</p>
 	      </td>
-              <td width="222" valign="top" bgcolor="#FCFCFC"><p class="text_black" align="center">Announcements</p>
+              <td valign="top" bgcolor="#FCFCFC"><p class="text_black" align="center">Announcements</p>
                 <ul>
 		  <% NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3).each do |news| %>
                   <li><%= news.body %></li>
 		  <% end %>
                 </ul>
                 <p class="text_black" align="center">Powered by</p>
-                <p align="center" class="text_black"><img src="/images/portal/rails.gif" alt="rails" width="65" height="84" /></p>                  
-                <p align="center" class="black">
-		  <a href="http://digg.com/submit?phase=2&amp;url=http%3A%2F%2Fwww.clockingit.com%2F" target="_blank"><img src="/images/portal/add_digg.gif" alt="digg" width="16" height="14" border="0" class="flag"/> </a>
-		  <a href="https://secure.del.icio.us/login?url=http%3A%2F%2Fwww.clockingit.com%2F&amp;title=ClockingIT%20-%20Online%20Project%20Management%20and%20time%20tracking" target="_blank"><img src="/images/portal/add_delicious.gif" alt="delicious" width="18" height="18" border="0" class="flag"/> </a>
-		</p>
+                <p align="center" class="text_black">
+                   <a href="http://www.freebsd.org"><img src="/images/portal/freebsd.png" alt="FreeBSD" /></a>
+                   <a href="http://www.rubyonrails.com"><img src="/images/portal/rails.gif" alt="Ruby on Rails" /></a>
+                </p>                  
 	      </td>
             </tr>
           </table>
