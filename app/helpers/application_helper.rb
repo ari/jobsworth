@@ -458,7 +458,7 @@ module ApplicationHelper
 
 def flash_plugin(channels = ["default"])
   config = Juggernaut.config
-  host = request.env['SERVER_NAME']
+  host = request.server_name
   port = config["PUSH_PORT"]
 #  crossdomain = config["CROSSDOMAIN"]
 #  juggernaut_data =  CGI.escape('"' + channels.join('","') + '"')
