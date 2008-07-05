@@ -91,7 +91,7 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 
 <%
 
-users = Project.find(selected_project).users.find(:all, :order => 'name' )
+users = Project.find(selected_project).users.find(:all, :order => 'name' ) rescue [] 
 
 resource_string = "<select id=\"task_users\" name=\"users[]\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('') + "</select>"
 resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
