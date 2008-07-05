@@ -167,7 +167,7 @@ document.forms[0].username.focus();
         <td>
           <table width="909" border="0" cellpadding="0" cellspacing="0">
             <tr>
-              <td width="303" valign="top" bgcolor="#fff"><p class="black"><span class="orange">Plan</span> your projects, see your schedule, know if you're slipping behind and why.</p>
+              <td width="303" valign="top" style="background-color:#fff;"><p class="black"><span class="orange">Plan</span> your projects, see your schedule, know if you're slipping behind and why.</p>
                 <p class="black"><span class="orange">Time Tracking</span> and extensive reports help you show your clients exactly what you've done and for how long.</p>
                 <p class="black"><span class="orange">Available</span> in english, french, spanish, basque, italian, german, dutch, polish, hebrew, brazilian portuguese, swedish, danish, norwegian, finnish</p>
                 <p class="black" align="center">
@@ -187,7 +187,7 @@ document.forms[0].username.focus();
 		  <img src="/images/portal/norway.png" alt="no" width="16" height="11" class="flag"  />
 		  <img src="/images/portal/fi.png" width="16" height="11" class="flag" /></p>
               </td>
-              <td width="303" valign="top" bgcolor="#F8F8F8"><p class="black"><span class="orange">Features</span><br/>
+              <td width="303" valign="top" style="background-color:#F8F8F8;"><p class="black"><span class="orange">Features</span><br/>
 		  - no restrictions or limits <br />
                   - one-click time tracking <br />
                   - clean and out of the way interface <br />
@@ -210,7 +210,7 @@ document.forms[0].username.focus();
 		  </div>
 		</p>
 	      </td>
-              <td valign="top" bgcolor="#FCFCFC"><p class="text_black" align="center">Announcements</p>
+              <td valign="top" style="background-color:#FCFCFC;"><p class="text_black" align="center">Announcements</p>
                 <ul>
 		  <% NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3).each do |news| %>
                   <li><%= news.body %></li>
