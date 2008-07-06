@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 124) do
+ActiveRecord::Schema.define(:version => 125) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -175,6 +175,8 @@ ActiveRecord::Schema.define(:version => 124) do
     t.datetime "completed_at"
     t.integer  "total_tasks",     :default => 0
     t.integer  "completed_tasks", :default => 0
+    t.datetime "scheduled_at"
+    t.boolean  "scheduled",       :default => false
   end
 
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
@@ -309,11 +311,6 @@ ActiveRecord::Schema.define(:version => 124) do
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
 
-  create_table "schema_migrations", :primary_key => "version", :force => true do |t|
-  end
-
-  add_index "schema_migrations", ["version"], :name => "unique_schema_migrations", :unique => true
-
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -444,29 +441,32 @@ ActiveRecord::Schema.define(:version => 124) do
   add_index "task_tags", ["task_id"], :name => "task_tags_task_id_index"
 
   create_table "tasks", :force => true do |t|
-    t.string   "name",          :limit => 200, :default => "", :null => false
-    t.integer  "project_id",                   :default => 0,  :null => false
-    t.integer  "position",                     :default => 0,  :null => false
-    t.datetime "created_at",                                   :null => false
+    t.string   "name",               :limit => 200, :default => "",    :null => false
+    t.integer  "project_id",                        :default => 0,     :null => false
+    t.integer  "position",                          :default => 0,     :null => false
+    t.datetime "created_at",                                           :null => false
     t.datetime "due_at"
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "updated_at",                                           :null => false
     t.datetime "completed_at"
-    t.integer  "duration",                     :default => 1
-    t.integer  "hidden",                       :default => 0
+    t.integer  "duration",                          :default => 1
+    t.integer  "hidden",                            :default => 0
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                     :default => 0
+    t.integer  "priority",                          :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                  :default => 0
-    t.integer  "type_id",                      :default => 0
-    t.integer  "task_num",                     :default => 0
-    t.integer  "status",                       :default => 0
+    t.integer  "severity_id",                       :default => 0
+    t.integer  "type_id",                           :default => 0
+    t.integer  "task_num",                          :default => 0
+    t.integer  "status",                            :default => 0
     t.string   "requested_by"
     t.integer  "creator_id"
     t.string   "notify_emails"
     t.string   "repeat"
     t.datetime "hide_until"
+    t.datetime "scheduled_at"
+    t.integer  "scheduled_duration"
+    t.boolean  "scheduled",                         :default => false
   end
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"

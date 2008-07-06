@@ -313,3 +313,4 @@ function closeChat(el) {
   new Ajax.Request('/shout/chat_close/' + el.up().id, {asynchronous:true, evalScripts:true});
   Element.remove(el);
 }
+

@@ -1,10 +1,20 @@
+<script type="text/javascript" language="javascript" charset="utf-8" src="/javascripts/gantt.js"></script>
+
 <div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;"><%= _ 'Changes done here will not be logged in the Activity log or sent out as notifications.'%></div>
+
+
 <table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
-<tr>
-    <td valign="top" style="padding-right:0.3em;">
+    <td class="page_header" colspan="2">
+      <div style="float:left;"><%=_ 'Plan / GANTT' %></div>
+    </td>
+  <tr>
+    <td valign="top" style="padding-right:0.3em;padding-top:0.5em;">
       <table cellpadding="0" cellspacing="0">
 	<tr>
-	  <th style="height:20px;" colspan="4"></th>
+	  <th style="height:20px;" colspan="4" align="right">
+	    <%= link_to_remote _('Reset'), :url => {:action => 'gantt_reset'} %>
+	    <%= link_to_remote _('Save'), :url => {:action => 'gantt_save'} %>
+	  </th>
 	</tr>
 	<tr>
 	  <th style="height:20px;" width="200px"><%= _'Task'%></th>
@@ -13,9 +23,9 @@
 	  <th><%=_ 'Due Date'%></th>
 	</tr>
 	<% i = 1
-	date_tooltip = _("Enter task due date, or click calendar button.")
-        last_milestone = nil
-	@tasks.each do |@t| 
+	  date_tooltip = _("Enter task due date, or click calendar button.")
+          last_milestone = nil
+          @tasks.each do |@t| 
           if @t.milestone_id.to_i > 0 && @t.milestone_id != last_milestone
 	    last_milestone = @t.milestone_id
 	    %>
@@ -26,11 +36,11 @@
 
 	<% i += 2
 	end %>
-</table>
+      </table>
     </td>
-    <td width="70%" valign="top" style="padding-left:0.3em;">
+    <td width="70%" valign="top" style="padding-left:0.3em;padding-top:0.5em;">
 
-<div style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;">
+<div id="gantt-container" style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;">
 <div style="height:19px;position:relative;">
        <% s = @range[0]
 	  left = 0
@@ -96,6 +106,7 @@
 	</div>
       </div>
 </div>
+<%= draggable_element "offset-#{t.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" } %> 
 <% row += 1
    end %>
 <div>&nbsp;</div>
@@ -128,4 +139,5 @@ Event.observe($('due-<%=t.dom_id%>'), "change", function(ev) {
 <% end %>
 
 // ]]>
+
 </script>
