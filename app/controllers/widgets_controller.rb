@@ -328,13 +328,13 @@ class WidgetsController < ApplicationController
         
         if t.overdue?
           (@tasks[OVERDUE] ||= []) << t
-        elsif t.due_date < (tz.now.utc.tomorrow.midnight)
+        elsif t.due_date < ( tz.local_to_utc(tz.now.utc.tomorrow.midnight) )
           (@tasks[TODAY] ||= []) << t
-        elsif t.due_date < (tz.now.utc.since(2.days).midnight)
+        elsif t.due_date < ( tz.local_to_utc(tz.now.utc.since(2.days).midnight) )
           (@tasks[TOMORROW] ||= []) << t
-        elsif t.due_date < (tz.now.utc.next_week.beginning_of_week)
+        elsif t.due_date < ( tz.local_to_utc(tz.now.utc.next_week.beginning_of_week) )
           (@tasks[THIS_WEEK] ||= []) << t
-        elsif t.due_date < (tz.now.utc.since(2.weeks).beginning_of_week)
+        elsif t.due_date < ( tz.local_to_utc(tz.now.utc.since(2.weeks).beginning_of_week) )
           (@tasks[NEXT_WEEK] ||= []) << t
         end
       end
