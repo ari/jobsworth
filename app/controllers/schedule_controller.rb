@@ -416,10 +416,6 @@ class ScheduleController < ApplicationController
     day = (t.scheduled_date).midnight if t.scheduled_date
     day ||= Time.now.utc.midnight
 
-    logger.debug "--> #{t.id} scheduling got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.scheduled_due_at}] - #{rev ? "backwards" : "forwards"}"
-    day, rev = override_day(t, day, before, after, rev)
-    logger.debug "--> #{t.id} scheduling got adjusted day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.scheduled_due_at}] - #{rev ? "backwards" : "forwards"}"
-
     if min_start && min_start < day && rev
       before = min_start.midnight 
       after = nil
@@ -428,6 +424,10 @@ class ScheduleController < ApplicationController
       before = nil
     end 
     
+    logger.debug "--> #{t.id} scheduling got day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.scheduled_due_at}] - #{rev ? "backwards" : "forwards"}"
+    day, rev = override_day(t, day, before, after, rev)
+    logger.debug "--> #{t.id} scheduling got adjusted day[#{day.to_s}], before[#{before}], after[#{after}], due[#{t.scheduled_due_at}] - #{rev ? "backwards" : "forwards"}"
+
 
     if t.scheduled_minutes_left == 0
       return [day,day]
@@ -561,9 +561,9 @@ class ScheduleController < ApplicationController
     tasks += @milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
 
     non_due = @tasks.reject{ |t| t.scheduled_due_at } # all tasks without due date
-    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
-    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
     tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
+    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
+    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
     tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
     
     @stack = []
@@ -589,8 +589,8 @@ class ScheduleController < ApplicationController
   end 
 
   def gantt_save
-    Task.update_all("scheduled=0, due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL"])
-    Milestone.update_all("scheduled=0, due_at=scheduled_at", ["milestones.project_id IN (#{current_project_ids}) AND milestones.completed_at IS NULL"])
+    Task.update_all("scheduled=0, due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND scheduled=1"])
+    Milestone.update_all("scheduled=0, due_at=scheduled_at", ["milestones.project_id IN (#{current_project_ids}) AND milestones.completed_at IS NULL AND scheduled=1"])
     flash['notice'] = _('Schedule saved')
     render :update do |page|
       page.redirect_to :action => 'gantt'
@@ -611,7 +611,8 @@ class ScheduleController < ApplicationController
     
     if params[:due] && params[:due].length > 0
       begin
-        @task.scheduled_at = DateTime.strptime( params[:due], current_user.date_format )
+        due = DateTime.strptime( params[:due], current_user.date_format )
+        @task.scheduled_at = tz.local_to_utc(due.to_time + 1.day - 1.minute) unless due.nil?
       rescue
         render :update do |page|
           page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
@@ -672,7 +673,8 @@ class ScheduleController < ApplicationController
     
     if params[:due] && params[:due].length > 0
       begin
-        @milestone.scheduled_at = DateTime.strptime( params[:due], current_user.date_format )
+        due = DateTime.strptime( params[:due], current_user.date_format )
+        @milestone.scheduled_at = tz.local_to_utc(due.to_time + 1.day - 1.minute) unless due.nil?
       rescue
         render :update do |page|
           page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
@@ -718,7 +720,11 @@ class ScheduleController < ApplicationController
 
   def gantt_drag
     begin
-      @task = Task.find(params[:id].split("-").last, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}'"] )
+      if params[:id].include?('-due-')
+        @milestone = Milestone.find(params[:id].split("-").last, :conditions => ["milestones.project_id IN (#{current_project_ids})"] )
+      else 
+        @task = Task.find(params[:id].split("-").last, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}'"] )
+      end 
     rescue 
       render :nothing => true
       return
@@ -727,18 +733,27 @@ class ScheduleController < ApplicationController
     start_date = Time.now.utc.midnight + (params[:x].to_i / 16).days
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
     
-    @task.scheduled_at = end_date
-    @task.scheduled_duration = @task.duration unless @task.scheduled_duration
-    @task.scheduled = true
-    @task.save
+    if @milestone
+      @milestone.scheduled_at = start_date
+      @milestone.scheduled = true
+      @milestone.save
+    else 
+      @task.scheduled_at = end_date
+      @task.scheduled_duration = @task.duration unless @task.scheduled_duration
+      @task.scheduled = true
+      @task.save
+    end 
 
     gantt
     
     render :update do |page|
-      page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
-      page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
-
-      page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
+      if @milestone
+        page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+      else 
+        page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
+        page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
+      end 
 
       milestones = { }
       
@@ -767,7 +782,12 @@ class ScheduleController < ApplicationController
 
   def gantt_dragging
     begin
-      @task = Task.find(params[:id].split("-").last, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}'"] )
+
+      if params[:id].include?('-due-')
+        @milestone = Milestone.find(params[:id].split("-").last, :conditions => ["milestones.project_id IN (#{current_project_ids})"] )
+      else 
+        @task = Task.find(params[:id].split("-").last, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}'"] )
+      end 
     rescue 
       render :nothing => true
       return
@@ -775,16 +795,21 @@ class ScheduleController < ApplicationController
     
     start_date = Time.now.utc.midnight + (params[:x].to_i / 16).days
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
-    
-    @task.scheduled_at = end_date
-    @task.scheduled_duration = @task.duration unless @task.scheduled_duration
-    @task.scheduled = true
-#    @task.save
 
-    render :update do |page|
-      page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+    if @milestone
+      @milestone.scheduled_at = start_date
+      @milestone.scheduled = true
+      render :update do |page|
+        page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+      end
+    else 
+      @task.scheduled_at = end_date
+      @task.scheduled_duration = @task.duration unless @task.scheduled_duration
+      @task.scheduled = true
+      render :update do |page|
+        page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+      end
     end
-    
   end
   
 
@@ -825,7 +850,9 @@ class ScheduleController < ApplicationController
         "#00f"
       end 
     else 
-      if t.overworked?
+      if t.scheduled_date && @end[t.id] && @end[t.id] > t.scheduled_date.to_time
+        "#f66"
+      elsif t.overworked?
        "#ff9900"
       elsif t.started? 
        "#76a670"

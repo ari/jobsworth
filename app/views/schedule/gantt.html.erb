@@ -12,8 +12,8 @@
       <table cellpadding="0" cellspacing="0">
 	<tr>
 	  <th style="height:20px;" colspan="4" align="right">
-	    <%= link_to_remote _('Reset'), :url => {:action => 'gantt_reset'} %>
-	    <%= link_to_remote _('Save'), :url => {:action => 'gantt_save'} %>
+	    <%= link_to_remote _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'tooltip'} %> | 
+	    <%= link_to_remote _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'tooltip'} %>
 	  </th>
 	</tr>
 	<tr>
@@ -88,17 +88,18 @@
 	      &nbsp;
 	  </div>
 	</div>
-	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.due_at ? t.milestone.due_at.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;">
-	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:17px;margin-right:0.3em;vertical-align:top;height:19px;">
+	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.due_at ? t.milestone.due_at.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;" <%=" class=\"handle\"" if current_user.can?(t.project, 'milestone')%>>
+	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:17px;margin-right:0.3em;vertical-align:top;height:19px;" >
 	      <div style="float:left;"><img src="/images/milestone.gif" class="tooltip" title="<%= (t.milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user))%>"/></div>
 	  </div>
 	</div>
 </div>
+<%= draggable_element("offset-due-#{t.milestone.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" }) if current_user.can?(t.project, 'milestone') %> 
 <%  row += 1
     end %>
 <div style="clear:both;height:20px;position:relative;width:100%;">
       <div id="offset-<%=t.dom_id%>" style="position:absolute;left:<%=gantt_offset(@start[t.id])%>;top:0px;padding-top:3px;height:20px;width:<%= gantt_width(@start[t.id], @end[t.id]).to_i + 500%>px;">
-	<div id="width-<%=t.dom_id%>" style="float:left;background-color:<%= gantt_color(t) %>;width:<%=gantt_width(@start[t.id], @end[t.id])%>;margin-right:0.3em;">
+	<div id="width-<%=t.dom_id%>" style="float:left;background-color:<%= gantt_color(t) %>;width:<%=gantt_width(@start[t.id], @end[t.id])%>;margin-right:0.3em;"<%=" class=\"handle\"" if current_user.can?(t.project, 'prioritize')%>>
 	  &nbsp;
 	</div>
 	<div style="padding-top:1px;">
@@ -106,7 +107,7 @@
 	</div>
       </div>
 </div>
-<%= draggable_element "offset-#{t.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" } %> 
+<%= draggable_element("offset-#{t.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" }) if current_user.can?(t.project, 'prioritize') %> 
 <% row += 1
    end %>
 <div>&nbsp;</div>
