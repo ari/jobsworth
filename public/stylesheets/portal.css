@@ -137,7 +137,10 @@ text-decoration: underline;
 text-align: center;
 font-size: 1.1em;
 }
-        
+
+#notice { 
+  color: #ff6666;
+}        
 
 .fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select {
   background-color: red;
