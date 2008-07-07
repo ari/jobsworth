@@ -4,7 +4,7 @@
     <td id="duration-<%=@t.milestone.dom_id%>" width="1%" style="text-align:right;font-weight:bold;"><%= worked_nice(@t.milestone.duration)%></td>
     <td style="padding-left:0.5em;text-align:right;">
 	<% if current_user.can?(@t.project,'milestone')%>
-	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.milestone.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.milestone.scheduled_at.strftime(current_user.date_format) if @t.milestone.scheduled_at %>" />
+	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.milestone.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.milestone.scheduled_date.strftime(current_user.date_format) if @t.milestone.scheduled_date %>" />
 	      <img alt="Calendar" class="date" id="due-<%=@t.milestone.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/>
 <script type="text/javascript">
 Calendar.setup({ inputField:"due-<%=@t.milestone.dom_id%>",step:1,firstDay:1,button:"due-<%=@t.milestone.dom_id%>-calendar",ifFormat:"<%=current_user.date_format%>",range:[2006, 2010],showOthers:true, onUpdate:function(){new Ajax.Request('/schedule/reschedule_milestone/<%=@t.milestone.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=@t.milestone.dom_id%>').value });} })

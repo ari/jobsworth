@@ -554,7 +554,7 @@ class ScheduleController < ApplicationController
     tasks = @tasks.select{ |t| t.scheduled_due_at } # all tasks with due dates
     
     
-    @milestones = @tasks.select{ |t| t.scheduled_due_at.nil? && t.milestone && t.milestone.scheduled_at }.reverse # all tasks with milestone with due date
+    @milestones = @tasks.select{ |t| t.scheduled_due_at.nil? && t.milestone && t.milestone.scheduled_date }.reverse # all tasks with milestone with due date
     tasks += @milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
     tasks += @milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
     tasks += @milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
@@ -578,12 +578,12 @@ class ScheduleController < ApplicationController
   end
 
   def gantt_reset
-    projects = current_user.projects.collect{ |p| current_user.can?(p, 'prioritize')}.join(',')
+    projects = current_user.projects.select{ |p| current_user.can?(p, 'prioritize')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
     Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration = 0", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL"])
 
-    projects = current_user.projects.collect{ |p| current_user.can?(p, 'milestone')}.join(',')
+    projects = current_user.projects.select{ |p| current_user.can?(p, 'milestone')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
     Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL"])
@@ -597,15 +597,17 @@ class ScheduleController < ApplicationController
 
   def gantt_save
 
-    projects = current_user.projects.collect{ |p| current_user.can?(p, 'prioritize')}.join(',')
+    projects = current_user.projects.select{ |p| current_user.can?(p, 'prioritize')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
-    Task.update_all("scheduled=0, due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
+    Task.update_all("due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
+    Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration=0", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
 
-    projects = current_user.projects.collect{ |p| current_user.can?(p, 'milestone')}.join(',')
+    projects = current_user.projects.select{ |p| current_user.can?(p, 'milestone')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
-    Milestone.update_all("scheduled=0, due_at=scheduled_at", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
+    Milestone.update_all("due_at=scheduled_at", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
+    Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
     flash['notice'] = _('Schedule saved')
     render :update do |page|
       page.redirect_to :action => 'gantt'
@@ -618,6 +620,12 @@ class ScheduleController < ApplicationController
     rescue
       render :nothing => true
       return
+    end 
+
+    unless @task.scheduled?
+      @task.scheduled_duration = @task.duration
+      @task.scheduled_at = @task.due_at
+      @task.scheduled = true
     end 
     
     if params[:duration]
@@ -638,8 +646,6 @@ class ScheduleController < ApplicationController
       @task.scheduled_at = nil
     end
 
-    @task.scheduled_duration = @task.duration unless @task.scheduled_duration
-    @task.scheduled = true
     
     @task.save
 
@@ -686,6 +692,11 @@ class ScheduleController < ApplicationController
       return
     end 
     
+    unless @milestone.scheduled?
+      @milestone.scheduled_at = @milestone.due_at
+      @milestone.scheduled = true
+    end 
+
     if params[:due] && params[:due].length > 0
       begin
         due = DateTime.strptime( params[:due], current_user.date_format )
@@ -700,7 +711,6 @@ class ScheduleController < ApplicationController
       @milestone.scheduled_at = nil
     end
 
-    @milestone.scheduled = true
     @milestone.save
 
     gantt
@@ -749,13 +759,21 @@ class ScheduleController < ApplicationController
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
     
     if @milestone
+      unless @milestone.scheduled?
+        @milestone.scheduled_at = @milestone.due_at
+        @milestone.scheduled = true
+      end 
+
       @milestone.scheduled_at = start_date
-      @milestone.scheduled = true
       @milestone.save
     else 
+      unless @task.scheduled?
+        @task.scheduled_duration = @task.duration
+        @task.scheduled_at = @task.due_at
+        @task.scheduled = true
+      end 
+
       @task.scheduled_at = end_date
-      @task.scheduled_duration = @task.duration unless @task.scheduled_duration
-      @task.scheduled = true
       @task.save
     end 
 
@@ -813,14 +831,11 @@ class ScheduleController < ApplicationController
 
     if @milestone
       @milestone.scheduled_at = start_date
-      @milestone.scheduled = true
       render :update do |page|
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
       end
     else 
       @task.scheduled_at = end_date
-      @task.scheduled_duration = @task.duration unless @task.scheduled_duration
-      @task.scheduled = true
       render :update do |page|
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
       end
