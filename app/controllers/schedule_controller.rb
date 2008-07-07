@@ -578,8 +578,15 @@ class ScheduleController < ApplicationController
   end
 
   def gantt_reset
-    Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration = 0", ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL"])
-    Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{current_project_ids}) AND milestones.completed_at IS NULL"])
+    projects = current_user.projects.collect{ |p| current_user.can?(p, 'prioritize')}.join(',')
+    projects = "0" if projects.nil? || projects.length == 0
+
+    Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration = 0", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL"])
+
+    projects = current_user.projects.collect{ |p| current_user.can?(p, 'milestone')}.join(',')
+    projects = "0" if projects.nil? || projects.length == 0
+
+    Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL"])
     flash['notice'] = _('Schedule reverted')
 
     render :update do |page|
@@ -589,8 +596,16 @@ class ScheduleController < ApplicationController
   end 
 
   def gantt_save
-    Task.update_all("scheduled=0, due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND scheduled=1"])
-    Milestone.update_all("scheduled=0, due_at=scheduled_at", ["milestones.project_id IN (#{current_project_ids}) AND milestones.completed_at IS NULL AND scheduled=1"])
+
+    projects = current_user.projects.collect{ |p| current_user.can?(p, 'prioritize')}.join(',')
+    projects = "0" if projects.nil? || projects.length == 0
+
+    Task.update_all("scheduled=0, due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
+
+    projects = current_user.projects.collect{ |p| current_user.can?(p, 'milestone')}.join(',')
+    projects = "0" if projects.nil? || projects.length == 0
+
+    Milestone.update_all("scheduled=0, due_at=scheduled_at", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
     flash['notice'] = _('Schedule saved')
     render :update do |page|
       page.redirect_to :action => 'gantt'
