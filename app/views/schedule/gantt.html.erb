@@ -1,19 +1,24 @@
 <script type="text/javascript" language="javascript" charset="utf-8" src="/javascripts/gantt.js"></script>
-
-<div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;"><%= _ 'Changes done here will not be logged in the Activity log or sent out as notifications.'%></div>
-
-
 <table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
+  <tr>
     <td class="page_header" colspan="2">
       <div style="float:left;"><%=_ 'Plan / GANTT' %></div>
     </td>
+  </tr>
+  <tr>
+    <td colspan="2" style="padding-top:0.3em;">
+	    <form method="post">
+	    <div style="float:left"><%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %>
+</div>
+	    <div style="float:right"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'tooltip'} %></div>
+	  </form>
+    </td>
+  </tr>
   <tr>
     <td valign="top" style="padding-right:0.3em;padding-top:0.5em;">
       <table cellpadding="0" cellspacing="0">
 	<tr>
-	  <th style="height:20px;" colspan="4" align="right">
-	    <%= link_to_remote _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'tooltip'} %> | 
-	    <%= link_to_remote _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'tooltip'} %>
+	  <th style="height:20px;" colspan="4">
 	  </th>
 	</tr>
 	<tr>
@@ -40,7 +45,7 @@
     </td>
     <td width="70%" valign="top" style="padding-left:0.3em;padding-top:0.5em;">
 
-<div id="gantt-container" style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;">
+<div id="gantt-container" style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;border-top:1px solid #999;">
 <div style="height:19px;position:relative;">
        <% s = @range[0]
 	  left = 0

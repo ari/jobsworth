@@ -600,14 +600,62 @@ class ScheduleController < ApplicationController
     projects = current_user.projects.select{ |p| current_user.can?(p, 'prioritize')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
-    Task.update_all("due_at=scheduled_at, duration = scheduled_duration", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
-    Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration=0", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
+    tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
+    tasks.each do |t|
+      body = ""
+      if t.scheduled_at != t.due_at
+        old_name = "None"
+        old_name = current_user.tz.utc_to_local(t.due_at).strftime_localized("%A, %d %B %Y") unless t.due_at.nil?
+
+        new_name = "None"
+        new_name = current_user.tz.utc_to_local(t.scheduled_at).strftime_localized("%A, %d %B %Y") unless t.scheduled_at.nil?
+
+        body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+        t.due_at = t.scheduled_at
+      end 
+      if t.scheduled_duration.to_i != t.duration.to_i
+        body << "- <strong>Estimate</strong>: #{worked_nice(t.duration).strip} -> #{worked_nice(t.scheduled_duration)}\n"
+        t.duration = t.scheduled_duration
+      end 
+
+      if body != ""
+        worklog = WorkLog.new
+        worklog.log_type = EventLog::TASK_MODIFIED
+        worklog.user = current_user
+        worklog.company = t.project.company
+        worklog.customer = t.project.customer
+        worklog.project = t.project
+        worklog.task = t
+        worklog.started_at = Time.now.utc
+        worklog.duration = 0
+        worklog.body = body
+        worklog.save
+
+        if(params['notify'].to_i == 1)
+          Notifications::deliver_changed( :updated, t, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
+        end 
+      end 
+
+      t.scheduled_at = nil
+      t.scheduled_duration = 0
+      t.scheduled = false
+      t.save
+    end 
 
     projects = current_user.projects.select{ |p| current_user.can?(p, 'milestone')}.collect(&:id).join(',')
     projects = "0" if projects.nil? || projects.length == 0
 
-    Milestone.update_all("due_at=scheduled_at", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
-    Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
+    milestones = Milestone.find(:all, :conditions => ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
+    milestones.each do |m|
+      if m.due_at != m.scheduled_at
+        m.due_at = m.scheduled_at
+        Notifications::deliver_milestone_changed(current_user, m, 'updated', m.due_at) rescue nil
+      end 
+      m.scheduled_at = nil
+      m.scheduled = false
+      m.save
+    end 
+
     flash['notice'] = _('Schedule saved')
     render :update do |page|
       page.redirect_to :action => 'gantt'
@@ -863,7 +911,7 @@ class ScheduleController < ApplicationController
   end
   
   def gantt_color(t)
-    if t.overdue?
+    if t.scheduled_overdue?
       if t.scheduled?
         "#f00"
       else 
