@@ -5,7 +5,7 @@
 <p><label for="project_customer_id"><%=_ 'Client' %></label><%= select 'project', 'customer_id', Customer.find(:all, :order => 'name', :conditions => ["company_id = ?", current_user.company.id ]).collect {|c| [ c.name, c.id ] }  %></p>
 <p><label for="project_name"><%=_ 'Description' %></label><%= text_area 'project', 'description', :rows => 5  %></p>
 <% if @project.new_record? && current_user.company.show_forum %>
-<p><label for="project_create_forum"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', :class => 'checkbox' %></p>
+<p><label for="project_create_forum" class="tooltip" title="<%=_'Create a private forum for people with access to this project?'%>"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', {:class => 'checkbox tooltip', :title => _('Create a private forum for people with access to this project?')} %></p>
 <% end %>
 <br>
 <!--[eoform:project]-->
