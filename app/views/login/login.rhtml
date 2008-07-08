@@ -138,6 +138,7 @@ document.forms[0].username.focus();
 
 <% else %>
 
+<% cookies.delete "_session_id" if cookies["_session_id"] %>
 
 <div id="wrapper">
   <div id="top">
