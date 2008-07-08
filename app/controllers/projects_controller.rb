@@ -113,21 +113,30 @@ class ProjectsController < ApplicationController
       permission.save
     end
 
-    @project = current_user.projects.find(params[:id])
-    @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
-
-    render :partial => "permission_list"
+    if params[:user_edit]
+      @user = current_user.company.users.find(params[:user_id])
+      render :partial => "users/project_permissions"
+    else 
+      @project = current_user.projects.find(params[:id])
+      @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
+      render :partial => "permission_list"
+    end 
   end
 
   def ajax_add_permission
     user = User.find(params[:user_id], :conditions => ["company_id = ?", current_user.company_id])
 
     begin
-      @project = current_user.projects.find(params[:id])
+      if current_user.admin?
+        @project = current_user.company.projects.find(params[:id])
+      else 
+        @project = current_user.projects.find(params[:id])
+      end 
     rescue
       render :update do |page|
         page.visual_effect(:highlight, "user-#{params[:user_id]}", :duration => 1.0, :startcolor => "'#ff9999'")
       end
+      return
     end
 
     if @project && user && ProjectPermission.count(:conditions => ["user_id = ? AND project_id = ?", user.id, @project.id]) == 0
@@ -144,9 +153,14 @@ class ProjectsController < ApplicationController
       permission.set(params[:perm])
       permission.save
     end
-    @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
 
-    render :partial => "permission_list"
+    if params[:user_edit] && current_user.admin?
+      @user = current_user.company.users.find(params[:user_id])
+      render :partial => "users/project_permissions"
+    else 
+      @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
+      render :partial => "permission_list"
+    end 
   end
 
   def update

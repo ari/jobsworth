@@ -6,7 +6,7 @@
 class Company < ActiveRecord::Base
   has_many      :customers, :dependent => :destroy
   has_many      :users, :dependent => :destroy
-  has_many      :projects, :dependent => :destroy
+  has_many      :projects, :dependent => :destroy, :order => 'name'
   has_many      :tasks
   has_many      :pages
   has_many      :work_logs
