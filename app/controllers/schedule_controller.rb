@@ -809,7 +809,10 @@ class ScheduleController < ApplicationController
       return
     end 
     
-    start_date = Time.now.utc.midnight + (params[:x].to_i / 16).days
+    x = params[:x].to_i
+    x = 0 if x < 0
+
+    start_date = Time.now.utc.midnight + (x / 16).days
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
     
     if @milestone
@@ -880,7 +883,10 @@ class ScheduleController < ApplicationController
       return
     end 
     
-    start_date = Time.now.utc.midnight + (params[:x].to_i / 16).days
+    x = params[:x].to_i
+    x = 0 if x < 0
+
+    start_date = Time.now.utc.midnight + (x / 16).days
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
 
     if @milestone
