@@ -70,7 +70,7 @@
   <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
   <tr><th colspan="5">Last Registered Users</th></tr>
   <tr><th>Name</th><th>Company</th><th>Email</th><th>Created</th><th>Timezone</th></tr>
-  <% for u in @last_10_users %>
+  <% for u in @last_50_users %>
   <tr><td><%= u.name %></td><td><%= u.company.name %></td><td><%= u.email %></td><td><%= tz.utc_to_local(u.created_at).strftime("%d/%m %Y %H:%M") %></td><td><%= u.time_zone %></td></tr>
   <% end %>
   </table>  
