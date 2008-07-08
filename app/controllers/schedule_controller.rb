@@ -372,7 +372,7 @@ class ScheduleController < ApplicationController
     min_start = max_start = nil
 
 #    if rev
-      my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 )
+    my_deps = @deps[t.id].slice!( @deps[t.id].rindex(t) .. -1 ) rescue []
 #    else 
 #      my_deps = @deps[t.id].slice!( 0 .. @deps[t.id].rindex(t) )
 #    end
