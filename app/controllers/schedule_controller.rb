@@ -651,7 +651,9 @@ class ScheduleController < ApplicationController
     milestones.each do |m|
       if m.due_at != m.scheduled_at
         m.due_at = m.scheduled_at
-        Notifications::deliver_milestone_changed(current_user, m, 'updated', m.due_at) rescue nil
+        if(params['notify'].to_i == 1)
+          Notifications::deliver_milestone_changed(current_user, m, 'updated', m.due_at) rescue nil
+        end 
       end 
       m.scheduled_at = nil
       m.scheduled = false
