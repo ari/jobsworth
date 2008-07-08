@@ -27,7 +27,7 @@
       perms = ['comment', 'work', 'close', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
 %>
 
-<% if user_granted && (@user.id != @project.user_id && @user.id != current_user.id ) %>
+<% if user_granted && (@user.id != @project.user_id ) %>
     <td align="center">
       <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove all access for <b>%s</b>?", @user.name), :class => "tooltip centered"),
         :update => 'permission_list',
@@ -54,12 +54,12 @@
 
 <% elsif user_granted %>
       <td align="center">
-        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") %>
+        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>project creator</b>!", :class => "tooltip centered") %>
       </td>
       <% for p in perms %>
       <td align="center">
-        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") if perm.can? p %>
-        <%= image_tag("delete.png", :border => 0, :title => _("Can't remove <b>yourself</b> or the <b>project creator</b>!"), :class => "tooltip centered") unless perm.can? p %>
+        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove the <b>project creator</b>!", :class => "tooltip centered") if perm.can? p %>
+        <%= image_tag("delete.png", :border => 0, :title => _("Can't remove the <b>project creator</b>!"), :class => "tooltip centered") unless perm.can? p %>
       </td>
       <% end %>
 <% else %>

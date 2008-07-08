@@ -16,6 +16,12 @@ class UsersController < ApplicationController
   end
 
   def new
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
     @user = User.new
     @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
@@ -25,6 +31,12 @@ class UsersController < ApplicationController
   end
 
   def create
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id
     @user.date_format = "%d/%m/%Y"
