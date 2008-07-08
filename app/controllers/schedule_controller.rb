@@ -217,7 +217,7 @@ class ScheduleController < ApplicationController
     end
     
 
-    my_deps << t
+    my_deps << t unless t.done?
     if t.milestone && t.milestone.scheduled_date
       t.dependants.each do |d|
         my_deps += schedule_collect_deps(deps, seen, d, rev)
@@ -230,6 +230,7 @@ class ScheduleController < ApplicationController
 
     seen.pop
 
+    my_deps.compact!
     my_deps.uniq!
     
     deps[t.id] = my_deps if my_deps.size > 0
