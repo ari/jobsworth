@@ -630,6 +630,13 @@ class TasksController < ApplicationController
 
       if @old_task.duration != @task.duration
         body << "- <strong>Estimate</strong>: #{worked_nice(@old_task.duration).strip} -> #{worked_nice(@task.duration)}\n"
+
+        if @task.scheduled?
+          @task.scheduled_at = nil
+          @task.scheduled_duration = 0
+          @task.scheduled = false
+        end 
+
       end
 
       if @old_task.milestone != @task.milestone
@@ -650,6 +657,13 @@ class TasksController < ApplicationController
         new_name = current_user.tz.utc_to_local(@task.due_at).strftime_localized("%A, %d %B %Y") unless @task.due_at.nil?
 
         body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+
+        if @task.scheduled?
+          @task.scheduled_at = nil
+          @task.scheduled_duration = 0
+          @task.scheduled = false
+        end 
+
       end
 
       body << "- <strong>Priority</strong>: #{@old_task.priority_type} -> #{@task.priority_type}\n" if @old_task.priority != @task.priority
