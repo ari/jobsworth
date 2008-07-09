@@ -141,7 +141,7 @@ puts
 
 
 puts "Please create the database and user for ClockingIT by running something like this: "
-puts " echo \"CREATE DATABASE `#{db}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `#{db}.*` TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
+puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
 puts 
 puts "Press <Return> to continue"
 gets
@@ -394,17 +394,12 @@ puts "Done"
 puts 
 puts "All done!"
 puts "---------"
-puts 
-puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 
 puts
-puts "Starting required servers..."
+puts "Please start the required services by entering the following in a console:"
 puts "  ./script/ferret_server -e production start"
-system("./script/ferret_server -e production start")
-
 puts "  nohup ./script/push_server &"
-system("nohup ./script/push_server &")
-
 puts "  ./script/server production"
-system("./script/server production")
+puts 
+puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 
