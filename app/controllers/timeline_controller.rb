@@ -67,7 +67,7 @@ class TimelineController < ApplicationController
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
       
-      @logs = EventLog.paginate(:all, :order => "event_logs.id desc", :conditions => ["event_logs.company_id = ? #{filter}", current_user.company_id], :per_page => 100, :page => params[:page] )
+      @logs = EventLog.paginate(:all, :order => "event_logs.created_at desc", :conditions => ["event_logs.company_id = ? #{filter}", current_user.company_id], :per_page => 100, :page => params[:page] )
     else 
       @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", current_user.company_id], :include => [:user, {:task => [ :tags ]}, :project, ], :per_page => 100, :page => params[:page] )
     end 
