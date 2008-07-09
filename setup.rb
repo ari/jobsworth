@@ -105,7 +105,7 @@ if missing_dep
   if missing_deps.include? "rmagick"
     puts "rmagick requires ImageMagick. If you're unable to install ImageMagick 6.3.0+, which the latest"
     puts "version of rmagick requires, please install version 1.5.14 instead: "
-    puts "  sudo gem install rmagick --version=1.5.14 -r"
+    puts "  sudo gem install rmagick -v 1.5.14 -r"
   end
   
   exit
