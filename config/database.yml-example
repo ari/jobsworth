@@ -5,6 +5,7 @@ development:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
+  SOCKET
 
 test:
   adapter: mysql
@@ -13,6 +14,7 @@ test:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
+  SOCKET
 
 production:
   adapter: mysql
@@ -21,3 +23,4 @@ production:
   username: USERNAME
   password: PASSWORD
   encoding: utf8
+  SOCKET
