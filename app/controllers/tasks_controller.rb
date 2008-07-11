@@ -827,11 +827,45 @@ class TasksController < ApplicationController
 
 
   def ajax_check
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
+    begin
+      @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
+    rescue
+      render :nothing => true
+      return
+    end 
 
     old_status = @task.status_type
     
     unless @task.completed_at
+
+      worklog = WorkLog.new
+      worklog.user = current_user
+      worklog.company = @task.project.company
+      worklog.customer = @task.project.customer
+      worklog.project = @task.project
+      worklog.task = @task
+
+      body = ""
+
+      if @current_sheet && @current_sheet.task_id == @task.id
+        worklog.started_at = @current_sheet.created_at
+        worklog.duration = @current_sheet.duration
+        worklog.paused_duration = @current_sheet.paused_duration
+        worklog.log_type = EventLog::TASK_COMPLETED
+        unless @current_sheet.body.blank?
+          body = "\n#{@current_sheet.body}"
+          worklog.comment = true 
+        end 
+      else 
+        worklog.started_at = Time.now.utc
+        worklog.duration = 0
+        worklog.log_type = EventLog::TASK_COMPLETED
+      end 
+
+      worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
+      if worklog.save
+        @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
+      end 
 
       @task.completed_at = Time.now.utc
       @task.updated_by_id = current_user.id
@@ -843,22 +877,9 @@ class TasksController < ApplicationController
           repeat_task(@task)
       end
 
-      body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n"
-      
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_COMPLETED
-      worklog.body = body
-      worklog.save
 
       if current_user.send_notifications
-        Notifications::deliver_changed(:completed, @task, current_user, body.gsub(/<[^>]*>/,'') ) rescue nil
+        Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -955,8 +976,8 @@ class TasksController < ApplicationController
         redirect_from_last
       end
 
-      @old_task.updated_by_id = current_user.id
-      @old_task.save
+#      @old_task.updated_by_id = current_user.id
+#      @old_task.save
 
       worklog = WorkLog.new
       worklog.user = current_user
