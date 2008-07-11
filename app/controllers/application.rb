@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       if current_user.company.restricted_userlist
         user_ids = [current_user.id]
         current_user.all_projects.each do |p|
-          user_ids << p.users.collect(&:id)
+          user_ids << p.users.collect{ |u| u.id }
         end
 
         @all_users = User.find(:all, :conditions => ["company_id = ? AND id IN (#{user_ids.uniq.join(',')})", current_user.company_id], :order => "name")
@@ -269,7 +269,7 @@ class ApplicationController < ActionController::Base
   # List of current Project ids, joined with ,
   def current_project_ids
     unless @current_project_ids
-      @current_project_ids = current_projects.collect(&:id).join(',')
+      @current_project_ids = current_projects.collect{ |p| p.id }.join(',')
       @current_project_ids = "0" if @current_project_ids == ''
     end
     @current_project_ids
