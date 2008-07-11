@@ -19,7 +19,7 @@ class TasksController < ApplicationController
     else
       @task = Task.new
       @task.duration = 0
-      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden], :filter_milestone => session[:filter_milestone]})
+      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
     end
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
