@@ -2,7 +2,7 @@ class Notifications < ActionMailer::Base
 
   def created(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
-    @subject    = "#{$CONFIG[:prefix]} Created: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? 'Unassigned' : task.users.collect{|u| u.name}.join(', '))})"
+    @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
@@ -44,7 +44,7 @@ class Notifications < ActionMailer::Base
 
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
     @body       = {:tasks => tasks, :tasks_tomorrow => tasks_tomorrow, :tasks_overdue => tasks_overdue, :user => user}
-    @subject    = "#{$CONFIG[:prefix]} Tasks due"
+    @subject    = "#{$CONFIG[:prefix]} #{_('Tasks due')}"
 
     @recipients = [user.email]
 
@@ -100,9 +100,9 @@ class Notifications < ActionMailer::Base
   def milestone_changed(user, milestone, action, due_date = nil, old_name = nil)
     @body       = { :user => user, :milestone => milestone, :action => action, :due_date => due_date, :old_name => old_name }
     if old_name.nil?
-      @subject    = "#{$CONFIG[:prefix]} Milestone #{action}: #{milestone.name} [#{milestone.project.name}]"
+      @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.name}]"
     else 
-      @subject    = "#{$CONFIG[:prefix]} Milestone #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.name}]"
+      @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.name}]"
     end
     @recipients = (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq
     @sent_on    = Time.now
