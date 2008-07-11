@@ -862,21 +862,21 @@ class TasksController < ApplicationController
         worklog.log_type = EventLog::TASK_COMPLETED
       end 
 
-      worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
-      if worklog.save
-        @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
-      end 
-
       @task.completed_at = Time.now.utc
       @task.updated_by_id = current_user.id
       @task.status = 2
       @task.save
       @task.reload
 
+      worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
+      if worklog.save
+        @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
+      end 
+
+
       if @task.next_repeat_date != nil
           repeat_task(@task)
       end
-
 
       if current_user.send_notifications
         Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
