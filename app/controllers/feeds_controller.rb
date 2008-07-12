@@ -356,7 +356,7 @@ class FeedsController < ApplicationController
     @current_user = user
 
     @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
-    pids = @projects.collect(&:id).join(',')
+    pids = @projects.collect{ |p| p.id }.join(',')
     if pids.nil? || pids.empty?
         pids = "0"
     end
