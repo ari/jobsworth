@@ -5,100 +5,23 @@ require 'rubygems'
 missing_dep = false
 missing_deps = []
 
+deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'RedCloth', 'rake' => 'rake', 'ferret' => 'ferret', 
+  'fastercsv' => 'fastercsv', 'eventmachine' => 'eventmachine',  'RMagick' => 'rmagick', 
+  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest',
+  'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec'
+}
+
 puts "Verifying dependencies..."
 
-begin
-  require 'tzinfo'
-rescue LoadError 
-  missing_deps << "tzinfo"
-  missing_dep = true
+deps.keys.each do |dep|
+  begin
+    require dep
+  rescue LoadError
+    missing_deps << deps[dep]
+  end 
 end 
 
-begin
-  require 'redcloth'
-rescue LoadError
-  missing_deps << "RedCloth"
-  missing_dep = true
-end 
-
-begin
-  require 'rake'
-rescue LoadError
-  missing_deps << "rake"
-  missing_dep = true
-end 
-
-begin
-  require 'ferret'
-rescue LoadError
-  missing_deps << "ferret"
-  missing_dep = true
-end 
-
-begin
-  require 'fastercsv'
-rescue LoadError
-  missing_deps << "fastercsv"
-  missing_dep = true
-end 
-
-begin
-  require 'eventmachine'
-rescue LoadError
-  missing_deps << "eventmachine"
-  missing_dep = true
-end 
-
-begin
-  require 'RMagick'
-rescue LoadError
-  missing_deps << "rmagick"
-  missing_dep = true
-end 
-
-begin
-  require 'icalendar'
-rescue LoadError
-  missing_deps << "icalendar"
-  missing_dep = true
-end 
-
-begin
-  require 'mongrel'
-rescue LoadError
-  missing_deps << "mongrel"
-  missing_dep = true
-end 
-
-begin
-  require 'zentest'
-rescue LoadError
-  missing_deps << "ZenTest"
-  missing_dep = true
-end 
-
-begin
-  require 'google_chart'
-rescue LoadError
-  missing_deps << "gchartrb"
-  missing_dep = true
-end 
-
-begin
-  require 'json'
-rescue LoadError
-  missing_deps << "json"
-  missing_dep = true
-end 
-
-begin
-  require 'test/spec'
-rescue LoadError
-  missing_deps << "test-spec"
-  missing_dep = true
-end 
-
-if missing_dep
+if missing_deps.size > 0
   puts "Please install required Ruby Gems:"
   puts "  sudo gem install #{missing_deps.join(" ")} -r"
   puts
