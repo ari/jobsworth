@@ -22,6 +22,8 @@ class Milestone < ActiveRecord::Base
     res = "<table cellpadding=0 cellspacing=0>"
     res << "<tr><th>#{_('Name')}</th><td> #{self.name}</td></tr>"
     res << "<tr><th>#{_('Due Date')}</th><td> #{options[:user].tz.utc_to_local(due_at).strftime_localized("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
+    res << "<tr><th>#{_('Project')}</th><td> #{self.project.name}</td></tr>"
+    res << "<tr><th>#{_('Client')}</th><td> #{self.project.customer.name}</td></tr>"
     res << "<tr><th>#{_('Owner')}</th><td> #{self.user.name}</td></tr>" unless self.user.nil?
     res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
     res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.slice(0,4096).gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
