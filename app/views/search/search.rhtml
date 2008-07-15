@@ -1,19 +1,22 @@
-  <table class="content" width="100%" style="margin-left:1em; padding-right: 1em;" cellpadding="0" cellspacing="0" id="content">
+<table width="100%" cellpadding="0" cellspacing="0" id="content">
   <tr>
-    <td class="page_header">
-      <%=_ 'Search Results' %>
-    </td>
-  </tr>
-  <tr><td align="right" style="padding-right:1em;">
-  <form action="<%=request.url%>" method="post">
-    <input type="checkbox" name="completed_projects" value="1" <%= "checked=\"checked\"" if session[:completed_projects].to_i == 1%> onclick="javascript:document.forms[1].submit();"/><%= _'Include completed projects' %>
-  </form>
+    <td style="padding-left:1em;" valign="top">
+      <table width="99%" cellpadding="0" cellspacing="0" class="content">
+	<tr>
+	  <td class="page_header">
+            <%=_ 'Search Results' %>
+	  </td>
+	</tr>
+	<tr><td align="right" style="padding-right:1em;">
+	    <form action="<%=request.url%>" method="post">
+	      <input type="checkbox" name="completed_projects" value="1" <%= "checked=\"checked\"" if session[:completed_projects].to_i == 1%> onclick="javascript:document.forms[1].submit();"/><%= _'Include completed projects' %>
+            </form>
 </td></tr>
 
 <% if @tasks.size > 0 %>
   <tr>
-    <td class="log_header">
-      <%=_ 'Tasks' %>
+    <td>
+      <div class="log_header"><%=_ 'Tasks' %></div>
     </td>
   </tr>
   <tr><td><ul style="padding-left: 0; margin-left:0;" id="search_tasks">
@@ -105,5 +108,6 @@
 <% end %>
 
 
+</table></td></tr>
 
 </table>
