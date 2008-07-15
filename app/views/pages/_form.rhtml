@@ -5,7 +5,7 @@
 <tr><td valign="top">
 
 <!--[form:page]-->
-<p><label for="page_project_id"><%=_ 'Project' %></label>
+<label for="page_project_id"><%=_ 'Project' %></label>
 <select name="page[project_id]" id="page_project_id">
 <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
 <% @clients.each do |c| %>
@@ -18,13 +18,14 @@
     </optgroup>
   <% end %>
 <% end %>
-</select>
-</p>
-<p><label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %></p>
+</select><br/>
 
-<p><label for="page_body"><%=_ 'Body' %></label><%= text_area 'page', 'body'  %></p>
+<label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
+
+<label for="page_body"><%=_ 'Body' %></label><%= text_area 'page', 'body'  %><br/>
 <!--[eoform:page]-->
-<%= submit_tag _("Save"), :class => 'nolabel' %>
+<label>&nbsp;</label>
+<%= submit_tag _("Save"), :class => 'nolabel' %><br/>
 
 <fieldset>
 <legend><%=_ 'Preview' %></legend>

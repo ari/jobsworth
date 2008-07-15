@@ -1,12 +1,16 @@
 <%= error_messages_for 'project' %>
 
 <!--[form:project]-->
-<p><label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %></p>
-<p><label for="project_customer_id"><%=_ 'Client' %></label><%= select 'project', 'customer_id', Customer.find(:all, :order => 'name', :conditions => ["company_id = ?", current_user.company.id ]).collect {|c| [ c.name, c.id ] }  %></p>
-<p><label for="project_name"><%=_ 'Description' %></label><%= text_area 'project', 'description', :rows => 5  %></p>
+<label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %><br/>
+<label for="project_customer_id"><%=_ 'Client' %></label><%= select 'project', 'customer_id', Customer.find(:all, :order => 'name', :conditions => ["company_id = ?", current_user.company.id ]).collect {|c| [ c.name, c.id ] }  %><br/>
+<label for="project_name"><%=_ 'Description' %></label><%= text_area 'project', 'description', :rows => 5  %><br/>
 <% if @project.new_record? && current_user.company.show_forum %>
-<p><label for="project_create_forum" class="tooltip" title="<%=_'Create a private forum for people with access to this project?'%>"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', {:class => 'checkbox tooltip', :title => _('Create a private forum for people with access to this project?')} %></p>
+<label for="project_create_forum" class="tooltip" title="<%=_'Create a private forum for people with access to this project?'%>"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', {:class => 'checkbox tooltip', :title => _('Create a private forum for people with access to this project?')} %><br/>
 <% end %>
+<label>&nbsp;</label>
+<div class="buttons">
+<%= submit_tag (@project.new_record? ? _("Create") : _("Save")), :class => 'nolabel' %>
+</div>
 <br>
 <!--[eoform:project]-->
 

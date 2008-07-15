@@ -5,18 +5,18 @@
 
 <fieldset>
 <legend><%=_ 'Options' %></legend>
-<p><label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %></p>
-<p><label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %></p>
+<label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %><br/>
+<label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %><br/>
 <% if current_user.admin > 0 %>
-<p><label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %></p>
+<label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %><br/>
 <br/>
 <% end %>
 
-<p><label for="user_option_tracktime"><%=_ 'Track Time' %></label><%= check_box 'user', 'option_tracktime' %></p>
-<p><label for="user_option_externalclients"><%=_ 'Use External Clients' %></label><%= check_box 'user', 'option_externalclients' %></p>
-<p><label for="user_option_tooltips"><%=_ 'Show Tooltips' %></label><%= check_box 'user', 'option_tooltips' %></p>
-<p><label for="user_send_notifications"><%=_ 'Send Notifications' %></label><%= check_box 'user', 'send_notifications' %></p>
-<p><label for="user_receive_notifications"><%=_ 'Receive Notifications' %></label><%= check_box 'user', 'receive_notifications' %></p>
+<label for="user_option_tracktime"><%=_ 'Track Time' %></label><%= check_box 'user', 'option_tracktime' %><br/>
+<label for="user_option_externalclients"><%=_ 'Use External Clients' %></label><%= check_box 'user', 'option_externalclients' %><br/>
+<label for="user_option_tooltips"><%=_ 'Show Tooltips' %></label><%= check_box 'user', 'option_tooltips' %><br/>
+<label for="user_send_notifications"><%=_ 'Send Notifications' %></label><%= check_box 'user', 'send_notifications' %><br/>
+<label for="user_receive_notifications"><%=_ 'Receive Notifications' %></label><%= check_box 'user', 'receive_notifications' %><br/>
 </fieldset>
 <br>
 <!--[eoform:user]-->

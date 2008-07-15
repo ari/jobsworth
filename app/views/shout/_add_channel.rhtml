@@ -24,10 +24,13 @@
     </optgroup>
   <% end %>
 <% end %>
-</select>
+</select><br/>
 
     <label for="channel_description"><%=_ 'Description' %></label><%= text_area 'channel', 'description', { :cols => 17, :rows => 4 } %><br />
-<%= submit_tag _("Create"), :style => "clear:left;margin-left:11.6em;" %><div style="float:left;margin-top:0.3em;"> <%= _'or' %> <a href="#" onclick="$('channel-add-container').hide();false;"><%= _'Cancel'%></a></div>
+    <label>&nbsp;</label>
+<%= submit_tag _("Create"), :class => "nolabel" %><div style="float:left;margin-top:0.3em;"> <span class="optional"><%= _'or' %></span> <a href="#" onclick="$('channel-add-container').hide();false;"><%= _'Cancel'%></a></div>
+      <br/>
+      <br/>
   </fieldset>
 <% end %>
   </td>

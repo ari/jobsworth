@@ -3,7 +3,9 @@
 
 <% form_tag( {:action => 'update', :id => @view} ) do  %>
   <%= render :partial => "form" %>
-  <%= submit_tag _("Edit"), :class => "nolabel" %>
-<% end %><br />
+  <label>&nbsp;</label><div class="buttons">
+  <%= submit_tag _("Update"), :class => 'nolabel' %>
+  </div>
+<br /><% end %>
 <%= link_to _("Delete View"), {:controller => 'views', :action => 'destroy', :id => @view}, :confirm => _("Really delete %s?", @view.name) %>
 </fieldset>

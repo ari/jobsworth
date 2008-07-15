@@ -8,7 +8,6 @@
               <legend><%=_ 'Edit Project' %></legend>
               <% form_tag :action => 'update', :id => @project do %>
               <%= render :partial => "form" %>
-              <%= submit_tag _("Save"), :class => 'nolabel' %>
               <% end %>
               <br />
               <% if @project.user_id == current_user.id || current_user.admin > 0%>

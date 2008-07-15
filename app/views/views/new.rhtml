@@ -3,7 +3,9 @@
 
 <% form_tag :action => 'create' do %>
   <%= render :partial => "form" %>
-  <%= submit_tag _("Create"), :class => "nolabel" %>
+  <label>&nbsp;</label><div class="buttons">
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
+  </div>
 <% end %>
 
 </fieldset>

@@ -508,13 +508,24 @@ fieldset input.file {
 }
 
 fieldset input.nolabel {
-  position: relative;
-  clear: both;
-  float: none;
-  margin-left: 11.6em;
+  float: left;
   display: block;
+}
 
-  background-color: #fafafa;
+fieldset div.buttons { 
+  padding-top: 0.5em;
+}
+
+fieldset .buttons input, fieldset .buttons select { 
+  float:left;
+}
+
+input.nolabel:hover {
+  background-color: #ff9900;
+}
+
+input.nolabel { 
+  background-color: #ffc772;
   border-color:#FF9900 #AA6600 #AA6600 #FF9900;
   border-style:solid;
   border-width:1px;
@@ -522,18 +533,18 @@ fieldset input.nolabel {
   cursor:pointer;
   font-family:Tahoma,sans-serif;
   overflow:visible;
-}
-
-fieldset input.nolabel:hover {
-  color: #ff9900;
+  font-size: 0.95em;
+  font-weight: bold;
+  margin-right:0.5em;
+  padding: 2px 4px;
 }
 
 fieldset form br {
-        clear: both;
+  clear: both;
 }
 
 input.button {
- border: none;
+  border: none;
 }
 
 .otheruser {

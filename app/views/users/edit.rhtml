@@ -4,8 +4,8 @@
 <% form_tag :action => 'update', :id => @user do %>
   <%= render :partial => "form" %>
 
-
   <%= submit_tag _("Save"), :class => 'nolabel' %>
+    <br/>
 <% end %>
 
 <% if current_user.admin? %>

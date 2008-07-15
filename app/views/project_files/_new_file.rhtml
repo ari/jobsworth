@@ -5,12 +5,16 @@
      :html => {:multipart => "true", :target => 'up_frame'} ) do |f|
  %>
   <%= render :partial => "form" %>
-  <%= submit_tag _("Upload"), :style => 'margin-left:11.6em;' %>
-    <div style="padding-top:0.2em;"> <%= _("or") %>
-    <%= link_to_function _("Cancel") do |page|
+  <label>&nbsp;</label>
+  <div class="buttons">
+  <%= submit_tag _("Upload"), :class => "nolabel" %>
+    <div style="float:left;padding-top:0.4em;padding-right:0.5em;" class="optional"> <%= _("or") %></div>
+    <div style="float:left;padding-top:0.2em;padding-right:0.5em;"><%= link_to_function _("Cancel") do |page|
           page.hide 'inline_form'
         end
     %></div>
+  </div>
 <% end %>
+<br/>
 <iframe id="up_frame" name="up_frame" style="width:1px;height:1px;border:0;"></iframe>
 </fieldset>
