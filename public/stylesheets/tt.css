@@ -367,8 +367,9 @@ div#loading {
 body > div#loading { position: fixed; }
 
 input:focus, textarea:focus { border: 1px solid #FC0; }
-input, textarea, select {
+input, textarea {
   border: 1px solid #dcdcdc;
+  background-color: #fff;
 /*  background: #FFFFFF url(/images/bg.png) repeat-x 0 0 ; */
 }
 input, textarea {
@@ -520,13 +521,18 @@ fieldset .buttons input, fieldset .buttons select {
   float:left;
 }
 
+fieldset { 
+  padding-bottom: 0.5em;
+ }
+
 input.nolabel:hover {
   background-color: #ff9900;
 }
 
 input.nolabel { 
-  background-color: #ffc772;
-  border-color:#FF9900 #AA6600 #AA6600 #FF9900;
+  background-color: #ffd597;
+
+  border-color:#ff9900;
   border-style:solid;
   border-width:1px;
   color:#333;
@@ -760,16 +766,17 @@ pre.auto_generated {
   border: 2px solid red;
 }
 
-#ErrorExplanation {
+#errorExplanation {
   width: 400px;
   border: 2px solid red;
   padding: 7px;
   padding-bottom: 12px;
   margin-bottom: 20px;
   background-color: #f0f0f0;
+  margin: 1em;
 }
 
-#ErrorExplanation h2 {
+#errorExplanation h2 {
   text-align: left;
   font-weight: bold;
   padding: 5px 5px 5px 15px;
@@ -779,19 +786,19 @@ pre.auto_generated {
   color: #fff;
 }
 
-#ErrorExplanation p {
+#errorExplanation p {
   color: #333;
   margin-bottom: 0;
   padding: 5px;
 }
 
-#ErrorExplanation ul li {
+#errorExplanation ul li {
   font-size: 12px;
   list-style: square;
 }
 
 #content { 
-  padding-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 #content ul
