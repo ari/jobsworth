@@ -11,9 +11,9 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
   end
 
   def changed(update_type, task, user, change, sent_at = Time.now)
@@ -36,9 +36,9 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
   end
 
 
@@ -48,7 +48,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = [user.email]
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -59,7 +59,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -70,7 +70,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -81,7 +81,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = target.email
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
     @headers    = {'Reply-To' => user.email}
 
@@ -93,7 +93,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = from
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
   end
 
@@ -107,7 +107,7 @@ class Notifications < ActionMailer::Base
     @recipients = (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq
     @sent_on    = Time.now
     @headers    = {'Reply-To' => user.email}
-    @from       = "#{$CONFIG[:prefix]} Notification <noreply@#{$CONFIG[:domain]}>"
+    @from       = "#{$CONFIG[:prefix]} Notification <noreply@#{$CONFIG[:email_domain]}>"
   end
 
 end
