@@ -314,3 +314,12 @@ function closeChat(el) {
   Element.remove(el);
 }
 
+function addMilestone() {
+  var val = $('task_project_id').value;
+  var popup = window.open("/milestones/quick_new?project_id=" + val, 'NewMilestone', 'height=320,width=550,toolbar=0,location=0,status=0,menubar=0');
+  popup.focus();
+}
+
+function refreshMilestones(pid,mid) {
+  new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');$('task_milestone_id').value=mid;}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + pid, insertion: updateSelect });
+}

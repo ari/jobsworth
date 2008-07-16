@@ -194,7 +194,15 @@ class TasksController < ApplicationController
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
     res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
     res << ']}'
-    render :text => res
+  
+    p = current_user.projects.find(params[:project_id]) rescue nil
+    script = ""
+    if p && current_user.can?(p, 'milestone')
+      script = "\n<script type=\"text/javascript\">$('add_milestone').show();</script>"
+    else 
+      script = "\n<script type=\"text/javascript\">$('add_milestone').hide();</script>"
+    end 
+    render :text => "#{res}#{script}"
   end
 
   def dependency_targets

@@ -18,6 +18,12 @@ class MilestonesController < ApplicationController
     @milestone.project_id = params[:project_id]
   end
 
+  def quick_new
+    self.new
+    @popup = true
+    render :action => 'new', :layout => 'popup'
+  end 
+
   def create
     params_milestone = params[:milestone]
 
@@ -36,8 +42,15 @@ class MilestonesController < ApplicationController
     @milestone.company_id = current_user.company_id
 
     if @milestone.save
-      flash[:notice] = _('Milestone was successfully created.')
-      redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
+      unless request.xhr?
+        flash[:notice] = _('Milestone was successfully created.')
+        redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
+      else 
+        render :update do |page|
+          page << "window.opener.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
+          page << "window.close();"
+        end 
+      end 
       Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date) rescue nil
     else
       render :action => 'new'

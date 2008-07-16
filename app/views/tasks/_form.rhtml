@@ -124,12 +124,18 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 //]]>
 </script>
 
+	  <div>
           <label for="task_milestone_id"><%=_ 'Milestone' %></label>
           <% unless @task.id.nil? %>
-            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
+            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %>
           <% else %>
-            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
+            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %>
           <% end %>
+          <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
+	  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
+	  <% end %>
+	  </div>
+	  <br/>
 
 <%
 
@@ -147,7 +153,7 @@ unless @task.users.empty?
     owner_string <<  "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'") + "</select>" #, perms['reassign'] )
 
     if( perms['reassign'].keys.size == 0 )
-      owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num == 0
+      owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a>" if num == 0
       owner_string << "<a href=\"#\" onclick=\"javascript:new Element.remove('owner_#{num}');return false;\"><img src=\"/images/user_delete.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num != 0
     end
     owner_string << "</div>"
@@ -160,7 +166,7 @@ else
 
   if perms['reassign'].keys.size == 0
     owner_string = "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>#{owner_string}"
-    owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a></div>"
+    owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a></div>"
   end
   num = num + 1
 end
