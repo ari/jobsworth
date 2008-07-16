@@ -7,5 +7,10 @@ page.replace_html "shortlist-legend", :partial => "tasks/short_legend"
 page.call "fixShortLinks"
 page << "}"
 
+
+page << "if($('work-log') && $('work-log').visible ) {"
+page['work-log'].hide
+page << "}"
+
 page.call "UpdateDnD"
 

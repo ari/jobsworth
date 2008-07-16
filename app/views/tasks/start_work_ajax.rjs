@@ -13,6 +13,7 @@ else
 
   page << "if($('work-log')) {"
   page << "$('worklog_body').clear();"
+  page << "$('worklog-saved').innerHTML = '';"
   page << "if(! $('work-log').visible() ) {"
   page << "$('work-log').show();"
   page << "}"

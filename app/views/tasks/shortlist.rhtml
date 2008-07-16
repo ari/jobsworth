@@ -29,6 +29,13 @@
     </select>
     </div>
     <% end %>
+    <div <%= "style=\"display:none;\"" if @current_sheet.nil? %> id="work-log">
+        <div class="log_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
+        <form method="post" onsubmit="return false;" id="worklog_form">
+	  <textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea>
+	</form>
+	<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
+    </div>
     <div id="shortlist-tasks">
     <% @tasks.each do |task| -%>
       <%= render :partial => 'task_row', :locals => {:task => task, :override_filter => false} -%>
@@ -56,6 +63,7 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
 fixShortLinks();
+if($('task_name')) {
 Element.observe('task_name', 'focus', function(e) {
   var el = Event.element(e);
   if(el.value == '<%= _'New Task' %>') {
@@ -63,7 +71,10 @@ Element.observe('task_name', 'focus', function(e) {
     el.removeClassName('initial');
   }
 });
+}
 
+
+if($('project_name')) {
 Element.observe('project_name', 'focus', function(e) {
   var el = Event.element(e);
   if(el.value == '<%= _'New Project' %>') {
@@ -71,16 +82,21 @@ Element.observe('project_name', 'focus', function(e) {
     el.removeClassName('initial');
   }
 });
+}
 
 Event.observe(window, "load", function(e) {
   var el = $('task_name');
-  if( el.value == '<%= _'New Task' %>') {
+  if( el && el.value == '<%= _'New Task' %>') {
     el.addClassName('initial');
   }
   el = $('project_name');
-  if( el.value == '<%= _'New Project' %>') {
+  if( el && el.value == '<%= _'New Project' %>') {
     el.addClassName('initial');
   }
+
+  new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});
+
+
 });
 
 // ]]>
