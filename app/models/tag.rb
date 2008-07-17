@@ -25,7 +25,7 @@ class Tag < ActiveRecord::Base
 
     sql = "SELECT count(tasks.*) from task_tags, tasks, tags WHERE task_tags.tag_id=tags.id AND tasks.id = task_tags.task_id"
     sql << " AND (" + tags.collect { |t| ["tags.name='#{t.downcase.strip}'"] }.join(" OR ") + ")"
-    sql << " AND tasks.company_id=#{session[:company].id}"
+    sql << " AND tasks.company_id=#{current_user.company_id}"
     sql << " GROUP BY tasks.id"
     sql << " HAVING COUNT(tasks.id) = #{tags.size}"
 
