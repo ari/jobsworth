@@ -41,8 +41,8 @@
 
 		  <% end %>
 
-		  <%= observe_field( 'company', { :url => { :action => 'company_check'}, :update => 'company_check', :with => 'company' , :on => 'blur'} ) %>
-		  <%= observe_field( 'subdomain', { :url => { :action => 'subdomain_check'}, :update => 'subdomain_check', :with => 'subdomain', :on => 'blur' } ) %>
+		  <%= observe_field( 'company', { :url => { :action => 'company_check'}, :update => 'company_check', :with => 'company', :frequency => 0.5 } ) %>
+		  <%= observe_field( 'subdomain', { :url => { :action => 'subdomain_check'}, :update => 'subdomain_check', :with => 'subdomain', :frequency => 0.5 } ) %>
 
 		  <br />
 		  <p>When you've registered your account, you can add co-workers to your company from the <em>users</em> page.</p>
