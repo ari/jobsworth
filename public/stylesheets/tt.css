@@ -2305,3 +2305,6 @@ a.widget-collapsed {
 .presence-info-mine { 
  }
 
+.delete { 
+  color: #ff6666;
+}

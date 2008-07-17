@@ -8,11 +8,11 @@ class Company < ActiveRecord::Base
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => 'name'
   has_many      :tasks
-  has_many      :pages
+  has_many      :pages, :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
-  has_many      :tags, :dependent => :destroy
+  has_many      :tags, :dependent => :destroy, :order => 'name'
 
 
 

@@ -1777,4 +1777,20 @@ class TasksController < ApplicationController
     end
   end
 
+  def tags
+    @tags = current_user.company.tags
+  end 
+
+  def delete_tag
+    tag = current_user.company.tags.find(params[:id]) rescue nil
+    if tag
+      tag.destroy
+      render :update do |page|
+        page.remove tag.dom_id
+      end 
+    else 
+      render :nothing => true
+    end 
+  end 
+
 end
