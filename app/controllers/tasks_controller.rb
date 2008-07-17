@@ -134,7 +134,17 @@ class TasksController < ApplicationController
       items = projects.collect(&:full_name).sort
       @groups = Task.group_by(@tasks, items) { |t,i| t.project.full_name == i }
     elsif session[:group_by].to_i == 4 # Milestones
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
+      filter = ""
+      if session[:filter_milestone].to_i > 0
+        m = Milestone.find(session[:filter_milestone], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name") rescue nil
+        filter = " AND project_id = #{m.project_id}" if m
+      elsif session[:filter_project].to_i > 0
+        filter = " AND project_id = #{session[:filter_project]}"
+      elsif session[:filter_customer].to_i > 0
+        pids = current_user.company.customers.find(session[:filter_customer]).projects.collect{|p| p.id}.join(',') rescue '0'
+        filter = " AND project_id IN (#{pids})"
+      end
+      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})#{filter} AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
       milestones.each { |m| @group_ids[m.name + " / " + m.project.name] = m.id }
       @group_ids['Unassigned'] = 0
       items = ["Unassigned"] +  milestones.collect{ |m| m.name + " / " + m.project.name }
