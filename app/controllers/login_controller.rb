@@ -218,15 +218,12 @@ class LoginController < ApplicationController
     if params[:company].length == 0
       flash[:notice] += "* Enter your company name<br/>"
       error = 1
-    elsif Company.count( :conditions => ["name = ?", params[:company]]) > 0
-      flash[:notice] += "* Company name taken. If someone at your company is using Clocking IT, have them create an account for you so you end up in the same company.<br/>"
-      error = 1
     end
 
     if params[:subdomain].length == 0
       flash[:notice] += "* Enter your preferred URL for company access<br/>"
       error = 1
-    elsif params[:subdomain].match(/[\W _]/) != nil
+    elsif params[:subdomain].match(/[\W _\.]/) != nil
       flash[:notice] += "* Login URL can only contain letters and numbers, no spaces."
       error = 1
     elsif Company.count( :conditions => ["subdomain = ?", params[:subdomain]]) > 0
@@ -277,20 +274,20 @@ class LoginController < ApplicationController
 
   def company_check
     if params[:company].blank?
-      render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
+      render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a name.</small>"
     else
       companies = Company.count( :conditions => ["name = ?", params[:company]])
       if companies > 0
-        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name already taken, have someone from that company create your account, or choose a different name.</small>"
+        render :text => "<img src=\"/images/error.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Company name already esists. Do you really want to create a duplicate company?</small>"
       else
-        render :inline => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name OK</small>"
+        render :text => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Name OK</small>"
       end
     end
   end
 
   def subdomain_check
     if params[:subdomain].nil? || params[:subdomain].empty?
-      render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
+      render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
     else
       subdomain = Company.count( :conditions => ["subdomain = ?", params[:subdomain]])
       if %w( www forum wiki repo mail ftp static01 ).include?( params[:subdomain].downcase )
@@ -298,12 +295,12 @@ class LoginController < ApplicationController
       end
 
       if params[:subdomain].match(/[\W _]/) != nil
-        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters and numbers, no spaces.</small>"
+        render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters and numbers, no spaces.</small>"
 
       elsif subdomain > 0
-        render :inline => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain already taken, choose a different one.</small>"
+        render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain already in use, please choose a different one.</small>"
       else
-        render :inline => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain OK</small>"
+        render :text => "<img src=\"/images/accept.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain OK</small>"
       end
     end
   end
