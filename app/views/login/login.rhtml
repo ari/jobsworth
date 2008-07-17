@@ -54,11 +54,6 @@ input, textarea, select { border: 1px solid #AAA; }
   color: #999;
 }
 
-<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", @company.name, @company.id]) %>
-<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-<%= @internal.css %>
-<% end %>
-
 body {
   background: none;
   background-color: #F8F4EE;
@@ -85,6 +80,11 @@ label {
 #notice {
   color: #000;
 }
+
+<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", @company.name, @company.id]) %>
+<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
+<%= @internal.css %>
+<% end %>
 
 </style>
 
@@ -213,7 +213,7 @@ document.forms[0].username.focus();
 	      </td>
               <td valign="top" style="background-color:#FCFCFC;"><p class="text_black" align="center">Announcements</p>
                 <ul>
-		  <% NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3).each do |news| %>
+		  <% @news.each do |news| %>
                   <li><%= news.body %></li>
 		  <% end %>
                 </ul>

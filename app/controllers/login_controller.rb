@@ -10,6 +10,8 @@ class LoginController < ApplicationController
   def index
     @user = User.new
     render :action => 'login'
+
+    @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
   end
 
   def screenshots
@@ -25,6 +27,7 @@ class LoginController < ApplicationController
   end
 
   def login
+
     subdomain = 'www'
     subdomain = request.subdomains.first if request.subdomains
     if session[:user_id]
@@ -39,6 +42,7 @@ class LoginController < ApplicationController
         end
       end
     end   
+    @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
   end
 
   def logout
