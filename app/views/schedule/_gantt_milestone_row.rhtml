@@ -1,7 +1,7 @@
 <tr style="background-color:#eee;">
     <td style="height:20px;vertical-align:top;" nowrap><div style="width:200px;overflow:hidden;font-weight:bold;"><img src="/images/bullet_black.png" /><%= link_to_milestone(@t.milestone) %> [<%= @t.project.name %>]</div></td>
-    <td width="1%" style="text-align:right;padding-right:0.5em;font-weight:bold;"><%= worked_nice(@t.milestone.worked_minutes)%></td>
-    <td id="duration-<%=@t.milestone.dom_id%>" width="1%" style="text-align:right;font-weight:bold;"><%= worked_nice(@t.milestone.duration)%></td>
+    <td width="1%" style="text-align:right;padding-right:0.5em;font-weight:bold;white-space:nowrap;" nowrap><%= worked_nice(@t.milestone.worked_minutes)%></td>
+    <td id="duration-<%=@t.milestone.dom_id%>" width="1%" style="text-align:right;font-weight:bold;white-space:nowrap;" nowrap><%= worked_nice(@t.milestone.duration)%></td>
     <td style="padding-left:0.5em;text-align:right;">
 	<% if current_user.can?(@t.project,'milestone')%>
 	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.milestone.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.milestone.scheduled_date.strftime(current_user.date_format) if @t.milestone.scheduled_date %>" />
