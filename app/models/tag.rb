@@ -3,12 +3,6 @@ class Tag < ActiveRecord::Base
   belongs_to :company
   has_and_belongs_to_many      :tasks, :join_table => :task_tags
 
-
-  def exists?
-    tag = Tag.find(:first, :conditions => ["company_id = ? AND name = ?", self.company_id, self.name])
-    !tag.nil?
-  end
-
   def count
     tasks.count(:conditions => "tasks.completed_at IS NULL")
   end

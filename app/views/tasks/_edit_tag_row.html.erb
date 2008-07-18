@@ -1,0 +1,40 @@
+	      <div class="hoverrow" id="<%=@tag.dom_id%>" style="margin-bottom:0.3em;">
+		<div id="link-<%=@tag.dom_id%>" style="padding-left:1em;padding-right:1em;float:left;"><% if @tag.count > 0 %><span class="tag_active"><% end %><a href="/tasks/list?tag=<%=URI.encode(@tag.name)%>"><%= @tag.name %></a><% if @tag.count > 0 %></span><% end %>
+                    <br/>
+		    <small>(<%= _("%d open / %d tasks", @tag.count, @tag.total_count) %>)</small>
+                </div>
+		<div id="edit-<%=@tag.dom_id%>" style="padding-left:1em;padding-right:1em;float:left;display:none;"><input type="text" name="tag-name" id="value-<%=@tag.dom_id%>" value="<%=@tag.name%>"></div>
+                <div style="float:right;">
+		    <small>
+		      <span id="edit-link-<%=@tag.dom_id%>">
+                      <%= link_to_function _("Edit"), { :class => 'delete' } do |page|
+                                  page["link-#{@tag.dom_id}"].hide
+                                  page["edit-#{@tag.dom_id}"].show
+                                  page["edit-link-#{@tag.dom_id}"].hide
+                                  page["save-link-#{@tag.dom_id}"].show
+                               end 
+                      %> | 
+		      <%= link_to_remote _("Delete"), {
+                      :url => { :controller => 'tasks', :action => 'delete_tag', :id => @tag },
+                      :loading => "Element.show('loading');",
+                      :complete => "Element.hide('loading');",
+                      :confirm => _("Really delete tag?") },
+                      { :class => 'delete' }
+                      %></span>
+		      <span id="save-link-<%=@tag.dom_id%>" style="display:none;">
+		      <%= link_to_function _("Save") do |page|
+                        page << "new Ajax.Request('/tasks/save_tag/#{@tag.id}', {asynchronous:true, evalScripts:true, parameters: $('value-#{@tag.dom_id}').serialize() });"
+                          end
+                      %> |
+                      <%= link_to_function _("Cancel") do |page|
+                                  page["link-#{@tag.dom_id}"].show
+                                  page["edit-#{@tag.dom_id}"].hide
+                                  page["edit-link-#{@tag.dom_id}"].show
+                                  page["save-link-#{@tag.dom_id}"].hide
+                               end 
+                      %>
+                     </span>
+		    </small> 
+                </div>
+		<div style="clear:both;" class="hoverrow"></div>
+	      </div>

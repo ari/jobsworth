@@ -1793,4 +1793,32 @@ class TasksController < ApplicationController
     end 
   end 
 
+  def save_tag
+    @tag = current_user.company.tags.find(params[:id]) rescue nil
+    if @tag && !params['tag-name'].blank?
+      if Tag.exists?(:company_id => current_user.company_id, :name => params['tag-name'])
+        
+        @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
+        @tag.tasks.each do |t|
+          @existing.tasks << t
+        end 
+        @tag.destroy
+
+        render :update do |page|
+          page[@tag.dom_id].remove
+          @tag = @existing
+          page[@tag.dom_id].replace :partial => 'edit_tag_row'
+        end 
+        
+      else 
+        @tag.name = params['tag-name']
+        @tag.save
+        render :update do |page|
+          page[@tag.dom_id].replace :partial => 'edit_tag_row'
+        end 
+      end 
+    else 
+      render :nothing => true
+    end 
+  end 
 end
