@@ -98,8 +98,8 @@ Object.extend(Xilinus.Widget.prototype, {
   updateHeight: function() {
     $(this._contentDiv).setStyle({height: null});
 
-      //    var h = $(this._contentDiv).getHeight();
-      //    $(this._contentDiv).setStyle({height: h + "px"})
+//    var h = $(this._contentDiv).getHeight();
+//    $(this._contentDiv).setStyle({height: h + "px"});
   },
 
   // PRIVATE FUNCTIONS
@@ -131,7 +131,7 @@ Object.extend(Xilinus.Portal.prototype, {
                                                                    accept: this.options.accept});}.bind(this));
     this._outTimer  = null;
 
-    // Draggable calls makePositioned for IE fix (??), I had to remove it for all browsers fix :) to handle properly zIndex
+      // Draggable calls makePositioned for IE fix (??), I had to remove it for all browsers fix :) to handle properly zIndex
     this._columns.invoke("undoPositioned");
 
     this._currentOverWidget = null;
@@ -277,9 +277,10 @@ Object.extend(Xilinus.Portal.prototype, {
   },
 
   endDrag: function(eventName, draggable) {
-    $('left_col').setStyle({width: null, border: null});
-    $('right_col').setStyle({width: null, border: null});
-    $('bottom_col').setStyle({border: null});
+
+    $('left_col').setStyle({width: null, border: ""});
+    $('right_col').setStyle({width: null, border: ""});
+    $('bottom_col').setStyle({border: ""});
 
     var widget = draggable.element;
     if (!this._widgets.find(function(w) {return w == widget.widget;}))
