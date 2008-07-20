@@ -153,7 +153,7 @@ Object.extend(Xilinus.Portal.prototype, {
 
     // Make header draggable
     if (draggable) {
-      widget.draggable = new Draggable(widget.getElement(),{ handle: widget._titleDiv, revert: false});
+      widget.draggable = new Draggable(widget.getElement(),{ handle: widget._titleDiv, revert: false, delay: 200});
       widget.getTitle().addClassName("widget_draggable");
     }
 
@@ -168,6 +168,7 @@ Object.extend(Xilinus.Portal.prototype, {
 
     widget.getElement().undoPositioned();
     widget.getTitle().undoPositioned();
+
 
   },
 
