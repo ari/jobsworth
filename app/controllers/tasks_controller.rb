@@ -270,7 +270,10 @@ class TasksController < ApplicationController
 
   def create
 
-    @task = Task.new(params[:task])
+    tags = params[:task][:set_tags]
+    params[:task][:set_tags] = nil
+
+    @task = current_user.company.tasks.new(params[:task])
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
@@ -293,8 +296,8 @@ class TasksController < ApplicationController
     @task.company_id = current_user.company_id
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
-    @task.duration = parse_time(params[:task][:duration], true)  if params[:task]
-    @task.set_tags(params[:task][:set_tags]) if params[:task]
+    @task.duration = parse_time(params[:task][:duration], true) 
+    @task.set_tags(tags) 
     @task.set_task_num(current_user.company_id)
     @task.duration = 0 if @task.duration.nil?
 

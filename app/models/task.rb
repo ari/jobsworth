@@ -433,21 +433,16 @@ class Task < ActiveRecord::Base
   end
 
   def set_tags( tagstring )
+    return false unless tagstring
     self.tags.clear
     tagstring.split(',').each do |t|
-      tag = Tag.new
-      tag.company_id = self.company_id
-      tag.name = t.downcase.strip
+      tag_name = t.downcase.strip
 
-      if tag.name.length == 0
+      if tag_name.length == 0
         next
       end
 
-      unless tag.exists?
-        tag.save
-      else
-        tag = Tag.find(:first, :conditions => ["company_id = ? AND name = ?", tag.company_id, tag.name])
-      end
+      tag = Company.find(self.company_id).tags.find_or_create_by_name(tag_name)
       self.tags << tag unless self.tags.include?(tag)
     end
     true
