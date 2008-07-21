@@ -33,7 +33,7 @@
             selected_project = current_user.projects.find(:first, :order => 'name').id
          end
 
-         @project = current_user.projects.find(selected_project) rescue current_user.projects.find(:first,:order => 'name').id end
+         @project = current_user.projects.find(selected_project) rescue current_user.projects.find(:first,:order => 'name').id 
 	 selected_project = @project.id
 
 
