@@ -32,6 +32,11 @@
          else
             selected_project = current_user.projects.find(:first, :order => 'name').id
          end
+
+         @project = current_user.projects.find(selected_project) rescue current_user.projects.find(:first,:order => 'name').id end
+	 selected_project = @project.id
+
+
       %>
       <label for="task_project_id"><%=_ 'Project' %></label><br />
       <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
