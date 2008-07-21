@@ -1617,7 +1617,7 @@ li.help {
 }
 
 .folder-active {
-  background-color: #fff2d4;
+  background-color: #fff2d4 !IMPORTANT;
 }
 
 .file_cell {
@@ -1627,7 +1627,7 @@ li.help {
   text-align: center;
   width: 200px;
   height: 200px;
-  background-color: #fff;
+  background: #fff;
  }
 
 .file_cell:hover {
