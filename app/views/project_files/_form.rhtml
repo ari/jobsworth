@@ -1,14 +1,14 @@
 
 <!--[form:project_files]-->
 <% if @file.project_id.nil? %>
-<p><label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %></p>
+<label for="file_project_id"><%=_ 'Project' %></label><%= select 'file', 'project_id', current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ c.name, c.id ] } %><br/>
 <% else %>
 <%= hidden_field 'file', 'project_id' %>
 <% end %>
 
-<p><label for="file_name"><%=_ 'Name' %></label><%= text_field 'file', 'name'  %></p>
-<p><label for="file_file"><%=_ 'File', 1 %></label><%= file_field 'file', 'tmp_file' %></p>
+<label for="file_name"><%=_ 'Name' %></label><%= text_field 'file', 'name'  %><br />
+<label for="file_file"><%=_ 'File', 1 %></label><%= file_field 'file', 'tmp_file' %><br />
+
 <%= hidden_field 'file', 'project_folder_id' %>
-<br>
 <!--[eoform:project_files]-->
 

@@ -2,7 +2,7 @@ class Notifications < ActionMailer::Base
 
   def created(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
-    @subject    = "#{$CONFIG[:prefix]} Created: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? 'Unassigned' : task.users.collect{|u| u.name}.join(', '))})"
+    @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
@@ -11,9 +11,9 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
   end
 
   def changed(update_type, task, user, change, sent_at = Time.now)
@@ -36,19 +36,19 @@ class Notifications < ActionMailer::Base
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
     @recipients.uniq!
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:domain]}"}
+    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
   end
 
 
   def reminder(tasks, tasks_tomorrow, tasks_overdue, user, sent_at = Time.now)
     @body       = {:tasks => tasks, :tasks_tomorrow => tasks_tomorrow, :tasks_overdue => tasks_overdue, :user => user}
-    @subject    = "#{$CONFIG[:prefix]} Tasks due"
+    @subject    = "#{$CONFIG[:prefix]} #{_('Tasks due')}"
 
     @recipients = [user.email]
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -59,7 +59,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -70,7 +70,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -81,7 +81,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = target.email
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
     @headers    = {'Reply-To' => user.email}
 
@@ -93,21 +93,21 @@ class Notifications < ActionMailer::Base
 
     @recipients = from
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
   end
 
   def milestone_changed(user, milestone, action, due_date = nil, old_name = nil)
     @body       = { :user => user, :milestone => milestone, :action => action, :due_date => due_date, :old_name => old_name }
     if old_name.nil?
-      @subject    = "#{$CONFIG[:prefix]} Milestone #{action}: #{milestone.name} [#{milestone.project.name}]"
+      @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.name}]"
     else 
-      @subject    = "#{$CONFIG[:prefix]} Milestone #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.name}]"
+      @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.name}]"
     end
     @recipients = (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq
     @sent_on    = Time.now
     @headers    = {'Reply-To' => user.email}
-    @from       = "#{$CONFIG[:prefix]} Notification <noreply@#{$CONFIG[:domain]}>"
+    @from       = "#{$CONFIG[:prefix]} Notification <noreply@#{$CONFIG[:email_domain]}>"
   end
 
 end

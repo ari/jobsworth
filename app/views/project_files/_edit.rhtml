@@ -5,11 +5,13 @@
                                    :loading => "Element.show('loading');",
                                    :complete => "Element.hide('loading');" do  %>
   <%= render :partial => "form_edit" %>
-  <%= submit_tag _("Update"), :style => 'margin-left:11.6em;' %>
-    <div style="padding-top:0.2em;"> <%= _("or") %>
+  <label>&nbsp;</label><div class="buttons">
+  <%= submit_tag _("Update"), :class => 'nolabel' %>
+    <div style="padding-top:0.2em;"><span class="optional"> <%= _("or") %> </span>
     <%= link_to_function _("Cancel") do |page|
           page.hide 'inline_form'
         end
     %></div>
+  </div>
 <% end %>
 </fieldset>

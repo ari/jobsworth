@@ -24,11 +24,53 @@
         <%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
         <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
         <label for="task_description"><%=_ 'Description' %></label>
-        <%= text_area 'task', 'description', { :rows => 20, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
+        <%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
         <label for="comment"><%=_ 'Comment' %></label>
-        <%= text_area_tag 'comment', {}, { :rows => 10, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
+        <%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
         <label for="task_tmp_file"><%=_ 'Attach file' %></label>
         <%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
+	<label>&nbsp;</label>
+	<div class="buttons">
+	<% if @task.new_record? %>
+        <%= submit_tag _("Create"), :class => "nolabel" %>
+        <%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><div style="padding-top:0.2em;padding-left:0.2em;float:left;"><%=_ 'Send notification emails' %></div>
+	<% else %>
+        <%= submit_tag _("Save"), :class => "nolabel" %> <span class="optional" style="float:left;padding-right:0.4em;padding-top:0.4em"><%=_ 'and' %> </span>
+	<div style="float:left;">
+        <%
+ options = []
+ options << [_("Leave Open"), 0] if @task.status == 0
+ options << [_("Revert to Open"), 0] if @task.status != 0
+ options << [_("Set in Progress"), 1] if @task.status == 0
+ options << [_("Leave as in Progress"), 1] if @task.status == 1
+ options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
+ options << [_("Leave Closed"), 2] if @task.status == 2
+ options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Won't Fix"), 3] if @task.status == 3
+ options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Invalid"), 4] if @task.status == 4
+ options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
+ options << [_("Leave as Duplicate"), 5] if @task.status == 5
+ options << [_("Wait"), 6] if @task.status < 2
+
+ can_close = {:disabled => "disabled"} unless current_user.can?( @task.project, 'close' )
+ can_close ||= {}
+
+ defer_options = []
+ defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
+ defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
+ defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
+ defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
+ defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
+ defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
+
+%>
+
+<%= select 'task', 'status', options, {:selected => @task.status}, can_close %> <div id="defer_options" style="display:none;float:left;"><div style="float:left;padding-right:0.5em;padding-top:0.3em;"><%= _("until") %></div><%= select 'task', 'hide_until', defer_options %></div>
+<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><div style="padding-top:0.2em;padding-left:0.2em;float:left;"><%=_ 'Send notification emails' %></div>
+	</div>
+        <% end %>
+	</div>
       </fieldset>
 <% unless @tags.nil? %>
 <script type="text/javascript">
@@ -82,16 +124,22 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 //]]>
 </script>
 
+	  <div>
           <label for="task_milestone_id"><%=_ 'Milestone' %></label>
           <% unless @task.id.nil? %>
-            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %><br/>
+            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %>
           <% else %>
-            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %><br/>
+            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %>
           <% end %>
+          <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
+	  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
+	  <% end %>
+	  </div>
+	  <br/>
 
 <%
 
-users = Project.find(selected_project).users.find(:all, :order => 'name' )
+users = Project.find(selected_project).users.find(:all, :order => 'name' ) rescue [] 
 
 resource_string = "<select id=\"task_users\" name=\"users[]\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('') + "</select>"
 resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
@@ -105,7 +153,7 @@ unless @task.users.empty?
     owner_string <<  "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'") + "</select>" #, perms['reassign'] )
 
     if( perms['reassign'].keys.size == 0 )
-      owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num == 0
+      owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a>" if num == 0
       owner_string << "<a href=\"#\" onclick=\"javascript:new Element.remove('owner_#{num}');return false;\"><img src=\"/images/user_delete.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num != 0
     end
     owner_string << "</div>"
@@ -118,7 +166,7 @@ else
 
   if perms['reassign'].keys.size == 0
     owner_string = "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>#{owner_string}"
-    owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a></div>"
+    owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a></div>"
   end
   num = num + 1
 end

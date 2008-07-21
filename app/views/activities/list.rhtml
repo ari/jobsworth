@@ -44,7 +44,7 @@ portal.add(widget, <%=@widget.column%>);
 <%= "$('content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
 <% end %>
 <% (current_user.widgets.select{|w| !w.collapsed?} + current_user.widgets.select{|w| w.collapsed?} ).each do |@widget| %>
-new Ajax.Request('/widgets/show/<%=@widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});
+new Ajax.Request('/widgets/show/<%=@widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){portal.refreshHeights();} });
 <% end %>
 // ]]>
 </script>

@@ -1,11 +1,13 @@
 module Misc
 
-  defaults = { :domain => "clockingit.com", :replyto => "admin", :from => "admin", :prefix => "[ClockingIT" }
+  defaults = { :domain => "clockingit.com", :replyto => "admin", :from => "admin", :prefix => "[ClockingIT]" }
   
   $CONFIG ||= { }
   defaults.keys.each do |k|
     $CONFIG[k] ||= defaults[k]
   end
+
+  $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
 
   # Format minutes => <tt>1w 2d 3h 3m</tt>
   def format_duration(minutes, duration_format, day_duration, days_per_week = 5)

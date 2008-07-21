@@ -10,13 +10,15 @@ def self.config
 end
 
 def self.send(data,chan = ["default"])
+  begin
     @socket = TCPSocket.new(FS_APP_CONFIG["PUSH_HOST"], FS_APP_CONFIG["PUSH_PORT"])
-    fc = { :message => Base64.encode64(data).gsub(/\n/,''), :secret => FS_APP_CONFIG["PUSH_SECRET"], :broadcast => 1, :channels => chan}
+    fc = { :message => data, :secret => FS_APP_CONFIG["PUSH_SECRET"], :broadcast => 1, :channels => chan}
     @socket.print fc.to_json + "\0"
     @socket.flush
-    @socket.close
- rescue
-    false
+  rescue
+  ensure
+    @socket.close if @socket and !@socket.closed?
+  end 
 end
 
     def self.html_escape(s)

@@ -15,9 +15,9 @@ module TasksHelper
     filters = []
     title = "<div style=\"float:left\">"
     if session[:filter_status].to_i >= 0
-      title << Task.status_types[session[:filter_status].to_i] + " tasks ["
+      title << " #{_'%s tasks', Task.status_types[session[:filter_status].to_i]} ["
     else
-      title << "Tasks ["
+      title << "#{_'Tasks'} ["
     end
 
     if session[:filter_customer].to_i > 0

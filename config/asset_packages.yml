@@ -6,7 +6,6 @@ javascripts:
   - dragdrop
   - controls
   - application
-  - rounder
   - calendar
   - calendar-en
   - calendar-setup

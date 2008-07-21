@@ -1,7 +1,7 @@
 <table width="100%" cellpadding="0" cellspacing="0" id="content">
   <tr>
     <td style="padding-left: 1em;" valign="top">
-      <table cellpadding=0 width="99%" cellspacing="0" class="content">
+      <table cellpadding="0" width="99%" cellspacing="0" class="content">
         <tr>
           <td align="left" class="page_header">
             <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
@@ -42,10 +42,9 @@
             filter_count = 0
             if session[:view].nil?
             %>
-            <fieldset style="padding-bottom:0.2em;margin-bottom:1em;"><legend>Filter</legend>
-	      <form action="/tasks/filter" method="post">
-
-            <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
+            <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;"><legend><%= _'Filter'%></legend>
+	    <form action="/tasks/filter" method="post" style="margin:0;padding:0;">
+              <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 
                 <% @clients.each do |c| %>
@@ -65,7 +64,6 @@
                   <% end -%>
                 <% end %>
             </select>
-
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[Any User]") %></option>
               <%= options_for_select @users, session[:filter_user] %>
@@ -125,8 +123,8 @@
             %>
             <div style="float:right;">
             <small>
-            <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');">Organize Tasks</a>
-            <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});">Organizing Done</a>
+            <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
+            <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
             </small>
             </div>
             <%   end
@@ -145,8 +143,9 @@
     <td valign="top" style="padding-right:0.5em;" id="tags">
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
-          <td align="right" class="page_header" style="padding-left:0;padding-right:1em;">
-            <%=_ 'Tags' %>
+          <td align="right" class="page_header" style="padding-left:1em;padding-right:1em;">
+            <div style="float:right;"><%=_ 'Tags' %></div>
+	    <% if current_user.admin? %><div style="float:left;"><a href="/tasks/tags">Edit</a></div><% end %>
           </td>
         </tr>
       <% unless @selected_tags.empty? %>

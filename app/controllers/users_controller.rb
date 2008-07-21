@@ -16,6 +16,12 @@ class UsersController < ApplicationController
   end
 
   def new
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
     @user = User.new
     @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
@@ -25,6 +31,12 @@ class UsersController < ApplicationController
   end
 
   def create
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return
+    end
+
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id
     @user.date_format = "%d/%m/%Y"
@@ -33,7 +45,7 @@ class UsersController < ApplicationController
     if @user.save
       flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
       Signup::deliver_account_created(@user, current_user, params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
-      redirect_to :action => 'list'
+      redirect_to :action => 'edit', :id => @user
     else
       render :action => 'new'
     end

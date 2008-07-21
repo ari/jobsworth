@@ -18,11 +18,11 @@
 <%= "<a href=\"/project_files/show/#{log.target_id}\" title=\"<img src=/project_files/thumbnail/#{log.target_id}>\" class=\"tooltip\">#{log.target.full_name}</a>" %>
 <%= "]" if log.target.task %>
 <% end %>
-    <%= "<br/>" if((log.target.respond_to?(:user) && log.target.user) || (log.target.respond_to?(:task) && log.target.task) ) %>
+    <%= "<br/>" if(log.user || (log.target.respond_to?(:task) && log.target.task) ) %>
     <%= "<span class=\"optional\">#{log.target.task.full_name}</span> " if( log.target.respond_to?(:task) && log.target.task )%>
-    <%= "<small><span class=\"otheruser\">[#{log.target.user.name}]</span></small>" if log.target.respond_to?(:user) && log.target.user %>
+    <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
   </strong></div>
-  <div style="float:right;"><%= avatar_for log.target.user, 25 if log.target.respond_to?(:user) && log.target.user %></div>
+  <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
   <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
 <% if log.target.is_a?(Post) && log.target.body && log.target.body.length > 0 %>
 <%= wrap_text(log.target.body, 100).gsub(/\n/, "<br>")  %>

@@ -5,107 +5,30 @@ require 'rubygems'
 missing_dep = false
 missing_deps = []
 
+deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'RedCloth', 'rake' => 'rake', 'ferret' => 'ferret', 
+  'fastercsv' => 'fastercsv', 'eventmachine' => 'eventmachine',  'RMagick' => 'rmagick', 
+  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest',
+  'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec'
+}
+
 puts "Verifying dependencies..."
 
-begin
-  require 'tzinfo'
-rescue LoadError 
-  missing_deps << "tzinfo"
-  missing_dep = true
+deps.keys.each do |dep|
+  begin
+    require dep
+  rescue LoadError
+    missing_deps << deps[dep]
+  end 
 end 
 
-begin
-  require 'redcloth'
-rescue LoadError
-  missing_deps << "RedCloth"
-  missing_dep = true
-end 
-
-begin
-  require 'rake'
-rescue LoadError
-  missing_deps << "rake"
-  missing_dep = true
-end 
-
-begin
-  require 'ferret'
-rescue LoadError
-  missing_deps << "ferret"
-  missing_dep = true
-end 
-
-begin
-  require 'fastercsv'
-rescue LoadError
-  missing_deps << "fastercsv"
-  missing_dep = true
-end 
-
-begin
-  require 'eventmachine'
-rescue LoadError
-  missing_deps << "eventmachine"
-  missing_dep = true
-end 
-
-begin
-  require 'RMagick'
-rescue LoadError
-  missing_deps << "rmagick"
-  missing_dep = true
-end 
-
-begin
-  require 'icalendar'
-rescue LoadError
-  missing_deps << "icalendar"
-  missing_dep = true
-end 
-
-begin
-  require 'mongrel'
-rescue LoadError
-  missing_deps << "mongrel"
-  missing_dep = true
-end 
-
-begin
-  require 'zentest'
-rescue LoadError
-  missing_deps << "ZenTest"
-  missing_dep = true
-end 
-
-begin
-  require 'google_chart'
-rescue LoadError
-  missing_deps << "gchartrb"
-  missing_dep = true
-end 
-
-begin
-  require 'json'
-rescue LoadError
-  missing_deps << "json"
-  missing_dep = true
-end 
-
-begin
-  require 'test/spec'
-rescue LoadError
-  missing_deps << "test-spec"
-  missing_dep = true
-end 
-
-if missing_dep
+if missing_deps.size > 0
   puts "Please install required Ruby Gems:"
   puts "  sudo gem install #{missing_deps.join(" ")} -r"
   puts
   if missing_deps.include? "rmagick"
     puts "rmagick requires ImageMagick. If you're unable to install ImageMagick 6.3.0+, which the latest"
     puts "version of rmagick requires, please install version 1.5.14 instead: "
-    puts "  sudo gem install rmagick --version=1.5.14 -r"
+    puts "  sudo gem install rmagick -v 1.5.14 -r"
   end
   
   exit
@@ -141,7 +64,7 @@ puts
 
 
 puts "Please create the database and user for ClockingIT by running something like this: "
-puts " echo \"CREATE DATABASE `#{db}` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON `#{db}.*` TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
+puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
 puts 
 puts "Press <Return> to continue"
 gets
@@ -232,6 +155,9 @@ jug_port.strip!
 puts "Creating config files..."
 puts "  Creating config/database.yml"
 
+socket = %x[mysql_config --socket]
+socket.strip!
+
 db_config = []
 File.open("config/database.yml-example") do |file|
   while line = file.gets
@@ -243,6 +169,7 @@ db_config = db_config.join
 db_config.gsub!(/DATABASE/, db)
 db_config.gsub!(/USERNAME/, dbuser)
 db_config.gsub!(/PASSWORD/, dbpw)
+db_config.gsub!(/SOCKET/, (socket.include?('/') ? "socket: #{socket}" : "") )
 
 File.open("config/database.yml", "w") do |file|
   file.puts db_config
@@ -394,17 +321,12 @@ puts "Done"
 puts 
 puts "All done!"
 puts "---------"
-puts 
-puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 
 puts
-puts "Starting required servers..."
+puts "Please start the required services by entering the following in a console:"
 puts "  ./script/ferret_server -e production start"
-system("./script/ferret_server -e production start")
-
 puts "  nohup ./script/push_server &"
-system("nohup ./script/push_server &")
-
 puts "  ./script/server production"
-system("./script/server production")
+puts 
+puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 

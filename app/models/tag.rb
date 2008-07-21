@@ -3,33 +3,12 @@ class Tag < ActiveRecord::Base
   belongs_to :company
   has_and_belongs_to_many      :tasks, :join_table => :task_tags
 
-
-  def exists?
-    tag = Tag.find(:first, :conditions => ["company_id = ? AND name = ?", self.company_id, self.name])
-    !tag.nil?
+  def count
+    tasks.count(:conditions => "tasks.completed_at IS NULL")
   end
 
-#  def count
-#    count = Tag.count_with_tag(self)
-#  end
-
-  def Tag.count_with_tag(tag)
-    tags = []
-    if tag.is_a? Tag
-      tags = [tag.name]
-    elsif tag.is_a? String
-      tags = tag.include?(",") ? tag.split(',') : [tag]
-    elsif tag.is_a? Array
-      tags = tag
-    end
-
-    sql = "SELECT count(tasks.*) from task_tags, tasks, tags WHERE task_tags.tag_id=tags.id AND tasks.id = task_tags.task_id"
-    sql << " AND (" + tags.collect { |t| ["tags.name='#{t.downcase.strip}'"] }.join(" OR ") + ")"
-    sql << " AND tasks.company_id=#{session[:company].id}"
-    sql << " GROUP BY tasks.id"
-    sql << " HAVING COUNT(tasks.id) = #{tags.size}"
-
-    count_by_sql(sql)
+  def total_count
+    tasks.count
   end
 
   def Tag.top_counts(options = {})

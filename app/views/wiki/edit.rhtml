@@ -28,7 +28,7 @@
   <p>AnotherPage</p>
 </div>
 <div style="clear:both;float:left;"><label for="change" style="float:left;width:auto;"><%= _('Edit Summary')%></label><input type="text" name="change" /></div>
-<div style="clear:both;float:left;"><%= submit_tag _("Save") %><% unless @page.revisions.empty?%> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %></div>
+<div style="clear:both;float:left;"><%= submit_tag _("Save"), :class => "nolabel" %><% unless @page.revisions.empty?%> <span class="optional"><%= _('or')%></span> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel", :id => @page.name %><% end %></div>
 <% end %>
 </fieldset>
 </div>

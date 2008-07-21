@@ -515,11 +515,11 @@ class ReportsController < ApplicationController
           @column_headers.sort.each do |k,v|
             next if k == '__'
             val = nil
-            val = value[k] if value[k] && value[k].is_a?(Fixnum)
+            val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
             val = value[k].gsub(/<[a-zA-Z\/][^>]*>/,'') if val.nil? && value[k]
             row << [val]
           end
-          row << [@row_totals[key]]
+          row << [@row_totals[key]/60]
           csv << row
         end
 
@@ -528,10 +528,10 @@ class ReportsController < ApplicationController
         @column_headers.sort.each do |key,value|
           next if key == '__'
           val = nil
-          val = @column_totals[key] if @column_totals[key] > 0
+          val = @column_totals[key]/60 if @column_totals[key] > 0
           row << [val]
         end
-        row << [@total]
+        row << [@total/60]
         csv << row
 
 

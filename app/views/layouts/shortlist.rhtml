@@ -5,9 +5,18 @@
   <head>
     <%= javascript_include_merged :base %>
     <%= javascript_include_merged :tt %>
+    <%= javascript_include_tag "swfobject" %>
     <%= stylesheet_link_merged :tt %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= stylesheet_link_tag "shortlist" %>
+    <!--[if lt IE 7]>
+      <%= javascript_include_tag "IE7" %>
+<style type="text/css">
+#presence {
+      position:relative;
+}
+</style>
+    <![endif]-->
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
     <title><%= controller.controller_name + " / " + controller.action_name %></title>

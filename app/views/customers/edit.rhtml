@@ -3,6 +3,7 @@
 
 <% form_tag :action => 'update', :id => @customer do %>
   <%= render :partial => "form" %>
+  <label>&nbsp;</label>
   <%= submit_tag _("Save"), :class => "nolabel" %>
 <% end %>
 </fieldset>
@@ -15,6 +16,7 @@
 <% form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
 <p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
 <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
+<label>&nbsp;</label>
 <%= submit_tag "Upload", :class => 'nolabel' %>
 <% end %>
 </fieldset>

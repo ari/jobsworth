@@ -1,124 +1,179 @@
-/* Neutralize styling:
-   Elements we want to clean out entirely: */
-html, body, form, fieldset {
-        margin: 0;
-        padding: 0;
-        font: 100%/120% Arial, Verdana, Helvetica, sans-serif;
-}
-
-/* Neutralize styling:
-   Elements with a vertical margin: */
-h1, h2, h3, h4, h5, h6, p, pre,
-blockquote, ul, ol, dl, address {
-        margin: 1em 0;
-        padding: 0;
-}
-
-/* Apply left margin:
-   Only to the few elements that need it: */
-li, dd, blockquote {
-        margin-left: 1em;
-}
-
-/* Miscellaneous conveniences: */
-form label {
-        cursor: pointer;
-}
-fieldset {
-        border: none;
-}
-input, select, textarea {
-        font-size: 100%;
-}
-
 body {
-  margin:0;
-  padding:0;
-  background:#040404 url(/images/portal/bkg.jpg) left top repeat-x;
-  color:#FCFCFC;
-  font-size: 13px;
-}
-
-#container {
-  width:950px;
-  position:relative;
-  left:50%;
-  margin-left:-475px;
-  font-size: 122%;
-  line-height: 19px;
-}
-
-#container a {
- }
-
-input:focus, textarea:focus { border: 1px solid #FC0; }
-input, textarea, select { border: 1px solid #AAA; }
-
-a {
-  color: #FCFCFC;
-  text-decoration: underline;
-  border: none;
-  padding: 0;
+  background: #e8e8e8;
   margin: 0;
- }
+  padding: 0;
+  font: 10.5pt/1.3em "Trebuchet MS", Trebuchet, Helvetica, Arial;
+}
+
+h1 {
+  margin-left: 50px;
+}
+
+img {
+  border: none;
+}
+  
+a { 
+  color: #038;
+}
+
 a:hover {
+  color: #5b2d08;
 }
 
-#menu a {
-  font-size: 136%;
-  display: inline;
+
+ul li {
+  list-style-image: url('/images/portal/comment.png');
+  margin-right: 7px;
+  color: #038;
+  font-size: 0.80em;
+}
+
+/* FRAME */
+
+#wrapper{
+  width: 970px;
+  background:transparent url(/images/portal/shadow.gif) repeat-y scroll center top !important;
+  margin: 0 auto;
+}
+
+#top {
+  font-size: 106%; 
   text-decoration: none;
+  color: #FCFCFC;
+  width: 930px;
+  margin-left:30px;
 }
 
-#menu img {
+.logo {
+  margin: 20px 0 0 0;
 }
 
-#box {
-  font-size: 24px;
+a.menu_top{
+color: #000;
+text-decoration: none;
+margin: 50px 40px 0 0;
+font-weight:bold;
+float:right;
 }
 
-li {
-  font-size: smaller;
-
+a.menu_top_sign{
+color: #FF9900;
+text-decoration: none;
+margin: 50px 40px 0 0;
+font-weight:bold;
+float:right;
 }
 
-ul {
-  padding-left: 5px;
-  margin-left: 10px;
+#top a:hover { 
+  text-decoration: underline;
 }
 
-.small {
+.menu_white{
+  color: #FFF;
+  font-size: 1.2em; 
+  font-weight:bold;
+  padding-right: 20px;
+  text-align:center;
+}
+
+.text_white{
+  color: #FFF;
+  font-size: 1.3em; 
+  font-weight:bold;
+  margin: 20px 20px 20px 20px;
+}
+
+.text_white_small{
+  color: #FFF;
+  font-size: 0.8em; 
   font-weight:normal;
-  font-size:70%;
-}
-#footer {
-  text-align:left;
-  font-size:11px;
-  color: #777;
+  margin:0;
 }
 
-#footer a {
-  color:#fba105;
-  font-size: 11px;
+.text_black{
+color: #3D3D3D;
+font-size: 1.2em;
+line-height: 22px;
+margin: 20px 20px 20px 20px;
+font-family: Georgia, Times, serif;
 }
 
-#notice {
-  margin-top: 2em;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-bottom: 1em;
+.black{
+color: #3D3D3D;
+line-height: 22px;
+margin: 20px 20px 20px 20px;
+font-family: Georgia, Times, serif;
+}
+
+a.bar{
+color: #FFF;
+text-decoration: none;
+float:right;
+font-size: 0.90em;
+text-decoration: none;
+padding-right: 20px;
+font-family: Verdana, "Times New Roman", Times, serif;}
+.orange {
+color: #FF9900; 
+font-weight:bold;
+}         
+
+
+.flag{
+padding-right: 6px;
+padding-right: 10 px;
+}
+
+.footer{
+font-size: 0.70em;
+color: #ccc;
+text-align: center;
+}
+
+a.footer{
+color: #FFF;
+text-decoration: underline;
+text-align: center;
+font-size: 1.1em;
+}
+
+#notice { 
+  color: #ff6666;
+}        
+
+.fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select {
+  background-color: red;
   border: 2px solid red;
-  width: 563px;
 }
 
-fieldset {
-  border: 1px solid #666666;
-  color: #666666;
+#ErrorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
 }
 
-legend {
-  font-size: 14px;
+#ErrorExplanation h2 {
+  text-align: left;
   font-weight: bold;
-  color: #666666;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#ErrorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#ErrorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
 }
 

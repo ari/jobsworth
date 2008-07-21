@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+  <head>
+    <%= javascript_include_merged :base %>
+    <%= javascript_include_merged :tt %>
+    <%= stylesheet_link_merged :tt %>
+    <%= stylesheet_link_tag "print", { :media => "print" } %>
+    <%= stylesheet_link_tag "shortlist" %>
+    <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
+<style type="text/css">
+<%= @internal.css %>
+</style>
+<% end %>
+</head>
+
+  <body id="body" style="height:100%;">
+    <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><img src="/images/spinner.gif" border="0"></div>
+    <div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;color:#666666;z-index:60;overflow:hidden;"><table border="0"><tr><td style="background-color:#ffffff;color:#666666;border:1px solid #CCCCCC;padding:0.2em;" id="message"><br/></td></tr></table></div>
+    <table width="100%" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="top" width="100%">
+          <%= @content_for_layout %>
+        </td>
+      </tr>
+    </table>
+
+<script type="text/javascript" language="javascript" charset="utf-8">
+// <![CDATA[
+var userId=<%=current_user.id%>;
+Event.observe(window, "load", function(e) {
+<% if current_user.option_tooltips.to_i == 1 %>
+  makeTooltips(1);
+<% else %>
+  makeTooltips(0);
+<% end %>
+});
+// ]]>
+</script>
+
+</body>
+</html>

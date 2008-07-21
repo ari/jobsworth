@@ -279,6 +279,10 @@ class Task < ActiveRecord::Base
     self.due_date ? (self.due_date.to_time <= Time.now.utc) : false
   end
 
+  def scheduled_overdue?
+    self.scheduled_date ? (self.scheduled_date.to_time <= Time.now.utc) : false
+  end
+
   def started?
     worked_minutes > 0 || self.worked_on?
   end
@@ -291,7 +295,38 @@ class Task < ActiveRecord::Base
     else 
       nil
     end 
-      
+  end
+
+  def scheduled_date
+    if self.scheduled?
+      if self.scheduled_at?
+        self.scheduled_at
+      elsif self.milestone
+        self.milestone.scheduled_date
+      end 
+    else 
+      if self.due_at?
+        self.due_at
+      elsif self.milestone
+        self.milestone.scheduled_date
+      end
+    end 
+  end 
+
+  def scheduled_due_at
+    if self.scheduled?
+      self.scheduled_at
+    else 
+      self.due_at
+    end 
+  end 
+
+  def scheduled_duration
+    if self.scheduled?
+      @attributes['scheduled_duration'].to_i
+    else 
+      self.duration.to_i
+    end 
   end
   
   def worked_minutes
@@ -302,14 +337,21 @@ class Task < ActiveRecord::Base
   end
 
   def minutes_left
-    d = (self.duration || 0) - self.worked_minutes 
-    d = 240 if d < 0 && self.duration > 0
+    d = self.duration.to_i - self.worked_minutes 
+    d = 240 if d < 0 && self.duration.to_i > 0
     d = 0 if d < 0
     d
   end
 
+  def scheduled_minutes_left
+    d = self.scheduled_duration.to_i - self.worked_minutes 
+    d = 240 if d < 0 && self.scheduled_duration.to_i > 0
+    d = 0 if d < 0
+    d
+  end 
+
   def overworked?
-    ((self.duration - self.worked_minutes) < 0 && self.duration > 0)
+    ((self.duration.to_i - self.worked_minutes) < 0 && (self.duration.to_i) > 0)
   end
   
   def full_name
@@ -391,21 +433,16 @@ class Task < ActiveRecord::Base
   end
 
   def set_tags( tagstring )
+    return false unless tagstring
     self.tags.clear
     tagstring.split(',').each do |t|
-      tag = Tag.new
-      tag.company_id = self.company_id
-      tag.name = t.downcase.strip
+      tag_name = t.downcase.strip
 
-      if tag.name.length == 0
+      if tag_name.length == 0
         next
       end
 
-      unless tag.exists?
-        tag.save
-      else
-        tag = Tag.find(:first, :conditions => ["company_id = ? AND name = ?", tag.company_id, tag.name])
-      end
+      tag = Company.find(self.company_id).tags.find_or_create_by_name(tag_name)
       self.tags << tag unless self.tags.include?(tag)
     end
     true
@@ -576,10 +613,10 @@ class Task < ActiveRecord::Base
         res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
       end
       unless self.dependants.empty?
-        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.status_name }.join('<br />')}</td></tr>"
+        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
       end
-      res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
-      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+      res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
+      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.slice(0,4096).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
     end 

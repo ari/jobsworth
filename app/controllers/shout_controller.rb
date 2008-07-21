@@ -221,8 +221,8 @@ class ShoutController < ApplicationController
         present = render_present(@shout, last)
         passive = render_passive(@shout, last)
 
-        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(present)}');", ["channel_#{room.id}"])
-        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(passive)}');", ["channel_passive_#{room.id}"])
+        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(present + "juggernaut.playSound('blip2');")}');", ["channel_#{room.id}"])
+        Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(passive + "juggernaut.playSound('blip2');")}');", ["channel_passive_#{room.id}"])
 
         render :text => date_stamp + present
       else
@@ -469,6 +469,8 @@ class ShoutController < ApplicationController
       @target.save
     end
 
+    notified = false
+    
     if @target.active == -1
       # insert chat tab on target
       @target.active = 0
@@ -485,7 +487,8 @@ class ShoutController < ApplicationController
       end
       @user = @target_user
       @chat = @current_chat
-      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_tab)}');", ["user_#{@user.id}"])
+      Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_tab)}');juggernaut.playSound('blip1');", ["user_#{@user.id}"])
+      notified = true
     end
 
     @last_message = @chat.chat_messages.first
@@ -520,7 +523,7 @@ class ShoutController < ApplicationController
       
       
     end
-    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_message)}');", ["user_#{@user.id}"])
+    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(target_message)}');#{"juggernaut.playSound('bleep');" unless notified}", ["user_#{@user.id}"])
     
     @message = ChatMessage.new
     @message.chat = @chat

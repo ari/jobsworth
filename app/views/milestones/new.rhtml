@@ -1,9 +1,18 @@
 <fieldset>
 <legend><%=_ 'New Milestone' %></legend>
 
-<% form_tag :action => 'create' do %>
+<% unless @popup.nil? %>
+<% form_remote_tag :url => { :action => 'create' },
+       :loading => "Element.show('loading');", :complete => "Element.hide('loading');" do %>
   <%= render :partial => 'form' %>
+  <label>&nbsp;</label>
   <%= submit_tag _("Create"), :class => 'nolabel' %>
 <% end %>
-
+<% else %>
+  <% form_tag :action => 'create' do %>
+   <%= render :partial => 'form' %>
+  <label>&nbsp;</label>
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
+<% end %>
+<% end %>
 </fieldset>

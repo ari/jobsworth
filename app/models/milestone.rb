@@ -22,9 +22,11 @@ class Milestone < ActiveRecord::Base
     res = "<table cellpadding=0 cellspacing=0>"
     res << "<tr><th>#{_('Name')}</th><td> #{self.name}</td></tr>"
     res << "<tr><th>#{_('Due Date')}</th><td> #{options[:user].tz.utc_to_local(due_at).strftime_localized("%A, %d %B %Y")}</td></tr>" unless self.due_at.nil?
+    res << "<tr><th>#{_('Project')}</th><td> #{self.project.name}</td></tr>"
+    res << "<tr><th>#{_('Client')}</th><td> #{self.project.customer.name}</td></tr>"
     res << "<tr><th>#{_('Owner')}</th><td> #{self.user.name}</td></tr>" unless self.user.nil?
     res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
-    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.slice(0,4096).gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
     res << "</table>"
     res.gsub(/\"/,'&quot;')
   end
@@ -41,6 +43,10 @@ class Milestone < ActiveRecord::Base
     @due_date
   end
 
+  def scheduled_date
+    (self.scheduled? ? self.scheduled_at : self.due_at)
+  end 
+  
   def worked_minutes
     if @minutes.nil?
       @minutes = WorkLog.sum('work_logs.duration', :joins => "INNER JOIN tasks ON tasks.milestone_id = #{self.id}", :conditions => ["work_logs.task_id = tasks.id AND tasks.completed_at IS NULL"] ) || 0
@@ -51,7 +57,8 @@ class Milestone < ActiveRecord::Base
 
   def duration
     if @duration.nil?
-      @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL", self.id]) || 0
+      @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = 0", self.id]) || 0
+      @duration += Task.sum(:scheduled_duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = 1", self.id]) || 0
     end 
     @duration
   end

@@ -1,5 +1,6 @@
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
+  belongs_to :user
 
   TASK_CREATED       = 1
   TASK_COMPLETED     = 2
@@ -36,7 +37,7 @@ class EventLog < ActiveRecord::Base
   FORUM_NEW_POST      = 60
 
   def started_at
-    self.target.started_at
+    self.created_at
   end
   
 end

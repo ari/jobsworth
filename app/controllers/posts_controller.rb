@@ -9,7 +9,7 @@ class PostsController < ApplicationController
     conditions << Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids}))))", current_user.company_id])
     conditions = conditions.any? ? conditions.collect { |c| "(#{c})" }.join(' AND ') : nil
     @posts = Post.paginate(@@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect{ |post| post.user_id }.uniq]).index_by{ |post| post.id }
     render_posts_or_xml
   end
 
@@ -17,7 +17,7 @@ class PostsController < ApplicationController
     conditions = params[:q].blank? ? Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids}))))", current_user.company_id]) : Post.send(:sanitize_sql, ["(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids})))) AND LOWER(posts.body) LIKE ?", current_user.company_id, "%#{params[:q]}%"])
     logger.info("conditions = [#{conditions.inspect}]")
     @posts = Post.paginate(@@query_options.merge(:conditions => conditions))
-    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect(&:user_id).uniq]).index_by(&:id)
+    @users = User.find(:all, :select => 'distinct *', :conditions => ['id in (?)', @posts.collect{ |post| post.user_id}.uniq]).index_by{ |post| post.id }
     render_posts_or_xml :index
   end
 

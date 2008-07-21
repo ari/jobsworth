@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 # Juggernaut Push server
 
@@ -13,45 +13,11 @@ require 'eventmachine'
 require "json"
 require 'json/add/rails'
 
-
 module Juggernaut
 
   RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
   CONFIG = YAML::load_file("config/juggernaut_config.yml").freeze
 
-
-  module JSON
-    class ParseError < StandardError
-    end
-
-    class << self
-      # Converts a JSON string into a Ruby object.
-      def decode(json)
-        YAML.load(convert_json_to_yaml(json))
-      rescue ArgumentError => e
-        raise ParseError, "Invalid JSON string"
-      end
-
-      protected
-      # Ensure that ":" and "," are always followed by a space
-      def convert_json_to_yaml(json)
-        quoting, escaping = false, false
-        json.gsub(/./) do |char|
-          escaping = false and next char if escaping
-          case char
-          when '"', "'"
-            quoting = quoting == char ? false : char
-          when "\\"
-            escaping = true if quoting
-          when ":", ","
-            char << " " unless quoting
-          end
-          char
-        end
-      end
-
-    end
-  end
 
 
   class Channels < Monitor
@@ -124,7 +90,6 @@ module Juggernaut
     end
 
     def broadcast(data)
-      puts "Sending[#{data}]"
       receivers = nil
       synchronize do
         receivers = @subscribers.dup
@@ -145,7 +110,6 @@ module Juggernaut
   module PushServer
 
     def receive_data(data)
-      Logger.debug  "Received: #{data}"
       @line_buffer << data
       if ["\0", "\n", "\r"].include?(data[-1, 1])
         dispatch_request
@@ -173,8 +137,8 @@ module Juggernaut
     def dispatch_request
       Logger.debug "dispatch_request"
       request = parse_request
-      return unless request
       Logger.debug  "Handling request: #{request.inspect}"
+      return unless request
       if request['broadcast'] == 1
         broadcast(request)
       else
@@ -190,6 +154,7 @@ module Juggernaut
     end
 
     def subscribe(request)
+      return if request['channels'].nil?
       Logger.info  "Subscribing to channels #{request['channels'].join(', ')}"
       request['channels'].each do |channel_name|
         @@channels.subscribe(channel_name, self)
@@ -201,15 +166,16 @@ module Juggernaut
       @line_buffer.strip!
       request = nil
 
+      Logger.debug "@line_buffer[#{@line_buffer}]"
       unless @line_buffer.empty?
         if @line_buffer.include? "<policy-file-request/>"
           Logger.debug "Sending policy file.."
           self.send_data "<?xml version=\"1.0\"?>\n<cross-domain-policy>\n<allow-access-from domain=\"#{Juggernaut::CONFIG["ALLOW_CROSSDOMAIN"]}\" to-ports=\"*\"/>\n<allow-access-from domain=\"192.168.*\" to-ports=\"*\"/>\n</cross-domain-policy>\n\0"
         else
           begin
-            request = Juggernaut::JSON.decode(@line_buffer)
-            Logger.debug "JSON result: [#{request.inspect}]"
+            request = JSON.parse(@line_buffer)
           rescue
+	    Logger.warn "Unable to parse [#{@line_buffer}]"
             request = nil
           end
         end

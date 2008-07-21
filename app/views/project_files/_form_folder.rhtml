@@ -1,6 +1,6 @@
 <% if @folder.parent_id.nil? && (@folder.new_record? || (@folder.num_files == 0 && @folder.num_folders == 0) )%>
 
-<p><label for="folder_project_id"><%=_ 'Project' %></label>
+<label for="folder_project_id"><%=_ 'Project' %></label>
 <select name="folder[project_id]" id="folder_project_id">
 <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
 <% @clients.each do |c| %>
@@ -13,12 +13,11 @@
     </optgroup>
   <% end %>
 <% end %>
-</select>
-</p>
+</select><br/>
 <% else %>
 <%= hidden_field 'folder', 'project_id' %>
 <% end %>
-<p><label for="folder_name"><%=_ 'Name' %></label><%= text_field 'folder', 'name'  %></p>
+<label for="folder_name"><%=_ 'Name' %></label><%= text_field 'folder', 'name'  %><br/>
 <%= hidden_field 'folder', 'parent_id' %>
-<br>
+<br/>
 

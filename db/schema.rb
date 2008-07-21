@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 121) do
+ActiveRecord::Schema.define(:version => 125) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -175,6 +175,8 @@ ActiveRecord::Schema.define(:version => 121) do
     t.datetime "completed_at"
     t.integer  "total_tasks",     :default => 0
     t.integer  "completed_tasks", :default => 0
+    t.datetime "scheduled_at"
+    t.boolean  "scheduled",       :default => false
   end
 
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
@@ -200,6 +202,7 @@ ActiveRecord::Schema.define(:version => 121) do
   create_table "news_items", :force => true do |t|
     t.datetime "created_at"
     t.text     "body"
+    t.boolean  "portal",     :default => true
   end
 
   create_table "notifications", :force => true do |t|
@@ -438,29 +441,32 @@ ActiveRecord::Schema.define(:version => 121) do
   add_index "task_tags", ["task_id"], :name => "task_tags_task_id_index"
 
   create_table "tasks", :force => true do |t|
-    t.string   "name",          :limit => 200, :default => "", :null => false
-    t.integer  "project_id",                   :default => 0,  :null => false
-    t.integer  "position",                     :default => 0,  :null => false
-    t.datetime "created_at",                                   :null => false
+    t.string   "name",               :limit => 200, :default => "",    :null => false
+    t.integer  "project_id",                        :default => 0,     :null => false
+    t.integer  "position",                          :default => 0,     :null => false
+    t.datetime "created_at",                                           :null => false
     t.datetime "due_at"
-    t.datetime "updated_at",                                   :null => false
+    t.datetime "updated_at",                                           :null => false
     t.datetime "completed_at"
-    t.integer  "duration",                     :default => 1
-    t.integer  "hidden",                       :default => 0
+    t.integer  "duration",                          :default => 1
+    t.integer  "hidden",                            :default => 0
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                     :default => 0
+    t.integer  "priority",                          :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                  :default => 0
-    t.integer  "type_id",                      :default => 0
-    t.integer  "task_num",                     :default => 0
-    t.integer  "status",                       :default => 0
+    t.integer  "severity_id",                       :default => 0
+    t.integer  "type_id",                           :default => 0
+    t.integer  "task_num",                          :default => 0
+    t.integer  "status",                            :default => 0
     t.string   "requested_by"
     t.integer  "creator_id"
     t.string   "notify_emails"
     t.string   "repeat"
     t.datetime "hide_until"
+    t.datetime "scheduled_at"
+    t.integer  "scheduled_duration"
+    t.boolean  "scheduled",                         :default => false
   end
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
@@ -536,6 +542,7 @@ ActiveRecord::Schema.define(:version => 121) do
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                  :default => true
     t.integer  "days_per_week",                         :default => 5
+    t.boolean  "enable_sounds",                         :default => true
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
@@ -579,6 +586,7 @@ ActiveRecord::Schema.define(:version => 121) do
     t.boolean  "configured",  :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "gadget_url"
   end
 
   add_index "widgets", ["user_id"], :name => "index_widgets_on_user_id"

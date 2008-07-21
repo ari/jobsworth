@@ -297,7 +297,7 @@ class FeedsController < ApplicationController
       event.summary = "#{action} #{to_duration(log.duration).downcase}: #{log.task.issue_name} - #{log.user.name}" if log.duration > 0
       event.summary ||= "#{action} - #{log.user.name}"
       description = log.body.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if log.body
-      event.description = description if description && description.length > 0
+      event.description = description unless description.blank?
 
       event.categories = log.task.tags.collect{ |t| t.name.upcase } if log.task.tags.size > 0
 
@@ -308,9 +308,7 @@ class FeedsController < ApplicationController
 
     end
 
-    ical_feed = cal.to_ical
-    ical_feed.gsub!(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR")
-    ical_feed.gsub!(/^PERCENT:/, 'PERCENT-COMPLETE:')
+    ical_feed = cal.to_ical.gsub(/END:VCALENDAR/,"#{cached.join}END:VCALENDAR").gsub(/^PERCENT:/, 'PERCENT-COMPLETE:')
     render :text => ical_feed
 
     ical_feed = nil
@@ -358,7 +356,7 @@ class FeedsController < ApplicationController
     @current_user = user
 
     @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
-    pids = @projects.collect(&:id).join(',')
+    pids = @projects.collect{ |p| p.id }.join(',')
     if pids.nil? || pids.empty?
         pids = "0"
     end

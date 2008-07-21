@@ -23,16 +23,17 @@
  can_close ||= {}
 
 %>
-<p>
 <% if @log.log_type == EventLog::TASK_WORK_ADDED  %>
 <label for="task_status"><%=_ 'Status' %></label><%= select 'task', 'status', options, {:selected => @task.status}, can_close %>
 <% else %>
 <label for="notify"></label>
 <% end %>
-<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Only your notes will be included in the notification email')} %><%=_ 'Send notification emails' %>
-</p>
+<br/>
+<label>&nbsp;</label>
+<div class="buttons">
 <%= submit_tag _("Save"), :class => 'nolabel' %>
-
+<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Only your notes will be included in the notification email')} %> <%=_ 'Send notification emails' %>
+</div>
 
 <% end %>
 <br />

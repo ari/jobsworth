@@ -5,7 +5,7 @@ for more information.
 
 == Getting started
 
-1. sudo apt-get install libmagic9-dev ImageMagick ruby1.8 ruby1.8-dev rubygems ri rdoc rake
+1. sudo apt-get install libmagick9-dev imagemagick ruby1.8 ruby1.8-dev rubygems ri rdoc rake
 
 2. ruby ./setup.rb
    Follow the instructions and answer the questions.

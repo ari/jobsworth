@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   helper_method :worked_nice
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
-                                         :take_forgotten, :show_logo, :about,
+                                         :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
                                          :company_check, :subdomain_check, :unsubscribe, :shortlist_auth,
                                          :igoogle_setup, :igoogle
                                        ]
@@ -46,7 +46,7 @@ class ApplicationController < ActionController::Base
       if current_user.company.restricted_userlist
         user_ids = [current_user.id]
         current_user.all_projects.each do |p|
-          user_ids << p.users.collect(&:id)
+          user_ids << p.users.collect{ |u| u.id }
         end
 
         @all_users = User.find(:all, :conditions => ["company_id = ? AND id IN (#{user_ids.uniq.join(',')})", current_user.company_id], :order => "name")
@@ -100,13 +100,17 @@ class ApplicationController < ActionController::Base
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
 #    session[:user_id] = 1
+
+    logger.info("remember[#{session[:remember_until]}]")
+    
+    # We need to re-authenticate
     if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
       session[:user_id] = nil
-      reset_session
+      session[:remember_until] = nil
     end
     
     if session[:user_id].to_i == 0
-      if !request.request_uri.include?('/login/login') && !request.request_uri.include?('update_sheet_info')
+      if !(request.request_uri.include?('/login/login') || request.xhr?)
         session[:redirect] = request.request_uri 
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
@@ -144,9 +148,8 @@ class ApplicationController < ActionController::Base
         current_user.last_ping_at = Time.now.utc
       end 
       
-      current_user.remember_until ||= Time.now.utc + 1.hour
+      session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
       
-      current_user.remember_until = Time.now.utc + 1.hour if(current_user.remember_until < Time.now.utc + 1.hour)
       current_user.save
 
       current_sheet
@@ -266,7 +269,7 @@ class ApplicationController < ActionController::Base
   # List of current Project ids, joined with ,
   def current_project_ids
     unless @current_project_ids
-      @current_project_ids = current_projects.collect(&:id).join(',')
+      @current_project_ids = current_projects.collect{ |p| p.id }.join(',')
       @current_project_ids = "0" if @current_project_ids == ''
     end
     @current_project_ids

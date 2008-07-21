@@ -9,5 +9,5 @@
 <% end -%>
 <%= link_to(image_tag("add.png", :border => 0, :class => "tooltip work_icon", :title => _("Add earlier work to <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'add_work', :id => task})  -%>
 <% end -%>
-<%= task.issue_num %> <%= task.name %> (<%= "#{task.status_type}" %>) <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if current_user.option_tracktime == 1 %>
+<%= task.issue_num %> <%= task.name %> (<%= _ "#{task.status_type}" %>) <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if current_user.option_tracktime == 1 %>
 
