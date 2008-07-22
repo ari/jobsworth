@@ -202,11 +202,11 @@ class FeedsController < ApplicationController
       event = cal.event
 
       if m.completed_at
-        event.start = to_localtime(tz, m.completed_at)
+        event.start = to_localtime(tz, m.completed_at).beginning_of_day + 8.hours
       else
-        event.start = to_localtime(tz, m.due_at)
+        event.start = to_localtime(tz, m.due_at).beginning_of_day + 8.hours
       end
-      event.duration = "PT1M"
+      event.duration = "PT#{user.workday_duration}M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
       event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/views/select_milestone/#{m.id}"
