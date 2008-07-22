@@ -315,6 +315,7 @@ class LoginController < ApplicationController
     end
 
     session[:user_id] = user.id
+    session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
     authorize
 
     redirect_to :controller => 'tasks', :action => 'shortlist'
