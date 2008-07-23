@@ -15,9 +15,9 @@
       <th><%=_ 'All' %></th>
     </tr>
 
-<% for @project in current_user.company.projects.find(:all, :conditions => ["completed_at IS NULL"]) %>
+<% for @project in current_user.company.projects.find(:all, :conditions => ["completed_at IS NULL"], :order => 'name') %>
 <tr class="hoverrow" id="user-<%= @project.dom_id %>">
-<td><%= @project.name %></td>
+        <td><%= "#{@project.name} [#{@project.customer.name}]" %></td>
 
 <%
       user_granted = @project.users.include? @user
