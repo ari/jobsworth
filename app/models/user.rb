@@ -241,7 +241,7 @@ class User < ActiveRecord::Base
     n = name.gsub(/[^\s\w]+/, '').split(" ") if name
     n = ["Anonymous"] if(n.nil? || n.empty?)
 
-    "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + "."}.join(' ')}".strip
+    "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
   end
 
   def online_status_icon
