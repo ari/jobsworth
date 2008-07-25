@@ -5,7 +5,7 @@ class WikiRevision < ActiveRecord::Base
   EXPR = Regexp.new( '\b((?:[A-Z]\w+){2,})|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )
   CamelCase = /\b((?:[A-Z]\w+){2,})/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
-  PRE = /<pre>(.*?)<\/pre>/
+  PRE = /<pre>(.*?)<\/pre>/m
 #  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
 
   TaskNumber = /[^&]#([0-9]+)/
@@ -53,13 +53,12 @@ class WikiRevision < ActiveRecord::Base
 
   def to_html
     return "" if body.blank?
-
     
     pres = []
 
     body.gsub!( PRE ) { |m|
       match = m.match(PRE)
-      pres << match
+      pres << match[1]
       "%%pre_#{pres.size-1}%%"
     }
 

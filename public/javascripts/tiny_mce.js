@@ -14,7 +14,9 @@ tinyMCE.init({
                theme_advanced_buttons3: "",
 	       editor_selector: "tinymce",
 	       content_css: "/stylesheets/editor.css",
-	       cleanup_serializer: 'xml',
+	       convert_newlines_to_brs: false,
+//	       cleanup_serializer: 'xml',
+//	       encoding: 'xml',
 	       entity_encoding: 'raw',
 	       debug: true
              });

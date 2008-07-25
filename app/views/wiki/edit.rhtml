@@ -7,7 +7,7 @@
 <h5 style="margin:0;">This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h5>
 <textarea id="wiki_body" name="body" rows="20" style="width:80%;" class="tinymce"></textarea>
 <% else %>
-<textarea id="wiki_body" name="body" rows="20" style="width:80%;" class="tinymce"><%=@page.to_plain_html(params[:rev].to_i) %></textarea>
+<textarea id="wiki_body" name="body" rows="20" style="width:80%;" class="tinymce"><%= html_encode(@page.to_plain_html(params[:rev].to_i)) %></textarea>
 <% end %>
 
 <div style="clear:both;float:left;"><label for="change" style="float:left;width:auto;"><%= _('Edit Summary')%></label><input type="text" name="change" /></div>

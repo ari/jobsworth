@@ -23,7 +23,7 @@
 
 <label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
 
-<label for="page_body"><%=_ 'Body' %></label><%= text_area 'page', 'body'  %><br/>
+<label for="page_body"><%=_ 'Body' %></label><textarea name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
 <!--[eoform:page]-->
 <label>&nbsp;</label>
 <%= submit_tag _("Save"), :class => 'nolabel' %><br/>

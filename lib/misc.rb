@@ -62,6 +62,9 @@ module Misc
     languages.reject {|x| x.last == 0 }.sort {|x,y| -(x.last <=> y.last) }.map {|x| x.first }
   end
 
+  def html_encode(s)
+    s.to_s.gsub(/&/, "&amp;").gsub(/\"/, "&quot;").gsub(/>/, "&gt;").gsub(/</, "&lt;")
+  end 
 end
 
 class OrderedHash < Hash
