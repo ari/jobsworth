@@ -4,6 +4,7 @@
 <html>
   <head>
     <%= javascript_include_merged :base %>
+    <%= yield :tinymce %>
     <%= javascript_include_merged :tt %>
 
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
@@ -18,6 +19,8 @@
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
       <%= javascript_include_tag "flotr" %>
     <% end %>
+    <%= yield :tinymce_init %>
+
     <!--[if lt IE 7]>
       <%= javascript_include_tag "IE7" %>
 <style type="text/css">

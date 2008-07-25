@@ -5,9 +5,10 @@ class WikiRevision < ActiveRecord::Base
   EXPR = Regexp.new( '\b((?:[A-Z]\w+){2,})|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )
   CamelCase = /\b((?:[A-Z]\w+){2,})/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
+  PRE = /<pre>(.*?)<\/pre>/
 #  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
 
-  TaskNumber = /#([0-9]+)/
+  TaskNumber = /[^&]#([0-9]+)/
 
   ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, 'utf-8')
 
@@ -52,6 +53,16 @@ class WikiRevision < ActiveRecord::Base
 
   def to_html
     return "" if body.blank?
+
+    
+    pres = []
+
+    body.gsub!( PRE ) { |m|
+      match = m.match(PRE)
+      pres << match
+      "%%pre_#{pres.size-1}%%"
+    }
+
     body.gsub!( EXPR ) { |m|
       match = m.match(WIKI_LINK)
       if match
@@ -74,21 +85,33 @@ class WikiRevision < ActiveRecord::Base
           url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, name])
         end
 
-        "%(#{url_class})\"#{text}\":#{url}%"
+        "<a href=\"#{url}\" class=\"#{url_class}\">#{text}</a>"
 
       else
         url = "/wiki/show/#{URI.encode(m)}"
         url_class = 'internal'
         url_class << '_missing' unless WikiPage.find(:first, :conditions => ['company_id = ? and name = ?', self.wiki_page.company_id, m])
 
-        "%(#{url_class})\"#{m}\":#{url}%"
+        "<a href=\"#{url}\" class=\"#{url_class}\">#{m}</a>"
       end
    }
 
 
-    body.gsub!( TaskNumber, '"#\1":/tasks/view/\1')
+    body.gsub!( TaskNumber, '<a href="/tasks/view/\1">#\1</a>')
 
-    RedCloth.new(body).to_html + "<br/>"
+    i = 0
+    while i < pres.size
+      body.gsub!(/%%pre_#{i}%%/) { |m|
+        pres[i]
+      }
+      i = i + 1
+    end 
+    body
 
   end
+
+  def to_plain_html
+    body
+  end 			
+
 end

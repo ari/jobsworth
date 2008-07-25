@@ -1,10 +1,8 @@
-<table width="100%" id="page">
-<tr><td style="padding-left:15px;">
+<div id="wiki">
 <h1><%= @page.name %></h1>
-<%= @body %>
-</td></tr>
-<tr><td style="padding-left:15px;">
+<%= @page.body %>
+</div>
+<div id="wiki-info">
 <%= link_to _('Edit'), :action => 'edit', :id => @page %> |
 <%= link_to _('Delete'), { :action => 'destroy', :id => @page }, :confirm => _("Really delete %s?", @page.name) %>
-</td></tr>
-</table>
+</div>
