@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
   
   def avatar_url(size=32)
     if avatar?
-      if size > 25
+      if size > 25 && File.exist?(avatar_large_path)
         "/users/avatar/#{self.id}?large=1&" + File.mtime(avatar_large_path).to_i.to_s
       else
         "/users/avatar/#{self.id}?" + File.mtime(avatar_path).to_i.to_s
