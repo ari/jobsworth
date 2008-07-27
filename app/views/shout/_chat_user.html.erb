@@ -20,7 +20,7 @@
     </div>
     <div style="height:20px;margin: 2px;padding-top:2px;text-align:center;border-top:1px solid #ccc;">
       <form action="#" id="chat-form-<%=@user.dom_id%>" method="post">
-	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;">
+	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;" maxlength="255">
       </form>
     </div>
   </div>
