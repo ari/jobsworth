@@ -114,7 +114,7 @@ class TasksController < ApplicationController
 
 #      @tasks = Task.find(:all, :conditions => [filter + "tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids})"],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [ :milestone, :dependencies, :dependants, :users, :tags, :todos, :sheets ], :joins => [:project => :customer])
 
-      @tasks = Task.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids}) AND " + filter],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants, :users, :tags, :project, :sheets])
+      @tasks = Task.find(:all, :conditions => ["tasks.company_id = #{current_user.company_id} AND tasks.project_id IN (#{project_ids}) AND " + filter],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:milestone, :dependencies, :dependants, :users, :tags, { :project => :customer}, :sheets, :todos])
     end
 
     # Most popular tags, currently unlimited.
