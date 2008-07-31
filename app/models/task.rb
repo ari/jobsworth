@@ -31,8 +31,8 @@ class Task < ActiveRecord::Base
 
   has_and_belongs_to_many  :tags, :join_table => :task_tags
 
-  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => "task_num"
-  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => "task_num"
+  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id'
+  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id'
 
   has_one       :ical_entry
 
@@ -290,7 +290,7 @@ class Task < ActiveRecord::Base
   def due_date
     if self.due_at?
       self.due_at
-    elsif milestone && milestone.due_at?
+    elsif self.milestone_id.to_i > 0 && milestone && milestone.due_at?
       milestone.due_at
     else 
       nil
@@ -329,12 +329,12 @@ class Task < ActiveRecord::Base
     end 
   end
   
-  def worked_minutes
-    if @minutes.nil?
-      @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
-    end 
-    @minutes
-  end
+#  def worked_minutes
+#    if @minutes.nil?
+#      @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
+#    end 
+#    @minutes
+#  end
 
   def minutes_left
     d = self.duration.to_i - self.worked_minutes 
@@ -590,7 +590,7 @@ class Task < ActiveRecord::Base
 
   def due
     due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone)
+    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
     due
   end
 

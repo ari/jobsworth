@@ -18,6 +18,12 @@ class WorkLog < ActiveRecord::Base
     l = r.event_log
     l.created_at = r.started_at
     l.save
+
+    if r.task && r.duration > 0
+      r.task.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", r.task_id]).to_i / 60
+      r.task.save
+    end
+  
   }
 
   after_create { |r|
@@ -28,6 +34,12 @@ class WorkLog < ActiveRecord::Base
     l.event_type = r.log_type
     l.created_at = r.started_at
     l.save
+    
+    if r.task && r.duration > 0
+      r.task.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", r.task_id]).to_i / 60
+      r.task.save
+    end
+    
   }
 
   def self.full_text_search(q, options = {})
