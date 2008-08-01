@@ -12,7 +12,7 @@
           <td align="left" style="padding-top:0.5em;" nowrap id="tasks_filter" colspan="3">
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
-            @projects = User.find(current_user.id).projects.find(:all, :conditions => ["completed_at IS NULL"]).collect {|p| [p.name, p.id.to_s]}
+            @projects = current_user.projects.collect {|p| [p.name, p.id.to_s]}
             @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id]).collect {|c| [ c.name, c.id.to_s ] }
 
             filter_count = 0
@@ -96,8 +96,8 @@
             <% if log.is_a? WorkLog %>
 	      <%= render :partial => 'activities/log_row', :locals => { :log => log } %>
             <% else %>
-              <% if log.target.is_a? WorkLog %>
-  	        <%= render :partial => 'activities/log_row', :locals => { :log => log.target } %>
+              <% if  log.target_type == 'WorkLog' %>
+  	        <%= render :partial => 'activities/log_row', :locals => { :log => @worklogs[log.target_id] } %>
               <% else %>
                 <%= render :partial => 'activities/other_row', :locals => {:log => log } %>
               <% end %>
