@@ -20,7 +20,7 @@ class WorkLog < ActiveRecord::Base
     l.save
 
     if r.task && r.duration > 0
-      r.task.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", r.task_id]).to_i / 60
+      r.task.recalculate_worked_minutes
       r.task.save
     end
   
@@ -36,7 +36,7 @@ class WorkLog < ActiveRecord::Base
     l.save
     
     if r.task && r.duration > 0
-      r.task.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", r.task_id]).to_i / 60
+      r.task.recalculate_worked_minutes
       r.task.save
     end
     
