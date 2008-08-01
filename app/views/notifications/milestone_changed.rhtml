@@ -1,5 +1,5 @@
 <% if @old_name.nil? -%>
-<%= @user.name %> <%= @action %> the '<%= @milestone.name %>' milestone in '<%=@milestone.project.name %>':
+<%= @user.name %> <%= @action %> the '<%= @milestone.name %>' milestone for the '<%=@milestone.project.customer.name %> / <%=@milestone.project.name %>' project:
 <% else -%>
 <%= @user.name %> <%= @action %> the '<%= @old_name %>' milestone to '<%= @milestone.name %>' in '<%=@milestone.project.name %>':
 <% end -%>
