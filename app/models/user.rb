@@ -175,15 +175,18 @@ class User < ActiveRecord::Base
   end
 
   def can?(project, perm)
-    if @perm_cache.nil?
-      @perm_cache = { }
+    @perm_cache ||= {}
+    unless @perm_cache[project.id]
+      @perm_cache[project.id] ||= {}
       self.project_permissions.each do | p |
-        @perm_cache[p.project_id] ||= { }
-        @perm_cache[p.project_id][perm] = p.can?(perm)
-      end
+        @perm_cache[p.project_id] ||= {}
+        ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant'].each do |p_perm|
+          @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
+        end
+      end 
     end 
 
-    @perm_cache[project.id][perm] rescue false
+    @perm_cache[project.id][perm] || false
   end
 
   def can_all?(projects, perm)
