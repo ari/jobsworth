@@ -1528,6 +1528,7 @@ li.help {
 
 #wiki pre {
   background-color: #eee;
+  border: 1px dashed #FFC266;
 }
 
 #wiki h1, h2, h3, h4 {
