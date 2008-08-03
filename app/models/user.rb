@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
   
   def avatar_url(size=32)
     if avatar?
-      if size > 25
+      if size > 25 && File.exist?(avatar_large_path)
         "/users/avatar/#{self.id}?large=1&" + File.mtime(avatar_large_path).to_i.to_s
       else
         "/users/avatar/#{self.id}?" + File.mtime(avatar_path).to_i.to_s
@@ -175,11 +175,18 @@ class User < ActiveRecord::Base
   end
 
   def can?(project, perm)
-    return false if self.project_permissions.nil?
-    self.project_permissions.each do | p |
-        return p.can?(perm) if p.project_id == project.id
-    end
-    return false
+    @perm_cache ||= {}
+    unless @perm_cache[project.id]
+      @perm_cache[project.id] ||= {}
+      self.project_permissions.each do | p |
+        @perm_cache[p.project_id] ||= {}
+        ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant'].each do |p_perm|
+          @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
+        end
+      end 
+    end 
+
+    @perm_cache[project.id][perm] || false
   end
 
   def can_all?(projects, perm)
@@ -241,7 +248,7 @@ class User < ActiveRecord::Base
     n = name.gsub(/[^\s\w]+/, '').split(" ") if name
     n = ["Anonymous"] if(n.nil? || n.empty?)
 
-    "#{n[0].capitalize} #{n[1..-1].collect{|e| e[0..0].upcase + "."}.join(' ')}".strip
+    "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
   end
 
   def online_status_icon

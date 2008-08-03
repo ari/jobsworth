@@ -1,7 +1,7 @@
 <div class="presence-section<%= " presence-section-pending" if( @chat.chat_messages.size > 0 && @chat.chat_messages.first.id > @chat.last_seen )%>" id="presence-<%= @user.dom_id %>">
   <div id="presence-<%= @user.dom_id%>-popup" class="presence-popup" style="display:none;">
     <div style="background-color: #eee; border-bottom:1px solid #ccc; font-size:14px; padding: 3px; font-weight:bold;">
-      <div><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= @user.name %></div>
+      <div><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= h @user.name %></div>
       <% unless @chat.chat_messages.blank? && @chat.archived_messages.blank?%>
       <div>
 	<div id="chat-browse-<%=@user.dom_id%>" style="font-size:9px;float:left;<%= "display:none;" if @chat.archived_messages.blank? %>"><a href="/shout/chat_browse/<%= @user.id %>"><%= _'Show History' %></a></div>
@@ -20,7 +20,7 @@
     </div>
     <div style="height:20px;margin: 2px;padding-top:2px;text-align:center;border-top:1px solid #ccc;">
       <form action="#" id="chat-form-<%=@user.dom_id%>" method="post">
-	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;">
+	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;" maxlength="255">
       </form>
     </div>
   </div>

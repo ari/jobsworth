@@ -3,9 +3,6 @@ class PagesController < ApplicationController
 
   def show
     @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
-
-    @body = RedCloth.new(@page.body).to_html
-
   end
 
   def new
@@ -93,13 +90,5 @@ class PagesController < ApplicationController
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
-  def preview
-    if params[:body]
-      r = RedCloth.new params[:body]
-      render :text => r.to_html
-    else
-      render :nothing => true
-    end
-  end
 
 end

@@ -35,7 +35,7 @@
   <% end %>
   </td>
   <td  valign="top" width="90%"><div style="float:left;"><strong>
-<% if log.task %>
+<% if log.task_id.to_i > 0 && log.task %>
 <%= link_to_task log.task %>
 <% elsif log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>

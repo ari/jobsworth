@@ -39,7 +39,6 @@ class ReportsController < ApplicationController
       "#{w.customer.name} #{w.project.name} #{w.task.name} #{w.task.task_num}"
     when 2
       w.is_a?(Tag) ? w.id : 0
-
     when 3
       w.user_id
     when 4
@@ -77,9 +76,11 @@ class ReportsController < ApplicationController
     when 18
       "3_task"
     when 19
-      "4_note"
+      "5_note"
     when 20
       "#{w.task.requested_by}"
+    when 21
+      "4_user"
     end
     
   end
@@ -109,23 +110,25 @@ class ReportsController < ApplicationController
     when 11
       "#{w.task.priority_type}"
     when 12
-      "Notes"
+      _("Notes")
     when 13
-      "Start"
+      _("Start")
     when 14
-      "End"
+      _("End")
     when 15
       "#{tz.utc_to_local(w.started_at).strftime_localized( "%a " + current_user.date_format )}"
     when 16
-      "Start"
+      _("Start")
     when 17
-      "End"
+      _("End")
     when 18
-      "Task"
+      _("Task")
     when 19
-      "Note"
+      _("Note")
     when 20 
       "#{w.task.requested_by}"
+    when 21
+      _("User")
     end
 
   end
@@ -182,7 +185,11 @@ class ReportsController < ApplicationController
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
       do_row(rkey, row_name, key, "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{w.task.name}</a> <br/><small>#{w.task.full_name}</small>")
-    elsif key == "4_note"
+    elsif key == "4_user"
+      rkey = key_from_worklog(w, 13).to_s
+      row_name = name_from_worklog(w, 15)
+      do_row(rkey, row_name, key, w.user.name)
+    elsif key == "5_note"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
       body = w.body
@@ -458,16 +465,17 @@ class ReportsController < ApplicationController
 
         when 2
           # Audit
-          key = key_from_worklog(w, 12).to_s
-          unless @column_headers[ key ]
-            @column_headers[ key ] = name_from_worklog( w, 12 )
-            @column_totals[ key ] ||= 0
-          end
-          do_column(w, key)
-
+          [12].each do |k|
+            key = key_from_worklog(w,k).to_s
+            unless @column_headers[ key ]
+              @column_headers[ key ] = name_from_worklog( w, k )
+              @column_totals[ key ] ||= 0
+            end
+            do_column(w, key)
+          end 
         when 3
           # Time sheet
-          [16, 17, 18, 19].each do |k|
+          [16, 17, 18, 21, 19].each do |k|
             key = key_from_worklog(w, k)
             unless @column_headers[ key ]
               @column_headers[ key ] = name_from_worklog( w, k )

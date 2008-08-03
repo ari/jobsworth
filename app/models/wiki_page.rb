@@ -47,11 +47,24 @@ class WikiPage < ActiveRecord::Base
     current_revision.user
   end
 
+  def revision(rev = 0)
+    rev > 0 ? self.revisions[rev-1] : current_revision
+  end 
+    
+
   def to_html(rev = 0)
     if rev > 0
       self.revisions[rev-1].to_html
     else
       current_revision.to_html
+    end
+  end
+
+  def to_plain_html(rev = 0)
+    if rev > 0
+      self.revisions[rev-1].to_plain_html
+    else
+      current_revision.to_plain_html
     end
   end
 

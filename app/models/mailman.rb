@@ -41,11 +41,14 @@ class Mailman < ActionMailer::Base
 
     e.save
 
+    puts "company[#{company.name}], user[#{e.user ? e.user.name : "none"}]"
+
     return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 
     target = nil
     email.to.each do |to|
       if to.include?("task-")
+        puts "looking for a task"
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
           puts "Looking for task[#{task_num}] from [#{company.name}]"
@@ -53,6 +56,8 @@ class Mailman < ActionMailer::Base
         end
       end
     end
+
+    puts "target[#{target}]"
 
     if target && target.is_a?(Task)
       puts "Found target [#{target.name}]"
@@ -112,7 +117,7 @@ class Mailman < ActionMailer::Base
         w.body = e.body
         w.save
 
-        w.event_log.user = email.from.first
+        w.event_log.user = e.user
         w.event_log.save
 
         user = nil

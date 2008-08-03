@@ -32,7 +32,7 @@
             else
               @user_ids = []
               @all_projects.each do |p|
-                @user_ids << p.users.collect(&:id)
+                @user_ids << p.users.collect{ |pu| pu.id }
               end
 
               @user_ids = [0] if @user_ids.size == 0
@@ -48,7 +48,7 @@
               <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 
                 <% @clients.each do |c| %>
-                  <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c[1]} AND completed_at IS NULL"], :order => "name") %>
+                  <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c[1]}"] ) %>
                   <% if @client_projects.size > 0 %>
                   <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
                     <% @client_projects.each do |p| %>

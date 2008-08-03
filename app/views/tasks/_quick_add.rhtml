@@ -25,13 +25,18 @@
     <td valign="top">
       <% if @task.project_id > 0
             selected_project = @task.project_id
-         elsif session[:last_project_id].to_i > 0
+         elsif session[:last_project_id].to_i > 0 && Project.exists?(session[:last_project_id])
             selected_project = session[:last_project_id].to_i
-         elsif session[:filter_project].to_i > 0
+         elsif session[:filter_project].to_i > 0 && Project.exists?(session[:filter_project])
             selected_project = session[:filter_project].to_i
          else
             selected_project = current_user.projects.find(:first, :order => 'name').id
          end
+
+         @project = current_user.projects.find(selected_project) rescue current_user.projects.find(:first,:order => 'name').id 
+	 selected_project = @project.id
+
+
       %>
       <label for="task_project_id"><%=_ 'Project' %></label><br />
       <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>

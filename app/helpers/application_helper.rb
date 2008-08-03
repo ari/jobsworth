@@ -316,7 +316,7 @@ module ApplicationHelper
 
   def wrap_text(txt, col = 80)
 
-    txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
+    txt.chars.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
     txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
     txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\"><img src=\"\\0\" border=\"0\" onload=\"inline_image(this);\"/></a>")
@@ -359,7 +359,7 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{h(truncate(task.name,80))}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{h(task.name.chars[0..80])}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)
@@ -456,10 +456,10 @@ module ApplicationHelper
 
 
 
-def flash_plugin(channels = ["default"])
-  config = Juggernaut.config
-  host = request.server_name
-  port = config["PUSH_PORT"]
+  def flash_plugin(channels = ["default"])
+    config = Juggernaut.config
+    host = request.server_name
+    port = config["PUSH_PORT"]
 #  crossdomain = config["CROSSDOMAIN"]
 #  juggernaut_data =  CGI.escape('"' + channels.join('","') + '"')
 
@@ -469,6 +469,19 @@ new Juggernaut({ host:'#{host}', port: #{port}, channels:["#{channels.join('","'
 </script>
 END_OF_HTML
   end
+
+
+  def use_tinymce
+    @content_for_tinymce = "" 
+    content_for :tinymce do
+      javascript_include_tag "tiny_mce/tiny_mce"
+    end
+    @content_for_tinymce_init = "" 
+    content_for :tinymce_init do
+      javascript_include_tag "tiny_mce"
+    end
+  end
+
 end
 
 
