@@ -9,9 +9,8 @@ class WorkLog < ActiveRecord::Base
   belongs_to :task
   belongs_to :scm_changeset
 
-  has_one    :ical_entry
-
-  has_one   :event_log, :as => :target, :dependent => :destroy
+  has_one    :ical_entry, :dependent => :destroy
+  has_one    :event_log, :as => :target, :dependent => :destroy
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
@@ -40,6 +39,14 @@ class WorkLog < ActiveRecord::Base
       r.task.save
     end
     
+  }
+
+  after_destroy { |r|
+    if r.task
+      r.task.recalculate_worked_minutes
+      r.task.save
+    end
+  
   }
 
   def self.full_text_search(q, options = {})
