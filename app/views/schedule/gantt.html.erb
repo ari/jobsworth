@@ -113,12 +113,14 @@
        </div>
        <%   s = s.next_month.beginning_of_month
            left += w + 1
-          end %>
+          end 
+          e = s
+	  %>
 </div>
 <div style="clear:both;height:20px;position:relative;">
        <% s = @range[0]
 	  w = 0
-          while s && s < @range[1] do 
+          while s && s < e
 	  %>
        <div style="position:absolute;left:<%=w%>px;top:0;width:15px;border-right:1px solid #eee;text-align:center;height:20000px;<%="background-color:#eee;" if s.wday == 0 || s.wday == 6%>">
 	  <%= s.day %>
