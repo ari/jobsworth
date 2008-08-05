@@ -9,6 +9,7 @@
 <label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %><br/>
 <% if current_user.admin > 0 %>
 <label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %><br/>
+<label for="user_create_projects"><%=_ 'Can Create Projects' %></label><%= check_box 'user', 'create_projects' %><br/>
 <br/>
 <% end %>
 

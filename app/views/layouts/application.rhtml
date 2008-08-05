@@ -34,7 +34,7 @@
 
     <title><%= controller.controller_name + " / " + controller.action_name %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", current_user.company.name, current_user.company.id]) %>
+<% @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company_id, current_user.company.name ]) %>
 
 <style type="text/css">
 <% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
@@ -167,9 +167,11 @@
                 <% else %>
                 <li><%= link_to "#{_('Projects')}", {:controller => 'projects', :action => 'list'} %> 
                 <% end %>
+		  <% if current_user.create_projects? %>
 		  <ul>
 	            <li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
 		  </ul>
+                  <% end %>
 		</li>
 
                 <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
@@ -232,8 +234,7 @@
       <tr>
         <td valign="top" width="100%">
 
-        <% if current_user.respond_to?(:seen_news_id)%>
-          <% news = NewsItem.find(:first, :order => "created_at desc", :conditions => ["id > ?", current_user.seen_news_id ]) %>
+          <% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ]) %>
           <% unless news.nil? %>
             <div id="news">
               <table class="news" id="news_table">
@@ -243,7 +244,6 @@
               </table>
             </div>
 
-          <% end %>
           <% end %>
 
           <div id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
@@ -379,6 +379,6 @@ new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.
 
 // ]]>
 </script>
-
+<%#= query_review_output %>
 </body>
 </html>
