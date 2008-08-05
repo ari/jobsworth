@@ -50,14 +50,8 @@
        <% s = @range[0]
 	  left = 0
           while s && s < @range[1] do
-#	  if s.next_month.beginning_of_month < @range[1] 
                 w = ((s.next_month.beginning_of_month.to_i - s.midnight.to_i)/1.day) * 16 - 1
 		style = "width:#{w}px;border-right:1px solid #999;"
-#           else 
-#	        w = 0
-#                style = ""
-#           end 
-
 	   %>
        <div style="<%= style %>text-align:center;position:absolute;left:<%=left%>px;top:0;height:20000px;">
 	  <%= s.strftime_localized("%B") %>
@@ -93,7 +87,7 @@
 	      &nbsp;
 	  </div>
 	</div>
-	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.due_at ? t.milestone.due_at.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;" <%=" class=\"handle\"" if current_user.can?(t.project, 'milestone')%>>
+	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.scheduled_date ? t.milestone.scheduled_date.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;" <%=" class=\"handle\"" if current_user.can?(t.project, 'milestone')%>>
 	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:17px;margin-right:0.3em;vertical-align:top;height:19px;" >
 	      <div style="float:left;"><img src="/images/milestone.gif" class="tooltip" title="<%= (t.milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user))%>"/></div>
 	  </div>

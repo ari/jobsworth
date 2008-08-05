@@ -724,8 +724,8 @@ class ScheduleController < ApplicationController
       
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
@@ -784,8 +784,8 @@ class ScheduleController < ApplicationController
 
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
@@ -856,8 +856,8 @@ class ScheduleController < ApplicationController
       
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
