@@ -2309,3 +2309,7 @@ a.widget-collapsed {
 .delete { 
   color: #ff6666;
 }
+
+input.scheduled { 
+  border: 1px solid #f00;
+}

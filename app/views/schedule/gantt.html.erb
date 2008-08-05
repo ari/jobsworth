@@ -63,8 +63,8 @@
 	  </div>
             <div>
 	      <form method="post">
-                <div style="float:left;padding-left:0.5em;"><%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'nolabel tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %></div>
-                <div style="float:right;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'nolabel tooltip'} %></div>
+                <div style="float:left;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'nolabel tooltip'} %>
+                <%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'nolabel tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %></div>
 	     </form>
            </div>
     </td>

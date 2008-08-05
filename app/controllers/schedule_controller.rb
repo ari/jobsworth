@@ -721,6 +721,7 @@ class ScheduleController < ApplicationController
       rescue
         render :update do |page|
           page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+          page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
         end
         return
       end 
@@ -736,7 +737,9 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
+      page["duration-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_duration != @task.duration) ? "scheduled" : "")
       page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+      page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
 
       page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
 
@@ -785,6 +788,7 @@ class ScheduleController < ApplicationController
       rescue
         render :update do |page|
           page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+          page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
         end
         return
       end 
@@ -798,7 +802,10 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+      page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
 
+      logger.info("#{@milestone.scheduled_at} != #{@milestone.due_at}")
+      
       milestones = { }
       
       @displayed_tasks.each do |t|
@@ -848,7 +855,7 @@ class ScheduleController < ApplicationController
         @milestone.scheduled = true
       end 
 
-      @milestone.scheduled_at = start_date
+      @milestone.scheduled_at = tz.local_to_utc(start_date.to_time + 1.day - 1.minute) unless start_date.nil?
       @milestone.save
     else 
       unless @task.scheduled?
@@ -857,7 +864,7 @@ class ScheduleController < ApplicationController
         @task.scheduled = true
       end 
 
-      @task.scheduled_at = end_date
+      @task.scheduled_at = tz.local_to_utc(end_date.to_time + 1.day - 1.minute) unless end_date.nil?
       @task.save
     end 
 
@@ -866,10 +873,13 @@ class ScheduleController < ApplicationController
     render :update do |page|
       if @milestone
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
+        logger.info("#{@milestone.scheduled_at} != #{@milestone.due_at}")
       else 
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
-        page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
+        page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
         page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
+        logger.info("#{@task.scheduled_at} != #{@task.due_at}")
       end 
 
       milestones = { }
@@ -917,14 +927,16 @@ class ScheduleController < ApplicationController
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
 
     if @milestone
-      @milestone.scheduled_at = start_date
+      @milestone.scheduled_at = tz.local_to_utc(start_date.to_time + 1.day - 1.minute) unless start_date.nil?
       render :update do |page|
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
       end
     else 
-      @task.scheduled_at = end_date
+      @task.scheduled_at = tz.local_to_utc(end_date.to_time + 1.day - 1.minute) unless end_date.nil?
       render :update do |page|
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
       end
     end
   end
