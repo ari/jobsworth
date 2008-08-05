@@ -30,7 +30,7 @@ class ShoutController < ApplicationController
       @rooms = ShoutChannel.find(:all, :conditions => ["company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                  :order => "company_id, name")
     end
-    @transcripts = Transcript.find_all(current_user.company_id, @rooms.collect(&:id) )
+    @transcripts = Transcript.find_all(current_user.company_id, @rooms.collect{ |room| room.id } )
   end
 
   def transcript
