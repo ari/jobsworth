@@ -32,8 +32,13 @@
 
 	  <% if @user.projects.size > 0 %>
 	  <div>
-	    <div class="information-header"><%= _('Projects') %></div>
-	    <div class="information-value" style="float:left;"><%= @user.projects.collect{|p| "<a href=\"/views/select_project/#{p.id}\">#{h(p.full_name)}</a>"}.join("<br/> ") %></div>
+            <div class="information-header"><%= _('Projects') %></div>
+            <div class="information-value" style="float:left;">
+	    <%= link_to_function _("%d project", @user.projects.size), "Element.toggle('projects-#{@user.dom_id}');" %>
+	    <div id="projects-<%=@user.dom_id%>" style="display:none;">
+	    <%= @user.projects.collect{|p| "<a href=\"/views/select_project/#{p.id}\">#{h(p.full_name)}</a>"}.join("<br/> ") %>
+            </div>
+            </div>
 	  </div>
 	  <% end %>
 	  

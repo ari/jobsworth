@@ -1,10 +1,10 @@
 <tr>
     <td style="height:20px;vertical-align:top;width:260px;padding-right:0.5em;" nowrap><div style="width:250px;overflow:hidden;height:16px;" nowrap><%= link_to_task(@t) %></div></td>
     <td width="1%" style="text-align:right;padding-right:0.5em;" nowrap><%= worked_nice(@t.worked_minutes)%></td>
-    <td width="1%" style="text-align:right;" nowrap><% if current_user.can?(@t.project,'prioritize')%><input tabindex="<%=tab%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.scheduled_duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
+    <td width="1%" style="text-align:right;" nowrap><% if current_user.can?(@t.project,'prioritize')%><input tabindex="<%=tab%>" class="<%= "scheduled" if @t.scheduled? && @t.scheduled_duration != @t.duration%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.scheduled_duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
     <td style="padding-left:0.5em;text-align:right;" nowrap>
 	<% if current_user.can?(@t.project,'prioritize')%>
-	    <input class="date" tabindex="<%=tab+1%>" id="due-<%=@t.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.scheduled_due_at.strftime(current_user.date_format) if @t.scheduled_due_at %>" />
+	    <input class="<%= "scheduled" if @t.scheduled? && @t.scheduled_at != @t.due_at %>" tabindex="<%=tab+1%>" id="due-<%=@t.dom_id%>" name="due" size="8" type="text" style="font-size:11px;" value="<%= @t.scheduled_due_at.strftime(current_user.date_format) if @t.scheduled_due_at %>" />
 	      <img alt="Calendar" class="date" id="due-<%=@t.dom_id%>-calendar" src="/images/calendar.png" title="Show Calendar"/>
 <script type="text/javascript">
 Calendar.setup({ inputField:"due-<%=@t.dom_id%>",step:1,firstDay:1,button:"due-<%=@t.dom_id%>-calendar",ifFormat:"<%=current_user.date_format%>",range:[2006, 2010],showOthers:true, onUpdate:function(){new Ajax.Request('/schedule/reschedule/<%=@t.id%>', {asynchronous: true, evalScripts: true, parameters:'due='+$('due-<%=@t.dom_id%>').value });} })

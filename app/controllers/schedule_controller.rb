@@ -524,22 +524,50 @@ class ScheduleController < ApplicationController
   def gantt
 
     sort = "tasks.milestone_id IS NOT NULL, tasks.milestone_id <> 0, milestones.due_at IS NOT NULL desc, milestones.due_at, milestones.name, tasks.due_at IS NOT NULL desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
-    params[:filter_by] ||= " "
-    filter = case params[:filter_by][0..0]
-             when 'c'
-               "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", params[:filter_by][1..-1]]).collect(&:id).compact.join(',') } )"
-             when 'p'
-               "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-             when 'm'
-               "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-             when 'u'
-               "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-             else 
-               ""
-             end
 
-    @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter}"], :order => sort)
+    if session[:filter_project].to_i == 0
+      project_ids = current_project_ids
+    else
+      project_ids = session[:filter_project]
+    end
 
+    filter = ""
+
+    if session[:filter_user].to_i > 0
+      task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
+      if task_ids == ''
+        filter << "AND tasks.id IN (0) "
+      else
+        filter << "AND tasks.id IN (#{task_ids}) "
+      end
+    elsif session[:filter_user].to_i < 0
+      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", current_user.company_id]).collect { |t| t.id }.join(',')
+      if not_task_ids == ''
+        filter << "AND tasks.id = 0 "
+      else
+        filter << "AND tasks.id IN (#{not_task_ids}) " if not_task_ids != ""
+      end
+    end
+
+    if session[:filter_milestone].to_i > 0
+      filter << "AND tasks.milestone_id = #{session[:filter_milestone]} "
+    elsif session[:filter_milestone].to_i < 0
+      filter << "AND (tasks.milestone_id IS NULL OR tasks.milestone_id = 0) "
+    end
+
+    unless session[:filter_customer].to_i == 0
+      filter << "AND projects.customer_id = #{session[:filter_customer]} "
+    end
+
+    @displayed_tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL #{filter}"], :order => sort)
+
+    if session[:ignore_hidden].to_i > 0
+      @tasks = @displayed_tasks
+    else 
+      @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"], :order => sort)
+    end
+
+    
     @dates = { }
     
     @start = { }
@@ -566,6 +594,21 @@ class ScheduleController < ApplicationController
     tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
     tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
     tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
+
+    @schedule_in_progress = false
+    
+    for task in @tasks
+      if task.scheduled? && (task.scheduled_at != task.due_at || task.scheduled_duration != task.duration)
+        @schedule_in_progress = true
+        break
+      end
+      
+      if task.milestone && task.milestone.scheduled? && task.milestone.scheduled_at != task.milestone.due_at
+        @schedule_in_progress = true
+        break
+      end
+      
+    end
     
     @stack = []
     
@@ -694,6 +737,7 @@ class ScheduleController < ApplicationController
       rescue
         render :update do |page|
           page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+          page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
         end
         return
       end 
@@ -708,14 +752,26 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
+      
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
+      page["duration-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_duration != @task.duration) ? "scheduled" : "")
       page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+      page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
 
       page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
 
       milestones = { }
       
-      @tasks.each do |t|
+      @displayed_tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ backgroundColor:'#{gantt_color(t)}'});"
@@ -724,8 +780,8 @@ class ScheduleController < ApplicationController
       
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
@@ -758,6 +814,7 @@ class ScheduleController < ApplicationController
       rescue
         render :update do |page|
           page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+          page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
         end
         return
       end 
@@ -770,11 +827,21 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
       page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+      page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
 
       milestones = { }
       
-      @tasks.each do |t|
+      @displayed_tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('offset-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id]).to_i + 500}px'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
@@ -784,8 +851,8 @@ class ScheduleController < ApplicationController
 
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
@@ -821,7 +888,7 @@ class ScheduleController < ApplicationController
         @milestone.scheduled = true
       end 
 
-      @milestone.scheduled_at = start_date
+      @milestone.scheduled_at = tz.local_to_utc(start_date.to_time + 1.day - 1.minute) unless start_date.nil?
       @milestone.save
     else 
       unless @task.scheduled?
@@ -830,24 +897,34 @@ class ScheduleController < ApplicationController
         @task.scheduled = true
       end 
 
-      @task.scheduled_at = end_date
+      @task.scheduled_at = tz.local_to_utc(end_date.to_time + 1.day - 1.minute) unless end_date.nil?
       @task.save
     end 
 
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
       if @milestone
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
       else 
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
-        page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
+        page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
         page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
       end 
 
       milestones = { }
       
-      @tasks.each do |t|
+      @displayed_tasks.each do |t|
         page << "$('offset-#{t.dom_id}').setStyle({ left:'#{gantt_offset(@start[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ width:'#{gantt_width(@start[t.id],@end[t.id])}'});"
         page << "$('width-#{t.dom_id}').setStyle({ backgroundColor:'#{gantt_color(t)}'});"
@@ -856,8 +933,8 @@ class ScheduleController < ApplicationController
       
       milestones.values.each do |m|
         page.replace_html "duration-#{m.dom_id}", worked_nice(m.duration)
-        if m.scheduled_at
-          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_at.midnight.to_time)}'});"
+        if m.scheduled_date
+          page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(m.scheduled_date.midnight.to_time)}'});"
         else 
           page << "$('offset-due-#{m.dom_id}').setStyle({ left:'#{gantt_offset(@milestone_end[m.id])}'});"
         end
@@ -890,14 +967,16 @@ class ScheduleController < ApplicationController
     end_date = start_date + ((params[:w].to_i - 501)/16).days + 1.day
 
     if @milestone
-      @milestone.scheduled_at = start_date
+      @milestone.scheduled_at = tz.local_to_utc(start_date.to_time + 1.day - 1.minute) unless start_date.nil?
       render :update do |page|
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
       end
     else 
-      @task.scheduled_at = end_date
+      @task.scheduled_at = tz.local_to_utc(end_date.to_time + 1.day - 1.minute) unless end_date.nil?
       render :update do |page|
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
+        page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
       end
     end
   end
@@ -952,4 +1031,39 @@ class ScheduleController < ApplicationController
     end
   end
 
+  def filter
+
+    f = params[:filter]
+
+    if f.nil? || f.empty? || f == "0"
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "0"
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'c'
+      session[:filter_customer] = f[1..-1]
+      session[:filter_milestone] = "0"
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'p'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "0"
+      session[:filter_project] = f[1..-1]
+    elsif f[0..0] == 'm'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = f[1..-1]
+      session[:filter_project] = "0"
+    elsif f[0..0] == 'u'
+      session[:filter_customer] = "0"
+      session[:filter_milestone] = "-1"
+      session[:filter_project] = f[1..-1]
+    end
+
+    [:filter_user, :ignore_hidden].each do |filter|
+      session[filter] = params[filter]
+    end
+
+    redirect_to :action => 'gantt'
+    
+  end
+
+  
 end

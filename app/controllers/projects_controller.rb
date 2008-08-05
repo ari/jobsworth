@@ -4,10 +4,22 @@ class ProjectsController < ApplicationController
   cache_sweeper :project_sweeper, :only => [ :create, :edit, :update, :destroy, :ajax_remove_permission, :ajax_add_permission ]
 
   def new
+    unless current_user.create_projects?
+      flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
+      redirect_from_last
+      return
+    end
+    
     @project = Project.new
   end
 
   def create
+    unless current_user.create_projects?
+      flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
+      redirect_from_last
+      return
+    end
+
     @project = Project.new(params[:project])
     @project.owner = current_user
     @project.company_id = current_user.company_id
