@@ -61,10 +61,10 @@
 		<input type="checkbox" name="ignore_hidden" id="ignore_hidden" title="<%= _('Ignore hidden tasks when scheduling') %>" class="tooltip" value="1" <%= session[:ignore_hidden].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Ignore hidden tasks when scheduling') %>" class="tooltip"> <%=_ 'Ignore hidden tasks when scheduling'%></div>
 	  </fieldset>
 	  </div>
-            <div>
+	  <div id="gantt-save-revert" <%= " style=\"display:none;\"" unless @schedule_in_progress%>>
 	      <form method="post">
-                <div style="float:left;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state'), :class => 'nolabel tooltip'} %>
-                <%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule'), :class => 'nolabel tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %></div>
+                <div style="float:left;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state. Includes filtered tasks.'), :class => 'nolabel tooltip'} %>
+                <%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule. Includes filtered tasks.'), :class => 'nolabel tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %></div>
 	     </form>
            </div>
     </td>

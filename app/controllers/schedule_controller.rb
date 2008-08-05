@@ -566,6 +566,7 @@ class ScheduleController < ApplicationController
     else 
       @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"], :order => sort)
     end
+
     
     @dates = { }
     
@@ -593,6 +594,21 @@ class ScheduleController < ApplicationController
     tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
     tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
     tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
+
+    @schedule_in_progress = false
+    
+    for task in @tasks
+      if task.scheduled? && (task.scheduled_at != task.due_at || task.scheduled_duration != task.duration)
+        @schedule_in_progress = true
+        break
+      end
+      
+      if task.milestone && task.milestone.scheduled? && task.milestone.scheduled_at != task.milestone.due_at
+        @schedule_in_progress = true
+        break
+      end
+      
+    end
     
     @stack = []
     
@@ -736,6 +752,16 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
+      
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
       page["duration-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_duration != @task.duration) ? "scheduled" : "")
       page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
@@ -801,11 +827,18 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
       page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
       page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
 
-      logger.info("#{@milestone.scheduled_at} != #{@milestone.due_at}")
-      
       milestones = { }
       
       @displayed_tasks.each do |t|
@@ -871,15 +904,22 @@ class ScheduleController < ApplicationController
     gantt
     
     render :update do |page|
+      if @schedule_in_progress
+        page << "if( !$('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').show();"
+        page << "}"
+      else 
+        page << "if( $('gantt-save-revert').visible() ) {"
+        page << "$('gantt-save-revert').hide();"
+        page << "}"
+      end
       if @milestone
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
         page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
-        logger.info("#{@milestone.scheduled_at} != #{@milestone.due_at}")
       else 
         page["due-#{@task.dom_id}"].value = (@task.scheduled_at ? @task.scheduled_at.strftime_localized(current_user.date_format) : "")
         page["due-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_at != @task.due_at) ? "scheduled" : "")
         page << "$('width-#{@task.dom_id}').setStyle({ backgroundColor:'#{gantt_color(@task)}'});"
-        logger.info("#{@task.scheduled_at} != #{@task.due_at}")
       end 
 
       milestones = { }
