@@ -9,7 +9,22 @@
 <% end %>
 <label>&nbsp;</label>
 <div class="buttons">
-<%= submit_tag (@project.new_record? ? _("Create") : _("Save")), :class => 'nolabel' %>
+<% if @project.new_record? %>
+
+  <%= submit_tag _("Create"), :class => 'nolabel' %>
+  <% if current_user.all_projects.size > 0 %>
+  <span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
+  <select name="copy_project" id="copy_project">
+     <option value="0" class="select_default"><%= _("[None]") %></option>
+     <%= options_for_select current_user.all_projects.collect{|p| ["#{p.name} [#{p.customer.name}]",p.id]}, params[:copy_project].to_i %>
+  </select>
+  </div>
+  <% end %>
+
+<% else %>
+<%= submit_tag _("Save"), :class => 'nolabel' %>
+<% end %>
+
 </div>
 <br>
 <!--[eoform:project]-->
