@@ -1,43 +1,46 @@
 Localization.define('nl_NL') do |l|
-  l.store "d", "d"
+  l.store "d", "d" # Tom Niessink
   l.store "h", "u"
-  l.store "m", "m"
-  l.store "w", "w"
+  l.store "m", "m" # Tom Niessink
+  l.store "w", "w" # Tom Niessink
   l.store "To", "Tot"
   l.store "by", "door"
   l.store "of", "van"
   l.store "or", "of"
-  l.store "Age", "Age"
-  l.store "All", "All"
-  l.store "Apr", "Apr"
-  l.store "Aug", "Aug"
-  l.store "CSV", "CSV"
-  l.store "Dec", "Dec"
-  l.store "Feb", "Feb"
+  l.store "Age", "Leeftijd" # Tom Niessink
+  l.store "All", "Alles" # Tom Niessink
+  l.store "Apr", "Apr" # Tom Niessink
+  l.store "Aug", "Aug" # Tom Niessink
+  l.store "CSV", "CSV" # Tom Niessink
+  l.store "Dec", "Dec" # Tom Niessink
+  l.store "Due", "Due"
+  l.store "End", "End"
+  l.store "Feb", "Feb" # Tom Niessink
   l.store "Fri", "Vr"
-  l.store "Jan", "Jan"
-  l.store "Jul", "Jul"
-  l.store "Jun", "Jun"
+  l.store "Jan", "Jan" # Tom Niessink
+  l.store "Jul", "Jul" # Tom Niessink
+  l.store "Jun", "Jun" # Tom Niessink
   l.store "Low", "Laag"
   l.store "Mar", "Mrt"
   l.store "May", "Mei"
   l.store "Mon", "Ma"
   l.store "New", "Nieuw"
-  l.store "Nov", "Nov"
+  l.store "Nov", "Nov" # Tom Niessink
   l.store "Oct", "Okt"
   l.store "Sat", "Za"
-  l.store "Sep", "Sep"
+  l.store "Sep", "Sep" # Tom Niessink
   l.store "Sun", "Zo"
   l.store "Thu", "Do"
-  l.store "To:", "To:"
+  l.store "To:", "Aan:" # Tom Niessink
   l.store "Tue", "Di"
   l.store "Wed", "Wo"
-  l.store "ago", "ago"
+  l.store "ago", "geleden" # Tom Niessink
   l.store "and", "en"
-  l.store "day", "day"
+  l.store "day", "dag" # Tom Niessink
   l.store "Body", "Inhoud"
   l.store "Chat", "Overleg"
   l.store "Date", "Datum"
+  l.store "Days", "Dagen" # Jonathan van Woudenberg
   l.store "Edit", "Wijzig"
   l.store "File", ["Bestand", "Bestanden"]
   l.store "From", "Van"
@@ -45,58 +48,65 @@ Localization.define('nl_NL') do |l|
   l.store "High", "Hoog"
   l.store "July", "Juli"
   l.store "June", "Juni"
-  l.store "Mine", "Mine"
+  l.store "Mine", "Van Mij" # Jonathan van Woudenberg
   l.store "Name", "Naam"
-  l.store "Next", "Next"
-  l.store "Open", "Open"
+  l.store "Next", "Volgende" # Tom Niessink
+  l.store "Note", "Note"
+  l.store "Open", "Open" # Tom Niessink
   l.store "Read", "Lezen"
   l.store "Rows", "Regels"
   l.store "Save", "Opslaan"
-  l.store "Show", "Show"
-  l.store "Tags", "Tags"
+  l.store "Show", "Geef weer" # Tom Niessink
+  l.store "Tags", "Tags" # Tom Niessink
   l.store "Task", "Taak"
-  l.store "Type", "Type"
+  l.store "Type", "Type" # Tom Niessink
   l.store "User", "Gebruiker"
-  l.store "View", "View"
-  l.store "Wait", "Wait"
-  l.store "Week", "Week"
-  l.store "Wiki", "Wiki"
+  l.store "View", "Overzicht" # Tom Niessink
+  l.store "Wait", "Wacht" # Tom Niessink
+  l.store "Week", "Week" # Tom Niessink
+  l.store "Wiki", "Wiki" # Tom Niessink
   l.store "Work", "Werk"
-  l.store "days", "days"
-  l.store "last", "last"
-  l.store "59:04", "59:04"
-  l.store "April", "April"
-  l.store "Audit", "Audit"
+  l.store "days", "dagen" # Tom Niessink
+  l.store "idle", "idle"
+  l.store "last", "laatste" # Tom Niessink
+  l.store "59:04", "59:04" # Tom Niessink
+  l.store "April", "April" # Tom Niessink
+  l.store "Audit", "Controle" # Tom Niessink
   l.store "Close", "Sluiten"
   l.store "Email", "email"
-  l.store "Empty", "Empty"
+  l.store "Empty", "Leeg" # Tom Niessink
   l.store "Files", "Bestanden"
-  l.store "Forum", "Forum"
+  l.store "Forum", "Forum" # Tom Niessink
   l.store "Grant", "Toegang verlenen"
   l.store "Major", "Belangrijk"
   l.store "March", "Maart"
   l.store "Minor", "Minder Belangrijk"
   l.store "Notes", "Notities"
   l.store "Owner", "Eigenaar"
-  l.store "Pivot", "Pivot"
-  l.store "Saved", "Saved"
-  l.store "Start", "Start"
+  l.store "Pivot", "Kernpunt" # Tom Niessink
+  l.store "Posts", "Berichten" # Jonathan van Woudenberg
+  l.store "Saved", "Opgeslagen" # Tom Niessink
+  l.store "Start", "Start" # Tom Niessink
   l.store "Tasks", "Taken"
-  l.store "Title", "Title"
-  l.store "To-do", "To-do"
+  l.store "Title", "Titel" # Tom Niessink
+  l.store "To-do", "To-do" # Tom Niessink
   l.store "Today", "Vandaag"
+  l.store "Topic", "Onderwerp" # Jonathan van Woudenberg
   l.store "Total", "Totaal"
   l.store "Users", "Gebruikers"
   l.store "Views", "Overzichten"
-  l.store "every", "every"
+  l.store "Weeks", "Weken" # Jonathan van Woudenberg
+  l.store "every", "elke" # Tom Niessink
+  l.store "lists", "lijsten" # Jonathan van Woudenberg
   l.store "today", "vandaag"
-  l.store "until", "until"
+  l.store "until", "tot" # Tom Niessink
   l.store "%d day", ["één dag", "%d dagen"]
   l.store "%s ago", "%s geleden"
+  l.store "*bold*", "*vetgedrukt*" # Jonathan van Woudenberg
   l.store "Assign", "Toewijzen"
   l.store "August", "Augustus"
   l.store "Browse", "Bladeren"
-  l.store "Cancel", "Cancel"
+  l.store "Cancel", "Annuleren" # Tom Niessink
   l.store "Client", "Klant"
   l.store "Closed", "Gesloten"
   l.store "Create", "Creëer"
@@ -104,32 +114,37 @@ Localization.define('nl_NL') do |l|
   l.store "Defect", "Fout"
   l.store "Delete", "Verwijderen"
   l.store "Filter", "Filteren"
-  l.store "Forums", "Forums"
+  l.store "Forums", "Forums" # Tom Niessink
   l.store "Friday", "Vrijdag"
+  l.store "Locked", "Gesloten" # Jonathan van Woudenberg
   l.store "Lowest", "Laagst"
   l.store "Monday", "Maandag"
+  l.store "Months", "Maanden" # Jonathan van Woudenberg
   l.store "No one", "Geen"
   l.store "Normal", "Normaal"
   l.store "Online", "on-line"
-  l.store "Paused", "Paused"
-  l.store "Plural", "Plural"
-  l.store "Recent", "Recent"
+  l.store "Paused", "Gepauzeerd" # Tom Niessink
+  l.store "Plural", "Meervoud" # Tom Niessink
+  l.store "Recent", "Recent" # Tom Niessink
   l.store "Revert", "Terugzetten"
   l.store "Search", "Zoeken"
   l.store "Shared", "Gedeeld"
-  l.store "Status", "Status"
+  l.store "Status", "Status" # Tom Niessink
+  l.store "Sticky", "Altijd Bovenaan" # Jonathan van Woudenberg
   l.store "Sunday", "Zondag"
   l.store "Target", "Doel"
-  l.store "Update", "Update"
+  l.store "Update", "Wijzigen" # Tom Niessink
   l.store "Upload", "Plaatsen"
   l.store "Urgent", "Dringend"
-  l.store "Worked", "Worked"
+  l.store "Worked", "Gewerkt" # Tom Niessink
   l.store "[Next]", "[Volgende]"
   l.store "[None]", "[Geen]"
   l.store "[Prev]", "[Vorige]"
   l.store "[wdhm]", "[wdum]"
-  l.store "%d days", ["%d days", "%d days"]
-  l.store "%d file", ["%d file", "%d files"]
+  l.store "cancel", "annuleren" # Jonathan van Woudenberg
+  l.store "quotes", "quotes"
+  l.store "%d days", ["%d dag", "%d dagen"] # Tom Niessink
+  l.store "%d file", ["%d bestand", "%d bestanden"] # Tom Niessink
   l.store "%d week", ["één week", "%d weken"]
   l.store "Blocker", "Blokkerend"
   l.store "Clients", "Klanten"
@@ -138,138 +153,158 @@ Localization.define('nl_NL') do |l|
   l.store "Company", "Bedrijf"
   l.store "Contact", "Klanten"
   l.store "Created", "Aangemaakt"
-  l.store "Destroy", "Destroy"
+  l.store "Destroy", "Verwijderen" # Jonathan van Woudenberg
   l.store "History", "Historie"
   l.store "Invalid", "Ongeldig"
   l.store "January", "Januari"
-  l.store "Loading", "Loading"
+  l.store "Loading", "Laden" # Tom Niessink
   l.store "Log Out", "Afmelden"
-  l.store "Members", "Members"
+  l.store "Members", "Leden" # Tom Niessink
   l.store "October", "Oktober"
   l.store "Offline", "off-line"
   l.store "Options", "Opties"
   l.store "Preview", "Voorbeeld"
-  l.store "Project", "Project"
+  l.store "Project", "Project" # Tom Niessink
   l.store "Reports", "Rapporten"
-  l.store "Sort By", "Sort By"
+  l.store "Sort By", "Sorteren op" # Tom Niessink
   l.store "Summary", "Samenvatting"
   l.store "Trivial", "Onbelangrijk"
   l.store "Tuesday", "Dinsdag"
-  l.store "Updated", "Updated"
-  l.store "Welcome", "Welcome"
+  l.store "Updated", "Gewijzigd" # Tom Niessink
+  l.store "Welcome", "Welkom" # Tom Niessink
+  l.store "offline", "offline" # Jonathan van Woudenberg
   l.store "%d month", ["één maand", "%d maanden"]
-  l.store "%d posts", ["%d posts", "%d posts"]
-  l.store "1:2:3:04", "1:2:3:04"
+  l.store "%d posts", ["%d bericht", "%d berichten"] # Tom Niessink
+  l.store "%s tasks", "%s taken" # Jonathan van Woudenberg
+  l.store "1:2:3:04", "1:2:3:04" # Tom Niessink
   l.store "1w2d3h4m", "1w2d3u4m"
   l.store "Archived", "Gearchiveerd"
-  l.store "Complete", "Complete"
+  l.store "Attached", "Bijgevoegd" # Jonathan van Woudenberg
+  l.store "Comments", "Comments"
+  l.store "Complete", "Afgerond" # Tom Niessink
   l.store "Critical", "Kritiek"
-  l.store "December", "December"
-  l.store "Download", "Download"
+  l.store "December", "December" # Tom Niessink
+  l.store "Download", "Downloaden" # Tom Niessink
   l.store "Due Date", "Einddatum"
-  l.store "Estimate", "Estimate"
-  l.store "Everyone", "Everyone"
+  l.store "Estimate", "Schatting" # Tom Niessink
+  l.store "Everyone", "Iedereen" # Tom Niessink
   l.store "February", "Februari"
-  l.store "Group By", "Group By"
+  l.store "Group By", "Groeperen op" # Tom Niessink
   l.store "Language", "Taal"
   l.store "Location", "Locatie"
   l.store "Modified", "Gewijzigd"
-  l.store "New File", "New File"
+  l.store "New File", "Nieuw bestand" # Tom Niessink
   l.store "New Note", "Nieuwe Notitie"
-  l.store "New Room", "New Room"
+  l.store "New Room", "Nieuwe chatroom" # Tom Niessink
   l.store "New Task", "Nieuwe Taak"
-  l.store "New User", "New User"
+  l.store "New User", "Nieuwe gebruiker" # Tom Niessink
   l.store "New View", "Nieuw Overzicht"
   l.store "New logo", "Nieuw Logo"
-  l.store "November", "November"
-  l.store "One week", "One week"
+  l.store "November", "November" # Tom Niessink
+  l.store "One week", "Eén week" # Tom Niessink
   l.store "Overview", "Overzicht"
   l.store "Password", "Wachtwoord"
-  l.store "Previous", "Previous"
+  l.store "Previous", "Vorige" # Tom Niessink
   l.store "Priority", "Prioriteit"
-  l.store "Progress", "Progress"
+  l.store "Progress", "Vordering" # Tom Niessink
   l.store "Projects", "Projecten"
-  l.store "QuickAdd", "QuickAdd"
-  l.store "Resolved", "Resolved"
-  l.store "Reverted", "Reverted"
+  l.store "QuickAdd", "VoegSnelToe" # Tom Niessink
+  l.store "Resolved", "Afgerond" # Tom Niessink
+  l.store "Reverted", "Teruggedraait" # Tom Niessink
   l.store "Revision", "Revisie"
   l.store "Saturday", "Zaterdag"
   l.store "Schedule", "Planning"
   l.store "Severity", "Impact"
-  l.store "Singular", "Singular"
+  l.store "Singular", "Enkelvoudig" # Tom Niessink
   l.store "Thursday", "Donderdag"
   l.store "Timeline", "Tijdlog"
-  l.store "Tomorrow", "Tomorrow"
+  l.store "Tomorrow", "Morgen" # Tom Niessink
   l.store "Tutorial", "Introductie"
-  l.store "Use Chat", "Use Chat"
-  l.store "Use Wiki", "Use Wiki"
+  l.store "Use Chat", "Gebruik Chat" # Tom Niessink
+  l.store "Use Wiki", "Begruik Wiki" # Tom Niessink
   l.store "Username", "Gebruikersnaam"
   l.store "Work Log", "Werklog"
-  l.store "Workload", "Workload"
+  l.store "Workload", "Werklast" # Tom Niessink
   l.store "[Delete]", "[Verwijder]"
   l.store "tomorrow", "morgen"
-  l.store "%d folder", ["%d folder", "%d folders"]
+  l.store "%d folder", ["%d map", "%d mappen"] # Jonathan van Woudenberg
   l.store "%d minute", ["één minuut", "%d minuten"]
-  l.store "%d topics", ["%d topics", "%d topics"]
+  l.store "%d topics", ["%d onderwerp", "%d onderwerpen"] # Tom Niessink
+  l.store "%d voices", ["%d stem", "%d stemmen"] # Jonathan van Woudenberg
   l.store "Completed", "Afgesloten"
+  l.store "Due Tasks", "Due Tasks"
   l.store "Duplicate", "Dubbele"
   l.store "Edit Note", "Wijzig Notitie"
   l.store "Edit User", "Wijzig Gebruiker"
   l.store "Edit View", "Wijzig Overzicht"
-  l.store "Estimated", "Estimated"
-  l.store "Last Post", "Last Post"
+  l.store "Edit post", "Wijzig bericht" # Jonathan van Woudenberg
+  l.store "Estimated", "Geschat" # Tom Niessink
+  l.store "Last Post", "Laaste bericht" # Tom Niessink
   l.store "Last Week", "Vorige Week"
   l.store "Last Year", "Vorig jaar"
+  l.store "Last post", "Laatste bericht" # Jonathan van Woudenberg
   l.store "Milestone", "Mijlpaal"
-  l.store "Next Week", "Next Week"
-  l.store "Next week", "Next week"
-  l.store "One month", "One month"
-  l.store "Remaining", "Remaining"
-  l.store "September", "September"
+  l.store "New Topic", "Nieuw Onderwerp" # Jonathan van Woudenberg
+  l.store "New topic", "Nieuw onderwerp" # Jonathan van Woudenberg
+  l.store "Next Week", "Volgende Week" # Tom Niessink
+  l.store "Next week", "Vorige week" # Tom Niessink
+  l.store "One month", "Eén maand" # Tom Niessink
+  l.store "Remaining", "Overblijvend" # Jonathan van Woudenberg
+  l.store "September", "September" # Tom Niessink
   l.store "Task Type", "Taak Type"
   l.store "This Week", "Deze Week"
   l.store "This Year", "Dit jaar"
   l.store "Top Tasks", "Top Taken"
-  l.store "Translate", "Translate"
-  l.store "Use Forum", "Use Forum"
+  l.store "Translate", "Vertaal" # Tom Niessink
+  l.store "Use Forum", "Gebruik Forum" # Tom Niessink
   l.store "Wednesday", "Woensdag"
   l.store "Won't Fix", "Zal niet opgelost worden"
-  l.store "Work Done", "Work Done"
-  l.store "Yesterday", "Yesterday"
+  l.store "Won't fix", "Won't fix"
+  l.store "Work Done", "Volbracht Werk" # Tom Niessink
+  l.store "Yesterday", "Gisteren" # Tom Niessink
+  l.store "_italics_", "_schuingedrukt_" # Jonathan van Woudenberg
   l.store "entries..", "elementen.."
   l.store "yesterday", "gisteren"
   l.store "%d day ago", ["één dag geleden", "%d dagen geleden"]
   l.store "Activities", "Activiteiten"
+  l.store "Assignment", "Assignment"
   l.store "Attributes", "Eigenschappen"
-  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Chat Rooms", "Chatrooms" # Tom Niessink
   l.store "Client CSS", "Klant CSS"
-  l.store "Depends on", "Depends on"
+  l.store "Delete All", "Delete All"
+  l.store "Depends on", "Afhankelijk van" # Tom Niessink
+  l.store "Edit Topic", "Edit Topic"
   l.store "Group Tags", "Groepeer op Tags"
   l.store "Last Login", "Laatste Aanmelding"
   l.store "Last Month", "Vorige Maand"
   l.store "Leave Open", "Open laten staan"
-  l.store "Loading...", "Loading..."
-  l.store "Local Time", "Local Time"
+  l.store "Leave Room", "Leave Room"
+  l.store "Leave room", "Leave room"
+  l.store "Loading...", "Aan het laden..." # Tom Niessink
+  l.store "Local Time", "Locale Tijd" # Tom Niessink
   l.store "Milestones", "Mijlpalen"
-  l.store "New Avatar", "New Avatar"
+  l.store "Moderators", "Beheerders" # Jonathan van Woudenberg
+  l.store "New Avatar", "Nieuwe Avatar" # Tom Niessink
   l.store "New Client", "Nieuwe Klant"
-  l.store "New Folder", "New Folder"
-  l.store "Next month", "Next month"
+  l.store "New Folder", "Nieuwe Map" # Jonathan van Woudenberg
+  l.store "Next month", "Volgende maand" # Tom Niessink
   l.store "Open Tasks", "Openstaande Taken"
+  l.store "Post Topic", "Plaats Onderwerp" # Jonathan van Woudenberg
   l.store "Prioritize", "Prioriteit Wijzigen"
-  l.store "Reassigned", "Reassigned"
+  l.store "Reassigned", "Toegewezen" # Tom Niessink
   l.store "Run Report", "Genereer Rapport"
+  l.store "Save Reply", "Bewaar Antwoord" # Jonathan van Woudenberg
   l.store "Sub-totals", "Subtotalen"
   l.store "This Month", "Deze Maand"
   l.store "Time Range", "Tijdsreeks"
   l.store "Time sheet", "Tijdslijst"
   l.store "Track Time", "Tijd Registratie"
-  l.store "Unassigned", "Unassigned"
-  l.store "View Tasks", "View Tasks"
+  l.store "Unassigned", "Niet toegewezen" # Tom Niessink
+  l.store "View Tasks", "Bekijk Taken" # Tom Niessink
   l.store "Widget Key", "Widget Key"
   l.store "[All Tags]", "[Alle Tags]"
   l.store "[All Time]", "[Alle Tijd]"
-  l.store "[Any Task]", "[Any Task]"
+  l.store "[Any Task]", "[Willekeurige Taak]" # Tom Niessink
   l.store "[Any Type]", "[Alle Typen]"
   l.store "[Any User]", "[Alle Gebruikers]"
   l.store "[New File]", "[Nieuw Bestand]"
@@ -278,151 +313,182 @@ Localization.define('nl_NL') do |l|
   l.store "1w 2d 3h 4m", "1w 2d 3u 4m"
   l.store "Assigned To", "Toegewezen aan"
   l.store "Attach file", "Voeg bestand toe"
-  l.store "Attachments", "Attachments"
+  l.store "Attachments", "Bijlagen" # Tom Niessink
+  l.store "Change room", "Change room"
   l.store "Custom Logo", "Aangepast Logo"
   l.store "Date Format", "Datumaanduiding"
-  l.store "Delete Room", "Delete Room"
+  l.store "Delete Room", "Verwijder Chatroom" # Tom Niessink
   l.store "Delete View", "Verwijder Overzicht"
   l.store "Description", "Omschrijving"
-  l.store "End of week", "End of week"
-  l.store "Forum Posts", "Forum Posts"
+  l.store "Edit Client", "Wijzig Klant" # Jonathan van Woudenberg
+  l.store "End of week", "Einde van week" # Tom Niessink
+  l.store "Forum Posts", "Forum Berichten" # Tom Niessink
   l.store "Improvement", "Verbetering"
   l.store "In Progress", "In Ontwikkeling"
   l.store "Information", "Informatie"
   l.store "Let me know", "Laat het mij weten"
   l.store "Linked from", "Gekoppeld vanaf"
   l.store "New Feature", "Nieuwe Functionaliteit"
-  l.store "New Project", "New Project"
+  l.store "New Project", "Nieuw Project" # Tom Niessink
   l.store "Preferences", "Instellingen"
   l.store "Report Type", "Rapport Type"
   l.store "Task Status", "Taak Status"
   l.store "Time Format", "Tijdsaanduiding"
-  l.store "Transcripts", "Transcripts"
-  l.store "[All Tasks]", "[All Tasks]"
+  l.store "Transcripts", "Transcripten" # Tom Niessink
+  l.store "[All Tasks]", "[AlleTaken]" # Tom Niessink
   l.store "[Next page]", "[Volgende Pagina]"
+  l.store "delete post", "delete post"
   l.store "%d month ago", ["één maand geleden", "%d maanden geleden"]
   l.store "%s reverted.", "%s teruggeplaatst."
-  l.store "Company Name", "Company Name"
+  l.store "Burnup Chart", "Burnup Chart"
+  l.store "Company Name", "Bedrijfsnaam" # Tom Niessink
   l.store "Contact name", "Klantnaam"
-  l.store "Create Forum", "Create Forum"
+  l.store "Create Forum", "Maak Forum" # Tom Niessink
   l.store "Current logo", "Huidig Logo"
-  l.store "Dependencies", "Dependencies"
+  l.store "Dependencies", "Afhankelijkheden" # Tom Niessink
   l.store "Edit Project", "Project Wijzigen"
-  l.store "Edit Summary", "Edit Summary"
-  l.store "Hide Waiting", "Hide Waiting"
+  l.store "Edit Summary", "Wijzig Samenvatting" # Tom Niessink
+  l.store "Hide Waiting", "Verberg Wachtend" # Tom Niessink
   l.store "Last Updated", "Laatst aangepast"
   l.store "Leave Closed", "Laat gesloten"
-  l.store "Name / Email", "Name / Email"
+  l.store "Name / Email", "Naam / E-mail" # Tom Niessink
   l.store "Newest Tasks", "Nieuwste Taken"
   l.store "Notification", "Berichten"
-  l.store "Plan / GANTT", "Plan / GANTT"
-  l.store "Recent Posts", "Recent Posts"
+  l.store "Participants", "Participants"
+  l.store "Plan / GANTT", "Planning / GANTT" # Tom Niessink
+  l.store "Recent Posts", "Recente Berichten" # Tom Niessink
   l.store "Requested By", "Aangevraagd door"
   l.store "Save as View", "Sla op als Overzicht"
-  l.store "Show Avatars", "Show Avatars"
-  l.store "Timer Window", "Timer Window"
-  l.store "Wiki Changes", "Wiki Changes"
+  l.store "Send Message", "Send Message"
+  l.store "Show Avatars", "Bekijk Avatars" # Tom Niessink
+  l.store "Show History", "Show History"
+  l.store "Timer Window", "Tijdsregistratiescherm" # Tom Niessink
+  l.store "Users Online", "Gebruikers Online" # Jonathan van Woudenberg
+  l.store "Wiki Changes", "Wiki Wijzigingen" # Tom Niessink
   l.store "[Any Client]", "[Alle Klanten]"
   l.store "[Any Status]", "[Alle Statussen]"
   l.store "[Unassigned]", "[Niet Toegewezen]"
+  l.store "about 1 year", "about 1 year"
   l.store "worked today", "gewerkt vandaag"
   l.store "%s completed.", "%s afgesloten."
+  l.store "Active %s ago", "Actief %s geleden" # Jonathan van Woudenberg
   l.store "Administrator", "Beheerder"
-  l.store "Are you sure?", "Are you sure?"
+  l.store "Are you sure?", "Weet je het zeker?" # Tom Niessink
   l.store "Contact email", "Klant email"
-  l.store "Custom Avatar", "Custom Avatar"
-  l.store "Days per Week", "Days per Week"
+  l.store "Custom Avatar", "Custom Avatar" # Tom Niessink
+  l.store "Days per Week", "Dagen per Week" # Tom Niessink
+  l.store "Enable Sounds", "Geluiden Inschakelen" # Jonathan van Woudenberg
   l.store "File too big.", "Bestand te groot."
+  l.store "Google Gadget", "Google Gadget"
+  l.store "Invite a user", "Invite a user"
+  l.store "Monitor forum", "Monitor forum"
+  l.store "Monitor topic", "Monitor topic"
   l.store "My Open Tasks", "Mijn Openstaande Taken"
   l.store "New Milestone", "Nieuwe Mijlpaal"
-  l.store "Public Forums", "Public Forums"
+  l.store "Public Forums", "Publieke Forums" # Tom Niessink
   l.store "Show Calendar", "Kalender Tonen"
   l.store "Show Tooltips", "Helpballonnen Tonen"
   l.store "Status Change", "Statuswijziging"
   l.store "Task Priority", "Taak Prioriteit"
   l.store "Task Severity", "Taak Impact"
   l.store "Time Estimate", "Geschatte Tijd"
-  l.store "Use Messaging", "Use Messaging"
+  l.store "Use Messaging", "Gebruik Berichtgeving" # Tom Niessink
   l.store "[Active User]", "[Active Gebruiker]"
   l.store "[Any Project]", "[Alle Projecten]"
-  l.store "[No Grouping]", "[No Grouping]"
+  l.store "[No Grouping]", "[Geen Groupering]" # Tom Niessink
   l.store "about %d hour", ["ongeveer één uur", "ongeveer %d uren"]
+  l.store "about 1 month", "ongeveer 1 maand" # Jonathan van Woudenberg
   l.store "half a minute", "een halve minuut"
-  l.store "Add New Widget", "Add New Widget"
-  l.store "Are your sure?", "Weet u dat zeker?"
-  l.store "Current Avatar", "Current Avatar"
+  l.store "Add New Widget", "Voeg Nieuw Widget Toe" # Tom Niessink
+  l.store "Are your sure?", "Weet je dat zeker?" # Jonathan van Woudenberg
+  l.store "Burndown Chart", "Burndown Chart"
+  l.store "Current Avatar", "Huidige Avatar" # Tom Niessink
   l.store "Delete Project", "Project Verwijderen"
-  l.store "Depended on by", "Depended on by"
-  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Depended on by", "Van afhankelijk" # Tom Niessink
+  l.store "Edit <b>%s</b>", "Wijzig <b>%s</b>" # Tom Niessink
   l.store "Edit Log Entry", "Wijzig log-item"
   l.store "Edit Milestone", "Wijzig Mijlpaal"
   l.store "Full Reference", "Volledige Beschrijving"
-  l.store "Help Translate", "Help Translate"
-  l.store "New To-do Item", "New To-do Item"
-  l.store "Open <b>%s</b>", "Open <b>%s</b>"
-  l.store "Remaining Work", "Remaining Work"
+  l.store "Help Translate", "Help met vertalen" # Tom Niessink
+  l.store "New To-do Item", "Nieuw To-do Item" # Tom Niessink
+  l.store "Open <b>%s</b>", "Open <b>%s</b>" # Tom Niessink
+  l.store "Organize Tasks", "Organiseer Taken" # Jonathan van Woudenberg
+  l.store "Remaining Work", "Openstaand Werk" # Tom Niessink
+  l.store "Reply to topic", "Antwoord op onderwerp" # Jonathan van Woudenberg
   l.store "Revert to Open", "Zet weer op Open"
+  l.store "Schedule saved", "Schedule saved"
   l.store "Search Results", "Zoekresultaten"
   l.store "Set as Invalid", "Zet op Ongeldig"
-  l.store "Signup Message", "Signup Message"
-  l.store "Wiki Additions", "Wiki Additions"
-  l.store "Workday Length", "Workday Length"
-  l.store "[Any Priority]", "[Any Priority]"
-  l.store "[Any Severity]", "[Any Severity]"
+  l.store "Signup Message", "Inschrijfbericht" # Tom Niessink
+  l.store "Wiki Additions", "Wiki Toevoegingn" # Tom Niessink
+  l.store "Workday Length", "Duur Werkdag" # Tom Niessink
+  l.store "[Any Priority]", "[Alle Prioriteiten]" # Tom Niessink
+  l.store "[Any Severity]", "[Alle Impactniveau's]" # Tom Niessink
   l.store "Close <b>%s</b>", "Sluit <b>%s</b>"
   l.store "Duration Format", "Weergave Tijdsduur"
   l.store "Duration Worked", "Gewerkte tijd"
+  l.store "Formatting Help", "Formatting Help"
+  l.store "Organizing Done", "Organizing Done"
   l.store "Quick Reference", "Verkorte Beschrijving"
+  l.store "Recent activity", "Recent activity"
   l.store "Set in Progress", "Zet in behandeling"
   l.store "Upload New File", "Plaats een nieuw Bestand"
   l.store "[Any Milestone]", "[Alle Mijlpalen]"
   l.store "[Previous page]", "[Vorige Pagina]"
-  l.store "creating a task", "creating a task"
+  l.store "creating a task", "taak aan het maken" # Tom Niessink
   l.store "Advanced Options", "Geavanceerder Opties"
-  l.store "Company Settings", "Company Settings"
+  l.store "Archive Messages", "Archive Messages"
+  l.store "Company Settings", "Bedrijfsinstellingen" # Tom Niessink
   l.store "Complete Project", "Project Afsluiten"
-  l.store "Create New Forum", "Create New Forum"
-  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Create New Forum", "Maak een nieuw Forum" # Tom Niessink
+  l.store "Delete <b>%s</b>", "Verwijder <b>%s</b>" # Tom Niessink
   l.store "Delete Log Entry", "Verwijder log-item"
   l.store "Delete Milestone", "Verwijder Mijlpaal"
+  l.store "Instant Messages", "Instant Messages"
   l.store "Leave as Invalid", "Laat op Ongeldig staan"
-  l.store "Open to %s users", "Open to %s users"
-  l.store "Open to everyone", "Open to everyone"
+  l.store "Messages from %s", "Messages from %s"
+  l.store "Open to %s users", "Beschikbaar voor %s gebruikers" # Tom Niessink
+  l.store "Open to everyone", "Beschikbaar voor iedereen" # Tom Niessink
   l.store "Overall Progress", "Voortgang"
   l.store "Set as Duplicate", "Zet op Dubbel"
   l.store "Set as Won't Fix", "Zet op wordt niet opgelost"
   l.store "Unassigned Tasks", "Niet Toegewezen Taken"
   l.store "User Information", "Gebruiksinformatie"
-  l.store "create a project", "create a project"
+  l.store "create a project", "Maak een project aan" # Tom Niessink
   l.store "%s / %s reverted.", "%s / %s teruggeplaatst."
   l.store "Access To Project", "Toegang tot Project"
-  l.store "Create New Folder", "Create New Folder"
-  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
-  l.store "Really delete %s?", "Wilt u %s echt verwijderen?"
+  l.store "Create New Folder", "Maak een nieuwe Map" # Jonathan van Woudenberg
+  l.store "Delete <b>%s</b>.", "Verwijder <b>%s</b>." # Tom Niessink
+  l.store "Really delete %s?", "Wil je %s echt verwijderen?" # Jonathan van Woudenberg
   l.store "Really revert %s?", "%s echt terugzetten?"
   l.store "Recent Activities", "Recente activiteiten"
-  l.store "Remove dependency", "Remove dependency"
+  l.store "Remove dependency", "Verwijder afhankelijkheid" # Tom Niessink
+  l.store "Tasks / Day Chart", "Tasks / Day Chart"
   l.store "Under revision by", "Gereviseerd door"
-  l.store "[Active Projects]", "[Active Projects]"
-  l.store "[Closed Projects]", "[Closed Projects]"
-  l.store "[Default Sorting]", "[Default Sorting]"
-  l.store "the documentation", "the documentation"
+  l.store "[Active Projects]", "[Actieve Projecten]" # Tom Niessink
+  l.store "[Closed Projects]", "[Gesloten Projecten]" # Tom Niessink
+  l.store "[Default Sorting]", "[Standaard Volgorde]" # Tom Niessink
+  l.store "the documentation", "de documentatie" # Tom Niessink
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
   l.store "%s / %s completed.", "%s / %s afgesloten."
+  l.store "Access to Projects", "Toegang tot Projecten" # Jonathan van Woudenberg
   l.store "Complete Milestone", "Sluit Mijlpaal af"
   l.store "Completed Projects", "Afgesloten Projecten"
-  l.store "Hide Waiting Tasks", "Hide Waiting Tasks"
-  l.store "Last active %s ago", "Last active %s ago"
+  l.store "Hide Waiting Tasks", "Verberd Wachtende Taken" # Tom Niessink
+  l.store "Last active %s ago", "Laaste activiteit %s geleden" # Tom Niessink
   l.store "Leave as Duplicate", "Laat staan op Dubbel"
   l.store "Leave as Won't Fix", "Laat staan op wordt niet opgelost"
   l.store "Log entry saved...", "Werk-Log item opgeslagen..."
-  l.store "No recent activity", "No recent activity"
-  l.store "Really abort work?", "Really abort work?"
-  l.store "Receive Newsletter", "Receive Newsletter"
-  l.store "Same as in English", "Same as in English"
+  l.store "No recent activity", "Geen recentelijke activiteit" # Tom Niessink
+  l.store "Really abort work?", "Weet je zeker dat je dit werk wilt afbreken?" # Tom Niessink
+  l.store "Really delete tag?", "Really delete tag?"
+  l.store "Receive Newsletter", "Ontvang Nieuwsbrief" # Tom Niessink
+  l.store "Same as in English", "Zelfde als in het engels" # Tom Niessink
   l.store "Send Notifications", "Verstuur Meldingen"
+  l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "minder dan één minuut"
-  l.store "Remove notification", "Remove notification"
-  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "Remove notification", "Verwijder notificatie" # Tom Niessink
+  l.store "Restricted Userlist", "Lijst beperkte gebruikers" # Tom Niessink
   l.store "%d completed project", ["één project afgerond", "%d projecten afgerond"]
   l.store "Completed Milestones", "Afgesloten Mijlpalen"
   l.store "Leave as in Progress", "Laat in behandeling staan"
@@ -430,96 +496,116 @@ Localization.define('nl_NL') do |l|
   l.store "My In Progress Tasks", "Mijn Taken in Behandling"
   l.store "Project was deleted.", "Project verwijderd."
   l.store "Report Configuration", "Rapport Configuratie"
-  l.store "Showing Full History", "Showing Full History"
+  l.store "Restricted Messaging", "Restricted Messaging"
+  l.store "Showing Full History", "Volledige Historie Zichtbaar" # Tom Niessink
   l.store "Use External Clients", "Gebruik externe klanten"
   l.store "less than %d seconds", "minder dan %d sekonden"
-  l.store "Open to everyone from", "Open to everyone from"
-  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Open to everyone from", "Beschikbaar voor iedereen in" # Tom Niessink
+  l.store "Projects / Milestones", "Projecten / Mijlpalen" # Tom Niessink
   l.store "Receive Notifications", "Ontvange Meldingen"
   l.store "%d completed milestone", ["één mijlpaal afgerond", "%d mijlpalen afgerond"]
-  l.store "Add another dependency", "Add another dependency"
+  l.store "Add another dependency", "Voeg afhankelijkheid toe" # Tom Niessink
   l.store "Edit project <b>%s</b>", "Project <b>%s</b> Wijzigen"
-  l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "Floating Messaging Bar", "Zwevende Berichtenbalk" # Tom Niessink
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
-  l.store "invite some co-workers", "invite some co-workers"
+  l.store "invite some co-workers", "nodig collega's uit" # Tom Niessink
+  l.store "%d translations updated.", ["%d vertaling gewijzigd.", "%d vertalingen gewijzigd."] # Tom Niessink
   l.store "Edit milestone <b>%s</b>", "Mijlpaal<b>%s</b> Wijzigen"
-  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Open to everyone from %s", "Beschikbaar voor iedereen in %s" # Tom Niessink
   l.store "Send notification emails", "Verstuur email notificaties"
   l.store "Invalid due date ignored.", "Ongeldige einddatum ingevuld; deze wordt genegeerd."
   l.store "CSS successfully uploaded.", "CSS met succes geplaatst."
+  l.store "Delete this topic forever?", "Dit onderwerp permanent verwijderen?" # Jonathan van Woudenberg
   l.store "Grant access to <b>%s</b>?", "Verleen toegang aan <b>%s</b>?"
-  l.store "Include completed projects", "Include completed projects"
+  l.store "Include completed projects", "Geef afgeronde projecten weer" # Tom Niessink
+  l.store "Save and activate schedule", "Bewaar en activeer planning" # Jonathan van Woudenberg
   l.store "Stop working on <b>%s</b>.", "Stop met werken aan <b>%s</b>."
-  l.store "Don't show this splash page", "Don't show this splash page"
+  l.store "Don't show this splash page", "Laat deze opstartpagina niet meer zien" # Tom Niessink
   l.store "File successfully uploaded.", "Bestand met succes geplaatst."
   l.store "Logo successfully uploaded.", "Logo met succes geplaatst."
-  l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
+  l.store "Pause working on <b>%s</b>.", "Pauzeer werk aan <b>%s</b>." # Tom Niessink
+  l.store "Please always be courteous.", "Please always be courteous."
   l.store "Unable to save log entry...", "Kan het werk-log item niet opslaan..."
   l.store "Cancel working on <b>%s</b>.", "Stop werken aan <b>%s</b>."
   l.store "Empty report, log more work!", "Leeg rapport, registreer meer werk!"
   l.store "No file selected for upload.", "Geen bestand geselecteerd op te plaatsen."
-  l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
-  l.store "Really delete this log entry?", "Weet u zeker dat u dit log-item wilt verwijderen?"
-  l.store "Add earlier work to <b>%s</b>.", "Add earlier work to <b>%s</b>."
+  l.store "Really delete whole history?", "Really delete whole history?"
+  l.store "Resume working on <b>%s</b>.", "Vervolg werk aan <b>%s</b>." # Tom Niessink
+  l.store "Avatar successfully uploaded.", "Avatar succesvol geüpload." # Jonathan van Woudenberg
+  l.store "Really delete this log entry?", "Weet je zeker dat je dit log-item wilt verwijderen?" # Jonathan van Woudenberg
+  l.store "Add earlier work to <b>%s</b>.", "Voeg werktijd toe aan <b>%s</b>." # Tom Niessink
   l.store "Grant %s access for <b>%s</b>?", "Verleen toegang aan %s voor <b>%s</b>?"
   l.store "Move <b>%s</b> to the Archive.", "Verplaats <b>%s</b> naar het Archief."
   l.store "Note was successfully created.", "Notitie aangemaakt."
   l.store "Note was successfully updated.", "Notitie gewijzigd."
+  l.store "Revert schedule to saved state", "Revert schedule to saved state"
   l.store "Task was successfully created.", "Taak aangemaakt."
   l.store "Task was successfully updated.", "Taak gewijzigd."
   l.store "User was successfully updated.", "Gebruiker gewijzigd."
-  l.store "Remove %s access for <b>%s</b>?", "Remove %s access for <b>%s</b>?"
+  l.store "Remove %s access for <b>%s</b>?", "Weiger %s toegang tot <b>%s</b>?" # Tom Niessink
   l.store "Client was successfully created.", "Klant aangemaakt."
   l.store "Client was successfully updated.", "Klant aangepast."
+  l.store "Delete this post?  Are you sure?", "Delete this post?  Are you sure?"
   l.store "Download CSV file of this report", "Download een CSV bestand van dit rapport."
   l.store "Remove all access for <b>%s</b>?", "Alle toegang voor <b>%s</b> verwijderen?"
-  l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
+  l.store "Open to everyone using ClockingIT", "Open voor alle ClockingIT gebruikers" # Tom Niessink
   l.store "Preferences successfully updated.", "Instellingen opgeslagen."
   l.store "Project was successfully created.", "Project aangemaakt."
   l.store "Project was successfully updated.", "Project gewijzigd."
   l.store "Done working on <b>%s</b> for now.", "Voorlopig klaar met werken aan <b>%s</b>."
-  l.store "You can't delete your own company.", "U kunt uw eigen bedrijf niet verwijderen."
+  l.store "You can't delete your own company.", "Je kunt je eigen bedrijf niet verwijderen." # Jonathan van Woudenberg
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Opmerkingen? Suggesties? Ideeën? Fouten?"
+  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
   l.store "Milestone was successfully created.", "Mijlpaal aangemaakt."
   l.store "Milestone was successfully updated.", "Mijlpaal gewijzigd."
   l.store "Restore <b>%s</b> from the Archive.", "Zet <b>%s</b> terug uit het archief."
   l.store "View '%s' was successfully created.", "Overzicht '%s' is aangemaakt."
   l.store "View '%s' was successfully updated.", "Overzicht '%s' is gewijzigd."
-  l.store "Changes are not made live instantly.", "Changes are not made live instantly."
-  l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
-  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
-  l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
+  l.store "Changes are not made live instantly.", "Wijzigingen worden niet direct actueel (live) gemaakt." # Tom Niessink
+  l.store "This forum is currently unmoderated.", "Dit forum wordt momenteel niet beheerd." # Jonathan van Woudenberg
+  l.store "Hide tasks deferred until a later time", "Verberg taken verschoven naar later tijdstip" # Tom Niessink
+  l.store "Limit userlist to users in same project", "Limiteer gebruikerslijst tot gebruikers uit hetzelfde project" # Tom Niessink
+  l.store "Really delete room and all transcripts?", "Weet je zeker dat je deze chatroom en bijbehorende transcripten wilt verwijderen?" # Tom Niessink
   l.store "Revert <b>%s</b> to not completed status.", "Zet <b>%s</b> op niet afgerond"
-  l.store "Easy access to commonly needed information.", "Easy access to commonly needed information."
-  l.store "Subscribe to the recent activities RSS feed", "Subscribe to the recent activities RSS feed"
-  l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
-  l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
-  l.store "The message will be included in the signup email.", "The message will be included in the signup email."
+  l.store "Easy access to commonly needed information.", "Gemakkelijke toegang tot veelgebruikte informatie." # Tom Niessink
+  l.store "Play sounds when new messages are received.", "Speel geluiden wanneer nieuwe berichten worden ontvangen." # Jonathan van Woudenberg
+  l.store "Subscribe to the recent activities RSS feed", "Schrijf je in voor de RSS feed met recente activiteiten" # Tom Niessink
+  l.store "Subscribe to the iCal feed for your projects.", "Schrijf je in voor de iCal feed voor jou projecten." # Tom Niessink
+  l.store "Enter task due date, or click calendar button.", "Voer einddatum van taak in, of gebruik de calender knop." # Tom Niessink
+  l.store "The message will be included in the signup email.", "Het bericht zal opgenomen worden in de e-mail van de inschrijving." # Tom Niessink
   l.store "Start working on <b>%s</b>. Click again when done.", "Begin te werken aan <b>%s</b>. Klik nogmaals om te stoppen."
-  l.store "Unable to find task belonging to you with that ID.", "Unable to find task belonging to you with that ID."
-  l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
-  l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
+  l.store "Unable to find task belonging to you with that ID.", "Kan geen taak van jou vinden met dat ID." # Jonathan van Woudenberg
+  l.store "Bookmark this link to quickly open the Timer Window", "Voeg deze link toe aan je favorieten om snel het Tijdsregistratiescherm te kunnen openen." # Tom Niessink
+  l.store "Custom saved filters showing a subset of your tasks", "Custom opgeslagen filters geeft een subset van je taken weer" # Tom Niessink
   l.store "Error sending creation email. Account still created.", "Fout bij het versturen van de welkomst-email. Het account is wel aangemaakt."
+  l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
+  l.store "Please create a project to attach files / folders to.", "Please create a project to attach files / folders to."
   l.store "Please delete all projects for %s before deleting it.", "Verwijder alle projecten voor %s alvorens deze te verwijderen."
   l.store "Log entry already saved from another browser instance.", "Werk-log reeds opgeslagen met een andere webbrowser instantie."
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Introductie verborgen. Deze zal niet meer in het menu worden getoond."
+  l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
+  l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "U kunt <b>uzelf</b> of de <b>projecteigenaar</b> niet verwijderen!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Introductie voltooid. Deze zal niet meer in het menu worden getoond."
-  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
-  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
-  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welcome to ClockingIT. To get started, follow the steps below."
-  l.store "If you require further help, check the %s, %s or email us at %s", "If you require further help, check the %s, %s or email us at %s"
-  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
-  l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
-  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Laat de berichtenbalk onderaan in het scherm staan." # Tom Niessink
+  l.store "Send notification emails to people affected by these changes", "Send notification emails to people affected by these changes"
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Voer taaknummer in, gescheiden door komma. Typ tekst om te zoeken." # Tom Niessink
+  l.store "Create a private forum for people with access to this project?", "Create a private forum for people with access to this project?"
+  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welkom bij ClockingIT. Volg de stappen hieronder om snel van start te kunnen." # Tom Niessink
+  l.store "If you require further help, check the %s, %s or email us at %s", "Als je meer hulp nodig hebt, check de %s, %s of mail ons op %s" # Tom Niessink
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Worden verkleind naar 25x25 en 50x50 met behoud van aspect ratio)" # Tom Niessink
+  l.store "Text entered will be saved automatically to your current work notes.", "Ingevoerde tekst zal automatisch opgeslagen worden aan je notities van je actieve taak." # Tom Niessink
+  l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Voor een persoonlijk feed, vervang <b>ical_all</b> door <b>ical</b> in de URL." # Tom Niessink
   l.store "Project was successfully created. Add users who need access to this project.", "Project aangemaakt. Voeg de gebruikers die dit project moeten gebruiken toe aan dit project."
-  l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
+  l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Om een project te maken buiten deze welkomstpagina om, klik %s in het %s menu entry" # Tom Niessink
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Gebruiker aangemaakt Geef deze gebruiker rechten tot de benodigde projecten."
-  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Changes done here will not be logged in the Activity log or sent out as notifications."
+  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Wijzigingen die hier gemaakt worden zullen niet gelogt worden of verwonden worden als notificaties." # Tom Niessink
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "U moet een project aanmaken om uw taken te kunnen bevatten, of krijg toegang tot een bestaand project..."
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px zou goed moeten zijn. Het logo verschijnt in plaats van het logo in de koptekst en op de Aanmeldpagina.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Additionele personen die een bericht dienen te ontvangen<br />wanneer er wijzigingen zijn in deze taak, in aanvulling op de maker en uitvoerder van de taak.<br /><br />Ctrl-klik om anderen te selecteren."
-  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Je kan ook <b>?mode=tasks</b> toevoegen voor alleen taken, of <b>?mode=logs</b> for alleen werklogs, <br/>of <b>?mode=milestones</b> voor alleen mijlpalen." # Tom Niessink
   l.store "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate.", "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate."
   l.store "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.", "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu."
   l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki."

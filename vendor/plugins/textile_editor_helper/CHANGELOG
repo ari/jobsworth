@@ -1,9 +1,0 @@
-== v0.2.1 ==
-* Added support for using textile_editor_initialize from an AJAX request
-
-== v0.2 ==
-* Refactored all the Javascript methods into a more OOP-style architecture
-* Added ability to add custom buttons to the toolbar via new helper: textile_editor_button
-
-== v0.1 ==
-* Initial Release

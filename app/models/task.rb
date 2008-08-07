@@ -620,7 +620,7 @@ class Task < ActiveRecord::Base
         res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
       end
       res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
-      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.slice(0,4096).gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.chars[0..1024].gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
     end 

@@ -25,7 +25,22 @@ class ProjectsController < ApplicationController
     @project.company_id = current_user.company_id
 
     if @project.save
-      @project_permission = ProjectPermission.new
+      if params[:copy_project].to_i > 0
+        project = current_user.all_projects.find(params[:copy_project])
+        project.project_permissions.each do |perm|
+          p = perm.clone
+          p.project_id = @project.id
+          p.save
+
+          if p.user_id == current_user.id
+            @project_permission = p
+          end
+        
+        end
+      end 
+        
+      @project_permission ||= ProjectPermission.new
+
       @project_permission.user_id = current_user.id
       @project_permission.project_id = @project.id
       @project_permission.company_id = current_user.company_id
@@ -40,7 +55,7 @@ class ProjectsController < ApplicationController
       @project_permission.can_milestone = 1
       @project_permission.can_grant = 1
       @project_permission.save
-
+      
       if @project.company.users.size == 1
         flash['notice'] = _('Project was successfully created.')
         redirect_from_last
@@ -107,7 +122,7 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    @project = current_user.projects.find(params[:id], :conditions => ["projects.company_id = ?", current_user.company_id])
+    @project = current_user.projects.find(params[:id])
     if @project.nil?
       redirect_to :controller => 'activities', :action => 'list'
       return false

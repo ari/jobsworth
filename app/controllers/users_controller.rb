@@ -43,6 +43,16 @@ class UsersController < ApplicationController
     @user.time_format = "%H:%M"
 
     if @user.save
+      
+      if params[:copy_user].to_i > 0
+        u = current_user.company.users.find(params[:copy_user])
+        u.project_permissions.each do |perm|
+          p = perm.clone
+          p.user = @user
+          p.save
+        end
+      end
+      
       flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
       Signup::deliver_account_created(@user, current_user, params['welcome_message']) rescue flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
       redirect_to :action => 'edit', :id => @user
