@@ -14,6 +14,7 @@ Localization.define('fr_FR') do |l|
   l.store "Aug", "Aoû"
   l.store "CSV", "CSV" # Brice
   l.store "Dec", "Déc"
+  l.store "Due", "Attendu pour le" # Brice
   l.store "Feb", "Fév"
   l.store "Fri", "Ven"
   l.store "Jan", "Jan" # Brice
@@ -85,7 +86,7 @@ Localization.define('fr_FR') do |l|
   l.store "Pivot", "Pivot" # Brice
   l.store "Posts", "Messages" # Brice
   l.store "Saved", "Sauvegardé" # Brice
-  l.store "Start", "Commencer"
+  l.store "Start", "Débutée à" # Brice
   l.store "Tasks", "Tâches"
   l.store "Title", "Titre" # Brice
   l.store "To-do", "A faire" # Brice
@@ -142,6 +143,7 @@ Localization.define('fr_FR') do |l|
   l.store "[Prev]", "[Préc.]"
   l.store "[wdhm]", "[sjh]|mn"
   l.store "cancel", "annuler" # Brice
+  l.store "locked", "vérouillé" # Jérémie
   l.store "quotes", "guillemets" # Brice
   l.store "%d days", ["%d jour", "%d jours"] # Brice
   l.store "%d file", ["%d fichier", "%d fichiers"] # Brice
@@ -163,6 +165,7 @@ Localization.define('fr_FR') do |l|
   l.store "October", "Octobre"
   l.store "Offline", "Déconnecté"
   l.store "Options", "Options" # Brice
+  l.store "Overdue", "En retard" # Brice
   l.store "Preview", "Aperçu"
   l.store "Project", "Projet"
   l.store "Reports", "Rapports"
@@ -173,12 +176,15 @@ Localization.define('fr_FR') do |l|
   l.store "Updated", "Mis à jour" # Brice
   l.store "Welcome", "Bienvenue" # Brice
   l.store "offline", "hors ligne" # Brice
+  l.store "page %s", "page %s" # Brice
   l.store "%d month", ["%d mois", "%d mois"] # Brice
   l.store "%d posts", ["%d message", "%d messages"] # Brice
+  l.store "%s tasks", "%s tâches" # Brice
   l.store "1:2:3:04", "1:2:3:04" # Brice
   l.store "1w2d3h4m", "1s2j3h4mn"
   l.store "Any Room", "Toutes les salles" # Brice
   l.store "Archived", "Archivé"
+  l.store "Attached", "Joint" # Brice
   l.store "Comments", "Commentaires" # Brice
   l.store "Complete", "Terminé" # Brice
   l.store "Critical", "Critique"
@@ -267,10 +273,13 @@ Localization.define('fr_FR') do |l|
   l.store "entries..", "entrées.."
   l.store "yesterday", "hier"
   l.store "%d day ago", ["depuis %d jour", "depuis %d jours"] # Brice
+  l.store "%d project", ["%d project", "%d project"]
   l.store "Activities", "Activités"
+  l.store "Assignment", "Assignement" # Brice
   l.store "Attributes", "Attributs"
   l.store "Chat Rooms", "Salles de Chat" # Brice
   l.store "Client CSS", "CSS client"
+  l.store "Delete All", "Tout supprimer" # Brice
   l.store "Depends on", "Dépend de" # Brice
   l.store "Edit Forum", "Modifier le forum" # Brice
   l.store "Edit Topic", "Modifier le sujet" # Brice
@@ -300,6 +309,7 @@ Localization.define('fr_FR') do |l|
   l.store "Time Sheet", "Feuille horaire"
   l.store "Time sheet", "Feuille d'activité" # Brice
   l.store "Track Time", "Comptabiliser le temps"
+  l.store "Transcript", "Transcription" # Brice
   l.store "Unassigned", "Non assigné" # Brice
   l.store "View Tasks", "Afficher les tâches" # Brice
   l.store "Widget Key", "Clef du Widget" # Brice
@@ -351,7 +361,7 @@ Localization.define('fr_FR') do |l|
   l.store "Dependencies", "Dépendances" # Brice
   l.store "Edit Project", "Modifier le projet"
   l.store "Edit Summary", "Modifier l'intitulé" # Brice
-  l.store "Hide Waiting", "Cacher en attente" # Brice
+  l.store "Hide Waiting", "Masquer les tâches en attente" # Brice
   l.store "Last Updated", "Dernière modification"
   l.store "Leave Closed", "Maintenir classé"
   l.store "Name / Email", "Nom / Email" # Brice
@@ -366,6 +376,7 @@ Localization.define('fr_FR') do |l|
   l.store "Show Avatars", "Afficher les avatars" # Brice
   l.store "Show History", "Afficher l'historique" # Brice
   l.store "Timer Window", "Fenêtre d'activité" # Brice
+  l.store "Topic locked", "Sujet vérouillé" # Jérémie
   l.store "Users Online", "Utilisateurs en ligne" # Brice
   l.store "Wiki Changes", "Modifications au Wiki" # Brice
   l.store "[Any Client]", "[Tous les clients]"
@@ -380,7 +391,9 @@ Localization.define('fr_FR') do |l|
   l.store "Contact email", "E-Mail du contact"
   l.store "Custom Avatar", "Avatar personnel" # Brice
   l.store "Days per Week", "Jours par semaine" # Brice
+  l.store "Enable Sounds", "Activer le support sonore" # Brice
   l.store "File too big.", "Fichier trop volumineux"
+  l.store "Google Gadget", "Gadget Google" # Brice
   l.store "Invite a user", "Inviter un utilisateur" # Brice
   l.store "Monitor forum", "Administrer le forum" # Brice
   l.store "Monitor topic", "Administrer le sujet" # Brice
@@ -413,9 +426,11 @@ Localization.define('fr_FR') do |l|
   l.store "Help Translate", "Participer à la traduction" # Brice
   l.store "New To-do Item", "Nouvel élement \"à faire\"" # Brice
   l.store "Open <b>%s</b>", "Ouvrir <b>%s</b>" # Brice
+  l.store "Organize Tasks", "Organiser les tâches" # Brice
   l.store "Remaining Work", "Travail restant" # Brice
   l.store "Reply to topic", "Répondre au sujet" # Brice
   l.store "Revert to Open", "Rouvrir la tâche"
+  l.store "Schedule saved", "Planification sauvegardée" # Brice
   l.store "Search Results", "Résultats"
   l.store "Set as Invalid", "Marquer comme invalide"
   l.store "Signup Message", "Message d'inscription" # Brice
@@ -427,6 +442,7 @@ Localization.define('fr_FR') do |l|
   l.store "Duration Format", "Format de durée"
   l.store "Duration Worked", "Durée du travail accompli"
   l.store "Formatting Help", "Aide sur la mise en forme" # Brice
+  l.store "Organizing Done", "Organisation terminée" # Brice
   l.store "Quick Reference", "Syntaxe abrégée"
   l.store "Recent activity", "Activité récente" # Brice
   l.store "Set in Progress", "Marquer comme en cours"
@@ -443,7 +459,9 @@ Localization.define('fr_FR') do |l|
   l.store "Delete <b>%s</b>", "Supprimer <b>%s</b>" # Brice
   l.store "Delete Log Entry", "Supprimer l'entrée"
   l.store "Delete Milestone", "Supprimer le jalon"
+  l.store "Gadget HTML Code", "Code HTML du Gadget" # Brice
   l.store "Leave as Invalid", "Laisser invalide"
+  l.store "Messages from %s", "Messages de %s" # Brice
   l.store "Monitoring forum", "Administration du forum" # Brice
   l.store "Monitoring topic", "Administration du sujet" # Brice
   l.store "Open to %s users", "Ouvert aux utilisateurs de %s" # Brice
@@ -458,18 +476,22 @@ Localization.define('fr_FR') do |l|
   l.store "Access To Project", "Accéder au projet"
   l.store "Create New Folder", "Créer un nouveau dossier" # Brice
   l.store "Delete <b>%s</b>.", "Supprimer <b>%s</b>." # Brice
+  l.store "Delete Transcript", "Supprimer la transcription" # Brice
   l.store "No file selected.", "Aucun fichier sélectionné." # Brice
   l.store "Really delete %s?", "Confirmer la suppression de %s ?"
   l.store "Really revert %s?", "Confirmer la resaturation de %s ?"
   l.store "Recent Activities", "Tâches récentes"
   l.store "Remove dependency", "Supprimer la dépendance" # Brice
+  l.store "Schedule reverted", "Planification réinitialisée" # Brice
   l.store "Tasks / Day Chart", "Tâches / Diagramme quotidien" # Brice
   l.store "Under revision by", "En cours de révision par"
   l.store "[Active Projects]", "[Projets actifs]" # Brice
   l.store "[Closed Projects]", "[Projects terminés]" # Brice
   l.store "[Default Sorting]", "[Tri par défaut]" # Brice
   l.store "the documentation", "la documentation" # Brice
+  l.store "%d open / %d tasks", ["%d ouverte / %d tâches", "%d ouvertes / %d tâches"] # Brice
   l.store "%s / %s completed.", "%s / %s achevé."
+  l.store "Access to Projects", "Accéder aux projets" # Brice
   l.store "Complete Milestone", "Jalon atteint"
   l.store "Completed Projects", "Projets achevés"
   l.store "Hide Waiting Tasks", "Cacher les tâches en attente" # Brice
@@ -479,42 +501,52 @@ Localization.define('fr_FR') do |l|
   l.store "Log entry saved...", "Entrée sauvegardée."
   l.store "No recent activity", "Aucune activité récente" # Brice
   l.store "Really abort work?", "Arrêter le travail ?" # Brice
+  l.store "Really delete tag?", "Confirmez-vous la suppression de ce tag ?" # Brice
   l.store "Receive Newsletter", "Recevoir la lettre de diffusion" # Brice
   l.store "Same as in English", "Identique en français" # Brice
   l.store "Send Notifications", "Envoyer des notifications"
   l.store "less than a minute", "moins d'une minute"
+  l.store "Can Create Projects", "Can Create Projects"
   l.store "Remove notification", "Supprimer la notification" # Brice
   l.store "Restricted Userlist", "Liste restreinte d'utilisateurs" # Brice
   l.store "[Without Milestone]", "[Sans jalon]"
   l.store "%d completed project", ["%d projet terminé", "%d du projet terminé"] # Brice
   l.store "Completed Milestones", "Jalons atteints"
+  l.store "Find a Google Gadget", "Rechercher un Gadget Google" # Brice
   l.store "Leave as in Progress", "Marquer comme toujours en cours"
   l.store "Log entry deleted...", "Entrée supprimée."
   l.store "My In Progress Tasks", "Mes tâches en cours"
   l.store "Project was deleted.", "Projet supprimé."
   l.store "Report Configuration", "Configuration des rapports"
+  l.store "Restricted Messaging", "Messagerie restreinte" # Jérémie
   l.store "Showing Full History", "Montrer l'historique complet" # Brice
+  l.store "This topic is locked", "Ce sujet est vérouillé" # Jérémie
   l.store "Use External Clients", "Utiliser des clients externes"
   l.store "less than %d seconds", "moins de %d secondes"
   l.store "Open to everyone from", "Ouvert à tous les membres du groupe" # Brice
   l.store "Projects / Milestones", "Projets / Jalons" # Brice
   l.store "Receive Notifications", "Recevoir des notifications"
+  l.store "Showing Only Comments", "N'afficher que les commentaires" # Brice
   l.store "%d completed milestone", ["%d jalon atteint", "%d jalons atteints"] # Brice
   l.store "Add another dependency", "Autre dépendance" # Brice
   l.store "Edit project <b>%s</b>", "Modifier le projet <b>%s</b>" # Brice
   l.store "Floating Messaging Bar", "Barre flottante de messages" # Brice
   l.store "View '%s' was deleted.", "Vue '%s' supprimée."
   l.store "invite some co-workers", "inviter des collègues" # Brice
+  l.store ", this topic is locked.", ", ce sujet est vérouillé." # Jérémie
   l.store "%d translations updated.", ["%d traduction mise à jour.", "%d traductions mises à jour."] # Brice
   l.store "Company settings updated", "Données concernant la société mises à jour" # Brice
   l.store "Edit milestone <b>%s</b>", "Modifier le jalon <b>%s</b>" # Brice
   l.store "Open to everyone from %s", "Ouvert à tous le monde de %s" # Brice
   l.store "Send notification emails", "Envoyer un email de notification"
   l.store "Invalid due date ignored.", "Echéance invalide."
+  l.store "Really delete transcript?", "Confirmez-vous la suppression de la transcription ?" # Brice
+  l.store "and copy permissions from", "and copy permissions from"
   l.store "CSS successfully uploaded.", "CSS envoyé."
   l.store "Delete this topic forever?", "Supprimer le sujet définitivement?" # Brice
   l.store "Grant access to <b>%s</b>?", "Autoriser l'accès de <b>%s</b>?" # Brice
   l.store "Include completed projects", "Inclure les projets terminés" # Brice
+  l.store "Save and activate schedule", "Sauvegarder et activer la planification" # Brice
   l.store "Stop working on <b>%s</b>.", "Arrêter de travailler sur <b>%s</b>."
   l.store "Don't show this splash page", "Ne pas afficher cette écran d'accueil" # Brice
   l.store "File successfully uploaded.", "Fichier envoyé."
@@ -526,6 +558,7 @@ Localization.define('fr_FR') do |l|
   l.store "Cancel working on <b>%s</b>.", "Annuler le temps travaillé sur <b>%s</b>."
   l.store "Empty report, log more work!", "Le rapport est vide, saisissez plus de données de travail !"
   l.store "No file selected for upload.", "Aucun fichier sélectionné."
+  l.store "Really delete whole history?", "Souhaitez-vous vraiment supprimer tout l'historique ?" # Brice
   l.store "Resume working on <b>%s</b>.", "Reprendre le travail sur la tâche <b>%s</b>." # Brice
   l.store "Avatar successfully uploaded.", "Avatar téléchargé avec succès." # Brice
   l.store "Really delete this log entry?", "Confirmer la suppression de cette entrée ?"
@@ -534,6 +567,7 @@ Localization.define('fr_FR') do |l|
   l.store "Move <b>%s</b> to the Archive.", "Déplacer <b>%s</b> dans les archives"
   l.store "Note was successfully created.", "Note créée."
   l.store "Note was successfully updated.", "Note actualisée."
+  l.store "Revert schedule to saved state", "Réinitialiser la planification à son état précédent" # Brice
   l.store "Task was successfully created.", "Tâche créée."
   l.store "Task was successfully updated.", "Tâche actualisée."
   l.store "User was successfully updated.", "Utilisateur actualisé."
@@ -550,6 +584,7 @@ Localization.define('fr_FR') do |l|
   l.store "Done working on <b>%s</b> for now.", "Fin du travail sur <b>%s</b>"
   l.store "You can't delete your own company.", "Vous ne pouvez pas supprimer votre propre société."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Des remarques, des suggestions, des idées, des bogues ?"
+  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
   l.store "Milestone was successfully created.", "Jalon créé."
   l.store "Milestone was successfully updated.", "Jalon actualisé."
   l.store "Restore <b>%s</b> from the Archive.", "Recupérer <b>%s</b> dans les archives."
@@ -562,6 +597,7 @@ Localization.define('fr_FR') do |l|
   l.store "Really delete room and all transcripts?", "Supprimer la salle et toutes les discussions ?" # Brice
   l.store "Revert <b>%s</b> to not completed status.", "Marquer <b>%s</b> comme inachevé."
   l.store "Easy access to commonly needed information.", "Accès rapide aux informations usuelles." # Brice
+  l.store "Play sounds when new messages are received.", "Avertissement sonore lors de la réception d'un message." # Brice
   l.store "Subscribe to the recent activities RSS feed", "Souscrire à la syndication RSS de l'activité du projet" # Brice
   l.store "Subscribe to the iCal feed for your projects.", "Souscrire à la syndication iCal pour vos projets" # Brice
   l.store "Enter task due date, or click calendar button.", "Saisissez une date de fin de tâche, ou cliquez sur le bouton du calendrier." # Brice
@@ -571,14 +607,21 @@ Localization.define('fr_FR') do |l|
   l.store "Bookmark this link to quickly open the Timer Window", "Ajoutez ce lien à vos favoris pour accéder rapidement à la Fenêtre d'activité" # Brice
   l.store "Custom saved filters showing a subset of your tasks", "Filtres personnalisés présentant un sous-ensemble de vos tâches" # Brice
   l.store "Error sending creation email. Account still created.", "Erreur dans l'envoi de l'e-mail de création. Le compte a néanmoins été créé."
+  l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
   l.store "Please create a project to attach files / folders to.", "Veuillez créer un projet avant de déclarer des fichiers ou des répertoires associés." # Brice
   l.store "Please delete all projects for %s before deleting it.", "Veuillez suppprimer tous les projets pour %s avant sa suppression."
   l.store "Log entry already saved from another browser instance.", "Entrée déjà sauvegardée lors d'une précédente session de navigation." # Brice
+  l.store "You don't have access to create tasks on this project.", "Vous n'êtes pas autorité(e) à créer une tâche pour ce projet." # Brice
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutoriel masqué. Il ne sera plus affiché dans le menu."
+  l.store "Limit instant messaging to users sharing the same projects", "Limiter la messagerie instantanée aux utilisateurs partageant les même projets" # Jérémie
+  l.store "Only your notes will be included in the notification email", "Seules vos notes seront incluses dans l'email de notification" # Brice
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Vous ne pouvez pas supprimer le créateur du projet (ni vous-même) !"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutoriel achevé. Il ne sera plus affiché dans le menu."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Afficher la barre de messages au bas de l'écran." # Brice
+  l.store "Send notification emails to people affected by these changes", "Envoyer les notifications email aux utilisateurs concernés par ces modifications" # Brice
   l.store "Enter task numbers, separated by commas. Type text to search.", "Saisissez les numéros des tâches séparés par un virgule. Entrez le texte à rechercher." # Brice
+  l.store "Create a private forum for people with access to this project?", "Créer un forum privé pour les utilisateurs ayant accès à ce projet ?" # Brice
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Bienvenue sur ClockingIT. Pour bien débuter, suivez les étapes ci-dessous." # Brice
   l.store "If you require further help, check the %s, %s or email us at %s", "Pour obtenir de l'aide supplémentaire, visitez le %s, le %s ou contactez-nous à %s" # Brice
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Sera redimensionnée en 25x25 et 50x50, les proportions seront conservées)" # Brice

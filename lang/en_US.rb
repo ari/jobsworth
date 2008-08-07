@@ -12,9 +12,11 @@ Localization.define('en_US') do |l|
   l.store "%d topics", ["%d topic", "%d topics"] # Erlend Simonsen
   l.store "%d voices", ["%d voice", "%d voices"] # Erlend Simonsen
   l.store "%d day ago", ["%d day ago", "%d days ago"] # Erlend Simonsen
+  l.store "%d project", ["%d project", "%d projects"] # Erlend Simonsen
   l.store "%d week ago", ["%d week ago", "%d weeks ago"] # Erlend Simonsen
   l.store "%d month ago", ["%d month ago", "%d months ago"]
   l.store "about %d hour", ["about %d hour", "about %d hours"] # Erlend Simonsen
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
   l.store "%d completed project", ["%d completed project", "%d completed projects"] # Erlend Simonsen
   l.store "%d completed milestone", ["%d completed milestone", "%d completed milestones"] # Erlend Simonsen
   l.store "%d translations updated.", ["%d translations updated.", "%d translations updated."]
