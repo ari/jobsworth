@@ -134,7 +134,7 @@ class Mailman < ActionMailer::Base
 
       else
         # Unknown email
-        Notifications::deliver_unknown_from_address(email.from.first, subdomain) rescue nil
+        Notifications::deliver_unknown_from_address(email.from.first, company.subdomain) rescue nil
       end
     end
 

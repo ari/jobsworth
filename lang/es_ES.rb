@@ -1,7 +1,7 @@
 Localization.define('es_ES') do |l|
-  l.store "d", "d"
-  l.store "h", "h"
-  l.store "m", "m"
+  l.store "d", "d" # darkpollo
+  l.store "h", "h" # darkpollo
+  l.store "m", "m" # darkpollo
   l.store "w", "s"
   l.store "To", "Hasta"
   l.store "by", "por"
@@ -12,22 +12,24 @@ Localization.define('es_ES') do |l|
   l.store "All", "Todo" # Sergio Rael
   l.store "Apr", "Abr"
   l.store "Aug", "Ago"
-  l.store "CSV", "CSV"
+  l.store "CSV", "CSV" # darkpollo
   l.store "Dec", "Dic"
-  l.store "Feb", "Feb"
+  l.store "Due", "Due"
+  l.store "End", "End"
+  l.store "Feb", "Feb" # darkpollo
   l.store "Fri", "Vie"
   l.store "Jan", "Ene"
-  l.store "Jul", "Jul"
-  l.store "Jun", "Jun"
+  l.store "Jul", "Jul" # darkpollo
+  l.store "Jun", "Jun" # darkpollo
   l.store "Low", "Baja"
-  l.store "Mar", "Mar"
-  l.store "May", "May"
+  l.store "Mar", "Mar" # darkpollo
+  l.store "May", "May" # darkpollo
   l.store "Mon", "Lun"
   l.store "New", "Añadir"
-  l.store "Nov", "Nov"
-  l.store "Oct", "Oct"
+  l.store "Nov", "Nov" # darkpollo
+  l.store "Oct", "Oct" # darkpollo
   l.store "Sat", "Sáb"
-  l.store "Sep", "Sep"
+  l.store "Sep", "Sep" # darkpollo
   l.store "Sun", "Dom"
   l.store "Thu", "Jue"
   l.store "To:", "Para:" # Sergio Rael
@@ -37,7 +39,7 @@ Localization.define('es_ES') do |l|
   l.store "and", "y"
   l.store "day", "día" # Sergio Rael
   l.store "Body", "Contenido"
-  l.store "Chat", "Chat"
+  l.store "Chat", "Chat" # darkpollo
   l.store "Date", "Fecha"
   l.store "Days", "Dias" # Paco
   l.store "Edit", "Editar"
@@ -51,6 +53,7 @@ Localization.define('es_ES') do |l|
   l.store "Name", "Nombre"
   l.store "Next", "Siguiente" # Sergio Rael
   l.store "None", "Nada" # Paco
+  l.store "Note", "Nota" # darkpollo
   l.store "Open", "Abierta"
   l.store "Read", "Lectura"
   l.store "Rows", "Filas"
@@ -63,12 +66,12 @@ Localization.define('es_ES') do |l|
   l.store "View", "Ver" # Sergio Rael
   l.store "Wait", "Esperar" # Sergio Rael
   l.store "Week", "Semana"
-  l.store "Wiki", "Wiki"
+  l.store "Wiki", "Wiki" # darkpollo
   l.store "Work", "Trabajar"
   l.store "days", "días" # Sergio Rael
   l.store "idle", "idle"
   l.store "last", "último" # Sergio Rael
-  l.store "59:04", "59:04"
+  l.store "59:04", "59:04" # Luis Mendoza
   l.store "April", "Abril"
   l.store "Audit", "Auditoría"
   l.store "Close", "Cerrar"
@@ -91,7 +94,7 @@ Localization.define('es_ES') do |l|
   l.store "To-do", "Tareas" # Paco
   l.store "Today", "Hoy"
   l.store "Topic", "Tema" # Sergio Rael
-  l.store "Total", "Total"
+  l.store "Total", "Total" # darkpollo
   l.store "Users", "Usuarios"
   l.store "Views", "Vistas"
   l.store "Weeks", "Semanas" # Paco
@@ -119,18 +122,18 @@ Localization.define('es_ES') do |l|
   l.store "Locked", "Bloqueado" # Paco
   l.store "Lowest", "Muy baja"
   l.store "Monday", "Lunes"
-  l.store "Months", "Months"
+  l.store "Months", "Meses" # darkpollo
   l.store "No one", "Ninguno"
-  l.store "Normal", "Normal"
+  l.store "Normal", "Normal" # darkpollo
   l.store "Online", "En linea"
   l.store "Paused", "Pausado" # Sergio Rael
-  l.store "Plural", "Plural"
+  l.store "Plural", "Plural" # darkpollo
   l.store "Recent", "Reciente" # Sergio Rael
-  l.store "Revert", "Volver a poner"
+  l.store "Revert", "Restaurar" # darkpollo
   l.store "Search", "Buscar"
   l.store "Shared", "Compartir"
   l.store "Status", "Estado"
-  l.store "Sticky", "Sticky"
+  l.store "Sticky", "Pegado" # darkpollo
   l.store "Sunday", "Domingo"
   l.store "Target", "Objetivo"
   l.store "Update", "Actualizar" # Paco
@@ -175,13 +178,17 @@ Localization.define('es_ES') do |l|
   l.store "Tuesday", "Martes"
   l.store "Updated", "Actualizado" # Sergio Rael
   l.store "Welcome", "Bienvenido/a" # Sergio Rael
-  l.store "offline", "offline"
-  l.store "page %s", "page %s"
+  l.store "[Noone]", "[Noone]"
+  l.store "offline", "desconectado" # darkpollo
+  l.store "page %s", "página %s" # darkpollo
   l.store "%d month", ["un mes", "%d meses"]
   l.store "%d posts", ["%d posts", "%d posts"]
+  l.store "%s tasks", "%s tareas" # darkpollo
   l.store "1:2:3:04", "1:2:3:04"
   l.store "1w2d3h4m", "1s2d3h4m"
+  l.store "Any Room", "Cualquier Sala" # darkpollo
   l.store "Archived", "Archivada"
+  l.store "Attached", "Anexado" # Luis Mendoza
   l.store "Comments", "Comentarios" # Paco
   l.store "Complete", "Completo" # Sergio Rael
   l.store "Critical", "Crítica"
@@ -213,16 +220,16 @@ Localization.define('es_ES') do |l|
   l.store "Projects", "Proyectos"
   l.store "QuickAdd", "Añadir rápido" # Paco
   l.store "Resolved", "Resuelto" # Sergio Rael
-  l.store "Reverted", "Reverted"
+  l.store "Reverted", "Revertido" # Luis Mendoza
   l.store "Revision", "Revisión"
   l.store "Saturday", "Sábado"
   l.store "Schedule", "Agenda"
   l.store "Severity", "Importancia"
-  l.store "Singular", "Singular"
+  l.store "Singular", "Singular" # Luis Mendoza
   l.store "Thursday", "Jueves"
   l.store "Timeline", "Historial"
   l.store "Tomorrow", "Mañana" # Sergio Rael
-  l.store "Tutorial", "Tutorial"
+  l.store "Tutorial", "Tutorial" # darkpollo
   l.store "Use Chat", "Usar el Chat" # Sergio Rael
   l.store "Use Wiki", "Usar el Wiki" # Sergio Rael
   l.store "Username", "Nombre de usuario"
@@ -242,18 +249,18 @@ Localization.define('es_ES') do |l|
   l.store "Edit View", "Editar vista"
   l.store "Edit post", "Edit post"
   l.store "Estimated", "Estimado" # Sergio Rael
-  l.store "Last Post", "Last Post"
+  l.store "Last Post", "Último Envío" # darkpollo
   l.store "Last Week", "La semana pasada"
   l.store "Last Year", "El año pasado"
   l.store "Last post", "Last post"
   l.store "Milestone", "Hito"
   l.store "New Topic", "Nuevo Tema" # Sergio Rael
   l.store "New topic", "Nuevo tema" # Sergio Rael
-  l.store "Next Week", "Next Week"
+  l.store "Next Week", "Próxima Semana" # darkpollo
   l.store "Next week", "Proxima semana" # Paco
   l.store "One month", "Un mes" # Paco
-  l.store "Remaining", "Remaining"
-  l.store "Revisions", "Revisions"
+  l.store "Remaining", "Pendiente" # Jordán
+  l.store "Revisions", "Revisiones" # darkpollo
   l.store "September", "Septiembre"
   l.store "Task Type", "Tipo de tarea"
   l.store "This Week", "Esta semana"
@@ -270,21 +277,23 @@ Localization.define('es_ES') do |l|
   l.store "entries..", "entradas..."
   l.store "yesterday", "ayer"
   l.store "%d day ago", ["hace un día", "hace %d días"]
+  l.store "%d project", ["%d project", "%d project"]
   l.store "Activities", "Actividades"
+  l.store "Assignment", "Assignment"
   l.store "Attributes", "Atributos"
   l.store "Chat Rooms", "Habitaciones de Chat" # Paco
   l.store "Client CSS", "CSS del cliente"
-  l.store "Delete All", "Delete All"
-  l.store "Depends on", "Depends on"
+  l.store "Delete All", "Borrar Todo" # darkpollo
+  l.store "Depends on", "Depende de" # darkpollo
   l.store "Edit Forum", "Editar Foro" # Sergio Rael
   l.store "Edit Topic", "Editar Tema" # Sergio Rael
   l.store "Group Tags", "Agrupar etiquetas"
   l.store "Last Login", "Último acceso"
   l.store "Last Month", "El mes pasado"
   l.store "Leave Open", "Dejar abierta"
-  l.store "Leave Room", "Leave Room"
-  l.store "Leave room", "Leave room"
-  l.store "Loading...", "Loading..."
+  l.store "Leave Room", "Salir de la Sala" # darkpollo
+  l.store "Leave room", "Salir de la sala" # darkpollo
+  l.store "Loading...", "Cargando..." # Jordán
   l.store "Local Time", "Hora Local" # Sergio Rael
   l.store "Milestones", "Hitos"
   l.store "Moderators", "Moderadores" # Sergio Rael
@@ -303,6 +312,7 @@ Localization.define('es_ES') do |l|
   l.store "Time Range", "Intervalo de tiempo"
   l.store "Time sheet", "Hoja de tiempos"
   l.store "Track Time", "Contrl de tiempos"
+  l.store "Transcript", "Transcript"
   l.store "Unassigned", "No asignado" # Sergio Rael
   l.store "View Tasks", "Ver Tareas" # Sergio Rael
   l.store "Widget Key", "Widget Key"
@@ -319,14 +329,15 @@ Localization.define('es_ES') do |l|
   l.store "Assigned To", "Asignada a" # Antonio Montesinos
   l.store "Attach file", "Adjuntar archivo"
   l.store "Attachments", "Adjuntos" # Sergio Rael
-  l.store "Change room", "Change room"
+  l.store "Change room", "Cambiar de sala" # darkpollo
   l.store "Custom Logo", "Logo personalizado"
   l.store "Date Format", "Formato de fecha"
   l.store "Delete Room", "Eliminar Sala" # Sergio Rael
   l.store "Delete View", "Borra vista"
   l.store "Description", "Descripción"
   l.store "Edit Client", "Editar Cliente" # Sergio Rael
-  l.store "Edit Folder", "Edit Folder"
+  l.store "Edit Folder", "Editar Carpeta" # darkpollo
+  l.store "Empty file.", "Empty file."
   l.store "End of week", "Fin de semana" # Sergio Rael
   l.store "Forum Posts", "Forum Posts"
   l.store "Improvement", "Mejora"
@@ -358,18 +369,19 @@ Localization.define('es_ES') do |l|
   l.store "Hide Waiting", "Ocultar En Espera" # Sergio Rael
   l.store "Last Updated", "Última actualización"
   l.store "Leave Closed", "Dejar cerrada"
-  l.store "Name / Email", "Name / Email"
+  l.store "Name / Email", "Nombre / Correo" # darkpollo
   l.store "Newest Tasks", "Nuevas tareas"
   l.store "Notification", "Notificación"
-  l.store "Participants", "Participants"
+  l.store "Participants", "Participantes" # darkpollo
   l.store "Plan / GANTT", "Plan / GANTT"
   l.store "Recent Posts", "Recent Posts"
   l.store "Requested By", "Solicitada por"
   l.store "Save as View", "Grabar como vista"
+  l.store "Send Message", "Enviar Mensaje" # darkpollo
   l.store "Show Avatars", "Mostrar Avatars" # Sergio Rael
-  l.store "Show History", "Show History"
+  l.store "Show History", "Mostrar Historial" # darkpollo
   l.store "Timer Window", "Timer Window"
-  l.store "Topic locked", "Topic locked"
+  l.store "Topic locked", "Tema Bloqueado" # Luis Mendoza
   l.store "Users Online", "Usuarios en Línea" # Sergio Rael
   l.store "Wiki Changes", "Wiki Changes"
   l.store "[Any Client]", "[Cualquier cliente]"
@@ -384,7 +396,9 @@ Localization.define('es_ES') do |l|
   l.store "Contact email", "E-mail de contacto"
   l.store "Custom Avatar", "Custom Avatar"
   l.store "Days per Week", "Días por Semana" # Sergio Rael
+  l.store "Enable Sounds", "Enable Sounds"
   l.store "File too big.", "Archivo demasiado grande."
+  l.store "Google Gadget", "Google Gadget"
   l.store "Invite a user", "Invite a user"
   l.store "Monitor forum", "Monitorizar el foro" # Sergio Rael
   l.store "Monitor topic", "Monitorizar el tema" # Sergio Rael
@@ -400,7 +414,7 @@ Localization.define('es_ES') do |l|
   l.store "Use Messaging", "Usar Mensajería" # Sergio Rael
   l.store "[Active User]", "[Usuario conectado]"
   l.store "[Any Project]", "[Cualquier proyecto]"
-  l.store "[No Grouping]", "[No Grouping]"
+  l.store "[No Grouping]", "[Sin agrupar]" # Antonio Montesinos
   l.store "about %d hour", ["alrededor de una hora", "alrededor de %d horas"]
   l.store "about 1 month", "alrededor de 1 mes" # Sergio Rael
   l.store "half a minute", "medio minuto"
@@ -418,9 +432,11 @@ Localization.define('es_ES') do |l|
   l.store "Invalid Filter", "Invalid Filter"
   l.store "New To-do Item", "New To-do Item"
   l.store "Open <b>%s</b>", "Abrir <b>%s</b>" # Sergio Rael
-  l.store "Remaining Work", "Remaining Work"
+  l.store "Organize Tasks", "Organizar Tareas" # darkpollo
+  l.store "Remaining Work", "Trabajo pendiente" # Jordán
   l.store "Reply to topic", "Reply to topic"
   l.store "Revert to Open", "Volver a abrir"
+  l.store "Schedule saved", "Schedule saved"
   l.store "Search Results", "Buscar en resultados"
   l.store "Set as Invalid", "Poner como Inválida"
   l.store "Signup Message", "Signup Message"
@@ -432,23 +448,28 @@ Localization.define('es_ES') do |l|
   l.store "Duration Format", "Formato de duración"
   l.store "Duration Worked", "Tiempo trabajado"
   l.store "Formatting Help", "Formatting Help"
+  l.store "No such folder.", "No such folder."
+  l.store "Organizing Done", "Organizing Done"
   l.store "Quick Reference", "Referencia rápida"
-  l.store "Recent activity", "Recent activity"
+  l.store "Recent activity", "Actividad reciente" # darkpollo
   l.store "Set in Progress", "Poner En Progreso"
   l.store "Upload New File", "Subir nuevo archivo"
   l.store "[Any Milestone]", "[Cualquier hito]"
   l.store "[Previous page]", "[Página anterior]"
-  l.store "creating a task", "creating a task"
+  l.store "creating a task", "creando una tarea" # darkpollo
   l.store "Advanced Options", "Opciones avanzadas"
-  l.store "Archive Messages", "Archive Messages"
-  l.store "Company Settings", "Company Settings"
+  l.store "Archive Messages", "Archivar Mensajes" # darkpollo
+  l.store "Chat Transcripts", "Chat Transcripts"
+  l.store "Company Settings", "Configurar Compañía" # darkpollo
   l.store "Complete Project", "Terminar proyecto"
   l.store "Create New Forum", "Create New Forum"
   l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
   l.store "Delete Log Entry", "Borrar entrada de histórico"
   l.store "Delete Milestone", "Borrar Hito"
+  l.store "Gadget HTML Code", "Gadget HTML Code"
   l.store "Leave as Invalid", "Dejar como Inválida"
   l.store "Messages from %s", "Messages from %s"
+  l.store "Monitoring forum", "Monitoring forum"
   l.store "Monitoring topic", "Monitoring topic"
   l.store "Open to %s users", "Open to %s users"
   l.store "Open to everyone", "Open to everyone"
@@ -457,78 +478,91 @@ Localization.define('es_ES') do |l|
   l.store "Set as Won't Fix", "Poner como Sin Solución"
   l.store "Unassigned Tasks", "Tareas no asignadas"
   l.store "User Information", "Información del usuario"
-  l.store "create a project", "create a project"
+  l.store "create a project", "crear un proyecto" # darkpollo
   l.store "%s / %s reverted.", "%s / %s se ha vuelto a renombrar."
   l.store "Access To Project", "Acceder al proyecto"
-  l.store "Create New Folder", "Create New Folder"
+  l.store "Create New Folder", "Crear Nueva Carpeta" # darkpollo
   l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
+  l.store "Delete Transcript", "Delete Transcript"
   l.store "No file selected.", "No file selected."
   l.store "Really delete %s?", "¿De verdad desea borrar %s?"
   l.store "Really revert %s?", "¿De verdad quiere ponerlo de nuevo como %s?"
   l.store "Recent Activities", "Actividades recientes"
   l.store "Remove dependency", "Remove dependency"
+  l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "Tasks / Day Chart"
   l.store "Under revision by", "Está siendo revisado por"
-  l.store "[Active Projects]", "[Active Projects]"
-  l.store "[Closed Projects]", "[Closed Projects]"
-  l.store "[Default Sorting]", "[Default Sorting]"
-  l.store "the documentation", "the documentation"
+  l.store "[Active Projects]", "[Proyectos Activos]" # Luis Mendoza
+  l.store "[Closed Projects]", "[Proyectos Cerrados]" # Luis Mendoza
+  l.store "[Default Sorting]", "[Ordenar por Default]" # Luis Mendoza
+  l.store "the documentation", "la documentación" # darkpollo
+  l.store "%d open / %d tasks", ["%d abierto / %d tarea", "%d abiertos / %d tareas"] # Luis Mendoza
   l.store "%s / %s completed.", "%s / %s completado."
+  l.store "Access to Projects", "Acceder a Proyectos" # Luis Mendoza
   l.store "Complete Milestone", "Completar Hito"
   l.store "Completed Projects", "Proyectos terminados"
   l.store "Hide Waiting Tasks", "Hide Waiting Tasks"
-  l.store "Last active %s ago", "Last active %s ago"
+  l.store "Last active %s ago", "Ultima vez activo hace %s" # Luis Mendoza
   l.store "Leave as Duplicate", "Dejar como Duplicada"
   l.store "Leave as Won't Fix", "Dejar como Sin Solución"
   l.store "Log entry saved...", "Entrada de histórico guardada..."
-  l.store "No recent activity", "No recent activity"
+  l.store "No recent activity", "Sin actividad reciente" # Luis Mendoza
   l.store "Really abort work?", "Really abort work?"
+  l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "Receive Newsletter"
-  l.store "Same as in English", "Same as in English"
+  l.store "Same as in English", "Igual que en Inglés" # Jordán
   l.store "Send Notifications", "Enviar notificaciones"
+  l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "menos de un minuto"
-  l.store "Remove notification", "Remove notification"
+  l.store "Can Create Projects", "Can Create Projects"
+  l.store "Remove notification", "Quitar notificación" # Jordán
   l.store "Restricted Userlist", "Restricted Userlist"
   l.store "[Without Milestone]", "[Without Milestone]"
   l.store "%d completed project", ["un proyecto terminado", "%d proyectos terminados"]
   l.store "Completed Milestones", "Hitos completados"
+  l.store "Find a Google Gadget", "Enconrar un Gadget de Google" # Luis Mendoza
   l.store "Leave as in Progress", "Dejar En Progreso"
   l.store "Log entry deleted...", "Entrada de histórico eliminada..."
   l.store "My In Progress Tasks", "Mis tareas en curso"
   l.store "Project was deleted.", "El proyecto fue eliminado."
   l.store "Report Configuration", "Configurar informe"
-  l.store "Showing Full History", "Showing Full History"
-  l.store "This topic is locked", "This topic is locked"
+  l.store "Restricted Messaging", "Restricted Messaging"
+  l.store "Showing Full History", "Mostrar historial completo" # Jordán
+  l.store "This topic is locked", "El asunto está bloqueado" # Jordán
   l.store "Use External Clients", "Usar clientes externos"
   l.store "less than %d seconds", ["menos de un segundo", "menos de %d segundos"]
-  l.store "Open to everyone from", "Open to everyone from"
-  l.store "Projects / Milestones", "Projects / Milestones"
+  l.store "Open to everyone from", "Abierto para todos desde" # Jordán
+  l.store "Projects / Milestones", "Proyectos / Objetivos" # Jordán
   l.store "Receive Notifications", "Recibir notificaciones"
-  l.store "Showing Only Comments", "Showing Only Comments"
+  l.store "Showing Only Comments", "Mostrar Solo Comentarios" # Luis Mendoza
   l.store "visión global ARAWEB", "visión global ARAWEB"
   l.store "%d completed milestone", ["un hito terminado", "%d hitos terminados"]
-  l.store "Add another dependency", "Add another dependency"
+  l.store "Add another dependency", "Agregar otra dependencia" # Luis Mendoza
   l.store "Edit project <b>%s</b>", "Editar proyecto <b>%s</b>"
   l.store "Floating Messaging Bar", "Floating Messaging Bar"
   l.store "View '%s' was deleted.", "Vista '%s' eliminada."
-  l.store "invite some co-workers", "invite some co-workers"
-  l.store ", this topic is locked.", ", this topic is locked."
-  l.store "%d translations updated.", ["%d translations updated.", "%d translations updated."]
-  l.store "Company settings updated", "Company settings updated"
+  l.store "invite some co-workers", "invitar colaboradores" # Luis Mendoza
+  l.store ", this topic is locked.", ", este tema esta bloqueado." # Luis Mendoza
+  l.store "%d translations updated.", ["%d traduccion actualizada.", "%d traducciones actualizadas."] # Luis Mendoza
+  l.store "Company settings updated", "Configuración d" # Jordán
   l.store "Edit milestone <b>%s</b>", "Editar hito <b>%s</b>"
-  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Open to everyone from %s", "Abierto para todos desde %s" # Jordán
   l.store "Send notification emails", "Enviar notificación por e-mail"
   l.store "Invalid due date ignored.", "Fecha de entraga inválida ignorada."
+  l.store "Really delete transcript?", "Really delete transcript?"
+  l.store "and copy permissions from", "and copy permissions from"
   l.store "CSS successfully uploaded.", "CSS subido satisfactoriamente."
   l.store "Delete this topic forever?", "Delete this topic forever?"
   l.store "Grant access to <b>%s</b>?", "¿Dar permisos a <b>%s</b>?"
   l.store "Include completed projects", "Include completed projects"
+  l.store "Save and activate schedule", "Save and activate schedule"
   l.store "Stop working on <b>%s</b>.", "Dejar de trabajar en <b>%s</b>."
   l.store "Don't show this splash page", "Don't show this splash page"
   l.store "File successfully uploaded.", "Fichero subido satisfactoriamente."
   l.store "Logo successfully uploaded.", "Logo subido satisfactoriamente."
+  l.store "Only admins can edit users.", "Only admins can edit users."
   l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
-  l.store "Please always be courteous.", "Please always be courteous."
+  l.store "Please always be courteous.", "Porfavor sea siempre cortez." # Luis Mendoza
   l.store "Please configure the widget", "Please configure the widget"
   l.store "Unable to save log entry...", "Imposible guardar entrada de histórico..."
   l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b>."
@@ -543,6 +577,7 @@ Localization.define('es_ES') do |l|
   l.store "Move <b>%s</b> to the Archive.", "Mover <b>%s</b> al Archivo."
   l.store "Note was successfully created.", "Nota creada satisfactoriamente."
   l.store "Note was successfully updated.", "Nota modificada satisfactoriamente."
+  l.store "Revert schedule to saved state", "Revert schedule to saved state"
   l.store "Task was successfully created.", "Tarea creada satisfactoriamente."
   l.store "Task was successfully updated.", "Tarea modificada satisfactoriamente."
   l.store "User was successfully updated.", "Usuario modificado satisfactoriamente."
@@ -559,6 +594,7 @@ Localization.define('es_ES') do |l|
   l.store "Done working on <b>%s</b> for now.", "Trabajado en <b>%s</b> hasta el momento."
   l.store "You can't delete your own company.", "No puede borrar su propia compañia."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Comentarios? ¿Sugerencias? ¿Ideas? ¿Fallos?"
+  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
   l.store "Milestone was successfully created.", "Hito creado satisfactoriamente."
   l.store "Milestone was successfully updated.", "Hito modificado satisfactoriamente."
   l.store "Restore <b>%s</b> from the Archive.", "Restaurar <b>%s</b> del Archivo."
@@ -571,6 +607,7 @@ Localization.define('es_ES') do |l|
   l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
   l.store "Revert <b>%s</b> to not completed status.", "Dejar <b>%s</b> como no terminado."
   l.store "Easy access to commonly needed information.", "Easy access to commonly needed information."
+  l.store "Play sounds when new messages are received.", "Play sounds when new messages are received."
   l.store "Subscribe to the recent activities RSS feed", "Subscribe to the recent activities RSS feed"
   l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
   l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
@@ -580,24 +617,33 @@ Localization.define('es_ES') do |l|
   l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
   l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
   l.store "Error sending creation email. Account still created.", "Error al enviar e-mail de creación. La cuanta ya fue creada."
+  l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
   l.store "Please create a project to attach files / folders to.", "Please create a project to attach files / folders to."
   l.store "Please delete all projects for %s before deleting it.", "Por favor, elimine todos los proyectos de %s antes de borrarlo."
   l.store "Log entry already saved from another browser instance.", "Entrada de histórico ya grabada desde otra ventana."
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutorial escondido. No se volverá a mostrar en el menú."
+  l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
+  l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "¡No se puede eliminar <b>a usted mismo</b> a al <b>creador del proyecto</b>!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutorial completado. No se volverá a mostrar en el menú."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
+  l.store "Send notification emails to people affected by these changes", "Send notification emails to people affected by these changes"
   l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
+  l.store "Create a private forum for people with access to this project?", "Create a private forum for people with access to this project?"
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welcome to ClockingIT. To get started, follow the steps below."
   l.store "If you require further help, check the %s, %s or email us at %s", "If you require further help, check the %s, %s or email us at %s"
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
   l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "Proyecto creado satisfactoriamente. Añada los usuarios que necesiten tener acceso a este proyecto."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Usuario creado satisfactoriamente. Recuerde dar acceso a este usuario a los proyectos que necesite."
   l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Changes done here will not be logged in the Activity log or sent out as notifications."
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Debe crear un proyecto para asignar sus tareas, o tener permiso para crear tareas en un proyecto existente..."
+  l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "You can have as many chat rooms as you like. They can be limited to a project or public across all your users."
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Se recomienda un tamaño de imagen de 250x50px. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Los cambios en la tarea se notificarán, además de a<br/>su creador y a las personas asignadas a:<br/><br/>Ctrl-click para cambiar."
   l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."
