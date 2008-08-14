@@ -93,7 +93,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = from
 
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+    @from       = "noreply@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
   end
 
