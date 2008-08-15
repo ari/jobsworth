@@ -186,6 +186,10 @@ class TasksController < ApplicationController
       items = items.uniq.sort
 
       @groups = Task.group_by(@tasks, items) { |t,i| t.milestone ? ("#{t.project.name} / #{t.milestone.name}" == i) : (t.project.name == i)  }
+    elsif session[:group_by].to_i == 11 # Requested By
+      requested_by = @tasks.collect{|t| t.requested_by.blank? ? nil : t.requested_by }.compact.uniq.sort
+      requested_by = [_('No one')] + requested_by
+      @groups = Task.group_by(@tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
     else
       @groups = [@tasks]
     end
