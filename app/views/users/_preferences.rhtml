@@ -2,7 +2,7 @@
 
 <%
   @workday_duration = []
-  48.upto(12 * 12) do |m|
+  24.upto(12 * 12) do |m|
      t = m * 5
      @workday_duration << [ "#{t/60}#{_('h')} #{t%60}#{_('m')}", t]
   end
