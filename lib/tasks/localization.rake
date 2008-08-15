@@ -11,7 +11,7 @@ namespace :locale do
     Localization.locales.each do |locale|
       l = locale[1]
       
-      Localization.l10s[l].keys.each do |k|
+      (Localization.l10s[l] || { }).keys.each do |k|
         v = Localization.l10s[l][k]
         n = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", locale[1], k]) || Locale.new
         n.locale = locale[1]
