@@ -1485,7 +1485,7 @@ class TasksController < ApplicationController
         worklog.duration = 0
         worklog.body = body
         worklog.save
-        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
+        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) if current_user.send_notifications? rescue nil
         Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       end
 
