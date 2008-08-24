@@ -48,7 +48,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = [user.email]
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @headers    = {'Reply-To' => user.email}
   end
@@ -81,7 +81,7 @@ class Notifications < ActionMailer::Base
 
     @recipients = target.email
 
-    @from       = "{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
     @headers    = {'Reply-To' => user.email}
 
