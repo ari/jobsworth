@@ -55,7 +55,7 @@ class Notifications < ActionMailer::Base
 
   def forum_reply(user, post, sent_at = Time.now)
     @body       = {:user => user, :post => post}
-    @subject    = "#{$CONFIG[:prefix]} Reply to #{post.topic.title}"
+    @subject    = "#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]"
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
 
@@ -66,7 +66,7 @@ class Notifications < ActionMailer::Base
 
   def forum_post(user, post, sent_at = Time.now)
     @body       = {:user => user, :post => post}
-    @subject    = "#{$CONFIG[:prefix]} New topic in #{post.forum.name}"
+    @subject    = "#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]"
 
     @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
 
