@@ -1,0 +1,30 @@
+<div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
+<% form_remote_tag :url => {:controller => 'widgets', :action => 'update', :id => @widget },
+                                   :loading => "Element.show('loading');",
+                                   :complete => "Element.hide('loading');" do  %>
+<label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
+<label for="widget_number"><%= _("Tasks") %></label><%= select( 'widget', 'number', [1,2,3,4,5,6,7,8,9,10,15,20,25,30].collect{|i| [i.to_s, i]}) %>
+<%= select( 'widget', 'mine', [[_('Mine'),true],[_('Everyone'),false]]) %>
+<select name="widget[filter_by]" id="widget_filter_by">
+  <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
+  <% @clients = current_user.company.customers %>
+  <% @clients.each do |c| %>
+    <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name") %>
+    <% if @client_projects.size > 0 %>
+      <option value="c<%=c.id%>" class="select_heading"<%= " selected" if "c#{c.id}" == @widget.filter_by %>><%= c.name %></option>
+      <% @client_projects.each do |p| %>
+        <option value="p<%= p.id %>" class="select_item"<%= " selected" if "p#{p.id}" == @widget.filter_by %>>&nbsp;&nbsp;<%= p.name %></option>
+        <% @project_milestones = Milestone.find(:all, :conditions => ["project_id = #{p.id} AND completed_at IS NULL"], :order => "due_at, name") %>
+        <% if @project_milestones.size > 0 -%>
+          <% @project_milestones.each do |m| -%>
+            <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if "m#{m.id}" == @widget.filter_by %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
+          <% end -%>
+          <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if "u#{p.id}" == @widget.filter_by %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
+        <% end -%>
+      <% end -%>
+    <% end -%>
+  <% end -%>
+</select>
+<%= submit_tag _("Save"), :class => "nolabel" %> <%= _'or'%> <%= link_to_function(_('Cancel'), "Element.remove($('config-#{@widget.dom_id}'));") %>
+<% end %>
+</div>

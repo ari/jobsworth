@@ -300,6 +300,7 @@ class WidgetsController < ApplicationController
     when 7
       # Schedule
 
+      filter = ''
       if @widget.filter_by?
         filter = case @widget.filter_by[0..0]
         when 'c'
@@ -341,8 +342,41 @@ class WidgetsController < ApplicationController
       
     when 8 
       # Google Gadget
+    when 9 
+      # Work Status
+      filter = ''
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+                 when 'c'
+                   "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+                 when 'p'
+                   "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+                 when 'm'
+                   "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+                 when 'u'
+                   "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+                 else 
+                   ""
+                 end
+      end
+
+      start = tz.local_to_utc(tz.now.at_midnight)
       
+      if @widget.mine?
+        @last_completed = current_user.tasks.find(:all, :conditions => "completed_at IS NOT NULL #{filter}", :order => "completed_at DESC", :limit => @widget.number)
+        @total_today = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start, start + 1.day]).to_i / 60
+        @total_week  = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start - 6.days, start + 1.day]).to_i / 60
+        @total_month = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start - 30.days, start + 1.day]).to_i / 60
+      else 
+        @last_completed = current_user.company.tasks.find(:all, :conditions => "tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NOT NULL #{filter}", :order => "tasks.completed_at DESC", :limit => @widget.number)
+        @total_today = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start, start + 1.day]).to_i / 60
+        @total_week  = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start - 6.days, start + 1.day]).to_i / 60
+        @total_month = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start - 30.days, start + 1.day]).to_i / 60
+      end 
+    
     end
+
+    
 
     render :update do |page|
       case @widget.widget_type
@@ -362,6 +396,8 @@ class WidgetsController < ApplicationController
         page << "var e = new Element('script', {id:'gadget-#{@widget.dom_id}'});"
         page << "$('gadget-wrapper-#{@widget.dom_id}').insert({top: e});"
         page << "$('gadget-#{@widget.dom_id}').src=#{@widget.gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,'')};"
+      when 9
+        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       end
 
       page.call("updateTooltips")

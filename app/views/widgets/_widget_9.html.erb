@@ -1,0 +1,8 @@
+<div class="log_header" style="margin-left:8px;margin-top:0.5em;"><%= _('Work Logged') %></div>
+<div style="padding-left:1em;"><strong><%= worked_nice(@total_today)%></strong> <%= _('today')%>, <strong><%= worked_nice(@total_week)%></strong> <%= _('last %d days', 7) %>, <strong><%= worked_nice(@total_month)%></strong> <%= _('last %d days', 30)%></div>
+
+<div class="log_header" style="margin-left:8px;margin-top:0.5em;"><%= _('Last %d Completed Tasks', @widget.number) %></div>
+<% @last_completed.each do |t| %>
+<%= render :partial => 'tasks/task_row', :locals => {:task => t} %>
+<% end %>
+
