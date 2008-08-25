@@ -942,3 +942,7 @@ div.editbox ul.help {
 #main_col .spacer {
   font-size:0.2em;
 }
+
+td.entry-content {
+  vertical-align: top;
+}

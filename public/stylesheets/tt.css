@@ -1156,7 +1156,7 @@ a.description {
   margin                  : 0px;
   background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
-  border-top: 1px solid #c8c8c8;
+/*  border-top: 1px solid #c8c8c8; */
   border-left: 1px solid #c8c8c8;
 /*  border-bottom: 1px solid #c8c8c8; */
   z-index: 2;
@@ -1209,6 +1209,7 @@ a.description {
   font-weight: bold;
   display: block;
   height: 16px;
+  border-top: 1px solid #d8d8d8;
   border-right: 1px solid #ddd;
   border-left: 1px solid #eee;
   border-bottom: none;
@@ -1242,7 +1243,12 @@ a.description {
 
 #tabmenu li.active a {
   color: #FF9900;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
+  background: url(/images/active_menu.png);
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+  border-left: none;
+  border-top: 1px solid #929392;
 }
 
 #tabmenu li.active li a { 
@@ -1267,6 +1273,7 @@ a.description {
 #tabmenu li a:hover, #tabmenu li:hover a {
   background: #fff;
   color: #ff9900;
+  border-top: 1px solid #d8d8d8;
 }
 
 #tabmenu li ul a {
