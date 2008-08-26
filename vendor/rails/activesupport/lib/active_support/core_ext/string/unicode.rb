@@ -2,13 +2,13 @@
 module ActiveSupport #:nodoc:
   module CoreExtensions #:nodoc:
     module String #:nodoc:
+      def self.included(base)
+        if '1.8.7'.respond_to?(:chars)
+          base.class_eval { remove_method :chars }
+        end
+      end
       # Define methods for handling unicode data.
       module Unicode
-        def self.included(base)
-          if '1.8.7'.respond_to?(:chars)
-            base.class_eval { remove_method :chars }
-          end
-        end
 
         # +chars+ is a Unicode safe proxy for string methods. It creates and returns an instance of the
         # ActiveSupport::Multibyte::Chars class which encapsulates the original string. A Unicode safe version of all

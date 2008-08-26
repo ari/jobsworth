@@ -39,7 +39,7 @@
 <% end %>
     <td class="inv lp">
       <% if forum.posts.last %>
-        <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
+        <div class="tooltip" title="<%= h(forum.posts.last.body_html) %>">
         <%= truncate(forum.posts.last.topic.title, 40) %><br />
         <%= "#{_('by')} <strong>#{h(forum.posts.last.user.display_name)}</strong>" %><br />
         <%= _('%s ago', time_ago_in_words(forum.posts.last.created_at)) %>
