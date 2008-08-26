@@ -6,5 +6,15 @@ else
   page.insert_html :before, "done_sep_0", :partial => "task_row", :locals => {:task => @task }
 end
 
+if session[:history] && session[:history][0] == '/activities/list'
+  page.delay(1) do 
+    current_user.widgets.each do |widget|
+      if widget.configured?
+        page << "new Ajax.Request('/widgets/show/#{widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});"
+      end   
+    end 
+  end
+end 
+
 page.visual_effect(:highlight, "task_#{@task.id}", :duration => 2.0)
 page.call "UpdateDnD"
