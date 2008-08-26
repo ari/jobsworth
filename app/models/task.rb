@@ -666,4 +666,12 @@ class Task < ActiveRecord::Base
     end 
   end 
 
+  def worked_and_duration_class
+    if worked_minutes > duration
+      "overtime"
+    else 
+      ""
+    end 
+  end 
+
 end

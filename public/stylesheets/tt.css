@@ -577,6 +577,10 @@ input.button {
   color: #FC5C04;
 }
 
+.overtime {
+  background-color: #FFCC00;
+}
+
 .calendar {
   margin:0;
   padding: 0;

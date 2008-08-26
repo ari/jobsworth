@@ -106,7 +106,9 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
        <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="Element.toggle('todo-container-<%=task.dom_id%>'); return false;"><%=task.todo_status%></a>
      </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
-       <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if task.duration.to_i > 0 -%>
+     <% if task.duration.to_i > 0 -%>
+       <span class="<%=task.worked_and_duration_class%>"><%="(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})"%></span>
+     <% end %> 
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <% end -%>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
