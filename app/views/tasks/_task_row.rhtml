@@ -92,6 +92,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <% end -%>
    </div>
 
+   <div style="float:right;padding-left:0.5em;" class="avatar"><%= task.icon %></div>
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
    <div class="task-name" style="padding-left:2px;">
 
