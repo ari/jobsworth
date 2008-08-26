@@ -227,7 +227,7 @@ function reset_owners() {
         <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
       <% if current_user.option_tracktime.to_i == 1%>
        <label for="task_duration"><%=_ 'Time Estimate' %></label>
-      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => '2w 3d 1h'}.merge(perms['prioritize']) %><br/>
+      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
 <% else %>
     <%= hidden_field_tag "task[duration]", "1h" %>
 <% end %>
