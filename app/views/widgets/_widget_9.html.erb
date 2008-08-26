@@ -3,12 +3,12 @@
 <tr><td>&nbsp;</td><td align="right"><span  class="widget_sub_header"><%= _'Today' %></span></td><td align="right"><span class="widget_sub_header"><%= _'Yesterday' %></span></td><td align="right"><span class="widget_sub_header"><%= _('Last %d Days', 7) %></span></td><td align="right"><span class="widget_sub_header"><%= _('Last %d Days', 30) %></span></td></tr>
 
 <tr>
-<td class="widget_sub_heading"><%= _('New Tasks')%></td>
+<td class="widget_sub_heading"><%= _('New')%></td>
 <% 0.upto(3) do |i| %><td align="right"><%= @counts[:created][i] %></td><% end %>
 </tr>
 
 <tr>
-<td class="widget_sub_heading"><%= _('Completed Tasks')%></td>
+<td class="widget_sub_heading"><%= _('Completed')%></td>
 <% 0.upto(3) do |i| %><td align="right"><%= @counts[:completed][i] %></td><% end %>
 </tr>
 
