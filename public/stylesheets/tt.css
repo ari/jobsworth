@@ -1290,7 +1290,6 @@ a.description {
 #tabmenu li a:hover, #tabmenu li:hover a {
   background: #fff;
   color: #ff9900;
-  border-top: 1px solid #d8d8d8;
 }
 
 #tabmenu li ul a {
