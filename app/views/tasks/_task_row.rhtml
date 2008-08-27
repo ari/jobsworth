@@ -30,7 +30,7 @@
 class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
-  <div style="float:left;padding-left:0.3em;padding-top:1px;"><%= task.icon %></div>
+  <div style="float:left;padding-top:1px;padding-right:2px;" class="task-icon"><%= task.icon %></div>
   <% if(@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
     <% if(@current_sheet && @current_sheet.task_id == task.id) -%>

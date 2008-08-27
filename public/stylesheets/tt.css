@@ -1076,6 +1076,7 @@ a.description {
   font-size: 11px;
   min-height: 2.3em;
   margin-bottom: 2px;
+  background: url(/images/pri_normal_bkg.png) repeat-y;
 }
 
 
@@ -1098,24 +1099,27 @@ a.description {
   background-color: #F3F3F3;
 }
 
-#content div.task_lowest_pri {
-  border-left: solid 4px #F3F3F3;
+#content div.task_crit_pri {
+  border-left: solid 4px #FF6666;
+  background: url(/images/pri_crit_bkg.png) repeat-y;
+}
+
+#content div.task_high_pri {
+  border-left: solid 4px #f2ab99;
+  background: url(/images/pri_high_bkg.png) repeat-y;
+}
+
+#content div.task_raised_pri {
+  border-left: solid 4px #FFC266;
+  background: url(/images/pri_raised_bkg.png) repeat-y;
 }
 
 #content div.task_low_pri {
   border-left: solid 4px #e7e0c4;
 }
 
-#content div.task_crit_pri {
-  border-left: solid 4px #FF6666;
-}
-
-#content div.task_high_pri {
-  border-left: solid 4px #f2ab99;
-}
-
-#content div.task_raised_pri {
-  border-left: solid 4px #FFC266;
+#content div.task_lowest_pri {
+  border-left: solid 4px #F3F3F3;
 }
 
 #content div.task-row {
