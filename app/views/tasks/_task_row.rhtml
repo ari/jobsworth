@@ -30,6 +30,7 @@
 class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
+  <div style="float:left;padding-left:0.3em;padding-top:1px;"><%= task.icon %></div>
   <% if(@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
     <% if(@current_sheet && @current_sheet.task_id == task.id) -%>
@@ -72,7 +73,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
 
-  <div style="float:left; padding-left:0.4em;">
+  <div style="float:left; padding-left:0.3em;">
     <% unless task.done? %>
       <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_check/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}})",
 	  :class => "button tooltip checkbox", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
@@ -83,7 +84,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
     <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
       <% if @current_sheet && @current_sheet.task_id == task.id -%>
-        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
+        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link work-icon" } )  -%>
       <% else -%>
         <a href="#" onclick="new Ajax.Request('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
       <% end -%>
@@ -92,7 +93,6 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <% end -%>
    </div>
 
-   <div style="float:right;padding-left:0.5em;" class="avatar"><%= task.icon %></div>
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
    <div class="task-name" style="padding-left:2px;">
 
