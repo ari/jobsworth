@@ -181,7 +181,11 @@
                 <% end %>
 		</li>
 
+
+		<li class="right"><a href="http://wiki.clockingit.com/help:<%=controller.controller_name%>:<%=controller.action_name%>" target="_blank"><img height="16" style="margin-top:-2px;" src="/images/help.png" border="0" /></a></li>
+
                 <li class="right"><%= link_to "#{_('Log Out')}", { :controller => 'login', :action => 'logout'}, :class => "right" %></li>
+
                 <% if controller.controller_name == "users" && controller.action_name == "edit_preferences" %>
                 <li class="right active"><%= link_to "#{_('Preferences')}", { :controller => 'users', :action => 'edit_preferences'}, :class => "right active"%>
                 <% else %>
