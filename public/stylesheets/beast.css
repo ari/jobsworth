@@ -556,13 +556,15 @@ td.code,
   background-color: #e5eaef;
   font-size:0.8em;
   padding:3px 10px;
-  border:1px solid #B7B7B7;
+  border:1px solid #B7B7B7; 
 }
 #main_col table tr td
 {
         padding:7px;
         border:1px solid #ddd;
 }
+
+
 
 /* topics */
 
@@ -710,16 +712,18 @@ div.stats .posts { float:right; text-align:right; }
 
 table.posts
 {
-        border-bottom:2px solid #eee;
+/*      border-bottom:2px solid #eee; */
 }
 
 table.posts tr td
 {
         border:0;
 }
+
 table.posts tr.spacer td
 {
-        font-size:1px;
+  font-size:1px;
+  border:0;
 }
 
 /* fade edit links */
@@ -941,4 +945,9 @@ div.editbox ul.help {
 
 #main_col .spacer {
   font-size:0.2em;
+  border:none;
+}
+
+td.entry-content {
+  vertical-align: top;
 }

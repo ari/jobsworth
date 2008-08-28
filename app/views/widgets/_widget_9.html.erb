@@ -1,0 +1,26 @@
+<div style="padding-left: 1em;">
+<table border="0" width="100%">
+<tr><td>&nbsp;</td><td align="right"><span  class="widget_sub_header"><%= _'Today' %></span></td><td align="right"><span class="widget_sub_header"><%= _'Yesterday' %></span></td><td align="right"><span class="widget_sub_header"><%= _('Last %d Days', 7) %></span></td><td align="right"><span class="widget_sub_header"><%= _('Last %d Days', 30) %></span></td></tr>
+
+<tr>
+<td class="widget_sub_heading"><%= _('New')%></td>
+<% 0.upto(3) do |i| %><td align="right"><%= @counts[:created][i] %></td><% end %>
+</tr>
+
+<tr>
+<td class="widget_sub_heading"><%= _('Completed')%></td>
+<% 0.upto(3) do |i| %><td align="right"><%= @counts[:completed][i] %></td><% end %>
+</tr>
+
+<tr>
+<td class="widget_sub_heading"><%= _('Work Logged')%></td>
+<% 0.upto(3) do |i| %><td align="right"><%= worked_nice(@counts[:work][i]) %></td><% end %>
+</tr>
+
+</table>
+</div>
+<div class="log_header" style="margin-left:8px;margin-top:0.5em;"><%= _('Last %d Completed Tasks', @widget.number) %></div>
+<% @last_completed.each do |t| %>
+<%= render :partial => 'tasks/task_row', :locals => {:task => t} %>
+<% end %>
+

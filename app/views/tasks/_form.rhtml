@@ -219,15 +219,26 @@ function reset_owners() {
 
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
-      <label for="task_type_id"><%=_ 'Type' %></label>
-        <%= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
-        <label for="task_priority"><%=_ 'Priority' %></label>
+      <label for="task_type_id"><%=_ 'Type' %></label><div style="float:left;">
+        <% disabled = (perms['prioritize'].empty? || @task.new_record?) ? "" : "disabled=\"disabled\"" %>
+        <input type="radio" name="task[type_id]" id="task_type_id_0" value="0" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 0 %> <%= disabled %>/>
+          <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_1" value="1" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 1 %> <%= disabled %>/>
+          <label for="task_type_id_1" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'New Feature'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_2" value="2"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 2 %> <%= disabled %>/>
+          <label for="task_type_id_2" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Defect'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_3" value="3"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 3 %> <%= disabled %>/>
+          <label for="task_type_id_3" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Improvement'%></label>
+        </div>
+
+        <%#= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
+      <label for="task_priority"><%=_ 'Priority' %></label>
         <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
       <label for="task_severity_id"><%=_ 'Severity' %></label>
         <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
       <% if current_user.option_tracktime.to_i == 1%>
        <label for="task_duration"><%=_ 'Time Estimate' %></label>
-      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => '2w 3d 1h'}.merge(perms['prioritize']) %><br/>
+      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
 <% else %>
     <%= hidden_field_tag "task[duration]", "1h" %>
 <% end %>

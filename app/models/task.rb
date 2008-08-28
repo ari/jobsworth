@@ -620,12 +620,20 @@ class Task < ActiveRecord::Base
         res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
       end
       res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
-      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.chars[0..1024].gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
+      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description_wrapped.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
     end 
     @tip
   end
+
+  def description_wrapped
+    unless description.blank?
+      self.description.chars.gsub(/(.{1,80})( +|$)\n?|(.{80})/, "\\1\\3\n")[0..1024]
+    else
+      nil
+    end
+  end 
 
   def css_classes
     unless @css
@@ -647,5 +655,23 @@ class Task < ActiveRecord::Base
   def todo_count
     "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
   end
+
+  def icon(icon_type = nil)
+    icon_type ||= type_id
+    case icon_type
+      when 0 then '<img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" />'
+      when 1 then '<img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" />'
+      when 2 then '<img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" />'
+      when 3 then '<img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" />'
+    end 
+  end 
+
+  def worked_and_duration_class
+    if worked_minutes > duration
+      "overtime"
+    else 
+      ""
+    end 
+  end 
 
 end

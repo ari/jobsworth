@@ -1,0 +1,66 @@
+<div style="height:19px;position:relative;">
+       <% s = @range[0]
+	  left = 0
+          while s && s < @range[1] do
+                w = ((s.next_month.beginning_of_month.to_i - s.midnight.to_i)/1.day) * 16 - 1
+		style = "width:#{w}px;border-right:1px solid #999;"
+	   %>
+       <div style="<%= style %>text-align:center;position:absolute;left:<%=left%>px;top:0;height:20000px;">
+	  <%= s.strftime_localized("%B") %>
+       </div>
+       <%   s = s.next_month.beginning_of_month
+           left += w + 1
+          end 
+          e = s
+	  %>
+</div>
+<div style="clear:both;height:20px;position:relative;">
+       <% s = @range[0]
+	  w = 0
+          while s && s < e
+	  %>
+       <div style="position:absolute;left:<%=w%>px;top:0;width:15px;border-right:1px solid #eee;text-align:center;height:20000px;<%="background-color:#eee;" if s.wday == 0 || s.wday == 6%>">
+	  <%= s.day %>
+       </div>
+       <%   s += 1.day
+	  w+= 16;
+          end %>
+</div>
+
+<% last_milestone = nil
+   row = 2
+   @displayed_tasks.each do |t|
+   if t.milestone_id.to_i > 0 && t.milestone_id != last_milestone
+     last_milestone = t.milestone_id
+%>
+<div style="clear:both;height:20px;position:relative;overflow:visible;width:100%;">
+	<div id="offset-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( @milestone_start[t.milestone_id] )%>;top:0px;padding-top:3px;width:<%= gantt_width(@milestone_start[t.milestone_id], @milestone_end[t.milestone_id]).to_i + 500%>px;">
+	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:<%= gantt_width(@milestone_start[t.milestone_id], @milestone_end[t.milestone_id])%>;margin-right:0.3em;vertical-align:top;background:url(/images/milestone_bar.gif) repeat-x;overflow-y:hidden;height:19px;">
+	      <div style="float:left;"><img src="/images/milestone_end.gif" /></div>
+	      <div style="float:right;"><img src="/images/milestone_end.gif" /></div>
+	      &nbsp;
+	  </div>
+	</div>
+	<div id="offset-due-<%=t.milestone.dom_id%>" style="height:20px;position:absolute;left:<%=gantt_offset( (t.milestone.scheduled_date ? t.milestone.scheduled_date.midnight : @milestone_end[t.milestone_id]) )%>;top:0px;padding-top:3px;17px;" <%=" class=\"handle\"" if current_user.can?(t.project, 'milestone')%>>
+	  <div id="width-<%=t.milestone.dom_id%>" style="float:left;width:17px;margin-right:0.3em;vertical-align:top;height:19px;" >
+	      <div style="float:left;"><img src="/images/milestone.gif" class="tooltip" title="<%= (t.milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user))%>"/></div>
+	  </div>
+	</div>
+</div>
+<%= draggable_element("offset-due-#{t.milestone.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" }) if current_user.can?(t.project, 'milestone') %> 
+<%  row += 1
+    end %>
+<div style="clear:both;height:20px;position:relative;width:100%;">
+      <div id="offset-<%=t.dom_id%>" style="position:absolute;left:<%=gantt_offset(@start[t.id])%>;top:0px;padding-top:3px;height:20px;width:<%= gantt_width(@start[t.id], @end[t.id]).to_i + 500%>px;">
+	<div id="width-<%=t.dom_id%>" style="float:left;background-color:<%= gantt_color(t) %>;width:<%=gantt_width(@start[t.id], @end[t.id])%>;margin-right:0.3em;"<%=" class=\"handle\"" if current_user.can?(t.project, 'prioritize')%>>
+	  &nbsp;
+	</div>
+	<div style="padding-top:1px;">
+	  <small><%= ((t.users.size > 0) ? t.users.collect(&:name).join(',') : "[No one]") %></small>
+	</div>
+      </div>
+</div>
+<%= draggable_element("offset-#{t.dom_id}", { :revert => false, :ghosting => false, :constraint => "'horizontal'", :onEnd => "ganttDragEnd", :onStart => "ganttDragStart", :snap => 16, :scroll => "'gantt-container'" }) if current_user.can?(t.project, 'prioritize') %> 
+<% row += 1
+   end %>
+<div>&nbsp;</div>

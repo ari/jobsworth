@@ -24,6 +24,7 @@
         :loading => "Element.show('loading');",
         :complete => "Element.hide('loading');" -%>
   <% end %>
+  <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
 <%= info_string %>
 <% else %>
 [<%= worked_nice(total_today) %> <%=_ 'today'%>]

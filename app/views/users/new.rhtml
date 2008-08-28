@@ -5,7 +5,7 @@
   end
 
   @user_ids = [0] if @user_ids.size == 0
-  @users = User.find(:all, :conditions => ["id IN (#{@user_ids.uniq.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
+  @users = User.find(:all, :conditions => ["id IN (#{@user_ids.flatten.compact.uniq.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
 %>
 <div id="content">
 <fieldset>
@@ -19,7 +19,7 @@
   <label>&nbsp;</label>
   <%= submit_tag _("Create"), :class => 'nolabel' %><span style="padding-top:0.3em;padding-right:0.5em;float:left;"> <%= _'and copy permissions from'%></span><div style="float:left;">
   <select name="copy_user" id="copy_user">
-     <option value="0" class="select_default"><%= _("[Noone]") %></option>
+     <option value="0" class="select_default"><%= _("[No one]") %></option>
      <%= options_for_select @users, params[:copy_user].to_i %>
   </select>
   </div>

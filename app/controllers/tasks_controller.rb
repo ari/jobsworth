@@ -12,6 +12,14 @@ class TasksController < ApplicationController
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
+    unless @projects.collect{ |p| p[1] }.include? session[:last_project_id].to_i
+      session[:last_project_id] = nil
+    end
+
+    unless @projects.collect{ |p| p[1] }.include? session[:filter_project].to_i
+      session[:filter_project] = nil
+    end
+    
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
@@ -186,6 +194,10 @@ class TasksController < ApplicationController
       items = items.uniq.sort
 
       @groups = Task.group_by(@tasks, items) { |t,i| t.milestone ? ("#{t.project.name} / #{t.milestone.name}" == i) : (t.project.name == i)  }
+    elsif session[:group_by].to_i == 11 # Requested By
+      requested_by = @tasks.collect{|t| t.requested_by.blank? ? nil : t.requested_by }.compact.uniq.sort
+      requested_by = [_('No one')] + requested_by
+      @groups = Task.group_by(@tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
     else
       @groups = [@tasks]
     end
@@ -194,7 +206,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
@@ -1481,7 +1493,7 @@ class TasksController < ApplicationController
         worklog.duration = 0
         worklog.body = body
         worklog.save
-        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
+        Notifications::deliver_changed( update_type, @task, current_user, body.gsub(/<[^>]*>/,'')) if current_user.send_notifications? rescue nil
         Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       end
 

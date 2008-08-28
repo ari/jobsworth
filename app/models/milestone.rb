@@ -26,10 +26,18 @@ class Milestone < ActiveRecord::Base
     res << "<tr><th>#{_('Client')}</th><td> #{self.project.customer.name}</td></tr>"
     res << "<tr><th>#{_('Owner')}</th><td> #{self.user.name}</td></tr>" unless self.user.nil?
     res << "<tr><th>#{_('Progress')}</th><td> #{self.completed_tasks.to_i} / #{self.total_tasks.to_i} #{_('Complete')}</td></tr>"
-    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description.slice(0,4096).gsub(/\n/, '</td></tr>').gsub(/\"/,'&quot;')}</td></tr>" if( self.description && self.description.strip.length > 0)
+    res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description_wrapped.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;')}</td></tr>" unless self.description.blank?
     res << "</table>"
     res.gsub(/\"/,'&quot;')
   end
+
+  def description_wrapped
+    unless description.blank?
+      self.description.chars.gsub(/(.{1,80})( +|$)\n?|(.{80})/, "\\1\\3\n")[0..1024]
+    else
+      nil
+    end
+  end 
 
   def due_date
     unless @due_date
