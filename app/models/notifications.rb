@@ -57,7 +57,7 @@ class Notifications < ActionMailer::Base
     @body       = {:user => user, :post => post}
     @subject    = "#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]"
 
-    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
+    @recipients = (post.topic.posts.collect{ |p| p.user.email if(p.user.receive_notifications > 0) } + post.topic.monitors.collect(&:email) + post.forum.monitors.collect(&:email) ).uniq.compact - [user.email]
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
@@ -68,7 +68,7 @@ class Notifications < ActionMailer::Base
     @body       = {:user => user, :post => post}
     @subject    = "#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]"
 
-    @recipients = (post.topic.posts.collect{ |post| post.user.email if(post.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
+    @recipients = (post.topic.posts.collect{ |p| p.user.email if(p.user.receive_notifications > 0) } + post.forum.monitors.collect(&:email)).uniq.compact - [user.email]
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
