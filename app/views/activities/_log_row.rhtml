@@ -9,7 +9,7 @@
     <% end %>
   <%= link_to "#{worked_nice(log.duration/60)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
-  <td align="center" width="36px" valign="top">
+  <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
   <% if log.task_id.to_i > 0 %>
 
   <%= image_tag('accept.png', :alt => "Complete") if log.log_type == EventLog::TASK_COMPLETED %>
