@@ -290,7 +290,7 @@ class LoginController < ApplicationController
       render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Please choose a domain.</small>"
     else
       subdomain = Company.count( :conditions => ["subdomain = ?", params[:subdomain]])
-      if %w( www forum wiki repo mail ftp static01 ).include?( params[:subdomain].downcase )
+      if %w( www forum wiki repo mail ftp static01 new lists static ).include?( params[:subdomain].downcase )
         subdomain = 1
       end
 
