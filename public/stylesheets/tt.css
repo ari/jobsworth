@@ -1116,10 +1116,12 @@ a.description {
 
 #content div.task_low_pri {
   border-left: solid 4px #e7e0c4;
+  background: url(/images/pri_low_bkg.png) repeat-y;
 }
 
 #content div.task_lowest_pri {
   border-left: solid 4px #F3F3F3;
+  background: url(/images/pri_lowest_bkg.png) repeat-y;
 }
 
 #content div.task-row {
