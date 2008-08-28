@@ -220,7 +220,7 @@ function reset_owners() {
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
       <label for="task_type_id"><%=_ 'Type' %></label><div style="float:left;">
-        <% disabled = perms['prioritize'].nil? ? "" : "disabled=\"disabled\"" %>
+        <% disabled = (perms['prioritize'].empty? || @task.new_record?) ? "" : "disabled=\"disabled\"" %>
         <input type="radio" name="task[type_id]" id="task_type_id_0" value="0" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 0 %> <%= disabled %>/>
           <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/cog.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
         <input type="radio" name="task[type_id]" id="task_type_id_1" value="1" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 1 %> <%= disabled %>/>
