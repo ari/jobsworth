@@ -12,6 +12,14 @@ class TasksController < ApplicationController
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
+    unless @projects.collect{ |p| p[1] }.include? session[:last_project_id].to_i
+      session[:last_project_id] = nil
+    end
+
+    unless @projects.collect{ |p| p[1] }.include? session[:filter_project].to_i
+      session[:filter_project] = nil
+    end
+    
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
