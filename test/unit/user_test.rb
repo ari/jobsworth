@@ -116,7 +116,7 @@ class UserTest < Test::Unit::TestCase
     user.generate_uuid
 
     assert_not_nil user.uuid
-    assert_not_nil user.autologin
+     assert_not_nil user.autologin
     
     assert user.uuid.length == 32
     assert user.autologin.length == 32
@@ -150,12 +150,12 @@ class UserTest < Test::Unit::TestCase
     limited = User.find(4)
     other = User.find(2)
     
-    %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
-      assert normal.can?(project, perm)
-      assert !other.can?(project, perm)
+    %w(comment work close report create edit reassign prioritize milestone grant all).each do |perm|
+       assert normal.can?(project, perm)
+       assert !other.can?(project, perm)
       if %w(comment work).include? perm
         assert limited.can?(project, perm)
-      else 
+      else
         assert !limited.can?(project, perm)
       end
     end
@@ -168,7 +168,7 @@ class UserTest < Test::Unit::TestCase
     other = User.find(2)
 
     %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
-      assert normal.can_all?(projects, perm)
+      assert_equal normal.can_all?(projects, perm), true
       assert !other.can_all?(projects, perm)
       assert !limited.can_all?(projects, perm)
     end 
@@ -181,7 +181,8 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_currently_online
-    assert_equal [@user], @user.currently_online
+    @user2 = User.find(3)
+    assert_equal [@user,@user2], @user.currently_online
     assert_equal [], User.find(2).currently_online
   end
 

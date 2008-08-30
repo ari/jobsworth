@@ -78,8 +78,8 @@ user:
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
-  last_seen_at: null
-  last_ping_at: null
+  last_seen_at: <%= Time.now.utc.to_s(:db) %>
+  last_ping_at: <%= Time.now.utc.to_s(:db) %>
   last_milestone_id: 0
   last_filter: 0
   date_format: %d/%m/%Y

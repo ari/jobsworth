@@ -6,6 +6,7 @@ clockingit:
   contact_name: Erlend Simonsen
   subdomain: cit
   show_forum: true
+  restricted_userlist: false
 fudge:
   id: 2
   name: Fudge
@@ -13,3 +14,4 @@ fudge:
   contact_name: Erlend Simonsen
   subdomain: fudge
   show_forum: true
+  restricted_userlist: true
