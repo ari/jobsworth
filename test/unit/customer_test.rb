@@ -4,8 +4,8 @@ class CustomerTest < Test::Unit::TestCase
   fixtures :companies, :customers
 
   def setup
-    @internal = Customer.find(1)
-    @external = Customer.find(2)
+    @internal = customers(:internal_customer)
+    @external = customers(:external_customer)
   end
 
   def test_truth
@@ -13,15 +13,15 @@ class CustomerTest < Test::Unit::TestCase
   end
   
   def test_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', '1'), @internal.path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}"), @internal.path
   end
 
   def test_store_name
-    assert_equal "logo_1", @internal.store_name
+    assert_equal "logo_#{@internal.id}", @internal.store_name
   end
 
   def test_logo_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', '1', 'logo_1'), @internal.logo_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}", "logo_#{@internal.id}"), @internal.logo_path
   end
   
   def test_full_name

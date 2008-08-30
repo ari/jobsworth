@@ -1,8 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 normal_task:
-  id: 1
   name: Test
-  project_id: 1
+  project: test_project
   position: 0
   due_at: null
   completed_at: null
@@ -10,7 +9,7 @@ normal_task:
   hidden: null
   milestone_id: null
   description: Just a normal Task
-  company_id: 1
+  company: cit
   priority: 0
   updated_by_id: 1
   severity_id: 0
@@ -23,9 +22,8 @@ normal_task:
   repeat: null
   hide_until: null
 milestone_task:
-  id: 2
   name: Test Milestone Task
-  project_id: 1
+  project: test_project
   position: 0
   due_at: null
   completed_at: null
@@ -33,7 +31,7 @@ milestone_task:
   hidden: null
   milestone_id: 1
   description: Just a milestone Task
-  company_id: 1
+  company: cit
   priority: 0
   updated_by_id: 1
   severity_id: 1
@@ -46,9 +44,8 @@ milestone_task:
   repeat: null
   hide_until: null
 completed_task:
-  id: 3
   name: Test Completed
-  project_id: 1
+  project: test_project
   position: 0
   due_at: null
   completed_at: <%= Time.now.utc.to_s(:db) %>
@@ -56,7 +53,7 @@ completed_task:
   hidden: null
   milestone_id: null
   description: Just a normal Task
-  company_id: 1
+  company: cit
   priority: 0
   updated_by_id: 1
   severity_id: 0

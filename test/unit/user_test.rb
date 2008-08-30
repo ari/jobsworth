@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < Test::Unit::TestCase
-  fixtures :users, :projects, :project_permissions
+  fixtures :users, :projects, :project_permissions, :companies, :customers
 
   def setup
-    @user = User.find(1)
+    @user = users(:admin)
   end
 
   # Replace this with your real tests.
@@ -18,7 +18,7 @@ class UserTest < Test::Unit::TestCase
     u.username = "a"
     u.password = "a"
     u.email = "a@a.com"
-    u.company_id = 1
+    u.company = companies(:cit)
     u.save
     
     assert_not_nil u.uuid
@@ -35,7 +35,7 @@ class UserTest < Test::Unit::TestCase
     u.username = "a"
     u.password = "a"
     u.email = "a@a.com"
-    u.company_id = 1
+    u.company = companies(:cit)
 
     assert !u.save
     assert_equal 1, u.errors.size
@@ -48,7 +48,7 @@ class UserTest < Test::Unit::TestCase
     u.name = "a"
     u.password = "a"
     u.email = "a@a.com"
-    u.company_id = 1
+    u.company = companies(:cit)
 
     assert !u.save
     assert_equal 1, u.errors.size
@@ -66,7 +66,7 @@ class UserTest < Test::Unit::TestCase
     u.name = "a"
     u.username = "a"
     u.email = "a@a.com"
-    u.company_id = 1
+    u.company = companies(:cit)
 
     assert !u.save
     assert_equal 1, u.errors.size
@@ -79,7 +79,7 @@ class UserTest < Test::Unit::TestCase
     u.name = "a"
     u.username = "a"
     u.password = "a"
-    u.company_id = 1
+    u.company = companies(:cit)
 
     assert !u.save
     assert_equal 1, u.errors.size
@@ -100,15 +100,15 @@ class UserTest < Test::Unit::TestCase
 
 
   def test_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1'), @user.path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}"), @user.path
   end
   
   def test_avatar_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1', '1'), @user.avatar_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}"), @user.avatar_path
   end
   
   def test_avatar_large_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', '1', '1_large'), @user.avatar_large_path
+    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}_large"), @user.avatar_large_path
   end
   
   def test_generate_uuid
@@ -141,14 +141,14 @@ class UserTest < Test::Unit::TestCase
     assert_nil   @user.login
     assert_nil   @user.login('www')
     assert_nil   User.new.login('cit')
-    assert_nil   User.find(2).login('cit')
+    assert_nil   users(:fudge).login('cit')
   end
   
   def test_can?
-    project = Project.find(1)
-    normal = User.find(3)
-    limited = User.find(4)
-    other = User.find(2)
+    project = projects(:test_project)
+    normal = users(:tester)
+    limited = users(:tester_limited)
+    other = users(:fudge)
     
     %w(comment work close report create edit reassign prioritize milestone grant all).each do |perm|
        assert normal.can?(project, perm)
@@ -162,13 +162,13 @@ class UserTest < Test::Unit::TestCase
   end
   
   def test_can_all?
-    projects = [Project.find(1), Project.find(3)]
-    normal = User.find(3)
-    limited = User.find(4)
-    other = User.find(2)
+    projects = [projects(:test_project), projects(:completed_project)]
+    normal = users(:tester)
+    limited = users(:tester_limited)
+    other = users(:fudge)
 
     %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
-      assert_equal normal.can_all?(projects, perm), true
+      assert normal.can_all?(projects, perm)
       assert !other.can_all?(projects, perm)
       assert !limited.can_all?(projects, perm)
     end 
@@ -176,14 +176,14 @@ class UserTest < Test::Unit::TestCase
   
   def test_admin?
     assert @user.admin?
-    assert !User.find(2).admin?
+    assert !users(:fudge).admin?
     assert !User.new.admin?
   end
 
   def test_currently_online
-    @user2 = User.find(3)
-    assert_equal [@user,@user2], @user.currently_online
-    assert_equal [], User.find(2).currently_online
+    @user2 = users(:tester)
+    assert_equal [@user2,@user], @user.currently_online
+    assert_equal [], users(:fudge).currently_online
   end
 
   def test_moderator_of?
@@ -194,7 +194,7 @@ class UserTest < Test::Unit::TestCase
     @user.last_ping_at = Time.now.utc
     
     assert @user.online?
-    assert !User.find(2).online?
+    assert !users(:fudge).online?
     
   end
 

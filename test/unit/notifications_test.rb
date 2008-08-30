@@ -26,7 +26,7 @@ class NotificationsTest < Test::Unit::TestCase
     @expected.body    = read_fixture('created')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_created(Task.find(1), User.find(1), "", @expected.date).encoded
+    assert_equal @expected.encoded, Notifications.create_created(tasks(:normal_task), users(:admin), "", @expected.date).encoded
   end
 
   def test_changed
@@ -38,7 +38,7 @@ class NotificationsTest < Test::Unit::TestCase
     @expected.body    = read_fixture('changed')
     @expected.date    = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_changed(:completed, Task.find(1), User.find(1), "Task Changed", @expected.date).encoded
+    assert_equal @expected.encoded, Notifications.create_changed(:completed, tasks(:normal_task), users(:admin), "Task Changed", @expected.date).encoded
   end
 
   private

@@ -7,13 +7,13 @@ context "Activities" do
     use_controller ActivitiesController
 
     @request.with_subdomain('cit')
-    @request.session[:user_id] = 1
+    @request.session[:user_id] = users(:admin).id
   end
   
   specify "/index should render :success" do
     get :index
     assigns(:current_user).tz.should.equal Timezone.get('Europe/Oslo')
-    assigns(:current_user).should.equal User.find(1)
+    assigns(:current_user).should.equal users(:admin)
     status.should.be :success
   end
 

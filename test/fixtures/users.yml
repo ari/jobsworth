@@ -1,10 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 admin:
-  id: 1
   name: Erlend Simonsen
   username: test
   password: password
-  company_id: 1
+  company: cit
   email: admin@clockingit.com
   last_login_at: <%= Time.now.utc.to_s(:db) %>
   admin: 10
@@ -32,11 +31,10 @@ admin:
   option_avatars: 1
   autologin: 2234567890abcdefghijklmnopqrstuv
 fudge:
-  id: 2
   name: Fudgie
   username: fudge
   password: password
-  company_id: 2
+  company: fudge
   email: mr@fudgie.org
   last_login_at: null
   admin: 0
@@ -63,12 +61,11 @@ fudge:
   newsletter: 1
   option_avatars: 1
   autologin: 4234567890abcdefghijklmnopqrstuv
-user:
-  id: 3
+tester:
   name: Test User
   username: tester
   password: password
-  company_id: 1
+  company: cit
   email: test@clockingit.com
   last_login_at: null
   admin: 0
@@ -95,12 +92,11 @@ user:
   newsletter: 1
   option_avatars: 1
   autologin: 6234567890abcdefghijklmnopqrstuv
-user_limited:
-  id: 4
+tester_limited:
   name: Test User Limited
   username: tester_limited
   password: password
-  company_id: 1
+  company: cit
   email: tester@clockingit.com
   last_login_at: null
   admin: 0

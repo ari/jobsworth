@@ -1,29 +1,26 @@
 test_project:
-  id: 1
   name: Test Project
-  user_id: 1
-  company_id: 1
-  customer_id: 1
+  owner: admin
+  company: cit
+  customer: internal_customer
   completed_at: null
   critical_count: 0
   normal_count: 0
   low_count: 0
-tester_project:
-  id: 2
+fudge_project:
   name: Tester Project
-  user_id: 2
-  company_id: 2
-  customer_id: 3
+  owner: fudge
+  company: fudge
+  customer: fudge_internal_customer
   completed_at: null
   critical_count: 0
   normal_count: 0
   low_count: 0
 completed_project:
-  id: 3
   name: Completed Project
-  user_id: 1
-  company_id: 1
-  customer_id: 1
+  owner: admin
+  company: cit
+  customer: internal_customer
   completed_at: <%= Time.now.utc - 1.day %>
   critical_count: 0
   normal_count: 0

@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ProjectTest < Test::Unit::TestCase
-  fixtures :projects
+  fixtures :projects, :companies, :users, :customers
 
   def setup
-    @project = Project.find(1)
+    @project = projects(:test_project)
   end
 
   # Replace this with your real tests.
@@ -15,9 +15,9 @@ class ProjectTest < Test::Unit::TestCase
   def test_after_create_without_forum
     p = Project.new
     p.name = "a"
-    p.user_id = 1
-    p.company_id = 1
-    p.customer_id = 1
+    p.owner = users(:admin)
+    p.company = companies(:cit)
+    p.customer = customers(:internal_customer)
     p.save
     
     assert_not_nil        p.forums
@@ -27,9 +27,9 @@ class ProjectTest < Test::Unit::TestCase
   def test_after_create_with_forum
     p = Project.new
     p.name = "a"
-    p.user_id = 1
-    p.company_id = 1
-    p.customer_id = 1
+    p.owner = users(:admin)
+    p.company = companies(:cit)
+    p.customer = customers(:internal_customer)
     p.create_forum = 1
     p.save
 
@@ -42,9 +42,9 @@ class ProjectTest < Test::Unit::TestCase
 
   def test_validate_name
     p = Project.new
-    p.user_id = 1
-    p.company_id = 1
-    p.customer_id = 1
+    p.owner = users(:admin)
+    p.company = companies(:cit)
+    p.customer = customers(:internal_customer)
 
     assert !p.save
     assert_equal 1, p.errors.size

@@ -1,7 +1,6 @@
 top:
-  id: 1
-  company_id: 1
-  user_id: 1
+  company: cit
+  user: admin
   name: Top Tasks
   widget_type: 0
   number: 0

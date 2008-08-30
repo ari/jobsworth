@@ -7,12 +7,12 @@ context "ApplicationController" do
      use_controller ActivitiesController
 
      @request.with_subdomain('cit')
-     @request.session[:user_id] = 1
+     @request.session[:user_id] = users(:admin).id
   end
 
   specify "should get current_user" do
      get :index
-     @controller.current_user.should.equal(User.find(1))
+     @controller.current_user.should.equal(users(:admin))
   end
 
   specify "user 1 should be admin" do
@@ -21,7 +21,7 @@ context "ApplicationController" do
   end
 
   specify "user 2 should NOT be admin" do
-     @request.session[:user_id] = 2
+     @request.session[:user_id] = users(:fudge).id
      get :index
      assigns(:current_user).admin?.should.be false
   end
