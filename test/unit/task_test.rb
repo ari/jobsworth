@@ -97,13 +97,13 @@ class TaskTest < Test::Unit::TestCase
 
   def test_overdue?
     @task.due_at = nil
-    assert_equal 0, @task.overdue?
+    assert_equal false, @task.overdue?
 
     @task.due_at = Time.now.utc + 1.day
-    assert_equal 0, @task.overdue?
+    assert_equal false, @task.overdue?
 
     @task.due_at = Time.now.utc - 1.day
-    assert_equal 1, @task.overdue?
+    assert_equal true, @task.overdue?
   end
 
   def test_worked_minutes

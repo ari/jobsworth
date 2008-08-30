@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
 context "A user" do
   use_controller LoginController
   fixtures :users, :companies, :customers

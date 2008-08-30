@@ -5,9 +5,11 @@ clockingit:
   contact_email: admin@clockingit.com
   contact_name: Erlend Simonsen
   subdomain: cit
+  show_forum: true
 fudge:
   id: 2
   name: Fudge
   contact_email: mr@fudgie.org
   contact_name: Erlend Simonsen
   subdomain: fudge
+  show_forum: true

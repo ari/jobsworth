@@ -12,7 +12,7 @@ class ProjectTest < Test::Unit::TestCase
     assert_kind_of Project,  @project
   end
   
-  def test_after_create
+  def test_after_create_without_forum
     p = Project.new
     p.name = "a"
     p.user_id = 1
@@ -21,10 +21,24 @@ class ProjectTest < Test::Unit::TestCase
     p.save
     
     assert_not_nil        p.forums
+    assert_equal       0, p.forums.size
+  end
+
+  def test_after_create_with_forum
+    p = Project.new
+    p.name = "a"
+    p.user_id = 1
+    p.company_id = 1
+    p.customer_id = 1
+    p.create_forum = 1
+    p.save
+
+    assert_not_nil        p.forums
     assert_equal       1, p.forums.size
     assert_kind_of Forum, p.forums.first
     assert_equal     "Internal / a", p.forums.first.name
   end
+
 
   def test_validate_name
     p = Project.new

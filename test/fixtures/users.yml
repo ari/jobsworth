@@ -11,7 +11,6 @@ admin:
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -44,7 +43,6 @@ fudge:
   time_zone: Europe/London
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -77,7 +75,6 @@ user:
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -110,7 +107,6 @@ user_limited:
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null

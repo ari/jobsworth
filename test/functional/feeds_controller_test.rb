@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
 context "Feeds" do
   fixtures :users
   

@@ -1,6 +1,7 @@
-test/spec/rails by Per "Tuxie" Wigren <per.wigren@gmail.com>
+test/spec/rails
 
 This plugin contain some helpers to test your Rails app using test/spec.
+
 
 Installation
 ------------
@@ -9,6 +10,15 @@ Installation
  * require 'test/spec/rails' in your test_helper.rb
 
 
+Source
+------
+  test/spec/rails uses Git for source control. If you're running edge Rails you can install with:
+
+    script/plugin install git://github.com/pelargir/test_spec_on_rails.git
+
+  Otherwise just clone the project directly:
+
+    git clone git://github.com/pelargir/test_spec_on_rails.git vendor/plugins/test_spec_on_rails
 
 
 Model validation
@@ -153,3 +163,10 @@ Misc
   when using foo.should.equal(bar) or foo.should.be(bar)
   foo.should.not.equal and foo.should.not.be look for #should_not_equal
 
+
+Credit
+------
+
+ * Created by Per "Tuxie" Wigren <per.wigren@gmail.com>
+ * Enhanced by Rick Olson <technoweenie@gmail.com>
+ * Currently maintained by Matthew Bass <pelargir@gmail.com>

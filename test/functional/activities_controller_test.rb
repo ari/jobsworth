@@ -1,10 +1,12 @@
-context "Activities" do 
+require File.dirname(__FILE__) + '/../test_helper'
+
+context "Activities" do
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs
   
   setup do
     use_controller ActivitiesController
 
-    @request.host = 'cit.local.host'
+    @request.with_subdomain('cit')
     @request.session[:user_id] = 1
   end
   
@@ -15,7 +17,7 @@ context "Activities" do
     status.should.be :success
   end
 
-  specify "/list should render :success" do 
+  specify "/list should render :success" do
     get :list
     status.should.be :success
     template.should.be 'activities/list'    
