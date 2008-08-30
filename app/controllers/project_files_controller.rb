@@ -3,8 +3,6 @@
 #
 class ProjectFilesController < ApplicationController
   require_dependency 'RMagick'
-#  enable_upload_progress
-#  upload_status_for :upload
 
   def index
     if current_user.projects.empty?
@@ -40,7 +38,7 @@ class ProjectFilesController < ApplicationController
   def show
     @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
-    if @project_files.thumbnail?
+    if @project_files.thumbnail? || @project_files.file_type == ProjectFile::FILETYPE_IMG
 #      image = Magick::Image.read(@project_files.file_path ).first
       send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => 'inline'
       GC.start
