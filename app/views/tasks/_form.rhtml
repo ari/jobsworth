@@ -222,13 +222,13 @@ function reset_owners() {
       <label for="task_type_id"><%=_ 'Type' %></label><div style="float:left;">
         <% disabled = (perms['prioritize'].empty? || @task.new_record?) ? "" : "disabled=\"disabled\"" %>
         <input type="radio" name="task[type_id]" id="task_type_id_0" value="0" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 0 %> <%= disabled %>/>
-          <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/cog.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
+          <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
         <input type="radio" name="task[type_id]" id="task_type_id_1" value="1" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 1 %> <%= disabled %>/>
-          <label for="task_type_id_1" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/application_add.png" alt="New Feature" title="New Feature" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'New Feature'%></label><br/> 
+          <label for="task_type_id_1" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'New Feature'%></label><br/> 
         <input type="radio" name="task[type_id]" id="task_type_id_2" value="2"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 2 %> <%= disabled %>/>
-          <label for="task_type_id_2" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/bug.png" alt="Defect" title="Defect" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Defect'%></label><br/> 
+          <label for="task_type_id_2" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Defect'%></label><br/> 
         <input type="radio" name="task[type_id]" id="task_type_id_3" value="3"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 3 %> <%= disabled %>/>
-          <label for="task_type_id_3" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/application_edit.png" alt="Improvement" title="Improvement" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Improvement'%></label>
+          <label for="task_type_id_3" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Improvement'%></label>
         </div>
 
         <%#= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
