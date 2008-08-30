@@ -15,6 +15,7 @@ end
   test_layout
   
   should_redirect
+  should_render
   should_route
   should_select
   should_validate

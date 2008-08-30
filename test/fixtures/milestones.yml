@@ -2,9 +2,9 @@
 test_milestone:
   id: 1
   name: Test Milestone
-  company_id: 1
-  project_id: 1
-  user_id: 1
+  company: cit
+  project: test_project
+  user: admin
   description: Test Milestone due Tomorrow
   due_at: <%= Time.now.utc + 1.day %>
   position: 0
@@ -15,9 +15,9 @@ test_milestone:
 test_milestone_overdue:
   id: 2
   name: Overdue Milestone
-  company_id: 1
-  project_id: 1
-  user_id: 1
+  company: cit
+  project: test_project
+  user: admin
   description: Test Milestone Overdue
   due_at: <%= Time.now.utc - 1.week %>
   position: 0

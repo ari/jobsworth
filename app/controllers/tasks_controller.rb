@@ -390,20 +390,33 @@ class TasksController < ApplicationController
         task_file.name = filename
         task_file.save
         task_file.file_size = params['task_file'].size
+
+
         task_file.save
         task_file.reload
 
         if !File.directory?(task_file.path)
           File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue begin
-                                                 end
+          Dir.mkdir(task_file.path, 0777) rescue nil
         end
 
         File.umask(0)
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
+                                                                                                        task_file = nil
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
                                                                                                       end
+        if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+           image = Magick::Image.read( task_file.file_path ).first
+
+           if image.columns > 0
+              task_file.file_type = ProjectFile::FILETYPE_IMG
+              task_file.mime_type = image.mime_type
+              task_file.save
+           end
+           image = nil
+           GC.start
+        end
 
         #TODO Add notification
       end
@@ -756,6 +769,18 @@ class TasksController < ApplicationController
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
                                                                                                         filename = nil
                                                                                                       end
+        if filename && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+           image = Magick::Image.read( task_file.file_path ).first
+
+           if image.columns > 0
+              task_file.file_type = ProjectFile::FILETYPE_IMG
+              task_file.mime_type = image.mime_type
+              task_file.save
+           end
+           image = nil
+           GC.start
+        end
+
         if filename
           body << "- <strong>Attached</strong>: #{filename}\n"
         end

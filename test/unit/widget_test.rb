@@ -4,7 +4,7 @@ class WidgetTest < Test::Unit::TestCase
   fixtures :users, :tasks, :widgets
 
   def setup
-    @user = User.find(1)
+    @user = users(:admin)
   end
 
   # Replace this with your real tests.

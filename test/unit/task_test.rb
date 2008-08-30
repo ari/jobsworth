@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TaskTest < Test::Unit::TestCase
-  fixtures :tasks
+  fixtures :tasks, :projects, :users, :companies, :customers
 
   def setup
-    @task = Task.find(1)
+    @task = tasks(:normal_task)
   end
 
   # Replace this with your real tests.
@@ -72,19 +72,16 @@ class TaskTest < Test::Unit::TestCase
   end
 
   def test_worked_on?
-    assert !Task.find(1).worked_on?
+     assert !@task.worked_on?
 
-    sheet = Sheet.new
-    sheet.task = @task
-    sheet.user_id = 1
-    sheet.project_id = 1
-    sheet.save
+     sheet = @task.sheets.build(:project => projects(:test_project), :user => users(:admin) )
+     sheet.save
 
-    assert Task.find(1).worked_on?
+     assert @task.worked_on?
   end
 
   def test_set_task_num
-    @task.set_task_num(1)
+    @task.set_task_num(@task.company_id)
     assert_equal 4, @task.task_num
   end
 
@@ -97,13 +94,13 @@ class TaskTest < Test::Unit::TestCase
 
   def test_overdue?
     @task.due_at = nil
-    assert_equal 0, @task.overdue?
+    assert_equal false, @task.overdue?
 
     @task.due_at = Time.now.utc + 1.day
-    assert_equal 0, @task.overdue?
+    assert_equal false, @task.overdue?
 
     @task.due_at = Time.now.utc - 1.day
-    assert_equal 1, @task.overdue?
+    assert_equal true, @task.overdue?
   end
 
   def test_worked_minutes

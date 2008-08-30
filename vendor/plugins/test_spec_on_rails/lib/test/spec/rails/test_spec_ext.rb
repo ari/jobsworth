@@ -20,7 +20,7 @@ class Test::Spec::Should
 
   def by(value)
     yield
-    # TODO this should use #should_equal if available
+    # TODO: this should use should_equal if available
     assert_equal @initial_value + value, @object.send(@method)
   end
 end
