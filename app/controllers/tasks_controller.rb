@@ -681,7 +681,10 @@ class TasksController < ApplicationController
 
       if @old_task.milestone != @task.milestone
         old_name = "None"
-        old_name = @old_task.milestone.name unless @old_task.milestone.nil?
+        unless @old_task.milestone.nil?
+           old_name = @old_task.milestone.name
+           @old_task.milestone.update_counts
+        end
 
         new_name = "None"
         new_name = @task.milestone.name unless @task.milestone.nil?
@@ -1377,12 +1380,15 @@ class TasksController < ApplicationController
         project = current_user.projects.find(@group)
         if @task.project_id != project.id
           body = "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
+          old_milestone = nil
           if @task.milestone
             body << "- <strong>Milestone</strong>: #{@task.milestone.name} -> None"
-            @task.milestone_id = nil
+            old_milestone = @task.milestone
+            @task.milestone = nil
           end
           @task.project_id = project.id
           @task.save
+          old_milestone.update_counts if old_milestone
         end
       when 4
         # Milestone
@@ -1402,8 +1408,13 @@ class TasksController < ApplicationController
 
             body << "- <strong>Milestone</strong>: #{old_milestone} -> #{new_milestone}"
 
+            old = @task.milestone
+
             @task.milestone = milestone
             @task.save
+
+            old.update_counts if old
+
           end
         end
       when 5
@@ -1473,6 +1484,7 @@ class TasksController < ApplicationController
         # task-group_44_15
 
         project = current_user.projects.find(@group)
+        old = @task.milestone
 
         if @task.project_id != @group
           body << "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
@@ -1482,6 +1494,7 @@ class TasksController < ApplicationController
         if elems[1].split('_').size > 2
           milestone = Milestone.find(elems[1].split('_')[2], :conditions => ["project_id IN (#{current_project_ids})"])
 
+          
           if @task.milestone_id != milestone.id
             old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
             new_milestone = milestone.nil? ? "None" : milestone.name
@@ -1504,7 +1517,7 @@ class TasksController < ApplicationController
         ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
 
         @task.save
-
+        old.update_counts if old
       end
 
 
