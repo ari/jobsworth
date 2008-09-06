@@ -54,7 +54,7 @@ class Task < ActiveRecord::Base
     r.project.save
 
     if r.project.id != r.project_id
-      # Task has change projects, update counts of target project as well
+      # Task has changed projects, update counts of target project as well
       p = Project.find(r.project_id)
       p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
       p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
@@ -62,12 +62,7 @@ class Task < ActiveRecord::Base
       p.save
     end
     
-    if r.milestone
-      r.milestone.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", r.milestone.id] )
-      r.milestone.total_tasks = Task.count( :conditions => ["milestone_id = ?", r.milestone.id] )
-      r.milestone.save
-    end
-
+    r.milestone.update_counts if r.milestone
   }
 
   # w: 1, next day-of-week: Every _Sunday_
@@ -659,10 +654,10 @@ class Task < ActiveRecord::Base
   def icon(icon_type = nil)
     icon_type ||= type_id
     case icon_type
-      when 0 then '<img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" />'
-      when 1 then '<img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" />'
-      when 2 then '<img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" />'
-      when 3 then '<img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" />'
+      when 0 then "<img src=\"/images/task_icons/task.png\" alt=\"#{_'Task'}\" title=\"#{_'Task'}\" class=\"tooltip\" />"
+      when 1 then "<img src=\"/images/task_icons/new_feature.png\" alt=\"#{_'New Feature'}\" title=\"#{_'New Feature'}\" class=\"tooltip\" />"
+      when 2 then "<img src=\"/images/task_icons/bug.png\" alt=\"#{_'Defect'}\" title=\"#{_'Defect'}\" class=\"tooltip\" />"
+      when 3 then "<img src=\"/images/task_icons/change.png\" alt=\"#{_'Improvement'}\" title=\"#{_'Improvement'}\" class=\"tooltip\" />"
     end 
   end 
 
