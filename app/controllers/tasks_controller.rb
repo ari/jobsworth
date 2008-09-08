@@ -235,12 +235,11 @@ class TasksController < ApplicationController
     end
 
     # Append project id's the user has access to
-    projects = ""
+    projects = "0"
     current_projects.each do |p|
-      projects << "|" unless projects == ""
-      projects << "#{p.id}"
+      projects << "|#{p.id}"
     end
-    projects = "+project_id:\"#{projects}\"" unless projects == ""
+    projects = "+project_id:\"#{projects}\"" 
 
     # Find the tasks
     @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
@@ -365,7 +364,7 @@ class TasksController < ApplicationController
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+            t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", dep])
             unless t.nil?
               @task.dependencies << t
             end
@@ -606,7 +605,7 @@ class TasksController < ApplicationController
       end
 
       if params[:dependencies]
-        @task.dependencies.delete @task.dependencies
+        
         new_dependencies = []
         params[:dependencies].each do |d|
           deps = d.split(',')
@@ -617,13 +616,25 @@ class TasksController < ApplicationController
           end
         end
         
+        new_dependenices = []
         new_dependencies.compact.uniq.each do |dep|
           t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+          unless t.nil?
+            new_dependencies << t
+          end
+        end
+        
+        removed = @task.dependencies - new_dependencies
+        @task.dependencies.delete(removed) if removed.size > 0
+
+        added = (new_dependencies - @task.dependencies)
+        added.each do |a|
+          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a.id])
           unless t.nil?
             @task.dependencies << t
           end
         end
-
+        
       end
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
