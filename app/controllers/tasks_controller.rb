@@ -469,7 +469,14 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] )
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] ) rescue begin
+                                                                                                                           flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+                                                                                                                           redirect_from_last
+                                                                                                                           return
+                                                                                                                         end 
+                                                                                                                           
+    
+    
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
