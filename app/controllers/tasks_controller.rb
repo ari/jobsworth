@@ -235,12 +235,11 @@ class TasksController < ApplicationController
     end
 
     # Append project id's the user has access to
-    projects = ""
+    projects = "0"
     current_projects.each do |p|
-      projects << "|" unless projects == ""
-      projects << "#{p.id}"
+      projects << "|#{p.id}"
     end
-    projects = "+project_id:\"#{projects}\"" unless projects == ""
+    projects = "+project_id:\"#{projects}\"" 
 
     # Find the tasks
     @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
@@ -365,7 +364,7 @@ class TasksController < ApplicationController
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+            t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", dep])
             unless t.nil?
               @task.dependencies << t
             end
@@ -470,7 +469,14 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] )
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] ) rescue begin
+                                                                                                                           flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+                                                                                                                           redirect_from_last
+                                                                                                                           return
+                                                                                                                         end 
+                                                                                                                           
+    
+    
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
@@ -606,7 +612,7 @@ class TasksController < ApplicationController
       end
 
       if params[:dependencies]
-        @task.dependencies.delete @task.dependencies
+        
         new_dependencies = []
         params[:dependencies].each do |d|
           deps = d.split(',')
@@ -617,13 +623,25 @@ class TasksController < ApplicationController
           end
         end
         
+        new_dependenices = []
         new_dependencies.compact.uniq.each do |dep|
           t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+          unless t.nil?
+            new_dependencies << t
+          end
+        end
+        
+        removed = @task.dependencies - new_dependencies
+        @task.dependencies.delete(removed) if removed.size > 0
+
+        added = (new_dependencies - @task.dependencies)
+        added.each do |a|
+          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a.id])
           unless t.nil?
             @task.dependencies << t
           end
         end
-
+        
       end
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
