@@ -36,4 +36,16 @@ class Project < ActiveRecord::Base
     "#{self.name.underscore.dasherize.gsub(/[ \."',]/,'-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'",]/,'-')}"
   end
 
+  def total_estimate
+    tasks.sum(:duration).to_i
+  end 
+
+  def work_done
+    tasks.sum(:worked_minutes).to_i
+  end 
+
+  def overtime
+    tasks.sum('worked_minutes - duration', :conditions => "worked_minutes > duration").to_i
+  end 
+
 end

@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'test/rails'
 require 'test_help'
+require 'test/spec'
 require 'test/spec/rails'
 
 class Test::Rails::TestCase
@@ -54,3 +55,18 @@ class Test::Rails::ControllerTestCase
   # Add more helper methods to be used by all tests here...
 end
 
+module ActionController
+  class TestRequest
+    def with_subdomain(subdomain=nil)
+      the_host_name = "www.localhost.com"
+      the_host_name = "#{subdomain}.localhost.com" if subdomain
+      self.host = the_host_name
+      self.env['SERVER_NAME'] = the_host_name
+      self.env['HTTP_HOST'] = the_host_name
+    end
+
+    def server_name
+       self.env['SERVER_NAME']
+    end
+  end
+end

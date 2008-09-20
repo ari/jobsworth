@@ -577,6 +577,10 @@ input.button {
   color: #FC5C04;
 }
 
+.overtime {
+  background-color: #FFCC00;
+}
+
 .calendar {
   margin:0;
   padding: 0;
@@ -822,7 +826,7 @@ pre.auto_generated {
 }
 
 .todo-container {
-  padding: 0 0 0 2.0em;
+  padding: 0 0 0 2.3em;
   font-size: 10px;
 }
 
@@ -1072,6 +1076,7 @@ a.description {
   font-size: 11px;
   min-height: 2.3em;
   margin-bottom: 2px;
+  background: url(/images/pri_normal_bkg.png) repeat-y;
 }
 
 
@@ -1094,24 +1099,29 @@ a.description {
   background-color: #F3F3F3;
 }
 
-#content div.task_lowest_pri {
-  border-left: solid 4px #F3F3F3;
-}
-
-#content div.task_low_pri {
-  border-left: solid 4px #e7e0c4;
-}
-
 #content div.task_crit_pri {
   border-left: solid 4px #FF6666;
+  background: url(/images/pri_crit_bkg.png) repeat-y;
 }
 
 #content div.task_high_pri {
   border-left: solid 4px #f2ab99;
+  background: url(/images/pri_high_bkg.png) repeat-y;
 }
 
 #content div.task_raised_pri {
   border-left: solid 4px #FFC266;
+  background: url(/images/pri_raised_bkg.png) repeat-y;
+}
+
+#content div.task_low_pri {
+  border-left: solid 4px #e7e0c4;
+  background: url(/images/pri_low_bkg.png) repeat-y;
+}
+
+#content div.task_lowest_pri {
+  border-left: solid 4px #F3F3F3;
+  background: url(/images/pri_lowest_bkg.png) repeat-y;
 }
 
 #content div.task-row {
@@ -1137,6 +1147,23 @@ a.description {
   border-bottom: 1px solid #e8e8e8;
 }
 
+.widget_sub_header
+{
+  padding-left: 1em;
+  margin-bottom: 0.5em;
+  color: #666666;
+  font-size: 12px;
+  font-weight: bold;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.widget_sub_heading { 
+  margin-bottom: 0.5em;
+  color: #666666;
+  font-size: 11px;
+  font-weight: bold;
+}
+
 .paging_header
 {
   padding-left: 1em;
@@ -1156,7 +1183,7 @@ a.description {
   margin                  : 0px;
   background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
-  border-top: 1px solid #c8c8c8;
+/*  border-top: 1px solid #c8c8c8; */
   border-left: 1px solid #c8c8c8;
 /*  border-bottom: 1px solid #c8c8c8; */
   z-index: 2;
@@ -1209,6 +1236,7 @@ a.description {
   font-weight: bold;
   display: block;
   height: 16px;
+  border-top: 1px solid #d8d8d8;
   border-right: 1px solid #ddd;
   border-left: 1px solid #eee;
   border-bottom: none;
@@ -1242,7 +1270,12 @@ a.description {
 
 #tabmenu li.active a {
   color: #FF9900;
-  background-color: #f0f0f0;
+  background-color: #ffffff;
+  background: url(/images/active_menu.png);
+  padding-left: 0.5em;
+  padding-right: 0.4em;
+  border-left: none;
+  border-top: 1px solid #929392;
 }
 
 #tabmenu li.active li a { 

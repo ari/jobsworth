@@ -8,10 +8,19 @@ class TasksController < ApplicationController
 #    :cancel_work_ajax, :destroy_log ]
 
   require_dependency 'fastercsv'
+  require_dependency 'RMagick'
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
+    unless @projects.collect{ |p| p[1] }.include? session[:last_project_id].to_i
+      session[:last_project_id] = nil
+    end
+
+    unless @projects.collect{ |p| p[1] }.include? session[:filter_project].to_i
+      session[:filter_project] = nil
+    end
+    
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
@@ -94,7 +103,6 @@ class TasksController < ApplicationController
     end
 
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
-
 
     if params[:tag] && params[:tag].length > 0
       # Looking for tasks based on tags
@@ -232,12 +240,11 @@ class TasksController < ApplicationController
     end
 
     # Append project id's the user has access to
-    projects = ""
+    projects = "0"
     current_projects.each do |p|
-      projects << "|" unless projects == ""
-      projects << "#{p.id}"
+      projects << "|#{p.id}"
     end
-    projects = "+project_id:\"#{projects}\"" unless projects == ""
+    projects = "+project_id:\"#{projects}\"" 
 
     # Find the tasks
     @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
@@ -362,7 +369,7 @@ class TasksController < ApplicationController
           deps.each do |dep|
             dep.strip!
             next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+            t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", dep])
             unless t.nil?
               @task.dependencies << t
             end
@@ -388,20 +395,33 @@ class TasksController < ApplicationController
         task_file.name = filename
         task_file.save
         task_file.file_size = params['task_file'].size
+
+
         task_file.save
         task_file.reload
 
         if !File.directory?(task_file.path)
           File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue begin
-                                                 end
+          Dir.mkdir(task_file.path, 0777) rescue nil
         end
 
         File.umask(0)
         File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
                                                                                                         task_file.destroy
+                                                                                                        task_file = nil
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
                                                                                                       end
+        if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+           image = Magick::Image.read( task_file.file_path ).first
+
+           if image.columns > 0
+              task_file.file_type = ProjectFile::FILETYPE_IMG
+              task_file.mime_type = image.mime_type
+              task_file.save
+           end
+           image = nil
+           GC.start
+        end
 
         #TODO Add notification
       end
@@ -454,7 +474,14 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] )
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] ) rescue begin
+                                                                                                                           flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+                                                                                                                           redirect_from_last
+                                                                                                                           return
+                                                                                                                         end 
+                                                                                                                           
+    
+    
     @task.due_at = tz.utc_to_local(@task.due_at) unless @task.due_at.nil?
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
@@ -590,7 +617,7 @@ class TasksController < ApplicationController
       end
 
       if params[:dependencies]
-        @task.dependencies.delete @task.dependencies
+        
         new_dependencies = []
         params[:dependencies].each do |d|
           deps = d.split(',')
@@ -601,13 +628,25 @@ class TasksController < ApplicationController
           end
         end
         
+        new_dependenices = []
         new_dependencies.compact.uniq.each do |dep|
           t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
+          unless t.nil?
+            new_dependencies << t
+          end
+        end
+        
+        removed = @task.dependencies - new_dependencies
+        @task.dependencies.delete(removed) if removed.size > 0
+
+        added = (new_dependencies - @task.dependencies)
+        added.each do |a|
+          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a.id])
           unless t.nil?
             @task.dependencies << t
           end
         end
-
+        
       end
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
@@ -665,7 +704,10 @@ class TasksController < ApplicationController
 
       if @old_task.milestone != @task.milestone
         old_name = "None"
-        old_name = @old_task.milestone.name unless @old_task.milestone.nil?
+        unless @old_task.milestone.nil?
+           old_name = @old_task.milestone.name
+           @old_task.milestone.update_counts
+        end
 
         new_name = "None"
         new_name = @task.milestone.name unless @task.milestone.nil?
@@ -754,6 +796,18 @@ class TasksController < ApplicationController
                                                                                                         flash['notice'] = _("Permission denied while saving file.")
                                                                                                         filename = nil
                                                                                                       end
+        if filename && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+           image = Magick::Image.read( task_file.file_path ).first
+
+           if image.columns > 0
+              task_file.file_type = ProjectFile::FILETYPE_IMG
+              task_file.mime_type = image.mime_type
+              task_file.save
+           end
+           image = nil
+           GC.start
+        end
+
         if filename
           body << "- <strong>Attached</strong>: #{filename}\n"
         end
@@ -1216,17 +1270,17 @@ class TasksController < ApplicationController
     old_duration = @log.duration
     old_note = @log.body
     
+    if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
+      begin
+        due_date = DateTime.strptime( params[:log][:started_at], "#{current_user.date_format} #{current_user.time_format}" )
+        params[:log][:started_at] = tz.local_to_utc(due_date)
+      rescue
+        params[:log][:started_at] = Time.now.utc
+      end
+    end
+
     if @log.update_attributes(params[:log])
 
-      if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
-        begin
-          due_date = DateTime.strptime( params[:log][:started_at], "#{current_user.date_format} #{current_user.time_format}" )
-          @log.started_at = tz.local_to_utc(due_date)
-        rescue
-          @log.started_at = Time.now.utc
-        end
-
-      end
 
       @log.started_at = Time.now.utc if(@log.started_at.blank? || (params[:log] && (params[:log][:started_at].blank?)) )
 
@@ -1349,12 +1403,15 @@ class TasksController < ApplicationController
         project = current_user.projects.find(@group)
         if @task.project_id != project.id
           body = "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
+          old_milestone = nil
           if @task.milestone
             body << "- <strong>Milestone</strong>: #{@task.milestone.name} -> None"
-            @task.milestone_id = nil
+            old_milestone = @task.milestone
+            @task.milestone = nil
           end
           @task.project_id = project.id
           @task.save
+          old_milestone.update_counts if old_milestone
         end
       when 4
         # Milestone
@@ -1374,8 +1431,13 @@ class TasksController < ApplicationController
 
             body << "- <strong>Milestone</strong>: #{old_milestone} -> #{new_milestone}"
 
+            old = @task.milestone
+
             @task.milestone = milestone
             @task.save
+
+            old.update_counts if old
+
           end
         end
       when 5
@@ -1445,6 +1507,7 @@ class TasksController < ApplicationController
         # task-group_44_15
 
         project = current_user.projects.find(@group)
+        old = @task.milestone
 
         if @task.project_id != @group
           body << "- <strong>Project</strong>: #{@task.project.name} -> #{project.name}\n"
@@ -1454,6 +1517,7 @@ class TasksController < ApplicationController
         if elems[1].split('_').size > 2
           milestone = Milestone.find(elems[1].split('_')[2], :conditions => ["project_id IN (#{current_project_ids})"])
 
+          
           if @task.milestone_id != milestone.id
             old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
             new_milestone = milestone.nil? ? "None" : milestone.name
@@ -1476,7 +1540,7 @@ class TasksController < ApplicationController
         ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{project.id}", "task_id = #{@task.id}")
 
         @task.save
-
+        old.update_counts if old
       end
 
 

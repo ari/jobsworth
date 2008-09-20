@@ -126,13 +126,21 @@ class CustomersController < ApplicationController
     else
       flash['notice'] = _('Empty file.')
       File.delete(@customer.logo_path) rescue begin end
-      redirect_from_last
+      if params[:company_settings]
+         redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
+      else
+         redirect_from_last
+      end
       return
     end
     GC.start
 
     flash['notice'] = _('Logo successfully uploaded.')
-    redirect_from_last
+    if params[:company_settings]
+       redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
+    else
+       redirect_from_last
+    end 
   end
 
   def delete_logo

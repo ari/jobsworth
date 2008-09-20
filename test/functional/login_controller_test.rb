@@ -1,3 +1,5 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
 context "A user" do
   use_controller LoginController
   fixtures :users, :companies, :customers
@@ -37,8 +39,8 @@ context "A user" do
     post :validate, :user => { 'username' => 'test', 'password' => 'password' }
     should.redirect_to :controller => 'activities', :action => 'list'
 
-    assigns(:user).should.not.be.nil
-    session[:user_id].should.equal 1
+    assigns(:user).should.not.be.nil?
+    session[:user_id].should.equal users(:admin).id
   end 
 
 end 

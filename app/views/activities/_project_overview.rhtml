@@ -26,29 +26,34 @@
                   last_customer = project.customer_id
                end
 
-
-               critical_count = project.critical_count
-               normal_count = project.normal_count
-               low_count = project.low_count
-               total_count = (critical_count + normal_count + low_count) * 1.0
-
-               critical_percent = ((critical_count / total_count) * 100.0)
-               normal_percent = ((normal_count / total_count) * 100.0)
-
-               unless critical_percent.nan?
-                 critical_percent = critical_percent.round
-               end
-               unless normal_percent.nan?
-                 normal_percent = normal_percent.round
-               end
-
-               if normal_percent + critical_percent > 100
-                  normal_percent = 100 - critical_percent
-               end
-
-               low_percent = 100.0 - critical_percent - normal_percent
+               
 
 
+       if @widget.order_by == 'work' 
+         critical_count = project.overtime
+         normal_count = project.work_done - critical_count
+         low_count = project.total_estimate - normal_count - critical_count
+         low_count = 0 if low_count < 0
+         total_count = (critical_count + normal_count + low_count) * 1.0
+       else
+         critical_count = project.critical_count
+         normal_count = project.normal_count
+         low_count = project.low_count
+         total_count = (critical_count + normal_count + low_count) * 1.0
+       end
+
+       critical_percent = ((critical_count / total_count) * 100.0)
+       normal_percent = ((normal_count / total_count) * 100.0)
+
+       critical_percent = critical_percent.round unless critical_percent.nan?
+               
+       normal_percent = normal_percent.round unless normal_percent.nan?
+
+       
+       normal_percent = 100 - critical_percent if normal_percent + critical_percent > 100
+       low_percent = 100.0 - critical_percent - normal_percent
+
+       
                collapse = " <div id=\"small_indicator_#{project.id}\" class=\""
                collapse << ((session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) ? "small-collapse-indicator-closed" : "small-collapse-indicator-open")
                collapse << "\" </div> "
@@ -78,12 +83,27 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
         <div style="float: left; margin-left:5px;"><span class="projects"><%= link_to_remote collapse,
                                               :url => { :controller => 'activities', :action => 'toggle_display_milestones', :id => project.id },
                                               :loading => "Element.show('loading');",
-                                              :complete => "Element.hide('loading');" %> <%= link_to project.name, { :controller => 'views', :action => 'select_project', :id => project.id} %></span></div>
-              <div class="prog-border"  style="float: right; height: 15px;position:relative;">
-                  <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= number_to_percentage( critical_percent, :precision => 0) + " (#{critical_count}/#{total_count.to_i})" %>  High Priority"> </div>
-                  <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= number_to_percentage( normal_percent, :precision => 0) + " (#{normal_count}/#{total_count.to_i})"%>  Normal"> </div>
-                  <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= number_to_percentage( low_percent, :precision => 0) + " (#{low_count}/#{total_count.to_i})" %>  Low Priority "> </div>
-                </div>
+                                              :complete => "Element.hide('loading');" %> <%= link_to project.name, { :controller => 'views', :action => 'select_project', :id => project.id} %></span>
+	</div>
+        <div class="prog-border"  style="float: right; height: 15px;position:relative;">
+	  <% if @widget.order_by == 'work' %>
+
+	  <% critical_tooltip = number_to_percentage( critical_percent, :precision => 0) + " (#{worked_nice(critical_count)}) #{_'Over Estimate'}<br/>" +
+                                number_to_percentage( critical_percent + normal_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
+             normal_tooltip   = number_to_percentage( normal_percent, :precision => 0) + " (#{worked_nice(normal_count)}) #{_'Estimated'}<br/>" +
+                                number_to_percentage( critical_percent + normal_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
+             low_tooltip      = number_to_percentage( low_percent, :precision => 0) + " (#{worked_nice(low_count)}) #{_'Left'}<br/>" +
+                                number_to_percentage( critical_percent + normal_percent + low_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count + low_count)}) #{_'Total'}<br/>"
+          %>
+          <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= critical_tooltip %>" </div>
+          <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= normal_tooltip%>"> </div>
+          <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= low_tooltip %> "> </div>
+	  <% else %>
+          <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= number_to_percentage( critical_percent, :precision => 0) + " (#{critical_count}/#{total_count.to_i})" %> <%=_'High Priority'%>"> </div>
+          <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= number_to_percentage( normal_percent, :precision => 0) + " (#{normal_count}/#{total_count.to_i})"%> <%=_'Normal'%>"> </div>
+          <div class="prog-bar-low tooltip" style="width:<%= number_to_percentage( low_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent + normal_percent, :precision => 0)%>" title="<%= number_to_percentage( low_percent, :precision => 0) + " (#{low_count}/#{total_count.to_i})" %>  <%=_'Low Priority'%> "> </div>
+         <% end %>
+        </div>
               </div>
     </div></td></tr>
           <%= render :partial => "activities/overall_progress", :locals => { :project => project } %>

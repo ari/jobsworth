@@ -1,17 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 admin:
-  id: 1
   name: Erlend Simonsen
   username: test
   password: password
-  company_id: 1
+  company: cit
   email: admin@clockingit.com
   last_login_at: <%= Time.now.utc.to_s(:db) %>
   admin: 10
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -33,18 +31,16 @@ admin:
   option_avatars: 1
   autologin: 2234567890abcdefghijklmnopqrstuv
 fudge:
-  id: 2
   name: Fudgie
   username: fudge
   password: password
-  company_id: 2
+  company: fudge
   email: mr@fudgie.org
   last_login_at: null
   admin: 0
   time_zone: Europe/London
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
@@ -65,24 +61,22 @@ fudge:
   newsletter: 1
   option_avatars: 1
   autologin: 4234567890abcdefghijklmnopqrstuv
-user:
-  id: 3
+tester:
   name: Test User
   username: tester
   password: password
-  company_id: 1
+  company: cit
   email: test@clockingit.com
   last_login_at: null
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null
-  last_seen_at: null
-  last_ping_at: null
+  last_seen_at: <%= Time.now.utc.to_s(:db) %>
+  last_ping_at: <%= Time.now.utc.to_s(:db) %>
   last_milestone_id: 0
   last_filter: 0
   date_format: %d/%m/%Y
@@ -98,19 +92,17 @@ user:
   newsletter: 1
   option_avatars: 1
   autologin: 6234567890abcdefghijklmnopqrstuv
-user_limited:
-  id: 4
+tester_limited:
   name: Test User Limited
   username: tester_limited
   password: password
-  company_id: 1
+  company: cit
   email: tester@clockingit.com
   last_login_at: null
   admin: 0
   time_zone: Europe/Oslo
   option_tracktime: 1
   option_externalclients: 1
-  option_showcalendar: 1
   option_tooltips: 1
   seen_news_id: null
   last_project_id: null

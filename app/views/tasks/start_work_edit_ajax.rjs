@@ -6,3 +6,12 @@ else
 	page.call "UpdateDnD"
 end
 
+page << "if($('work-log')) {"
+page << "$('worklog_body').clear();"
+page << "$('worklog-saved').innerHTML = '';"
+page << "if(! $('work-log').visible() ) {"
+page << "$('work-log').show();"
+page << "}"
+page << "$('worklog_body').focus();"
+page << "}"
+  

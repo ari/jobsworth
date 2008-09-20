@@ -170,6 +170,7 @@ class ApplicationController < ActionController::Base
   def parse_time(input, minutes = false)
     total = 0
     unless input.nil?
+      miss = false
       reg = Regexp.new("(#{_('[wdhm]')})")
       input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
         part = /(\d+)(\w+)/.match(e)
@@ -179,10 +180,34 @@ class ApplicationController < ActionController::Base
           when _('d') then total += e.to_i * current_user.workday_duration
           when _('h') then total += e.to_i * 60
           when _('m') then total += e.to_i
+          else 
+            miss = true
           end
         end
       end
 
+      # Fallback to default english parsing
+      if miss
+        eng_total = 0
+        reg = Regexp.new("([wdhm])")
+        input.downcase.gsub(reg,'\1 ').split(' ').each do |e|
+          part = /(\d+)(\w+)/.match(e)
+          if part && part.size == 3
+            case  part[2]
+            when 'w' then eng_total += e.to_i * current_user.workday_duration * current_user.days_per_week
+            when 'd' then eng_total += e.to_i * current_user.workday_duration
+            when 'h' then eng_total += e.to_i * 60
+            when 'm' then eng_total += e.to_i
+            end
+          end
+        end
+        
+        if eng_total > total
+          total = eng_total
+        end
+        
+      end
+      
       if total == 0
         times = input.split(':')
         while time = times.shift

@@ -71,4 +71,11 @@ class Milestone < ActiveRecord::Base
     @duration
   end
 
+  def update_counts
+     self.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", self.id] )
+     self.total_tasks = Task.count( :conditions => ["milestone_id = ?", self.id] )
+     self.save
+     
+  end
+
 end

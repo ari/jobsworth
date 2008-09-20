@@ -31,7 +31,7 @@ class Mailman < ActionMailer::Base
       next unless to.include?($CONFIG[:domain])
       subdomain = to.split('@')[1].split('.')[0]
       puts "Looking for #{subdomain}.."
-      company = Company.find_by_subdomain(subdomain)
+      company ||= Company.find_by_subdomain(subdomain)
     end
 
     if company
@@ -40,8 +40,6 @@ class Mailman < ActionMailer::Base
     end
 
     e.save
-
-    puts "company[#{company.name}], user[#{e.user ? e.user.name : "none"}]"
 
     return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 

@@ -1,13 +1,15 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-clockingit:
-  id: 1
+cit:
   name: ClockingIT
   contact_email: admin@clockingit.com
   contact_name: Erlend Simonsen
   subdomain: cit
+  show_forum: true
+  restricted_userlist: false
 fudge:
-  id: 2
   name: Fudge
   contact_email: mr@fudgie.org
   contact_name: Erlend Simonsen
   subdomain: fudge
+  show_forum: true
+  restricted_userlist: true

@@ -1,13 +1,13 @@
 [#1] Test
 ---------
 
-  Client:      Internal
-  Project:     Test Project
-  Task Type:   Task
-  Severity:    Normal
-  Priority:    Normal
-  Assigned To: No one
-  Created By:  Erlend Simonsen
+  Client:       Internal
+  Project:      Test Project
+  Task Type:    Task
+  Severity:     Normal
+  Priority:     Normal
+  Assigned To:  No one
+  Created By:   Erlend Simonsen
 
 Description:
 Just a normal Task
