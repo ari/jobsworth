@@ -675,5 +675,5 @@ class Task < ActiveRecord::Base
     else 
       ""
     end 
-
+  end 
 end
