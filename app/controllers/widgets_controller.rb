@@ -51,7 +51,7 @@ class WidgetsController < ApplicationController
                when 'priority':
                      @items.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-@widget.number..-1].reverse
                when 'date':
-                     @items.sort_by{|t| [-t.created_at.to_i, t.priority + t.severity_id] }[-@widget.number..-1].reverse
+                     @items.sort_by{|t| [-t.created_at.to_i, t.priority + t.severity_id] }[-@widget.number..-1]
               end
 
     when 1
