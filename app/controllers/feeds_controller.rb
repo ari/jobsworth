@@ -283,7 +283,7 @@ class FeedsController < ApplicationController
 
       event = cal.event
       event.start = to_localtime(tz, log.started_at)
-#      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration*60) : 60) )
+#      event.end = to_localtime(tz, log.started_at + (log.duration > 0 ? (log.duration) : 60) )
       event.duration = "PT" + (log.duration > 0 ? to_duration(log.duration) : "1M")
       event.created = to_localtime(tz, log.task.created_at) unless log.task.nil?
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
@@ -320,17 +320,6 @@ class FeedsController < ApplicationController
     cal = nil
 
     GC.start
-
-    ical_feed = nil
-    @activities = nil
-    @tasks = nil
-    @milestones = nil
-    tz = nil
-    cached = ""
-    cal = nil
-
-    GC.start
-
   end
 
 
