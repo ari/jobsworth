@@ -1,6 +1,6 @@
 Localization.define('de_DE') do |l|
   l.store "d", "t"
-  l.store "h", "s"
+  l.store "h", "h" # Benedikt Forchhammer
   l.store "m", "m" # Tim Zech
   l.store "w", "w" # Tim Zech
   l.store "To", "Bis"
@@ -15,7 +15,7 @@ Localization.define('de_DE') do |l|
   l.store "CSV", "CSV" # Tim Zech
   l.store "Dec", "Dez"
   l.store "Due", "Fällig" # Tim Zech
-  l.store "End", "End"
+  l.store "End", "Ende" # Mark
   l.store "Feb", "Feb" # Tim Zech
   l.store "Fri", "Fr"
   l.store "Jan", "Jan" # Tim Zech
@@ -53,7 +53,7 @@ Localization.define('de_DE') do |l|
   l.store "Name", "Name" # Tim Zech
   l.store "Next", "Weiter" # Tim Zech
   l.store "None", "Keine" # Tim Zech
-  l.store "Note", "Note"
+  l.store "Note", "Notiz" # Mark
   l.store "Open", "Offen" # Tim Zech
   l.store "Read", "Lesen"
   l.store "Rows", "Zeile"
@@ -155,7 +155,7 @@ Localization.define('de_DE') do |l|
   l.store "Clients", "Kunden"
   l.store "Columns", "Spalten"
   l.store "Comment", "Kommentar"
-  l.store "Company", "Unternehmen" # Mag. (FH) Kelderbacher Uwe
+  l.store "Company", "Unternehmen" # Uwe Kelderbacher
   l.store "Contact", "Kontakt"
   l.store "Created", "Angelegt"
   l.store "Destroy", "Löschen" # Tim Zech
@@ -163,7 +163,7 @@ Localization.define('de_DE') do |l|
   l.store "Invalid", "Ungültig"
   l.store "January", "Januar"
   l.store "Loading", "Lade" # Tim Zech
-  l.store "Log Out", "Abmelden" # Mag. (FH) Kelderbacher Uwe
+  l.store "Log Out", "Abmelden" # Uwe Kelderbacher
   l.store "Members", "Mitglieder" # Tim Zech
   l.store "October", "Oktober"
   l.store "Offline", "Abwesend"
@@ -179,12 +179,13 @@ Localization.define('de_DE') do |l|
   l.store "Updated", "Aktualisiert" # Tim Zech
   l.store "Welcome", "Willkommen" # Tim Zech
   l.store "offline", "offline" # Tim Zech
-  l.store "page %s", "Seite %s" # Mag. (FH) Kelderbacher Uwe
+  l.store "page %s", "Seite %s" # Uwe Kelderbacher
   l.store "%d month", ["einem Monat", "%d Monate"] # Tim Zech
   l.store "%d posts", ["ein Beitrag", "%d Beiträge"] # Tim Zech
   l.store "%s tasks", "%s Aufgaben" # Tim Zech
   l.store "1:2:3:04", "1:2:3:04" # Tim Zech
   l.store "1w2d3h4m", "1w2t3s4m"
+  l.store "2w 3d 1h", "2w 3t 1s" # Phillipp Koops
   l.store "Any Room", "Beliebiger Raum" # Tim Zech
   l.store "Archived", "Archiviert"
   l.store "Attached", "Angehängt" # Tim Zech
@@ -236,6 +237,7 @@ Localization.define('de_DE') do |l|
   l.store "Work Log", "Arbeitsprotokoll"
   l.store "Workload", "Arbeitsauslastung" # Stefan Hofmann
   l.store "[Delete]", "[Löschen]"
+  l.store "[No one]", "[Niemand]" # Uwe Kelderbacher
   l.store "tomorrow", "morgen"
   l.store "%d folder", ["ein Verzeichnis", "%d Verzeichnisse"] # Tim Zech
   l.store "%d minute", ["%d Minute", "%d Minuten"] # Tim Zech
@@ -277,7 +279,7 @@ Localization.define('de_DE') do |l|
   l.store "entries..", "Einträgen.."
   l.store "yesterday", "gestern"
   l.store "%d day ago", ["%d Tag vorher", "%d Tage vorher"] # Tim Zech
-  l.store "%d project", ["%d project", "%d project"]
+  l.store "%d project", ["%d Projekt", "%d Projekt"] # Mark
   l.store "Activities", "Aktivitäten"
   l.store "Assignment", "Zuweisung" # Tim Zech
   l.store "Attributes", "Attribute"
@@ -285,7 +287,7 @@ Localization.define('de_DE') do |l|
   l.store "Client CSS", "Kunden-CSS"
   l.store "Depends on", "Hängt ab von"
   l.store "Edit Forum", "Forum bearbeiten" # Tim Zech
-  l.store "Edit Topic", "Thema bearbeiten" # Mag. (FH) Kelderbacher Uwe
+  l.store "Edit Topic", "Thema bearbeiten" # Uwe Kelderbacher
   l.store "Group Tags", "Kennzeichen gruppieren"
   l.store "Last Login", "Letzte Anwesenheit"
   l.store "Last Month", "Letzter Monat"
@@ -336,13 +338,13 @@ Localization.define('de_DE') do |l|
   l.store "Description", "Beschreibung"
   l.store "Edit Client", "Kunden Bearbeiten" # Tim Zech
   l.store "Edit Folder", "Ordner bearbeiten" # Tim Zech
-  l.store "Empty file.", "Keine Daten." # Mag. (FH) Kelderbacher Uwe
+  l.store "Empty file.", "Keine Daten." # Uwe Kelderbacher
   l.store "End of week", "Ende der Woche" # Tim Zech
   l.store "Forum Posts", "Foren Beiträge" # Tim Zech
   l.store "Improvement", "Verbesserungsvorschlag"
   l.store "In Progress", "In Bearbeitung"
   l.store "Information", "Information" # Tim Zech
-  l.store "Let me know", "Lass es mich wissen" # Mag. (FH) Kelderbacher Uwe
+  l.store "Let me know", "Lass es mich wissen" # Uwe Kelderbacher
   l.store "Linked from", "Verlinkt von" # Tim Zech
   l.store "New Feature", "Neue Funktionalität"
   l.store "New Project", "Neues Projekt" # Tim Zech
@@ -352,13 +354,15 @@ Localization.define('de_DE') do |l|
   l.store "Task Status", "Aufgabenstatus"
   l.store "Time Format", "Zeitformat"
   l.store "Transcripts", "Mitschriften" # Tim Zech
+  l.store "Work Logged", "Arbeit aufgezeichnet" # Phillipp Koops
+  l.store "Work Status", "Arbeitsstatus" # Phillipp Koops
   l.store "[All Tasks]", "[Alle Aufgaben]" # Tim Zech
   l.store "[Next page]", "[Nächste Seite]"
   l.store "delete post", "Beitrag löschen" # Tim Zech
   l.store "%d month ago", ["%d Monat vorher", "%d Monate vorher"] # Tim Zech
   l.store "%s reverted.", "%s zurückversetzt."
   l.store "Burnup Chart", "Burnup Chart" # Tim Zech
-  l.store "Company Name", "Name des Unternehmens" # Mag. (FH) Kelderbacher Uwe
+  l.store "Company Name", "Name des Unternehmens" # Uwe Kelderbacher
   l.store "Contact name", "Name des Kontaktes"
   l.store "Create Forum", "Forum anlegen" # Tim Zech
   l.store "Current logo", "Gegenwärtiges Markenzeichen"
@@ -366,8 +370,10 @@ Localization.define('de_DE') do |l|
   l.store "Edit Project", "Projekt bearbeiten"
   l.store "Edit Summary", "Zusammenfassung bearbeiten" # Tim Zech
   l.store "Hide Waiting", "Wartende verstecken" # Tim Zech
+  l.store "Last %d Days", ["Letzter Tag", "Letzten %d Tage"] # Phillipp Koops
   l.store "Last Updated", "Zuletzt aktualisiert"
   l.store "Leave Closed", "Abgeschlossen lassen"
+  l.store "Low Priority", "Geringe Priorität" # Phillipp Koops
   l.store "Name / Email", "Name / E-Mail" # Tim Zech
   l.store "Newest Tasks", "Neueste Aufgaben"
   l.store "Notification", "Benachrichtigung"
@@ -397,6 +403,7 @@ Localization.define('de_DE') do |l|
   l.store "Enable Sounds", "Klänge aktivieren" # Tim Zech
   l.store "File too big.", "Datei ist zu groß."
   l.store "Google Gadget", "Google Gadget" # Tim Zech
+  l.store "High Priority", "Hohe Priorität" # Phillipp Koops
   l.store "Invite a user", "Benutzer einladen" # Tim Zech
   l.store "Monitor forum", "Forum überwachen" # Tim Zech
   l.store "Monitor topic", "Thema überwachen" # Tim Zech
@@ -409,13 +416,14 @@ Localization.define('de_DE') do |l|
   l.store "Task Priority", "Priorität der Aufgabe"
   l.store "Task Severity", "Schweregrad der Aufgabe"
   l.store "Time Estimate", "Geschätzte Zeit"
-  l.store "Use Messaging", "Nachrichten benutzen" # Mag. (FH) Kelderbacher Uwe
+  l.store "Use Messaging", "Nachrichten benutzen" # Uwe Kelderbacher
   l.store "[Active User]", "[Aktiver Benutzer]" # Tim Zech
   l.store "[Any Project]", "[Alle Projekte]"
   l.store "[No Grouping]", "[Keine Gruppierung]" # Tim Zech
   l.store "about %d hour", ["ca. eine Stunde", "ca. %d Stunden"] # Tim Zech
   l.store "about 1 month", "zirka einem Monat" # Tim Zech
   l.store "half a minute", "eine halbe Minute"
+  l.store "over %d years", ["über %d Jahr", "über %d Jahre"] # Phillipp Koops
   l.store "Add New Widget", "Neues Widget hinzufügen" # Tim Zech
   l.store "Are your sure?", "Sind Sie sich sicher?" # Tim Zech
   l.store "Burndown Chart", "Burndown Chart" # Tim Zech
@@ -433,7 +441,7 @@ Localization.define('de_DE') do |l|
   l.store "Remaining Work", "Verbleibende Arbeit" # Tim Zech
   l.store "Reply to topic", "Auf das Thema antworten" # Tim Zech
   l.store "Revert to Open", "Auf 'Offen' zurückversetzen"
-  l.store "Schedule saved", "Zeitablaufplan gespeichert" # Mag. (FH) Kelderbacher Uwe
+  l.store "Schedule saved", "Zeitablaufplan gespeichert" # Uwe Kelderbacher
   l.store "Search Results", "Suchresultate"
   l.store "Set as Invalid", "Auf 'ungültig' setzen"
   l.store "Signup Message", "Anmeldenachricht"
@@ -450,6 +458,7 @@ Localization.define('de_DE') do |l|
   l.store "Quick Reference", "Schnell Referenz" # Tim Zech
   l.store "Recent activity", "Jüngste Aktivitäten" # Tim Zech
   l.store "Set in Progress", "'In Bearbeitung' versetzen"
+  l.store "Task Priorities", "Aufgabenpriorität" # Uwe Kelderbacher
   l.store "Upload New File", "Neue Datei hochladen"
   l.store "[Any Milestone]", "[Alle Meilensteine]"
   l.store "[Previous page]", "[Vorherige Seite]"
@@ -465,7 +474,8 @@ Localization.define('de_DE') do |l|
   l.store "Delete Milestone", "Meilenstein löschen"
   l.store "Gadget HTML Code", "Gadget HTML Code" # Tim Zech
   l.store "Leave as Invalid", "Als 'ungültig' lassen"
-  l.store "Monitoring topic", "Thema beobachten" # Mag. (FH) Kelderbacher Uwe
+  l.store "Monitoring forum", "Monitoring forum"
+  l.store "Monitoring topic", "Thema beobachten" # Uwe Kelderbacher
   l.store "Open to %s users", "Offen für %s Benutzer" # Tim Zech
   l.store "Open to everyone", "Offen für jeden" # Tim Zech
   l.store "Overall Progress", "Gesamtfortschritt"
@@ -486,12 +496,12 @@ Localization.define('de_DE') do |l|
   l.store "Remove dependency", "Abhängigkeit entfernen"
   l.store "Schedule reverted", "Zeitplanung rückgängig gemacht" # Tim Zech
   l.store "Tasks / Day Chart", "Aufgaben / Tag Chart" # Tim Zech
-  l.store "Under revision by", "Wird überprüft von" # Mag. (FH) Kelderbacher Uwe
+  l.store "Under revision by", "Wird überprüft von" # Uwe Kelderbacher
   l.store "[Active Projects]", "[Aktive Projekte]" # Tim Zech
   l.store "[Closed Projects]", "[Abgeschlossene Projekte]" # Tim Zech
   l.store "[Default Sorting]", "[Standard Sortierung]" # Tim Zech
   l.store "the documentation", "Die Dokumentation" # Tim Zech
-  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
+  l.store "%d open / %d tasks", ["%d offen / %d Aufgabe", "%d offen / %d Aufgaben"] # Tim Zech
   l.store "%s / %s completed.", "%s / %s abgeschlossen."
   l.store "Access to Projects", "Zugriff auf Projekte" # Tim Zech
   l.store "Complete Milestone", "Meilenstein abschließen"
@@ -503,14 +513,16 @@ Localization.define('de_DE') do |l|
   l.store "Log entry saved...", "Protokolleintrag wurde gespeichert..."
   l.store "No recent activity", "Keine jüngsten Aktivitäten" # Tim Zech
   l.store "Really abort work?", "Arbeit wirklich abbrechen?" # Tim Zech
-  l.store "Really delete tag?", "Kennzeichen wirklich entfernen?" # Mag. (FH) Kelderbacher Uwe
+  l.store "Really delete tag?", "Kennzeichen wirklich entfernen?" # Uwe Kelderbacher
   l.store "Receive Newsletter", "Newsletter empfangen" # Tim Zech
   l.store "Same as in English", "Gleich im Englischen" # Tim Zech
   l.store "Send Notifications", "Benachrichtigungen versenden"
+  l.store "Task not worked on", "Aufgaben die nicht bearbeitet werden" # kertal
   l.store "less than a minute", "weniger als eine Minute"
-  l.store "Can Create Projects", "Can Create Projects"
+  l.store "Can Create Projects", "Kann Projekt erstellen" # Mark
   l.store "Remove notification", "Benachrichtigung entfernen" # Tim Zech
   l.store "Restricted Userlist", "Eingeschränkte Benutzerliste" # Tim Zech
+  l.store "Show TaskType Icons", "Zeige Aufgabenart Icons" # Phillipp Koops
   l.store "[Without Milestone]", "[Ohne Meilenstein]"
   l.store "%d completed project", ["Ein abgeschlossenes Projekt", "%d abgeschlossene Projekte"] # Tim Zech
   l.store "Aufgaben -  [Eigene]", "Aufgaben -  [Eigene]" # Tim Zech
@@ -521,7 +533,7 @@ Localization.define('de_DE') do |l|
   l.store "My In Progress Tasks", "Meine im Moment bearbeiteten Aufgaben"
   l.store "Project was deleted.", "Projekt wurde gelöscht."
   l.store "Report Configuration", "Berichtseinstellungen"
-  l.store "Restricted Messaging", "Eingeschränkter Nachrichtenservice" # Mag. (FH) Kelderbacher Uwe
+  l.store "Restricted Messaging", "Eingeschränkter Nachrichtenservice" # Uwe Kelderbacher
   l.store "Showing Full History", "Zeige den vollständigen Verlauf" # Tim Zech
   l.store "Use External Clients", "Externe Kunden benutzen"
   l.store "less than %d seconds", "weniger als %d Sekunden"
@@ -533,9 +545,10 @@ Localization.define('de_DE') do |l|
   l.store "%d completed milestone", ["Ein abgeschlossener Meilenstein", "%d abgeschlossene Meilensteine"] # Tim Zech
   l.store "Add another dependency", "Weitere Abhängigkeit hinzufügen"
   l.store "Edit project <b>%s</b>", "Projekt <b>%s</b> bearbeiten"
-  l.store "Floating Messaging Bar", "Nachrichtenleiste andocken" # Mag. (FH) Kelderbacher Uwe
+  l.store "Floating Messaging Bar", "Nachrichtenleiste andocken" # Uwe Kelderbacher
   l.store "View '%s' was deleted.", "Ansicht '%s' wurde gelöscht."
   l.store "invite some co-workers", "Mitarbeiter einladen" # Tim Zech
+  l.store "Last %d Completed Tasks", ["Letzte fertiggestellte Aufgabe", "Letzten %d fertiggestellten Aufgaben"] # Phillipp Koops
   l.store "%d translations updated.", ["Eine Übersetzung aktualisiert.", "%d Übersetzungen aktualisiert."] # Tim Zech
   l.store "Company settings updated", "Firmen-Einstellungen aktualisiert" # Tim Zech
   l.store "Edit milestone <b>%s</b>", "Meilenstein <b>%s</b> bearbeiten"
@@ -543,7 +556,7 @@ Localization.define('de_DE') do |l|
   l.store "Send notification emails", "Benachrichtigung per E-Mail verschicken" # Tim Zech
   l.store "Invalid due date ignored.", "Abgabetermin wurde wegen Ungültigkeit ignoriert."
   l.store "Really delete transcript?", "Mitschrift wirklich löschen?" # Tim Zech
-  l.store "and copy permissions from", "and copy permissions from"
+  l.store "and copy permissions from", "und kopiere berechtigung von" # Mark
   l.store "CSS successfully uploaded.", "CSS erfolgreich hochgeladen."
   l.store "Delete this topic forever?", "Dieses Thema für immer löschen?" # Tim Zech
   l.store "Grant access to <b>%s</b>?", "Zugriff gewähren für <b>%s</b>?"
@@ -587,7 +600,7 @@ Localization.define('de_DE') do |l|
   l.store "Done working on <b>%s</b> for now.", "Momentan mit Bearbeitung von <b>%s</b> fertig" # Tim Zech
   l.store "You can't delete your own company.", "Die eigene Firma kann nicht gelöscht werden."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Rückmeldungen? Vorschläge? Ideen? Fehler?"
-  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
+  l.store "Ignore hidden tasks when scheduling", "Ignoriere versteckte Aufgaben während der Planung" # Mark
   l.store "Milestone was successfully created.", "Meilenstein erfolgreich angelegt."
   l.store "Milestone was successfully updated.", "Meilenstein erfolgreich aktualisiert."
   l.store "Restore <b>%s</b> from the Archive.", "<b>%s</b> aus dem Archiv holen."
@@ -604,37 +617,43 @@ Localization.define('de_DE') do |l|
   l.store "Subscribe to the recent activities RSS feed", "Abonniere den RSS-Feed für neueste Aktivitäten" # Tim Zech
   l.store "Subscribe to the iCal feed for your projects.", "Abonnieren Sie den iCal Feed für Ihre Projekte" # Tim Zech
   l.store "Enter task due date, or click calendar button.", "Geben Sie das Fälligkeitsdatum ein oder klicken Sie auf das Kalender-Icon" # Tim Zech
+  l.store "Show icons next to tasks representing their type.", "Zeige ein Symbol neben der entsprechenden Aufgabe." # Phillipp Koops
   l.store "The message will be included in the signup email.", "Diese Nachricht wird in die Anmelde-E-Mail eingefügt."
+  l.store "Unable to find that task in any of your projects.", "Task wurde in keinem Ihrer Projekte gefunden." # Uwe Kelderbacher
   l.store "Start working on <b>%s</b>. Click again when done.", "Bearbeitung von <b>%s</b> beginnen. Nochmals anklicken, wenn fertig."
   l.store "Unable to find task belonging to you with that ID.", "Es wurde keine Ihnen zugeordnete Aufgabe mit dieser ID gefunden." # Manuel Schaeidt
   l.store "Bookmark this link to quickly open the Timer Window", "Fügen Sie diesen Link zu den Lesezeichen hinzu um das Timer Window schnell öffnen zu können." # Tim Zech
   l.store "Custom saved filters showing a subset of your tasks", "Benutzerdefinierte Filter zeigen eine Untermenge der Aufgaben" # Tim Zech
   l.store "Error sending creation email. Account still created.", "Fehler beim Versenden der Benutzeranlage-E-Mail. Der Benutzer wurde trotzdem angelegt."
+  l.store "Save and activate schedule. Includes filtered tasks.", "Speicher und aktiviere den Zeitplan. Beinhaltet die gefilterte Aufgaben." # Phillipp Koops
   l.store "Please create a project to attach files / folders to.", "Bitte lege ein Projekt an um Dateien und Ordner zuzuweisen." # Tim Zech
   l.store "Please delete all projects for %s before deleting it.", "Bitte vor dem Löschen von %s all dessen Projekte löschen."
   l.store "Log entry already saved from another browser instance.", "Protokolleintrag wurde schon von einer anderen Browser-Instanz gespeichert."
   l.store "You don't have access to create tasks on this project.", "Ihnen fehlt die Berechtigung Aufgaben in diesem Projekt anzulegen" # Tim Zech
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Setze den Zeitplan zurück auf den gespeicherten Zustand. Beinhaltet die gefilterten Aufgaben." # Phillipp Koops
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Einführung verborgen. Sie wird nicht mehr im Menü angezeigt."
-  l.store "Limit instant messaging to users sharing the same projects", "Nachrichtenservice nur Benutzern gleicher Projekte erlauben" # Mag. (FH) Kelderbacher Uwe
+  l.store "Limit instant messaging to users sharing the same projects", "Nachrichtenservice nur Benutzern gleicher Projekte erlauben" # Uwe Kelderbacher
   l.store "Only your notes will be included in the notification email", "Nur Ihre Notizen werden in der Benachrichtigungsemail enthalten sein" # Jens Allermann
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Man kann weder <b>sich selbst</b> noch <b>den Projekturheber</b> entfernen!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Einführung abgeschlossen. Sie wird nicht mehr im Menü angezeigt."
-  l.store "Keep the messaging bar floating at the bottom of the screen.", "Nachrichtenleiste am unteren Bildschirmrand andocken." # Mag. (FH) Kelderbacher Uwe
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Nachrichtenleiste am unteren Bildschirmrand andocken." # Uwe Kelderbacher
   l.store "Send notification emails to people affected by these changes", "Sende Benachrichtigungen per E-Mail an Personen die von den Änderungen betroffen sind" # Tim Zech
   l.store "Enter task numbers, separated by commas. Type text to search.", "Geben Sie Aufgabennummern getrennt durch Kommas ein. Geben Sie Text  zum Suchen ein." # Tim Zech
   l.store "Create a private forum for people with access to this project?", "Ein privates Forum für Personen mit Zugriff auf dieses Projekt erstellen?" # Tim Zech
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Willkommen bei ClockingIT. To get started, follow the steps below." # Tim Zech
   l.store "If you require further help, check the %s, %s or email us at %s", "Wenn Sie weitere Hilfe benötigen, schauen Sie unter %s, %s nach oder senden Sie eine E-Mail an %s" # Tim Zech
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Either the project doesn't exist, or you don't have access to it."
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Die Größe wird auf 25x25 und 50x50 angepasst. Das Seitenverhältnis wird berücksichtig.)" # Tim Zech
   l.store "Text entered will be saved automatically to your current work notes.", "Der eingegebene Text wird automatisch in den aktuellen Arbeitsnotizen gespeichert." # Tim Zech
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Für einen persönlichen Feed, müssen Sie <b>ical_all</b> mit <b>ical</b> in der URL ersetzen." # Tim Zech
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "Ihnen ist es nicht erlaubt, Projekte zu erstellen. Fragen Sie ihren Administrator umd die dazu notwendigen Rechte." # Uwe Kelderbacher
   l.store "Project was successfully created. Add users who need access to this project.", "Projekt wurde erfolgreich angelegt. Füge Benutzer hinzu, die Zugriff auf dieses Projekt benötigen."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Um ein Projekt ausserhalb dieser Willkommensseite anzulegen, klicken Sie auf %s im %s Menüeintrag" # Tim Zech
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Benutzer wurde erfolgreich angelegt. Bitte nicht vergessen, dem Benutzer Zugriff auf die gewünschten Projekte zu gewähren."
   l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Änderungen hier werden nicht im Verlauf gespeichert oder als Benachrichtigung verschickt." # Tim Zech
   l.store "Changes done here will not go live until admin@clockingit.com is notified for verification.", "Änderungen hier werden nicht Veröffentlicht bis admin@clockingit.com für die Verifikation benachrichtigt wurde." # Tim Zech
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Sie müssen ein Projekt anlegen, welches Ihre Aufgaben verwaltet, oder sich um Zugriff auf ein existierendes Projekt bemühen, um Aufgaben anzulegen..." # Tim Zech
-  l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "Sie können soviele Chat-Räume haben wie sie möchten. Diese können auf ein Projekt limitiert werden oder öffentlich für alle Ihre Benutzer sein." # Tim Zech
+  l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "Sie können soviele Chat-Räume haben wie sie möchten. Diese können auf ein Projekt begrenzt werden oder öffentlich für alle Ihre Benutzer sein." # Tom
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px sollte gut aussehen. Das Markenzeichen wird anstatt dem von clockingit.com zuoberst auf jeder Seite angezeigt.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Andere über Änderungen an Aufgaben<br/>zusätzlich zu Urheber und Beauftragtem zu<br/>benachrichtigende Personen.<br/><br/>Strg-Mausklick zum Auswählen."
   l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Sie können ausserdem <b>?mode=tasks</b> nur für Aufgaben, <b>?mode=logs</b> nur für Arbeitsberichte, <br/>oder <b>?mode=milestones</b> nur für Meilensteine anhängen." # Tim Zech
@@ -648,5 +667,5 @@ Localization.define('de_DE') do |l|
   l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Sobald Sie einen oder mehrere Aufgaben definiert haben ist es an der Zeit an diesen zu arbeiten. Klicken Sie auf %s im oberen Menü, wählen Sie eine Aufgabe und klicken Sie auf %s daneben. Die Stopuhr für startet nun für diese Aufgabe." # Tim Zech
   l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "Das letzte was noch getan werden muss ist %s solange Sie nicht alleine arbeiten. Sobald sie Logins angelegt haben gewähren Sie den Benutzern Zugriff auf die Projekte an denen sie arbeiten über die \"Projekt bearbeiten\" Seite welche Sie über %s erreichen." # Tim Zech
   l.store "If you require further help, check the <a href=\"http://forum.clockingit.com\" target=\"_new\">forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">wiki</a> or email us at <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>.", "Wenn Sie weitere Hilfe benötigen, schauen Sie im <a href=\"http://forum.clockingit.com\" target=\"_new\">Forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">Wiki</a> nach oder senden Sie eine E-Mail an <a href=\"mailto:support@clockingit.com\">support" # Tim Zech
-  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki."
+  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Als nächstes kommt %s. Du kannst dieses erreichen, indem du %s im oberen Menu drückst. Für weitere Informationen über Aufgaben, schaue in <a href=\"http://wiki.clockingit.com/wiki:tutorials#tasks\" target=\"_new\">die Dokumentation</a> in der ClockingIT Wiki." # Phillipp Koops
 end

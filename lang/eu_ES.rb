@@ -120,6 +120,7 @@ Localization.define('eu_ES') do |l|
   l.store "No one", "Batere ez"
   l.store "Normal", "Normala"
   l.store "Online", "Konektatuta"
+  l.store "Paused", "Paused"
   l.store "Plural", "Plurala" # Josu
   l.store "Recent", "Recent"
   l.store "Revert", "Berriz jarri"
@@ -172,6 +173,7 @@ Localization.define('eu_ES') do |l|
   l.store "%s tasks", "%s tasks"
   l.store "1:2:3:04", "1:2:3:04"
   l.store "1w2d3h4m", "1a2e3o4m"
+  l.store "2w 3d 1h", "2w 3d 1h"
   l.store "Archived", "Artxibatua"
   l.store "Comments", "Comments"
   l.store "Complete", "Burututa" # Josu
@@ -256,6 +258,7 @@ Localization.define('eu_ES') do |l|
   l.store "entries..", "sarrera..."
   l.store "yesterday", "atzo"
   l.store "%d day ago", ["orain dela egun 1", "orain dela %d egun"]
+  l.store "%d project", ["%d project", "%d project"]
   l.store "Activities", "Aktibitateak"
   l.store "Assignment", "Assignment"
   l.store "Attributes", "Ezaugarriak"
@@ -321,6 +324,8 @@ Localization.define('eu_ES') do |l|
   l.store "Task Status", "Atazaren egoera"
   l.store "Time Format", "Orduaren formatua"
   l.store "Transcripts", "Transcripts"
+  l.store "Work Logged", "Work Logged"
+  l.store "Work Status", "Work Status"
   l.store "[All Tasks]", "[Ataza guztiak]" # Josu
   l.store "[Next page]", "[Hurrengo orria]"
   l.store "%d month ago", ["orain dela hilabete 1", "orain dela %d hilabete"]
@@ -334,8 +339,10 @@ Localization.define('eu_ES') do |l|
   l.store "Edit Project", "Proiektua editatu"
   l.store "Edit Summary", "Edit Summary"
   l.store "Hide Waiting", "Hide Waiting"
+  l.store "Last %d Days", ["Last %d Days", "Last %d Days"]
   l.store "Last Updated", "Azken eguneratzea"
   l.store "Leave Closed", "Itxita utzi"
+  l.store "Low Priority", "Low Priority"
   l.store "Name / Email", "Name / Email"
   l.store "Newest Tasks", "Ataza berriak"
   l.store "Notification", "Jakinarazpen"
@@ -353,6 +360,7 @@ Localization.define('eu_ES') do |l|
   l.store "[Any Client]", "[Edozein bezero]"
   l.store "[Any Status]", "[Edozein egoera]"
   l.store "[Unassigned]", "[Esleitu gabe]"
+  l.store "about 1 year", "about 1 year"
   l.store "worked today", "lanean gaur"
   l.store "%s completed.", "%s burututa."
   l.store "Active %s ago", "Active %s ago"
@@ -363,6 +371,7 @@ Localization.define('eu_ES') do |l|
   l.store "Days per Week", "Egun asteko" # Josu
   l.store "File too big.", "Fitxategia handiegia da."
   l.store "Google Gadget", "Google Gadget"
+  l.store "High Priority", "High Priority"
   l.store "Invite a user", "Invite a user"
   l.store "Monitor forum", "Monitor forum"
   l.store "Monitor topic", "Monitor topic"
@@ -447,7 +456,9 @@ Localization.define('eu_ES') do |l|
   l.store "[Closed Projects]", "[Itxitako Proiektuak]" # Josu
   l.store "[Default Sorting]", "[Default Sorting]"
   l.store "the documentation", "the documentation"
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
   l.store "%s / %s completed.", "%s / %s burututa."
+  l.store "Access to Projects", "Access to Projects"
   l.store "Complete Milestone", "Zedarria Burutu"
   l.store "Completed Projects", "Bukatutako proiektuak"
   l.store "Hide Waiting Tasks", "Ezkutatu hasi gabeko atazak"
@@ -457,9 +468,11 @@ Localization.define('eu_ES') do |l|
   l.store "Log entry saved...", "Sarrera historikoa gordeta..."
   l.store "No recent activity", "No recent activity"
   l.store "Really abort work?", "Lana ezabatu nahi al duzu?" # Josu
+  l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "Receive Newsletter"
   l.store "Send Notifications", "Jakinarazpenak Bidali"
   l.store "less than a minute", "minutu bat baino gutxiago"
+  l.store "Can Create Projects", "Can Create Projects"
   l.store "Remove notification", "Remove notification"
   l.store "Restricted Userlist", "Restricted Userlist"
   l.store "[Without Milestone]", "[Zedarri gabe]"
@@ -470,6 +483,7 @@ Localization.define('eu_ES') do |l|
   l.store "My In Progress Tasks", "Nire hasitako atazak"
   l.store "Project was deleted.", "Proiektua ezabatua izan da."
   l.store "Report Configuration", "Txostena konfiguratu"
+  l.store "Restricted Messaging", "Restricted Messaging"
   l.store "Showing Full History", "Showing Full History"
   l.store "Use External Clients", "Kanpo bezeroak erabili"
   l.store "less than %d seconds", ["segundu 1 baino gutxiago", "%d segundu baino gutxiago"]
@@ -482,14 +496,17 @@ Localization.define('eu_ES') do |l|
   l.store "Floating Messaging Bar", "Floating Messaging Bar"
   l.store "View '%s' was deleted.", "'%s' Bista ezabatuta."
   l.store "invite some co-workers", "invite some co-workers"
+  l.store "Last %d Completed Tasks", ["Last %d Completed Tasks", "Last %d Completed Tasks"]
   l.store "%d translations updated.", ["%d translations updated.", "%d translations updated."]
   l.store "Company settings updated", "Company settings updated"
   l.store "Edit milestone <b>%s</b>", "<b>%s</b> zedarria editatu"
   l.store "Open to everyone from %s", "Open to everyone from %s"
   l.store "Send notification emails", "Posta elektronikoz jakinarazi"
   l.store "Invalid due date ignored.", "Baliogabezko entrega-epea ez da kontutan hartu."
+  l.store "and copy permissions from", "and copy permissions from"
   l.store "CSS successfully uploaded.", "CSS egoki igo da."
   l.store "Grant access to <b>%s</b>?", "¿<b>%s</b> - (r)i baimena eman?"
+  l.store "Include completed projects", "Include completed projects"
   l.store "Save and activate schedule", "Save and activate schedule"
   l.store "Stop working on <b>%s</b>.", "<b>%s</b> lanean utzi."
   l.store "Don't show this splash page", "Don't show this splash page"
@@ -497,10 +514,12 @@ Localization.define('eu_ES') do |l|
   l.store "Logo successfully uploaded.", "Logoa egoki igo da."
   l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
   l.store "Please always be courteous.", "Please always be courteous."
+  l.store "Please configure the widget", "Please configure the widget"
   l.store "Unable to save log entry...", "Ezinezkoa sarrera historikoa gordetzea..."
   l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b> lana ezeztatu."
   l.store "Empty report, log more work!", "Txostena hutsik dago, sortu lan sarrera gehiago!"
   l.store "No file selected for upload.", "Ez da fitxategirik aukeratu igotzeko."
+  l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
   l.store "Really delete this log entry?", "¿Sarrera hau historikotik ezabatu nahi al duzu?"
   l.store "Add earlier work to <b>%s</b>.", "Add earlier work to <b>%s</b>."
   l.store "Grant %s access for <b>%s</b>?", "%s –ren baimena emana <b>%s</b> -(r)i?"
@@ -544,9 +563,12 @@ Localization.define('eu_ES') do |l|
   l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
   l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
   l.store "Error sending creation email. Account still created.", "Sortze e-posta ezin izan da bidali. Kontua aurretik sortua da."
+  l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
   l.store "Please delete all projects for %s before deleting it.", "Mesedez, ezabatu %s –(r)en proiektu guztiak bera ezabatu aurretik."
   l.store "Log entry already saved from another browser instance.", "Sarrera historikoa beste leiho baten sortu da."
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Izkutatutako tutoretza. Ez da berriz menuan agertuko."
+  l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
   l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "¡ Ezin zara <b>zu zeu</b> edo <b>proiektuaren sortzailea</b>ezabatu!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Burututako tutoretza. Ez da berriz menuan agertuko."
