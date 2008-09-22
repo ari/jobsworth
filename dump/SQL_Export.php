@@ -175,14 +175,14 @@ class SQL_Export
 			case 'emails' : 			$returnVal = $companyID_query; break;
 			case 'event_logs' : 		$returnVal = $companyID_query; break;
 			case 'forums' : 			$returnVal = $companyID_query; break;
-			case 'generated_reports' : 	$returnVal = $companyID_query; break;
+			case 'generated_reports' : 	$returnVal = ''; break;
 			case 'ical_entries' : 		$returnVal = ''; break;
 			case 'locales' : 	        $returnVal = ''; break;	
 			case 'logged_exceptions' : 	$returnVal = $all_query; break;
 			case 'milestones' : 		$returnVal = $companyID_query; break;
 			case 'moderatorships' : 	$returnVal = $userID_query; break;
 			case 'monitorships' : 		$returnVal = $userID_query; break;
-			case 'news_items' : 		$returnVal = $all_query; break;
+			case 'news_items' : 		$returnVal = ''; break;
 			case 'notifications' : 		$returnVal = $userID_query; break;
 			case 'pages' : 				$returnVal = $companyID_query; break;
 			case 'posts' : 			$returnVal = "SELECT $fieldList FROM `posts` LEFT JOIN `forums` ON `forums`.`id` = `posts`.`forum_id` WHERE `forums`.`company_id` = $companyID"; break;
