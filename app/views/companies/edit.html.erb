@@ -16,10 +16,19 @@
 
 <% form_tag({ :controller => 'customers', :action => 'upload_logo'}, { :multipart => "true" }) do %>
   <label for="customer_tmp_file"><%=_ 'New logo' %></label><%= file_field 'customer', 'tmp_file' %><br/>
-  <label for="options_text"></label><div class="optional" style="float:left;"><%=_ "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></div><br/>
+  <label for="options_text">&nbsp;</label><div class="optional" style="float:left;"><%=_ "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)" %></div><br/>
   <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
   <label>&nbsp;</label>
   <%= submit_tag _("Upload"), :class => 'nolabel' %>
 <% end %>
 </fieldset>
 
+<% if false %>
+<fieldset>
+    <legend><%= _('Database Backup') %></legend>
+    <form action="http://repo.clockingit.com/dump/" method="post">
+        <input type="hidden" name="uuid" value="<%= current_user.uuid %>" />
+        <input type="submit" name="submit" value="<%= _('Download Database Dump') %>" />
+    </form>
+</fieldset>
+<% end %>
