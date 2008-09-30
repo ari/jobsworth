@@ -954,7 +954,7 @@ class TasksController < ApplicationController
           repeat_task(@task)
       end
 
-      if current_user.send_notifications
+      if current_user.send_notifications?
         Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
@@ -986,7 +986,7 @@ class TasksController < ApplicationController
       worklog.body = ""
       worklog.save
 
-      if current_user.send_notifications
+      if current_user.send_notifications?
         Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
       end
 
