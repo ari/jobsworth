@@ -15,8 +15,6 @@ class Customer < ActiveRecord::Base
     File.delete(r.logo_path) rescue begin end
   }
 
-  attr_protected :binary_id
-
   def path
     File.join("#{RAILS_ROOT}", 'store', 'logos', self.company_id.to_s)
   end
