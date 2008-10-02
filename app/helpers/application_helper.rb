@@ -311,8 +311,6 @@ module ApplicationHelper
 
       "<a href=\"#{url}\">#{text}</a>"
     }
-
-
   end
 
   def highlight_all( text, keys )
