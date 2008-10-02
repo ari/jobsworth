@@ -7,13 +7,14 @@ Localization.define('fi_FI') do |l|
   l.store "by", ":"
   l.store "of", "/"
   l.store "or", "tai"
-  l.store "Age", "Age"
+  l.store "Age", "Ikä" # Aki Saksola
   l.store "All", "Kaikki"
   l.store "Apr", "Huhti"
   l.store "Aug", "Elo"
-  l.store "CSV", "CSV"
+  l.store "CSV", "CSV" # Toni Huuskonen
   l.store "Dec", "Joulu"
   l.store "Due", "Due"
+  l.store "End", "End"
   l.store "Feb", "Helmi"
   l.store "Fri", "Pe"
   l.store "Jan", "Tammi"
@@ -39,6 +40,7 @@ Localization.define('fi_FI') do |l|
   l.store "Body", "Runko"
   l.store "Chat", "Chat"
   l.store "Date", "Päiväys"
+  l.store "Days", "Päivää" # Aki Saksola
   l.store "Edit", "Muokkaa"
   l.store "File", ["Tiedosto", "Tiedostot"]
   l.store "From", "Lähtien"
@@ -46,62 +48,65 @@ Localization.define('fi_FI') do |l|
   l.store "High", "Korkea"
   l.store "July", "Heinäkuu"
   l.store "June", "Kesäkuu"
-  l.store "Mine", "Mine"
+  l.store "Mine", "Omat" # Aki Saksola
   l.store "Name", "Nimi"
-  l.store "Next", "Next"
+  l.store "Next", "Seuraava" # Aki Saksola
+  l.store "Note", "Note"
   l.store "Open", "Avoin"
   l.store "Read", "Lue"
   l.store "Rows", "Riviä"
   l.store "Save", "Tallenna"
-  l.store "Show", "Show"
+  l.store "Show", "Näytä" # Aki Saksola
   l.store "Tags", "Tagit"
   l.store "Task", "Tehtävä"
   l.store "Type", "Tyyppi"
   l.store "User", "Käyttäjä"
   l.store "View", "View"
-  l.store "Wait", "Wait"
+  l.store "Wait", "Odota" # Aki Saksola
   l.store "Week", "Viikko"
-  l.store "Wiki", "Wiki"
+  l.store "Wiki", "Wiki" # Toni Huuskonen
   l.store "Work", "Työskentele"
   l.store "days", "päivä"
-  l.store "idle", "idle"
+  l.store "idle", "jouten" # Toni Huuskonen
   l.store "last", "viime"
-  l.store "59:04", "59:04"
+  l.store "59:04", "59:04" # Toni Huuskonen
   l.store "April", "Huhtikuu"
   l.store "Audit", "Tarkasta"
   l.store "Close", "Sulje"
   l.store "Email", "Sähköposti"
+  l.store "Empty", "Tyhjä" # Toni Huuskonen
   l.store "Files", "Tiedostot"
-  l.store "Forum", "Forum"
+  l.store "Forum", "Foorumi" # Aki Saksola
   l.store "Grant", "Valtuuta"
   l.store "Major", "Merkittävä"
   l.store "March", "Maaliskuu"
   l.store "Minor", "Vähäpätöinen"
   l.store "Notes", "Merkinnät"
   l.store "Owner", "Omistaja"
-  l.store "Pivot", "Pivot"
-  l.store "Posts", "Posts"
-  l.store "Saved", "Saved"
+  l.store "Pivot", "Pivot" # Toni Huuskonen
+  l.store "Posts", "Viestiä" # Toni Huuskonen
+  l.store "Saved", "Tallennettu" # Aki Saksola
   l.store "Start", "Aloita"
-  l.store "Tasks", "Uppgifter"
-  l.store "Title", "Title"
+  l.store "Tasks", "Tehtävät" # Toni Huuskonen
+  l.store "Title", "Aihe" # Aki Saksola
   l.store "To-do", "To-do"
   l.store "Today", "Tänään"
-  l.store "Topic", "Topic"
+  l.store "Topic", "Aihe" # Toni Huuskonen
   l.store "Total", "Kaikkiaan"
   l.store "Users", "Käyttäjät"
   l.store "Views", "Ikkunat"
+  l.store "Weeks", "Viikkoa" # Toni Huuskonen
   l.store "every", "joka"
   l.store "lists", "lists"
   l.store "today", "tänään"
-  l.store "until", "until"
+  l.store "until", "kunnes" # Toni Huuskonen
   l.store "%d day", ["päivä", "%d päivää"]
-  l.store "%s ago", "%s ago"
-  l.store "*bold*", "*bold*"
+  l.store "%s ago", "%s sitten" # Aki Saksola
+  l.store "*bold*", "*lihavointi*" # Toni Huuskonen
   l.store "Assign", "Osoita"
   l.store "August", "Elokuu"
   l.store "Browse", "Selaa"
-  l.store "Cancel", "Cancel"
+  l.store "Cancel", "Peruuta" # Aki Saksola
   l.store "Client", "Toimeksiantaja"
   l.store "Closed", "Suljettu"
   l.store "Create", "Luo"
@@ -109,22 +114,26 @@ Localization.define('fi_FI') do |l|
   l.store "Defect", "Vika"
   l.store "Delete", "Poista"
   l.store "Filter", "Filtteri"
-  l.store "Forums", "Forums"
+  l.store "Forums", "Foorumit" # Aki Saksola
   l.store "Friday", "Perjantai"
+  l.store "Locked", "Lukittu" # Toni Huuskonen
   l.store "Lowest", "Matalin"
   l.store "Monday", "Maanantai"
+  l.store "Months", "Kuukautta" # Aki Saksola
   l.store "No one", "Ei Ketään"
   l.store "Normal", "Normaali"
   l.store "Online", "Online"
-  l.store "Paused", "Paused"
+  l.store "Paused", "Pysäytetty" # Aki Saksola
+  l.store "Plural", "Monikko" # Aki Saksola
   l.store "Recent", "Recent"
   l.store "Revert", "Peru"
   l.store "Search", "Etsi"
   l.store "Shared", "Jaetut"
-  l.store "Status", "Status"
+  l.store "Status", "Tila" # Aki Saksola
   l.store "Sticky", "Sticky"
   l.store "Sunday", "Sunnuntai"
   l.store "Target", "Tavoite"
+  l.store "Update", "Update"
   l.store "Upload", "Lisää"
   l.store "Urgent", "Kiireellinen"
   l.store "Worked", "Worked"
@@ -132,10 +141,11 @@ Localization.define('fi_FI') do |l|
   l.store "[None]", "[Ei Mitään]"
   l.store "[Prev]", "[Edellinen]"
   l.store "[wdhm]", "[wdhm]"
-  l.store "cancel", "cancel"
+  l.store "cancel", "peruuta" # Aki Saksola
   l.store "quotes", "quotes"
-  l.store "%d days", ["%d days", "%d days"]
+  l.store "%d days", ["%d päivä", "%d päivää"] # Aki Saksola
   l.store "%d file", ["%d tiedosto", "%d tiedostoa"]
+  l.store "%d more", ["%d more", "%d more"]
   l.store "%d week", ["viikko", "%d viikkoa"]
   l.store "Blocker", "Blokkeri"
   l.store "Clients", "Toimeksiantajat"
@@ -144,142 +154,154 @@ Localization.define('fi_FI') do |l|
   l.store "Company", "Yhtiö"
   l.store "Contact", "Kontaktit"
   l.store "Created", "Luotu"
-  l.store "Destroy", "Destroy"
+  l.store "Destroy", "Tuhoa" # Aki Saksola
   l.store "History", "Historia"
   l.store "Invalid", "Kelvoton"
   l.store "January", "Tammikuu"
-  l.store "Loading", "Loading"
+  l.store "Loading", "Lataa" # Aki Saksola
   l.store "Log Out", "Kirjaudu Ulos"
-  l.store "Members", "Members"
+  l.store "Members", "Jäsenet" # Aki Saksola
   l.store "October", "Lokakuu"
   l.store "Offline", "Offline"
   l.store "Options", "Valinnat"
+  l.store "Overdue", "Myöhässä" # Aki Saksola
   l.store "Preview", "Esikatselu"
   l.store "Project", "Projekti"
-  l.store "Reports", "Raportitr"
-  l.store "Sort By", "Sort By"
+  l.store "Reports", "Raportit" # Toni Huuskonen
+  l.store "Sort By", "Järjestä" # Toni Huuskonen
   l.store "Summary", "Yhteenveto"
   l.store "Trivial", "Mitätön"
   l.store "Tuesday", "Tiistai"
-  l.store "Updated", "Updated"
-  l.store "Welcome", "Welcome"
+  l.store "Updated", "Päivitetty" # Aki Saksola
+  l.store "Welcome", "Tervetuloa" # Aki Saksola
   l.store "offline", "offline"
   l.store "%d month", ["kuukausi", "%d kuukautta"]
-  l.store "%d posts", ["%d posts", "%d posts"]
-  l.store "%s tasks", "%s tasks"
-  l.store "1:2:3:04", "1:2:3:04"
+  l.store "%d posts", ["%d viesti", "%d viestiä"] # Toni Huuskonen
+  l.store "%s tasks", "%s tehtävää" # Toni Huuskonen
+  l.store "1:2:3:04", "1:2:3:04" # Toni Huuskonen
   l.store "1w2d3h4m", "1w2d3h4m"
+  l.store "2w 3d 1h", "2w 3d 1h"
   l.store "Archived", "Arkistoitu"
-  l.store "Complete", "Complete"
+  l.store "Attached", "Liitetty" # Aki Saksola
+  l.store "Comments", "Kommentit" # Aki Saksola
+  l.store "Complete", "Valmis" # Aki Saksola
   l.store "Critical", "Kriittinen"
   l.store "December", "Joulukuu"
   l.store "Download", "Lataa"
   l.store "Due Date", "Deadline"
-  l.store "Estimate", "Estimate"
+  l.store "Estimate", "Arvio" # Aki Saksola
+  l.store "Everyone", "Kaikki" # Aki Saksola
   l.store "February", "Helmikuu"
-  l.store "Group By", "Group By"
+  l.store "Group By", "Ryhmitä:" # Aki Saksola
   l.store "Language", "Kieli"
   l.store "Location", "Sijainti"
   l.store "Modified", "Muokattu"
-  l.store "New File", "New File"
+  l.store "New File", "Uusi tiedosto" # Aki Saksola
   l.store "New Note", "Uusi Merkintä"
-  l.store "New Room", "New Room"
+  l.store "New Room", "Uusi huone" # Aki Saksola
   l.store "New Task", "Uusi Tehtävä"
-  l.store "New User", "New User"
+  l.store "New User", "Uusi käyttäjä" # Aki Saksola
   l.store "New View", "Uusi Ikkuna"
   l.store "New logo", "Uusi logo"
   l.store "November", "Marraskuu"
-  l.store "One week", "One week"
+  l.store "One week", "viikko" # Aki Saksola
   l.store "Overview", "Yleiskatsaus"
   l.store "Password", "Salasana"
-  l.store "Previous", "Previous"
+  l.store "Previous", "Edellinen" # Aki Saksola
   l.store "Priority", "Prioriteetti"
   l.store "Progress", "Kesken"
   l.store "Projects", "Projektit"
-  l.store "QuickAdd", "QuickAdd"
-  l.store "Resolved", "Resolved"
+  l.store "QuickAdd", "Pikalisäys" # Aki Saksola
+  l.store "Resolved", "Ratkaistu" # Toni Huuskonen
+  l.store "Reverted", "Reverted"
   l.store "Revision", "Tarkastus"
   l.store "Saturday", "Lauantai"
   l.store "Schedule", "Kalenteri"
   l.store "Severity", "Vakavuus"
+  l.store "Singular", "Yksikkö" # Toni Huuskonen
   l.store "Thursday", "Tortai"
   l.store "Timeline", "Aikajana"
-  l.store "Tomorrow", "Tomorrow"
+  l.store "Tomorrow", "Huomenna" # Aki Saksola
   l.store "Tutorial", "Perehdytys"
-  l.store "Use Chat", "Use Chat"
-  l.store "Use Wiki", "Use Wiki"
+  l.store "Use Chat", "Käytä chattia" # Toni Huuskonen
+  l.store "Use Wiki", "Käytä Wikiä" # Toni Huuskonen
   l.store "Username", "Nick"
   l.store "Work Log", "Työ Loki"
-  l.store "Workload", "Workload"
+  l.store "Workload", "Työkuorma" # Aki Saksola
   l.store "[Delete]", "[Poista]"
+  l.store "[No one]", "[No one]"
   l.store "tomorrow", "huomenna"
   l.store "%d folder", ["%d kansio", "%d kansiota"]
   l.store "%d minute", ["minuutti", "%d minuuttia"]
-  l.store "%d topics", ["%d topics", "%d topics"]
-  l.store "%d voices", ["%d voices", "%d voices"]
+  l.store "%d topics", ["%d aihe", "%d aihetta"] # Toni Huuskonen
+  l.store "%d voices", ["%d ääni", "%d ääntä"] # Toni Huuskonen
   l.store "Completed", "Valmis"
-  l.store "Duplicate", "Duplicate"
+  l.store "Due Tasks", "Erääntyvät tehtävät" # Toni Huuskonen
+  l.store "Duplicate", "Duplikaatti" # Aki Saksola
   l.store "Edit Note", "Muokkaa Merkintää"
   l.store "Edit User", "Muokkaa Käyttäjää"
   l.store "Edit View", "Muokkaa Ikkunaa"
-  l.store "Edit post", "Edit post"
-  l.store "Estimated", "Estimated"
-  l.store "Last Post", "Last Post"
+  l.store "Edit post", "Muokkaa viestiä" # Toni Huuskonen
+  l.store "Estimated", "Arvio" # Aki Saksola
+  l.store "Last Post", "Viimeisin viesti" # Toni Huuskonen
   l.store "Last Week", "Viime Viikko"
   l.store "Last Year", "Viime Vuosi"
-  l.store "Last post", "Last post"
-  l.store "Milestone", "Milestone"
-  l.store "New Topic", "New Topic"
-  l.store "New topic", "New topic"
-  l.store "Next Week", "Next Week"
-  l.store "Next week", "Next week"
-  l.store "One month", "One month"
-  l.store "Remaining", "Remaining"
+  l.store "Last post", "Viimeisin viesti" # Toni Huuskonen
+  l.store "Milestone", "Virstanpylväs" # Toni Huuskonen
+  l.store "New Topic", "Uusi aihe" # Toni Huuskonen
+  l.store "New topic", "Uusi aihe" # Toni Huuskonen
+  l.store "Next Week", "Seuraava viikko" # Aki Saksola
+  l.store "Next week", "Seuraava viikko" # Aki Saksola
+  l.store "One month", "Kuukausi" # Aki Saksola
+  l.store "Remaining", "Jäljellä" # Aki Saksola
   l.store "September", "Syyskuu"
   l.store "Task Type", "Työn Tyyppi"
   l.store "This Week", "Tämä Viikko"
   l.store "This Year", "Tämä Vuosi"
   l.store "Top Tasks", "Tärkeimmät Tehtävät"
-  l.store "Use Forum", "Use Forum"
+  l.store "Translate", "Käännä" # Aki Saksola
+  l.store "Use Forum", "Käytä foorumia" # Aki Saksola
   l.store "Wednesday", "Keskiviikko"
   l.store "Won't Fix", "Mahdoton Korjata"
-  l.store "Work Done", "Work Done"
-  l.store "Yesterday", "Yesterday"
-  l.store "_italics_", "_italics_"
+  l.store "Work Done", "Työ tehty" # Aki Saksola
+  l.store "Yesterday", "Eilen" # Aki Saksola
+  l.store "_italics_", "_kursivoitu_" # Toni Huuskonen
   l.store "entries..", "merkinnästä.."
   l.store "yesterday", "eilen"
   l.store "%d day ago", ["päivä sitten", "%d päivää sitten"]
+  l.store "%d project", ["%d projekti", "%d projektia"] # Aki Saksola
   l.store "Activities", "Tapahtumat"
   l.store "Assignment", "Assignment"
   l.store "Attributes", "Attribuutit"
-  l.store "Chat Rooms", "Chat Rooms"
+  l.store "Chat Rooms", "Chat-huoneet" # Toni Huuskonen
   l.store "Client CSS", "Toimeksiantajan CSS"
   l.store "Depends on", "Riippuu projektista/tehtävästä"
-  l.store "Group Tags", "Ryhmä Tagit"
-  l.store "Last Login", "Viimeisin Sisäänkirjautuminen"
-  l.store "Last Month", "Viime Kuukausi"
-  l.store "Leave Open", "Jätä Auki"
-  l.store "Loading...", "Loading..."
-  l.store "Local Time", "Local Time"
-  l.store "Milestones", "Milestonea"
-  l.store "Moderators", "Moderators"
-  l.store "New Avatar", "New Avatar"
-  l.store "New Client", "Uusi Toimeksiantaja"
-  l.store "New Folder", "New Folder"
-  l.store "Next month", "Next month"
-  l.store "Open Tasks", "Kaikki Tehtävät"
-  l.store "Post Topic", "Post Topic"
+  l.store "Group Tags", "Ryhmätagit" # Toni Huuskonen
+  l.store "Last Login", "Kirjautui viimeksi" # Aki Saksola
+  l.store "Last Month", "Viime kuukausi" # Toni Huuskonen
+  l.store "Leave Open", "Jätä auki" # Toni Huuskonen
+  l.store "Loading...", "Lataa..." # Aki Saksola
+  l.store "Local Time", "Paikallinen aika" # Aki Saksola
+  l.store "Milestones", "Virstanpylvästä" # Toni Huuskonen
+  l.store "Moderators", "Valvojat" # Toni Huuskonen
+  l.store "New Avatar", "Uusi Avatar" # Aki Saksola
+  l.store "New Client", "Uusi toimeksiantaja" # Toni Huuskonen
+  l.store "New Folder", "Uusi kansio" # Aki Saksola
+  l.store "Next month", "Seuraava kuukausi" # Aki Saksola
+  l.store "Open Tasks", "Kaikki tehtävät" # Toni Huuskonen
+  l.store "Post Topic", "Lähetä viesti" # Toni Huuskonen
   l.store "Prioritize", "Priorisoi"
-  l.store "Run Report", "Aja Raportti"
-  l.store "Save Reply", "Save Reply"
+  l.store "Reassigned", "Reassigned"
+  l.store "Run Report", "Aja raportti" # Toni Huuskonen
+  l.store "Save Reply", "Tallenna vastaus" # Toni Huuskonen
   l.store "Sub-totals", "Välisumma"
-  l.store "This Month", "Tämä Kuukausi"
+  l.store "This Month", "Tämä kuukausi" # Toni Huuskonen
   l.store "Time Range", "Rajoitettu"
   l.store "Time sheet", "Täydellinen"
-  l.store "Track Time", "Ota Aikaa"
-  l.store "Unassigned", "Unassigned"
-  l.store "View Tasks", "View Tasks"
-  l.store "Widget Key", "Widget Key"
+  l.store "Track Time", "Ota aikaa" # Toni Huuskonen
+  l.store "Unassigned", "Ei asetettu" # Aki Saksola
+  l.store "View Tasks", "Näytä tehtävät" # Toni Huuskonen
+  l.store "Widget Key", "Widget-avain" # Toni Huuskonen
   l.store "[All Tags]", "[Kaikki Tagit]"
   l.store "[All Time]", "[Koko Aika]"
   l.store "[Any Task]", "[Kaikki tehtävät]"
@@ -292,258 +314,294 @@ Localization.define('fi_FI') do |l|
   l.store "Assigned To", "Osoitettu:"
   l.store "Attach file", "Liitä tiedosto"
   l.store "Attachments", "Liitteet"
-  l.store "Custom Logo", "Kustomi Logo"
-  l.store "Date Format", "Päiväyksen Formaatti"
-  l.store "Delete Room", "Delete Room"
-  l.store "Delete View", "Poista Ikkuna"
+  l.store "Custom Logo", "Mukautettu logo" # Toni Huuskonen
+  l.store "Date Format", "Päiväyksen muoto" # Toni Huuskonen
+  l.store "Delete Room", "Poista huone" # Toni Huuskonen
+  l.store "Delete View", "Poista näkymä" # Toni Huuskonen
   l.store "Description", "Kuvaus"
-  l.store "End of week", "End of week"
-  l.store "Forum Posts", "Forum Posts"
+  l.store "Edit Client", "Muokkaa asiakasta" # Aki Saksola
+  l.store "End of week", "Viikon loppuun" # Aki Saksola
+  l.store "Forum Posts", "Forum-viestit" # Toni Huuskonen
   l.store "Improvement", "Parannus"
   l.store "In Progress", "Kesken"
   l.store "Information", "Informaatio"
   l.store "Let me know", "Kerro meille"
-  l.store "Linked from", "Linked from"
-  l.store "New Feature", "Uusi Ominaisuus"
-  l.store "New Project", "New Project"
+  l.store "Linked from", "Linkitetty kohteesta" # Toni Huuskonen
+  l.store "New Feature", "Uusi ominaisuus" # Toni Huuskonen
+  l.store "New Project", "Uusi projekti" # Aki Saksola
   l.store "Preferences", "Asetukset"
   l.store "Report Type", "Raportityyppi"
-  l.store "Task Status", "Työn Status"
-  l.store "Time Format", "Ajan Formaatti"
+  l.store "Task Status", "Työn status" # Toni Huuskonen
+  l.store "Time Format", "Ajan muoto" # Toni Huuskonen
   l.store "Transcripts", "Transcripts"
-  l.store "[All Tasks]", "[All Tasks]"
+  l.store "Work Logged", "Kirjatut tunnit" # Aki Saksola
+  l.store "Work Status", "Työn tila" # Aki Saksola
+  l.store "[All Tasks]", "[Kaikki tehtävät]" # Aki Saksola
   l.store "[Next page]", "[Seuraava sivu]"
-  l.store "delete post", "delete post"
+  l.store "delete post", "poista viesti" # Toni Huuskonen
   l.store "%d month ago", ["kuukausi sitten", "%d kuukautta sitten"]
   l.store "%s reverted.", "%s palautettu."
-  l.store "Company Name", "Company Name"
+  l.store "Burnup Chart", "Burnup Chart"
+  l.store "Company Name", "Yhtiön nimi" # Aki Saksola
   l.store "Contact name", "Nimi"
-  l.store "Create Forum", "Create Forum"
+  l.store "Create Forum", "Luo foorumi" # Toni Huuskonen
   l.store "Current logo", "Nykyinen logo"
   l.store "Dependencies", "Riippuvuudet"
-  l.store "Edit Project", "Muokkaa Projektia"
-  l.store "Edit Summary", "Edit Summary"
+  l.store "Edit Project", "Muokkaa projektia" # Aki Saksola
+  l.store "Edit Summary", "Muokkaa yhteenvetoa" # Aki Saksola
   l.store "Hide Waiting", "Hide Waiting"
-  l.store "Last Updated", "Viimeksi Päivitetty"
-  l.store "Leave Closed", "Jätä Suljetuksi"
-  l.store "Name / Email", "Name / Email"
-  l.store "Newest Tasks", "Uusimmat Tehtävät"
+  l.store "Last %d Days", ["Viimeisin %d päivä", "Viimeiset %d päivää"] # Aki Saksola
+  l.store "Last Updated", "Viimeksi päivitetty" # Toni Huuskonen
+  l.store "Leave Closed", "Jätä suljetuksi" # Toni Huuskonen
+  l.store "Low Priority", "Matala prioriteetti" # Toni Huuskonen
+  l.store "Name / Email", "Nimi / Sähköposti" # Aki Saksola
+  l.store "Newest Tasks", "Uusimmat tehtävät" # Toni Huuskonen
   l.store "Notification", "Ilmoitus"
-  l.store "Plan / GANTT", "Plan / GANTT"
-  l.store "Recent Posts", "Recent Posts"
+  l.store "Plan / GANTT", "Suunnitelma / GANTT" # Toni Huuskonen
+  l.store "Recent Posts", "Viimeisimmät viestit" # Toni Huuskonen
   l.store "Requested By", "Pyytäjä:"
-  l.store "Save as View", "Tallenna Ikkuna"
-  l.store "Show Avatars", "Show Avatars"
-  l.store "Show History", "Show History"
-  l.store "Timer Window", "Timer Window"
-  l.store "Users Online", "Users Online"
-  l.store "Wiki Changes", "Wiki Changes"
+  l.store "Save as View", "Tallenna näkymä" # Toni Huuskonen
+  l.store "Show Avatars", "Näytä avatarit" # Toni Huuskonen
+  l.store "Show History", "Näytä historia" # Toni Huuskonen
+  l.store "Timer Window", "Ajastinikkuna" # Aki Saksola
+  l.store "Users Online", "Käyttäjiä online" # Toni Huuskonen
+  l.store "Wiki Changes", "Wikin muutokset" # Toni Huuskonen
   l.store "[Any Client]", "[Kaikki Toimeksiantajat]"
   l.store "[Any Status]", "[Kaikki statukset]"
   l.store "[Unassigned]", "[Osoittamattomat]"
-  l.store "worked today", "tehnyt töitä tänään"
+  l.store "about 1 year", "about 1 year"
+  l.store "worked today", "tehtyjä töitä tänään" # Aki Saksola
   l.store "%s completed.", "%s valmis."
-  l.store "Active %s ago", "Active %s ago"
+  l.store "Active %s ago", "Aktiivinen %s sitten" # Toni Huuskonen
   l.store "Administrator", "Admin"
-  l.store "Are you sure?", "Are you sure?"
+  l.store "Are you sure?", "Oletko varma?" # Toni Huuskonen
   l.store "Contact email", "Sähköposti"
   l.store "Custom Avatar", "Custom Avatar"
-  l.store "Days per Week", "Days per Week"
-  l.store "Enable Sounds", "Enable Sounds"
+  l.store "Days per Week", "Päivää/viikko" # Aki Saksola
+  l.store "Enable Sounds", "Äänet päällä" # Toni Huuskonen
   l.store "File too big.", "Tiedosto on liian suuri."
-  l.store "Monitor forum", "Monitor forum"
-  l.store "Monitor topic", "Monitor topic"
-  l.store "My Open Tasks", "Kaikki Omat Tehtävät"
-  l.store "New Milestone", "Uusi Milestone"
-  l.store "Public Forums", "Public Forums"
-  l.store "Show Calendar", "Näytä Kalenteri"
-  l.store "Show Tooltips", "Näytä Opasteet"
-  l.store "Status Change", "Statuksenmuutos"
-  l.store "Task Priority", "Työn Tärkeysaste"
-  l.store "Task Severity", "Työn Vakavuusaste"
+  l.store "Google Gadget", "Google Gadget"
+  l.store "High Priority", "Korkea prioriteetti" # Toni Huuskonen
+  l.store "Monitor forum", "Valvo foorumia" # Toni Huuskonen
+  l.store "Monitor topic", "Valvo aihetta" # Toni Huuskonen
+  l.store "My Open Tasks", "Kaikki omat tehtävät" # Toni Huuskonen
+  l.store "New Milestone", "Uusi virstanpylväs" # Toni Huuskonen
+  l.store "Public Forums", "Yleiset foorumit" # Toni Huuskonen
+  l.store "Show Calendar", "Näytä kalenteri" # Aki Saksola
+  l.store "Show Tooltips", "Näytä opasteet" # Aki Saksola
+  l.store "Status Change", "Statuksen muutos" # Toni Huuskonen
+  l.store "Task Priority", "Työn tärkeysaste" # Toni Huuskonen
+  l.store "Task Severity", "Työn vakavuusaste" # Toni Huuskonen
   l.store "Time Estimate", "Aika-arvio"
-  l.store "Use Messaging", "Use Messaging"
+  l.store "Use Messaging", "Käytä pikaviestintää" # Toni Huuskonen
   l.store "[Active User]", "[Aktiivinen Käyttäjä]"
-  l.store "[Any Project]", "[Kaikki Projektit]"
-  l.store "[No Grouping]", "[No Grouping]"
+  l.store "[Any Project]", "[Kaikki projektit]" # Aki Saksola
+  l.store "[No Grouping]", "[Ei ryhmitystä]" # Toni Huuskonen
   l.store "about %d hour", ["noin tunti", "noin %d tuntia"]
-  l.store "about 1 month", "about 1 month"
+  l.store "about 1 month", "noin kuukausi" # Toni Huuskonen
   l.store "half a minute", "puolen minuuttia"
-  l.store "Add New Widget", "Add New Widget"
-  l.store "Are your sure?", "Oletako varma?"
-  l.store "Current Avatar", "Current Avatar"
-  l.store "Delete Project", "Poista Projekti"
+  l.store "Add New Widget", "Lisää uusi Widget" # Toni Huuskonen
+  l.store "Are your sure?", "Oletko varma?" # Aki Saksola
+  l.store "Burndown Chart", "Burndown-kaavio" # Toni Huuskonen
+  l.store "Current Avatar", "Nykyinen Avatar" # Toni Huuskonen
+  l.store "Delete Project", "Poista projekti" # Aki Saksola
   l.store "Depended on by", "Depended on by"
-  l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
+  l.store "Edit <b>%s</b>", "Muokkaa <b>%s</b>" # Aki Saksola
   l.store "Edit Log Entry", "Muokkaa lokimerkintää"
-  l.store "Edit Milestone", "Muokkaa Milestoneja"
+  l.store "Edit Milestone", "Muokkaa virstanpylväitä" # Toni Huuskonen
   l.store "Full Reference", "Koko referenssi"
-  l.store "Help Translate", "Help Translate"
+  l.store "Help Translate", "Auta kääntämään" # Aki Saksola
   l.store "New To-do Item", "New To-do Item"
-  l.store "Open <b>%s</b>", "Open <b>%s</b>"
-  l.store "Remaining Work", "Remaining Work"
-  l.store "Reply to topic", "Reply to topic"
+  l.store "Open <b>%s</b>", "Avaa <b>%s</b>" # Aki Saksola
+  l.store "Remaining Work", "Työtä jäljellä:" # Aki Saksola
+  l.store "Reply to topic", "Vastaus viestiin" # Toni Huuskonen
   l.store "Revert to Open", "Avaa"
+  l.store "Schedule saved", "Aikataulu tallennettu" # Toni Huuskonen
   l.store "Search Results", "Hakutulokset"
-  l.store "Set as Invalid", "Aseta Kelvottomaksi"
+  l.store "Set as Invalid", "Aseta kelvottomaksi" # Toni Huuskonen
   l.store "Signup Message", "Tervetuloviesti"
   l.store "Wiki Additions", "Wiki Additions"
   l.store "Workday Length", "Työpäivän pituus"
-  l.store "[Any Priority]", "[Kaikki Tärkeysasteet]"
-  l.store "[Any Severity]", "[Kaikki Vakavuusasteet]"
+  l.store "[Any Priority]", "[Kaikki tärkeysasteet]" # Toni Huuskonen
+  l.store "[Any Severity]", "[Kaikki vakavuusasteet]" # Toni Huuskonen
   l.store "Close <b>%s</b>", "Sulje <b>%s</b>"
-  l.store "Duration Format", "Keston formaatti"
+  l.store "Duration Format", "Keston muoto" # Toni Huuskonen
   l.store "Duration Worked", "Aika joka käytetty työhön"
-  l.store "Formatting Help", "Formatting Help"
+  l.store "Formatting Help", "Muotoiluohje" # Toni Huuskonen
   l.store "Quick Reference", "Pika referenssi"
   l.store "Recent activity", "Recent activity"
-  l.store "Set in Progress", "Aseta Keskeneräiseksi"
-  l.store "Upload New File", "Lisää Uusi Tiedosto"
-  l.store "[Any Milestone]", "[Kaikki milestonet]"
+  l.store "Set in Progress", "Aseta keskeneräiseksi" # Aki Saksola
+  l.store "Upload New File", "Lisää uusi tiedosto" # Toni Huuskonen
+  l.store "[Any Milestone]", "[Kaikki virstanpylväät]" # Toni Huuskonen
   l.store "[Previous page]", "[Edellinen sivu]"
   l.store "creating a task", "creating a task"
-  l.store "Advanced Options", "Äärimmäiset Valinnat"
-  l.store "Archive Messages", "Archive Messages"
-  l.store "Company Settings", "Company Settings"
-  l.store "Complete Project", "Lopeta Projekta"
-  l.store "Create New Forum", "Create New Forum"
-  l.store "Delete <b>%s</b>", "Delete <b>%s</b>"
+  l.store "Advanced Options", "Lisävalinnat" # Toni Huuskonen
+  l.store "Archive Messages", "Arkistoi viestit" # Toni Huuskonen
+  l.store "Company Settings", "Yhtiön asetukset" # Aki Saksola
+  l.store "Complete Project", "Lopeta projekti" # Aki Saksola
+  l.store "Create New Forum", "Luo uusi foorumi" # Toni Huuskonen
+  l.store "Delete <b>%s</b>", "Poista <b>%s</b>" # Toni Huuskonen
   l.store "Delete Log Entry", "Poista lokimerkintä"
-  l.store "Delete Milestone", "Poista Milestoneja"
-  l.store "Leave as Invalid", "Jätä Kelvottomaksi"
-  l.store "Monitoring forum", "Monitoring forum"
+  l.store "Delete Milestone", "Poista virstanpylväs" # Toni Huuskonen
+  l.store "Gadget HTML Code", "Gadget HTML-koodi" # Toni Huuskonen
+  l.store "Leave as Invalid", "Jätä kelvottomaksi" # Aki Saksola
+  l.store "Monitoring forum", "Valvo foorumia" # Toni Huuskonen
   l.store "Open to %s users", "Open to %s users"
-  l.store "Open to everyone", "Open to everyone"
-  l.store "Overall Progress", "Kokonaisvaltainen Edistys"
-  l.store "Set as Duplicate", "Aseta Duplicateksi"
-  l.store "Set as Won't Fix", "Aseta Mahdottomaksi Korjata"
-  l.store "Unassigned Tasks", "Osoittamattomat Tehtävät"
+  l.store "Open to everyone", "Avoin kaikille" # Toni Huuskonen
+  l.store "Overall Progress", "Kokonaisvaltainen edistys" # Aki Saksola
+  l.store "Set as Duplicate", "Aseta duplikaatiksi" # Aki Saksola
+  l.store "Set as Won't Fix", "Aseta mahdottomaksi korjata" # Aki Saksola
+  l.store "Unassigned Tasks", "Osoittamattomat tehtävät" # Aki Saksola
   l.store "User Information", "Käyttäjän Tiedot"
-  l.store "create a project", "create a project"
-  l.store "%s / %s reverted.", "%s / %s återställd."
-  l.store "Access To Project", "Pääsy Projektiin"
-  l.store "Delete <b>%s</b>.", "Delete <b>%s</b>."
-  l.store "Really delete %s?", "Haluatko varmasti poistaa %sn?"
+  l.store "create a project", "Luo projekti" # Aki Saksola
+  l.store "%s / %s reverted.", "%s / %s palautettu" # Aki Saksola
+  l.store "Access To Project", "Pääsy projektiin" # Toni Huuskonen
+  l.store "Create New Folder", "Luo uusi kansio" # Aki Saksola
+  l.store "Delete <b>%s</b>.", "Poista <b>%s</b>." # Aki Saksola
+  l.store "No file selected.", "Ei tiedostoa valittu." # Toni Huuskonen
+  l.store "Really delete %s?", "Haluatko varmasti poistaa %s:n?" # Toni Huuskonen
   l.store "Really revert %s?", "Peru %s?"
-  l.store "Recent Activities", "Tuoreimmat Tapahtumat"
+  l.store "Recent Activities", "Tuoreimmat tapahtumat" # Toni Huuskonen
   l.store "Remove dependency", "Poista riippuvuus"
+  l.store "Tasks / Day Chart", "Tehtävää päivässä -kaavio" # Toni Huuskonen
   l.store "Under revision by", "Tarkastaja:"
-  l.store "[Active Projects]", "[Active Projects]"
-  l.store "[Closed Projects]", "[Closed Projects]"
+  l.store "[Active Projects]", "[Aktiiviset projektit]" # Aki Saksola
+  l.store "[Closed Projects]", "[Suljetut projektit]" # Aki Saksola
   l.store "[Default Sorting]", "[Default Sorting]"
   l.store "the documentation", "the documentation"
-  l.store "%s / %s completed.", "%s / %s avslutad."
-  l.store "Complete Milestone", "Merkitse Milestone Saavutetuksi"
-  l.store "Completed Projects", "Valmiit Projektit"
+  l.store "%s / %s completed.", "%s / %s valmiina." # Toni Huuskonen
+  l.store "Access to Projects", "Pääsy projekteihin" # Aki Saksola
+  l.store "Complete Milestone", "Merkitse virstanpylväs saavutetuksi" # Toni Huuskonen
+  l.store "Completed Projects", "Valmiit projektit" # Aki Saksola
   l.store "Hide Waiting Tasks", "Piilota odottavat tehtävät"
-  l.store "Last active %s ago", "Last active %s ago"
-  l.store "Leave as Duplicate", "Jätä Duplicateksi"
-  l.store "Leave as Won't Fix", "Jätä Mahdottomaksi Korjata"
-  l.store "Log entry saved...", "Arbetslogg sparad..."
-  l.store "No recent activity", "No recent activity"
-  l.store "Really abort work?", "Really abort work?"
-  l.store "Receive Newsletter", "Receive Newsletter"
-  l.store "Send Notifications", "Lähetä Ilmoitukset"
+  l.store "Last active %s ago", "Aktiivinen %s sitten" # Aki Saksola
+  l.store "Leave as Duplicate", "Jätä kopioksi" # Toni Huuskonen
+  l.store "Leave as Won't Fix", "Jätä mahdottomaksi korjata" # Aki Saksola
+  l.store "Log entry saved...", "Lokikirjaus tallennettu..." # Aki Saksola
+  l.store "No recent activity", "Ei viimeaikaisia toimintoja" # Aki Saksola
+  l.store "Really abort work?", "Keskeytä työ?" # Aki Saksola
+  l.store "Receive Newsletter", "Vastaanota uutiskirjeitä" # Aki Saksola
+  l.store "Same as in English", "Kuten englanniksi" # Aki Saksola
+  l.store "Send Notifications", "Lähetä ilmoitukset" # Toni Huuskonen
+  l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "alle minuutti"
-  l.store "Remove notification", "Remove notification"
-  l.store "[Without Milestone]", "[Ei Milestonea]"
+  l.store "Can Create Projects", "Voi luoda projekteja" # Aki Saksola
+  l.store "Remove notification", "Poista ilmoitukset" # Aki Saksola
+  l.store "Show TaskType Icons", "Show TaskType Icons"
+  l.store "[Without Milestone]", "[Ei virstanpylvästä]" # Toni Huuskonen
   l.store "%d completed project", ["valmis projekti", "%d valmista projektia"]
-  l.store "Completed Milestones", "Saavutetut Milestonet"
-  l.store "Leave as in Progress", "Jätä Keskeneräiseksi"
-  l.store "Log entry deleted...", "Arbetslogg raderad..."
-  l.store "My In Progress Tasks", "Omat Keskeneräiset Tehtävät"
+  l.store "Completed Milestones", "Saavutetut virstanpylväät" # Toni Huuskonen
+  l.store "Find a Google Gadget", "Etsi Google Gadget" # Aki Saksola
+  l.store "Leave as in Progress", "Jätä keskeneräiseksi" # Aki Saksola
+  l.store "Log entry deleted...", "Lokimerkintä poistettu..." # Toni Huuskonen
+  l.store "My In Progress Tasks", "Omat keskeneräiset tehtävät" # Aki Saksola
   l.store "Project was deleted.", "Projekti poistettu."
-  l.store "Report Configuration", "Raportoi Konfiguraatio"
-  l.store "Restricted Messaging", "Restricted Messaging"
-  l.store "Showing Full History", "Showing Full History"
-  l.store "Use External Clients", "Käytä Ulkopuolisia"
+  l.store "Report Configuration", "Raportoi konfiguraatio" # Toni Huuskonen
+  l.store "Restricted Messaging", "Rajoitettu viestittely" # Aki Saksola
+  l.store "Showing Full History", "Näytää koko historian" # Toni Huuskonen
+  l.store "Use External Clients", "Käytä ulkopuolisia" # Toni Huuskonen
   l.store "less than %d seconds", "alle %d sekuntia"
-  l.store "Open to everyone from", "Open to everyone from"
-  l.store "Projects / Milestones", "Projects / Milestones"
-  l.store "Receive Notifications", "Ota Vastaan Ilmoituskset"
-  l.store "%d completed milestone", ["saavutettu milestone", "%d saavutettua milestonea"]
+  l.store "Open to everyone from", "Avoinna seuraaville:" # Aki Saksola
+  l.store "Projects / Milestones", "Projektit / virstanpylväät" # Toni Huuskonen
+  l.store "Receive Notifications", "Ota vastaan ilmoitukset" # Toni Huuskonen
+  l.store "%d completed milestone", ["saavutettu virstanpylväs", "%d saavutettua virstanpylvästä"] # Toni Huuskonen
   l.store "Add another dependency", "Lisää riippuvuus"
   l.store "Edit project <b>%s</b>", "Muokkaa projektia <b>%s</b>"
-  l.store "Floating Messaging Bar", "Floating Messaging Bar"
-  l.store "View '%s' was deleted.", "Ikkuna '%s' poistettu."
-  l.store "invite some co-workers", "invite some co-workers"
-  l.store ", this topic is locked.", ", this topic is locked."
-  l.store "Edit milestone <b>%s</b>", "Muokkaa milestonea <b>%s</b>"
-  l.store "Open to everyone from %s", "Open to everyone from %s"
+  l.store "Floating Messaging Bar", "Kelluva ilmoituspalkki" # Aki Saksola
+  l.store "View '%s' was deleted.", "Näkymä '%s' poistettu." # Toni Huuskonen
+  l.store "invite some co-workers", "kutsu joitain työtovereita" # Aki Saksola
+  l.store ", this topic is locked.", ", tämä aihe on lukittu." # Toni Huuskonen
+  l.store "Last %d Completed Tasks", ["Viimeisin valmistunut tehtävä", "Viimeiset %d valmistunutta tehtävää"] # Toni Huuskonen
+  l.store "%d translations updated.", ["%d käännös päivitetty.", "%d käännöstä päivitetty."] # Toni Huuskonen
+  l.store "Company settings updated", "Yhtiön asetukset tallennettu" # Toni Huuskonen
+  l.store "Edit milestone <b>%s</b>", "Muokkaa virstanpylvästä <b>%s</b>" # Toni Huuskonen
+  l.store "Open to everyone from %s", "Avoinna seuraaville: %s" # Aki Saksola
   l.store "Send notification emails", "Lähetä ilmoitusmailit"
-  l.store "Invalid due date ignored.", "Ogiltig deadline ignorerad."
+  l.store "Invalid due date ignored.", "Virheellistä määräpäivää ei otettu huomioon." # Toni Huuskonen
+  l.store "and copy permissions from", "ja kopioi oikeudet:" # Aki Saksola
   l.store "CSS successfully uploaded.", "CSS lisätty."
-  l.store "Delete this topic forever?", "Delete this topic forever?"
+  l.store "Delete this topic forever?", "Poista aihe lopullisesti?" # Aki Saksola
   l.store "Grant access to <b>%s</b>?", "Valtuuta projektiin/tehtävään <b>%s</b>?"
-  l.store "Save and activate schedule", "Save and activate schedule"
-  l.store "Stop working on <b>%s</b>.", "Lopeta <b>%s</b>n työstäminen."
+  l.store "Include completed projects", "Sisällytä valmiit projektit" # Toni Huuskonen
+  l.store "Save and activate schedule", "Tallenna ja aktivoi aikataulu" # Aki Saksola
+  l.store "Stop working on <b>%s</b>.", "Lopeta työn <b>%s</b> työstäminen." # Aki Saksola
   l.store "Don't show this splash page", "Don't show this splash page"
   l.store "File successfully uploaded.", "Tiedosto lisätty."
   l.store "Logo successfully uploaded.", "Logo lisätty."
-  l.store "Pause working on <b>%s</b>.", "Pause working on <b>%s</b>."
-  l.store "Please always be courteous.", "Please always be courteous."
-  l.store "Unable to save log entry...", "Arbetslogg kunde ej sparas..."
+  l.store "Pause working on <b>%s</b>.", "Pidä tauko työstä: <b>%s</b>." # Aki Saksola
+  l.store "Please always be courteous.", "Ole hyvä ja ole aina kohtelias." # Aki Saksola
+  l.store "Please configure the widget", "Please configure the widget"
+  l.store "Unable to save log entry...", "Logia ei voitu tallentaa..." # Aki Saksola
   l.store "Cancel working on <b>%s</b>.", "Keskeytä työ <b>%s</b>."
   l.store "Empty report, log more work!", "Tyhjä raportti, loggaa enemmän töitä!"
   l.store "No file selected for upload.", "Ei tiedostoja valittu."
-  l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
+  l.store "Resume working on <b>%s</b>.", "Jatka työtä: <b>%s</b>." # Aki Saksola
+  l.store "Avatar successfully uploaded.", "Avatar ladattu onnistuneesti." # Toni Huuskonen
   l.store "Really delete this log entry?", "Poistetaanko lokimerkintä?"
-  l.store "Add earlier work to <b>%s</b>.", "Add earlier work to <b>%s</b>."
+  l.store "Add earlier work to <b>%s</b>.", "Lisää aikaisempia tunteja: <b>%s</b>." # Aki Saksola
   l.store "Grant %s access for <b>%s</b>?", "Valtuuta %s projektiin/tehtävään <b>%s</b>?"
-  l.store "Move <b>%s</b> to the Archive.", "Siirrä <b>%s</b> Arkistoon."
-  l.store "Note was successfully created.", "Milestone luotu."
-  l.store "Note was successfully updated.", "Milestone päivitetty."
+  l.store "Move <b>%s</b> to the Archive.", "Siirrä <b>%s</b> arkistoon." # Toni Huuskonen
+  l.store "Note was successfully created.", "Virstanpylväs luotu." # Toni Huuskonen
+  l.store "Note was successfully updated.", "Virstanpylväs päivitetty." # Toni Huuskonen
   l.store "Revert schedule to saved state", "Revert schedule to saved state"
-  l.store "Task was successfully created.", "Uppgift skapades utan problem."
-  l.store "Task was successfully updated.", "Uppgift uppdaterades utan problem."
+  l.store "Task was successfully created.", "Tehtävän luominen onnistui." # Aki Saksola
+  l.store "Task was successfully updated.", "Tehtävän muokkaaminen onnistui." # Aki Saksola
   l.store "User was successfully updated.", "Käyttäjä päivitetty."
   l.store "Remove %s access for <b>%s</b>?", "Remove %s access for <b>%s</b>?"
-  l.store "Client was successfully created.", "Uusi Toimeksiantaja luotu"
+  l.store "Client was successfully created.", "Uusi toimeksiantaja luotu" # Aki Saksola
   l.store "Client was successfully updated.", "Toimeksiantajan tiedot päivitetty."
-  l.store "Delete this post?  Are you sure?", "Delete this post?  Are you sure?"
-  l.store "Download CSV file of this report", "Lisää projektille uusi CSV-tiedosto."
+  l.store "Delete this post?  Are you sure?", "Poista viesti? Oletko varma?" # Toni Huuskonen
+  l.store "Download CSV file of this report", "Lataa projektin CSV-tiedosto." # Aki Saksola
   l.store "Remove all access for <b>%s</b>?", "Poista kaikki oikeudet projektiin/tehtävään <b>%s</b>?"
   l.store "Open to everyone using ClockingIT", "Open to everyone using ClockingIT"
   l.store "Preferences successfully updated.", "Asetukset päivitetty."
-  l.store "Project was successfully created.", "Projektu luotu."
-  l.store "Project was successfully updated.", "Projekti päivitetty"
+  l.store "Project was successfully created.", "Projekti luotu." # Aki Saksola
+  l.store "Project was successfully updated.", "Projekti päivitetty." # Aki Saksola
   l.store "Done working on <b>%s</b> for now.", "<b>%s</b> valmis toistaiseksi."
   l.store "You can't delete your own company.", "Et voi poistaa omaa yhtiötäsi."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Palaute? Ehdotukset? Ideat? Bugit?"
-  l.store "Milestone was successfully created.", "Milstolpe skapades utan problem."
-  l.store "Milestone was successfully updated.", "Milstolpe uppdaterades utan problem."
-  l.store "Restore <b>%s</b> from the Archive.", "Palauta <b>%s</b> Arkistosta."
+  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
+  l.store "Milestone was successfully created.", "Virstanpylväs luotiin onnistuneesti." # Aki Saksola
+  l.store "Milestone was successfully updated.", "Virstanpylvään päivitys onnistui." # Aki Saksola
+  l.store "Restore <b>%s</b> from the Archive.", "Palauta <b>%s</b> arkistosta." # Aki Saksola
   l.store "View '%s' was successfully created.", "Ikkuna '%s' luotu."
   l.store "View '%s' was successfully updated.", "Ikkuna '%s' päivitetty."
+  l.store "Changes are not made live instantly.", "Muutokset eivät päivity heti." # Aki Saksola
   l.store "This forum is currently unmoderated.", "This forum is currently unmoderated."
   l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
   l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
   l.store "Revert <b>%s</b> to not completed status.", "Palauta <b>%s</b> keskeneräiseksi"
-  l.store "Easy access to commonly needed information.", "Easy access to commonly needed information."
-  l.store "Play sounds when new messages are received.", "Play sounds when new messages are received."
+  l.store "Easy access to commonly needed information.", "Helppo pääsy usein käytettyihin tietoihin." # Aki Saksola
+  l.store "Play sounds when new messages are received.", "Soita äänimerkki kun uusia viestejä on vastaanotettu." # Aki Saksola
   l.store "Subscribe to the recent activities RSS feed", "Tilaa \"uusimmat tapahtumat\"-RSS feedi"
   l.store "Subscribe to the iCal feed for your projects.", "Subscribe to the iCal feed for your projects."
-  l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
+  l.store "Enter task due date, or click calendar button.", "Kirjoita määräpäivä tai klikkaa kalenteria" # Aki Saksola
+  l.store "Show icons next to tasks representing their type.", "Show icons next to tasks representing their type."
   l.store "The message will be included in the signup email.", "Viesti tulee sähköposteihin."
-  l.store "Start working on <b>%s</b>. Click again when done.", "Aloita <b>%s</b>n työstäminen. Klikkaa uudestaan, kun lopetat."
+  l.store "Start working on <b>%s</b>. Click again when done.", "Aloita työn <b>%s</b> työstäminen. Klikkaa uudestaan, kun lopetat." # Aki Saksola
+  l.store "Unable to find task belonging to you with that ID.", "Unable to find task belonging to you with that ID."
   l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
   l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
-  l.store "Error sending creation email. Account still created.", "Virhe lähetettäessä luomis sähköpostia. Käyttäjä luotu silti."
-  l.store "Please create a project to attach files / folders to.", "Please create a project to attach files / folders to."
+  l.store "Error sending creation email. Account still created.", "Virhe lähetettäessä luomissähköpostia. Käyttäjä luotu silti." # Aki Saksola
+  l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
+  l.store "Please create a project to attach files / folders to.", "Luo projekti johon liität tiedostoja/kansioita." # Aki Saksola
   l.store "Please delete all projects for %s before deleting it.", "Poista kaikki projektit liittyen %s ennen toimeksiantajan poistoa."
-  l.store "Log entry already saved from another browser instance.", "Arbetslogg är redan sparad från en annan webbläsarinstans."
+  l.store "Log entry already saved from another browser instance.", "Loki jo tallennettu toisesta selaimesta." # Aki Saksola
+  l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Perehdytys piilotettu. Tämän jälkeen sitä ei enää näy menussa."
   l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
+  l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Et voi poistaa <b>itseäsi</b> tai <b>projektin luojaa</b>!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Perehdytys suoritettu. Tämän jälkeen sitä ei enää näy menussa."
-  l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
-  l.store "Send notification emails to people affected by these changes", "Send notification emails to people affected by these changes"
-  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
+  l.store "Keep the messaging bar floating at the bottom of the screen.", "Pidä viestipalkki selaimen alaosassa." # Aki Saksola
+  l.store "Send notification emails to people affected by these changes", "Lähetä sähköposti kaikille joita nämä muutokset koskevat." # Aki Saksola
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Lisää tehtävänumerot pilkulla erotettuna. Kirjoita etsiäksesi." # Aki Saksola
   l.store "Create a private forum for people with access to this project?", "Create a private forum for people with access to this project?"
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welcome to ClockingIT. To get started, follow the steps below."
   l.store "If you require further help, check the %s, %s or email us at %s", "If you require further help, check the %s, %s or email us at %s"
-  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
-  l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Either the project doesn't exist, or you don't have access to it."
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Muokataan 25x25 ja 50x50 kokoon säilyttäen kuvasuhteen)" # Aki Saksola
+  l.store "Text entered will be saved automatically to your current work notes.", "Kirjoitettu teksti tallennetaan automaattisesti tehtävän muistiinpanoihin." # Aki Saksola
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
   l.store "Project was successfully created. Add users who need access to this project.", "Projekti luotu. Lisää käyttäjät."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"

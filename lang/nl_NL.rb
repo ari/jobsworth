@@ -14,7 +14,7 @@ Localization.define('nl_NL') do |l|
   l.store "CSV", "CSV" # Tom Niessink
   l.store "Dec", "Dec" # Tom Niessink
   l.store "Due", "Due"
-  l.store "End", "End"
+  l.store "End", "Einde" # Dylan Verheul
   l.store "Feb", "Feb" # Tom Niessink
   l.store "Fri", "Vr"
   l.store "Jan", "Jan" # Tom Niessink
@@ -178,9 +178,10 @@ Localization.define('nl_NL') do |l|
   l.store "%s tasks", "%s taken" # Jonathan van Woudenberg
   l.store "1:2:3:04", "1:2:3:04" # Tom Niessink
   l.store "1w2d3h4m", "1w2d3u4m"
+  l.store "2w 3d 1h", "2w 3d 1u" # Jonathan van Woudenberg
   l.store "Archived", "Gearchiveerd"
   l.store "Attached", "Bijgevoegd" # Jonathan van Woudenberg
-  l.store "Comments", "Comments"
+  l.store "Comments", "Opmerkingen" # Jonathan van Woudenberg
   l.store "Complete", "Afgerond" # Tom Niessink
   l.store "Critical", "Kritiek"
   l.store "December", "December" # Tom Niessink
@@ -221,11 +222,12 @@ Localization.define('nl_NL') do |l|
   l.store "Tomorrow", "Morgen" # Tom Niessink
   l.store "Tutorial", "Introductie"
   l.store "Use Chat", "Gebruik Chat" # Tom Niessink
-  l.store "Use Wiki", "Begruik Wiki" # Tom Niessink
+  l.store "Use Wiki", "Gebruik Wiki" # Jonathan van Woudenberg
   l.store "Username", "Gebruikersnaam"
   l.store "Work Log", "Werklog"
   l.store "Workload", "Werklast" # Tom Niessink
   l.store "[Delete]", "[Verwijder]"
+  l.store "[No one]", "[Niemand]" # Dylan Verheul
   l.store "tomorrow", "morgen"
   l.store "%d folder", ["%d map", "%d mappen"] # Jonathan van Woudenberg
   l.store "%d minute", ["één minuut", "%d minuten"]
@@ -266,12 +268,13 @@ Localization.define('nl_NL') do |l|
   l.store "entries..", "elementen.."
   l.store "yesterday", "gisteren"
   l.store "%d day ago", ["één dag geleden", "%d dagen geleden"]
+  l.store "%d project", ["%d project", "%d projecten"] # Jonathan van Woudenberg
   l.store "Activities", "Activiteiten"
-  l.store "Assignment", "Assignment"
+  l.store "Assignment", "Opdracht" # Dylan Verheul
   l.store "Attributes", "Eigenschappen"
   l.store "Chat Rooms", "Chatrooms" # Tom Niessink
   l.store "Client CSS", "Klant CSS"
-  l.store "Delete All", "Delete All"
+  l.store "Delete All", "Alles verwijderen" # Dylan Verheul
   l.store "Depends on", "Afhankelijk van" # Tom Niessink
   l.store "Edit Topic", "Edit Topic"
   l.store "Group Tags", "Groepeer op Tags"
@@ -351,6 +354,7 @@ Localization.define('nl_NL') do |l|
   l.store "Hide Waiting", "Verberg Wachtend" # Tom Niessink
   l.store "Last Updated", "Laatst aangepast"
   l.store "Leave Closed", "Laat gesloten"
+  l.store "Low Priority", "Low Priority"
   l.store "Name / Email", "Naam / E-mail" # Tom Niessink
   l.store "Newest Tasks", "Nieuwste Taken"
   l.store "Notification", "Berichten"
@@ -368,7 +372,7 @@ Localization.define('nl_NL') do |l|
   l.store "[Any Client]", "[Alle Klanten]"
   l.store "[Any Status]", "[Alle Statussen]"
   l.store "[Unassigned]", "[Niet Toegewezen]"
-  l.store "about 1 year", "about 1 year"
+  l.store "about 1 year", "ongeveer 1 jaar" # Dylan Verheul
   l.store "worked today", "gewerkt vandaag"
   l.store "%s completed.", "%s afgesloten."
   l.store "Active %s ago", "Actief %s geleden" # Jonathan van Woudenberg
@@ -380,6 +384,7 @@ Localization.define('nl_NL') do |l|
   l.store "Enable Sounds", "Geluiden Inschakelen" # Jonathan van Woudenberg
   l.store "File too big.", "Bestand te groot."
   l.store "Google Gadget", "Google Gadget"
+  l.store "High Priority", "High Priority"
   l.store "Invite a user", "Invite a user"
   l.store "Monitor forum", "Monitor forum"
   l.store "Monitor topic", "Monitor topic"
@@ -463,6 +468,7 @@ Localization.define('nl_NL') do |l|
   l.store "Really revert %s?", "%s echt terugzetten?"
   l.store "Recent Activities", "Recente activiteiten"
   l.store "Remove dependency", "Verwijder afhankelijkheid" # Tom Niessink
+  l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "Tasks / Day Chart"
   l.store "Under revision by", "Gereviseerd door"
   l.store "[Active Projects]", "[Actieve Projecten]" # Tom Niessink
@@ -487,8 +493,10 @@ Localization.define('nl_NL') do |l|
   l.store "Send Notifications", "Verstuur Meldingen"
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "minder dan één minuut"
+  l.store "Can Create Projects", "Can Create Projects"
   l.store "Remove notification", "Verwijder notificatie" # Tom Niessink
   l.store "Restricted Userlist", "Lijst beperkte gebruikers" # Tom Niessink
+  l.store "Show TaskType Icons", "Show TaskType Icons"
   l.store "%d completed project", ["één project afgerond", "%d projecten afgerond"]
   l.store "Completed Milestones", "Afgesloten Mijlpalen"
   l.store "Leave as in Progress", "Laat in behandeling staan"
@@ -514,6 +522,7 @@ Localization.define('nl_NL') do |l|
   l.store "Open to everyone from %s", "Beschikbaar voor iedereen in %s" # Tom Niessink
   l.store "Send notification emails", "Verstuur email notificaties"
   l.store "Invalid due date ignored.", "Ongeldige einddatum ingevuld; deze wordt genegeerd."
+  l.store "and copy permissions from", "and copy permissions from"
   l.store "CSS successfully uploaded.", "CSS met succes geplaatst."
   l.store "Delete this topic forever?", "Dit onderwerp permanent verwijderen?" # Jonathan van Woudenberg
   l.store "Grant access to <b>%s</b>?", "Verleen toegang aan <b>%s</b>?"
@@ -572,6 +581,7 @@ Localization.define('nl_NL') do |l|
   l.store "Subscribe to the recent activities RSS feed", "Schrijf je in voor de RSS feed met recente activiteiten" # Tom Niessink
   l.store "Subscribe to the iCal feed for your projects.", "Schrijf je in voor de iCal feed voor jou projecten." # Tom Niessink
   l.store "Enter task due date, or click calendar button.", "Voer einddatum van taak in, of gebruik de calender knop." # Tom Niessink
+  l.store "Show icons next to tasks representing their type.", "Show icons next to tasks representing their type."
   l.store "The message will be included in the signup email.", "Het bericht zal opgenomen worden in de e-mail van de inschrijving." # Tom Niessink
   l.store "Start working on <b>%s</b>. Click again when done.", "Begin te werken aan <b>%s</b>. Klik nogmaals om te stoppen."
   l.store "Unable to find task belonging to you with that ID.", "Kan geen taak van jou vinden met dat ID." # Jonathan van Woudenberg
