@@ -819,7 +819,7 @@ class TasksController < ApplicationController
         email_body = body + current_user.name + ":\n"
 
         body << CGI::escapeHTML(params[:comment])
-        email_body << CGI::escapeHTML(params[:comment])
+        email_body << params[:comment]
       end
 
       if body.length > 0
