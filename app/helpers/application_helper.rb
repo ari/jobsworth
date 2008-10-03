@@ -125,30 +125,6 @@ module ApplicationHelper
   end
 
 
-  def activity_img(activity)
-    case activity.activity_type
-    when Activity::TASK_COMPLETED then image_tag("completed.gif")
-    when Activity::TASK_NOT_COMPLETED then image_tag("reverted.png")
-    when Activity::TASK_CREATED then image_tag("new_task.png")
-    when Activity::TASK_DELETED then image_tag("delete_task.gif")
-    when Activity::COMPONENT_CREATED then "Component" + image_tag("new_task.png")
-    when Activity::COMPONENT_DELETED then "Component" + image_tag("delete_task.gif")
-
-    when Activity::PAGE_CREATED then "Page Added"
-    when Activity::PAGE_MODIFIED then "Page Modified"
-    when Activity::PAGE_RENAMED then "Page Renamed"
-    when Activity::PAGE_DELETED then "Page Deleted"
-
-    when Activity::FILE_UPLOADED then "File Uploaded"
-    when Activity::FILE_DELETED then "File Deleted"
-
-
-    else "Unknown"
-    end
-  end
-
-
-
     # Returns HTML code for a calendar that pops up when the calendar image is
   # clicked.
   #
@@ -335,8 +311,6 @@ module ApplicationHelper
 
       "<a href=\"#{url}\">#{text}</a>"
     }
-
-
   end
 
   def highlight_all( text, keys )
@@ -369,7 +343,7 @@ module ApplicationHelper
     link_to( h(milestone.name), {:controller => 'views', :action => 'select_milestone', :id => milestone.id}, {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)})
   end
 
-  def submit_tag(value = "Save Changes"[], options={} )
+  def submit_tag(value = "Save Changes", options={} )
     or_option = options.delete(:or)
     return super + "<span class='button_or'>"+"or"+" " + or_option + "</span>" if or_option
     super
