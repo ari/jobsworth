@@ -15,6 +15,7 @@ Localization.define('it_IT') do |l|
   l.store "CSV", "CSV" # PIetro Sacchi
   l.store "Dec", "Dic"
   l.store "Due", "Dovuto" # PIetro Sacchi
+  l.store "End", "Fine" # Paolo Formenti
   l.store "Feb", "Feb" # PIetro Sacchi
   l.store "Fri", "Ven"
   l.store "Jan", "Geb"
@@ -48,9 +49,11 @@ Localization.define('it_IT') do |l|
   l.store "High", "Importante"
   l.store "July", "Luglio"
   l.store "June", "Giugno"
-  l.store "Mine", "Miei" # PIetro Sacchi
+  l.store "Mine", "Miei" # Paolo Formenti
   l.store "Name", "Nome"
   l.store "Next", "Prossimo" # Mauro Roncali
+  l.store "None", "Niente" # Mauro Roncali
+  l.store "Note", "Nota" # PIetro Sacchi
   l.store "Open", "Aperto"
   l.store "Read", "Leggi"
   l.store "Rows", "Righe"
@@ -174,11 +177,13 @@ Localization.define('it_IT') do |l|
   l.store "Updated", "Aggiornato"
   l.store "Welcome", "Benvenuto" # Mauro Roncali
   l.store "offline", "offline" # PIetro Sacchi
+  l.store "page %s", "pagina %s" # PIetro Sacchi
   l.store "%d month", ["un mese", "%d mesi"]
   l.store "%d posts", ["%d posts", "%d posts"] # PIetro Sacchi
   l.store "%s tasks", "%s tasks" # Mauro Roncali
   l.store "1:2:3:04", "1:2:3:04" # PIetro Sacchi
   l.store "1w2d3h4m", "1v2d3t4m"
+  l.store "2w 3d 1h", "2s 3g 1o" # PIetro Sacchi
   l.store "Any Room", "Tutte le stanze" # Mauro Roncali
   l.store "Archived", "Archiviato"
   l.store "Attached", "Assegnato" # PIetro Sacchi
@@ -229,6 +234,7 @@ Localization.define('it_IT') do |l|
   l.store "Work Log", "Diario di lavoro"
   l.store "Workload", "Carico di lavoro" # Mauro Roncali
   l.store "[Delete]", "[Elimina]"
+  l.store "[No one]", "[Nessuno]" # Paolo Formenti
   l.store "tomorrow", "domani"
   l.store "%d folder", ["%d cartella", "%d cartelle"]
   l.store "%d minute", ["un minuto", "%d minuti"]
@@ -339,6 +345,8 @@ Localization.define('it_IT') do |l|
   l.store "Task Status", "Stato del Task"
   l.store "Time Format", "Formato ora"
   l.store "Transcripts", "Transcripts" # PIetro Sacchi
+  l.store "Work Logged", "Lavoro Loggato" # PIetro Sacchi
+  l.store "Work Status", "Stato di Lavoro" # PIetro Sacchi
   l.store "[All Tasks]", "[Tutti i Task]" # Mauro Roncali
   l.store "[Next page]", "[Pagina successiva]"
   l.store "%d month ago", ["un mese fa", "%d mesi fa"]
@@ -352,8 +360,10 @@ Localization.define('it_IT') do |l|
   l.store "Edit Project", "Modifica Progetto"
   l.store "Edit Summary", "Modifica sommario" # Mauro Roncali
   l.store "Hide Waiting", "Nascondi attesa" # Mauro Roncali
+  l.store "Last %d Days", ["Ultim %d giorno", "Ultimi %d giorni"] # Mauro Roncali
   l.store "Last Updated", "Ultimo aggiornamento"
   l.store "Leave Closed", "Lascia chiuso"
+  l.store "Low Priority", "bassa priorita'" # PIetro Sacchi
   l.store "Name / Email", "Nome/ Email" # Mauro Roncali
   l.store "Newest Tasks", "Nuovi Task"
   l.store "Notification", "Notifica" # Bevar
@@ -371,6 +381,7 @@ Localization.define('it_IT') do |l|
   l.store "[Any Client]", "[Qualunque cliente]"
   l.store "[Any Status]", "[Qualunque stato]"
   l.store "[Unassigned]", "[Non assegnato]"
+  l.store "about 1 year", "circa un anno" # PIetro Sacchi
   l.store "worked today", "svolti oggi"
   l.store "%s completed.", "%s completato."
   l.store "Active %s ago", "Attivo da %s fa" # PIetro Sacchi
@@ -382,6 +393,7 @@ Localization.define('it_IT') do |l|
   l.store "Enable Sounds", "Abilita suoni" # Mauro Roncali
   l.store "File too big.", "File troppo grosso."
   l.store "Google Gadget", "Google Gadget" # PIetro Sacchi
+  l.store "High Priority", "Alta priorità" # Mauro Roncali
   l.store "Invite a user", "Invita un utente" # PIetro Sacchi
   l.store "Monitor forum", "Monitorizza forum" # Mauro Roncali
   l.store "Monitor topic", "Monitorizza topic" # Mauro Roncali
@@ -412,6 +424,7 @@ Localization.define('it_IT') do |l|
   l.store "Edit Milestone", "Modifica Milestone"
   l.store "Full Reference", "Riferimento completo"
   l.store "Help Translate", "Aiuto Traduzione" # Mauro Roncali
+  l.store "Invalid Filter", "Filtro Non Valido" # PIetro Sacchi
   l.store "New To-do Item", "Nuovo elemento To-do" # Mauro Roncali
   l.store "Open <b>%s</b>", "Apri <b>%s</b>" # Mauro Roncali
   l.store "Organize Tasks", "Organizza Tasks" # Mauro Roncali
@@ -434,6 +447,7 @@ Localization.define('it_IT') do |l|
   l.store "Quick Reference", "Riferimento rapido"
   l.store "Recent activity", "Attivita' Recente" # PIetro Sacchi
   l.store "Set in Progress", "Imposta in Esecuzione"
+  l.store "Task Priorities", "Proprietà task" # Mauro Roncali
   l.store "Upload New File", "Carica nuovo file"
   l.store "[Any Milestone]", "[Qualunque Milestone]"
   l.store "[Previous page]", "[Pagina precedente]"
@@ -496,6 +510,7 @@ Localization.define('it_IT') do |l|
   l.store "Can Create Projects", "In grado di creare progetti" # PIetro Sacchi
   l.store "Remove notification", "Cancella notifica" # Bevar
   l.store "Restricted Userlist", "Lista utenti Ristretta" # PIetro Sacchi
+  l.store "Show TaskType Icons", "Visualizza icona del tipo task" # Mauro Roncali
   l.store "[Without Milestone]", "[Senza Milestone]"
   l.store "%d completed project", ["Un progetto completo", "%d progetti completi"]
   l.store "Completed Milestones", "Completato Milestone"
@@ -519,12 +534,14 @@ Localization.define('it_IT') do |l|
   l.store "Floating Messaging Bar", "Barra dei Messaggi Flottante" # PIetro Sacchi
   l.store "View '%s' was deleted.", "La vista '%s' è stata cancellata."
   l.store "invite some co-workers", "Invita alcuni collaboratori" # PIetro Sacchi
+  l.store "Last %d Completed Tasks", ["Ultimo %d Task Completato", "Ultimi %d Task Completati"] # Mauro Roncali
   l.store "%d translations updated.", ["%d traduzione aggiornata.", "%d traduzioni aggiornate."] # PIetro Sacchi
   l.store "Company settings updated", "Preferenze azienda Impostate e salvate" # PIetro Sacchi
   l.store "Edit milestone <b>%s</b>", "Modifica milestone <b>%s</b>"
   l.store "Open to everyone from %s", "Aperto a tutti da %s" # PIetro Sacchi
   l.store "Send notification emails", "Manda notifiche email"
   l.store "Invalid due date ignored.", "Data di scadenza non valida, verrà ignorata."
+  l.store "and copy permissions from", "e permesso di copia da" # PIetro Sacchi
   l.store "CSS successfully uploaded.", "CSS è stato caricato con successo."
   l.store "Delete this topic forever?", "Cancellare questo topic per sempre?" # PIetro Sacchi
   l.store "Grant access to <b>%s</b>?", "Concedere l'accesso a <b>%s</b>?"
@@ -565,7 +582,7 @@ Localization.define('it_IT') do |l|
   l.store "Done working on <b>%s</b> for now.", "Lavori svolti per <b>%s</b> finora."
   l.store "You can't delete your own company.", "Non puoi cancellare la tua stessa ditta."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Feedback? Suggerimenti? Idee? Bugs?"
-  l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
+  l.store "Ignore hidden tasks when scheduling", "Ignora task nascosti quando scheduli" # Mauro Roncali
   l.store "Milestone was successfully created.", "Il Milestone è stato creato con successo."
   l.store "Milestone was successfully updated.", "Il Milestone è stato aggiornato con successo."
   l.store "Restore <b>%s</b> from the Archive.", "Ripristina <b>%s</b> dall'archivio."
@@ -582,6 +599,7 @@ Localization.define('it_IT') do |l|
   l.store "Subscribe to the recent activities RSS feed", "Iscriviti alla feed RSS relativa alle attività recenti"
   l.store "Subscribe to the iCal feed for your projects.", "Sottiscrivi il feed ICal per  i tuoi progetti" # PIetro Sacchi
   l.store "Enter task due date, or click calendar button.", "Enter task due date, or click calendar button."
+  l.store "Show icons next to tasks representing their type.", "Show icons next to tasks representing their type."
   l.store "The message will be included in the signup email.", "Il messaggio verrà allegato nell'email accettata."
   l.store "Start working on <b>%s</b>. Click again when done.", "Inizia a lavorare su <b>%s</b>. Clicca nuovamente quando finito."
   l.store "Unable to find task belonging to you with that ID.", "Unable to find task belonging to you with that ID."
@@ -608,6 +626,7 @@ Localization.define('it_IT') do |l|
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
   l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "Il Progetto è stato creato con successo. Aggiungi gli utenti che devono accedere a questo progetto."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "L'utente è stato creato con successo. RIcorda di autorizzare questo utente ad i propri progetti."

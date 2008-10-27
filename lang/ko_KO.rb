@@ -1,4 +1,4 @@
-Localization.define('en_US') do |l|
+Localization.define('ko_KO') do |l|
   l.store "File", ["File", "Files"]
   l.store "%d day", ["one day", "%d days"]
   l.store "%d days", ["%d day", "%d days"] # Erlend Simonsen

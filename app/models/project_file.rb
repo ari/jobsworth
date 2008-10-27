@@ -37,11 +37,6 @@ class ProjectFile < ActiveRecord::Base
 
   belongs_to    :project_folder
 
-  has_one       :binary
-  has_one       :thumbnail
-
-  belongs_to    :thumbnail
-
   has_many   :event_logs, :as => :target, :dependent => :destroy
 
   after_create { |r|

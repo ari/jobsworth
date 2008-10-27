@@ -436,7 +436,7 @@ class TasksController < ApplicationController
       worklog.duration = 0
       worklog.log_type = EventLog::TASK_CREATED
       if (!params[:comment].nil? && params[:comment].length > 0)
-        worklog.body = params[:comment] 
+        worklog.body =  CGI::escapeHTML(params[:comment])
         worklog.comment = true
       end 
 
@@ -824,7 +824,7 @@ class TasksController < ApplicationController
         email_body = body + current_user.name + ":\n"
 
         body << CGI::escapeHTML(params[:comment])
-        email_body << CGI::escapeHTML(params[:comment])
+        email_body << params[:comment]
       end
 
       if body.length > 0
@@ -959,7 +959,7 @@ class TasksController < ApplicationController
           repeat_task(@task)
       end
 
-      if current_user.send_notifications
+      if current_user.send_notifications?
         Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
@@ -991,7 +991,7 @@ class TasksController < ApplicationController
       worklog.body = ""
       worklog.save
 
-      if current_user.send_notifications
+      if current_user.send_notifications?
         Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
       end
 
