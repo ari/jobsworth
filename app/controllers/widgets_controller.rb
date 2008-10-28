@@ -402,10 +402,24 @@ class WidgetsController < ApplicationController
         @counts[:created][3] = current_user.company.tasks.count(:conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at >= ? AND created_at < ? #{filter}", start - 29.days, start + 1.day])
         
       end 
-    
-    end
-
-    
+    when 10: 
+      if @widget.filter_by?
+        filter = case @widget.filter_by[0..0]
+                 when 'c'
+                   "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+                 when 'p'
+                   "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+                 when 'm'
+                   "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+                 when 'u'
+                   "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+                 else 
+                   ""
+                 end
+      end
+      
+      @sheets = Sheet.find(:all, :order => 'users.name', :include => [ :user, :task, :project ], :conditions => ["tasks.project_id IN (#{current_project_ids})#{filter}"]) 
+    end 
 
     render :update do |page|
       case @widget.widget_type
@@ -425,7 +439,7 @@ class WidgetsController < ApplicationController
         page << "var e = new Element('script', {id:'gadget-#{@widget.dom_id}'});"
         page << "$('gadget-wrapper-#{@widget.dom_id}').insert({top: e});"
         page << "$('gadget-#{@widget.dom_id}').src=#{@widget.gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,'')};"
-      when 9
+      when 9..10
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       end
 

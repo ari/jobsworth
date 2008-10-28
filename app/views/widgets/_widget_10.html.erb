@@ -1,0 +1,12 @@
+<div style="padding-left: 1em;">
+<table border="0" width="100%">
+
+<% @sheets.each do |@sheet| %>
+<tr>
+<td class="widget_sub_heading"><%= @sheet.user.name %></td>
+<td><%= link_to_task @sheet.task %></td>
+<td align="right"><%= worked_nice(@sheet.duration/60) -%> (<%= _('started %s', tz.utc_to_local(@sheet.created_at).strftime("#{current_user.time_format} #{current_user.date_format}")) %>)</td>
+</tr>
+<% end %>
+</table>
+</div>
