@@ -252,7 +252,7 @@ class LoginController < ApplicationController
       @company.name = params[:company]
       @company.contact_email = params[:email]
       @company.contact_name = params[:name]
-      @company.subdomain = params[:subdomain].downcase
+      @company.subdomain = params[:subdomain].downcase.strip
 
 
       if @company.save
