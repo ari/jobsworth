@@ -294,7 +294,7 @@ class LoginController < ApplicationController
         subdomain = 1
       end
 
-      if params[:subdomain].match(/[\W _]/) != nil
+      if params[:subdomain].match(/[^a-zA-Z0-9-]/) != nil
         render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters and numbers, no spaces.</small>"
 
       elsif subdomain > 0
