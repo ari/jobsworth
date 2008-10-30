@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby
 
-require 'rubygems'
+begin
+  require 'rubygems'
+rescue LoadError
+  puts "Please install the latest version of RubyGems to get started."
+  exit
+end
 
 missing_dep = false
 missing_deps = []

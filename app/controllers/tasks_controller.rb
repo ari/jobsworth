@@ -1776,6 +1776,7 @@ class TasksController < ApplicationController
     if @todo.completed_at
       @todo.completed_at = nil
     else
+      @todo.completed_by_user = current_user
       @todo.completed_at = Time.now.utc
     end
     if @todo.save
