@@ -18,6 +18,7 @@ class ProjectTest < Test::Unit::TestCase
     p.owner = users(:admin)
     p.company = companies(:cit)
     p.customer = customers(:internal_customer)
+    p.create_forum = 0
     p.save
     
     assert_not_nil        p.forums
