@@ -4,6 +4,7 @@ require 'test/rails'
 require 'test_help'
 require 'test/spec'
 require 'test/spec/rails'
+require 'lib/misc'
 
 class Test::Rails::TestCase
   # Transactional fixtures accelerate your tests by wrapping each test method
