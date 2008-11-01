@@ -13,7 +13,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
+    @reply_to   = "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
   end
 
   def changed(update_type, task, user, change, sent_at = Time.now)
@@ -38,7 +38,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"}
+    @reply_to   = "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
   end
 
 
@@ -50,7 +50,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @reply_to   = user.email
   end
 
   def forum_reply(user, post, sent_at = Time.now)
@@ -61,7 +61,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @reply_to   = user.email
   end
 
   def forum_post(user, post, sent_at = Time.now)
@@ -72,7 +72,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => user.email}
+    @reply_to   = user.email
   end
 
   def chat_invitation(user, target, room)
@@ -83,7 +83,7 @@ class Notifications < ActionMailer::Base
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = Time.now
-    @headers    = {'Reply-To' => user.email}
+    @reply_to   = user.email
 
   end
 
@@ -106,7 +106,7 @@ class Notifications < ActionMailer::Base
     end
     @recipients = (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq
     @sent_on    = Time.now
-    @headers    = {'Reply-To' => user.email}
+    @reply_to   = user.email
     @from       = "#{$CONFIG[:prefix]} Notification <noreply@#{$CONFIG[:email_domain]}>"
   end
 
