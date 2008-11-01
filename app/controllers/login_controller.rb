@@ -223,8 +223,8 @@ class LoginController < ApplicationController
     if params[:subdomain].length == 0
       flash[:notice] += "* Enter your preferred URL for company access<br/>"
       error = 1
-    elsif params[:subdomain].match(/[\W _\.]/) != nil
-      flash[:notice] += "* Login URL can only contain letters and numbers, no spaces."
+    elsif params[:subdomain].match(/[^a-zA-Z0-9-]/) != nil
+      flash[:notice] += "* Login URL can only contain letters, numbers, and hyphens, no spaces."
       error = 1
     elsif Company.count( :conditions => ["subdomain = ?", params[:subdomain]]) > 0
       flash[:notice] += "* Login url already taken. Please choose another one."
@@ -252,7 +252,7 @@ class LoginController < ApplicationController
       @company.name = params[:company]
       @company.contact_email = params[:email]
       @company.contact_name = params[:name]
-      @company.subdomain = params[:subdomain].downcase
+      @company.subdomain = params[:subdomain].downcase.strip
 
 
       if @company.save
@@ -294,8 +294,8 @@ class LoginController < ApplicationController
         subdomain = 1
       end
 
-      if params[:subdomain].match(/[\W _]/) != nil
-        render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters and numbers, no spaces.</small>"
+      if params[:subdomain].match(/[^a-zA-Z0-9-]/) != nil
+        render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain can only contain letters, numbers, and hyphens, no spaces.</small>"
 
       elsif subdomain > 0
         render :text => "<img src=\"/images/delete.png\" border=\"0\" style=\"vertical-align:middle;\"/> <small>Domain already in use, please choose a different one.</small>"
