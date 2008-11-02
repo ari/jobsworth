@@ -1,5 +1,7 @@
 class Notifications < ActionMailer::Base
 
+  require 'lib/misc'
+
   def created(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"

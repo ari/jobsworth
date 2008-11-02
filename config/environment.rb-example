@@ -65,6 +65,8 @@ $CONFIG = { :domain => "clockingit.com",
 	    :prefix => "[ClockingIT]"
 }
 
+require File.join(File.dirname(__FILE__), '../lib/misc.rb')
+
 ActionMailer::Base.smtp_settings = {
   :address  => "localhost",
   :port  => 25,
