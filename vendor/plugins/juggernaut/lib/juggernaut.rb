@@ -40,4 +40,4 @@ end
 
 end
 
-ActionView::Base::load_helpers
+#ActionView::Base::load_helpers

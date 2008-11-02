@@ -25,13 +25,6 @@ class WidgetsController < ApplicationController
     case @widget.widget_type
     when 0
       # Tasks
-      order = case @widget.order_by
-              when 'priority':
-                  "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END"
-              when 'date':
-                  "tasks.created_at desc"
-              end
-      
       
       if @widget.filter_by?
         filter = case @widget.filter_by[0..0]
@@ -49,10 +42,18 @@ class WidgetsController < ApplicationController
       end
       
       unless @widget.mine?
-        @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND tasks.company_id = #{current_user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:tags, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos], :limit => @widget.number  )
+        @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"], :include => [:milestone, { :project => :customer}, :dependencies, :dependants, :users, :todos, :tags])
       else 
-        @items = current_user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:tags, :milestone, { :project => :customer }, :dependencies, :dependants, :todos], :limit => @widget.number  )
+        @items = current_user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:milestone, { :project => :customer }, :dependencies, :dependants, :todos, :tags])
       end
+
+      @items = case @widget.order_by
+               when 'priority':
+                     @items.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-@widget.number..-1].reverse
+               when 'date':
+                     @items.sort_by{|t| [-t.created_at.to_i, t.priority + t.severity_id] }[-@widget.number..-1]
+              end
+
     when 1
       # Project List
       @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])

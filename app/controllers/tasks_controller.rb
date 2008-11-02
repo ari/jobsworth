@@ -104,23 +104,28 @@ class TasksController < ApplicationController
 
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
 
-    sort = case session[:sort].to_i
-           when 0 then "tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
-           when 1 then "CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
-           when 2 then "tasks.created_at, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
-           when 3 then "tasks.name, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.created_at"
-           when 4 then "CASE WHEN tasks.updated_at IS NULL THEN tasks.created_at ELSE tasks.updated_at END desc, tasks.priority + tasks.severity_id desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.name"
-           end
-
     if params[:tag] && params[:tag].length > 0
       # Looking for tasks based on tags
       @selected_tags = params[:tag].downcase.split(',').collect{|t| t.strip}
-      @tasks = Task.tagged_with(@selected_tags, { :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer], :sort => sort })
+      @tasks = Task.tagged_with(@selected_tags, { :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer] })
     else
       # Looking for tasks based on filters
       @selected_tags = []
-      @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter],  :order => " tasks.completed_at IS NOT NULL, tasks.completed_at desc, #{sort}", :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ])
+      @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], :include => [:users, :tags, :sheets, :todos, :dependencies, {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
     end
+
+    @tasks = case session[:sort].to_i
+             when 0:
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.priority + t.severity_id, (t.due_date || Time.now.utc).to_i, -t.task_num] }.reverse
+             when 1: 
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || Time.now.utc).to_i, t.priority + t.severity_id,  -t.task_num] }
+             when 2: 
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id,  -t.task_num] }
+             when 3: 
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.name, t.priority + t.severity_id,  -t.task_num] }
+             when 4: 
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id,  -t.task_num] }.reverse
+             end
 
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
@@ -141,7 +146,7 @@ class TasksController < ApplicationController
     elsif session[:group_by].to_i == 4 # Milestones
       filter = ""
       if session[:filter_milestone].to_i > 0
-        m = Milestone.find(session[:filter_milestone], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name") rescue nil
+        m = Milestone.find(session[:filter_milestone], :conditions => ["project_id IN (#{current_project_ids}) AND completed_at IS NULL"], :order => "due_at, name") rescue nil
         filter = " AND project_id = #{m.project_id}" if m
       elsif session[:filter_project].to_i > 0
         filter = " AND project_id = #{session[:filter_project]}"

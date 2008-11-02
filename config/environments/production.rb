@@ -17,4 +17,3 @@ config.action_controller.perform_caching             = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 #
-config.action_view.local_assigns_support_string_keys = false

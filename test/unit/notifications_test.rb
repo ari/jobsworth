@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 require 'notifications'
 
+
 class NotificationsTest < Test::Unit::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
@@ -18,20 +19,20 @@ class NotificationsTest < Test::Unit::TestCase
   end
 
   def test_created
-    @expected.subject = '[ClockingIT] Created: [#1] Test [Test Project] (Unassigned)'
-    @expected.from    = 'admin@clockingit.com'
-    @expected['Reply-To'] = 'task-1@cit.clockingit.com'
-    @expected.to      = 'admin@clockingit.com'
+    @expected.subject  = '[ClockingIT] Created: [#1] Test [Test Project] (Unassigned)'
+    @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+    @expected.reply_to = 'task-1@cit.clockingit.com'
+    @expected.to       = 'admin@clockingit.com'
     @expected['Mime-Version'] = '1.0'
-    @expected.body    = read_fixture('created')
-    @expected.date    = Time.now
+    @expected.body     = read_fixture('created')
+    @expected.date     = Time.now
 
     assert_equal @expected.encoded, Notifications.create_created(tasks(:normal_task), users(:admin), "", @expected.date).encoded
   end
 
   def test_changed
     @expected.subject = '[ClockingIT] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
-    @expected.from    = 'admin@clockingit.com'
+    @expected.from    = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @expected['Reply-To'] = 'task-1@cit.clockingit.com'
     @expected.to      = 'admin@clockingit.com'
     @expected['Mime-Version'] = '1.0'

@@ -182,7 +182,7 @@ class UserTest < Test::Unit::TestCase
 
   def test_currently_online
     @user2 = users(:tester)
-    assert_equal [@user2,@user], @user.currently_online
+    assert_equal [@user,@user2], @user.currently_online
     assert_equal [], users(:fudge).currently_online
   end
 

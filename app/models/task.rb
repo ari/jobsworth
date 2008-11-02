@@ -651,6 +651,14 @@ class Task < ActiveRecord::Base
     "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
   end
 
+  def order_default
+    [-(self.severity_id + self.priority), self.due_date.to_i, self.milestone ? 1 : 0, self.milestone_id.to_i > 0 ? self.milestone.name : ""]
+  end 
+
+  def order_date
+    [self.created_at.to_i]
+  end 
+
   def icon(icon_type = nil)
     icon_type ||= type_id
     case icon_type
@@ -668,5 +676,4 @@ class Task < ActiveRecord::Base
       ""
     end 
   end 
-
 end
