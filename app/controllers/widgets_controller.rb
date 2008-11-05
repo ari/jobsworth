@@ -44,14 +44,14 @@ class WidgetsController < ApplicationController
       unless @widget.mine?
         @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"], :include => [:milestone, { :project => :customer}, :dependencies, :dependants, :users, :todos, :tags])
       else 
-        @items = current_user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"],  :order => order, :include => [:milestone, { :project => :customer }, :dependencies, :dependants, :todos, :tags])
+        @items = current_user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"], :include => [:milestone, { :project => :customer }, :dependencies, :dependants, :todos, :tags])
       end
 
       @items = case @widget.order_by
                when 'priority':
-                     @items.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-@widget.number..-1].reverse
+                     @items.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-(@widget.number < @items.size ? @widget.number : @items.size)..-1].reverse
                when 'date':
-                     @items.sort_by{|t| [-t.created_at.to_i, t.priority + t.severity_id] }[-@widget.number..-1]
+                     @items.sort_by{|t| [-t.created_at.to_i, t.priority + t.severity_id] }[-(@widget.number < @items.size ? @widget.number : @items.size)..-1]
               end
 
     when 1

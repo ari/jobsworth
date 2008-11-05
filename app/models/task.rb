@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
 
   belongs_to    :old_owner, :class_name => "User", :foreign_key => "user_id"
 
-  has_and_belongs_to_many  :tags, :join_table => :task_tags
+  has_and_belongs_to_many  :tags, :join_table => 'task_tags'
 
   has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id'
   has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id'
