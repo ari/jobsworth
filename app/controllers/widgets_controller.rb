@@ -318,9 +318,9 @@ class WidgetsController < ApplicationController
       end
 
       if @widget.mine?
-        tasks = current_user.tasks.find(:all, :include => [:milestone,:project], :conditions => ["tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+        tasks = current_user.tasks.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
       else 
-        tasks = Task.find(:all, :include => [:milestone,:project], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+        tasks = Task.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
       end
 
       @tasks = []
