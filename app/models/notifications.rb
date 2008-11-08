@@ -1,6 +1,6 @@
 class Notifications < ActionMailer::Base
 
-  require 'lib/misc'
+  require  File.join(File.dirname(__FILE__), '../../lib/misc')
 
   def created(task, user, note = "", sent_at = Time.now)
     @body       = {:task => task, :user => user, :note => note}

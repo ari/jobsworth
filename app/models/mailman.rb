@@ -41,7 +41,7 @@ class Mailman < ActionMailer::Base
 
     e.save
 
-    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
+#    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 
     target = nil
     email.to.each do |to|
