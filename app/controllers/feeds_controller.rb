@@ -30,7 +30,7 @@ class FeedsController < ApplicationController
     user.newsletter = 0
     user.save
 
-    render :text => "You're now unsubscribed.. <br/><a href=\"http://www.clockingit.com\">ClockingIT</a>"
+    render :text => "You're now unsubscribed... http://#{user.company.subdomain}.#{$CONFIG[:domain]}"
 
   end
 
@@ -83,7 +83,7 @@ class FeedsController < ApplicationController
     content = RSS::Maker.make("2.0") do |m|
       m.channel.title = "#{user.company.name} Activities"
       m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/activities/list"
-      m.channel.description = "Last changes from ClockingIT for #{user.name}@#{user.company.name}."
+      m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
       m.items.do_sort = true # sort items by date
 
       @activities.each do |log|
@@ -329,7 +329,7 @@ class FeedsController < ApplicationController
 
   def igoogle_feed
     if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"http://www.clockingit.com\">ClockingIT</a> preferences page.", :layout => false
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"http://#{user.company.subdomain}.#{$CONFIG[:domain]}/users/edit_preferences\">preferences page</a>.", :layout => false
       return
     end
 
