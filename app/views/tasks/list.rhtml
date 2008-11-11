@@ -30,13 +30,9 @@
             if session[:filter_project].to_i > 0
               @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
             else
-              @user_ids = []
-              @all_projects.each do |p|
-                @user_ids << p.users.collect{ |pu| pu.id }
-              end
-
+              @user_ids = ProjectPermission.find(:all, :conditions => ["project_id IN (?)", @all_projects.collect{|p| p.id}] ).collect{|pp| pp.user_id }.uniq
               @user_ids = [0] if @user_ids.size == 0
-              @users = User.find(:all, :conditions => ["id IN (#{@user_ids.uniq.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
+              @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
             end
 
             filter_count = 0
