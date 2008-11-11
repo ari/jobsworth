@@ -4,7 +4,7 @@ module Localization
   @@lang = :default
 
   def self.locales
-    [['English', 'en_US'], ['Česky', 'cz_CZ'], ['Dansk', 'dk_DK'], ['Deutsch', 'de_DE'], ['Euskara', 'eu_ES'], ['Español', 'es_ES'], ['Français', 'fr_FR'], ['עברית', 'il_IL'], ['Italiano', 'it_IT'], ['한국어', 'ko_KO'], ['Lietuvių kalba','lt_LT'], ['Magyar', 'hu_HU'], ['Nederlands', 'nl_NL'], ['Norsk', 'no_NO'], ['Polski', 'pl_PL'], ['Português Brazilian', 'pt_BR'], ['Suomi', 'fi_FI'], ['Svensk', 'sv_SV']]
+    [['English', 'en_US'], ['Česky', 'cz_CZ'], ['简体中文', 'zh_ZH'], ['Dansk', 'dk_DK'], ['Deutsch', 'de_DE'], ['Euskara', 'eu_ES'], ['Español', 'es_ES'], ['Français', 'fr_FR'], ['עברית', 'il_IL'], ['Italiano', 'it_IT'], ['한국어', 'ko_KO'], ['Lietuvių kalba','lt_LT'], ['Magyar', 'hu_HU'], ['Nederlands', 'nl_NL'], ['Norsk', 'no_NO'], ['Polski', 'pl_PL'], ['Português Brazilian', 'pt_BR'], ['Suomi', 'fi_FI'], ['Svensk', 'sv_SV']]
   end
 
   def self._(string_to_localize, *args)
