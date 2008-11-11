@@ -38,7 +38,7 @@ class TasksController < ApplicationController
   end
 
   def index
-    redirect_to :list
+    redirect_to 'list'
   end
   
   def list
