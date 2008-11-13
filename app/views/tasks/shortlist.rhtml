@@ -29,6 +29,7 @@
     </select>
     </div>
     <% end %>
+
     <div <%= "style=\"display:none;\"" if @current_sheet.nil? %> id="work-log">
         <div class="log_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
         <form method="post" onsubmit="return false;" id="worklog_form">
@@ -48,6 +49,8 @@
        :success => "$('task_name').clear();" do %>
     <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
 <% end %>
+
+<% if current_user.create_projects? %>
 <div style="float:right;"><a href="#" onclick="Element.toggle('shortlist-new-project-container');">[<%= _('New Project')%>]</a></div>
 <div id="shortlist-new-project-container" style="display:none;">
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax', :controller => 'projects' },
@@ -57,6 +60,8 @@
     <input type="text" name="project[name]" id="project_name" value="<%= _ 'New Project' %>"/>
 <% end %>
 </div>
+<% end %>
+
     <% end %>
   </fieldset>
 </div>

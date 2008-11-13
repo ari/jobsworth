@@ -22,8 +22,8 @@ class WikiController < ApplicationController
       @page.company_id = current_user.company_id
       @page.name = params[:id]
       @page.project_id = nil
+      @page.save
     end
-    @page.unlock
 
     @rev = WikiRevision.new
     @rev.wiki_page = @page
@@ -31,6 +31,9 @@ class WikiController < ApplicationController
     @rev.body = params[:body]
     @rev.change = params[:change]
     @rev.save
+
+    @page.reload
+    @page.unlock
 
     # Create event log
     l = @page.event_logs.new

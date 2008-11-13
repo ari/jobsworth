@@ -10,10 +10,10 @@ end
 missing_dep = false
 missing_deps = []
 
-deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'RedCloth', 'rake' => 'rake', 'ferret' => 'ferret', 
+deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'redcloth', 'rake' => 'rake', 'ferret' => 'ferret', 
   'fastercsv' => 'fastercsv', 'eventmachine' => 'eventmachine',  'RMagick' => 'rmagick', 
-  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest',
-  'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec'
+  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'zentest',
+  'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec', 'echoe' => 'echoe'
 }
 
 puts "Verifying dependencies..."

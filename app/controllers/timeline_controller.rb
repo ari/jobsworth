@@ -1,6 +1,6 @@
 # Filter WorkLogs in different ways, with pagination
 class TimelineController < ApplicationController
-
+  
   def list
 
     filter = ""
@@ -66,8 +66,6 @@ class TimelineController < ApplicationController
     if( ([EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i) || work_log == false)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
-      
-      logger.info(filter)
       
       @logs = EventLog.paginate(:all, :include => [:user], :order => "event_logs.created_at desc", :conditions => ["event_logs.company_id = ? #{filter}", current_user.company_id], :per_page => 100, :page => params[:page] )
       

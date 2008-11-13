@@ -43,7 +43,7 @@ module WillPaginate
       }.each do |klass|
         klass.class_eval do
           include Finder::ClassMethods
-          alias_method_chain :method_missing, :paginate
+#          alias_method_chain :method_missing, :paginate
         end
       end
     end
