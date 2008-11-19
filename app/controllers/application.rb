@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
                                          :igoogle_setup, :igoogle
                                        ]
                                        
-  before_filter :clear_cache
+#  before_filter :clear_cache
                                        
   after_filter :set_charset
   after_filter OutputCompressionFilter
