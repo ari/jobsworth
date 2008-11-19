@@ -28,10 +28,6 @@ class ApplicationController < ActionController::Base
   after_filter :set_charset
   after_filter OutputCompressionFilter
 
-  def clear_cache
-    User.clear_cache
-  end
-
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
   def current_user
