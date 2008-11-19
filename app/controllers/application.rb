@@ -22,14 +22,21 @@ class ApplicationController < ActionController::Base
                                          :company_check, :subdomain_check, :unsubscribe, :shortlist_auth,
                                          :igoogle_setup, :igoogle
                                        ]
+                                       
+  before_filter :clear_cache
+                                       
   after_filter :set_charset
   after_filter OutputCompressionFilter
+
+  def clear_cache
+    User.clear_cache
+  end
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id], :include => [:company, :projects])
+      @current_user = User.find(session[:user_id], :include => [:company])
     end
     @current_user
   end
@@ -99,7 +106,7 @@ class ApplicationController < ActionController::Base
     end
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-#    session[:user_id] = 1
+    session[:user_id] = 1
 
     logger.info("remember[#{session[:remember_until]}]")
     
