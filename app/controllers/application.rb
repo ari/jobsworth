@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
     end
 
 #    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-    session[:user_id] = 1
+#    session[:user_id] = 1
 
     logger.info("remember[#{session[:remember_until]}]")
     
