@@ -12,7 +12,7 @@ missing_deps = []
 
 deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'RedCloth', 'rake' => 'rake', 'ferret' => 'ferret', 
   'fastercsv' => 'fastercsv', 'eventmachine' => 'eventmachine',  'RMagick' => 'rmagick', 
-  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest',
+  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest', 'hoe' => 'hoe',
   'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec', 'echoe' => 'echoe'
 }
 
