@@ -22,6 +22,9 @@ class ApplicationController < ActionController::Base
                                          :company_check, :subdomain_check, :unsubscribe, :shortlist_auth,
                                          :igoogle_setup, :igoogle
                                        ]
+                                       
+#  before_filter :clear_cache
+                                       
   after_filter :set_charset
   after_filter OutputCompressionFilter
 
@@ -29,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id], :include => [:company, :projects])
+      @current_user = User.find(session[:user_id], :include => [:company])
     end
     @current_user
   end
