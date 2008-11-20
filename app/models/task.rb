@@ -259,7 +259,7 @@ class Task < ActiveRecord::Base
   end
 
   def set_task_num(company_id)
-    self.task_num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id]) + 1 rescue self.task_num = 1
+    @attributes['task_num'] = Task.maximum('task_num', :conditions => ["company_id = ?", company_id]) + 1 rescue 1
   end
 
   def time_left
