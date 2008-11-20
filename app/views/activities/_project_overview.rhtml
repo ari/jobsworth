@@ -1,34 +1,30 @@
 <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
-  <%
-     last_customer = 0
-     for project in @projects
-       if last_customer != project.customer_id && current_user.option_externalclients.to_i > 0
-         if last_customer != 0
-  %>
+	<%
+	last_customer = 0
+	for project in @projects
+		if last_customer != project.customer_id && current_user.option_externalclients.to_i > 0
+			if last_customer != 0
+				%>
+			</td></tr></table></td></tr>
+			<% end %>
 
-   </td></tr></table></td></tr>
-         <% end %>
+			<%
+			collapse = " <div id=\"indicator_#{project.customer_id}\" class=\""
+			collapse << ((session[:collapse_projects] && session[:collapse_projects][project.customer_id.to_s].to_i == 1) ? "collapse-indicator-closed" : "collapse-indicator-open")
+			collapse << "\"></div>"
+			collapse << (project.customer.name == 'Internal' ? current_user.company.name : project.customer.name)
+			%>
 
-               <%
-                  collapse = " <div id=\"indicator_#{project.customer_id}\" class=\""
-                  collapse << ((session[:collapse_projects] && session[:collapse_projects][project.customer_id.to_s].to_i == 1) ? "collapse-indicator-closed" : "collapse-indicator-open")
-                  collapse << "\"></div>"
-                  collapse << (project.customer.name == 'Internal' ? current_user.company.name : project.customer.name)
-                %>
-
-               <tr><td colspan=2 align=left class="project_customer"><%= link_to_remote collapse,
-                                              :url => { :controller => 'activities', :action => 'toggle_display', :id => project.customer_id },
-                                              :loading => "Element.show('loading');",
-                                              :complete => "Element.hide('loading');"
+			<tr><td colspan=2 align=left class="project_customer">
+				<%= link_to_remote collapse, :url => { :controller => 'activities', :action => 'toggle_display', :id => project.customer_id },
+				                             :loading => "Element.show('loading');",
+                                             :complete => "Element.hide('loading');"
                %></strong></td></tr>
                <tr><td colspan=2 align=left><table width="100%" cellpadding="0" cellspacing="0" id="projects_customer_<%= project.customer_id %>" <%= "style=\"display:none;\"" if (session[:collapse_projects] && session[:collapse_projects][project.customer_id.to_s].to_i == 1) %>><tr><td>
-               <%
-                  last_customer = project.customer_id
-               end
-
-               
-
-
+				<%
+				last_customer = project.customer_id
+			end
+			
        if @widget.order_by == 'work' 
          critical_count = project.overtime
          normal_count = project.work_done - critical_count
@@ -88,12 +84,12 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
         <div class="prog-border"  style="float: right; height: 15px;position:relative;">
 	  <% if @widget.order_by == 'work' %>
 
-	  <% critical_tooltip = number_to_percentage( critical_percent, :precision => 0) + " (#{worked_nice(critical_count)}) #{_'Over Estimate'}<br/>" +
-                                number_to_percentage( critical_percent + normal_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
-             normal_tooltip   = number_to_percentage( normal_percent, :precision => 0) + " (#{worked_nice(normal_count)}) #{_'Estimated'}<br/>" +
-                                number_to_percentage( critical_percent + normal_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
-             low_tooltip      = number_to_percentage( low_percent, :precision => 0) + " (#{worked_nice(low_count)}) #{_'Left'}<br/>" +
-                                number_to_percentage( critical_percent + normal_percent + low_percent, :precision => 0) + " (#{worked_nice(critical_count + normal_count + low_count)}) #{_'Total'}<br/>"
+	  <% critical_tooltip = "#{number_to_percentage( critical_percent, :precision => 0)} (#{worked_nice(critical_count)}) #{_'Over Estimate'}<br/>" +
+                                "#{number_to_percentage( critical_percent + normal_percent, :precision => 0)} (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
+             normal_tooltip   = "#{number_to_percentage( normal_percent, :precision => 0)} (#{worked_nice(normal_count)}) #{_'Estimated'}<br/>" +
+                                "#{number_to_percentage( critical_percent + normal_percent, :precision => 0)} (#{worked_nice(critical_count + normal_count)}) #{_'Total Done'}<br/>"
+             low_tooltip      = "#{number_to_percentage( low_percent, :precision => 0)} (#{worked_nice(low_count)}) #{_'Left'}<br/>" +
+                                "#{number_to_percentage( critical_percent + normal_percent + low_percent, :precision => 0)} (#{worked_nice(critical_count + normal_count + low_count)}) #{_'Total'}<br/>"
           %>
           <div class="prog-bar-high tooltip" style="width:<%= number_to_percentage( critical_percent, :precision => 0)%>;position:absolute;" title="<%= critical_tooltip %>" </div>
           <div class="prog-bar-medium tooltip" style="width:<%= number_to_percentage( normal_percent, :precision => 0)%>;position:absolute;left:<%= number_to_percentage( critical_percent, :precision => 0)%>" title="<%= normal_tooltip%>"> </div>
