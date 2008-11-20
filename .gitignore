@@ -13,3 +13,10 @@ config/ferret_server.yml
 config/environment.rb
 config/juggernaut_config.yml
 semantic.cache
+public/javascripts/base_*.js
+public/javascripts/portal_*.js
+public/javascripts/tt_*.js
+public/stylesheets/base_*.css
+public/stylesheets/portal_*.css
+public/stylesheets/tt_*.css
+tmp
