@@ -318,7 +318,7 @@ function reset_owners() {
 var watchers = <%= @task.watchers.size + (@task.notify_emails.nil? ? 0 : @task.notify_emails.count(',')) %>;
 
 function updateList(text) {
-   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/accept.png" border="0" title="<%=_ 'Remove notification'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
+   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove notification'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
    watchers += 1;
 }
 
