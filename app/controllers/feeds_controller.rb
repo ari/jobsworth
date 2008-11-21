@@ -68,46 +68,109 @@ class FeedsController < ApplicationController
       return
     end
 
-    # Find all Project ids this user has access to
-    pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+    content = nil
+    if params[:widget].blank?
+      # Find all Project ids this user has access to
+      pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
 
-    # Find 50 last WorkLogs of the Projects
-    unless pids.nil? || pids.empty?
-      pids = pids.collect{|p|p.id}.join(',')
-      @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
-    else
-      @activities = []
-    end
-
-    # Create the RSS
-    content = RSS::Maker.make("2.0") do |m|
-      m.channel.title = "#{user.company.name} Activities"
-      m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/activities/list"
-      m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
-      m.items.do_sort = true # sort items by date
-
-      @activities.each do |log|
-        action = get_action(log)
-
-        i = m.items.new_item
-        i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
-        i.title ||= "#{action}"
-        i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
-        i.description = log.body unless log.body.blank?
-        i.date = user.tz.utc_to_local(log.started_at)
-        i.author = log.user.name unless log.user.nil?
-        action = nil
+      # Find 50 last WorkLogs of the Projects
+      unless pids.nil? || pids.empty?
+        pids = pids.collect{|p|p.id}.join(',')
+        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
+      else
+        @activities = []
       end
-    end
 
+      # Create the RSS
+      content = RSS::Maker.make("2.0") do |m|
+        m.channel.title = "#{user.company.name} Activities"
+        m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/activities/list"
+        m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
+        m.items.do_sort = true # sort items by date
+      
+        @activities.each do |log|
+          action = get_action(log)
+        
+          i = m.items.new_item
+          i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
+          i.title ||= "#{action}"
+          i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
+          i.description = log.body unless log.body.blank?
+          i.date = user.tz.utc_to_local(log.started_at)
+          i.author = log.user.name unless log.user.nil?
+          action = nil
+        end
+      end
+      @activities = nil
+    else 
+      widget = user.widgets.find(params[:widget]) rescue nil
+      
+      if widget 
+        filter = ''
+        if widget.filter_by?
+          filter = case widget.filter_by[0..0]
+                   when 'c'
+                     "AND tasks.project_id IN (#{user.projects.find(:all, :conditions => ["customer_id = ?", widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+                   when 'p'
+                     "AND tasks.project_id = #{widget.filter_by[1..-1]}"
+                   when 'm'
+                     "AND tasks.milestone_id = #{widget.filter_by[1..-1]}"
+                   when 'u'
+                     "AND tasks.project_id = #{widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+                   else 
+                     ""
+                   end
+        end
+        pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ]).collect{|p| p.id}.join(",")
+
+        unless widget.mine?
+          tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
+        else 
+          tasks = user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
+        end
+
+        tasks = case widget.order_by
+               when 'priority':
+                     tasks.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1].reverse
+               when 'date':
+                     tasks.sort_by{|t| [t.created_at.to_i, t.priority + t.severity_id] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1]
+              end
+
+        # Create the RSS
+        content = RSS::Maker.make("2.0") do |m|
+          m.channel.title = widget.name
+          m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/list"
+          m.channel.description = widget.name
+          m.items.do_sort = true # sort items by date
+          tasks.each do |task|
+            i = m.items.new_item
+            i.title = "#{task.issue_name}"
+            i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{task.task_num}"
+            i.description = task.description unless task.description.blank?
+            i.date = user.tz.utc_to_local(task.created_at)
+            i.author = task.creator.name unless task.creator.nil?
+          end
+        end
+      else  
+        content = '<?xml version="1.0" encoding="UTF-8"?>
+        <rss version="2.0"
+          xmlns:content="http://purl.org/rss/1.0/modules/content/"
+          xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+          xmlns:dc="http://purl.org/dc/elements/1.1/"
+          xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+          <channel>
+            <title>No such ClockingIT widget</title>
+            <link>http://www.clockingit.com/</link>
+            <description>No such ClockingIT widget.</description>
+          </channel>
+        </rss>'
+      end 
+    end 
     # Render it inline
     render :text => content.to_s
-    @activities = nil
     content = nil
     user = nil
-
   end
-
 
   def to_localtime(tz, time)
     DateTime.parse(tz.utc_to_local(time).to_s)
