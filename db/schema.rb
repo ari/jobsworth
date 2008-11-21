@@ -1,5 +1,5 @@
 # This file is auto-generated from the current state of the database. Instead of editing this file, 
-# please use the migrations feature of ActiveRecord to incrementally modify your database, and
+# please use the migrations feature of Active Record to incrementally modify your database, and
 # then regenerate this schema definition.
 #
 # Note that this schema.rb definition is the authoritative source for your database schema. If you need
@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 131) do
+ActiveRecord::Schema.define(:version => 20081121140153) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -289,18 +289,22 @@ ActiveRecord::Schema.define(:version => 131) do
   add_index "project_permissions", ["project_id", "user_id"], :name => "project_permissions_project_id_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",           :limit => 200, :default => "",   :null => false
-    t.integer  "user_id",                       :default => 0,    :null => false
-    t.integer  "company_id",                    :default => 0,    :null => false
-    t.integer  "customer_id",                   :default => 0,    :null => false
+    t.string   "name",             :limit => 200, :default => "",   :null => false
+    t.integer  "user_id",                         :default => 0,    :null => false
+    t.integer  "company_id",                      :default => 0,    :null => false
+    t.integer  "customer_id",                     :default => 0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
-    t.integer  "critical_count",                :default => 0
-    t.integer  "normal_count",                  :default => 0
-    t.integer  "low_count",                     :default => 0
+    t.integer  "critical_count",                  :default => 0
+    t.integer  "normal_count",                    :default => 0
+    t.integer  "low_count",                       :default => 0
     t.text     "description"
-    t.boolean  "create_forum",                  :default => true
+    t.boolean  "create_forum",                    :default => true
+    t.integer  "open_tasks"
+    t.integer  "total_tasks"
+    t.integer  "total_milestones"
+    t.integer  "open_milestones"
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
@@ -361,7 +365,7 @@ ActiveRecord::Schema.define(:version => 131) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :limit => 64
-    t.text     "data"
+    t.text     "data",       :limit => 2147483647
     t.datetime "updated_at"
   end
 

@@ -51,6 +51,8 @@ class Task < ActiveRecord::Base
     r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project.id])
     r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project.id])
     r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project.id])
+    r.project.open_tasks = nil
+    r.project.total_tasks = nil
     r.project.save
 
     if r.project.id != r.project_id
@@ -59,6 +61,8 @@ class Task < ActiveRecord::Base
       p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
       p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
       p.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id])
+      p.open_tasks = nil
+      p.total_tasks = nil
       p.save
     end
     

@@ -5,6 +5,12 @@ class Milestone < ActiveRecord::Base
 
   has_many :tasks, :dependent => :nullify
 
+  after_save { |r|
+    r.project.total_milestones = nil
+    r.project.open_milestones = nil
+    r.project.save
+  }
+
   def percent_complete
     p = 0.0
 
