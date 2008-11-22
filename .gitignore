@@ -20,3 +20,6 @@ public/stylesheets/base_*.css
 public/stylesheets/portal_*.css
 public/stylesheets/tt_*.css
 tmp
+.DS_Store
+.buildpath
+.project
