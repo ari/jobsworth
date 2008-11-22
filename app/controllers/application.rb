@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
 
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id], :include => [:company])
+      @current_user = User.find(session[:user_id], :include => [:company, :projects], :conditions => ["projects.completed_at IS NULL"])
     end
     @current_user
   end

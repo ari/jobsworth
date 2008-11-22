@@ -60,7 +60,7 @@ class TaskTest < Test::Unit::TestCase
     # TODO
   end
 
-  def test_actibe?
+  def test_active?
     @task.hide_until = nil
     assert @task.active?
 
@@ -81,8 +81,9 @@ class TaskTest < Test::Unit::TestCase
   end
 
   def test_set_task_num
-    @task.set_task_num(@task.company_id)
-    assert_equal 4, @task.task_num
+    max = Task.maximum('task_num', :conditions => ["company_id = ?", @task.company.id])
+    @task.set_task_num(@task.company.id)
+    assert_equal max + 1, @task.task_num
   end
 
   def test_time_left

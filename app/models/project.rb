@@ -46,6 +46,40 @@ class Project < ActiveRecord::Base
 
   def overtime
     tasks.sum('worked_minutes - duration', :conditions => "worked_minutes > duration").to_i
-  end 
+  end
+
+  def total_tasks_count
+    if self.total_tasks.nil?
+       self.total_tasks = tasks.count
+       self.save
+    end
+    total_tasks
+  end
+
+  def open_tasks_count
+    if self.open_tasks.nil?
+       self.open_tasks = tasks.count(:conditions => ["completed_at IS NULL"])
+       self.save
+    end
+    open_tasks
+  end
+
+  def total_milestones_count
+    if self.total_milestones.nil?
+       self.total_milestones = milestones.count
+       self.save
+    end
+    total_milestones
+  end
+
+  def open_milestones_count
+    if self.open_milestones.nil?
+       self.open_milestones = milestones.count(:conditions => ["completed_at IS NULL"])
+       self.save
+    end
+    open_milestones
+  end
+
+  
 
 end
