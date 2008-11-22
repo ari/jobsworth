@@ -1,0 +1,999 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Class: LoginController</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+// Allison template
+// Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
+
+var href_base = '.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
+
+function $(id) {
+    if (document.getElementById)
+      elem = document.getElementById(id);
+    else if ( document.all )
+      elem = eval("document.all." + id);
+    else
+      return false;
+    return elem;
+}
+
+  function toggle(id) {
+    elem = $(id);
+    elemStyle = elem.style;   
+    if (elemStyle.display == "block") {
+      elemStyle.display = "none"
+    } else {
+      elemStyle.display = "block"
+    }
+    return true;
+  }
+
+  function toggleText(id) {
+    elem = $(id)
+    if (m = elem.innerHTML.match(/(Hide)(.*)/)) {
+      elem.innerHTML = "Show" + m[2];
+    } else if (m = elem.innerHTML.match(/(Show)(.*)/)) {
+      elem.innerHTML = "Hide" + m[2];
+    }
+    return true;
+  }
+
+function span(s, klass) {
+  return '<span class="' + klass + '">' + s + '</span>';
+}
+  
+function highlightSymbols() {
+  pres = document.getElementsByTagName('pre');
+  for(var i = 0; i < pres.length; i++) {
+    pre = pres[i];
+    spans = pre.getElementsByTagName('span');
+    for(var k = 0; k < spans.length; k++) {
+      span = spans[k];
+      if (span.className.match(/ruby-identifier/)) {
+        if (span.innerHTML.match(/^:/)) {
+          span.className += " ruby-symbol";
+        }
+      }
+    }
+  }
+}
+
+ function hasClass(obj) {
+     var result = false;
+     if (obj.getAttributeNode("class") != null) {
+         result = obj.getAttributeNode("class").value;
+     }
+     return result;
+  }   
+
+ function stripe() {
+    var even = true;
+    var color = "#e4ebed";
+    var tables = document.getElementsByTagName('table');
+    if (tables.length == 0) { return; }
+    for (var h = 0; h < tables.length; h++) {
+        var trs = tables[h].getElementsByTagName("tr");
+        for (var i = 0; i < trs.length; i++) {
+          var tds = trs[i].getElementsByTagName("td");
+            for (var j = 0; j < tds.length; j++) {       
+              if (hasClass(tds[j]) != "first") {                
+              var mytd = tds[j];
+              if (even) {
+                mytd.style.backgroundColor = color;
+              }         
+            }
+          }
+          even =  ! even;
+      }
+    }
+  }
+  
+function ajaxGet(url) {
+  url = (href_base + url).replace('/./', '/')
+  var req = false;
+
+  if (window.ActiveXObject) {
+    try {
+      // stupid hack because IE7 disables local Ajax with the native xmlhttprequest object
+      // for security purposes. Yet ActiveX still works. Thanks, Microsoft. I hate you. Die.
+      req = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+    } catch (e) {
+      try {
+        /* IE 6 and maybe 5, don't know, don't care */
+        req = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          req = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) {
+          req = false;
+        }
+      }
+    }
+  }
+    
+  /* real browsers */
+  if (!req && window.XMLHttpRequest) {
+    try {
+      req = new XMLHttpRequest();
+    } catch (e) {
+      req = false;
+    }
+  } 
+  
+  if (req) {
+    req.open('GET', url, false);
+    req.send(null);
+    return req.responseText;
+  } else {
+    return "Ajax error";  
+  }
+}
+
+
+function addEvent(elm, evType, fn, useCapture) {
+	if (elm.addEventListener) {
+	  elm.addEventListener(evType, fn, useCapture);  
+  	return true;
+	} else if (elm.attachEvent) {
+  	var r = elm.attachEvent('on' + evType, fn);  
+	  return r;  
+	} else {
+  	elm['on' + evType] = fn;
+	}
+}
+
+function insertIndices() {
+  pages = ["class", "file", "method"]
+  for (x in pages) { 
+    $(pages[x]).innerHTML += ajaxGet('fr_' + pages[x] + '_index.html').replace(/(href=")/g, '$1' + href_base);
+  }
+  /* mouseoverify method links */
+  links = $('method').getElementsByTagName('a');
+  for (var x = 0; x < links.length; x++) {
+    if (m = links[x].innerHTML.match(/(.*)\s\((.*)\)/)) {
+      links[x].innerHTML = m[1] + '<br>';
+      links[x].title = m[2];
+    }
+  }
+  /* this is stupid */
+  $('class').style.display = "block";
+  $('file').style.display = "block";
+  
+  /* has to be here because IE7 does not guarantee the onLoad callback order */
+  abbreviateIndicesInner(["class", "file"], 25, "a");
+  /* same, linkTitle() depends on the class link list */
+  linkTitle();
+}
+
+function abbreviateIndices() {
+  var ids = ["defined_in", "child_of", "includes", "requires", "method", "methods"];
+  abbreviateIndicesInner(ids, 25, 'a');
+  abbreviateIndicesInner(ids, 25, 'span');
+}
+
+function abbreviateIndicesInner(indices, amount, tag) {
+  for (var x = 0; x < indices.length; x++) { 
+    var the_index = $(indices[x]);
+    if (the_index) {
+      links = the_index.getElementsByTagName(tag);
+      for (var y = 0; y < links.length; y++) {
+        var link = links[y];
+        if (link.getElementsByTagName('span').length == 0 && link.getElementsByTagName('a').length == 0) {
+          // avoid nesting
+          link.innerHTML = link.innerHTML.replace(/<br>|\n/gi, '');
+          link.title = link.innerHTML;
+          link.innerHTML = abbreviate(link.innerHTML, amount) + '<br>';
+        }
+      }
+    }
+  }
+}
+
+function linkTitle() {
+  
+  /* grab the correct title element from the index */
+  var index_page = ajaxGet('index.html');
+  title_text = index_page.match(/<title>(.*)<\/title>/m)[1];
+  document.title = title_text + " - " + document.title;
+  var p = $('header').getElementsByTagName('p')[0]
+  if (p.innerHTML.match(/^\s*$/)) {
+    p.innerHTML = title_text;
+  } else {
+    p.innerHTML = title_text + ": " + p.innerHTML;
+  }
+  
+  /* set the link properly */
+  title_link = index_page.match(/<a\s+href="(.*?)"/)[1];
+  var element = $('title');
+  var item_type = "";
+  var item_name = "";
+  if (m = element.innerHTML.match(/(Class:|Module:|File:)\s*(.*)/)) {
+    item_type = m[1];
+    item_name = m[2];
+  } else {
+    item_name = element.innerHTML;
+  }
+  element.innerHTML = '<a href="' + href_base + title_link + '">' + item_type + " " + abbreviate(item_name, 45) + '</a>';
+  element.getElementsByTagName('a')[0].title = item_name
+  
+  /* breadcrumb navigation */
+  items = item_name.split("::");
+  items_new = item_name.split("::");
+  file_links = $('class').getElementsByTagName('a');
+  for (var x = 0; x < items.length - 1; x++ ){
+    var item = items[x];
+    link = ("/classes/" + items.slice(0,x).join("/") + "/" + item + ".html").replace('//', '/');
+    regex = new RegExp(RegExp.escape(link) + '$');
+    for (var y = 0; y < file_links.length; y++) {
+      if (file_links[y].href.match(regex)) {
+         items_new[x] = '<a href="' + href_base + link + '">' + item + '</a>';
+         break;
+      }
+    }  
+  }
+  $('item_name').innerHTML = item_type + ' ' + items_new.join(" :: ");
+}
+
+function abbreviate(s, size) {
+  while (s.length > size) {
+    var old_s = s;
+    s = s.replace(/\s|\n/mg, '');
+    s = s.replace(/([A-Z])[a-z]+/m, '$1');
+    if (!s || old_s == s) {
+      return "..." + s.substring(s.length - size, s.length);
+    }
+  }
+  return s;
+}
+
+function disableSubmit(event) {
+  var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+  if (keyCode == 13) {
+    return false;
+  } else {
+    return true;
+  }
+}
+  
+function filterList(id, s, event) {
+  
+  /* some weak escaping */
+  s = s.replace(/[^\w\d\.\_\-\/\:\=\[\]\?\!]/g, '');
+  s = RegExp.escape(s);
+  
+  var show_all = false;
+  if (s.match(/^\s*$/)) {
+    show_all = true;
+  }
+  
+  links = $(id).getElementsByTagName('a')
+  regex = new RegExp(s, 'i');
+  
+  for (var x = 0; x < links.length; x++) {
+    var link = links[x];
+    if (show_all) {
+      link.style.display = 'inline';
+    } else {
+       if (link.innerHTML.match(regex)) {        
+         link.style.display = 'inline';
+       } else {
+         link.style.display = 'none';
+       }
+    }
+  }
+  return true;
+}
+
+RegExp.escape = function(text) {
+  if (!arguments.callee.sRE) {
+    var specials = ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'];
+    arguments.callee.sRE = new RegExp(
+      '(\\' + specials.join('|\\') + ')', 'g'
+    );
+  }
+  return text.replace(arguments.callee.sRE, '\\$1');
+}
+
+function hacks() {
+  // show the spacer if necessary, 
+  divs = document.getElementsByTagName('div');
+  for(var x = 0; x < divs.length; x++) {
+    if (divs[x].className && divs[x].className.match(/top/)) {
+      document.getElementById('spacer').style.display = 'block';
+    }
+  }
+  // remove extra colons from tables
+  tds = document.getElementsByTagName('td');
+  for(var x = 0; x < tds.length; x++) {
+    str = tds[x].innerHTML
+    if (str.charAt(str.length - 1) == ":") {
+      tds[x].innerHTML = str.slice(0, str.length - 1)
+    }
+  }
+}
+
+addEvent(window, 'load', insertIndices, false);
+addEvent(window, 'load', abbreviateIndices, false);
+addEvent(window, 'load', stripe, false);
+addEvent(window, 'load', highlightSymbols, false);
+addEvent(window, 'load', hacks, false);
+</script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
+</p><span><h1 id="title">
+Class: LoginController
+</h1></span>
+</div><div class="clear"></div><div id="left">
+<div class="navigation darker top" id="child_of"><h3>Child of</h3><span>
+
+<a href='ApplicationController.html'>
+ApplicationController
+</a>
+</span></div>
+
+<div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
+
+<a href="../files/app/controllers/login_controller_rb.html">app/controllers/login_controller.rb</a>
+
+</div>
+
+
+
+<div class="navigation top" id="methods"><h3>Methods</h3>
+
+
+<a href='#M000334'>
+about<br/>
+</a>
+
+
+
+
+<a href='#M000342'>
+company_check<br/>
+</a>
+
+
+
+
+<a href='#M000338'>
+forgotten_password<br/>
+</a>
+
+
+
+
+<a href='#M000330'>
+index<br/>
+</a>
+
+
+
+
+<a href='#M000335'>
+login<br/>
+</a>
+
+
+
+
+<a href='#M000336'>
+logout<br/>
+</a>
+
+
+
+
+<a href='#M000332'>
+policy<br/>
+</a>
+
+
+
+
+<a href='#M000331'>
+screenshots<br/>
+</a>
+
+
+
+
+<a href='#M000344'>
+shortlist_auth<br/>
+</a>
+
+
+
+
+<a href='#M000340'>
+signup<br/>
+</a>
+
+
+
+
+<a href='#M000343'>
+subdomain_check<br/>
+</a>
+
+
+
+
+<a href='#M000339'>
+take_forgotten<br/>
+</a>
+
+
+
+
+<a href='#M000341'>
+take_signup<br/>
+</a>
+
+
+
+
+<a href='#M000333'>
+terms<br/>
+</a>
+
+
+
+
+<a href='#M000337'>
+validate<br/>
+</a>
+
+
+</div>
+<div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
+<h1 id="item_name">Class: LoginController</h1>
+
+<div id="description"><p>
+Handle logins, as well as the portal pages
+</p>
+<p>
+The portal pages should probably be moved into a separate controller.
+</p>
+</div>
+
+
+
+
+<p></p>
+
+
+
+
+
+
+<h1>Public Instance Methods</h1>
+
+
+<a class="small" name="M000334"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000334'>
+
+
+about
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000334-show-link"><a onclick="toggle('M000334-source'); toggleText('M000334-link'); return false;" href="#" id="M000334-link">Show source...</a></p><div class="source" id="M000334-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">about</span>
+27:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000342"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000342'>
+
+
+company_check
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000342-show-link"><a onclick="toggle('M000342-source'); toggleText('M000342-link'); return false;" href="#" id="M000342-link">Show source...</a></p><div class="source" id="M000342-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 275</span>
+275:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">company_check</span>
+276:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:company</span>].<span class="ruby-identifier">blank?</span>
+277:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Please choose a name.&lt;/small&gt;&quot;</span>
+278:     <span class="ruby-keyword kw">else</span>
+279:       <span class="ruby-identifier">companies</span> = <span class="ruby-constant">Company</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;name = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:company</span>]])
+280:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">companies</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+281:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/error.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Company name already esists. Do you really want to create a duplicate company?&lt;/small&gt;&quot;</span>
+282:       <span class="ruby-keyword kw">else</span>
+283:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/accept.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Name OK&lt;/small&gt;&quot;</span>
+284:       <span class="ruby-keyword kw">end</span>
+285:     <span class="ruby-keyword kw">end</span>
+286:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000338"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000338'>
+
+
+forgotten_password
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000338-show-link"><a onclick="toggle('M000338-source'); toggleText('M000338-link'); return false;" href="#" id="M000338-link">Show source...</a></p><div class="source" id="M000338-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 139</span>
+139:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forgotten_password</span>
+140: 
+141:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000330"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000330'>
+
+
+index
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000330-show-link"><a onclick="toggle('M000330-source'); toggleText('M000330-link'); return false;" href="#" id="M000330-link">Show source...</a></p><div class="source" id="M000330-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+11:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+12:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'login'</span>
+13: 
+14:     <span class="ruby-ivar">@news</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">NewsItem</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;portal = 1&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id desc&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>)
+15:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000335"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000335'>
+
+
+login
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000335-show-link"><a onclick="toggle('M000335-source'); toggleText('M000335-link'); return false;" href="#" id="M000335-link">Show source...</a></p><div class="source" id="M000335-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 29</span>
+29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">login</span>
+30: 
+31:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-value str">'www'</span>
+32:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">subdomains</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">subdomains</span>
+33:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>]
+34:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'activities'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+35:     <span class="ruby-keyword kw">else</span>
+36:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">subdomain</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">'www'</span>
+37:         <span class="ruby-ivar">@company</span> = <span class="ruby-constant">Company</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;subdomain = ?&quot;</span>, <span class="ruby-identifier">subdomain</span>])
+38:         <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@company</span>.<span class="ruby-identifier">nil?</span>
+39:           <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'login'</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+40:         <span class="ruby-keyword kw">else</span>
+41:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-node">&quot;http://www.#{$CONFIG[:domain]}&quot;</span>
+42:         <span class="ruby-keyword kw">end</span>
+43:       <span class="ruby-keyword kw">end</span>
+44:     <span class="ruby-keyword kw">end</span>   
+45:     <span class="ruby-ivar">@news</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">NewsItem</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;portal = 1&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id desc&quot;</span>, <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">3</span>)
+46:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000336"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000336'>
+
+
+logout
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000336-show-link"><a onclick="toggle('M000336-source'); toggleText('M000336-link'); return false;" href="#" id="M000336-link">Show source...</a></p><div class="source" id="M000336-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 48</span>
+48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logout</span>
+49:     <span class="ruby-comment cmt"># Mark user as logged out</span>
+50:     <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;update users set last_ping_at = NULL, last_seen_at = NULL where id = #{current_user.id}&quot;</span>)
+51: 
+52:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">last_seen_at</span> = <span class="ruby-keyword kw">nil</span>
+53:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">last_ping_at</span> = <span class="ruby-keyword kw">nil</span>
+54:     
+55:     <span class="ruby-comment cmt"># Let other logged in Users in same Company know that User logged out.</span>
+56:     <span class="ruby-constant">Juggernaut</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;do_execute(#{current_user.id}, \&quot;Element.update('flash_message', '#{current_user.username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\&quot;);&quot;</span>, [<span class="ruby-node">&quot;info_#{current_user.company_id}&quot;</span>])
+57: 
+58:     <span class="ruby-identifier">chat_update</span> = <span class="ruby-identifier">render_to_string</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+59:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;if($('presence-online')) {&quot;</span>
+60:       <span class="ruby-identifier">page</span>.<span class="ruby-identifier">replace_html</span> <span class="ruby-value str">'presence-online'</span>, (<span class="ruby-identifier">online_users</span>).<span class="ruby-identifier">to_s</span>
+61:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;if($('presence-toggle-#{current_user.dom_id}')) {&quot;</span>
+62:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;$('presence-img-#{current_user.dom_id}').src=\&quot;#{current_user.online_status_icon}\&quot;;&quot;</span>
+63:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;}&quot;</span>
+64:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;}&quot;</span>
+65:     <span class="ruby-keyword kw">end</span>
+66:     <span class="ruby-constant">Juggernaut</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;do_execute(#{current_user.id}, '#{double_escape(chat_update)}');&quot;</span>, [<span class="ruby-node">&quot;info_#{current_user.company_id}&quot;</span>])
+67: 
+68:     <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-value str">'text/html'</span>
+69: 
+70:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>] = <span class="ruby-keyword kw">nil</span>
+71:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:project</span>] = <span class="ruby-keyword kw">nil</span>
+72:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sheet</span>] = <span class="ruby-keyword kw">nil</span>
+73:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-keyword kw">nil</span>
+74:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-keyword kw">nil</span>
+75:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-keyword kw">nil</span>
+76:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-keyword kw">nil</span>
+77:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:group_tags</span>] = <span class="ruby-keyword kw">nil</span>
+78:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:channels</span>] = <span class="ruby-keyword kw">nil</span>
+79:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-keyword kw">nil</span>
+80:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember_until</span>] = <span class="ruby-keyword kw">nil</span>
+81:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>] = <span class="ruby-keyword kw">nil</span>
+82:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>] = <span class="ruby-keyword kw">nil</span>
+83:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-value str">&quot;/&quot;</span>
+84:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000332"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000332'>
+
+
+policy
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000332-show-link"><a onclick="toggle('M000332-source'); toggleText('M000332-link'); return false;" href="#" id="M000332-link">Show source...</a></p><div class="source" id="M000332-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 20</span>
+20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">policy</span>
+21:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000331"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000331'>
+
+
+screenshots
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000331-show-link"><a onclick="toggle('M000331-source'); toggleText('M000331-link'); return false;" href="#" id="M000331-link">Show source...</a></p><div class="source" id="M000331-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 17</span>
+17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">screenshots</span>
+18:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000344"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000344'>
+
+
+shortlist_auth
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000344-show-link"><a onclick="toggle('M000344-source'); toggleText('M000344-link'); return false;" href="#" id="M000344-link">Show source...</a></p><div class="source" id="M000344-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 308</span>
+308:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">shortlist_auth</span>
+309:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
+310:     <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;autologin = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
+311: 
+312:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">nil?</span>
+313:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+314:       <span class="ruby-keyword kw">return</span>
+315:     <span class="ruby-keyword kw">end</span>
+316: 
+317:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>] = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span>
+318:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember_until</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-operator">+</span> ( <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-operator">?</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">hour</span> )
+319:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>] = <span class="ruby-keyword kw">nil</span>
+320:     <span class="ruby-identifier">authorize</span>
+321: 
+322:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'shortlist'</span>
+323: 
+324:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000340"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000340'>
+
+
+signup
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000340-show-link"><a onclick="toggle('M000340-source'); toggleText('M000340-link'); return false;" href="#" id="M000340-link">Show source...</a></p><div class="source" id="M000340-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 169</span>
+169:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">signup</span>
+170:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+171:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000343"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000343'>
+
+
+subdomain_check
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000343-show-link"><a onclick="toggle('M000343-source'); toggleText('M000343-link'); return false;" href="#" id="M000343-link">Show source...</a></p><div class="source" id="M000343-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 288</span>
+288:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subdomain_check</span>
+289:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">empty?</span>
+290:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Please choose a domain.&lt;/small&gt;&quot;</span>
+291:     <span class="ruby-keyword kw">else</span>
+292:       <span class="ruby-identifier">subdomain</span> = <span class="ruby-constant">Company</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;subdomain = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>]])
+293:       <span class="ruby-keyword kw">if</span> <span class="ruby-node">%w( www forum wiki repo mail ftp static01 new lists static )</span>.<span class="ruby-identifier">include?</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">downcase</span> )
+294:         <span class="ruby-identifier">subdomain</span> = <span class="ruby-value">1</span>
+295:       <span class="ruby-keyword kw">end</span>
+296: 
+297:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/[^a-zA-Z0-9-]/</span>) <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
+298:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Domain can only contain letters, numbers, and hyphens, no spaces.&lt;/small&gt;&quot;</span>
+299: 
+300:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">subdomain</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+301:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Domain already in use, please choose a different one.&lt;/small&gt;&quot;</span>
+302:       <span class="ruby-keyword kw">else</span>
+303:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/accept.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Domain OK&lt;/small&gt;&quot;</span>
+304:       <span class="ruby-keyword kw">end</span>
+305:     <span class="ruby-keyword kw">end</span>
+306:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000339"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000339'>
+
+
+take_forgotten
+
+()
+
+</a>
+</h3>
+<p>
+Mail the <a href="User.html">User</a> his/her credentials for all Users on
+the requested email address
+</p>
+
+<p class="source_link" id="M000339-show-link"><a onclick="toggle('M000339-source'); toggleText('M000339-link'); return false;" href="#" id="M000339-link">Show source...</a></p><div class="source" id="M000339-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 145</span>
+145:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">take_forgotten</span>
+146:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;&quot;</span>
+147:     <span class="ruby-identifier">error</span> = <span class="ruby-value">0</span>
+148: 
+149:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+150:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter your email&lt;br/&gt;&quot;</span>
+151:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+152:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;email = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>]]) <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+153:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* No such email&lt;br/&gt;&quot;</span>
+154:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+155:     <span class="ruby-keyword kw">end</span>
+156: 
+157:     <span class="ruby-keyword kw">if</span>( <span class="ruby-identifier">error</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> )
+158:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;email = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>]])
+159:       <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span>
+160:          <span class="ruby-constant">Signup</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_forgot_password</span>(<span class="ruby-identifier">u</span>)
+161:       <span class="ruby-keyword kw">end</span>
+162:     <span class="ruby-keyword kw">end</span>
+163: 
+164:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;Mail sent&quot;</span>
+165:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'login'</span>
+166:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000341"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000341'>
+
+
+take_signup
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000341-show-link"><a onclick="toggle('M000341-source'); toggleText('M000341-link'); return false;" href="#" id="M000341-link">Show source...</a></p><div class="source" id="M000341-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 173</span>
+173:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">take_signup</span>
+174: 
+175:     <span class="ruby-identifier">error</span> = <span class="ruby-value">0</span>
+176: 
+177:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:username</span>]
+178:       <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+179:       <span class="ruby-ivar">@company</span> = <span class="ruby-constant">Company</span>.<span class="ruby-identifier">new</span>
+180:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'signup'</span>
+181:       <span class="ruby-keyword kw">return</span>
+182:     <span class="ruby-keyword kw">end</span>
+183: 
+184:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;&quot;</span>
+185: 
+186: 
+187:     <span class="ruby-comment cmt"># FIXME: Use models validation instead</span>
+188:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:username</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+189:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter username&lt;br/&gt;&quot;</span>
+190:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+191:     <span class="ruby-keyword kw">end</span>
+192: 
+193:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:password</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+194:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter password&lt;br/&gt;&quot;</span>
+195:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+196:     <span class="ruby-keyword kw">end</span>
+197: 
+198:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:password_again</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+199:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter password again&lt;br/&gt;&quot;</span>
+200:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+201:     <span class="ruby-keyword kw">end</span>
+202: 
+203:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:password_again</span>] <span class="ruby-operator">!=</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:password</span>]
+204:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Password and Password Again don't match&lt;br/&gt;&quot;</span>
+205:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+206:     <span class="ruby-keyword kw">end</span>
+207: 
+208:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+209:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter your name&lt;br/&gt;&quot;</span>
+210:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+211:     <span class="ruby-keyword kw">end</span>
+212: 
+213:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+214:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter your email&lt;br/&gt;&quot;</span>
+215:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+216:     <span class="ruby-keyword kw">end</span>
+217: 
+218:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:company</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+219:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter your company name&lt;br/&gt;&quot;</span>
+220:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+221:     <span class="ruby-keyword kw">end</span>
+222: 
+223:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+224:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Enter your preferred URL for company access&lt;br/&gt;&quot;</span>
+225:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+226:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/[^a-zA-Z0-9-]/</span>) <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
+227:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Login URL can only contain letters, numbers, and hyphens, no spaces.&quot;</span>
+228:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+229:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-constant">Company</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;subdomain = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>]]) <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+230:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;* Login url already taken. Please choose another one.&quot;</span>
+231:       <span class="ruby-identifier">error</span> = <span class="ruby-value">1</span>
+232:     <span class="ruby-keyword kw">end</span>
+233: 
+234:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">error</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+235:       <span class="ruby-comment cmt"># Create the User and Company</span>
+236:       <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
+237:       <span class="ruby-ivar">@company</span> = <span class="ruby-constant">Company</span>.<span class="ruby-identifier">new</span>
+238: 
+239:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>]
+240:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">username</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:username</span>]
+241:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">password</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:password</span>]
+242:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>]
+243:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">time_zone</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>][<span class="ruby-identifier">:time_zone</span>]
+244:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">locale</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>][<span class="ruby-identifier">:locale</span>]
+245:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">option_externalclients</span> = <span class="ruby-value">1</span>
+246:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">option_tracktime</span> = <span class="ruby-value">1</span>
+247:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">option_tooltips</span> = <span class="ruby-value">1</span>
+248:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">date_format</span> = <span class="ruby-value str">&quot;%d/%m/%Y&quot;</span>
+249:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">time_format</span> = <span class="ruby-value str">&quot;%H:%M&quot;</span>
+250:       <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">admin</span> = <span class="ruby-value">1</span>
+251: 
+252:       <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:company</span>]
+253:       <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">contact_email</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:email</span>]
+254:       <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">contact_name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:name</span>]
+255:       <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">subdomain</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">strip</span>
+256: 
+257: 
+258:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">save</span>
+259:         <span class="ruby-ivar">@customer</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">new</span>
+260:         <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">name</span> = <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">name</span>
+261: 
+262:         <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">customers</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@customer</span>
+263:         <span class="ruby-ivar">@company</span>.<span class="ruby-identifier">users</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-ivar">@user</span>
+264: 
+265:         <span class="ruby-constant">Signup</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_signup</span>(<span class="ruby-ivar">@user</span>, <span class="ruby-ivar">@company</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;Error sending registration email. Account still created.&lt;br/&gt;&quot;</span>
+266:         <span class="ruby-identifier">redirect_to</span> <span class="ruby-node">&quot;http://#{@company.subdomain}.#{$CONFIG[:domain]}&quot;</span>
+267:       <span class="ruby-keyword kw">end</span>
+268: 
+269:     <span class="ruby-keyword kw">else</span>
+270:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'signup'</span>
+271:     <span class="ruby-keyword kw">end</span>
+272: 
+273:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000333"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000333'>
+
+
+terms
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000333-show-link"><a onclick="toggle('M000333-source'); toggleText('M000333-link'); return false;" href="#" id="M000333-link">Show source...</a></p><div class="source" id="M000333-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">terms</span>
+24:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000337"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000337'>
+
+
+validate
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000337-show-link"><a onclick="toggle('M000337-source'); toggleText('M000337-link'); return false;" href="#" id="M000337-link">Show source...</a></p><div class="source" id="M000337-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 86</span>
+ 86:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
+ 87:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>])
+ 88:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-value str">'www'</span>
+ 89:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">subdomains</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">subdomains</span>
+ 90:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">logged_in</span> = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">login</span>(<span class="ruby-identifier">subdomain</span>)
+ 91:       <span class="ruby-identifier">logged_in</span>.<span class="ruby-identifier">last_login_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
+ 92:       
+ 93:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:remember</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+ 94:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember_until</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">month</span>
+ 95:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember</span>] = <span class="ruby-value">1</span>
+ 96:       <span class="ruby-keyword kw">else</span> 
+ 97:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember</span>] = <span class="ruby-value">0</span>
+ 98:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:remember_until</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">hour</span>
+ 99:       <span class="ruby-keyword kw">end</span>
+100:       <span class="ruby-identifier">logged_in</span>.<span class="ruby-identifier">last_seen_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
+101:       <span class="ruby-identifier">logged_in</span>.<span class="ruby-identifier">last_ping_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
+102: 
+103:       <span class="ruby-identifier">logged_in</span>.<span class="ruby-identifier">save</span>
+104:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>] = <span class="ruby-identifier">logged_in</span>.<span class="ruby-identifier">id</span>
+105:       
+106:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sheet</span>] = <span class="ruby-keyword kw">nil</span>
+107:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+108:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;0&quot;</span>
+109:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;0&quot;</span>
+110:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;0&quot;</span>
+111:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;0&quot;</span>
+112:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;-1&quot;</span>
+113:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;1&quot;</span>
+114:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;0&quot;</span>
+115:       
+116:       <span class="ruby-comment cmt"># Let others know User logged in</span>
+117:       <span class="ruby-constant">Juggernaut</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;do_execute(#{logged_in.id}, \&quot;Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\&quot;);&quot;</span>, [<span class="ruby-node">&quot;info_#{logged_in.company_id}&quot;</span>])
+118: 
+119:       <span class="ruby-identifier">chat_update</span> = <span class="ruby-identifier">render_to_string</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+120:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;if($('presence-online')) {&quot;</span>
+121:         <span class="ruby-identifier">page</span>.<span class="ruby-identifier">replace_html</span> <span class="ruby-value str">'presence-online'</span>, (<span class="ruby-identifier">online_users</span>).<span class="ruby-identifier">to_s</span>
+122:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;if($('presence-toggle-#{logged_in.dom_id}')) {&quot;</span>
+123:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;$('presence-img-#{logged_in.dom_id}').src=\&quot;#{logged_in.online_status_icon}\&quot;;&quot;</span>
+124:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;}&quot;</span>
+125:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;}&quot;</span>
+126:       <span class="ruby-keyword kw">end</span>
+127:       
+128:       <span class="ruby-constant">Juggernaut</span>.<span class="ruby-identifier">send</span>(<span class="ruby-node">&quot;do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');&quot;</span>, [<span class="ruby-node">&quot;info_#{logged_in.company_id}&quot;</span>])
+129: 
+130:       <span class="ruby-identifier">response</span>.<span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-value str">'text/html'</span>
+131:       
+132:       <span class="ruby-identifier">redirect_from_last</span>
+133:     <span class="ruby-keyword kw">else</span>
+134:       <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;Username or password is wrong...&quot;</span>
+135:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'login'</span>
+136:     <span class="ruby-keyword kw">end</span>
+137:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+
+
+
+
+</div><div class="clear" id="footer">Generated on Jan 21, 2008 / Allison 2 &copy; 2007 <a href="http://cloudbur.st">Cloudburst, LLC</a></div></div></body></html>

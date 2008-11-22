@@ -1,0 +1,652 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Class: TopicsController</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+// Allison template
+// Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
+
+var href_base = '.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
+
+function $(id) {
+    if (document.getElementById)
+      elem = document.getElementById(id);
+    else if ( document.all )
+      elem = eval("document.all." + id);
+    else
+      return false;
+    return elem;
+}
+
+  function toggle(id) {
+    elem = $(id);
+    elemStyle = elem.style;   
+    if (elemStyle.display == "block") {
+      elemStyle.display = "none"
+    } else {
+      elemStyle.display = "block"
+    }
+    return true;
+  }
+
+  function toggleText(id) {
+    elem = $(id)
+    if (m = elem.innerHTML.match(/(Hide)(.*)/)) {
+      elem.innerHTML = "Show" + m[2];
+    } else if (m = elem.innerHTML.match(/(Show)(.*)/)) {
+      elem.innerHTML = "Hide" + m[2];
+    }
+    return true;
+  }
+
+function span(s, klass) {
+  return '<span class="' + klass + '">' + s + '</span>';
+}
+  
+function highlightSymbols() {
+  pres = document.getElementsByTagName('pre');
+  for(var i = 0; i < pres.length; i++) {
+    pre = pres[i];
+    spans = pre.getElementsByTagName('span');
+    for(var k = 0; k < spans.length; k++) {
+      span = spans[k];
+      if (span.className.match(/ruby-identifier/)) {
+        if (span.innerHTML.match(/^:/)) {
+          span.className += " ruby-symbol";
+        }
+      }
+    }
+  }
+}
+
+ function hasClass(obj) {
+     var result = false;
+     if (obj.getAttributeNode("class") != null) {
+         result = obj.getAttributeNode("class").value;
+     }
+     return result;
+  }   
+
+ function stripe() {
+    var even = true;
+    var color = "#e4ebed";
+    var tables = document.getElementsByTagName('table');
+    if (tables.length == 0) { return; }
+    for (var h = 0; h < tables.length; h++) {
+        var trs = tables[h].getElementsByTagName("tr");
+        for (var i = 0; i < trs.length; i++) {
+          var tds = trs[i].getElementsByTagName("td");
+            for (var j = 0; j < tds.length; j++) {       
+              if (hasClass(tds[j]) != "first") {                
+              var mytd = tds[j];
+              if (even) {
+                mytd.style.backgroundColor = color;
+              }         
+            }
+          }
+          even =  ! even;
+      }
+    }
+  }
+  
+function ajaxGet(url) {
+  url = (href_base + url).replace('/./', '/')
+  var req = false;
+
+  if (window.ActiveXObject) {
+    try {
+      // stupid hack because IE7 disables local Ajax with the native xmlhttprequest object
+      // for security purposes. Yet ActiveX still works. Thanks, Microsoft. I hate you. Die.
+      req = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+    } catch (e) {
+      try {
+        /* IE 6 and maybe 5, don't know, don't care */
+        req = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          req = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) {
+          req = false;
+        }
+      }
+    }
+  }
+    
+  /* real browsers */
+  if (!req && window.XMLHttpRequest) {
+    try {
+      req = new XMLHttpRequest();
+    } catch (e) {
+      req = false;
+    }
+  } 
+  
+  if (req) {
+    req.open('GET', url, false);
+    req.send(null);
+    return req.responseText;
+  } else {
+    return "Ajax error";  
+  }
+}
+
+
+function addEvent(elm, evType, fn, useCapture) {
+	if (elm.addEventListener) {
+	  elm.addEventListener(evType, fn, useCapture);  
+  	return true;
+	} else if (elm.attachEvent) {
+  	var r = elm.attachEvent('on' + evType, fn);  
+	  return r;  
+	} else {
+  	elm['on' + evType] = fn;
+	}
+}
+
+function insertIndices() {
+  pages = ["class", "file", "method"]
+  for (x in pages) { 
+    $(pages[x]).innerHTML += ajaxGet('fr_' + pages[x] + '_index.html').replace(/(href=")/g, '$1' + href_base);
+  }
+  /* mouseoverify method links */
+  links = $('method').getElementsByTagName('a');
+  for (var x = 0; x < links.length; x++) {
+    if (m = links[x].innerHTML.match(/(.*)\s\((.*)\)/)) {
+      links[x].innerHTML = m[1] + '<br>';
+      links[x].title = m[2];
+    }
+  }
+  /* this is stupid */
+  $('class').style.display = "block";
+  $('file').style.display = "block";
+  
+  /* has to be here because IE7 does not guarantee the onLoad callback order */
+  abbreviateIndicesInner(["class", "file"], 25, "a");
+  /* same, linkTitle() depends on the class link list */
+  linkTitle();
+}
+
+function abbreviateIndices() {
+  var ids = ["defined_in", "child_of", "includes", "requires", "method", "methods"];
+  abbreviateIndicesInner(ids, 25, 'a');
+  abbreviateIndicesInner(ids, 25, 'span');
+}
+
+function abbreviateIndicesInner(indices, amount, tag) {
+  for (var x = 0; x < indices.length; x++) { 
+    var the_index = $(indices[x]);
+    if (the_index) {
+      links = the_index.getElementsByTagName(tag);
+      for (var y = 0; y < links.length; y++) {
+        var link = links[y];
+        if (link.getElementsByTagName('span').length == 0 && link.getElementsByTagName('a').length == 0) {
+          // avoid nesting
+          link.innerHTML = link.innerHTML.replace(/<br>|\n/gi, '');
+          link.title = link.innerHTML;
+          link.innerHTML = abbreviate(link.innerHTML, amount) + '<br>';
+        }
+      }
+    }
+  }
+}
+
+function linkTitle() {
+  
+  /* grab the correct title element from the index */
+  var index_page = ajaxGet('index.html');
+  title_text = index_page.match(/<title>(.*)<\/title>/m)[1];
+  document.title = title_text + " - " + document.title;
+  var p = $('header').getElementsByTagName('p')[0]
+  if (p.innerHTML.match(/^\s*$/)) {
+    p.innerHTML = title_text;
+  } else {
+    p.innerHTML = title_text + ": " + p.innerHTML;
+  }
+  
+  /* set the link properly */
+  title_link = index_page.match(/<a\s+href="(.*?)"/)[1];
+  var element = $('title');
+  var item_type = "";
+  var item_name = "";
+  if (m = element.innerHTML.match(/(Class:|Module:|File:)\s*(.*)/)) {
+    item_type = m[1];
+    item_name = m[2];
+  } else {
+    item_name = element.innerHTML;
+  }
+  element.innerHTML = '<a href="' + href_base + title_link + '">' + item_type + " " + abbreviate(item_name, 45) + '</a>';
+  element.getElementsByTagName('a')[0].title = item_name
+  
+  /* breadcrumb navigation */
+  items = item_name.split("::");
+  items_new = item_name.split("::");
+  file_links = $('class').getElementsByTagName('a');
+  for (var x = 0; x < items.length - 1; x++ ){
+    var item = items[x];
+    link = ("/classes/" + items.slice(0,x).join("/") + "/" + item + ".html").replace('//', '/');
+    regex = new RegExp(RegExp.escape(link) + '$');
+    for (var y = 0; y < file_links.length; y++) {
+      if (file_links[y].href.match(regex)) {
+         items_new[x] = '<a href="' + href_base + link + '">' + item + '</a>';
+         break;
+      }
+    }  
+  }
+  $('item_name').innerHTML = item_type + ' ' + items_new.join(" :: ");
+}
+
+function abbreviate(s, size) {
+  while (s.length > size) {
+    var old_s = s;
+    s = s.replace(/\s|\n/mg, '');
+    s = s.replace(/([A-Z])[a-z]+/m, '$1');
+    if (!s || old_s == s) {
+      return "..." + s.substring(s.length - size, s.length);
+    }
+  }
+  return s;
+}
+
+function disableSubmit(event) {
+  var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+  if (keyCode == 13) {
+    return false;
+  } else {
+    return true;
+  }
+}
+  
+function filterList(id, s, event) {
+  
+  /* some weak escaping */
+  s = s.replace(/[^\w\d\.\_\-\/\:\=\[\]\?\!]/g, '');
+  s = RegExp.escape(s);
+  
+  var show_all = false;
+  if (s.match(/^\s*$/)) {
+    show_all = true;
+  }
+  
+  links = $(id).getElementsByTagName('a')
+  regex = new RegExp(s, 'i');
+  
+  for (var x = 0; x < links.length; x++) {
+    var link = links[x];
+    if (show_all) {
+      link.style.display = 'inline';
+    } else {
+       if (link.innerHTML.match(regex)) {        
+         link.style.display = 'inline';
+       } else {
+         link.style.display = 'none';
+       }
+    }
+  }
+  return true;
+}
+
+RegExp.escape = function(text) {
+  if (!arguments.callee.sRE) {
+    var specials = ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'];
+    arguments.callee.sRE = new RegExp(
+      '(\\' + specials.join('|\\') + ')', 'g'
+    );
+  }
+  return text.replace(arguments.callee.sRE, '\\$1');
+}
+
+function hacks() {
+  // show the spacer if necessary, 
+  divs = document.getElementsByTagName('div');
+  for(var x = 0; x < divs.length; x++) {
+    if (divs[x].className && divs[x].className.match(/top/)) {
+      document.getElementById('spacer').style.display = 'block';
+    }
+  }
+  // remove extra colons from tables
+  tds = document.getElementsByTagName('td');
+  for(var x = 0; x < tds.length; x++) {
+    str = tds[x].innerHTML
+    if (str.charAt(str.length - 1) == ":") {
+      tds[x].innerHTML = str.slice(0, str.length - 1)
+    }
+  }
+}
+
+addEvent(window, 'load', insertIndices, false);
+addEvent(window, 'load', abbreviateIndices, false);
+addEvent(window, 'load', stripe, false);
+addEvent(window, 'load', highlightSymbols, false);
+addEvent(window, 'load', hacks, false);
+</script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
+</p><span><h1 id="title">
+Class: TopicsController
+</h1></span>
+</div><div class="clear"></div><div id="left">
+<div class="navigation darker top" id="child_of"><h3>Child of</h3><span>
+
+<a href='ApplicationController.html'>
+ApplicationController
+</a>
+</span></div>
+
+<div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
+
+<a href="../files/app/controllers/topics_controller_rb.html">app/controllers/topics_controller.rb</a>
+
+</div>
+
+
+
+<div class="navigation top" id="methods"><h3>Methods</h3>
+
+
+<a href='#M000362'>
+assign_protected<br/>
+</a>
+
+
+
+
+<a href='#M000364'>
+authorized?<br/>
+</a>
+
+
+
+
+<a href='#M000359'>
+create<br/>
+</a>
+
+
+
+
+<a href='#M000361'>
+destroy<br/>
+</a>
+
+
+
+
+<a href='#M000363'>
+find_forum_and_topic<br/>
+</a>
+
+
+
+
+<a href='#M000356'>
+index<br/>
+</a>
+
+
+
+
+<a href='#M000357'>
+new<br/>
+</a>
+
+
+
+
+<a href='#M000358'>
+show<br/>
+</a>
+
+
+
+
+<a href='#M000360'>
+update<br/>
+</a>
+
+
+</div>
+<div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
+<h1 id="item_name">Class: TopicsController</h1>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+
+<h1>Public Instance Methods</h1>
+
+
+<a class="small" name="M000359"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000359'>
+
+
+create
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000359-show-link"><a onclick="toggle('M000359-source'); toggleText('M000359-link'); return false;" href="#" id="M000359-link">Show source...</a></p><div class="source" id="M000359-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 28</span>
+28:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
+29:     <span class="ruby-comment cmt"># this is icky - move the topic/first post workings into the topic model?</span>
+30:     <span class="ruby-constant">Topic</span>.<span class="ruby-identifier">transaction</span> <span class="ruby-keyword kw">do</span>
+31:       <span class="ruby-ivar">@topic</span>  = <span class="ruby-ivar">@forum</span>.<span class="ruby-identifier">topics</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>])
+32:       <span class="ruby-identifier">assign_protected</span>
+33:       <span class="ruby-ivar">@post</span>   = <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>])
+34:       <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">topic</span>=<span class="ruby-ivar">@topic</span>
+35:       <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
+36:       <span class="ruby-comment cmt"># only save topic if post is valid so in the view topic will be a new record if there was an error</span>
+37:       <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">body</span> = <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">body</span> <span class="ruby-comment cmt"># incase save fails and we go back to the form</span>
+38:       <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">save!</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">valid?</span>
+39:       <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">save!</span>
+40: 
+41:       <span class="ruby-constant">Notifications</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_forum_post</span>(<span class="ruby-identifier">current_user</span>, <span class="ruby-ivar">@post</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+42:     <span class="ruby-keyword kw">end</span>
+43:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+44:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">topic_path</span>(<span class="ruby-ivar">@forum</span>, <span class="ruby-ivar">@topic</span>) }
+45:     <span class="ruby-keyword kw">end</span>
+46:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000361"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000361'>
+
+
+destroy
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000361-show-link"><a onclick="toggle('M000361-source'); toggleText('M000361-link'); return false;" href="#" id="M000361-link">Show source...</a></p><div class="source" id="M000361-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 62</span>
+62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+63:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">forum</span>)
+64:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">forums_path</span>
+65:       <span class="ruby-keyword kw">return</span>
+66:     <span class="ruby-keyword kw">end</span>
+67: 
+68:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
+69:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">forums_path</span>
+70:       <span class="ruby-keyword kw">return</span>
+71:     <span class="ruby-keyword kw">end</span>
+72: 
+73:     <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">destroy</span>
+74:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;Topic '#{CGI::escapeHTML(@topic.title)}' was deleted.&quot;</span>
+75:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+76:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">forum_path</span>(<span class="ruby-ivar">@forum</span>) }
+77:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-value">200</span> }
+78:     <span class="ruby-keyword kw">end</span>
+79:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000356"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000356'>
+
+
+index
+
+()
+
+</a>
+</h3>
+<p>
+before_filter :update_last_seen_at, :only =&gt; :<a
+href="TopicsController.html#M000358">show</a>
+</p>
+
+<p class="source_link" id="M000356-show-link"><a onclick="toggle('M000356-source'); toggleText('M000356-link'); return false;" href="#" id="M000356-link">Show source...</a></p><div class="source" id="M000356-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 5</span>
+5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
+6:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+7:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">forum_path</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:forum_id</span>]) }
+8:     <span class="ruby-keyword kw">end</span>
+9:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000357"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000357'>
+
+
+new
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000357-show-link"><a onclick="toggle('M000357-source'); toggleText('M000357-link'); return false;" href="#" id="M000357-link">Show source...</a></p><div class="source" id="M000357-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 11</span>
+11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
+12:     <span class="ruby-ivar">@topic</span> = <span class="ruby-constant">Topic</span>.<span class="ruby-identifier">new</span>
+13:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000358"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000358'>
+
+
+show
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000358-show-link"><a onclick="toggle('M000358-source'); toggleText('M000358-link'); return false;" href="#" id="M000358-link">Show source...</a></p><div class="source" id="M000358-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 15</span>
+15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
+16:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+17:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword kw">do</span>
+18:         <span class="ruby-comment cmt"># keep track of when we last viewed this topic for activity indicators</span>
+19:         (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:topics</span>] <span class="ruby-operator">||=</span> {})[<span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">id</span>] = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">logged_in?</span>
+20:         <span class="ruby-comment cmt"># authors of topics don't get counted towards total hits</span>
+21:         <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">hit!</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">user</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">current_user</span>
+22:         <span class="ruby-ivar">@posts</span> = <span class="ruby-constant">Post</span>.<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'posts.created_at'</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:user</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'posts.topic_id = ?'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]], <span class="ruby-identifier">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>] <span class="ruby-operator">||</span> <span class="ruby-value">1</span>)
+23:         <span class="ruby-ivar">@post</span>   = <span class="ruby-constant">Post</span>.<span class="ruby-identifier">new</span>
+24:       <span class="ruby-keyword kw">end</span>
+25:     <span class="ruby-keyword kw">end</span>
+26:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000360"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000360'>
+
+
+update
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000360-show-link"><a onclick="toggle('M000360-source'); toggleText('M000360-link'); return false;" href="#" id="M000360-link">Show source...</a></p><div class="source" id="M000360-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 48</span>
+48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+49:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">user_id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">forum</span>)
+50:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">topic_path</span>(<span class="ruby-ivar">@forum</span>, <span class="ruby-ivar">@topic</span>)
+51:       <span class="ruby-keyword kw">return</span>
+52:     <span class="ruby-keyword kw">end</span>
+53:     <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">attributes</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>]
+54:     <span class="ruby-identifier">assign_protected</span>
+55:     <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">save!</span>
+56:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
+57:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">topic_path</span>(<span class="ruby-ivar">@forum</span>, <span class="ruby-ivar">@topic</span>) }
+58:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">xml</span>  { <span class="ruby-identifier">head</span> <span class="ruby-value">200</span> }
+59:     <span class="ruby-keyword kw">end</span>
+60:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+
+<h1>Protected Instance Methods</h1>
+
+
+<a class="small" name="M000362"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000362'>
+
+
+assign_protected
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000362-show-link"><a onclick="toggle('M000362-source'); toggleText('M000362-link'); return false;" href="#" id="M000362-link">Show source...</a></p><div class="source" id="M000362-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 82</span>
+82:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">assign_protected</span>
+83:       <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">user</span>     = <span class="ruby-identifier">current_user</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">new_record?</span>
+84:       <span class="ruby-comment cmt"># admins and moderators can sticky and lock topics</span>
+85:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">admin?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">forum</span>)
+86:       <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">sticky</span>, <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">locked</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>][<span class="ruby-identifier">:sticky</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>][<span class="ruby-identifier">:locked</span>]
+87:       <span class="ruby-comment cmt"># only admins can move</span>
+88:       <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">admin?</span>
+89:       <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">forum_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>][<span class="ruby-identifier">:forum_id</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic</span>][<span class="ruby-identifier">:forum_id</span>]
+90:     <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000364"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000364'>
+
+
+authorized?
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000364-show-link"><a onclick="toggle('M000364-source'); toggleText('M000364-link'); return false;" href="#" id="M000364-link">Show source...</a></p><div class="source" id="M000364-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 97</span>
+97:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">authorized?</span>
+98:       <span class="ruby-node">%w(new create)</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">action_name</span>) <span class="ruby-operator">||</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">current_user</span>)
+99:     <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000363"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000363'>
+
+
+find_forum_and_topic
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000363-show-link"><a onclick="toggle('M000363-source'); toggleText('M000363-link'); return false;" href="#" id="M000363-link">Show source...</a></p><div class="source" id="M000363-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/topics_controller.rb, line 92</span>
+92:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_forum_and_topic</span>
+93:       <span class="ruby-ivar">@forum</span> = <span class="ruby-constant">Forum</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:forum_id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+94:       <span class="ruby-ivar">@topic</span> = <span class="ruby-ivar">@forum</span>.<span class="ruby-identifier">topics</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]
+95:     <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+
+
+
+
+</div><div class="clear" id="footer">Generated on Jan 21, 2008 / Allison 2 &copy; 2007 <a href="http://cloudbur.st">Cloudburst, LLC</a></div></div></body></html>

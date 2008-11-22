@@ -1,0 +1,599 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Class: Project</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+// Allison template
+// Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
+
+var href_base = '.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
+
+function $(id) {
+    if (document.getElementById)
+      elem = document.getElementById(id);
+    else if ( document.all )
+      elem = eval("document.all." + id);
+    else
+      return false;
+    return elem;
+}
+
+  function toggle(id) {
+    elem = $(id);
+    elemStyle = elem.style;   
+    if (elemStyle.display == "block") {
+      elemStyle.display = "none"
+    } else {
+      elemStyle.display = "block"
+    }
+    return true;
+  }
+
+  function toggleText(id) {
+    elem = $(id)
+    if (m = elem.innerHTML.match(/(Hide)(.*)/)) {
+      elem.innerHTML = "Show" + m[2];
+    } else if (m = elem.innerHTML.match(/(Show)(.*)/)) {
+      elem.innerHTML = "Hide" + m[2];
+    }
+    return true;
+  }
+
+function span(s, klass) {
+  return '<span class="' + klass + '">' + s + '</span>';
+}
+  
+function highlightSymbols() {
+  pres = document.getElementsByTagName('pre');
+  for(var i = 0; i < pres.length; i++) {
+    pre = pres[i];
+    spans = pre.getElementsByTagName('span');
+    for(var k = 0; k < spans.length; k++) {
+      span = spans[k];
+      if (span.className.match(/ruby-identifier/)) {
+        if (span.innerHTML.match(/^:/)) {
+          span.className += " ruby-symbol";
+        }
+      }
+    }
+  }
+}
+
+ function hasClass(obj) {
+     var result = false;
+     if (obj.getAttributeNode("class") != null) {
+         result = obj.getAttributeNode("class").value;
+     }
+     return result;
+  }   
+
+ function stripe() {
+    var even = true;
+    var color = "#e4ebed";
+    var tables = document.getElementsByTagName('table');
+    if (tables.length == 0) { return; }
+    for (var h = 0; h < tables.length; h++) {
+        var trs = tables[h].getElementsByTagName("tr");
+        for (var i = 0; i < trs.length; i++) {
+          var tds = trs[i].getElementsByTagName("td");
+            for (var j = 0; j < tds.length; j++) {       
+              if (hasClass(tds[j]) != "first") {                
+              var mytd = tds[j];
+              if (even) {
+                mytd.style.backgroundColor = color;
+              }         
+            }
+          }
+          even =  ! even;
+      }
+    }
+  }
+  
+function ajaxGet(url) {
+  url = (href_base + url).replace('/./', '/')
+  var req = false;
+
+  if (window.ActiveXObject) {
+    try {
+      // stupid hack because IE7 disables local Ajax with the native xmlhttprequest object
+      // for security purposes. Yet ActiveX still works. Thanks, Microsoft. I hate you. Die.
+      req = new ActiveXObject("MSXML2.XMLHTTP.3.0");
+    } catch (e) {
+      try {
+        /* IE 6 and maybe 5, don't know, don't care */
+        req = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          req = new ActiveXObject("Microsoft.XMLHTTP");
+        } catch (e) {
+          req = false;
+        }
+      }
+    }
+  }
+    
+  /* real browsers */
+  if (!req && window.XMLHttpRequest) {
+    try {
+      req = new XMLHttpRequest();
+    } catch (e) {
+      req = false;
+    }
+  } 
+  
+  if (req) {
+    req.open('GET', url, false);
+    req.send(null);
+    return req.responseText;
+  } else {
+    return "Ajax error";  
+  }
+}
+
+
+function addEvent(elm, evType, fn, useCapture) {
+	if (elm.addEventListener) {
+	  elm.addEventListener(evType, fn, useCapture);  
+  	return true;
+	} else if (elm.attachEvent) {
+  	var r = elm.attachEvent('on' + evType, fn);  
+	  return r;  
+	} else {
+  	elm['on' + evType] = fn;
+	}
+}
+
+function insertIndices() {
+  pages = ["class", "file", "method"]
+  for (x in pages) { 
+    $(pages[x]).innerHTML += ajaxGet('fr_' + pages[x] + '_index.html').replace(/(href=")/g, '$1' + href_base);
+  }
+  /* mouseoverify method links */
+  links = $('method').getElementsByTagName('a');
+  for (var x = 0; x < links.length; x++) {
+    if (m = links[x].innerHTML.match(/(.*)\s\((.*)\)/)) {
+      links[x].innerHTML = m[1] + '<br>';
+      links[x].title = m[2];
+    }
+  }
+  /* this is stupid */
+  $('class').style.display = "block";
+  $('file').style.display = "block";
+  
+  /* has to be here because IE7 does not guarantee the onLoad callback order */
+  abbreviateIndicesInner(["class", "file"], 25, "a");
+  /* same, linkTitle() depends on the class link list */
+  linkTitle();
+}
+
+function abbreviateIndices() {
+  var ids = ["defined_in", "child_of", "includes", "requires", "method", "methods"];
+  abbreviateIndicesInner(ids, 25, 'a');
+  abbreviateIndicesInner(ids, 25, 'span');
+}
+
+function abbreviateIndicesInner(indices, amount, tag) {
+  for (var x = 0; x < indices.length; x++) { 
+    var the_index = $(indices[x]);
+    if (the_index) {
+      links = the_index.getElementsByTagName(tag);
+      for (var y = 0; y < links.length; y++) {
+        var link = links[y];
+        if (link.getElementsByTagName('span').length == 0 && link.getElementsByTagName('a').length == 0) {
+          // avoid nesting
+          link.innerHTML = link.innerHTML.replace(/<br>|\n/gi, '');
+          link.title = link.innerHTML;
+          link.innerHTML = abbreviate(link.innerHTML, amount) + '<br>';
+        }
+      }
+    }
+  }
+}
+
+function linkTitle() {
+  
+  /* grab the correct title element from the index */
+  var index_page = ajaxGet('index.html');
+  title_text = index_page.match(/<title>(.*)<\/title>/m)[1];
+  document.title = title_text + " - " + document.title;
+  var p = $('header').getElementsByTagName('p')[0]
+  if (p.innerHTML.match(/^\s*$/)) {
+    p.innerHTML = title_text;
+  } else {
+    p.innerHTML = title_text + ": " + p.innerHTML;
+  }
+  
+  /* set the link properly */
+  title_link = index_page.match(/<a\s+href="(.*?)"/)[1];
+  var element = $('title');
+  var item_type = "";
+  var item_name = "";
+  if (m = element.innerHTML.match(/(Class:|Module:|File:)\s*(.*)/)) {
+    item_type = m[1];
+    item_name = m[2];
+  } else {
+    item_name = element.innerHTML;
+  }
+  element.innerHTML = '<a href="' + href_base + title_link + '">' + item_type + " " + abbreviate(item_name, 45) + '</a>';
+  element.getElementsByTagName('a')[0].title = item_name
+  
+  /* breadcrumb navigation */
+  items = item_name.split("::");
+  items_new = item_name.split("::");
+  file_links = $('class').getElementsByTagName('a');
+  for (var x = 0; x < items.length - 1; x++ ){
+    var item = items[x];
+    link = ("/classes/" + items.slice(0,x).join("/") + "/" + item + ".html").replace('//', '/');
+    regex = new RegExp(RegExp.escape(link) + '$');
+    for (var y = 0; y < file_links.length; y++) {
+      if (file_links[y].href.match(regex)) {
+         items_new[x] = '<a href="' + href_base + link + '">' + item + '</a>';
+         break;
+      }
+    }  
+  }
+  $('item_name').innerHTML = item_type + ' ' + items_new.join(" :: ");
+}
+
+function abbreviate(s, size) {
+  while (s.length > size) {
+    var old_s = s;
+    s = s.replace(/\s|\n/mg, '');
+    s = s.replace(/([A-Z])[a-z]+/m, '$1');
+    if (!s || old_s == s) {
+      return "..." + s.substring(s.length - size, s.length);
+    }
+  }
+  return s;
+}
+
+function disableSubmit(event) {
+  var keyCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+  if (keyCode == 13) {
+    return false;
+  } else {
+    return true;
+  }
+}
+  
+function filterList(id, s, event) {
+  
+  /* some weak escaping */
+  s = s.replace(/[^\w\d\.\_\-\/\:\=\[\]\?\!]/g, '');
+  s = RegExp.escape(s);
+  
+  var show_all = false;
+  if (s.match(/^\s*$/)) {
+    show_all = true;
+  }
+  
+  links = $(id).getElementsByTagName('a')
+  regex = new RegExp(s, 'i');
+  
+  for (var x = 0; x < links.length; x++) {
+    var link = links[x];
+    if (show_all) {
+      link.style.display = 'inline';
+    } else {
+       if (link.innerHTML.match(regex)) {        
+         link.style.display = 'inline';
+       } else {
+         link.style.display = 'none';
+       }
+    }
+  }
+  return true;
+}
+
+RegExp.escape = function(text) {
+  if (!arguments.callee.sRE) {
+    var specials = ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'];
+    arguments.callee.sRE = new RegExp(
+      '(\\' + specials.join('|\\') + ')', 'g'
+    );
+  }
+  return text.replace(arguments.callee.sRE, '\\$1');
+}
+
+function hacks() {
+  // show the spacer if necessary, 
+  divs = document.getElementsByTagName('div');
+  for(var x = 0; x < divs.length; x++) {
+    if (divs[x].className && divs[x].className.match(/top/)) {
+      document.getElementById('spacer').style.display = 'block';
+    }
+  }
+  // remove extra colons from tables
+  tds = document.getElementsByTagName('td');
+  for(var x = 0; x < tds.length; x++) {
+    str = tds[x].innerHTML
+    if (str.charAt(str.length - 1) == ":") {
+      tds[x].innerHTML = str.slice(0, str.length - 1)
+    }
+  }
+}
+
+addEvent(window, 'load', insertIndices, false);
+addEvent(window, 'load', abbreviateIndices, false);
+addEvent(window, 'load', stripe, false);
+addEvent(window, 'load', highlightSymbols, false);
+addEvent(window, 'load', hacks, false);
+</script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
+</p><span><h1 id="title">
+Class: Project
+</h1></span>
+</div><div class="clear"></div><div id="left">
+<div class="navigation darker top" id="child_of"><h3>Child of</h3><span>
+
+ActiveRecord::Base
+</span></div>
+
+<div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
+
+<a href="../files/app/models/project_rb.html">app/models/project.rb</a>
+
+</div>
+
+
+
+<div class="navigation top" id="methods"><h3>Methods</h3>
+
+
+<a href='#M000214'>
+full_name<br/>
+</a>
+
+
+
+
+<a href='#M000222'>
+open_milestones_count<br/>
+</a>
+
+
+
+
+<a href='#M000220'>
+open_tasks_count<br/>
+</a>
+
+
+
+
+<a href='#M000218'>
+overtime<br/>
+</a>
+
+
+
+
+<a href='#M000215'>
+to_css_name<br/>
+</a>
+
+
+
+
+<a href='#M000216'>
+total_estimate<br/>
+</a>
+
+
+
+
+<a href='#M000221'>
+total_milestones_count<br/>
+</a>
+
+
+
+
+<a href='#M000219'>
+total_tasks_count<br/>
+</a>
+
+
+
+
+<a href='#M000217'>
+work_done<br/>
+</a>
+
+
+</div>
+<div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
+<h1 id="item_name">Class: Project</h1>
+
+
+
+
+
+<p></p>
+
+
+
+
+
+
+<h1>Public Instance Methods</h1>
+
+
+<a class="small" name="M000214"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000214'>
+
+
+full_name
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000214-show-link"><a onclick="toggle('M000214-source'); toggleText('M000214-link'); return false;" href="#" id="M000214-link">Show source...</a></p><div class="source" id="M000214-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
+32:     <span class="ruby-node">&quot;#{customer.name} / #{name}&quot;</span>
+33:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000222"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000222'>
+
+
+open_milestones_count
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000222-show-link"><a onclick="toggle('M000222-source'); toggleText('M000222-link'); return false;" href="#" id="M000222-link">Show source...</a></p><div class="source" id="M000222-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 75</span>
+75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">open_milestones_count</span>
+76:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_milestones</span>.<span class="ruby-identifier">nil?</span>
+77:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_milestones</span> = <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
+78:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+79:     <span class="ruby-keyword kw">end</span>
+80:     <span class="ruby-identifier">open_milestones</span>
+81:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000220"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000220'>
+
+
+open_tasks_count
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000220-show-link"><a onclick="toggle('M000220-source'); toggleText('M000220-link'); return false;" href="#" id="M000220-link">Show source...</a></p><div class="source" id="M000220-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 59</span>
+59:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">open_tasks_count</span>
+60:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_tasks</span>.<span class="ruby-identifier">nil?</span>
+61:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_tasks</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
+62:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+63:     <span class="ruby-keyword kw">end</span>
+64:     <span class="ruby-identifier">open_tasks</span>
+65:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000218"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000218'>
+
+
+overtime
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000218-show-link"><a onclick="toggle('M000218-source'); toggleText('M000218-link'); return false;" href="#" id="M000218-link">Show source...</a></p><div class="source" id="M000218-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 47</span>
+47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">overtime</span>
+48:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-value str">'worked_minutes - duration'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;worked_minutes &gt; duration&quot;</span>).<span class="ruby-identifier">to_i</span>
+49:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000215"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000215'>
+
+
+to_css_name
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000215-show-link"><a onclick="toggle('M000215-source'); toggleText('M000215-link'); return false;" href="#" id="M000215-link">Show source...</a></p><div class="source" id="M000215-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 35</span>
+35:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_css_name</span>
+36:     <span class="ruby-node">&quot;#{self.name.underscore.dasherize.gsub(/[ \.&quot;',]/,'-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'&quot;,]/,'-')}&quot;</span>
+37:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000216"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000216'>
+
+
+total_estimate
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000216-show-link"><a onclick="toggle('M000216-source'); toggleText('M000216-link'); return false;" href="#" id="M000216-link">Show source...</a></p><div class="source" id="M000216-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 39</span>
+39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_estimate</span>
+40:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-identifier">:duration</span>).<span class="ruby-identifier">to_i</span>
+41:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000221"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000221'>
+
+
+total_milestones_count
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000221-show-link"><a onclick="toggle('M000221-source'); toggleText('M000221-link'); return false;" href="#" id="M000221-link">Show source...</a></p><div class="source" id="M000221-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 67</span>
+67:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_milestones_count</span>
+68:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_milestones</span>.<span class="ruby-identifier">nil?</span>
+69:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_milestones</span> = <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">count</span>
+70:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+71:     <span class="ruby-keyword kw">end</span>
+72:     <span class="ruby-identifier">total_milestones</span>
+73:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000219"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000219'>
+
+
+total_tasks_count
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000219-show-link"><a onclick="toggle('M000219-source'); toggleText('M000219-link'); return false;" href="#" id="M000219-link">Show source...</a></p><div class="source" id="M000219-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 51</span>
+51:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_tasks_count</span>
+52:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span>.<span class="ruby-identifier">nil?</span>
+53:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>
+54:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">save</span>
+55:     <span class="ruby-keyword kw">end</span>
+56:     <span class="ruby-identifier">total_tasks</span>
+57:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000217"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000217'>
+
+
+work_done
+
+()
+
+</a>
+</h3>
+
+<p class="source_link" id="M000217-show-link"><a onclick="toggle('M000217-source'); toggleText('M000217-link'); return false;" href="#" id="M000217-link">Show source...</a></p><div class="source" id="M000217-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 43</span>
+43:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">work_done</span>
+44:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-identifier">:worked_minutes</span>).<span class="ruby-identifier">to_i</span>
+45:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+
+
+
+
+</div><div class="clear" id="footer">Generated on Jan 21, 2008 / Allison 2 &copy; 2007 <a href="http://cloudbur.st">Cloudburst, LLC</a></div></div></body></html>

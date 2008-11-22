@@ -1,0 +1,7 @@
+In order to generate or update the rdoc documentation, make sure you have the Allison template installed:
+
+# sudo gem install -y allison
+
+Then update the documentation like this:
+
+# rake rdoc
