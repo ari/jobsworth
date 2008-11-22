@@ -1,7 +1,7 @@
 development:
   adapter: mysql
   database: DATABASE
-  host: localhost
+  host: HOST
   username: USERNAME
   password: PASSWORD
   encoding: utf8
@@ -10,7 +10,7 @@ development:
 test:
   adapter: mysql
   database: DATABASE_test
-  host: localhost
+  host: HOST
   username: USERNAME
   password: PASSWORD
   encoding: utf8
@@ -19,7 +19,7 @@ test:
 production:
   adapter: mysql
   database: DATABASE
-  host: localhost
+  host: HOST
   username: USERNAME
   password: PASSWORD
   encoding: utf8

@@ -23,8 +23,8 @@ deps.keys.each do |dep|
     require dep
   rescue LoadError
     missing_deps << deps[dep]
-  end 
-end 
+  end
+end
 
 if missing_deps.size > 0
   puts "Please install required Ruby Gems:"
@@ -35,7 +35,7 @@ if missing_deps.size > 0
     puts "version of rmagick requires, please install version 1.5.14 instead: "
     puts "  sudo gem install rmagick -v 1.5.14 -r"
   end
-  
+
   exit
 end
 
@@ -49,18 +49,22 @@ puts "**************************************************************************
 puts
 
 print "Enter MySQL database name for ClockingIT [cit]: "
-db = gets 
+db = gets
 db = "cit" if db == "\n"
 print "Enter username for ClockingIT MySQL account [cit]: "
-dbuser = gets 
+dbuser = gets
 dbuser = "cit" if dbuser == "\n"
 print "Enter password for ClockingIT MySQL account [cit]: "
-dbpw = gets 
+dbpw = gets
 dbpw = "cit" if dbpw == "\n"
+print "Enter host for ClockingIT MySQL account [localhost]: "
+dbhost = gets
+dbhost = "localhost" if dbhost == "\n"
 
 db.strip!
 dbuser.strip!
 dbpw.strip!
+dbhost.strip!
 
 puts
 puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database."
@@ -70,10 +74,10 @@ puts
 
 puts "Please create the database and user for ClockingIT by running something like this: "
 puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
-puts 
+puts
 puts "Press <Return> to continue"
 gets
-puts 
+puts
 
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
@@ -114,11 +118,11 @@ password = "\n"
 password2 = "\n"
 
 while password != password2 || password == "\n"
-  
+
 password = "\n"
 password2 = "\n"
 
-  while password == "\n" 
+  while password == "\n"
     print "Enter password for initial user: "
     password = gets
   end
@@ -144,9 +148,9 @@ username.strip!
 password.strip!
 email.strip!
 
-puts 
+puts
 puts "Will create '#{username}' with password '#{password}' for '#{company}' as initial administrator account."
-puts 
+puts
 
 
 jug_port = "\n"
@@ -174,6 +178,7 @@ db_config = db_config.join
 db_config.gsub!(/DATABASE/, db)
 db_config.gsub!(/USERNAME/, dbuser)
 db_config.gsub!(/PASSWORD/, dbpw)
+db_config.gsub!(/HOST/, dbhost)
 db_config.gsub!(/SOCKET/, (socket.include?('/') ? "socket: #{socket}" : "") )
 
 File.open("config/database.yml", "w") do |file|
@@ -241,7 +246,7 @@ if init_db.include?('y') || init_db.include?('Y')
   system("rake db:schema:load RAILS_ENV=production")
 end
 
-puts 
+puts
 puts "Loading Rails to create account..."
 begin
 require "config/environment"
@@ -250,7 +255,7 @@ rescue
   puts "  ./script/console"
   puts "and look at the error reported."
   exit
-end 
+end
 
 
 
@@ -280,15 +285,15 @@ puts "  Creating initial company..."
 if @company.save
   @customer = Customer.new
   @customer.name = @company.name
-  
+
   @company.customers << @customer
   puts "  Creating initial user..."
   @company.users << @user
-else 
+else
   c = Company.find_by_subdomain(subdomain)
   if c
     puts "** Unable to create initial company, #{subdomain} already registered.. **"
-    
+
     del = "\n"
     print "Delete existing company '#{c.name}' with subdomain '#{subdomain}' and try again? [y]: "
     del = gets
@@ -299,21 +304,21 @@ else
       if @company.save
         @customer = Customer.new
         @customer.name = @company.name
-  
+
         @company.customers << @customer
         puts "  Creating initial user..."
         @company.users << @user
-      
+
       else
         puts " Still unable to create initial company. Check database settings..."
         exit
       end
     end
 
-  else 
+  else
     exit
   end
-end 
+end
 
 puts "Creating merged CSS and JavaScript files..."
 system("rake asset:packager:build_all")
@@ -323,7 +328,7 @@ puts "Running any pending migrations..."
 system("rake db:migrate RAILS_ENV=production")
 puts "Done"
 
-puts 
+puts
 puts "All done!"
 puts "---------"
 
@@ -332,6 +337,6 @@ puts "Please start the required services by entering the following in a console:
 puts "  ./script/ferret_server -e production start"
 puts "  nohup ./script/push_server &"
 puts "  ./script/server production"
-puts 
+puts
 puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 
