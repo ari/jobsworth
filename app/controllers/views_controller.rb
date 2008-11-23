@@ -55,6 +55,9 @@ class ViewsController < ApplicationController
     @view.auto_group = session[:group_by].to_i
     @view.hide_dependencies = session[:hide_dependencies].to_i
     @view.filter_status = session[:filter_status].to_i
+    @view.filter_type_id = session[:filter_type].to_i
+    @view.filter_severity = session[:filter_severity].to_i
+    @view.filter_priority = session[:filter_priority].to_i
     @view.sort = session[:sort].to_i
 
     @view.filter_tags = params[:tags].split(',').collect{ |t|
@@ -88,6 +91,8 @@ class ViewsController < ApplicationController
     session[:filter_hidden] = "0"
     session[:filter_status] = @view.filter_status
     session[:filter_type] = @view.filter_type_id.to_s
+    session[:filter_severity] = @view.filter_severity.to_s
+    session[:filter_priority] = @view.filter_priority.to_s
     session[:filter_customer] = @view.filter_customer_id.to_s
     session[:sort] = @view.sort.to_s
 
@@ -114,6 +119,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     session[:view] = nil
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -128,6 +135,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     session[:view] = nil
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -142,6 +151,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     session[:view] = nil
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -156,6 +167,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = @client.id
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     session[:view] = nil
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -175,6 +188,8 @@ class ViewsController < ApplicationController
     session[:hide_dependencies] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -191,6 +206,8 @@ class ViewsController < ApplicationController
     session[:filter_type] = "-1"
     session[:hide_dependencies] = "1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -207,6 +224,8 @@ class ViewsController < ApplicationController
     session[:filter_type] = "-1"
     session[:hide_dependencies] = "1"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -223,6 +242,8 @@ class ViewsController < ApplicationController
     session[:filter_type] = "-1"
     session[:hide_dependencies] = "0"
     session[:filter_customer] = "0"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -232,6 +253,8 @@ class ViewsController < ApplicationController
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
     session[:hide_dependencies] = "1"
+    session[:filter_severity] = "-10"
+    session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
   end
 

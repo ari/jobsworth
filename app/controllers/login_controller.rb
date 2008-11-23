@@ -74,6 +74,9 @@ class LoginController < ApplicationController
     session[:filter_milestone] = nil
     session[:filter_hidden] = nil
     session[:filter_status] = nil
+    session[:filter_type] = nil
+    session[:filter_severity] = nil
+    session[:filter_priority] = nil
     session[:group_tags] = nil
     session[:channels] = nil
     session[:hide_dependencies] = nil
@@ -110,6 +113,8 @@ class LoginController < ApplicationController
       session[:filter_status] ||= "0"
       session[:filter_hidden] ||= "0"
       session[:filter_type] ||= "-1"
+      session[:filter_severity] ||= "-10"
+      session[:filter_priority] ||= "-10"
       session[:hide_dependencies] ||= "1"
       session[:filter_customer] ||= "0"
       

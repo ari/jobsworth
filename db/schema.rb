@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081121140153) do
+ActiveRecord::Schema.define(:version => 20081123091936) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -364,7 +364,7 @@ ActiveRecord::Schema.define(:version => 20081121140153) do
   add_index "scm_revisions", ["scm_file_id"], :name => "scm_revisions_scm_file_id_index"
 
   create_table "sessions", :force => true do |t|
-    t.string   "session_id", :limit => 64
+    t.string   "session_id", :limit => 32
     t.text     "data",       :limit => 2147483647
     t.datetime "updated_at"
   end
@@ -571,6 +571,8 @@ ActiveRecord::Schema.define(:version => 20081121140153) do
     t.integer "filter_type_id",      :default => 0
     t.integer "hide_dependencies"
     t.integer "sort",                :default => 0
+    t.integer "filter_severity",     :default => -10
+    t.integer "filter_priority",     :default => -10
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"

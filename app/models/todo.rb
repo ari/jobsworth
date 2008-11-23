@@ -15,10 +15,6 @@ class Todo < ActiveRecord::Base
   end
 
   def css_classes
-    if self.done?
-      "todo todo-completed"
-    else
-      "todo todo-active"
-    end
+    self.done? ? "todo todo-completed" : "todo todo-active"
   end
 end

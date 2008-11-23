@@ -98,6 +98,14 @@ class TasksController < ApplicationController
       filter << "tasks.type_id = #{session[:filter_type].to_i} AND "
     end
 
+    unless session[:filter_severity].to_i == -10
+      filter << "tasks.severity_id >= #{session[:filter_severity].to_i} AND "
+    end 
+
+    unless session[:filter_priority].to_i == -10
+      filter << "tasks.priority >= #{session[:filter_priority].to_i} AND "
+    end 
+
     unless session[:filter_customer].to_i == 0
       filter << "projects.customer_id = #{session[:filter_customer]} AND "
     end
@@ -548,8 +556,8 @@ class TasksController < ApplicationController
     update_type = :updated
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
-    old_tags = @task.tags.collect {|t| t.name}.join(', ')
-    old_deps = @task.dependencies.collect { |t| t.issue_num }.join(', ')
+    old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
+    old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     old_users = @task.users.collect{ |u| u.id}.sort.join(',')
     old_users ||= "0"
     old_project_id = @task.project_id
@@ -641,7 +649,7 @@ class TasksController < ApplicationController
 
         added = (new_dependencies - @task.dependencies)
         added.each do |a|
-          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a.id])
+          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a])
           unless t.nil?
             @task.dependencies << t
           end
@@ -729,12 +737,12 @@ class TasksController < ApplicationController
       body << "- <strong>Severity</strong>: #{@old_task.severity_type} -> #{@task.severity_type}\n" if @old_task.severity_id != @task.severity_id
       body << "- <strong>Type</strong>: #{@old_task.issue_type} -> #{@task.issue_type}\n" if @old_task.type_id != @task.type_id
 
-      new_tags = @task.tags.collect {|t| t.name}.join(', ')
+      new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
       if old_tags != new_tags
         body << "- <strong>Tags</strong>: #{new_tags}\n"
       end
 
-      new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.join(", ")
+      new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
       if old_deps != new_deps
         body << "- <strong>Dependencies</strong>: #{(new_deps.length > 0) ? new_deps : _("None")}"
       end
@@ -1209,7 +1217,7 @@ class TasksController < ApplicationController
       session[:filter_project] = f[1..-1]
     end
 
-    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |filter|
+    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |filter|
       session[filter] = params[filter]
     end
 
@@ -1227,7 +1235,7 @@ class TasksController < ApplicationController
   def filter_shortlist
 
     tmp = { }
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
       tmp[v] = session[v]
     end
 
@@ -1237,7 +1245,7 @@ class TasksController < ApplicationController
     session[:filter_customer_short] = session[:filter_customer]
     session[:filter_milestone_short] = session[:filter_milestone]
 
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
       session[v] = tmp[v]
     end
 
