@@ -95,6 +95,36 @@
 
 
             <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
+            <br />
+            <% if((session[:filter_type] != "-1") || (session[:filter_priority] != "-10") || (session[:filter_severity] != "-10") ) %>
+            <div id="more-filters">
+            <% else %>
+            <div id="filters-toggle"><a href="#" onclick="Element.show('more-filters');Element.hide('filters-toggle');return false;"><small><%= _('More filters')%></small></a></div>
+            <div id="more-filters" style="display:none;">
+            <% end %>
+              <select name="filter_type" id="filter_type" onchange="javascript:document.forms[1].submit();" class="tooltip" title="<%=_('Only show tasks of this type')%>">>
+                <option value="-1" class="select_default"><%= _("[Any Type]") %></option>
+                <%
+                   @types = [[_("Task"), "0"],[_("New Feature"), "1"],[_("Defect"), "2"],[_("Improvement"), "3"]]
+                %>
+                <%= options_for_select @types, session[:filter_type] %>
+              </select>
+              <select name="filter_severity" id="filter_severity" onchange="javascript:document.forms[1].submit();" class="tooltip" title="<%=_('Show tasks with at least this severity')%>">
+                <option value="-10" class="select_default"><%= _("[Any Severity]") %></option>
+                <%
+                   @serverities = [[_('Blocker'),"3"],[_('Critical'),"2"],[_('Major'),"1"],[_('Normal'),"0"],[_('Minor'),"-1"],[_('Trivial'),"-2"]]
+                %>
+                <%= options_for_select @serverities, session[:filter_severity] %>
+              </select>
+              <select name="filter_priority" id="filter_priority" onchange="javascript:document.forms[1].submit();" class="tooltip" title="<%=_('Show tasks with at least this priority')%>">
+                <option value="-10" class="select_default"><%= _("[Any Priority]") %></option>
+                <%
+                   @priorities = [[_('Critical'),"3"],[_('Urgent'),"2"],[_('High'),"1"],[_('Normal'),"0"],[_('Low'),"-1"],[_('Lowest'),"-2"]]
+                %>
+                <%= options_for_select @priorities, session[:filter_priority] %>
+              </select>
+
+            </div>
 	    </form>
             </fieldset>
             <% end %>

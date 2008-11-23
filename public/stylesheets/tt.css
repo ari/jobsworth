@@ -1324,7 +1324,7 @@ a.description {
   text-decoration: underline;
 }
 
-#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort {
+#filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority {
   font-size: 10px;
 }
 
