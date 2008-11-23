@@ -106,7 +106,7 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
           <% for milestone in project.milestones %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
           <% end %>
-  <% @completed_milestones = Milestone.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
+  <% @completed_milestones = project.total_milestones_count - project.open_milestones_count
      if @completed_milestones > 0
   %>
   <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => project %></td></tr>

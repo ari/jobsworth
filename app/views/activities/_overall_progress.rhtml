@@ -1,7 +1,7 @@
 <%
-  total_count = Task.count(:conditions => ["project_id = ?", project.id]) * 1.0
+  total_count = project.total_tasks_count * 1.0
   if total_count >= 1.0
-    done_count = Task.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", project.id])
+    done_count = total_count - project.open_tasks_count
     done_percent = (done_count/total_count) * 100.0
 %>
 <tr class="milestone project_<%= project.id %>" style="height:16px;<%= "display:none;" if (session[:collapse_milestones] && session[:collapse_milestones][project.id.to_s].to_i == 1) %>">

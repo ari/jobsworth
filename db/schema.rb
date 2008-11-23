@@ -289,18 +289,22 @@ ActiveRecord::Schema.define(:version => 20081123091936) do
   add_index "project_permissions", ["project_id", "user_id"], :name => "project_permissions_project_id_user_id_index"
 
   create_table "projects", :force => true do |t|
-    t.string   "name",           :limit => 200, :default => "",   :null => false
-    t.integer  "user_id",                       :default => 0,    :null => false
-    t.integer  "company_id",                    :default => 0,    :null => false
-    t.integer  "customer_id",                   :default => 0,    :null => false
+    t.string   "name",             :limit => 200, :default => "",   :null => false
+    t.integer  "user_id",                         :default => 0,    :null => false
+    t.integer  "company_id",                      :default => 0,    :null => false
+    t.integer  "customer_id",                     :default => 0,    :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "completed_at"
-    t.integer  "critical_count",                :default => 0
-    t.integer  "normal_count",                  :default => 0
-    t.integer  "low_count",                     :default => 0
+    t.integer  "critical_count",                  :default => 0
+    t.integer  "normal_count",                    :default => 0
+    t.integer  "low_count",                       :default => 0
     t.text     "description"
-    t.boolean  "create_forum",                  :default => true
+    t.boolean  "create_forum",                    :default => true
+    t.integer  "open_tasks"
+    t.integer  "total_tasks"
+    t.integer  "total_milestones"
+    t.integer  "open_milestones"
   end
 
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
