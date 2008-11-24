@@ -327,16 +327,9 @@ class Task < ActiveRecord::Base
       self.duration.to_i
     end 
   end
-  
-#  def worked_minutes
-#    if @minutes.nil?
-#      @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
-#    end 
-#    @minutes
-#  end
 
   def recalculate_worked_minutes
-    @attributes['worked_minutes'] = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
+    self.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
   end
   
   def minutes_left
