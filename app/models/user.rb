@@ -1,3 +1,5 @@
+# A user from a company
+
 class User < ActiveRecord::Base
 
   require_dependency 'digest/md5'

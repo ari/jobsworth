@@ -1,3 +1,8 @@
+# This model represents an instant message session between two users
+#
+# One instance is created for each side of the conversation, to track
+# individual counts and statuses
+
 class Chat < ActiveRecord::Base
   belongs_to :user
   belongs_to :target, :class_name => 'User'

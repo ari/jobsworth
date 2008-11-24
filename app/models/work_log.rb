@@ -1,3 +1,6 @@
+# A work entry, belonging to a user & task
+# Has a duration in seconds for work entries
+
 class WorkLog < ActiveRecord::Base
 
   acts_as_ferret({ :fields => ['body', 'company_id', 'project_id'], :remote => true })

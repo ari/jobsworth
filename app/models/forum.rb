@@ -1,3 +1,8 @@
+# Discussion forums for a company.
+#
+# Can be public across all registered users, private to a company, 
+# or private to a project
+
 class Forum < ActiveRecord::Base
 
   belongs_to :company

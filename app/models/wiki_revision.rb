@@ -1,3 +1,5 @@
+# A single revision of a WikiPage
+
 class WikiRevision < ActiveRecord::Base
   belongs_to :wiki_page
   belongs_to :user

@@ -1,3 +1,6 @@
+# Stand-alone Page (called Note inside the application) with information a user frequently
+# needs. 
+
 class Page < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :project

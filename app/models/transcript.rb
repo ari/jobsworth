@@ -1,3 +1,7 @@
+# Virtual table, doesn't exist in the database
+#
+# Generated chat transcripts, based on the chats done
+
 class Transcript < ActiveRecord::BaseWithoutTable
 
   belongs_to :user

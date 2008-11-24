@@ -1,3 +1,5 @@
+# A logical grouping of milestones and tasks, belonging to a Customer / Client
+
 class Project < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer

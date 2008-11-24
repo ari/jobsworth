@@ -1,3 +1,5 @@
+# Receive and handle emails sent to tasks
+
 class Mailman < ActionMailer::Base
 
   def get_body(email)

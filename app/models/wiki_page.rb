@@ -1,3 +1,5 @@
+# A wiki page
+
 class WikiPage < ActiveRecord::Base
   has_many :revisions, :class_name => 'WikiRevision', :order => 'id'
   has_many :references, :class_name => 'WikiReference', :order => 'referenced_name'

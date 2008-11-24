@@ -1,3 +1,12 @@
+# A task
+#
+# Belongs to a project, milestone, creator
+# Has many tags, users (through task_owners), tags (through task_tags),
+#   dependencies (tasks which should be done before this one) and 
+#   dependants (tasks which should be done after this one),
+#   todos, and sheets
+#
+
 class Task < ActiveRecord::Base
 
   include Misc

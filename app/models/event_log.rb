@@ -1,3 +1,8 @@
+# Wrapper for worklog entries, containing 
+# WorkLog, WikiPage, ProjectFile, and Post types linking to
+# the respective models of those types
+# 
+
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
   belongs_to :user

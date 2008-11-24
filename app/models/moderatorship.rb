@@ -1,3 +1,5 @@
+# Users with moderation rights to forums. Not really used yet.
+
 class Moderatorship < ActiveRecord::Base
   belongs_to :forum
   belongs_to :user

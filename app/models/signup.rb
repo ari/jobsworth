@@ -1,3 +1,5 @@
+# Signup emails
+
 class Signup < ActionMailer::Base
 
   def signup(user, company, sent_at = Time.now)

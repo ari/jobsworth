@@ -1,3 +1,5 @@
+# A simple todo item for a task
+
 class Todo < ActiveRecord::Base
   belongs_to :company
   belongs_to :task
