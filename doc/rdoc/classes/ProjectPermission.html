@@ -358,6 +358,11 @@ set<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: ProjectPermission</h1>
 
+<div id="description"><p>
+Permissions for a <a href="User.html">User</a> on a <a
+href="Project.html">Project</a>
+</p>
+</div>
 
 
 
@@ -384,23 +389,23 @@ can?
 </a>
 </h3>
 
-<p class="source_link" id="M000472-show-link"><a onclick="toggle('M000472-source'); toggleText('M000472-link'); return false;" href="#" id="M000472-link">Show source...</a></p><div class="source" id="M000472-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 6</span>
- 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">can?</span> (<span class="ruby-identifier">perm</span>)
- 7:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
- 8:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment?</span>
- 9:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work?</span>
-10:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close?</span>
-11:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report?</span>
-12:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create?</span>
-13:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit?</span>
-14:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign?</span>
-15:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize?</span>
-16:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone?</span>
-17:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant?</span>
-18:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span> (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit?</span> <span class="ruby-operator">&amp;&amp;</span>
-19:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant?</span>)
-20:     <span class="ruby-keyword kw">end</span>
-21:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000472-show-link"><a onclick="toggle('M000472-source'); toggleText('M000472-link'); return false;" href="#" id="M000472-link">Show source...</a></p><div class="source" id="M000472-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">can?</span> (<span class="ruby-identifier">perm</span>)
+ 9:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
+10:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment?</span>
+11:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work?</span>
+12:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close?</span>
+13:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report?</span>
+14:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create?</span>
+15:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit?</span>
+16:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign?</span>
+17:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize?</span>
+18:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone?</span>
+19:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant?</span>
+20:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span> (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit?</span> <span class="ruby-operator">&amp;&amp;</span>
+21:             <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant?</span>)
+22:     <span class="ruby-keyword kw">end</span>
+23:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000474"><br/></a>
@@ -415,32 +420,32 @@ remove
 </a>
 </h3>
 
-<p class="source_link" id="M000474-show-link"><a onclick="toggle('M000474-source'); toggleText('M000474-link'); return false;" href="#" id="M000474-link">Show source...</a></p><div class="source" id="M000474-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 49</span>
-49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">perm</span>)
-50:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
-51:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">0</span>
-52:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">0</span>
-53:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">0</span>
-54:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">0</span>
-55:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">0</span>
-56:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">0</span>
-57:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">0</span>
-58:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">0</span>
-59:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">0</span>
-60:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">0</span>
-61:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span>
-62:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">0</span>
-63:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">0</span>
-64:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">0</span>
-65:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">0</span>
-66:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">0</span>
-67:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">0</span>
-68:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">0</span>
-69:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">0</span>
-70:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">0</span>
-71:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">0</span>
-72:     <span class="ruby-keyword kw">end</span>
-73:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000474-show-link"><a onclick="toggle('M000474-source'); toggleText('M000474-link'); return false;" href="#" id="M000474-link">Show source...</a></p><div class="source" id="M000474-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 51</span>
+51:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove</span>(<span class="ruby-identifier">perm</span>)
+52:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
+53:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">0</span>
+54:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">0</span>
+55:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">0</span>
+56:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">0</span>
+57:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">0</span>
+58:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">0</span>
+59:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">0</span>
+60:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">0</span>
+61:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">0</span>
+62:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">0</span>
+63:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span>
+64:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">0</span>
+65:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">0</span>
+66:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">0</span>
+67:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">0</span>
+68:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">0</span>
+69:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">0</span>
+70:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">0</span>
+71:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">0</span>
+72:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">0</span>
+73:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">0</span>
+74:     <span class="ruby-keyword kw">end</span>
+75:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000473"><br/></a>
@@ -455,32 +460,32 @@ set
 </a>
 </h3>
 
-<p class="source_link" id="M000473-show-link"><a onclick="toggle('M000473-source'); toggleText('M000473-link'); return false;" href="#" id="M000473-link">Show source...</a></p><div class="source" id="M000473-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 23</span>
-23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set</span>(<span class="ruby-identifier">perm</span>)
-24:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
-25:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">1</span>
-26:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">1</span>
-27:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">1</span>
-28:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">1</span>
-29:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">1</span>
-30:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">1</span>
-31:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">1</span>
-32:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">1</span>
-33:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">1</span>
-34:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">1</span>
-35:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span>
-36:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">1</span>
-37:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">1</span>
-38:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">1</span>
-39:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">1</span>
-40:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">1</span>
-41:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">1</span>
-42:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">1</span>
-43:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">1</span>
-44:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">1</span>
-45:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">1</span>
-46:     <span class="ruby-keyword kw">end</span>
-47:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000473-show-link"><a onclick="toggle('M000473-source'); toggleText('M000473-link'); return false;" href="#" id="M000473-link">Show source...</a></p><div class="source" id="M000473-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_permission.rb, line 25</span>
+25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set</span>(<span class="ruby-identifier">perm</span>)
+26:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">perm</span>
+27:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'comment'</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">1</span>
+28:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'work'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">1</span>
+29:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'close'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">1</span>
+30:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'report'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">1</span>
+31:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'create'</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">1</span>
+32:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'edit'</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">1</span>
+33:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'reassign'</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">1</span>
+34:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'prioritize'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">1</span>
+35:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'milestone'</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">1</span>
+36:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'grant'</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">1</span>
+37:     <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'all'</span>        <span class="ruby-keyword kw">then</span>
+38:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_comment</span> = <span class="ruby-value">1</span>
+39:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_work</span> = <span class="ruby-value">1</span>
+40:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_close</span> = <span class="ruby-value">1</span>
+41:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_report</span> = <span class="ruby-value">1</span>
+42:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_create</span> = <span class="ruby-value">1</span>
+43:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_edit</span> = <span class="ruby-value">1</span>
+44:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_reassign</span> = <span class="ruby-value">1</span>
+45:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_prioritize</span> = <span class="ruby-value">1</span>
+46:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_milestone</span> = <span class="ruby-value">1</span>
+47:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">can_grant</span> = <span class="ruby-value">1</span>
+48:     <span class="ruby-keyword kw">end</span>
+49:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

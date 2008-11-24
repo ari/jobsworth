@@ -393,6 +393,10 @@ unknown_from_address<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: Notifications</h1>
 
+<div id="description"><p>
+Mail handlers for all notifications, except login / signup
+</p>
+</div>
 
 
 
@@ -419,31 +423,31 @@ changed
 </a>
 </h3>
 
-<p class="source_link" id="M000127-show-link"><a onclick="toggle('M000127-source'); toggleText('M000127-link'); return false;" href="#" id="M000127-link">Show source...</a></p><div class="source" id="M000127-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 21</span>
-21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">changed</span>(<span class="ruby-identifier">update_type</span>, <span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">change</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
-22:     <span class="ruby-ivar">@subject</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">update_type</span>
-23:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:completed</span>  <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -&gt; #{_(task.status_type)} [#{task.project.name}] (#{user.name})&quot;</span>
-24:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:status</span>     <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Status'}: #{task.issue_name} -&gt; #{_(task.status_type)} [#{task.project.name}] (#{user.name})&quot;</span>
-25:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:updated</span>    <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
-26:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:comment</span>    <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
-27:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:reverted</span>   <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
-28:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:reassigned</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})&quot;</span>
-29:                <span class="ruby-keyword kw">end</span>
-30: 
-31:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:change</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">change</span>}
-32: 
-33:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-value str">&quot;&quot;</span>
-34:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-35:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> [<span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> 
-36:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
-37:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">watchers</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>}
-38:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">strip</span>} <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
-39:     <span class="ruby-ivar">@recipients</span>.<span class="ruby-identifier">uniq!</span>
-40: 
-41:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-42:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
-43:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-node">&quot;task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}&quot;</span>
-44:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000127-show-link"><a onclick="toggle('M000127-source'); toggleText('M000127-link'); return false;" href="#" id="M000127-link">Show source...</a></p><div class="source" id="M000127-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 24</span>
+24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">changed</span>(<span class="ruby-identifier">update_type</span>, <span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">change</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+25:     <span class="ruby-ivar">@subject</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">update_type</span>
+26:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:completed</span>  <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -&gt; #{_(task.status_type)} [#{task.project.name}] (#{user.name})&quot;</span>
+27:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:status</span>     <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Status'}: #{task.issue_name} -&gt; #{_(task.status_type)} [#{task.project.name}] (#{user.name})&quot;</span>
+28:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:updated</span>    <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
+29:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:comment</span>    <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
+30:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:reverted</span>   <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})&quot;</span>
+31:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:reassigned</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})&quot;</span>
+32:                <span class="ruby-keyword kw">end</span>
+33: 
+34:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:change</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">change</span>}
+35: 
+36:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-value str">&quot;&quot;</span>
+37:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+38:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> [<span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">creator</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> 
+39:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
+40:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">watchers</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>}
+41:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">strip</span>} <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
+42:     <span class="ruby-ivar">@recipients</span>.<span class="ruby-identifier">uniq!</span>
+43: 
+44:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+45:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
+46:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-node">&quot;task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}&quot;</span>
+47:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000131"><br/></a>
@@ -458,18 +462,18 @@ chat_invitation
 </a>
 </h3>
 
-<p class="source_link" id="M000131-show-link"><a onclick="toggle('M000131-source'); toggleText('M000131-link'); return false;" href="#" id="M000131-link">Show source...</a></p><div class="source" id="M000131-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 80</span>
-80:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chat_invitation</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">target</span>, <span class="ruby-identifier">room</span>)
-81:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:room</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">room</span> }
-82:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Invitation to chat: #{room.name} (#{user.name})&quot;</span>
-83: 
-84:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-identifier">target</span>.<span class="ruby-identifier">email</span>
-85: 
-86:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-87:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-88:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
-89: 
-90:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000131-show-link"><a onclick="toggle('M000131-source'); toggleText('M000131-link'); return false;" href="#" id="M000131-link">Show source...</a></p><div class="source" id="M000131-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 83</span>
+83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chat_invitation</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">target</span>, <span class="ruby-identifier">room</span>)
+84:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:room</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">room</span> }
+85:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Invitation to chat: #{room.name} (#{user.name})&quot;</span>
+86: 
+87:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-identifier">target</span>.<span class="ruby-identifier">email</span>
+88: 
+89:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+90:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+91:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+92: 
+93:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000126"><br/></a>
@@ -484,22 +488,22 @@ created
 </a>
 </h3>
 
-<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 5</span>
- 5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">created</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">note</span> = <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
- 6:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:note</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">note</span>}
- 7:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})&quot;</span>
- 8: 
- 9:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-value str">&quot;&quot;</span>
-10:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-11:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
-12:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">watchers</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>}
-13:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">strip</span>} <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
-14:     <span class="ruby-ivar">@recipients</span>.<span class="ruby-identifier">uniq!</span>
-15: 
-16:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-17:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
-18:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-node">&quot;task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}&quot;</span>
-19:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">created</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">note</span> = <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+ 9:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:note</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">note</span>}
+10:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})&quot;</span>
+11: 
+12:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-value str">&quot;&quot;</span>
+13:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+14:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
+15:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">watchers</span>.<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">w</span><span class="ruby-operator">|</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>}
+16:     <span class="ruby-ivar">@recipients</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">strip</span>} <span class="ruby-keyword kw">unless</span> (<span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>)
+17:     <span class="ruby-ivar">@recipients</span>.<span class="ruby-identifier">uniq!</span>
+18: 
+19:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+20:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
+21:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-node">&quot;task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}&quot;</span>
+22:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000130"><br/></a>
@@ -514,17 +518,17 @@ forum_post
 </a>
 </h3>
 
-<p class="source_link" id="M000130-show-link"><a onclick="toggle('M000130-source'); toggleText('M000130-link'); return false;" href="#" id="M000130-link">Show source...</a></p><div class="source" id="M000130-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 69</span>
-69:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_post</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
-70:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
-71:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]&quot;</span>
-72: 
-73:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) } <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>)).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">compact</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
-74: 
-75:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-76:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
-77:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
-78:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000130-show-link"><a onclick="toggle('M000130-source'); toggleText('M000130-link'); return false;" href="#" id="M000130-link">Show source...</a></p><div class="source" id="M000130-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 72</span>
+72:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_post</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+73:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
+74:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]&quot;</span>
+75: 
+76:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) } <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>)).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">compact</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
+77: 
+78:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+79:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
+80:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+81:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000129"><br/></a>
@@ -539,17 +543,17 @@ forum_reply
 </a>
 </h3>
 
-<p class="source_link" id="M000129-show-link"><a onclick="toggle('M000129-source'); toggleText('M000129-link'); return false;" href="#" id="M000129-link">Show source...</a></p><div class="source" id="M000129-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 58</span>
-58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_reply</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
-59:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
-60:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]&quot;</span>
-61: 
-62:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) } <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>) ).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">compact</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
-63: 
-64:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-65:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
-66:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
-67:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000129-show-link"><a onclick="toggle('M000129-source'); toggleText('M000129-link'); return false;" href="#" id="M000129-link">Show source...</a></p><div class="source" id="M000129-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 61</span>
+61:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_reply</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+62:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
+63:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]&quot;</span>
+64: 
+65:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">posts</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) } <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">post</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">monitors</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:email</span>) ).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">compact</span> <span class="ruby-operator">-</span> [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
+66: 
+67:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+68:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
+69:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+70:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000133"><br/></a>
@@ -564,19 +568,19 @@ milestone_changed
 </a>
 </h3>
 
-<p class="source_link" id="M000133-show-link"><a onclick="toggle('M000133-source'); toggleText('M000133-link'); return false;" href="#" id="M000133-link">Show source...</a></p><div class="source" id="M000133-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 102</span>
-102:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">milestone_changed</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">action</span>, <span class="ruby-identifier">due_date</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">old_name</span> = <span class="ruby-keyword kw">nil</span>)
-103:     <span class="ruby-ivar">@body</span>       = { <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:milestone</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">action</span>, <span class="ruby-identifier">:due_date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">due_date</span>, <span class="ruby-identifier">:old_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">old_name</span> }
-104:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">old_name</span>.<span class="ruby-identifier">nil?</span>
-105:       <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]&quot;</span>
-106:     <span class="ruby-keyword kw">else</span> 
-107:       <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -&gt; #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]&quot;</span>
-108:     <span class="ruby-keyword kw">end</span>
-109:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } ).<span class="ruby-identifier">uniq</span>
-110:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-111:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
-112:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Notification &lt;noreply@#{$CONFIG[:email_domain]}&gt;&quot;</span>
-113:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000133-show-link"><a onclick="toggle('M000133-source'); toggleText('M000133-link'); return false;" href="#" id="M000133-link">Show source...</a></p><div class="source" id="M000133-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 105</span>
+105:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">milestone_changed</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">action</span>, <span class="ruby-identifier">due_date</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">old_name</span> = <span class="ruby-keyword kw">nil</span>)
+106:     <span class="ruby-ivar">@body</span>       = { <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:milestone</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">action</span>, <span class="ruby-identifier">:due_date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">due_date</span>, <span class="ruby-identifier">:old_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">old_name</span> }
+107:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">old_name</span>.<span class="ruby-identifier">nil?</span>
+108:       <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]&quot;</span>
+109:     <span class="ruby-keyword kw">else</span> 
+110:       <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -&gt; #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]&quot;</span>
+111:     <span class="ruby-keyword kw">end</span>
+112:     <span class="ruby-ivar">@recipients</span> = (<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">receive_notifications</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> } ).<span class="ruby-identifier">uniq</span>
+113:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+114:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+115:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Notification &lt;noreply@#{$CONFIG[:email_domain]}&gt;&quot;</span>
+116:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000128"><br/></a>
@@ -591,17 +595,17 @@ reminder
 </a>
 </h3>
 
-<p class="source_link" id="M000128-show-link"><a onclick="toggle('M000128-source'); toggleText('M000128-link'); return false;" href="#" id="M000128-link">Show source...</a></p><div class="source" id="M000128-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 47</span>
-47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reminder</span>(<span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
-48:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:tasks</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">:tasks_tomorrow</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">:tasks_overdue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
-49:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Tasks due')}&quot;</span>
-50: 
-51:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
-52: 
-53:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
-54:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
-55:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
-56:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000128-show-link"><a onclick="toggle('M000128-source'); toggleText('M000128-link'); return false;" href="#" id="M000128-link">Show source...</a></p><div class="source" id="M000128-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 50</span>
+50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reminder</span>(<span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
+51:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:tasks</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">:tasks_tomorrow</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">:tasks_overdue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
+52:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Tasks due')}&quot;</span>
+53: 
+54:     <span class="ruby-ivar">@recipients</span> = [<span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>]
+55: 
+56:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}&quot;</span>
+57:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-identifier">sent_at</span>
+58:     <span class="ruby-ivar">@reply_to</span>   = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">email</span>
+59:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000132"><br/></a>
@@ -616,16 +620,16 @@ unknown_from_address
 </a>
 </h3>
 
-<p class="source_link" id="M000132-show-link"><a onclick="toggle('M000132-source'); toggleText('M000132-link'); return false;" href="#" id="M000132-link">Show source...</a></p><div class="source" id="M000132-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 92</span>
- 92:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unknown_from_address</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">subdomain</span>)
- 93:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>, <span class="ruby-identifier">:subdomain</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subdomain</span> }
- 94:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Unknown email address: #{from}&quot;</span>
- 95: 
- 96:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-identifier">from</span>
- 97: 
- 98:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;noreply@#{$CONFIG[:email_domain]}&quot;</span>
- 99:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
-100:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000132-show-link"><a onclick="toggle('M000132-source'); toggleText('M000132-link'); return false;" href="#" id="M000132-link">Show source...</a></p><div class="source" id="M000132-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 95</span>
+ 95:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unknown_from_address</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">subdomain</span>)
+ 96:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>, <span class="ruby-identifier">:subdomain</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subdomain</span> }
+ 97:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Unknown email address: #{from}&quot;</span>
+ 98: 
+ 99:     <span class="ruby-ivar">@recipients</span> = <span class="ruby-identifier">from</span>
+100: 
+101:     <span class="ruby-ivar">@from</span>       = <span class="ruby-node">&quot;noreply@#{$CONFIG[:email_domain]}&quot;</span>
+102:     <span class="ruby-ivar">@sent_on</span>    = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>
+103:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

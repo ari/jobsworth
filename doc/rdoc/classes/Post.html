@@ -372,6 +372,11 @@ to_xml<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: Post</h1>
 
+<div id="description"><p>
+<a href="Post.html">Post</a> to a Thread in a <a
+href="Forum.html">Forum</a>
+</p>
+</div>
 
 
 
@@ -398,10 +403,10 @@ company_id
 </a>
 </h3>
 
-<p class="source_link" id="M000542-show-link"><a onclick="toggle('M000542-source'); toggleText('M000542-link'); return false;" href="#" id="M000542-link">Show source...</a></p><div class="source" id="M000542-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 42</span>
-42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">company_id</span>
-43:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span>
-44:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000542-show-link"><a onclick="toggle('M000542-source'); toggleText('M000542-link'); return false;" href="#" id="M000542-link">Show source...</a></p><div class="source" id="M000542-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 44</span>
+44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">company_id</span>
+45:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span>
+46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000540"><br/></a>
@@ -416,10 +421,10 @@ editable_by?
 </a>
 </h3>
 
-<p class="source_link" id="M000540-show-link"><a onclick="toggle('M000540-source'); toggleText('M000540-link'); return false;" href="#" id="M000540-link">Show source...</a></p><div class="source" id="M000540-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 32</span>
-32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">user</span>)
-33:     <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user_id</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company_id</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum_id</span>))
-34:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000540-show-link"><a onclick="toggle('M000540-source'); toggleText('M000540-link'); return false;" href="#" id="M000540-link">Show source...</a></p><div class="source" id="M000540-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 34</span>
+34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">user</span>)
+35:     <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user_id</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company_id</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum_id</span>))
+36:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000543"><br/></a>
@@ -434,10 +439,10 @@ project_id
 </a>
 </h3>
 
-<p class="source_link" id="M000543-show-link"><a onclick="toggle('M000543-source'); toggleText('M000543-link'); return false;" href="#" id="M000543-link">Show source...</a></p><div class="source" id="M000543-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 46</span>
-46:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">project_id</span>
-47:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">project_id</span>
-48:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000543-show-link"><a onclick="toggle('M000543-source'); toggleText('M000543-link'); return false;" href="#" id="M000543-link">Show source...</a></p><div class="source" id="M000543-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 48</span>
+48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">project_id</span>
+49:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">project_id</span>
+50:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000544"><br/></a>
@@ -452,10 +457,10 @@ started_at
 </a>
 </h3>
 
-<p class="source_link" id="M000544-show-link"><a onclick="toggle('M000544-source'); toggleText('M000544-link'); return false;" href="#" id="M000544-link">Show source...</a></p><div class="source" id="M000544-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 50</span>
-50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
-51:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
-52:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000544-show-link"><a onclick="toggle('M000544-source'); toggleText('M000544-link'); return false;" href="#" id="M000544-link">Show source...</a></p><div class="source" id="M000544-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 52</span>
+52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
+53:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
+54:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000541"><br/></a>
@@ -470,12 +475,12 @@ to_xml
 </a>
 </h3>
 
-<p class="source_link" id="M000541-show-link"><a onclick="toggle('M000541-source'); toggleText('M000541-link'); return false;" href="#" id="M000541-link">Show source...</a></p><div class="source" id="M000541-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 36</span>
-36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_xml</span>(<span class="ruby-identifier">options</span> = {})
-37:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">||=</span> []
-38:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:topic_title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:forum_name</span>
-39:     <span class="ruby-keyword kw">super</span>
-40:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000541-show-link"><a onclick="toggle('M000541-source'); toggleText('M000541-link'); return false;" href="#" id="M000541-link">Show source...</a></p><div class="source" id="M000541-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 38</span>
+38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_xml</span>(<span class="ruby-identifier">options</span> = {})
+39:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">||=</span> []
+40:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:topic_title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:forum_name</span>
+41:     <span class="ruby-keyword kw">super</span>
+42:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

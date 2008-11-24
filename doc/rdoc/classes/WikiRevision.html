@@ -358,6 +358,10 @@ update_references<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: WikiRevision</h1>
 
+<div id="description"><p>
+A single revision of a <a href="WikiPage.html">WikiPage</a>
+</p>
+</div>
 
 
 
@@ -434,64 +438,64 @@ to_html
 </a>
 </h3>
 
-<p class="source_link" id="M000367-show-link"><a onclick="toggle('M000367-source'); toggleText('M000367-link'); return false;" href="#" id="M000367-link">Show source...</a></p><div class="source" id="M000367-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 54</span>
- 54:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
- 55:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">body</span>.<span class="ruby-identifier">blank?</span>
- 56:     
- 57:     <span class="ruby-identifier">pres</span> = []
- 58: 
- 59:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">PRE</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
- 60:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">PRE</span>)
- 61:       <span class="ruby-identifier">pres</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
- 62:       <span class="ruby-node">&quot;%%pre_#{pres.size-1}%%&quot;</span>
- 63:     }
- 64: 
- 65:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">EXPR</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
- 66:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">WIKI_LINK</span>)
- 67:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span>
- 68:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
- 69: 
- 70:         <span class="ruby-identifier">alias_match</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">match</span>(<span class="ruby-constant">ALIAS_SEPARATION</span>)
- 71:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">alias_match</span>
- 72:           <span class="ruby-identifier">name</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">1</span>]
- 73:           <span class="ruby-identifier">text</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">2</span>]
- 74:         <span class="ruby-keyword kw">end</span>
- 75: 
- 76:         <span class="ruby-identifier">name</span>.<span class="ruby-identifier">strip!</span>
+<p class="source_link" id="M000367-show-link"><a onclick="toggle('M000367-source'); toggleText('M000367-link'); return false;" href="#" id="M000367-link">Show source...</a></p><div class="source" id="M000367-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 56</span>
+ 56:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
+ 57:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">body</span>.<span class="ruby-identifier">blank?</span>
+ 58:     
+ 59:     <span class="ruby-identifier">pres</span> = []
+ 60: 
+ 61:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">PRE</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+ 62:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">PRE</span>)
+ 63:       <span class="ruby-identifier">pres</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+ 64:       <span class="ruby-node">&quot;%%pre_#{pres.size-1}%%&quot;</span>
+ 65:     }
+ 66: 
+ 67:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">EXPR</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+ 68:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">WIKI_LINK</span>)
+ 69:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span>
+ 70:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+ 71: 
+ 72:         <span class="ruby-identifier">alias_match</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">match</span>(<span class="ruby-constant">ALIAS_SEPARATION</span>)
+ 73:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">alias_match</span>
+ 74:           <span class="ruby-identifier">name</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">1</span>]
+ 75:           <span class="ruby-identifier">text</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">2</span>]
+ 76:         <span class="ruby-keyword kw">end</span>
  77: 
- 78:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
- 79:           <span class="ruby-identifier">url</span> = <span class="ruby-identifier">name</span>
- 80:           <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'external'</span>
- 81:         <span class="ruby-keyword kw">else</span>
- 82:           <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;/wiki/show/#{URI.encode(name)}&quot;</span>
- 83:           <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'internal'</span>
- 84:           <span class="ruby-identifier">url_class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'_missing'</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? and name = ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">name</span>])
- 85:         <span class="ruby-keyword kw">end</span>
- 86: 
- 87:         <span class="ruby-node">&quot;&lt;a href=\&quot;#{url}\&quot; class=\&quot;#{url_class}\&quot;&gt;#{text}&lt;/a&gt;&quot;</span>
+ 78:         <span class="ruby-identifier">name</span>.<span class="ruby-identifier">strip!</span>
+ 79: 
+ 80:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
+ 81:           <span class="ruby-identifier">url</span> = <span class="ruby-identifier">name</span>
+ 82:           <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'external'</span>
+ 83:         <span class="ruby-keyword kw">else</span>
+ 84:           <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;/wiki/show/#{URI.encode(name)}&quot;</span>
+ 85:           <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'internal'</span>
+ 86:           <span class="ruby-identifier">url_class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'_missing'</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? and name = ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">name</span>])
+ 87:         <span class="ruby-keyword kw">end</span>
  88: 
- 89:       <span class="ruby-keyword kw">else</span>
- 90:         <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;/wiki/show/#{URI.encode(m)}&quot;</span>
- 91:         <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'internal'</span>
- 92:         <span class="ruby-identifier">url_class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'_missing'</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? and name = ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">m</span>])
- 93: 
- 94:         <span class="ruby-node">&quot;&lt;a href=\&quot;#{url}\&quot; class=\&quot;#{url_class}\&quot;&gt;#{m}&lt;/a&gt;&quot;</span>
- 95:       <span class="ruby-keyword kw">end</span>
- 96:    }
- 97: 
- 98: 
- 99:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">TaskNumber</span>, <span class="ruby-value str">'&lt;a href=&quot;/tasks/view/\1&quot;&gt;#\1&lt;/a&gt;'</span>)
+ 89:         <span class="ruby-node">&quot;&lt;a href=\&quot;#{url}\&quot; class=\&quot;#{url_class}\&quot;&gt;#{text}&lt;/a&gt;&quot;</span>
+ 90: 
+ 91:       <span class="ruby-keyword kw">else</span>
+ 92:         <span class="ruby-identifier">url</span> = <span class="ruby-node">&quot;/wiki/show/#{URI.encode(m)}&quot;</span>
+ 93:         <span class="ruby-identifier">url_class</span> = <span class="ruby-value str">'internal'</span>
+ 94:         <span class="ruby-identifier">url_class</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">'_missing'</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? and name = ?'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">m</span>])
+ 95: 
+ 96:         <span class="ruby-node">&quot;&lt;a href=\&quot;#{url}\&quot; class=\&quot;#{url_class}\&quot;&gt;#{m}&lt;/a&gt;&quot;</span>
+ 97:       <span class="ruby-keyword kw">end</span>
+ 98:    }
+ 99: 
 100: 
-101:     <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
-102:     <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">pres</span>.<span class="ruby-identifier">size</span>
-103:       <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">/%%pre_#{i}%%/</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
-104:         <span class="ruby-identifier">pres</span>[<span class="ruby-identifier">i</span>]
-105:       }
-106:       <span class="ruby-identifier">i</span> = <span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
-107:     <span class="ruby-keyword kw">end</span> 
-108:     <span class="ruby-identifier">body</span>
-109: 
-110:   <span class="ruby-keyword kw">end</span></pre></div>
+101:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">TaskNumber</span>, <span class="ruby-value str">'&lt;a href=&quot;/tasks/view/\1&quot;&gt;#\1&lt;/a&gt;'</span>)
+102: 
+103:     <span class="ruby-identifier">i</span> = <span class="ruby-value">0</span>
+104:     <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">pres</span>.<span class="ruby-identifier">size</span>
+105:       <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-node">/%%pre_#{i}%%/</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+106:         <span class="ruby-identifier">pres</span>[<span class="ruby-identifier">i</span>]
+107:       }
+108:       <span class="ruby-identifier">i</span> = <span class="ruby-identifier">i</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>
+109:     <span class="ruby-keyword kw">end</span> 
+110:     <span class="ruby-identifier">body</span>
+111: 
+112:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000368"><br/></a>
@@ -506,10 +510,10 @@ to_plain_html
 </a>
 </h3>
 
-<p class="source_link" id="M000368-show-link"><a onclick="toggle('M000368-source'); toggleText('M000368-link'); return false;" href="#" id="M000368-link">Show source...</a></p><div class="source" id="M000368-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 112</span>
-112:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>
-113:     <span class="ruby-identifier">body</span>
-114:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000368-show-link"><a onclick="toggle('M000368-source'); toggleText('M000368-link'); return false;" href="#" id="M000368-link">Show source...</a></p><div class="source" id="M000368-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 114</span>
+114:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>
+115:     <span class="ruby-identifier">body</span>
+116:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000366"><br/></a>
@@ -524,43 +528,43 @@ update_references
 </a>
 </h3>
 
-<p class="source_link" id="M000366-show-link"><a onclick="toggle('M000366-source'); toggleText('M000366-link'); return false;" href="#" id="M000366-link">Show source...</a></p><div class="source" id="M000366-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 17</span>
-17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_references</span>
-18: 
-19:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">destroy_all</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+<p class="source_link" id="M000366-show-link"><a onclick="toggle('M000366-source'); toggleText('M000366-link'); return false;" href="#" id="M000366-link">Show source...</a></p><div class="source" id="M000366-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 19</span>
+19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_references</span>
 20: 
-21:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">WIKI_LINK</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
-22:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">WIKI_LINK</span>)
-23:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
-24:       <span class="ruby-identifier">alias_match</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">match</span>(<span class="ruby-constant">ALIAS_SEPARATION</span>)
-25:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">alias_match</span>
-26:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">1</span>]
-27:         <span class="ruby-identifier">text</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">2</span>]
-28:       <span class="ruby-keyword kw">end</span>
-29: 
-30:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
-31:         <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;wiki_page_id = ? AND referenced_name = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>])
-32:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">name</span>
-33:           <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:wiki_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>, <span class="ruby-identifier">:referenced_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> )
-34:           <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">save</span>
-35:         <span class="ruby-keyword kw">end</span>
-36:       <span class="ruby-keyword kw">end</span>
-37:     }
-38: 
-39:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">CamelCase</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
-40:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">CamelCase</span>)
-41:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
-42: 
-43:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
-44:         <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;wiki_page_id = ? AND referenced_name = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>])
-45:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">name</span>
-46:           <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:wiki_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>, <span class="ruby-identifier">:referenced_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> )
-47:           <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">save</span>
-48:         <span class="ruby-keyword kw">end</span>
-49:       <span class="ruby-keyword kw">end</span>
-50:     }
-51: 
-52:   <span class="ruby-keyword kw">end</span></pre></div>
+21:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">destroy_all</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+22: 
+23:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">WIKI_LINK</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+24:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">WIKI_LINK</span>)
+25:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+26:       <span class="ruby-identifier">alias_match</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">match</span>(<span class="ruby-constant">ALIAS_SEPARATION</span>)
+27:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">alias_match</span>
+28:         <span class="ruby-identifier">name</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">1</span>]
+29:         <span class="ruby-identifier">text</span> = <span class="ruby-identifier">alias_match</span>[<span class="ruby-value">2</span>]
+30:       <span class="ruby-keyword kw">end</span>
+31: 
+32:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
+33:         <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;wiki_page_id = ? AND referenced_name = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>])
+34:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">name</span>
+35:           <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:wiki_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>, <span class="ruby-identifier">:referenced_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> )
+36:           <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">save</span>
+37:         <span class="ruby-keyword kw">end</span>
+38:       <span class="ruby-keyword kw">end</span>
+39:     }
+40: 
+41:     <span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub!</span>( <span class="ruby-constant">CamelCase</span> ) { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span>
+42:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">CamelCase</span>)
+43:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
+44: 
+45:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
+46:         <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;wiki_page_id = ? AND referenced_name = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>])
+47:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">name</span>
+48:           <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:wiki_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>, <span class="ruby-identifier">:referenced_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> )
+49:           <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">save</span>
+50:         <span class="ruby-keyword kw">end</span>
+51:       <span class="ruby-keyword kw">end</span>
+52:     }
+53: 
+54:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

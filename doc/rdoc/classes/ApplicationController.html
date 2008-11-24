@@ -539,10 +539,10 @@ admin?
 </a>
 </h3>
 
-<p class="source_link" id="M000025-show-link"><a onclick="toggle('M000025-source'); toggleText('M000025-link'); return false;" href="#" id="M000025-link">Show source...</a></p><div class="source" id="M000025-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 345</span>
-345:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admin?</span>
-346:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-347:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000025-show-link"><a onclick="toggle('M000025-source'); toggleText('M000025-link'); return false;" href="#" id="M000025-link">Show source...</a></p><div class="source" id="M000025-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 349</span>
+349:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admin?</span>
+350:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+351:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000019"><br/></a>
@@ -557,10 +557,10 @@ all_projects
 </a>
 </h3>
 
-<p class="source_link" id="M000019-show-link"><a onclick="toggle('M000019-source'); toggleText('M000019-link'); return false;" href="#" id="M000019-link">Show source...</a></p><div class="source" id="M000019-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 306</span>
-306:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_projects</span>
-307:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">all_projects</span>
-308:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000019-show-link"><a onclick="toggle('M000019-source'); toggleText('M000019-link'); return false;" href="#" id="M000019-link">Show source...</a></p><div class="source" id="M000019-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 310</span>
+310:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_projects</span>
+311:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">all_projects</span>
+312:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000009"><br/></a>
@@ -679,13 +679,17 @@ Make sure the session is logged in
 160:       <span class="ruby-comment cmt"># Set current locale</span>
 161:       <span class="ruby-constant">Localization</span>.<span class="ruby-identifier">lang</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">locale</span> <span class="ruby-operator">||</span> <span class="ruby-value str">'en_US'</span>)
 162:       
-163:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>]
-164:         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>]
-165:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>] = <span class="ruby-keyword kw">nil</span>
-166:       <span class="ruby-keyword kw">end</span>
-167:     <span class="ruby-keyword kw">end</span>
-168:     <span class="ruby-keyword kw">true</span>
-169:   <span class="ruby-keyword kw">end</span></pre></div>
+163:       <span class="ruby-comment cmt"># Update session with new filters, if they don't already exist</span>
+164:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;-10&quot;</span>
+165:       <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] <span class="ruby-operator">||=</span> <span class="ruby-value str">&quot;-10&quot;</span>
+166: 
+167:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>]
+168:         <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>]
+169:         <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:redirect</span>] = <span class="ruby-keyword kw">nil</span>
+170:       <span class="ruby-keyword kw">end</span>
+171:     <span class="ruby-keyword kw">end</span>
+172:     <span class="ruby-keyword kw">true</span>
+173:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000020"><br/></a>
@@ -703,14 +707,14 @@ completed_milestone_ids
 List of completed milestone ids, joined with ,
 </p>
 
-<p class="source_link" id="M000020-show-link"><a onclick="toggle('M000020-source'); toggleText('M000020-link'); return false;" href="#" id="M000020-link">Show source...</a></p><div class="source" id="M000020-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 313</span>
-313:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">completed_milestone_ids</span>
-314:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestone_ids</span>
-315:       <span class="ruby-ivar">@milestone_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND completed_at IS NOT NULL&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-316:       <span class="ruby-ivar">@milestone_ids</span> = <span class="ruby-value str">&quot;-1&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@milestone_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
-317:     <span class="ruby-keyword kw">end</span>
-318:     <span class="ruby-ivar">@milestone_ids</span>
-319:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000020-show-link"><a onclick="toggle('M000020-source'); toggleText('M000020-link'); return false;" href="#" id="M000020-link">Show source...</a></p><div class="source" id="M000020-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 317</span>
+317:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">completed_milestone_ids</span>
+318:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestone_ids</span>
+319:       <span class="ruby-ivar">@milestone_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND completed_at IS NOT NULL&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+320:       <span class="ruby-ivar">@milestone_ids</span> = <span class="ruby-value str">&quot;-1&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@milestone_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
+321:     <span class="ruby-keyword kw">end</span>
+322:     <span class="ruby-ivar">@milestone_ids</span>
+323:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000018"><br/></a>
@@ -728,14 +732,14 @@ current_project_ids
 List of current <a href="Project.html">Project</a> ids, joined with ,
 </p>
 
-<p class="source_link" id="M000018-show-link"><a onclick="toggle('M000018-source'); toggleText('M000018-link'); return false;" href="#" id="M000018-link">Show source...</a></p><div class="source" id="M000018-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 298</span>
-298:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_project_ids</span>
-299:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_project_ids</span>
-300:       <span class="ruby-ivar">@current_project_ids</span> = <span class="ruby-identifier">current_projects</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-301:       <span class="ruby-ivar">@current_project_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@current_project_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
-302:     <span class="ruby-keyword kw">end</span>
-303:     <span class="ruby-ivar">@current_project_ids</span>
-304:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000018-show-link"><a onclick="toggle('M000018-source'); toggleText('M000018-link'); return false;" href="#" id="M000018-link">Show source...</a></p><div class="source" id="M000018-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 302</span>
+302:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_project_ids</span>
+303:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_project_ids</span>
+304:       <span class="ruby-ivar">@current_project_ids</span> = <span class="ruby-identifier">current_projects</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+305:       <span class="ruby-ivar">@current_project_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@current_project_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
+306:     <span class="ruby-keyword kw">end</span>
+307:     <span class="ruby-ivar">@current_project_ids</span>
+308:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000017"><br/></a>
@@ -753,10 +757,10 @@ current_projects
 List of Users current Projects ordered by customer_id and Project.name
 </p>
 
-<p class="source_link" id="M000017-show-link"><a onclick="toggle('M000017-source'); toggleText('M000017-link'); return false;" href="#" id="M000017-link">Show source...</a></p><div class="source" id="M000017-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 292</span>
-292:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_projects</span>
-293:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>
-294:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000017-show-link"><a onclick="toggle('M000017-source'); toggleText('M000017-link'); return false;" href="#" id="M000017-link">Show source...</a></p><div class="source" id="M000017-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 296</span>
+296:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_projects</span>
+297:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>
+298:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000010"><br/></a>
@@ -844,14 +848,14 @@ double_escape
 </a>
 </h3>
 
-<p class="source_link" id="M000029-show-link"><a onclick="toggle('M000029-source'); toggleText('M000029-link'); return false;" href="#" id="M000029-link">Show source...</a></p><div class="source" id="M000029-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 361</span>
-361:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">double_escape</span>(<span class="ruby-identifier">txt</span>)
-362:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">txt</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/channel-message-mine/</span>,<span class="ruby-value str">'channel-message-others'</span>)
-363:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\\n|\n|\\r|\r/</span>,<span class="ruby-value str">''</span>) <span class="ruby-comment cmt"># remove linefeeds</span>
-364:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/'/</span>, <span class="ruby-value str">&quot;\\\\'&quot;</span>) <span class="ruby-comment cmt"># escape ' to \'</span>
-365:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&quot;/</span>, <span class="ruby-value str">'\\\\&quot;'</span>)
-366:     <span class="ruby-identifier">res</span>
-367:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000029-show-link"><a onclick="toggle('M000029-source'); toggleText('M000029-link'); return false;" href="#" id="M000029-link">Show source...</a></p><div class="source" id="M000029-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 365</span>
+365:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">double_escape</span>(<span class="ruby-identifier">txt</span>)
+366:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">txt</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/channel-message-mine/</span>,<span class="ruby-value str">'channel-message-others'</span>)
+367:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\\n|\n|\\r|\r/</span>,<span class="ruby-value str">''</span>) <span class="ruby-comment cmt"># remove linefeeds</span>
+368:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/'/</span>, <span class="ruby-value str">&quot;\\\\'&quot;</span>) <span class="ruby-comment cmt"># escape ' to \'</span>
+369:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&quot;/</span>, <span class="ruby-value str">'\\\\&quot;'</span>)
+370:     <span class="ruby-identifier">res</span>
+371:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000022"><br/></a>
@@ -866,10 +870,10 @@ highlight
 </a>
 </h3>
 
-<p class="source_link" id="M000022-show-link"><a onclick="toggle('M000022-source'); toggleText('M000022-link'); return false;" href="#" id="M000022-link">Show source...</a></p><div class="source" id="M000022-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 325</span>
-325:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span> )
-326:     <span class="ruby-identifier">t</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(#{Regexp.escape(k)})/i</span>, <span class="ruby-value str">'&lt;strong&gt;\1&lt;/strong&gt;'</span>)
-327:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000022-show-link"><a onclick="toggle('M000022-source'); toggleText('M000022-link'); return false;" href="#" id="M000022-link">Show source...</a></p><div class="source" id="M000022-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 329</span>
+329:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span> )
+330:     <span class="ruby-identifier">t</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(#{Regexp.escape(k)})/i</span>, <span class="ruby-value str">'&lt;strong&gt;\1&lt;/strong&gt;'</span>)
+331:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000023"><br/></a>
@@ -884,13 +888,13 @@ highlight_all
 </a>
 </h3>
 
-<p class="source_link" id="M000023-show-link"><a onclick="toggle('M000023-source'); toggleText('M000023-link'); return false;" href="#" id="M000023-link">Show source...</a></p><div class="source" id="M000023-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 329</span>
-329:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight_all</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">keys</span> )
-330:     <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
-331:       <span class="ruby-identifier">text</span> = <span class="ruby-identifier">highlight</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span>)
-332:     <span class="ruby-keyword kw">end</span>
-333:     <span class="ruby-identifier">text</span>
-334:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000023-show-link"><a onclick="toggle('M000023-source'); toggleText('M000023-link'); return false;" href="#" id="M000023-link">Show source...</a></p><div class="source" id="M000023-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 333</span>
+333:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight_all</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">keys</span> )
+334:     <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+335:       <span class="ruby-identifier">text</span> = <span class="ruby-identifier">highlight</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span>)
+336:     <span class="ruby-keyword kw">end</span>
+337:     <span class="ruby-identifier">text</span>
+338:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000027"><br/></a>
@@ -905,10 +909,10 @@ last_active
 </a>
 </h3>
 
-<p class="source_link" id="M000027-show-link"><a onclick="toggle('M000027-source'); toggleText('M000027-link'); return false;" href="#" id="M000027-link">Show source...</a></p><div class="source" id="M000027-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 353</span>
-353:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
-354:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:last_active</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
-355:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000027-show-link"><a onclick="toggle('M000027-source'); toggleText('M000027-link'); return false;" href="#" id="M000027-link">Show source...</a></p><div class="source" id="M000027-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 357</span>
+357:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
+358:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:last_active</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
+359:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000028"><br/></a>
@@ -923,10 +927,10 @@ link_to_task
 </a>
 </h3>
 
-<p class="source_link" id="M000028-show-link"><a onclick="toggle('M000028-source'); toggleText('M000028-link'); return false;" href="#" id="M000028-link">Show source...</a></p><div class="source" id="M000028-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 357</span>
-357:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_task</span>(<span class="ruby-identifier">task</span>)
-358:     <span class="ruby-node">&quot;&lt;strong&gt;&lt;small&gt;#{task.issue_num}&lt;/small&gt;&lt;/strong&gt; &lt;a href=\&quot;/tasks/edit/#{task.id}\&quot; class=\&quot;tooltip#{task.css_classes}\&quot; title=\&quot;#{task.to_tip({ :duration_format =&gt; current_user.duration_format, :workday_duration =&gt; current_user.workday_duration, :days_per_week =&gt; current_user.days_per_week, :user =&gt; current_user })}\&quot;&gt;#{task.name}&lt;/a&gt;&quot;</span>
-359:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000028-show-link"><a onclick="toggle('M000028-source'); toggleText('M000028-link'); return false;" href="#" id="M000028-link">Show source...</a></p><div class="source" id="M000028-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 361</span>
+361:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_task</span>(<span class="ruby-identifier">task</span>)
+362:     <span class="ruby-node">&quot;&lt;strong&gt;&lt;small&gt;#{task.issue_num}&lt;/small&gt;&lt;/strong&gt; &lt;a href=\&quot;/tasks/edit/#{task.id}\&quot; class=\&quot;tooltip#{task.css_classes}\&quot; title=\&quot;#{task.to_tip({ :duration_format =&gt; current_user.duration_format, :workday_duration =&gt; current_user.workday_duration, :days_per_week =&gt; current_user.days_per_week, :user =&gt; current_user })}\&quot;&gt;#{task.name}&lt;/a&gt;&quot;</span>
+363:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000026"><br/></a>
@@ -941,10 +945,10 @@ logged_in?
 </a>
 </h3>
 
-<p class="source_link" id="M000026-show-link"><a onclick="toggle('M000026-source'); toggleText('M000026-link'); return false;" href="#" id="M000026-link">Show source...</a></p><div class="source" id="M000026-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 349</span>
-349:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logged_in?</span>
-350:     <span class="ruby-keyword kw">true</span>
-351:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000026-show-link"><a onclick="toggle('M000026-source'); toggleText('M000026-link'); return false;" href="#" id="M000026-link">Show source...</a></p><div class="source" id="M000026-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 353</span>
+353:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logged_in?</span>
+354:     <span class="ruby-keyword kw">true</span>
+355:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000015"><br/></a>
@@ -959,47 +963,47 @@ parse_repeat
 </a>
 </h3>
 
-<p class="source_link" id="M000015-show-link"><a onclick="toggle('M000015-source'); toggleText('M000015-link'); return false;" href="#" id="M000015-link">Show source...</a></p><div class="source" id="M000015-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 236</span>
-236:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_repeat</span>(<span class="ruby-identifier">r</span>)
-237:     <span class="ruby-comment cmt"># every monday</span>
-238:     <span class="ruby-comment cmt"># every 15th</span>
-239:     <span class="ruby-comment cmt"># every last monday</span>
-240:     <span class="ruby-comment cmt"># every 3rd tuesday</span>
-241:     <span class="ruby-comment cmt"># every 01/02</span>
-242:     <span class="ruby-comment cmt"># every 12 days</span>
-243: 
-244:     <span class="ruby-identifier">r</span> = <span class="ruby-identifier">r</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
-245: 
-246:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">r</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'every '</span>
+<p class="source_link" id="M000015-show-link"><a onclick="toggle('M000015-source'); toggleText('M000015-link'); return false;" href="#" id="M000015-link">Show source...</a></p><div class="source" id="M000015-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 240</span>
+240:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_repeat</span>(<span class="ruby-identifier">r</span>)
+241:     <span class="ruby-comment cmt"># every monday</span>
+242:     <span class="ruby-comment cmt"># every 15th</span>
+243:     <span class="ruby-comment cmt"># every last monday</span>
+244:     <span class="ruby-comment cmt"># every 3rd tuesday</span>
+245:     <span class="ruby-comment cmt"># every 01/02</span>
+246:     <span class="ruby-comment cmt"># every 12 days</span>
 247: 
-248:     <span class="ruby-identifier">tokens</span> = <span class="ruby-identifier">r</span>[<span class="ruby-value">6</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+248:     <span class="ruby-identifier">r</span> = <span class="ruby-identifier">r</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
 249: 
-250:     <span class="ruby-identifier">mode</span> = <span class="ruby-value str">&quot;&quot;</span>
-251:     <span class="ruby-identifier">args</span> = []
-252: 
-253:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-254:       <span class="ruby-constant">Date</span><span class="ruby-operator">::</span><span class="ruby-constant">DAYNAMES</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
-255:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
-256:           <span class="ruby-identifier">mode</span> = <span class="ruby-value str">&quot;w&quot;</span>
-257:           <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
-258:           <span class="ruby-keyword kw">break</span>
-259:         <span class="ruby-keyword kw">end</span>
-260:       <span class="ruby-keyword kw">end</span>
-261: 
-262:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mode</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
-263:         <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">REPEAT_DATE</span>.<span class="ruby-identifier">size</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
-264:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">REPEAT_DATE</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
-265:             <span class="ruby-identifier">mode</span> = <span class="ruby-value str">'m'</span>
-266:             <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">i</span>
-267:             <span class="ruby-keyword kw">break</span>
-268:           <span class="ruby-keyword kw">end</span>
-269:         <span class="ruby-keyword kw">end</span>
-270:       <span class="ruby-keyword kw">end</span>
-271: 
-272:     <span class="ruby-keyword kw">end</span>
-273: 
-274: 
-275:   <span class="ruby-keyword kw">end</span></pre></div>
+250:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">r</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">'every '</span>
+251: 
+252:     <span class="ruby-identifier">tokens</span> = <span class="ruby-identifier">r</span>[<span class="ruby-value">6</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+253: 
+254:     <span class="ruby-identifier">mode</span> = <span class="ruby-value str">&quot;&quot;</span>
+255:     <span class="ruby-identifier">args</span> = []
+256: 
+257:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">tokens</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+258:       <span class="ruby-constant">Date</span><span class="ruby-operator">::</span><span class="ruby-constant">DAYNAMES</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">d</span><span class="ruby-operator">|</span>
+259:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">d</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
+260:           <span class="ruby-identifier">mode</span> = <span class="ruby-value str">&quot;w&quot;</span>
+261:           <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
+262:           <span class="ruby-keyword kw">break</span>
+263:         <span class="ruby-keyword kw">end</span>
+264:       <span class="ruby-keyword kw">end</span>
+265: 
+266:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mode</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
+267:         <span class="ruby-value">1</span>.<span class="ruby-identifier">upto</span>(<span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">REPEAT_DATE</span>.<span class="ruby-identifier">size</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+268:           <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Task</span><span class="ruby-operator">::</span><span class="ruby-constant">REPEAT_DATE</span>[<span class="ruby-identifier">i</span>].<span class="ruby-identifier">include?</span> <span class="ruby-identifier">tokens</span>[<span class="ruby-value">0</span>]
+269:             <span class="ruby-identifier">mode</span> = <span class="ruby-value str">'m'</span>
+270:             <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>] = <span class="ruby-identifier">i</span>
+271:             <span class="ruby-keyword kw">break</span>
+272:           <span class="ruby-keyword kw">end</span>
+273:         <span class="ruby-keyword kw">end</span>
+274:       <span class="ruby-keyword kw">end</span>
+275: 
+276:     <span class="ruby-keyword kw">end</span>
+277: 
+278: 
+279:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000014"><br/></a>
@@ -1017,69 +1021,69 @@ parse_time
 Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> =&gt; minutes or seconds
 </p>
 
-<p class="source_link" id="M000014-show-link"><a onclick="toggle('M000014-source'); toggleText('M000014-link'); return false;" href="#" id="M000014-link">Show source...</a></p><div class="source" id="M000014-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 173</span>
-173:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">minutes</span> = <span class="ruby-keyword kw">false</span>)
-174:     <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
-175:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">nil?</span>
-176:       <span class="ruby-identifier">miss</span> = <span class="ruby-keyword kw">false</span>
-177:       <span class="ruby-identifier">reg</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;(#{_('[wdhm]')})&quot;</span>)
-178:       <span class="ruby-identifier">input</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">reg</span>,<span class="ruby-value str">'\1 '</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
-179:         <span class="ruby-identifier">part</span> = <span class="ruby-regexp re">/(\d+)(\w+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">e</span>)
-180:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span>
-181:           <span class="ruby-keyword kw">case</span>  <span class="ruby-identifier">part</span>[<span class="ruby-value">2</span>]
-182:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'w'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
-183:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'d'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
-184:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'h'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
-185:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'m'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>
-186:           <span class="ruby-keyword kw">else</span> 
-187:             <span class="ruby-identifier">miss</span> = <span class="ruby-keyword kw">true</span>
-188:           <span class="ruby-keyword kw">end</span>
-189:         <span class="ruby-keyword kw">end</span>
-190:       <span class="ruby-keyword kw">end</span>
-191: 
-192:       <span class="ruby-comment cmt"># Fallback to default english parsing</span>
-193:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">miss</span>
-194:         <span class="ruby-identifier">eng_total</span> = <span class="ruby-value">0</span>
-195:         <span class="ruby-identifier">reg</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;([wdhm])&quot;</span>)
-196:         <span class="ruby-identifier">input</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">reg</span>,<span class="ruby-value str">'\1 '</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
-197:           <span class="ruby-identifier">part</span> = <span class="ruby-regexp re">/(\d+)(\w+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">e</span>)
-198:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span>
-199:             <span class="ruby-keyword kw">case</span>  <span class="ruby-identifier">part</span>[<span class="ruby-value">2</span>]
-200:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'w'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
-201:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'d'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
-202:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'h'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
-203:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'m'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>
-204:             <span class="ruby-keyword kw">end</span>
-205:           <span class="ruby-keyword kw">end</span>
-206:         <span class="ruby-keyword kw">end</span>
-207:         
-208:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">total</span>
-209:           <span class="ruby-identifier">total</span> = <span class="ruby-identifier">eng_total</span>
+<p class="source_link" id="M000014-show-link"><a onclick="toggle('M000014-source'); toggleText('M000014-link'); return false;" href="#" id="M000014-link">Show source...</a></p><div class="source" id="M000014-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 177</span>
+177:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">minutes</span> = <span class="ruby-keyword kw">false</span>)
+178:     <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
+179:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">nil?</span>
+180:       <span class="ruby-identifier">miss</span> = <span class="ruby-keyword kw">false</span>
+181:       <span class="ruby-identifier">reg</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-node">&quot;(#{_('[wdhm]')})&quot;</span>)
+182:       <span class="ruby-identifier">input</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">reg</span>,<span class="ruby-value str">'\1 '</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
+183:         <span class="ruby-identifier">part</span> = <span class="ruby-regexp re">/(\d+)(\w+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">e</span>)
+184:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span>
+185:           <span class="ruby-keyword kw">case</span>  <span class="ruby-identifier">part</span>[<span class="ruby-value">2</span>]
+186:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'w'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
+187:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'d'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
+188:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'h'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
+189:           <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'m'</span>) <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>
+190:           <span class="ruby-keyword kw">else</span> 
+191:             <span class="ruby-identifier">miss</span> = <span class="ruby-keyword kw">true</span>
+192:           <span class="ruby-keyword kw">end</span>
+193:         <span class="ruby-keyword kw">end</span>
+194:       <span class="ruby-keyword kw">end</span>
+195: 
+196:       <span class="ruby-comment cmt"># Fallback to default english parsing</span>
+197:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">miss</span>
+198:         <span class="ruby-identifier">eng_total</span> = <span class="ruby-value">0</span>
+199:         <span class="ruby-identifier">reg</span> = <span class="ruby-constant">Regexp</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">&quot;([wdhm])&quot;</span>)
+200:         <span class="ruby-identifier">input</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-identifier">reg</span>,<span class="ruby-value str">'\1 '</span>).<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span>
+201:           <span class="ruby-identifier">part</span> = <span class="ruby-regexp re">/(\d+)(\w+)/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">e</span>)
+202:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">part</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">part</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">3</span>
+203:             <span class="ruby-keyword kw">case</span>  <span class="ruby-identifier">part</span>[<span class="ruby-value">2</span>]
+204:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'w'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
+205:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'d'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
+206:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'h'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
+207:             <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'m'</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_i</span>
+208:             <span class="ruby-keyword kw">end</span>
+209:           <span class="ruby-keyword kw">end</span>
 210:         <span class="ruby-keyword kw">end</span>
 211:         
-212:       <span class="ruby-keyword kw">end</span>
-213:       
-214:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-215:         <span class="ruby-identifier">times</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">':'</span>)
-216:         <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">time</span> = <span class="ruby-identifier">times</span>.<span class="ruby-identifier">shift</span>
-217:           <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">times</span>.<span class="ruby-identifier">size</span>
-218:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span>
-219:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
-220:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
-221:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">3</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
-222:           <span class="ruby-keyword kw">end</span>
-223:         <span class="ruby-keyword kw">end</span>
-224:       <span class="ruby-keyword kw">end</span>
-225: 
-226:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-227:         <span class="ruby-identifier">total</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">to_i</span>
+212:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">eng_total</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">total</span>
+213:           <span class="ruby-identifier">total</span> = <span class="ruby-identifier">eng_total</span>
+214:         <span class="ruby-keyword kw">end</span>
+215:         
+216:       <span class="ruby-keyword kw">end</span>
+217:       
+218:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+219:         <span class="ruby-identifier">times</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">':'</span>)
+220:         <span class="ruby-keyword kw">while</span> <span class="ruby-identifier">time</span> = <span class="ruby-identifier">times</span>.<span class="ruby-identifier">shift</span>
+221:           <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">times</span>.<span class="ruby-identifier">size</span>
+222:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span>
+223:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
+224:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>
+225:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">3</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">time</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>
+226:           <span class="ruby-keyword kw">end</span>
+227:         <span class="ruby-keyword kw">end</span>
 228:       <span class="ruby-keyword kw">end</span>
 229: 
-230:       <span class="ruby-identifier">total</span> = <span class="ruby-identifier">total</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">minutes</span>
-231:       
-232:     <span class="ruby-keyword kw">end</span>
-233:     <span class="ruby-identifier">total</span>
-234:   <span class="ruby-keyword kw">end</span></pre></div>
+230:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">total</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+231:         <span class="ruby-identifier">total</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">to_i</span>
+232:       <span class="ruby-keyword kw">end</span>
+233: 
+234:       <span class="ruby-identifier">total</span> = <span class="ruby-identifier">total</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">minutes</span>
+235:       
+236:     <span class="ruby-keyword kw">end</span>
+237:     <span class="ruby-identifier">total</span>
+238:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000016"><br/></a>
@@ -1098,18 +1102,18 @@ Redirect back to the last important page, forcing the tutorial unless
 that&#8216;s completed.
 </p>
 
-<p class="source_link" id="M000016-show-link"><a onclick="toggle('M000016-source'); toggleText('M000016-link'); return false;" href="#" id="M000016-link">Show source...</a></p><div class="source" id="M000016-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 279</span>
-279:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">redirect_from_last</span>
-280:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>].<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-281:       <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>][<span class="ruby-value">0</span>])
-282:     <span class="ruby-keyword kw">else</span>
-283:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">seen_welcome</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-284:         <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value str">'/activities/welcome'</span>)
-285:       <span class="ruby-keyword kw">else</span>
-286:         <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value str">'/activities/list'</span>)
-287:       <span class="ruby-keyword kw">end</span>
-288:     <span class="ruby-keyword kw">end</span>
-289:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000016-show-link"><a onclick="toggle('M000016-source'); toggleText('M000016-link'); return false;" href="#" id="M000016-link">Show source...</a></p><div class="source" id="M000016-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 283</span>
+283:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">redirect_from_last</span>
+284:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>].<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+285:       <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>][<span class="ruby-value">0</span>])
+286:     <span class="ruby-keyword kw">else</span>
+287:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">seen_welcome</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+288:         <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value str">'/activities/welcome'</span>)
+289:       <span class="ruby-keyword kw">else</span>
+290:         <span class="ruby-identifier">redirect_to</span>(<span class="ruby-value str">'/activities/list'</span>)
+291:       <span class="ruby-keyword kw">end</span>
+292:     <span class="ruby-keyword kw">end</span>
+293:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000024"><br/></a>
@@ -1134,10 +1138,10 @@ def rescue_action(exception)
 end
 </p>
 
-<p class="source_link" id="M000024-show-link"><a onclick="toggle('M000024-source'); toggleText('M000024-link'); return false;" href="#" id="M000024-link">Show source...</a></p><div class="source" id="M000024-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 341</span>
-341:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_invalid_record</span>(<span class="ruby-identifier">record</span>)
-342:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">record</span>.<span class="ruby-identifier">new_record?</span> <span class="ruby-value">? </span><span class="ruby-value str">'new'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'edit'</span>)
-343:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000024-show-link"><a onclick="toggle('M000024-source'); toggleText('M000024-link'); return false;" href="#" id="M000024-link">Show source...</a></p><div class="source" id="M000024-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 345</span>
+345:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_invalid_record</span>(<span class="ruby-identifier">record</span>)
+346:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">record</span>.<span class="ruby-identifier">new_record?</span> <span class="ruby-value">? </span><span class="ruby-value str">'new'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'edit'</span>)
+347:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000012"><br/></a>
@@ -1198,10 +1202,10 @@ worked_nice
 </a>
 </h3>
 
-<p class="source_link" id="M000021-show-link"><a onclick="toggle('M000021-source'); toggleText('M000021-link'); return false;" href="#" id="M000021-link">Show source...</a></p><div class="source" id="M000021-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 321</span>
-321:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">worked_nice</span>(<span class="ruby-identifier">minutes</span>)
-322:     <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>)
-323:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000021-show-link"><a onclick="toggle('M000021-source'); toggleText('M000021-link'); return false;" href="#" id="M000021-link">Show source...</a></p><div class="source" id="M000021-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 325</span>
+325:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">worked_nice</span>(<span class="ruby-identifier">minutes</span>)
+326:     <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>)
+327:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

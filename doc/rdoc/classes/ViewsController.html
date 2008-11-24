@@ -502,24 +502,26 @@ all_tasks
 </a>
 </h3>
 
-<p class="source_link" id="M000083-show-link"><a onclick="toggle('M000083-source'); toggleText('M000083-link'); return false;" href="#" id="M000083-link">Show source...</a></p><div class="source" id="M000083-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 163</span>
-163:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_tasks</span>
-164: 
-165:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
-166:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Open Tasks'</span>)
-167: 
-168:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
-169: 
-170:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-171:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-172:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-173:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-174:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-175:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-176:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-177:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-178:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-179:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000083-show-link"><a onclick="toggle('M000083-source'); toggleText('M000083-link'); return false;" href="#" id="M000083-link">Show source...</a></p><div class="source" id="M000083-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 176</span>
+176:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_tasks</span>
+177: 
+178:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
+179:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Open Tasks'</span>)
+180: 
+181:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
+182: 
+183:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+184:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+185:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+186:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+187:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+188:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+189:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+190:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+191:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+192:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+193:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+194:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000087"><br/></a>
@@ -534,15 +536,17 @@ browse
 </a>
 </h3>
 
-<p class="source_link" id="M000087-show-link"><a onclick="toggle('M000087-source'); toggleText('M000087-link'); return false;" href="#" id="M000087-link">Show source...</a></p><div class="source" id="M000087-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 229</span>
-229:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">browse</span>
-230:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
-231:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-232:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-233:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-234:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
-235:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-236:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000087-show-link"><a onclick="toggle('M000087-source'); toggleText('M000087-link'); return false;" href="#" id="M000087-link">Show source...</a></p><div class="source" id="M000087-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 250</span>
+250:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">browse</span>
+251:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
+252:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+253:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+254:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+255:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
+256:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+257:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+258:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+259:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000073"><br/></a>
@@ -583,13 +587,13 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000077-show-link"><a onclick="toggle('M000077-source'); toggleText('M000077-link'); return false;" href="#" id="M000077-link">Show source...</a></p><div class="source" id="M000077-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 72</span>
-72:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-73:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
-74:     <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;View '%s' was deleted.&quot;</span>, <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span>)
-75:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">destroy</span>
-76:     <span class="ruby-identifier">redirect_from_last</span>
-77:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000077-show-link"><a onclick="toggle('M000077-source'); toggleText('M000077-link'); return false;" href="#" id="M000077-link">Show source...</a></p><div class="source" id="M000077-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 75</span>
+75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+76:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
+77:     <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;View '%s' was deleted.&quot;</span>, <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span>)
+78:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">destroy</span>
+79:     <span class="ruby-identifier">redirect_from_last</span>
+80:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000074"><br/></a>
@@ -623,20 +627,20 @@ get_milestones
 </a>
 </h3>
 
-<p class="source_link" id="M000089-show-link"><a onclick="toggle('M000089-source'); toggleText('M000089-link'); return false;" href="#" id="M000089-link">Show source...</a></p><div class="source" id="M000089-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 251</span>
-251:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_milestones</span>
-252:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-253:       <span class="ruby-ivar">@milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;project_id, due_at&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND completed_at IS NULL&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span>  {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{m.name} / #{m.project.name}\&quot;, \&quot;value\&quot;:\&quot;#{m.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-254: 
-255:     <span class="ruby-keyword kw">else</span>
-256:       <span class="ruby-ivar">@milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'due_at, name'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND project_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>]]).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{m.name}\&quot;, \&quot;value\&quot;:\&quot;#{m.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-257:     <span class="ruby-keyword kw">end</span>
-258: 
-259:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Milestone]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
-260:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@milestones}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestones</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@milestones</span>.<span class="ruby-identifier">empty?</span>
-261:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
-262:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
-263:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000089-show-link"><a onclick="toggle('M000089-source'); toggleText('M000089-link'); return false;" href="#" id="M000089-link">Show source...</a></p><div class="source" id="M000089-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 274</span>
+274:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_milestones</span>
+275:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+276:       <span class="ruby-ivar">@milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;project_id, due_at&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND completed_at IS NULL&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span>  {<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{m.name} / #{m.project.name}\&quot;, \&quot;value\&quot;:\&quot;#{m.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+277: 
+278:     <span class="ruby-keyword kw">else</span>
+279:       <span class="ruby-ivar">@milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'due_at, name'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND project_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>]]).<span class="ruby-identifier">collect</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{m.name}\&quot;, \&quot;value\&quot;:\&quot;#{m.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+280:     <span class="ruby-keyword kw">end</span>
+281: 
+282:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Milestone]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
+283:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@milestones}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestones</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@milestones</span>.<span class="ruby-identifier">empty?</span>
+284:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
+285:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
+286:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000090"><br/></a>
@@ -651,20 +655,20 @@ get_owners
 </a>
 </h3>
 
-<p class="source_link" id="M000090-show-link"><a onclick="toggle('M000090-source'); toggleText('M000090-link'); return false;" href="#" id="M000090-link">Show source...</a></p><div class="source" id="M000090-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 265</span>
-265:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_owners</span>
-266:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-267:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{u.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{u.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-268:     <span class="ruby-keyword kw">else</span>
-269:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND id = ?'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>]]).<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>  {<span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{u.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{u.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-270:     <span class="ruby-keyword kw">end</span>
-271: 
-272:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any User]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;,&quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active User]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;,&quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Unassigned]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
-273: 
-274:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@users}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">empty?</span>
-275:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
-276:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
-277:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000090-show-link"><a onclick="toggle('M000090-source'); toggleText('M000090-link'); return false;" href="#" id="M000090-link">Show source...</a></p><div class="source" id="M000090-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 288</span>
+288:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_owners</span>
+289:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+290:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{u.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{u.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+291:     <span class="ruby-keyword kw">else</span>
+292:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND id = ?'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project_id</span>]]).<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>  {<span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{u.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{u.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+293:     <span class="ruby-keyword kw">end</span>
+294: 
+295:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any User]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;,&quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active User]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;,&quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Unassigned]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
+296: 
+297:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@users}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@users</span>.<span class="ruby-identifier">empty?</span>
+298:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
+299:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
+300:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000088"><br/></a>
@@ -679,19 +683,19 @@ get_projects
 </a>
 </h3>
 
-<p class="source_link" id="M000088-show-link"><a onclick="toggle('M000088-source'); toggleText('M000088-link'); return false;" href="#" id="M000088-link">Show source...</a></p><div class="source" id="M000088-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 238</span>
-238:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
-239:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:customer_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-240:       <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name} / #{p.customer.name}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-241:     <span class="ruby-keyword kw">else</span>
-242:       <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'customer_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:customer_id</span>]]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-243:     <span class="ruby-keyword kw">end</span>
-244: 
-245:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
-246:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
-247:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
-248:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
-249:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000088-show-link"><a onclick="toggle('M000088-source'); toggleText('M000088-link'); return false;" href="#" id="M000088-link">Show source...</a></p><div class="source" id="M000088-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 261</span>
+261:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
+262:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:customer_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+263:       <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name} / #{p.customer.name}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+264:     <span class="ruby-keyword kw">else</span>
+265:       <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'customer_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:customer_id</span>]]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+266:     <span class="ruby-keyword kw">end</span>
+267: 
+268:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
+269:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
+270:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
+271:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
+272:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000085"><br/></a>
@@ -706,22 +710,24 @@ my_in_progress_tasks
 </a>
 </h3>
 
-<p class="source_link" id="M000085-show-link"><a onclick="toggle('M000085-source'); toggleText('M000085-link'); return false;" href="#" id="M000085-link">Show source...</a></p><div class="source" id="M000085-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 197</span>
-197:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">my_in_progress_tasks</span>
-198:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
-199:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'My In Progress Tasks'</span>)
-200: 
-201:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
-202:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-203:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-204:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-205:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;1&quot;</span>
-206:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-207:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-208:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
-209:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-210:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-211:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000085-show-link"><a onclick="toggle('M000085-source'); toggleText('M000085-link'); return false;" href="#" id="M000085-link">Show source...</a></p><div class="source" id="M000085-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 214</span>
+214:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">my_in_progress_tasks</span>
+215:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
+216:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'My In Progress Tasks'</span>)
+217: 
+218:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
+219:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+220:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+221:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+222:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;1&quot;</span>
+223:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+224:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+225:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
+226:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+227:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+228:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+229:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+230:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000084"><br/></a>
@@ -736,22 +742,24 @@ my_tasks
 </a>
 </h3>
 
-<p class="source_link" id="M000084-show-link"><a onclick="toggle('M000084-source'); toggleText('M000084-link'); return false;" href="#" id="M000084-link">Show source...</a></p><div class="source" id="M000084-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 181</span>
-181:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">my_tasks</span>
-182:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
-183:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'My Open Tasks'</span>)
-184: 
-185:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
-186:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-187:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-188:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-189:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-190:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-191:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-192:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
-193:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-194:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-195:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000084-show-link"><a onclick="toggle('M000084-source'); toggleText('M000084-link'); return false;" href="#" id="M000084-link">Show source...</a></p><div class="source" id="M000084-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 196</span>
+196:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">my_tasks</span>
+197:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
+198:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'My Open Tasks'</span>)
+199: 
+200:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
+201:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+202:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+203:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+204:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+205:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+206:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+207:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;1&quot;</span>
+208:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+209:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+210:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+211:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+212:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000072"><br/></a>
@@ -796,19 +804,22 @@ save_filter
 55:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">auto_group</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:group_by</span>].<span class="ruby-identifier">to_i</span>
 56:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">hide_dependencies</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span>
 57:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_status</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span>
-58:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">sort</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sort</span>].<span class="ruby-identifier">to_i</span>
-59: 
-60:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tags</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
-61:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-62:         <span class="ruby-identifier">t</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
-63:       <span class="ruby-keyword kw">else</span>
-64:         <span class="ruby-keyword kw">nil</span>
-65:       <span class="ruby-keyword kw">end</span>
-66:       }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tags</span>]
-67: 
-68:     <span class="ruby-ivar">@tags</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">top_counts</span>({ <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:project_ids</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_project_ids</span> })
-69:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
-70:   <span class="ruby-keyword kw">end</span></pre></div>
+58:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_type_id</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>].<span class="ruby-identifier">to_i</span>
+59:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_severity</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>].<span class="ruby-identifier">to_i</span>
+60:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_priority</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>].<span class="ruby-identifier">to_i</span>
+61:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">sort</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sort</span>].<span class="ruby-identifier">to_i</span>
+62: 
+63:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tags</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+64:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+65:         <span class="ruby-identifier">t</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
+66:       <span class="ruby-keyword kw">else</span>
+67:         <span class="ruby-keyword kw">nil</span>
+68:       <span class="ruby-keyword kw">end</span>
+69:       }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:tags</span>]
+70: 
+71:     <span class="ruby-ivar">@tags</span> = <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">top_counts</span>({ <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:project_ids</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_project_ids</span> })
+72:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
+73:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000078"><br/></a>
@@ -823,34 +834,36 @@ select
 </a>
 </h3>
 
-<p class="source_link" id="M000078-show-link"><a onclick="toggle('M000078-source'); toggleText('M000078-link'); return false;" href="#" id="M000078-link">Show source...</a></p><div class="source" id="M000078-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 79</span>
- 79:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select</span>
- 80:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND (user_id = ? OR shared = 1)&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
- 81: 
- 82:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>)
- 83:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-2</span>
- 84:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_project_id</span>.<span class="ruby-identifier">to_s</span>
- 85:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_milestone_id</span>.<span class="ruby-identifier">to_s</span>
- 86:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:group_by</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">auto_group</span>.<span class="ruby-identifier">to_s</span>
- 87:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">hide_dependencies</span>.<span class="ruby-identifier">to_s</span>
- 88:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
- 89:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_status</span>
- 90:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_type_id</span>.<span class="ruby-identifier">to_s</span>
- 91:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_customer_id</span>.<span class="ruby-identifier">to_s</span>
- 92:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sort</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">to_s</span>
- 93: 
- 94:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span> = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
- 95:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
- 96:         <span class="ruby-identifier">t</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
- 97:       <span class="ruby-keyword kw">else</span>
- 98:         <span class="ruby-keyword kw">nil</span>
- 99:       <span class="ruby-keyword kw">end</span>
-100:       }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-101: 
-102:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
-103: 
-104:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span>
-105:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000078-show-link"><a onclick="toggle('M000078-source'); toggleText('M000078-link'); return false;" href="#" id="M000078-link">Show source...</a></p><div class="source" id="M000078-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 82</span>
+ 82:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select</span>
+ 83:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND (user_id = ? OR shared = 1)&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
+ 84: 
+ 85:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span>)
+ 86:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_user_id</span> <span class="ruby-operator">==</span> <span class="ruby-value">-2</span>
+ 87:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_project_id</span>.<span class="ruby-identifier">to_s</span>
+ 88:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_milestone_id</span>.<span class="ruby-identifier">to_s</span>
+ 89:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:group_by</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">auto_group</span>.<span class="ruby-identifier">to_s</span>
+ 90:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">hide_dependencies</span>.<span class="ruby-identifier">to_s</span>
+ 91:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+ 92:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_status</span>
+ 93:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_type_id</span>.<span class="ruby-identifier">to_s</span>
+ 94:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_severity</span>.<span class="ruby-identifier">to_s</span>
+ 95:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_priority</span>.<span class="ruby-identifier">to_s</span>
+ 96:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_customer_id</span>.<span class="ruby-identifier">to_s</span>
+ 97:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:sort</span>] = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">to_s</span>
+ 98: 
+ 99:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span> = <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+100:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+101:         <span class="ruby-identifier">t</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span>
+102:       <span class="ruby-keyword kw">else</span>
+103:         <span class="ruby-keyword kw">nil</span>
+104:       <span class="ruby-keyword kw">end</span>
+105:       }.<span class="ruby-identifier">compact</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+106: 
+107:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
+108: 
+109:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:tag</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">filter_tags</span>
+110:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000082"><br/></a>
@@ -865,20 +878,22 @@ select_client
 </a>
 </h3>
 
-<p class="source_link" id="M000082-show-link"><a onclick="toggle('M000082-source'); toggleText('M000082-link'); return false;" href="#" id="M000082-link">Show source...</a></p><div class="source" id="M000082-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 149</span>
-149:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_client</span>
-150:     <span class="ruby-ivar">@client</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-151:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-152:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-153:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-154:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-155:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-156:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-157:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-158:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">id</span>
-159:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
-160:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-161:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000082-show-link"><a onclick="toggle('M000082-source'); toggleText('M000082-link'); return false;" href="#" id="M000082-link">Show source...</a></p><div class="source" id="M000082-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 160</span>
+160:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_client</span>
+161:     <span class="ruby-ivar">@client</span> = <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+162:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+163:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+164:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+165:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+166:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+167:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+168:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+169:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-ivar">@client</span>.<span class="ruby-identifier">id</span>
+170:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+171:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+172:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
+173:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+174:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000079"><br/></a>
@@ -893,20 +908,22 @@ select_milestone
 </a>
 </h3>
 
-<p class="source_link" id="M000079-show-link"><a onclick="toggle('M000079-source'); toggleText('M000079-link'); return false;" href="#" id="M000079-link">Show source...</a></p><div class="source" id="M000079-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 107</span>
-107:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_milestone</span>
-108:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-109:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-110:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-111:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-112:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-113:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-114:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-115:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-116:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-117:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
-118:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-119:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000079-show-link"><a onclick="toggle('M000079-source'); toggleText('M000079-link'); return false;" href="#" id="M000079-link">Show source...</a></p><div class="source" id="M000079-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 112</span>
+112:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_milestone</span>
+113:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+114:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+115:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+116:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+117:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+118:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+119:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+120:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+121:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+122:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+123:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+124:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
+125:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+126:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000080"><br/></a>
@@ -921,20 +938,22 @@ select_project
 </a>
 </h3>
 
-<p class="source_link" id="M000080-show-link"><a onclick="toggle('M000080-source'); toggleText('M000080-link'); return false;" href="#" id="M000080-link">Show source...</a></p><div class="source" id="M000080-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 121</span>
-121:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_project</span>
-122:     <span class="ruby-ivar">@project</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-123:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-124:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@project</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-125:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-126:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-127:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-128:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-129:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-130:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-131:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
-132:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-133:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000080-show-link"><a onclick="toggle('M000080-source'); toggleText('M000080-link'); return false;" href="#" id="M000080-link">Show source...</a></p><div class="source" id="M000080-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 128</span>
+128:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_project</span>
+129:     <span class="ruby-ivar">@project</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+130:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+131:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-ivar">@project</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+132:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+133:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+134:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+135:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+136:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+137:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+138:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+139:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+140:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
+141:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+142:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000081"><br/></a>
@@ -949,20 +968,22 @@ select_user
 </a>
 </h3>
 
-<p class="source_link" id="M000081-show-link"><a onclick="toggle('M000081-source'); toggleText('M000081-link'); return false;" href="#" id="M000081-link">Show source...</a></p><div class="source" id="M000081-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 135</span>
-135:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_user</span>
-136:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-137:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
-138:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-139:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-140:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-141:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-142:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-143:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-144:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-145:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
-146:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-147:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000081-show-link"><a onclick="toggle('M000081-source'); toggleText('M000081-link'); return false;" href="#" id="M000081-link">Show source...</a></p><div class="source" id="M000081-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 144</span>
+144:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">select_user</span>
+145:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+146:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>
+147:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+148:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+149:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+150:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+151:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+152:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+153:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+154:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+155:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+156:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-keyword kw">nil</span>
+157:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+158:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000086"><br/></a>
@@ -977,22 +998,24 @@ unassigned_tasks
 </a>
 </h3>
 
-<p class="source_link" id="M000086-show-link"><a onclick="toggle('M000086-source'); toggleText('M000086-link'); return false;" href="#" id="M000086-link">Show source...</a></p><div class="source" id="M000086-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 213</span>
-213:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unassigned_tasks</span>
-214:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
-215:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unassigned Tasks'</span>)
-216: 
-217:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
-218:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-219:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-220:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-221:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-222:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-223:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
-224:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-225:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
-226:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-227:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000086-show-link"><a onclick="toggle('M000086-source'); toggleText('M000086-link'); return false;" href="#" id="M000086-link">Show source...</a></p><div class="source" id="M000086-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/views_controller.rb, line 232</span>
+232:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unassigned_tasks</span>
+233:     <span class="ruby-ivar">@view</span> = <span class="ruby-constant">View</span>.<span class="ruby-identifier">new</span>
+234:     <span class="ruby-ivar">@view</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unassigned Tasks'</span>)
+235: 
+236:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:view</span>] = <span class="ruby-ivar">@view</span>
+237:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+238:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+239:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+240:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+241:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_hidden</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+242:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] = <span class="ruby-value str">&quot;-1&quot;</span>
+243:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+244:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>] = <span class="ruby-value str">&quot;0&quot;</span>
+245:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+246:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] = <span class="ruby-value str">&quot;-10&quot;</span>
+247:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'tasks'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+248:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000075"><br/></a>

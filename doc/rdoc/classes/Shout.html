@@ -344,6 +344,10 @@ full_text_search<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: Shout</h1>
 
+<div id="description"><p>
+A chat message in a chat channel
+</p>
+</div>
 
 
 
@@ -370,15 +374,15 @@ full_text_search
 </a>
 </h3>
 
-<p class="source_link" id="M000030-show-link"><a onclick="toggle('M000030-source'); toggleText('M000030-link'); return false;" href="#" id="M000030-link">Show source...</a></p><div class="source" id="M000030-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout.rb, line 15</span>
-15:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">full_text_search</span>(<span class="ruby-identifier">q</span>, <span class="ruby-identifier">options</span> = {})
-16:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">q</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;&quot;</span>
-17:     <span class="ruby-identifier">default_options</span> = {<span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>, <span class="ruby-identifier">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>}
-18:     <span class="ruby-identifier">options</span> = <span class="ruby-identifier">default_options</span>.<span class="ruby-identifier">merge</span> <span class="ruby-identifier">options</span>
-19:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-operator">*</span> (<span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:page</span>).<span class="ruby-identifier">to_i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
-20:     <span class="ruby-identifier">results</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">find_by_contents</span>(<span class="ruby-identifier">q</span>, <span class="ruby-identifier">options</span>)
-21:     <span class="ruby-keyword kw">return</span> [<span class="ruby-identifier">results</span>.<span class="ruby-identifier">total_hits</span>, <span class="ruby-identifier">results</span>]
-22:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000030-show-link"><a onclick="toggle('M000030-source'); toggleText('M000030-link'); return false;" href="#" id="M000030-link">Show source...</a></p><div class="source" id="M000030-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout.rb, line 17</span>
+17:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">full_text_search</span>(<span class="ruby-identifier">q</span>, <span class="ruby-identifier">options</span> = {})
+18:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">q</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;&quot;</span>
+19:     <span class="ruby-identifier">default_options</span> = {<span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">20</span>, <span class="ruby-identifier">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>}
+20:     <span class="ruby-identifier">options</span> = <span class="ruby-identifier">default_options</span>.<span class="ruby-identifier">merge</span> <span class="ruby-identifier">options</span>
+21:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:offset</span>] = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:limit</span>] <span class="ruby-operator">*</span> (<span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-identifier">:page</span>).<span class="ruby-identifier">to_i</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>)
+22:     <span class="ruby-identifier">results</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">find_by_contents</span>(<span class="ruby-identifier">q</span>, <span class="ruby-identifier">options</span>)
+23:     <span class="ruby-keyword kw">return</span> [<span class="ruby-identifier">results</span>.<span class="ruby-identifier">total_hits</span>, <span class="ruby-identifier">results</span>]
+24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

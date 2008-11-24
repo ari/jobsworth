@@ -351,6 +351,10 @@ name=<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: Widget</h1>
 
+<div id="description"><p>
+A widget on the Activities page.
+</p>
+</div>
 
 
 
@@ -377,31 +381,31 @@ name
 </a>
 </h3>
 
-<p class="source_link" id="M000382-show-link"><a onclick="toggle('M000382-source'); toggleText('M000382-link'); return false;" href="#" id="M000382-link">Show source...</a></p><div class="source" id="M000382-source"><pre>    <span class="ruby-comment cmt"># File app/models/widget.rb, line 7</span>
- 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name</span>
- 8:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
- 9:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-10:       <span class="ruby-keyword kw">begin</span>
-11:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">0</span>]
-12:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'c'</span>
-13:                  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">company</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">name</span>
-14:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'p'</span>
-15:                  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">name</span>
-16:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'m'</span>
-17:                  <span class="ruby-identifier">m</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{User.find(self.user_id).projects.collect(&amp;:id).join(',')})&quot;</span>])
-18:                  <span class="ruby-node">&quot;#{m.project.name} / #{m.name}&quot;</span>
-19:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'u'</span>
-20:                  <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Unassigned]'</span>)
-21:                <span class="ruby-keyword kw">else</span> 
-22:                  <span class="ruby-value str">&quot;&quot;</span>
-23:                <span class="ruby-keyword kw">end</span> 
-24:       <span class="ruby-keyword kw">rescue</span>
-25:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Invalid Filter&quot;</span>)
-26:       <span class="ruby-keyword kw">end</span> 
-27:     <span class="ruby-keyword kw">end</span> 
-28:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; [#{_'Mine'}]&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mine?</span>
-29:     <span class="ruby-node">&quot;#{@attributes['name']}#{ res.empty? ? &quot;&quot; : &quot; - #{res}&quot;}&quot;</span>
-30:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000382-show-link"><a onclick="toggle('M000382-source'); toggleText('M000382-link'); return false;" href="#" id="M000382-link">Show source...</a></p><div class="source" id="M000382-source"><pre>    <span class="ruby-comment cmt"># File app/models/widget.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name</span>
+11:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
+12:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+13:       <span class="ruby-keyword kw">begin</span>
+14:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-keyword kw">case</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">0</span>]
+15:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'c'</span>
+16:                  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">company</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">name</span>
+17:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'p'</span>
+18:                  <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>]).<span class="ruby-identifier">name</span>
+19:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'m'</span>
+20:                  <span class="ruby-identifier">m</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{User.find(self.user_id).projects.collect(&amp;:id).join(',')})&quot;</span>])
+21:                  <span class="ruby-node">&quot;#{m.project.name} / #{m.name}&quot;</span>
+22:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'u'</span>
+23:                  <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Unassigned]'</span>)
+24:                <span class="ruby-keyword kw">else</span> 
+25:                  <span class="ruby-value str">&quot;&quot;</span>
+26:                <span class="ruby-keyword kw">end</span> 
+27:       <span class="ruby-keyword kw">rescue</span>
+28:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Invalid Filter&quot;</span>)
+29:       <span class="ruby-keyword kw">end</span> 
+30:     <span class="ruby-keyword kw">end</span> 
+31:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; [#{_'Mine'}]&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mine?</span>
+32:     <span class="ruby-node">&quot;#{@attributes['name']}#{ res.empty? ? &quot;&quot; : &quot; - #{res}&quot;}&quot;</span>
+33:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000383"><br/></a>
@@ -416,10 +420,10 @@ name=
 </a>
 </h3>
 
-<p class="source_link" id="M000383-show-link"><a onclick="toggle('M000383-source'); toggleText('M000383-link'); return false;" href="#" id="M000383-link">Show source...</a></p><div class="source" id="M000383-source"><pre>    <span class="ruby-comment cmt"># File app/models/widget.rb, line 32</span>
-32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">arg</span>)
-33:     <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'name'</span>] = <span class="ruby-identifier">arg</span>
-34:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000383-show-link"><a onclick="toggle('M000383-source'); toggleText('M000383-link'); return false;" href="#" id="M000383-link">Show source...</a></p><div class="source" id="M000383-source"><pre>    <span class="ruby-comment cmt"># File app/models/widget.rb, line 35</span>
+35:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name=</span>(<span class="ruby-identifier">arg</span>)
+36:     <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'name'</span>] = <span class="ruby-identifier">arg</span>
+37:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

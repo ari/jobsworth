@@ -344,6 +344,11 @@ last_active<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: ShoutChannel</h1>
 
+<div id="description"><p>
+A chat channel, has many subscribed users and shouts (messages in a
+channel)
+</p>
+</div>
 
 
 
@@ -370,11 +375,11 @@ last_active
 </a>
 </h3>
 
-<p class="source_link" id="M000091-show-link"><a onclick="toggle('M000091-source'); toggleText('M000091-link'); return false;" href="#" id="M000091-link">Show source...</a></p><div class="source" id="M000091-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout_channel.rb, line 12</span>
-12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
-13:     <span class="ruby-identifier">s</span> = <span class="ruby-constant">Shout</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;shout_channel_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id desc&quot;</span>)
-14:     <span class="ruby-identifier">s</span> <span class="ruby-value">? </span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">created_at</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>
-15:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000091-show-link"><a onclick="toggle('M000091-source'); toggleText('M000091-link'); return false;" href="#" id="M000091-link">Show source...</a></p><div class="source" id="M000091-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout_channel.rb, line 14</span>
+14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
+15:     <span class="ruby-identifier">s</span> = <span class="ruby-constant">Shout</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;shout_channel_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id desc&quot;</span>)
+16:     <span class="ruby-identifier">s</span> <span class="ruby-value">? </span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">created_at</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>
+17:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

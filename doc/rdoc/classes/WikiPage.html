@@ -428,6 +428,10 @@ user<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: WikiPage</h1>
 
+<div id="description"><p>
+A wiki page
+</p>
+</div>
 
 
 
@@ -464,10 +468,10 @@ body
 </a>
 </h3>
 
-<p class="source_link" id="M000111-show-link"><a onclick="toggle('M000111-source'); toggleText('M000111-link'); return false;" href="#" id="M000111-link">Show source...</a></p><div class="source" id="M000111-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 42</span>
-42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">body</span>
-43:     <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">body</span>
-44:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000111-show-link"><a onclick="toggle('M000111-source'); toggleText('M000111-link'); return false;" href="#" id="M000111-link">Show source...</a></p><div class="source" id="M000111-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 44</span>
+44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">body</span>
+45:     <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">body</span>
+46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000104"><br/></a>
@@ -482,10 +486,10 @@ lock
 </a>
 </h3>
 
-<p class="source_link" id="M000104-show-link"><a onclick="toggle('M000104-source'); toggleText('M000104-link'); return false;" href="#" id="M000104-link">Show source...</a></p><div class="source" id="M000104-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 13</span>
-13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">lock</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">locked_by</span>)
-14:     <span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">:locked_at</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">time</span>, <span class="ruby-identifier">:locked_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">locked_by</span>)
-15:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000104-show-link"><a onclick="toggle('M000104-source'); toggleText('M000104-link'); return false;" href="#" id="M000104-link">Show source...</a></p><div class="source" id="M000104-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 15</span>
+15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">lock</span>(<span class="ruby-identifier">time</span>, <span class="ruby-identifier">locked_by</span>)
+16:     <span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">:locked_at</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">time</span>, <span class="ruby-identifier">:locked_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">locked_by</span>)
+17:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000105"><br/></a>
@@ -500,10 +504,10 @@ lock_duration
 </a>
 </h3>
 
-<p class="source_link" id="M000105-show-link"><a onclick="toggle('M000105-source'); toggleText('M000105-link'); return false;" href="#" id="M000105-link">Show source...</a></p><div class="source" id="M000105-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 17</span>
-17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">lock_duration</span>(<span class="ruby-identifier">time</span>)
-18:     ((<span class="ruby-identifier">time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">locked_at</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">locked_at</span>.<span class="ruby-identifier">nil?</span>
-19:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000105-show-link"><a onclick="toggle('M000105-source'); toggleText('M000105-link'); return false;" href="#" id="M000105-link">Show source...</a></p><div class="source" id="M000105-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 19</span>
+19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">lock_duration</span>(<span class="ruby-identifier">time</span>)
+20:     ((<span class="ruby-identifier">time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">locked_at</span>) <span class="ruby-operator">/</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">locked_at</span>.<span class="ruby-identifier">nil?</span>
+21:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000107"><br/></a>
@@ -518,10 +522,10 @@ locked?
 </a>
 </h3>
 
-<p class="source_link" id="M000107-show-link"><a onclick="toggle('M000107-source'); toggleText('M000107-link'); return false;" href="#" id="M000107-link">Show source...</a></p><div class="source" id="M000107-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 25</span>
-25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">locked?</span>
-26:     <span class="ruby-identifier">locked_at</span> <span class="ruby-operator">+</span> <span class="ruby-constant">LOCKING_PERIOD</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">locked_at</span>.<span class="ruby-identifier">nil?</span>
-27:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000107-show-link"><a onclick="toggle('M000107-source'); toggleText('M000107-link'); return false;" href="#" id="M000107-link">Show source...</a></p><div class="source" id="M000107-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 27</span>
+27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">locked?</span>
+28:     <span class="ruby-identifier">locked_at</span> <span class="ruby-operator">+</span> <span class="ruby-constant">LOCKING_PERIOD</span> <span class="ruby-operator">&gt;</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">locked_at</span>.<span class="ruby-identifier">nil?</span>
+29:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000108"><br/></a>
@@ -536,10 +540,10 @@ locked_by
 </a>
 </h3>
 
-<p class="source_link" id="M000108-show-link"><a onclick="toggle('M000108-source'); toggleText('M000108-link'); return false;" href="#" id="M000108-link">Show source...</a></p><div class="source" id="M000108-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 29</span>
-29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">locked_by</span>
-30:     <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>( <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'locked_by'</span>] ) <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'locked_by'</span>].<span class="ruby-identifier">nil?</span>
-31:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000108-show-link"><a onclick="toggle('M000108-source'); toggleText('M000108-link'); return false;" href="#" id="M000108-link">Show source...</a></p><div class="source" id="M000108-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">locked_by</span>
+32:     <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>( <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'locked_by'</span>] ) <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">attributes</span>[<span class="ruby-value str">'locked_by'</span>].<span class="ruby-identifier">nil?</span>
+33:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000109"><br/></a>
@@ -559,10 +563,10 @@ wiki_pages.id = w_r.wiki_page_id WHERE w_r.referenced_name =
 &#8216;pagename&#8217;;
 </p>
 
-<p class="source_link" id="M000109-show-link"><a onclick="toggle('M000109-source'); toggleText('M000109-link'); return false;" href="#" id="M000109-link">Show source...</a></p><div class="source" id="M000109-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 34</span>
-34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pages_linking_here</span>
-35:     <span class="ruby-ivar">@refs</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;wiki_pages.*&quot;</span>, <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;w_r.referenced_name = ? AND wiki_pages.company_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company_id</span>])
-36:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000109-show-link"><a onclick="toggle('M000109-source'); toggleText('M000109-link'); return false;" href="#" id="M000109-link">Show source...</a></p><div class="source" id="M000109-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 36</span>
+36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pages_linking_here</span>
+37:     <span class="ruby-ivar">@refs</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;wiki_pages.*&quot;</span>, <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;LEFT OUTER JOIN wiki_references w_r ON wiki_pages.id = w_r.wiki_page_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;w_r.referenced_name = ? AND wiki_pages.company_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company_id</span>])
+38:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000113"><br/></a>
@@ -577,10 +581,10 @@ revision
 </a>
 </h3>
 
-<p class="source_link" id="M000113-show-link"><a onclick="toggle('M000113-source'); toggleText('M000113-link'); return false;" href="#" id="M000113-link">Show source...</a></p><div class="source" id="M000113-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 50</span>
-50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revision</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
-51:     <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">current_revision</span>
-52:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000113-show-link"><a onclick="toggle('M000113-source'); toggleText('M000113-link'); return false;" href="#" id="M000113-link">Show source...</a></p><div class="source" id="M000113-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 52</span>
+52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revision</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
+53:     <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>] <span class="ruby-operator">:</span> <span class="ruby-identifier">current_revision</span>
+54:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000116"><br/></a>
@@ -595,10 +599,10 @@ started_at
 </a>
 </h3>
 
-<p class="source_link" id="M000116-show-link"><a onclick="toggle('M000116-source'); toggleText('M000116-link'); return false;" href="#" id="M000116-link">Show source...</a></p><div class="source" id="M000116-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 71</span>
-71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
-72:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
-73:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000116-show-link"><a onclick="toggle('M000116-source'); toggleText('M000116-link'); return false;" href="#" id="M000116-link">Show source...</a></p><div class="source" id="M000116-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 73</span>
+73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
+74:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
+75:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000114"><br/></a>
@@ -613,14 +617,14 @@ to_html
 </a>
 </h3>
 
-<p class="source_link" id="M000114-show-link"><a onclick="toggle('M000114-source'); toggleText('M000114-link'); return false;" href="#" id="M000114-link">Show source...</a></p><div class="source" id="M000114-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 55</span>
-55:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
-56:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-57:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">to_html</span>
-58:     <span class="ruby-keyword kw">else</span>
-59:       <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">to_html</span>
-60:     <span class="ruby-keyword kw">end</span>
-61:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000114-show-link"><a onclick="toggle('M000114-source'); toggleText('M000114-link'); return false;" href="#" id="M000114-link">Show source...</a></p><div class="source" id="M000114-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 57</span>
+57:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
+58:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+59:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">to_html</span>
+60:     <span class="ruby-keyword kw">else</span>
+61:       <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">to_html</span>
+62:     <span class="ruby-keyword kw">end</span>
+63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000115"><br/></a>
@@ -635,14 +639,14 @@ to_plain_html
 </a>
 </h3>
 
-<p class="source_link" id="M000115-show-link"><a onclick="toggle('M000115-source'); toggleText('M000115-link'); return false;" href="#" id="M000115-link">Show source...</a></p><div class="source" id="M000115-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 63</span>
-63:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
-64:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-65:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">to_plain_html</span>
-66:     <span class="ruby-keyword kw">else</span>
-67:       <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">to_plain_html</span>
-68:     <span class="ruby-keyword kw">end</span>
-69:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000115-show-link"><a onclick="toggle('M000115-source'); toggleText('M000115-link'); return false;" href="#" id="M000115-link">Show source...</a></p><div class="source" id="M000115-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 65</span>
+65:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>(<span class="ruby-identifier">rev</span> = <span class="ruby-value">0</span>)
+66:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">rev</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+67:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">revisions</span>[<span class="ruby-identifier">rev</span><span class="ruby-operator">-</span><span class="ruby-value">1</span>].<span class="ruby-identifier">to_plain_html</span>
+68:     <span class="ruby-keyword kw">else</span>
+69:       <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">to_plain_html</span>
+70:     <span class="ruby-keyword kw">end</span>
+71:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000110"><br/></a>
@@ -657,10 +661,10 @@ to_url
 </a>
 </h3>
 
-<p class="source_link" id="M000110-show-link"><a onclick="toggle('M000110-source'); toggleText('M000110-link'); return false;" href="#" id="M000110-link">Show source...</a></p><div class="source" id="M000110-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 38</span>
-38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_url</span>
-39:     <span class="ruby-node">&quot;&lt;a href=\&quot;/wiki/show/#{URI.encode(name)}\&quot;&gt;#{name}&lt;/a&gt;&quot;</span>
-40:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000110-show-link"><a onclick="toggle('M000110-source'); toggleText('M000110-link'); return false;" href="#" id="M000110-link">Show source...</a></p><div class="source" id="M000110-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 40</span>
+40:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_url</span>
+41:     <span class="ruby-node">&quot;&lt;a href=\&quot;/wiki/show/#{URI.encode(name)}\&quot;&gt;#{name}&lt;/a&gt;&quot;</span>
+42:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000106"><br/></a>
@@ -675,10 +679,10 @@ unlock
 </a>
 </h3>
 
-<p class="source_link" id="M000106-show-link"><a onclick="toggle('M000106-source'); toggleText('M000106-link'); return false;" href="#" id="M000106-link">Show source...</a></p><div class="source" id="M000106-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 21</span>
-21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unlock</span>
-22:     <span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">:locked_at</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">:locked_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>)
-23:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000106-show-link"><a onclick="toggle('M000106-source'); toggleText('M000106-link'); return false;" href="#" id="M000106-link">Show source...</a></p><div class="source" id="M000106-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 23</span>
+23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unlock</span>
+24:     <span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">:locked_at</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">:locked_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">nil</span>)
+25:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000112"><br/></a>
@@ -693,10 +697,10 @@ user
 </a>
 </h3>
 
-<p class="source_link" id="M000112-show-link"><a onclick="toggle('M000112-source'); toggleText('M000112-link'); return false;" href="#" id="M000112-link">Show source...</a></p><div class="source" id="M000112-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 46</span>
-46:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">user</span>
-47:     <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">user</span>
-48:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000112-show-link"><a onclick="toggle('M000112-source'); toggleText('M000112-link'); return false;" href="#" id="M000112-link">Show source...</a></p><div class="source" id="M000112-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_page.rb, line 48</span>
+48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">user</span>
+49:     <span class="ruby-identifier">current_revision</span>.<span class="ruby-identifier">user</span>
+50:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

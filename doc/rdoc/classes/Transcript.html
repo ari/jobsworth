@@ -344,6 +344,13 @@ find_all<br/>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: Transcript</h1>
 
+<div id="description"><p>
+Virtual table, doesn&#8216;t exist in the database
+</p>
+<p>
+Generated chat transcripts, based on the chats done
+</p>
+</div>
 
 
 
@@ -370,13 +377,13 @@ find_all
 </a>
 </h3>
 
-<p class="source_link" id="M000241-show-link"><a onclick="toggle('M000241-source'); toggleText('M000241-link'); return false;" href="#" id="M000241-link">Show source...</a></p><div class="source" id="M000241-source"><pre>    <span class="ruby-comment cmt"># File app/models/transcript.rb, line 6</span>
- 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_all</span>(<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">channel_ids</span>)
- 7:     <span class="ruby-comment cmt"># MySQL</span>
- 8:     <span class="ruby-identifier">find_by_sql</span>([<span class="ruby-value str">&quot;SELECT DISTINCT shout_channel_id, user_id, DAY(created_at) as day,MONTH(created_at) as month, YEAR(created_at) as year FROM shouts WHERE shout_channel_id IN (?) AND (company_id IS NULL OR company_id = ?) AND message_type = 0 ORDER BY created_at desc&quot;</span>, <span class="ruby-identifier">channel_ids</span>, <span class="ruby-identifier">company_id</span>])
- 9:     <span class="ruby-comment cmt"># PostgreSQL</span>
-10:     <span class="ruby-comment cmt">#find_by_sql([&quot;SELECT DISTINCT shout_channel_id, user_id, date_part('day',created_at) as day, date_part('month',created_at) as month, date_part('year',created_at) as year FROM shouts WHERE shout_channel_id IN (?) AND (company_id IS NULL OR company_id = ?) AND message_type = 0 ORDER BY created_at desc&quot;, channel_ids, company_id])</span>
-11:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000241-show-link"><a onclick="toggle('M000241-source'); toggleText('M000241-link'); return false;" href="#" id="M000241-link">Show source...</a></p><div class="source" id="M000241-source"><pre>    <span class="ruby-comment cmt"># File app/models/transcript.rb, line 10</span>
+10:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_all</span>(<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">channel_ids</span>)
+11:     <span class="ruby-comment cmt"># MySQL</span>
+12:     <span class="ruby-identifier">find_by_sql</span>([<span class="ruby-value str">&quot;SELECT DISTINCT shout_channel_id, user_id, DAY(created_at) as day,MONTH(created_at) as month, YEAR(created_at) as year FROM shouts WHERE shout_channel_id IN (?) AND (company_id IS NULL OR company_id = ?) AND message_type = 0 ORDER BY created_at desc&quot;</span>, <span class="ruby-identifier">channel_ids</span>, <span class="ruby-identifier">company_id</span>])
+13:     <span class="ruby-comment cmt"># PostgreSQL</span>
+14:     <span class="ruby-comment cmt">#find_by_sql([&quot;SELECT DISTINCT shout_channel_id, user_id, date_part('day',created_at) as day, date_part('month',created_at) as month, date_part('year',created_at) as year FROM shouts WHERE shout_channel_id IN (?) AND (company_id IS NULL OR company_id = ?) AND message_type = 0 ORDER BY created_at desc&quot;, channel_ids, company_id])</span>
+15:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 
