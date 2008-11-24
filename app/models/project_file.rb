@@ -1,3 +1,7 @@
+# A file attached to a project.
+#
+# Possibly belongs to a task (attachment), or a ProjectFolder
+
 class ProjectFile < ActiveRecord::Base
 
   FILETYPE_IMG          = 1

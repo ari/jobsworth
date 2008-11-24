@@ -1,3 +1,6 @@
+# A widget on the Activities page.
+
+
 class Widget < ActiveRecord::Base
   belongs_to :company
   belongs_to :user

@@ -1,3 +1,5 @@
+# Permissions for a User on a Project
+
 class ProjectPermission < ActiveRecord::Base
   belongs_to :company
   belongs_to :project

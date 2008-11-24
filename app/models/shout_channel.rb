@@ -1,3 +1,5 @@
+# A chat channel, has many subscribed users and shouts (messages in a channel)
+
 class ShoutChannel < ActiveRecord::Base
   belongs_to :company
   belongs_to :project

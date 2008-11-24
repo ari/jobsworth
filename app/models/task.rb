@@ -1,3 +1,12 @@
+# A task
+#
+# Belongs to a project, milestone, creator
+# Has many tags, users (through task_owners), tags (through task_tags),
+#   dependencies (tasks which should be done before this one) and 
+#   dependants (tasks which should be done after this one),
+#   todos, and sheets
+#
+
 class Task < ActiveRecord::Base
 
   include Misc
@@ -327,16 +336,9 @@ class Task < ActiveRecord::Base
       self.duration.to_i
     end 
   end
-  
-#  def worked_minutes
-#    if @minutes.nil?
-#      @minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
-#    end 
-#    @minutes
-#  end
 
   def recalculate_worked_minutes
-    @attributes['worked_minutes'] = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
+    self.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
   end
   
   def minutes_left

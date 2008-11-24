@@ -1,3 +1,6 @@
+# Mail handlers for all notifications, except login / signup
+
+
 class Notifications < ActionMailer::Base
 
   require  File.join(File.dirname(__FILE__), '../../lib/misc')

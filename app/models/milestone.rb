@@ -1,3 +1,7 @@
+# Logical grouping of tasks from one project. 
+#
+# Can have a due date, and be completed
+
 class Milestone < ActiveRecord::Base
   belongs_to :company
   belongs_to :project

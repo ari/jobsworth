@@ -1,3 +1,6 @@
+# A logical grouping of projects, called Client inside
+# ClockingIT.
+
 class Customer < ActiveRecord::Base
   belongs_to    :company
   has_many      :projects, :order => "name", :dependent => :destroy

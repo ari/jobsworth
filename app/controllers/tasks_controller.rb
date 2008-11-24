@@ -107,7 +107,7 @@ class TasksController < ApplicationController
     end 
 
     unless session[:filter_customer].to_i == 0
-      filter << "projects.customer_id = #{session[:filter_customer]} AND "
+      filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
     end
 
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
