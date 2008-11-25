@@ -219,6 +219,7 @@ Localization.define('il_IL') do |l|
   l.store "Work Log", "לוג עבודה"
   l.store "Workload", "Workload"
   l.store "[Delete]", "[מחק]"
+  l.store "[No one]", "[No one]"
   l.store "tomorrow", "מחר"
   l.store "%d folder", ["%d תיקיה", "%d תיקיות"]
   l.store "%d minute", ["דקה", "%d דקות"]
@@ -257,6 +258,7 @@ Localization.define('il_IL') do |l|
   l.store "%d day ago", ["אתמול", "לפני %d  ימים"]
   l.store "%d project", ["%d project", "%d project"]
   l.store "Activities", "פעילויות"
+  l.store "Assignment", "Assignment"
   l.store "Attributes", "מאפיינים"
   l.store "Chat Rooms", "Chat Rooms"
   l.store "Client CSS", "CSS של הלקוח"
@@ -405,6 +407,7 @@ Localization.define('il_IL') do |l|
   l.store "[Any Priority]", "[כל העדיפויות]"
   l.store "[Any Severity]", "[כל החומרות]"
   l.store "Close <b>%s</b>", "סגור <b>%s</b>"
+  l.store "Database Backup", "Database Backup"
   l.store "Duration Format", "פורמט משך"
   l.store "Duration Worked", "זמן עבודה"
   l.store "Formatting Help", "Formatting Help"
@@ -463,6 +466,7 @@ Localization.define('il_IL') do |l|
   l.store "Send Notifications", "שלח התראות"
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "פחות מדקה"
+  l.store "Can Create Projects", "Can Create Projects"
   l.store "Remove notification", "Remove notification"
   l.store "Restricted Userlist", "Restricted Userlist"
   l.store "Show TaskType Icons", "Show TaskType Icons"
@@ -484,6 +488,7 @@ Localization.define('il_IL') do |l|
   l.store "Receive Notifications", "קבל התראות"
   l.store "%d completed milestone", ["אבן דרך שהסתיימה", "%d אבני דרך שהושלמו"]
   l.store "Add another dependency", "הוסף תלות"
+  l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "עריכת פרויקט <b>%s</b>"
   l.store "Floating Messaging Bar", "Floating Messaging Bar"
   l.store "View '%s' was deleted.", "תצוגה '%s' נמחקה."
@@ -508,6 +513,7 @@ Localization.define('il_IL') do |l|
   l.store "Empty report, log more work!", "דוח ריק.!"
   l.store "No file selected for upload.", "לא נבחר קובץ להעלאה."
   l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
+  l.store "Avatar successfully uploaded.", "Avatar successfully uploaded."
   l.store "Really delete this log entry?", "האם למחוק את שורת הלוג?"
   l.store "Add earlier work to <b>%s</b>.", "Add earlier work to <b>%s</b>."
   l.store "Grant %s access for <b>%s</b>?", "לתת גישה ל-%s עבור <b>%s</b>?"
@@ -570,6 +576,7 @@ Localization.define('il_IL') do |l|
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
   l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "הפרויקט נוצר בהצלחה. הוסף משתמשים לפרויקט ."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "משתמש נוצר בהצלחה. זכור לתת למשתמש גישה לפרויקטים."

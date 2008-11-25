@@ -1,6 +1,6 @@
 Localization.define('de_DE') do |l|
   l.store "d", "t"
-  l.store "h", "h" # Benedikt Forchhammer
+  l.store "h", "s" # Manuel Schaeidt
   l.store "m", "m" # Tim Zech
   l.store "w", "w" # Tim Zech
   l.store "To", "Bis"
@@ -49,6 +49,7 @@ Localization.define('de_DE') do |l|
   l.store "High", "Hoch"
   l.store "July", "Juli"
   l.store "June", "Juni"
+  l.store "Left", "Links" # Uwe Kelderbacher
   l.store "Mine", "Eigene" # Tim Zech
   l.store "Name", "Name" # Tim Zech
   l.store "Next", "Weiter" # Tim Zech
@@ -59,7 +60,7 @@ Localization.define('de_DE') do |l|
   l.store "Rows", "Zeile"
   l.store "Save", "Speichern"
   l.store "Show", "Zeige" # Tim Zech
-  l.store "Tags", "Kennzeichen"
+  l.store "Tags", "Tags" # Malte Diedrich
   l.store "Task", "Aufgabe"
   l.store "Type", "Typ"
   l.store "User", "Benutzer"
@@ -285,6 +286,7 @@ Localization.define('de_DE') do |l|
   l.store "Attributes", "Attribute"
   l.store "Chat Rooms", "Chat Räume" # Tim Zech
   l.store "Client CSS", "Kunden-CSS"
+  l.store "Delete All", "Alle löschen" # Uwe Kelderbacher
   l.store "Depends on", "Hängt ab von"
   l.store "Edit Forum", "Forum bearbeiten" # Tim Zech
   l.store "Edit Topic", "Thema bearbeiten" # Uwe Kelderbacher
@@ -313,6 +315,7 @@ Localization.define('de_DE') do |l|
   l.store "Time Range", "Zeitfenster"
   l.store "Time Sheet", "Arbeitszeitnachweis"
   l.store "Time sheet", "Arbeitsnachweis" # Tim Zech
+  l.store "Total Done", "insgesamt erledigt" # Uwe Kelderbacher
   l.store "Track Time", "Zeit verfolgen"
   l.store "Transcript", "Mitschrift" # Tim Zech
   l.store "Unassigned", "Nicht zugeordnet" # Tim Zech
@@ -361,6 +364,7 @@ Localization.define('de_DE') do |l|
   l.store "delete post", "Beitrag löschen" # Tim Zech
   l.store "%d month ago", ["%d Monat vorher", "%d Monate vorher"] # Tim Zech
   l.store "%s reverted.", "%s zurückversetzt."
+  l.store "Active Tasks", "Aktive Aufgaben" # Volker Hartmann
   l.store "Burnup Chart", "Burnup Chart" # Tim Zech
   l.store "Company Name", "Name des Unternehmens" # Uwe Kelderbacher
   l.store "Contact name", "Name des Kontaktes"
@@ -409,6 +413,7 @@ Localization.define('de_DE') do |l|
   l.store "Monitor topic", "Thema überwachen" # Tim Zech
   l.store "My Open Tasks", "Meine unerledigten Aufgaben"
   l.store "New Milestone", "Neuer Meilenstein"
+  l.store "Over Estimate", "Zeitüberschreitung" # Malte Diedrich
   l.store "Public Forums", "Öffentliche Foren" # Tim Zech
   l.store "Show Calendar", "Kalender anzeigen"
   l.store "Show Tooltips", "Kurzinfos anzeigen"
@@ -435,6 +440,7 @@ Localization.define('de_DE') do |l|
   l.store "Edit Milestone", "Meilenstein bearbeiten"
   l.store "Full Reference", "Vollständige Referenz" # Tim Zech
   l.store "Help Translate", "Helfe zu übersetzen!" # Tim Zech
+  l.store "Invalid Filter", "ungültiger Filter" # Guy Simonow
   l.store "New To-do Item", "Neues To-Do Element" # Tim Zech
   l.store "Open <b>%s</b>", "Offen <b>%s</b>" # Tim Zech
   l.store "Organize Tasks", "Tasks Organisieren" # Tim Zech
@@ -451,6 +457,7 @@ Localization.define('de_DE') do |l|
   l.store "[Any Priority]", "[Alle Prioritäten]"
   l.store "[Any Severity]", "[Alle Schweregrade]"
   l.store "Close <b>%s</b>", "<b>%s</b> schließen"
+  l.store "Database Backup", "Datenbanksicherung" # Günther Grill
   l.store "Duration Format", "Zeitdauer-Format"
   l.store "Duration Worked", "Arbeitsdauer"
   l.store "Formatting Help", "Formatierungshilfe" # Tim Zech
@@ -473,8 +480,10 @@ Localization.define('de_DE') do |l|
   l.store "Delete Log Entry", "Berichtseintrag löschen"
   l.store "Delete Milestone", "Meilenstein löschen"
   l.store "Gadget HTML Code", "Gadget HTML Code" # Tim Zech
+  l.store "Instant Messages", "Sofortnachrichten" # Guy Simonow
   l.store "Leave as Invalid", "Als 'ungültig' lassen"
-  l.store "Monitoring forum", "Monitoring forum"
+  l.store "Messages from %s", "Nachrichten von %s" # Uwe Kelderbacher
+  l.store "Monitoring forum", "Forum wird überwacht" # Manuel Schaeidt
   l.store "Monitoring topic", "Thema beobachten" # Uwe Kelderbacher
   l.store "Open to %s users", "Offen für %s Benutzer" # Tim Zech
   l.store "Open to everyone", "Offen für jeden" # Tim Zech
@@ -544,6 +553,7 @@ Localization.define('de_DE') do |l|
   l.store "Showing Only Comments", "Nur Kommentare anzeigen" # Tim Zech
   l.store "%d completed milestone", ["Ein abgeschlossener Meilenstein", "%d abgeschlossene Meilensteine"] # Tim Zech
   l.store "Add another dependency", "Weitere Abhängigkeit hinzufügen"
+  l.store "Download Database Dump", "Datenbankabbild herunterladen" # Günther Grill
   l.store "Edit project <b>%s</b>", "Projekt <b>%s</b> bearbeiten"
   l.store "Floating Messaging Bar", "Nachrichtenleiste andocken" # Uwe Kelderbacher
   l.store "View '%s' was deleted.", "Ansicht '%s' wurde gelöscht."
@@ -566,6 +576,7 @@ Localization.define('de_DE') do |l|
   l.store "Don't show this splash page", "Diese Willkommensseite nicht mehr anzeigen." # Tim Zech
   l.store "File successfully uploaded.", "Datei erfolgreich hochgeladen."
   l.store "Logo successfully uploaded.", "Markenzeichen erfolgreich hochgeladen."
+  l.store "Only admins can edit users.", "Nur Administratoren können Benutzer editieren" # Marcus Cimander
   l.store "Pause working on <b>%s</b>.", "Arbeiten an <b>%s</b> anhalten." # Tim Zech
   l.store "Please always be courteous.", "Bitte seien Sie immer höflich." # Tim Zech
   l.store "Please configure the widget", "Bitte stellen Sie das Widget ein." # Tim Zech
@@ -573,6 +584,7 @@ Localization.define('de_DE') do |l|
   l.store "Cancel working on <b>%s</b>.", "Bearbeitung von<b>%s</b> abbrechen."
   l.store "Empty report, log more work!", "Bericht ist leer, bitte mehr Arbeit aufschreiben!"
   l.store "No file selected for upload.", "Keine Datei zum Hochladen ausgewählt."
+  l.store "Really delete whole history?", "Gesamtes Protokoll wirklich löschen?" # Uwe Kelderbacher
   l.store "Resume working on <b>%s</b>.", "Arbeiten an <b>%s</b> wiederaufnehmen." # Tim Zech
   l.store "Avatar successfully uploaded.", "Avatar erfolgreich hochgeladen" # Tim Zech
   l.store "Burndown Chart - Routenplaner", "Burndown Chart - Routenplaner" # Tim Zech
@@ -615,6 +627,7 @@ Localization.define('de_DE') do |l|
   l.store "Easy access to commonly needed information.", "Einfacher Zugriff auf häufig benötigte Informationen" # Tim Zech
   l.store "Play sounds when new messages are received.", "Spiele klänge wenn neue Nachrichten empfangen wurden." # Tim Zech
   l.store "Subscribe to the recent activities RSS feed", "Abonniere den RSS-Feed für neueste Aktivitäten" # Tim Zech
+  l.store "Permission denied while saving resized file.", "Zugriff verweigert, während die Dateigröße geändert wird." # Manuel Schaeidt
   l.store "Subscribe to the iCal feed for your projects.", "Abonnieren Sie den iCal Feed für Ihre Projekte" # Tim Zech
   l.store "Enter task due date, or click calendar button.", "Geben Sie das Fälligkeitsdatum ein oder klicken Sie auf das Kalender-Icon" # Tim Zech
   l.store "Show icons next to tasks representing their type.", "Zeige ein Symbol neben der entsprechenden Aufgabe." # Phillipp Koops
@@ -642,8 +655,9 @@ Localization.define('de_DE') do |l|
   l.store "Create a private forum for people with access to this project?", "Ein privates Forum für Personen mit Zugriff auf dieses Projekt erstellen?" # Tim Zech
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Willkommen bei ClockingIT. To get started, follow the steps below." # Tim Zech
   l.store "If you require further help, check the %s, %s or email us at %s", "Wenn Sie weitere Hilfe benötigen, schauen Sie unter %s, %s nach oder senden Sie eine E-Mail an %s" # Tim Zech
-  l.store "Either the project doesn't exist, or you don't have access to it.", "Either the project doesn't exist, or you don't have access to it."
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Entweder existiert das Projekt nicht oder sie haben keinen Zugriff darauf." # Manuel Schaeidt
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Die Größe wird auf 25x25 und 50x50 angepasst. Das Seitenverhältnis wird berücksichtig.)" # Tim Zech
+  l.store "Either the milestone doesn't exist, or you don't have access to it.", "Der Meilenstein existiert nicht oder du hast keine Zugriffs-Berechtigung für ihn." # Christian Scharr
   l.store "Text entered will be saved automatically to your current work notes.", "Der eingegebene Text wird automatisch in den aktuellen Arbeitsnotizen gespeichert." # Tim Zech
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Für einen persönlichen Feed, müssen Sie <b>ical_all</b> mit <b>ical</b> in der URL ersetzen." # Tim Zech
   l.store "You're not allowed to create new projects. Have your admin give you access.", "Ihnen ist es nicht erlaubt, Projekte zu erstellen. Fragen Sie ihren Administrator umd die dazu notwendigen Rechte." # Uwe Kelderbacher
