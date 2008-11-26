@@ -207,6 +207,7 @@ Localization.define('fi_FI') do |l|
   l.store "One week", "viikko" # Aki Saksola
   l.store "Overview", "Yleiskatsaus"
   l.store "Password", "Salasana"
+  l.store "Position", "Position"
   l.store "Previous", "Edellinen" # Aki Saksola
   l.store "Priority", "Prioriteetti"
   l.store "Progress", "Kesken"
@@ -275,7 +276,9 @@ Localization.define('fi_FI') do |l|
   l.store "Attributes", "Attribuutit"
   l.store "Chat Rooms", "Chat-huoneet" # Toni Huuskonen
   l.store "Client CSS", "Toimeksiantajan CSS"
+  l.store "Delete All", "Delete All"
   l.store "Depends on", "Riippuu projektista/tehtävästä"
+  l.store "Edit Forum", "Edit Forum"
   l.store "Group Tags", "Ryhmätagit" # Toni Huuskonen
   l.store "Last Login", "Kirjautui viimeksi" # Aki Saksola
   l.store "Last Month", "Viime kuukausi" # Toni Huuskonen
@@ -341,6 +344,7 @@ Localization.define('fi_FI') do |l|
   l.store "delete post", "poista viesti" # Toni Huuskonen
   l.store "%d month ago", ["kuukausi sitten", "%d kuukautta sitten"]
   l.store "%s reverted.", "%s palautettu."
+  l.store "Active Tasks", "Active Tasks"
   l.store "Burnup Chart", "Burnup Chart"
   l.store "Company Name", "Yhtiön nimi" # Aki Saksola
   l.store "Contact name", "Nimi"
@@ -425,6 +429,7 @@ Localization.define('fi_FI') do |l|
   l.store "[Any Priority]", "[Kaikki tärkeysasteet]" # Toni Huuskonen
   l.store "[Any Severity]", "[Kaikki vakavuusasteet]" # Toni Huuskonen
   l.store "Close <b>%s</b>", "Sulje <b>%s</b>"
+  l.store "Database Backup", "Database Backup"
   l.store "Duration Format", "Keston muoto" # Toni Huuskonen
   l.store "Duration Worked", "Aika joka käytetty työhön"
   l.store "Formatting Help", "Muotoiluohje" # Toni Huuskonen
@@ -445,6 +450,7 @@ Localization.define('fi_FI') do |l|
   l.store "Delete Milestone", "Poista virstanpylväs" # Toni Huuskonen
   l.store "Gadget HTML Code", "Gadget HTML-koodi" # Toni Huuskonen
   l.store "Leave as Invalid", "Jätä kelvottomaksi" # Aki Saksola
+  l.store "Messages from %s", "Messages from %s"
   l.store "Monitoring forum", "Valvo foorumia" # Toni Huuskonen
   l.store "Open to %s users", "Open to %s users"
   l.store "Open to everyone", "Avoin kaikille" # Toni Huuskonen
@@ -469,6 +475,7 @@ Localization.define('fi_FI') do |l|
   l.store "[Closed Projects]", "[Suljetut projektit]" # Aki Saksola
   l.store "[Default Sorting]", "[Default Sorting]"
   l.store "the documentation", "the documentation"
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
   l.store "%s / %s completed.", "%s / %s valmiina." # Toni Huuskonen
   l.store "Access to Projects", "Pääsy projekteihin" # Aki Saksola
   l.store "Complete Milestone", "Merkitse virstanpylväs saavutetuksi" # Toni Huuskonen
@@ -480,6 +487,7 @@ Localization.define('fi_FI') do |l|
   l.store "Log entry saved...", "Lokikirjaus tallennettu..." # Aki Saksola
   l.store "No recent activity", "Ei viimeaikaisia toimintoja" # Aki Saksola
   l.store "Really abort work?", "Keskeytä työ?" # Aki Saksola
+  l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "Vastaanota uutiskirjeitä" # Aki Saksola
   l.store "Same as in English", "Kuten englanniksi" # Aki Saksola
   l.store "Send Notifications", "Lähetä ilmoitukset" # Toni Huuskonen
@@ -506,6 +514,7 @@ Localization.define('fi_FI') do |l|
   l.store "Receive Notifications", "Ota vastaan ilmoitukset" # Toni Huuskonen
   l.store "%d completed milestone", ["saavutettu virstanpylväs", "%d saavutettua virstanpylvästä"] # Toni Huuskonen
   l.store "Add another dependency", "Lisää riippuvuus"
+  l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Muokkaa projektia <b>%s</b>"
   l.store "Floating Messaging Bar", "Kelluva ilmoituspalkki" # Aki Saksola
   l.store "View '%s' was deleted.", "Näkymä '%s' poistettu." # Toni Huuskonen
@@ -535,6 +544,7 @@ Localization.define('fi_FI') do |l|
   l.store "Cancel working on <b>%s</b>.", "Keskeytä työ <b>%s</b>."
   l.store "Empty report, log more work!", "Tyhjä raportti, loggaa enemmän töitä!"
   l.store "No file selected for upload.", "Ei tiedostoja valittu."
+  l.store "Really delete whole history?", "Really delete whole history?"
   l.store "Resume working on <b>%s</b>.", "Jatka työtä: <b>%s</b>." # Aki Saksola
   l.store "Avatar successfully uploaded.", "Avatar ladattu onnistuneesti." # Toni Huuskonen
   l.store "Really delete this log entry?", "Poistetaanko lokimerkintä?"
@@ -603,6 +613,7 @@ Localization.define('fi_FI') do |l|
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Muokataan 25x25 ja 50x50 kokoon säilyttäen kuvasuhteen)" # Aki Saksola
   l.store "Text entered will be saved automatically to your current work notes.", "Kirjoitettu teksti tallennetaan automaattisesti tehtävän muistiinpanoihin." # Aki Saksola
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "Projekti luotu. Lisää käyttäjät."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Käyttäjä luotu. Muista antaa oikeudet tarvittaviin projekteihin."

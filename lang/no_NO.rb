@@ -91,7 +91,7 @@ Localization.define('no_NO') do |l|
   l.store "Start", "Start" # Erlend Simonsen
   l.store "Tasks", "Oppgaver"
   l.store "Title", "Tittel"
-  l.store "To-do", "Utestående" # Ronny Hanssen
+  l.store "To-do", "Oppgaver" # Ronny Hanssen
   l.store "Today", "I dag"
   l.store "Topic", "Emne"
   l.store "Total", "Totalt"
@@ -320,6 +320,7 @@ Localization.define('no_NO') do |l|
   l.store "[Any User]", "[Alle Brukere]"
   l.store "[New File]", "[Ny Fil]"
   l.store "[New User]", "[Ny Bruker]"
+  l.store "started %s", "started %s"
   l.store "%d week ago", ["en uke siden", "%d uker siden"]
   l.store "1w 2d 3h 4m", "1u 2d 3t 4m"
   l.store "Assigned To", "Ansvarlig"
@@ -354,6 +355,7 @@ Localization.define('no_NO') do |l|
   l.store "[Next page]", "[Neste side]"
   l.store "%d month ago", ["en måned siden", "%d måneder siden"]
   l.store "%s reverted.", "%s tilbakestilt."
+  l.store "Active Tasks", "Active Tasks"
   l.store "Burnup Chart", "Burnup Graf" # Erlend Simonsen
   l.store "Company Name", "Firmanavn"
   l.store "Contact name", "Kontakt navn"
@@ -442,6 +444,7 @@ Localization.define('no_NO') do |l|
   l.store "[Any Priority]", "[Alle Prioriteter]"
   l.store "[Any Severity]", "[Alle Alvorlighetsgrader]"
   l.store "Close <b>%s</b>", "Lukk <b>%s</b>"
+  l.store "Database Backup", "Database Backup"
   l.store "Duration Format", "Lengdeformat"
   l.store "Duration Worked", "Arbeidet tid"
   l.store "Formatting Help", "Formatteringshjelp"
@@ -481,6 +484,7 @@ Localization.define('no_NO') do |l|
   l.store "Create New Folder", "Lag ny mappe" # Erlend Simonsen
   l.store "Delete <b>%s</b>.", "Slett <b>%s</b>."
   l.store "Delete Transcript", "Slett Referat"
+  l.store "No file selected.", "No file selected."
   l.store "Really delete %s?", "Slette %s?"
   l.store "Really revert %s?", "Tilbakestille %s?"
   l.store "Recent Activities", "Siste aktiviteter"
@@ -532,6 +536,7 @@ Localization.define('no_NO') do |l|
   l.store "Showing Only Comments", "Viser kun kommentarer" # Erlend Simonsen
   l.store "%d completed milestone", ["en ferdig milepæl", "%d ferdige milepæler"]
   l.store "Add another dependency", "Ny avhengighet"
+  l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Editer prosjektet <b>%s</b>"
   l.store "Floating Messaging Bar", "Flytende Beskjed Bar"
   l.store "View '%s' was deleted.", "Utsnitt '%s' slettet."
@@ -614,6 +619,7 @@ Localization.define('no_NO') do |l|
   l.store "Please create a project to attach files / folders to.", "Please create a project to attach files / folders to."
   l.store "Please delete all projects for %s before deleting it.", "Vennligst slett alle prosjekter for %s før du sletter."
   l.store "Log entry already saved from another browser instance.", "Arbeidslogg allerede lagret fra en annen nett-leser instans."
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
   l.store "Revert schedule to saved state. Includes filtered tasks.", "Tilbake til opprinnelig plan. Inkludér filtrerte oppgaver." # Ronny Hanssen
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Introduksjon gjemt. Den vil ikke vises i menyen lengre."
   l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"

@@ -49,6 +49,7 @@ Localization.define('pl_PL') do |l|
   l.store "High", "Wysoki"
   l.store "July", "Lipiec"
   l.store "June", "Czerwiec"
+  l.store "Left", "Left"
   l.store "Mine", "Moje" # chester
   l.store "Name", "Nazwa"
   l.store "Next", "Nast." # Radek Czarnecki
@@ -147,6 +148,7 @@ Localization.define('pl_PL') do |l|
   l.store "quotes", "quotes"
   l.store "%d days", ["%d dzień", "%d dni"] # GhandaL
   l.store "%d file", ["%d plik", "%d pliki"]
+  l.store "%d more", ["%d more", "%d more"]
   l.store "%d week", ["tydzień", "%d tygodni"]
   l.store "Blocker", "Blokujący"
   l.store "Clients", "Klienci"
@@ -165,6 +167,7 @@ Localization.define('pl_PL') do |l|
   l.store "October", "Październik"
   l.store "Offline", "Offline" # chester
   l.store "Options", "Opcje"
+  l.store "Overdue", "Overdue"
   l.store "Preview", "Podgląd"
   l.store "Project", "Projekt"
   l.store "Reports", "Raporty"
@@ -282,6 +285,7 @@ Localization.define('pl_PL') do |l|
   l.store "Delete All", "Usuń wszystkie" # chester
   l.store "Depends on", "Zależy od"
   l.store "Edit Forum", "Edytuj Forum" # chester
+  l.store "Edit Topic", "Edit Topic"
   l.store "Group Tags", "Grupuj tagi"
   l.store "Last Login", "Ostatnie logowanie"
   l.store "Last Month", "Ostatni miesiąc"
@@ -307,6 +311,7 @@ Localization.define('pl_PL') do |l|
   l.store "Time Range", "Zakres czasu"
   l.store "Time Sheet", "Arkusz czasu"
   l.store "Time sheet", "Arkusz czasu" # GhandaL
+  l.store "Total Done", "Total Done"
   l.store "Track Time", "Czas śledzenia"
   l.store "Transcript", "Historia" # chester
   l.store "Unassigned", "Nieprzydzielone" # GhandaL
@@ -354,6 +359,7 @@ Localization.define('pl_PL') do |l|
   l.store "delete post", "usuń post" # chester
   l.store "%d month ago", ["w zeszłym miesiącu", "%d miesięcy temu"]
   l.store "%s reverted.", "%s przywrócony."
+  l.store "Active Tasks", "Active Tasks"
   l.store "Burnup Chart", "Burnup Chart"
   l.store "Company Name", "Nazwa firmy" # GhandaL
   l.store "Contact name", "Nazwa"
@@ -403,6 +409,7 @@ Localization.define('pl_PL') do |l|
   l.store "Monitor topic", "Monitoruj temat" # Marcin H
   l.store "My Open Tasks", "Moje otwarte zadania"
   l.store "New Milestone", "Nowy Krok"
+  l.store "Over Estimate", "Over Estimate"
   l.store "Public Forums", "Publiczne fora" # chester
   l.store "Show Calendar", "Wyświetlanie kalendarza"
   l.store "Show Tooltips", "Wyświetlanie podpowiedzi"
@@ -445,6 +452,7 @@ Localization.define('pl_PL') do |l|
   l.store "[Any Severity]", "[Wszystkie]"
   l.store "[Save as View]", "[Zapisz jako widok]"
   l.store "Close <b>%s</b>", "Zamknij <b>%s</b>"
+  l.store "Database Backup", "Database Backup"
   l.store "Duration Format", "Format długości czasu"
   l.store "Duration Worked", "Czas pracy"
   l.store "Formatting Help", "Pomoc formatowania" # chester
@@ -452,6 +460,7 @@ Localization.define('pl_PL') do |l|
   l.store "Quick Reference", "Quick Reference"
   l.store "Recent activity", "Ostatnia aktywność" # chester
   l.store "Set in Progress", "Ustaw jako W Toku" # chester
+  l.store "Task Priorities", "Task Priorities"
   l.store "Upload New File", "Wyślij nowy plik"
   l.store "[Any Milestone]", "[Wszystkie kroki]"
   l.store "[Previous page]", "[Poprzednia strona]"
@@ -492,6 +501,7 @@ Localization.define('pl_PL') do |l|
   l.store "[Closed Projects]", "[Zamknięte projekty]" # chester
   l.store "[Default Sorting]", "[Domyślne sortowanie]" # chester
   l.store "the documentation", "dokumentacja" # chester
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
   l.store "%s / %s completed.", "%s / %s ukończony."
   l.store "Access to Projects", "Dostęp do projektów" # chester
   l.store "Complete Milestone", "Ukończ Krok"
@@ -503,6 +513,7 @@ Localization.define('pl_PL') do |l|
   l.store "Log entry saved...", "Wpis logu zapisany..."
   l.store "No recent activity", "Brak aktywności" # chester
   l.store "Really abort work?", "Na pewno anulować pracę ?" # chester
+  l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "Odbieraj newsletter" # chester
   l.store "Same as in English", "Tak samo jak w j. angielskim" # chester
   l.store "Send Notifications", "Wysyłanie powiadomień"
@@ -530,6 +541,7 @@ Localization.define('pl_PL') do |l|
   l.store "Showing Only Comments", "Wyświetlanie tylko komentarzy" # chester
   l.store "%d completed milestone", ["jeden ukończony Krok", "%d ukończonych Kroków"]
   l.store "Add another dependency", "Dodaj zależność"
+  l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Edytuj projekt <b>%s</b>" # GhandaL
   l.store "Floating Messaging Bar", "Pływający pasek wiadomości" # chester
   l.store "View '%s' was deleted.", "Widok '%s' usunięty." # GhandaL
@@ -625,6 +637,7 @@ Localization.define('pl_PL') do |l|
   l.store "Create a private forum for people with access to this project?", "Czy utworzyć prywatne forum dla użytkowników z dostępem do tego projektu ?" # chester
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Witamy w ClockingIT! Przeprowadź poniższe kroki aby rozpocząć pracę." # chester
   l.store "If you require further help, check the %s, %s or email us at %s", "Jeśli potrzebujesz pomocy, sprawdź %s, %s lub napisz wiadomość email pod adres %s" # chester
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Either the project doesn't exist, or you don't have access to it."
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Zostanie pomniejszony do 25x25 i 50x50. Proporcje zostają zachowane)" # chester
   l.store "Either the milestone doesn't exist, or you don't have access to it.", "Either the milestone doesn't exist, or you don't have access to it."
   l.store "Text entered will be saved automatically to your current work notes.", "Wpisana treść zostanie automatycznie zapisana do notatek" # chester

@@ -39,7 +39,7 @@ Localization.define('fr_FR') do |l|
   l.store "and", "et"
   l.store "day", "jour" # Brice
   l.store "Body", "Contenu"
-  l.store "Chat", "Chat" # Brice
+  l.store "Chat", "Chat" # Lancrey
   l.store "Date", "Date" # Brice
   l.store "Days", "Jours" # Brice
   l.store "Edit", "Modifier"
@@ -60,7 +60,7 @@ Localization.define('fr_FR') do |l|
   l.store "Rows", "Lignes"
   l.store "Save", "Sauvegarder"
   l.store "Show", "Afficher" # Brice
-  l.store "Tags", "Tags" # Brice
+  l.store "Tags", "Mots clés" # Eric Jost
   l.store "Task", "Tâche"
   l.store "Type", "Type" # Brice
   l.store "User", "Utilisateur"
@@ -146,7 +146,7 @@ Localization.define('fr_FR') do |l|
   l.store "[Prev]", "[Préc.]"
   l.store "[wdhm]", "[sjh]|mn"
   l.store "cancel", "annuler" # Brice
-  l.store "locked", "vérouillé" # Jérémie
+  l.store "locked", "verrouillé" # Lancrey
   l.store "quotes", "guillemets" # Brice
   l.store "%d days", ["%d jour", "%d jours"] # Brice
   l.store "%d file", ["%d fichier", "%d fichiers"] # Brice
@@ -327,6 +327,7 @@ Localization.define('fr_FR') do |l|
   l.store "[Any User]", "[Tous les utilisateurs]"
   l.store "[New File]", "[Nouveau Fichier]"
   l.store "[New User]", "[Nouvel utilisateur]"
+  l.store "started %s", "démarré %s" # Brice
   l.store "%d week ago", ["depuis %d semaine", "depuis %d semaines"] # Brice
   l.store "1w 2d 3h 4m", "1s 2j 3h 4mn"
   l.store "Assigned To", "Affecté à"
@@ -362,6 +363,7 @@ Localization.define('fr_FR') do |l|
   l.store "delete post", "supprimer le message" # Brice
   l.store "%d month ago", ["depuis %d mois", "depuis %d mois"] # Brice
   l.store "%s reverted.", "%s restauré."
+  l.store "Active Tasks", "Tâches actives" # Brice
   l.store "Burnup Chart", "Diagramme Burnup" # Lancrey
   l.store "Company Name", "Nom de la société" # Brice
   l.store "Contact name", "Nom du contact"
@@ -387,7 +389,7 @@ Localization.define('fr_FR') do |l|
   l.store "Show Avatars", "Afficher les avatars" # Brice
   l.store "Show History", "Afficher l'historique" # Brice
   l.store "Timer Window", "Fenêtre d'activité" # Brice
-  l.store "Topic locked", "Sujet vérouillé" # Jérémie
+  l.store "Topic locked", "Sujet verrouillé" # Lancrey
   l.store "Users Online", "Utilisateurs en ligne" # Brice
   l.store "Wiki Changes", "Modifications au Wiki" # Brice
   l.store "[Any Client]", "[Tous les clients]"
@@ -411,6 +413,7 @@ Localization.define('fr_FR') do |l|
   l.store "Monitor topic", "Administrer le sujet" # Brice
   l.store "My Open Tasks", "Mes tâches ouvertes"
   l.store "New Milestone", "Nouveau jalon"
+  l.store "No such file.", "Fichier introuvable." # Lancrey
   l.store "Over Estimate", "Surestimer" # Brice
   l.store "Public Forums", "Forums publics" # Brice
   l.store "Show Calendar", "Afficher le calendrier"
@@ -437,6 +440,7 @@ Localization.define('fr_FR') do |l|
   l.store "Edit Milestone", "Modifier le jalon"
   l.store "Full Reference", "Exemples de syntaxe"
   l.store "Help Translate", "Participer à la traduction" # Brice
+  l.store "Invalid Filter", "Filtre invalide" # Eric Jost
   l.store "New To-do Item", "Nouvel élement \"à faire\"" # Brice
   l.store "Open <b>%s</b>", "Ouvrir <b>%s</b>" # Brice
   l.store "Organize Tasks", "Organiser les tâches" # Brice
@@ -452,6 +456,7 @@ Localization.define('fr_FR') do |l|
   l.store "[Any Priority]", "[Toutes les priorités]"
   l.store "[Any Severity]", "[Toutes les importances]"
   l.store "Close <b>%s</b>", "Classer <b>%s</b>"
+  l.store "Database Backup", "Sauvegarde des données" # Lancrey
   l.store "Duration Format", "Format de durée"
   l.store "Duration Worked", "Durée du travail accompli"
   l.store "Formatting Help", "Aide sur la mise en forme" # Brice
@@ -536,7 +541,7 @@ Localization.define('fr_FR') do |l|
   l.store "Report Configuration", "Configuration des rapports"
   l.store "Restricted Messaging", "Messagerie restreinte" # Jérémie
   l.store "Showing Full History", "Montrer l'historique complet" # Brice
-  l.store "This topic is locked", "Ce sujet est vérouillé" # Jérémie
+  l.store "This topic is locked", "Ce sujet est verrouillé" # Lancrey
   l.store "Use External Clients", "Utiliser des clients externes"
   l.store "less than %d seconds", "moins de %d secondes"
   l.store "Open to everyone from", "Ouvert à tous les membres du groupe" # Brice
@@ -545,11 +550,12 @@ Localization.define('fr_FR') do |l|
   l.store "Showing Only Comments", "N'afficher que les commentaires" # Brice
   l.store "%d completed milestone", ["%d jalon atteint", "%d jalons atteints"] # Brice
   l.store "Add another dependency", "Autre dépendance" # Brice
+  l.store "Download Database Dump", "Télécharger la base de données" # Lancrey
   l.store "Edit project <b>%s</b>", "Modifier le projet <b>%s</b>" # Brice
   l.store "Floating Messaging Bar", "Barre flottante de messages" # Brice
   l.store "View '%s' was deleted.", "Vue '%s' supprimée."
   l.store "invite some co-workers", "inviter des collègues" # Brice
-  l.store ", this topic is locked.", ", ce sujet est vérouillé." # Jérémie
+  l.store ", this topic is locked.", ", ce sujet est verrouillé." # Lancrey
   l.store "Last %d Completed Tasks", ["Dernière tâche classée", "%d dernières tâches classées"] # Brice
   l.store "%d translations updated.", ["%d traduction mise à jour.", "%d traductions mises à jour."] # Brice
   l.store "Company settings updated", "Données concernant la société mises à jour" # Brice
@@ -568,6 +574,7 @@ Localization.define('fr_FR') do |l|
   l.store "Don't show this splash page", "Ne pas afficher cette écran d'accueil" # Brice
   l.store "File successfully uploaded.", "Fichier envoyé."
   l.store "Logo successfully uploaded.", "Logo envoyé."
+  l.store "Only admins can edit users.", "Seuls les administrateurs peuvent modifier les utilisateurs." # Brice
   l.store "Pause working on <b>%s</b>.", "Mettre la tâche <b>%s</b> en pause." # Brice
   l.store "Please always be courteous.", "Veuillez rester courtois." # Brice
   l.store "Please configure the widget", "Veuillez configurer le widget" # Brice
@@ -610,6 +617,7 @@ Localization.define('fr_FR') do |l|
   l.store "Changes are not made live instantly.", "Les modifications ne sont pas prises en compte en temps réel." # Brice
   l.store "This forum is currently unmoderated.", "Ce forum n'est pas modéré" # Brice
   l.store "Hide tasks deferred until a later time", "Cacher les tâches qui ont été repoussées" # Brice
+  l.store "Only admins can edit company settings.", "Seuls les administrateurs peuvent modifier la configuration de la société." # Brice
   l.store "Limit userlist to users in same project", "Limiter la liste des utilisateurs à ceux du projet" # Brice
   l.store "Really delete room and all transcripts?", "Supprimer la salle et toutes les discussions ?" # Brice
   l.store "Revert <b>%s</b> to not completed status.", "Marquer <b>%s</b> comme inachevé."
@@ -645,6 +653,7 @@ Localization.define('fr_FR') do |l|
   l.store "If you require further help, check the %s, %s or email us at %s", "Pour obtenir de l'aide supplémentaire, visitez le %s, le %s ou contactez-nous à %s" # Brice
   l.store "Either the project doesn't exist, or you don't have access to it.", "Le projet n'existe pas, ou vous n'êtes pas autorisé à y accéder." # Lancrey
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Sera redimensionnée en 25x25 et 50x50, les proportions seront conservées)" # Brice
+  l.store "Either the milestone doesn't exist, or you don't have access to it.", "Ce jalon n'existe pas, ou bien vous n'êtes pas autorisé à y accéder." # Lancrey
   l.store "Text entered will be saved automatically to your current work notes.", "Le texte saisi sera ajouté automatiquement à vos notes de travail courantes." # Lancrey
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Pour une syndication personnalisée, remplacez <b>ical_all</b> par <b>ical</b> dans l'URL." # Brice
   l.store "You're not allowed to create new projects. Have your admin give you access.", "Vous n'êtes pas autorisé(e) à créer un nouveau projet. Veuillez contacter votre administrateur afin qu'il vous y autorise." # Brice

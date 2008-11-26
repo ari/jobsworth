@@ -49,11 +49,11 @@ Localization.define('pt_BR') do |l|
   l.store "High", "Alta"
   l.store "July", "Julho"
   l.store "June", "Junho"
-  l.store "Left", "Left"
+  l.store "Left", "Restante(s)" # Rodrigo Angeline - TI
   l.store "Mine", "Minhas" # José Eduardo
   l.store "Name", "Nome"
   l.store "Next", "Próximo" # Marcelo Ubiali
-  l.store "None", "Nome" # Márcio Jordano
+  l.store "None", "Nenhum" # Peter Nothaft
   l.store "Note", "Notas" # Pedro Henrique Braga Moreira
   l.store "Open", "Aberto"
   l.store "Read", "Ler"
@@ -327,6 +327,7 @@ Localization.define('pt_BR') do |l|
   l.store "[Any User]", "[Qualquer Usuário]"
   l.store "[New File]", "[Novo Arquivo]"
   l.store "[New User]", "[Novo Usuário]"
+  l.store "started %s", "started %s"
   l.store "%d week ago", ["faz uma semana", "faz %d semanas"]
   l.store "1w 2d 3h 4m", "1s 2d 3h 4m" # Yeltsin Lima
   l.store "Assigned To", "Alocado para"
@@ -362,6 +363,7 @@ Localization.define('pt_BR') do |l|
   l.store "delete post", "excluir post" # José Eduardo
   l.store "%d month ago", ["faz um mês", "faz %d meses"]
   l.store "%s reverted.", "%s revertido."
+  l.store "Active Tasks", "Tarefas Ativas" # Vitor Mattos
   l.store "Burnup Chart", "Gráfico Burnup" # Ivan Carlos
   l.store "Company Name", "Nome da Empresa" # Yeltsin Lima
   l.store "Contact name", "Nome para contato"
@@ -437,7 +439,7 @@ Localization.define('pt_BR') do |l|
   l.store "Edit Log Entry", "Editar entrada de histórico"
   l.store "Edit Milestone", "Editar Marco" # Pedro Henrique Braga Moreira
   l.store "Full Reference", "Referência completa" # Yeltsin Lima
-  l.store "Help Translate", "Ajudar tradução" # Yeltsin Lima
+  l.store "Help Translate", "Ajudar na tradução" # Romulo Nunes
   l.store "Invalid Filter", "Filtro Inválido" # Pedro Henrique Braga Moreira
   l.store "New To-do Item", "Novo item A Fazer" # Lucas Sander
   l.store "Open <b>%s</b>", "Aberto <b>%s</b>" # André Persil
@@ -454,6 +456,7 @@ Localization.define('pt_BR') do |l|
   l.store "[Any Priority]", "[Qualquer Prioridade]" # Tiago
   l.store "[Any Severity]", "[Qualquer Severidade]" # André Persil
   l.store "Close <b>%s</b>", "Fechar <b>%s</b>"
+  l.store "Database Backup", "Backup do Banco de Dados" # Pedro Henrique Braga Moreira
   l.store "Duration Format", "Formato da Duração" # Yeltsin Lima
   l.store "Duration Worked", "Tempo Trabalhado"
   l.store "Formatting Help", "Ajuda para formatação" # José Eduardo
@@ -541,7 +544,7 @@ Localization.define('pt_BR') do |l|
   l.store "Project was deleted.", "Projeto removido."
   l.store "Report Configuration", "Configurar relatório"
   l.store "Restricted Messaging", "Mensagem restrita" # Pedro Henrique Braga Moreira
-  l.store "Showing Full History", "Exibindo História Completa" # Lucas Sander
+  l.store "Showing Full History", "Exibindo Histórico Completa" # Eduardo
   l.store "This topic is locked", "Este tópico está bloqueado" # Pedro Henrique Braga Moreira
   l.store "Use External Clients", "Usar Clientes Externos"
   l.store "less than %d seconds", ["menos de um segundo", "menos de %d segundos"]
@@ -551,6 +554,7 @@ Localization.define('pt_BR') do |l|
   l.store "Showing Only Comments", "Mostrando Apenas Comentários" # Adir
   l.store "%d completed milestone", ["um marco finalizado", "%d marcos finalizados"] # Pedro Henrique Braga Moreira
   l.store "Add another dependency", "Adicionar outra dependência" # Yeltsin Lima
+  l.store "Download Database Dump", "Fazer Download do Banco de Dados" # Pedro Henrique Braga Moreira
   l.store "Edit project <b>%s</b>", "Editar projeto <b>%s</b>"
   l.store "Floating Messaging Bar", "Barra de mensagem flutuante" # André Persil
   l.store "View '%s' was deleted.", "Visualização '%s' removida."
@@ -574,7 +578,7 @@ Localization.define('pt_BR') do |l|
   l.store "Grant access to <b>%s</b>?", "Dar permissões a <b>%s</b>?"
   l.store "Include completed projects", "Incluir trabalhos completos" # Yeltsin Lima
   l.store "Save and activate schedule", "Salvar e ativar a agenda" # Pedro Henrique Braga Moreira
-  l.store "Stop working on <b>%s</b>.", "Deixar de trabalhar em <b>%s</b>."
+  l.store "Stop working on <b>%s</b>.", "Parar de trabalhar em <b>%s</b>." # Romulo Nunes
   l.store "??? - Caju S. A. [Pessoais]", "??? - Caju S. A. [Pessoais]" # José Eduardo
   l.store "Don't show this splash page", "Não mostrar a tela de boas vinda" # Yeltsin Lima
   l.store "File successfully uploaded.", "Arquivo enviado com sucesso."
@@ -613,7 +617,7 @@ Localization.define('pt_BR') do |l|
   l.store "Project was successfully updated.", "Projeto modificado com sucesso."
   l.store "Done working on <b>%s</b> for now.", "Trabalhando em <b>%s</b> por agora."
   l.store "You can't delete your own company.", "Não pode remover sua própria companhia."
-  l.store "Feedback? Suggestions? Ideas? Bugs?", "Feedback? Sugestões? Idéias? Bugs?"
+  l.store "Feedback? Suggestions? Ideas? Bugs?", "Opiniões? Sugestões? Idéias? Erros?" # Romulo Nunes
   l.store "Ignore hidden tasks when scheduling", "Ignorar tarefas ocultas ao agendar" # Pedro Henrique Braga Moreira
   l.store "Milestone was successfully created.", "Marco criado com sucesso." # Pedro Henrique Braga Moreira
   l.store "Milestone was successfully updated.", "Marco modificado com sucesso." # Pedro Henrique Braga Moreira
