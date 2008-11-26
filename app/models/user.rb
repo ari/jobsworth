@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
 
   end
   
-  def avatar_url(size=32)
+  def avatar_url(size=32, secure = false)
     if avatar?
       if size > 25 && File.exist?(avatar_large_path)
         "/users/avatar/#{self.id}?large=1&" + File.mtime(avatar_large_path).to_i.to_s
@@ -159,7 +159,11 @@ class User < ActiveRecord::Base
         "/users/avatar/#{self.id}?" + File.mtime(avatar_path).to_i.to_s
       end
     else
-      "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+      if secure
+	"https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+      else
+	"http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+      end
     end
   end
 
