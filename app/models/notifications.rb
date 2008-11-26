@@ -23,12 +23,12 @@ class Notifications < ActionMailer::Base
 
   def changed(update_type, task, user, change, sent_at = Time.now)
     @subject = case update_type
-               when :completed  : "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
-               when :status     : "#{$CONFIG[:prefix]} #{_'Status'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
-               when :updated    : "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :comment    : "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :reverted   : "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :reassigned : "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})"
+               when :completed  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
+               when :status     then "#{$CONFIG[:prefix]} #{_'Status'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
+               when :updated    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :comment    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
+               when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})"
                end
 
     @body       = {:task => task, :user => user, :change => change}
