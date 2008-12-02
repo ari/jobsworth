@@ -13,7 +13,7 @@ Localization.define('nl_NL') do |l|
   l.store "Aug", "Aug" # Tom Niessink
   l.store "CSV", "CSV" # Tom Niessink
   l.store "Dec", "Dec" # Tom Niessink
-  l.store "Due", "Due"
+  l.store "Due", "Vervaldatum" # Martin
   l.store "End", "Einde" # Dylan Verheul
   l.store "Feb", "Feb" # Tom Niessink
   l.store "Fri", "Vr"
@@ -51,7 +51,8 @@ Localization.define('nl_NL') do |l|
   l.store "Mine", "Van Mij" # Jonathan van Woudenberg
   l.store "Name", "Naam"
   l.store "Next", "Volgende" # Tom Niessink
-  l.store "Note", "Note"
+  l.store "None", "Geen" # Martin
+  l.store "Note", "Notitie" # Martin
   l.store "Open", "Open" # Tom Niessink
   l.store "Read", "Lezen"
   l.store "Rows", "Regels"
@@ -179,6 +180,7 @@ Localization.define('nl_NL') do |l|
   l.store "1:2:3:04", "1:2:3:04" # Tom Niessink
   l.store "1w2d3h4m", "1w2d3u4m"
   l.store "2w 3d 1h", "2w 3d 1u" # Jonathan van Woudenberg
+  l.store "Any Room", "Any Room"
   l.store "Archived", "Gearchiveerd"
   l.store "Attached", "Bijgevoegd" # Jonathan van Woudenberg
   l.store "Comments", "Opmerkingen" # Jonathan van Woudenberg
@@ -324,6 +326,7 @@ Localization.define('nl_NL') do |l|
   l.store "Delete View", "Verwijder Overzicht"
   l.store "Description", "Omschrijving"
   l.store "Edit Client", "Wijzig Klant" # Jonathan van Woudenberg
+  l.store "Edit Folder", "Bewerk Map" # Martin
   l.store "End of week", "Einde van week" # Tom Niessink
   l.store "Forum Posts", "Forum Berichten" # Tom Niessink
   l.store "Improvement", "Verbetering"
@@ -338,11 +341,13 @@ Localization.define('nl_NL') do |l|
   l.store "Task Status", "Taak Status"
   l.store "Time Format", "Tijdsaanduiding"
   l.store "Transcripts", "Transcripten" # Tom Niessink
+  l.store "Work Status", "Werk Status" # Martin
   l.store "[All Tasks]", "[AlleTaken]" # Tom Niessink
   l.store "[Next page]", "[Volgende Pagina]"
-  l.store "delete post", "delete post"
+  l.store "delete post", "verwijder bericht" # Martin
   l.store "%d month ago", ["één maand geleden", "%d maanden geleden"]
   l.store "%s reverted.", "%s teruggeplaatst."
+  l.store "Active Tasks", "Actieve Taken" # Martin
   l.store "Burnup Chart", "Burnup Chart"
   l.store "Company Name", "Bedrijfsnaam" # Tom Niessink
   l.store "Contact name", "Klantnaam"
@@ -354,18 +359,18 @@ Localization.define('nl_NL') do |l|
   l.store "Hide Waiting", "Verberg Wachtend" # Tom Niessink
   l.store "Last Updated", "Laatst aangepast"
   l.store "Leave Closed", "Laat gesloten"
-  l.store "Low Priority", "Low Priority"
+  l.store "Low Priority", "Lage Prioriteit" # Martin
   l.store "Name / Email", "Naam / E-mail" # Tom Niessink
   l.store "Newest Tasks", "Nieuwste Taken"
   l.store "Notification", "Berichten"
-  l.store "Participants", "Participants"
+  l.store "Participants", "Deelnemers" # Martin
   l.store "Plan / GANTT", "Planning / GANTT" # Tom Niessink
   l.store "Recent Posts", "Recente Berichten" # Tom Niessink
   l.store "Requested By", "Aangevraagd door"
   l.store "Save as View", "Sla op als Overzicht"
-  l.store "Send Message", "Send Message"
+  l.store "Send Message", "Verstuur Bericht" # Martin
   l.store "Show Avatars", "Bekijk Avatars" # Tom Niessink
-  l.store "Show History", "Show History"
+  l.store "Show History", "Weergeven Geschiedenis" # Martin
   l.store "Timer Window", "Tijdsregistratiescherm" # Tom Niessink
   l.store "Users Online", "Gebruikers Online" # Jonathan van Woudenberg
   l.store "Wiki Changes", "Wiki Wijzigingen" # Tom Niessink
@@ -384,8 +389,8 @@ Localization.define('nl_NL') do |l|
   l.store "Enable Sounds", "Geluiden Inschakelen" # Jonathan van Woudenberg
   l.store "File too big.", "Bestand te groot."
   l.store "Google Gadget", "Google Gadget"
-  l.store "High Priority", "High Priority"
-  l.store "Invite a user", "Invite a user"
+  l.store "High Priority", "Hoge Prioriteit" # Martin
+  l.store "Invite a user", "Gebruiker Uitnodigen" # Martin
   l.store "Monitor forum", "Monitor forum"
   l.store "Monitor topic", "Monitor topic"
   l.store "My Open Tasks", "Mijn Openstaande Taken"
@@ -430,19 +435,22 @@ Localization.define('nl_NL') do |l|
   l.store "[Any Priority]", "[Alle Prioriteiten]" # Tom Niessink
   l.store "[Any Severity]", "[Alle Impactniveau's]" # Tom Niessink
   l.store "Close <b>%s</b>", "Sluit <b>%s</b>"
+  l.store "Database Backup", "Database Backup"
   l.store "Duration Format", "Weergave Tijdsduur"
   l.store "Duration Worked", "Gewerkte tijd"
   l.store "Formatting Help", "Formatting Help"
   l.store "Organizing Done", "Organizing Done"
   l.store "Quick Reference", "Verkorte Beschrijving"
-  l.store "Recent activity", "Recent activity"
+  l.store "Recent activity", "Recente Activiteit" # Martin
   l.store "Set in Progress", "Zet in behandeling"
+  l.store "Task Priorities", "Taak Prioriteiten" # Martin
   l.store "Upload New File", "Plaats een nieuw Bestand"
   l.store "[Any Milestone]", "[Alle Mijlpalen]"
   l.store "[Previous page]", "[Vorige Pagina]"
   l.store "creating a task", "taak aan het maken" # Tom Niessink
   l.store "Advanced Options", "Geavanceerder Opties"
-  l.store "Archive Messages", "Archive Messages"
+  l.store "Archive Messages", "Archiveer Berichten" # Martin
+  l.store "Chat Transcripts", "Chat Transcripts"
   l.store "Company Settings", "Bedrijfsinstellingen" # Tom Niessink
   l.store "Complete Project", "Project Afsluiten"
   l.store "Create New Forum", "Maak een nieuw Forum" # Tom Niessink
@@ -452,6 +460,7 @@ Localization.define('nl_NL') do |l|
   l.store "Instant Messages", "Instant Messages"
   l.store "Leave as Invalid", "Laat op Ongeldig staan"
   l.store "Messages from %s", "Messages from %s"
+  l.store "Monitoring forum", "Monitoring forum"
   l.store "Open to %s users", "Beschikbaar voor %s gebruikers" # Tom Niessink
   l.store "Open to everyone", "Beschikbaar voor iedereen" # Tom Niessink
   l.store "Overall Progress", "Voortgang"
@@ -511,13 +520,16 @@ Localization.define('nl_NL') do |l|
   l.store "Open to everyone from", "Beschikbaar voor iedereen in" # Tom Niessink
   l.store "Projects / Milestones", "Projecten / Mijlpalen" # Tom Niessink
   l.store "Receive Notifications", "Ontvange Meldingen"
+  l.store "Showing Only Comments", "Showing Only Comments"
   l.store "%d completed milestone", ["één mijlpaal afgerond", "%d mijlpalen afgerond"]
   l.store "Add another dependency", "Voeg afhankelijkheid toe" # Tom Niessink
+  l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Project <b>%s</b> Wijzigen"
   l.store "Floating Messaging Bar", "Zwevende Berichtenbalk" # Tom Niessink
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
   l.store "invite some co-workers", "nodig collega's uit" # Tom Niessink
   l.store "%d translations updated.", ["%d vertaling gewijzigd.", "%d vertalingen gewijzigd."] # Tom Niessink
+  l.store "Company settings updated", "Company settings updated"
   l.store "Edit milestone <b>%s</b>", "Mijlpaal<b>%s</b> Wijzigen"
   l.store "Open to everyone from %s", "Beschikbaar voor iedereen in %s" # Tom Niessink
   l.store "Send notification emails", "Verstuur email notificaties"
@@ -583,6 +595,7 @@ Localization.define('nl_NL') do |l|
   l.store "Enter task due date, or click calendar button.", "Voer einddatum van taak in, of gebruik de calender knop." # Tom Niessink
   l.store "Show icons next to tasks representing their type.", "Show icons next to tasks representing their type."
   l.store "The message will be included in the signup email.", "Het bericht zal opgenomen worden in de e-mail van de inschrijving." # Tom Niessink
+  l.store "Unable to find that task in any of your projects.", "Unable to find that task in any of your projects."
   l.store "Start working on <b>%s</b>. Click again when done.", "Begin te werken aan <b>%s</b>. Klik nogmaals om te stoppen."
   l.store "Unable to find task belonging to you with that ID.", "Kan geen taak van jou vinden met dat ID." # Jonathan van Woudenberg
   l.store "Bookmark this link to quickly open the Timer Window", "Voeg deze link toe aan je favorieten om snel het Tijdsregistratiescherm te kunnen openen." # Tom Niessink
@@ -605,14 +618,17 @@ Localization.define('nl_NL') do |l|
   l.store "Create a private forum for people with access to this project?", "Create a private forum for people with access to this project?"
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welkom bij ClockingIT. Volg de stappen hieronder om snel van start te kunnen." # Tom Niessink
   l.store "If you require further help, check the %s, %s or email us at %s", "Als je meer hulp nodig hebt, check de %s, %s of mail ons op %s" # Tom Niessink
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Either the project doesn't exist, or you don't have access to it."
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Worden verkleind naar 25x25 en 50x50 met behoud van aspect ratio)" # Tom Niessink
   l.store "Text entered will be saved automatically to your current work notes.", "Ingevoerde tekst zal automatisch opgeslagen worden aan je notities van je actieve taak." # Tom Niessink
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Voor een persoonlijk feed, vervang <b>ical_all</b> door <b>ical</b> in de URL." # Tom Niessink
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "Project aangemaakt. Voeg de gebruikers die dit project moeten gebruiken toe aan dit project."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Om een project te maken buiten deze welkomstpagina om, klik %s in het %s menu entry" # Tom Niessink
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Gebruiker aangemaakt Geef deze gebruiker rechten tot de benodigde projecten."
   l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Wijzigingen die hier gemaakt worden zullen niet gelogt worden of verwonden worden als notificaties." # Tom Niessink
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "U moet een project aanmaken om uw taken te kunnen bevatten, of krijg toegang tot een bestaand project..."
+  l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "You can have as many chat rooms as you like. They can be limited to a project or public across all your users."
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px zou goed moeten zijn. Het logo verschijnt in plaats van het logo in de koptekst en op de Aanmeldpagina.)"
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Additionele personen die een bericht dienen te ontvangen<br />wanneer er wijzigingen zijn in deze taak, in aanvulling op de maker en uitvoerder van de taak.<br /><br />Ctrl-klik om anderen te selecteren."
   l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Je kan ook <b>?mode=tasks</b> toevoegen voor alleen taken, of <b>?mode=logs</b> for alleen werklogs, <br/>of <b>?mode=milestones</b> voor alleen mijlpalen." # Tom Niessink

@@ -355,7 +355,7 @@ module ApplicationHelper
 
   def avatar_for(user, size=32)
     if current_user.option_avatars == 1
-      return "<img src=\"#{user.avatar_url(size)}\" class=\"photo\" />"
+      return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />"
     end
     ""
   end
