@@ -260,12 +260,12 @@ class ViewsController < ApplicationController
 
   def get_projects
     if params[:customer_id].to_i == 0
-      @projects = current_user.projects.collect {|p| "{\"text\":\"#{p.name} / #{p.customer.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
+      @projects = current_user.projects.collect {|p| "{\"text\":\"#{p.name} / #{p.customer.name}\", \"value\":#{p.id}}" }.join(',')
     else
       @projects = current_user.projects.find(:all, :conditions => ['customer_id = ? AND completed_at IS NULL', params[:customer_id]]).collect {|p| "{\"text\":\"#{p.name}\", \"value\":\"#{p.id.to_s}\"}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"' + _('[Any Project]') + '"}'
+    res = '{"options":[{"value":0, "text":"' + _('[Any Project]') + '"}'
     res << ", #{@projects}" unless @projects.nil? || @projects.empty?
     res << ']}'
     render :text => res
@@ -273,13 +273,13 @@ class ViewsController < ApplicationController
 
   def get_milestones
     if params[:project_id].to_i == 0
-      @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["company_id = ? AND completed_at IS NULL", current_user.company_id]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
+      @milestones = Milestone.find(:all, :order => "project_id, due_at", :conditions => ["project_id IN (#{current_project_ids}) AND completed_at IS NULL"]).collect  {|m| "{\"text\":\"#{m.name} / #{m.project.name}\", \"value\":#{m.id}}" }.join(',')
 
     else
-      @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":\"#{m.id.to_s}\"}" }.join(',')
+      @milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name}\", \"value\":#{m.id}}" }.join(',')
     end
 
-    res = '{"options":[{"value":"0", "text":"' + _('[Any Milestone]') + '"}'
+    res = '{"options":[{"value":0, "text":"' + _('[Any Milestone]') + '"}'
     res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
     res << ']}'
     render :text => res
