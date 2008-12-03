@@ -124,13 +124,13 @@ class TasksController < ApplicationController
 
     @tasks = case session[:sort].to_i
              when 0:
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.priority + t.severity_id/2.0, (t.due_date || Time.now.utc).to_i, -t.task_num] }.reverse
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.priority + t.severity_id/2.0, -(t.due_date || 9999999999).to_i, -t.task_num] }.reverse
              when 1: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || Time.now.utc).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
              when 2: 
                  @tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
              when 3: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.name, t.priority + t.severity_id/2.0,  -t.task_num] }
+                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, t.priority + t.severity_id/2.0,  -t.task_num] }
              when 4: 
                  @tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }.reverse
              end
