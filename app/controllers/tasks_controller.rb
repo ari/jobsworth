@@ -626,18 +626,19 @@ class TasksController < ApplicationController
 
       if params[:dependencies]
         
+        in_deps = []
         new_dependencies = []
+
         params[:dependencies].each do |d|
           deps = d.split(',')
           deps.each do |dep|
             dep.strip!
             next if [0, @task.id].include? dep.to_i
-            new_dependencies << [dep.to_i]
+            in_deps << [dep.to_i]
           end
         end
         
-        new_dependenices = []
-        new_dependencies.compact.uniq.each do |dep|
+        in_deps.compact.uniq.each do |dep|
           t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
           unless t.nil?
             new_dependencies << t
