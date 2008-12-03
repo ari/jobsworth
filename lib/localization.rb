@@ -31,7 +31,7 @@ module Localization
     return translated.call(*args).to_s if translated.is_a? Proc
     translated =
       translated[args[0]>1 ? 1 : 0] if translated.is_a?(Array)
-    sprintf translated, *args
+    sprintf translated, *args rescue sprintf string_to_localize, *args 
   end
 
   def self.define(lang = :default)

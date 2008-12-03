@@ -8,7 +8,6 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
   end
 
   def forgot_password(user, sent_at = Time.now)
@@ -17,7 +16,6 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
   end
 
   def account_created(user, created_by, welcome_message, sent_at = Time.now)
@@ -26,7 +24,7 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {'Reply-To' => created_by.email}
+    @reply_to   = created_by.email
   end
 
   def mass_email(user, sent_at = Time.now)
@@ -35,7 +33,6 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
   end
 
   def subdomain_changed(user, sent_at = Time.now)
@@ -44,7 +41,6 @@ class Signup < ActionMailer::Base
     @recipients = user.email
     @from       = "admin@#{$CONFIG[:domain]}"
     @sent_on    = sent_at
-    @headers    = {}
   end
 
 
