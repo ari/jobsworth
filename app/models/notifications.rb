@@ -35,7 +35,6 @@ class Notifications < ActionMailer::Base
 
     @recipients = ""
     @recipients = [user.email] if user.receive_notifications > 0
-    @recipients += [task.creator.email] if task.creator && task.creator.receive_notifications > 0 
     @recipients += task.users.collect{ |u| u.email if u.receive_notifications > 0 } unless task.users.empty?
     @recipients += task.watchers.collect{|w| w.email if w.receive_notifications > 0}
     @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
