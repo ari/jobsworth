@@ -36,6 +36,8 @@ class TasksController < ApplicationController
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
     @notify_targets = @notify_targets.flatten.uniq
     @notify_targets ||= []
+
+    @properties = Property.all_for_company(current_user.company)
   end
 
   def index
