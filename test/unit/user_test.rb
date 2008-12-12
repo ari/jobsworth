@@ -182,7 +182,10 @@ class UserTest < Test::Unit::TestCase
 
   def test_currently_online
     @user2 = users(:tester)
-    assert_equal [@user,@user2], @user.currently_online
+    online = @user.currently_online
+    # sort by id to ensure order is always the same (otherwise the test fails occasionally)
+    online = online.sort_by { |u| u.name }
+    assert_equal [@user,@user2], online
     assert_equal [], users(:fudge).currently_online
   end
 
