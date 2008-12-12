@@ -50,7 +50,7 @@ class PropertiesController < ApplicationController
     respond_to do |format|
       if @property.save
         flash[:notice] = 'Property was successfully created.'
-        format.html { redirect_to(edit_properties_path(@property)) }
+        format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
         format.html { render :action => "new" }
