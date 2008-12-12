@@ -12,4 +12,10 @@ module PropertiesHelper
     
     submit_tag(text, :class => 'nolabel')
   end
+
+  def link_to_remove_value
+    image = image_tag("cross_small.png", :border => 0, 
+                      :alt => "#{ _("Remove") }")
+    link_to_function(image, '$(this).up(".property_value").remove();')
+  end
 end
