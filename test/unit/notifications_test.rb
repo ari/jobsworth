@@ -16,6 +16,10 @@ class NotificationsTest < Test::Unit::TestCase
 
     @expected = TMail::Mail.new
     @expected.set_content_type "text", "plain", { "charset" => CHARSET }
+
+    # need to hard code these configs because the fixtured have hard coded values
+    $CONFIG[:domain] = "clockingit.com"
+    $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
   end
 
   def test_created
