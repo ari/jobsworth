@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081211235109) do
+ActiveRecord::Schema.define(:version => 20081212062227) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -447,6 +447,15 @@ ActiveRecord::Schema.define(:version => 20081211235109) do
 
   add_index "task_owners", ["task_id", "user_id"], :name => "task_owners_task_id_user_id_index"
   add_index "task_owners", ["user_id", "task_id"], :name => "task_owners_user_id_task_id_index"
+
+  create_table "task_property_values", :force => true do |t|
+    t.integer "task_id"
+    t.integer "property_id"
+    t.integer "property_value_id"
+  end
+
+  add_index "task_property_values", ["task_id"], :name => "index_task_property_values_on_task_id"
+  add_index "task_property_values", ["property_id"], :name => "index_task_property_values_on_property_id"
 
   create_table "task_tags", :id => false, :force => true do |t|
     t.integer "tag_id"

@@ -263,6 +263,19 @@ function reset_owners() {
           <% end %>
         <% end %>
 
+	<% @properties.each do |p| -%>
+	  <% name = "property_#{ p.id }" -%>
+  	  <label for="<%= name %>"><%= h(p.name) %></label>
+	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
+	    <option></option>
+	    <% p.property_values.each do |pv| -%>
+	      <option value="<%= pv.id %>" <%= @task.property_value(p) == pv ? "selected" : ""  %>>
+		<%= h(pv.value) %>
+	      </option>
+	    <% end -%>
+	  </select>
+	<% end -%>
+
       </fieldset>
 
       <fieldset id="task_dependencies" style="padding-right:0;">

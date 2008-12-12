@@ -43,6 +43,8 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id'
   has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id'
 
+  has_many :task_property_values, :dependent => :destroy
+
   has_one       :ical_entry
 
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
@@ -682,4 +684,22 @@ class Task < ActiveRecord::Base
       ""
     end 
   end 
+
+  # Sets up custom properties using the given form params
+  def properties=(params)
+    task_property_values.clear
+
+    params.each do |prop_id, val_id|
+      next if val_id.blank?
+      task_property_values.create(:property_id => prop_id, :property_value_id => val_id)
+    end
+  end
+
+  # Returns the value of the given property for this task
+  def property_value(property)
+    return unless property
+
+    tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
+    tpv.property_value if tpv
+  end
 end
