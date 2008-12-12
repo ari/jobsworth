@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081123091936) do
+ActiveRecord::Schema.define(:version => 20081211235109) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -310,6 +310,23 @@ ActiveRecord::Schema.define(:version => 20081123091936) do
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
   add_index "projects", ["completed_at", "customer_id", "name"], :name => "projects_completed_at_customer_id_name_index"
+
+  create_table "properties", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "property_values", :force => true do |t|
+    t.integer  "property_id"
+    t.string   "value"
+    t.string   "color"
+    t.string   "default"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
