@@ -151,6 +151,7 @@ class TaskTest < Test::Unit::TestCase
       properties(:first).id => v1.id,
       properties(:second).id => v2.id
     }
+    @task.save!
     @task.task_property_values.reload
 
     tpv = @task.task_property_values.detect { |tpv| tpv.property_id == properties(:first).id }

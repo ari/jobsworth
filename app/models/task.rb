@@ -691,7 +691,7 @@ class Task < ActiveRecord::Base
 
     params.each do |prop_id, val_id|
       next if val_id.blank?
-      task_property_values.create(:property_id => prop_id, :property_value_id => val_id)
+      task_property_values.build(:property_id => prop_id, :property_value_id => val_id)
     end
   end
 
