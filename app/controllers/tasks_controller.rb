@@ -112,7 +112,7 @@ class TasksController < ApplicationController
     unless session[:filter_customer].to_i == 0
       filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
     end
-
+    
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
 
     if params[:tag] && params[:tag].length > 0
@@ -122,8 +122,23 @@ class TasksController < ApplicationController
     else
       # Looking for tasks based on filters
       @selected_tags = []
-      @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], :include => [:users, :tags, :sheets, :todos, :dependencies, {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
+      @tasks = Task.find(:all, 
+                         :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], 
+                         :include => [:users, :tags, :sheets, :todos, :dependencies, 
+                                      {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
     end
+
+    # trim tasks based on custom properties
+    Property.all_for_company(current_user.company).each do |prop|
+      filter_value = session[prop.filter_name]
+      if filter_value.to_i > 0
+        @tasks = @tasks.delete_if do |t| 
+          val = t.property_value(prop)
+          val.nil? or val.id != filter_value.to_i
+        end
+      end
+    end
+
 
     @tasks = case session[:sort].to_i
              when 0:
@@ -219,6 +234,7 @@ class TasksController < ApplicationController
       @groups = [@tasks]
     end
 
+    @properties = Property.all_for_company(current_user.company)
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
@@ -1223,6 +1239,11 @@ class TasksController < ApplicationController
     end
 
     [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |filter|
+      session[filter] = params[filter]
+    end
+
+    Property.all_for_company(current_user.company).each do |prop|
+      filter = prop.filter_name
       session[filter] = params[filter]
     end
 
