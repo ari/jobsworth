@@ -18,4 +18,10 @@ module PropertiesHelper
                       :alt => "#{ _("Remove") }")
     link_to_function(image, '$(this).up(".property_value").remove();')
   end
+
+  def sortable_handle_tag(property_value)
+    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => "handle")
+
+    property_value.new_record? ? "" : image
+  end
 end

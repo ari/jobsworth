@@ -90,6 +90,21 @@ class PropertiesController < ApplicationController
     end
   end
 
+  def order
+    if params[:property_values]
+      values = params[:property_values].map { |id| PropertyValue.find(id) }
+      # if it's a new record, we can just ignore this (because update will use the correct order)
+      if values.first.property
+        values.each_with_index do |v, i|
+          v.position = i
+          v.save
+        end
+      end
+    end
+
+    render :text => ''
+  end
+
   private
 
   def update_existing_property_values(property, params)
