@@ -1,4 +1,6 @@
-<% name = filter_property.name.downcase.gsub(/\s/, '_') -%>
+<% 
+   filter_value = session[filter_property.filter_name].to_i
+-%>
 
 <select name="<%= filter_property.filter_name %>" id="<%= filter_property.filter_name %>" 
 	onchange="javascript:document.forms[1].submit();" 
@@ -7,6 +9,6 @@
     <%= "[#{_('Any')} #{filter_property.name}]" %>
   </option>
 
-  <%= options_from_collection_for_select(filter_property.property_values, "id", "value", session[filter_property.filter_name].to_i) %>
+  <%= options_from_collection_for_select(filter_property.property_values, "id", "value", filter_value) %>
 </select>
 
