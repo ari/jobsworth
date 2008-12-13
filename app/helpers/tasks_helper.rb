@@ -118,4 +118,16 @@ module TasksHelper
     res
   end
 
+  def show_more_filters
+    show = (session[:filter_type] != "-1") 
+    show ||= (session[:filter_priority] != "-10") 
+    show ||= (session[:filter_severity] != "-10")
+
+    # check if any custom properties are set and show if so
+    @properties.each do |prop|
+      show ||= session[prop.filter_name].to_i > 0
+    end
+
+    show
+  end
 end
