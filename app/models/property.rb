@@ -1,6 +1,6 @@
 class Property < ActiveRecord::Base
   belongs_to :company
-  has_many :property_values, :dependent => :destroy
+  has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
 
   def self.all_for_company(company)
     find(:all, :conditions => { :company_id => company.id })
