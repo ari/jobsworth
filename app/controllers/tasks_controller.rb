@@ -1445,6 +1445,10 @@ class TasksController < ApplicationController
           end
           @task.project_id = project.id
           @task.save
+
+          WorkLog.update_all("customer_id = #{project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+          ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+
           old_milestone.update_counts if old_milestone
         end
       when 4
