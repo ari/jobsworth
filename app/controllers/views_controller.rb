@@ -53,6 +53,7 @@ class ViewsController < ApplicationController
     @view.filter_project_id = session[:filter_project].to_i
     @view.filter_milestone_id = session[:filter_milestone].to_i
     @view.auto_group = session[:group_by].to_i
+    @view.hide_deferred = session[:hide_deferred].to_i
     @view.hide_dependencies = session[:hide_dependencies].to_i
     @view.filter_status = session[:filter_status].to_i
     @view.filter_type_id = session[:filter_type].to_i
@@ -87,6 +88,7 @@ class ViewsController < ApplicationController
     session[:filter_project] = @view.filter_project_id.to_s
     session[:filter_milestone] = @view.filter_milestone_id.to_s
     session[:group_by] = @view.auto_group.to_s
+    session[:hide_deferred] = @view.hide_deferred.to_s
     session[:hide_dependencies] = @view.hide_dependencies.to_s
     session[:filter_hidden] = "0"
     session[:filter_status] = @view.filter_status
@@ -114,6 +116,7 @@ class ViewsController < ApplicationController
     session[:filter_user] = "0"
     session[:filter_project] = @milestone.project.id.to_s
     session[:filter_milestone] = @milestone.id.to_s
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
@@ -130,6 +133,7 @@ class ViewsController < ApplicationController
     session[:filter_user] = "0"
     session[:filter_project] = @project.id.to_s
     session[:filter_milestone] = "0"
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
@@ -146,6 +150,7 @@ class ViewsController < ApplicationController
     session[:filter_user] = @user.id.to_s
     session[:filter_project] = "0"
     session[:filter_milestone] = "0"
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
@@ -162,6 +167,7 @@ class ViewsController < ApplicationController
     session[:filter_user] = "0"
     session[:filter_project] = "0"
     session[:filter_milestone] = "0"
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
@@ -185,6 +191,7 @@ class ViewsController < ApplicationController
     session[:filter_milestone] = "0"
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_type] = "-1"
     session[:filter_customer] = "0"
@@ -204,7 +211,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
-    session[:hide_dependencies] = "1"
+    session[:hide_deferred] = "1"
+    session[:hide_dependencies] = "0"
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
@@ -222,7 +230,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "1"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
-    session[:hide_dependencies] = "1"
+    session[:hide_deferred] = "1"
+    session[:hide_dependencies] = "0"
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
@@ -240,6 +249,7 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
+    session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
@@ -252,7 +262,8 @@ class ViewsController < ApplicationController
     session[:filter_status] = "0"
     session[:filter_hidden] = "0"
     session[:filter_type] = "-1"
-    session[:hide_dependencies] = "1"
+    session[:hide_deferred] = "1"
+    session[:hide_dependencies] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
     redirect_to :controller => 'tasks', :action => 'list'
