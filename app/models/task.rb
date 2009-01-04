@@ -100,22 +100,22 @@ class Task < ActiveRecord::Base
     when 'w' :
         @date = @start + (7 - @start.wday + args[1].to_i).days
     when 'm' :
-        @date = @start.beginning_of_month.change(:month => @start.month + 1, :mday => (args[1].to_i))
+        @date = @start.beginning_of_month.next_month.change(:day => (args[1].to_i))
     when 'n' :
-        @date = @start.beginning_of_month.change(:month => @start.month + 1, :mday => 1)
+        @date = @start.beginning_of_month.next_month.change(:day => 1)
       if args[2].to_i < @date.day
         args[2] = args[2].to_i + 7
       end
       @date = @date + (@date.day + args[2].to_i - @date.wday - 1).days
       @date = @date + (7 * (args[1].to_i - 1)).days
     when 'l' :
-        @date = @start.change(:month => @start.month + 1).end_of_month
+        @date = @start.next_month.end_of_month
       if args[1].to_i > @date.wday
-        @date = @date.change(:mday => @date.mday - 7)
+        @date = @date.change(:day => @date.day - 7)
       end
-      @date = @date.change(:mday => @date.day - @date.wday + args[1].to_i)
+      @date = @date.change(:day => @date.day - @date.wday + args[1].to_i)
     when 'y' :
-        @date = @start.beginning_of_year.change(:year => @start.year + 1, :month => args[1].to_i, :mday => args[2].to_i)
+        @date = @start.beginning_of_year.change(:year => @start.year + 1, :month => args[1].to_i, :day => args[2].to_i)
     when 'a' :
         @date = @start + args[1].to_i.days
     end

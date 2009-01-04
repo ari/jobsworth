@@ -32,9 +32,9 @@ class Widget < ActiveRecord::Base
     "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
   end
   
-  def name=(arg)
-    @attributes['name'] = arg
-  end
+#  def name=(arg)
+#    self.attributes['name'] = arg
+#  end
 
   
 end
