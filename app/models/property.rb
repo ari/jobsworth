@@ -31,7 +31,7 @@ class Property < ActiveRecord::Base
   # Returns a name suitable for use as a div id or similar.
   ###
   def filter_name
-    @filter_name ||= "property_filter_#{ id }"
+    @filter_name ||= "property_#{ id }"
   end
 
   def to_s
