@@ -137,7 +137,7 @@ module TasksHelper
             when 9  then current_user.can_all?(affected_projects, 'prioritize')
             when 10 then current_user.can_all?(affected_projects, 'reassign')
             end
-    elsif /property_(\d+)/ =~ group_by
+    elsif Property.find_by_group_by(current_user.company, group_by)
       can = true
     end        
 
