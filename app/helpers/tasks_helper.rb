@@ -118,6 +118,29 @@ module TasksHelper
     res
   end
 
+  def can_organize?
+    can = false
+    group_by = session[:group_by]
+    if group_by.to_i > 2 
+      gb = group_by.to_i
+      affected_projects = @tasks.collect(&:project).uniq
+      can = case gb
+            when 3  then current_user.can_all?(affected_projects, 'reassign')
+            when 4  then current_user.can_all?(affected_projects, 'reassign')
+            when 5  then current_user.can_all?(affected_projects, 'reassign')
+            when 6  then current_user.can_all?(affected_projects, 'prioritize')
+            when 7  then current_user.can_all?(affected_projects, 'close')
+            when 8  then current_user.can_all?(affected_projects, 'prioritize')
+            when 9  then current_user.can_all?(affected_projects, 'prioritize')
+            when 10 then current_user.can_all?(affected_projects, 'reassign')
+            end
+    elsif /property_(\d+)/ =~ group_by
+      can = true
+    end        
+
+    return can
+  end
+
   def show_more_filters
     show = (session[:filter_type] != "-1") 
     show ||= (session[:filter_priority] != "-10") 
