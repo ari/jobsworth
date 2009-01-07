@@ -1504,6 +1504,23 @@ class TasksController < ApplicationController
         old.update_counts if old
       end
 
+      if (property = Property.find_by_group_by(current_user.company, session[:group_by]))
+        old_value = @task.property_value(property)
+        new_value = property.property_values.find(@group) if @group.to_i > 0
+
+        logger.info(old_value)
+        logger.info(new_value)
+        @task.set_property_value(property, new_value)
+        body <<  " - <strong>#{ property }</strong>:"
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+        logger.info("SSSSSSSSSSSSSSS")
+      end
+
 
       if body.length > 0
         @task.reload
@@ -1942,10 +1959,7 @@ class TasksController < ApplicationController
       requested_by = tasks.collect{|t| t.requested_by.blank? ? nil : t.requested_by }.compact.uniq.sort
       requested_by = [_('No one')] + requested_Eby
       groups = Task.group_by(tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
-    elsif session[:group_by].match(/property_(\d+)/)
-      property_id = $~[1] # grab the last match
-      property = current_user.company.properties.find(property_id)
-
+    elsif (property = Property.find_by_group_by(current_user.company, session[:group_by]))
       # we only want to group through used values 
       used_values = tasks.map { |t| t.property_value(property) }.uniq
       # but we need them in the order defined by the user, so
