@@ -121,7 +121,7 @@ module TasksHelper
   def can_organize?
     can = false
     group_by = session[:group_by]
-    if group_by.to_i > 2 
+    if group_by.to_i > 2 and @tasks
       gb = group_by.to_i
       affected_projects = @tasks.collect(&:project).uniq
       can = case gb
