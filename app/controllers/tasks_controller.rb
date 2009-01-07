@@ -1947,7 +1947,7 @@ class TasksController < ApplicationController
       groups = Task.group_by(tasks, items) { |t,i| t.milestone ? ("#{t.project.name} / #{t.milestone.name}" == i) : (t.project.name == i)  }
     elsif session[:group_by].to_i == 11 # Requested By
       requested_by = tasks.collect{|t| t.requested_by.blank? ? nil : t.requested_by }.compact.uniq.sort
-      requested_by = [_('No one')] + requested_by
+      requested_by = [_('No one')] + requested_Eby
       groups = Task.group_by(tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
     elsif session[:group_by].match(/property_(\d+)/)
       property_id = $~[1]
@@ -1957,9 +1957,17 @@ class TasksController < ApplicationController
       used_values = tasks.map { |t| t.property_value(property) }.uniq
       # but we need them in the order defined by the user, so
       used_values = property.property_values.select { |pv| used_values.include?(pv) }
+      used_values.each { |pbv| group_ids[pbv] = pbv.id }
+      # add in for tasks without values
+      unassigned = _("Unassigned")
+      group_ids[unassigned] = 0
+      used_values = [ unassigned ] + used_values
 
-      groups = Task.group_by(tasks, used_values) do |task, value|
-        value == task.property_value(property)
+      groups = Task.group_by(tasks, used_values) do |task, match_value|
+        value = task.property_value(property)
+        group = (value and value == match_value)
+        group ||= (!value and match_value == unassigned)
+        group
       end
     else
       groups = [tasks]

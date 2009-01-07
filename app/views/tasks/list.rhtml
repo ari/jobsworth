@@ -137,32 +137,14 @@
             <% end %>
             <div id="quick_add_container" style="display:none;"></div>
 
-            <% if session[:group_by].to_i > 2 %>
-
-            <%   gb = session[:group_by].to_i
-                 affected_projects = @tasks.collect(&:project).uniq
-                 can_organize = case gb
-                                when 3  then current_user.can_all?(affected_projects, 'reassign')
-                                when 4  then current_user.can_all?(affected_projects, 'reassign')
-                                when 5  then current_user.can_all?(affected_projects, 'reassign')
-                                when 6  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 7  then current_user.can_all?(affected_projects, 'close')
-                                when 8  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 9  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 10 then current_user.can_all?(affected_projects, 'reassign')
-                                end
-                 if can_organize
-
-            %>
+	    <% if can_organize? %>
             <div style="float:right;">
-            <small>
-            <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
-            <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
-            </small>
+              <small>
+		<a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
+		<a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
+              </small>
             </div>
-            <%   end
-               end
-            %>
+            <% end %>
           </td>
         </tr>
 
