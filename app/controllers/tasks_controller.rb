@@ -1950,7 +1950,7 @@ class TasksController < ApplicationController
       requested_by = [_('No one')] + requested_Eby
       groups = Task.group_by(tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
     elsif session[:group_by].match(/property_(\d+)/)
-      property_id = $~[1]
+      property_id = $~[1] # grab the last match
       property = current_user.company.properties.find(property_id)
 
       # we only want to group through used values 
@@ -1966,7 +1966,7 @@ class TasksController < ApplicationController
       groups = Task.group_by(tasks, used_values) do |task, match_value|
         value = task.property_value(property)
         group = (value and value == match_value)
-        group ||= (!value and match_value == unassigned)
+        group ||= (value.nil? and match_value == unassigned)
         group
       end
     else
