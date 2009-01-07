@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
   has_many      :project_files, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
   has_many      :tags, :dependent => :destroy, :order => 'name'
-
+  has_many      :properties
 
 
 #  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/
