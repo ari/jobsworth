@@ -1,6 +1,18 @@
+###
+# Properties are used to describe tasks. Each property has a number of 
+# PropertyValues which define the values available for the user to choose
+# from.
+#
+# Properties can be created and edited by users in the system and so can 
+# have any PropertyValues a user needs.
+
+# Examples of potential properties include Priority, Status, Sub-project
+# - anything that suits a company's workflow..
+###
 class Property < ActiveRecord::Base
   belongs_to :company
   has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
+
 
   def self.all_for_company(company)
     find(:all, :conditions => { :company_id => company.id })
@@ -15,6 +27,9 @@ class Property < ActiveRecord::Base
     return company.properties.find(match[1]) if match
   end
 
+  ###
+  # Returns a name suitable for use as a div id or similar.
+  ###
   def filter_name
     @filter_name ||= "property_filter_#{ id }"
   end
