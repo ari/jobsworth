@@ -1957,17 +1957,15 @@ class TasksController < ApplicationController
       requested_by = [_('No one')] + requested_Eby
       groups = Task.group_by(tasks, requested_by) { |t,i| (t.requested_by.blank? ? _('No one') : t.requested_by) == i }
     elsif (property = Property.find_by_group_by(current_user.company, session[:group_by]))
-      # we only want to group through used values 
-      used_values = tasks.map { |t| t.property_value(property) }.uniq
-      # but we need them in the order defined by the user, so
-      used_values = property.property_values.select { |pv| used_values.include?(pv) }
-      used_values.each { |pbv| group_ids[pbv] = pbv.id }
+      items = property.property_values
+      items.each { |pbv| group_ids[pbv] = pbv.id }
+
       # add in for tasks without values
       unassigned = _("Unassigned")
       group_ids[unassigned] = 0
-      used_values = [ unassigned ] + used_values
+      items = [ unassigned ] + items
 
-      groups = Task.group_by(tasks, used_values) do |task, match_value|
+      groups = Task.group_by(tasks, items) do |task, match_value|
         value = task.property_value(property)
         group = (value and value == match_value)
         group ||= (value.nil? and match_value == unassigned)
