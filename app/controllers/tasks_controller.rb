@@ -1511,14 +1511,7 @@ class TasksController < ApplicationController
         logger.info(old_value)
         logger.info(new_value)
         @task.set_property_value(property, new_value)
-        body <<  " - <strong>#{ property }</strong>:"
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
-        logger.info("SSSSSSSSSSSSSSS")
+        body <<  " - <strong>#{ property }</strong>: #{ old_value } -> #{ new_value }"
       end
 
 
