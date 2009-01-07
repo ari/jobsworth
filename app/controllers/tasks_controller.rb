@@ -1513,9 +1513,6 @@ class TasksController < ApplicationController
       if (property = Property.find_by_group_by(current_user.company, session[:group_by]))
         old_value = @task.property_value(property)
         new_value = property.property_values.find(@group) if @group.to_i > 0
-
-        logger.info(old_value)
-        logger.info(new_value)
         @task.set_property_value(property, new_value)
         body <<  " - <strong>#{ property }</strong>: #{ old_value } -> #{ new_value }"
       end
