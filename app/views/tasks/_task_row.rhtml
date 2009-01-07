@@ -133,7 +133,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
    <%= render :partial => 'tasks/todo_container', :locals => { :task => task, :depth => depth } %>
 </div>
 
-<% if session[:group_by].to_i > 2 %>
+<% if can_organize? -%>
   <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => "'handle'", :constraint => "'vertical'" } %>
 <% end %>
 
