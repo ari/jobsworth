@@ -16,7 +16,7 @@ for g in groups
 %>
 
 <div class="task-group" id="task-group_<%=@group_ids[k]%>">
-<div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= parent + k %></div>
+<div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= "#{ parent }#{ k }" %></div>
 <%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => "", :depth => depth + 1} %>
 </div>
 <% if session[:group_by].to_i > 2 -%>
