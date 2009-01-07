@@ -103,7 +103,7 @@ Event.observe('project_<%= project.id %>', "mouseout", function(e) {
               </div>
     </div></td></tr>
           <%= render :partial => "activities/overall_progress", :locals => { :project => project } %>
-          <% for milestone in project.milestones %>
+          <% for milestone in project.milestones.select{|m| m.completed_at.nil?} %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
           <% end %>
   <% @completed_milestones = project.total_milestones_count - project.open_milestones_count

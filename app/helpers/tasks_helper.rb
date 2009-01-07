@@ -88,32 +88,35 @@ module TasksHelper
 
     @deps = []
 
-    unless root_present
-      root = nil
-      parents = []
-      p = t
-      while(!p.nil? && p.dependencies.size > 0)
+    if session[:hide_dependencies].to_i == 1
+      res << render(:partial => "task_row", :locals => { :task => t, :depth => depth})
+    else 
+      unless root_present
         root = nil
-        p.dependencies.each do |dep|
-          root = dep if((!dep.done?) && (!@deps.include?(dep.id) ) )
+        parents = []
+        p = t
+        while(!p.nil? && p.dependencies.size > 0)
+          root = nil
+          p.dependencies.each do |dep|
+            root = dep if((!dep.done?) && (!@deps.include?(dep.id) ) )
+          end
+          root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
+          p = root
+          @deps << root.id
         end
-        root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
-        p = root
-        @deps << root.id
-      end
-      res << render_task_dependants(root, depth, true) unless root.nil?
+        res << render_task_dependants(root, depth, true) unless root.nil?
+      else
+        res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
 
-    else
-      res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
+        @printed_ids << t.id
 
-      @printed_ids << t.id
-
-      if t.dependants.size > 0
-        t.dependants.each do |child|
-          next if @printed_ids.include? child.id
-          res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+        if t.dependants.size > 0
+          t.dependants.each do |child|
+            next if @printed_ids.include? child.id
+            res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+          end
         end
-      end
+      end 
     end
     res
   end
@@ -122,8 +125,9 @@ module TasksHelper
     show = (session[:filter_type] != "-1") 
     show ||= (session[:filter_priority] != "-10") 
     show ||= (session[:filter_severity] != "-10")
+    show ||= (session[:hide_dependencies].to_i != 0)
 
-    # check if any custom properties are set and show if so
+    # we also need to show filter if any custom properties are set
     @properties.each do |prop|
       show ||= session[prop.filter_name].to_i > 0
     end

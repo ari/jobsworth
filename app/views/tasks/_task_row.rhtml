@@ -1,4 +1,4 @@
-<% if session[:hide_dependencies].to_i == 0 || task.active? -%>
+<% if session[:hide_deferred].to_i == 0 || task.active? -%>
 <div id="task_<%=task.id%>"
 <%
  depth ||= 1

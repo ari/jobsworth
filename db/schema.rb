@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081212062227) do
+ActiveRecord::Schema.define(:version => 20090103140701) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -595,10 +595,11 @@ ActiveRecord::Schema.define(:version => 20081212062227) do
     t.string  "filter_tags",         :default => ""
     t.integer "filter_status",       :default => 0
     t.integer "filter_type_id",      :default => 0
-    t.integer "hide_dependencies"
+    t.integer "hide_deferred"
     t.integer "sort",                :default => 0
     t.integer "filter_severity",     :default => -10
     t.integer "filter_priority",     :default => -10
+    t.integer "hide_dependencies"
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"

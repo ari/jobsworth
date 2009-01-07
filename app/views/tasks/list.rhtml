@@ -94,7 +94,7 @@
             </select>
 
 
-            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
+            <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <br />
             <% if show_more_filters %>
             <div id="more-filters">
@@ -124,7 +124,9 @@
                 <%= options_for_select @priorities, session[:filter_priority] %>
               </select>
 
+
 	      <%= render :partial => 'filter_property', :collection => @properties %>
+              <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%></div>
             </div>            
 	    </div>
 	    </form>

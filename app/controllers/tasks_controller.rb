@@ -97,6 +97,10 @@ class TasksController < ApplicationController
       filter << "tasks.hidden = 0 AND "
     end
 
+    if session[:hide_deferred].to_i > 0
+      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND"
+    end 
+
     unless session[:filter_type].to_i == -1
       filter << "tasks.type_id = #{session[:filter_type].to_i} AND "
     end
@@ -636,7 +640,8 @@ class TasksController < ApplicationController
 
       unless params[:users].nil?
         @task.task_owners.destroy_all
-        params[:users].each do |o|
+        params[:users].uniq.each do |o|
+          logger.info("Adding user #{o} to #{@task.id}")
           next if o.to_i == 0
           u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
           to = TaskOwner.new(:user => u, :task => @task)
@@ -714,7 +719,8 @@ class TasksController < ApplicationController
         body << "- <strong>Description</strong> changed\n"
       end
 
-      if params[:users] && old_users != params[:users].collect{|u| u.to_i}.sort.join(',')
+      if params[:users] && old_users != params[:users].uniq.collect{|u| u.to_i}.sort.join(',')
+        logger.info("#{old_users} != #{params[:users].collect{|u| u.to_i}.sort.join(',')}")
         @task.users.reload
         new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
         body << "- <strong>Assignment</strong>: #{new_name}\n"
@@ -1238,7 +1244,7 @@ class TasksController < ApplicationController
       session[:filter_project] = f[1..-1]
     end
 
-    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |filter|
+    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |filter|
       session[filter] = params[filter]
     end
 
@@ -1261,7 +1267,7 @@ class TasksController < ApplicationController
   def filter_shortlist
 
     tmp = { }
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
       tmp[v] = session[v]
     end
 
@@ -1271,7 +1277,7 @@ class TasksController < ApplicationController
     session[:filter_customer_short] = session[:filter_customer]
     session[:filter_milestone_short] = session[:filter_milestone]
 
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
       session[v] = tmp[v]
     end
 
@@ -1445,6 +1451,10 @@ class TasksController < ApplicationController
           end
           @task.project_id = project.id
           @task.save
+
+          WorkLog.update_all("customer_id = #{project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+          ProjectFile.update_all("customer_id = #{project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+
           old_milestone.update_counts if old_milestone
         end
       when 4
@@ -1714,7 +1724,7 @@ class TasksController < ApplicationController
   def shortlist
     tmp = { }
     # Save filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
       tmp[v] = session[v]
     end
 
@@ -1725,13 +1735,14 @@ class TasksController < ApplicationController
     session[:filter_hidden] = "0"
     session[:filter_status] = "0"
     session[:group_by] = "0"
+    session[:hide_deferred] = "1"
     session[:hide_dependencies] = "1"
     session[:sort] = "0"
 
     self.list
 
     # Restore filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_dependencies, :sort].each do |v|
+    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
       session[v] = tmp[v]
     end
 
