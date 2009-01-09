@@ -699,16 +699,12 @@ class Task < ActiveRecord::Base
     # remove the current one if it exists
     existing = task_property_values.detect { |tpv| tpv.property == property }
     if existing and existing.property_value != property_value
-      logger.info("REMOVING EXISTING")
       task_property_values.delete(existing)
     end
 
     if property_value
-      logger.info("ADDING NEW")
       # only create a new one if property_value is set
       task_property_values.create(:property_id => property.id, :property_value_id => property_value.id)
-    else
-      logger.info("NIL PASSED IN")
     end
   end
 
