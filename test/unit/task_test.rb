@@ -160,6 +160,33 @@ class TaskTest < Test::Unit::TestCase
     assert_equal v2, tpv.property_value
   end
 
+  def test_properties_setter_should_clear_old_properties
+    prop = properties(:first)
+    v1 = property_values(:first)
+    v2 = property_values(:third)
+
+    @task.properties = { 
+      properties(:first).id => v1.id,
+      properties(:second).id => v2.id
+    }
+    @task.save!
+    assert_equal 2, @task.task_property_values.reload.length
+
+    @task.properties = { properties(:first).id => v1.id }
+    @task.save!
+    assert_equal 1, @task.task_property_values.reload.length
+  end
+
+  def test_set_property_value_should_clear_value_if_nil
+    prop = properties(:first)
+    v1 = property_values(:first)
+
+    @task.set_property_value(prop, v1)
+    assert_equal v1, @task.property_value(prop)
+    @task.set_property_value(prop, nil)
+    assert_equal(nil, @task.property_value(prop))
+  end
+
   def test_property_value
     v1 = property_values(:first)
     @task.task_property_values.create(:property_id => v1.property_id, :property_value_id => v1.id)
