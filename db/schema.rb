@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090110041909) do
+ActiveRecord::Schema.define(:version => 20090110043543) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -318,6 +318,8 @@ ActiveRecord::Schema.define(:version => 20090110041909) do
     t.datetime "updated_at"
   end
 
+  add_index "properties", ["company_id"], :name => "index_properties_on_company_id"
+
   create_table "property_values", :force => true do |t|
     t.integer  "property_id"
     t.string   "value"
@@ -328,6 +330,8 @@ ActiveRecord::Schema.define(:version => 20090110041909) do
     t.datetime "updated_at"
     t.string   "icon_url",    :limit => 1000
   end
+
+  add_index "property_values", ["property_id"], :name => "index_property_values_on_property_id"
 
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
