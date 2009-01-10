@@ -121,6 +121,10 @@ module TasksHelper
     res
   end
 
+  ###
+  # Returns true if the current user can organize tasks based
+  # on the their rights.
+  ###
   def can_organize?
     can = false
     group_by = session[:group_by]
@@ -144,7 +148,10 @@ module TasksHelper
     return can
   end
 
-  def show_more_filters
+  ###
+  # Returns true if the more filters area should be shown.
+  ###
+  def show_more_filters?
     show = (session[:filter_type] != "-1") 
     show ||= (session[:filter_priority] != "-10") 
     show ||= (session[:filter_severity] != "-10")
@@ -156,5 +163,19 @@ module TasksHelper
     end
 
     show
+  end
+
+  ###
+  # Returns a string of css style to color task using the
+  # selected coloring.
+  ###
+  def color_style(task)
+    color_property = session[:colors].to_i
+    return if color_property == 0
+ 
+    property = current_user.company.properties.find(color_property)
+    value = task.property_value(property)
+
+    return "border-left: 4px solid #{ value.color }; background: none;"
   end
 end

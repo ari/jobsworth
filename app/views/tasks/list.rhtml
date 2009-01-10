@@ -96,10 +96,15 @@
               <%= options_for_select @sort, session[:sort] %>
             </select>
 
+            <select name="colors" id="colors" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[Default colors]") %></option>
+	      <% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, session[:colors]) %>
+            </select>
 
             <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <br />
-            <% if show_more_filters %>
+            <% if show_more_filters? %>
             <div id="more-filters">
             <% else %>
             <div id="filters-toggle"><a href="#" onclick="Element.show('more-filters');Element.hide('filters-toggle');return false;"><small><%= _('More filters')%></small></a></div>

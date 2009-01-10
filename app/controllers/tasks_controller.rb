@@ -1167,10 +1167,12 @@ class TasksController < ApplicationController
       session[:filter_project] = f[1..-1]
     end
 
-    [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |filter|
+    filter_names =  [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority, :colors ]
+    filter_names.each do |filter|
       session[filter] = params[filter]
     end
 
+    # set any filters on custom properties
     Property.all_for_company(current_user.company).each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]

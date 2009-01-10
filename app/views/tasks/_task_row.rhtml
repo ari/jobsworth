@@ -27,7 +27,7 @@
  classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
  classes << " #{task.dom_id}"
 -%>
-class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
+class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
   <% if current_user.show_type_icons? %><div style="float:left;padding-top:1px;padding-right:2px;" class="task-icon"><%= task.icon %></div><% end %>

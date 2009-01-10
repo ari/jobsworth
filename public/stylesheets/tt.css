@@ -2349,3 +2349,7 @@ input.scheduled {
   font-size: small;
   
 }
+
+#property_values li.property_value {
+    padding: 8px 0px 5px 0px;
+}
