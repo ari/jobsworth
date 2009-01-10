@@ -34,6 +34,18 @@ class Property < ActiveRecord::Base
   end
 
   ###
+  # Returns an array of all properties for company which
+  # have icons set up for their property values.
+  ###
+  def self.all_with_icons(company)
+    props = all_for_company(company).select do |p|
+      p.property_values.detect { |pv| !pv.icon_url.blank? }
+    end
+
+    return props
+  end
+
+  ###
   # Finds the property matching the given group_by parameter.
   ###
   def self.find_by_group_by(company, group_by)

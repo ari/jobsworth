@@ -102,6 +102,12 @@
               <%= options_for_select(options, session[:colors]) %>
             </select>
 
+            <select name="icons" id="icons" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[Default icons]") %></option>
+	      <% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, session[:icons]) %>
+            </select>
+
             <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <br />
             <% if show_more_filters? %>

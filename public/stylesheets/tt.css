@@ -219,6 +219,11 @@ body, p, ol, ul, td, tr {
 
 }
 
+.task-icon img {
+    height: 16px;
+    width: 16px;
+}
+
 .invalid {
   text-decoration: line-through;
 }

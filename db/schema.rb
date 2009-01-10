@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090103140701) do
+ActiveRecord::Schema.define(:version => 20090110031641) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -326,6 +326,7 @@ ActiveRecord::Schema.define(:version => 20090103140701) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "icon_url",    :limit => 1000
   end
 
   create_table "scm_changesets", :force => true do |t|

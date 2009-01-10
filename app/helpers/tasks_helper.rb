@@ -167,7 +167,7 @@ module TasksHelper
 
   ###
   # Returns a string of css style to color task using the
-  # selected coloring.
+  # selected (in the session) coloring.
   ###
   def color_style(task)
     color_property = session[:colors].to_i
@@ -178,4 +178,20 @@ module TasksHelper
 
     return "border-left: 4px solid #{ value.color }; background: none;"
   end
+
+  ###
+  # Return an html tag to display the icon for given task using
+  # the selected (in the session) icons to display.
+  ###
+  def task_icon(task)
+    icon_property = session[:icons].to_i
+    return task.icon if icon_property == 0
+ 
+    property = current_user.company.properties.find(icon_property)
+    pv = task.property_value(property)
+    src = pv.icon_url if pv
+
+    return image_tag(src, :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+  end
+
 end
