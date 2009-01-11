@@ -286,12 +286,18 @@ class ReportsController < ApplicationController
           filename << "-" + tz.now.beginning_of_year.strftime("%Y%m%d")
         when 7
           if filter[:stop_date] && filter[:start_date].length > 1
-            start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time
+            start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time rescue begin
+                                                                                                             flash['notice'] ||= _("Invalid start date")
+                                                                                                             start_date = tz.now
+                                                                                                           end 
             date_filter = date_filter + " AND work_logs.started_at >= '#{tz.local_to_utc(start_date.midnight).to_s(:db)}'"
           end
 
           if filter[:stop_date] && filter[:stop_date].length > 1
-            end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time
+            end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time rescue begin
+                                                                                                          flash['notice'] ||= _("Invalid end date")
+                                                                                                          end_date = tz.now
+                                                                                                        end 
             date_filter = date_filter + " AND work_logs.started_at < '#{tz.local_to_utc( (end_date + 1.day).midnight).to_s(:db)}'"
           end
 
