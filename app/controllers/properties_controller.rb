@@ -13,17 +13,6 @@ class PropertiesController < ApplicationController
     end
   end
 
-  # GET /properties/1
-  # GET /properties/1.xml
-  def show
-    @property = Property.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @property }
-    end
-  end
-
   # GET /properties/new
   # GET /properties/new.xml
   def new
@@ -37,7 +26,7 @@ class PropertiesController < ApplicationController
 
   # GET /properties/1/edit
   def edit
-    @property = Property.find(params[:id])
+    @property = current_user.company.properties.find(params[:id])
   end
 
   # POST /properties
@@ -62,12 +51,17 @@ class PropertiesController < ApplicationController
   # PUT /properties/1
   # PUT /properties/1.xml
   def update
-    @property = Property.find(params[:id])
+    @property = current_user.company.properties.find(params[:id])
     update_existing_property_values(@property, params)
     @property.property_values.build(params[:new_property_values]) if params[:new_property_values]
 
+    saved = @property.update_attributes(params[:property]) 
+    # force company in case somebody passes in company_id param
+    @property.company = current_user.company
+    saved &&= @property.save
+
     respond_to do |format|
-      if @property.update_attributes(params[:property]) and @property.save
+      if saved
         flash[:notice] = 'Property was successfully updated.'
         format.html { redirect_to(edit_property_path(@property)) }
         format.xml  { head :ok }
@@ -81,7 +75,7 @@ class PropertiesController < ApplicationController
   # DELETE /properties/1
   # DELETE /properties/1.xml
   def destroy
-    @property = Property.find(params[:id])
+    @property = current_user.company.properties.find(params[:id])
     @property.destroy
 
     respond_to do |format|
@@ -108,6 +102,8 @@ class PropertiesController < ApplicationController
   private
 
   def update_existing_property_values(property, params)
+    return if !property or !params[:property_values]
+
     property.property_values.each do |pv|
       posted_vals = params[:property_values][pv.id.to_s]
       if posted_vals
