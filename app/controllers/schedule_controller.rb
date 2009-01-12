@@ -55,11 +55,13 @@ class ScheduleController < ApplicationController
 
         while done >= 0
           d += 1
-          next if ((due_date - d).wday == 0 || (due_date - d).wday == 6) && !(due_date.wday == 0 || due_date.wday == 6)
-          #            logger.info "Checking #{due_date-d} for slot #{slot}"
+          wday1 = (due_date - d)
+          wday2 = (due_date.wday)
+          dpw = current_user.days_per_week
+
+          next if( ((wday1 == 0 && dpw < 7) || (wday1 == 6 && dwp < 6)) && !((wday2 == 0 && dpw < 7) || (wday2 == 6 && dpw <6)) )
           unless @dates[due_date - d].nil? || @dates[due_date - d][slot].nil?
-              found = false
-            #              logger.info "Conflict.."
+            found = false
           end
           done -= 1
         end
@@ -71,8 +73,8 @@ class ScheduleController < ApplicationController
         @dates[due_date] ||= []
         @dates[due_date][slot] = t
         due_date -= 1.days
-        due_date -= 1.days if due_date.wday == 6
-        due_date -= 2.days if due_date.wday == 0
+        due_date -= 1.days if due_date.wday == 6 && current_user.days_per_week < 6
+        due_date -= 2.days if due_date.wday == 0 && current_user.days_per_week < 7
       end
 
     end
@@ -123,10 +125,10 @@ class ScheduleController < ApplicationController
         end
         
         date_check += 1.day
-        if date_check.wday == 6
+        if date_check.wday == 6 && current_user.days_per_week < 6
           date_check += 2.days
         end
-        if date_check.wday == 0
+        if date_check.wday == 0 && current_user.days_per_week < 7
           date_check += 1.days
         end
 
@@ -158,10 +160,10 @@ class ScheduleController < ApplicationController
         end_date = day if end_date < day
         
         day += 1.day
-        if day.wday == 6
+        if day.wday == 6 && current_user.days_per_week < 6
           day += 2.days
         end
-        if day.wday == 0
+        if day.wday == 0 && current_user.days_per_week < 7
           day += 1.days
         end
 
@@ -265,7 +267,7 @@ class ScheduleController < ApplicationController
 #          day -= 1.days
 #          dur += 1.days
 #        end 
-        if day.wday == 0
+        if day.wday == 0 && current_user.days_per_week < 7
           day -= 1.days
           dur += 2.days
         end 
@@ -273,10 +275,10 @@ class ScheduleController < ApplicationController
         day -= rem.minutes
 
         while days > 0
-          if day.wday == 0
+          if day.wday == 0 && current_user.days_per_week < 7
             day -= 2.days
             dur += 2.days
-          elsif day.wday == 6
+          elsif day.wday == 6 && current_user.days_per_week < 6
             day -= 1.days
             dur += 2.days
             days -= 1
@@ -290,16 +292,16 @@ class ScheduleController < ApplicationController
         
         logger.debug "--> #{t.id} force before #{day.wday} -> #{(day+dur).wday} [due] "
         
-        if day.wday == 6
+        if day.wday == 6 && current_user.days_per_week < 6
           day -= 2.days
         end 
-        if day.wday == 0
+        if day.wday == 0 && current_user.days_per_week < 7
           day -= 2.days 
         end 
 
         logger.debug "--> #{t.id} force before #{day} -> #{(day+dur)} [due] "
       else 
-        if day.wday == 0
+        if day.wday == 0 && current_user.days_per_week < 7
           day -= 1.days
           dur += 2.days
         end 
@@ -307,10 +309,10 @@ class ScheduleController < ApplicationController
         day -= rem.minutes
 
         while days > 0
-          if day.wday == 0
+          if day.wday == 0 && current_user.days_per_week < 7
             day -= 2.days
             dur += 2.days
-          elsif day.wday == 6
+          elsif day.wday == 6 && current_user.days_per_week < 6
             day -= 1.days
             dur += 2.days
             days -= 1
@@ -337,11 +339,11 @@ class ScheduleController < ApplicationController
     end
 
     if rev
-      day -= 1.days if day.wday == 6
-      day -= 2.days if day.wday == 0
+      day -= 1.days if day.wday == 6 && current_user.days_per_week < 6
+      day -= 2.days if day.wday == 0 && current_user.days_per_week < 7
     else 
-      day += 2.days if day.wday == 6
-      day += 1.days if day.wday == 0
+      day += 2.days if day.wday == 6 && current_user.days_per_week < 6
+      day += 1.days if day.wday == 0 && current_user.days_per_week < 7
     end
 
     
@@ -452,10 +454,10 @@ class ScheduleController < ApplicationController
 
         if rev 
           day -= 1.day
-          if day.wday == 0
+          if day.wday == 0 && current_user.days_per_week < 7
             day -= 2.days
           end
-          if day.wday == 6
+          if day.wday == 6 && current_user.days_per_week < 6
             day -= 1.days
           end
           
@@ -464,22 +466,19 @@ class ScheduleController < ApplicationController
             rev = false
             logger.debug("--> switching direction #{t.id}")
             
-            if day.wday == 6
+            if day.wday == 6 && current_user.days_per_week < 6
               day += 2.days
             end
-            if day.wday == 0
+            if day.wday == 0 && current_user.days_per_week < 7
               day += 1.days
             end
-            
-            
           end
-          
         else 
           day += 1.day
-          if day.wday == 6
+          if day.wday == 6 && current_user.days_per_week < 6
             day += 2.days
           end
-          if day.wday == 0
+          if day.wday == 0 && current_user.days_per_week < 7
             day += 1.days
           end
 
