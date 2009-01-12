@@ -176,6 +176,7 @@ module TasksHelper
     property = current_user.company.properties.find(color_property)
     value = task.property_value(property)
 
+    return unless value
     return "border-left: 4px solid #{ value.color }; background: none;"
   end
 
