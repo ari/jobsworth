@@ -4,3 +4,6 @@ first:
 second:
   name: Test property 2
   company: cit
+third:
+  name: Test property 2
+  company: fudge
