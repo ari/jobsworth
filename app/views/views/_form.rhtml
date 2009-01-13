@@ -94,6 +94,25 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
               %>
               <%= options_for_select @sort, @view.sort.to_s %>
             </select><br/>
-  <label for="view_hide_dependencies"><%=_ 'Hide Waiting Tasks' %></label><input type="checkbox" name="view[hide_dependencies]" id="view_hide_dependencies" value="1" <%= @view.hide_dependencies.to_i > 0 ? "checked" : "" %>><br/>
+
+	    <label for="colors"><%=_ "Colors" %></label>
+            <select name="view[colors]" id="colors">
+              <option value="0" class="select_default"><%= _("[Default colors]") %></option>
+	      <% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, @view.colors.to_s) %>
+            </select>
+	    <br />
+
+	    <label for="icons"><%=_ "Icons" %></label>
+            <select name="view[icons]" id="icons">
+              <option value="0" class="select_default"><%= _("[Default icons]") %></option>
+	      <% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, @view.icons.to_s) %>
+            </select>
+	    <br />
+
+
+  <label for="view_hide_deferred"><%=_ 'Hide Waiting Tasks' %></label><input type="checkbox" name="view[hide_deferred]" id="view_hide_deferred" value="1" <%= @view.hide_deferred.to_i > 0 ? "checked" : "" %>><br/>
+  <label for="view_hide_dependencies"><%=_ 'Hide Task Dependencies' %></label><input type="checkbox" name="view[hide_dependencies]" id="view_hide_dependencies" value="1" <%= @view.hide_dependencies.to_i > 0 ? "checked" : "" %>><br/>
   <label for="view_shared"><%=_ 'Shared' %></label><input type="checkbox" name="view[shared]" id="view_shared" value="1" <%= @view.shared.to_i > 0 ? "checked" : "" %>><br/>
 <!--[eoform:view]-->

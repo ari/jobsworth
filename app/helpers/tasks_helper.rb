@@ -88,36 +88,43 @@ module TasksHelper
 
     @deps = []
 
-    unless root_present
-      root = nil
-      parents = []
-      p = t
-      while(!p.nil? && p.dependencies.size > 0)
+    if session[:hide_dependencies].to_i == 1
+      res << render(:partial => "task_row", :locals => { :task => t, :depth => depth})
+    else 
+      unless root_present
         root = nil
-        p.dependencies.each do |dep|
-          root = dep if((!dep.done?) && (!@deps.include?(dep.id) ) )
+        parents = []
+        p = t
+        while(!p.nil? && p.dependencies.size > 0)
+          root = nil
+          p.dependencies.each do |dep|
+            root = dep if((!dep.done?) && (!@deps.include?(dep.id) ) )
+          end
+          root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
+          p = root
+          @deps << root.id
         end
-        root ||= p.dependencies.first if(p.dependencies.first.id != p.id && !@deps.include?(p.dependencies.first.id))
-        p = root
-        @deps << root.id
-      end
-      res << render_task_dependants(root, depth, true) unless root.nil?
+        res << render_task_dependants(root, depth, true) unless root.nil?
+      else
+        res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
 
-    else
-      res << render(:partial => "task_row", :locals => { :task => t, :depth => depth, :override_filter => !shown }) if( ((!t.done?) && t.dependants.size > 0) || shown)
+        @printed_ids << t.id
 
-      @printed_ids << t.id
-
-      if t.dependants.size > 0
-        t.dependants.each do |child|
-          next if @printed_ids.include? child.id
-          res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+        if t.dependants.size > 0
+          t.dependants.each do |child|
+            next if @printed_ids.include? child.id
+            res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
+          end
         end
-      end
+      end 
     end
     res
   end
 
+  ###
+  # Returns true if the current user can organize tasks based
+  # on the their rights.
+  ###
   def can_organize?
     can = false
     group_by = session[:group_by]
@@ -141,16 +148,51 @@ module TasksHelper
     return can
   end
 
-  def show_more_filters
+  ###
+  # Returns true if the more filters area should be shown.
+  ###
+  def show_more_filters?
     show = (session[:filter_type] != "-1") 
     show ||= (session[:filter_priority] != "-10") 
     show ||= (session[:filter_severity] != "-10")
+    show ||= (session[:hide_dependencies].to_i != 0)
 
-    # check if any custom properties are set and show if so
+    # we also need to show filter if any custom properties are set
     @properties.each do |prop|
       show ||= session[prop.filter_name].to_i > 0
     end
 
     show
   end
+
+  ###
+  # Returns a string of css style to color task using the
+  # selected (in the session) coloring.
+  ###
+  def color_style(task)
+    color_property = session[:colors].to_i
+    return if color_property == 0
+ 
+    property = current_user.company.properties.find(color_property)
+    value = task.property_value(property)
+
+    return unless value
+    return "border-left: 4px solid #{ value.color }; background: none;"
+  end
+
+  ###
+  # Return an html tag to display the icon for given task using
+  # the selected (in the session) icons to display.
+  ###
+  def task_icon(task)
+    icon_property = session[:icons].to_i
+    return task.icon if icon_property == 0
+ 
+    property = current_user.company.properties.find(icon_property)
+    pv = task.property_value(property)
+    src = pv.icon_url if pv
+
+    return image_tag(src, :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+  end
+
 end

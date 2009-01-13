@@ -219,6 +219,11 @@ body, p, ol, ul, td, tr {
 
 }
 
+.task-icon img {
+    height: 16px;
+    width: 16px;
+}
+
 .invalid {
   text-decoration: line-through;
 }
@@ -2348,4 +2353,8 @@ input.scheduled {
 .header-link { 
   font-size: small;
   
+}
+
+#property_values li.property_value {
+    padding: 8px 0px 5px 0px;
 }

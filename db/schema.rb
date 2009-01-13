@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081212062227) do
+ActiveRecord::Schema.define(:version => 20090110043543) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -318,6 +318,8 @@ ActiveRecord::Schema.define(:version => 20081212062227) do
     t.datetime "updated_at"
   end
 
+  add_index "properties", ["company_id"], :name => "index_properties_on_company_id"
+
   create_table "property_values", :force => true do |t|
     t.integer  "property_id"
     t.string   "value"
@@ -326,7 +328,10 @@ ActiveRecord::Schema.define(:version => 20081212062227) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "icon_url",    :limit => 1000
   end
+
+  add_index "property_values", ["property_id"], :name => "index_property_values_on_property_id"
 
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
@@ -595,10 +600,13 @@ ActiveRecord::Schema.define(:version => 20081212062227) do
     t.string  "filter_tags",         :default => ""
     t.integer "filter_status",       :default => 0
     t.integer "filter_type_id",      :default => 0
-    t.integer "hide_dependencies"
+    t.integer "hide_deferred"
     t.integer "sort",                :default => 0
     t.integer "filter_severity",     :default => -10
     t.integer "filter_priority",     :default => -10
+    t.integer "hide_dependencies"
+    t.integer "colors"
+    t.integer "icons"
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"
