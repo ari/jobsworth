@@ -319,7 +319,10 @@ jQuery('#task_due_at').datepicker();
         <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
       <label for="task_severity_id"><%=_ 'Severity' %></label>
         <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
-	<% @properties.each do |p| -%>
+	<%
+		@properties = Property.all_for_company(current_user.company)
+		@properties.each do |p|
+	-%>
 	  <% name = "property_#{ p.id }" -%>
   	  <label for="<%= name %>"><%= h(p.name) %></label>
 	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
