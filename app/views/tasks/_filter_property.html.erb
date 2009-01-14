@@ -1,0 +1,14 @@
+<% 
+   filter_value = session[filter_property.filter_name].to_i
+-%>
+
+<select name="<%= filter_property.filter_name %>" id="<%= filter_property.filter_name %>" 
+	onchange="javascript:document.forms[1].submit();" 
+	class="tooltip" title="<%=_('Only show tasks with this property value')%>">>
+  <option value="" class="select_default">
+    <%= "[#{_('Any %s', filter_property.name)}]" %>
+  </option>
+
+  <%= options_from_collection_for_select(filter_property.property_values, "id", "value", filter_value) %>
+</select>
+

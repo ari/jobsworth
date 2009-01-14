@@ -15,11 +15,11 @@ for g in groups
     g.each_key do |k|
 %>
 
-<div class="task-group" id="task-group_<%=@group_ids[k]%>">
-<div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= parent + k %></div>
+<div class="task-group" id="task-group_<%= @group_ids[k] %>">
+<div class="tag_header" style="margin-left:<%= 8 + (depth) * 16 %>px;"><%= "#{ parent }#{ k }" %></div>
 <%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => "", :depth => depth + 1} %>
 </div>
-<% if session[:group_by].to_i > 2 -%>
+<% if can_organize? -%>
 <script type="text/javascript">
 //<![CDATA[
 Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', accept:'task', greedy:true, onDrop:function(element, dropElement){Element.remove(element); new Ajax.Request('/tasks/move', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})

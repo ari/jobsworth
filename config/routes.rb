@@ -31,6 +31,8 @@ ActionController::Routing::Routes.draw do |map|
   map.formatted_monitored_posts 'users/:user_id/monitored.:format', :controller => 'posts', :action => 'monitored'
   map.monitored_posts           'users/:user_id/monitored', :controller => 'posts', :action => 'monitored'
 
+  map.resources :properties
+
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   map.connect ':controller/:action/:id.:format'

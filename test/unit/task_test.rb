@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TaskTest < Test::Unit::TestCase
-  fixtures :tasks, :projects, :users, :companies, :customers
+  fixtures :tasks, :projects, :users, :companies, :customers, :properties, :property_values
 
   def setup
     @task = tasks(:normal_task)
@@ -140,6 +140,61 @@ class TaskTest < Test::Unit::TestCase
 
     @task.status = 2
     assert_equal "<strike>#1</strike> Test", @task.status_name
+  end
+
+  def test_properties_setter
+    prop = properties(:first)
+    v1 = property_values(:first)
+    v2 = property_values(:third)
+
+    @task.properties = { 
+      properties(:first).id => v1.id,
+      properties(:second).id => v2.id
+    }
+    @task.save!
+    @task.task_property_values.reload
+
+    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == properties(:first).id }
+    assert_equal v1, tpv.property_value
+    tpv = @task.task_property_values.detect { |tpv| tpv.property_id == properties(:second).id }
+    assert_equal v2, tpv.property_value
+  end
+
+  def test_properties_setter_should_clear_old_properties
+    prop = properties(:first)
+    v1 = property_values(:first)
+    v2 = property_values(:third)
+
+    @task.properties = { 
+      properties(:first).id => v1.id,
+      properties(:second).id => v2.id
+    }
+    @task.save!
+    assert_equal 2, @task.task_property_values.reload.length
+
+    @task.properties = { properties(:first).id => v1.id }
+    @task.save!
+    assert_equal 1, @task.task_property_values.reload.length
+  end
+
+  def test_set_property_value_should_clear_value_if_nil
+    prop = properties(:first)
+    v1 = property_values(:first)
+
+    @task.set_property_value(prop, v1)
+    assert_equal v1, @task.property_value(prop)
+    @task.set_property_value(prop, nil)
+    assert_equal(nil, @task.property_value(prop))
+  end
+
+  def test_property_value
+    v1 = property_values(:first)
+    @task.task_property_values.create(:property_id => v1.property_id, :property_value_id => v1.id)
+    v2 = property_values(:third)
+    @task.task_property_values.create(:property_id => v2.property_id, :property_value_id => v2.id)
+
+    assert_equal v1, @task.property_value(v1.property)
+    assert_equal v2, @task.property_value(v2.property)
   end
 
 end

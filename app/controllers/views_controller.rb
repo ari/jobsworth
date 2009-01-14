@@ -60,6 +60,8 @@ class ViewsController < ApplicationController
     @view.filter_severity = session[:filter_severity].to_i
     @view.filter_priority = session[:filter_priority].to_i
     @view.sort = session[:sort].to_i
+    @view.colors = session[:colors].to_i
+    @view.icons = session[:icons].to_i
 
     @view.filter_tags = params[:tags].split(',').collect{ |t|
       unless t.length == 0
@@ -97,6 +99,9 @@ class ViewsController < ApplicationController
     session[:filter_priority] = @view.filter_priority.to_s
     session[:filter_customer] = @view.filter_customer_id.to_s
     session[:sort] = @view.sort.to_s
+    session[:colors] = @view.colors.to_s
+    session[:icons] = @view.icons.to_s
+
 
     @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
       unless t.length == 0

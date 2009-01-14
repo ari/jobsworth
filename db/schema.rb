@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081123091936) do
+ActiveRecord::Schema.define(:version => 20090110043543) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -311,6 +311,28 @@ ActiveRecord::Schema.define(:version => 20081123091936) do
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
   add_index "projects", ["completed_at", "customer_id", "name"], :name => "projects_completed_at_customer_id_name_index"
 
+  create_table "properties", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "properties", ["company_id"], :name => "index_properties_on_company_id"
+
+  create_table "property_values", :force => true do |t|
+    t.integer  "property_id"
+    t.string   "value"
+    t.string   "color"
+    t.string   "default"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "icon_url",    :limit => 1000
+  end
+
+  add_index "property_values", ["property_id"], :name => "index_property_values_on_property_id"
+
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -430,6 +452,15 @@ ActiveRecord::Schema.define(:version => 20081123091936) do
 
   add_index "task_owners", ["task_id", "user_id"], :name => "task_owners_task_id_user_id_index"
   add_index "task_owners", ["user_id", "task_id"], :name => "task_owners_user_id_task_id_index"
+
+  create_table "task_property_values", :force => true do |t|
+    t.integer "task_id"
+    t.integer "property_id"
+    t.integer "property_value_id"
+  end
+
+  add_index "task_property_values", ["task_id"], :name => "index_task_property_values_on_task_id"
+  add_index "task_property_values", ["property_id"], :name => "index_task_property_values_on_property_id"
 
   create_table "task_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
@@ -569,10 +600,13 @@ ActiveRecord::Schema.define(:version => 20081123091936) do
     t.string  "filter_tags",         :default => ""
     t.integer "filter_status",       :default => 0
     t.integer "filter_type_id",      :default => 0
-    t.integer "hide_dependencies"
+    t.integer "hide_deferred"
     t.integer "sort",                :default => 0
     t.integer "filter_severity",     :default => -10
     t.integer "filter_priority",     :default => -10
+    t.integer "hide_dependencies"
+    t.integer "colors"
+    t.integer "icons"
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"

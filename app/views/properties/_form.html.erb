@@ -1,0 +1,26 @@
+<% form_for(@property) do |f| %>
+  <%= f.error_messages %>
+
+  <fieldset>
+    <label for="property_name"><%=_ "Name" %></label>
+    <%= f.text_field :name %>
+    <br />
+
+    <fieldset>
+      <legend><%=_ "Possible values" %></legend>
+      <ul id="property_values">
+	<% @property.property_values.each do |pv| -%>
+  	  <%= render :partial => "property_value", :locals => { :pv => pv } %>
+	<% end -%>
+      </ul>
+
+      <%= sortable_element("property_values", :handle => "handle", :url => { :action => "order" }) %>
+      <br />
+      <%= add_value_link %>
+    </fieldset>
+
+    <br />
+
+    <%= cit_submit_tag(@property) %>
+  </fieldset>
+<% end %>

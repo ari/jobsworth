@@ -1,0 +1,9 @@
+first:
+  name: Test property
+  company: cit
+second:
+  name: Test property 2
+  company: cit
+third:
+  name: Test property 2
+  company: fudge

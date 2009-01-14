@@ -1,0 +1,10 @@
+first:
+  value: value 1
+  property: first
+second:
+  value: value 2
+  property: first
+
+third:
+  value: value 3
+  property: second

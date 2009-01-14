@@ -81,6 +81,11 @@
 
               <%
                  @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"], [_("Requested By"), "11"]]
+		 @properties = Property.all_for_company(current_user.company)
+
+		 @properties.each do |prop|
+		   @group_by << [ prop.name, prop.filter_name ]
+		 end
               %>
               <%= options_for_select @group_by, session[:group_by] %>
             </select>
@@ -93,10 +98,21 @@
               <%= options_for_select @sort, session[:sort] %>
             </select>
 
+            <select name="colors" id="colors" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[Default colors]") %></option>
+	      <% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, session[:colors]) %>
+            </select>
+
+            <select name="icons" id="icons" onchange="javascript:document.forms[1].submit();">
+              <option value="0" class="select_default"><%= _("[Default icons]") %></option>
+	      <% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
+              <%= options_for_select(options, session[:icons]) %>
+            </select>
 
             <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
             <br />
-            <% if((session[:filter_type] != "-1") || (session[:filter_priority] != "-10") || (session[:filter_severity] != "-10") || (session[:hide_dependencies].to_i != 0) ) %>
+            <% if show_more_filters? %>
             <div id="more-filters">
             <% else %>
             <div id="filters-toggle"><a href="#" onclick="Element.show('more-filters');Element.hide('filters-toggle');return false;"><small><%= _('More filters')%></small></a></div>
@@ -124,40 +140,24 @@
                 <%= options_for_select @priorities, session[:filter_priority] %>
               </select>
 
-            <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%></div>
 
-            </div>
+	      <%= render :partial => 'filter_property', :collection => @properties %>
+              <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%></div>
+            </div>            
+	    </div>
 	    </form>
             </fieldset>
             <% end %>
             <div id="quick_add_container" style="display:none;"></div>
 
-            <% if session[:group_by].to_i > 2 %>
-
-            <%   gb = session[:group_by].to_i
-                 affected_projects = @tasks.collect(&:project).uniq
-                 can_organize = case gb
-                                when 3  then current_user.can_all?(affected_projects, 'reassign')
-                                when 4  then current_user.can_all?(affected_projects, 'reassign')
-                                when 5  then current_user.can_all?(affected_projects, 'reassign')
-                                when 6  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 7  then current_user.can_all?(affected_projects, 'close')
-                                when 8  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 9  then current_user.can_all?(affected_projects, 'prioritize')
-                                when 10 then current_user.can_all?(affected_projects, 'reassign')
-                                end
-                 if can_organize
-
-            %>
+	    <% if can_organize? %>
             <div style="float:right;">
-            <small>
-            <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
-            <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
-            </small>
+              <small>
+		<a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
+		<a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
+              </small>
             </div>
-            <%   end
-               end
-            %>
+            <% end %>
           </td>
         </tr>
 
