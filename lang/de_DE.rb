@@ -378,9 +378,9 @@ Localization.define('de_DE') do |l|
   l.store "Last Updated", "Zuletzt aktualisiert"
   l.store "Leave Closed", "Abgeschlossen lassen"
   l.store "Low Priority", "Geringe Priorität" # Phillipp Koops
-  l.store "Name / Email", "Name / E-Mail" # Tim Zech
+  l.store "Notify", "Name / E-Mail" # Tim Zech
   l.store "Newest Tasks", "Neueste Aufgaben"
-  l.store "Notification", "Benachrichtigung"
+  l.store "Notifications", "Benachrichtigung"
   l.store "Participants", "Teilnehmer" # Tim Zech
   l.store "Plan / GANTT", "Plan / GANTT" # Tim Zech
   l.store "Recent Posts", "Letzte Beiträge" # Tim Zech
@@ -529,7 +529,7 @@ Localization.define('de_DE') do |l|
   l.store "Task not worked on", "Aufgaben die nicht bearbeitet werden" # kertal
   l.store "less than a minute", "weniger als eine Minute"
   l.store "Can Create Projects", "Kann Projekt erstellen" # Mark
-  l.store "Remove notification", "Benachrichtigung entfernen" # Tim Zech
+  l.store "Remove", "Benachrichtigung entfernen" # Tim Zech
   l.store "Restricted Userlist", "Eingeschränkte Benutzerliste" # Tim Zech
   l.store "Show TaskType Icons", "Zeige Aufgabenart Icons" # Phillipp Koops
   l.store "[Without Milestone]", "[Ohne Meilenstein]"
