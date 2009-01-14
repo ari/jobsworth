@@ -283,7 +283,7 @@ function reset_owners() {
 
         <label for="dependencies_input"><%=_ 'Depends on'%> #</label>
         <% if perms['prioritize'].empty? %>
-        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Enter task numbers, separated by commas. Type text to search.")%>" class="tooltip" >
+        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
         <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
         <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value', :tokens => ',' } %>
         <% else %>
@@ -294,12 +294,13 @@ function reset_owners() {
 
         <% @task.dependencies.each do |d| %>
 
-        <div id="dep_<%=d.id%>" style="clear:both;">
-        <div style="float:left;"><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
+        <div id="dep_<%=d.id%>"  class="dependency_no">
+        <div><% if d.done? %><img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(d) %></div>
         <% if perms['prioritize'].empty? %>
-               <div style="float:right;"><a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/delete.png" border="0" title="<%=_ 'Remove dependency'%>" class="tooltip"></a></div>
+            <a href="#" class="close-cross" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
         <% end %>
         <input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
+        <span class="clear-both"></span>
         </div>
         <% end %>
 
@@ -312,8 +313,8 @@ function reset_owners() {
 
         <% @task.dependants.each do |d| %>
 
-        <div id="dep_<%=d.id%>" style="clear:both;">
-        <div style="float:left;"><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
+        <div id="dep_<%=d.id%>">
+        <div><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
         </div>
         <% end %>
 
@@ -331,7 +332,7 @@ function reset_owners() {
 var watchers = <%= @task.watchers.size + (@task.notify_emails.nil? ? 0 : @task.notify_emails.count(',')) %>;
 
 function updateList(text) {
-   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove notification'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
+   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" class="close-cross" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
    watchers += 1;
 }
 

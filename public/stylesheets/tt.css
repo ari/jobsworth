@@ -11,6 +11,20 @@ div.content_body {
   background-color: #fff;
 }
 
+span.clear-both { display: block; clear: both; }
+
+span.divider {
+	display: block;
+	width: auto;
+	border-bottom: 1px solid #DDDDDD;
+}
+
+.close-cross img {
+	text-align: right;
+	float: right;
+	width: auto;
+	background-position: top right;
+}
 
 a {
   color: #566ca5;
@@ -465,6 +479,31 @@ fieldset input.checkbox {
   padding-left: 0;
   margin-left: 0;
 }
+
+#task_dependencies div div {
+	width: 132px;
+	margin: 2px 0 0 0;
+	min-height: 25px;
+	float: left;
+}
+
+	.dependency_no {
+		margin: 0 0 0 85px;
+		padding: 5px 0;
+		clear: both;
+	}
+
+	#task_dependencies .dependency_no strong { 
+		margin: 1px 2px 0 0; 
+		float: left; 
+		color: #888888;
+	}
+	
+	#task_dependencies div div a {
+		margin: 0 0 0 17px;
+		display: block;
+	}
+
 
 
 fieldset textarea {
@@ -1929,7 +1968,7 @@ h4 {
 }
 
 .notify-user {
-	width: 122px;
+	width: 120px;
 	margin: 2px 0 0 102px;
 	padding: 2px;
 	float: left;
