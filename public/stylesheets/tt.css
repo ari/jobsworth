@@ -380,17 +380,16 @@ input, textarea {
 
 
 fieldset label {
-  float: left;
-  clear: both;
-  text-align: right;
-  width: 12.4em;
-  margin-right: 0.5em;
-  margin-top: 0.2em;
-  font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
-  font-size: 12px;
-  color: #423f54;
+		float: left;
+		clear: both;
+		text-align: left;
+		width: auto;
+		margin-right: 0.5em;
+		margin-top: 0.2em;
+		font-weight: normal;
+		cursor: pointer;
+		font-size: 12px;
+		color: #999999;
 }
 
 #quick_add_container {
@@ -418,33 +417,16 @@ fieldset label {
 }
 
 
-#task_attr label {
-  width: 7em;
-}
-
-#task_notify label {
-  width: 7em;
-}
-
-#task_dependencies label {
-  width: 7em;
-}
-
-#task_attachments label {
-  width: 7em;
-}
-
-#task_project_selection label {
-  width: 7em;
-}
-
-#task_information label {
-  width: 6em;
-}
-
-#reports_filter label, #reports_config label{
-
-  width: 7em;
+#task_attr label,
+#task_notify label,
+#task_dependencies label,
+#task_attachments label,
+#task_project_selection label,
+#task_information label, 
+#reports_filter label, 
+#reports_config label{
+	width: 95px;
+	padding: 3px 0;
 }
 
 fieldset input {
@@ -456,10 +438,11 @@ fieldset input {
 }
 
 fieldset img {
-  float: left;
-  clear: right;
-  margin-right: 0.5em;
-  margin-bottom: 0.2em;
+		float: left;
+		clear: right;
+		margin: 5px 0.5em 0 0;
+		padding: 2px;
+		border-top: 1px solid #FAFAFA;
 }
 
 fieldset img.centered {
@@ -1946,9 +1929,15 @@ h4 {
 }
 
 .notify-user {
-  float: left;
-  font-weight: bold;
-  color: #333;
+	width: 122px;
+	margin: 2px 0 0 102px;
+	padding: 2px;
+	float: left;
+	font-size: 12px;
+	font-weight: normal;
+	color: #333333;
+	border-bottom: 1px solid #DDDDDD;
+	border-top: 1px solid #FAFAFA;
 }
 
 .notify-row {
