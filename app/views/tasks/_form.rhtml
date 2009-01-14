@@ -72,7 +72,11 @@
         <% end %>
 	</div>
       </fieldset>
+     
+      
 <% unless @tags.nil? %>
+
+
 <script type="text/javascript">
 new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
 </script>
@@ -171,6 +175,42 @@ end
 
 %>
 
+      <% if current_user.option_tracktime.to_i == 1%>
+       <label for="task_duration"><%=_ 'Time Estimate' %></label>
+      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
+<% else %>
+      <%= hidden_field_tag "task[duration]", "#{(@task.duration.to_i > 0 ? worked_nice(@task.duration) : "")}" %>
+<% end %>
+      <label for="task_due_at"><%=_ 'Due Date' %></label>
+        <% if perms['prioritize'].empty? %>
+          <% if( (current_user.locale || 'en_US') == 'en_US' )
+               date_tooltip = _("Enter task due date, or click calendar button.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
+             else
+               date_tooltip = _("Enter task due date, or click calendar button.")
+             end %>
+          <% if @task.repeat && @task.repeat.length > 0 %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary },
+          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <% else %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') },
+          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <% end %>
+          <br/>
+        <% else %>
+          <% if @task.repeat && @task.repeat.length > 0 %>
+        <%= text_field 'task', 'due_at', {:size => 12, :value => @task.repeat_summary}.merge(perms['prioritize']) %><br/>
+          <% else %>
+        <%= text_field 'task', 'due_at', {:size => 12}.merge(perms['prioritize']) %><br/>
+          <% end %>
+        <% end %>
+
+
+
+      </fieldset>
+
+      <fieldset id="task_notify" style="padding-right:0;">
+        <legend><%=_ 'Notifications' %></legend>
+
 <script type="text/javascript">
 var num = <%=num%>;
 var resource = '<%= resource_string %>';
@@ -212,127 +252,15 @@ function reset_owners() {
       <div id="owner_separator"></div>
       <label for="task_requested_by"><%=_ 'Requested By' %></label>
       <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %><br/>
-      </fieldset>
 
-
-      <fieldset id="task_attr" style="padding-right:0;">
-        <legend><%=_ 'Attributes' %></legend>
-      <label for="task_type_id"><%=_ 'Type' %></label><div style="float:left;">
-        <% disabled = (perms['prioritize'].empty? || @task.new_record?) ? "" : "disabled=\"disabled\"" %>
-        <input type="radio" name="task[type_id]" id="task_type_id_0" value="0" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 0 %> <%= disabled %>/>
-          <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
-        <input type="radio" name="task[type_id]" id="task_type_id_1" value="1" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 1 %> <%= disabled %>/>
-          <label for="task_type_id_1" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'New Feature'%></label><br/> 
-        <input type="radio" name="task[type_id]" id="task_type_id_2" value="2"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 2 %> <%= disabled %>/>
-          <label for="task_type_id_2" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Defect'%></label><br/> 
-        <input type="radio" name="task[type_id]" id="task_type_id_3" value="3"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 3 %> <%= disabled %>/>
-          <label for="task_type_id_3" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Improvement'%></label>
-        </div>
-
-        <%#= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
-      <label for="task_priority"><%=_ 'Priority' %></label>
-        <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
-      <label for="task_severity_id"><%=_ 'Severity' %></label>
-        <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
-      <% if current_user.option_tracktime.to_i == 1%>
-       <label for="task_duration"><%=_ 'Time Estimate' %></label>
-      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
-<% else %>
-      <%= hidden_field_tag "task[duration]", "#{(@task.duration.to_i > 0 ? worked_nice(@task.duration) : "")}" %>
-<% end %>
-      <label for="task_due_at"><%=_ 'Due Date' %></label>
-        <% if perms['prioritize'].empty? %>
-          <% if( (current_user.locale || 'en_US') == 'en_US' )
-               date_tooltip = _("Enter task due date, or click calendar button.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
-             else
-               date_tooltip = _("Enter task due date, or click calendar button.")
-             end %>
-          <% if @task.repeat && @task.repeat.length > 0 %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
-          <% else %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
-          <% end %>
-          <br/>
-        <% else %>
-          <% if @task.repeat && @task.repeat.length > 0 %>
-        <%= text_field 'task', 'due_at', {:size => 12, :value => @task.repeat_summary}.merge(perms['prioritize']) %><br/>
-          <% else %>
-        <%= text_field 'task', 'due_at', {:size => 12}.merge(perms['prioritize']) %><br/>
-          <% end %>
-        <% end %>
-
-	<% @properties.each do |p| -%>
-	  <% name = "property_#{ p.id }" -%>
-  	  <label for="<%= name %>"><%= h(p.name) %></label>
-	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
-	    <option></option>
-	    <% p.property_values.each do |pv| -%>
-	      <option value="<%= pv.id %>" <%= @task.property_value(p) == pv ? "selected" : ""  %>>
-		<%= h(pv.value) %>
-	      </option>
-	    <% end -%>
-	  </select>
-	<% end -%>
-
-      </fieldset>
-
-      <fieldset id="task_dependencies" style="padding-right:0;">
-        <legend><%=_ "Dependencies"%></legend>
-
-        <label for="dependencies_input"><%=_ 'Depends on'%> #</label>
-        <% if perms['prioritize'].empty? %>
-        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
-        <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
-        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value', :tokens => ',' } %>
-        <% else %>
-        <input name="dependencies[]" size="12" type="text" disabled="disabled">
-        <% end %>
-
-        <div id="dep_separator"></div>
-
-        <% @task.dependencies.each do |d| %>
-
-        <div id="dep_<%=d.id%>"  class="dependency_no">
-        <div><% if d.done? %><img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(d) %></div>
-        <% if perms['prioritize'].empty? %>
-            <a href="#" class="close-cross" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
-        <% end %>
-        <input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
-        <span class="clear-both"></span>
-        </div>
-        <% end %>
-
-      </fieldset>
-
-<% unless @task.dependants.empty? %>
-
-      <fieldset id="task_dependants" style="padding-right:0;">
-        <legend><%=_ "Depended on by"%></legend>
-
-        <% @task.dependants.each do |d| %>
-
-        <div id="dep_<%=d.id%>">
-        <div><% if d.done? %><img src="/images/tick.png" border=0><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
-        </div>
-        <% end %>
-
-      </fieldset>
-
-
-<% end %>
-
-      <fieldset id="task_notify" style="padding-right:0;">
-        <legend><%=_ 'Notification' %></legend>
-        <label for="notification-input"><%= _"Name / Email" %></label><input type="text" size="12" name="watchers[]" id="notification-input">
+        <label for="notification-input"><%= _"Notify" %></label><input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
         <div style="clear:both; display:none;" id="notification-autocomplete"></div>
         <div style="clear:both;" id="notifications"></div>
 <script type="text/javascript">
 var watchers = <%= @task.watchers.size + (@task.notify_emails.nil? ? 0 : @task.notify_emails.count(',')) %>;
 
 function updateList(text) {
-   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><div style="float:right;"><a href="#" class="close-cross" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a></div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
+   new Insertion.Top($('notifications'), '<a href="#" class="close-cross" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a><div id="watcher-' + watchers + '" class="notify-row"><div class="notify-user">' + text + '</div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
    watchers += 1;
 }
 
@@ -371,15 +299,93 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 </script>
 
       </fieldset>
+      <fieldset id="task_attr" style="padding-right:0;">
+        <legend><%=_ 'Attributes' %></legend>
+      <label for="task_type_id"><%=_ 'Type' %></label><div style="float:left;">
+        <% disabled = (perms['prioritize'].empty? || @task.new_record?) ? "" : "disabled=\"disabled\"" %>
+        <input type="radio" name="task[type_id]" id="task_type_id_0" value="0" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 0 %> <%= disabled %>/>
+          <label for="task_type_id_0" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/task.png" alt="Task" title="Task" class="tooltip" style="float:none;margin:0 4px 0 0;"/><%=_'Task'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_1" value="1" style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 1 %> <%= disabled %>/>
+          <label for="task_type_id_1" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/new_feature.png" alt="New Feature" title="New Feature" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'New Feature'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_2" value="2"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 2 %> <%= disabled %>/>
+          <label for="task_type_id_2" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/bug.png" alt="Defect" title="Defect" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Defect'%></label><br/> 
+        <input type="radio" name="task[type_id]" id="task_type_id_3" value="3"  style="float:none;vertical-align:middle;" <%= "checked=\"checked\"" if @task.type_id.to_i == 3 %> <%= disabled %>/>
+          <label for="task_type_id_3" style="float:none;text-align:left;width:auto;margin:0;color:#000;font-weight:normal;"><img src="/images/task_icons/change.png" alt="Improvement" title="Improvement" class="tooltip" style="float:none;margin:0 4px 0 0;" /><%=_'Improvement'%></label>
+        </div>
+
+        <%#= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %><br/>
+      <label for="task_priority"><%=_ 'Priority' %></label>
+        <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
+      <label for="task_severity_id"><%=_ 'Severity' %></label>
+        <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
+	<% @properties.each do |p| -%>
+	  <% name = "property_#{ p.id }" -%>
+  	  <label for="<%= name %>"><%= h(p.name) %></label>
+	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
+	    <option></option>
+	    <% p.property_values.each do |pv| -%>
+	      <option value="<%= pv.id %>" <%= @task.property_value(p) == pv ? "selected" : ""  %>>
+		<%= h(pv.value) %>
+	      </option>
+	    <% end -%>
+	  </select>
+	<% end -%>
+      </fieldset>
+
+      <fieldset id="task_dependencies" style="padding-right:0;">
+        <legend><%=_ "Dependencies"%></legend>
+
+        <label for="dependencies_input"><%=_ 'Depends on'%></label>
+        <% if perms['prioritize'].empty? %>
+        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
+        <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value', :tokens => ',' } %>
+        <% else %>
+        <input name="dependencies[]" size="12" type="text" disabled="disabled">
+        <% end %>
+
+        
+
+        <% @task.dependencies.each do |d| %>
+        	<div class="dependency_no">
+	        <% if perms['prioritize'].empty? %>
+	            <a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/cross_small.png" class="close-cross" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
+	        <% end %>
+	        
+	        <% if d.done? %>
+	        	<img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(d) %>
+	        	<input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
+        	<span class="divider"></span>
+	        </div>
+        	
+        <% end %>
+
+      </fieldset>
+
+			<% unless @task.dependants.empty? %>
+	      <fieldset id="task_dependants" style="padding-right:0;">
+	        <legend><%=_ "Depended on by"%></legend>
+	
+	        <% @task.dependants.each do |d| %>
+	
+	        <div id="dep_<%=d.id%>">
+	        <div><% if d.done? %><img src="/images/tick.png" border="0"><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
+	        </div>
+	        <% end %>
+	
+	      </fieldset>
+			<% end %>
+
+
 
       <% if @task.attachments.size > 0 %>
       <fieldset id="task_attachments">
         <legend><%=_ "Attachments" %></legend>
 
         <% for file in @task.attachments %>
-        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=number_to_human_size(file.file_size)%>)
-        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
-        <br/>
+        <%= link_to _('<img src="/images/cross_small.png" class="close-cross" border="0" />'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
+        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> <em>(<%=number_to_human_size(file.file_size)%>)</em>
+        <span class="divider"></span>
         <% end %>
       </fieldset>
       <% end %>
@@ -389,3 +395,21 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 
 
 <!--[eoform:task]-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -369,9 +369,9 @@ Localization.define('no_NO') do |l|
   l.store "Last Updated", "Sist oppdatert"
   l.store "Leave Closed", "Hold Lukket"
   l.store "Low Priority", "Lav Prioritet" # Ronny Hanssen
-  l.store "Name / Email", "Navn / Email" # Erlend Simonsen
+  l.store "Notify", "Navn / Email" # Erlend Simonsen
   l.store "Newest Tasks", "Nyeste Oppgaver"
-  l.store "Notification", "Varsling"
+  l.store "Notifications", "Varsling"
   l.store "Participants", "Deltakere"
   l.store "Plan / GANTT", "Planlegg / GANTT"
   l.store "Recent Posts", "Siste Innlegg"
@@ -514,7 +514,7 @@ Localization.define('no_NO') do |l|
   l.store "Send Notifications", "Send varslinger"
   l.store "less than a minute", "mindre enn ett minutt"
   l.store "Can Create Projects", "Kan Opprette Prosjekter" # Ronny Hanssen
-  l.store "Remove notification", "Fjerne varsling" # Ronny Hanssen
+  l.store "Remove", "Fjerne varsling" # Ronny Hanssen
   l.store "Restricted Userlist", "Begrenset Brukerliste"
   l.store "Show TaskType Icons", "Vis Type-ikon for Oppgaver" # Ronny Hanssen
   l.store "[Without Milestone]", "[Uten Milepæl]"

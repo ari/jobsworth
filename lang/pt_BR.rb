@@ -377,9 +377,9 @@ Localization.define('pt_BR') do |l|
   l.store "Last Updated", "Última atualização"
   l.store "Leave Closed", "Manter Fechada" # José Eduardo
   l.store "Low Priority", "Prioridade Baixa" # Pedro Henrique Braga Moreira
-  l.store "Name / Email", "Nome / Email" # Adir
+  l.store "Notify", "Nome / Email" # Adir
   l.store "Newest Tasks", "Novas Tarefas"
-  l.store "Notification", "Notificação"
+  l.store "Notifications", "Notificação"
   l.store "Participants", "Participantes" # Yeltsin Lima
   l.store "Plan / GANTT", "Planejamento / GANTT" # André Persil
   l.store "Recent Posts", "Últimas Mensagens" # Yeltsin Lima
@@ -532,7 +532,7 @@ Localization.define('pt_BR') do |l|
   l.store "Task not worked on", "Tarefa não realizada" # Pedro Henrique Braga Moreira
   l.store "less than a minute", "menos de um minuto"
   l.store "Can Create Projects", "Pode Criar Projetos" # Pedro Henrique Braga Moreira
-  l.store "Remove notification", "Remover notificação" # Yeltsin Lima
+  l.store "Remove", "Remover notificação" # Yeltsin Lima
   l.store "Restricted Userlist", "Lista de usuários restrita" # André Persil
   l.store "Show TaskType Icons", "Mostrar ícones de tipos de tarefas" # Pedro Henrique Braga Moreira
   l.store "%d completed project", ["um projeto finalizado", "%d projetos finalizados"]

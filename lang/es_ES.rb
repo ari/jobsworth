@@ -377,9 +377,9 @@ Localization.define('es_ES') do |l|
   l.store "Last Updated", "Última Actualización" # Informático
   l.store "Leave Closed", "Dejar cerrada"
   l.store "Low Priority", "Baja Prioridad" # Informático
-  l.store "Name / Email", "Nombre / E-mail" # Federico
+  l.store "Notify", "Nombre / E-mail" # Federico
   l.store "Newest Tasks", "Tareas +Nuevas" # Informático
-  l.store "Notification", "Notificación"
+  l.store "Notifications", "Notificación"
   l.store "Participants", "Participantes" # darkpollo
   l.store "Plan / GANTT", "Plan / GANTT" # Gumer
   l.store "Recent Posts", "Posts recientes" # Keber
@@ -529,7 +529,7 @@ Localization.define('es_ES') do |l|
   l.store "Task not worked on", "Tareas en la que no se ha trabajado" # Informático
   l.store "less than a minute", "menos de un minuto"
   l.store "Can Create Projects", "Puede crear proyectos" # Alejandro Macho-Quevedo
-  l.store "Remove notification", "Quitar notificación" # Jordán
+  l.store "Remove", "Quitar notificación" # Jordán
   l.store "Restricted Userlist", "Lista de usuarios restringida" # Alejandro Macho-Quevedo
   l.store "Show TaskType Icons", "Mostrar iconos tipo tarea" # Alejandro Macho-Quevedo
   l.store "[Without Milestone]", "[Sin hito]" # Alejandro Macho-Quevedo

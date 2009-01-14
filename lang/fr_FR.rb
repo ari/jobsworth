@@ -377,9 +377,9 @@ Localization.define('fr_FR') do |l|
   l.store "Last Updated", "Dernière modification"
   l.store "Leave Closed", "Maintenir classé"
   l.store "Low Priority", "Faible priorité" # Lancrey
-  l.store "Name / Email", "Nom / Email" # Brice
+  l.store "Notify", "Nom / Email" # Brice
   l.store "Newest Tasks", "Nouvelles tâches"
-  l.store "Notification", "Notification" # Brice
+  l.store "Notifications", "Notification" # Brice
   l.store "Participants", "Participants" # Brice
   l.store "Plan / GANTT", "Planification / GANTT" # Brice
   l.store "Recent Posts", "Messages récents" # Brice
@@ -527,7 +527,7 @@ Localization.define('fr_FR') do |l|
   l.store "Task not worked on", "Tâche en attente" # Brice
   l.store "less than a minute", "moins d'une minute"
   l.store "Can Create Projects", "Peut créer des projets" # Brice
-  l.store "Remove notification", "Supprimer la notification" # Brice
+  l.store "Remove", "Supprimer la notification" # Brice
   l.store "Restricted Userlist", "Liste restreinte d'utilisateurs" # Brice
   l.store "Show TaskType Icons", "Montrer les icônes de type de tâche" # Lancrey
   l.store "[Without Milestone]", "[Sans jalon]"

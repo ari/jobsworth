@@ -15,21 +15,25 @@ span.clear-both { display: block; clear: both; }
 
 span.divider {
 	display: block;
+	margin: 6px 0;
 	width: auto;
+	clear: both;
+	/**/
 	border-bottom: 1px solid #DDDDDD;
 }
 
-.close-cross img {
-	text-align: right;
-	float: right;
+.close-cross {
 	width: auto;
+	float: right;
+	margin: 0 0 0 0;
 	background-position: top right;
+	text-align: right;
 }
 
 a {
   color: #566ca5;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: normal;
 }
 a:hover {
   text-decoration: underline;
@@ -447,6 +451,7 @@ fieldset input {
   float: left;
   clear: right;
   text-align: left;
+  margin-top: 0.5em;
   margin-right: 0.1em;
   margin-bottom: 0.2em;
 }
@@ -454,7 +459,7 @@ fieldset input {
 fieldset img {
 		float: left;
 		clear: right;
-		margin: 5px 0.5em 0 0;
+		margin: 0 0.5em 0 0;
 		padding: 2px;
 		border-top: 1px solid #FAFAFA;
 }
@@ -484,26 +489,19 @@ fieldset input.checkbox {
 	width: 132px;
 	margin: 2px 0 0 0;
 	min-height: 25px;
-	float: left;
 }
 
 	.dependency_no {
-		margin: 0 0 0 85px;
-		padding: 5px 0;
 		clear: both;
+		margin: 0.3em 0.5em 0 100px;
 	}
 
-	#task_dependencies .dependency_no strong { 
-		margin: 1px 2px 0 0; 
-		float: left; 
-		color: #888888;
-	}
-	
-	#task_dependencies div div a {
-		margin: 0 0 0 17px;
-		display: block;
-	}
-
+#task_attachments em {
+	font-size: 90%;
+	color: #888888;
+	font-style: normal;
+	widows: 1;
+}
 
 
 fieldset textarea {
@@ -1968,10 +1966,8 @@ h4 {
 }
 
 .notify-user {
-	width: 120px;
-	margin: 2px 0 0 102px;
+	margin: 0 0.5em 0 100px;
 	padding: 2px;
-	float: left;
 	font-size: 12px;
 	font-weight: normal;
 	color: #333333;
@@ -1979,9 +1975,7 @@ h4 {
 	border-top: 1px solid #FAFAFA;
 }
 
-.notify-row {
-  clear:both;
-}
+
 
 .informal {
   font-weight: normal;
