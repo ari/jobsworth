@@ -1103,7 +1103,7 @@ class TasksController < ApplicationController
 
   def add_work
     begin
-      @task = current_user.tasks.find( params['id'] )
+      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
     rescue
       flash['notice'] = _('Unable to find task belonging to you with that ID.')
       redirect_from_last
