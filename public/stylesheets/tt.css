@@ -1329,6 +1329,9 @@ a.description {
 #filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority {
   font-size: 10px;
 }
+#more-filters select {
+    font-size: 10px;
+}
 
 #task_description {
   font-size: 11px;
