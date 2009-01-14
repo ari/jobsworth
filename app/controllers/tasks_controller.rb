@@ -1173,6 +1173,11 @@ class TasksController < ApplicationController
       session[filter] = params[filter]
     end
 
+    Property.all_for_company(current_user.company).each do |prop|
+      filter = prop.filter_name
+      session[filter] = params[filter]
+    end
+
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]

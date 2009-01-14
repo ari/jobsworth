@@ -358,9 +358,9 @@ Localization.define('fi_FI') do |l|
   l.store "Last Updated", "Viimeksi päivitetty" # Toni Huuskonen
   l.store "Leave Closed", "Jätä suljetuksi" # Toni Huuskonen
   l.store "Low Priority", "Matala prioriteetti" # Toni Huuskonen
-  l.store "Name / Email", "Nimi / Sähköposti" # Aki Saksola
+  l.store "Notify", "Nimi / Sähköposti" # Aki Saksola
   l.store "Newest Tasks", "Uusimmat tehtävät" # Toni Huuskonen
-  l.store "Notification", "Ilmoitus"
+  l.store "Notifications", "Ilmoitus"
   l.store "Plan / GANTT", "Suunnitelma / GANTT" # Toni Huuskonen
   l.store "Recent Posts", "Viimeisimmät viestit" # Toni Huuskonen
   l.store "Requested By", "Pyytäjä:"
@@ -494,7 +494,7 @@ Localization.define('fi_FI') do |l|
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "alle minuutti"
   l.store "Can Create Projects", "Voi luoda projekteja" # Aki Saksola
-  l.store "Remove notification", "Poista ilmoitukset" # Aki Saksola
+  l.store "Remove", "Poista ilmoitukset" # Aki Saksola
   l.store "Show TaskType Icons", "Show TaskType Icons"
   l.store "[Without Milestone]", "[Ei virstanpylvästä]" # Toni Huuskonen
   l.store "%d completed project", ["valmis projekti", "%d valmista projektia"]

@@ -374,9 +374,9 @@ Localization.define('it_IT') do |l|
   l.store "Last Updated", "Ultimo aggiornamento"
   l.store "Leave Closed", "Lascia chiuso"
   l.store "Low Priority", "bassa priorita'" # PIetro Sacchi
-  l.store "Name / Email", "Nome/ Email" # Mauro Roncali
+  l.store "Notify", "Nome/ Email" # Mauro Roncali
   l.store "Newest Tasks", "Nuovi Compiti" # M. L. Giannotta
-  l.store "Notification", "Notifica" # Bevar
+  l.store "Notifications", "Notifica" # Bevar
   l.store "Participants", "Partecipanti" # PIetro Sacchi
   l.store "Plan / GANTT", "Plan / GANTT" # PIetro Sacchi
   l.store "Recent Posts", "Posts Recenti" # Mauro Roncali
@@ -523,7 +523,7 @@ Localization.define('it_IT') do |l|
   l.store "Task not worked on", "Task non lavorato da" # PIetro Sacchi
   l.store "less than a minute", "meno di un minuto"
   l.store "Can Create Projects", "In grado di creare progetti" # PIetro Sacchi
-  l.store "Remove notification", "Cancella notifica" # Bevar
+  l.store "Remove", "Cancella notifica" # Bevar
   l.store "Restricted Userlist", "Lista utenti Ristretta" # PIetro Sacchi
   l.store "Show TaskType Icons", "Visualizza icona del tipo task" # Mauro Roncali
   l.store "[Without Milestone]", "[Senza Milestone]"
