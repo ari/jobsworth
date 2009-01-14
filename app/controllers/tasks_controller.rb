@@ -36,8 +36,6 @@ class TasksController < ApplicationController
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
     @notify_targets = @notify_targets.flatten.uniq
     @notify_targets ||= []
-
-    @properties = Property.all_for_company(current_user.company)
   end
 
   def index
@@ -161,7 +159,6 @@ class TasksController < ApplicationController
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
     
     @group_ids, @groups = group_tasks(@tasks)
-    @properties = Property.all_for_company(current_user.company)
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
@@ -445,8 +442,6 @@ class TasksController < ApplicationController
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
-
-    @properties = Property.all_for_company(current_user.company)
   end
 
 #  def edit_ajax

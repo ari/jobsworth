@@ -81,6 +81,8 @@
 
               <%
                  @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"], [_("Requested By"), "11"]]
+		 @properties = Property.all_for_company(current_user.company)
+
 		 @properties.each do |prop|
 		   @group_by << [ prop.name, prop.filter_name ]
 		 end

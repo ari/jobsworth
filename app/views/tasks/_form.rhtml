@@ -263,7 +263,10 @@ function reset_owners() {
           <% end %>
         <% end %>
 
-	<% @properties.each do |p| -%>
+	<% 
+	   @properties = Property.all_for_company(current_user.company)
+	   @properties.each do |p| 
+	 -%>
 	  <% name = "property_#{ p.id }" -%>
   	  <label for="<%= name %>"><%= h(p.name) %></label>
 	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
