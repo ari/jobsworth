@@ -23,12 +23,30 @@ class Company < ActiveRecord::Base
   validates_presence_of         :subdomain
   validates_uniqueness_of       :subdomain
 
+  after_create :create_default_properties
 
   # Find the Internal client of this company.
   # A small kludge is needed,as it was previously called Internal, now it has the same
   # name as the parent company.
   def internal_customer
     customers.find(:first, :conditions => ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id], :order => 'id')
+  end
+
+  ###
+  # Creates the default properties used for describing tasks.
+  # Returns an array of the created properties.
+  ###
+  def create_default_properties
+    new_props = []
+    Property.defaults.each do |property_params, property_values_params|
+      p = properties.new(property_params)
+      p.property_values.build(property_values_params)
+      p.save!
+
+      new_props << p
+    end
+
+    return new_props
   end
 
 end

@@ -699,6 +699,7 @@ class Task < ActiveRecord::Base
     # remove the current one if it exists
     existing = task_property_values.detect { |tpv| tpv.property == property }
     if existing and existing.property_value != property_value
+      puts "EXISTING FOUND"
       task_property_values.delete(existing)
     end
 

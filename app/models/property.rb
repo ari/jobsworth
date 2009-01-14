@@ -12,7 +12,38 @@
 class Property < ActiveRecord::Base
   belongs_to :company
   has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
+  
+  before_destroy :remove_invalid_task_property_values
+  
+  # Returns an array of the default values that should be
+  # used when creating a new company.
+  def self.defaults
+    res = []
+    res << [ { :name => _("Type") },
+             [ { :value => _("Task") },
+               { :value => _("New Feature") },
+               { :value => _("Defect") },
+               { :value => _("Improvement") }
+             ]]
+    res << [ { :name => _("Severity") },
+             [ { :value => _("Blocker") },
+               { :value => _("Critical") },
+               { :value => _("Major") },
+               { :value => _("Normal") },
+               { :value => _("Minor") },
+               { :value => _("Trivial") }
+             ]]
+    res << [ { :name => _("Priority") },
+             [ { :value => _("Critical") },
+               { :value => _("Urgent") },
+               { :value => _("High") },
+               { :value => _("Normal") },
+               { :value => _("Low") },
+               { :value => _("Lowest") }
+             ]]
 
+    return res
+  end
 
   ###
   # Returns all properties setup for company.
@@ -65,5 +96,14 @@ class Property < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  ###
+  # Clears any tasks which have a value for this 
+  # property set.
+  ###
+  def remove_invalid_task_property_values
+    tpvs = TaskPropertyValue.find(:all, :conditions => { :property_id => id })
+    tpvs.each { |tpv| tpv.destroy }
   end
 end
