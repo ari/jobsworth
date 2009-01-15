@@ -46,19 +46,23 @@ class ViewTest < Test::Unit::TestCase
     assert_equal "Defect", @view.selected(@type).to_s
     assert_equal "Minor", @view.selected(@severity).to_s
     assert_equal "Critical", @view.selected(@priority).to_s
+
+    @view.filter_type_id = -1
+    @view.convert_attributes_to_properties
+    assert_nil @view.selected(@type)
   end
+
 
   def test_convert_properties_to_attributes
     pvs = []
     pvs << @type.property_values.last
     pvs << @severity.property_values[2]
-    pvs << @priority.property_values.last
 
     @view.properties = pvs.map { |pv| pv.id.to_s }
     @view.convert_properties_to_attributes
 
     assert_equal 3, @view.filter_type_id
     assert_equal 1, @view.filter_severity
-    assert_equal -2, @view.filter_priority
+    assert_equal -10, @view.filter_priority
   end
 end

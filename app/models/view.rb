@@ -41,17 +41,23 @@ class View < ActiveRecord::Base
     all_properties = Property.all_for_company(company)
     new_ids = []
 
-    type = all_properties.detect { |t| t.name == "Type" }
-    old = Task.issue_types[filter_type_id]
-    new_ids << type.property_values.detect { |p| p.to_s == old }
-    
-    priority = all_properties.detect { |t| t.name == "Priority" }
-    old = Task.priority_types[filter_priority]
-    new_ids << priority.property_values.detect { |p| p.to_s == old }
+    if filter_type_id != -1
+      type = all_properties.detect { |t| t.name == "Type" }
+      old = Task.issue_types[filter_type_id]
+      new_ids << type.property_values.detect { |p| p.to_s == old }
+    end
 
-    severity = all_properties.detect { |t| t.name == "Severity" }
-    old = Task.severity_types[filter_severity]
-    new_ids << severity.property_values.detect { |p| p.to_s == old }
+    if filter_priority != -10
+      priority = all_properties.detect { |t| t.name == "Priority" }
+      old = Task.priority_types[filter_priority]
+      new_ids << priority.property_values.detect { |p| p.to_s == old }
+    end
+
+    if filter_severity != -10
+      severity = all_properties.detect { |t| t.name == "Severity" }
+      old = Task.severity_types[filter_severity]
+      new_ids << severity.property_values.detect { |p| p.to_s == old }
+    end
 
     self.properties = new_ids
   end
@@ -66,15 +72,15 @@ class View < ActiveRecord::Base
     
     type = all_properties.detect { |t| t.name == "Type" }
     old_id = Task.issue_types.index(selected(type).to_s)
-    self.filter_type_id = old_id
+    self.filter_type_id = old_id || -1
 
     priority = all_properties.detect { |t| t.name == "Priority" }
     old_id = Task.priority_types.invert[selected(priority).to_s]
-    self.filter_priority = old_id
+    self.filter_priority = old_id || -10
 
     severity = all_properties.detect { |t| t.name == "Severity" }
     old_id = Task.severity_types.invert[selected(severity).to_s]
-    self.filter_severity = old_id
+    self.filter_severity = old_id || -10
 
     save
   end

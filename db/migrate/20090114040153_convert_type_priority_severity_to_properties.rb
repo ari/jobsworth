@@ -18,12 +18,18 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
     remove_column Task.table_name, :severity_id
     remove_column Task.table_name, :type_id
 
+    # create tables for filtering views on properties
     create_table :views_property_values, :id => false do |t|
       t.column :view_id, :integer
       t.column :property_value_id, :integer
     end
     add_index(:views_property_values, :view_id)
     add_index(:views_property_values, :property_value_id)
+
+    # convert old views to use property values
+    View.find(:all).each do |v|
+      v.convert_attributes_to_properties
+    end
   end
 
   def self.down
