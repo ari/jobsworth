@@ -10,9 +10,11 @@ class ViewsController < ApplicationController
   end
 
   def create
-    @view = View.new(params[:view])
+    @view = View.new
     @view.company_id = current_user.company_id
     @view.user_id = current_user.id
+    @view.attributes = params[:view]
+
     if @view.save
       flash['notice'] = _("View '%s' was successfully created.", @view.name)
       redirect_to :action => 'select', :id => @view.id

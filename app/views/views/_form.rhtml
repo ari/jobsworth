@@ -111,6 +111,23 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
             </select>
 	    <br />
 
+	    <% 
+	       properties = Property.all_for_company(current_user.company)
+	       properties.each do |p|
+	    -%>
+	    <label for="<%= p.filter_name %>"><%= p %></label>
+	    <select name="view[properties][]" id="<%= p.filter_name %>">
+	      <option value="" class="select_default">
+		<%= "[#{_('Any %s', p.name)}]" %>
+	      </option>
+	      <% p.property_values.each do |pv| -%>
+	        <option value="<%= pv.id %>" <%= @view.property_values.index(pv) ? "selected" : ""  %>>
+		  <%= pv %>
+		</option>
+	      <% end -%>
+	    </select>
+	    <% end -%>
+
 
   <label for="view_hide_deferred"><%=_ 'Hide Waiting Tasks' %></label><input type="checkbox" name="view[hide_deferred]" id="view_hide_deferred" value="1" <%= @view.hide_deferred.to_i > 0 ? "checked" : "" %>><br/>
   <label for="view_hide_dependencies"><%=_ 'Hide Task Dependencies' %></label><input type="checkbox" name="view[hide_dependencies]" id="view_hide_dependencies" value="1" <%= @view.hide_dependencies.to_i > 0 ? "checked" : "" %>><br/>

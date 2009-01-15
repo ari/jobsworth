@@ -17,9 +17,18 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
     remove_column Task.table_name, :priority
     remove_column Task.table_name, :severity_id
     remove_column Task.table_name, :type_id
+
+    create_table :views_property_values, :id => false do |t|
+      t.column :view_id, :integer
+      t.column :property_value_id, :integer
+    end
+    add_index(:views_property_values, :view_id)
+    add_index(:views_property_values, :property_value_id)
   end
 
   def self.down
+    drop_table :views_property_values
+
     add_column Task.table_name, :priority, :integer, :default => 0
     add_column Task.table_name, :severity_id, :integer, :default => 0
     add_column Task.table_name, :type_id, :integer, :default => 0

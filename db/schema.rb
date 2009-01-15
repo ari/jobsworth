@@ -608,6 +608,14 @@ ActiveRecord::Schema.define(:version => 20090114040153) do
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"
 
+  create_table "views_property_values", :id => false, :force => true do |t|
+    t.integer "view_id"
+    t.integer "property_value_id"
+  end
+
+  add_index "views_property_values", ["view_id"], :name => "index_views_property_values_on_view_id"
+  add_index "views_property_values", ["property_value_id"], :name => "index_views_property_values_on_property_value_id"
+
   create_table "widgets", :force => true do |t|
     t.integer  "company_id"
     t.integer  "user_id"
