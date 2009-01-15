@@ -16,63 +16,63 @@
 <!--[form:task]-->
 
 <tr>
-    <td valign="top">
-      <fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
-        <label for="task_name"><%=_ 'Summary' %></label>
-        <%= text_field 'task', 'name', { :size => 47, :maxlength => 200, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
-        <label for="task_set_tags"><%=_ 'Tags' %></label>
-        <%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
-        <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
-        <label for="task_description"><%=_ 'Description' %></label>
-        <%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
-        <label for="comment"><%=_ 'Comment' %></label>
-        <%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
-        <label for="task_tmp_file"><%=_ 'Attach file' %></label>
-        <%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
-	<label>&nbsp;</label>
-	<div class="buttons">
-	<% if @task.new_record? %>
-        <%= submit_tag _("Create"), :class => "nolabel" %>
-        <%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><div style="padding-top:0.2em;padding-left:0.2em;float:left;"><%=_ 'Send notification emails' %></div>
-	<% else %>
-        <%= submit_tag _("Save"), :class => "nolabel" %> <span class="optional" style="float:left;padding-right:0.4em;padding-top:0.4em"><%=_ 'and' %> </span>
-	<div style="float:left;">
-        <%
- options = []
- options << [_("Leave Open"), 0] if @task.status == 0
- options << [_("Revert to Open"), 0] if @task.status != 0
- options << [_("Set in Progress"), 1] if @task.status == 0
- options << [_("Leave as in Progress"), 1] if @task.status == 1
- options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
- options << [_("Leave Closed"), 2] if @task.status == 2
- options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
- options << [_("Leave as Won't Fix"), 3] if @task.status == 3
- options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
- options << [_("Leave as Invalid"), 4] if @task.status == 4
- options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
- options << [_("Leave as Duplicate"), 5] if @task.status == 5
- options << [_("Wait"), 6] if @task.status < 2
-
- can_close = {:disabled => "disabled"} unless current_user.can?( @task.project, 'close' )
- can_close ||= {}
-
- defer_options = []
- defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
- defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
- defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
- defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
- defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
- defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
-
-%>
-
-<%= select 'task', 'status', options, {:selected => @task.status}, can_close %> <div id="defer_options" style="display:none;float:left;"><div style="float:left;padding-right:0.5em;padding-top:0.3em;"><%= _("until") %></div><%= select 'task', 'hide_until', defer_options %></div>
-<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><div style="padding-top:0.2em;padding-left:0.2em;float:left;"><%=_ 'Send notification emails' %></div>
-	</div>
-        <% end %>
-	</div>
-      </fieldset>
-     
+  <td valign="top">
+		<fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
+			<label for="task_name"><%=_ 'Summary' %></label>
+			<%= text_field 'task', 'name', { :size => 47, :maxlength => 200, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
+			<label for="task_set_tags"><%=_ 'Tags' %></label>
+			<%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
+			<div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
+			<label for="task_description"><%=_ 'Description' %></label>
+			<%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
+			<label for="comment"><%=_ 'Comment' %></label>
+			<%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
+			<label for="task_tmp_file"><%=_ 'Attach file' %></label>
+			<%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
+	
+			<span class="divider"></span>
+			
+			<% if @task.new_record? %>
+				<%= submit_tag _("Create"), :class => "button nolabel right" %>
+				<label class="ignore"><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %> <%=_ 'Send notification emails' %></label>
+			<% else %>
+				<%= submit_tag _("Save"), :class => "button nolabel right" %>      
+				
+				<%
+					options = []
+					options << [_("Leave Open"), 0] if @task.status == 0
+					options << [_("Revert to Open"), 0] if @task.status != 0
+					options << [_("Set in Progress"), 1] if @task.status == 0
+					options << [_("Leave as in Progress"), 1] if @task.status == 1
+					options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
+					options << [_("Leave Closed"), 2] if @task.status == 2
+					options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
+					options << [_("Leave as Won't Fix"), 3] if @task.status == 3
+					options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
+					options << [_("Leave as Invalid"), 4] if @task.status == 4
+					options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
+					options << [_("Leave as Duplicate"), 5] if @task.status == 5
+					options << [_("Wait"), 6] if @task.status < 2
+					
+					can_close = {:disabled => "disabled"} unless current_user.can?( @task.project, 'close' )
+					can_close ||= {}
+					
+					defer_options = []
+					defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
+					defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
+					defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
+					defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
+					defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
+					defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]				
+				%>
+				
+				<%= select 'task', 'status', options, {:selected => @task.status}, can_close %> <span id="defer_options" style="display:none;"> <%= _("until") %> &nbsp; <%= select 'task', 'hide_until', defer_options %></span> <%=_ 'and' %> 
+				
+				<label class="ignore"><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %> <%=_ 'Send notification emails' %></label>
+			<% end %>
+		
+		</fieldset>
+   
       
 <% unless @tags.nil? %>
 
@@ -132,9 +132,9 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
             <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %>
           <% end %>
           <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-	  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
 	  <% end %>
-	  </div>
+		  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
+  </div>
 	  <br/>
 
 <%
