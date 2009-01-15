@@ -483,10 +483,7 @@ ActiveRecord::Schema.define(:version => 20090114040153) do
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                          :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                       :default => 0
-    t.integer  "type_id",                           :default => 0
     t.integer  "task_num",                          :default => 0
     t.integer  "status",                            :default => 0
     t.string   "requested_by"
