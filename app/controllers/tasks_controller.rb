@@ -95,7 +95,7 @@ class TasksController < ApplicationController
     end
 
     if session[:hide_deferred].to_i > 0
-      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND"
+      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
     end 
 
     unless session[:filter_type].to_i == -1
