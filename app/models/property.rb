@@ -25,14 +25,6 @@ class Property < ActiveRecord::Base
                { :value => _("Defect") },
                { :value => _("Improvement") }
              ]]
-    res << [ { :name => _("Severity") },
-             [ { :value => _("Blocker") },
-               { :value => _("Critical") },
-               { :value => _("Major") },
-               { :value => _("Normal") },
-               { :value => _("Minor") },
-               { :value => _("Trivial") }
-             ]]
     res << [ { :name => _("Priority") },
              [ { :value => _("Critical") },
                { :value => _("Urgent") },
@@ -40,6 +32,14 @@ class Property < ActiveRecord::Base
                { :value => _("Normal") },
                { :value => _("Low") },
                { :value => _("Lowest") }
+             ]]
+    res << [ { :name => _("Severity") },
+             [ { :value => _("Blocker") },
+               { :value => _("Critical") },
+               { :value => _("Major") },
+               { :value => _("Normal") },
+               { :value => _("Minor") },
+               { :value => _("Trivial") }
              ]]
 
     return res
