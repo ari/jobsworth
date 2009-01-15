@@ -58,20 +58,20 @@ class Task < ActiveRecord::Base
 
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
-
-    r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project.id])
-    r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project.id])
-    r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project.id])
-    r.project.open_tasks = nil
-    r.project.total_tasks = nil
-    r.project.save
+    project = r.project
+    project.critical_count = project.tasks.select { |t| t.severity_id + t.priority / 2 > 0 }.length
+    project.normal_count = project.tasks.select { |t| t.severity_id + t.priority / 2 == 0 }.length
+    project.low_count = project.tasks.select { |t| t.severity_id + t.priority / 2 < 0 }.length
+    project.open_tasks = nil
+    project.total_tasks = nil
+    project.save
 
     if r.project.id != r.project_id
       # Task has changed projects, update counts of target project as well
       p = Project.find(r.project_id)
-      p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
-      p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
-      p.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id])
+      p.critical_count = p.tasks.select { |t| t.severity_id + t.priority / 2 > 0 }.length
+      p.normal_count = p.tasks.select { |t| t.severity_id + t.priority / 2 == 0 }.length
+      p.low_count = p.tasks.select { |t| t.severity_id + t.priority / 2 < 0 }.length
       p.open_tasks = nil
       p.total_tasks = nil
       p.save
@@ -431,6 +431,31 @@ class Task < ActiveRecord::Base
 
   def Task.severity_types
     { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
+  end
+
+  def priority
+    property_value_as_integer("Priority", Task.priority_types.invert) || 0
+  end  
+  def severity_id
+    property_value_as_integer("Severity", Task.severity_types.invert) || 0
+  end
+  def type_id
+    property_value_as_integer("Type") || 0
+  end
+
+
+  ###
+  # Returns an int representing the given property.
+  # Pass in a hash of strings to ids to return those values, otherwise
+  # the index in the property value list is returned.
+  ###
+  def property_value_as_integer(property_name, mappings = {})
+    property = company.properties.find(:first, :conditions => [ "name = ? or name = ?", property_name, _(property_name) ])
+    task_value = property_value(property)
+
+    if task_value
+      return mappings[task_value.value] || property.property_values.index(task_value)
+    end
   end
 
   def owners

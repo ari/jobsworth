@@ -14,11 +14,10 @@
 
   <%= image_tag('accept.png', :alt => "Complete") if log.log_type == EventLog::TASK_COMPLETED %>
   <%= image_tag('cancel.png', :alt => "Reverted") if log.log_type == EventLog::TASK_REVERTED %>
-  FIX THESE LINKS
-  <!-- <%= image_tag('task_icons/task.png', :alt => "New Task") if log.task.type_id == 0 && log.log_type == EventLog::TASK_CREATED %> -->
-  <!-- <%= image_tag('task_icons/bug.png', :alt => "New Defect") if log.task.type_id == 2 && log.log_type == EventLog::TASK_CREATED %> -->
-  <!-- <%= image_tag('task_icons/new_feature.png', :alt => "New Feature") if log.task.type_id == 1 && log.log_type ==  EventLog::TASK_CREATED %> -->
-  <!-- <%= image_tag('task_icons/change.png', :alt => "Improvement") if log.task.type_id == 3 && log.log_type ==  EventLog::TASK_CREATED %> -->
+  <%= image_tag('task_icons/task.png', :alt => "New Task") if log.task.type_id == 0 && log.log_type == EventLog::TASK_CREATED %>
+  <%= image_tag('task_icons/bug.png', :alt => "New Defect") if log.task.type_id == 2 && log.log_type == EventLog::TASK_CREATED %>
+  <%= image_tag('task_icons/new_feature.png', :alt => "New Feature") if log.task.type_id == 1 && log.log_type ==  EventLog::TASK_CREATED %>
+  <%= image_tag('task_icons/change.png', :alt => "Improvement") if log.task.type_id == 3 && log.log_type ==  EventLog::TASK_CREATED %>
 
   <%= image_tag('application_form_edit.png', :alt => "Edit") if log.log_type == EventLog::TASK_MODIFIED %>
   <%= image_tag('comment_add.png', :alt => "New Comment") if log.log_type == EventLog::TASK_COMMENT %>
