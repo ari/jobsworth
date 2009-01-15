@@ -96,19 +96,7 @@ class TasksController < ApplicationController
     end
 
     if session[:hide_deferred].to_i > 0
-      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND"
-    end 
-
-    unless session[:filter_type].to_i == -1
-      filter << "tasks.type_id = #{session[:filter_type].to_i} AND "
-    end
-
-    unless session[:filter_severity].to_i == -10
-      filter << "tasks.severity_id >= #{session[:filter_severity].to_i} AND "
-    end 
-
-    unless session[:filter_priority].to_i == -10
-      filter << "tasks.priority >= #{session[:filter_priority].to_i} AND "
+      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
     end 
 
     unless session[:filter_customer].to_i == 0
