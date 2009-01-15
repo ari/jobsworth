@@ -5,12 +5,12 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
 
   def self.up
     Company.find(:all).each do |c|
-      type, severity, priority = c.create_default_properties
+      type, priority, severity = c.create_default_properties
       
       c.tasks.each do |t|
         copy_task_value(t, t.issue_type, type)
-        copy_task_value(t, t.severity_type, severity)
         copy_task_value(t, t.priority_type, priority)
+        copy_task_value(t, t.severity_type, severity)
       end
     end
 
@@ -20,16 +20,12 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
   end
 
   def self.down
-#     remove_column Task.table_name, :priority
-#     remove_column Task.table_name, :severity_id
-#     remove_column Task.table_name, :type_id
-
     add_column Task.table_name, :priority, :integer, :default => 0
     add_column Task.table_name, :severity_id, :integer, :default => 0
     add_column Task.table_name, :type_id, :integer, :default => 0
 
     Company.find(:all).each do |c|
-      type, severity, priority = Property.defaults
+      type, priority, severity = Property.defaults
       type = c.properties.find_by_name(type.first[:name])
       severity = c.properties.find_by_name(severity.first[:name])
       priority = c.properties.find_by_name(priority.first[:name])
