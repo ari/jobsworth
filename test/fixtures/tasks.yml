@@ -9,10 +9,7 @@ normal_task:
   milestone_id: null
   description: Just a normal Task
   company: cit
-  priority: 0
   updated_by_id: 1
-  severity_id: 0
-  type_id: 0
   task_num: 1
   status: 0
   requested_by: null
@@ -31,10 +28,7 @@ milestone_task:
   milestone_id: 1
   description: Just a milestone Task
   company: cit
-  priority: 0
   updated_by_id: 1
-  severity_id: 1
-  type_id: 0
   task_num: 2
   status: 0
   requested_by: null
@@ -53,10 +47,7 @@ completed_task:
   milestone_id: null
   description: Just a normal Task
   company: cit
-  priority: 0
   updated_by_id: 1
-  severity_id: 0
-  type_id: 0
   task_num: 3
   status: 2
   requested_by: null
