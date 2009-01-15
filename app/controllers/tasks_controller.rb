@@ -1041,7 +1041,7 @@ class TasksController < ApplicationController
 
   def add_work
     begin
-      @task = current_user.tasks.find( params['id'] )
+      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
     rescue
       flash['notice'] = _('Unable to find task belonging to you with that ID.')
       redirect_from_last
@@ -1332,11 +1332,11 @@ class TasksController < ApplicationController
 
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
-      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
+      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
       csv << header
 
       for t in @tasks
-        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
+        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.created_at, t.completed_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
       end
 
     end
