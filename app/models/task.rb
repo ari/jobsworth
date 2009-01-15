@@ -398,7 +398,7 @@ class Task < ActiveRecord::Base
   end
 
   def issue_type
-    Task.issue_types[self.type_id]
+    Task.issue_types[self.type_id.to_i]
   end
 
   def Task.issue_types
@@ -433,15 +433,15 @@ class Task < ActiveRecord::Base
     { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
   end
 
-  def priority
-    property_value_as_integer("Priority", Task.priority_types.invert) || 0
-  end  
-  def severity_id
-    property_value_as_integer("Severity", Task.severity_types.invert) || 0
-  end
-  def type_id
-    property_value_as_integer("Type") || 0
-  end
+#   def priority
+#     property_value_as_integer("Priority", Task.priority_types.invert) || 0
+#   end  
+#   def severity_id
+#     property_value_as_integer("Severity", Task.severity_types.invert) || 0
+#   end
+#   def type_id
+#     property_value_as_integer("Type") || 0
+#   end
 
 
   ###
@@ -735,5 +735,44 @@ class Task < ActiveRecord::Base
 
     tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
     tpv.property_value if tpv
+  end
+
+  ###
+  # This method will help in the migration of type id, priority and severity
+  # to use properties. It can be removed once that is done.
+  ###
+  def convert_attributes_to_properties(type, priority, severity)
+    copy_task_value(issue_type, type)
+    copy_task_value(priority_type, priority)
+    copy_task_value(severity_type, severity)
+  end
+
+  ###
+  # This method will help in the migration of type id, priority and severity
+  # to use properties. It can be removed once that is done.
+  #
+  # Copies the severity, priority etc on the given task to the new
+  # property.
+  ###
+  def copy_task_value(old_value, new_property)
+    return if !old_value
+
+    matching_value = new_property.property_values.detect { |pv| pv.value == old_value }
+    set_property_value(new_property, matching_value) if matching_value
+  end
+
+  ###
+  # This method will help in the rollback of type, priority and severity 
+  # from properties.
+  # It can be removed after.
+  ###
+  def convert_properties_to_attributes
+    type = company.properties.detect { |p| p.name == "Type" }
+    severity = company.properties.detect { |p| p.name == "Severity" }
+    priority = company.properties.detect { |p| p.name == "Priority" }
+
+    self.type_id = Task.issue_types.index(property_value(type).to_s)
+    self.severity_id = Task.severity_types.invert[property_value(severity).to_s] || 0
+    self.priority = Task.priority_types.invert[property_value(priority).to_s] || 0
   end
 end

@@ -30,6 +30,8 @@ class View < ActiveRecord::Base
   # (Or nil if none)
   ###
   def selected(property)
+    return if !property
+
     property.property_values.detect { |pv| self.property_values.index(pv) }
   end
 

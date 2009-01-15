@@ -495,6 +495,9 @@ ActiveRecord::Schema.define(:version => 20090114040153) do
     t.integer  "scheduled_duration"
     t.boolean  "scheduled",                         :default => false
     t.integer  "worked_minutes",                    :default => 0
+    t.integer  "priority",                          :default => 0
+    t.integer  "severity_id",                       :default => 0
+    t.integer  "type_id",                           :default => 0
   end
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
