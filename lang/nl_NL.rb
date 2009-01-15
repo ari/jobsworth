@@ -360,9 +360,9 @@ Localization.define('nl_NL') do |l|
   l.store "Last Updated", "Laatst aangepast"
   l.store "Leave Closed", "Laat gesloten"
   l.store "Low Priority", "Lage Prioriteit" # Martin
-  l.store "Name / Email", "Naam / E-mail" # Tom Niessink
+  l.store "Notify", "Naam / E-mail" # Tom Niessink
   l.store "Newest Tasks", "Nieuwste Taken"
-  l.store "Notification", "Berichten"
+  l.store "Notifications", "Berichten"
   l.store "Participants", "Deelnemers" # Martin
   l.store "Plan / GANTT", "Planning / GANTT" # Tom Niessink
   l.store "Recent Posts", "Recente Berichten" # Tom Niessink
@@ -503,7 +503,7 @@ Localization.define('nl_NL') do |l|
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "minder dan één minuut"
   l.store "Can Create Projects", "Can Create Projects"
-  l.store "Remove notification", "Verwijder notificatie" # Tom Niessink
+  l.store "Remove", "Verwijder notificatie" # Tom Niessink
   l.store "Restricted Userlist", "Lijst beperkte gebruikers" # Tom Niessink
   l.store "Show TaskType Icons", "Show TaskType Icons"
   l.store "%d completed project", ["één project afgerond", "%d projecten afgerond"]

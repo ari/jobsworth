@@ -299,9 +299,9 @@ Localization.define('cz_CZ') do |l|
   l.store "Last %d Days", ["Poslední %d den", "Posledních %d dnů"] # Ladislav Nešněra
   l.store "Last Updated", "Naposledy upravené" # Ladislav Nešněra
   l.store "Low Priority", "Nízká priorita" # Ladislav Nešněra
-  l.store "Name / Email", "Jméno / Email" # Ladislav Nešněra
+  l.store "Notify", "Jméno / Email" # Ladislav Nešněra
   l.store "Newest Tasks", "Nejnovější úkoly" # Ladislav Nešněra
-  l.store "Notification", "Upozornění" # Ladislav Nešněra
+  l.store "Notifications", "Upozornění" # Ladislav Nešněra
   l.store "Plan / GANTT", "Plán / GANTT" # Ladislav Nešněra
   l.store "Recent Posts", "Naposledy přidané" # Ladislav Nešněra
   l.store "Requested By", "Požádováno" # Ladislav Nešněra
@@ -408,7 +408,7 @@ Localization.define('cz_CZ') do |l|
   l.store "Task not worked on", "?Úkol nebyl zahájen" # Ladislav Nešněra
   l.store "less than a minute", "less than a minute"
   l.store "Can Create Projects", "Mohou zatvářet projekty" # Ladislav Nešněra
-  l.store "Remove notification", "Odstranit upozornění" # Ladislav Nešněra
+  l.store "Remove", "Odstranit upozornění" # Ladislav Nešněra
   l.store "Show TaskType Icons", "Zobrazit typy úkolů jako ikony" # Ladislav Nešněra
   l.store "%d completed project", ["%d ukončený projekt", "%d ukončených projektů"] # Ladislav Nešněra
   l.store "Leave as in Progress", "Ponechat stav rozpracováno" # Ladislav Nešněra

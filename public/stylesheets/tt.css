@@ -11,11 +11,29 @@ div.content_body {
   background-color: #fff;
 }
 
+span.clear-both { display: block; clear: both; }
+
+span.divider {
+	display: block;
+	margin: 6px 0;
+	width: auto;
+	clear: both;
+	/**/
+	border-bottom: 1px solid #DDDDDD;
+}
+
+.close-cross {
+	width: auto;
+	float: right;
+	margin: 0 0 0 0;
+	background-position: top right;
+	text-align: right;
+}
 
 a {
   color: #566ca5;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: normal;
 }
 a:hover {
   text-decoration: underline;
@@ -380,17 +398,16 @@ input, textarea {
 
 
 fieldset label {
-  float: left;
-  clear: both;
-  text-align: right;
-  width: 12.4em;
-  margin-right: 0.5em;
-  margin-top: 0.2em;
-  font-weight: bold;
-  cursor: pointer;
-  cursor: hand;
-  font-size: 12px;
-  color: #423f54;
+		float: left;
+		clear: both;
+		text-align: left;
+		width: auto;
+		margin-right: 0.5em;
+		margin-top: 0.2em;
+		font-weight: normal;
+		cursor: pointer;
+		font-size: 12px;
+		color: #999999;
 }
 
 #quick_add_container {
@@ -418,48 +435,33 @@ fieldset label {
 }
 
 
-#task_attr label {
-  width: 7em;
-}
-
-#task_notify label {
-  width: 7em;
-}
-
-#task_dependencies label {
-  width: 7em;
-}
-
-#task_attachments label {
-  width: 7em;
-}
-
-#task_project_selection label {
-  width: 7em;
-}
-
-#task_information label {
-  width: 6em;
-}
-
-#reports_filter label, #reports_config label{
-
-  width: 7em;
+#task_attr label,
+#task_notify label,
+#task_dependencies label,
+#task_attachments label,
+#task_project_selection label,
+#task_information label, 
+#reports_filter label, 
+#reports_config label{
+	width: 95px;
+	padding: 3px 0;
 }
 
 fieldset input {
   float: left;
   clear: right;
   text-align: left;
+  margin-top: 0.5em;
   margin-right: 0.1em;
   margin-bottom: 0.2em;
 }
 
 fieldset img {
-  float: left;
-  clear: right;
-  margin-right: 0.5em;
-  margin-bottom: 0.2em;
+		float: left;
+		clear: right;
+		margin: 0 0.5em 0 0;
+		padding: 2px;
+		border-top: 1px solid #FAFAFA;
 }
 
 fieldset img.centered {
@@ -481,6 +483,24 @@ fieldset input.checkbox {
   margin-bottom: 0.2em;
   padding-left: 0;
   margin-left: 0;
+}
+
+#task_dependencies div div {
+	width: 132px;
+	margin: 2px 0 0 0;
+	min-height: 25px;
+}
+
+	.dependency_no {
+		clear: both;
+		margin: 0.3em 0.5em 0 100px;
+	}
+
+#task_attachments em {
+	font-size: 90%;
+	color: #888888;
+	font-style: normal;
+	widows: 1;
 }
 
 
@@ -1949,14 +1969,16 @@ h4 {
 }
 
 .notify-user {
-  float: left;
-  font-weight: bold;
-  color: #333;
+	margin: 0 0.5em 0 100px;
+	padding: 2px;
+	font-size: 12px;
+	font-weight: normal;
+	color: #333333;
+	border-bottom: 1px solid #DDDDDD;
+	border-top: 1px solid #FAFAFA;
 }
 
-.notify-row {
-  clear:both;
-}
+
 
 .informal {
   font-weight: normal;

@@ -373,9 +373,9 @@ Localization.define('pl_PL') do |l|
   l.store "Last Updated", "Ostatnio zmodyfikowany"
   l.store "Leave Closed", "Pozostaw Zamknięte"
   l.store "Low Priority", "Niski priorytet" # chester
-  l.store "Name / Email", "Nazwa / Email" # chester
+  l.store "Notify", "Nazwa / Email" # chester
   l.store "Newest Tasks", "Najnowsze zadania"
-  l.store "Notification", "Powiadomienie"
+  l.store "Notifications", "Powiadomienie"
   l.store "Participants", "Uczestnicy" # chester
   l.store "Plan / GANTT", "Plan / GANTT" # chester
   l.store "Recent Posts", "Ostatnie posty" # chester
@@ -520,7 +520,7 @@ Localization.define('pl_PL') do |l|
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "mniej niż minuta"
   l.store "Can Create Projects", "Może Tworzyć Projekty" # Marcin H
-  l.store "Remove notification", "Usuń powiadomienie" # chester
+  l.store "Remove", "Usuń powiadomienie" # chester
   l.store "Restricted Userlist", "Restricted Userlist"
   l.store "Show TaskType Icons", "Pokaż ikony typu zadania" # chester
   l.store "[Without Milestone]", "[Bez Kroków]"

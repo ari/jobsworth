@@ -313,9 +313,9 @@ Localization.define('hu_HU') do |l|
   l.store "Last Updated", "Last Updated"
   l.store "Leave Closed", "Leave Closed"
   l.store "Low Priority", "Alacsony Prioritás" # Jozsef
-  l.store "Name / Email", "Név / Email" # Jozsef
+  l.store "Notify", "Név / Email" # Jozsef
   l.store "Newest Tasks", "Newest Tasks"
-  l.store "Notification", "Jelzések" # Jozsef
+  l.store "Notifications", "Jelzések" # Jozsef
   l.store "Participants", "Résztvevők" # Jozsef
   l.store "Plan / GANTT", "Terv / GANTT" # Jozsef
   l.store "Recent Posts", "Legutóbbi postok" # Jozsef
@@ -427,7 +427,7 @@ Localization.define('hu_HU') do |l|
   l.store "Send Notifications", "Értesítés Küldése" # Jozsef
   l.store "less than a minute", "kevesebb, mint egy perc" # Jozsef
   l.store "Can Create Projects", "Létrehozhat Projektet" # Jozsef
-  l.store "Remove notification", "Értesítés eltávolítása" # Jozsef
+  l.store "Remove", "Értesítés eltávolítása" # Jozsef
   l.store "Show TaskType Icons", "Mutassa a feladatfüggő ikonokat" # Jozsef
   l.store "Leave as in Progress", "Leave as in Progress"
   l.store "My In Progress Tasks", "Folyamatban lévő feladataim" # Jozsef

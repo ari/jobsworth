@@ -4,8 +4,8 @@ class WikiRevision < ActiveRecord::Base
   belongs_to :wiki_page
   belongs_to :user
 
-  EXPR = Regexp.new( '\b((?:[A-Z]\w+){2,})|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )
-  CamelCase = /\b((?:[A-Z]\w+){2,})/
+  EXPR = Regexp.new( '\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )
+  CamelCase = /\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
   PRE = /<pre>(.*?)<\/pre>/m
 #  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
@@ -42,7 +42,7 @@ class WikiRevision < ActiveRecord::Base
       match = m.match(CamelCase)
       name = text = match[1]
 
-        unless name.downcase.include? '://'
+      unless name.downcase.include? '://'
         ref = WikiReference.find(:first, :conditions => ["wiki_page_id = ? AND referenced_name = ?", self.wiki_page.id, name])
         if ref.nil? && self.wiki_page.name != name
           ref = WikiReference.create(:wiki_page => self.wiki_page, :referenced_name => name )
