@@ -444,6 +444,65 @@ END_OF_HTML
     end
   end
 
+  ###
+  # Returns a string of css style to color task using the
+  # selected (in the session) coloring.
+  ###
+  def color_style(task)
+    color_property = session[:colors].to_i
+    return if color_property == 0
+ 
+    property = current_user.company.properties.find(color_property)
+    value = task.property_value(property)
+
+    return unless value
+    return "border-left: 4px solid #{ value.color }; background: none;"
+  end
+
+  ###
+  # Return an html tag to display the icon for given task using
+  # the selected (in the session) icons to display.
+  ###
+  def task_icon(task)
+    icon_property = session[:icons].to_i
+    return task.icon if icon_property == 0
+ 
+    property = current_user.company.properties.find(icon_property)
+    pv = task.property_value(property)
+    src = pv.icon_url if pv
+
+    return image_tag(src, :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+  end
+
+  ###
+  # Returns true if the current user can organize tasks based
+  # on the their rights.
+  ###
+  def can_organize?
+    can = false
+    group_by = session[:group_by]
+    if group_by.to_i > 2 and @tasks
+      gb = group_by.to_i
+      affected_projects = @tasks.collect(&:project).uniq
+      can = case gb
+            when 3  then current_user.can_all?(affected_projects, 'reassign')
+            when 4  then current_user.can_all?(affected_projects, 'reassign')
+            when 5  then current_user.can_all?(affected_projects, 'reassign')
+            when 6  then current_user.can_all?(affected_projects, 'prioritize')
+            when 7  then current_user.can_all?(affected_projects, 'close')
+            when 8  then current_user.can_all?(affected_projects, 'prioritize')
+            when 9  then current_user.can_all?(affected_projects, 'prioritize')
+            when 10 then current_user.can_all?(affected_projects, 'reassign')
+            end
+    elsif Property.find_by_group_by(current_user.company, group_by)
+      can = true
+    end        
+
+    return can
+  end
+
+
+
 end
 
 
