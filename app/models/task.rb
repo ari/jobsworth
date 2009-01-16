@@ -688,16 +688,6 @@ class Task < ActiveRecord::Base
     [self.created_at.to_i]
   end 
 
-  def icon(icon_type = nil)
-    icon_type ||= type_id
-    case icon_type
-      when 0 then "<img src=\"/images/task_icons/task.png\" alt=\"#{_'Task'}\" title=\"#{_'Task'}\" class=\"tooltip\" />"
-      when 1 then "<img src=\"/images/task_icons/new_feature.png\" alt=\"#{_'New Feature'}\" title=\"#{_'New Feature'}\" class=\"tooltip\" />"
-      when 2 then "<img src=\"/images/task_icons/bug.png\" alt=\"#{_'Defect'}\" title=\"#{_'Defect'}\" class=\"tooltip\" />"
-      when 3 then "<img src=\"/images/task_icons/change.png\" alt=\"#{_'Improvement'}\" title=\"#{_'Improvement'}\" class=\"tooltip\" />"
-    end 
-  end 
-
   def worked_and_duration_class
     if worked_minutes > duration
       "overtime"

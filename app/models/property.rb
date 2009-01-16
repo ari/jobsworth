@@ -20,10 +20,10 @@ class Property < ActiveRecord::Base
   def self.defaults
     res = []
     res << [ { :name => _("Type") },
-             [ { :value => _("Task") },
-               { :value => _("New Feature") },
-               { :value => _("Defect") },
-               { :value => _("Improvement") }
+             [ { :value => _("Task"),        :icon_url => "/images/task_icons/task.png" },
+               { :value => _("New Feature"), :icon_url => "/images/task_icons/new_feature.png" },
+               { :value => _("Defect"),      :icon_url => "/images/task_icons/bug.png" },
+               { :value => _("Improvement"), :icon_url => "/images/task_icons/change.png" }
              ]]
     res << [ { :name => _("Priority") },
              [ { :value => _("Critical") },

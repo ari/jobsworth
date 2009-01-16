@@ -465,9 +465,12 @@ END_OF_HTML
   ###
   def task_icon(task)
     icon_property = session[:icons].to_i
-    return task.icon if icon_property == 0
- 
-    property = current_user.company.properties.find(icon_property)
+    
+    property = current_user.company.type_property
+    if icon_property != 0 and !property
+      property = current_user.company.properties.find(icon_property)
+    end
+
     pv = task.property_value(property)
     src = pv.icon_url if pv
 
