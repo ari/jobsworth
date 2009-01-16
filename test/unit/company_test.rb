@@ -46,4 +46,28 @@ class CompanyTest < Test::Unit::TestCase
     assert_equal 6, priority.property_values.length
   end
 
+  def test_property_helper_methods
+    @company.create_default_properties
+
+    ensure_property_method_works_with_translation(:type_property)
+    ensure_property_method_works_with_translation(:severity_property)
+    ensure_property_method_works_with_translation(:priority_property)
+  end
+
+
+  private 
+
+  def ensure_property_method_works_with_translation(method)
+    prop = @company.send(method)
+    assert_not_nil prop
+
+    Localization.lang("eu_ES")
+    prop.name = _(prop.name)
+    prop.save
+
+    prop_after_translation = @company.send(method)
+    assert_equal prop, prop_after_translation
+
+    Localization.lang("en_US")
+  end
 end
