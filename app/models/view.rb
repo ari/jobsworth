@@ -13,7 +13,7 @@ class View < ActiveRecord::Base
   def properties=(params)
     property_values.clear
 
-    all_properties = Property.all_for_company(company)
+    all_properties = company.properties
 
     params.each do |property_value_id|
       next if property_value_id.blank?
@@ -40,7 +40,7 @@ class View < ActiveRecord::Base
   # to use properties. It can be removed once that is done.
   ###
   def convert_attributes_to_properties
-    all_properties = Property.all_for_company(company)
+    all_properties = company.properties
     new_ids = []
 
     if filter_type_id != -1
@@ -70,7 +70,7 @@ class View < ActiveRecord::Base
   # It can be removed if we're happy with the migration to properties.
   ###
   def convert_properties_to_attributes
-    all_properties = Property.all_for_company(company)
+    all_properties = company.properties
     
     type = all_properties.detect { |t| t.name == "Type" }
     old_id = Task.issue_types.index(selected(type).to_s)

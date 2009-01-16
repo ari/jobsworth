@@ -119,7 +119,7 @@ class TasksController < ApplicationController
     end
 
     # trim tasks based on custom properties
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter_value = session[prop.filter_name]
       if filter_value.to_i > 0
         @tasks = @tasks.delete_if do |t| 
@@ -1156,12 +1156,12 @@ class TasksController < ApplicationController
     end
 
     # set any filters on custom properties
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]
     end
 
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]
     end

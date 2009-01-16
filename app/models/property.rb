@@ -46,18 +46,11 @@ class Property < ActiveRecord::Base
   end
 
   ###
-  # Returns all properties setup for company.
-  ###
-  def self.all_for_company(company)
-    find(:all, :conditions => { :company_id => company.id })
-  end
-
-  ###
   # Returns an array of all properties for company which
   # have colors set up for their property values.
   ###
   def self.all_with_colors(company)
-    props = all_for_company(company).select do |p|
+    props = company.properties.select do |p|
       p.property_values.detect { |pv| !pv.color.blank? }
     end
 
@@ -69,7 +62,7 @@ class Property < ActiveRecord::Base
   # have icons set up for their property values.
   ###
   def self.all_with_icons(company)
-    props = all_for_company(company).select do |p|
+    props = company.properties.select do |p|
       p.property_values.detect { |pv| !pv.icon_url.blank? }
     end
 

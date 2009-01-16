@@ -301,10 +301,7 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
       </fieldset>
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
-	<%
-		@properties = Property.all_for_company(current_user.company)
-		@properties.each do |p|
-	-%>
+	<% current_user.company.properties.each do |p| -%>
 	  <% name = "property_#{ p.id }" -%>
   	  <label for="<%= name %>"><%= h(p.name) %></label>
 	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">

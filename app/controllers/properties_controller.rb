@@ -3,7 +3,7 @@ class PropertiesController < ApplicationController
   # GET /properties.xml
   def index
     if current_user.admin > 0
-      @properties = Property.all_for_company(current_user.company)
+      @properties = current_user.company.properties
       respond_to do |format|
         format.html # index.html.erb
         format.xml  { render :xml => @properties }

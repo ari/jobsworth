@@ -131,7 +131,7 @@ module TasksHelper
     show ||= (session[:hide_dependencies].to_i != 0)
 
     # we also need to show filter if any custom properties are set
-    @properties.each do |prop|
+    current_user.company.properties.each do |prop|
       show ||= session[prop.filter_name].to_i > 0
     end
 

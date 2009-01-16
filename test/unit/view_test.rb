@@ -12,8 +12,8 @@ class ViewTest < Test::Unit::TestCase
   end
 
   def test_properties_setter_clears_old_values
-    pv1 = Property.all_for_company(@view.company).first.property_values.first
-    pv2 = Property.all_for_company(@view.company).first.property_values.last
+    pv1 = @view.company.properties.first.property_values.first
+    pv2 = @view.company.properties.first.property_values.last
     assert_not_nil pv1
     assert_not_nil pv2
 
@@ -26,8 +26,7 @@ class ViewTest < Test::Unit::TestCase
   end
 
   def test_selected_returns_value_for_correct_property
-    properties = Property.all_for_company(@view.company)
-    p1 = properties.first
+    p1 = @view.company.properties.first
     assert_not_nil p1
 
     assert_nil @view.selected(p1)

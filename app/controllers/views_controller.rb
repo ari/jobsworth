@@ -346,7 +346,7 @@ class ViewsController < ApplicationController
   # session.
   ###
   def reset_property_filters
-    Property.all_for_company(current_user.company).each do |p|
+    current_user.company.properties.each do |p|
       session[p.filter_name] = nil
     end
   end
