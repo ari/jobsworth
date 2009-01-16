@@ -433,31 +433,6 @@ class Task < ActiveRecord::Base
     { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
   end
 
-#   def priority
-#     property_value_as_integer("Priority", Task.priority_types.invert) || 0
-#   end  
-#   def severity_id
-#     property_value_as_integer("Severity", Task.severity_types.invert) || 0
-#   end
-#   def type_id
-#     property_value_as_integer("Type") || 0
-#   end
-
-
-  ###
-  # Returns an int representing the given property.
-  # Pass in a hash of strings to ids to return those values, otherwise
-  # the index in the property value list is returned.
-  ###
-  def property_value_as_integer(property_name, mappings = {})
-    property = company.properties.find(:first, :conditions => [ "name = ? or name = ?", property_name, _(property_name) ])
-    task_value = property_value(property)
-
-    if task_value
-      return mappings[task_value.value] || property.property_values.index(task_value)
-    end
-  end
-
   def owners
     o = self.users.collect{ |u| u.name}.join(', ')
     o = "Unassigned" if o.nil? || o == ""
@@ -732,9 +707,14 @@ class Task < ActiveRecord::Base
   # to use properties. It can be removed once that is done.
   ###
   def convert_attributes_to_properties(type, priority, severity)
-    copy_task_value(issue_type, type)
-    copy_task_value(priority_type, priority)
-    copy_task_value(severity_type, severity)
+    old_value = Task.issue_types[attributes['type_id']]
+    copy_task_value(old_value, type)
+
+    old_value = Task.priority_types[attributes['priority']]
+    copy_task_value(old_value || 0, priority)
+
+    old_value = Task.severity_types[attributes['severity_id']]
+    copy_task_value(old_value || 0, severity)
   end
 
   ###
@@ -765,4 +745,34 @@ class Task < ActiveRecord::Base
     self.severity_id = Task.severity_types.invert[property_value(severity).to_s] || 0
     self.priority = Task.priority_types.invert[property_value(priority).to_s] || 0
   end
+
+  ###
+  # These methods replace the columns for these values. If people go ahead
+  # and change the default priority, etc values then they will return a 
+  # default value that shouldn't affect sorting.
+  ###
+  def priority
+    property_value_as_integer(company.priority_property, Task.priority_types.invert) || 0
+  end  
+  def severity_id
+    property_value_as_integer(company.severity_property, Task.severity_types.invert) || 0
+  end
+  def type_id
+    property_value_as_integer(company.type_property) || 0
+  end
+
+  ###
+  # Returns an int representing the given property.
+  # Pass in a hash of strings to ids to return those values, otherwise
+  # the index in the property value list is returned.
+  ###
+  def property_value_as_integer(property, mappings = {})
+    task_value = property_value(property)
+
+    if task_value
+      return mappings[task_value.value] || property.property_values.index(task_value)
+    end
+  end
+
+
 end
