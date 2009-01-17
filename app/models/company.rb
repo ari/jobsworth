@@ -39,14 +39,20 @@ class Company < ActiveRecord::Base
   def create_default_properties
     new_props = []
     Property.defaults.each do |property_params, property_values_params|
-      p = properties.new(property_params)
-      p.property_values.build(property_values_params)
-      if !properties.detect { |op| op.name == p.name }
+      name = property_params[:name]
+      existing = properties.detect { |p| p.name == name }
+
+      if !existing
+        p = properties.new(property_params)
+        p.property_values.build(property_values_params)
         p.save!
         new_props << p
+      else
+        new_props << existing
       end
     end
 
+    self.properties.reload
     return new_props
   end
 
