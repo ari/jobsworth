@@ -42,13 +42,9 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
 
     # remove created properties
     Company.find(:all).each do |c|
-      type = c.properties.detect { |p| p.name == "Type" }
-      severity = c.properties.detect { |p| p.name == "Severity" }
-      priority = c.properties.detect { |p| p.name == "Priority" }
-      
-      type.destroy if type
-      priority.destroy if priority
-      severity.destroy if severity
+      c.type_property.destroy if c.type_property
+      c.priority_property.destroy if c.priority_property
+      c.severity_property.destroy if c.severity_property
     end
 
   end

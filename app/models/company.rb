@@ -41,9 +41,10 @@ class Company < ActiveRecord::Base
     Property.defaults.each do |property_params, property_values_params|
       p = properties.new(property_params)
       p.property_values.build(property_values_params)
-      p.save!
-
-      new_props << p
+      if !properties.detect { |op| op.name == p.name }
+        p.save!
+        new_props << p
+      end
     end
 
     return new_props
