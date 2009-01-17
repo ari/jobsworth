@@ -78,7 +78,6 @@
 
             <select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
               <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
-
               <%
                  @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Status"), "7"], [_("Requested By"), "11"]]
 		 current_user.company.properties.each do |prop|
