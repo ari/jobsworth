@@ -123,9 +123,9 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 	  <div>
           <label for="task_milestone_id"><%=_ 'Milestone' %></label>
           <% unless @task.id.nil? %>
-            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %>
+            <%= select 'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'] %>
           <% else %>
-            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %>
+            <%= select'task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => session[:filter_milestone] ? session[:filter_milestone].to_i : 0}, perms['milestone'] %>
           <% end %>
           <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
 	  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
