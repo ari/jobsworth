@@ -1,6 +1,9 @@
 ---
 javascripts:
 - base:
+  - jquery
+  - jquery-ui.js
+  - jrails
   - prototype
   - effects
   - dragdrop
@@ -23,4 +26,5 @@ stylesheets:
   - portal
 - tt:
   - calendar-system
+  - ui.datepicker.css
   - tt

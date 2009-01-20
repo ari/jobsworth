@@ -248,11 +248,10 @@ function reset_owners() {
                date_tooltip = _("Enter task due date, or click calendar button.")
              end %>
           <% if @task.repeat && @task.repeat.length > 0 %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
           <% else %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+	  <input type="text" name="task[due_at]" id="task_due_at" size="12"/>
+          <%#= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
           <% end %>
           <br/>
         <% else %>
@@ -353,6 +352,8 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 <% end %>
 
+
+jQuery('#task_due_at').datepicker();
 
 </script>
 
