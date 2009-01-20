@@ -1231,6 +1231,7 @@ class TasksController < ApplicationController
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]
+    session[:last_project_id] = session[:filter_project]
     current_user.save
   end
 
