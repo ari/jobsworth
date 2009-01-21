@@ -96,7 +96,7 @@ class TasksController < ApplicationController
     end
 
     if session[:hide_deferred].to_i > 0
-      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND"
+      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
     end 
 
     unless session[:filter_type].to_i == -1
@@ -163,7 +163,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
@@ -1181,6 +1181,7 @@ class TasksController < ApplicationController
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]
+    session[:last_project_id] = session[:filter_project]
     current_user.save
   end
 
