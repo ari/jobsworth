@@ -98,7 +98,7 @@ class TasksController < ApplicationController
     end
 
     if session[:hide_deferred].to_i > 0
-      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND"
+      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
     end 
 
     unless session[:filter_type].to_i == -1
@@ -166,7 +166,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
@@ -1046,7 +1046,7 @@ class TasksController < ApplicationController
 
   def add_work
     begin
-      @task = current_user.tasks.find( params['id'] )
+      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
     rescue
       flash['notice'] = _('Unable to find task belonging to you with that ID.')
       redirect_from_last
@@ -1186,6 +1186,7 @@ class TasksController < ApplicationController
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]
+    session[:last_project_id] = session[:filter_project]
     current_user.save
   end
 
@@ -1337,11 +1338,11 @@ class TasksController < ApplicationController
 
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
-      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
+      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
       csv << header
 
       for t in @tasks
-        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
+        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.created_at, t.completed_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
       end
 
     end
