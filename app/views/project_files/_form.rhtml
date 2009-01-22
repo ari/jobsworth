@@ -5,9 +5,14 @@
 <% else %>
 <%= hidden_field 'file', 'project_id' %>
 <% end %>
-
-<label for="file_name"><%=_ 'Name' %></label><%= text_field 'file', 'name'  %><br />
-<label for="file_file"><%=_ 'File', 1 %></label><%= file_field 'file', 'tmp_file' %><br />
+<label>&nbsp;</label>
+<br/>
+<div id="upload_container">
+<label for="file_name"><%=_ 'Name' %></label><input type="text" name="file_names[]"/><br />
+<label for="file_file"><%=_ 'File', 1 %></label><input type="file" size="35" name="tmp_files[]"/><div class="buttons"><small><%= link_to_function _("Upload more files") do |page|
+       page.insert_html :bottom, :upload_container, "<label for=\"file_name\">#{_'Name'}</label><input type=\"text\" name=\"file_names[]\"/><br /><label for=\"file_file\">#{_ 'File', 1}</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />"
+end %></small></div><br />
+</div>
 
 <%= hidden_field 'file', 'project_folder_id' %>
 <!--[eoform:project_files]-->

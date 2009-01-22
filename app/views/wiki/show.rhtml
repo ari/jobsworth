@@ -1,7 +1,23 @@
 <div id="wiki">
-<h1><%= @page.name %></h1>
+<%
+    headings = []
+    src = @page.to_html(params[:rev].to_i)
+    src.gsub!(/<h(\d)>([^<]+)<\/h\d>/m) { |m|
+      headings << [m]
+      m.gsub(/<h(\d)>([^<]+)<\/h\d>/m, "<h\\1 id=\"toc_#{headings.size-1}\">\\2</h\\1>")
+    }
+    if headings.size > 0
+%>
+  <div id="wiki-toc">
+   <a href="#toc_0"><h1><%= @page.name %></h1></a>
+<% headings.each_with_index do |head,idx| %>
+   <a href="#toc_<%=idx%>"><%=head%></a>
+<% end %>
+  </div>
+<% end %>
 
-<%= @page.to_html(params[:rev].to_i) %>
+<h1 id="toc_0"><%= @page.name %></h1>
+  <%= src %>
 </div>
 
 <div id="wiki-info">
