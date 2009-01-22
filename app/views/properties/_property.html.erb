@@ -1,5 +1,7 @@
 <tr>
   <td><%= h(property.name) %></td>
+  <td><%= _(property.default_sort ? "Yes" : "") %></td>
+  <td><%= _(property.default_color ? "Yes" : "") %></td>
   <td><%= link_to(_("Edit"), edit_property_path(property)) %></td>
   <td><%= link_to(_("Delete"), property_path(property), :method => :delete, :confirm => "Are you sure?") %></td>
 </tr>

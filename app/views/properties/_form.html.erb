@@ -6,6 +6,14 @@
     <%= f.text_field :name %>
     <br />
 
+    <label for="property_default_sort"><%=_ "Sort tasks by this property by default?" %></label>
+    <%= f.check_box :default_sort %>
+    <br />
+
+    <label for="property_default_color"><%=_ "Color tasks by this property by default?" %></label>
+    <%= f.check_box :default_color %>
+    <br />
+
     <fieldset>
       <legend><%=_ "Possible values" %></legend>
       <ul id="property_values">
