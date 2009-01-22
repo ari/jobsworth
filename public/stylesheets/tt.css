@@ -2352,3 +2352,41 @@ input.scheduled {
   font-size: small;
   
 }
+
+#wiki-toc {
+    border: 2px dotted #ccc;
+    float: right;
+    background-color: #fff;
+    max-width: 200px;
+    overflow: hidden;
+    padding: 0.5em;
+    white-space: nowrap;
+}
+
+#wiki-toc h1, #wiki-toc h2, #wiki-toc h3, #wiki-toc h4, #wiki-toc h5, #wiki-toc h6 {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+#wiki-toc h2 {
+    padding-left: 1.0em;
+    font-size: 12px;
+}
+#wiki-toc h3 {
+    padding-left: 2.0em;
+    font-size: 11px;
+}
+#wiki-toc h4 {
+    padding-left: 3.0em;
+    font-size: 10px;
+    display:none;
+}
+#wiki-toc h5 {
+    display:none;
+}
+#wiki-toc h6 {
+    display: none;
+}
