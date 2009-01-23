@@ -6,6 +6,15 @@
 class PropertyValue < ActiveRecord::Base
   belongs_to :property
 
+  ###
+  # Returns an int to use for sorting tasks with
+  # this property value.
+  ###
+  def sort_rank
+    @sort_rank ||= (property.property_values.length 
+                    - property.property_values.index(self))
+  end
+
   def to_s
     value
   end

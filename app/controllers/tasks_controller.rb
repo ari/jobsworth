@@ -130,22 +130,9 @@ class TasksController < ApplicationController
     end
 
 
-    @tasks = case session[:sort].to_i
-             when 0:
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.priority + t.severity_id/2.0, -(t.due_date || 9999999999).to_i, -t.task_num] }.reverse
-             when 1: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 2: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 3: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 4: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }.reverse
-             end
-
+    @tasks = sort_tasks(@tasks)
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
-    
     @group_ids, @groups = group_tasks(@tasks)
   end
 
@@ -1862,18 +1849,53 @@ class TasksController < ApplicationController
   end 
 
   private
+  
+  ###
+  # Returns an array of tasks sorted according to the value
+  # in the session.
+  ### 
+  def sort_tasks(tasks)
+    sort_by = session[:sort].to_i
+    res = tasks
 
+    if sort_by == 0 # default sorting
+      res = tasks.sort_by do |t| 
+        array = []
+        array << -t.completed_at.to_i
+
+        # sort by any selected sort properties
+        sort_properties = current_user.company.properties.select { |p| p.default_sort }
+        rank_by_properties = sort_properties.inject(0) do |rank, property|
+          logger.info(property)
+          pv = t.property_value(property)
+          rank += pv.sort_rank if pv and pv.sort_rank
+        end
+        array << rank_by_properties
+
+        array << - (t.due_date || 9999999999).to_i
+        array << - t.task_num
+
+        array
+      end
+      res = res.reverse
+    elsif sort_by == 1
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
+    elsif sort_by ==  2
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
+    elsif sort_by == 3
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, t.priority + t.severity_id/2.0,  -t.task_num] }
+    elsif sort_by ==  4
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }.reverse
+    end
+
+    return res
+  end
   ###
   # Returns a two element array containing the grouped tasks.
   # The first element is an in-order array of group ids / names
   # The second element is a hash mapping group ids / names to arrays of tasks.
   ###
   def group_tasks(tasks)
-    logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    logger.info(session[:group_by])
-    logger.info(Property.find_by_group_by(current_user.company, session[:group_by]))
-    logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-
     group_ids = {}
     groups = []
     
