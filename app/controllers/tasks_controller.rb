@@ -1859,24 +1859,7 @@ class TasksController < ApplicationController
     res = tasks
 
     if sort_by == 0 # default sorting
-      res = tasks.sort_by do |t| 
-        array = []
-        array << -t.completed_at.to_i
-
-        # sort by any selected sort properties
-        sort_properties = current_user.company.properties.select { |p| p.default_sort }
-        rank_by_properties = sort_properties.inject(0) do |rank, property|
-          pv = t.property_value(property)
-          rank += pv.sort_rank if pv and pv.sort_rank
-        end
-        array << rank_by_properties
-
-        array << - (t.due_date || 9999999999).to_i
-        array << - t.task_num
-
-        array
-      end
-      res = res.reverse
+      res = current_user.company.sort(tasks)
     elsif sort_by == 1
       res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
     elsif sort_by ==  2

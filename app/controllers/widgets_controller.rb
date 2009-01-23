@@ -49,10 +49,10 @@ class WidgetsController < ApplicationController
 
       @items = case @widget.order_by
                when 'priority':
-                     @items.sort_by{|t| [t.priority + t.severity_id/2.0, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-(@widget.number < @items.size ? @widget.number : @items.size)..-1].reverse
+                   current_user.company.sort(@items)[0, @widget.number]
                when 'date':
-                     @items.sort_by{|t| [t.created_at.to_i, t.priority + t.severity_id/2.0] }[-(@widget.number < @items.size ? @widget.number : @items.size)..-1]
-              end
+                   @items.sort_by {|t| t.created_at.to_i }[0, @widget.number]
+               end
 
     when 1
       # Project List
@@ -318,11 +318,14 @@ class WidgetsController < ApplicationController
       end
 
       if @widget.mine?
-        tasks = current_user.tasks.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+        tasks = current_user.tasks.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"])
       else 
-        tasks = Task.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
+        tasks = Task.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"])
       end
-
+      # first use default sorting
+      tasks = tasks.sort_by do |t| 
+        [ t.due_date.to_i, t.milestone_id, - current_user.company.rank_by_properties(t) ]
+      end
       @tasks = []
       
       tasks.each do |t|

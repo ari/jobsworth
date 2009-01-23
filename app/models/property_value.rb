@@ -11,8 +11,7 @@ class PropertyValue < ActiveRecord::Base
   # this property value.
   ###
   def sort_rank
-    @sort_rank ||= (property.property_values.length 
-                    - property.property_values.index(self))
+    @sort_rank ||= (property.property_values.length - property.property_values.index(self))
   end
 
   def to_s

@@ -57,6 +57,50 @@ class Company < ActiveRecord::Base
   end
 
   ###
+  # Sorts the given tasks in the default sort order.
+  # Default sorting uses the completed at time, the due date, task num and any
+  # custom properties with the default_sort parameter.
+  ###
+  def sort(tasks)
+    res = tasks.sort_by do |task| 
+      array = []
+      array << -task.completed_at.to_i
+      array << rank_by_properties(task)
+      array << - (task.due_date || 9999999999).to_i
+      array << - task.task_num
+    end
+    res = res.reverse
+    
+    return res
+  end
+
+  ###
+  # Returns an into to use to rank the task according to properties
+  # set up as default_sort.
+  ###
+  def rank_by_properties(task)
+    sort_properties = self.properties.select { |p| p.default_sort }
+
+    rank_by_properties = sort_properties.inject(0) do |rank, property|
+      pv = task.property_value(property)
+      if pv
+        rank += (pv.sort_rank || 0) 
+      end
+    end
+
+    return (rank_by_properties || 0)
+  end
+
+  ###
+  # Returns the default array to sort tasks by for this company.
+  ###
+  def default_sort_array(task)
+    array = []
+    
+    return array
+  end
+
+  ###
   # Returns the property to use to represent a tasks type.
   ###
   def type_property
