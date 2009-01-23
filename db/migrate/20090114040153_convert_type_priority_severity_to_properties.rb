@@ -1,9 +1,8 @@
 class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
-  OLD_ISSUE_TYPES =  [ "Task", "New Feature", "Defect", "Improvement" ]
-  OLD_PRIORITY_TYPES = { -2 => "Lowest", -1 => "Low", 0 => "Normal", 1 => "High", 2 => "Urgent", 3 => "Critical" }
-  OLD_SEVERITY_TYPES = { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker" }
-
   def self.up
+    add_column Property.table_name, :default_sort, :boolean
+    add_column Property.table_name, :default_color, :boolean
+
     Company.find(:all).each do |c|
       type, priority, severity = c.create_default_properties
       c.tasks.each do |t|
@@ -47,5 +46,7 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
       c.severity_property.destroy if c.severity_property
     end
 
+    remove_column Property.table_name, :default_sort
+    remove_column Property.table_name, :default_color
   end
 end

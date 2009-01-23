@@ -13,6 +13,7 @@ class Property < ActiveRecord::Base
   belongs_to :company
   has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
   
+  after_save :clear_other_default_colors
   before_destroy :remove_invalid_task_property_values
   
   # Returns an array of the default values that should be
@@ -25,15 +26,15 @@ class Property < ActiveRecord::Base
                { :value => _("Defect"),      :icon_url => "/images/task_icons/bug.png" },
                { :value => _("Improvement"), :icon_url => "/images/task_icons/change.png" }
              ]]
-    res << [ { :name => _("Priority") },
-             [ { :value => _("Critical") },
-               { :value => _("Urgent") },
-               { :value => _("High") },
-               { :value => _("Normal") },
-               { :value => _("Low") },
-               { :value => _("Lowest") }
+    res << [ { :name => _("Priority"), :default_sort => true, :default_color => true },
+             [ { :value => _("Critical"), :color => "#FF6666" },
+               { :value => _("Urgent"),   :color => "#FF6666" },
+               { :value => _("High"),     :color => "#F2AB99" },
+               { :value => _("Normal"),   :color => "#B0D295" },
+               { :value => _("Low"),      :color => "#F3F3F3" },
+               { :value => _("Lowest"),   :color => "#F3F3F3" }
              ]]
-    res << [ { :name => _("Severity") },
+    res << [ { :name => _("Severity"), :default_sort => true },
              [ { :value => _("Blocker") },
                { :value => _("Critical") },
                { :value => _("Major") },
@@ -98,5 +99,22 @@ class Property < ActiveRecord::Base
   def remove_invalid_task_property_values
     tpvs = TaskPropertyValue.find(:all, :conditions => { :property_id => id })
     tpvs.each { |tpv| tpv.destroy }
+  end
+
+  ###
+  # Only one property can be used to color tasks, so this
+  # method will ensure only one property will have the 
+  # default_colors attribute set.
+  ###
+  def clear_other_default_colors
+    if self.default_color
+      other_properties = company.properties - [ self ]
+      other_properties.each do |p|
+        if p.default_color
+          p.default_color = false
+          p.save
+        end
+      end
+    end
   end
 end
