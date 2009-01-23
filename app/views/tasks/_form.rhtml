@@ -31,8 +31,8 @@
 			<div id="upload_container">
             <%= file_field_tag 'tmp_files[]', { :size => 35, :class => "file" }.merge( perms['comment'] ) %>
             <% if perms['comment'].empty? %>
-              <span style="float:left;padding-right:0.4em;padding-top:0.4em"><%= link_to_function _("Upload more files") do |pag
-                      page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"35\" name=\
+              <span style="float:left;padding-right:0.4em;padding-top:0.4em"><%= link_to_function _("Upload more files") do |page|
+                  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />"
                   end %></span>
             <% end %>
             <br />
@@ -397,7 +397,7 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
         <% for file in @task.attachments %>
         <% if file.thumbnail? %>
         <div>
-        <a href="/project_files/show/<%=file.id%>"><img src="/project_files/thumbnail/<%=file.id%>" border="0" style="float:no
+        <a href="/project_files/show/<%=file.id%>"><img src="/project_files/thumbnail/<%=file.id%>" border="0" style="float:none;"/></a>
         </div>
         <% end %>
 
@@ -413,21 +413,3 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 
 
 <!--[eoform:task]-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

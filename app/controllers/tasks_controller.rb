@@ -672,7 +672,8 @@ class TasksController < ApplicationController
 
       files = create_attachments(@task)
       files.each do |filename|
-      body << "- <strong>Attached</strong>: #{filename}\n"
+        body << "- <strong>Attached</strong>: #{filename}\n"
+      end
 
       email_body = body
 
@@ -778,7 +779,7 @@ class TasksController < ApplicationController
              File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
                                                                                                   task_file.destroy
                                                                                                   task_file = nil
-                                                                                                  flash['notice'] = _("P
+                                                                                                  flash['notice'] = _("Permission denied while saving file.")
                                                                                                         next
                                                                                                 end
                          filenames << filename
