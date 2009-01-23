@@ -2,7 +2,6 @@
 # If it's not an image, try and find an appropriate stock icon
 #
 class ProjectFilesController < ApplicationController
-  require_dependency 'RMagick'
 
   def index
     if current_user.projects.empty?
@@ -182,25 +181,11 @@ class ProjectFilesController < ApplicationController
         project_file.file_size = File.size?( project_file.file_path )
 
         if project_file.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && project_file.file_size > 0
-          image = Magick::Image.read( project_file.file_path ).first
-
-          if image.columns > 0
+          image = ImageOperations::get_image(project_file.file_path )
+					if ImageOperations::is_image?(image)
             project_file.file_type = ProjectFile::FILETYPE_IMG
             project_file.mime_type = image.mime_type
-
-            if image.columns > 124 or image.rows > 124
-
-              if image.columns > image.rows
-                scale = 124.0 / image.columns
-              else
-                scale = 124.0 / image.rows
-              end
-
-              image.scale!(scale)
-            end
-
-            thumb = shadow(image)
-            thumb.format = 'jpg'
+						thumb = ImageOperations::thumbnail(image,124)
 
             File.umask(0)
             t = File.new(project_file.thumbnail_path, "w", 0777)
@@ -292,20 +277,6 @@ class ProjectFilesController < ApplicationController
 
     @folder.destroy
   end
-
-  def shadow( image )
-    shadow = image.dup
-    shadow.background_color = "black"
-    shadow.erase!
-    shadow.border!(26, 26, "white")
-    shadow = shadow.blur_image(0, 8/2)
-		shadow.composite( image, Magick::NorthWestGravity,
-			(shadow.columns - image.columns) / 2 - 2,
-			(shadow.rows    - image.rows) / 2 - 2,
-			Magick::OverCompositeOp
-		).trim!
-  end
-
 
   def move
     elements = params[:id].split(' ')
