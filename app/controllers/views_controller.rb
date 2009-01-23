@@ -118,7 +118,11 @@ class ViewsController < ApplicationController
   end
 
   def select_milestone
-    @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+	  @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id]) rescue begin
+       flash['notice'] = _('Either the milestone doesn\'t exist, or you don\'t have access to it.')
+       redirect_from_last
+       return
+	  end
     session[:filter_user] = "0"
     session[:filter_project] = @milestone.project.id.to_s
     session[:last_project_id] = session[:filter_project]
@@ -136,7 +140,11 @@ class ViewsController < ApplicationController
   end
 
   def select_project
-    @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id])
+    @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id]) rescue begin
+      flash['notice'] = _('Either the project doesn\'t exist, or you don\'t have access to it.')
+      redirect_from_last
+      return
+    end
     session[:filter_user] = "0"
     session[:filter_project] = @project.id.to_s
     session[:last_project_id] = session[:filter_project]
