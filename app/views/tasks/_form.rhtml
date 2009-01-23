@@ -28,7 +28,16 @@
 			<label for="comment"><%=_ 'Comment' %></label>
 			<%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
 			<label for="task_tmp_file"><%=_ 'Attach file' %></label>
-			<%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
+			<div id="upload_container">
+            <%= file_field_tag 'tmp_files[]', { :size => 35, :class => "file" }.merge( perms['comment'] ) %>
+            <% if perms['comment'].empty? %>
+              <span style="float:left;padding-right:0.4em;padding-top:0.4em"><%= link_to_function _("Upload more files") do |pag
+                      page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"35\" name=\
+                  end %></span>
+            <% end %>
+            <br />
+            </div>
+
 	
 			<span class="divider"></span>
 			
@@ -386,6 +395,12 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
         <legend><%=_ "Attachments" %></legend>
 
         <% for file in @task.attachments %>
+        <% if file.thumbnail? %>
+        <div>
+        <a href="/project_files/show/<%=file.id%>"><img src="/project_files/thumbnail/<%=file.id%>" border="0" style="float:no
+        </div>
+        <% end %>
+
         <%= link_to _('<img src="/images/cross_small.png" class="close-cross" border="0" />'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
         <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> <em>(<%=number_to_human_size(file.file_size)%>)</em>
         <span class="divider"></span>

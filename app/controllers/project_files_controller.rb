@@ -2,7 +2,6 @@
 # If it's not an image, try and find an appropriate stock icon
 #
 class ProjectFilesController < ApplicationController
-  require_dependency 'RMagick'
 
   def index
     if current_user.projects.empty?
@@ -131,7 +130,7 @@ class ProjectFilesController < ApplicationController
 
   def upload
     project_files = []
-    if params['tmp_files'].blank? || !params['tmp_files'][0].respond_to?('original_filename')
+    if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0 
       flash['notice'] = _('No file selected.')
       responds_to_parent do
         render :update do |page|
@@ -142,6 +141,7 @@ class ProjectFilesController < ApplicationController
     end
 
     params['tmp_files'].each_with_index do |tmp_file,idx|
+	    next unless tmp_file.respond_to?('original_filename')
       filename = tmp_file.original_filename
       next if filename.nil? || filename.strip.length == 0
       filename = filename.split("/").last
@@ -181,25 +181,11 @@ class ProjectFilesController < ApplicationController
         project_file.file_size = File.size?( project_file.file_path )
 
         if project_file.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && project_file.file_size > 0
-          image = Magick::Image.read( project_file.file_path ).first
-
-          if image.columns > 0
+          image = ImageOperations::get_image(project_file.file_path )
+					if ImageOperations::is_image?(image)
             project_file.file_type = ProjectFile::FILETYPE_IMG
             project_file.mime_type = image.mime_type
-
-            if image.columns > 124 or image.rows > 124
-
-              if image.columns > image.rows
-                scale = 124.0 / image.columns
-              else
-                scale = 124.0 / image.rows
-              end
-
-              image.scale!(scale)
-            end
-
-            thumb = shadow(image)
-            thumb.format = 'jpg'
+						thumb = ImageOperations::thumbnail(image,124)
 
             File.umask(0)
             t = File.new(project_file.thumbnail_path, "w", 0777)
@@ -291,34 +277,6 @@ class ProjectFilesController < ApplicationController
 
     @folder.destroy
   end
-
-  def shadow( image )
-    w = image.columns
-    h = image.rows
-
-    x2 = w + 5
-    y2 = h + 5
-
-    # blur margin
-    x4 = w + 15
-    y4 = h + 15
-
-    c = "White"
-    base = Magick::Image.new( x4, y4 ) { self.background_color = c }
-
-    gc = Magick::Draw.new
-    gc.fill( "Gray75" )
-    gc.rectangle( 5, 5, x2, y2 )
-    gc.draw( base )
-
-    # requires RMagick 1.6.1 or later.
-    base = base.gaussian_blur_channel( 2, 8, Magick::AllChannels )
-    base = base.gaussian_blur_channel( 3, 8, Magick::AllChannels )
-
-    base.composite( image, Magick::NorthWestGravity, Magick::OverCompositeOp )
-
-  end
-
 
   def move
     elements = params[:id].split(' ')
