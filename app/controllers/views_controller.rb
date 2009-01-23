@@ -88,6 +88,7 @@ class ViewsController < ApplicationController
     session[:filter_user] = @view.filter_user_id.to_s if (@view.filter_user_id >= 0 || @view.filter_user_id == -1)
     session[:filter_user] = current_user.id.to_s if @view.filter_user_id == -2
     session[:filter_project] = @view.filter_project_id.to_s
+    session[:last_project_id] = session[:filter_project]
     session[:filter_milestone] = @view.filter_milestone_id.to_s
     session[:group_by] = @view.auto_group.to_s
     session[:hide_deferred] = @view.hide_deferred.to_s
@@ -120,6 +121,7 @@ class ViewsController < ApplicationController
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     session[:filter_user] = "0"
     session[:filter_project] = @milestone.project.id.to_s
+    session[:last_project_id] = session[:filter_project]
     session[:filter_milestone] = @milestone.id.to_s
     session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
@@ -137,6 +139,7 @@ class ViewsController < ApplicationController
     @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id])
     session[:filter_user] = "0"
     session[:filter_project] = @project.id.to_s
+    session[:last_project_id] = session[:filter_project]
     session[:filter_milestone] = "0"
     session[:hide_deferred] = "0"
     session[:hide_dependencies] = "0"
