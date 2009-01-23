@@ -3,13 +3,7 @@
 <%
  depth ||= 1
  depth = 1 if depth < 1
- pri = task.priority + task.severity_id/2.0
  classes = ""
- classes = " task_raised_pri" if pri >= 0.1 && !task.done?
- classes = " task_high_pri" if pri >= 0.51 && !task.done?
- classes = " task_crit_pri" if pri >= 1.5 && !task.done?
- classes = " task_low_pri" if pri < -0.51 && !task.done?
- classes = " task_lowest_pri" if pri < -1.5 && !task.done?
  
  can_complete = { :disabled => "disabled" } unless current_user.can?(task.project, 'close')
  can_complete ||= {}
