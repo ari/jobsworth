@@ -131,7 +131,7 @@ class ProjectFilesController < ApplicationController
 
   def upload
     project_files = []
-    if params['tmp_files'].blank? || !params['tmp_files'][0].respond_to?('original_filename')
+    if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0 
       flash['notice'] = _('No file selected.')
       responds_to_parent do
         render :update do |page|
@@ -142,6 +142,7 @@ class ProjectFilesController < ApplicationController
     end
 
     params['tmp_files'].each_with_index do |tmp_file,idx|
+	    next unless tmp_file.respond_to?('original_filename')
       filename = tmp_file.original_filename
       next if filename.nil? || filename.strip.length == 0
       filename = filename.split("/").last
@@ -293,30 +294,16 @@ class ProjectFilesController < ApplicationController
   end
 
   def shadow( image )
-    w = image.columns
-    h = image.rows
-
-    x2 = w + 5
-    y2 = h + 5
-
-    # blur margin
-    x4 = w + 15
-    y4 = h + 15
-
-    c = "White"
-    base = Magick::Image.new( x4, y4 ) { self.background_color = c }
-
-    gc = Magick::Draw.new
-    gc.fill( "Gray75" )
-    gc.rectangle( 5, 5, x2, y2 )
-    gc.draw( base )
-
-    # requires RMagick 1.6.1 or later.
-    base = base.gaussian_blur_channel( 2, 8, Magick::AllChannels )
-    base = base.gaussian_blur_channel( 3, 8, Magick::AllChannels )
-
-    base.composite( image, Magick::NorthWestGravity, Magick::OverCompositeOp )
-
+    shadow = image.dup
+    shadow.background_color = "black"
+    shadow.erase!
+    shadow.border!(26, 26, "white")
+    shadow = shadow.blur_image(0, 8/2)
+		shadow.composite( image, Magick::NorthWestGravity,
+			(shadow.columns - image.columns) / 2 - 2,
+			(shadow.rows    - image.rows) / 2 - 2,
+			Magick::OverCompositeOp
+		).trim!
   end
 
 
