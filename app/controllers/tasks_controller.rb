@@ -1866,7 +1866,6 @@ class TasksController < ApplicationController
         # sort by any selected sort properties
         sort_properties = current_user.company.properties.select { |p| p.default_sort }
         rank_by_properties = sort_properties.inject(0) do |rank, property|
-          logger.info(property)
           pv = t.property_value(property)
           rank += pv.sort_rank if pv and pv.sort_rank
         end
