@@ -390,54 +390,8 @@ class TasksController < ApplicationController
         @task.save
       end
 
-      if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
-
-        filename = params[:task_file].original_filename
-        filename = filename.split("/").last
-        filename = filename.split("\\").last
-        filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
-
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = @task.project.customer
-        task_file.project = @task.project
-        task_file.task_id = @task.id
-        task_file.user_id = current_user.id
-        task_file.filename = filename
-        task_file.name = filename
-        task_file.save
-        task_file.file_size = params['task_file'].size
-
-
-        task_file.save
-        task_file.reload
-
-        if !File.directory?(task_file.path)
-          File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue nil
-        end
-
-        File.umask(0)
-        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
-                                                                                                        task_file.destroy
-                                                                                                        task_file = nil
-                                                                                                        flash['notice'] = _("Permission denied while saving file.")
-                                                                                                      end
-        if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
-           image = Magick::Image.read( task_file.file_path ).first
-
-           if image.columns > 0
-              task_file.file_type = ProjectFile::FILETYPE_IMG
-              task_file.mime_type = image.mime_type
-              task_file.save
-           end
-           image = nil
-           GC.start
-        end
-
-        #TODO Add notification
-      end
-
+			create_attachments(@task)
+      
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = @task.project.company
@@ -778,54 +732,9 @@ class TasksController < ApplicationController
 
       end
 
-
-      if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
-
-        filename = params[:task_file].original_filename
-        filename = filename.split("/").last
-        filename = filename.split("\\").last
-        filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
-
-
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = @task.project.customer
-        task_file.project = @task.project
-        task_file.task_id = @task.id
-        task_file.user_id = current_user.id
-        task_file.filename = filename
-        task_file.name = filename
-        task_file.file_size = params['task_file'].size
-        task_file.save
-
-        task_file.reload
-
-        if !File.directory?(task_file.path)
-          File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue nil
-        end
-
-        File.umask(0)
-        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
-                                                                                                        task_file.destroy
-                                                                                                        flash['notice'] = _("Permission denied while saving file.")
-                                                                                                        filename = nil
-                                                                                                      end
-        if filename && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
-           image = Magick::Image.read( task_file.file_path ).first
-
-           if image.columns > 0
-              task_file.file_type = ProjectFile::FILETYPE_IMG
-              task_file.mime_type = image.mime_type
-              task_file.save
-           end
-           image = nil
-           GC.start
-        end
-
-        if filename
-          body << "- <strong>Attached</strong>: #{filename}\n"
-        end
+			files = create_attachments(@task)
+			files.each do |filename|
+        body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
       email_body = body
@@ -1915,5 +1824,64 @@ class TasksController < ApplicationController
     else 
       render :nothing => true
     end 
-  end 
+  end
+
+
+	private
+
+	def create_attachments(task)
+		filenames = []
+		unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+			params['tmp_files'].each do |tmp_file|
+				next if tmp_file.is_a?(String)
+			  filename = tmp_file.original_filename
+		    filename = filename.split("/").last
+		    filename = filename.split("\\").last
+		    filename = filename.gsub(/[^\w.]/, '_')
+
+		    task_file = ProjectFile.new()
+		    task_file.company = current_user.company
+		    task_file.customer = task.project.customer
+		    task_file.project = task.project
+		    task_file.task_id = task.id
+		    task_file.user_id = current_user.id
+		    task_file.filename = filename
+		    task_file.name = filename
+		    task_file.save
+		    task_file.file_size = tmp_file.size
+
+		    task_file.save
+		    task_file.reload
+
+			  File.umask(0)
+		    if !File.directory?(task_file.path)
+		     Dir.mkdir(task_file.path, 0777) rescue nil
+		    end
+
+		    File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
+		                                                                                         task_file.destroy
+		                                                                                         task_file = nil
+		                                                                                         flash['notice'] = _("Permission denied while saving file.")
+			                                                                                       next
+		                                                                                       end
+				filenames << filename
+		    if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+		      image = ImageOperations::get_image( task_file.file_path )
+					if ImageOperations::is_image?(image)
+		        task_file.file_type = ProjectFile::FILETYPE_IMG
+		        task_file.mime_type = image.mime_type
+		        task_file.save
+						thumb = ImageOperations::thumbnail(image, 124)
+		        f = File.new(task_file.thumbnail_path, "w", 0777)
+		        f.write(thumb.to_blob)
+		        f.close
+		      end
+		      image = thumb = nil
+		      GC.start
+		    end
+		  end
+		end
+		filenames
+	end
+
 end
