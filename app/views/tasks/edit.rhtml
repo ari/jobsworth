@@ -42,8 +42,6 @@ Event.observe($('task_status'), "change", function(e) {
 );
 
 $('comment').focus();
-
-
 </script>
 <style type="text/css">
 .todo-container {
@@ -53,8 +51,29 @@ $('comment').focus();
     padding-right: 0;
 }
 </style>
-<div id="content">
 
+<div style="float:right;width:20%;padding-right:1em;">
+
+      <% if @task.attachments.size > 0 %>
+      <fieldset id="task_attachments">
+        <legend><%=_ "Attachments" %></legend>
+
+        <% for file in @task.attachments %>
+        <% if file.thumbnail? %>
+        <div>
+        <a href="/project_files/show/<%=file.id%>"><img src="/project_files/thumbnail/<%=file.id%>" border="0" style="float:none;"/></a>
+        </div>
+        <% end %>
+        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=number_to_human_size(file.file_size)%>)
+        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
+        <br/><br/>
+        <% end %>
+
+      </fieldset>
+      <% end %>
+    </div>
+
+<div id="content" style="width:79%;">
   <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
     <tr><td>&nbsp;</td></tr>
     <tr><td align="left" class="page_header"><div style="float:left;"><%= _ 'To-do' %>
@@ -66,6 +85,7 @@ $('comment').focus();
 <div id="task_history">
    <%= render :partial => "history" %>
 </div>
+
 
 </div>
 <script type="text/javascript">
