@@ -239,6 +239,7 @@ init_db = "n" if init_db == "\n"
 if init_db.include?('y') || init_db.include?('Y')
   puts "Initializing database schema"
   system("rake db:schema:load RAILS_ENV=production")
+  system("rake db:migrate RAILS_ENV=production")
 end
 
 puts 
