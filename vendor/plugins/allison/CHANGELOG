@@ -1,0 +1,18 @@
+
+v2.0.3. Remove wrong copyright notices (technomancy).
+
+v2.0.2. Let's not talk about that.
+
+v2.0.1. Remove PROJECT constant which isn't even used, gosh (Adam).
+
+v2.0. Visual redesign. Gem version. 'allison' command line tool.
+
+v1.5. RDoc.
+
+v1.4. Again.
+
+v1.3. Hack to make gem versioning work.
+
+v1.2. Caching in order to remove Markaby dependency.
+
+v1. First release.

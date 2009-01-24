@@ -335,28 +335,28 @@ ActionController::Caching::Sweeper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000274'>
+<a href='#M000284'>
 after_create<br/>
 </a>
 
 
 
 
-<a href='#M000275'>
+<a href='#M000285'>
 after_destroy<br/>
 </a>
 
 
 
 
-<a href='#M000272'>
+<a href='#M000282'>
 after_save<br/>
 </a>
 
 
 
 
-<a href='#M000273'>
+<a href='#M000283'>
 after_update<br/>
 </a>
 
@@ -379,9 +379,9 @@ after_update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000274"><br/></a>
+<a class="small" name="M000284"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000274'>
+<a href='#M000284'>
 
 
 after_create
@@ -391,15 +391,15 @@ after_create
 </a>
 </h3>
 
-<p class="source_link" id="M000274-show-link"><a onclick="toggle('M000274-source'); toggleText('M000274-link'); return false;" href="#" id="M000274-link">Show source...</a></p><div class="source" id="M000274-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 10</span>
+<p class="source_link" id="M000284-show-link"><a onclick="toggle('M000284-source'); toggleText('M000284-link'); return false;" href="#" id="M000284-link">Show source...</a></p><div class="source" id="M000284-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 10</span>
 10:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_create</span>(<span class="ruby-identifier">record</span>)
 11:       <span class="ruby-identifier">expire_fragment</span>( <span class="ruby-node">%r{application/projects\.action_suffix=#{record.company_id}.*}</span> )  
 12:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000275"><br/></a>
+<a class="small" name="M000285"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000275'>
+<a href='#M000285'>
 
 
 after_destroy
@@ -409,15 +409,15 @@ after_destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000275-show-link"><a onclick="toggle('M000275-source'); toggleText('M000275-link'); return false;" href="#" id="M000275-link">Show source...</a></p><div class="source" id="M000275-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 13</span>
+<p class="source_link" id="M000285-show-link"><a onclick="toggle('M000285-source'); toggleText('M000285-link'); return false;" href="#" id="M000285-link">Show source...</a></p><div class="source" id="M000285-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 13</span>
 13:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_destroy</span>(<span class="ruby-identifier">record</span>)
 14:       <span class="ruby-identifier">expire_fragment</span>( <span class="ruby-node">%r{application/projects\.action_suffix=#{record.company_id}.*}</span> )  
 15:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000272"><br/></a>
+<a class="small" name="M000282"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000272'>
+<a href='#M000282'>
 
 
 after_save
@@ -427,15 +427,15 @@ after_save
 </a>
 </h3>
 
-<p class="source_link" id="M000272-show-link"><a onclick="toggle('M000272-source'); toggleText('M000272-link'); return false;" href="#" id="M000272-link">Show source...</a></p><div class="source" id="M000272-source"><pre>   <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 4</span>
+<p class="source_link" id="M000282-show-link"><a onclick="toggle('M000282-source'); toggleText('M000282-link'); return false;" href="#" id="M000282-link">Show source...</a></p><div class="source" id="M000282-source"><pre>   <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 4</span>
 4:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_save</span>(<span class="ruby-identifier">record</span>)
 5:       <span class="ruby-identifier">expire_fragment</span>( <span class="ruby-node">%r{application/projects\.action_suffix=#{record.company_id}.*}</span> )  
 6:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000273"><br/></a>
+<a class="small" name="M000283"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000273'>
+<a href='#M000283'>
 
 
 after_update
@@ -445,7 +445,7 @@ after_update
 </a>
 </h3>
 
-<p class="source_link" id="M000273-show-link"><a onclick="toggle('M000273-source'); toggleText('M000273-link'); return false;" href="#" id="M000273-link">Show source...</a></p><div class="source" id="M000273-source"><pre>   <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 7</span>
+<p class="source_link" id="M000283-show-link"><a onclick="toggle('M000283-source'); toggleText('M000283-link'); return false;" href="#" id="M000283-link">Show source...</a></p><div class="source" id="M000283-source"><pre>   <span class="ruby-comment cmt"># File app/models/project_sweeper.rb, line 7</span>
 7:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_update</span>(<span class="ruby-identifier">record</span>)
 8:       <span class="ruby-identifier">expire_fragment</span>( <span class="ruby-node">%r{application/projects\.action_suffix=#{record.company_id}.*}</span> )  
 9:     <span class="ruby-keyword kw">end</span></pre></div>

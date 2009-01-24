@@ -867,7 +867,7 @@ Get the RSS feed, based on the secret key passed on the url
 
 <p class="source_link" id="M000136-show-link"><a onclick="toggle('M000136-source'); toggleText('M000136-link'); return false;" href="#" id="M000136-link">Show source...</a></p><div class="source" id="M000136-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 58</span>
  58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rss</span>
- 59:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span>
+ 59:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">blank?</span>
  60: 
  61:     <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-value str">&quot;application/rss+xml&quot;</span>
  62: 

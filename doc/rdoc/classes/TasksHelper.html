@@ -331,28 +331,35 @@ Module: TasksHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000607'>
+<a href='#M000638'>
 pri_color<br/>
 </a>
 
 
 
 
-<a href='#M000608'>
+<a href='#M000639'>
 print_title<br/>
 </a>
 
 
 
 
-<a href='#M000610'>
+<a href='#M000641'>
 render_task_dependants<br/>
 </a>
 
 
 
 
-<a href='#M000609'>
+<a href='#M000642'>
+show_more_filters?<br/>
+</a>
+
+
+
+
+<a href='#M000640'>
 task_shown?<br/>
 </a>
 
@@ -375,9 +382,9 @@ task_shown?<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000607"><br/></a>
+<a class="small" name="M000638"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000607'>
+<a href='#M000638'>
 
 
 pri_color
@@ -387,7 +394,7 @@ pri_color
 </a>
 </h3>
 
-<p class="source_link" id="M000607-show-link"><a onclick="toggle('M000607-source'); toggleText('M000607-link'); return false;" href="#" id="M000607-link">Show source...</a></p><div class="source" id="M000607-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
+<p class="source_link" id="M000638-show-link"><a onclick="toggle('M000638-source'); toggleText('M000638-link'); return false;" href="#" id="M000638-link">Show source...</a></p><div class="source" id="M000638-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pri_color</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">priority</span>)
  4:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#b0d295&quot;</span>
  5:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#f2ab99&quot;</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">severity</span>)<span class="ruby-operator">/</span><span class="ruby-value">2.0</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span><span class="ruby-value">.5</span>
@@ -400,9 +407,9 @@ pri_color
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000608"><br/></a>
+<a class="small" name="M000639"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000608'>
+<a href='#M000639'>
 
 
 print_title
@@ -412,7 +419,7 @@ print_title
 </a>
 </h3>
 
-<p class="source_link" id="M000608-show-link"><a onclick="toggle('M000608-source'); toggleText('M000608-link'); return false;" href="#" id="M000608-link">Show source...</a></p><div class="source" id="M000608-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
+<p class="source_link" id="M000639-show-link"><a onclick="toggle('M000639-source'); toggleText('M000639-link'); return false;" href="#" id="M000639-link">Show source...</a></p><div class="source" id="M000639-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">print_title</span>
 15:     <span class="ruby-identifier">filters</span> = []
 16:     <span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;&lt;div style=\&quot;float:left\&quot;&gt;&quot;</span>
@@ -445,9 +452,9 @@ print_title
 43:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000610"><br/></a>
+<a class="small" name="M000641"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000610'>
+<a href='#M000641'>
 
 
 render_task_dependants
@@ -457,7 +464,7 @@ render_task_dependants
 </a>
 </h3>
 
-<p class="source_link" id="M000610-show-link"><a onclick="toggle('M000610-source'); toggleText('M000610-link'); return false;" href="#" id="M000610-link">Show source...</a></p><div class="source" id="M000610-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 81</span>
+<p class="source_link" id="M000641-show-link"><a onclick="toggle('M000641-source'); toggleText('M000641-link'); return false;" href="#" id="M000641-link">Show source...</a></p><div class="source" id="M000641-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 81</span>
  81:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">t</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">root_present</span>)
  82:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
  83:     <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">||=</span> []
@@ -468,40 +475,74 @@ render_task_dependants
  88: 
  89:     <span class="ruby-ivar">@deps</span> = []
  90: 
- 91:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root_present</span>
- 92:       <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
- 93:       <span class="ruby-identifier">parents</span> = []
- 94:       <span class="ruby-identifier">p</span> = <span class="ruby-identifier">t</span>
- 95:       <span class="ruby-keyword kw">while</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">p</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
- 96:         <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
- 97:         <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dep</span><span class="ruby-operator">|</span>
- 98:           <span class="ruby-identifier">root</span> = <span class="ruby-identifier">dep</span> <span class="ruby-keyword kw">if</span>((<span class="ruby-operator">!</span><span class="ruby-identifier">dep</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">dep</span>.<span class="ruby-identifier">id</span>) ) )
- 99:         <span class="ruby-keyword kw">end</span>
-100:         <span class="ruby-identifier">root</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>))
-101:         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">root</span>
-102:         <span class="ruby-ivar">@deps</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">id</span>
-103:       <span class="ruby-keyword kw">end</span>
-104:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">root</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">nil?</span>
-105: 
-106:     <span class="ruby-keyword kw">else</span>
-107:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">:override_filter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">shown</span> }) <span class="ruby-keyword kw">if</span>( ((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>)
-108: 
-109:       <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
+ 91:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+ 92:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>})
+ 93:     <span class="ruby-keyword kw">else</span> 
+ 94:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root_present</span>
+ 95:         <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
+ 96:         <span class="ruby-identifier">parents</span> = []
+ 97:         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">t</span>
+ 98:         <span class="ruby-keyword kw">while</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">p</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
+ 99:           <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
+100:           <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dep</span><span class="ruby-operator">|</span>
+101:             <span class="ruby-identifier">root</span> = <span class="ruby-identifier">dep</span> <span class="ruby-keyword kw">if</span>((<span class="ruby-operator">!</span><span class="ruby-identifier">dep</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">dep</span>.<span class="ruby-identifier">id</span>) ) )
+102:           <span class="ruby-keyword kw">end</span>
+103:           <span class="ruby-identifier">root</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>))
+104:           <span class="ruby-identifier">p</span> = <span class="ruby-identifier">root</span>
+105:           <span class="ruby-ivar">@deps</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">id</span>
+106:         <span class="ruby-keyword kw">end</span>
+107:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">root</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">nil?</span>
+108:       <span class="ruby-keyword kw">else</span>
+109:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">:override_filter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">shown</span> }) <span class="ruby-keyword kw">if</span>( ((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>)
 110: 
-111:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-112:         <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
-113:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">id</span>
-114:           <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">child</span>, (((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">depth</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span> )
-115:         <span class="ruby-keyword kw">end</span>
-116:       <span class="ruby-keyword kw">end</span>
-117:     <span class="ruby-keyword kw">end</span>
-118:     <span class="ruby-identifier">res</span>
-119:   <span class="ruby-keyword kw">end</span></pre></div>
+111:         <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
+112: 
+113:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+114:           <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+115:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">id</span>
+116:             <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">child</span>, (((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">depth</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span> )
+117:           <span class="ruby-keyword kw">end</span>
+118:         <span class="ruby-keyword kw">end</span>
+119:       <span class="ruby-keyword kw">end</span> 
+120:     <span class="ruby-keyword kw">end</span>
+121:     <span class="ruby-identifier">res</span>
+122:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000609"><br/></a>
+<a class="small" name="M000642"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000609'>
+<a href='#M000642'>
+
+
+show_more_filters?
+
+()
+
+</a>
+</h3>
+<p>
+Returns true if the more filters area should be shown.
+</p>
+
+<p class="source_link" id="M000642-show-link"><a onclick="toggle('M000642-source'); toggleText('M000642-link'); return false;" href="#" id="M000642-link">Show source...</a></p><div class="source" id="M000642-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 127</span>
+127:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_more_filters?</span>
+128:     <span class="ruby-identifier">show</span> = (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-1&quot;</span>) 
+129:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-10&quot;</span>) 
+130:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-10&quot;</span>)
+131:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)
+132: 
+133:     <span class="ruby-comment cmt"># we also need to show filter if any custom properties are set</span>
+134:     <span class="ruby-ivar">@properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">prop</span><span class="ruby-operator">|</span>
+135:       <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">prop</span>.<span class="ruby-identifier">filter_name</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+136:     <span class="ruby-keyword kw">end</span>
+137: 
+138:     <span class="ruby-identifier">show</span>
+139:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000640"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000640'>
 
 
 task_shown?
@@ -511,7 +552,7 @@ task_shown?
 </a>
 </h3>
 
-<p class="source_link" id="M000609-show-link"><a onclick="toggle('M000609-source'); toggleText('M000609-link'); return false;" href="#" id="M000609-link">Show source...</a></p><div class="source" id="M000609-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 45</span>
+<p class="source_link" id="M000640-show-link"><a onclick="toggle('M000640-source'); toggleText('M000640-link'); return false;" href="#" id="M000640-link">Show source...</a></p><div class="source" id="M000640-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 45</span>
 45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
 46: 
 47:     <span class="ruby-identifier">shown</span> = <span class="ruby-keyword kw">true</span>

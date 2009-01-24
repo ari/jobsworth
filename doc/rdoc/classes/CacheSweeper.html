@@ -335,28 +335,28 @@ ActionController::Caching::Sweeper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000223'>
+<a href='#M000233'>
 after_save<br/>
 </a>
 
 
 
 
-<a href='#M000224'>
+<a href='#M000234'>
 before_destroy<br/>
 </a>
 
 
 
 
-<a href='#M000225'>
+<a href='#M000235'>
 expire_milestone<br/>
 </a>
 
 
 
 
-<a href='#M000226'>
+<a href='#M000236'>
 expire_tree<br/>
 </a>
 
@@ -379,9 +379,9 @@ expire_tree<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000223"><br/></a>
+<a class="small" name="M000233"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000223'>
+<a href='#M000233'>
 
 
 after_save
@@ -391,7 +391,7 @@ after_save
 </a>
 </h3>
 
-<p class="source_link" id="M000223-show-link"><a onclick="toggle('M000223-source'); toggleText('M000223-link'); return false;" href="#" id="M000223-link">Show source...</a></p><div class="source" id="M000223-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 5</span>
+<p class="source_link" id="M000233-show-link"><a onclick="toggle('M000233-source'); toggleText('M000233-link'); return false;" href="#" id="M000233-link">Show source...</a></p><div class="source" id="M000233-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 5</span>
  5:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_save</span>(<span class="ruby-identifier">record</span>)
  6:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Milestone</span>)
  7:         <span class="ruby-identifier">expire_milestone</span>(<span class="ruby-identifier">record</span>)
@@ -401,9 +401,9 @@ after_save
 11:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000224"><br/></a>
+<a class="small" name="M000234"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000224'>
+<a href='#M000234'>
 
 
 before_destroy
@@ -413,7 +413,7 @@ before_destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000224-show-link"><a onclick="toggle('M000224-source'); toggleText('M000224-link'); return false;" href="#" id="M000224-link">Show source...</a></p><div class="source" id="M000224-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 13</span>
+<p class="source_link" id="M000234-show-link"><a onclick="toggle('M000234-source'); toggleText('M000234-link'); return false;" href="#" id="M000234-link">Show source...</a></p><div class="source" id="M000234-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 13</span>
 13:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">before_destroy</span>(<span class="ruby-identifier">record</span>)
 14:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Milestone</span>)
 15:         <span class="ruby-identifier">expire_milestone</span>(<span class="ruby-identifier">record</span>)
@@ -423,9 +423,9 @@ before_destroy
 19:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000225"><br/></a>
+<a class="small" name="M000235"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000225'>
+<a href='#M000235'>
 
 
 expire_milestone
@@ -435,7 +435,7 @@ expire_milestone
 </a>
 </h3>
 
-<p class="source_link" id="M000225-show-link"><a onclick="toggle('M000225-source'); toggleText('M000225-link'); return false;" href="#" id="M000225-link">Show source...</a></p><div class="source" id="M000225-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 21</span>
+<p class="source_link" id="M000235-show-link"><a onclick="toggle('M000235-source'); toggleText('M000235-link'); return false;" href="#" id="M000235-link">Show source...</a></p><div class="source" id="M000235-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 21</span>
 21:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">expire_milestone</span>(<span class="ruby-identifier">record</span>)
 22:         <span class="ruby-identifier">tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;milestone_id = ? AND completed_at is null&quot;</span>, <span class="ruby-identifier">record</span>.<span class="ruby-identifier">id</span>])
 23: 
@@ -445,9 +445,9 @@ expire_milestone
 27:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000226"><br/></a>
+<a class="small" name="M000236"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000226'>
+<a href='#M000236'>
 
 
 expire_tree
@@ -457,7 +457,7 @@ expire_tree
 </a>
 </h3>
 
-<p class="source_link" id="M000226-show-link"><a onclick="toggle('M000226-source'); toggleText('M000226-link'); return false;" href="#" id="M000226-link">Show source...</a></p><div class="source" id="M000226-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 29</span>
+<p class="source_link" id="M000236-show-link"><a onclick="toggle('M000236-source'); toggleText('M000236-link'); return false;" href="#" id="M000236-link">Show source...</a></p><div class="source" id="M000236-source"><pre>    <span class="ruby-comment cmt"># File app/models/cache_sweeper.rb, line 29</span>
 29:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">expire_tree</span>(<span class="ruby-identifier">record</span>)
 30: 
 31:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">record</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Sheet</span>)
