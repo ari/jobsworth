@@ -71,7 +71,7 @@ class ProjectFile < ActiveRecord::Base
   end
 
   def thumbnail_path
-    File.join(path, "thumb_" + self.store_name)
+    File.join(path, "thumb_" + self.store_name)# + ".jpg")
   end
 
   def thumbnail?
@@ -93,5 +93,22 @@ class ProjectFile < ActiveRecord::Base
   def started_at
     self.created_at
   end
+
+  def generate_thumbnail(size = 124)
+    image = ImageOperations::get_image( self.file_path ) rescue begin
+                                                                  return false
+                                                                  end 
+    if ImageOperations::is_image?(image)
+      res = %x[convert #{self.file_path}  -thumbnail 124x124 \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage -strip #{self.thumbnail_path}]
+      puts res
+
+#      thumb = ImageOperations::thumbnail(image, size)
+#      f = File.new(self.thumbnail_path, "w", 0777)
+#      f.write(thumb.to_blob)
+#      f.close
+    end
+    image = thumb = nil
+    true
+  end 
   
 end
