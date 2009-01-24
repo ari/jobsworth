@@ -335,63 +335,63 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000214'>
+<a href='#M000224'>
 full_name<br/>
 </a>
 
 
 
 
-<a href='#M000222'>
+<a href='#M000232'>
 open_milestones_count<br/>
 </a>
 
 
 
 
-<a href='#M000220'>
+<a href='#M000230'>
 open_tasks_count<br/>
 </a>
 
 
 
 
-<a href='#M000218'>
+<a href='#M000228'>
 overtime<br/>
 </a>
 
 
 
 
-<a href='#M000215'>
+<a href='#M000225'>
 to_css_name<br/>
 </a>
 
 
 
 
-<a href='#M000216'>
+<a href='#M000226'>
 total_estimate<br/>
 </a>
 
 
 
 
-<a href='#M000221'>
+<a href='#M000231'>
 total_milestones_count<br/>
 </a>
 
 
 
 
-<a href='#M000219'>
+<a href='#M000229'>
 total_tasks_count<br/>
 </a>
 
 
 
 
-<a href='#M000217'>
+<a href='#M000227'>
 work_done<br/>
 </a>
 
@@ -419,9 +419,9 @@ href="Customer.html">Customer</a> / Client
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000214"><br/></a>
+<a class="small" name="M000224"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000214'>
+<a href='#M000224'>
 
 
 full_name
@@ -431,15 +431,15 @@ full_name
 </a>
 </h3>
 
-<p class="source_link" id="M000214-show-link"><a onclick="toggle('M000214-source'); toggleText('M000214-link'); return false;" href="#" id="M000214-link">Show source...</a></p><div class="source" id="M000214-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 33</span>
+<p class="source_link" id="M000224-show-link"><a onclick="toggle('M000224-source'); toggleText('M000224-link'); return false;" href="#" id="M000224-link">Show source...</a></p><div class="source" id="M000224-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 33</span>
 33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
 34:     <span class="ruby-node">&quot;#{customer.name} / #{name}&quot;</span>
 35:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000222"><br/></a>
+<a class="small" name="M000232"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000222'>
+<a href='#M000232'>
 
 
 open_milestones_count
@@ -449,7 +449,7 @@ open_milestones_count
 </a>
 </h3>
 
-<p class="source_link" id="M000222-show-link"><a onclick="toggle('M000222-source'); toggleText('M000222-link'); return false;" href="#" id="M000222-link">Show source...</a></p><div class="source" id="M000222-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 77</span>
+<p class="source_link" id="M000232-show-link"><a onclick="toggle('M000232-source'); toggleText('M000232-link'); return false;" href="#" id="M000232-link">Show source...</a></p><div class="source" id="M000232-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 77</span>
 77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">open_milestones_count</span>
 78:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_milestones</span>.<span class="ruby-identifier">nil?</span>
 79:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_milestones</span> = <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
@@ -459,9 +459,9 @@ open_milestones_count
 83:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000220"><br/></a>
+<a class="small" name="M000230"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000220'>
+<a href='#M000230'>
 
 
 open_tasks_count
@@ -471,7 +471,7 @@ open_tasks_count
 </a>
 </h3>
 
-<p class="source_link" id="M000220-show-link"><a onclick="toggle('M000220-source'); toggleText('M000220-link'); return false;" href="#" id="M000220-link">Show source...</a></p><div class="source" id="M000220-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 61</span>
+<p class="source_link" id="M000230-show-link"><a onclick="toggle('M000230-source'); toggleText('M000230-link'); return false;" href="#" id="M000230-link">Show source...</a></p><div class="source" id="M000230-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 61</span>
 61:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">open_tasks_count</span>
 62:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_tasks</span>.<span class="ruby-identifier">nil?</span>
 63:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">open_tasks</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
@@ -481,9 +481,9 @@ open_tasks_count
 67:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000218"><br/></a>
+<a class="small" name="M000228"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000218'>
+<a href='#M000228'>
 
 
 overtime
@@ -493,15 +493,15 @@ overtime
 </a>
 </h3>
 
-<p class="source_link" id="M000218-show-link"><a onclick="toggle('M000218-source'); toggleText('M000218-link'); return false;" href="#" id="M000218-link">Show source...</a></p><div class="source" id="M000218-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 49</span>
+<p class="source_link" id="M000228-show-link"><a onclick="toggle('M000228-source'); toggleText('M000228-link'); return false;" href="#" id="M000228-link">Show source...</a></p><div class="source" id="M000228-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 49</span>
 49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">overtime</span>
 50:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-value str">'worked_minutes - duration'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;worked_minutes &gt; duration&quot;</span>).<span class="ruby-identifier">to_i</span>
 51:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000215"><br/></a>
+<a class="small" name="M000225"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000215'>
+<a href='#M000225'>
 
 
 to_css_name
@@ -511,15 +511,15 @@ to_css_name
 </a>
 </h3>
 
-<p class="source_link" id="M000215-show-link"><a onclick="toggle('M000215-source'); toggleText('M000215-link'); return false;" href="#" id="M000215-link">Show source...</a></p><div class="source" id="M000215-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 37</span>
+<p class="source_link" id="M000225-show-link"><a onclick="toggle('M000225-source'); toggleText('M000225-link'); return false;" href="#" id="M000225-link">Show source...</a></p><div class="source" id="M000225-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_css_name</span>
 38:     <span class="ruby-node">&quot;#{self.name.underscore.dasherize.gsub(/[ \.&quot;',]/,'-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'&quot;,]/,'-')}&quot;</span>
 39:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000216"><br/></a>
+<a class="small" name="M000226"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000216'>
+<a href='#M000226'>
 
 
 total_estimate
@@ -529,15 +529,15 @@ total_estimate
 </a>
 </h3>
 
-<p class="source_link" id="M000216-show-link"><a onclick="toggle('M000216-source'); toggleText('M000216-link'); return false;" href="#" id="M000216-link">Show source...</a></p><div class="source" id="M000216-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 41</span>
+<p class="source_link" id="M000226-show-link"><a onclick="toggle('M000226-source'); toggleText('M000226-link'); return false;" href="#" id="M000226-link">Show source...</a></p><div class="source" id="M000226-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 41</span>
 41:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_estimate</span>
 42:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-identifier">:duration</span>).<span class="ruby-identifier">to_i</span>
 43:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000221"><br/></a>
+<a class="small" name="M000231"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000221'>
+<a href='#M000231'>
 
 
 total_milestones_count
@@ -547,7 +547,7 @@ total_milestones_count
 </a>
 </h3>
 
-<p class="source_link" id="M000221-show-link"><a onclick="toggle('M000221-source'); toggleText('M000221-link'); return false;" href="#" id="M000221-link">Show source...</a></p><div class="source" id="M000221-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 69</span>
+<p class="source_link" id="M000231-show-link"><a onclick="toggle('M000231-source'); toggleText('M000231-link'); return false;" href="#" id="M000231-link">Show source...</a></p><div class="source" id="M000231-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 69</span>
 69:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_milestones_count</span>
 70:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_milestones</span>.<span class="ruby-identifier">nil?</span>
 71:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_milestones</span> = <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">count</span>
@@ -557,9 +557,9 @@ total_milestones_count
 75:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000219"><br/></a>
+<a class="small" name="M000229"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000219'>
+<a href='#M000229'>
 
 
 total_tasks_count
@@ -569,7 +569,7 @@ total_tasks_count
 </a>
 </h3>
 
-<p class="source_link" id="M000219-show-link"><a onclick="toggle('M000219-source'); toggleText('M000219-link'); return false;" href="#" id="M000219-link">Show source...</a></p><div class="source" id="M000219-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 53</span>
+<p class="source_link" id="M000229-show-link"><a onclick="toggle('M000229-source'); toggleText('M000229-link'); return false;" href="#" id="M000229-link">Show source...</a></p><div class="source" id="M000229-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 53</span>
 53:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_tasks_count</span>
 54:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span>.<span class="ruby-identifier">nil?</span>
 55:        <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>
@@ -579,9 +579,9 @@ total_tasks_count
 59:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000217"><br/></a>
+<a class="small" name="M000227"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000217'>
+<a href='#M000227'>
 
 
 work_done
@@ -591,7 +591,7 @@ work_done
 </a>
 </h3>
 
-<p class="source_link" id="M000217-show-link"><a onclick="toggle('M000217-source'); toggleText('M000217-link'); return false;" href="#" id="M000217-link">Show source...</a></p><div class="source" id="M000217-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 45</span>
+<p class="source_link" id="M000227-show-link"><a onclick="toggle('M000227-source'); toggleText('M000227-link'); return false;" href="#" id="M000227-link">Show source...</a></p><div class="source" id="M000227-source"><pre>    <span class="ruby-comment cmt"># File app/models/project.rb, line 45</span>
 45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">work_done</span>
 46:     <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-identifier">:worked_minutes</span>).<span class="ruby-identifier">to_i</span>
 47:   <span class="ruby-keyword kw">end</span></pre></div>

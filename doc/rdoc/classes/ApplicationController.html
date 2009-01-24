@@ -1163,7 +1163,7 @@ Force UTF-8 for all text Content-Types
 84:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_charset</span>
 85:     <span class="ruby-identifier">content_type</span> = <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">'text/html'</span>
 86:     <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^text\//</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">content_type</span>)
-87:       <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-node">&quot;#{content_type}; charset=\&quot;utf-8\&quot;&quot;</span>
+87:       <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-node">&quot;#{content_type}; charset=utf-8&quot;</span>
 88:     <span class="ruby-keyword kw">end</span>
 89: 
 90:   <span class="ruby-keyword kw">end</span></pre></div>

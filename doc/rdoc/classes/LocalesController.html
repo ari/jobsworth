@@ -337,21 +337,21 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000143'>
+<a href='#M000151'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000144'>
+<a href='#M000152'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000145'>
+<a href='#M000153'>
 update<br/>
 </a>
 
@@ -374,9 +374,9 @@ update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000143"><br/></a>
+<a class="small" name="M000151"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000143'>
+<a href='#M000151'>
 
 
 index
@@ -386,15 +386,15 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000143-show-link"><a onclick="toggle('M000143-source'); toggleText('M000143-link'); return false;" href="#" id="M000143-link">Show source...</a></p><div class="source" id="M000143-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 3</span>
+<p class="source_link" id="M000151-show-link"><a onclick="toggle('M000151-source'); toggleText('M000151-link'); return false;" href="#" id="M000151-link">Show source...</a></p><div class="source" id="M000151-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
 4:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
 5:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000144"><br/></a>
+<a class="small" name="M000152"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000144'>
+<a href='#M000152'>
 
 
 list
@@ -404,7 +404,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000144-show-link"><a onclick="toggle('M000144-source'); toggleText('M000144-link'); return false;" href="#" id="M000144-link">Show source...</a></p><div class="source" id="M000144-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 7</span>
+<p class="source_link" id="M000152-show-link"><a onclick="toggle('M000152-source'); toggleText('M000152-link'); return false;" href="#" id="M000152-link">Show source...</a></p><div class="source" id="M000152-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 7</span>
  7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
  8:     <span class="ruby-ivar">@keys</span> = <span class="ruby-constant">Locale</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;locales.locale = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">locale</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;locales.same = 1, locales.key = locales.singular desc, length(locales.key),locales.key&quot;</span>)
  9:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">locale</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">'en_US'</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">10</span>
@@ -414,9 +414,9 @@ list
 13:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000145"><br/></a>
+<a class="small" name="M000153"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000145'>
+<a href='#M000153'>
 
 
 update
@@ -426,7 +426,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000145-show-link"><a onclick="toggle('M000145-source'); toggleText('M000145-link'); return false;" href="#" id="M000145-link">Show source...</a></p><div class="source" id="M000145-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 15</span>
+<p class="source_link" id="M000153-show-link"><a onclick="toggle('M000153-source'); toggleText('M000153-link'); return false;" href="#" id="M000153-link">Show source...</a></p><div class="source" id="M000153-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/locales_controller.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 16:     <span class="ruby-identifier">modified</span> = <span class="ruby-keyword kw">false</span>
 17:     <span class="ruby-identifier">count</span> = <span class="ruby-value">0</span>

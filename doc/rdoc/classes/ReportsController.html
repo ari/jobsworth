@@ -337,70 +337,70 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000211'>
+<a href='#M000221'>
 create_csv<br/>
 </a>
 
 
 
 
-<a href='#M000209'>
+<a href='#M000219'>
 do_column<br/>
 </a>
 
 
 
 
-<a href='#M000208'>
+<a href='#M000218'>
 do_row<br/>
 </a>
 
 
 
 
-<a href='#M000212'>
+<a href='#M000222'>
 get_csv<br/>
 </a>
 
 
 
 
-<a href='#M000204'>
+<a href='#M000214'>
 get_date_header<br/>
 </a>
 
 
 
 
-<a href='#M000205'>
+<a href='#M000215'>
 get_date_key<br/>
 </a>
 
 
 
 
-<a href='#M000213'>
+<a href='#M000223'>
 get_projects<br/>
 </a>
 
 
 
 
-<a href='#M000206'>
+<a href='#M000216'>
 key_from_worklog<br/>
 </a>
 
 
 
 
-<a href='#M000210'>
+<a href='#M000220'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000207'>
+<a href='#M000217'>
 name_from_worklog<br/>
 </a>
 
@@ -428,9 +428,9 @@ well as CSV downloading.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000211"><br/></a>
+<a class="small" name="M000221"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000211'>
+<a href='#M000221'>
 
 
 create_csv
@@ -440,55 +440,55 @@ create_csv
 </a>
 </h3>
 
-<p class="source_link" id="M000211-show-link"><a onclick="toggle('M000211-source'); toggleText('M000211-link'); return false;" href="#" id="M000211-link">Show source...</a></p><div class="source" id="M000211-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 507</span>
-507:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_csv</span>
-508:     <span class="ruby-identifier">csv_string</span> = <span class="ruby-value str">&quot;&quot;</span>
-509:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span>
-510:       <span class="ruby-identifier">csv_string</span> = <span class="ruby-constant">FasterCSV</span>.<span class="ruby-identifier">generate</span>( <span class="ruby-identifier">:col_sep</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;,&quot;</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
-511: 
-512:         <span class="ruby-identifier">header</span> = [<span class="ruby-keyword kw">nil</span>]
-513:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-514:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-515:           <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
-516:         <span class="ruby-keyword kw">end</span>
-517:         <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Total&quot;</span>)]
-518:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header</span>
-519: 
-520:         <span class="ruby-ivar">@rows</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-521:           <span class="ruby-identifier">row</span> = []
-522:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>[<span class="ruby-value str">'__'</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
-523:           <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-524:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-525:             <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
-526:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Fixnum</span>)
-527:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]
-528:             <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
-529:           <span class="ruby-keyword kw">end</span>
-530:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@row_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span>]
-531:           <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
-532:         <span class="ruby-keyword kw">end</span>
-533: 
-534:         <span class="ruby-identifier">row</span> = []
-535:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">'Total'</span>)]
-536:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-537:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-538:           <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
-539:           <span class="ruby-identifier">val</span> = <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-540:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
-541:         <span class="ruby-keyword kw">end</span>
-542:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@total</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>]
-543:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
-544: 
-545: 
-546:       <span class="ruby-keyword kw">end</span>
-547:     <span class="ruby-keyword kw">end</span>
-548:     <span class="ruby-identifier">csv_string</span>
-549:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000221-show-link"><a onclick="toggle('M000221-source'); toggleText('M000221-link'); return false;" href="#" id="M000221-link">Show source...</a></p><div class="source" id="M000221-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 513</span>
+513:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_csv</span>
+514:     <span class="ruby-identifier">csv_string</span> = <span class="ruby-value str">&quot;&quot;</span>
+515:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span>
+516:       <span class="ruby-identifier">csv_string</span> = <span class="ruby-constant">FasterCSV</span>.<span class="ruby-identifier">generate</span>( <span class="ruby-identifier">:col_sep</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;,&quot;</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
+517: 
+518:         <span class="ruby-identifier">header</span> = [<span class="ruby-keyword kw">nil</span>]
+519:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+520:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+521:           <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
+522:         <span class="ruby-keyword kw">end</span>
+523:         <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Total&quot;</span>)]
+524:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header</span>
+525: 
+526:         <span class="ruby-ivar">@rows</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+527:           <span class="ruby-identifier">row</span> = []
+528:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>[<span class="ruby-value str">'__'</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
+529:           <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+530:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+531:             <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
+532:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Fixnum</span>)
+533:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]
+534:             <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
+535:           <span class="ruby-keyword kw">end</span>
+536:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@row_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span>]
+537:           <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
+538:         <span class="ruby-keyword kw">end</span>
+539: 
+540:         <span class="ruby-identifier">row</span> = []
+541:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">'Total'</span>)]
+542:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+543:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+544:           <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
+545:           <span class="ruby-identifier">val</span> = <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+546:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
+547:         <span class="ruby-keyword kw">end</span>
+548:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@total</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>]
+549:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
+550: 
+551: 
+552:       <span class="ruby-keyword kw">end</span>
+553:     <span class="ruby-keyword kw">end</span>
+554:     <span class="ruby-identifier">csv_string</span>
+555:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000209"><br/></a>
+<a class="small" name="M000219"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000209'>
+<a href='#M000219'>
 
 
 do_column
@@ -498,7 +498,7 @@ do_column
 </a>
 </h3>
 
-<p class="source_link" id="M000209-show-link"><a onclick="toggle('M000209-source'); toggleText('M000209-link'); return false;" href="#" id="M000209-link">Show source...</a></p><div class="source" id="M000209-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 155</span>
+<p class="source_link" id="M000219-show-link"><a onclick="toggle('M000219-source'); toggleText('M000219-link'); return false;" href="#" id="M000219-link">Show source...</a></p><div class="source" id="M000219-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 155</span>
 155:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
 156:     <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}&quot;</span>)
 157: 
@@ -551,9 +551,9 @@ do_column
 204:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000208"><br/></a>
+<a class="small" name="M000218"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000208'>
+<a href='#M000218'>
 
 
 do_row
@@ -563,7 +563,7 @@ do_row
 </a>
 </h3>
 
-<p class="source_link" id="M000208-show-link"><a onclick="toggle('M000208-source'); toggleText('M000208-link'); return false;" href="#" id="M000208-link">Show source...</a></p><div class="source" id="M000208-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 137</span>
+<p class="source_link" id="M000218-show-link"><a onclick="toggle('M000218-source'); toggleText('M000218-link'); return false;" href="#" id="M000218-link">Show source...</a></p><div class="source" id="M000218-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 137</span>
 137:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">do_row</span>(<span class="ruby-identifier">rkey</span>, <span class="ruby-identifier">rname</span>, <span class="ruby-identifier">vkey</span>, <span class="ruby-identifier">duration</span>)
 138:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@rows</span>[<span class="ruby-identifier">rkey</span>]
 139:       <span class="ruby-ivar">@rows</span>[ <span class="ruby-identifier">rkey</span> ] <span class="ruby-operator">||=</span> { }
@@ -582,9 +582,9 @@ do_row
 152:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000212"><br/></a>
+<a class="small" name="M000222"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000212'>
+<a href='#M000222'>
 
 
 get_csv
@@ -594,23 +594,23 @@ get_csv
 </a>
 </h3>
 
-<p class="source_link" id="M000212-show-link"><a onclick="toggle('M000212-source'); toggleText('M000212-link'); return false;" href="#" id="M000212-link">Show source...</a></p><div class="source" id="M000212-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 551</span>
-551:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_csv</span>
-552:     <span class="ruby-ivar">@report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ? AND company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-553:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@report</span>
-554:       <span class="ruby-identifier">send_data</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report</span>,
-555:                 <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'text/csv; charset=utf-8; header=present'</span>,
-556:                 <span class="ruby-identifier">:filename</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">filename</span>)
-557:     <span class="ruby-keyword kw">else</span>
-558:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-559:     <span class="ruby-keyword kw">end</span>
-560: 
-561:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000222-show-link"><a onclick="toggle('M000222-source'); toggleText('M000222-link'); return false;" href="#" id="M000222-link">Show source...</a></p><div class="source" id="M000222-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 557</span>
+557:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_csv</span>
+558:     <span class="ruby-ivar">@report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ? AND company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+559:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@report</span>
+560:       <span class="ruby-identifier">send_data</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report</span>,
+561:                 <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'text/csv; charset=utf-8; header=present'</span>,
+562:                 <span class="ruby-identifier">:filename</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">filename</span>)
+563:     <span class="ruby-keyword kw">else</span>
+564:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+565:     <span class="ruby-keyword kw">end</span>
+566: 
+567:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000204"><br/></a>
+<a class="small" name="M000214"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000204'>
+<a href='#M000214'>
 
 
 get_date_header
@@ -620,7 +620,7 @@ get_date_header
 </a>
 </h3>
 
-<p class="source_link" id="M000204-show-link"><a onclick="toggle('M000204-source'); toggleText('M000204-link'); return false;" href="#" id="M000204-link">Show source...</a></p><div class="source" id="M000204-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 8</span>
+<p class="source_link" id="M000214-show-link"><a onclick="toggle('M000214-source'); toggleText('M000214-link'); return false;" href="#" id="M000214-link">Show source...</a></p><div class="source" id="M000214-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 8</span>
  8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_date_header</span>(<span class="ruby-identifier">w</span>)
  9:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@range</span>.<span class="ruby-identifier">to_i</span>
 10:       <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>).<span class="ruby-identifier">strftime_localized</span>(<span class="ruby-value str">&quot;%a &lt;br/&gt;%d/%m&quot;</span>)
@@ -640,9 +640,9 @@ get_date_header
 24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000205"><br/></a>
+<a class="small" name="M000215"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000205'>
+<a href='#M000215'>
 
 
 get_date_key
@@ -652,7 +652,7 @@ get_date_key
 </a>
 </h3>
 
-<p class="source_link" id="M000205-show-link"><a onclick="toggle('M000205-source'); toggleText('M000205-link'); return false;" href="#" id="M000205-link">Show source...</a></p><div class="source" id="M000205-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 26</span>
+<p class="source_link" id="M000215-show-link"><a onclick="toggle('M000215-source'); toggleText('M000215-link'); return false;" href="#" id="M000215-link">Show source...</a></p><div class="source" id="M000215-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_date_key</span>(<span class="ruby-identifier">w</span>)
 27:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@range</span>.<span class="ruby-identifier">to_i</span>
 28:       <span class="ruby-node">&quot;#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%u')}&quot;</span>
@@ -664,9 +664,9 @@ get_date_key
 34:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000213"><br/></a>
+<a class="small" name="M000223"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000213'>
+<a href='#M000223'>
 
 
 get_projects
@@ -676,28 +676,28 @@ get_projects
 </a>
 </h3>
 
-<p class="source_link" id="M000213-show-link"><a onclick="toggle('M000213-source'); toggleText('M000213-link'); return false;" href="#" id="M000213-link">Show source...</a></p><div class="source" id="M000213-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 563</span>
-563:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
-564:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-565:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
-566:         <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-567:     <span class="ruby-keyword kw">else</span>
-568:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
-569:                    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }
-570:                    ).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-571:     <span class="ruby-keyword kw">end</span>
-572: 
-573:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Closed Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
-574: 
-575:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
-576:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
-577:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
-578:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000223-show-link"><a onclick="toggle('M000223-source'); toggleText('M000223-link'); return false;" href="#" id="M000223-link">Show source...</a></p><div class="source" id="M000223-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 569</span>
+569:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
+570:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+571:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
+572:         <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+573:     <span class="ruby-keyword kw">else</span>
+574:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
+575:                    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }
+576:                    ).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+577:     <span class="ruby-keyword kw">end</span>
+578: 
+579:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Closed Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
+580: 
+581:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
+582:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
+583:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
+584:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000206"><br/></a>
+<a class="small" name="M000216"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000206'>
+<a href='#M000216'>
 
 
 key_from_worklog
@@ -707,7 +707,7 @@ key_from_worklog
 </a>
 </h3>
 
-<p class="source_link" id="M000206-show-link"><a onclick="toggle('M000206-source'); toggleText('M000206-link'); return false;" href="#" id="M000206-link">Show source...</a></p><div class="source" id="M000206-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 36</span>
+<p class="source_link" id="M000216-show-link"><a onclick="toggle('M000216-source'); toggleText('M000216-link'); return false;" href="#" id="M000216-link">Show source...</a></p><div class="source" id="M000216-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 36</span>
 36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">r</span>)
 37:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">r</span>
 38:     <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>
@@ -761,9 +761,9 @@ key_from_worklog
 86:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000210"><br/></a>
+<a class="small" name="M000220"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000210'>
+<a href='#M000220'>
 
 
 list
@@ -773,7 +773,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000210-show-link"><a onclick="toggle('M000210-source'); toggleText('M000210-link'); return false;" href="#" id="M000210-link">Show source...</a></p><div class="source" id="M000210-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 207</span>
+<p class="source_link" id="M000220-show-link"><a onclick="toggle('M000220-source'); toggleText('M000220-link'); return false;" href="#" id="M000220-link">Show source...</a></p><div class="source" id="M000220-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 207</span>
 207:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 208:     <span class="ruby-identifier">sql_filter</span> = <span class="ruby-value str">&quot;&quot;</span>
 209:     <span class="ruby-identifier">date_filter</span> = <span class="ruby-value str">&quot;&quot;</span>
@@ -856,228 +856,234 @@ list
 286:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;-&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">beginning_of_year</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>)
 287:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">7</span>
 288:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:start_date</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
-289:             <span class="ruby-identifier">start_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">strptime</span>( <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:start_date</span>], <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">date_format</span> ).<span class="ruby-identifier">to_time</span>
-290:             <span class="ruby-identifier">date_filter</span> = <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND work_logs.started_at &gt;= '#{tz.local_to_utc(start_date.midnight).to_s(:db)}'&quot;</span>
-291:           <span class="ruby-keyword kw">end</span>
-292: 
-293:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
-294:             <span class="ruby-identifier">end_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">strptime</span>( <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>], <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">date_format</span> ).<span class="ruby-identifier">to_time</span>
-295:             <span class="ruby-identifier">date_filter</span> = <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND work_logs.started_at &lt; '#{tz.local_to_utc( (end_date + 1.day).midnight).to_s(:db)}'&quot;</span>
-296:           <span class="ruby-keyword kw">end</span>
-297: 
-298:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span>
-299:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">end_date</span>
-300: 
-301:         <span class="ruby-keyword kw">end</span>
-302: 
-303:         <span class="ruby-identifier">join</span> = <span class="ruby-value str">&quot;&quot;</span>
-304:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-305:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.status = #{task_status}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
-306:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.type_id = #{task_type_id}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
-307:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.priority = #{task_priority}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-308:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.severity_id = #{task_severity}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-309:         <span class="ruby-keyword kw">end</span>
-310: 
-311:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">empty?</span>
-312:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">tagged_with</span>(<span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">downcase</span>, { <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:filter_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;-1&quot;</span> } ).<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;,&quot;</span>)
-313:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span>.<span class="ruby-identifier">empty?</span>
-314:           <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND work_logs.task_id IN (#{task_ids})&quot;</span>
+289:             <span class="ruby-identifier">start_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">strptime</span>( <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:start_date</span>], <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">date_format</span> ).<span class="ruby-identifier">to_time</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+290:                                                                                                              <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Invalid start date&quot;</span>)
+291:                                                                                                              <span class="ruby-identifier">start_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>
+292:                                                                                                            <span class="ruby-keyword kw">end</span> 
+293:             <span class="ruby-identifier">date_filter</span> = <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND work_logs.started_at &gt;= '#{tz.local_to_utc(start_date.midnight).to_s(:db)}'&quot;</span>
+294:           <span class="ruby-keyword kw">end</span>
+295: 
+296:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>].<span class="ruby-identifier">length</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+297:             <span class="ruby-identifier">end_date</span> = <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">strptime</span>( <span class="ruby-identifier">filter</span>[<span class="ruby-identifier">:stop_date</span>], <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">date_format</span> ).<span class="ruby-identifier">to_time</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+298:                                                                                                           <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] <span class="ruby-operator">||=</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Invalid end date&quot;</span>)
+299:                                                                                                           <span class="ruby-identifier">end_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>
+300:                                                                                                         <span class="ruby-keyword kw">end</span> 
+301:             <span class="ruby-identifier">date_filter</span> = <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND work_logs.started_at &lt; '#{tz.local_to_utc( (end_date + 1.day).midnight).to_s(:db)}'&quot;</span>
+302:           <span class="ruby-keyword kw">end</span>
+303: 
+304:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span>
+305:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%Y%m%d&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">end_date</span>
+306: 
+307:         <span class="ruby-keyword kw">end</span>
+308: 
+309:         <span class="ruby-identifier">join</span> = <span class="ruby-value str">&quot;&quot;</span>
+310:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
+311:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.status = #{task_status}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
+312:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.type_id = #{task_type_id}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
+313:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.priority = #{task_priority}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
+314:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.severity_id = #{task_severity}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
 315:         <span class="ruby-keyword kw">end</span>
 316: 
-317:         <span class="ruby-ivar">@projects</span> = []
-318:         <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">-2</span>
-319:         <span class="ruby-ivar">@projects</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
-320:         <span class="ruby-ivar">@logs</span> = []
-321:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-322:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">join</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;&quot;</span>
-323:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">work_logs</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.*&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.project_id&quot;</span>, <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;LEFT JOIN tasks ON tasks.id = work_logs.task_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;work_logs.company_id = ? AND work_logs.duration &gt; 0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">join</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>])
-324:           <span class="ruby-keyword kw">else</span>
-325:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">work_logs</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.project_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;work_logs.company_id = ? AND duration &gt; 0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>])
-326:           <span class="ruby-keyword kw">end</span>
-327:         <span class="ruby-keyword kw">end</span>
-328: 
-329:       <span class="ruby-keyword kw">else</span>
-330:         <span class="ruby-comment cmt"># Workload report</span>
-331: 
-332:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">customer_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-333:           <span class="ruby-identifier">sql_filter</span> = <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND tasks.project_id IN (#{Project.find(:all, :conditions =&gt; [&quot;customer_id = ?&quot;, customer_id]).collect{|p| p.id}.join(',') || '0' })&quot;</span>
-334:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">customer_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
-335:         <span class="ruby-keyword kw">end</span>
-336: 
-337:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-338:           <span class="ruby-identifier">sql_filter</span> = <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND tasks.project_id = #{project_id}&quot;</span>
-339:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">project_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
-340:         <span class="ruby-keyword kw">end</span>
-341: 
-342:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-343:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">user_id</span>.<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-344:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
-345:             <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot; AND tasks.id IN (0) &quot;</span>
-346:           <span class="ruby-keyword kw">else</span>
-347:             <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.id IN (#{task_ids}) &quot;</span>
-348:           <span class="ruby-keyword kw">end</span>
-349:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
-350:         <span class="ruby-keyword kw">end</span>
-351: 
-352:         <span class="ruby-identifier">join</span> = <span class="ruby-value str">&quot;&quot;</span>
-353:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-354:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.status = #{task_status}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
-355:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.type_id = #{task_type_id}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
-356:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.priority = #{task_priority}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-357:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.severity_id = #{task_severity}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
-358:         <span class="ruby-keyword kw">end</span>
-359: 
-360:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">empty?</span>
-361:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">tagged_with</span>(<span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">downcase</span>, { <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:filter_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;-1&quot;</span> } ).<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;,&quot;</span>)
-362:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span>.<span class="ruby-identifier">empty?</span>
-363:           <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.id IN (#{task_ids})&quot;</span>
+317:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">empty?</span>
+318:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">tagged_with</span>(<span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">downcase</span>, { <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:filter_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;-1&quot;</span> } ).<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;,&quot;</span>)
+319:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span>.<span class="ruby-identifier">empty?</span>
+320:           <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND work_logs.task_id IN (#{task_ids})&quot;</span>
+321:         <span class="ruby-keyword kw">end</span>
+322: 
+323:         <span class="ruby-ivar">@projects</span> = []
+324:         <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">-2</span>
+325:         <span class="ruby-ivar">@projects</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
+326:         <span class="ruby-ivar">@logs</span> = []
+327:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+328:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">join</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;&quot;</span>
+329:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">work_logs</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.*&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.project_id&quot;</span>, <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;LEFT JOIN tasks ON tasks.id = work_logs.task_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;work_logs.company_id = ? AND work_logs.duration &gt; 0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">join</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>])
+330:           <span class="ruby-keyword kw">else</span>
+331:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">work_logs</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;work_logs.project_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;work_logs.company_id = ? AND duration &gt; 0&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>])
+332:           <span class="ruby-keyword kw">end</span>
+333:         <span class="ruby-keyword kw">end</span>
+334: 
+335:       <span class="ruby-keyword kw">else</span>
+336:         <span class="ruby-comment cmt"># Workload report</span>
+337: 
+338:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">customer_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+339:           <span class="ruby-identifier">sql_filter</span> = <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND tasks.project_id IN (#{Project.find(:all, :conditions =&gt; [&quot;customer_id = ?&quot;, customer_id]).collect{|p| p.id}.join(',') || '0' })&quot;</span>
+340:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">customer_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
+341:         <span class="ruby-keyword kw">end</span>
+342: 
+343:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+344:           <span class="ruby-identifier">sql_filter</span> = <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-node">&quot; AND tasks.project_id = #{project_id}&quot;</span>
+345:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">project_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
+346:         <span class="ruby-keyword kw">end</span>
+347: 
+348:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">user_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+349:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">user_id</span>.<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+350:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span> <span class="ruby-operator">==</span> <span class="ruby-value str">''</span>
+351:             <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot; AND tasks.id IN (0) &quot;</span>
+352:           <span class="ruby-keyword kw">else</span>
+353:             <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.id IN (#{task_ids}) &quot;</span>
+354:           <span class="ruby-keyword kw">end</span>
+355:           <span class="ruby-identifier">filename</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">user_id</span>).<span class="ruby-identifier">name</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/ /</span>, <span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">downcase</span>
+356:         <span class="ruby-keyword kw">end</span>
+357: 
+358:         <span class="ruby-identifier">join</span> = <span class="ruby-value str">&quot;&quot;</span>
+359:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
+360:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.status = #{task_status}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
+361:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.type_id = #{task_type_id}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_type_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-1</span>
+362:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.priority = #{task_priority}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_priority</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
+363:           <span class="ruby-identifier">join</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.severity_id = #{task_severity}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_severity</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">-3</span>
 364:         <span class="ruby-keyword kw">end</span>
 365: 
-366:         <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>
-367:         <span class="ruby-ivar">@projects</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span> <span class="ruby-keyword kw">if</span>( <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> )
-368:         <span class="ruby-ivar">@tasks</span> = []
-369:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-370:           <span class="ruby-ivar">@tasks</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;tasks.project_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status &lt; 2 &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">join</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:project</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:milestone</span>, <span class="ruby-identifier">:company</span>, <span class="ruby-identifier">:tags</span>])
-371:         <span class="ruby-keyword kw">end</span>
-372: 
-373:         <span class="ruby-ivar">@logs</span> = []
-374:         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
-375:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-376:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span>
-377:               <span class="ruby-identifier">w</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">new</span>
-378:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span> = <span class="ruby-identifier">t</span>
-379:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">u</span>.<span class="ruby-identifier">id</span>
-380:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">company</span>
-381:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer</span>
-382:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">project</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>
-383:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>) )
-384:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
-385:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
-386:               <span class="ruby-ivar">@logs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">w</span>
-387:             <span class="ruby-keyword kw">end</span>
-388:           <span class="ruby-keyword kw">else</span>
-389:             <span class="ruby-identifier">w</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">new</span>
-390:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
-391:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">company_id</span>
-392:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">customer_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span>
-393:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">project_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project_id</span>
-394:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>) )
-395:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
-396:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
-397:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">w</span>
-398:           <span class="ruby-keyword kw">end</span>
-399: 
-400:         <span class="ruby-keyword kw">end</span>
-401:       <span class="ruby-keyword kw">end</span>
-402: 
-403:       <span class="ruby-comment cmt"># Swap to an appropriate range based on entries returned</span>
-404:       <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">w</span> <span class="ruby-keyword kw">in</span> <span class="ruby-ivar">@logs</span>
-405:         <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span>( <span class="ruby-node">&quot;#{w.started_at} -&gt; #{tz.utc_to_local(w.started_at)} &lt; #{start_date}&quot;</span>)
-406:         <span class="ruby-identifier">start_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">start_date</span>))
-407:         <span class="ruby-identifier">end_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">end_date</span>))
-408:       <span class="ruby-keyword kw">end</span>
-409: 
-410:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">end_date</span>
-411:         <span class="ruby-ivar">@days</span> = <span class="ruby-identifier">end_date</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start_date</span>
-412:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
-413:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">0</span>
-414:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">7</span>.<span class="ruby-identifier">days</span>
-415:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">1</span>
-416:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">31</span>.<span class="ruby-identifier">days</span>
-417:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">3</span>
-418:         <span class="ruby-keyword kw">else</span>
-419:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">5</span>
-420:         <span class="ruby-keyword kw">end</span>
-421:       <span class="ruby-keyword kw">end</span>
-422: 
-423:       <span class="ruby-ivar">@total</span> = <span class="ruby-value">0</span>
-424:       <span class="ruby-ivar">@row_totals</span> = { }
-425:       <span class="ruby-ivar">@column_totals</span> = { }
-426:       <span class="ruby-ivar">@column_headers</span> = { }
-427:       <span class="ruby-ivar">@rows</span> = { }
+366:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">empty?</span>
+367:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">tagged_with</span>(<span class="ruby-identifier">task_tags</span>.<span class="ruby-identifier">downcase</span>, { <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">:filter_status</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;-1&quot;</span> } ).<span class="ruby-identifier">collect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;,&quot;</span>)
+368:           <span class="ruby-identifier">task_ids</span> = <span class="ruby-value str">&quot;0&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_ids</span>.<span class="ruby-identifier">empty?</span>
+369:           <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; AND tasks.id IN (#{task_ids})&quot;</span>
+370:         <span class="ruby-keyword kw">end</span>
+371: 
+372:         <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>
+373:         <span class="ruby-ivar">@projects</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span> <span class="ruby-keyword kw">if</span>( <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">-1</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">project_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> )
+374:         <span class="ruby-ivar">@tasks</span> = []
+375:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+376:           <span class="ruby-ivar">@tasks</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;tasks.project_id&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;tasks.company_id = ? AND tasks.completed_at IS NULL AND tasks.status &lt; 2 &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sql_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">date_filter</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">join</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:project</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:milestone</span>, <span class="ruby-identifier">:company</span>, <span class="ruby-identifier">:tags</span>])
+377:         <span class="ruby-keyword kw">end</span>
+378: 
+379:         <span class="ruby-ivar">@logs</span> = []
+380:         <span class="ruby-ivar">@tasks</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span>
+381:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+382:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span>
+383:               <span class="ruby-identifier">w</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">new</span>
+384:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span> = <span class="ruby-identifier">t</span>
+385:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">u</span>.<span class="ruby-identifier">id</span>
+386:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">company</span>
+387:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">customer</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer</span>
+388:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">project</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>
+389:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>) )
+390:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
+391:               <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
+392:               <span class="ruby-ivar">@logs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">w</span>
+393:             <span class="ruby-keyword kw">end</span>
+394:           <span class="ruby-keyword kw">else</span>
+395:             <span class="ruby-identifier">w</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">new</span>
+396:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
+397:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">company_id</span>
+398:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">customer_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span>
+399:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">project_id</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project_id</span>
+400:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> (<span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span> <span class="ruby-value">? </span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">due_at</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span>) )
+401:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">now</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;&quot;</span>
+402:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>
+403:             <span class="ruby-ivar">@logs</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">w</span>
+404:           <span class="ruby-keyword kw">end</span>
+405: 
+406:         <span class="ruby-keyword kw">end</span>
+407:       <span class="ruby-keyword kw">end</span>
+408: 
+409:       <span class="ruby-comment cmt"># Swap to an appropriate range based on entries returned</span>
+410:       <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">w</span> <span class="ruby-keyword kw">in</span> <span class="ruby-ivar">@logs</span>
+411:         <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span>( <span class="ruby-node">&quot;#{w.started_at} -&gt; #{tz.utc_to_local(w.started_at)} &lt; #{start_date}&quot;</span>)
+412:         <span class="ruby-identifier">start_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">start_date</span>))
+413:         <span class="ruby-identifier">end_date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>) <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">end_date</span>))
+414:       <span class="ruby-keyword kw">end</span>
+415: 
+416:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">end_date</span>
+417:         <span class="ruby-ivar">@days</span> = <span class="ruby-identifier">end_date</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">start_date</span>
+418:         <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">1</span>.<span class="ruby-identifier">days</span>
+419:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">0</span>
+420:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">7</span>.<span class="ruby-identifier">days</span>
+421:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">1</span>
+422:         <span class="ruby-keyword kw">elsif</span> <span class="ruby-ivar">@days</span> <span class="ruby-operator">&lt;=</span> <span class="ruby-value">31</span>.<span class="ruby-identifier">days</span>
+423:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">3</span>
+424:         <span class="ruby-keyword kw">else</span>
+425:           <span class="ruby-ivar">@range</span> = <span class="ruby-value">5</span>
+426:         <span class="ruby-keyword kw">end</span>
+427:       <span class="ruby-keyword kw">end</span>
 428: 
-429:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span>
-430:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] = <span class="ruby-node">&quot;#{start_date.strftime_localized(current_user.date_format)}&quot;</span>
-431:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;- #{end_date.strftime_localized(current_user.date_format)}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">end_date</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">yday</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">yday</span>
-432:       <span class="ruby-keyword kw">else</span>
-433:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] = <span class="ruby-value str">&quot;&amp;nbsp;&quot;</span>
-434:       <span class="ruby-keyword kw">end</span>
-435: 
-436:       <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">w</span> <span class="ruby-keyword kw">in</span> <span class="ruby-ivar">@logs</span>
-437: 
-438:         <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">w</span>.<span class="ruby-identifier">task_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-439:         <span class="ruby-ivar">@total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span>
-440: 
-441:         <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@type</span>
-442: 
-443:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>, <span class="ruby-value">4</span>
-444:           <span class="ruby-comment cmt"># Pivot</span>
-445:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_value</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">empty?</span>
-446:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
-447:               <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-ivar">@column_value</span>).<span class="ruby-identifier">to_s</span>
-448:               <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
-449:                 <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">tag</span>, <span class="ruby-ivar">@column_value</span> )
-450:                 <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
-451:               <span class="ruby-keyword kw">end</span>
-452:               <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
-453:             <span class="ruby-keyword kw">end</span>
-454:           <span class="ruby-keyword kw">else</span>
-455:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-ivar">@column_value</span>).<span class="ruby-identifier">to_s</span>
-456:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
-457:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-ivar">@column_value</span> )
-458:               <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_value</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
-459:                 <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">name</span>
-460:               <span class="ruby-keyword kw">end</span>
-461:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
-462:             <span class="ruby-keyword kw">end</span>
-463:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
-464:           <span class="ruby-keyword kw">end</span>
-465: 
-466:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span>
-467:           <span class="ruby-comment cmt"># Audit</span>
-468:           [<span class="ruby-value">12</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
-469:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>,<span class="ruby-identifier">k</span>).<span class="ruby-identifier">to_s</span>
-470:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
-471:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span> )
-472:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
-473:             <span class="ruby-keyword kw">end</span>
-474:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
-475:           <span class="ruby-keyword kw">end</span> 
-476:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">3</span>
-477:           <span class="ruby-comment cmt"># Time sheet</span>
-478:           [<span class="ruby-value">16</span>, <span class="ruby-value">17</span>, <span class="ruby-value">18</span>, <span class="ruby-value">21</span>, <span class="ruby-value">19</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
-479:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span>)
-480:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
-481:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span> )
-482:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
-483:             <span class="ruby-keyword kw">end</span>
-484:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
-485:           <span class="ruby-keyword kw">end</span>
-486: 
-487:         <span class="ruby-keyword kw">end</span>
-488: 
-489:       <span class="ruby-keyword kw">end</span>
-490: 
-491:     <span class="ruby-keyword kw">end</span>
+429:       <span class="ruby-ivar">@total</span> = <span class="ruby-value">0</span>
+430:       <span class="ruby-ivar">@row_totals</span> = { }
+431:       <span class="ruby-ivar">@column_totals</span> = { }
+432:       <span class="ruby-ivar">@column_headers</span> = { }
+433:       <span class="ruby-ivar">@rows</span> = { }
+434: 
+435:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">start_date</span>
+436:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] = <span class="ruby-node">&quot;#{start_date.strftime_localized(current_user.date_format)}&quot;</span>
+437:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;- #{end_date.strftime_localized(current_user.date_format)}&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">end_date</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">end_date</span>.<span class="ruby-identifier">yday</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">start_date</span>.<span class="ruby-identifier">yday</span>
+438:       <span class="ruby-keyword kw">else</span>
+439:         <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-value str">'__'</span> ] = <span class="ruby-value str">&quot;&amp;nbsp;&quot;</span>
+440:       <span class="ruby-keyword kw">end</span>
+441: 
+442:       <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">w</span> <span class="ruby-keyword kw">in</span> <span class="ruby-ivar">@logs</span>
+443: 
+444:         <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">w</span>.<span class="ruby-identifier">task_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+445:         <span class="ruby-ivar">@total</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">w</span>.<span class="ruby-identifier">duration</span>
+446: 
+447:         <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@type</span>
+448: 
+449:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>, <span class="ruby-value">4</span>
+450:           <span class="ruby-comment cmt"># Pivot</span>
+451:           <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_value</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">empty?</span>
+452:             <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">tags</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">tag</span><span class="ruby-operator">|</span>
+453:               <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">tag</span>, <span class="ruby-ivar">@column_value</span>).<span class="ruby-identifier">to_s</span>
+454:               <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
+455:                 <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">tag</span>, <span class="ruby-ivar">@column_value</span> )
+456:                 <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
+457:               <span class="ruby-keyword kw">end</span>
+458:               <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
+459:             <span class="ruby-keyword kw">end</span>
+460:           <span class="ruby-keyword kw">else</span>
+461:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-ivar">@column_value</span>).<span class="ruby-identifier">to_s</span>
+462:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
+463:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-ivar">@column_value</span> )
+464:               <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_value</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+465:                 <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">w</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">name</span>
+466:               <span class="ruby-keyword kw">end</span>
+467:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
+468:             <span class="ruby-keyword kw">end</span>
+469:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
+470:           <span class="ruby-keyword kw">end</span>
+471: 
+472:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span>
+473:           <span class="ruby-comment cmt"># Audit</span>
+474:           [<span class="ruby-value">12</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+475:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>,<span class="ruby-identifier">k</span>).<span class="ruby-identifier">to_s</span>
+476:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
+477:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span> )
+478:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
+479:             <span class="ruby-keyword kw">end</span>
+480:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
+481:           <span class="ruby-keyword kw">end</span> 
+482:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">3</span>
+483:           <span class="ruby-comment cmt"># Time sheet</span>
+484:           [<span class="ruby-value">16</span>, <span class="ruby-value">17</span>, <span class="ruby-value">18</span>, <span class="ruby-value">21</span>, <span class="ruby-value">19</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
+485:             <span class="ruby-identifier">key</span> = <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span>)
+486:             <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ]
+487:               <span class="ruby-ivar">@column_headers</span>[ <span class="ruby-identifier">key</span> ] = <span class="ruby-identifier">name_from_worklog</span>( <span class="ruby-identifier">w</span>, <span class="ruby-identifier">k</span> )
+488:               <span class="ruby-ivar">@column_totals</span>[ <span class="ruby-identifier">key</span> ] <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
+489:             <span class="ruby-keyword kw">end</span>
+490:             <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
+491:           <span class="ruby-keyword kw">end</span>
 492: 
-493:     <span class="ruby-identifier">csv</span> = <span class="ruby-identifier">create_csv</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
-494:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">csv</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">csv</span>.<span class="ruby-identifier">empty?</span>
-495:       <span class="ruby-ivar">@generated_report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">new</span>
-496:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>
-497:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
-498:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">filename</span> = <span class="ruby-identifier">filename</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;.csv&quot;</span>
-499:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">report</span> = <span class="ruby-identifier">csv</span>
-500:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">save</span>
-501:     <span class="ruby-keyword kw">else</span>
-502:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Empty report, log more work!&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>]
-503:     <span class="ruby-keyword kw">end</span>
-504: 
-505:   <span class="ruby-keyword kw">end</span></pre></div>
+493:         <span class="ruby-keyword kw">end</span>
+494: 
+495:       <span class="ruby-keyword kw">end</span>
+496: 
+497:     <span class="ruby-keyword kw">end</span>
+498: 
+499:     <span class="ruby-identifier">csv</span> = <span class="ruby-identifier">create_csv</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>
+500:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">csv</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">csv</span>.<span class="ruby-identifier">empty?</span>
+501:       <span class="ruby-ivar">@generated_report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">new</span>
+502:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>
+503:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
+504:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">filename</span> = <span class="ruby-identifier">filename</span> <span class="ruby-operator">+</span> <span class="ruby-value str">&quot;.csv&quot;</span>
+505:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">report</span> = <span class="ruby-identifier">csv</span>
+506:       <span class="ruby-ivar">@generated_report</span>.<span class="ruby-identifier">save</span>
+507:     <span class="ruby-keyword kw">else</span>
+508:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Empty report, log more work!&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>]
+509:     <span class="ruby-keyword kw">end</span>
+510: 
+511:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000207"><br/></a>
+<a class="small" name="M000217"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000207'>
+<a href='#M000217'>
 
 
 name_from_worklog
@@ -1087,7 +1093,7 @@ name_from_worklog
 </a>
 </h3>
 
-<p class="source_link" id="M000207-show-link"><a onclick="toggle('M000207-source'); toggleText('M000207-link'); return false;" href="#" id="M000207-link">Show source...</a></p><div class="source" id="M000207-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 88</span>
+<p class="source_link" id="M000217-show-link"><a onclick="toggle('M000217-source'); toggleText('M000217-link'); return false;" href="#" id="M000217-link">Show source...</a></p><div class="source" id="M000217-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 88</span>
  88:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name_from_worklog</span>(<span class="ruby-identifier">w</span>,<span class="ruby-identifier">r</span>)
  89:     <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">r</span>
  90:     <span class="ruby-keyword kw">when</span> <span class="ruby-value">1</span>

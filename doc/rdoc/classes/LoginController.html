@@ -337,105 +337,105 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000334'>
+<a href='#M000344'>
 about<br/>
 </a>
 
 
 
 
-<a href='#M000342'>
+<a href='#M000352'>
 company_check<br/>
 </a>
 
 
 
 
-<a href='#M000338'>
+<a href='#M000348'>
 forgotten_password<br/>
 </a>
 
 
 
 
-<a href='#M000330'>
+<a href='#M000340'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000335'>
+<a href='#M000345'>
 login<br/>
 </a>
 
 
 
 
-<a href='#M000336'>
+<a href='#M000346'>
 logout<br/>
 </a>
 
 
 
 
-<a href='#M000332'>
+<a href='#M000342'>
 policy<br/>
 </a>
 
 
 
 
-<a href='#M000331'>
+<a href='#M000341'>
 screenshots<br/>
 </a>
 
 
 
 
-<a href='#M000344'>
+<a href='#M000354'>
 shortlist_auth<br/>
 </a>
 
 
 
 
-<a href='#M000340'>
+<a href='#M000350'>
 signup<br/>
 </a>
 
 
 
 
-<a href='#M000343'>
+<a href='#M000353'>
 subdomain_check<br/>
 </a>
 
 
 
 
-<a href='#M000339'>
+<a href='#M000349'>
 take_forgotten<br/>
 </a>
 
 
 
 
-<a href='#M000341'>
+<a href='#M000351'>
 take_signup<br/>
 </a>
 
 
 
 
-<a href='#M000333'>
+<a href='#M000343'>
 terms<br/>
 </a>
 
 
 
 
-<a href='#M000337'>
+<a href='#M000347'>
 validate<br/>
 </a>
 
@@ -465,9 +465,9 @@ The portal pages should probably be moved into a separate controller.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000334"><br/></a>
+<a class="small" name="M000344"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000334'>
+<a href='#M000344'>
 
 
 about
@@ -477,14 +477,14 @@ about
 </a>
 </h3>
 
-<p class="source_link" id="M000334-show-link"><a onclick="toggle('M000334-source'); toggleText('M000334-link'); return false;" href="#" id="M000334-link">Show source...</a></p><div class="source" id="M000334-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 26</span>
+<p class="source_link" id="M000344-show-link"><a onclick="toggle('M000344-source'); toggleText('M000344-link'); return false;" href="#" id="M000344-link">Show source...</a></p><div class="source" id="M000344-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">about</span>
 27:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000342"><br/></a>
+<a class="small" name="M000352"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000342'>
+<a href='#M000352'>
 
 
 company_check
@@ -494,7 +494,7 @@ company_check
 </a>
 </h3>
 
-<p class="source_link" id="M000342-show-link"><a onclick="toggle('M000342-source'); toggleText('M000342-link'); return false;" href="#" id="M000342-link">Show source...</a></p><div class="source" id="M000342-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 280</span>
+<p class="source_link" id="M000352-show-link"><a onclick="toggle('M000352-source'); toggleText('M000352-link'); return false;" href="#" id="M000352-link">Show source...</a></p><div class="source" id="M000352-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 280</span>
 280:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">company_check</span>
 281:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:company</span>].<span class="ruby-identifier">blank?</span>
 282:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Please choose a name.&lt;/small&gt;&quot;</span>
@@ -509,9 +509,9 @@ company_check
 291:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000338"><br/></a>
+<a class="small" name="M000348"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000338'>
+<a href='#M000348'>
 
 
 forgotten_password
@@ -521,15 +521,15 @@ forgotten_password
 </a>
 </h3>
 
-<p class="source_link" id="M000338-show-link"><a onclick="toggle('M000338-source'); toggleText('M000338-link'); return false;" href="#" id="M000338-link">Show source...</a></p><div class="source" id="M000338-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 144</span>
+<p class="source_link" id="M000348-show-link"><a onclick="toggle('M000348-source'); toggleText('M000348-link'); return false;" href="#" id="M000348-link">Show source...</a></p><div class="source" id="M000348-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 144</span>
 144:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forgotten_password</span>
 145: 
 146:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000330"><br/></a>
+<a class="small" name="M000340"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000330'>
+<a href='#M000340'>
 
 
 index
@@ -539,7 +539,7 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000330-show-link"><a onclick="toggle('M000330-source'); toggleText('M000330-link'); return false;" href="#" id="M000330-link">Show source...</a></p><div class="source" id="M000330-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 10</span>
+<p class="source_link" id="M000340-show-link"><a onclick="toggle('M000340-source'); toggleText('M000340-link'); return false;" href="#" id="M000340-link">Show source...</a></p><div class="source" id="M000340-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
 11:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
 12:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'login'</span>
@@ -548,9 +548,9 @@ index
 15:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000335"><br/></a>
+<a class="small" name="M000345"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000335'>
+<a href='#M000345'>
 
 
 login
@@ -560,7 +560,7 @@ login
 </a>
 </h3>
 
-<p class="source_link" id="M000335-show-link"><a onclick="toggle('M000335-source'); toggleText('M000335-link'); return false;" href="#" id="M000335-link">Show source...</a></p><div class="source" id="M000335-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 29</span>
+<p class="source_link" id="M000345-show-link"><a onclick="toggle('M000345-source'); toggleText('M000345-link'); return false;" href="#" id="M000345-link">Show source...</a></p><div class="source" id="M000345-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 29</span>
 29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">login</span>
 30: 
 31:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-value str">'www'</span>
@@ -581,9 +581,9 @@ login
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000336"><br/></a>
+<a class="small" name="M000346"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000336'>
+<a href='#M000346'>
 
 
 logout
@@ -593,7 +593,7 @@ logout
 </a>
 </h3>
 
-<p class="source_link" id="M000336-show-link"><a onclick="toggle('M000336-source'); toggleText('M000336-link'); return false;" href="#" id="M000336-link">Show source...</a></p><div class="source" id="M000336-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 48</span>
+<p class="source_link" id="M000346-show-link"><a onclick="toggle('M000346-source'); toggleText('M000346-link'); return false;" href="#" id="M000346-link">Show source...</a></p><div class="source" id="M000346-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 48</span>
 48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logout</span>
 49:     <span class="ruby-comment cmt"># Mark user as logged out</span>
 50:     <span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">Base</span>.<span class="ruby-identifier">connection</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-node">&quot;update users set last_ping_at = NULL, last_seen_at = NULL where id = #{current_user.id}&quot;</span>)
@@ -636,9 +636,9 @@ logout
 87:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000332"><br/></a>
+<a class="small" name="M000342"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000332'>
+<a href='#M000342'>
 
 
 policy
@@ -648,14 +648,14 @@ policy
 </a>
 </h3>
 
-<p class="source_link" id="M000332-show-link"><a onclick="toggle('M000332-source'); toggleText('M000332-link'); return false;" href="#" id="M000332-link">Show source...</a></p><div class="source" id="M000332-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 20</span>
+<p class="source_link" id="M000342-show-link"><a onclick="toggle('M000342-source'); toggleText('M000342-link'); return false;" href="#" id="M000342-link">Show source...</a></p><div class="source" id="M000342-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 20</span>
 20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">policy</span>
 21:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000331"><br/></a>
+<a class="small" name="M000341"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000331'>
+<a href='#M000341'>
 
 
 screenshots
@@ -665,14 +665,14 @@ screenshots
 </a>
 </h3>
 
-<p class="source_link" id="M000331-show-link"><a onclick="toggle('M000331-source'); toggleText('M000331-link'); return false;" href="#" id="M000331-link">Show source...</a></p><div class="source" id="M000331-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 17</span>
+<p class="source_link" id="M000341-show-link"><a onclick="toggle('M000341-source'); toggleText('M000341-link'); return false;" href="#" id="M000341-link">Show source...</a></p><div class="source" id="M000341-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">screenshots</span>
 18:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000344"><br/></a>
+<a class="small" name="M000354"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000344'>
+<a href='#M000354'>
 
 
 shortlist_auth
@@ -682,7 +682,7 @@ shortlist_auth
 </a>
 </h3>
 
-<p class="source_link" id="M000344-show-link"><a onclick="toggle('M000344-source'); toggleText('M000344-link'); return false;" href="#" id="M000344-link">Show source...</a></p><div class="source" id="M000344-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 313</span>
+<p class="source_link" id="M000354-show-link"><a onclick="toggle('M000354-source'); toggleText('M000354-link'); return false;" href="#" id="M000354-link">Show source...</a></p><div class="source" id="M000354-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 313</span>
 313:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">shortlist_auth</span>
 314:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
 315:     <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;autologin = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
@@ -702,9 +702,9 @@ shortlist_auth
 329:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000340"><br/></a>
+<a class="small" name="M000350"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000340'>
+<a href='#M000350'>
 
 
 signup
@@ -714,15 +714,15 @@ signup
 </a>
 </h3>
 
-<p class="source_link" id="M000340-show-link"><a onclick="toggle('M000340-source'); toggleText('M000340-link'); return false;" href="#" id="M000340-link">Show source...</a></p><div class="source" id="M000340-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 174</span>
+<p class="source_link" id="M000350-show-link"><a onclick="toggle('M000350-source'); toggleText('M000350-link'); return false;" href="#" id="M000350-link">Show source...</a></p><div class="source" id="M000350-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 174</span>
 174:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">signup</span>
 175:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>
 176:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000343"><br/></a>
+<a class="small" name="M000353"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000343'>
+<a href='#M000353'>
 
 
 subdomain_check
@@ -732,7 +732,7 @@ subdomain_check
 </a>
 </h3>
 
-<p class="source_link" id="M000343-show-link"><a onclick="toggle('M000343-source'); toggleText('M000343-link'); return false;" href="#" id="M000343-link">Show source...</a></p><div class="source" id="M000343-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 293</span>
+<p class="source_link" id="M000353-show-link"><a onclick="toggle('M000353-source'); toggleText('M000353-link'); return false;" href="#" id="M000353-link">Show source...</a></p><div class="source" id="M000353-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 293</span>
 293:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subdomain_check</span>
 294:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:subdomain</span>].<span class="ruby-identifier">empty?</span>
 295:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;&lt;img src=\&quot;/images/delete.png\&quot; border=\&quot;0\&quot; style=\&quot;vertical-align:middle;\&quot;/&gt; &lt;small&gt;Please choose a domain.&lt;/small&gt;&quot;</span>
@@ -754,9 +754,9 @@ subdomain_check
 311:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000339"><br/></a>
+<a class="small" name="M000349"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000339'>
+<a href='#M000349'>
 
 
 take_forgotten
@@ -770,7 +770,7 @@ Mail the <a href="User.html">User</a> his/her credentials for all Users on
 the requested email address
 </p>
 
-<p class="source_link" id="M000339-show-link"><a onclick="toggle('M000339-source'); toggleText('M000339-link'); return false;" href="#" id="M000339-link">Show source...</a></p><div class="source" id="M000339-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 150</span>
+<p class="source_link" id="M000349-show-link"><a onclick="toggle('M000349-source'); toggleText('M000349-link'); return false;" href="#" id="M000349-link">Show source...</a></p><div class="source" id="M000349-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 150</span>
 150:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">take_forgotten</span>
 151:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-value str">&quot;&quot;</span>
 152:     <span class="ruby-identifier">error</span> = <span class="ruby-value">0</span>
@@ -795,9 +795,9 @@ the requested email address
 171:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000341"><br/></a>
+<a class="small" name="M000351"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000341'>
+<a href='#M000351'>
 
 
 take_signup
@@ -807,7 +807,7 @@ take_signup
 </a>
 </h3>
 
-<p class="source_link" id="M000341-show-link"><a onclick="toggle('M000341-source'); toggleText('M000341-link'); return false;" href="#" id="M000341-link">Show source...</a></p><div class="source" id="M000341-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 178</span>
+<p class="source_link" id="M000351-show-link"><a onclick="toggle('M000351-source'); toggleText('M000351-link'); return false;" href="#" id="M000351-link">Show source...</a></p><div class="source" id="M000351-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 178</span>
 178:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">take_signup</span>
 179: 
 180:     <span class="ruby-identifier">error</span> = <span class="ruby-value">0</span>
@@ -911,9 +911,9 @@ take_signup
 278:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000333"><br/></a>
+<a class="small" name="M000343"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000333'>
+<a href='#M000343'>
 
 
 terms
@@ -923,14 +923,14 @@ terms
 </a>
 </h3>
 
-<p class="source_link" id="M000333-show-link"><a onclick="toggle('M000333-source'); toggleText('M000333-link'); return false;" href="#" id="M000333-link">Show source...</a></p><div class="source" id="M000333-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 23</span>
+<p class="source_link" id="M000343-show-link"><a onclick="toggle('M000343-source'); toggleText('M000343-link'); return false;" href="#" id="M000343-link">Show source...</a></p><div class="source" id="M000343-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 23</span>
 23:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">terms</span>
 24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000337"><br/></a>
+<a class="small" name="M000347"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000337'>
+<a href='#M000347'>
 
 
 validate
@@ -940,7 +940,7 @@ validate
 </a>
 </h3>
 
-<p class="source_link" id="M000337-show-link"><a onclick="toggle('M000337-source'); toggleText('M000337-link'); return false;" href="#" id="M000337-link">Show source...</a></p><div class="source" id="M000337-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 89</span>
+<p class="source_link" id="M000347-show-link"><a onclick="toggle('M000347-source'); toggleText('M000347-link'); return false;" href="#" id="M000347-link">Show source...</a></p><div class="source" id="M000347-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/login_controller.rb, line 89</span>
  89:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
  90:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>])
  91:     <span class="ruby-identifier">subdomain</span> = <span class="ruby-value str">'www'</span>
