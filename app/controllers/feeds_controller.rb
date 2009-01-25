@@ -131,9 +131,9 @@ class FeedsController < ApplicationController
 
         tasks = case widget.order_by
                when 'priority':
-                     tasks.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1].reverse
+                    user.company.sort(tasks)[0, widget.number]
                when 'date':
-                     tasks.sort_by{|t| [t.created_at.to_i, t.priority + t.severity_id] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1]
+                   tasks.sort_by {|t| t.created_at.to_i }[0, widget.number]
               end
 
         # Create the RSS
