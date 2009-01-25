@@ -27,6 +27,7 @@ class TasksController < ApplicationController
       return
     else
       @task = Task.new
+      @task.company = current_user.company
       @task.duration = 0
       @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
       @task.watchers << current_user
