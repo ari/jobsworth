@@ -70,8 +70,10 @@ class ProjectFile < ActiveRecord::Base
     File.join(self.path, self.store_name)
   end
 
+  # The thumbnails are jpg's even though they keep
+  # their original extension.
   def thumbnail_path
-    File.join(path, "thumb_" + self.store_name)# + ".jpg")
+    File.join(path, "thumb_" + self.store_name)
   end
 
   def thumbnail?
@@ -99,7 +101,9 @@ class ProjectFile < ActiveRecord::Base
                                                                   return false
                                                                   end 
     if ImageOperations::is_image?(image)
-      res = %x[convert #{self.file_path}  -thumbnail 124x124 \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage -strip #{self.thumbnail_path}]
+      # Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory
+      # very fast. 
+      res = %x[convert #{self.file_path}  -thumbnail "124x124" \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]
       puts res
 
 #      thumb = ImageOperations::thumbnail(image, size)
@@ -108,6 +112,7 @@ class ProjectFile < ActiveRecord::Base
 #      f.close
     end
     image = thumb = nil
+    GC.start
     true
   end 
   
