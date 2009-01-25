@@ -521,9 +521,6 @@ class ScheduleController < ApplicationController
   end
   
   def gantt
-
-    sort = "tasks.milestone_id IS NOT NULL, tasks.milestone_id <> 0, milestones.due_at IS NOT NULL desc, milestones.due_at, milestones.name, tasks.due_at IS NOT NULL desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.priority + tasks.severity_id desc, tasks.name"
-
     if session[:filter_project].to_i == 0
       project_ids = current_project_ids
     else
@@ -558,13 +555,37 @@ class ScheduleController < ApplicationController
       filter << "AND projects.customer_id = #{session[:filter_customer]} "
     end
 
-    @displayed_tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL #{filter}"], :order => sort)
+    @displayed_tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL #{filter}"])# , :order => sort)
 
     if session[:ignore_hidden].to_i > 0
       @tasks = @displayed_tasks
     else 
-      @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"], :order => sort)
+      @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"]) #, :order => sort)
     end
+
+    # old sorting. is all of this necessary? it seems like the task.due_at method will
+    # take care of most of this.
+    # sort = "tasks.milestone_id IS NOT NULL, 
+    # tasks.milestone_id <> 0, 
+    # milestones.due_at IS NOT NULL desc, 
+    # milestones.due_at, 
+    # milestones.name, 
+    # tasks.due_at IS NOT NULL desc, 
+    # CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, 
+    # CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, 
+    # tasks.priority + tasks.severity_id desc, 
+    # tasks.name"
+
+    @displayed_tasks = @displayed_tasks.sort_by do |t| 
+      array  = []
+      array << (t.due_at ? t.due_at.to_i : 9999999999)
+      array << t.milestone.name if t.milestone
+      array << - current_user.company.rank_by_properties(t)
+      array << t.name
+
+      array
+    end
+
 
     
     @dates = { }
