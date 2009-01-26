@@ -98,13 +98,14 @@ end
     <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
   </td>
   <% current_user.company.properties.each do |p| -%>
+    <% selected = p.default_value -%>
     <% name = "property_#{ p.id }" -%>
     <td valign="top">
       <label for="<%= name %>"><%= h(p.name) %></label><br />
       <select name="task[properties][<%= p.id %>]" id="<%= name %>">
 	<option></option>
 	<% p.property_values.each do |pv| -%>
-	<option value="<%= pv.id %>" <%= @task.property_value(p) == pv ? "selected" : ""  %>>
+	<option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>>
 	  <%= h(pv.value) %>
 	</option>
 	<% end -%>

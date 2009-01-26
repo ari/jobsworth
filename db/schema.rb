@@ -326,7 +326,7 @@ ActiveRecord::Schema.define(:version => 20090114040153) do
     t.integer  "property_id"
     t.string   "value"
     t.string   "color"
-    t.string   "default"
+    t.boolean  "default"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"

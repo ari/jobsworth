@@ -301,13 +301,16 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
       </fieldset>
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
-	<% current_user.company.properties.each do |p| -%>
+	<% 
+	   current_user.company.properties.each do |p| 
+	     selected = @task.new_record? ? p.default_value : @task.property_value(p)
+	 -%>
 	  <% name = "property_#{ p.id }" -%>
   	  <label for="<%= name %>"><%= h(p.name) %></label>
 	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
 	    <option></option>
 	    <% p.property_values.each do |pv| -%>
-	      <option value="<%= pv.id %>" <%= @task.property_value(p) == pv ? "selected" : ""  %>>
+	      <option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>>
 		<%= h(pv.value) %>
 	      </option>
 	    <% end -%>

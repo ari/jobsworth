@@ -22,7 +22,7 @@ class Property < ActiveRecord::Base
   def self.defaults
     res = []
     res << [ { :name => _("Type") },
-             [ { :value => _("Task"),        :icon_url => "/images/task_icons/task.png" },
+             [ { :value => _("Task"),        :icon_url => "/images/task_icons/task.png", :default => true },
                { :value => _("New Feature"), :icon_url => "/images/task_icons/new_feature.png" },
                { :value => _("Defect"),      :icon_url => "/images/task_icons/bug.png" },
                { :value => _("Improvement"), :icon_url => "/images/task_icons/change.png" }
@@ -31,7 +31,7 @@ class Property < ActiveRecord::Base
              [ { :value => _("Critical"), :color => "#FF6666" },
                { :value => _("Urgent"),   :color => "#FF6666" },
                { :value => _("High"),     :color => "#F2AB99" },
-               { :value => _("Normal"),   :color => "#B0D295" },
+               { :value => _("Normal"),   :color => "#B0D295", :default => true },
                { :value => _("Low"),      :color => "#F3F3F3" },
                { :value => _("Lowest"),   :color => "#F3F3F3" }
              ]]
@@ -39,7 +39,7 @@ class Property < ActiveRecord::Base
              [ { :value => _("Blocker") },
                { :value => _("Critical") },
                { :value => _("Major") },
-               { :value => _("Normal") },
+               { :value => _("Normal"), :default => true },
                { :value => _("Minor") },
                { :value => _("Trivial") }
              ]]
@@ -87,6 +87,13 @@ class Property < ActiveRecord::Base
   ###
   def filter_name
     @filter_name ||= "property_#{ id }"
+  end
+
+  ###
+  # Returns the first property value set as default, or nil if none.
+  ###
+  def default_value
+    property_values.detect { |pv| pv.default }
   end
 
   def to_s
