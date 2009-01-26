@@ -779,6 +779,8 @@ class Task < ActiveRecord::Base
   # ranking using the companys sort.
   ###
   def critical?
+    return false if company.maximum_sort_rank == 0
+
     sort_rank.to_f / company.maximum_sort_rank.to_f > 0.80
   end
 
@@ -794,6 +796,8 @@ class Task < ActiveRecord::Base
   # ranking using the companys sort.
   ###
   def low?
+    return false if company.maximum_sort_rank == 0
+
     sort_rank.to_f / company.maximum_sort_rank.to_f < 0.20
   end
 

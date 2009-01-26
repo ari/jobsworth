@@ -14,6 +14,7 @@ class Property < ActiveRecord::Base
   has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
   
   after_save :clear_other_default_colors
+  after_save :update_project_counts
   before_destroy :remove_invalid_task_property_values
   
   # Returns an array of the default values that should be
@@ -115,6 +116,18 @@ class Property < ActiveRecord::Base
           p.save
         end
       end
+    end
+  end
+
+  ###
+  # Update critical, low and normal counts on this companys projects.
+  # If we've change the sort defaults, these counts may change, so 
+  # we need to update them on save.
+  ###
+  def update_project_counts
+    company.projects.each do |p| 
+      p.update_project_stats
+      p.save
     end
   end
 end
