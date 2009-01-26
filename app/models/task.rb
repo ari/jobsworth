@@ -699,13 +699,13 @@ class Task < ActiveRecord::Base
   # to use properties. It can be removed once that is done.
   ###
   def convert_attributes_to_properties(type, priority, severity)
-    old_value = Task.issue_types[attributes['type_id']]
+    old_value = Task.issue_types[attributes['type_id'].to_i]
     copy_task_value(old_value, type)
 
-    old_value = Task.priority_types[attributes['priority']]
+    old_value = Task.priority_types[attributes['priority'].to_i]
     copy_task_value(old_value || 0, priority)
 
-    old_value = Task.severity_types[attributes['severity_id']]
+    old_value = Task.severity_types[attributes['severity_id'].to_i]
     copy_task_value(old_value || 0, severity)
   end
 
