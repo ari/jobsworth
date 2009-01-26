@@ -434,9 +434,6 @@ class TasksController < ApplicationController
     @repeat.repeat = task.repeat
     @repeat.requested_by = task.requested_by
     @repeat.creator_id = task.creator_id
-    @repeat.type_id = task.type_id
-    @repeat.priority = task.priority
-    @repeat.severity_id = task.severity_id
     @repeat.set_tags(task.tags.collect{|t| t.name}.join(', '))
     @repeat.set_task_num(current_user.company_id)
     @repeat.duration = task.duration
@@ -653,10 +650,6 @@ class TasksController < ApplicationController
 
         body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
       end
-
-      body << "- <strong>Priority</strong>: #{@old_task.priority_type} -> #{@task.priority_type}\n" if @old_task.priority != @task.priority
-      body << "- <strong>Severity</strong>: #{@old_task.severity_type} -> #{@task.severity_type}\n" if @old_task.severity_id != @task.severity_id
-      body << "- <strong>Type</strong>: #{@old_task.issue_type} -> #{@task.issue_type}\n" if @old_task.type_id != @task.type_id
 
       new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
       if old_tags != new_tags
@@ -1406,13 +1399,6 @@ class TasksController < ApplicationController
 
         end
         @task.save
-      when 6
-        # Task Type
-        if @task.type_id != @group
-          body << "- <strong>Type</strong>: #{@task.issue_type} -> #{Task.issue_types[@group]}\n"
-          @task.type_id = @group
-          @task.save
-        end
       when 7
         # Status
         if( @task.status != @group )
@@ -1431,20 +1417,6 @@ class TasksController < ApplicationController
           end
           body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
           @task.status = @group
-          @task.save
-        end
-      when 8
-        # Severity
-        if @task.severity_id != @group
-          body << "- <strong>Severity</strong>: #{@task.severity_type} -> #{Task.severity_types[@group]}\n"
-          @task.severity_id = @group
-          @task.save
-        end
-      when 9
-        # Priority
-        if @task.priority != @group
-          body << "- <strong>Priority</strong>: #{@task.priority_type} -> #{Task.priority_types[@group]}\n"
-          @task.priority = @group
           @task.save
         end
       when 10
@@ -1862,13 +1834,13 @@ class TasksController < ApplicationController
     if sort_by == 0 # default sorting
       res = current_user.company.sort(tasks)
     elsif sort_by == 1
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, - t.sort_rank,  -t.task_num] }
     elsif sort_by ==  2
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, - t.sort_rank,  -t.task_num] }
     elsif sort_by == 3
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, t.priority + t.severity_id/2.0,  -t.task_num] }
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, - t.sort_rank,  -t.task_num] }
     elsif sort_by ==  4
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }.reverse
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, - t.sort_rank,  -t.task_num] }.reverse
     end
 
     return res
