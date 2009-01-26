@@ -59,21 +59,13 @@ class Task < ActiveRecord::Base
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
     project = r.project
-    project.critical_count = project.tasks.select { |t| t.severity_id + t.priority / 2 > 0 }.length
-    project.normal_count = project.tasks.select { |t| t.severity_id + t.priority / 2 == 0 }.length
-    project.low_count = project.tasks.select { |t| t.severity_id + t.priority / 2 < 0 }.length
-    project.open_tasks = nil
-    project.total_tasks = nil
+    project.update_project_stats
     project.save
 
     if r.project.id != r.project_id
       # Task has changed projects, update counts of target project as well
       p = Project.find(r.project_id)
-      p.critical_count = p.tasks.select { |t| t.severity_id + t.priority / 2 > 0 }.length
-      p.normal_count = p.tasks.select { |t| t.severity_id + t.priority / 2 == 0 }.length
-      p.low_count = p.tasks.select { |t| t.severity_id + t.priority / 2 < 0 }.length
-      p.open_tasks = nil
-      p.total_tasks = nil
+      p.update_project_stats
       p.save
     end
     
@@ -772,6 +764,37 @@ class Task < ActiveRecord::Base
     if task_value
       return mappings[task_value.value] || property.property_values.index(task_value)
     end
+  end
+
+  ###
+  # Returns an int to use for sorting this task. See Company.rank_by_properties
+  # for more info.
+  ###
+  def sort_rank
+    @sort_rank ||= company.rank_by_properties(self)
+  end
+
+  ###
+  # A task is critical if it is in the top 20% of the possible
+  # ranking using the companys sort.
+  ###
+  def critical?
+    sort_rank.to_f / company.maximum_sort_rank.to_f > 0.80
+  end
+
+  ###
+  # A task is normal if it is not critical or low.
+  ###
+  def normal?
+    !critical? and !low?
+  end
+
+  ###
+  # A task is low if it is in the bottom 20% of the possible
+  # ranking using the companys sort.
+  ###
+  def low?
+    sort_rank.to_f / company.maximum_sort_rank.to_f < 0.20
   end
 
 

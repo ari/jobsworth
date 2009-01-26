@@ -75,12 +75,24 @@ class Company < ActiveRecord::Base
   end
 
   ###
-  # Returns an into to use to rank the task according to properties
+  # Returns an array of properties that should be used for sorting tasks.
+  ###
+  def sort_properties
+    properties.select { |p| p.default_sort }
+  end
+
+  ###
+  # Returns the maximum sort rank a task could possibly have.
+  ###
+  def maximum_sort_rank
+    @maximum_sort_rank ||= sort_properties.inject(0) { |rank, property| rank += property.property_values.length }
+  end
+
+  ###
+  # Returns an int to to use to rank the task according to properties
   # set up as default_sort.
   ###
   def rank_by_properties(task)
-    sort_properties = self.properties.select { |p| p.default_sort }
-
     rank_by_properties = sort_properties.inject(0) do |rank, property|
       pv = task.property_value(property)
       if pv
