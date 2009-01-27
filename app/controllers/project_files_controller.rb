@@ -61,7 +61,12 @@ class ProjectFilesController < ApplicationController
 
   def download
     @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
-    send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"
+    if (@project_files.mime_type =~ /image.*/)
+      disposition = "inline"
+	else
+      disposition = "attachment"
+	end
+    send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => disposition
   end
 
 
