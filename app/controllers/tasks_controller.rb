@@ -771,18 +771,18 @@ class TasksController < ApplicationController
              task_file.save
              task_file.reload
   
-                   File.umask(0)
+             File.umask(0)
              if !File.directory?(task_file.path)
               Dir.mkdir(task_file.path, 0777) rescue nil
              end
   
              File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
-                                                                                                  task_file.destroy
-                                                                                                  task_file = nil
-                                                                                                  flash['notice'] = _("Permission denied while saving file.")
-                                                                                                        next
-                                                                                                end
-                         filenames << filename
+                                                    flash['notice'] = _("Permission denied while saving file to #{task_file.file_path}.")
+                                                    task_file.destroy
+                                                    task_file = nil
+                                                    next
+                                                    end
+             filenames << filename
              if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
                image = ImageOperations::get_image( task_file.file_path )
                                  if ImageOperations::is_image?(image)
