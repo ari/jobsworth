@@ -1,4 +1,4 @@
 <%= h(current_user.name + " / " + current_user.company.name) %><br /><small><%=tz.now.strftime("#{current_user.time_format} #{current_user.date_format}")%></small> <%= "<small>[#{online_users} #{_('Online')}]</small>" %>
 <% if current_user.projects.size > 0 %>
-<br/><small><a href="javascript:var timerwindow=window.open('<%= request.protocol -%><%=current_user.company.subdomain%>.<%= $CONFIG[:domain] %>:<%=request.port%>/login/shortlist_auth/<%= current_user.autologin %>','','resizable=1,toolbar=0,location=0,status=0,menubar=0,scrollbars=1,width=300,height=650');timerwindow.focus();" style="font-size:9px;" class="tooltip" title="<%= _'Bookmark this link to quickly open the Timer Window'%>"><%= _'Timer Window'%></a></small>
+<br/><small><a href="javascript:var timerwindow=window.open('<%=request.protocol%><%=request.host_with_port%>/login/shortlist_auth/<%= current_user.autologin %>','','resizable=1,toolbar=0,location=0,status=0,menubar=0,scrollbars=1,width=300,height=650');timerwindow.focus();" style="font-size:9px;" class="tooltip" title="<%= _'Bookmark this link to quickly open the Timer Window'%>"><%= _'Timer Window'%></a></small>
 <% end %>
