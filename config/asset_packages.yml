@@ -27,5 +27,5 @@ stylesheets:
   - portal
 - tt:
   - calendar-system
-  - ui.datepicker.css
+  - ui.datepicker
   - tt
