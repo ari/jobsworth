@@ -59,14 +59,14 @@ $('comment').focus();
         <legend><%=_ "Attachments" %></legend>
 
         <% for file in @task.attachments %>
-        <% if file.thumbnail? %>
-        <div>
-        <a href="/project_files/show/<%=file.id%>"><img src="/project_files/thumbnail/<%=file.id%>" border="0" style="float:none;"/></a>
-        </div>
-        <% end %>
-        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> (<%=number_to_human_size(file.file_size)%>)
-        <%= link_to _('[Delete]'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
-        <br/><br/>
+	        <% if file.thumbnail? %>
+		        <div>
+		        <%= link_to image_tag("/project_files/thumbnail/#{file.id}", {:border=>0, :style=>'float:none'}), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %>
+		        </div>
+	        <% end %>
+	        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %><em> (<%=number_to_human_size(file.file_size)%>)</em>
+	        <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name), :class => 'close-cross' %>
+	        <span class="divider"></span>
         <% end %>
 
       </fieldset>

@@ -93,6 +93,16 @@ class ProjectFile < ActiveRecord::Base
   def started_at
     self.created_at
   end
+  
+  # Lookup, guesstimate if fail, the file extension
+  # For example:
+  # 'text/rss+xml' => "xml"
+  def file_extension
+      set = Mime::LOOKUP[self.mime_type]
+      sym = set.instance_variable_get("@symbol") if set
+      return sym.to_s if sym
+      return $1 if self.mime_type =~ /(\w+)$/
+  end
 
   def generate_thumbnail(size = 124)
     image = ImageOperations::get_image( self.file_path ) rescue begin
