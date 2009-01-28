@@ -744,8 +744,6 @@ class TasksController < ApplicationController
 
     render :nothing => true
   end
-
-  private
   
   def create_attachments(task)
          filenames = []
