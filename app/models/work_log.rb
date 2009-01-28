@@ -37,7 +37,7 @@ class WorkLog < ActiveRecord::Base
     l.created_at = r.started_at
     l.save
     
-    if r.task && r.duration > 0
+    if r.task && r.duration.to_i > 0
       r.task.recalculate_worked_minutes
       r.task.save
     end
