@@ -390,7 +390,7 @@ class TasksController < ApplicationController
         @task.save
       end
 
-			create_attachments(@task)
+      create_attachments(@task)
       
       worklog = WorkLog.new
       worklog.user = current_user
@@ -1826,62 +1826,70 @@ class TasksController < ApplicationController
     end 
   end
 
+  def get_comment
+    @task = current_user.tasks.find(params[:id])
+    if @task
+      @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
+    end 
+  end 
 
-	private
+  private
 
-	def create_attachments(task)
-		filenames = []
-		unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-			params['tmp_files'].each do |tmp_file|
-				next if tmp_file.is_a?(String)
-			  filename = tmp_file.original_filename
-		    filename = filename.split("/").last
-		    filename = filename.split("\\").last
-		    filename = filename.gsub(/[^\w.]/, '_')
+  def create_attachments(task)
+    filenames = []
+    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+      params['tmp_files'].each do |tmp_file|
+        next if tmp_file.is_a?(String)
+        filename = tmp_file.original_filename
+        filename = filename.split("/").last
+        filename = filename.split("\\").last
+        filename = filename.gsub(/[^\w.]/, '_')
+        
+        task_file = ProjectFile.new()
+        task_file.company = current_user.company
+        task_file.customer = task.project.customer
+        task_file.project = task.project
+        task_file.task_id = task.id
+        task_file.user_id = current_user.id
+        task_file.filename = filename
+        task_file.name = filename
+        task_file.save
+        task_file.file_size = tmp_file.size
+        
+        task_file.save
+        task_file.reload
+        
+        File.umask(0)
+        if !File.directory?(task_file.path)
+          Dir.mkdir(task_file.path, 0777) rescue nil
+        end
+        
+        File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
+                                                                                             task_file.destroy
+                                                                                             task_file = nil
+                                                                                             flash['notice'] = _("Permission denied while saving file.")
+                                                                                             next
+                                                                                           end
+        filenames << filename
+        if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+          image = ImageOperations::get_image( task_file.file_path )
+          if ImageOperations::is_image?(image)
+            task_file.file_type = ProjectFile::FILETYPE_IMG
+            task_file.mime_type = image.mime_type
+            task_file.save
+            thumb = ImageOperations::thumbnail(image, 124)
+            f = File.new(task_file.thumbnail_path, "w", 0777)
+            f.write(thumb.to_blob)
+            f.close
+          end
+          image = thumb = nil
+          GC.start
+        end
+      end
+    end
+    filenames
+  end
 
-		    task_file = ProjectFile.new()
-		    task_file.company = current_user.company
-		    task_file.customer = task.project.customer
-		    task_file.project = task.project
-		    task_file.task_id = task.id
-		    task_file.user_id = current_user.id
-		    task_file.filename = filename
-		    task_file.name = filename
-		    task_file.save
-		    task_file.file_size = tmp_file.size
-
-		    task_file.save
-		    task_file.reload
-
-			  File.umask(0)
-		    if !File.directory?(task_file.path)
-		     Dir.mkdir(task_file.path, 0777) rescue nil
-		    end
-
-		    File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
-		                                                                                         task_file.destroy
-		                                                                                         task_file = nil
-		                                                                                         flash['notice'] = _("Permission denied while saving file.")
-			                                                                                       next
-		                                                                                       end
-				filenames << filename
-		    if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
-		      image = ImageOperations::get_image( task_file.file_path )
-					if ImageOperations::is_image?(image)
-		        task_file.file_type = ProjectFile::FILETYPE_IMG
-		        task_file.mime_type = image.mime_type
-		        task_file.save
-						thumb = ImageOperations::thumbnail(image, 124)
-		        f = File.new(task_file.thumbnail_path, "w", 0777)
-		        f.write(thumb.to_blob)
-		        f.close
-		      end
-		      image = thumb = nil
-		      GC.start
-		    end
-		  end
-		end
-		filenames
-	end
+  
 
 end

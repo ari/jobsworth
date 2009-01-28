@@ -604,7 +604,7 @@ class Task < ActiveRecord::Base
       owners = "No one"
       owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
 
-      res = "<table cellpadding=0 cellspacing=0>"
+      res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
       res << "<tr><th>#{_('Summary')}</td><td>#{self.name}</tr>"
       res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
       res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
