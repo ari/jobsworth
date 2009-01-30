@@ -8,7 +8,6 @@ class TasksController < ApplicationController
 #    :cancel_work_ajax, :destroy_log ]
 
   require_dependency 'fastercsv'
-  require_dependency 'RMagick'
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -1827,7 +1826,7 @@ class TasksController < ApplicationController
   end
 
   def get_comment
-    @task = current_user.tasks.find(params[:id])
+    @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
     if @task
       @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
     end 
