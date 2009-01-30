@@ -137,7 +137,7 @@ class UserTest < Test::Unit::TestCase
   end
 
   def test_login
-    assert_equal @user, @user.login('cit')
+    assert_equal @user, @user.login(companies('cit'))
     assert_nil   @user.login
     assert_nil   @user.login('www')
     assert_nil   User.new.login('cit')
