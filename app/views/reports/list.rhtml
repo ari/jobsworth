@@ -144,15 +144,17 @@
 <div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="$('advanced').toggle();"><%=_ 'Advanced Options' %></a></div>
 
 
-<div id="advanced" <%= "style=\"display:none;\"" unless (params[:report] && (params[:report][:status] != "-1" || params[:report][:type_id] != "-1" || params[:report][:priority] != "-3" || params[:report][:severity_id] != "-3" || params[:report][:tags].length > 0 ))%>>
+<div id="advanced" <%= "style=\"display:none;\"" unless show_advanced? %>>
 <label for="report_type_id"><%=_ 'Status' %></label>
 <%= select 'report', 'status', [[_('[Any Status]'), '-1'], [_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3], [_('Invalid'), 4], [_('Duplicate'), 5]], :selected => ((params[:report] && params[:report][:status]) ? params[:report][:status].to_i : "-1")  %><br/>
-<label for="report_type_id"><%=_ 'Type' %></label>
-<%= select 'report', 'type_id', [[_('[Any Type]'), '-1'], [_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], :selected => ((params[:report] && params[:report][:type_id]) ? params[:report][:type_id].to_i : "-1")  %><br/>
-<label for="report_priority"><%=_ 'Priority' %></label>
-<%= select 'report', 'priority', [[_('[Any Priority]'), '-3'], [_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], :selected => ((params[:report] && params[:report][:priority]) ? params[:report][:priority].to_i : "-3")   %><br/>
-<label for="report_severity_id"><%=_ 'Severity' %></label>
-<%= select 'report', 'severity_id', [[_('[Any Severity]'), '-3'], [_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], :selected => ((params[:report] && params[:report][:severity_id]) ? params[:report][:severity_id].to_i : "-3")  %><br/>
+<% current_user.company.properties.each do |p| -%>
+  <label for="report_#{ property.filter_name }"><%= p.name %></label>
+    <% 
+       options = [ [ _("Any %s", p.name), "" ] ]
+       options += p.property_values.map { |pv| [ pv.to_s, pv.id.to_s ] } 
+       -%>
+    <%= select "report", p.filter_name, options, :selected => (params[:report] and params[:report][p.filter_name.to_sym]) %>
+<% end -%>
 <label for="report_tags"><%=_ 'Tags' %></label><%= text_field 'report', 'tags', {:size => 12, :value => (params[:report] && params[:report][:tags]) ? params[:report][:tags] : "", :autocomplete => "off"} %><br/>
 <div class="auto_complete" id="report_tags_auto_complete" style="display:none;" align="left"></div>
 <% unless @tags.nil? %>
@@ -243,3 +245,4 @@ new Form.Element.EventObserver('report_client_id', function(element, value) {new
 
 // ]]>
 </script>
+

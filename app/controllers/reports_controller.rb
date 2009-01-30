@@ -50,12 +50,6 @@ class ReportsController < ApplicationController
       get_date_key(w)
     elsif r == 8
       w.task.status
-    elsif r == 9
-      w.task.type_id
-    elsif r == 10
-      w.task.severity_id + 2
-    elsif r == 11
-      w.task.priority + 2
     elsif r == 12
       "comment"
     elsif r == 13
@@ -103,12 +97,6 @@ class ReportsController < ApplicationController
       get_date_header(w)
     elsif r == 8
       "#{w.task.status_type}"
-    elsif r == 9
-      "#{w.task.issue_type}"
-    elsif r == 10
-      "#{w.task.severity_type}"
-    elsif r == 11
-      "#{w.task.priority_type}"
     elsif r == 12
       _("Notes")
     elsif r == 13
@@ -228,9 +216,12 @@ class ReportsController < ApplicationController
       project_id = filter[:project_id]
 
       task_status = filter[:status].to_i
-      task_type_id = filter[:type_id].to_i
-      task_priority = filter[:priority].to_i
-      task_severity = filter[:severity_id].to_i
+      task_property_filters = {}
+      current_user.company.properties.each do |p|
+        required_value = filter[p.filter_name.to_sym] if filter[p.filter_name.to_sym]
+        required_value = p.property_values.detect { |pv| pv.id == required_value.to_i }
+        task_property_filters[p] = required_value if required_value
+      end
       task_tags = filter[:tags]
 
       filename << "_" + ["pivot", "audit", "time_sheet", "workload"][@type-1]
@@ -311,11 +302,8 @@ class ReportsController < ApplicationController
         end
 
         join = ""
-        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+        if task_status > -1
           join << " AND tasks.status = #{task_status}" if task_status > -1
-          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
-          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
-          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
         end
 
         unless task_tags.nil? || task_tags.empty?
@@ -335,7 +323,6 @@ class ReportsController < ApplicationController
             @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, current_user.company.id])
           end
         end
-
       else
         # Workload report
 
@@ -360,11 +347,8 @@ class ReportsController < ApplicationController
         end
 
         join = ""
-        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+        if task_status > -1
           join << " AND tasks.status = #{task_status}" if task_status > -1
-          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
-          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
-          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
         end
 
         unless task_tags.nil? || task_tags.empty?
@@ -409,6 +393,8 @@ class ReportsController < ApplicationController
 
         end
       end
+
+      @logs = filter_logs_by_properties(@logs, task_property_filters)
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
@@ -500,17 +486,17 @@ class ReportsController < ApplicationController
 
     end
 
-#     csv = create_csv if @column_headers && @column_headers.size > 1
-#     unless csv.nil? || csv.empty?
-#       @generated_report = GeneratedReport.new
-#       @generated_report.company = current_user.company
-#       @generated_report.user = current_user
-#       @generated_report.filename = filename + ".csv"
-#       @generated_report.report = csv
-#       @generated_report.save
-#     else
-#       flash['notice'] = _("Empty report, log more work!") if params[:report]
-#     end
+    csv = create_csv if @column_headers && @column_headers.size > 1
+    unless csv.nil? || csv.empty?
+      @generated_report = GeneratedReport.new
+      @generated_report.company = current_user.company
+      @generated_report.user = current_user
+      @generated_report.filename = filename + ".csv"
+      @generated_report.report = csv
+      @generated_report.save
+    else
+      flash['notice'] = _("Empty report, log more work!") if params[:report]
+    end
 
   end
 
@@ -522,7 +508,11 @@ class ReportsController < ApplicationController
         header = [nil]
         @column_headers.sort.each do |key,value|
           next if key == '__'
-          header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+          begin
+            header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+          rescue
+            header << [ value ]
+          end
         end
         header << [_("Total")]
         csv << header
@@ -588,4 +578,22 @@ class ReportsController < ApplicationController
   end
 
 
+  ###
+  # Remove any logs that don't match the property filters selected
+  # by the user.
+  ###
+  def filter_logs_by_properties(logs, property_filters)
+    return logs if property_filters.empty?
+
+    res = []
+    logs.each do |l|
+      all_matched = true
+      property_filters.each do |property, property_value|
+        all_matched &&= l.task.property_value(property) == property_value
+      end
+      res << l if all_matched
+    end
+    
+    return res
+  end
 end

@@ -44,13 +44,24 @@ module ReportsHelper
 
     return select("report", name, options, :selected => (selected || default_selected))
   end
-
+  
   ###
-  # Returns an array of options to use for populating the row and
-  # column selects.
+  # Returns true if the advances section of the report config section
+  # should be shown.
   ###
-
-  def options_for_rows_and_columns
+  def show_advanced?
+    show = false
+    if params[:report]
+      filters = params[:report]
+      show ||= filters[:status] != "-1"
+      show ||= filters[:tags].length > 0
+      
+      current_user.company.properties.each do |p|
+        show ||= filters[p.filter_name] != ""
+      end
+    end
     
+    return show
   end
+  
 end
