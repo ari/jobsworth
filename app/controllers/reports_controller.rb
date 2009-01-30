@@ -34,101 +34,103 @@ class ReportsController < ApplicationController
   end
 
   def key_from_worklog(w, r)
-    case r
-    when 1
+    if r == 1
       "#{w.customer.name} #{w.project.name} #{w.task.name} #{w.task.task_num}"
-    when 2
+    elsif r == 2
       w.is_a?(Tag) ? w.id : 0
-    when 3
+    elsif r == 3
       w.user_id
-    when 4
+    elsif r == 4
       w.customer_id
-    when 5
+    elsif r == 5
       w.project_id
-    when 6
+    elsif r == 6
       w.task.milestone.nil? ? 0 : w.task.milestone.name
-    when 7
+    elsif r == 7
       get_date_key(w)
-    when 8
+    elsif r == 8
       w.task.status
-    when 9
+    elsif r == 9
       w.task.type_id
-    when 10
+    elsif r == 10
       w.task.severity_id + 2
-    when 11
+    elsif r == 11
       w.task.priority + 2
-    when 12
+    elsif r == 12
       "comment"
-    when 13
+    elsif r == 13
       "#{tz.utc_to_local(w.started_at).strftime("%Y-%m-%d %H:%M")}"
-    when 14
+    elsif r == 14
       tz.utc_to_local(w.started_at) + w.duration
-    when 15
+    elsif r == 15
       if w.body && !w.body.empty?
         "#{w.customer.name}_#{w.project.name}_#{w.task.name}_#{w.id}"
       else
         "#{w.customer.name}_#{w.project.name}_#{w.task.name}"
       end
-    when 16
+    elsif r == 16
       "1_start"
-    when 17
+    elsif r == 17
       "2_end"
-    when 18
+    elsif r == 18
       "3_task"
-    when 19
+    elsif r == 19
       "5_note"
-    when 20
+    elsif r == 20
       "#{w.task.requested_by}"
-    when 21
+    elsif r == 21
       "4_user"
+    elsif (property = Property.find_by_filter_name(current_user.company, r))
+      w.task.property_value(property)
     end
     
   end
 
   def name_from_worklog(w,r)
-    case r
-    when 1
+    if r == 1
       "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{w.task.name}</a> <br /><small>#{w.task.full_name}</small>"
-    when 2
+    elsif r == 2
       w.is_a?(Tag) ? "#{w.name}" : "none"
-    when 3
+    elsif r == 3
       "#{w.user ? w.user.name : _("Unassigned")}"
-    when 4
+    elsif r == 4
       "#{w.customer.name}"
-    when 5
+    elsif r == 5
       "#{w.project.full_name}"
-    when 6
+    elsif r == 6
       w.task.milestone.nil? ? "none" : "#{w.task.milestone.name}"
-    when 7
+    elsif r == 7
       get_date_header(w)
-    when 8
+    elsif r == 8
       "#{w.task.status_type}"
-    when 9
+    elsif r == 9
       "#{w.task.issue_type}"
-    when 10
+    elsif r == 10
       "#{w.task.severity_type}"
-    when 11
+    elsif r == 11
       "#{w.task.priority_type}"
-    when 12
+    elsif r == 12
       _("Notes")
-    when 13
+    elsif r == 13
       _("Start")
-    when 14
+    elsif r == 14
       _("End")
-    when 15
+    elsif r == 15
       "#{tz.utc_to_local(w.started_at).strftime_localized( "%a " + current_user.date_format )}"
-    when 16
+    elsif r == 16
       _("Start")
-    when 17
+    elsif r == 17
       _("End")
-    when 18
+    elsif r == 18
       _("Task")
-    when 19
+    elsif r == 19
       _("Note")
-    when 20 
+    elsif r == 20
       "#{w.task.requested_by}"
-    when 21
+    elsif r == 21
       _("User")
+    elsif (property = Property.find_by_filter_name(current_user.company, r))
+      w.task.property_value(property)
     end
 
   end
@@ -216,8 +218,10 @@ class ReportsController < ApplicationController
       @type = filter[:type].to_i
       @range = filter[:range]
 
-      @row_value = filter[:rows].to_i
-      @column_value = filter[:columns].to_i
+      @row_value = filter[:rows]
+      @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
+      @column_value = filter[:columns]
+      @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
 
       customer_id = filter[:client_id]
       user_id = filter[:user_id]
@@ -496,17 +500,17 @@ class ReportsController < ApplicationController
 
     end
 
-    csv = create_csv if @column_headers && @column_headers.size > 1
-    unless csv.nil? || csv.empty?
-      @generated_report = GeneratedReport.new
-      @generated_report.company = current_user.company
-      @generated_report.user = current_user
-      @generated_report.filename = filename + ".csv"
-      @generated_report.report = csv
-      @generated_report.save
-    else
-      flash['notice'] = _("Empty report, log more work!") if params[:report]
-    end
+#     csv = create_csv if @column_headers && @column_headers.size > 1
+#     unless csv.nil? || csv.empty?
+#       @generated_report = GeneratedReport.new
+#       @generated_report.company = current_user.company
+#       @generated_report.user = current_user
+#       @generated_report.filename = filename + ".csv"
+#       @generated_report.report = csv
+#       @generated_report.save
+#     else
+#       flash['notice'] = _("Empty report, log more work!") if params[:report]
+#     end
 
   end
 

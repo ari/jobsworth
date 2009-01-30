@@ -32,12 +32,12 @@ module ReportsHelper
                [_("Milestones"), "6"],
                [_("Date"), "7"],
                [_("Task Status"), "8"],
-               [_("Task Type"), "9"],
-               [_("Task Priority"), "11"],
-               [_("Task Severity"), "10"],
                [_("Requested By"), "20"]
               ]
-
+    current_user.company.properties.each do |p|
+      options << [ p.name, p.filter_name ]
+    end
+    
     if params[:report] and params[:report][name.to_sym]
       selected = params[:report][name.to_sym]
     end

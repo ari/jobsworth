@@ -75,10 +75,16 @@ class Property < ActiveRecord::Base
   # Finds the property matching the given group_by parameter.
   ###
   def self.find_by_group_by(company, group_by)
-    return if !group_by
+    find_by_filter_name(company, group_by)
+  end
 
-    # N.B. This is mainly used in task filtering in the list view.
-    match = group_by.match(/property_(\d+)/)
+  ###
+  # Finds the property matching the given filter_name
+  ###
+  def self.find_by_filter_name(company, filter_name)
+    return if !filter_name
+
+    match = filter_name.match(/property_(\d+)/)
     return company.properties.find(match[1]) if match
   end
 
