@@ -25,22 +25,8 @@ class WidgetsController < ApplicationController
     case @widget.widget_type
     when 0
       # Tasks
-      
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-                 when 'c'
-                   "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-                 when 'p'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-                 when 'm'
-                   "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-                 when 'u'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                 else 
-                   ""
-                 end
-      end
-      
+      filter = filter_from_filter_by
+
       unless @widget.mine?
         @items = Task.find(:all, :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)"], :include => [:milestone, { :project => :customer}, :dependencies, :dependants, :users, :todos, :tags])
       else 
@@ -86,20 +72,7 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-        when 'c'
-           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-        when 'p'
-           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-        when 'm'
-           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-        when 'u'
-          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-        else 
-          ""
-        end
-      end
+      filter = filter_from_filter_by
       
       @items = []
       @dates = []
@@ -141,20 +114,7 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-        when 'c'
-           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-        when 'p'
-           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-        when 'm'
-           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-        when 'u'
-          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-        else 
-          ""
-        end
-      end
+      filter = filter_from_filter_by
 
       @items = []
       @dates = []
@@ -225,20 +185,7 @@ class WidgetsController < ApplicationController
         tick = "%b"
       end
 
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-        when 'c'
-           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-        when 'p'
-           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-        when 'm'
-           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-        when 'u'
-          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-        else 
-          ""
-        end
-      end
+      filter = filter_from_filter_by
 
       @items  = []
       @totals = []
@@ -301,21 +248,7 @@ class WidgetsController < ApplicationController
     when 7
       # Schedule
 
-      filter = ''
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-        when 'c'
-           "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-        when 'p'
-           "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-        when 'm'
-           "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-        when 'u'
-          "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-        else 
-          ""
-        end
-      end
+      filter = filter_from_filter_by
 
       if @widget.mine?
         tasks = current_user.tasks.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"], :order => "CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, tasks.severity_id + tasks.priority desc")
@@ -345,21 +278,7 @@ class WidgetsController < ApplicationController
       # Google Gadget
     when 9 
       # Work Status
-      filter = ''
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-                 when 'c'
-                   "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-                 when 'p'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-                 when 'm'
-                   "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-                 when 'u'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                 else 
-                   ""
-                 end
-      end
+      filter = filter_from_filter_by
 
       start = tz.local_to_utc(tz.now.at_midnight)
 
@@ -404,21 +323,8 @@ class WidgetsController < ApplicationController
         
       end 
     when 10: 
-      if @widget.filter_by?
-        filter = case @widget.filter_by[0..0]
-                 when 'c'
-                   "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-                 when 'p'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-                 when 'm'
-                   "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-                 when 'u'
-                   "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                 else 
-                   ""
-                 end
-      end
-      
+      filter = filter_from_filter_by
+
       @sheets = Sheet.find(:all, :order => 'users.name', :include => [ :user, :task, :project ], :conditions => ["tasks.project_id IN (#{current_project_ids})#{filter}"]) 
     end 
 
@@ -597,4 +503,23 @@ class WidgetsController < ApplicationController
     @widget.save
     
   end
+
+  private
+
+  def filter_from_filter_by
+    return nil unless @widget.filter_by
+    case @widget.filter_by[0..0]
+    when 'c'
+      "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+    when 'p'
+      "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
+    when 'm'
+      "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
+    when 'u'
+      "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+    else
+      ""
+    end
+  end
+
 end
