@@ -337,42 +337,42 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000237'>
+<a href='#M000247'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000240'>
+<a href='#M000250'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000238'>
+<a href='#M000248'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000236'>
+<a href='#M000246'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000235'>
+<a href='#M000245'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000239'>
+<a href='#M000249'>
 update<br/>
 </a>
 
@@ -400,9 +400,9 @@ Wiki once I get the time..
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000237"><br/></a>
+<a class="small" name="M000247"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000237'>
+<a href='#M000247'>
 
 
 create
@@ -412,7 +412,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000237-show-link"><a onclick="toggle('M000237-source'); toggleText('M000237-link'); return false;" href="#" id="M000237-link">Show source...</a></p><div class="source" id="M000237-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 12</span>
+<p class="source_link" id="M000247-show-link"><a onclick="toggle('M000247-source'); toggleText('M000247-link'); return false;" href="#" id="M000247-link">Show source...</a></p><div class="source" id="M000247-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 12</span>
 12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 13:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>])
 14: 
@@ -440,9 +440,9 @@ create
 36:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000240"><br/></a>
+<a class="small" name="M000250"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000240'>
+<a href='#M000250'>
 
 
 destroy
@@ -452,7 +452,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000240-show-link"><a onclick="toggle('M000240-source'); toggleText('M000240-link'); return false;" href="#" id="M000240-link">Show source...</a></p><div class="source" id="M000240-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 73</span>
+<p class="source_link" id="M000250-show-link"><a onclick="toggle('M000250-source'); toggleText('M000250-link'); return false;" href="#" id="M000250-link">Show source...</a></p><div class="source" id="M000250-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 73</span>
 73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 74:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>] )
 75: 
@@ -474,9 +474,9 @@ destroy
 91:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000238"><br/></a>
+<a class="small" name="M000248"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000238'>
+<a href='#M000248'>
 
 
 edit
@@ -486,15 +486,15 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000238-show-link"><a onclick="toggle('M000238-source'); toggleText('M000238-link'); return false;" href="#" id="M000238-link">Show source...</a></p><div class="source" id="M000238-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 38</span>
+<p class="source_link" id="M000248-show-link"><a onclick="toggle('M000248-source'); toggleText('M000248-link'); return false;" href="#" id="M000248-link">Show source...</a></p><div class="source" id="M000248-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 38</span>
 38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 39:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>] )
 40:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000236"><br/></a>
+<a class="small" name="M000246"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000236'>
+<a href='#M000246'>
 
 
 new
@@ -504,15 +504,15 @@ new
 </a>
 </h3>
 
-<p class="source_link" id="M000236-show-link"><a onclick="toggle('M000236-source'); toggleText('M000236-link'); return false;" href="#" id="M000236-link">Show source...</a></p><div class="source" id="M000236-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 8</span>
+<p class="source_link" id="M000246-show-link"><a onclick="toggle('M000246-source'); toggleText('M000246-link'); return false;" href="#" id="M000246-link">Show source...</a></p><div class="source" id="M000246-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 8</span>
  8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
  9:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">new</span>
 10:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000235"><br/></a>
+<a class="small" name="M000245"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000235'>
+<a href='#M000245'>
 
 
 show
@@ -522,15 +522,15 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000235-show-link"><a onclick="toggle('M000235-source'); toggleText('M000235-link'); return false;" href="#" id="M000235-link">Show source...</a></p><div class="source" id="M000235-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 4</span>
+<p class="source_link" id="M000245-show-link"><a onclick="toggle('M000245-source'); toggleText('M000245-link'); return false;" href="#" id="M000245-link">Show source...</a></p><div class="source" id="M000245-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 4</span>
 4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
 5:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>] )
 6:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000239"><br/></a>
+<a class="small" name="M000249"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000239'>
+<a href='#M000249'>
 
 
 update
@@ -540,7 +540,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000239-show-link"><a onclick="toggle('M000239-source'); toggleText('M000239-link'); return false;" href="#" id="M000239-link">Show source...</a></p><div class="source" id="M000239-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 42</span>
+<p class="source_link" id="M000249-show-link"><a onclick="toggle('M000249-source'); toggleText('M000249-link'); return false;" href="#" id="M000249-link">Show source...</a></p><div class="source" id="M000249-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/pages_controller.rb, line 42</span>
 42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 43:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">Page</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>] )
 44: 

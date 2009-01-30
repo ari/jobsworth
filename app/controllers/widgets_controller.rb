@@ -56,7 +56,7 @@ class WidgetsController < ApplicationController
 
     when 1
       # Project List
-      @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])
+      @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name, milestones.due_at IS NULL, milestones.due_at, milestones.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])
       @completed_projects = current_user.completed_projects.size
     when 2
       # Activities

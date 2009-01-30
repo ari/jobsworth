@@ -1,17 +1,18 @@
 ---
 javascripts:
 - base:
-  - jquery
-  - jquery-ui.js
-  - jrails
   - prototype
+  - jquery
+  - jquery-ui
+  - shadowbox
   - effects
   - dragdrop
   - controls
-  - application
   - calendar
   - calendar-en
   - calendar-setup
+  - application
+  - jrails
 - tt:
   - juggernaut_javascript
   - tt
@@ -26,5 +27,5 @@ stylesheets:
   - portal
 - tt:
   - calendar-system
-  - ui.datepicker.css
+  - ui.datepicker
   - tt

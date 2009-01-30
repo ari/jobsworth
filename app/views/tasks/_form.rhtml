@@ -28,7 +28,16 @@
 			<label for="comment"><%=_ 'Comment' %></label>
 			<%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
 			<label for="task_tmp_file"><%=_ 'Attach file' %></label>
-			<%= file_field_tag 'task_file', { :size => 35, :class => "file" }.merge( perms['comment'] ) %> <br />
+			<div id="upload_container">
+            <%= file_field_tag 'tmp_files[]', { :size => 35, :class => "file" }.merge( perms['comment'] ) %>
+            <% if perms['comment'].empty? %>
+              <span style="float:left;padding-right:0.4em;padding-top:0.4em"><%= link_to_function _("Upload more files") do |page|
+                  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />"
+                  end %></span>
+            <% end %>
+            <br />
+            </div>
+
 	
 			<span class="divider"></span>
 			
@@ -189,11 +198,10 @@ end
                date_tooltip = _("Enter task due date, or click calendar button.")
              end %>
           <% if @task.repeat && @task.repeat.length > 0 %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
           <% else %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') },
-          { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
+	  <input type="text" name="task[due_at]" id="task_due_at" size="12"/>
+          <%#= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
           <% end %>
           <br/>
         <% else %>
@@ -297,6 +305,8 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 
 jQuery('#task_due_at').datepicker();
 
+jQuery('#task_due_at').datepicker();
+
 </script>
 
       </fieldset>
@@ -319,7 +329,10 @@ jQuery('#task_due_at').datepicker();
         <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %><br/>
       <label for="task_severity_id"><%=_ 'Severity' %></label>
         <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %><br/>
-	<% @properties.each do |p| -%>
+	<%
+		@properties = Property.all_for_company(current_user.company)
+		@properties.each do |p|
+	-%>
 	  <% name = "property_#{ p.id }" -%>
   	  <label for="<%= name %>"><%= h(p.name) %></label>
 	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
@@ -379,38 +392,10 @@ jQuery('#task_due_at').datepicker();
 
 
 
-      <% if @task.attachments.size > 0 %>
-      <fieldset id="task_attachments">
-        <legend><%=_ "Attachments" %></legend>
 
-        <% for file in @task.attachments %>
-        <%= link_to _('<img src="/images/cross_small.png" class="close-cross" border="0" />'), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name) %>
-        <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id} %> <em>(<%=number_to_human_size(file.file_size)%>)</em>
-        <span class="divider"></span>
-        <% end %>
-      </fieldset>
-      <% end %>
     </td>
 </tr>
 
 
 
 <!--[eoform:task]-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

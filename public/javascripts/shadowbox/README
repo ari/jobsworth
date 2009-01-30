@@ -1,0 +1,58 @@
+This file contains instructions that should be helpful when creating skins for
+the Shadowbox media viewer. If you create a skin that looks good, and you would
+like to include it in the official Shadowbox distribution, please don't hesitate
+to contact me.
+
+INTRODUCTION
+
+A Shadowbox "skin" is merely a directory of files that determines what
+Shadowbox will look like. The name of the skin will be the name of the directory
+in which it resides. At the very minimum, this directory must contain at
+least two files:
+
+    1) skin.js
+    2) skin.css
+
+If you don't understand something that I write in this file and you'd rather see
+some code, you can always refer to the "classic" skin that is included in the
+default distribution.
+
+SKIN.JS
+
+The first file (skin.js) determines the actual HTML markup that Shadowbox will
+use. Inside this file, a public static property named SKIN should be defined on
+the Shadowbox object. This property itself will be an object containing the
+following properties:
+
+    1) markup
+    2) png_fix
+
+The markup property should be a string that defines the HTML markup to be used
+with Shadowbox. The script expects most of these elements to be present, so you
+should leave the most basic structural elements such as #shadowbox_container,
+#shadowbox_body, etc. However, I've tried to make the script flexible enough to
+allow for some rearranging of elements such as the navigation controls.
+
+The markup string may contain placeholders that will be translated into the
+appropriate language when the language file loads. These placeholders should
+contain the name of one of the Shadowbox.LANG properties surrounded by curly
+brackets (e.g. {cancel}).
+
+The png_fix property should contain an array of element id's that are using
+transparent PNG's for backgrounds. Transparent PNG support is built in to the
+script for browsers (such as IE6) that do not natively support it. This behavior
+can be seen in the classic skin for the navigation icons and the transparent
+overlay.
+
+SKIN.CSS
+
+The heart of a Shadowbox skin is the CSS file. Most of the weird CSS quirks have
+already been worked out in the classic skin, so use this skin as a reference
+when creating your own. I have placed comments by certain rules that are
+important for Shadowbox to display properly. Disclaimer: I don't have a lot of
+time to help you with your own CSS issues, so only attempt this if you know what
+you're doing or you're willing to put the time in to fix your bugs yourself.
+
+The CSS file defines the colors, images, and overall appearance of the
+Shadowbox media viewer. You may use transparent PNG's as the script contains
+support for browsers (such as IE6) that do not support them.

@@ -337,77 +337,77 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000353'>
+<a href='#M000363'>
 authorized?<br/>
 </a>
 
 
 
 
-<a href='#M000349'>
+<a href='#M000359'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000352'>
+<a href='#M000362'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000350'>
+<a href='#M000360'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000354'>
+<a href='#M000364'>
 find_post<br/>
 </a>
 
 
 
 
-<a href='#M000345'>
+<a href='#M000355'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000347'>
+<a href='#M000357'>
 monitored<br/>
 </a>
 
 
 
 
-<a href='#M000355'>
+<a href='#M000365'>
 render_posts_or_xml<br/>
 </a>
 
 
 
 
-<a href='#M000346'>
+<a href='#M000356'>
 search<br/>
 </a>
 
 
 
 
-<a href='#M000348'>
+<a href='#M000358'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000351'>
+<a href='#M000361'>
 update<br/>
 </a>
 
@@ -430,9 +430,9 @@ update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000349"><br/></a>
+<a class="small" name="M000359"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000349'>
+<a href='#M000359'>
 
 
 create
@@ -442,7 +442,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000349-show-link"><a onclick="toggle('M000349-source'); toggleText('M000349-link'); return false;" href="#" id="M000349-link">Show source...</a></p><div class="source" id="M000349-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 39</span>
+<p class="source_link" id="M000359-show-link"><a onclick="toggle('M000359-source'); toggleText('M000359-link'); return false;" href="#" id="M000359-link">Show source...</a></p><div class="source" id="M000359-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 39</span>
 39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 40:     <span class="ruby-ivar">@topic</span> = <span class="ruby-constant">Topic</span>.<span class="ruby-identifier">find_by_id_and_forum_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>],<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:forum_id</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:forum</span>)
 41:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@topic</span>.<span class="ruby-identifier">locked?</span>
@@ -484,9 +484,9 @@ create
 77:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000352"><br/></a>
+<a class="small" name="M000362"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000352'>
+<a href='#M000362'>
 
 
 destroy
@@ -496,7 +496,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000352-show-link"><a onclick="toggle('M000352-source'); toggleText('M000352-link'); return false;" href="#" id="M000352-link">Show source...</a></p><div class="source" id="M000352-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 97</span>
+<p class="source_link" id="M000362-show-link"><a onclick="toggle('M000362-source'); toggleText('M000362-link'); return false;" href="#" id="M000362-link">Show source...</a></p><div class="source" id="M000362-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 97</span>
  97:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
  98:     <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">destroy</span>
  99:     <span class="ruby-identifier">flash</span>[<span class="ruby-identifier">:notice</span>] = <span class="ruby-node">&quot;Post of '#{CGI::escapeHTML(@post.topic.title)}' was deleted.&quot;</span>
@@ -511,9 +511,9 @@ destroy
 108:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000350"><br/></a>
+<a class="small" name="M000360"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000350'>
+<a href='#M000360'>
 
 
 edit
@@ -523,14 +523,14 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000350-show-link"><a onclick="toggle('M000350-source'); toggleText('M000350-link'); return false;" href="#" id="M000350-link">Show source...</a></p><div class="source" id="M000350-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 79</span>
+<p class="source_link" id="M000360-show-link"><a onclick="toggle('M000360-source'); toggleText('M000360-link'); return false;" href="#" id="M000360-link">Show source...</a></p><div class="source" id="M000360-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 79</span>
 79:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 80:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000345"><br/></a>
+<a class="small" name="M000355"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000345'>
+<a href='#M000355'>
 
 
 index
@@ -540,7 +540,7 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000345-show-link"><a onclick="toggle('M000345-source'); toggleText('M000345-link'); return false;" href="#" id="M000345-link">Show source...</a></p><div class="source" id="M000345-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 6</span>
+<p class="source_link" id="M000355-show-link"><a onclick="toggle('M000355-source'); toggleText('M000355-link'); return false;" href="#" id="M000355-link">Show source...</a></p><div class="source" id="M000355-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 6</span>
  6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  7:     <span class="ruby-identifier">conditions</span> = []
  8:     [<span class="ruby-identifier">:user_id</span>, <span class="ruby-identifier">:forum_id</span>, <span class="ruby-identifier">:topic_id</span>].<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">attr</span><span class="ruby-operator">|</span> <span class="ruby-identifier">conditions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Post</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:sanitize_sql</span>, [<span class="ruby-node">&quot;posts.#{attr} = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">attr</span>]]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">attr</span>] }
@@ -552,9 +552,9 @@ index
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000347"><br/></a>
+<a class="small" name="M000357"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000347'>
+<a href='#M000357'>
 
 
 monitored
@@ -564,7 +564,7 @@ monitored
 </a>
 </h3>
 
-<p class="source_link" id="M000347-show-link"><a onclick="toggle('M000347-source'); toggleText('M000347-link'); return false;" href="#" id="M000347-link">Show source...</a></p><div class="source" id="M000347-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 24</span>
+<p class="source_link" id="M000357-show-link"><a onclick="toggle('M000357-source'); toggleText('M000357-link'); return false;" href="#" id="M000357-link">Show source...</a></p><div class="source" id="M000357-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 24</span>
 24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">monitored</span>
 25:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user_id</span>]
 26:     <span class="ruby-identifier">options</span> = <span class="ruby-ivar">@@query_options</span>.<span class="ruby-identifier">merge</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'monitorships.user_id = ? and posts.user_id != ? and monitorships.active = ?'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user_id</span>], <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-keyword kw">true</span>])
@@ -574,9 +574,9 @@ monitored
 30:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000346"><br/></a>
+<a class="small" name="M000356"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000346'>
+<a href='#M000356'>
 
 
 search
@@ -586,7 +586,7 @@ search
 </a>
 </h3>
 
-<p class="source_link" id="M000346-show-link"><a onclick="toggle('M000346-source'); toggleText('M000346-link'); return false;" href="#" id="M000346-link">Show source...</a></p><div class="source" id="M000346-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 16</span>
+<p class="source_link" id="M000356-show-link"><a onclick="toggle('M000356-source'); toggleText('M000356-link'); return false;" href="#" id="M000356-link">Show source...</a></p><div class="source" id="M000356-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">search</span>
 17:     <span class="ruby-identifier">conditions</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:q</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-value">? </span><span class="ruby-constant">Post</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:sanitize_sql</span>, [<span class="ruby-node">&quot;(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids}))))&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]) <span class="ruby-operator">:</span> <span class="ruby-constant">Post</span>.<span class="ruby-identifier">send</span>(<span class="ruby-identifier">:sanitize_sql</span>, [<span class="ruby-node">&quot;(forums.company_id IS NULL OR (forums.company_id = ? AND (forums.project_id IS NULL OR forums.project_id IN (#{current_project_ids})))) AND LOWER(posts.body) LIKE ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-node">&quot;%#{params[:q]}%&quot;</span>])
 18:     <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">info</span>(<span class="ruby-node">&quot;conditions = [#{conditions.inspect}]&quot;</span>)
@@ -596,9 +596,9 @@ search
 22:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000348"><br/></a>
+<a class="small" name="M000358"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000348'>
+<a href='#M000358'>
 
 
 show
@@ -608,7 +608,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000348-show-link"><a onclick="toggle('M000348-source'); toggleText('M000348-link'); return false;" href="#" id="M000348-link">Show source...</a></p><div class="source" id="M000348-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 32</span>
+<p class="source_link" id="M000358-show-link"><a onclick="toggle('M000358-source'); toggleText('M000358-link'); return false;" href="#" id="M000358-link">Show source...</a></p><div class="source" id="M000358-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 32</span>
 32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
 33:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
 34:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">topic_path</span>(<span class="ruby-ivar">@post</span>.<span class="ruby-identifier">forum_id</span>, <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">topic_id</span>) }
@@ -617,9 +617,9 @@ show
 37:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000351"><br/></a>
+<a class="small" name="M000361"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000351'>
+<a href='#M000361'>
 
 
 update
@@ -629,7 +629,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000351-show-link"><a onclick="toggle('M000351-source'); toggleText('M000351-link'); return false;" href="#" id="M000351-link">Show source...</a></p><div class="source" id="M000351-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 82</span>
+<p class="source_link" id="M000361-show-link"><a onclick="toggle('M000361-source'); toggleText('M000361-link'); return false;" href="#" id="M000361-link">Show source...</a></p><div class="source" id="M000361-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 82</span>
 82:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 83:     <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">attributes</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:post</span>]
 84:     <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">save!</span>
@@ -650,9 +650,9 @@ update
 <h1>Protected Instance Methods</h1>
 
 
-<a class="small" name="M000353"><br/></a>
+<a class="small" name="M000363"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000353'>
+<a href='#M000363'>
 
 
 authorized?
@@ -662,15 +662,15 @@ authorized?
 </a>
 </h3>
 
-<p class="source_link" id="M000353-show-link"><a onclick="toggle('M000353-source'); toggleText('M000353-link'); return false;" href="#" id="M000353-link">Show source...</a></p><div class="source" id="M000353-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 111</span>
+<p class="source_link" id="M000363-show-link"><a onclick="toggle('M000363-source'); toggleText('M000363-link'); return false;" href="#" id="M000363-link">Show source...</a></p><div class="source" id="M000363-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 111</span>
 111:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">authorized?</span>
 112:       <span class="ruby-identifier">action_name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'create'</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@post</span>.<span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">current_user</span>)
 113:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000354"><br/></a>
+<a class="small" name="M000364"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000354'>
+<a href='#M000364'>
 
 
 find_post
@@ -680,15 +680,15 @@ find_post
 </a>
 </h3>
 
-<p class="source_link" id="M000354-show-link"><a onclick="toggle('M000354-source'); toggleText('M000354-link'); return false;" href="#" id="M000354-link">Show source...</a></p><div class="source" id="M000354-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 115</span>
+<p class="source_link" id="M000364-show-link"><a onclick="toggle('M000364-source'); toggleText('M000364-link'); return false;" href="#" id="M000364-link">Show source...</a></p><div class="source" id="M000364-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 115</span>
 115:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_post</span>
 116:       <span class="ruby-ivar">@post</span> = <span class="ruby-constant">Post</span>.<span class="ruby-identifier">find_by_id_and_topic_id_and_forum_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:forum_id</span>]) <span class="ruby-operator">||</span> <span class="ruby-identifier">raise</span>(<span class="ruby-constant">ActiveRecord</span><span class="ruby-operator">::</span><span class="ruby-constant">RecordNotFound</span>)
 117:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000355"><br/></a>
+<a class="small" name="M000365"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000355'>
+<a href='#M000365'>
 
 
 render_posts_or_xml
@@ -698,7 +698,7 @@ render_posts_or_xml
 </a>
 </h3>
 
-<p class="source_link" id="M000355-show-link"><a onclick="toggle('M000355-source'); toggleText('M000355-link'); return false;" href="#" id="M000355-link">Show source...</a></p><div class="source" id="M000355-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 119</span>
+<p class="source_link" id="M000365-show-link"><a onclick="toggle('M000365-source'); toggleText('M000365-link'); return false;" href="#" id="M000365-link">Show source...</a></p><div class="source" id="M000365-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/posts_controller.rb, line 119</span>
 119:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_posts_or_xml</span>(<span class="ruby-identifier">template_name</span> = <span class="ruby-identifier">action_name</span>)
 120:       <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
 121:         <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> { <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{template_name}.rhtml&quot;</span> }

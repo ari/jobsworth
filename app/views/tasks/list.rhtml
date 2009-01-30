@@ -38,7 +38,7 @@
             filter_count = 0
             if session[:view].nil?
             %>
-	      <% projects_and_milestones = current_user.projects.find(:all, :order => "projects.name, milestones.due_at, milestones.name", :include => [:milestones]).group_by{ |p| p.customer_id }.to_hash %>
+	      <% projects_and_milestones = current_user.projects.find(:all, :order => "projects.name, milestones.due_at, milestones.name", :conditions => "milestones.completed_at IS NULL", :include => [:milestones]).group_by{ |p| p.customer_id }.to_hash %>
 
             <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;"><legend><%= _'Filter'%></legend>
 	    <form action="/tasks/filter" method="post" style="margin:0;padding:0;">
@@ -81,6 +81,8 @@
 
               <%
                  @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"], [_("Requested By"), "11"]]
+		 @properties = Property.all_for_company(current_user.company)
+
 		 @properties.each do |prop|
 		   @group_by << [ prop.name, prop.filter_name ]
 		 end

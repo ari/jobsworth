@@ -335,14 +335,14 @@ ActionMailer::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000369'>
+<a href='#M000379'>
 get_body<br/>
 </a>
 
 
 
 
-<a href='#M000370'>
+<a href='#M000380'>
 receive<br/>
 </a>
 
@@ -369,9 +369,9 @@ Receive and handle emails sent to tasks
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000369"><br/></a>
+<a class="small" name="M000379"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000369'>
+<a href='#M000379'>
 
 
 get_body
@@ -381,7 +381,7 @@ get_body
 </a>
 </h3>
 
-<p class="source_link" id="M000369-show-link"><a onclick="toggle('M000369-source'); toggleText('M000369-link'); return false;" href="#" id="M000369-link">Show source...</a></p><div class="source" id="M000369-source"><pre>    <span class="ruby-comment cmt"># File app/models/mailman.rb, line 5</span>
+<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>    <span class="ruby-comment cmt"># File app/models/mailman.rb, line 5</span>
  5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_body</span>(<span class="ruby-identifier">email</span>)
  6:       <span class="ruby-identifier">body</span> = <span class="ruby-keyword kw">nil</span>
  7: 
@@ -400,9 +400,9 @@ get_body
 20:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000370"><br/></a>
+<a class="small" name="M000380"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000370'>
+<a href='#M000380'>
 
 
 receive
@@ -412,7 +412,7 @@ receive
 </a>
 </h3>
 
-<p class="source_link" id="M000370-show-link"><a onclick="toggle('M000370-source'); toggleText('M000370-link'); return false;" href="#" id="M000370-link">Show source...</a></p><div class="source" id="M000370-source"><pre>     <span class="ruby-comment cmt"># File app/models/mailman.rb, line 22</span>
+<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>     <span class="ruby-comment cmt"># File app/models/mailman.rb, line 22</span>
  22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">receive</span>(<span class="ruby-identifier">email</span>)
  23:     <span class="ruby-identifier">e</span> = <span class="ruby-constant">Email</span>.<span class="ruby-identifier">new</span>
  24:     <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to</span> = <span class="ruby-identifier">email</span>.<span class="ruby-identifier">to</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;, &quot;</span>)
@@ -426,7 +426,7 @@ receive
  32:     <span class="ruby-identifier">email</span>.<span class="ruby-identifier">to</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">to</span><span class="ruby-operator">|</span>
  33:       <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">$CONFIG</span>[<span class="ruby-identifier">:domain</span>])
  34:       <span class="ruby-identifier">subdomain</span> = <span class="ruby-identifier">to</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'@'</span>)[<span class="ruby-value">1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">'.'</span>)[<span class="ruby-value">0</span>]
- 35:       <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Looking for #{subdomain}..&quot;</span>
+ 35: <span class="ruby-comment cmt">#      Rails.logger &quot;Looking for #{subdomain}..&quot;</span>
  36:       <span class="ruby-identifier">company</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Company</span>.<span class="ruby-identifier">find_by_subdomain</span>(<span class="ruby-identifier">subdomain</span>)
  37:     <span class="ruby-keyword kw">end</span>
  38: 
@@ -442,10 +442,10 @@ receive
  48:     <span class="ruby-identifier">target</span> = <span class="ruby-keyword kw">nil</span>
  49:     <span class="ruby-identifier">email</span>.<span class="ruby-identifier">to</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">to</span><span class="ruby-operator">|</span>
  50:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">to</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;task-&quot;</span>)
- 51:         <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;looking for a task&quot;</span>
+ 51: <span class="ruby-comment cmt">#        Rails.logger &quot;looking for a task&quot;</span>
  52:         <span class="ruby-identifier">_</span>, <span class="ruby-identifier">task_num</span> = <span class="ruby-regexp re">/task-(\d+).*@.*/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">to</span>).<span class="ruby-identifier">to_a</span>
  53:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_num</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
- 54:           <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Looking for task[#{task_num}] from [#{company.name}]&quot;</span>
+ 54: <span class="ruby-comment cmt">#          Rails.logger &quot;Looking for task[#{task_num}] from [#{company.name}]&quot;</span>
  55:           <span class="ruby-identifier">target</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND task_num = ?&quot;</span>, <span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">task_num</span>])
  56:         <span class="ruby-keyword kw">end</span>
  57:       <span class="ruby-keyword kw">end</span>
@@ -458,13 +458,13 @@ receive
  64:       <span class="ruby-identifier">notify_targets</span> = <span class="ruby-identifier">target</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">email</span>.<span class="ruby-identifier">downcase</span> }.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
  65:       <span class="ruby-identifier">notify_targets</span> <span class="ruby-operator">+=</span> <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;project_id = ? AND notify_emails IS NOT NULL and notify_emails &lt;&gt; ''&quot;</span>, <span class="ruby-identifier">target</span>.<span class="ruby-identifier">project_id</span>]).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">notify_emails</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">strip</span>.<span class="ruby-identifier">downcase</span> } }.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span>
  66: 
- 67:       <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Possible participants[#{notify_targets.join(', ')}]&quot;</span>
+ 67: <span class="ruby-comment cmt">#      Rails.logger &quot;Possible participants[#{notify_targets.join(', ')}]&quot;</span>
  68: 
  69:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">notify_targets</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">email</span>.<span class="ruby-identifier">from</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">downcase</span>)
  70:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">email</span>.<span class="ruby-identifier">has_attachments?</span>
  71:           <span class="ruby-identifier">email</span>.<span class="ruby-identifier">attachments</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">attachment</span><span class="ruby-operator">|</span>
  72: 
- 73:             <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Attachement[#{attachment.original_filename}]&quot;</span>
+ 73: <span class="ruby-comment cmt">#            Rails.logger &quot;Attachement[#{attachment.original_filename}]&quot;</span>
  74: 
  75:             <span class="ruby-identifier">task_file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">new</span>()
  76:             <span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">user</span>.<span class="ruby-identifier">company</span>
@@ -486,13 +486,13 @@ receive
  92: 
  93:             <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
  94:             <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">file_path</span>, <span class="ruby-value str">&quot;wb&quot;</span>, <span class="ruby-value">0777</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>( <span class="ruby-identifier">attachment</span>.<span class="ruby-identifier">read</span> ) } <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
- 95:                                                                                           <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Unable to save attachment..&quot;</span>
+ 95:  <span class="ruby-comment cmt">#                                                                                         Rails.logger &quot;Unable to save attachment..&quot;</span>
  96:                                                                                           <span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">destroy</span>
  97:                                                                                           <span class="ruby-identifier">task_file</span> = <span class="ruby-keyword kw">nil</span>
  98:                                                                                         <span class="ruby-keyword kw">end</span>
  99:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">task_file</span>
 100:               <span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">file_size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size</span>(<span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">file_path</span>)
-101:               <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Attachment saved[#{task_file.file_path}][#{task_file.file_size}]&quot;</span>
+101:   <span class="ruby-comment cmt">#            Rails.logger &quot;Attachment saved[#{task_file.file_path}][#{task_file.file_size}]&quot;</span>
 102:               <span class="ruby-identifier">task_file</span>.<span class="ruby-identifier">save</span>
 103:             <span class="ruby-keyword kw">end</span>
 104: 
@@ -524,23 +524,24 @@ receive
 130:           <span class="ruby-identifier">user</span> = <span class="ruby-identifier">e</span>.<span class="ruby-identifier">user</span>
 131:         <span class="ruby-keyword kw">end</span>
 132: 
-133:         <span class="ruby-constant">Notifications</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_commented</span>(<span class="ruby-identifier">target</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">e</span>.<span class="ruby-identifier">body</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
-134: 
-135:       <span class="ruby-keyword kw">else</span>
-136:         <span class="ruby-comment cmt"># Unknown email</span>
-137:         <span class="ruby-constant">Notifications</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_unknown_from_address</span>(<span class="ruby-identifier">email</span>.<span class="ruby-identifier">from</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">company</span>.<span class="ruby-identifier">subdomain</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
-138:       <span class="ruby-keyword kw">end</span>
-139:     <span class="ruby-keyword kw">end</span>
-140: 
-141: <span class="ruby-comment cmt">#      if email.has_attachments?</span>
-142: <span class="ruby-comment cmt">#        for attachment in email.attachments</span>
-143: <span class="ruby-comment cmt">#          page.attachments.create({</span>
-144: <span class="ruby-comment cmt">#            :file =&gt; attachment,</span>
-145: <span class="ruby-comment cmt">#            :description =&gt; email.subject</span>
-146: <span class="ruby-comment cmt">#          })</span>
-147: <span class="ruby-comment cmt">#        end</span>
-148: <span class="ruby-comment cmt">#      end</span>
-149:     <span class="ruby-keyword kw">end</span></pre></div>
+133:         <span class="ruby-constant">Notifications</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_changed</span>( <span class="ruby-identifier">:comment</span>, <span class="ruby-identifier">target</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">e</span>.<span class="ruby-identifier">body</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+134: <span class="ruby-comment cmt">#                                                                                                    Rails.logger &quot;Error sending notificaiton email&quot;</span>
+135:                                                                                                   <span class="ruby-keyword kw">end</span> 
+136:       <span class="ruby-keyword kw">else</span>
+137:         <span class="ruby-comment cmt"># Unknown email</span>
+138:         <span class="ruby-constant">Notifications</span><span class="ruby-operator">::</span><span class="ruby-identifier">deliver_unknown_from_address</span>(<span class="ruby-identifier">email</span>.<span class="ruby-identifier">from</span>.<span class="ruby-identifier">first</span>, <span class="ruby-identifier">company</span>.<span class="ruby-identifier">subdomain</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>
+139:       <span class="ruby-keyword kw">end</span>
+140:     <span class="ruby-keyword kw">end</span>
+141: 
+142: <span class="ruby-comment cmt">#      if email.has_attachments?</span>
+143: <span class="ruby-comment cmt">#        for attachment in email.attachments</span>
+144: <span class="ruby-comment cmt">#          page.attachments.create({</span>
+145: <span class="ruby-comment cmt">#            :file =&gt; attachment,</span>
+146: <span class="ruby-comment cmt">#            :description =&gt; email.subject</span>
+147: <span class="ruby-comment cmt">#          })</span>
+148: <span class="ruby-comment cmt">#        end</span>
+149: <span class="ruby-comment cmt">#      end</span>
+150:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

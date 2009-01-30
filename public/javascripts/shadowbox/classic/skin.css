@@ -1,0 +1,197 @@
+/**
+ * The "classic" theme CSS for Shadowbox.
+ *
+ * This file is part of Shadowbox.
+ *
+ * Shadowbox is an online media viewer application that supports all of the
+ * web's most popular media publishing formats. Shadowbox is written entirely
+ * in JavaScript and CSS and is highly customizable. Using Shadowbox, website
+ * authors can showcase a wide assortment of media in all major browsers without
+ * navigating users away from the linking page.
+ *
+ * Shadowbox is released under version 3.0 of the Creative Commons Attribution-
+ * Noncommercial-Share Alike license. This means that it is absolutely free
+ * for personal, noncommercial use provided that you 1) make attribution to the
+ * author and 2) release any derivative work under the same or a similar
+ * license.
+ *
+ * If you wish to use Shadowbox for commercial purposes, licensing information
+ * can be found at http://mjijackson.com/shadowbox/.
+ *
+ * @author      Michael J. I. Jackson <mjijackson@gmail.com>
+ * @copyright   2007-2008 Michael J. I. Jackson
+ * @license     http://creativecommons.org/licenses/by-nc-sa/3.0/
+ * @version     SVN: $Id: skin.js 91 2008-03-28 17:39:13Z mjijackson $
+ */
+
+/*_____________________________________________________  container & overlay  */
+#shadowbox_container, #shadowbox_overlay {
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+#shadowbox_container {
+  position: fixed;
+  display: block;
+  visibility: hidden;
+  z-index: 999;
+  text-align: center; /* centers #shadowbox in quirks and IE */
+}
+#shadowbox_overlay {
+  position: absolute;
+}
+
+/*_______________________________________________________________  shadowbox  */
+#shadowbox {
+  position: relative;
+  margin: 0 auto;
+  text-align: left; /* reset left alignment */
+}
+
+/*____________________________________________________________________  body  */
+#shadowbox_body {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #333;
+  overflow: hidden;
+}
+#shadowbox_body_inner {
+  position: relative;
+  height: 100%;
+}
+#shadowbox_content.html {
+  height: 100%;
+  overflow: auto; /* make html content scrollable */
+}
+
+/*_________________________________________________________________  loading  */
+#shadowbox_loading {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+#shadowbox_body, #shadowbox_loading {
+  background-color: #060606; /* should match loading image background color */
+}
+#shadowbox_loading_indicator {
+  float: left;
+  margin: 10px 10px 0 10px;
+  height: 32px;
+  width: 32px;
+  background-image: url(loading.gif);
+  background-repeat: no-repeat;
+}
+#shadowbox_loading span {
+  font-family: 'Lucida Grande', Tahoma, sans-serif;
+  font-size: 10px;
+  float: left;
+  margin-top: 16px;
+}
+#shadowbox_loading span a:link,
+#shadowbox_loading span a:visited {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/*____________________________________________________________  title & info  */
+#shadowbox_title, #shadowbox_info {
+  position: relative;
+  margin: 0; /* these must have no vertical margin or padding */
+  padding: 0;
+  overflow: hidden;
+}
+#shadowbox_title_inner, #shadowbox_info_inner {
+  position: relative;
+  font-family: 'Lucida Grande', Tahoma, sans-serif;
+  line-height: 16px;
+}
+#shadowbox_title {
+  height: 26px;
+}
+#shadowbox_title_inner {
+  font-size: 16px;
+  padding: 5px 0;
+  color: #fff;
+}
+#shadowbox_info {
+  height: 20px;
+}
+#shadowbox_info_inner {
+  font-size: 12px;
+  color: #fff;
+}
+
+/*_____________________________________________________________________  nav  */
+#shadowbox_nav {
+  float: right;
+  height: 16px;
+  padding: 2px 0;
+  width: 45%;
+}
+#shadowbox_nav a {
+  display: block;
+  float: right;
+  height: 16px;
+  width: 16px;
+  margin-left: 3px;
+  cursor: pointer;
+}
+#shadowbox_nav_close {
+  background-image: url(icons/close.png);
+  background-repeat: no-repeat;
+}
+#shadowbox_nav_next {
+  background-image: url(icons/next.png);
+  background-repeat: no-repeat;
+}
+#shadowbox_nav_previous {
+  background-image: url(icons/previous.png);
+  background-repeat: no-repeat;
+}
+#shadowbox_nav_play {
+  background-image: url(icons/play.png);
+  background-repeat: no-repeat;
+}
+#shadowbox_nav_pause {
+  background-image: url(icons/pause.png);
+  background-repeat: no-repeat;
+}
+
+/*_________________________________________________________________  counter  */
+#shadowbox_counter {
+  float: left;
+  padding: 2px 0;
+  width: 45%;
+}
+#shadowbox_counter a {
+  padding: 0 4px 0 0;
+  text-decoration: none;
+  cursor: pointer;
+  color: #fff;
+}
+#shadowbox_counter a.shadowbox_counter_current {
+  text-decoration: underline;
+}
+
+/*___________________________________________________________________  clear  */
+div.shadowbox_clear {
+  clear: both; /* clear floating counter & nav */
+}
+
+/*________________________________________________________________  messages  */
+div.shadowbox_message {
+  font-family: 'Lucida Grande', Tahoma, sans-serif;
+  font-size: 12px;
+  padding: 10px;
+  text-align: center;
+}
+div.shadowbox_message a:link,
+div.shadowbox_message a:visited {
+  color: #fff;
+  text-decoration: underline;
+}
