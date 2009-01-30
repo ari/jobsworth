@@ -18,4 +18,39 @@ module ReportsHelper
     total
   end
 
+  ###
+  # Returns a select tag to use to choose what to display in
+  # the report. name should probably be "rows" or "columns"
+  ###
+  def display_select(name, default_selected)
+    options = [
+               [_("Tasks"), "1"],
+               [_("Tags"), "2"],
+               [_("Users"), "3"],
+               [_("Clients"), "4"],
+               [_("Projects"), "5"],
+               [_("Milestones"), "6"],
+               [_("Date"), "7"],
+               [_("Task Status"), "8"],
+               [_("Task Type"), "9"],
+               [_("Task Priority"), "11"],
+               [_("Task Severity"), "10"],
+               [_("Requested By"), "20"]
+              ]
+
+    if params[:report] and params[:report][name.to_sym]
+      selected = params[:report][name.to_sym]
+    end
+
+    return select("report", name, options, :selected => (selected || default_selected))
+  end
+
+  ###
+  # Returns an array of options to use for populating the row and
+  # column selects.
+  ###
+
+  def options_for_rows_and_columns
+    
+  end
 end
