@@ -335,7 +335,7 @@ ActionController::Caching::Sweeper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000429'>
+<a href='#M000257'>
 after_save<br/>
 </a>
 
@@ -358,9 +358,9 @@ after_save<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000429"><br/></a>
+<a class="small" name="M000257"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000429'>
+<a href='#M000257'>
 
 
 after_save
@@ -370,7 +370,7 @@ after_save
 </a>
 </h3>
 
-<p class="source_link" id="M000429-show-link"><a onclick="toggle('M000429-source'); toggleText('M000429-link'); return false;" href="#" id="M000429-link">Show source...</a></p><div class="source" id="M000429-source"><pre>   <span class="ruby-comment cmt"># File app/models/shout_sweeper.rb, line 4</span>
+<p class="source_link" id="M000257-show-link"><a onclick="toggle('M000257-source'); toggleText('M000257-link'); return false;" href="#" id="M000257-link">Show source...</a></p><div class="source" id="M000257-source"><pre>   <span class="ruby-comment cmt"># File app/models/shout_sweeper.rb, line 4</span>
 4:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">after_save</span>(<span class="ruby-identifier">record</span>)
 5:       <span class="ruby-identifier">expire_fragment</span>( <span class="ruby-node">%r{application/chat\.action_suffix=#{record.company_id}.*}</span> )  
 6:     <span class="ruby-keyword kw">end</span></pre></div>

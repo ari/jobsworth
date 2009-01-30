@@ -26,23 +26,23 @@ class LoginController < ApplicationController
   def about
   end
 
+	# Display the login page
   def login
-
-    subdomain = 'www'
-    subdomain = request.subdomains.first if request.subdomains
     if session[:user_id]
       redirect_to :controller => 'activities', :action => 'list'
     else
-      if subdomain != 'www'
-        @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-        if !@company.nil?
-          render :action => 'login', :layout => false
-        else
-          redirect_to "http://www.#{$CONFIG[:domain]}"
-        end
-      end
+      @company = getCompany
+      @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
+      render :action => 'login', :layout => false
     end   
-    @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
+  end
+
+  def getCompany
+    subdomain = request.subdomains.first if request.subdomains
+      @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
+      if $company.nil?
+        @company = Company.find(:first, :conditions => ["id = 1"])
+    end
   end
 
   def logout
@@ -88,57 +88,58 @@ class LoginController < ApplicationController
 
   def validate
     @user = User.new(params[:user])
-    subdomain = 'www'
-    subdomain = request.subdomains.first if request.subdomains
-    if logged_in = @user.login(subdomain)
-      logged_in.last_login_at = Time.now.utc
-      
-      if params[:remember].to_i == 1
-        session[:remember_until] = Time.now.utc + 1.month
-        session[:remember] = 1
-      else 
-        session[:remember] = 0
-        session[:remember_until] = Time.now.utc + 1.hour
-      end
-      logged_in.last_seen_at = Time.now.utc
-      logged_in.last_ping_at = Time.now.utc
-
-      logged_in.save
-      session[:user_id] = logged_in.id
-      
-      session[:sheet] = nil
-      session[:filter_user] ||= current_user.id.to_s
-      session[:filter_project] ||= "0"
-      session[:filter_milestone] ||= "0"
-      session[:filter_status] ||= "0"
-      session[:filter_hidden] ||= "0"
-      session[:filter_type] ||= "-1"
-      session[:filter_severity] ||= "-10"
-      session[:filter_priority] ||= "-10"
-      session[:hide_dependencies] ||= "1"
-      session[:filter_customer] ||= "0"
-      
-      # Let others know User logged in
-      Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
-
-      chat_update = render_to_string :update do |page|
-        page << "if($('presence-online')) {"
-        page.replace_html 'presence-online', (online_users).to_s
-        page << "if($('presence-toggle-#{logged_in.dom_id}')) {"
-        page << "$('presence-img-#{logged_in.dom_id}').src=\"#{logged_in.online_status_icon}\";"
-        page << "}"
-        page << "}"
-      end
-      
-      Juggernaut.send("do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');", ["info_#{logged_in.company_id}"])
-
-      response.headers["Content-Type"] = 'text/html'
-      
-      redirect_from_last
-    else
+    @company = getCompany
+    unless logged_in = @user.login(@company)
       flash[:notice] = "Username or password is wrong..."
       redirect_to :action => 'login'
+      return
     end
+    
+    # User logged in with correct credentials
+    logged_in.last_login_at = Time.now.utc
+    
+    if params[:remember].to_i == 1
+      session[:remember_until] = Time.now.utc + 1.month
+      session[:remember] = 1
+    else 
+      session[:remember] = 0
+      session[:remember_until] = Time.now.utc + 1.hour
+    end
+    logged_in.last_seen_at = Time.now.utc
+    logged_in.last_ping_at = Time.now.utc
+
+    logged_in.save
+    session[:user_id] = logged_in.id
+    
+    session[:sheet] = nil
+    session[:filter_user] ||= current_user.id.to_s
+    session[:filter_project] ||= "0"
+    session[:filter_milestone] ||= "0"
+    session[:filter_status] ||= "0"
+    session[:filter_hidden] ||= "0"
+    session[:filter_type] ||= "-1"
+    session[:filter_severity] ||= "-10"
+    session[:filter_priority] ||= "-10"
+    session[:hide_dependencies] ||= "1"
+    session[:filter_customer] ||= "0"
+    
+    # Let others know User logged in
+    Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
+
+    chat_update = render_to_string :update do |page|
+      page << "if($('presence-online')) {"
+      page.replace_html 'presence-online', (online_users).to_s
+      page << "if($('presence-toggle-#{logged_in.dom_id}')) {"
+      page << "$('presence-img-#{logged_in.dom_id}').src=\"#{logged_in.online_status_icon}\";"
+      page << "}"
+      page << "}"
+    end
+    
+    Juggernaut.send("do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');", ["info_#{logged_in.company_id}"])
+
+    response.headers["Content-Type"] = 'text/html'
+    
+    redirect_from_last
   end
 
   def forgotten_password

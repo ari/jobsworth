@@ -337,84 +337,84 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000391'>
+<a href='#M000344'>
 ajax_add_permission<br/>
 </a>
 
 
 
 
-<a href='#M000390'>
+<a href='#M000343'>
 ajax_remove_permission<br/>
 </a>
 
 
 
 
-<a href='#M000394'>
+<a href='#M000347'>
 complete<br/>
 </a>
 
 
 
 
-<a href='#M000387'>
+<a href='#M000340'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000388'>
+<a href='#M000341'>
 create_shortlist_ajax<br/>
 </a>
 
 
 
 
-<a href='#M000393'>
+<a href='#M000346'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000389'>
+<a href='#M000342'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000397'>
+<a href='#M000350'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000396'>
+<a href='#M000349'>
 list_completed<br/>
 </a>
 
 
 
 
-<a href='#M000386'>
+<a href='#M000339'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000395'>
+<a href='#M000348'>
 revert<br/>
 </a>
 
 
 
 
-<a href='#M000392'>
+<a href='#M000345'>
 update<br/>
 </a>
 
@@ -441,9 +441,9 @@ Handle Projects for a company, including permissions
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000391"><br/></a>
+<a class="small" name="M000344"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000391'>
+<a href='#M000344'>
 
 
 ajax_add_permission
@@ -453,7 +453,7 @@ ajax_add_permission
 </a>
 </h3>
 
-<p class="source_link" id="M000391-show-link"><a onclick="toggle('M000391-source'); toggleText('M000391-link'); return false;" href="#" id="M000391-link">Show source...</a></p><div class="source" id="M000391-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 153</span>
+<p class="source_link" id="M000344-show-link"><a onclick="toggle('M000344-source'); toggleText('M000344-link'); return false;" href="#" id="M000344-link">Show source...</a></p><div class="source" id="M000344-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 153</span>
 153:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ajax_add_permission</span>
 154:     <span class="ruby-identifier">user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user_id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 155: 
@@ -495,9 +495,9 @@ ajax_add_permission
 191:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000390"><br/></a>
+<a class="small" name="M000343"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000390'>
+<a href='#M000343'>
 
 
 ajax_remove_permission
@@ -507,7 +507,7 @@ ajax_remove_permission
 </a>
 </h3>
 
-<p class="source_link" id="M000390-show-link"><a onclick="toggle('M000390-source'); toggleText('M000390-link'); return false;" href="#" id="M000390-link">Show source...</a></p><div class="source" id="M000390-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 133</span>
+<p class="source_link" id="M000343-show-link"><a onclick="toggle('M000343-source'); toggleText('M000343-link'); return false;" href="#" id="M000343-link">Show source...</a></p><div class="source" id="M000343-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 133</span>
 133:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ajax_remove_permission</span>
 134:     <span class="ruby-identifier">permission</span> = <span class="ruby-constant">ProjectPermission</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ? AND project_id = ? AND company_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user_id</span>], <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 135: 
@@ -529,9 +529,9 @@ ajax_remove_permission
 151:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000394"><br/></a>
+<a class="small" name="M000347"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000394'>
+<a href='#M000347'>
 
 
 complete
@@ -541,7 +541,7 @@ complete
 </a>
 </h3>
 
-<p class="source_link" id="M000394-show-link"><a onclick="toggle('M000394-source'); toggleText('M000394-link'); return false;" href="#" id="M000394-link">Show source...</a></p><div class="source" id="M000394-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 250</span>
+<p class="source_link" id="M000347-show-link"><a onclick="toggle('M000347-source'); toggleText('M000347-link'); return false;" href="#" id="M000347-link">Show source...</a></p><div class="source" id="M000347-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 250</span>
 250:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>
 251:     <span class="ruby-identifier">project</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;id IN (#{current_project_ids}) AND completed_at IS NULL&quot;</span>])
 252:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project</span>.<span class="ruby-identifier">nil?</span>
@@ -553,9 +553,9 @@ complete
 258:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000387"><br/></a>
+<a class="small" name="M000340"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000387'>
+<a href='#M000340'>
 
 
 create
@@ -565,7 +565,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000387-show-link"><a onclick="toggle('M000387-source'); toggleText('M000387-link'); return false;" href="#" id="M000387-link">Show source...</a></p><div class="source" id="M000387-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 16</span>
+<p class="source_link" id="M000340-show-link"><a onclick="toggle('M000340-source'); toggleText('M000340-link'); return false;" href="#" id="M000340-link">Show source...</a></p><div class="source" id="M000340-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 17:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">create_projects?</span>
 18:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span><span class="ruby-value str">&quot;You're not allowed to create new projects. Have your admin give you access.&quot;</span>
@@ -622,9 +622,9 @@ create
 69:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000388"><br/></a>
+<a class="small" name="M000341"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000388'>
+<a href='#M000341'>
 
 
 create_shortlist_ajax
@@ -634,7 +634,7 @@ create_shortlist_ajax
 </a>
 </h3>
 
-<p class="source_link" id="M000388-show-link"><a onclick="toggle('M000388-source'); toggleText('M000388-link'); return false;" href="#" id="M000388-link">Show source...</a></p><div class="source" id="M000388-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 71</span>
+<p class="source_link" id="M000341-show-link"><a onclick="toggle('M000341-source'); toggleText('M000341-link'); return false;" href="#" id="M000341-link">Show source...</a></p><div class="source" id="M000341-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 71</span>
  71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_shortlist_ajax</span>
  72:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:project</span>][<span class="ruby-identifier">:name</span>].<span class="ruby-identifier">empty?</span>
  73:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
@@ -689,9 +689,9 @@ create_shortlist_ajax
 122:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000393"><br/></a>
+<a class="small" name="M000346"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000393'>
+<a href='#M000346'>
 
 
 destroy
@@ -701,7 +701,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000393-show-link"><a onclick="toggle('M000393-source'); toggleText('M000393-link'); return false;" href="#" id="M000393-link">Show source...</a></p><div class="source" id="M000393-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 229</span>
+<p class="source_link" id="M000346-show-link"><a onclick="toggle('M000346-source'); toggleText('M000346-link'); return false;" href="#" id="M000346-link">Show source...</a></p><div class="source" id="M000346-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 229</span>
 229:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 230:     <span class="ruby-ivar">@project</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 231:     <span class="ruby-ivar">@project</span>.<span class="ruby-identifier">pages</span>.<span class="ruby-identifier">destroy_all</span>
@@ -724,9 +724,9 @@ destroy
 248:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000389"><br/></a>
+<a class="small" name="M000342"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000389'>
+<a href='#M000342'>
 
 
 edit
@@ -736,7 +736,7 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000389-show-link"><a onclick="toggle('M000389-source'); toggleText('M000389-link'); return false;" href="#" id="M000389-link">Show source...</a></p><div class="source" id="M000389-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 124</span>
+<p class="source_link" id="M000342-show-link"><a onclick="toggle('M000342-source'); toggleText('M000342-link'); return false;" href="#" id="M000342-link">Show source...</a></p><div class="source" id="M000342-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 124</span>
 124:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 125:     <span class="ruby-ivar">@project</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 126:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@project</span>.<span class="ruby-identifier">nil?</span>
@@ -747,9 +747,9 @@ edit
 131:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000397"><br/></a>
+<a class="small" name="M000350"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000397'>
+<a href='#M000350'>
 
 
 list
@@ -759,16 +759,16 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000397-show-link"><a onclick="toggle('M000397-source'); toggleText('M000397-link'); return false;" href="#" id="M000397-link">Show source...</a></p><div class="source" id="M000397-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 274</span>
+<p class="source_link" id="M000350-show-link"><a onclick="toggle('M000350-source'); toggleText('M000350-link'); return false;" href="#" id="M000350-link">Show source...</a></p><div class="source" id="M000350-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 274</span>
 274:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 275:     <span class="ruby-ivar">@projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'t1_r2, projects.name'</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-identifier">:customer</span>, <span class="ruby-identifier">:milestones</span>]);
 276:     <span class="ruby-ivar">@completed_projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>)
 277:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000396"><br/></a>
+<a class="small" name="M000349"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000396'>
+<a href='#M000349'>
 
 
 list_completed
@@ -778,15 +778,15 @@ list_completed
 </a>
 </h3>
 
-<p class="source_link" id="M000396-show-link"><a onclick="toggle('M000396-source'); toggleText('M000396-link'); return false;" href="#" id="M000396-link">Show source...</a></p><div class="source" id="M000396-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 270</span>
+<p class="source_link" id="M000349-show-link"><a onclick="toggle('M000349-source'); toggleText('M000349-link'); return false;" href="#" id="M000349-link">Show source...</a></p><div class="source" id="M000349-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 270</span>
 270:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list_completed</span>
 271:     <span class="ruby-ivar">@completed_projects</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NOT NULL&quot;</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;completed_at DESC&quot;</span>)
 272:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000386"><br/></a>
+<a class="small" name="M000339"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000386'>
+<a href='#M000339'>
 
 
 new
@@ -796,7 +796,7 @@ new
 </a>
 </h3>
 
-<p class="source_link" id="M000386-show-link"><a onclick="toggle('M000386-source'); toggleText('M000386-link'); return false;" href="#" id="M000386-link">Show source...</a></p><div class="source" id="M000386-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 6</span>
+<p class="source_link" id="M000339-show-link"><a onclick="toggle('M000339-source'); toggleText('M000339-link'); return false;" href="#" id="M000339-link">Show source...</a></p><div class="source" id="M000339-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 6</span>
  6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
  7:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">create_projects?</span>
  8:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span><span class="ruby-value str">&quot;You're not allowed to create new projects. Have your admin give you access.&quot;</span>
@@ -808,9 +808,9 @@ new
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000395"><br/></a>
+<a class="small" name="M000348"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000395'>
+<a href='#M000348'>
 
 
 revert
@@ -820,7 +820,7 @@ revert
 </a>
 </h3>
 
-<p class="source_link" id="M000395-show-link"><a onclick="toggle('M000395-source'); toggleText('M000395-link'); return false;" href="#" id="M000395-link">Show source...</a></p><div class="source" id="M000395-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 260</span>
+<p class="source_link" id="M000348-show-link"><a onclick="toggle('M000348-source'); toggleText('M000348-link'); return false;" href="#" id="M000348-link">Show source...</a></p><div class="source" id="M000348-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 260</span>
 260:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revert</span>
 261:     <span class="ruby-identifier">project</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 262:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project</span>.<span class="ruby-identifier">nil?</span>
@@ -832,9 +832,9 @@ revert
 268:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000392"><br/></a>
+<a class="small" name="M000345"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000392'>
+<a href='#M000345'>
 
 
 update
@@ -844,7 +844,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000392-show-link"><a onclick="toggle('M000392-source'); toggleText('M000392-link'); return false;" href="#" id="M000392-link">Show source...</a></p><div class="source" id="M000392-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 193</span>
+<p class="source_link" id="M000345-show-link"><a onclick="toggle('M000345-source'); toggleText('M000345-link'); return false;" href="#" id="M000345-link">Show source...</a></p><div class="source" id="M000345-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/projects_controller.rb, line 193</span>
 193:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 194:     <span class="ruby-ivar">@project</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 195:     <span class="ruby-identifier">old_client</span> = <span class="ruby-ivar">@project</span>.<span class="ruby-identifier">customer_id</span>

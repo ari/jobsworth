@@ -171,13 +171,14 @@ class User < ActiveRecord::Base
     self.name
   end
 
-  def login(subdomain = nil)
-    unless (subdomain.nil? || ['www'].include?(subdomain))
-      company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
-      User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, company.id ] )
-    else
-      nil
-    end
+#  def login(subdomain = nil)
+#	  company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
+#	  companyId = company.nil ? 1 : company.id
+#	  User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
+#  end
+  
+  def login(company)
+	  User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, company.id ] )
   end
 
   def can?(project, perm)

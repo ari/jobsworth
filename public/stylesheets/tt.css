@@ -11,6 +11,12 @@ div.content_body {
   background-color: #fff;
 }
 
+
+/* Global */
+
+.left 	{ float: left; }
+.right  { float: right;	}
+
 span.clear-both { display: block; clear: both; }
 
 span.divider {
@@ -29,6 +35,8 @@ span.divider {
 	background-position: top right;
 	text-align: right;
 }
+
+/*-----------*/
 
 a {
   color: #566ca5;
@@ -389,26 +397,37 @@ body > div#loading { position: fixed; }
 input:focus, textarea:focus { border: 1px solid #FC0; }
 input, textarea {
   border: 1px solid #dcdcdc;
-  background-color: #fff;
 /*  background: #FFFFFF url(/images/bg.png) repeat-x 0 0 ; */
 }
 input, textarea {
   padding: 0px 2px 0px 2px;
 }
 
+	input.button { border: auto; }
+
 
 fieldset label {
-		float: left;
-		clear: both;
+  float: left;
+  clear: both;
 		text-align: left;
 		width: auto;
-		margin-right: 0.5em;
-		margin-top: 0.2em;
+  margin-right: 0.5em;
+  margin-top: 0.2em;
 		font-weight: normal;
-		cursor: pointer;
-		font-size: 12px;
+  cursor: pointer;
+  font-size: 12px;
 		color: #999999;
 }
+
+	fieldset label.ignore {
+		float: none;
+		clear: none;
+		text-align: left;
+		width: auto;
+		margin-right: 0;
+		margin-top: 0;
+		color: #151515;
+	}
 
 #quick_add_container {
   border: 1px solid #dcdcdc;
@@ -456,9 +475,12 @@ fieldset input {
   margin-bottom: 0.2em;
 }
 
+		fieldset#task_information input { float: none; }
+		fieldset#task_information input.button { float: right; }
+
 fieldset img {
-		float: left;
-		clear: right;
+  float: left;
+  clear: right;
 		margin: 0 0.5em 0 0;
 		padding: 2px;
 		border-top: 1px solid #FAFAFA;
@@ -521,8 +543,9 @@ fieldset select {
   width: 10em;
 }
 
+	fieldset#task_information select { float: none; }
+
 fieldset input.file {
-  float: left;
   clear: right;
   text-align: left;
   font-size: 95%;
@@ -530,18 +553,12 @@ fieldset input.file {
   padding-right: 1em;
 }
 
-fieldset input.nolabel {
-  float: left;
-  display: block;
-}
 
 fieldset div.buttons { 
   padding-top: 0.5em;
 }
 
-fieldset .buttons input, fieldset .buttons select { 
-  float:left;
-}
+
 
 fieldset { 
   padding-bottom: 0.5em;
@@ -1687,7 +1704,7 @@ h4 {
   text-align: center;
   width: 200px;
   height: 200px;
-  background: #fff;
+  background: #fafafa;
  }
 
 .file_cell:hover {
@@ -2382,4 +2399,41 @@ input.scheduled {
 
 #property_values li.property_value {
     padding: 8px 0px 5px 0px;
+}
+#wiki-toc {
+    border: 2px dotted #ccc;
+    float: right;
+    background-color: #fff;
+    max-width: 200px;
+    overflow: hidden;
+    padding: 0.5em;
+    white-space: nowrap;
+}
+
+#wiki-toc h1, #wiki-toc h2, #wiki-toc h3, #wiki-toc h4, #wiki-toc h5, #wiki-toc h6 {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+#wiki-toc h2 {
+    padding-left: 1.0em;
+    font-size: 12px;
+}
+#wiki-toc h3 {
+    padding-left: 2.0em;
+    font-size: 11px;
+}
+#wiki-toc h4 {
+    padding-left: 3.0em;
+    font-size: 10px;
+    display:none;
+}
+#wiki-toc h5 {
+    display:none;
+}
+#wiki-toc h6 {
+    display: none;
 }

@@ -337,77 +337,77 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000379'>
+<a href='#M000163'>
 complete<br/>
 </a>
 
 
 
 
-<a href='#M000375'>
+<a href='#M000159'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000378'>
+<a href='#M000162'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000376'>
+<a href='#M000160'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000371'>
+<a href='#M000155'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000372'>
+<a href='#M000156'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000381'>
+<a href='#M000165'>
 list_completed<br/>
 </a>
 
 
 
 
-<a href='#M000373'>
+<a href='#M000157'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000374'>
+<a href='#M000158'>
 quick_new<br/>
 </a>
 
 
 
 
-<a href='#M000380'>
+<a href='#M000164'>
 revert<br/>
 </a>
 
 
 
 
-<a href='#M000377'>
+<a href='#M000161'>
 update<br/>
 </a>
 
@@ -434,9 +434,9 @@ Handle basic CRUD functionality regarding Milestones
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000379"><br/></a>
+<a class="small" name="M000163"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000379'>
+<a href='#M000163'>
 
 
 complete
@@ -446,7 +446,7 @@ complete
 </a>
 </h3>
 
-<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 111</span>
+<p class="source_link" id="M000163-show-link"><a onclick="toggle('M000163-source'); toggleText('M000163-link'); return false;" href="#" id="M000163-link">Show source...</a></p><div class="source" id="M000163-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 111</span>
 111:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>
 112:     <span class="ruby-identifier">milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>( <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{current_project_ids})&quot;</span>])
 113:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">nil?</span>
@@ -460,9 +460,9 @@ complete
 121:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000375"><br/></a>
+<a class="small" name="M000159"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000375'>
+<a href='#M000159'>
 
 
 create
@@ -472,7 +472,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000375-show-link"><a onclick="toggle('M000375-source'); toggleText('M000375-link'); return false;" href="#" id="M000375-link">Show source...</a></p><div class="source" id="M000375-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 27</span>
+<p class="source_link" id="M000159-show-link"><a onclick="toggle('M000159-source'); toggleText('M000159-link'); return false;" href="#" id="M000159-link">Show source...</a></p><div class="source" id="M000159-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 27</span>
 27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 28:     <span class="ruby-identifier">params_milestone</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:milestone</span>]
 29: 
@@ -507,9 +507,9 @@ create
 58:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000378"><br/></a>
+<a class="small" name="M000162"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000378'>
+<a href='#M000162'>
 
 
 destroy
@@ -519,7 +519,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000378-show-link"><a onclick="toggle('M000378-source'); toggleText('M000378-link'); return false;" href="#" id="M000378-link">Show source...</a></p><div class="source" id="M000378-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 93</span>
+<p class="source_link" id="M000162-show-link"><a onclick="toggle('M000162-source'); toggleText('M000162-link'); return false;" href="#" id="M000162-link">Show source...</a></p><div class="source" id="M000162-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 93</span>
  93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
  94:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
  95: 
@@ -539,9 +539,9 @@ destroy
 109:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000376"><br/></a>
+<a class="small" name="M000160"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000376'>
+<a href='#M000160'>
 
 
 edit
@@ -551,16 +551,16 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000376-show-link"><a onclick="toggle('M000376-source'); toggleText('M000376-link'); return false;" href="#" id="M000376-link">Show source...</a></p><div class="source" id="M000376-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 60</span>
+<p class="source_link" id="M000160-show-link"><a onclick="toggle('M000160-source'); toggleText('M000160-link'); return false;" href="#" id="M000160-link">Show source...</a></p><div class="source" id="M000160-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 60</span>
 60:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 61:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 62:     <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">due_at</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">due_at</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">due_at</span>.<span class="ruby-identifier">nil?</span>
 63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000371"><br/></a>
+<a class="small" name="M000155"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000371'>
+<a href='#M000155'>
 
 
 index
@@ -570,16 +570,16 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000371-show-link"><a onclick="toggle('M000371-source'); toggleText('M000371-link'); return false;" href="#" id="M000371-link">Show source...</a></p><div class="source" id="M000371-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 6</span>
+<p class="source_link" id="M000155-show-link"><a onclick="toggle('M000155-source'); toggleText('M000155-link'); return false;" href="#" id="M000155-link">Show source...</a></p><div class="source" id="M000155-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 6</span>
 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
 7:     <span class="ruby-identifier">list</span>
 8:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
 9:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000372"><br/></a>
+<a class="small" name="M000156"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000372'>
+<a href='#M000156'>
 
 
 list
@@ -589,15 +589,15 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000372-show-link"><a onclick="toggle('M000372-source'); toggleText('M000372-link'); return false;" href="#" id="M000372-link">Show source...</a></p><div class="source" id="M000372-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 11</span>
+<p class="source_link" id="M000156-show-link"><a onclick="toggle('M000156-source'); toggleText('M000156-link'); return false;" href="#" id="M000156-link">Show source...</a></p><div class="source" id="M000156-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 12:     <span class="ruby-ivar">@milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;project_id = ?&quot;</span>, <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:project</span>].<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;due_at&quot;</span>)
 13:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000381"><br/></a>
+<a class="small" name="M000165"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000381'>
+<a href='#M000165'>
 
 
 list_completed
@@ -607,15 +607,15 @@ list_completed
 </a>
 </h3>
 
-<p class="source_link" id="M000381-show-link"><a onclick="toggle('M000381-source'); toggleText('M000381-link'); return false;" href="#" id="M000381-link">Show source...</a></p><div class="source" id="M000381-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 134</span>
+<p class="source_link" id="M000165-show-link"><a onclick="toggle('M000165-source'); toggleText('M000165-link'); return false;" href="#" id="M000165-link">Show source...</a></p><div class="source" id="M000165-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 134</span>
 134:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list_completed</span>
 135:     <span class="ruby-ivar">@completed_milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;project_id = ? AND completed_at IS NOT NULL&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
 136:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000373"><br/></a>
+<a class="small" name="M000157"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000373'>
+<a href='#M000157'>
 
 
 new
@@ -625,7 +625,7 @@ new
 </a>
 </h3>
 
-<p class="source_link" id="M000373-show-link"><a onclick="toggle('M000373-source'); toggleText('M000373-link'); return false;" href="#" id="M000373-link">Show source...</a></p><div class="source" id="M000373-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 15</span>
+<p class="source_link" id="M000157-show-link"><a onclick="toggle('M000157-source'); toggleText('M000157-link'); return false;" href="#" id="M000157-link">Show source...</a></p><div class="source" id="M000157-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
 16:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">new</span>
 17:     <span class="ruby-ivar">@milestone</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -633,9 +633,9 @@ new
 19:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000374"><br/></a>
+<a class="small" name="M000158"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000374'>
+<a href='#M000158'>
 
 
 quick_new
@@ -645,7 +645,7 @@ quick_new
 </a>
 </h3>
 
-<p class="source_link" id="M000374-show-link"><a onclick="toggle('M000374-source'); toggleText('M000374-link'); return false;" href="#" id="M000374-link">Show source...</a></p><div class="source" id="M000374-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 21</span>
+<p class="source_link" id="M000158-show-link"><a onclick="toggle('M000158-source'); toggleText('M000158-link'); return false;" href="#" id="M000158-link">Show source...</a></p><div class="source" id="M000158-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 21</span>
 21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">quick_new</span>
 22:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">new</span>
 23:     <span class="ruby-ivar">@popup</span> = <span class="ruby-keyword kw">true</span>
@@ -653,9 +653,9 @@ quick_new
 25:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000380"><br/></a>
+<a class="small" name="M000164"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000380'>
+<a href='#M000164'>
 
 
 revert
@@ -665,7 +665,7 @@ revert
 </a>
 </h3>
 
-<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 123</span>
+<p class="source_link" id="M000164-show-link"><a onclick="toggle('M000164-source'); toggleText('M000164-link'); return false;" href="#" id="M000164-link">Show source...</a></p><div class="source" id="M000164-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 123</span>
 123:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">revert</span>
 124:     <span class="ruby-identifier">milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{current_project_ids})&quot;</span>])
 125:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">milestone</span>.<span class="ruby-identifier">nil?</span>
@@ -678,9 +678,9 @@ revert
 132:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000377"><br/></a>
+<a class="small" name="M000161"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000377'>
+<a href='#M000161'>
 
 
 update
@@ -690,7 +690,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000377-show-link"><a onclick="toggle('M000377-source'); toggleText('M000377-link'); return false;" href="#" id="M000377-link">Show source...</a></p><div class="source" id="M000377-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 65</span>
+<p class="source_link" id="M000161-show-link"><a onclick="toggle('M000161-source'); toggleText('M000161-link'); return false;" href="#" id="M000161-link">Show source...</a></p><div class="source" id="M000161-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/milestones_controller.rb, line 65</span>
 65:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 66:     <span class="ruby-ivar">@milestone</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 67: 

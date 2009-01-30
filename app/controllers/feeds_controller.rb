@@ -56,7 +56,7 @@ class FeedsController < ApplicationController
 
   # Get the RSS feed, based on the secret key passed on the url
   def rss
-    return if params[:id].empty? || params[:id].nil?
+    return if params[:id].blank?
 
     headers["Content-Type"] = "application/rss+xml"
 

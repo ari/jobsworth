@@ -337,7 +337,7 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000465'>
+<a href='#M000441'>
 destroy<br/>
 </a>
 
@@ -370,9 +370,9 @@ destroy<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000465"><br/></a>
+<a class="small" name="M000441"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000465'>
+<a href='#M000441'>
 
 
 destroy
@@ -382,7 +382,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000465-show-link"><a onclick="toggle('M000465-source'); toggleText('M000465-link'); return false;" href="#" id="M000465-link">Show source...</a></p><div class="source" id="M000465-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/moderators_controller.rb, line 3</span>
+<p class="source_link" id="M000441-show-link"><a onclick="toggle('M000441-source'); toggleText('M000441-link'); return false;" href="#" id="M000441-link">Show source...</a></p><div class="source" id="M000441-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/moderators_controller.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 4:     <span class="ruby-constant">Moderatorship</span>.<span class="ruby-identifier">delete_all</span> [<span class="ruby-value str">'id = ?'</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]]
 5:     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">user_path</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user_id</span>])

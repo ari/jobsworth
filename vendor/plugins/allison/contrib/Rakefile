@@ -1,0 +1,147 @@
+require 'rake'
+require 'rake/testtask'
+require 'rake/rdoctask'
+
+desc 'Default: run unit tests.'
+task :default => :test
+
+desc 'Test the yar_wiki plugin.'
+Rake::TestTask.new(:test) do |t|
+  ENV['RAILS_ENV'] = 'test'
+  t.libs << 'lib'
+  t.pattern = 'test/**/*_test.rb'
+  t.verbose = true
+end
+
+#  ERGO  teach +sed+ to trim trailing spaces, and to not modify the file time if there were none
+#  ERGO  teach rdoc to ignore TO-DOs! ;-)
+#  ERGO  obtain Donne Roberts tracks!
+#  ERGO  all rake ci commands should complain about stray files
+#  ERGO  ASCII art for other module header
+#  ERGO  why FreeRIDE can't see Rakefile??
+
+
+require 'doc/rdoc_patch'  #  ERGO  move this inside task!
+
+#:stopdoc:
+=begin
+ ERGO wish list for RDoc:
+ 
+ * the ability to alias a link to another part of the project. Example:
+
+      assert_xpath[AssertXPath#assert_xpath]
+         -> <a href='..'>assert_xpath</a>
+
+   that would shorten the cross-link from another module
+
+ ! the ability to transclude a snip of source from one module into the
+   doc for another. For example, assert_xpath's doc should not say:
+
+      See AssertXPathTest#test_assert_xpath
+
+   The contents of that test case should simply appear in the doc itself.
+
+ * alternative, pretty, persistent URIs for items. Not:
+
+   http://assertxpath.rubyforge.org/classes/AssertXPath.html#M000106
+
+   but:
+
+   http://assertxpath.rubyforge.org/classes/AssertXPath.html#assert_xpath
+
+   (Note I can do this with your patch, manually, by putting in an anchor)
+
+ * Each page should have a linker to the root index.html
+
+ * Ability to stick a method on the page where it belongs, instead
+   of the page for the class where it happens to be!
+
+ * link to complete source (I might be missing this one!)
+
+ * don't trip over this colon:
+
+     send(:"format_#{item.kind}", item, ypath)
+
+ * complain for broken links
+
+Finally, this might be pilot error, but certain class names I simply cannot 
+get out of the class list...
+ 
+=end
+
+#:startdoc:
+
+desc 'Generate documentation for the yar_wiki plugin.'
+Rake::RDocTask.new(:rdoc) do |rdoc|
+
+  #  ERGO  plunder:
+  # http://www.ruby-doc.org/stdlib/libdoc/rdoc/rdoc/index.html
+  # http://www.ruby-doc.org/stdlib/libdoc/rdoc/rdoc/classes/Options.html
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title    = 'XPath & JavaScript Assertions'
+  rdoc.options << '--line-numbers' << '--inline-source' << '--style=yar-style.css'
+
+  #  ERGO  good home for ../yar-style.css
+  #  ERGO  hanging indent on the bullet pointed items5
+  #  ERGO  --style with some groovy yar-wiki- (and flea-) inspired theme
+#  ERGO  does # :yields: element  mean returns?
+ #  TODO  use call-seq to fix *args
+ 
+  rdoc.rdoc_files.include('README')
+
+  rdoc.rdoc_files.include('test/*_test.rb') 
+      #  ERGO  clean this up and link in to them
+      #        and get the method names out of the general index?
+
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+desc 'send rdocs to rubyforge.org'
+task :publish => :style do
+  system 'scp -r rdoc/* phlip@assertxpath.rubyforge.org:/var/www/gforge-projects/assertxpath/'
+end
+
+desc 'upgrade and inspect the rdoc folder'
+task :style => :rdoc do 
+  FileUtils.copy 'doc/yar-style.css', 'rdoc/'
+  FileUtils.copy 'doc/sky.png',       'rdoc/'
+  system 'grep ERGO rdoc -r'
+  system 'grep TODO rdoc -r'
+end
+
+task :agiledox do
+  tests = FileList['test/**/*_test.rb']
+  tests.each do |file|
+    m = %r".*/([^/].*)_test.rb".match(file)
+    puts m[1]+" should:\n" 
+    test_definitions = File::readlines(file).select {|line| line =~ /.*def test.*/}
+    test_definitions.each do |definition|
+      m = %r"test_(should_)?(.*)".match(definition)
+      puts " - "+m[2].gsub(/_/," ")
+    end
+    puts "\n" 
+  end
+end
+
+def findTodos(searchFor)
+  folders = %w(lib tasks test wiki)
+  files = FileList[ *folders.map{|q| q+'/**/*'} ]
+  
+  files.collect!{|f| f if File.file?(f) }
+  files.compact!
+
+  files.each do |f|
+    if f !~ /(db|extra)$/
+      system "grep -H #{searchFor} #{f}"
+    end
+  end
+end
+
+#  in order of severity...
+
+task :fixme do findTodos('FIX'+'ME') end
+task :ergo do findTodos('ER'+'GO') end  #  this keeps the excessive assert_xpath out of client's TODO searches!
+task :todo do findTodos('TO'+'DO') end
+task :consider do findTodos('CON'+'SIDER') end
+task :note do findTodos('NO'+'TE') end

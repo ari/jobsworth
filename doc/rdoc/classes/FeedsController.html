@@ -344,63 +344,63 @@ Icalendar<br/>
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000135'>
+<a href='#M000066'>
 get_action<br/>
 </a>
 
 
 
 
-<a href='#M000140'>
+<a href='#M000071'>
 ical<br/>
 </a>
 
 
 
 
-<a href='#M000139'>
+<a href='#M000070'>
 ical_all<br/>
 </a>
 
 
 
 
-<a href='#M000141'>
+<a href='#M000072'>
 igoogle<br/>
 </a>
 
 
 
 
-<a href='#M000142'>
+<a href='#M000073'>
 igoogle_feed<br/>
 </a>
 
 
 
 
-<a href='#M000136'>
+<a href='#M000067'>
 rss<br/>
 </a>
 
 
 
 
-<a href='#M000138'>
+<a href='#M000069'>
 to_duration<br/>
 </a>
 
 
 
 
-<a href='#M000137'>
+<a href='#M000068'>
 to_localtime<br/>
 </a>
 
 
 
 
-<a href='#M000134'>
+<a href='#M000065'>
 unsubscribe<br/>
 </a>
 
@@ -434,9 +434,9 @@ href="mailto:admin@clockingit.com">admin@clockingit.com</a>)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000135"><br/></a>
+<a class="small" name="M000066"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000135'>
+<a href='#M000066'>
 
 
 get_action
@@ -446,7 +446,7 @@ get_action
 </a>
 </h3>
 
-<p class="source_link" id="M000135-show-link"><a onclick="toggle('M000135-source'); toggleText('M000135-link'); return false;" href="#" id="M000135-link">Show source...</a></p><div class="source" id="M000135-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 37</span>
+<p class="source_link" id="M000066-show-link"><a onclick="toggle('M000066-source'); toggleText('M000066-link'); return false;" href="#" id="M000066-link">Show source...</a></p><div class="source" id="M000066-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_action</span>(<span class="ruby-identifier">log</span>)
 38:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">task</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">task_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 39:       <span class="ruby-identifier">action</span> = <span class="ruby-value str">&quot;Completed&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">log_type</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EventLog</span><span class="ruby-operator">::</span><span class="ruby-constant">TASK_COMPLETED</span>
@@ -468,9 +468,9 @@ get_action
 55:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000140"><br/></a>
+<a class="small" name="M000071"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000140'>
+<a href='#M000071'>
 
 
 ical
@@ -480,7 +480,7 @@ ical
 </a>
 </h3>
 
-<p class="source_link" id="M000140-show-link"><a onclick="toggle('M000140-source'); toggleText('M000140-link'); return false;" href="#" id="M000140-link">Show source...</a></p><div class="source" id="M000140-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 187</span>
+<p class="source_link" id="M000071-show-link"><a onclick="toggle('M000071-source'); toggleText('M000071-link'); return false;" href="#" id="M000071-link">Show source...</a></p><div class="source" id="M000071-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 187</span>
 187:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ical</span>(<span class="ruby-identifier">mode</span> = <span class="ruby-identifier">:personal</span>)
 188: 
 189:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
@@ -683,9 +683,9 @@ ical
 386:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000139"><br/></a>
+<a class="small" name="M000070"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000139'>
+<a href='#M000070'>
 
 
 ical_all
@@ -695,15 +695,15 @@ ical_all
 </a>
 </h3>
 
-<p class="source_link" id="M000139-show-link"><a onclick="toggle('M000139-source'); toggleText('M000139-link'); return false;" href="#" id="M000139-link">Show source...</a></p><div class="source" id="M000139-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 183</span>
+<p class="source_link" id="M000070-show-link"><a onclick="toggle('M000070-source'); toggleText('M000070-link'); return false;" href="#" id="M000070-link">Show source...</a></p><div class="source" id="M000070-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 183</span>
 183:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ical_all</span>
 184:     <span class="ruby-identifier">ical</span>(<span class="ruby-identifier">:all</span>)
 185:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000141"><br/></a>
+<a class="small" name="M000072"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000141'>
+<a href='#M000072'>
 
 
 igoogle
@@ -713,15 +713,15 @@ igoogle
 </a>
 </h3>
 
-<p class="source_link" id="M000141-show-link"><a onclick="toggle('M000141-source'); toggleText('M000141-link'); return false;" href="#" id="M000141-link">Show source...</a></p><div class="source" id="M000141-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 389</span>
+<p class="source_link" id="M000072-show-link"><a onclick="toggle('M000072-source'); toggleText('M000072-link'); return false;" href="#" id="M000072-link">Show source...</a></p><div class="source" id="M000072-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 389</span>
 389:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">igoogle</span>
 390:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
 391:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000142"><br/></a>
+<a class="small" name="M000073"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000142'>
+<a href='#M000073'>
 
 
 igoogle_feed
@@ -731,7 +731,7 @@ igoogle_feed
 </a>
 </h3>
 
-<p class="source_link" id="M000142-show-link"><a onclick="toggle('M000142-source'); toggleText('M000142-link'); return false;" href="#" id="M000142-link">Show source...</a></p><div class="source" id="M000142-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 393</span>
+<p class="source_link" id="M000073-show-link"><a onclick="toggle('M000073-source'); toggleText('M000073-link'); return false;" href="#" id="M000073-link">Show source...</a></p><div class="source" id="M000073-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 393</span>
 393:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">igoogle_feed</span>
 394:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_uid</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_uid</span>].<span class="ruby-identifier">empty?</span>
 395:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;Please enter your widget key in this gadgets settings. The key can be found on your &lt;a href=\&quot;http://#{user.company.subdomain}.#{$CONFIG[:domain]}/users/edit_preferences\&quot;&gt;preferences page&lt;/a&gt;.&quot;</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
@@ -764,95 +764,97 @@ igoogle_feed
 422:       <span class="ruby-keyword kw">end</span>
 423:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Top Tasks&quot;</span>
 424:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
-425:         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until &lt; '#{tz.now.utc.to_s(:db)}')&quot;</span>],  <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END&quot;</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:tags</span>, <span class="ruby-identifier">:work_logs</span>, <span class="ruby-identifier">:milestone</span>, { <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:customer</span> }, <span class="ruby-identifier">:dependencies</span>, <span class="ruby-identifier">:dependants</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:todos</span> ], <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">to_i</span>  )
+425:         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until &lt; '#{tz.now.utc.to_s(:db)}')&quot;</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:tags</span>, <span class="ruby-identifier">:work_logs</span>, <span class="ruby-identifier">:milestone</span>, { <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:customer</span> }, <span class="ruby-identifier">:dependencies</span>, <span class="ruby-identifier">:dependants</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:todos</span> ])
 426:       <span class="ruby-keyword kw">else</span>
-427:         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until &lt; '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}&quot;</span>],  <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END&quot;</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:tags</span>, <span class="ruby-identifier">:work_logs</span>, <span class="ruby-identifier">:milestone</span>, { <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:customer</span> }, <span class="ruby-identifier">:dependencies</span>, <span class="ruby-identifier">:dependants</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:todos</span> ], <span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">to_i</span>  )
+427:         <span class="ruby-ivar">@tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until &lt; '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}&quot;</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:tags</span>, <span class="ruby-identifier">:work_logs</span>, <span class="ruby-identifier">:milestone</span>, { <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:customer</span> }, <span class="ruby-identifier">:dependencies</span>, <span class="ruby-identifier">:dependants</span>, <span class="ruby-identifier">:users</span>, <span class="ruby-identifier">:todos</span> ])
 428:       <span class="ruby-keyword kw">end</span>
-429:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Status Pie-Chart&quot;</span>
-430:       <span class="ruby-identifier">completed</span> = <span class="ruby-value">0</span>
-431:       <span class="ruby-identifier">open</span> = <span class="ruby-value">0</span>
-432:       <span class="ruby-identifier">in_progress</span> = <span class="ruby-value">0</span>
-433: 
-434:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
-435:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-436:           <span class="ruby-identifier">open</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
-437:           <span class="ruby-identifier">completed</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NOT NULL&quot;</span>])
-438:           <span class="ruby-identifier">in_progress</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL AND status = 1&quot;</span>])
-439:         <span class="ruby-keyword kw">end</span>
-440:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Status&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-441:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Open&quot;</span>, <span class="ruby-identifier">open</span>
-442:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Closed&quot;</span>, <span class="ruby-identifier">completed</span>
-443:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;In Progress&quot;</span>, <span class="ruby-identifier">in_progress</span>
-444:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-445:         <span class="ruby-keyword kw">end</span>
-446:       <span class="ruby-keyword kw">else</span>
-447:         <span class="ruby-identifier">open</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND project_id IN (#{pids})&quot;</span>])
-448:         <span class="ruby-identifier">completed</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NOT NULL AND project_id IN (#{pids})&quot;</span>])
-449:         <span class="ruby-identifier">in_progress</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND status = 1 AND project_id IN (#{pids})&quot;</span>])
-450:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Status&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-451:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Open&quot;</span>, <span class="ruby-identifier">open</span>
-452:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Closed&quot;</span>, <span class="ruby-identifier">completed</span>
-453:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;In Progress&quot;</span>, <span class="ruby-identifier">in_progress</span>
-454:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-455:         <span class="ruby-keyword kw">end</span>
-456:       <span class="ruby-keyword kw">end</span>
-457:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority Pie-Chart&quot;</span>
-458:       <span class="ruby-identifier">critical</span> = <span class="ruby-value">0</span>
-459:       <span class="ruby-identifier">normal</span> = <span class="ruby-value">0</span>
-460:       <span class="ruby-identifier">low</span> = <span class="ruby-value">0</span>
-461: 
-462:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
-463:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-464:           <span class="ruby-identifier">critical</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">critical_count</span>
-465:           <span class="ruby-identifier">normal</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">normal_count</span>
-466:           <span class="ruby-identifier">low</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">low_count</span>
-467:         <span class="ruby-keyword kw">end</span>
-468:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Priorities&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-469:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Critical&quot;</span>, <span class="ruby-identifier">critical</span>
-470:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Normal&quot;</span>, <span class="ruby-identifier">normal</span>
-471:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Low&quot;</span>, <span class="ruby-identifier">low</span>
-472:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-473:         <span class="ruby-keyword kw">end</span>
-474:       <span class="ruby-keyword kw">else</span>
-475:         <span class="ruby-identifier">critical</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 &gt; 0&quot;</span>])
-476:         <span class="ruby-identifier">normal</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NOT NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 = 0&quot;</span>])
-477:         <span class="ruby-identifier">low</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 &lt; 0 &quot;</span>])
-478:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.name} Priorities&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-479:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Critical&quot;</span>, <span class="ruby-identifier">critical</span>
-480:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Normal&quot;</span>, <span class="ruby-identifier">normal</span>
-481:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Low&quot;</span>, <span class="ruby-identifier">low</span>
-482:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-483:         <span class="ruby-keyword kw">end</span>
-484:       <span class="ruby-keyword kw">end</span>
-485:     <span class="ruby-keyword kw">else</span>
-486:       <span class="ruby-identifier">completed</span> = <span class="ruby-value">0</span>
-487:       <span class="ruby-identifier">open</span> = <span class="ruby-value">0</span>
-488:       <span class="ruby-identifier">in_progress</span> = <span class="ruby-value">0</span>
-489: 
-490:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
-491:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Projects&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-492:           <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-493:             <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span>, (<span class="ruby-identifier">p</span>.<span class="ruby-identifier">critical_count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">normal_count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">low_count</span>)
-494:           <span class="ruby-keyword kw">end</span>
-495:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-496:         <span class="ruby-keyword kw">end</span>
-497:       <span class="ruby-keyword kw">else</span>
-498:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Projects&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
-499:           <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-500:             <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;project_id = ? AND completed_at IS NULL&quot;</span>, <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span>])
-501:           <span class="ruby-keyword kw">end</span>
-502:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
-503:         <span class="ruby-keyword kw">end</span>
-504:       <span class="ruby-keyword kw">end</span>
-505:     <span class="ruby-keyword kw">end</span>
-506: 
-507:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
-508:   <span class="ruby-keyword kw">end</span></pre></div>
+429:       <span class="ruby-ivar">@tasks</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">sort</span>(<span class="ruby-ivar">@tasks</span>)[<span class="ruby-value">0</span>, <span class="ruby-identifier">limit</span>.<span class="ruby-identifier">to_i</span>]
+430:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Status Pie-Chart&quot;</span>
+431:       <span class="ruby-identifier">completed</span> = <span class="ruby-value">0</span>
+432:       <span class="ruby-identifier">open</span> = <span class="ruby-value">0</span>
+433:       <span class="ruby-identifier">in_progress</span> = <span class="ruby-value">0</span>
+434: 
+435:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
+436:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+437:           <span class="ruby-identifier">open</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL&quot;</span>])
+438:           <span class="ruby-identifier">completed</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NOT NULL&quot;</span>])
+439:           <span class="ruby-identifier">in_progress</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;completed_at IS NULL AND status = 1&quot;</span>])
+440:         <span class="ruby-keyword kw">end</span>
+441:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Status&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+442:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Open&quot;</span>, <span class="ruby-identifier">open</span>
+443:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Closed&quot;</span>, <span class="ruby-identifier">completed</span>
+444:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;In Progress&quot;</span>, <span class="ruby-identifier">in_progress</span>
+445:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+446:         <span class="ruby-keyword kw">end</span>
+447:       <span class="ruby-keyword kw">else</span>
+448:         <span class="ruby-identifier">open</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND project_id IN (#{pids})&quot;</span>])
+449:         <span class="ruby-identifier">completed</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NOT NULL AND project_id IN (#{pids})&quot;</span>])
+450:         <span class="ruby-identifier">in_progress</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;completed_at IS NULL AND status = 1 AND project_id IN (#{pids})&quot;</span>])
+451:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Status&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+452:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Open&quot;</span>, <span class="ruby-identifier">open</span>
+453:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Closed&quot;</span>, <span class="ruby-identifier">completed</span>
+454:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;In Progress&quot;</span>, <span class="ruby-identifier">in_progress</span>
+455:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+456:         <span class="ruby-keyword kw">end</span>
+457:       <span class="ruby-keyword kw">end</span>
+458:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_order</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority Pie-Chart&quot;</span>
+459:       <span class="ruby-identifier">critical</span> = <span class="ruby-value">0</span>
+460:       <span class="ruby-identifier">normal</span> = <span class="ruby-value">0</span>
+461:       <span class="ruby-identifier">low</span> = <span class="ruby-value">0</span>
+462: 
+463:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
+464:         <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+465:           <span class="ruby-identifier">critical</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">critical_count</span>
+466:           <span class="ruby-identifier">normal</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">normal_count</span>
+467:           <span class="ruby-identifier">low</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">low_count</span>
+468:         <span class="ruby-keyword kw">end</span>
+469:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Priorities&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+470:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Critical&quot;</span>, <span class="ruby-identifier">critical</span>
+471:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Normal&quot;</span>, <span class="ruby-identifier">normal</span>
+472:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Low&quot;</span>, <span class="ruby-identifier">low</span>
+473:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+474:         <span class="ruby-keyword kw">end</span>
+475:       <span class="ruby-keyword kw">else</span>
+476:         <span class="ruby-identifier">tasks</span> = <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">completed_at</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">and</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>) }
+477:         <span class="ruby-identifier">critical</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">critical?</span> }.<span class="ruby-identifier">length</span>
+478:         <span class="ruby-identifier">normal</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">normal?</span> }.<span class="ruby-identifier">length</span>
+479:         <span class="ruby-identifier">low</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">low?</span> }.<span class="ruby-identifier">length</span>
+480:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.name} Priorities&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+481:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Critical&quot;</span>, <span class="ruby-identifier">critical</span>
+482:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Normal&quot;</span>, <span class="ruby-identifier">normal</span>
+483:           <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-value str">&quot;Low&quot;</span>, <span class="ruby-identifier">low</span>
+484:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+485:         <span class="ruby-keyword kw">end</span>
+486:       <span class="ruby-keyword kw">end</span>
+487:     <span class="ruby-keyword kw">else</span>
+488:       <span class="ruby-identifier">completed</span> = <span class="ruby-value">0</span>
+489:       <span class="ruby-identifier">open</span> = <span class="ruby-value">0</span>
+490:       <span class="ruby-identifier">in_progress</span> = <span class="ruby-value">0</span>
+491: 
+492:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_show_mine</span>] <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;All Tasks&quot;</span>
+493:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Projects&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+494:           <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+495:             <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span>, (<span class="ruby-identifier">p</span>.<span class="ruby-identifier">critical_count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">normal_count</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">low_count</span>)
+496:           <span class="ruby-keyword kw">end</span>
+497:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+498:         <span class="ruby-keyword kw">end</span>
+499:       <span class="ruby-keyword kw">else</span>
+500:         <span class="ruby-constant">GoogleChart</span><span class="ruby-operator">::</span><span class="ruby-constant">PieChart</span>.<span class="ruby-identifier">new</span>(<span class="ruby-value str">'280x200'</span>, <span class="ruby-node">&quot;#{user.company.name} Projects&quot;</span>, <span class="ruby-keyword kw">false</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">pc</span><span class="ruby-operator">|</span>
+501:           <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+502:             <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">data</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">user</span>.<span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;project_id = ? AND completed_at IS NULL&quot;</span>, <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span>])
+503:           <span class="ruby-keyword kw">end</span>
+504:           <span class="ruby-ivar">@chart</span> = <span class="ruby-identifier">pc</span>.<span class="ruby-identifier">to_url</span>
+505:         <span class="ruby-keyword kw">end</span>
+506:       <span class="ruby-keyword kw">end</span>
+507:     <span class="ruby-keyword kw">end</span>
+508: 
+509:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
+510:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000136"><br/></a>
+<a class="small" name="M000067"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000136'>
+<a href='#M000067'>
 
 
 rss
@@ -865,9 +867,9 @@ rss
 Get the RSS feed, based on the secret key passed on the url
 </p>
 
-<p class="source_link" id="M000136-show-link"><a onclick="toggle('M000136-source'); toggleText('M000136-link'); return false;" href="#" id="M000136-link">Show source...</a></p><div class="source" id="M000136-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 58</span>
+<p class="source_link" id="M000067-show-link"><a onclick="toggle('M000067-source'); toggleText('M000067-link'); return false;" href="#" id="M000067-link">Show source...</a></p><div class="source" id="M000067-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 58</span>
  58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rss</span>
- 59:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span>
+ 59:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">blank?</span>
  60: 
  61:     <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] = <span class="ruby-value str">&quot;application/rss+xml&quot;</span>
  62: 
@@ -942,9 +944,9 @@ Get the RSS feed, based on the secret key passed on the url
 131: 
 132:         <span class="ruby-identifier">tasks</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">widget</span>.<span class="ruby-identifier">order_by</span>
 133:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'priority'</span><span class="ruby-operator">:</span>
-134:                      <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">t</span>.<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">severity_id</span>, <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>.<span class="ruby-identifier">to_i</span><span class="ruby-operator">-</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">due_date</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-operator">-</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">task_num</span>] }[<span class="ruby-operator">-</span>(<span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span> <span class="ruby-value">? </span><span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span>)<span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">reverse</span>
+134:                     <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">sort</span>(<span class="ruby-identifier">tasks</span>)[<span class="ruby-value">0</span>, <span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span>]
 135:                <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'date'</span><span class="ruby-operator">:</span>
-136:                      <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">t</span>.<span class="ruby-identifier">created_at</span>.<span class="ruby-identifier">to_i</span>, <span class="ruby-identifier">t</span>.<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">severity_id</span>] }[<span class="ruby-operator">-</span>(<span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">&lt;</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span> <span class="ruby-value">? </span><span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">size</span>)<span class="ruby-operator">..</span><span class="ruby-value">-1</span>]
+136:                    <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">created_at</span>.<span class="ruby-identifier">to_i</span> }[<span class="ruby-value">0</span>, <span class="ruby-identifier">widget</span>.<span class="ruby-identifier">number</span>]
 137:               <span class="ruby-keyword kw">end</span>
 138: 
 139:         <span class="ruby-comment cmt"># Create the RSS</span>
@@ -984,9 +986,9 @@ Get the RSS feed, based on the secret key passed on the url
 173:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000138"><br/></a>
+<a class="small" name="M000069"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000138'>
+<a href='#M000069'>
 
 
 to_duration
@@ -996,15 +998,15 @@ to_duration
 </a>
 </h3>
 
-<p class="source_link" id="M000138-show-link"><a onclick="toggle('M000138-source'); toggleText('M000138-link'); return false;" href="#" id="M000138-link">Show source...</a></p><div class="source" id="M000138-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 179</span>
+<p class="source_link" id="M000069-show-link"><a onclick="toggle('M000069-source'); toggleText('M000069-link'); return false;" href="#" id="M000069-link">Show source...</a></p><div class="source" id="M000069-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 179</span>
 179:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_duration</span>(<span class="ruby-identifier">dur</span>)
 180:     <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">dur</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>, <span class="ruby-value">1</span>, <span class="ruby-value">8</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">upcase</span>
 181:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000137"><br/></a>
+<a class="small" name="M000068"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000137'>
+<a href='#M000068'>
 
 
 to_localtime
@@ -1014,15 +1016,15 @@ to_localtime
 </a>
 </h3>
 
-<p class="source_link" id="M000137-show-link"><a onclick="toggle('M000137-source'); toggleText('M000137-link'); return false;" href="#" id="M000137-link">Show source...</a></p><div class="source" id="M000137-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 175</span>
+<p class="source_link" id="M000068-show-link"><a onclick="toggle('M000068-source'); toggleText('M000068-link'); return false;" href="#" id="M000068-link">Show source...</a></p><div class="source" id="M000068-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 175</span>
 175:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_localtime</span>(<span class="ruby-identifier">tz</span>, <span class="ruby-identifier">time</span>)
 176:     <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">time</span>).<span class="ruby-identifier">to_s</span>)
 177:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000134"><br/></a>
+<a class="small" name="M000065"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000134'>
+<a href='#M000065'>
 
 
 unsubscribe
@@ -1032,7 +1034,7 @@ unsubscribe
 </a>
 </h3>
 
-<p class="source_link" id="M000134-show-link"><a onclick="toggle('M000134-source'); toggleText('M000134-link'); return false;" href="#" id="M000134-link">Show source...</a></p><div class="source" id="M000134-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 17</span>
+<p class="source_link" id="M000065-show-link"><a onclick="toggle('M000065-source'); toggleText('M000065-link'); return false;" href="#" id="M000065-link">Show source...</a></p><div class="source" id="M000065-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unsubscribe</span>
 18:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
 19:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>

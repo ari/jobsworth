@@ -139,7 +139,7 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
 
     # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
@@ -305,53 +305,7 @@ class TasksController < ApplicationController
         @task.save
       end
 
-      if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
-
-        filename = params[:task_file].original_filename
-        filename = filename.split("/").last
-        filename = filename.split("\\").last
-        filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
-
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = @task.project.customer
-        task_file.project = @task.project
-        task_file.task_id = @task.id
-        task_file.user_id = current_user.id
-        task_file.filename = filename
-        task_file.name = filename
-        task_file.save
-        task_file.file_size = params['task_file'].size
-
-
-        task_file.save
-        task_file.reload
-
-        if !File.directory?(task_file.path)
-          File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue nil
-        end
-
-        File.umask(0)
-        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
-                                                                                                        task_file.destroy
-                                                                                                        task_file = nil
-                                                                                                        flash['notice'] = _("Permission denied while saving file.")
-                                                                                                      end
-        if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
-           image = Magick::Image.read( task_file.file_path ).first
-
-           if image.columns > 0
-              task_file.file_type = ProjectFile::FILETYPE_IMG
-              task_file.mime_type = image.mime_type
-              task_file.save
-           end
-           image = nil
-           GC.start
-        end
-
-        #TODO Add notification
-      end
+      create_attachments(@task)
 
       worklog = WorkLog.new
       worklog.user = current_user
@@ -685,54 +639,9 @@ class TasksController < ApplicationController
 
       end
 
-
-      if params['task_file'].respond_to?(:original_filename) && params['task_file'].length > 0
-
-        filename = params[:task_file].original_filename
-        filename = filename.split("/").last
-        filename = filename.split("\\").last
-        filename = filename.gsub(/[^a-zA-Z0-9.]/, '_')
-
-
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = @task.project.customer
-        task_file.project = @task.project
-        task_file.task_id = @task.id
-        task_file.user_id = current_user.id
-        task_file.filename = filename
-        task_file.name = filename
-        task_file.file_size = params['task_file'].size
-        task_file.save
-
-        task_file.reload
-
-        if !File.directory?(task_file.path)
-          File.umask(0)
-          Dir.mkdir(task_file.path, 0777) rescue nil
-        end
-
-        File.umask(0)
-        File.open(task_file.file_path, "wb", 0777) { |f| f.write( params['task_file'].read ) } rescue begin
-                                                                                                        task_file.destroy
-                                                                                                        flash['notice'] = _("Permission denied while saving file.")
-                                                                                                        filename = nil
-                                                                                                      end
-        if filename && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
-           image = Magick::Image.read( task_file.file_path ).first
-
-           if image.columns > 0
-              task_file.file_type = ProjectFile::FILETYPE_IMG
-              task_file.mime_type = image.mime_type
-              task_file.save
-           end
-           image = nil
-           GC.start
-        end
-
-        if filename
-          body << "- <strong>Attached</strong>: #{filename}\n"
-        end
+      files = create_attachments(@task)
+      files.each do |filename|
+        body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
       email_body = body
@@ -803,6 +712,61 @@ class TasksController < ApplicationController
     end
 
     render :nothing => true
+  end
+  
+  def create_attachments(task)
+         filenames = []
+         unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+                 params['tmp_files'].each do |tmp_file|
+                         next if tmp_file.is_a?(String)
+                   filename = tmp_file.original_filename
+             filename = filename.split("/").last
+             filename = filename.split("\\").last
+             filename = filename.gsub(/[^\w.]/, '_')
+  
+             task_file = ProjectFile.new()
+             task_file.company = current_user.company
+             task_file.customer = task.project.customer
+             task_file.project = task.project
+             task_file.task_id = task.id
+             task_file.user_id = current_user.id
+             task_file.filename = filename
+             task_file.name = filename
+             task_file.save
+             task_file.file_size = tmp_file.size
+  
+             task_file.save
+             task_file.reload
+  
+             File.umask(0)
+             if !File.directory?(task_file.path)
+              Dir.mkdir(task_file.path, 0777) rescue nil
+             end
+  
+             File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
+                                                    flash['notice'] = _("Permission denied while saving file to #{task_file.file_path}.")
+                                                    task_file.destroy
+                                                    task_file = nil
+                                                    next
+                                                    end
+             filenames << filename
+             if task_file && filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && task_file.file_size > 0
+               image = ImageOperations::get_image( task_file.file_path )
+                                 if ImageOperations::is_image?(image)
+                 task_file.file_type = ProjectFile::FILETYPE_IMG
+                 task_file.mime_type = image.mime_type
+                 task_file.save
+                                         thumb = ImageOperations::thumbnail(image, 124)
+                 f = File.new(task_file.thumbnail_path, "w", 0777)
+                 f.write(thumb.to_blob)
+                 f.close
+               end
+               image = thumb = nil
+               GC.start
+             end
+           end
+         end
+         filenames
   end
 
   def ajax_restore
@@ -1010,7 +974,7 @@ class TasksController < ApplicationController
 
   def add_work
     begin
-      @task = current_user.tasks.find( params['id'] )
+      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
     rescue
       flash['notice'] = _('Unable to find task belonging to you with that ID.')
       redirect_from_last
@@ -1150,6 +1114,7 @@ class TasksController < ApplicationController
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]
+    session[:last_project_id] = session[:filter_project]
     current_user.save
   end
 
@@ -1301,11 +1266,11 @@ class TasksController < ApplicationController
 
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
-      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
+      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
       csv << header
 
       for t in @tasks
-        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
+        csv << [t.project.customer.name, t.project.name, t.task_num, t.name, t.tags.collect(&:name).join(','), t.owners, t.milestone.nil? ? nil : t.milestone.name, t.due_at.nil? ? t.milestone.nil? ? nil : t.milestone.due_at : t.due_at, t.created_at, t.completed_at, t.worked_minutes, t.duration, t.status_type, t.priority_type, t.severity_type]
       end
 
     end

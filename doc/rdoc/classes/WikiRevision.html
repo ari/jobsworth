@@ -335,21 +335,21 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000367'>
+<a href='#M000335'>
 to_html<br/>
 </a>
 
 
 
 
-<a href='#M000368'>
+<a href='#M000336'>
 to_plain_html<br/>
 </a>
 
 
 
 
-<a href='#M000366'>
+<a href='#M000334'>
 update_references<br/>
 </a>
 
@@ -373,7 +373,7 @@ A single revision of a <a href="WikiPage.html">WikiPage</a>
 <tr>
 <td class="highlight">EXPR</td>
 
-<td class="normal">Regexp.new( '\b((?:[A-Z]\w+){2,})|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )</td>
+<td class="normal">Regexp.new( '\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)|\[\[\s*([^\]\s][^\]]+?)\s*\]\]' )</td>
 
 
 
@@ -381,7 +381,7 @@ A single revision of a <a href="WikiPage.html">WikiPage</a>
 <tr>
 <td class="highlight">CamelCase</td>
 
-<td class="normal">/\b((?:[A-Z]\w+){2,})/</td>
+<td class="normal">/\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)/</td>
 
 
 
@@ -426,9 +426,9 @@ A single revision of a <a href="WikiPage.html">WikiPage</a>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000367"><br/></a>
+<a class="small" name="M000335"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000367'>
+<a href='#M000335'>
 
 
 to_html
@@ -438,7 +438,7 @@ to_html
 </a>
 </h3>
 
-<p class="source_link" id="M000367-show-link"><a onclick="toggle('M000367-source'); toggleText('M000367-link'); return false;" href="#" id="M000367-link">Show source...</a></p><div class="source" id="M000367-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 56</span>
+<p class="source_link" id="M000335-show-link"><a onclick="toggle('M000335-source'); toggleText('M000335-link'); return false;" href="#" id="M000335-link">Show source...</a></p><div class="source" id="M000335-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 56</span>
  56:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
  57:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">body</span>.<span class="ruby-identifier">blank?</span>
  58:     
@@ -498,9 +498,9 @@ to_html
 112:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000368"><br/></a>
+<a class="small" name="M000336"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000368'>
+<a href='#M000336'>
 
 
 to_plain_html
@@ -510,15 +510,15 @@ to_plain_html
 </a>
 </h3>
 
-<p class="source_link" id="M000368-show-link"><a onclick="toggle('M000368-source'); toggleText('M000368-link'); return false;" href="#" id="M000368-link">Show source...</a></p><div class="source" id="M000368-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 114</span>
+<p class="source_link" id="M000336-show-link"><a onclick="toggle('M000336-source'); toggleText('M000336-link'); return false;" href="#" id="M000336-link">Show source...</a></p><div class="source" id="M000336-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 114</span>
 114:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>
 115:     <span class="ruby-identifier">body</span>
 116:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000366"><br/></a>
+<a class="small" name="M000334"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000366'>
+<a href='#M000334'>
 
 
 update_references
@@ -528,7 +528,7 @@ update_references
 </a>
 </h3>
 
-<p class="source_link" id="M000366-show-link"><a onclick="toggle('M000366-source'); toggleText('M000366-link'); return false;" href="#" id="M000366-link">Show source...</a></p><div class="source" id="M000366-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 19</span>
+<p class="source_link" id="M000334-show-link"><a onclick="toggle('M000334-source'); toggleText('M000334-link'); return false;" href="#" id="M000334-link">Show source...</a></p><div class="source" id="M000334-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 19</span>
 19:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_references</span>
 20: 
 21:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">destroy_all</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
@@ -555,7 +555,7 @@ update_references
 42:       <span class="ruby-identifier">match</span> = <span class="ruby-identifier">m</span>.<span class="ruby-identifier">match</span>(<span class="ruby-constant">CamelCase</span>)
 43:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">text</span> = <span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]
 44: 
-45:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
+45:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'://'</span>
 46:         <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;wiki_page_id = ? AND referenced_name = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">name</span>])
 47:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ref</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">name</span>
 48:           <span class="ruby-identifier">ref</span> = <span class="ruby-constant">WikiReference</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">:wiki_page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>, <span class="ruby-identifier">:referenced_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">name</span> )

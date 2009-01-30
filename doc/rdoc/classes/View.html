@@ -332,6 +332,36 @@ ActiveRecord::Base
 
 
 
+<div class="navigation top" id="methods"><h3>Methods</h3>
+
+
+<a href='#M000597'>
+convert_attributes_to_properties<br/>
+</a>
+
+
+
+
+<a href='#M000598'>
+convert_properties_to_attributes<br/>
+</a>
+
+
+
+
+<a href='#M000595'>
+properties=<br/>
+</a>
+
+
+
+
+<a href='#M000596'>
+selected<br/>
+</a>
+
+
+</div>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
 <h1 id="item_name">Class: View</h1>
 
@@ -346,6 +376,148 @@ A saved filter which can be applied to a group of tasks
 <p></p>
 
 
+
+
+
+
+<h1>Public Instance Methods</h1>
+
+
+<a class="small" name="M000597"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000597'>
+
+
+convert_attributes_to_properties
+
+()
+
+</a>
+</h3>
+<p>
+This method will help in the migration of type id, priority and severity to
+use properties. It can be removed once that is done.
+</p>
+
+<p class="source_link" id="M000597-show-link"><a onclick="toggle('M000597-source'); toggleText('M000597-link'); return false;" href="#" id="M000597-link">Show source...</a></p><div class="source" id="M000597-source"><pre>    <span class="ruby-comment cmt"># File app/models/view.rb, line 42</span>
+42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">convert_attributes_to_properties</span>
+43:     <span class="ruby-identifier">all_properties</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>
+44:     <span class="ruby-identifier">new_ids</span> = []
+45: 
+46:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter_type_id</span> <span class="ruby-operator">!=</span> <span class="ruby-value">-1</span>
+47:       <span class="ruby-identifier">type</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Type&quot;</span> }
+48:       <span class="ruby-identifier">old</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">issue_types</span>[<span class="ruby-identifier">filter_type_id</span>]
+49:       <span class="ruby-identifier">new_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">type</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">old</span> }
+50:     <span class="ruby-keyword kw">end</span>
+51: 
+52:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter_priority</span> <span class="ruby-operator">!=</span> <span class="ruby-value">-10</span>
+53:       <span class="ruby-identifier">priority</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority&quot;</span> }
+54:       <span class="ruby-identifier">old</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">priority_types</span>[<span class="ruby-identifier">filter_priority</span>]
+55:       <span class="ruby-identifier">new_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">priority</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">old</span> }
+56:     <span class="ruby-keyword kw">end</span>
+57: 
+58:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filter_severity</span> <span class="ruby-operator">!=</span> <span class="ruby-value">-10</span>
+59:       <span class="ruby-identifier">severity</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Severity&quot;</span> }
+60:       <span class="ruby-identifier">old</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">severity_types</span>[<span class="ruby-identifier">filter_severity</span>]
+61:       <span class="ruby-identifier">new_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">severity</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">old</span> }
+62:     <span class="ruby-keyword kw">end</span>
+63: 
+64:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">properties</span> = <span class="ruby-identifier">new_ids</span>
+65:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000598"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000598'>
+
+
+convert_properties_to_attributes
+
+()
+
+</a>
+</h3>
+<p>
+This method will migrate type id, priority and severity back from the
+properties to attributes. It can be removed if we&#8216;re happy with the
+migration to properties.
+</p>
+
+<p class="source_link" id="M000598-show-link"><a onclick="toggle('M000598-source'); toggleText('M000598-link'); return false;" href="#" id="M000598-link">Show source...</a></p><div class="source" id="M000598-source"><pre>    <span class="ruby-comment cmt"># File app/models/view.rb, line 72</span>
+72:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">convert_properties_to_attributes</span>
+73:     <span class="ruby-identifier">all_properties</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>
+74:     
+75:     <span class="ruby-identifier">type</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Type&quot;</span> }
+76:     <span class="ruby-identifier">old_id</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">issue_types</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">selected</span>(<span class="ruby-identifier">type</span>).<span class="ruby-identifier">to_s</span>)
+77:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_type_id</span> = <span class="ruby-identifier">old_id</span> <span class="ruby-operator">||</span> <span class="ruby-value">-1</span>
+78: 
+79:     <span class="ruby-identifier">priority</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority&quot;</span> }
+80:     <span class="ruby-identifier">old_id</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">priority_types</span>.<span class="ruby-identifier">invert</span>[<span class="ruby-identifier">selected</span>(<span class="ruby-identifier">priority</span>).<span class="ruby-identifier">to_s</span>]
+81:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_priority</span> = <span class="ruby-identifier">old_id</span> <span class="ruby-operator">||</span> <span class="ruby-value">-10</span>
+82: 
+83:     <span class="ruby-identifier">severity</span> = <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Severity&quot;</span> }
+84:     <span class="ruby-identifier">old_id</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">severity_types</span>.<span class="ruby-identifier">invert</span>[<span class="ruby-identifier">selected</span>(<span class="ruby-identifier">severity</span>).<span class="ruby-identifier">to_s</span>]
+85:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">filter_severity</span> = <span class="ruby-identifier">old_id</span> <span class="ruby-operator">||</span> <span class="ruby-value">-10</span>
+86: 
+87:     <span class="ruby-identifier">save</span>
+88:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000595"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000595'>
+
+
+properties=
+
+(params)
+
+</a>
+</h3>
+<p>
+Sets any property values to use as filters on this view.
+</p>
+
+<p class="source_link" id="M000595-show-link"><a onclick="toggle('M000595-source'); toggleText('M000595-link'); return false;" href="#" id="M000595-link">Show source...</a></p><div class="source" id="M000595-source"><pre>    <span class="ruby-comment cmt"># File app/models/view.rb, line 13</span>
+13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">properties=</span>(<span class="ruby-identifier">params</span>)
+14:     <span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">clear</span>
+15: 
+16:     <span class="ruby-identifier">all_properties</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>
+17: 
+18:     <span class="ruby-identifier">params</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">property_value_id</span><span class="ruby-operator">|</span>
+19:       <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">property_value_id</span>.<span class="ruby-identifier">blank?</span>
+20: 
+21:       <span class="ruby-identifier">pv</span> = <span class="ruby-constant">PropertyValue</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">property_value_id</span>)
+22:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">all_properties</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">pv</span>.<span class="ruby-identifier">property</span>)
+23:         <span class="ruby-identifier">property_values</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">pv</span>
+24:       <span class="ruby-keyword kw">end</span>
+25:     <span class="ruby-keyword kw">end</span>
+26:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000596"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000596'>
+
+
+selected
+
+(property)
+
+</a>
+</h3>
+<p>
+Returns the <a href="View.html#M000596">selected</a> property value on this
+view for property. (Or nil if none)
+</p>
+
+<p class="source_link" id="M000596-show-link"><a onclick="toggle('M000596-source'); toggleText('M000596-link'); return false;" href="#" id="M000596-link">Show source...</a></p><div class="source" id="M000596-source"><pre>    <span class="ruby-comment cmt"># File app/models/view.rb, line 32</span>
+32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">selected</span>(<span class="ruby-identifier">property</span>)
+33:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">property</span>
+34: 
+35:     <span class="ruby-identifier">property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">pv</span>) }
+36:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
 
 
 

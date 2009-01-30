@@ -331,21 +331,21 @@ Module: Misc
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000548'>
+<a href='#M000603'>
 accept_locales<br/>
 </a>
 
 
 
 
-<a href='#M000547'>
+<a href='#M000602'>
 format_duration<br/>
 </a>
 
 
 
 
-<a href='#M000549'>
+<a href='#M000604'>
 html_encode<br/>
 </a>
 
@@ -368,9 +368,9 @@ html_encode<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000548"><br/></a>
+<a class="small" name="M000603"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000548'>
+<a href='#M000603'>
 
 
 accept_locales
@@ -385,7 +385,7 @@ priority. Returns an empty array if the HTTP_ACCEPT_LANGUAGE header is not
 present.
 </p>
 
-<p class="source_link" id="M000548-show-link"><a onclick="toggle('M000548-source'); toggleText('M000548-link'); return false;" href="#" id="M000548-link">Show source...</a></p><div class="source" id="M000548-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 55</span>
+<p class="source_link" id="M000603-show-link"><a onclick="toggle('M000603-source'); toggleText('M000603-link'); return false;" href="#" id="M000603-link">Show source...</a></p><div class="source" id="M000603-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 55</span>
 55:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">accept_locales</span>
 56:     <span class="ruby-keyword kw">return</span> [] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>.<span class="ruby-identifier">include?</span> <span class="ruby-value str">'HTTP_ACCEPT_LANGUAGE'</span>
 57:     <span class="ruby-identifier">languages</span> = <span class="ruby-identifier">request</span>.<span class="ruby-identifier">env</span>[<span class="ruby-value str">'HTTP_ACCEPT_LANGUAGE'</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">','</span>).<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">al</span><span class="ruby-operator">|</span>
@@ -397,9 +397,9 @@ present.
 63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000547"><br/></a>
+<a class="small" name="M000602"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000547'>
+<a href='#M000602'>
 
 
 format_duration
@@ -412,7 +412,7 @@ format_duration
 Format minutes =&gt; <tt>1w 2d 3h 3m</tt>
 </p>
 
-<p class="source_link" id="M000547-show-link"><a onclick="toggle('M000547-source'); toggleText('M000547-link'); return false;" href="#" id="M000547-link">Show source...</a></p><div class="source" id="M000547-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 13</span>
+<p class="source_link" id="M000602-show-link"><a onclick="toggle('M000602-source'); toggleText('M000602-link'); return false;" href="#" id="M000602-link">Show source...</a></p><div class="source" id="M000602-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">day_duration</span>, <span class="ruby-identifier">days_per_week</span> = <span class="ruby-value">5</span>)
 14:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">''</span>
 15:     <span class="ruby-identifier">weeks</span> = <span class="ruby-identifier">days</span> = <span class="ruby-identifier">hours</span> = <span class="ruby-value">0</span>
@@ -453,9 +453,9 @@ Format minutes =&gt; <tt>1w 2d 3h 3m</tt>
 50:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000549"><br/></a>
+<a class="small" name="M000604"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000549'>
+<a href='#M000604'>
 
 
 html_encode
@@ -465,7 +465,7 @@ html_encode
 </a>
 </h3>
 
-<p class="source_link" id="M000549-show-link"><a onclick="toggle('M000549-source'); toggleText('M000549-link'); return false;" href="#" id="M000549-link">Show source...</a></p><div class="source" id="M000549-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 65</span>
+<p class="source_link" id="M000604-show-link"><a onclick="toggle('M000604-source'); toggleText('M000604-link'); return false;" href="#" id="M000604-link">Show source...</a></p><div class="source" id="M000604-source"><pre>    <span class="ruby-comment cmt"># File lib/misc.rb, line 65</span>
 65:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">html_encode</span>(<span class="ruby-identifier">s</span>)
 66:     <span class="ruby-identifier">s</span>.<span class="ruby-identifier">to_s</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&amp;/</span>, <span class="ruby-value str">&quot;&amp;amp;&quot;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\&quot;/</span>, <span class="ruby-value str">&quot;&amp;quot;&quot;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&gt;/</span>, <span class="ruby-value str">&quot;&amp;gt;&quot;</span>).<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;/</span>, <span class="ruby-value str">&quot;&amp;lt;&quot;</span>)
 67:   <span class="ruby-keyword kw">end</span></pre></div>
