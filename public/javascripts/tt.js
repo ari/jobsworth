@@ -314,12 +314,19 @@ function closeChat(el) {
   Element.remove(el);
 }
 
-function addMilestone() {
-  var val = $('task_project_id').value;
-  var popup = window.open("/milestones/quick_new?project_id=" + val, 'NewMilestone', 'height=320,width=550,toolbar=0,location=0,status=0,menubar=0');
-  popup.focus();
+// refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
+function refreshMilestones(pid, mid) {
+  jQuery.getJSON("/tasks/get_milestones", {project_id: pid},
+	function(data) {
+		var milestoneSelect = jQuery('#task_milestone_id').get(0);
+		rebuildSelect(milestoneSelect, data.options);
+		milestoneSelect.options[mid].selected = true;
+  });
 }
 
-function refreshMilestones(pid,mid) {
-  new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');$('task_milestone_id').value=mid;}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + pid, insertion: updateSelect });
+function rebuildSelect(select, data) {
+   select.options.length = 0;
+   for( var i=0; i<data.length; i++ ) {
+     select.options[i] = new Option(data[i].text,data[i].value,null,false);
+   }
 }

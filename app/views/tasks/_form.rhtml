@@ -142,7 +142,7 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
           <% end %>
           <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
 	  <% end %>
-		  <span id="add_milestone"><a href="#" onclick="javascript:addMilestone();return false;"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
+	  <span id="add_milestone"><a href="/milestones/quick_new?project_id=<%=selected_project%>" rel="shadowbox;height=300;width=460;player=iframe"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
   </div>
 	  <br/>
 
