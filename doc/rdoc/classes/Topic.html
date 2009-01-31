@@ -335,84 +335,84 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000287'>
+<a href='#M000370'>
 check_for_changing_forums<br/>
 </a>
 
 
 
 
-<a href='#M000295'>
+<a href='#M000378'>
 editable_by?<br/>
 </a>
 
 
 
 
-<a href='#M000290'>
+<a href='#M000373'>
 hit!<br/>
 </a>
 
 
 
 
-<a href='#M000286'>
+<a href='#M000369'>
 last<br/>
 </a>
 
 
 
 
-<a href='#M000294'>
+<a href='#M000377'>
 last_page<br/>
 </a>
 
 
 
 
-<a href='#M000293'>
+<a href='#M000376'>
 paged?<br/>
 </a>
 
 
 
 
-<a href='#M000296'>
+<a href='#M000379'>
 set_default_replied_at_and_sticky<br/>
 </a>
 
 
 
 
-<a href='#M000297'>
+<a href='#M000380'>
 set_post_forum_id<br/>
 </a>
 
 
 
 
-<a href='#M000291'>
+<a href='#M000374'>
 sticky?<br/>
 </a>
 
 
 
 
-<a href='#M000292'>
+<a href='#M000375'>
 views<br/>
 </a>
 
 
 
 
-<a href='#M000288'>
+<a href='#M000371'>
 voice_count<br/>
 </a>
 
 
 
 
-<a href='#M000289'>
+<a href='#M000372'>
 voices<br/>
 </a>
 
@@ -449,9 +449,9 @@ A forum topic
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000287"><br/></a>
+<a class="small" name="M000370"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000287'>
+<a href='#M000370'>
 
 
 check_for_changing_forums
@@ -461,7 +461,7 @@ check_for_changing_forums
 </a>
 </h3>
 
-<p class="source_link" id="M000287-show-link"><a onclick="toggle('M000287-source'); toggleText('M000287-link'); return false;" href="#" id="M000287-link">Show source...</a></p><div class="source" id="M000287-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 25</span>
+<p class="source_link" id="M000370-show-link"><a onclick="toggle('M000370-source'); toggleText('M000370-link'); return false;" href="#" id="M000370-link">Show source...</a></p><div class="source" id="M000370-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 25</span>
 25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_for_changing_forums</span>
 26:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">new_record?</span>
 27:     <span class="ruby-identifier">old</span>=<span class="ruby-constant">Topic</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>)
@@ -473,9 +473,9 @@ check_for_changing_forums
 33:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000295"><br/></a>
+<a class="small" name="M000378"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000295'>
+<a href='#M000378'>
 
 
 editable_by?
@@ -485,15 +485,15 @@ editable_by?
 </a>
 </h3>
 
-<p class="source_link" id="M000295-show-link"><a onclick="toggle('M000295-source'); toggleText('M000295-link'); return false;" href="#" id="M000295-link">Show source...</a></p><div class="source" id="M000295-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 58</span>
+<p class="source_link" id="M000378-show-link"><a onclick="toggle('M000378-source'); toggleText('M000378-link'); return false;" href="#" id="M000378-link">Show source...</a></p><div class="source" id="M000378-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 58</span>
 58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">user</span>)
 59:     <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user_id</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company_id</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-identifier">forum_id</span>))
 60:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000290"><br/></a>
+<a class="small" name="M000373"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000290'>
+<a href='#M000373'>
 
 
 hit!
@@ -503,15 +503,15 @@ hit!
 </a>
 </h3>
 
-<p class="source_link" id="M000290-show-link"><a onclick="toggle('M000290-source'); toggleText('M000290-link'); return false;" href="#" id="M000290-link">Show source...</a></p><div class="source" id="M000290-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 44</span>
+<p class="source_link" id="M000373-show-link"><a onclick="toggle('M000373-source'); toggleText('M000373-link'); return false;" href="#" id="M000373-link">Show source...</a></p><div class="source" id="M000373-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 44</span>
 44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">hit!</span>
 45:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">increment_counter</span> <span class="ruby-identifier">:hits</span>, <span class="ruby-identifier">id</span>
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000286"><br/></a>
+<a class="small" name="M000369"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000286'>
+<a href='#M000369'>
 
 
 last
@@ -521,15 +521,15 @@ last
 </a>
 </h3>
 
-<p class="source_link" id="M000286-show-link"><a onclick="toggle('M000286-source'); toggleText('M000286-link'); return false;" href="#" id="M000286-link">Show source...</a></p><div class="source" id="M000286-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 10</span>
+<p class="source_link" id="M000369-show-link"><a onclick="toggle('M000369-source'); toggleText('M000369-link'); return false;" href="#" id="M000369-link">Show source...</a></p><div class="source" id="M000369-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 10</span>
 10:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last</span>
 11:       <span class="ruby-ivar">@last_post</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'posts.created_at desc'</span>)
 12:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000294"><br/></a>
+<a class="small" name="M000377"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000294'>
+<a href='#M000377'>
 
 
 last_page
@@ -539,15 +539,15 @@ last_page
 </a>
 </h3>
 
-<p class="source_link" id="M000294-show-link"><a onclick="toggle('M000294-source'); toggleText('M000294-link'); return false;" href="#" id="M000294-link">Show source...</a></p><div class="source" id="M000294-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 54</span>
+<p class="source_link" id="M000377-show-link"><a onclick="toggle('M000377-source'); toggleText('M000377-link'); return false;" href="#" id="M000377-link">Show source...</a></p><div class="source" id="M000377-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 54</span>
 54:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_page</span>
 55:     (<span class="ruby-identifier">posts_count</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-value">30.0</span>).<span class="ruby-identifier">ceil</span>.<span class="ruby-identifier">to_i</span>
 56:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000293"><br/></a>
+<a class="small" name="M000376"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000293'>
+<a href='#M000376'>
 
 
 paged?
@@ -557,13 +557,13 @@ paged?
 </a>
 </h3>
 
-<p class="source_link" id="M000293-show-link"><a onclick="toggle('M000293-source'); toggleText('M000293-link'); return false;" href="#" id="M000293-link">Show source...</a></p><div class="source" id="M000293-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 52</span>
+<p class="source_link" id="M000376-show-link"><a onclick="toggle('M000376-source'); toggleText('M000376-link'); return false;" href="#" id="M000376-link">Show source...</a></p><div class="source" id="M000376-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 52</span>
 52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">paged?</span>() <span class="ruby-identifier">posts_count</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">30</span> <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000291"><br/></a>
+<a class="small" name="M000374"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000291'>
+<a href='#M000374'>
 
 
 sticky?
@@ -573,13 +573,13 @@ sticky?
 </a>
 </h3>
 
-<p class="source_link" id="M000291-show-link"><a onclick="toggle('M000291-source'); toggleText('M000291-link'); return false;" href="#" id="M000291-link">Show source...</a></p><div class="source" id="M000291-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 48</span>
+<p class="source_link" id="M000374-show-link"><a onclick="toggle('M000374-source'); toggleText('M000374-link'); return false;" href="#" id="M000374-link">Show source...</a></p><div class="source" id="M000374-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 48</span>
 48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sticky?</span>() <span class="ruby-identifier">sticky</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000292"><br/></a>
+<a class="small" name="M000375"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000292'>
+<a href='#M000375'>
 
 
 views
@@ -589,13 +589,13 @@ views
 </a>
 </h3>
 
-<p class="source_link" id="M000292-show-link"><a onclick="toggle('M000292-source'); toggleText('M000292-link'); return false;" href="#" id="M000292-link">Show source...</a></p><div class="source" id="M000292-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 50</span>
+<p class="source_link" id="M000375-show-link"><a onclick="toggle('M000375-source'); toggleText('M000375-link'); return false;" href="#" id="M000375-link">Show source...</a></p><div class="source" id="M000375-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 50</span>
 50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">views</span>() <span class="ruby-identifier">hits</span> <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000288"><br/></a>
+<a class="small" name="M000371"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000288'>
+<a href='#M000371'>
 
 
 voice_count
@@ -605,15 +605,15 @@ voice_count
 </a>
 </h3>
 
-<p class="source_link" id="M000288-show-link"><a onclick="toggle('M000288-source'); toggleText('M000288-link'); return false;" href="#" id="M000288-link">Show source...</a></p><div class="source" id="M000288-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 35</span>
+<p class="source_link" id="M000371-show-link"><a onclick="toggle('M000371-source'); toggleText('M000371-link'); return false;" href="#" id="M000371-link">Show source...</a></p><div class="source" id="M000371-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 35</span>
 35:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">voice_count</span>
 36:     <span class="ruby-identifier">posts</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;DISTINCT user_id&quot;</span>)
 37:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000289"><br/></a>
+<a class="small" name="M000372"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000289'>
+<a href='#M000372'>
 
 
 voices
@@ -623,7 +623,7 @@ voices
 </a>
 </h3>
 
-<p class="source_link" id="M000289-show-link"><a onclick="toggle('M000289-source'); toggleText('M000289-link'); return false;" href="#" id="M000289-link">Show source...</a></p><div class="source" id="M000289-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 39</span>
+<p class="source_link" id="M000372-show-link"><a onclick="toggle('M000372-source'); toggleText('M000372-link'); return false;" href="#" id="M000372-link">Show source...</a></p><div class="source" id="M000372-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 39</span>
 39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">voices</span>
 40:     <span class="ruby-comment cmt"># TODO - optimize</span>
 41:     <span class="ruby-identifier">posts</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">user</span> }.<span class="ruby-identifier">uniq</span>
@@ -634,9 +634,9 @@ voices
 <h1>Protected Instance Methods</h1>
 
 
-<a class="small" name="M000296"><br/></a>
+<a class="small" name="M000379"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000296'>
+<a href='#M000379'>
 
 
 set_default_replied_at_and_sticky
@@ -646,16 +646,16 @@ set_default_replied_at_and_sticky
 </a>
 </h3>
 
-<p class="source_link" id="M000296-show-link"><a onclick="toggle('M000296-source'); toggleText('M000296-link'); return false;" href="#" id="M000296-link">Show source...</a></p><div class="source" id="M000296-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 63</span>
+<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 63</span>
 63:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_default_replied_at_and_sticky</span>
 64:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">replied_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
 65:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">sticky</span>   <span class="ruby-operator">||=</span> <span class="ruby-value">0</span>
 66:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000297"><br/></a>
+<a class="small" name="M000380"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000297'>
+<a href='#M000380'>
 
 
 set_post_forum_id
@@ -665,7 +665,7 @@ set_post_forum_id
 </a>
 </h3>
 
-<p class="source_link" id="M000297-show-link"><a onclick="toggle('M000297-source'); toggleText('M000297-link'); return false;" href="#" id="M000297-link">Show source...</a></p><div class="source" id="M000297-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 68</span>
+<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>    <span class="ruby-comment cmt"># File app/models/topic.rb, line 68</span>
 68:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_post_forum_id</span>
 69:       <span class="ruby-constant">Post</span>.<span class="ruby-identifier">update_all</span> [<span class="ruby-value str">'forum_id = ?'</span>, <span class="ruby-identifier">forum_id</span>], [<span class="ruby-value str">'topic_id = ?'</span>, <span class="ruby-identifier">id</span>]
 70:     <span class="ruby-keyword kw">end</span></pre></div>

@@ -58,22 +58,14 @@ class Task < ActiveRecord::Base
 
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
-
-    r.project.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", r.project.id])
-    r.project.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", r.project.id])
-    r.project.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", r.project.id])
-    r.project.open_tasks = nil
-    r.project.total_tasks = nil
-    r.project.save
+    project = r.project
+    project.update_project_stats
+    project.save
 
     if r.project.id != r.project_id
       # Task has changed projects, update counts of target project as well
       p = Project.find(r.project_id)
-      p.critical_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 > 0  AND completed_at IS NULL", p.id])
-      p.normal_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 = 0 AND completed_at IS NULL", p.id])
-      p.low_count = Task.count(:conditions => ["project_id = ? AND (severity_id + priority)/2 < 0 AND completed_at IS NULL", p.id])
-      p.open_tasks = nil
-      p.total_tasks = nil
+      p.update_project_stats
       p.save
     end
     
@@ -398,7 +390,7 @@ class Task < ActiveRecord::Base
   end
 
   def issue_type
-    Task.issue_types[self.type_id]
+    Task.issue_types[self.type_id.to_i]
   end
 
   def Task.issue_types
@@ -659,22 +651,8 @@ class Task < ActiveRecord::Base
     "#{sprintf("%d/%d", todos.select{|t| t.completed_at }.size, todos.size)}"
   end
 
-  def order_default
-    [-(self.severity_id + self.priority), self.due_date.to_i, self.milestone ? 1 : 0, self.milestone_id.to_i > 0 ? self.milestone.name : ""]
-  end 
-
   def order_date
     [self.created_at.to_i]
-  end 
-
-  def icon(icon_type = nil)
-    icon_type ||= type_id
-    case icon_type
-      when 0 then "<img src=\"/images/task_icons/task.png\" alt=\"#{_'Task'}\" title=\"#{_'Task'}\" class=\"tooltip\" />"
-      when 1 then "<img src=\"/images/task_icons/new_feature.png\" alt=\"#{_'New Feature'}\" title=\"#{_'New Feature'}\" class=\"tooltip\" />"
-      when 2 then "<img src=\"/images/task_icons/bug.png\" alt=\"#{_'Defect'}\" title=\"#{_'Defect'}\" class=\"tooltip\" />"
-      when 3 then "<img src=\"/images/task_icons/change.png\" alt=\"#{_'Improvement'}\" title=\"#{_'Improvement'}\" class=\"tooltip\" />"
-    end 
   end 
 
   def worked_and_duration_class
@@ -715,4 +693,113 @@ class Task < ActiveRecord::Base
     tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
     tpv.property_value if tpv
   end
+
+  ###
+  # This method will help in the migration of type id, priority and severity
+  # to use properties. It can be removed once that is done.
+  ###
+  def convert_attributes_to_properties(type, priority, severity)
+    old_value = Task.issue_types[attributes['type_id'].to_i]
+    copy_task_value(old_value, type)
+
+    old_value = Task.priority_types[attributes['priority'].to_i]
+    copy_task_value(old_value || 0, priority)
+
+    old_value = Task.severity_types[attributes['severity_id'].to_i]
+    copy_task_value(old_value || 0, severity)
+  end
+
+  ###
+  # This method will help in the migration of type id, priority and severity
+  # to use properties. It can be removed once that is done.
+  #
+  # Copies the severity, priority etc on the given task to the new
+  # property.
+  ###
+  def copy_task_value(old_value, new_property)
+    return if !old_value
+
+    matching_value = new_property.property_values.detect { |pv| pv.value == old_value }
+    set_property_value(new_property, matching_value) if matching_value
+  end
+
+  ###
+  # This method will help in the rollback of type, priority and severity 
+  # from properties.
+  # It can be removed after.
+  ###
+  def convert_properties_to_attributes
+    type = company.properties.detect { |p| p.name == "Type" }
+    severity = company.properties.detect { |p| p.name == "Severity" }
+    priority = company.properties.detect { |p| p.name == "Priority" }
+
+    self.type_id = Task.issue_types.index(property_value(type).to_s)
+    self.severity_id = Task.severity_types.invert[property_value(severity).to_s] || 0
+    self.priority = Task.priority_types.invert[property_value(priority).to_s] || 0
+  end
+
+  ###
+  # These methods replace the columns for these values. If people go ahead
+  # and change the default priority, etc values then they will return a 
+  # default value that shouldn't affect sorting.
+  ###
+  def priority
+    property_value_as_integer(company.priority_property, Task.priority_types.invert) || 0
+  end  
+  def severity_id
+    property_value_as_integer(company.severity_property, Task.severity_types.invert) || 0
+  end
+  def type_id
+    property_value_as_integer(company.type_property) || 0
+  end
+
+  ###
+  # Returns an int representing the given property.
+  # Pass in a hash of strings to ids to return those values, otherwise
+  # the index in the property value list is returned.
+  ###
+  def property_value_as_integer(property, mappings = {})
+    task_value = property_value(property)
+
+    if task_value
+      return mappings[task_value.value] || property.property_values.index(task_value)
+    end
+  end
+
+  ###
+  # Returns an int to use for sorting this task. See Company.rank_by_properties
+  # for more info.
+  ###
+  def sort_rank
+    @sort_rank ||= company.rank_by_properties(self)
+  end
+
+  ###
+  # A task is critical if it is in the top 20% of the possible
+  # ranking using the companys sort.
+  ###
+  def critical?
+    return false if company.maximum_sort_rank == 0
+
+    sort_rank.to_f / company.maximum_sort_rank.to_f > 0.80
+  end
+
+  ###
+  # A task is normal if it is not critical or low.
+  ###
+  def normal?
+    !critical? and !low?
+  end
+
+  ###
+  # A task is low if it is in the bottom 20% of the possible
+  # ranking using the companys sort.
+  ###
+  def low?
+    return false if company.maximum_sort_rank == 0
+
+    sort_rank.to_f / company.maximum_sort_rank.to_f < 0.20
+  end
+
+
 end

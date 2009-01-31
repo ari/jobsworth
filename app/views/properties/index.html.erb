@@ -1,25 +1,24 @@
 <table class="content" width="100%" style="padding-left: 1em; padding-right: 1em;" cellpadding="0" cellspacing="0">
-  <tr>
-    <td class="page_header" colspan="3">
-      <div style="float:left;"><%=_ 'Properties' %></div>
-      <div style="float:right;padding-top:0.1em;">
-	<%= link_to 'New Property', new_property_path %>
-      </div>
-    </td>
-  </tr>
-  <tr><td colspan="4">&nbsp;</td></tr>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-  </tr>
-  <tr>
-    <td>
-      <%= render :partial => @properties %>
-    </td>
-  </tr>
+  <thead>
+    <tr>
+      <td class="page_header" colspan="5">
+	<div style="float:left;"><%=_ 'Properties' %></div>
+	<div style="float:right;padding-top:0.1em;">
+	  <%= link_to 'New Property', new_property_path %>
+	</div>
+      </td>
+    </tr>
+    <tr><td colspan="5">&nbsp;</td></tr>
+    <tr>
+      <th><%= _("Name") %></th>
+      <th><%= _("Default sort") %></th>
+      <th><%= _("Default color") %></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <%= render :partial => @properties %>
 </table>
-
 
 <br />
 

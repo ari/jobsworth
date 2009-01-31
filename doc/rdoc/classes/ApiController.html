@@ -337,14 +337,14 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000206'>
+<a href='#M000133'>
 get_projects<br/>
 </a>
 
 
 
 
-<a href='#M000207'>
+<a href='#M000134'>
 get_tasks<br/>
 </a>
 
@@ -377,9 +377,9 @@ href="mailto:admin@clockingit.com">admin@clockingit.com</a>)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000206"><br/></a>
+<a class="small" name="M000133"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000206'>
+<a href='#M000133'>
 
 
 get_projects
@@ -392,16 +392,16 @@ get_projects
 Return a list of Projects
 </p>
 
-<p class="source_link" id="M000206-show-link"><a onclick="toggle('M000206-source'); toggleText('M000206-link'); return false;" href="#" id="M000206-link">Show source...</a></p><div class="source" id="M000206-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/api_controller.rb, line 6</span>
+<p class="source_link" id="M000133-show-link"><a onclick="toggle('M000133-source'); toggleText('M000133-link'); return false;" href="#" id="M000133-link">Show source...</a></p><div class="source" id="M000133-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/api_controller.rb, line 6</span>
 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
 7:     <span class="ruby-identifier">projects</span> = <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.company_id=1&quot;</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [ <span class="ruby-identifier">:customer</span>])
 8:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:xml</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">to_xml</span>(<span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:customer</span>, <span class="ruby-identifier">:tasks</span>])
 9:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000207"><br/></a>
+<a class="small" name="M000134"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000207'>
+<a href='#M000134'>
 
 
 get_tasks
@@ -414,7 +414,7 @@ get_tasks
 Return a list of Tasks for a <a href="Project.html">Project</a>
 </p>
 
-<p class="source_link" id="M000207-show-link"><a onclick="toggle('M000207-source'); toggleText('M000207-link'); return false;" href="#" id="M000207-link">Show source...</a></p><div class="source" id="M000207-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/api_controller.rb, line 12</span>
+<p class="source_link" id="M000134-show-link"><a onclick="toggle('M000134-source'); toggleText('M000134-link'); return false;" href="#" id="M000134-link">Show source...</a></p><div class="source" id="M000134-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/api_controller.rb, line 12</span>
 12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_tasks</span>
 13:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>

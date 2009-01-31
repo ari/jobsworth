@@ -4,11 +4,6 @@
  depth ||= 1
  depth = 1 if depth < 1
  classes = ""
- classes = " task_raised_pri" if (task.priority + task.severity_id)/2.0 >= 0.1 && !task.done?
- classes = " task_high_pri" if (task.priority + task.severity_id)/2.0 >= 0.51 && !task.done?
- classes = " task_crit_pri" if (task.priority + task.severity_id)/2.0 >= 1.5 && !task.done?
- classes = " task_low_pri" if (task.priority + task.severity_id)/2 < -0.51 && !task.done?
- classes = " task_lowest_pri" if (task.priority + task.severity_id)/2 < -1.5 && !task.done?
 
  classes << " #{task.project.to_css_name}"
  classes << " override_filter" if defined?(override_filter) && override_filter
@@ -19,7 +14,7 @@
  classes << " task_done" if task.done?
  classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
 -%>
-class="task <%=classes%>" style="position:relative;">
+class="task <%=classes%>" style="position:relative; <%= color_style(task) %>">
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
    <div class="task-name" style="padding-left:2px;">

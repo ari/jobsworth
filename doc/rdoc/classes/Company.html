@@ -335,8 +335,71 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000092'>
+<a href='#M000056'>
+create_default_properties<br/>
+</a>
+
+
+
+
+<a href='#M000061'>
+default_sort_array<br/>
+</a>
+
+
+
+
+<a href='#M000055'>
 internal_customer<br/>
+</a>
+
+
+
+
+<a href='#M000059'>
+maximum_sort_rank<br/>
+</a>
+
+
+
+
+<a href='#M000064'>
+priority_property<br/>
+</a>
+
+
+
+
+<a href='#M000060'>
+rank_by_properties<br/>
+</a>
+
+
+
+
+<a href='#M000063'>
+severity_property<br/>
+</a>
+
+
+
+
+<a href='#M000057'>
+sort<br/>
+</a>
+
+
+
+
+<a href='#M000058'>
+sort_properties<br/>
+</a>
+
+
+
+
+<a href='#M000062'>
+type_property<br/>
 </a>
 
 
@@ -368,9 +431,71 @@ href="mailto:admin@clockingit.com">admin@clockingit.com</a>)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000092"><br/></a>
+<a class="small" name="M000056"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000092'>
+<a href='#M000056'>
+
+
+create_default_properties
+
+()
+
+</a>
+</h3>
+<p>
+Creates the default properties used for describing tasks. Returns an array
+of the created properties.
+</p>
+
+<p class="source_link" id="M000056-show-link"><a onclick="toggle('M000056-source'); toggleText('M000056-link'); return false;" href="#" id="M000056-link">Show source...</a></p><div class="source" id="M000056-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 39</span>
+39:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_default_properties</span>
+40:     <span class="ruby-identifier">new_props</span> = []
+41:     <span class="ruby-constant">Property</span>.<span class="ruby-identifier">defaults</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">property_params</span>, <span class="ruby-identifier">property_values_params</span><span class="ruby-operator">|</span>
+42:       <span class="ruby-identifier">name</span> = <span class="ruby-identifier">property_params</span>[<span class="ruby-identifier">:name</span>]
+43:       <span class="ruby-identifier">existing</span> = <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">name</span> }
+44: 
+45:       <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">existing</span>
+46:         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">property_params</span>)
+47:         <span class="ruby-identifier">p</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">property_values_params</span>)
+48:         <span class="ruby-identifier">p</span>.<span class="ruby-identifier">save!</span>
+49:         <span class="ruby-identifier">new_props</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">p</span>
+50:       <span class="ruby-keyword kw">else</span>
+51:         <span class="ruby-identifier">new_props</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">existing</span>
+52:       <span class="ruby-keyword kw">end</span>
+53:     <span class="ruby-keyword kw">end</span>
+54: 
+55:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">reload</span>
+56:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">new_props</span>
+57:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000061"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000061'>
+
+
+default_sort_array
+
+(task)
+
+</a>
+</h3>
+<p>
+Returns the default array to <a href="Company.html#M000057">sort</a> tasks
+by for this company.
+</p>
+
+<p class="source_link" id="M000061-show-link"><a onclick="toggle('M000061-source'); toggleText('M000061-link'); return false;" href="#" id="M000061-link">Show source...</a></p><div class="source" id="M000061-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 109</span>
+109:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_sort_array</span>(<span class="ruby-identifier">task</span>)
+110:     <span class="ruby-identifier">array</span> = []
+111:     
+112:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">array</span>
+113:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000055"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000055'>
 
 
 internal_customer
@@ -385,10 +510,178 @@ was previously called Internal, now it has the same name as the parent
 company.
 </p>
 
-<p class="source_link" id="M000092-show-link"><a onclick="toggle('M000092-source'); toggleText('M000092-link'); return false;" href="#" id="M000092-link">Show source...</a></p><div class="source" id="M000092-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 30</span>
-30:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">internal_customer</span>
-31:     <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;(name = ? OR name = 'Internal') AND company_id = ? &quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'id'</span>)
-32:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000055-show-link"><a onclick="toggle('M000055-source'); toggleText('M000055-link'); return false;" href="#" id="M000055-link">Show source...</a></p><div class="source" id="M000055-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 31</span>
+31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">internal_customer</span>
+32:     <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;(name = ? OR name = 'Internal') AND company_id = ? &quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'id'</span>)
+33:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000059"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000059'>
+
+
+maximum_sort_rank
+
+()
+
+</a>
+</h3>
+<p>
+Returns the maximum <a href="Company.html#M000057">sort</a> rank a task
+could possibly have.
+</p>
+
+<p class="source_link" id="M000059-show-link"><a onclick="toggle('M000059-source'); toggleText('M000059-link'); return false;" href="#" id="M000059-link">Show source...</a></p><div class="source" id="M000059-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 87</span>
+87:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">maximum_sort_rank</span>
+88:     <span class="ruby-ivar">@maximum_sort_rank</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">sort_properties</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">rank</span>, <span class="ruby-identifier">property</span><span class="ruby-operator">|</span> <span class="ruby-identifier">rank</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">length</span> }
+89:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000064"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000064'>
+
+
+priority_property
+
+()
+
+</a>
+</h3>
+<p>
+Returns the property to use to represent a tasks priority.
+</p>
+
+<p class="source_link" id="M000064-show-link"><a onclick="toggle('M000064-source'); toggleText('M000064-link'); return false;" href="#" id="M000064-link">Show source...</a></p><div class="source" id="M000064-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 130</span>
+130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">priority_property</span>
+131:     <span class="ruby-ivar">@priority_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Priority&quot;</span>) }
+132:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000060"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000060'>
+
+
+rank_by_properties
+
+(task)
+
+</a>
+</h3>
+<p>
+Returns an int to to use to rank the task according to properties set up as
+default_sort.
+</p>
+
+<p class="source_link" id="M000060-show-link"><a onclick="toggle('M000060-source'); toggleText('M000060-link'); return false;" href="#" id="M000060-link">Show source...</a></p><div class="source" id="M000060-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 95</span>
+ 95:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rank_by_properties</span>(<span class="ruby-identifier">task</span>)
+ 96:     <span class="ruby-identifier">rank_by_properties</span> = <span class="ruby-identifier">sort_properties</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rank</span>, <span class="ruby-identifier">property</span><span class="ruby-operator">|</span>
+ 97:       <span class="ruby-identifier">pv</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">property_value</span>(<span class="ruby-identifier">property</span>)
+ 98:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">pv</span>
+ 99:         <span class="ruby-identifier">rank</span> <span class="ruby-operator">+=</span> (<span class="ruby-identifier">pv</span>.<span class="ruby-identifier">sort_rank</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span>) 
+100:       <span class="ruby-keyword kw">end</span>
+101:     <span class="ruby-keyword kw">end</span>
+102: 
+103:     <span class="ruby-keyword kw">return</span> (<span class="ruby-identifier">rank_by_properties</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span>)
+104:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000063"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000063'>
+
+
+severity_property
+
+()
+
+</a>
+</h3>
+<p>
+Returns the property to use to represent a tasks severity.
+</p>
+
+<p class="source_link" id="M000063-show-link"><a onclick="toggle('M000063-source'); toggleText('M000063-link'); return false;" href="#" id="M000063-link">Show source...</a></p><div class="source" id="M000063-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 124</span>
+124:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">severity_property</span>
+125:     <span class="ruby-ivar">@severity_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Severity&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Severity&quot;</span>) }
+126:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000057"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000057'>
+
+
+sort
+
+(tasks)
+
+</a>
+</h3>
+<p>
+Sorts the given tasks in the default <a
+href="Company.html#M000057">sort</a> order. Default sorting uses the
+completed at time, the due date, task num and any custom properties with
+the default_sort parameter.
+</p>
+
+<p class="source_link" id="M000057-show-link"><a onclick="toggle('M000057-source'); toggleText('M000057-link'); return false;" href="#" id="M000057-link">Show source...</a></p><div class="source" id="M000057-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 64</span>
+64:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort</span>(<span class="ruby-identifier">tasks</span>)
+65:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span> 
+66:       <span class="ruby-identifier">array</span> = []
+67:       <span class="ruby-identifier">array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-operator">-</span><span class="ruby-identifier">task</span>.<span class="ruby-identifier">completed_at</span>.<span class="ruby-identifier">to_i</span>
+68:       <span class="ruby-identifier">array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">rank_by_properties</span>(<span class="ruby-identifier">task</span>)
+69:       <span class="ruby-identifier">array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-operator">-</span> (<span class="ruby-identifier">task</span>.<span class="ruby-identifier">due_date</span> <span class="ruby-operator">||</span> <span class="ruby-value">9999999999</span>).<span class="ruby-identifier">to_i</span>
+70:       <span class="ruby-identifier">array</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">task</span>.<span class="ruby-identifier">task_num</span>
+71:     <span class="ruby-keyword kw">end</span>
+72:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">reverse</span>
+73:     
+74:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
+75:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000058"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000058'>
+
+
+sort_properties
+
+()
+
+</a>
+</h3>
+<p>
+Returns an array of properties that should be used for sorting tasks.
+</p>
+
+<p class="source_link" id="M000058-show-link"><a onclick="toggle('M000058-source'); toggleText('M000058-link'); return false;" href="#" id="M000058-link">Show source...</a></p><div class="source" id="M000058-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 80</span>
+80:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort_properties</span>
+81:     <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">default_sort</span> }
+82:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000062"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000062'>
+
+
+type_property
+
+()
+
+</a>
+</h3>
+<p>
+Returns the property to use to represent a tasks type.
+</p>
+
+<p class="source_link" id="M000062-show-link"><a onclick="toggle('M000062-source'); toggleText('M000062-link'); return false;" href="#" id="M000062-link">Show source...</a></p><div class="source" id="M000062-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 118</span>
+118:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">type_property</span>
+119:     <span class="ruby-ivar">@type_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Type&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Type&quot;</span>) }
+120:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

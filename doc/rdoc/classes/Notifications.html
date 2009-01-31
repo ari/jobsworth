@@ -335,56 +335,56 @@ ActionMailer::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000127'>
+<a href='#M000148'>
 changed<br/>
 </a>
 
 
 
 
-<a href='#M000131'>
+<a href='#M000152'>
 chat_invitation<br/>
 </a>
 
 
 
 
-<a href='#M000126'>
+<a href='#M000147'>
 created<br/>
 </a>
 
 
 
 
-<a href='#M000130'>
+<a href='#M000151'>
 forum_post<br/>
 </a>
 
 
 
 
-<a href='#M000129'>
+<a href='#M000150'>
 forum_reply<br/>
 </a>
 
 
 
 
-<a href='#M000133'>
+<a href='#M000154'>
 milestone_changed<br/>
 </a>
 
 
 
 
-<a href='#M000128'>
+<a href='#M000149'>
 reminder<br/>
 </a>
 
 
 
 
-<a href='#M000132'>
+<a href='#M000153'>
 unknown_from_address<br/>
 </a>
 
@@ -411,9 +411,9 @@ Mail handlers for all notifications, except login / signup
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000127"><br/></a>
+<a class="small" name="M000148"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000127'>
+<a href='#M000148'>
 
 
 changed
@@ -423,7 +423,7 @@ changed
 </a>
 </h3>
 
-<p class="source_link" id="M000127-show-link"><a onclick="toggle('M000127-source'); toggleText('M000127-link'); return false;" href="#" id="M000127-link">Show source...</a></p><div class="source" id="M000127-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 24</span>
+<p class="source_link" id="M000148-show-link"><a onclick="toggle('M000148-source'); toggleText('M000148-link'); return false;" href="#" id="M000148-link">Show source...</a></p><div class="source" id="M000148-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 24</span>
 24:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">changed</span>(<span class="ruby-identifier">update_type</span>, <span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">change</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 25:     <span class="ruby-ivar">@subject</span> = <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">update_type</span>
 26:                <span class="ruby-keyword kw">when</span> <span class="ruby-identifier">:completed</span>  <span class="ruby-keyword kw">then</span> <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -&gt; #{_(task.status_type)} [#{task.project.name}] (#{user.name})&quot;</span>
@@ -449,9 +449,9 @@ changed
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000131"><br/></a>
+<a class="small" name="M000152"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000131'>
+<a href='#M000152'>
 
 
 chat_invitation
@@ -461,7 +461,7 @@ chat_invitation
 </a>
 </h3>
 
-<p class="source_link" id="M000131-show-link"><a onclick="toggle('M000131-source'); toggleText('M000131-link'); return false;" href="#" id="M000131-link">Show source...</a></p><div class="source" id="M000131-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 82</span>
+<p class="source_link" id="M000152-show-link"><a onclick="toggle('M000152-source'); toggleText('M000152-link'); return false;" href="#" id="M000152-link">Show source...</a></p><div class="source" id="M000152-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 82</span>
 82:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">chat_invitation</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">target</span>, <span class="ruby-identifier">room</span>)
 83:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:room</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">room</span> }
 84:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Invitation to chat: #{room.name} (#{user.name})&quot;</span>
@@ -475,9 +475,9 @@ chat_invitation
 92:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000126"><br/></a>
+<a class="small" name="M000147"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000126'>
+<a href='#M000147'>
 
 
 created
@@ -487,7 +487,7 @@ created
 </a>
 </h3>
 
-<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 8</span>
+<p class="source_link" id="M000147-show-link"><a onclick="toggle('M000147-source'); toggleText('M000147-link'); return false;" href="#" id="M000147-link">Show source...</a></p><div class="source" id="M000147-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 8</span>
  8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">created</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">note</span> = <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
  9:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">task</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:note</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">note</span>}
 10:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})&quot;</span>
@@ -505,9 +505,9 @@ created
 22:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000130"><br/></a>
+<a class="small" name="M000151"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000130'>
+<a href='#M000151'>
 
 
 forum_post
@@ -517,7 +517,7 @@ forum_post
 </a>
 </h3>
 
-<p class="source_link" id="M000130-show-link"><a onclick="toggle('M000130-source'); toggleText('M000130-link'); return false;" href="#" id="M000130-link">Show source...</a></p><div class="source" id="M000130-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 71</span>
+<p class="source_link" id="M000151-show-link"><a onclick="toggle('M000151-source'); toggleText('M000151-link'); return false;" href="#" id="M000151-link">Show source...</a></p><div class="source" id="M000151-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 71</span>
 71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_post</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 72:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
 73:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} New topic #{post.topic.title} [#{post.forum.name}]&quot;</span>
@@ -530,9 +530,9 @@ forum_post
 80:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000129"><br/></a>
+<a class="small" name="M000150"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000129'>
+<a href='#M000150'>
 
 
 forum_reply
@@ -542,7 +542,7 @@ forum_reply
 </a>
 </h3>
 
-<p class="source_link" id="M000129-show-link"><a onclick="toggle('M000129-source'); toggleText('M000129-link'); return false;" href="#" id="M000129-link">Show source...</a></p><div class="source" id="M000129-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 60</span>
+<p class="source_link" id="M000150-show-link"><a onclick="toggle('M000150-source'); toggleText('M000150-link'); return false;" href="#" id="M000150-link">Show source...</a></p><div class="source" id="M000150-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 60</span>
 60:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forum_reply</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">post</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 61:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:post</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">post</span>}
 62:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Reply to #{post.topic.title} [#{post.forum.name}]&quot;</span>
@@ -555,9 +555,9 @@ forum_reply
 69:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000133"><br/></a>
+<a class="small" name="M000154"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000133'>
+<a href='#M000154'>
 
 
 milestone_changed
@@ -567,7 +567,7 @@ milestone_changed
 </a>
 </h3>
 
-<p class="source_link" id="M000133-show-link"><a onclick="toggle('M000133-source'); toggleText('M000133-link'); return false;" href="#" id="M000133-link">Show source...</a></p><div class="source" id="M000133-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 104</span>
+<p class="source_link" id="M000154-show-link"><a onclick="toggle('M000154-source'); toggleText('M000154-link'); return false;" href="#" id="M000154-link">Show source...</a></p><div class="source" id="M000154-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 104</span>
 104:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">milestone_changed</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">action</span>, <span class="ruby-identifier">due_date</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">old_name</span> = <span class="ruby-keyword kw">nil</span>)
 105:     <span class="ruby-ivar">@body</span>       = { <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:milestone</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">milestone</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">action</span>, <span class="ruby-identifier">:due_date</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">due_date</span>, <span class="ruby-identifier">:old_name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">old_name</span> }
 106:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">old_name</span>.<span class="ruby-identifier">nil?</span>
@@ -582,9 +582,9 @@ milestone_changed
 115:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000128"><br/></a>
+<a class="small" name="M000149"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000128'>
+<a href='#M000149'>
 
 
 reminder
@@ -594,7 +594,7 @@ reminder
 </a>
 </h3>
 
-<p class="source_link" id="M000128-show-link"><a onclick="toggle('M000128-source'); toggleText('M000128-link'); return false;" href="#" id="M000128-link">Show source...</a></p><div class="source" id="M000128-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 49</span>
+<p class="source_link" id="M000149-show-link"><a onclick="toggle('M000149-source'); toggleText('M000149-link'); return false;" href="#" id="M000149-link">Show source...</a></p><div class="source" id="M000149-source"><pre>    <span class="ruby-comment cmt"># File app/models/notifications.rb, line 49</span>
 49:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reminder</span>(<span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 50:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:tasks</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks</span>, <span class="ruby-identifier">:tasks_tomorrow</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_tomorrow</span>, <span class="ruby-identifier">:tasks_overdue</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">tasks_overdue</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
 51:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} #{_('Tasks due')}&quot;</span>
@@ -607,9 +607,9 @@ reminder
 58:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000132"><br/></a>
+<a class="small" name="M000153"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000132'>
+<a href='#M000153'>
 
 
 unknown_from_address
@@ -619,7 +619,7 @@ unknown_from_address
 </a>
 </h3>
 
-<p class="source_link" id="M000132-show-link"><a onclick="toggle('M000132-source'); toggleText('M000132-link'); return false;" href="#" id="M000132-link">Show source...</a></p><div class="source" id="M000132-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 94</span>
+<p class="source_link" id="M000153-show-link"><a onclick="toggle('M000153-source'); toggleText('M000153-link'); return false;" href="#" id="M000153-link">Show source...</a></p><div class="source" id="M000153-source"><pre>     <span class="ruby-comment cmt"># File app/models/notifications.rb, line 94</span>
  94:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unknown_from_address</span>(<span class="ruby-identifier">from</span>, <span class="ruby-identifier">subdomain</span>)
  95:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:from</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">from</span>, <span class="ruby-identifier">:subdomain</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">subdomain</span> }
  96:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;#{$CONFIG[:prefix]} Unknown email address: #{from}&quot;</span>

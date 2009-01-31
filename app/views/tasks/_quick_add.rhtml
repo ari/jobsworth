@@ -95,18 +95,21 @@ end
     <label for="task_set_tags"><%=_ 'Tags' %></label><br /> <%= text_field 'task', 'set_tags', { :size => 17, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off" }.merge( perms['edit'] ) %>
     <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
   </td>
+  <% current_user.company.properties.each do |p| -%>
+    <% selected = p.default_value -%>
+    <% name = "property_#{ p.id }" -%>
     <td valign="top">
-      <label for="task_type_id"><%=_ 'Type' %></label><br />
-        <%= select 'task', 'type_id', [[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], {:selected => @task.type_id}, perms['prioritize']  %>
+      <label for="<%= name %>"><%= h(p.name) %></label><br />
+      <select name="task[properties][<%= p.id %>]" id="<%= name %>">
+	<option></option>
+	<% p.property_values.each do |pv| -%>
+	<option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>>
+	  <%= h(pv.value) %>
+	</option>
+	<% end -%>
+      </select>
     </td>
-    <td valign="top">
-        <label for="task_priority"><%=_ 'Priority' %></label><br />
-        <%= select 'task', 'priority', [[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], {:selected => @task.priority}, perms['prioritize']  %>
-    </td>
-    <td valign="top">
-        <label for="task_severity_id"><%=_ 'Severity' %></label><br />
-        <%= select 'task', 'severity_id', [[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], {:selected => @task.severity_id}, perms['prioritize']  %>
-    </td>
+  <% end -%>
 </tr>
 <tr>
   <td valign="top">

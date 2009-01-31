@@ -177,8 +177,9 @@ class User < ActiveRecord::Base
 #	  User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
 #  end
   
-  def login(company)
-	  User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, company.id ] )
+  def login(company = nil)
+    return if !company or !company.respond_to?(:users)
+    return company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
   end
 
   def can?(project, perm)

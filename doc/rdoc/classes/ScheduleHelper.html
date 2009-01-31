@@ -331,14 +331,14 @@ Module: ScheduleHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000636'>
+<a href='#M000673'>
 event_tip<br/>
 </a>
 
 
 
 
-<a href='#M000637'>
+<a href='#M000674'>
 show_calendar<br/>
 </a>
 
@@ -361,9 +361,9 @@ show_calendar<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000636"><br/></a>
+<a class="small" name="M000673"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000636'>
+<a href='#M000673'>
 
 
 event_tip
@@ -373,7 +373,7 @@ event_tip
 </a>
 </h3>
 
-<p class="source_link" id="M000636-show-link"><a onclick="toggle('M000636-source'); toggleText('M000636-link'); return false;" href="#" id="M000636-link">Show source...</a></p><div class="source" id="M000636-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 3</span>
+<p class="source_link" id="M000673-show-link"><a onclick="toggle('M000673-source'); toggleText('M000673-link'); return false;" href="#" id="M000673-link">Show source...</a></p><div class="source" id="M000673-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">event_tip</span>(<span class="ruby-identifier">e</span>)
 4:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Task</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Milestone</span>)
 5:       <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_tip</span>(<span class="ruby-identifier">:duration_format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">:workday_duration</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>, <span class="ruby-identifier">:days_per_week</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>)
@@ -383,9 +383,9 @@ event_tip
 9:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000637"><br/></a>
+<a class="small" name="M000674"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000637'>
+<a href='#M000674'>
 
 
 show_calendar
@@ -395,7 +395,7 @@ show_calendar
 </a>
 </h3>
 
-<p class="source_link" id="M000637-show-link"><a onclick="toggle('M000637-source'); toggleText('M000637-link'); return false;" href="#" id="M000637-link">Show source...</a></p><div class="source" id="M000637-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 11</span>
+<p class="source_link" id="M000674-show-link"><a onclick="toggle('M000674-source'); toggleText('M000674-link'); return false;" href="#" id="M000674-link">Show source...</a></p><div class="source" id="M000674-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_calendar</span>(<span class="ruby-identifier">options</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 12:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;No year given&quot;</span>  <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">defined?</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:year</span>]
 13:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;No month given&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">defined?</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:month</span>]

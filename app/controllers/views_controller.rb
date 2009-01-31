@@ -10,9 +10,11 @@ class ViewsController < ApplicationController
   end
 
   def create
-    @view = View.new(params[:view])
+    @view = View.new
     @view.company_id = current_user.company_id
     @view.user_id = current_user.id
+    @view.attributes = params[:view]
+
     if @view.save
       flash['notice'] = _("View '%s' was successfully created.", @view.name)
       redirect_to :action => 'select', :id => @view.id
@@ -103,6 +105,11 @@ class ViewsController < ApplicationController
     session[:colors] = @view.colors.to_s
     session[:icons] = @view.icons.to_s
 
+    reset_property_filters
+    # set filters for property values
+    @view.property_values.each do |pv|
+      session[pv.property.filter_name] = pv.id
+    end
 
     @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
       unless t.length == 0
@@ -136,6 +143,8 @@ class ViewsController < ApplicationController
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
     session[:view] = nil
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -158,6 +167,8 @@ class ViewsController < ApplicationController
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
     session[:view] = nil
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -175,6 +186,8 @@ class ViewsController < ApplicationController
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
     session[:view] = nil
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -192,6 +205,8 @@ class ViewsController < ApplicationController
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
     session[:view] = nil
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -213,6 +228,8 @@ class ViewsController < ApplicationController
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -232,6 +249,8 @@ class ViewsController < ApplicationController
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -251,6 +270,8 @@ class ViewsController < ApplicationController
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -270,6 +291,8 @@ class ViewsController < ApplicationController
     session[:filter_customer] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -282,6 +305,8 @@ class ViewsController < ApplicationController
     session[:hide_dependencies] = "0"
     session[:filter_severity] = "-10"
     session[:filter_priority] = "-10"
+    reset_property_filters
+
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
@@ -326,4 +351,14 @@ class ViewsController < ApplicationController
     render :text => res
   end
 
+
+  ###
+  # Removes any property filters from the current
+  # session.
+  ###
+  def reset_property_filters
+    current_user.company.properties.each do |p|
+      session[p.filter_name] = nil
+    end
+  end
 end

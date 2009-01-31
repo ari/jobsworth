@@ -335,63 +335,63 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000434'>
+<a href='#M000302'>
 complete?<br/>
 </a>
 
 
 
 
-<a href='#M000436'>
+<a href='#M000304'>
 description_wrapped<br/>
 </a>
 
 
 
 
-<a href='#M000437'>
+<a href='#M000305'>
 due_date<br/>
 </a>
 
 
 
 
-<a href='#M000440'>
+<a href='#M000308'>
 duration<br/>
 </a>
 
 
 
 
-<a href='#M000433'>
+<a href='#M000301'>
 percent_complete<br/>
 </a>
 
 
 
 
-<a href='#M000438'>
+<a href='#M000306'>
 scheduled_date<br/>
 </a>
 
 
 
 
-<a href='#M000435'>
+<a href='#M000303'>
 to_tip<br/>
 </a>
 
 
 
 
-<a href='#M000441'>
+<a href='#M000309'>
 update_counts<br/>
 </a>
 
 
 
 
-<a href='#M000439'>
+<a href='#M000307'>
 worked_minutes<br/>
 </a>
 
@@ -421,9 +421,9 @@ Can have a due date, and be completed
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000434"><br/></a>
+<a class="small" name="M000302"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000434'>
+<a href='#M000302'>
 
 
 complete?
@@ -433,15 +433,15 @@ complete?
 </a>
 </h3>
 
-<p class="source_link" id="M000434-show-link"><a onclick="toggle('M000434-source'); toggleText('M000434-link'); return false;" href="#" id="M000434-link">Show source...</a></p><div class="source" id="M000434-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 27</span>
+<p class="source_link" id="M000302-show-link"><a onclick="toggle('M000302-source'); toggleText('M000302-link'); return false;" href="#" id="M000302-link">Show source...</a></p><div class="source" id="M000302-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 27</span>
 27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete?</span>
 28:     (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">completed_tasks</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span>) <span class="ruby-operator">||</span> (<span class="ruby-operator">!</span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">completed_at</span>.<span class="ruby-identifier">nil?</span>)
 29:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000436"><br/></a>
+<a class="small" name="M000304"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000436'>
+<a href='#M000304'>
 
 
 description_wrapped
@@ -451,7 +451,7 @@ description_wrapped
 </a>
 </h3>
 
-<p class="source_link" id="M000436-show-link"><a onclick="toggle('M000436-source'); toggleText('M000436-link'); return false;" href="#" id="M000436-link">Show source...</a></p><div class="source" id="M000436-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 44</span>
+<p class="source_link" id="M000304-show-link"><a onclick="toggle('M000304-source'); toggleText('M000304-link'); return false;" href="#" id="M000304-link">Show source...</a></p><div class="source" id="M000304-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 44</span>
 44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">description_wrapped</span>
 45:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">description</span>.<span class="ruby-identifier">blank?</span>
 46:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">description</span>.<span class="ruby-identifier">chars</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/(.{1,80})( +|$)\n?|(.{80})/</span>, <span class="ruby-value str">&quot;\\1\\3\n&quot;</span>)[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">1024</span>]
@@ -461,9 +461,9 @@ description_wrapped
 50:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000437"><br/></a>
+<a class="small" name="M000305"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000437'>
+<a href='#M000305'>
 
 
 due_date
@@ -473,7 +473,7 @@ due_date
 </a>
 </h3>
 
-<p class="source_link" id="M000437-show-link"><a onclick="toggle('M000437-source'); toggleText('M000437-link'); return false;" href="#" id="M000437-link">Show source...</a></p><div class="source" id="M000437-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 52</span>
+<p class="source_link" id="M000305-show-link"><a onclick="toggle('M000305-source'); toggleText('M000305-link'); return false;" href="#" id="M000305-link">Show source...</a></p><div class="source" id="M000305-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 52</span>
 52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">due_date</span>
 53:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@due_date</span>
 54:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">due_at</span>.<span class="ruby-identifier">nil?</span>
@@ -487,9 +487,9 @@ due_date
 62:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000440"><br/></a>
+<a class="small" name="M000308"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000440'>
+<a href='#M000308'>
 
 
 duration
@@ -499,7 +499,7 @@ duration
 </a>
 </h3>
 
-<p class="source_link" id="M000440-show-link"><a onclick="toggle('M000440-source'); toggleText('M000440-link'); return false;" href="#" id="M000440-link">Show source...</a></p><div class="source" id="M000440-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 76</span>
+<p class="source_link" id="M000308-show-link"><a onclick="toggle('M000308-source'); toggleText('M000308-link'); return false;" href="#" id="M000308-link">Show source...</a></p><div class="source" id="M000308-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 76</span>
 76:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">duration</span>
 77:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@duration</span>.<span class="ruby-identifier">nil?</span>
 78:       <span class="ruby-ivar">@duration</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-identifier">:duration</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = 0&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>]) <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
@@ -509,9 +509,9 @@ duration
 82:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000433"><br/></a>
+<a class="small" name="M000301"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000433'>
+<a href='#M000301'>
 
 
 percent_complete
@@ -521,7 +521,7 @@ percent_complete
 </a>
 </h3>
 
-<p class="source_link" id="M000433-show-link"><a onclick="toggle('M000433-source'); toggleText('M000433-link'); return false;" href="#" id="M000433-link">Show source...</a></p><div class="source" id="M000433-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 18</span>
+<p class="source_link" id="M000301-show-link"><a onclick="toggle('M000301-source'); toggleText('M000301-link'); return false;" href="#" id="M000301-link">Show source...</a></p><div class="source" id="M000301-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 18</span>
 18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">percent_complete</span>
 19:     <span class="ruby-identifier">p</span> = <span class="ruby-value">0</span><span class="ruby-value">.0</span>
 20: 
@@ -532,9 +532,9 @@ percent_complete
 25:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000438"><br/></a>
+<a class="small" name="M000306"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000438'>
+<a href='#M000306'>
 
 
 scheduled_date
@@ -544,15 +544,15 @@ scheduled_date
 </a>
 </h3>
 
-<p class="source_link" id="M000438-show-link"><a onclick="toggle('M000438-source'); toggleText('M000438-link'); return false;" href="#" id="M000438-link">Show source...</a></p><div class="source" id="M000438-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 64</span>
+<p class="source_link" id="M000306-show-link"><a onclick="toggle('M000306-source'); toggleText('M000306-link'); return false;" href="#" id="M000306-link">Show source...</a></p><div class="source" id="M000306-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 64</span>
 64:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">scheduled_date</span>
 65:     (<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scheduled?</span> <span class="ruby-value">? </span><span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scheduled_at</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">due_at</span>)
 66:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000435"><br/></a>
+<a class="small" name="M000303"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000435'>
+<a href='#M000303'>
 
 
 to_tip
@@ -562,7 +562,7 @@ to_tip
 </a>
 </h3>
 
-<p class="source_link" id="M000435-show-link"><a onclick="toggle('M000435-source'); toggleText('M000435-link'); return false;" href="#" id="M000435-link">Show source...</a></p><div class="source" id="M000435-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 31</span>
+<p class="source_link" id="M000303-show-link"><a onclick="toggle('M000303-source'); toggleText('M000303-link'); return false;" href="#" id="M000303-link">Show source...</a></p><div class="source" id="M000303-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 31</span>
 31:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_tip</span>(<span class="ruby-identifier">options</span> = { })
 32:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&lt;table cellpadding=0 cellspacing=0&gt;&quot;</span>
 33:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;&lt;tr&gt;&lt;th&gt;#{_('Name')}&lt;/th&gt;&lt;td&gt; #{self.name}&lt;/td&gt;&lt;/tr&gt;&quot;</span>
@@ -577,9 +577,9 @@ to_tip
 42:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000441"><br/></a>
+<a class="small" name="M000309"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000441'>
+<a href='#M000309'>
 
 
 update_counts
@@ -589,7 +589,7 @@ update_counts
 </a>
 </h3>
 
-<p class="source_link" id="M000441-show-link"><a onclick="toggle('M000441-source'); toggleText('M000441-link'); return false;" href="#" id="M000441-link">Show source...</a></p><div class="source" id="M000441-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 84</span>
+<p class="source_link" id="M000309-show-link"><a onclick="toggle('M000309-source'); toggleText('M000309-link'); return false;" href="#" id="M000309-link">Show source...</a></p><div class="source" id="M000309-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 84</span>
 84:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_counts</span>
 85:      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">completed_tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;milestone_id = ? AND completed_at is not null&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>] )
 86:      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">total_tasks</span> = <span class="ruby-constant">Task</span>.<span class="ruby-identifier">count</span>( <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;milestone_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>] )
@@ -598,9 +598,9 @@ update_counts
 89:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000439"><br/></a>
+<a class="small" name="M000307"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000439'>
+<a href='#M000307'>
 
 
 worked_minutes
@@ -610,7 +610,7 @@ worked_minutes
 </a>
 </h3>
 
-<p class="source_link" id="M000439-show-link"><a onclick="toggle('M000439-source'); toggleText('M000439-link'); return false;" href="#" id="M000439-link">Show source...</a></p><div class="source" id="M000439-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 68</span>
+<p class="source_link" id="M000307-show-link"><a onclick="toggle('M000307-source'); toggleText('M000307-link'); return false;" href="#" id="M000307-link">Show source...</a></p><div class="source" id="M000307-source"><pre>    <span class="ruby-comment cmt"># File app/models/milestone.rb, line 68</span>
 68:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">worked_minutes</span>
 69:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@minutes</span>.<span class="ruby-identifier">nil?</span>
 70:       <span class="ruby-ivar">@minutes</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">sum</span>(<span class="ruby-value str">'work_logs.duration'</span>, <span class="ruby-identifier">:joins</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;INNER JOIN tasks ON tasks.milestone_id = #{self.id}&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;work_logs.task_id = tasks.id AND tasks.completed_at IS NULL&quot;</span>] ) <span class="ruby-operator">||</span> <span class="ruby-value">0</span>

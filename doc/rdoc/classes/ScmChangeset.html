@@ -335,21 +335,21 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000444'>
+<a href='#M000332'>
 full_name<br/>
 </a>
 
 
 
 
-<a href='#M000442'>
+<a href='#M000330'>
 issue_num<br/>
 </a>
 
 
 
 
-<a href='#M000443'>
+<a href='#M000331'>
 name<br/>
 </a>
 
@@ -372,9 +372,9 @@ name<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000444"><br/></a>
+<a class="small" name="M000332"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000444'>
+<a href='#M000332'>
 
 
 full_name
@@ -384,15 +384,15 @@ full_name
 </a>
 </h3>
 
-<p class="source_link" id="M000444-show-link"><a onclick="toggle('M000444-source'); toggleText('M000444-link'); return false;" href="#" id="M000444-link">Show source...</a></p><div class="source" id="M000444-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 28</span>
+<p class="source_link" id="M000332-show-link"><a onclick="toggle('M000332-source'); toggleText('M000332-link'); return false;" href="#" id="M000332-link">Show source...</a></p><div class="source" id="M000332-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 28</span>
 28:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
 29:     <span class="ruby-node">&quot;#{self.project.name}&quot;</span>
 30:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000442"><br/></a>
+<a class="small" name="M000330"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000442'>
+<a href='#M000330'>
 
 
 issue_num
@@ -402,15 +402,15 @@ issue_num
 </a>
 </h3>
 
-<p class="source_link" id="M000442-show-link"><a onclick="toggle('M000442-source'); toggleText('M000442-link'); return false;" href="#" id="M000442-link">Show source...</a></p><div class="source" id="M000442-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 11</span>
+<p class="source_link" id="M000330-show-link"><a onclick="toggle('M000330-source'); toggleText('M000330-link'); return false;" href="#" id="M000330-link">Show source...</a></p><div class="source" id="M000330-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">issue_num</span>
 12:     <span class="ruby-identifier">name</span> = <span class="ruby-node">&quot;[#{self.changeset_num}]&quot;</span>
 13:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000443"><br/></a>
+<a class="small" name="M000331"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000443'>
+<a href='#M000331'>
 
 
 name
@@ -420,7 +420,7 @@ name
 </a>
 </h3>
 
-<p class="source_link" id="M000443-show-link"><a onclick="toggle('M000443-source'); toggleText('M000443-link'); return false;" href="#" id="M000443-link">Show source...</a></p><div class="source" id="M000443-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 15</span>
+<p class="source_link" id="M000331-show-link"><a onclick="toggle('M000331-source'); toggleText('M000331-link'); return false;" href="#" id="M000331-link">Show source...</a></p><div class="source" id="M000331-source"><pre>    <span class="ruby-comment cmt"># File app/models/scm_changeset.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name</span>
 16:     <span class="ruby-identifier">n</span> = <span class="ruby-node">&quot;#{self.scm_project.scm_type.upcase} Commit&quot;</span>
 17:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scm_project</span>.<span class="ruby-identifier">scm_type</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'svn'</span>

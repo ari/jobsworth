@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090110043543) do
+ActiveRecord::Schema.define(:version => 20090114040153) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -316,6 +316,8 @@ ActiveRecord::Schema.define(:version => 20090110043543) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "default_sort"
+    t.boolean  "default_color"
   end
 
   add_index "properties", ["company_id"], :name => "index_properties_on_company_id"
@@ -324,7 +326,7 @@ ActiveRecord::Schema.define(:version => 20090110043543) do
     t.integer  "property_id"
     t.string   "value"
     t.string   "color"
-    t.string   "default"
+    t.boolean  "default"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -483,10 +485,7 @@ ActiveRecord::Schema.define(:version => 20090110043543) do
     t.integer  "milestone_id"
     t.text     "description"
     t.integer  "company_id"
-    t.integer  "priority",                          :default => 0
     t.integer  "updated_by_id"
-    t.integer  "severity_id",                       :default => 0
-    t.integer  "type_id",                           :default => 0
     t.integer  "task_num",                          :default => 0
     t.integer  "status",                            :default => 0
     t.string   "requested_by"
@@ -498,6 +497,9 @@ ActiveRecord::Schema.define(:version => 20090110043543) do
     t.integer  "scheduled_duration"
     t.boolean  "scheduled",                         :default => false
     t.integer  "worked_minutes",                    :default => 0
+    t.integer  "priority",                          :default => 0
+    t.integer  "severity_id",                       :default => 0
+    t.integer  "type_id",                           :default => 0
   end
 
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
@@ -610,6 +612,14 @@ ActiveRecord::Schema.define(:version => 20090110043543) do
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"
+
+  create_table "views_property_values", :id => false, :force => true do |t|
+    t.integer "view_id"
+    t.integer "property_value_id"
+  end
+
+  add_index "views_property_values", ["view_id"], :name => "index_views_property_values_on_view_id"
+  add_index "views_property_values", ["property_value_id"], :name => "index_views_property_values_on_property_value_id"
 
   create_table "widgets", :force => true do |t|
     t.integer  "company_id"

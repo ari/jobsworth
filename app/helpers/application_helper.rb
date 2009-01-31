@@ -450,13 +450,17 @@ END_OF_HTML
   ###
   def color_style(task)
     color_property = session[:colors].to_i
-    return if color_property == 0
- 
-    property = current_user.company.properties.find(color_property)
-    value = task.property_value(property)
 
-    return unless value
-    return "border-left: 4px solid #{ value.color }; background: none;"
+    if color_property > 0
+      property = current_user.company.properties.detect { |p| p.id == color_property }
+    else 
+      property = current_user.company.properties.detect { |p| p.default_color }
+    end
+
+    value = task.property_value(property)
+    if value
+      return "border-left: 4px solid #{ value.color }; background: none;"
+    end
   end
 
   ###
@@ -465,9 +469,12 @@ END_OF_HTML
   ###
   def task_icon(task)
     icon_property = session[:icons].to_i
-    return task.icon if icon_property == 0
- 
-    property = current_user.company.properties.find(icon_property)
+    
+    property = current_user.company.type_property
+    if icon_property != 0 and !property
+      property = current_user.company.properties.find(icon_property)
+    end
+
     pv = task.property_value(property)
     src = pv.icon_url if pv
 

@@ -344,161 +344,161 @@ Misc<br/>
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000025'>
+<a href='#M000530'>
 admin?<br/>
 </a>
 
 
 
 
-<a href='#M000019'>
+<a href='#M000524'>
 all_projects<br/>
 </a>
 
 
 
 
-<a href='#M000009'>
+<a href='#M000514'>
 all_users<br/>
 </a>
 
 
 
 
-<a href='#M000013'>
+<a href='#M000518'>
 authorize<br/>
 </a>
 
 
 
 
-<a href='#M000020'>
+<a href='#M000525'>
 completed_milestone_ids<br/>
 </a>
 
 
 
 
-<a href='#M000018'>
+<a href='#M000523'>
 current_project_ids<br/>
 </a>
 
 
 
 
-<a href='#M000017'>
+<a href='#M000522'>
 current_projects<br/>
 </a>
 
 
 
 
-<a href='#M000010'>
+<a href='#M000515'>
 current_sheet<br/>
 </a>
 
 
 
 
-<a href='#M000007'>
+<a href='#M000512'>
 current_user<br/>
 </a>
 
 
 
 
-<a href='#M000008'>
+<a href='#M000513'>
 current_users<br/>
 </a>
 
 
 
 
-<a href='#M000029'>
+<a href='#M000534'>
 double_escape<br/>
 </a>
 
 
 
 
-<a href='#M000022'>
+<a href='#M000527'>
 highlight<br/>
 </a>
 
 
 
 
-<a href='#M000023'>
+<a href='#M000528'>
 highlight_all<br/>
 </a>
 
 
 
 
-<a href='#M000027'>
+<a href='#M000532'>
 last_active<br/>
 </a>
 
 
 
 
-<a href='#M000028'>
+<a href='#M000533'>
 link_to_task<br/>
 </a>
 
 
 
 
-<a href='#M000026'>
+<a href='#M000531'>
 logged_in?<br/>
 </a>
 
 
 
 
-<a href='#M000015'>
+<a href='#M000520'>
 parse_repeat<br/>
 </a>
 
 
 
 
-<a href='#M000014'>
+<a href='#M000519'>
 parse_time<br/>
 </a>
 
 
 
 
-<a href='#M000016'>
+<a href='#M000521'>
 redirect_from_last<br/>
 </a>
 
 
 
 
-<a href='#M000024'>
+<a href='#M000529'>
 render_invalid_record<br/>
 </a>
 
 
 
 
-<a href='#M000012'>
+<a href='#M000517'>
 set_charset<br/>
 </a>
 
 
 
 
-<a href='#M000011'>
+<a href='#M000516'>
 tz<br/>
 </a>
 
 
 
 
-<a href='#M000021'>
+<a href='#M000526'>
 worked_nice<br/>
 </a>
 
@@ -527,9 +527,9 @@ controllers.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000025"><br/></a>
+<a class="small" name="M000530"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000025'>
+<a href='#M000530'>
 
 
 admin?
@@ -539,15 +539,15 @@ admin?
 </a>
 </h3>
 
-<p class="source_link" id="M000025-show-link"><a onclick="toggle('M000025-source'); toggleText('M000025-link'); return false;" href="#" id="M000025-link">Show source...</a></p><div class="source" id="M000025-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 349</span>
+<p class="source_link" id="M000530-show-link"><a onclick="toggle('M000530-source'); toggleText('M000530-link'); return false;" href="#" id="M000530-link">Show source...</a></p><div class="source" id="M000530-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 349</span>
 349:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">admin?</span>
 350:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 351:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000019"><br/></a>
+<a class="small" name="M000524"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000019'>
+<a href='#M000524'>
 
 
 all_projects
@@ -557,15 +557,15 @@ all_projects
 </a>
 </h3>
 
-<p class="source_link" id="M000019-show-link"><a onclick="toggle('M000019-source'); toggleText('M000019-link'); return false;" href="#" id="M000019-link">Show source...</a></p><div class="source" id="M000019-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 310</span>
+<p class="source_link" id="M000524-show-link"><a onclick="toggle('M000524-source'); toggleText('M000524-link'); return false;" href="#" id="M000524-link">Show source...</a></p><div class="source" id="M000524-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 310</span>
 310:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_projects</span>
 311:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">all_projects</span>
 312:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000009"><br/></a>
+<a class="small" name="M000514"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000009'>
+<a href='#M000514'>
 
 
 all_users
@@ -575,7 +575,7 @@ all_users
 </a>
 </h3>
 
-<p class="source_link" id="M000009-show-link"><a onclick="toggle('M000009-source'); toggleText('M000009-link'); return false;" href="#" id="M000009-link">Show source...</a></p><div class="source" id="M000009-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 47</span>
+<p class="source_link" id="M000514-show-link"><a onclick="toggle('M000514-source'); toggleText('M000514-link'); return false;" href="#" id="M000514-link">Show source...</a></p><div class="source" id="M000514-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 47</span>
 47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_users</span>
 48:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@all_users</span>
 49:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">restricted_userlist</span>
@@ -593,9 +593,9 @@ all_users
 61:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000013"><br/></a>
+<a class="small" name="M000518"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000013'>
+<a href='#M000518'>
 
 
 authorize
@@ -608,7 +608,7 @@ authorize
 Make sure the session is logged in
 </p>
 
-<p class="source_link" id="M000013-show-link"><a onclick="toggle('M000013-source'); toggleText('M000013-link'); return false;" href="#" id="M000013-link">Show source...</a></p><div class="source" id="M000013-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 93</span>
+<p class="source_link" id="M000518-show-link"><a onclick="toggle('M000518-source'); toggleText('M000518-link'); return false;" href="#" id="M000518-link">Show source...</a></p><div class="source" id="M000518-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 93</span>
  93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">authorize</span>
  94:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>] <span class="ruby-operator">||=</span> []
  95: 
@@ -692,9 +692,9 @@ Make sure the session is logged in
 173:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000020"><br/></a>
+<a class="small" name="M000525"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000020'>
+<a href='#M000525'>
 
 
 completed_milestone_ids
@@ -707,7 +707,7 @@ completed_milestone_ids
 List of completed milestone ids, joined with ,
 </p>
 
-<p class="source_link" id="M000020-show-link"><a onclick="toggle('M000020-source'); toggleText('M000020-link'); return false;" href="#" id="M000020-link">Show source...</a></p><div class="source" id="M000020-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 317</span>
+<p class="source_link" id="M000525-show-link"><a onclick="toggle('M000525-source'); toggleText('M000525-link'); return false;" href="#" id="M000525-link">Show source...</a></p><div class="source" id="M000525-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 317</span>
 317:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">completed_milestone_ids</span>
 318:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@milestone_ids</span>
 319:       <span class="ruby-ivar">@milestone_ids</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND completed_at IS NOT NULL&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]).<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-identifier">m</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
@@ -717,9 +717,9 @@ List of completed milestone ids, joined with ,
 323:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000018"><br/></a>
+<a class="small" name="M000523"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000018'>
+<a href='#M000523'>
 
 
 current_project_ids
@@ -732,7 +732,7 @@ current_project_ids
 List of current <a href="Project.html">Project</a> ids, joined with ,
 </p>
 
-<p class="source_link" id="M000018-show-link"><a onclick="toggle('M000018-source'); toggleText('M000018-link'); return false;" href="#" id="M000018-link">Show source...</a></p><div class="source" id="M000018-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 302</span>
+<p class="source_link" id="M000523-show-link"><a onclick="toggle('M000523-source'); toggleText('M000523-link'); return false;" href="#" id="M000523-link">Show source...</a></p><div class="source" id="M000523-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 302</span>
 302:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_project_ids</span>
 303:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_project_ids</span>
 304:       <span class="ruby-ivar">@current_project_ids</span> = <span class="ruby-identifier">current_projects</span>.<span class="ruby-identifier">collect</span>{ <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
@@ -742,9 +742,9 @@ List of current <a href="Project.html">Project</a> ids, joined with ,
 308:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000017"><br/></a>
+<a class="small" name="M000522"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000017'>
+<a href='#M000522'>
 
 
 current_projects
@@ -757,15 +757,15 @@ current_projects
 List of Users current Projects ordered by customer_id and Project.name
 </p>
 
-<p class="source_link" id="M000017-show-link"><a onclick="toggle('M000017-source'); toggleText('M000017-link'); return false;" href="#" id="M000017-link">Show source...</a></p><div class="source" id="M000017-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 296</span>
+<p class="source_link" id="M000522-show-link"><a onclick="toggle('M000522-source'); toggleText('M000522-link'); return false;" href="#" id="M000522-link">Show source...</a></p><div class="source" id="M000522-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 296</span>
 296:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_projects</span>
 297:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>
 298:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000010"><br/></a>
+<a class="small" name="M000515"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000010'>
+<a href='#M000515'>
 
 
 current_sheet
@@ -775,7 +775,7 @@ current_sheet
 </a>
 </h3>
 
-<p class="source_link" id="M000010-show-link"><a onclick="toggle('M000010-source'); toggleText('M000010-link'); return false;" href="#" id="M000010-link">Show source...</a></p><div class="source" id="M000010-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 63</span>
+<p class="source_link" id="M000515-show-link"><a onclick="toggle('M000515-source'); toggleText('M000515-link'); return false;" href="#" id="M000515-link">Show source...</a></p><div class="source" id="M000515-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 63</span>
 63:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_sheet</span>
 64:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_sheet</span>
 65:       <span class="ruby-ivar">@current_sheet</span> = <span class="ruby-constant">Sheet</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ?&quot;</span>, <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>]], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'sheets.id'</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:task</span>)
@@ -790,9 +790,9 @@ current_sheet
 74:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000007"><br/></a>
+<a class="small" name="M000512"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000007'>
+<a href='#M000512'>
 
 
 current_user
@@ -806,7 +806,7 @@ protect_from_forgery :secret =&gt;
 &#8216;112141be0ba20082c17b05c78c63f357&#8216;
 </p>
 
-<p class="source_link" id="M000007-show-link"><a onclick="toggle('M000007-source'); toggleText('M000007-link'); return false;" href="#" id="M000007-link">Show source...</a></p><div class="source" id="M000007-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 33</span>
+<p class="source_link" id="M000512-show-link"><a onclick="toggle('M000512-source'); toggleText('M000512-link'); return false;" href="#" id="M000512-link">Show source...</a></p><div class="source" id="M000512-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 33</span>
 33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_user</span>
 34:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_user</span>
 35:       <span class="ruby-ivar">@current_user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:user_id</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-identifier">:company</span>, <span class="ruby-identifier">:projects</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.completed_at IS NULL&quot;</span>])
@@ -815,9 +815,9 @@ protect_from_forgery :secret =&gt;
 38:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000008"><br/></a>
+<a class="small" name="M000513"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000008'>
+<a href='#M000513'>
 
 
 current_users
@@ -827,7 +827,7 @@ current_users
 </a>
 </h3>
 
-<p class="source_link" id="M000008-show-link"><a onclick="toggle('M000008-source'); toggleText('M000008-link'); return false;" href="#" id="M000008-link">Show source...</a></p><div class="source" id="M000008-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 40</span>
+<p class="source_link" id="M000513-show-link"><a onclick="toggle('M000513-source'); toggleText('M000513-link'); return false;" href="#" id="M000513-link">Show source...</a></p><div class="source" id="M000513-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 40</span>
 40:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_users</span>
 41:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@current_users</span>
 42:       <span class="ruby-ivar">@current_users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot; company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at &gt; '#{3.minutes.ago.utc.to_s(:db)}' OR last_seen_at &gt; '#{3.minutes.ago.utc.to_s(:db)}')&quot;</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;name&quot;</span> )
@@ -836,9 +836,9 @@ current_users
 45:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000029"><br/></a>
+<a class="small" name="M000534"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000029'>
+<a href='#M000534'>
 
 
 double_escape
@@ -848,7 +848,7 @@ double_escape
 </a>
 </h3>
 
-<p class="source_link" id="M000029-show-link"><a onclick="toggle('M000029-source'); toggleText('M000029-link'); return false;" href="#" id="M000029-link">Show source...</a></p><div class="source" id="M000029-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 365</span>
+<p class="source_link" id="M000534-show-link"><a onclick="toggle('M000534-source'); toggleText('M000534-link'); return false;" href="#" id="M000534-link">Show source...</a></p><div class="source" id="M000534-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 365</span>
 365:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">double_escape</span>(<span class="ruby-identifier">txt</span>)
 366:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">txt</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/channel-message-mine/</span>,<span class="ruby-value str">'channel-message-others'</span>)
 367:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/\\n|\n|\\r|\r/</span>,<span class="ruby-value str">''</span>) <span class="ruby-comment cmt"># remove linefeeds</span>
@@ -858,9 +858,9 @@ double_escape
 371:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000022"><br/></a>
+<a class="small" name="M000527"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000022'>
+<a href='#M000527'>
 
 
 highlight
@@ -870,15 +870,15 @@ highlight
 </a>
 </h3>
 
-<p class="source_link" id="M000022-show-link"><a onclick="toggle('M000022-source'); toggleText('M000022-link'); return false;" href="#" id="M000022-link">Show source...</a></p><div class="source" id="M000022-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 329</span>
+<p class="source_link" id="M000527-show-link"><a onclick="toggle('M000527-source'); toggleText('M000527-link'); return false;" href="#" id="M000527-link">Show source...</a></p><div class="source" id="M000527-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 329</span>
 329:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span> )
 330:     <span class="ruby-identifier">t</span> = <span class="ruby-identifier">text</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-node">/(#{Regexp.escape(k)})/i</span>, <span class="ruby-value str">'&lt;strong&gt;\1&lt;/strong&gt;'</span>)
 331:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000023"><br/></a>
+<a class="small" name="M000528"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000023'>
+<a href='#M000528'>
 
 
 highlight_all
@@ -888,7 +888,7 @@ highlight_all
 </a>
 </h3>
 
-<p class="source_link" id="M000023-show-link"><a onclick="toggle('M000023-source'); toggleText('M000023-link'); return false;" href="#" id="M000023-link">Show source...</a></p><div class="source" id="M000023-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 333</span>
+<p class="source_link" id="M000528-show-link"><a onclick="toggle('M000528-source'); toggleText('M000528-link'); return false;" href="#" id="M000528-link">Show source...</a></p><div class="source" id="M000528-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 333</span>
 333:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">highlight_all</span>( <span class="ruby-identifier">text</span>, <span class="ruby-identifier">keys</span> )
 334:     <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span><span class="ruby-operator">|</span>
 335:       <span class="ruby-identifier">text</span> = <span class="ruby-identifier">highlight</span>(<span class="ruby-identifier">text</span>, <span class="ruby-identifier">k</span>)
@@ -897,9 +897,9 @@ highlight_all
 338:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000027"><br/></a>
+<a class="small" name="M000532"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000027'>
+<a href='#M000532'>
 
 
 last_active
@@ -909,15 +909,15 @@ last_active
 </a>
 </h3>
 
-<p class="source_link" id="M000027-show-link"><a onclick="toggle('M000027-source'); toggleText('M000027-link'); return false;" href="#" id="M000027-link">Show source...</a></p><div class="source" id="M000027-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 357</span>
+<p class="source_link" id="M000532-show-link"><a onclick="toggle('M000532-source'); toggleText('M000532-link'); return false;" href="#" id="M000532-link">Show source...</a></p><div class="source" id="M000532-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 357</span>
 357:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
 358:     <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:last_active</span>] <span class="ruby-operator">||=</span> <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span>
 359:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000028"><br/></a>
+<a class="small" name="M000533"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000028'>
+<a href='#M000533'>
 
 
 link_to_task
@@ -927,15 +927,15 @@ link_to_task
 </a>
 </h3>
 
-<p class="source_link" id="M000028-show-link"><a onclick="toggle('M000028-source'); toggleText('M000028-link'); return false;" href="#" id="M000028-link">Show source...</a></p><div class="source" id="M000028-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 361</span>
+<p class="source_link" id="M000533-show-link"><a onclick="toggle('M000533-source'); toggleText('M000533-link'); return false;" href="#" id="M000533-link">Show source...</a></p><div class="source" id="M000533-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 361</span>
 361:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_task</span>(<span class="ruby-identifier">task</span>)
 362:     <span class="ruby-node">&quot;&lt;strong&gt;&lt;small&gt;#{task.issue_num}&lt;/small&gt;&lt;/strong&gt; &lt;a href=\&quot;/tasks/edit/#{task.id}\&quot; class=\&quot;tooltip#{task.css_classes}\&quot; title=\&quot;#{task.to_tip({ :duration_format =&gt; current_user.duration_format, :workday_duration =&gt; current_user.workday_duration, :days_per_week =&gt; current_user.days_per_week, :user =&gt; current_user })}\&quot;&gt;#{task.name}&lt;/a&gt;&quot;</span>
 363:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000026"><br/></a>
+<a class="small" name="M000531"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000026'>
+<a href='#M000531'>
 
 
 logged_in?
@@ -945,15 +945,15 @@ logged_in?
 </a>
 </h3>
 
-<p class="source_link" id="M000026-show-link"><a onclick="toggle('M000026-source'); toggleText('M000026-link'); return false;" href="#" id="M000026-link">Show source...</a></p><div class="source" id="M000026-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 353</span>
+<p class="source_link" id="M000531-show-link"><a onclick="toggle('M000531-source'); toggleText('M000531-link'); return false;" href="#" id="M000531-link">Show source...</a></p><div class="source" id="M000531-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 353</span>
 353:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logged_in?</span>
 354:     <span class="ruby-keyword kw">true</span>
 355:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000015"><br/></a>
+<a class="small" name="M000520"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000015'>
+<a href='#M000520'>
 
 
 parse_repeat
@@ -963,7 +963,7 @@ parse_repeat
 </a>
 </h3>
 
-<p class="source_link" id="M000015-show-link"><a onclick="toggle('M000015-source'); toggleText('M000015-link'); return false;" href="#" id="M000015-link">Show source...</a></p><div class="source" id="M000015-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 240</span>
+<p class="source_link" id="M000520-show-link"><a onclick="toggle('M000520-source'); toggleText('M000520-link'); return false;" href="#" id="M000520-link">Show source...</a></p><div class="source" id="M000520-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 240</span>
 240:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_repeat</span>(<span class="ruby-identifier">r</span>)
 241:     <span class="ruby-comment cmt"># every monday</span>
 242:     <span class="ruby-comment cmt"># every 15th</span>
@@ -1006,9 +1006,9 @@ parse_repeat
 279:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000014"><br/></a>
+<a class="small" name="M000519"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000014'>
+<a href='#M000519'>
 
 
 parse_time
@@ -1021,7 +1021,7 @@ parse_time
 Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> =&gt; minutes or seconds
 </p>
 
-<p class="source_link" id="M000014-show-link"><a onclick="toggle('M000014-source'); toggleText('M000014-link'); return false;" href="#" id="M000014-link">Show source...</a></p><div class="source" id="M000014-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 177</span>
+<p class="source_link" id="M000519-show-link"><a onclick="toggle('M000519-source'); toggleText('M000519-link'); return false;" href="#" id="M000519-link">Show source...</a></p><div class="source" id="M000519-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 177</span>
 177:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">parse_time</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">minutes</span> = <span class="ruby-keyword kw">false</span>)
 178:     <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
 179:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">nil?</span>
@@ -1086,9 +1086,9 @@ Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> =&gt; minutes or seconds
 238:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000016"><br/></a>
+<a class="small" name="M000521"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000016'>
+<a href='#M000521'>
 
 
 redirect_from_last
@@ -1102,7 +1102,7 @@ Redirect back to the last important page, forcing the tutorial unless
 that&#8216;s completed.
 </p>
 
-<p class="source_link" id="M000016-show-link"><a onclick="toggle('M000016-source'); toggleText('M000016-link'); return false;" href="#" id="M000016-link">Show source...</a></p><div class="source" id="M000016-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 283</span>
+<p class="source_link" id="M000521-show-link"><a onclick="toggle('M000521-source'); toggleText('M000521-link'); return false;" href="#" id="M000521-link">Show source...</a></p><div class="source" id="M000521-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 283</span>
 283:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">redirect_from_last</span>
 284:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>].<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 285:       <span class="ruby-identifier">redirect_to</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:history</span>][<span class="ruby-value">0</span>])
@@ -1116,9 +1116,9 @@ that&#8216;s completed.
 293:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000024"><br/></a>
+<a class="small" name="M000529"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000024'>
+<a href='#M000529'>
 
 
 render_invalid_record
@@ -1138,15 +1138,15 @@ def rescue_action(exception)
 end
 </p>
 
-<p class="source_link" id="M000024-show-link"><a onclick="toggle('M000024-source'); toggleText('M000024-link'); return false;" href="#" id="M000024-link">Show source...</a></p><div class="source" id="M000024-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 345</span>
+<p class="source_link" id="M000529-show-link"><a onclick="toggle('M000529-source'); toggleText('M000529-link'); return false;" href="#" id="M000529-link">Show source...</a></p><div class="source" id="M000529-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 345</span>
 345:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_invalid_record</span>(<span class="ruby-identifier">record</span>)
 346:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">record</span>.<span class="ruby-identifier">new_record?</span> <span class="ruby-value">? </span><span class="ruby-value str">'new'</span> <span class="ruby-operator">:</span> <span class="ruby-value str">'edit'</span>)
 347:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000012"><br/></a>
+<a class="small" name="M000517"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000012'>
+<a href='#M000517'>
 
 
 set_charset
@@ -1159,7 +1159,7 @@ set_charset
 Force UTF-8 for all text Content-Types
 </p>
 
-<p class="source_link" id="M000012-show-link"><a onclick="toggle('M000012-source'); toggleText('M000012-link'); return false;" href="#" id="M000012-link">Show source...</a></p><div class="source" id="M000012-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 84</span>
+<p class="source_link" id="M000517-show-link"><a onclick="toggle('M000517-source'); toggleText('M000517-link'); return false;" href="#" id="M000517-link">Show source...</a></p><div class="source" id="M000517-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 84</span>
 84:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_charset</span>
 85:     <span class="ruby-identifier">content_type</span> = <span class="ruby-identifier">headers</span>[<span class="ruby-value str">&quot;Content-Type&quot;</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">'text/html'</span>
 86:     <span class="ruby-keyword kw">if</span> <span class="ruby-regexp re">/^text\//</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">content_type</span>)
@@ -1169,9 +1169,9 @@ Force UTF-8 for all text Content-Types
 90:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000011"><br/></a>
+<a class="small" name="M000516"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000011'>
+<a href='#M000516'>
 
 
 tz
@@ -1181,7 +1181,7 @@ tz
 </a>
 </h3>
 
-<p class="source_link" id="M000011-show-link"><a onclick="toggle('M000011-source'); toggleText('M000011-link'); return false;" href="#" id="M000011-link">Show source...</a></p><div class="source" id="M000011-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 76</span>
+<p class="source_link" id="M000516-show-link"><a onclick="toggle('M000516-source'); toggleText('M000516-link'); return false;" href="#" id="M000516-link">Show source...</a></p><div class="source" id="M000516-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/application.rb, line 76</span>
 76:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tz</span>
 77:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@tz</span>
 78:       <span class="ruby-ivar">@tz</span> = <span class="ruby-constant">Timezone</span>.<span class="ruby-identifier">get</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">time_zone</span>)
@@ -1190,9 +1190,9 @@ tz
 81:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000021"><br/></a>
+<a class="small" name="M000526"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000021'>
+<a href='#M000526'>
 
 
 worked_nice
@@ -1202,7 +1202,7 @@ worked_nice
 </a>
 </h3>
 
-<p class="source_link" id="M000021-show-link"><a onclick="toggle('M000021-source'); toggleText('M000021-link'); return false;" href="#" id="M000021-link">Show source...</a></p><div class="source" id="M000021-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 325</span>
+<p class="source_link" id="M000526-show-link"><a onclick="toggle('M000526-source'); toggleText('M000526-link'); return false;" href="#" id="M000526-link">Show source...</a></p><div class="source" id="M000526-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 325</span>
 325:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">worked_nice</span>(<span class="ruby-identifier">minutes</span>)
 326:     <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">minutes</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>)
 327:   <span class="ruby-keyword kw">end</span></pre></div>

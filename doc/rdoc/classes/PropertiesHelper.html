@@ -331,28 +331,28 @@ Module: PropertiesHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000575'>
+<a href='#M000617'>
 add_value_link<br/>
 </a>
 
 
 
 
-<a href='#M000576'>
+<a href='#M000618'>
 cit_submit_tag<br/>
 </a>
 
 
 
 
-<a href='#M000577'>
+<a href='#M000619'>
 link_to_remove_value<br/>
 </a>
 
 
 
 
-<a href='#M000578'>
+<a href='#M000620'>
 sortable_handle_tag<br/>
 </a>
 
@@ -375,9 +375,9 @@ sortable_handle_tag<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000575"><br/></a>
+<a class="small" name="M000617"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000575'>
+<a href='#M000617'>
 
 
 add_value_link
@@ -387,7 +387,7 @@ add_value_link
 </a>
 </h3>
 
-<p class="source_link" id="M000575-show-link"><a onclick="toggle('M000575-source'); toggleText('M000575-link'); return false;" href="#" id="M000575-link">Show source...</a></p><div class="source" id="M000575-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 2</span>
+<p class="source_link" id="M000617-show-link"><a onclick="toggle('M000617-source'); toggleText('M000617-link'); return false;" href="#" id="M000617-link">Show source...</a></p><div class="source" id="M000617-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 2</span>
 2:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_value_link</span>
 3:     <span class="ruby-identifier">link_to_function</span>(<span class="ruby-identifier">_</span><span class="ruby-value str">&quot;Add&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
 4:       <span class="ruby-identifier">pv</span> = <span class="ruby-ivar">@property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">build</span>
@@ -397,9 +397,9 @@ add_value_link
 8:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000576"><br/></a>
+<a class="small" name="M000618"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000576'>
+<a href='#M000618'>
 
 
 cit_submit_tag
@@ -409,7 +409,7 @@ cit_submit_tag
 </a>
 </h3>
 
-<p class="source_link" id="M000576-show-link"><a onclick="toggle('M000576-source'); toggleText('M000576-link'); return false;" href="#" id="M000576-link">Show source...</a></p><div class="source" id="M000576-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 10</span>
+<p class="source_link" id="M000618-show-link"><a onclick="toggle('M000618-source'); toggleText('M000618-link'); return false;" href="#" id="M000618-link">Show source...</a></p><div class="source" id="M000618-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cit_submit_tag</span>(<span class="ruby-identifier">object</span>)
 11:     <span class="ruby-identifier">text</span> = <span class="ruby-identifier">object</span>.<span class="ruby-identifier">new_record?</span> <span class="ruby-value">? </span><span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Create&quot;</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Update&quot;</span>)
 12:     
@@ -417,9 +417,9 @@ cit_submit_tag
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000577"><br/></a>
+<a class="small" name="M000619"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000577'>
+<a href='#M000619'>
 
 
 link_to_remove_value
@@ -429,7 +429,7 @@ link_to_remove_value
 </a>
 </h3>
 
-<p class="source_link" id="M000577-show-link"><a onclick="toggle('M000577-source'); toggleText('M000577-link'); return false;" href="#" id="M000577-link">Show source...</a></p><div class="source" id="M000577-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 16</span>
+<p class="source_link" id="M000619-show-link"><a onclick="toggle('M000619-source'); toggleText('M000619-link'); return false;" href="#" id="M000619-link">Show source...</a></p><div class="source" id="M000619-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">link_to_remove_value</span>
 17:     <span class="ruby-identifier">image</span> = <span class="ruby-identifier">image_tag</span>(<span class="ruby-value str">&quot;cross_small.png&quot;</span>, <span class="ruby-identifier">:border</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>, 
 18:                       <span class="ruby-identifier">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{ _(&quot;Remove&quot;) }&quot;</span>)
@@ -437,9 +437,9 @@ link_to_remove_value
 20:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000578"><br/></a>
+<a class="small" name="M000620"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000578'>
+<a href='#M000620'>
 
 
 sortable_handle_tag
@@ -449,7 +449,7 @@ sortable_handle_tag
 </a>
 </h3>
 
-<p class="source_link" id="M000578-show-link"><a onclick="toggle('M000578-source'); toggleText('M000578-link'); return false;" href="#" id="M000578-link">Show source...</a></p><div class="source" id="M000578-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 22</span>
+<p class="source_link" id="M000620-show-link"><a onclick="toggle('M000620-source'); toggleText('M000620-link'); return false;" href="#" id="M000620-link">Show source...</a></p><div class="source" id="M000620-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/properties_helper.rb, line 22</span>
 22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sortable_handle_tag</span>(<span class="ruby-identifier">property_value</span>)
 23:     <span class="ruby-identifier">image</span> = <span class="ruby-identifier">image_tag</span>(<span class="ruby-value str">&quot;move.gif&quot;</span>, <span class="ruby-identifier">:border</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>, <span class="ruby-identifier">:alt</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;#{ _(&quot;Move&quot;) }&quot;</span>, <span class="ruby-identifier">:class</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;handle&quot;</span>)
 24: 

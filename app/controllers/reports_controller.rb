@@ -34,101 +34,91 @@ class ReportsController < ApplicationController
   end
 
   def key_from_worklog(w, r)
-    case r
-    when 1
+    if r == 1
       "#{w.customer.name} #{w.project.name} #{w.task.name} #{w.task.task_num}"
-    when 2
+    elsif r == 2
       w.is_a?(Tag) ? w.id : 0
-    when 3
+    elsif r == 3
       w.user_id
-    when 4
+    elsif r == 4
       w.customer_id
-    when 5
+    elsif r == 5
       w.project_id
-    when 6
+    elsif r == 6
       w.task.milestone.nil? ? 0 : w.task.milestone.name
-    when 7
+    elsif r == 7
       get_date_key(w)
-    when 8
+    elsif r == 8
       w.task.status
-    when 9
-      w.task.type_id
-    when 10
-      w.task.severity_id + 2
-    when 11
-      w.task.priority + 2
-    when 12
+    elsif r == 12
       "comment"
-    when 13
+    elsif r == 13
       "#{tz.utc_to_local(w.started_at).strftime("%Y-%m-%d %H:%M")}"
-    when 14
+    elsif r == 14
       tz.utc_to_local(w.started_at) + w.duration
-    when 15
+    elsif r == 15
       if w.body && !w.body.empty?
         "#{w.customer.name}_#{w.project.name}_#{w.task.name}_#{w.id}"
       else
         "#{w.customer.name}_#{w.project.name}_#{w.task.name}"
       end
-    when 16
+    elsif r == 16
       "1_start"
-    when 17
+    elsif r == 17
       "2_end"
-    when 18
+    elsif r == 18
       "3_task"
-    when 19
+    elsif r == 19
       "5_note"
-    when 20
+    elsif r == 20
       "#{w.task.requested_by}"
-    when 21
+    elsif r == 21
       "4_user"
+    elsif (property = Property.find_by_filter_name(current_user.company, r))
+      w.task.property_value(property)
     end
     
   end
 
   def name_from_worklog(w,r)
-    case r
-    when 1
+    if r == 1
       "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{w.task.name}</a> <br /><small>#{w.task.full_name}</small>"
-    when 2
+    elsif r == 2
       w.is_a?(Tag) ? "#{w.name}" : "none"
-    when 3
+    elsif r == 3
       "#{w.user ? w.user.name : _("Unassigned")}"
-    when 4
+    elsif r == 4
       "#{w.customer.name}"
-    when 5
+    elsif r == 5
       "#{w.project.full_name}"
-    when 6
+    elsif r == 6
       w.task.milestone.nil? ? "none" : "#{w.task.milestone.name}"
-    when 7
+    elsif r == 7
       get_date_header(w)
-    when 8
+    elsif r == 8
       "#{w.task.status_type}"
-    when 9
-      "#{w.task.issue_type}"
-    when 10
-      "#{w.task.severity_type}"
-    when 11
-      "#{w.task.priority_type}"
-    when 12
+    elsif r == 12
       _("Notes")
-    when 13
+    elsif r == 13
       _("Start")
-    when 14
+    elsif r == 14
       _("End")
-    when 15
+    elsif r == 15
       "#{tz.utc_to_local(w.started_at).strftime_localized( "%a " + current_user.date_format )}"
-    when 16
+    elsif r == 16
       _("Start")
-    when 17
+    elsif r == 17
       _("End")
-    when 18
+    elsif r == 18
       _("Task")
-    when 19
+    elsif r == 19
       _("Note")
-    when 20 
+    elsif r == 20
       "#{w.task.requested_by}"
-    when 21
+    elsif r == 21
       _("User")
+    elsif (property = Property.find_by_filter_name(current_user.company, r))
+      w.task.property_value(property)
     end
 
   end
@@ -216,17 +206,22 @@ class ReportsController < ApplicationController
       @type = filter[:type].to_i
       @range = filter[:range]
 
-      @row_value = filter[:rows].to_i
-      @column_value = filter[:columns].to_i
+      @row_value = filter[:rows]
+      @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
+      @column_value = filter[:columns]
+      @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
 
       customer_id = filter[:client_id]
       user_id = filter[:user_id]
       project_id = filter[:project_id]
 
       task_status = filter[:status].to_i
-      task_type_id = filter[:type_id].to_i
-      task_priority = filter[:priority].to_i
-      task_severity = filter[:severity_id].to_i
+      task_property_filters = {}
+      current_user.company.properties.each do |p|
+        required_value = filter[p.filter_name.to_sym] if filter[p.filter_name.to_sym]
+        required_value = p.property_values.detect { |pv| pv.id == required_value.to_i }
+        task_property_filters[p] = required_value if required_value
+      end
       task_tags = filter[:tags]
 
       filename << "_" + ["pivot", "audit", "time_sheet", "workload"][@type-1]
@@ -307,11 +302,8 @@ class ReportsController < ApplicationController
         end
 
         join = ""
-        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+        if task_status > -1
           join << " AND tasks.status = #{task_status}" if task_status > -1
-          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
-          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
-          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
         end
 
         unless task_tags.nil? || task_tags.empty?
@@ -331,7 +323,6 @@ class ReportsController < ApplicationController
             @logs += p.work_logs.find(:all, :order => "work_logs.project_id", :conditions => ["work_logs.company_id = ? AND duration > 0" + sql_filter + date_filter, current_user.company.id])
           end
         end
-
       else
         # Workload report
 
@@ -356,11 +347,8 @@ class ReportsController < ApplicationController
         end
 
         join = ""
-        if task_status > -1 || task_type_id > -1 || task_priority > -3 || task_severity > -3
+        if task_status > -1
           join << " AND tasks.status = #{task_status}" if task_status > -1
-          join << " AND tasks.type_id = #{task_type_id}" if task_type_id > -1
-          join << " AND tasks.priority = #{task_priority}" if task_priority > -3
-          join << " AND tasks.severity_id = #{task_severity}" if task_severity > -3
         end
 
         unless task_tags.nil? || task_tags.empty?
@@ -405,6 +393,8 @@ class ReportsController < ApplicationController
 
         end
       end
+
+      @logs = filter_logs_by_properties(@logs, task_property_filters)
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
@@ -518,7 +508,11 @@ class ReportsController < ApplicationController
         header = [nil]
         @column_headers.sort.each do |key,value|
           next if key == '__'
-          header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+          begin
+            header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+          rescue
+            header << [ value ]
+          end
         end
         header << [_("Total")]
         csv << header
@@ -584,4 +578,22 @@ class ReportsController < ApplicationController
   end
 
 
+  ###
+  # Remove any logs that don't match the property filters selected
+  # by the user.
+  ###
+  def filter_logs_by_properties(logs, property_filters)
+    return logs if property_filters.empty?
+
+    res = []
+    logs.each do |l|
+      all_matched = true
+      property_filters.each do |property, property_value|
+        all_matched &&= l.task.property_value(property) == property_value
+      end
+      res << l if all_matched
+    end
+    
+    return res
+  end
 end

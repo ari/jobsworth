@@ -335,43 +335,78 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000422'>
-all_for_company<br/>
-</a>
-
-
-
-
-<a href='#M000423'>
+<a href='#M000385'>
 all_with_colors<br/>
 </a>
 
 
 
 
-<a href='#M000424'>
+<a href='#M000386'>
 all_with_icons<br/>
 </a>
 
 
 
 
-<a href='#M000426'>
+<a href='#M000393'>
+clear_other_default_colors<br/>
+</a>
+
+
+
+
+<a href='#M000390'>
+default_value<br/>
+</a>
+
+
+
+
+<a href='#M000384'>
+defaults<br/>
+</a>
+
+
+
+
+<a href='#M000389'>
 filter_name<br/>
 </a>
 
 
 
 
-<a href='#M000425'>
+<a href='#M000388'>
+find_by_filter_name<br/>
+</a>
+
+
+
+
+<a href='#M000387'>
 find_by_group_by<br/>
 </a>
 
 
 
 
-<a href='#M000427'>
+<a href='#M000392'>
+remove_invalid_task_property_values<br/>
+</a>
+
+
+
+
+<a href='#M000391'>
 to_s<br/>
+</a>
+
+
+
+
+<a href='#M000394'>
+update_project_counts<br/>
 </a>
 
 
@@ -402,30 +437,9 @@ Examples of potential properties include Priority, Status, Sub-project
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000422"><br/></a>
+<a class="small" name="M000385"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000422'>
-
-
-all_for_company
-
-(company)
-
-</a>
-</h3>
-<p>
-Returns all properties setup for company.
-</p>
-
-<p class="source_link" id="M000422-show-link"><a onclick="toggle('M000422-source'); toggleText('M000422-link'); return false;" href="#" id="M000422-link">Show source...</a></p><div class="source" id="M000422-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 20</span>
-20:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">all_for_company</span>(<span class="ruby-identifier">company</span>)
-21:     <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:company_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span> })
-22:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000423"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000423'>
+<a href='#M000385'>
 
 
 all_with_colors
@@ -439,19 +453,19 @@ Returns an array of all properties for company which have colors set up for
 their property values.
 </p>
 
-<p class="source_link" id="M000423-show-link"><a onclick="toggle('M000423-source'); toggleText('M000423-link'); return false;" href="#" id="M000423-link">Show source...</a></p><div class="source" id="M000423-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 28</span>
-28:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">all_with_colors</span>(<span class="ruby-identifier">company</span>)
-29:     <span class="ruby-identifier">props</span> = <span class="ruby-identifier">all_for_company</span>(<span class="ruby-identifier">company</span>).<span class="ruby-identifier">select</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-30:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pv</span>.<span class="ruby-identifier">color</span>.<span class="ruby-identifier">blank?</span> }
-31:     <span class="ruby-keyword kw">end</span>
-32: 
-33:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">props</span>
-34:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000385-show-link"><a onclick="toggle('M000385-source'); toggleText('M000385-link'); return false;" href="#" id="M000385-link">Show source...</a></p><div class="source" id="M000385-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 54</span>
+54:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">all_with_colors</span>(<span class="ruby-identifier">company</span>)
+55:     <span class="ruby-identifier">props</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+56:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pv</span>.<span class="ruby-identifier">color</span>.<span class="ruby-identifier">blank?</span> }
+57:     <span class="ruby-keyword kw">end</span>
+58: 
+59:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">props</span>
+60:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000424"><br/></a>
+<a class="small" name="M000386"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000424'>
+<a href='#M000386'>
 
 
 all_with_icons
@@ -465,19 +479,90 @@ Returns an array of all properties for company which have icons set up for
 their property values.
 </p>
 
-<p class="source_link" id="M000424-show-link"><a onclick="toggle('M000424-source'); toggleText('M000424-link'); return false;" href="#" id="M000424-link">Show source...</a></p><div class="source" id="M000424-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 40</span>
-40:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">all_with_icons</span>(<span class="ruby-identifier">company</span>)
-41:     <span class="ruby-identifier">props</span> = <span class="ruby-identifier">all_for_company</span>(<span class="ruby-identifier">company</span>).<span class="ruby-identifier">select</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
-42:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pv</span>.<span class="ruby-identifier">icon_url</span>.<span class="ruby-identifier">blank?</span> }
-43:     <span class="ruby-keyword kw">end</span>
-44: 
-45:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">props</span>
-46:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000386-show-link"><a onclick="toggle('M000386-source'); toggleText('M000386-link'); return false;" href="#" id="M000386-link">Show source...</a></p><div class="source" id="M000386-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 66</span>
+66:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">all_with_icons</span>(<span class="ruby-identifier">company</span>)
+67:     <span class="ruby-identifier">props</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+68:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-operator">!</span><span class="ruby-identifier">pv</span>.<span class="ruby-identifier">icon_url</span>.<span class="ruby-identifier">blank?</span> }
+69:     <span class="ruby-keyword kw">end</span>
+70: 
+71:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">props</span>
+72:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000425"><br/></a>
+<a class="small" name="M000384"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000425'>
+<a href='#M000384'>
+
+
+defaults
+
+()
+
+</a>
+</h3>
+<p>
+Returns an array of the default values that should be used when creating a
+new company.
+</p>
+
+<p class="source_link" id="M000384-show-link"><a onclick="toggle('M000384-source'); toggleText('M000384-link'); return false;" href="#" id="M000384-link">Show source...</a></p><div class="source" id="M000384-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 22</span>
+22:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">defaults</span>
+23:     <span class="ruby-identifier">res</span> = []
+24:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> [ { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Type&quot;</span>) },
+25:              [ { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Task&quot;</span>),        <span class="ruby-identifier">:icon_url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;/images/task_icons/task.png&quot;</span>, <span class="ruby-identifier">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span> },
+26:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;New Feature&quot;</span>), <span class="ruby-identifier">:icon_url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;/images/task_icons/new_feature.png&quot;</span> },
+27:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Defect&quot;</span>),      <span class="ruby-identifier">:icon_url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;/images/task_icons/bug.png&quot;</span> },
+28:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Improvement&quot;</span>), <span class="ruby-identifier">:icon_url</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;/images/task_icons/change.png&quot;</span> }
+29:              ]]
+30:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> [ { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Priority&quot;</span>), <span class="ruby-identifier">:default_sort</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:default_color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span> },
+31:              [ { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Critical&quot;</span>), <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#FF6666&quot;</span> },
+32:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Urgent&quot;</span>),   <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#FF6666&quot;</span> },
+33:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;High&quot;</span>),     <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#F2AB99&quot;</span> },
+34:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Normal&quot;</span>),   <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#B0D295&quot;</span>, <span class="ruby-identifier">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span> },
+35:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Low&quot;</span>),      <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#F3F3F3&quot;</span> },
+36:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Lowest&quot;</span>),   <span class="ruby-identifier">:color</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;#F3F3F3&quot;</span> }
+37:              ]]
+38:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> [ { <span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Severity&quot;</span>), <span class="ruby-identifier">:default_sort</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span> },
+39:              [ { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Blocker&quot;</span>) },
+40:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Critical&quot;</span>) },
+41:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Major&quot;</span>) },
+42:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Normal&quot;</span>), <span class="ruby-identifier">:default</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span> },
+43:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Minor&quot;</span>) },
+44:                { <span class="ruby-identifier">:value</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Trivial&quot;</span>) }
+45:              ]]
+46: 
+47:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
+48:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000388"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000388'>
+
+
+find_by_filter_name
+
+(company, filter_name)
+
+</a>
+</h3>
+<p>
+Finds the property matching the given <a
+href="Property.html#M000389">filter_name</a>
+</p>
+
+<p class="source_link" id="M000388-show-link"><a onclick="toggle('M000388-source'); toggleText('M000388-link'); return false;" href="#" id="M000388-link">Show source...</a></p><div class="source" id="M000388-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 84</span>
+84:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_by_filter_name</span>(<span class="ruby-identifier">company</span>, <span class="ruby-identifier">filter_name</span>)
+85:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">filter_name</span>
+86: 
+87:     <span class="ruby-identifier">match</span> = <span class="ruby-identifier">filter_name</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/property_(\d+)/</span>)
+88:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span>
+89:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000387"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000387'>
 
 
 find_by_group_by
@@ -490,23 +575,70 @@ find_by_group_by
 Finds the property matching the given group_by parameter.
 </p>
 
-<p class="source_link" id="M000425-show-link"><a onclick="toggle('M000425-source'); toggleText('M000425-link'); return false;" href="#" id="M000425-link">Show source...</a></p><div class="source" id="M000425-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 51</span>
-51:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_by_group_by</span>(<span class="ruby-identifier">company</span>, <span class="ruby-identifier">group_by</span>)
-52:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">group_by</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-53: 
-54:     <span class="ruby-comment cmt"># N.B. This is mainly used in task filtering in the list view.</span>
-55:     <span class="ruby-identifier">match</span> = <span class="ruby-identifier">group_by</span>.<span class="ruby-identifier">match</span>(<span class="ruby-regexp re">/property_(\d+)/</span>)
-56:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">match</span>[<span class="ruby-value">1</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">match</span>
-57:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000387-show-link"><a onclick="toggle('M000387-source'); toggleText('M000387-link'); return false;" href="#" id="M000387-link">Show source...</a></p><div class="source" id="M000387-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 77</span>
+77:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_by_group_by</span>(<span class="ruby-identifier">company</span>, <span class="ruby-identifier">group_by</span>)
+78:     <span class="ruby-identifier">find_by_filter_name</span>(<span class="ruby-identifier">company</span>, <span class="ruby-identifier">group_by</span>)
+79:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000426"><br/></a>
+<a class="small" name="M000393"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000426'>
+<a href='#M000393'>
+
+
+clear_other_default_colors
+
+()
+
+</a>
+</h3>
+<p>
+Only one property can be used to color tasks, so this method will ensure
+only one property will have the default_colors attribute set.
+</p>
+
+<p class="source_link" id="M000393-show-link"><a onclick="toggle('M000393-source'); toggleText('M000393-link'); return false;" href="#" id="M000393-link">Show source...</a></p><div class="source" id="M000393-source"><pre>     <span class="ruby-comment cmt"># File app/models/property.rb, line 123</span>
+123:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clear_other_default_colors</span>
+124:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">default_color</span>
+125:       <span class="ruby-identifier">other_properties</span> = <span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span> <span class="ruby-operator">-</span> [ <span class="ruby-keyword kw">self</span> ]
+126:       <span class="ruby-identifier">other_properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+127:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">default_color</span>
+128:           <span class="ruby-identifier">p</span>.<span class="ruby-identifier">default_color</span> = <span class="ruby-keyword kw">false</span>
+129:           <span class="ruby-identifier">p</span>.<span class="ruby-identifier">save</span>
+130:         <span class="ruby-keyword kw">end</span>
+131:       <span class="ruby-keyword kw">end</span>
+132:     <span class="ruby-keyword kw">end</span>
+133:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000390"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000390'>
+
+
+default_value
+
+()
+
+</a>
+</h3>
+<p>
+Returns the first property value set as default, or nil if none.
+</p>
+
+<p class="source_link" id="M000390-show-link"><a onclick="toggle('M000390-source'); toggleText('M000390-link'); return false;" href="#" id="M000390-link">Show source...</a></p><div class="source" id="M000390-source"><pre>     <span class="ruby-comment cmt"># File app/models/property.rb, line 101</span>
+101:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_value</span>
+102:     <span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">pv</span><span class="ruby-operator">|</span> <span class="ruby-identifier">pv</span>.<span class="ruby-identifier">default</span> }
+103:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000389"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000389'>
 
 
 filter_name
@@ -519,15 +651,37 @@ filter_name
 Returns a name suitable for use as a div id or similar.
 </p>
 
-<p class="source_link" id="M000426-show-link"><a onclick="toggle('M000426-source'); toggleText('M000426-link'); return false;" href="#" id="M000426-link">Show source...</a></p><div class="source" id="M000426-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 62</span>
-62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter_name</span>
-63:     <span class="ruby-ivar">@filter_name</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;property_#{ id }&quot;</span>
-64:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000389-show-link"><a onclick="toggle('M000389-source'); toggleText('M000389-link'); return false;" href="#" id="M000389-link">Show source...</a></p><div class="source" id="M000389-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 94</span>
+94:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter_name</span>
+95:     <span class="ruby-ivar">@filter_name</span> <span class="ruby-operator">||=</span> <span class="ruby-node">&quot;property_#{ id }&quot;</span>
+96:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000427"><br/></a>
+<a class="small" name="M000392"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000427'>
+<a href='#M000392'>
+
+
+remove_invalid_task_property_values
+
+()
+
+</a>
+</h3>
+<p>
+Clears any tasks which have a value for this property set.
+</p>
+
+<p class="source_link" id="M000392-show-link"><a onclick="toggle('M000392-source'); toggleText('M000392-link'); return false;" href="#" id="M000392-link">Show source...</a></p><div class="source" id="M000392-source"><pre>     <span class="ruby-comment cmt"># File app/models/property.rb, line 113</span>
+113:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_invalid_task_property_values</span>
+114:     <span class="ruby-identifier">tpvs</span> = <span class="ruby-constant">TaskPropertyValue</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:property_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">id</span> })
+115:     <span class="ruby-identifier">tpvs</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">tpv</span><span class="ruby-operator">|</span> <span class="ruby-identifier">tpv</span>.<span class="ruby-identifier">destroy</span> }
+116:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000391"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000391'>
 
 
 to_s
@@ -537,10 +691,36 @@ to_s
 </a>
 </h3>
 
-<p class="source_link" id="M000427-show-link"><a onclick="toggle('M000427-source'); toggleText('M000427-link'); return false;" href="#" id="M000427-link">Show source...</a></p><div class="source" id="M000427-source"><pre>    <span class="ruby-comment cmt"># File app/models/property.rb, line 66</span>
-66:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
-67:     <span class="ruby-identifier">name</span>
-68:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000391-show-link"><a onclick="toggle('M000391-source'); toggleText('M000391-link'); return false;" href="#" id="M000391-link">Show source...</a></p><div class="source" id="M000391-source"><pre>     <span class="ruby-comment cmt"># File app/models/property.rb, line 105</span>
+105:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
+106:     <span class="ruby-identifier">name</span>
+107:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000394"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000394'>
+
+
+update_project_counts
+
+()
+
+</a>
+</h3>
+<p>
+Update critical, low and normal counts on this companys projects. If
+we&#8216;ve change the sort <a href="Property.html#M000384">defaults</a>,
+these counts may change, so we need to update them on save.
+</p>
+
+<p class="source_link" id="M000394-show-link"><a onclick="toggle('M000394-source'); toggleText('M000394-link'); return false;" href="#" id="M000394-link">Show source...</a></p><div class="source" id="M000394-source"><pre>     <span class="ruby-comment cmt"># File app/models/property.rb, line 140</span>
+140:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_project_counts</span>
+141:     <span class="ruby-identifier">company</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> 
+142:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">update_project_stats</span>
+143:       <span class="ruby-identifier">p</span>.<span class="ruby-identifier">save</span>
+144:     <span class="ruby-keyword kw">end</span>
+145:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

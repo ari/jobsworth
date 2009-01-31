@@ -82,6 +82,17 @@ class Project < ActiveRecord::Base
     open_milestones
   end
 
+  ###
+  # Updates the critical, normal and low counts for this project.
+  # Also updates open and total tasks.
+  ###
+  def update_project_stats
+    self.critical_count = tasks.select { |t| t.critical? }.length
+    self.normal_count = tasks.select { |t| t.normal? }.length
+    self.low_count = tasks.select { |t| t.low? }.length
+    self.open_tasks = nil
+    self.total_tasks = nil
+  end
   
 
 end

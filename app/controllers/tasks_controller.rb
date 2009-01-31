@@ -27,6 +27,7 @@ class TasksController < ApplicationController
       return
     else
       @task = Task.new
+      @task.company = current_user.company
       @task.duration = 0
       @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
       @task.watchers << current_user
@@ -99,18 +100,6 @@ class TasksController < ApplicationController
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
     end 
 
-    unless session[:filter_type].to_i == -1
-      filter << "tasks.type_id = #{session[:filter_type].to_i} AND "
-    end
-
-    unless session[:filter_severity].to_i == -10
-      filter << "tasks.severity_id >= #{session[:filter_severity].to_i} AND "
-    end 
-
-    unless session[:filter_priority].to_i == -10
-      filter << "tasks.priority >= #{session[:filter_priority].to_i} AND "
-    end 
-
     unless session[:filter_customer].to_i == 0
       filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
     end
@@ -131,7 +120,7 @@ class TasksController < ApplicationController
     end
 
     # trim tasks based on custom properties
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter_value = session[prop.filter_name]
       if filter_value.to_i > 0
         @tasks = @tasks.delete_if do |t| 
@@ -142,22 +131,9 @@ class TasksController < ApplicationController
     end
 
 
-    @tasks = case session[:sort].to_i
-             when 0:
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.priority + t.severity_id/2.0, -(t.due_date || 9999999999).to_i, -t.task_num] }.reverse
-             when 1: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 2: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 3: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, t.priority + t.severity_id/2.0,  -t.task_num] }
-             when 4: 
-                 @tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, t.priority + t.severity_id/2.0,  -t.task_num] }.reverse
-             end
-
+    @tasks = sort_tasks(@tasks)
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
-    
     @group_ids, @groups = group_tasks(@tasks)
   end
 
@@ -412,9 +388,6 @@ class TasksController < ApplicationController
     @repeat.repeat = task.repeat
     @repeat.requested_by = task.requested_by
     @repeat.creator_id = task.creator_id
-    @repeat.type_id = task.type_id
-    @repeat.priority = task.priority
-    @repeat.severity_id = task.severity_id
     @repeat.set_tags(task.tags.collect{|t| t.name}.join(', '))
     @repeat.set_task_num(current_user.company_id)
     @repeat.duration = task.duration
@@ -631,10 +604,6 @@ class TasksController < ApplicationController
 
         body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
       end
-
-      body << "- <strong>Priority</strong>: #{@old_task.priority_type} -> #{@task.priority_type}\n" if @old_task.priority != @task.priority
-      body << "- <strong>Severity</strong>: #{@old_task.severity_type} -> #{@task.severity_type}\n" if @old_task.severity_id != @task.severity_id
-      body << "- <strong>Type</strong>: #{@old_task.issue_type} -> #{@task.issue_type}\n" if @old_task.type_id != @task.type_id
 
       new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
       if old_tags != new_tags
@@ -1132,12 +1101,12 @@ class TasksController < ApplicationController
     end
 
     # set any filters on custom properties
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]
     end
 
-    Property.all_for_company(current_user.company).each do |prop|
+    current_user.company.properties.each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]
     end
@@ -1395,13 +1364,6 @@ class TasksController < ApplicationController
 
         end
         @task.save
-      when 6
-        # Task Type
-        if @task.type_id != @group
-          body << "- <strong>Type</strong>: #{@task.issue_type} -> #{Task.issue_types[@group]}\n"
-          @task.type_id = @group
-          @task.save
-        end
       when 7
         # Status
         if( @task.status != @group )
@@ -1420,20 +1382,6 @@ class TasksController < ApplicationController
           end
           body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
           @task.status = @group
-          @task.save
-        end
-      when 8
-        # Severity
-        if @task.severity_id != @group
-          body << "- <strong>Severity</strong>: #{@task.severity_type} -> #{Task.severity_types[@group]}\n"
-          @task.severity_id = @group
-          @task.save
-        end
-      when 9
-        # Priority
-        if @task.priority != @group
-          body << "- <strong>Priority</strong>: #{@task.priority_type} -> #{Task.priority_types[@group]}\n"
-          @task.priority = @group
           @task.save
         end
       when 10
@@ -1839,7 +1787,29 @@ class TasksController < ApplicationController
   end 
 
   private
+  
+  ###
+  # Returns an array of tasks sorted according to the value
+  # in the session.
+  ### 
+  def sort_tasks(tasks)
+    sort_by = session[:sort].to_i
+    res = tasks
 
+    if sort_by == 0 # default sorting
+      res = current_user.company.sort(tasks)
+    elsif sort_by == 1
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, - t.sort_rank,  -t.task_num] }
+    elsif sort_by ==  2
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, - t.sort_rank,  -t.task_num] }
+    elsif sort_by == 3
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, - t.sort_rank,  -t.task_num] }
+    elsif sort_by ==  4
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, - t.sort_rank,  -t.task_num] }.reverse
+    end
+
+    return res
+  end
   ###
   # Returns a two element array containing the grouped tasks.
   # The first element is an in-order array of group ids / names
@@ -1891,22 +1861,10 @@ class TasksController < ApplicationController
         end
         res
       }
-    elsif session[:group_by].to_i == 6 # Task Type
-      0.upto(3) { |i| group_ids[ _(Task.issue_types[i]) ] = i }
-      items = Task.issue_types.collect{ |i| _(i) }.sort
-      groups = Task.group_by(tasks, items) { |t,i| _(t.issue_type) == i }
     elsif session[:group_by].to_i == 7 # Status
       0.upto(5) { |i| group_ids[ _(Task.status_types[i]) ] = i }
       items = Task.status_types.collect{ |i| _(i) }
       groups = Task.group_by(tasks, items) { |t,i| _(t.status_type) == i }
-    elsif session[:group_by].to_i == 8 # Severity
-      -2.upto(3) { |i| group_ids[_(Task.severity_types[i])] = i }
-      items = Task.severity_types.sort.collect{ |v| _(v[1]) }.reverse
-      groups = Task.group_by(tasks, items) { |t,i| _(t.severity_type) == i }
-    elsif session[:group_by].to_i == 9 # Priority
-      -2.upto(3) { |i| group_ids[ _(Task.priority_types[i])] = i }
-      items = Task.priority_types.sort.collect{ |v| _(v[1]) }.reverse
-      groups = Task.group_by(tasks, items) { |t,i| _(t.priority_type) == i }
     elsif session[:group_by].to_i == 10 # Projects / Milestones
       milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
       projects = current_user.projects

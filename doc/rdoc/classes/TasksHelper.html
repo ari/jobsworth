@@ -331,35 +331,35 @@ Module: TasksHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000638'>
+<a href='#M000675'>
 pri_color<br/>
 </a>
 
 
 
 
-<a href='#M000639'>
+<a href='#M000676'>
 print_title<br/>
 </a>
 
 
 
 
-<a href='#M000641'>
+<a href='#M000678'>
 render_task_dependants<br/>
 </a>
 
 
 
 
-<a href='#M000642'>
+<a href='#M000679'>
 show_more_filters?<br/>
 </a>
 
 
 
 
-<a href='#M000640'>
+<a href='#M000677'>
 task_shown?<br/>
 </a>
 
@@ -382,9 +382,9 @@ task_shown?<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000638"><br/></a>
+<a class="small" name="M000675"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000638'>
+<a href='#M000675'>
 
 
 pri_color
@@ -394,7 +394,7 @@ pri_color
 </a>
 </h3>
 
-<p class="source_link" id="M000638-show-link"><a onclick="toggle('M000638-source'); toggleText('M000638-link'); return false;" href="#" id="M000638-link">Show source...</a></p><div class="source" id="M000638-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
+<p class="source_link" id="M000675-show-link"><a onclick="toggle('M000675-source'); toggleText('M000675-link'); return false;" href="#" id="M000675-link">Show source...</a></p><div class="source" id="M000675-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pri_color</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">priority</span>)
  4:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#b0d295&quot;</span>
  5:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#f2ab99&quot;</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">severity</span>)<span class="ruby-operator">/</span><span class="ruby-value">2.0</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span><span class="ruby-value">.5</span>
@@ -407,9 +407,9 @@ pri_color
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000639"><br/></a>
+<a class="small" name="M000676"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000639'>
+<a href='#M000676'>
 
 
 print_title
@@ -419,7 +419,7 @@ print_title
 </a>
 </h3>
 
-<p class="source_link" id="M000639-show-link"><a onclick="toggle('M000639-source'); toggleText('M000639-link'); return false;" href="#" id="M000639-link">Show source...</a></p><div class="source" id="M000639-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
+<p class="source_link" id="M000676-show-link"><a onclick="toggle('M000676-source'); toggleText('M000676-link'); return false;" href="#" id="M000676-link">Show source...</a></p><div class="source" id="M000676-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">print_title</span>
 15:     <span class="ruby-identifier">filters</span> = []
 16:     <span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;&lt;div style=\&quot;float:left\&quot;&gt;&quot;</span>
@@ -452,9 +452,9 @@ print_title
 43:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000641"><br/></a>
+<a class="small" name="M000678"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000641'>
+<a href='#M000678'>
 
 
 render_task_dependants
@@ -464,7 +464,7 @@ render_task_dependants
 </a>
 </h3>
 
-<p class="source_link" id="M000641-show-link"><a onclick="toggle('M000641-source'); toggleText('M000641-link'); return false;" href="#" id="M000641-link">Show source...</a></p><div class="source" id="M000641-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 81</span>
+<p class="source_link" id="M000678-show-link"><a onclick="toggle('M000678-source'); toggleText('M000678-link'); return false;" href="#" id="M000678-link">Show source...</a></p><div class="source" id="M000678-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 81</span>
  81:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">t</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">root_present</span>)
  82:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
  83:     <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">||=</span> []
@@ -509,9 +509,9 @@ render_task_dependants
 122:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000642"><br/></a>
+<a class="small" name="M000679"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000642'>
+<a href='#M000679'>
 
 
 show_more_filters?
@@ -524,7 +524,7 @@ show_more_filters?
 Returns true if the more filters area should be shown.
 </p>
 
-<p class="source_link" id="M000642-show-link"><a onclick="toggle('M000642-source'); toggleText('M000642-link'); return false;" href="#" id="M000642-link">Show source...</a></p><div class="source" id="M000642-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 127</span>
+<p class="source_link" id="M000679-show-link"><a onclick="toggle('M000679-source'); toggleText('M000679-link'); return false;" href="#" id="M000679-link">Show source...</a></p><div class="source" id="M000679-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 127</span>
 127:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_more_filters?</span>
 128:     <span class="ruby-identifier">show</span> = (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-1&quot;</span>) 
 129:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-10&quot;</span>) 
@@ -532,7 +532,7 @@ Returns true if the more filters area should be shown.
 131:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)
 132: 
 133:     <span class="ruby-comment cmt"># we also need to show filter if any custom properties are set</span>
-134:     <span class="ruby-ivar">@properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">prop</span><span class="ruby-operator">|</span>
+134:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">prop</span><span class="ruby-operator">|</span>
 135:       <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">prop</span>.<span class="ruby-identifier">filter_name</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 136:     <span class="ruby-keyword kw">end</span>
 137: 
@@ -540,9 +540,9 @@ Returns true if the more filters area should be shown.
 139:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000640"><br/></a>
+<a class="small" name="M000677"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000640'>
+<a href='#M000677'>
 
 
 task_shown?
@@ -552,7 +552,7 @@ task_shown?
 </a>
 </h3>
 
-<p class="source_link" id="M000640-show-link"><a onclick="toggle('M000640-source'); toggleText('M000640-link'); return false;" href="#" id="M000640-link">Show source...</a></p><div class="source" id="M000640-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 45</span>
+<p class="source_link" id="M000677-show-link"><a onclick="toggle('M000677-source'); toggleText('M000677-link'); return false;" href="#" id="M000677-link">Show source...</a></p><div class="source" id="M000677-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 45</span>
 45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
 46: 
 47:     <span class="ruby-identifier">shown</span> = <span class="ruby-keyword kw">true</span>

@@ -331,35 +331,35 @@ Module: ImageOperations
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000629'>
+<a href='#M000623'>
 get_image<br/>
 </a>
 
 
 
 
-<a href='#M000630'>
+<a href='#M000624'>
 is_image?<br/>
 </a>
 
 
 
 
-<a href='#M000631'>
+<a href='#M000625'>
 scale_down<br/>
 </a>
 
 
 
 
-<a href='#M000632'>
+<a href='#M000626'>
 shadow<br/>
 </a>
 
 
 
 
-<a href='#M000633'>
+<a href='#M000627'>
 thumbnail<br/>
 </a>
 
@@ -382,9 +382,9 @@ thumbnail<br/>
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000629"><br/></a>
+<a class="small" name="M000623"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000629'>
+<a href='#M000623'>
 
 
 get_image
@@ -394,15 +394,15 @@ get_image
 </a>
 </h3>
 
-<p class="source_link" id="M000629-show-link"><a onclick="toggle('M000629-source'); toggleText('M000629-link'); return false;" href="#" id="M000629-link">Show source...</a></p><div class="source" id="M000629-source"><pre>   <span class="ruby-comment cmt"># File lib/image_operations.rb, line 4</span>
-4:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_image</span>(<span class="ruby-identifier">filename</span>)
-5:                 <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">Image</span>.<span class="ruby-identifier">read</span>( <span class="ruby-identifier">filename</span> ).<span class="ruby-identifier">first</span>
-6:         <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000623-show-link"><a onclick="toggle('M000623-source'); toggleText('M000623-link'); return false;" href="#" id="M000623-link">Show source...</a></p><div class="source" id="M000623-source"><pre>   <span class="ruby-comment cmt"># File lib/image_operations.rb, line 4</span>
+4:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_image</span>(<span class="ruby-identifier">filename</span>)
+5:     <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">Image</span>.<span class="ruby-identifier">read</span>( <span class="ruby-identifier">filename</span> ).<span class="ruby-identifier">first</span>
+6:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000630"><br/></a>
+<a class="small" name="M000624"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000630'>
+<a href='#M000624'>
 
 
 is_image?
@@ -412,15 +412,15 @@ is_image?
 </a>
 </h3>
 
-<p class="source_link" id="M000630-show-link"><a onclick="toggle('M000630-source'); toggleText('M000630-link'); return false;" href="#" id="M000630-link">Show source...</a></p><div class="source" id="M000630-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 8</span>
- 8:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
- 9:                 <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-10:         <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000624-show-link"><a onclick="toggle('M000624-source'); toggleText('M000624-link'); return false;" href="#" id="M000624-link">Show source...</a></p><div class="source" id="M000624-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 8</span>
+ 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
+ 9:     <span class="ruby-identifier">image</span> <span class="ruby-value">? </span>(<span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>
+10:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000631"><br/></a>
+<a class="small" name="M000625"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000631'>
+<a href='#M000625'>
 
 
 scale_down
@@ -430,24 +430,24 @@ scale_down
 </a>
 </h3>
 
-<p class="source_link" id="M000631-show-link"><a onclick="toggle('M000631-source'); toggleText('M000631-link'); return false;" href="#" id="M000631-link">Show source...</a></p><div class="source" id="M000631-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 12</span>
-12:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
-13:           <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span>
-14:             <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
-15:               <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>
-16:             <span class="ruby-keyword kw">else</span>
-17:               <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
-18:             <span class="ruby-keyword kw">end</span>
-19: 
-20:             <span class="ruby-identifier">image</span>.<span class="ruby-identifier">scale!</span>(<span class="ruby-identifier">scale</span>)
-21:           <span class="ruby-keyword kw">end</span>
-22:                 <span class="ruby-identifier">image</span>
-23:         <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000625-show-link"><a onclick="toggle('M000625-source'); toggleText('M000625-link'); return false;" href="#" id="M000625-link">Show source...</a></p><div class="source" id="M000625-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 12</span>
+12:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
+13:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span>
+14:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
+15:         <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>
+16:       <span class="ruby-keyword kw">else</span>
+17:         <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
+18:       <span class="ruby-keyword kw">end</span>
+19:       
+20:       <span class="ruby-identifier">image</span>.<span class="ruby-identifier">scale!</span>(<span class="ruby-identifier">scale</span>)
+21:     <span class="ruby-keyword kw">end</span>
+22:     <span class="ruby-identifier">image</span>
+23:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000632"><br/></a>
+<a class="small" name="M000626"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000632'>
+<a href='#M000626'>
 
 
 shadow
@@ -457,24 +457,24 @@ shadow
 </a>
 </h3>
 
-<p class="source_link" id="M000632-show-link"><a onclick="toggle('M000632-source'); toggleText('M000632-link'); return false;" href="#" id="M000632-link">Show source...</a></p><div class="source" id="M000632-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 25</span>
-25:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">shadow</span>( <span class="ruby-identifier">image</span> )
-26:           <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">image</span>.<span class="ruby-identifier">dup</span>
-27:           <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">background_color</span> = <span class="ruby-value str">&quot;black&quot;</span>
-28:           <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">erase!</span>
-29:           <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">border!</span>(<span class="ruby-value">26</span>, <span class="ruby-value">26</span>, <span class="ruby-value str">&quot;white&quot;</span>)
-30:           <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">blur_image</span>(<span class="ruby-value">0</span>, <span class="ruby-value">8</span><span class="ruby-operator">/</span><span class="ruby-value">2</span>)
-31:                 <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">composite</span>( <span class="ruby-identifier">image</span>, <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">NorthWestGravity</span>,
-32:                         (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>,
-33:                         (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">rows</span>    <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">2</span>,
-34:                         <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">OverCompositeOp</span>
-35:                 ).<span class="ruby-identifier">trim!</span>
-36:         <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000626-show-link"><a onclick="toggle('M000626-source'); toggleText('M000626-link'); return false;" href="#" id="M000626-link">Show source...</a></p><div class="source" id="M000626-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 25</span>
+25:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">shadow</span>( <span class="ruby-identifier">image</span> )
+26:     <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">image</span>.<span class="ruby-identifier">dup</span>
+27:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">background_color</span> = <span class="ruby-value str">&quot;#666666&quot;</span>
+28:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">erase!</span>
+29:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">border!</span>(<span class="ruby-value">26</span>, <span class="ruby-value">26</span>, <span class="ruby-value str">&quot;#fafafa&quot;</span>)
+30:     <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">blur_image</span>(<span class="ruby-value">0</span>, <span class="ruby-value">8</span><span class="ruby-operator">/</span><span class="ruby-value">2</span>)
+31:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">composite</span>( <span class="ruby-identifier">image</span>, <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">NorthWestGravity</span>,
+32:                       (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>,
+33:                       (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">rows</span>    <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>,
+34:                       <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">OverCompositeOp</span>
+35:                       ).<span class="ruby-identifier">trim!</span>
+36:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000633"><br/></a>
+<a class="small" name="M000627"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000633'>
+<a href='#M000627'>
 
 
 thumbnail
@@ -484,13 +484,13 @@ thumbnail
 </a>
 </h3>
 
-<p class="source_link" id="M000633-show-link"><a onclick="toggle('M000633-source'); toggleText('M000633-link'); return false;" href="#" id="M000633-link">Show source...</a></p><div class="source" id="M000633-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 38</span>
-38:         <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">thumbnail</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
-39:                 <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>,<span class="ruby-identifier">size</span>)
-40:           <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">shadow</span>(<span class="ruby-identifier">thumb</span>)
-41:           <span class="ruby-identifier">thumb</span>.<span class="ruby-identifier">format</span> = <span class="ruby-value str">'jpg'</span>
-42:                 <span class="ruby-identifier">thumb</span>
-43:         <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000627-show-link"><a onclick="toggle('M000627-source'); toggleText('M000627-link'); return false;" href="#" id="M000627-link">Show source...</a></p><div class="source" id="M000627-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 38</span>
+38:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">thumbnail</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
+39:     <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>,<span class="ruby-identifier">size</span>)
+40:     <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">shadow</span>(<span class="ruby-identifier">thumb</span>)
+41:     <span class="ruby-identifier">thumb</span>.<span class="ruby-identifier">format</span> = <span class="ruby-value str">'jpg'</span>
+42:     <span class="ruby-identifier">thumb</span>
+43:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

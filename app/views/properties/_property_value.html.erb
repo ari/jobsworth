@@ -10,6 +10,9 @@
     <%= sortable_handle_tag(pv) %>
     <%= link_to_remove_value %>
 
+    <label><%=_ "Default" %></label>
+    <%= f.check_box :default, :index => pv.id, :class => 'default', :onChange => "clearOtherDefaults(this)" %>
+
     <label><%=_ "Color" %></label>
     <%= f.text_field :color, :index => pv.id %>
 

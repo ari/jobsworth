@@ -131,9 +131,9 @@ class FeedsController < ApplicationController
 
         tasks = case widget.order_by
                when 'priority':
-                     tasks.sort_by{|t| [t.priority + t.severity_id, Time.now.utc.to_i-t.due_date.to_i, -t.task_num] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1].reverse
+                    user.company.sort(tasks)[0, widget.number]
                when 'date':
-                     tasks.sort_by{|t| [t.created_at.to_i, t.priority + t.severity_id] }[-(widget.number < tasks.size ? widget.number : tasks.size)..-1]
+                   tasks.sort_by {|t| t.created_at.to_i }[0, widget.number]
               end
 
         # Create the RSS
@@ -422,10 +422,11 @@ class FeedsController < ApplicationController
       end
     elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ], :limit => limit.to_i  )
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       else
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"],  :order => "tasks.severity_id + tasks.priority desc, CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ], :limit => limit.to_i  )
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       end
+      @tasks = user.company.sort(@tasks)[0, limit.to_i]
     elsif params[:up_show_order] && params[:up_show_order] == "Status Pie-Chart"
       completed = 0
       open = 0
@@ -472,9 +473,10 @@ class FeedsController < ApplicationController
           @chart = pc.to_url
         end
       else
-        critical = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 > 0"])
-        normal = user.tasks.count(:conditions => ["completed_at IS NOT NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 = 0"])
-        low = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids}) AND (severity_id + priority)/2 < 0 "])
+        tasks = user.tasks.select { |t| t.completed_at.nil? and @projects.include?(t.project) }
+        critical = tasks.select { |t| t.critical? }.length
+        normal = tasks.select { |t| t.normal? }.length
+        low = tasks.select { |t| t.low? }.length
         GoogleChart::PieChart.new('280x200', "#{user.name} Priorities", false) do |pc|
           pc.data "Critical", critical
           pc.data "Normal", normal

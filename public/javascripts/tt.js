@@ -328,5 +328,14 @@ function rebuildSelect(select, data) {
    select.options.length = 0;
    for( var i=0; i<data.length; i++ ) {
      select.options[i] = new Option(data[i].text,data[i].value,null,false);
-   }
+}
+
+function clearOtherDefaults(sender) {
+    var list = $(sender).up("ul").select(".default");
+
+    list.each(function(e) {
+	if (e != sender) {
+	    e.checked = false;
+	}
+    });
 }

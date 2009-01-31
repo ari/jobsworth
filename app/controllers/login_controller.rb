@@ -26,23 +26,15 @@ class LoginController < ApplicationController
   def about
   end
 
-	# Display the login page
+  # Display the login page
   def login
     if session[:user_id]
       redirect_to :controller => 'activities', :action => 'list'
     else
-      @company = getCompany
+      @company = company_from_subdomain
       @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
       render :action => 'login', :layout => false
     end   
-  end
-
-  def getCompany
-    subdomain = request.subdomains.first if request.subdomains
-      @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-      if $company.nil?
-        @company = Company.find(:first, :conditions => ["id = 1"])
-    end
   end
 
   def logout
@@ -88,7 +80,7 @@ class LoginController < ApplicationController
 
   def validate
     @user = User.new(params[:user])
-    @company = getCompany
+    @company = company_from_subdomain
     unless logged_in = @user.login(@company)
       flash[:notice] = "Username or password is wrong..."
       redirect_to :action => 'login'
@@ -329,4 +321,14 @@ class LoginController < ApplicationController
 
   end
 
+  private
+
+  def company_from_subdomain
+    subdomain = request.subdomains.first if request.subdomains
+
+    company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
+    company ||= Company.find(:first, :conditions => ["id = 1"])
+
+    return company
+  end
 end

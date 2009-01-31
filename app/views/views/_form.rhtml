@@ -71,10 +71,21 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
     </select><br/>
   <% end %>
 
-  <label for="view_filter_type_id"><%=_ 'Type' %></label><%= select 'view', 'filter_type_id', [[_('[Any Type]'), '-1'],[_('Task'),0],[_('New Feature'),1],[_('Defect'),2],[_('Improvement'),3]], :selected => @view.filter_type_id %><br/>
-  <label for="view_filter_severity"><%=_ 'Severity' %></label><%= select 'view', 'filter_severity', [[_('[Any Severity]'), '-10'],[_('Blocker'),3],[_('Critical'),2],[_('Major'),1],[_('Normal'),0],[_('Minor'),-1],[_('Trivial'),-2]], :selected => @view.filter_severity %><br/>
-  <label for="view_filter_priority"><%=_ 'Priority' %></label><%= select 'view', 'filter_priority', [[_('[Any Priority]'), '-10'],[_('Critical'),3],[_('Urgent'),2],[_('High'),1],[_('Normal'),0],[_('Low'),-1],[_('Lowest'),-2]], :selected => @view.filter_priority %><br/>
   <label for="view_filter_status"><%=_ 'Status' %></label><%= select 'view', 'filter_status', [[_('[Any Status]'), '-1'],[_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3],[_('Invalid'),4],[_('Duplicate'),5], [_('Archived'), -2]], :selected => @view.filter_status %><br/>
+	    <% current_user.company.properties.each do |p| -%>
+	    <label for="<%= p.filter_name %>"><%= p %></label>
+	    <select name="view[properties][]" id="<%= p.filter_name %>">
+	      <option value="" class="select_default">
+		<%= "[#{_('Any %s', p.name)}]" %>
+	      </option>
+	      <% p.property_values.each do |pv| -%>
+	        <option value="<%= pv.id %>" <%= @view.property_values.index(pv) ? "selected" : ""  %>>
+		  <%= pv %>
+		</option>
+	      <% end -%>
+	    </select>
+	    <% end -%>
+
 
   <label for="view_auto_group"><%=_ 'Group By' %></label>
           <select name="view[auto_group]" id="view_auto_group">

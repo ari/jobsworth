@@ -335,35 +335,35 @@ ActionMailer::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000254'>
+<a href='#M000221'>
 account_created<br/>
 </a>
 
 
 
 
-<a href='#M000253'>
+<a href='#M000220'>
 forgot_password<br/>
 </a>
 
 
 
 
-<a href='#M000255'>
+<a href='#M000222'>
 mass_email<br/>
 </a>
 
 
 
 
-<a href='#M000252'>
+<a href='#M000219'>
 signup<br/>
 </a>
 
 
 
 
-<a href='#M000256'>
+<a href='#M000223'>
 subdomain_changed<br/>
 </a>
 
@@ -390,9 +390,9 @@ subdomain_changed<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000254"><br/></a>
+<a class="small" name="M000221"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000254'>
+<a href='#M000221'>
 
 
 account_created
@@ -402,7 +402,7 @@ account_created
 </a>
 </h3>
 
-<p class="source_link" id="M000254-show-link"><a onclick="toggle('M000254-source'); toggleText('M000254-link'); return false;" href="#" id="M000254-link">Show source...</a></p><div class="source" id="M000254-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 21</span>
+<p class="source_link" id="M000221-show-link"><a onclick="toggle('M000221-source'); toggleText('M000221-link'); return false;" href="#" id="M000221-link">Show source...</a></p><div class="source" id="M000221-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 21</span>
 21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">account_created</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">created_by</span>, <span class="ruby-identifier">welcome_message</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 22:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;[ClockingIT] Invitation from #{created_by.name}&quot;</span>
 23:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:created_by</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">created_by</span>, <span class="ruby-identifier">:welcome_message</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">welcome_message</span>}
@@ -413,9 +413,9 @@ account_created
 28:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000253"><br/></a>
+<a class="small" name="M000220"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000253'>
+<a href='#M000220'>
 
 
 forgot_password
@@ -425,7 +425,7 @@ forgot_password
 </a>
 </h3>
 
-<p class="source_link" id="M000253-show-link"><a onclick="toggle('M000253-source'); toggleText('M000253-link'); return false;" href="#" id="M000253-link">Show source...</a></p><div class="source" id="M000253-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 13</span>
+<p class="source_link" id="M000220-show-link"><a onclick="toggle('M000220-source'); toggleText('M000220-link'); return false;" href="#" id="M000220-link">Show source...</a></p><div class="source" id="M000220-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">forgot_password</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 14:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;[ClockingIT] #{user.company.name} Account Information&quot;</span>
 15:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
@@ -435,9 +435,9 @@ forgot_password
 19:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000255"><br/></a>
+<a class="small" name="M000222"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000255'>
+<a href='#M000222'>
 
 
 mass_email
@@ -447,7 +447,7 @@ mass_email
 </a>
 </h3>
 
-<p class="source_link" id="M000255-show-link"><a onclick="toggle('M000255-source'); toggleText('M000255-link'); return false;" href="#" id="M000255-link">Show source...</a></p><div class="source" id="M000255-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 30</span>
+<p class="source_link" id="M000222-show-link"><a onclick="toggle('M000222-source'); toggleText('M000222-link'); return false;" href="#" id="M000222-link">Show source...</a></p><div class="source" id="M000222-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 30</span>
 30:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">mass_email</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 31:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-value str">&quot;[ClockingIT] New version&quot;</span>
 32:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
@@ -457,9 +457,9 @@ mass_email
 36:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000252"><br/></a>
+<a class="small" name="M000219"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000252'>
+<a href='#M000219'>
 
 
 signup
@@ -469,7 +469,7 @@ signup
 </a>
 </h3>
 
-<p class="source_link" id="M000252-show-link"><a onclick="toggle('M000252-source'); toggleText('M000252-link'); return false;" href="#" id="M000252-link">Show source...</a></p><div class="source" id="M000252-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 5</span>
+<p class="source_link" id="M000219-show-link"><a onclick="toggle('M000219-source'); toggleText('M000219-link'); return false;" href="#" id="M000219-link">Show source...</a></p><div class="source" id="M000219-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 5</span>
  5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">signup</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">company</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
  6:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-value str">'[ClockingIT] Account Registration'</span>
  7:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>, <span class="ruby-identifier">:company</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">company</span>}
@@ -479,9 +479,9 @@ signup
 11:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000256"><br/></a>
+<a class="small" name="M000223"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000256'>
+<a href='#M000223'>
 
 
 subdomain_changed
@@ -491,7 +491,7 @@ subdomain_changed
 </a>
 </h3>
 
-<p class="source_link" id="M000256-show-link"><a onclick="toggle('M000256-source'); toggleText('M000256-link'); return false;" href="#" id="M000256-link">Show source...</a></p><div class="source" id="M000256-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 38</span>
+<p class="source_link" id="M000223-show-link"><a onclick="toggle('M000223-source'); toggleText('M000223-link'); return false;" href="#" id="M000223-link">Show source...</a></p><div class="source" id="M000223-source"><pre>    <span class="ruby-comment cmt"># File app/models/signup.rb, line 38</span>
 38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">subdomain_changed</span>(<span class="ruby-identifier">user</span>, <span class="ruby-identifier">sent_at</span> = <span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>)
 39:     <span class="ruby-ivar">@subject</span>    = <span class="ruby-node">&quot;[ClockingIT] #{user.company.name} - Login URL changed&quot;</span>
 40:     <span class="ruby-ivar">@body</span>       = {<span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">user</span>}
