@@ -579,7 +579,7 @@ class ScheduleController < ApplicationController
     @displayed_tasks = @displayed_tasks.sort_by do |t| 
       array  = []
       array << (t.due_at ? t.due_at.to_i : 9999999999)
-      array << t.milestone.name if t.milestone
+      array << (t.milestone ? t.milestone.name : "")
       array << - current_user.company.rank_by_properties(t)
       array << t.name
 

@@ -1,14 +1,14 @@
 class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
   def self.up
-    add_column Property.table_name, :default_sort, :boolean
-    add_column Property.table_name, :default_color, :boolean
+    add_column Property.table_name, :default_sort, :boolean unless Property.column_names.include?('default_sort')
+    add_column Property.table_name, :default_color, :boolean unless Property.column_names.include?('default_color')
     change_column PropertyValue.table_name, :default, :boolean
 
     Company.find(:all).each do |c|
       type, priority, severity = c.create_default_properties
-      c.tasks.each do |t|
+      c.tasks.each_with_index do |t, i|
+        next if t.property_value(severity) and t.property_value(priority) and t.property_value(type)
         t.convert_attributes_to_properties(type, priority, severity)
-        t.save
       end
     end
 

@@ -500,6 +500,16 @@ class ReportsController < ApplicationController
 
   end
 
+  def clean_value(value)
+    res = value
+    begin
+      res = [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+    rescue
+    end
+
+    return res
+  end
+
   def create_csv
     csv_string = ""
     if @column_headers
@@ -508,23 +518,20 @@ class ReportsController < ApplicationController
         header = [nil]
         @column_headers.sort.each do |key,value|
           next if key == '__'
-          begin
-            header << [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
-          rescue
-            header << [ value ]
-          end
+          header << clean_value(value)
         end
         header << [_("Total")]
         csv << header
 
         @rows.sort.each do |key, value|
           row = []
-          row << [value['__'].gsub(/<[a-zA-Z\/][^>]*>/,'')]
+          row << [ clean_value(value["__"]) ]
+#          row << [value['__'].gsub(/<[a-zA-Z\/][^>]*>/,'')]
           @column_headers.sort.each do |k,v|
             next if k == '__'
             val = nil
             val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
-            val = value[k].gsub(/<[a-zA-Z\/][^>]*>/,'') if val.nil? && value[k]
+            val = clean_value(value[k]) if val.nil? && value[k]
             row << [val]
           end
           row << [@row_totals[key]/60]
