@@ -156,6 +156,7 @@ class ProjectFilesController < ApplicationController
 
       project_file = ProjectFile.new
       project_file.project_id = params['file']['project_id'].to_i
+      project_file.project_folder_id = params['file']['project_folder_id']
 
       project_file.company_id = current_user.company_id
       project_file.user_id = current_user.id
@@ -203,7 +204,7 @@ class ProjectFilesController < ApplicationController
         project_file.file_type = file_type_from_filename(filename) if project_file.file_type != ProjectFile::FILETYPE_IMG
 
         unless project_file.save
-          flash['notice'] = _('Unable to save file.')
+          flash['notice'] = _('Unable to save file.') + " [#{project_file.filename}]"
           redirect_to :action => 'list', :id => params[:file][:project_folder_id]
         else
           project_files << project_file

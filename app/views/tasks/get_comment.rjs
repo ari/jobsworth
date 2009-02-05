@@ -1,0 +1,5 @@
+if @comment
+  body = "#{@comment.user.shout_nick}<br/>#{@comment.body.gsub(/\n/, '<br/>')}".to_json
+end 
+body ||= '""'
+page << "comments.set('#{@task.id.to_s}',#{body});"
