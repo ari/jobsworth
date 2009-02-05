@@ -24,11 +24,12 @@ class MilestonesController < ApplicationController
     render :action => 'new', :layout => 'popup'
   end 
 
+  # Ajax callback from milestone popup window to create a new milestone on submitting the form
   def create
     params_milestone = params[:milestone]
 
     @milestone = Milestone.new(params[:milestone])
-
+    logger.debug "Creating new milestone #{@milestone.name}"
     due_date = nil
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
       begin
@@ -47,8 +48,10 @@ class MilestonesController < ApplicationController
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       else 
         render :update do |page|
-          page << "window.opener.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
-          page << "window.close();"
+        logger.debug "Milestone saved, reloading popup with 'parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});'"
+        # TODO: this could be replaced with "page[task_milestone_id].replace :partial => get_milestones
+        # except that get_milestone currently returns json, not html
+        page << "parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
         end 
       end 
       Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date) rescue nil

@@ -2,16 +2,13 @@
 <legend><%=_ 'New Milestone' %></legend>
 
 <% unless @popup.nil? %>
-<% form_remote_tag :url => { :action => 'create' },
-       :loading => "Element.show('loading');", :complete => "Element.hide('loading');" do %>
+<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "self.parent.Shadowbox.close();" do %>
   <%= render :partial => 'form' %>
-  <label>&nbsp;</label>
-  <%= submit_tag _("Create"), :class => 'nolabel' %>
+  <%= submit_tag _("Create"), :class => 'nolabel'%>
 <% end %>
 <% else %>
   <% form_tag :action => 'create' do %>
    <%= render :partial => 'form' %>
-  <label>&nbsp;</label>
   <%= submit_tag _("Create"), :class => 'nolabel' %>
 <% end %>
 <% end %>
