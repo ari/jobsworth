@@ -1910,7 +1910,3 @@ class TasksController < ApplicationController
     return [ group_ids, groups ]
     end
   end
-
-  
-
-end
