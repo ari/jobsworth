@@ -114,7 +114,7 @@ class TasksController < ApplicationController
       @selected_tags = []
       @tasks = Task.find(:all, 
                          :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], 
-                         :include => [:users, :tags, :sheets, :todos, :dependencies, 
+                         :include => [:users, :tags, :sheets, :todos, :dependencies, { :task_property_values => { :property_value => :property } }, {:company => :properties}, 
                                       {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
     end
 
