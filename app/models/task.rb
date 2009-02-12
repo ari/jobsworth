@@ -801,5 +801,33 @@ class Task < ActiveRecord::Base
     sort_rank.to_f / company.maximum_sort_rank.to_f < 0.20
   end
 
+  ###
+  # Returns an array of email addresses of people who should be 
+  # notified about changes to this task.
+  ###
+  def notification_email_addresses(user_who_made_change = nil)
+    recipients = [ ]
 
+    if user_who_made_change and
+        user_who_made_change.receive_notifications?
+      recipients << user_who_made_change
+    end
+
+    recipients += users.select { |u| u.receive_notifications? }
+    recipients += watchers.select { |u| u.receive_notifications? }
+    recipients = recipients.uniq.compact
+
+    # remove them if they don't want their own notifications. 
+    # do it here rather than at start of method in case they're 
+    # on the watchers list, etc
+    if user_who_made_change and 
+        !user_who_made_change.receive_own_notifications?
+      recipients.delete(user_who_made_change) 
+    end
+
+    emails = recipients.map { |u| u.email }
+    emails = emails.uniq.compact
+
+    return emails
+  end
 end
