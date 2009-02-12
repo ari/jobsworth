@@ -1,6 +1,6 @@
 <%= error_messages_for 'task' %>
+<!--[form:task]-->
 <%
-
   perms = {}
 
   ['comment', 'edit', 'reassign', 'prioritize', 'close', 'milestone'].each do |p|
@@ -10,11 +10,7 @@
       perms[p] = { :disabled => 'disabled' }
     end
   end
-
 %>
-
-<!--[form:task]-->
-
 <tr>
   <td valign="top">
 		<fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
@@ -27,15 +23,6 @@
 			<%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
 			<label for="comment"><%=_ 'Comment' %></label>
 			<%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;" }.merge( perms['comment'] )  %> <br />
-			<label for="task_tmp_file"><%=_ 'Attach file' %></label>
-			<div id="upload_container">
-            <%= file_field_tag 'tmp_files[]', { :size => 35, :class => "file" }.merge( perms['comment'] ) %>
-            <% if perms['comment'].empty? %>
-              <span style="float:left;padding-right:0.4em;padding-top:0.4em"><%= link_to_function _("Upload more files") do |page|
-                  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"35\" name=\"tmp_files[]\"/><br />"
-                  end %></span>
-            <% end %>
-            <br />
             </div>
 
 	
@@ -84,8 +71,6 @@
    
       
 <% unless @tags.nil? %>
-
-
 <script type="text/javascript">
 new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
 </script>
@@ -180,8 +165,6 @@ else
   num = num + 1
 end
 
-
-
 %>
 
       <% if current_user.option_tracktime.to_i == 1%>
@@ -211,8 +194,6 @@ end
         <%= text_field 'task', 'due_at', {:size => 12}.merge(perms['prioritize']) %><br/>
           <% end %>
         <% end %>
-
-
 
       </fieldset>
 
@@ -305,8 +286,6 @@ updateList('<%= w.gsub(/'/, "\\\\\'") %>');
 
 jQuery('#task_due_at').datepicker();
 
-jQuery('#task_due_at').datepicker();
-
 </script>
 
       </fieldset>
@@ -341,8 +320,6 @@ jQuery('#task_due_at').datepicker();
         <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>
 
-        
-
         <% @task.dependencies.each do |d| %>
         	<div class="dependency_no">
 	        <% if perms['prioritize'].empty? %>
@@ -371,14 +348,33 @@ jQuery('#task_due_at').datepicker();
 	        <% end %>
 	
 	      </fieldset>
+	      
+	<fieldset id="task_attachments" style="padding-right:0;">
+		<legend><%=_ "Attachments" %></legend>
+		<% for file in @task.attachments %>
+			<% if file.thumbnail? %>
+				<div>
+					<%= link_to image_tag("/project_files/thumbnail/#{file.id}", {:border=>0, :style=>'float:none'}), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %>
+				</div>
 			<% end %>
+			<%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %><em> (<%=number_to_human_size(file.file_size)%>)</em>
+			<%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name), :class => 'close-cross' %>
+			<span class="divider"></span>
+		<% end %>
+	        
+		<label for="task_tmp_file"><%=_ 'Attach file' %></label>
+		<div id="upload_container">
+		<%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
+		</div>
+		<% if perms['comment'].empty? %>
+			<span style="float:left"><%= link_to_function _("Upload more files") do |page|
+	              page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
+	              end %></span>
+		<% end %>
+	</fieldset>
 
-
-
-
+<% end %>
     </td>
 </tr>
-
-
 
 <!--[eoform:task]-->

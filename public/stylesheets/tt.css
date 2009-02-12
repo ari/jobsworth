@@ -543,16 +543,17 @@ fieldset select {
   width: 10em;
 }
 
-	fieldset#task_information select { float: none; }
+fieldset#task_information select { float: none; }
 
 fieldset input.file {
   clear: right;
   text-align: left;
-  font-size: 95%;
-  width: 50%;
+  font-size: 90%;
+  width: 90%;
   padding-right: 1em;
+  margin-top: 0;
+  margin-bottom: 0;
 }
-
 
 fieldset div.buttons { 
   padding-top: 0.5em;
