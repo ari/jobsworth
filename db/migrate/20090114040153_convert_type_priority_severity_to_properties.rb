@@ -1,8 +1,12 @@
 class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
   def self.up
+    deactivate_project_stat_counts
+
     add_column Property.table_name, :default_sort, :boolean unless Property.column_names.include?('default_sort')
     add_column Property.table_name, :default_color, :boolean unless Property.column_names.include?('default_color')
     change_column PropertyValue.table_name, :default, :boolean
+
+    Property.reset_column_information
 
     Company.find(:all).each do |c|
       type, priority, severity = c.create_default_properties
@@ -24,9 +28,13 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
     View.find(:all).each do |v|
       v.convert_attributes_to_properties
     end
+
+    reactivate_project_stat_counts
   end
 
   def self.down
+    deactivate_project_stat_counts
+
     Company.find(:all).each do |c|
       c.tasks.each do |t|
         t.convert_properties_to_attributes
@@ -49,5 +57,27 @@ class ConvertTypePrioritySeverityToProperties < ActiveRecord::Migration
 
     remove_column Property.table_name, :default_sort
     remove_column Property.table_name, :default_color
+
+    reactivate_project_stat_counts
+  end
+
+  def self.deactivate_project_stat_counts
+    Project.class_eval do
+      alias :old_update_project_stats :update_project_stats
+      def update_project_stats
+        # do nothing
+      end
+    end
+  end
+
+  def self.reactivate_project_stat_counts
+    Project.class_eval do
+      alias :update_project_stats :old_update_project_stats
+    end
+
+    Project.find(:all).each do |p| 
+      p.update_project_stats
+      p.save
+    end
   end
 end
