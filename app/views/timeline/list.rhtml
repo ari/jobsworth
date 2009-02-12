@@ -75,7 +75,7 @@
           <tr><td colspan="3">&nbsp;</td></tr>
           <tr><td colspan="3">
               <span class="paging_header">
-	        <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %>
+	        <%= will_paginate(@logs, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous'), :params => @filter_params } ) %>
               </span>
             </td>
           </tr>

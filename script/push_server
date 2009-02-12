@@ -14,11 +14,8 @@ require "json"
 require 'json/add/rails'
 
 module Juggernaut
-
   RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
-  CONFIG = YAML::load_file("config/juggernaut_config.yml").freeze
-
-
+  CONFIG = YAML::load_file(RAILS_ROOT + "/config/juggernaut_config.yml").freeze
 
   class Channels < Monitor
 

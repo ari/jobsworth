@@ -8,7 +8,6 @@ class TasksController < ApplicationController
 #    :cancel_work_ajax, :destroy_log ]
 
   require_dependency 'fastercsv'
-  require_dependency 'RMagick'
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -103,7 +102,7 @@ class TasksController < ApplicationController
     unless session[:filter_customer].to_i == 0
       filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
     end
-    
+
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
 
     if params[:tag] && params[:tag].length > 0
@@ -115,7 +114,7 @@ class TasksController < ApplicationController
       @selected_tags = []
       @tasks = Task.find(:all, 
                          :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], 
-                         :include => [:users, :tags, :sheets, :todos, :dependencies, 
+                         :include => [:users, :tags, :sheets, :todos, :dependencies, { :task_property_values => { :property_value => :property } }, {:company => :properties}, 
                                       {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
     end
 
@@ -126,16 +125,16 @@ class TasksController < ApplicationController
         @tasks = @tasks.delete_if do |t| 
           val = t.property_value(prop)
           val.nil? or val.id != filter_value.to_i
-        end
+             end
       end
-    end
+        end
 
 
     @tasks = sort_tasks(@tasks)
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
     @group_ids, @groups = group_tasks(@tasks)
-  end
+    end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
@@ -306,7 +305,7 @@ class TasksController < ApplicationController
       end
 
       create_attachments(@task)
-
+      
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = @task.project.company
@@ -639,8 +638,8 @@ class TasksController < ApplicationController
 
       end
 
-      files = create_attachments(@task)
-      files.each do |filename|
+			files = create_attachments(@task)
+			files.each do |filename|
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
@@ -713,7 +712,7 @@ class TasksController < ApplicationController
 
     render :nothing => true
   end
-  
+
   def create_attachments(task)
          filenames = []
          unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
@@ -1763,17 +1762,23 @@ class TasksController < ApplicationController
       if Tag.exists?(:company_id => current_user.company_id, :name => params['tag-name'])
         
         @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
-        @tag.tasks.each do |t|
-          @existing.tasks << t
-        end 
-        @tag.destroy
+        if @existing.id != @tag.id
+          @tag.tasks.each do |t|
+            @existing.tasks << t
+          end 
+          @tag.destroy
+          render :update do |page|
+            page[@tag.dom_id].remove
+            @tag = @existing
+            page[@tag.dom_id].replace :partial => 'edit_tag_row'
+          end 
+        else
+          render :update do |page|
+            page[@tag.dom_id].replace :partial => 'edit_tag_row'
+          end 
 
-        render :update do |page|
-          page[@tag.dom_id].remove
-          @tag = @existing
-          page[@tag.dom_id].replace :partial => 'edit_tag_row'
         end 
-        
+
       else 
         @tag.name = params['tag-name']
         @tag.save
@@ -1784,10 +1789,17 @@ class TasksController < ApplicationController
     else 
       render :nothing => true
     end 
+  end
+
+  def get_comment
+    @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
+    if @task
+      @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
+    end 
   end 
 
   private
-  
+
   ###
   # Returns an array of tasks sorted according to the value
   # in the session.
@@ -1795,7 +1807,7 @@ class TasksController < ApplicationController
   def sort_tasks(tasks)
     sort_by = session[:sort].to_i
     res = tasks
-
+        
     if sort_by == 0 # default sorting
       res = current_user.company.sort(tasks)
     elsif sort_by == 1
@@ -1807,9 +1819,9 @@ class TasksController < ApplicationController
     elsif sort_by ==  4
       res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, - t.sort_rank,  -t.task_num] }.reverse
     end
-
+        
     return res
-  end
+        end
   ###
   # Returns a two element array containing the grouped tasks.
   # The first element is an in-order array of group ids / names
@@ -1818,7 +1830,7 @@ class TasksController < ApplicationController
   def group_tasks(tasks)
     group_ids = {}
     groups = []
-    
+        
     if session[:group_by].to_i == 1 # tags
       @tag_names = @all_tags.collect{|i,j| i}
       groups = Task.tag_groups(current_user.company_id, @tag_names, tasks)
@@ -1842,7 +1854,7 @@ class TasksController < ApplicationController
       elsif session[:filter_customer].to_i > 0
         pids = current_user.company.customers.find(session[:filter_customer]).projects.collect{|p| p.id}.join(',') rescue '0'
         filter = " AND project_id IN (#{pids})"
-      end
+                                                                                           end
       milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})#{filter} AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
       milestones.each { |m| group_ids[m.name + " / " + m.project.name] = m.id }
       group_ids['Unassigned'] = 0
@@ -1858,7 +1870,7 @@ class TasksController < ApplicationController
           res = t.users.collect(&:name).include? i
         else
           res = (_("Unassigned") == i)
-        end
+          end
         res
       }
     elsif session[:group_by].to_i == 7 # Status
@@ -1895,12 +1907,12 @@ class TasksController < ApplicationController
         group = (value and value == match_value)
         group ||= (value.nil? and match_value == unassigned)
         group
-      end
+        end
     else
       groups = [tasks]
-    end
+      end
 
 
     return [ group_ids, groups ]
+    end
   end
-end

@@ -5,7 +5,12 @@ class TimelineController < ApplicationController
 
     filter = ""
     work_log = false
-    
+    @filter_params = {}
+
+    [:filter_user, :filter_status, :filter_project, :filter_date].each do |fp|
+      @filter_params[fp] = params[fp] unless params[fp].blank?
+    end
+
     if( [EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i || params[:filter_status].nil? )
       filter << " AND event_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
       filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
@@ -21,9 +26,10 @@ class TimelineController < ApplicationController
       filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
     end 
 
-    if filter.length > 0 
+    if filter.length > 0
       work_log = true
     end
+
 
     case params[:filter_date].to_i
     when 1
@@ -44,17 +50,6 @@ class TimelineController < ApplicationController
     when 6
       # Last Year
       filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year.utc).to_s(:db)}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year.utc).to_s(:db)}'"
-    when 7
-      if filter[:stop_date] && filter[:start_date].length > 1
-        start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time
-        filter << " AND work_logs.started_at > '#{tz.utc_to_local(start_date).strftime("%Y-%m-%d 00:00:00")}'"
-      end
-      
-      if filter[:stop_date] && filter[:stop_date].length > 1
-        end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time
-        filter << " AND work_logs.started_at < '#{tz.utc_to_local(end_date).strftime("%Y-%m-%d 23:59:59")}'"
-      end
-      
     end
 
     if params[:filter_project].to_i > 0

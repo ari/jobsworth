@@ -1,10 +1,11 @@
 var lastElement = null;
 var lastPrefix = null;
 var lastColor = null;
-var tooltips = new Array;
-var tooltipids = new Array;
+var comments = new Hash();
 var last_shout = null;
 var show_tooltips = 1;
+var fetchTimeout = null;
+var fetchElement = null;
 
 function Hover(prefix, element) {
 }
@@ -38,10 +39,6 @@ Event.observe(window, "load", function(e) {
 });
 
 function tip(myEvent,tip){
-//  self.status=tip;
-
-
-
   var scrollposY=0;
   if (window.pageYOffset){
     scrollposY = window.pageYOffset;
@@ -51,6 +48,24 @@ function tip(myEvent,tip){
   }
   else if (document.getElementById("body").scrollTop){
     scrollposY = document.getElementById("body").scrollTop;
+  }
+
+
+  var el = Event.element(myEvent);
+  var taskId = null;
+  if( el.toString().include("tasks/edit/") ) {
+    var elements = el.toString().split("/");
+    taskId = elements[elements.size()-1];
+  }
+
+  if(taskId != null) {
+    var comment = comments.get(taskId);
+    if( comment != null && comment != "" ) {
+      var elements = comment.split("<br/>");
+      var author = elements.shift();
+
+      tip = tip.replace("</table>", "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr></table>");
+    }
   }
 
   document.getElementById("message").innerHTML= tip;
@@ -80,13 +95,38 @@ function tip(myEvent,tip){
   document.getElementById("tip").style.left = left +"px";
   document.getElementById("tip").style.zIndex=99;
   document.getElementById("tip").style.visibility="visible";
+
+  if( el.toString().include("tasks/edit/") && comments.get( taskId ) == null && fetchTimeout == null ) {
+    fetchElement = el;
+    fetchTimeout = setTimeout('fetchComment(fetchElement)', 1000);
+  }
 }
 
 function hide(e){
-        document.getElementById("tip").style.visibility="hidden";
-//        self.status="ClockingIT v0.99";
+  document.getElementById("tip").style.visibility="hidden";
+  if(fetchTimeout != null) {
+    clearTimeout(fetchTimeout);
+    fetchTimeout = null;
+    fetchElement = null;
+  }
 }
 
+function fetchComment(e) {
+  var elements = e.toString().split("/");
+  var taskId = elements[elements.size()-1];
+  new Ajax.Request('/tasks/get_comment/' + taskId, {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
+}
+
+function updateComment(taskId) {
+  if(taskId != null) {
+    var comment = comments.get(taskId);
+    if( comment != null && comment != "" ) {
+      var elements = comment.split("<br/>");
+      var author = elements.shift();
+      Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
+    }
+  }
+}
 
 function makeTooltips(show) {
   $$('.tooltip').each( function(el) {
@@ -328,6 +368,7 @@ function rebuildSelect(select, data) {
    select.options.length = 0;
    for( var i=0; i<data.length; i++ ) {
      select.options[i] = new Option(data[i].text,data[i].value,null,false);
+   }
 }
 
 function clearOtherDefaults(sender) {
