@@ -368,6 +368,7 @@ function rebuildSelect(select, data) {
    select.options.length = 0;
    for( var i=0; i<data.length; i++ ) {
      select.options[i] = new Option(data[i].text,data[i].value,null,false);
+   }
 }
 
 function clearOtherDefaults(sender) {

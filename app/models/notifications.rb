@@ -9,12 +9,7 @@ class Notifications < ActionMailer::Base
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
-    @recipients = ""
-    @recipients = [user.email] if user.receive_notifications > 0
-    @recipients += task.users.collect{ |u| u.email if u.receive_notifications > 0 } unless task.users.empty?
-    @recipients += task.watchers.collect{|w| w.email if w.receive_notifications > 0}
-    @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
-    @recipients.uniq!
+    @recipients = task.notification_email_addresses(user)
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
@@ -33,12 +28,7 @@ class Notifications < ActionMailer::Base
 
     @body       = {:task => task, :user => user, :change => change}
 
-    @recipients = ""
-    @recipients = [user.email] if user.receive_notifications > 0
-    @recipients += task.users.collect{ |u| u.email if u.receive_notifications > 0 } unless task.users.empty?
-    @recipients += task.watchers.collect{|w| w.email if w.receive_notifications > 0}
-    @recipients += task.notify_emails.split(',').collect{|e| e.strip} unless (task.notify_emails.nil? || task.notify_emails.length == 0)
-    @recipients.uniq!
+    @recipients = task.notification_email_addresses(user)
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at

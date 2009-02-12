@@ -114,7 +114,7 @@ class TasksController < ApplicationController
       @selected_tags = []
       @tasks = Task.find(:all, 
                          :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], 
-                         :include => [:users, :tags, :sheets, :todos, :dependencies, 
+                         :include => [:users, :tags, :sheets, :todos, :dependencies, { :task_property_values => { :property_value => :property } }, {:company => :properties}, 
                                       {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
     end
 
@@ -1762,17 +1762,23 @@ class TasksController < ApplicationController
       if Tag.exists?(:company_id => current_user.company_id, :name => params['tag-name'])
         
         @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
-        @tag.tasks.each do |t|
-          @existing.tasks << t
-        end 
-        @tag.destroy
+        if @existing.id != @tag.id
+          @tag.tasks.each do |t|
+            @existing.tasks << t
+          end 
+          @tag.destroy
+          render :update do |page|
+            page[@tag.dom_id].remove
+            @tag = @existing
+            page[@tag.dom_id].replace :partial => 'edit_tag_row'
+          end 
+        else
+          render :update do |page|
+            page[@tag.dom_id].replace :partial => 'edit_tag_row'
+          end 
 
-        render :update do |page|
-          page[@tag.dom_id].remove
-          @tag = @existing
-          page[@tag.dom_id].replace :partial => 'edit_tag_row'
         end 
-        
+
       else 
         @tag.name = params['tag-name']
         @tag.save
