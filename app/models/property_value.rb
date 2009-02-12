@@ -15,6 +15,6 @@ class PropertyValue < ActiveRecord::Base
   end
 
   def to_s
-    value
+    "#{ value }"
   end
 end
