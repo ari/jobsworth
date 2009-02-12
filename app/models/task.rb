@@ -813,6 +813,7 @@ class Task < ActiveRecord::Base
       recipients << user_who_made_change
     end
 
+    # add in watchers and users
     recipients += users.select { |u| u.receive_notifications? }
     recipients += watchers.select { |u| u.receive_notifications? }
     recipients = recipients.uniq.compact
@@ -826,7 +827,15 @@ class Task < ActiveRecord::Base
     end
 
     emails = recipients.map { |u| u.email }
-    emails = emails.uniq.compact
+
+    # add in notify emails
+    if !notify_emails.blank?
+      emails += notify_emails.split(",")
+    end
+    emails = emails.compact.map { |e| e.strip }
+
+    # and finally remove dupes 
+    emails = emails.uniq
 
     return emails
   end
