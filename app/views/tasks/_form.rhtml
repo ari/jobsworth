@@ -331,24 +331,19 @@ jQuery('#task_due_at').datepicker();
 	        	<input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
         	<span class="divider"></span>
 	        </div>
-        	
         <% end %>
 
-      </fieldset>
-
-			<% unless @task.dependants.empty? %>
-	      <fieldset id="task_dependants" style="padding-right:0;">
-	        <legend><%=_ "Depended on by"%></legend>
+		<% unless @task.dependants.empty? %>
+			<div style="clear:both">
+			<label for="dependants"><%=_ "Depended on by"%></label>
+			<% @task.dependants.each do |d| %>
+				<%= link_to_task(d) %><br/>
+			<% end %>
+			</div>
+		<% end %>
 	
-	        <% @task.dependants.each do |d| %>
+	</fieldset>
 	
-	        <div id="dep_<%=d.id%>">
-	        <div><% if d.done? %><img src="/images/tick.png" border="0"><% else %><img src="/images/spacer.gif" width="16px"><% end %><%= link_to_task(d) %></div>
-	        </div>
-	        <% end %>
-	
-	      </fieldset>
-	      
 	<fieldset id="task_attachments" style="padding-right:0;">
 		<legend><%=_ "Attachments" %></legend>
 		<% for file in @task.attachments %>
@@ -364,7 +359,7 @@ jQuery('#task_due_at').datepicker();
 	        
 		<label for="task_tmp_file"><%=_ 'Attach file' %></label>
 		<div id="upload_container">
-		<%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
+			<%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
 		</div>
 		<% if perms['comment'].empty? %>
 			<span style="float:left"><%= link_to_function _("Upload more files") do |page|
@@ -373,7 +368,6 @@ jQuery('#task_due_at').datepicker();
 		<% end %>
 	</fieldset>
 
-<% end %>
     </td>
 </tr>
 
