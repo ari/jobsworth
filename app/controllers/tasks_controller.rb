@@ -55,86 +55,15 @@ class TasksController < ApplicationController
       project_ids = session[:filter_project]
     end
 
-    filter = ""
-
-    if session[:filter_user].to_i > 0
-      task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
-      if task_ids == ''
-        filter = "tasks.id IN (0) AND "
-      else
-        filter = "tasks.id IN (#{task_ids}) AND "
-      end
-    elsif session[:filter_user].to_i < 0
-      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", current_user.company_id]).collect { |t| t.id }.join(',')
-      if not_task_ids == ''
-        filter = "tasks.id = 0 AND "
-      else
-        filter = "tasks.id IN (#{not_task_ids}) AND " if not_task_ids != ""
-      end
-    end
-
-    if session[:filter_milestone].to_i > 0
-      filter << "tasks.milestone_id = #{session[:filter_milestone]} AND "
-    elsif session[:filter_milestone].to_i < 0
-      filter << "(tasks.milestone_id IS NULL OR tasks.milestone_id = 0) AND "
-    end
-
-    unless session[:filter_status].to_i == -1 || session[:filter_status].to_i == -2
-      if session[:filter_status].to_i == 0
-        filter << "(tasks.status = 0 OR tasks.status = 1) AND "
-      elsif session[:filter_status].to_i == 2
-        filter << "(tasks.status > 1) AND "
-      else
-        filter << "tasks.status = #{session[:filter_status].to_i} AND "
-      end
-    end
-
-    if session[:filter_status].to_i == -2
-      filter << "tasks.hidden = 1 AND "
-    else
-      filter << "tasks.hidden = 0 AND "
-    end
-
-    if session[:hide_deferred].to_i > 0
-      filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND "
-    end 
-
-    unless session[:filter_customer].to_i == 0
-      filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
-    end
-
-    filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
-
     task_filter = TaskFilter.new(self, params)
-    @selected_tags = task_filter.selected_tags
-    if task_filter.filtering_by_tags?
-      @tasks = task_filter.tasks
-    else
-      # Looking for tasks based on filters
-      @selected_tags = []
-      @tasks = Task.find(:all, 
-                         :conditions => ["tasks.project_id IN (#{project_ids}) AND " + filter], 
-                         :include => [:users, :tags, :sheets, :todos, :dependencies, { :task_property_values => { :property_value => :property } }, {:company => :properties}, 
-                                      {:dependants => [:users, :tags, :sheets, :todos, { :project => :customer }, :milestone]}, { :project => :customer}, :milestone ])
-    end
-
-    # trim tasks based on custom properties
-    current_user.company.properties.each do |prop|
-      filter_value = session[prop.filter_name]
-      if filter_value.to_i > 0
-        @tasks = @tasks.delete_if do |t| 
-          val = t.property_value(prop)
-          val.nil? or val.id != filter_value.to_i
-             end
-      end
-        end
-
-
+    @selected_tags = task_filter.selected_tags || []
+    @tasks = task_filter.tasks
     @tasks = sort_tasks(@tasks)
+
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
     @group_ids, @groups = group_tasks(@tasks)
-    end
+  end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
