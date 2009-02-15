@@ -147,7 +147,7 @@
                   <td align=left class="page_header tooltip" width="100%" colspan="2" title="<%= _'Easy access to commonly needed information.'%>">
                     <div style="float:left;"><%=_ 'Notes'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div></td>
                 </tr>
-                        <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
+                <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
           <% for page in current_pages %>
                 <tr>
                   <td align=left class="pages_item" colspan=2><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></td>
@@ -158,7 +158,6 @@
             </td></tr>
           </table>
           </div></td>
-        </td>
       </tr>
     </table>
     
