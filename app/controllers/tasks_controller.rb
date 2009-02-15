@@ -105,10 +105,10 @@ class TasksController < ApplicationController
 
     filter << "(tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
 
-    if params[:tag] && params[:tag].length > 0
-      # Looking for tasks based on tags
-      @selected_tags = params[:tag].downcase.split(',').collect{|t| t.strip}
-      @tasks = Task.tagged_with(@selected_tags, { :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_user => session[:filter_user], :filter_milestone => session[:filter_milestone], :filter_status => session[:filter_status], :filter_customer => session[:filter_customer] })
+    task_filter = TaskFilter.new(self, params)
+    @selected_tags = task_filter.selected_tags
+    if task_filter.filtering_by_tags?
+      @tasks = task_filter.tasks
     else
       # Looking for tasks based on filters
       @selected_tags = []
