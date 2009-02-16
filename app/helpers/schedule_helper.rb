@@ -75,4 +75,35 @@ EOF
     cal << "            </tr>\n </tbody>\n</table>"
   end
 
+
+  ###
+  # Returns the html for the task filter fields on the gantt page.
+  ###
+  def gantt_filter
+    render(:partial => "common/tasks_filter", 
+           :locals => { 
+             :redirect_action => "gantt",
+             :hide_grouping => true,
+             :hide_colors => true,
+             :hide_icons => true,
+             :hide_organize => true,
+             :hide_hide_dependencies => true
+           })
+  end
+
+  ###
+  # Returns the html for the task filter fields on the schedule page .
+  ###
+  def schedule_filter
+    render(:partial => "common/tasks_filter", 
+           :locals => { 
+             :hide_grouping => true,
+             :hide_colors => true,
+             :hide_icons => true,
+             :hide_sorting => true,
+             :hide_organize => true,
+             :hide_hide_dependencies => true
+           })
+  end
+
 end

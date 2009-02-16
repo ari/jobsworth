@@ -424,7 +424,7 @@ class ApplicationController < ActionController::Base
 
     redir = params[:redirect_action]
     redir = "list" if redir.blank?
-    redirect_to(:action => redir)
+    redirect_to(:action => redir, :sss => "old")
   end
   
 end

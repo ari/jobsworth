@@ -57,6 +57,7 @@ if session[:view].nil?
       </select>
       <br/>
       
+      <% if !local_assigns[:hide_grouping] or !hide_grouping -%>
       <select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
         <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
         <%
@@ -67,7 +68,9 @@ if session[:view].nil?
          %>
          <%= options_for_select @group_by, session[:group_by] %>
       </select>
-
+      <% end -%>
+      
+      <% if !local_assigns[:hide_sorting] or !hide_sorting -%>
       <select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
         <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
         <%
@@ -75,18 +78,23 @@ if session[:view].nil?
            %>
         <%= options_for_select @sort, session[:sort] %>
       </select>
+      <% end -%>
 
+      <% if !local_assigns[:hide_colors] or !hide_colors -%>
       <select name="colors" id="colors" onchange="javascript:document.forms[1].submit();">
         <option value="0" class="select_default"><%= _("[Default colors]") %></option>
 	<% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
         <%= options_for_select(options, session[:colors]) %>
       </select>
+      <% end -%>
 
+      <% if !local_assigns[:hide_icons] or !hide_icons -%>
       <select name="icons" id="icons" onchange="javascript:document.forms[1].submit();">
         <option value="0" class="select_default"><%= _("[Default icons]") %></option>
 	<% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
         <%= options_for_select(options, session[:icons]) %>
       </select>
+      <% end -%>
 
       <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
 <br />
@@ -97,7 +105,10 @@ if session[:view].nil?
   <div id="more-filters" style="display:none;">
 <% end %>
 <%= render :partial => 'common/filter_property', :collection => current_user.company.properties %>
-<input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%></div>
+<% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
+<input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%>
+<% end -%>
+</div>
 </div>            
 </div>
 </form>
@@ -105,7 +116,7 @@ if session[:view].nil?
 <% end %>
 <div id="quick_add_container" style="display:none;"></div>
 
-<% if can_organize? %>
+<% if (!local_assigns[:hide_organize] or !hide_organize) and can_organize? %>
 <div style="float:right;">
   <small>
     <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>

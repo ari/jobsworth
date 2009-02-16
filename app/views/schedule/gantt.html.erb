@@ -7,7 +7,7 @@
   </tr>
   <tr>
     <td colspan="2" style="padding-top:0.3em;">
-	<%= render :partial => "common/tasks_filter", :locals => { :redirect_action => "gantt" } %>      
+       <%= gantt_filter %>
 	  <div id="gantt-save-revert" <%= " style=\"display:none;\"" unless @schedule_in_progress%>>
 	      <form method="post">
                 <div style="float:left;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state. Includes filtered tasks.'), :class => 'nolabel tooltip'} %>
