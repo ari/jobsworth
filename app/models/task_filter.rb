@@ -15,13 +15,14 @@ class TaskFilter
   # Any relevant params will be used to further filter the 
   # returned tasks.
   ###
-  def initialize(controller, params = {})
+  def initialize(controller, params, extra_conditions = "")
     @current_user = controller.current_user
     @company = @current_user.company
     @params = params
     @session = controller.session
     @tz = controller.tz
     @completed_milestone_ids = controller.completed_milestone_ids
+    @extra_conditions = extra_conditions
     
     if @session[:filter_project].to_i == 0
       @project_ids = controller.current_project_ids
@@ -70,10 +71,11 @@ class TaskFilter
     to_include << { :dependants => [:users, :tags, :sheets, :todos, 
                                     { :project => :customer }, :milestone ] }
 
-    conditions = [ "tasks.project_id IN (#{@project_ids}) AND " + filter ]
+    conditions = "tasks.project_id IN (#{@project_ids}) AND " + filter
+    conditions += " AND #{ @extra_conditions }" if @extra_conditions
 
     Task.find(:all, 
-              :conditions => conditions,
+              :conditions => [ conditions ],
               :include => to_include)
   end
 
