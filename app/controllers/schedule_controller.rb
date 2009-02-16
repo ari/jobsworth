@@ -524,47 +524,17 @@ class ScheduleController < ApplicationController
   end
   
   def gantt
-    if session[:filter_project].to_i == 0
-      project_ids = current_project_ids
-    else
-      project_ids = session[:filter_project]
-    end
+    task_filter = TaskFilter.new(self, params)
+    @tasks = task_filter.tasks
+    @displayed_tasks = @tasks
 
-    filter = ""
+    # @displayed_tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL #{filter}"])# , :order => sort)
 
-    if session[:filter_user].to_i > 0
-      task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
-      if task_ids == ''
-        filter << "AND tasks.id IN (0) "
-      else
-        filter << "AND tasks.id IN (#{task_ids}) "
-      end
-    elsif session[:filter_user].to_i < 0
-      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", current_user.company_id]).collect { |t| t.id }.join(',')
-      if not_task_ids == ''
-        filter << "AND tasks.id = 0 "
-      else
-        filter << "AND tasks.id IN (#{not_task_ids}) " if not_task_ids != ""
-      end
-    end
-
-    if session[:filter_milestone].to_i > 0
-      filter << "AND tasks.milestone_id = #{session[:filter_milestone]} "
-    elsif session[:filter_milestone].to_i < 0
-      filter << "AND (tasks.milestone_id IS NULL OR tasks.milestone_id = 0) "
-    end
-
-    unless session[:filter_customer].to_i == 0
-      filter << "AND projects.customer_id = #{session[:filter_customer]} "
-    end
-
-    @displayed_tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL #{filter}"])# , :order => sort)
-
-    if session[:ignore_hidden].to_i > 0
-      @tasks = @displayed_tasks
-    else 
-      @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"]) #, :order => sort)
-    end
+    # if session[:ignore_hidden].to_i > 0
+    #   @tasks = @displayed_tasks
+    # else 
+    #   @tasks = Task.find(:all, :include => [:milestone, :project, :users, :tags, :dependencies, :dependants], :conditions => ["tasks.project_id IN (#{project_ids})  AND projects.completed_at IS NULL AND (tasks.milestone_id NOT IN (#{completed_milestone_ids}) OR tasks.milestone_id IS NULL)  AND tasks.completed_at IS NULL"]) #, :order => sort)
+    # end
 
     # old sorting. is all of this necessary? it seems like the task.due_at method will
     # take care of most of this.

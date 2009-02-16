@@ -72,7 +72,7 @@ class TaskFilter
                                     { :project => :customer }, :milestone ] }
 
     conditions = "tasks.project_id IN (#{@project_ids}) AND " + filter
-    conditions += " AND #{ @extra_conditions }" if @extra_conditions
+    conditions += " AND #{ @extra_conditions }" if !@extra_conditions.blank?
 
     Task.find(:all, 
               :conditions => [ conditions ],
