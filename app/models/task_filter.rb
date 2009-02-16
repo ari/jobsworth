@@ -39,6 +39,7 @@ class TaskFilter
     if @tasks.nil?
       @tasks ||= (filtering_by_tags? ? tasks_by_tags : tasks_by_filters)
       @tasks = filter_by_properties(@tasks)
+      @tasks = sort_tasks(@tasks)
     end
 
     return @tasks
@@ -174,6 +175,29 @@ class TaskFilter
     end
 
     return tasks
+  end
+
+  ###
+  # Returns an array of tasks sorted according to the value
+  # in the session.
+  ### 
+  def sort_tasks(tasks)
+    sort_by = session[:sort].to_i
+    res = tasks
+        
+    if sort_by == 0 # default sorting
+      res = current_user.company.sort(tasks)
+    elsif sort_by == 1
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, - t.sort_rank,  -t.task_num] }
+    elsif sort_by ==  2
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, - t.sort_rank,  -t.task_num] }
+    elsif sort_by == 3
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, - t.sort_rank,  -t.task_num] }
+    elsif sort_by ==  4
+      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, - t.sort_rank,  -t.task_num] }.reverse
+    end
+        
+    return res
   end
 
 end

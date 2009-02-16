@@ -58,7 +58,6 @@ class TasksController < ApplicationController
     task_filter = TaskFilter.new(self, params)
     @selected_tags = task_filter.selected_tags || []
     @tasks = task_filter.tasks
-    @tasks = sort_tasks(@tasks)
 
     # Most popular tags, currently unlimited.
     @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
@@ -1675,28 +1674,6 @@ class TasksController < ApplicationController
 
   private
 
-  ###
-  # Returns an array of tasks sorted according to the value
-  # in the session.
-  ### 
-  def sort_tasks(tasks)
-    sort_by = session[:sort].to_i
-    res = tasks
-        
-    if sort_by == 0 # default sorting
-      res = current_user.company.sort(tasks)
-    elsif sort_by == 1
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, (t.due_date || 9999999999).to_i, - t.sort_rank,  -t.task_num] }
-    elsif sort_by ==  2
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.created_at.to_i, - t.sort_rank,  -t.task_num] }
-    elsif sort_by == 3
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.name.downcase, - t.sort_rank,  -t.task_num] }
-    elsif sort_by ==  4
-      res = tasks.sort_by{|t| [-t.completed_at.to_i, t.updated_at.to_i, - t.sort_rank,  -t.task_num] }.reverse
-    end
-        
-    return res
-        end
   ###
   # Returns a two element array containing the grouped tasks.
   # The first element is an in-order array of group ids / names

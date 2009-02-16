@@ -528,30 +528,6 @@ class ScheduleController < ApplicationController
     @tasks = task_filter.tasks
     @displayed_tasks = @tasks
 
-    # old sorting. is all of this necessary? it seems like the task.due_at method will
-    # take care of most of this.
-    # sort = "tasks.milestone_id IS NOT NULL, 
-    # tasks.milestone_id <> 0, 
-    # milestones.due_at IS NOT NULL desc, 
-    # milestones.due_at, 
-    # milestones.name, 
-    # tasks.due_at IS NOT NULL desc, 
-    # CASE WHEN (tasks.due_at IS NULL AND milestones.due_at IS NULL) THEN 1 ELSE 0 END, 
-    # CASE WHEN (tasks.due_at IS NULL AND tasks.milestone_id IS NOT NULL) THEN milestones.due_at ELSE tasks.due_at END, 
-    # tasks.priority + tasks.severity_id desc, 
-    # tasks.name"
-
-    @displayed_tasks = @displayed_tasks.sort_by do |t| 
-      array  = []
-      array << (t.due_at ? t.due_at.to_i : 9999999999)
-      array << (t.milestone ? t.milestone.name : "")
-      array << - current_user.company.rank_by_properties(t)
-      array << t.name
-
-      array
-    end
-
-
     
     @dates = { }
     
