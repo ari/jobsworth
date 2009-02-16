@@ -17,7 +17,7 @@
         </tr>
         <tr>
           <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
-	    <%= render :partial => "common/tasks_filter" %>
+	    <%= render(:partial => "common/tasks_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
           </td>
         </tr>
 

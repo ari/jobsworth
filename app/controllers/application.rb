@@ -422,9 +422,7 @@ class ApplicationController < ActionController::Base
     session[:last_project_id] = session[:filter_project]
     current_user.save
 
-    redir = params[:redirect_action]
-    redir = "list" if redir.blank?
-    redirect_to(:action => redir, :sss => "old")
+    redirect_to(params[:redirect_action])
   end
   
 end

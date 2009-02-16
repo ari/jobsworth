@@ -95,8 +95,13 @@ EOF
   # Returns the html for the task filter fields on the schedule page .
   ###
   def schedule_filter
+    redirect_params = {}
+    redirect_params[:month] = params[:month] if params[:month]
+    redirect_params[:year] = params[:year] if params[:year]
+
     render(:partial => "common/tasks_filter", 
            :locals => { 
+             :redirect_params => redirect_params,
              :hide_grouping => true,
              :hide_colors => true,
              :hide_icons => true,
