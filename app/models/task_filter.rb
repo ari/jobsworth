@@ -143,7 +143,7 @@ class TaskFilter
     if session[:filter_status].to_i == -2
       filter << "tasks.hidden = 1 AND "
     else
-      filter << "tasks.hidden = 0 AND "
+      filter << "(tasks.hidden = 0 OR tasks.hidden IS NULL) AND "
     end
 
     if session[:hide_deferred].to_i > 0

@@ -43,7 +43,7 @@ completed_task:
   due_at: null
   completed_at: <%= Time.now.utc.to_s(:db) %>
   duration: 60
-  hidden: null
+  hidden: 0
   milestone_id: null
   description: Just a normal Task
   company: cit
