@@ -2439,3 +2439,26 @@ input.scheduled {
 #wiki-toc h6 {
     display: none;
 }
+
+#content ul.tabs {
+border-bottom:1px solid #BBBBBB;
+font-family:"Lucida Grande",Verdana,sans-serif;
+font-size:80%;
+line-height:normal;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:1em 0;
+padding:4px 10px;
+white-space:nowrap;
+}
+
+#content ul.tabs li {
+background:transparent url(/images/tabs.gif) no-repeat scroll 100% 0;
+display:inline;
+list-style-image:none;
+list-style-position:outside;
+list-style-type:none;
+margin:0 10px 0 0;
+padding:4px 6px 4px 0;
+}

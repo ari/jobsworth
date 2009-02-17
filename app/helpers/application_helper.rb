@@ -541,7 +541,7 @@ END_OF_HTML
       class_names = []
       class_names << "first" if i == 0
       class_names << "last" if i == links.length - 1
-      class_names << "selected" if params.merge(url_opts) == params
+      class_names << "active" if params.merge(url_opts) == params
 
       res += content_tag(:li, link, :class => class_names.join(" "))
     end
