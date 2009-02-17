@@ -22,12 +22,21 @@ class ViewsController < ApplicationController
   end
 
   def edit
-    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    if current_user.admin?
+      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    else 
+      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    end 
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
   end
 
   def update
-    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    if current_user.admin?
+      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    else 
+      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    end 
+
     @view.attributes = params[:view]
     @view.shared = 0 if params[:view][:shared].nil?
     @view.auto_group = 0 unless params[:view][:auto_group]
@@ -74,7 +83,11 @@ class ViewsController < ApplicationController
   end
 
   def destroy
-    @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    if current_user.admin?
+      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    else 
+      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
+    end 
     flash['notice'] = _("View '%s' was deleted.", @view.name)
     @view.destroy
     redirect_from_last
