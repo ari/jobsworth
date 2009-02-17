@@ -221,4 +221,47 @@ class TaskTest < Test::Unit::TestCase
     assert_equal -2, @task.severity_id
     assert_equal 0, @task.priority
   end
+
+  def test_notification_email_addresses_returns_watchers_and_users
+    u1 = users(:admin)
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.users << u2
+    
+    emails = @task.notification_email_addresses
+    assert emails.include?(u1.email)
+    assert emails.include?(u2.email)
+  end
+
+  def test_notification_email_addresses_does_not_return_people_who_dont_want_notifications
+    u1 = users(:admin)
+    u1.receive_notifications = false
+    u1.save
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.users << u2
+    
+    emails = @task.notification_email_addresses
+    assert !emails.include?(u1.email)
+    assert emails.include?(u2.email)
+  end
+
+  def test_notification_email_addresses_respects_receive_own_notifications
+    u1 = users(:admin)
+    u1.receive_own_notifications = false
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.users << u2
+    
+    emails = @task.notification_email_addresses(u1)
+    assert !emails.include?(u1.email)
+    assert emails.include?(u2.email)
+
+    u1.receive_own_notifications = true
+    emails = @task.notification_email_addresses(u1)
+    assert emails.include?(u1.email)
+  end
 end
