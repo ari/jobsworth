@@ -119,7 +119,7 @@
 
                    views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
                    for view in views %>
-                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == current_user.id %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></td></tr>
+                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if(view.user_id == current_user.id || current_user.admin?)%><%= "[#{_('Shared')}]" if(view.user_id != current_user.id && !current_user.admin?)%></td></tr>
                    <% end %>
                 <tr><td colspan=2>&nbsp;</td></tr>
 	      <tr>
