@@ -525,6 +525,30 @@ END_OF_HTML
     show
   end
 
+  ###
+  # Returns the html for lis and links for the different task views.
+  ###
+  def task_view_links
+    links = []
+    links << [ "List", { :controller => "tasks", :action => "list" } ]
+    links << [ "Schedule", { :controller => "schedule", :action => "list" } ]
+    links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
+
+    res = ""
+    links.each_with_index do |opts, i|
+      name, url_opts = opts
+      link = link_to(name, url_opts)
+      class_names = []
+      class_names << "first" if i == 0
+      class_names << "last" if i == links.length - 1
+      class_names << "selected" if params.merge(url_opts) == params
+
+      res += content_tag(:li, link, :class => class_names.join(" "))
+    end
+
+    return res
+  end
+
 end
 
 

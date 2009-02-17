@@ -16,7 +16,7 @@ else
 end
 
 filter_count = 0
-if session[:view].nil?
+
 %>
   <% projects_and_milestones = current_user.projects.find(:all, :order => "projects.name, milestones.due_at, milestones.name", :conditions => "milestones.completed_at IS NULL", :include => [:milestones]).group_by{ |p| p.customer_id }.to_hash %>
 
@@ -118,9 +118,14 @@ if session[:view].nil?
 </div>
 </form>
 </fieldset>
-<% end %>
-<div id="quick_add_container" style="display:none;"></div>
 
+<div class="task_view_links">
+  <ul>
+    <%= task_view_links %>
+  </ul>
+</div>
+
+<div id="quick_add_container" style="display:none;"></div>
 <% if (!local_assigns[:hide_organize] or !hide_organize) and can_organize? %>
 <div style="float:right;">
   <small>
