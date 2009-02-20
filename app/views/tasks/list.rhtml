@@ -31,9 +31,9 @@
     <td valign="top" style="padding-right:0.5em;" id="tags">
       <table cellpadding=0 width="99%" cellspacing="0" class="content">
         <tr>
-          <td align="right" class="page_header" style="padding-left:1em;padding-right:1em;">
-            <div style="float:right;"><%=_ 'Tags' %></div>
-	    <% if current_user.admin? %><div style="float:left;"><a href="/tasks/tags">Edit</a></div><% end %>
+          <td align="left" class="page_header" style="padding-left:1em;">
+ 	    <% if current_user.admin? %><a href="/tasks/tags" style="float:right;">Edit</a><% end %>
+           <%=_ 'Tags' %>
           </td>
         </tr>
       <% unless @selected_tags.empty? %>

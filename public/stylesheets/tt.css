@@ -2441,24 +2441,34 @@ input.scheduled {
 }
 
 #content ul.tabs {
-border-bottom:1px solid #BBBBBB;
-font-family:"Lucida Grande",Verdana,sans-serif;
-font-size:80%;
-line-height:normal;
-list-style-image:none;
-list-style-position:outside;
-list-style-type:none;
-margin:1em 0;
-padding:4px 10px;
-white-space:nowrap;
+	border-bottom:1px solid #BBBBBB;
+	font-family:"Lucida Grande",Verdana,sans-serif;
+	font-size:80%;
+	line-height:normal;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:1em 0;
+	padding:4px 10px;
+	white-space:nowrap;
 }
 
 #content ul.tabs li {
-background:transparent url(/images/tabs.gif) no-repeat scroll 100% 0;
-display:inline;
-list-style-image:none;
-list-style-position:outside;
-list-style-type:none;
-margin:0 10px 0 0;
-padding:4px 6px 4px 0;
+	background:transparent url(/images/tabs.gif) no-repeat scroll 100% 0;
+	display:inline;
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+	margin:0 10px 0 0;
+	padding:4px 6px 4px 0;
 }
+
+#content ul.tabs li a {
+	margin: 0;
+	padding: 4px 0 4px 6px;
+	color: #423f54;
+	background:transparent url(/images/tabs.gif) no-repeat scroll 0 0;
+}
+
+	#content ul.tabs li a:hover { color: #222222; }
+	#content ul.tabs li.active a, #content ul.tabs li.active { font-weight: bold;  border-bottom: 1px solid #FFFFFF; }
