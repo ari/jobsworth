@@ -321,7 +321,7 @@ jQuery('#task_due_at').datepicker();
         <% end %>
 
         <% @task.dependencies.each do |d| %>
-        	<div class="dependency_no">
+        	<div id="dep_<%=d.id%>" class="dependency_no">
 	        <% if perms['prioritize'].empty? %>
 	            <a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/cross_small.png" class="close-cross" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
 	        <% end %>
