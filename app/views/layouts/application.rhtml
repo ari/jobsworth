@@ -106,54 +106,57 @@
 	    <table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
 
               <tr>
-                <td align="left" class="page_header tooltip" colspan="2" width="100%" title="<%= _'Custom saved filters showing a subset of your tasks'%>"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
+                <td align="left" class="page_header tooltip" width="100%" title="<%= _'Custom saved filters showing a subset of your tasks'%>"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),  :controller => 'views', :action => 'new' %></div></td>
 	      </tr>
 
-                <tr><td class="views_item" style="padding-top: 0.2em;" colspan="2"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
-                <tr><td class="views_item" colspan="2"><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
+                <tr><td class="views_item" style="padding-top: 0.2em;"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
+                <tr><td class="views_item"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
+                <tr><td class="views_item"><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
+                <tr><td class="views_item"><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
                 <% project_ids = current_project_ids %>
                 <% client_ids = current_projects.collect(&:customer_id).uniq.join(',')
                    client_ids = "0" if client_ids.nil? || client_ids.empty?
 
                    views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
                    for view in views %>
-                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if view.user_id == current_user.id %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></td></tr>
+                <tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if(view.user_id == current_user.id || current_user.admin?)%><%= "[#{_('Shared')}]" if(view.user_id != current_user.id && !current_user.admin?)%></td></tr>
                    <% end %>
-                <tr><td colspan=2>&nbsp;</td></tr>
-	      <tr>
-		 <td align="left" colspan="2" width="100%">
-		   <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
-		     <table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
-		       <tr>
-		         <td align="left" width="100%" class="page_header">
-		           <div class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
-			 </td>
-		       </tr>
-		       <tr>
-		         <td align="left" width="100%">
-				  <form method="post" onsubmit="return false;" id="worklog_form">
-		           <textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea>
-				  </form>
-		           <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
-			 </td>
-		       </tr>
-		     </table>
-		   </div>
-		 </td>
-	      </tr>
+                <tr><td>&nbsp;</td></tr>
+					      <tr>
+								 <td align="left" width="100%">
+								   <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
+								     <table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
+								       <tr>
+								         <td align="left" width="100%" class="page_header">
+								           <div class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
+									 </td>
+								       </tr>
+								       <tr>
+								         <td align="left" width="100%">
+										  <form method="post" onsubmit="return false;" id="worklog_form">
+								           <textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea>
+										  </form>
+								           <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
+									 </td>
+								       </tr>
+								     </table>
+								   </div>
+								 </td>
+					      </tr>
                 <tr>
-                  <td align=left class="page_header tooltip" width="100%" colspan="2" title="<%= _'Easy access to commonly needed information.'%>">
+                  <td align=left class="page_header tooltip" width="100%" title="<%= _'Easy access to commonly needed information.'%>">
                     <div style="float:left;"><%=_ 'Notes'%></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div></td>
                 </tr>
-                <tr><td colspan="2"><div style="height:0.2em;"></div></td></tr>
+                <tr><td ><div style="height:0.2em;"></div></td></tr>
           <% for page in current_pages %>
                 <tr>
-                  <td align=left class="pages_item" colspan=2><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></td>
+                  <td align=left class="pages_item"><%= link_to "#{page.name} / #{page.project.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></td>
                 </tr>
           <% end %>
-               <tr><td colspan=2></td></tr>
+               <tr><td>&nbsp;</td></tr>
+               <tr>
+							 	<td id="tag-block"></td>
+							 </tr>
               </table>
             </td></tr>
           </table>
