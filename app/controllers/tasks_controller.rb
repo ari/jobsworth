@@ -191,32 +191,22 @@ class TasksController < ApplicationController
       @task.dependency_attributes = params[:dependencies]
 
       create_attachments(@task)
-      
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_CREATED
-      if (!params[:comment].nil? && params[:comment].length > 0)
-        worklog.body =  CGI::escapeHTML(params[:comment])
-        worklog.comment = true
-      end 
+      worklog = WorkLog.create_for_task(task, current_user, params[:comment])
 
-      worklog.save
       if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
+        begin
+          Notifications::deliver_created(@task, current_user, params[:comment])
+        rescue
+          # TODO: why is this here? 
+          # If deliver_created throws an exception don't we want to know about it?
+        end
       end
 
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
 
       return if request.xhr?
-
       redirect_from_last
     else
       @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -1725,4 +1715,5 @@ class TasksController < ApplicationController
 
     return [ group_ids, groups ]
     end
-  end
+
+end
