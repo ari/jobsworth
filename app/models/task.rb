@@ -802,6 +802,43 @@ class Task < ActiveRecord::Base
   end
 
   ###
+  # Generate a cache key from all changing data
+  ###
+  def cache_expiry(current_user)
+    # due / completed ago
+    distance_in_minutes = 0
+    due_part = "0"
+    if done?
+      from_time = completed_at
+      to_time = Time.now.utc
+      distance_in_minutes = (((to_time - from_time).abs)/60).round
+    elsif due_date
+      from_time = Time.now.utc
+      to_time = due_date
+      distance_in_minutes = (((to_time - from_time).abs)/60).round
+    end 
+
+    if distance_in_minutes > 0
+      due_part = case distance_in_minutes
+                 when 0..1440     then "00"
+                 when 1441..2880   then "10"
+                 when 2881..10080  then "2#{(distance_in_minutes / 1440).round.to_s}"
+                 when 10081..20160 then "3#{(distance_in_minutes / 1440).round.to_s}"
+                 when 20161..43200 then "4#{(distance_in_minutes / 1440 / 7).round.to_s}"
+                 when 43201..86400 then "50"
+                 else "6#{(distance_in_minutes / 1440 / 30).round.to_s}"
+                 end
+    end 
+
+    worked_part = worked_on? ? "1#{worked_minutes}" : "0#{worked_minutes}"
+    config_part = current_user.show_type_icons? ? "1" : "0" 
+    config_part << current_user.option_tracktime.to_s
+    locale_part = current_user.locale.to_s
+
+    "#{locale_part}#{due_part}#{worked_part}#{config_part}"
+  end 
+
+  ###
   # Returns an array of email addresses of people who should be 
   # notified about changes to this task.
   ###
