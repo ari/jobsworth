@@ -876,4 +876,69 @@ class Task < ActiveRecord::Base
 
     return emails
   end
+
+  ###
+  # Sets the notifications and notify_emails for this task 
+  # based on watcher_params.
+  # Existing notifications will NOT be cleared by this method.
+  ###
+  def watchers_attributes=(watcher_params)
+    return if watcher_params.nil?
+
+    watcher_params.uniq.each do |elem|
+      elem.split(',').each do |w|
+        u = User.find_by_name(w, :conditions => [ "company_id = ?", 
+                                                  current_user.company_id])
+        if u # Found user
+          Notification.create(:user => u, :task => self)
+        else # Not a user, check for email address
+          if w.include?('@') && 
+              !(notify_emails && notify_emails.include?(w))
+            self.notify_emails ||= ""
+            self.notify_emails << "," unless self.notify_emails.empty?
+            self.notify_emails << w
+          end
+        end
+      end
+    end
+
+    self.save
+  end
+
+  ###
+  # Sets the owners of this task from owner_params.
+  # Existing owners will NOT be cleared by this method.
+  ###
+  def owner_attributes=(owner_params)
+    return if owner_params.nil?
+    
+    owner_params.each do |o|
+      next if o.to_i == 0
+      u = company.users.find(o.to_i)
+      TaskOwner.create(:user => u, :task => @task)
+    end
+  end
+
+  ###
+  # Sets the dependencies of this this from dependency_params.
+  # Existing dependencies will NOT be cleared by this method.
+  ###
+  def dependency_attributes=(dependency_params)
+    return if dependency_params.nil?
+
+    dependency_params.each do |d|
+      d.split(",").each do |dep|
+        dep.strip!
+        next if dep.to_i == 0
+
+        conditions = [ "project_id IN (#{current_project_ids}) " +
+                       " AND task_num = ?", dep ]
+        t = Task.find(:first, :conditions => conds)
+        self.dependencies << t if t
+      end
+    end
+
+    self.save
+  end
+
 end

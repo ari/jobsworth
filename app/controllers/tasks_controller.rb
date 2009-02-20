@@ -184,53 +184,11 @@ class TasksController < ApplicationController
     end
     
     if @task.save
-
       session[:last_project_id] = @task.project_id
-      
-      if params[:watchers]
-        params[:watchers].uniq.each do |elem|
-          elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
-            unless u.nil?
-              # Found user
-              n = Notification.new(:user => u, :task => @task)
-              n.save
-            else
-              # Not a user, check for email address
-              if w.include?('@') && !(@task.notify_emails && @task.notify_emails.include?(w))
-                @task.notify_emails ||= ""
-                @task.notify_emails << "," unless @task.notify_emails.empty?
-                @task.notify_emails << w
-              end
-            end
-          end
-        end
-        @task.save
-      end
 
-      if params[:users]
-        params[:users].each do |o|
-          next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
-          to = TaskOwner.new(:user => u, :task => @task)
-          to.save
-        end
-      end
-
-      if params[:dependencies]
-        params[:dependencies].each do |d|
-          deps = d.split(',')
-          deps.each do |dep|
-            dep.strip!
-            next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", dep])
-            unless t.nil?
-              @task.dependencies << t
-            end
-          end
-        end
-        @task.save
-      end
+      @task.watcher_attributes = params[:watchers]
+      @task.owner_attributes = params[:users]
+      @task.dependency_attributes = params[:dependencies]
 
       create_attachments(@task)
       
