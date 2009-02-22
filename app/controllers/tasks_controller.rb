@@ -186,18 +186,18 @@ class TasksController < ApplicationController
     if @task.save
       session[:last_project_id] = @task.project_id
 
-      @task.watcher_attributes = params[:watchers]
-      @task.owner_attributes = params[:users]
-      @task.dependency_attributes = params[:dependencies]
+      @task.set_watcher_attributes(params[:watchers], current_user)
+      @task.set_owner_attributes(params[:users])
+      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
 
       create_attachments(@task)
-      worklog = WorkLog.create_for_task(task, current_user, params[:comment])
+      worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
       if params['notify'].to_i == 1
         begin
           Notifications::deliver_created(@task, current_user, params[:comment])
         rescue
-          # TODO: why is this here? 
+          # TODO: (from BW) why is this here? 
           # If deliver_created throws an exception don't we want to know about it?
         end
       end
@@ -336,72 +336,9 @@ class TasksController < ApplicationController
         @task.repeat = nil
       end
 
-      @task.notifications.destroy_all if @task.notifications.size > 0
-      @task.notify_emails = nil
-      unless params[:watchers].nil?
-        params[:watchers].uniq.each do |elem|
-          elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
-            unless u.nil?
-              # Found user
-              n = Notification.new(:user => u, :task => @task)
-              n.save
-            else
-              # Not a user, check for email address
-              if w.include?('@')
-                @task.notify_emails ||= ""
-                @task.notify_emails << "," unless @task.notify_emails.empty?
-                @task.notify_emails << w
-              end
-            end
-          end
-        end
-      end
-
-      unless params[:users].nil?
-        @task.task_owners.destroy_all
-        params[:users].uniq.each do |o|
-          logger.info("Adding user #{o} to #{@task.id}")
-          next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
-          to = TaskOwner.new(:user => u, :task => @task)
-          to.save
-        end
-      end
-
-      if params[:dependencies]
-        
-        in_deps = []
-        new_dependencies = []
-
-        params[:dependencies].each do |d|
-          deps = d.split(',')
-          deps.each do |dep|
-            dep.strip!
-            next if [0, @task.id].include? dep.to_i
-            in_deps << [dep.to_i]
-          end
-        end
-        
-        in_deps.compact.uniq.each do |dep|
-          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
-          unless t.nil?
-            new_dependencies << t
-          end
-        end
-        
-        removed = @task.dependencies - new_dependencies
-        @task.dependencies.delete(removed) if removed.size > 0
-
-        added = (new_dependencies - @task.dependencies)
-        added.each do |a|
-          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a])
-          unless t.nil?
-            @task.dependencies << t
-          end
-        end
-        
-      end
+      @task.set_watcher_attributes(params[:watchers], current_user)
+      @task.set_owner_attributes(params[:users])
+      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id

@@ -880,10 +880,13 @@ class Task < ActiveRecord::Base
   ###
   # Sets the notifications and notify_emails for this task 
   # based on watcher_params.
-  # Existing notifications will NOT be cleared by this method.
+  # Existing notifications WILL be cleared by this method.
   ###
-  def watchers_attributes=(watcher_params)
+  def set_watcher_attributes(watcher_params, current_user)
     return if watcher_params.nil?
+
+    self.notifications.destroy_all
+    self.notify_emails = nil
 
     watcher_params.uniq.each do |elem|
       elem.split(',').each do |w|
@@ -907,37 +910,48 @@ class Task < ActiveRecord::Base
 
   ###
   # Sets the owners of this task from owner_params.
-  # Existing owners will NOT be cleared by this method.
+  # Existing owners WILL  be cleared by this method.
   ###
-  def owner_attributes=(owner_params)
+  def set_owner_attributes(owner_params)
     return if owner_params.nil?
-    
+
+    self.task_owners.destroy_all
+
     owner_params.each do |o|
       next if o.to_i == 0
       u = company.users.find(o.to_i)
-      TaskOwner.create(:user => u, :task => @task)
+      TaskOwner.create(:user => u, :task => self)
     end
   end
 
   ###
   # Sets the dependencies of this this from dependency_params.
-  # Existing dependencies will NOT be cleared by this method.
+  # Existing and unused dependencies WILL be cleared by this method.
   ###
-  def dependency_attributes=(dependency_params)
+  def set_dependency_attributes(dependency_params, project_ids)
     return if dependency_params.nil?
 
+    new_dependencies = []
     dependency_params.each do |d|
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
 
-        conditions = [ "project_id IN (#{current_project_ids}) " +
+        conditions = [ "project_id IN (#{ project_ids }) " +
                        " AND task_num = ?", dep ]
-        t = Task.find(:first, :conditions => conds)
-        self.dependencies << t if t
+        t = Task.find(:first, :conditions => conditions)
+        new_dependencies << t if t
       end
     end
 
+    removed = self.dependencies - new_dependencies
+    self.dependencies.delete(removed)
+
+    new_dependencies.each do |t|
+      existing = self.dependencies.detect { |d| d.id == t.id }
+      self.dependencies << t if !existing
+    end
+    
     self.save
   end
 
