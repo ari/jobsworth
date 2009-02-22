@@ -549,6 +549,17 @@ END_OF_HTML
     return res
   end
 
+  def task_unread_icon(task)
+    res = ""
+
+    if task.unread?(current_user)
+      img = image_tag("unread.png")
+      res = link_to_function(img, "toggleTaskUnread(this)");
+    end
+
+    return res
+  end
+
 end
 
 

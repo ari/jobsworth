@@ -980,6 +980,22 @@ class Task < ActiveRecord::Base
   end
 
   ###
+  # Sets this task as read for user.
+  # If read is passed, and false, sets the task
+  # as unread for user.
+  ###
+  def set_task_read(user, read = true)
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+    
+    user_notifications = notifications.select { |n| n.user = user }
+    user_notifications.each do |n|
+      n.update_attribute(:unread, !read)
+    end
+  end
+
+  ###
   # Returns true if this task is marked as unread for user.
   ###
   def unread?(user)

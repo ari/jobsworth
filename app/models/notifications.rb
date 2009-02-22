@@ -7,7 +7,7 @@ class Notifications < ActionMailer::Base
 
   def created(task, user, note = "", sent_at = Time.now)
     task.mark_as_unread
-
+ 
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 

@@ -1557,6 +1557,19 @@ class TasksController < ApplicationController
     end 
   end 
 
+  ###
+  # This action just sets the unread status for a task.
+  ###
+  def set_unread
+    task = Task.find(params[:id], 
+                     :conditions => "project_id IN (#{current_project_ids})")
+
+    read = params[:read] != "false"
+    task.set_task_read(current_user, read)
+
+    render :text => "", :layout => false
+  end
+
   private
 
   ###
