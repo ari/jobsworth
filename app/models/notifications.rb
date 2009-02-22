@@ -6,6 +6,8 @@ class Notifications < ActionMailer::Base
   require  File.join(File.dirname(__FILE__), '../../lib/misc')
 
   def created(task, user, note = "", sent_at = Time.now)
+    task.mark_as_unread
+
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
@@ -17,6 +19,8 @@ class Notifications < ActionMailer::Base
   end
 
   def changed(update_type, task, user, change, sent_at = Time.now)
+    task.mark_as_unread
+
     @subject = case update_type
                when :completed  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"
                when :status     then "#{$CONFIG[:prefix]} #{_'Status'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"

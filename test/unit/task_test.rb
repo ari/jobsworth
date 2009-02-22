@@ -264,4 +264,45 @@ class TaskTest < Test::Unit::TestCase
     emails = @task.notification_email_addresses(u1)
     assert emails.include?(u1.email)
   end
+
+  def test_mark_as_unread
+    u1 = users(:admin)
+    u1.receive_own_notifications = false
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.users << u2
+
+    @task.mark_as_unread
+
+    n = Notification.find(:first, :conditions => { 
+                            :user_id => u1.id, 
+                            :task_id => @task.id })
+    assert_not_nil n
+    assert n.unread?
+
+    o = TaskOwner.find(:first, :conditions => {
+                         :user_id => u2.id,
+                         :task_id => @task.id })
+    assert_not_nil n
+    assert o.unread?
+  end
+
+  def test_unread?
+    u1 = users(:admin)
+    u1.receive_own_notifications = false
+    u2 = users(:fudge)
+
+    @task.watchers << u1
+    @task.users << u2
+
+    n = Notification.find(:first, :conditions => { 
+                            :user_id => u1.id, 
+                            :task_id => @task.id })
+    n.unread = true
+    n.save
+
+    assert n.unread?
+    assert @task.unread?(u1)
+  end
 end

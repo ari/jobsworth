@@ -839,6 +839,19 @@ class Task < ActiveRecord::Base
   end 
 
   ###
+  # Returns an array of all users setup as owners or
+  # watchers of this task.
+  ###
+  def all_related_users
+    recipients = []
+    recipients += users
+    recipients += watchers
+    recipients = recipients.uniq.compact
+
+    return recipients
+  end
+
+  ###
   # Returns an array of email addresses of people who should be 
   # notified about changes to this task.
   ###
@@ -849,11 +862,8 @@ class Task < ActiveRecord::Base
         user_who_made_change.receive_notifications?
       recipients << user_who_made_change
     end
-
-    # add in watchers and users
-    recipients += users.select { |u| u.receive_notifications? }
-    recipients += watchers.select { |u| u.receive_notifications? }
-    recipients = recipients.uniq.compact
+    
+    recipients += all_related_users.select { |u| u.receive_notifications? }
 
     # remove them if they don't want their own notifications. 
     # do it here rather than at start of method in case they're 
@@ -955,4 +965,34 @@ class Task < ActiveRecord::Base
     self.save
   end
 
+  ###
+  # This method will mark this task as unread for any
+  # setup watchers or task owners.
+  ###
+  def mark_as_unread
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+
+    notifications.each do |n|
+      n.update_attribute(:unread, true)
+    end
+  end
+
+  ###
+  # Returns true if this task is marked as unread for user.
+  ###
+  def unread?(user)
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+    unread = false
+
+    user_notifications = notifications.select { |n| n.user = user }
+    user_notifications.each do |n|
+      unread ||= n.unread?
+    end
+
+    return unread
+  end
 end
