@@ -968,14 +968,19 @@ class Task < ActiveRecord::Base
   ###
   # This method will mark this task as unread for any
   # setup watchers or task owners.
+  # The exclude param should be a user or array of users whose unread
+  # status will not be updated. For example, the person who wrote a
+  # comment should probably be excluded.
   ###
-  def mark_as_unread
+  def mark_as_unread(exclude = [])
+    exclude = [ exclude ].flatten # make sure it's an array.
+
     # TODO: if we merge owners and notifications into one table, should
     # clean this up.
     notifications = self.notifications + self.task_owners
-
+    
     notifications.each do |n|
-      n.update_attribute(:unread, true)
+      n.update_attribute(:unread, true) if !exclude.include?(n.user)
     end
   end
 
@@ -989,7 +994,7 @@ class Task < ActiveRecord::Base
     # clean this up.
     notifications = self.notifications + self.task_owners
     
-    user_notifications = notifications.select { |n| n.user = user }
+    user_notifications = notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       n.update_attribute(:unread, !read)
     end
@@ -1004,7 +1009,7 @@ class Task < ActiveRecord::Base
     notifications = self.notifications + self.task_owners
     unread = false
 
-    user_notifications = notifications.select { |n| n.user = user }
+    user_notifications = notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end
