@@ -165,13 +165,18 @@ class TaskFilter
   def filter_by_properties(tasks)
     @company.properties.each do |prop|
       filter_value = session[prop.filter_name]
+      filter_values = [ filter_value ].flatten.compact
+      next if filter_values.empty?
 
-      if filter_value.to_i > 0
-        tasks = tasks.delete_if do |t| 
+      to_keep = []
+      filter_values.each do |fv|
+        to_keep += tasks.select do |t|
           val = t.property_value(prop)
-          val.nil? or val.id != filter_value.to_i
+          val and val.id == fv.to_i
         end
       end
+
+      tasks = to_keep.uniq
     end
 
     return tasks

@@ -1,8 +1,10 @@
 <% 
-   filter_value = session[filter_property.filter_name].to_i
+   filter_values = session[filter_property.filter_name]
+   filter_values = [ filter_values ].flatten
+   filter_values = filter_values.map { |v| v.to_i }
 -%>
 
-<select name="<%= filter_property.filter_name %>" id="<%= filter_property.filter_name %>" 
+<select name="<%= filter_property.filter_name %>[]" id="<%= filter_property.filter_name %>" 
 	onchange="javascript:document.forms[1].submit();" 
 	class="tooltip multiselect" 
           title="<%=_('Only show tasks with this property value')%>"
@@ -14,6 +16,8 @@
     <%= "[#{_('Any %s', filter_property.name)}]" %>
   </option>
 
-  <%= options_from_collection_for_select(filter_property.property_values, "id", "value", filter_value) %>
+  <% filter_property.property_values.each do |pv| %>
+    <%= content_tag(:option, pv.value, :value => pv.id, :selected => filter_values.include?(pv.id)) %>
+  <% end %>
 </select>
 

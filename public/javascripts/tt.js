@@ -398,9 +398,7 @@ jQuery(document).ready(function() {
 	    noneSelected : elem.options[0].text,
 	    oneOrMoreSelected : "*"
 	};
-	jQuery(elem).multiSelect(options, function() {
-	    elem.onchange();
-	});
+	jQuery(elem).multiSelect(options, elem.onchange);
     }
 });
 
