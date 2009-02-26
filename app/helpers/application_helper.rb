@@ -3,7 +3,7 @@ module ApplicationHelper
 
   require_dependency 'digest/md5'
 
-  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-]*(\?\S+)?)?)?)/i
+  URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-:\+]*(\?\S+)?)?)?)/i
 
   include Misc
 
@@ -321,11 +321,11 @@ module ApplicationHelper
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{h(task.name.chars[0..80])}</a>"
+    "<strong>#{task.issue_num}</strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{h(task.name.chars[0..80])}</a>"
   end
 
   def link_to_task_with_highlight(task, keys)
-    "<strong><small>#{task.issue_num}</small></strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task.css_classes}", :title => highlight_all(task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user }), keys)})
+    "<strong>#{task.issue_num}</strong> " + link_to( highlight_all(h(task.name), keys), {:controller => 'tasks', :action => 'edit', :id => task.id}, {:class => "tooltip#{task.css_classes}", :title => highlight_all(task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user }), keys)})
   end
 
   def milestone_classes(m)
