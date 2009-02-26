@@ -244,15 +244,32 @@ body, p, ol, ul, td, tr {
 .task.unread .task-name a {
   font-weight: bold;
 }
+
+
 .unread_icon {
   cursor: pointer;
   float: left;
-  margin-left: 2px;
+  margin-left: -75px;
   margin-top: 4px;
 }
-.unread_icon img {
-  border: 0px;
+  
+.unread_icon a {
+	display: block;
+	width: 12px;
+	height: 12px;
+	/**/
+	background-color: #000000;
+  background-image: url(../images/unread.png);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
 }
+
+.unread .unread_icon a	{ background-position: top left; }
+
+.unread_icon span {
+  display: none;
+}
+
 
 .closed {
 

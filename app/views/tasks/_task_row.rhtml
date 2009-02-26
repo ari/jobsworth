@@ -93,7 +93,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    <% end -%>
    </div>
   <div class="unread_icon">
-    <%= task_unread_icon(task) %>
+  	<a href="#" onclick="toggleTaskUnread(this); return false;"><span>*</span></a>
   </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>

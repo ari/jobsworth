@@ -392,15 +392,14 @@ jQuery(document).ready(function() {
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
  */
-function toggleTaskUnread(sender) {
-    sender = jQuery(sender);
+function toggleTaskUnread(icon) {
+    var task = jQuery(icon).parents(".task");
     
-    sender.hide();
-    var task = sender.parents(".task");
-    task.removeClass("unread");
+    var unread = task.hasClass("unread");
+    task.toggleClass("unread");
 
     var taskId = task.attr("id").replace("task_", "");
-    var parameters = { "id" : taskId, "read" : true };
+    var parameters = { "id" : taskId, "read" : unread };
 
     jQuery.post("/tasks/set_unread",  parameters);
 }
