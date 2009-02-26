@@ -411,11 +411,6 @@ class ApplicationController < ActionController::Base
       session[filter] = params[filter]
     end
 
-    current_user.company.properties.each do |prop|
-      filter = prop.filter_name
-      session[filter] = params[filter]
-    end
-
     current_user.last_filter = session[:filter_hidden]
     current_user.last_milestone_id = session[:filter_milestone]
     current_user.last_project_id = session[:filter_project]
