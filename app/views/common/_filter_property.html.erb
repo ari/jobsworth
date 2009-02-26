@@ -4,7 +4,12 @@
 
 <select name="<%= filter_property.filter_name %>" id="<%= filter_property.filter_name %>" 
 	onchange="javascript:document.forms[1].submit();" 
-	class="tooltip" title="<%=_('Only show tasks with this property value')%>">>
+	class="tooltip multiselect" 
+          title="<%=_('Only show tasks with this property value')%>"
+          multiple="multiple"
+          >
+        
+
   <option value="" class="select_default">
     <%= "[#{_('Any %s', filter_property.name)}]" %>
   </option>

@@ -28,7 +28,7 @@ filter_count = 0
       -%>
       <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
       
-      <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();">
+      <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
         <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
 	
         <% @clients.each do |c| %>
@@ -46,13 +46,13 @@ filter_count = 0
         <% end -%>
         <% end %>
       </select>
-      <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
+      <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
         <option value="0" class="select_default"><%= _("[Any User]") %></option>
         <%= options_for_select @users, session[:filter_user] %>
         <option value="-1" class="select_default"<%= " selected" if session[:filter_user].to_i == -1 %>><%= _("[Unassigned]") %></option>
       </select>
       
-      <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
+      <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
         <option value="-1" class="select_default"><%= _("[Any Status]") %></option>
 	
         <%

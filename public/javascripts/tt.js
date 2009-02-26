@@ -381,11 +381,27 @@ function clearOtherDefaults(sender) {
     });
 }
 
-// move the tags block to the right[#left_menu] menu
 jQuery(document).ready(function() {
-	jQuery('#tags').hide();
-	var tagsHTML = jQuery('#tags').html();
-	jQuery('#tag-block').html(tagsHTML);
+    // move the tags block to the right[#left_menu] menu
+    jQuery('#tags').hide();
+    var tagsHTML = jQuery('#tags').html();
+    jQuery('#tag-block').html(tagsHTML);
+
+    // initialize any multi select fields
+    // NB. Seem to need to do it one-by-one to get noneSelected
+    // option to work properly. Feel free to change it if you want.
+    var multis = jQuery(".multiselect");
+    for (var i = 0; i < multis.length; i++) {
+	var elem = multis[i];
+	var options = {
+	    selectAll : false,
+	    noneSelected : elem.options[0].text,
+	    oneOrMoreSelected : "*"
+	};
+	jQuery(elem).multiSelect(options, function() {
+	    elem.onchange();
+	});
+    }
 });
 
 /*
