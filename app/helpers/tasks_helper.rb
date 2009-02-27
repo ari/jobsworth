@@ -28,8 +28,9 @@ module TasksHelper
       filters << Project.find(session[:filter_project].to_i).name
     end
 
-    if session[:filter_user].to_i > 0
-      filters << User.find(session[:filter_user].to_i).name
+    TaskFilter.filter_user_ids(session, false).each do |id|
+      next if id == 0
+      filters << User.find(id).name
     end
 
     filters << current_user.company.name if filters.empty?
@@ -68,9 +69,12 @@ module TasksHelper
       shown = session[:filter_project].to_i == t.project_id if shown
     end
 
-    if session[:filter_user].to_i > 0 && shown
-      shown = t.users.collect(&:id).include?( session[:filter_user].to_i ) if shown
-    elsif session[:filter_user].to_i < 0 && shown
+    user_ids = TaskFilter.filter_user_ids(session, false)
+    if shown && user_ids.any?
+      task_user_ids = t.users.map { |u| u.id }
+      overlap = task_user_ids - user_ids
+      shown = overlap.any?
+    elsif shown && TaskFilter.filter_user_ids(session, true).any?
       shown = t.users.empty?
     end
 

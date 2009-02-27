@@ -3,8 +3,24 @@
 # in session.
 ###
 class TaskFilter
+  UNASSIGNED_TASKS = -1
+
   attr_accessor :session
   attr_accessor :current_user
+
+  ###
+  # Returns an array of user_ids which have been set as filters
+  # in the given session.
+  ###
+  def self.filter_user_ids(session, include_unassigned = true)
+    # When using views, session[:filter_user] will be an int.
+    # When using filter selects, it will be an array.
+    # We want it to always be an array, so convert it here:
+    ids = [ session[:filter_user] ].flatten.compact
+    ids = ids.map { |id| id.to_i }
+    ids.delete(-1) if !include_unassigned
+    return ids
+  end
 
   ###
   # Create a new task filter.
@@ -108,21 +124,8 @@ class TaskFilter
   def filter
     filter = ""
 
-    if session[:filter_user].to_i > 0
-      task_ids = User.find(session[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
-      if task_ids == ''
-        filter = "tasks.id IN (0) AND "
-      else
-        filter = "tasks.id IN (#{task_ids}) AND "
-      end
-    elsif session[:filter_user].to_i < 0
-      not_task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :readonly => false, :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", current_user.company_id]).collect { |t| t.id }.join(',')
-      if not_task_ids == ''
-        filter = "tasks.id = 0 AND "
-      else
-        filter = "tasks.id IN (#{not_task_ids}) AND " if not_task_ids != ""
-      end
-    end
+    
+    filter = filter_by_user
 
     if session[:filter_milestone].to_i > 0
       filter << "tasks.milestone_id = #{session[:filter_milestone]} AND "
@@ -203,6 +206,34 @@ class TaskFilter
     end
         
     return res
+  end
+
+  ###
+  # Returns a string to use for filtering the task to display
+  # based on the filter_user value in session.
+  ###
+  def filter_by_user
+    users = TaskFilter.filter_user_ids(session)
+    return "" if users.empty?
+
+    task_ids = []
+    users.each do |id|
+      if id > 0
+        u = User.find(id)
+        task_ids += u.tasks.map { |t| t.id }
+      elsif id == UNASSIGNED_TASKS
+        join = "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id"
+        conditions = ["tasks.company_id = ? AND t_o.id IS NULL", @company.id ]
+        unassigned =  Task.find(:all, :select => "tasks.*", 
+                                :joins => join,
+                                :readonly => false, 
+                                :conditions => conditions)
+        task_ids += unassigned.map { |t| t.id }
+      end
+    end
+
+    task_ids = [ "0" ] if task_ids.empty?
+    return "tasks.id IN (#{ task_ids.join(", ") }) AND "
   end
 
 end
