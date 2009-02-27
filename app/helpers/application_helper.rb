@@ -555,25 +555,27 @@ END_OF_HTML
   ###
   def task_filter_options
     res = content_tag(:option, _("[All Tasks]"), :value => 0, :class => "select_default")
-    filter_ids = [ session[:filter] ].flatten.compact
+    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
 
     current_user.company.customers.each do |customer|
       projects = customer.projects
       next if projects.empty?
 
       res += content_tag(:option, customer.name, :value => "c#{ customer.id }", 
-                         :class => "select_heading", :selected => filter_ids.include?("c#{ customer.id }"))
+                         :class => "select_heading", :selected => customer_ids.include?(customer.id))
       projects.each do |project|
         res += content_tag(:option, "&nbsp&nbsp;#{ project.name }", :value => "p#{ project.id }", 
-                           :class => "select_item", :selected => filter_ids.include?("p#{ project.id }"))
+                           :class => "select_item", :selected => project_ids.include?(project.id))
         project.milestones.each do |milestone|
           res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ milestone.name }", 
                              :value => "m#{ milestone.id }", :class => "select_subitem",
-                             :selected => filter_ids.include?("m#{ milestone.id }"))
+                             :selected => milestone_ids.include?(milestone.id))
         end
         res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ _("[Unassigned]") }", 
                            :value => "u#{ project.id }", :class => "select_default select_subitem",
-                           :selected => filter_ids.include?("u#{ project.id }"))
+                           :selected => milestone_ids.include?(- project.id - 1))
       end
     end
 

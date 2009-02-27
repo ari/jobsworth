@@ -399,7 +399,7 @@ class ApplicationController < ActionController::Base
         # "milestones that are unassigned in the project with that id"
         # We need to subtract 1 more as -1 is used by views to signify any unassigned
         # milestone.
-        milestones << - (id.to_i - 1) if code == "u"
+        milestones << - (id.to_i + 1) if code == "u"
       end
         
       session[:filter_customer] = customers

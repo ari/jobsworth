@@ -34,8 +34,7 @@ filter_count = 0
       p<%= session[:filter_project] %>p
       m<%= session[:filter_milestone] %>m
       c<%= session[:filter_customer] %>c
-
-      x<%= TaskFilter.filter_ids(session, :filter_milestone) %>x
+      <%= TaskFilter.filter_ids(session, :filter_project).include?(1) %>
 
       <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"> <!-- multiple="multiple"> class="multiselect">-->
 	<%= task_filter_options %>
