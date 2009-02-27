@@ -2502,3 +2502,7 @@ input.scheduled {
 
 	#content ul.tabs li a:hover { color: #222222; }
 	#content ul.tabs li.active a, #content ul.tabs li.active { font-weight: bold;  border-bottom: 1px solid #FFFFFF; }
+
+.multiSelectOptions {
+    background-color: white;
+}
