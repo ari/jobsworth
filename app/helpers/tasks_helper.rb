@@ -75,11 +75,11 @@ module TasksHelper
     end
 
     user_ids = TaskFilter.filter_user_ids(session, false)
-    if shown && user_ids.any?
+    all_users = user_ids.delete(TaskFilter::ALL_USERS)
+    if shown and !all_users and user_ids.any?
       task_user_ids = t.users.map { |u| u.id }
-      overlap = task_user_ids - user_ids
-      shown = overlap.any?
-    elsif shown && TaskFilter.filter_user_ids(session, true).any?
+      shown = user_ids.detect { |id| task_user_ids.include?(id) }
+    elsif shown and !all_users and TaskFilter.filter_user_ids(session, true).any?
       shown = t.users.empty?
     end
 

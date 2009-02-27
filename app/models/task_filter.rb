@@ -4,6 +4,7 @@
 ###
 class TaskFilter
   UNASSIGNED_TASKS = -1
+  ALL_USERS = 0
 
   attr_accessor :session
   attr_accessor :current_user
@@ -210,7 +211,7 @@ class TaskFilter
   ###
   def filter_by_user
     users = TaskFilter.filter_user_ids(session)
-    return "" if users.empty?
+    return "" if users.empty? or users.include?(ALL_USERS)
 
     task_ids = []
     users.each do |id|

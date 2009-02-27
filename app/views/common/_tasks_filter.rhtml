@@ -46,10 +46,11 @@ filter_count = 0
         <% end -%>
         <% end %>
       </select>
+      x<%= TaskFilter.filter_user_ids(session) %>x
       <select name="filter_user[]" id="filter_user" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
         <option value="0" class="select_default"><%= _("[Any User]") %></option>
         <%= options_for_select @users, session[:filter_user] %>
-        <option value="-1" class="select_default"<%= " selected" if session[:filter_user] == -1 %>><%= _("[Unassigned]") %></option>
+        <option value="-1" class="select_default"<%= " selected" if TaskFilter.filter_user_ids(session).include?(-1) %>><%= _("[Unassigned]") %></option>
       </select>
       
       <select name="filter_status[]" id="filter_status" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
