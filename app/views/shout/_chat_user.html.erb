@@ -1,5 +1,6 @@
 <div class="presence-section<%= " presence-section-pending" if( @chat.chat_messages.size > 0 && @chat.chat_messages.first.id > @chat.last_seen )%>" id="presence-<%= @user.dom_id %>">
-  <div id="presence-<%= @user.dom_id%>-popup" class="presence-popup" style="display:none;">
+  <div id="presence-<%= @user.dom_id%>-popup" class="presence-shadow" style="display:none;">
+  <div class="presence-popup">
     <div style="background-color: #eee; border-bottom:1px solid #ccc; font-size:14px; padding: 3px; font-weight:bold;">
       <div><%= "<img src=\"#{@user.avatar_url(32)}\" class=\"photo\" />" %> <%= h @user.name %></div>
       <% unless @chat.chat_messages.blank? && @chat.archived_messages.blank?%>
@@ -23,6 +24,7 @@
 	<img src="/images/comments.png" style="" border="0" /><input name="chat[<%= @user.id %>]" id="chat-<%= @user.dom_id %>" type="text" style="width:90%;border:none;background-color:#fff;" maxlength="255">
       </form>
     </div>
+  </div>
   </div>
   
   <div class="presence-bar-text" style="padding-left: 0.5em;float:right;"><a href="#" onclick="$('presence-<%=@user.dom_id%>').remove();new Ajax.Request('/shout/chat_close/presence-<%=@user.dom_id%>', {asynchronous:true, evalScripts:true});return false;">
