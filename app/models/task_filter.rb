@@ -37,10 +37,13 @@ class TaskFilter
 
   ###
   # Returns an array of ids set as filter in the given session and name.
+  # If passed, all_values_id_to_remove should be the value used to represent
+  # all values for this filter, and will be removed from the returned list.
   ###
-  def self.filter_ids(session, filter_name)
+  def self.filter_ids(session, filter_name, all_values_id_to_remove = nil)
     ids = [session[filter_name.to_sym] ].flatten.compact
     ids = ids.map { |id| id.to_i }
+    ids.delete(all_values_id_to_remove) if all_values_id_to_remove
     return ids
   end
 

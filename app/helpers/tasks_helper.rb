@@ -23,17 +23,16 @@ module TasksHelper
     end
 
     TaskFilter.filter_ids(session, :filter_customer).each do |id|
-      filters << Customer.find(id).name
+      filters << Customer.find(id).name unless id == TaskFilter::ALL_CUSTOMERS
     end
 
     
     TaskFilter.filter_ids(session, :filter_project).each do |id|
-      filters << Project.find(id).name
+      filters << Project.find(id).name unless id == TaskFilter::ALL_PROJECTS
     end
 
     TaskFilter.filter_user_ids(session, false).each do |id|
-      next if id == 0
-      filters << User.find(id).name
+      filters << User.find(id).name unless id == TaskFilter::ALL_USERS
     end
 
     filters << current_user.company.name if filters.empty?
@@ -47,7 +46,6 @@ module TasksHelper
   end
 
   def task_shown?(t)
-
     shown = true
 
     # N.B. Is this still necessary? It seems like the deciding which 
@@ -63,17 +61,17 @@ module TasksHelper
     #   end
     # end
 
-    milestones = TaskFilter.filter_ids(session, :filter_milestone)
+    milestones = TaskFilter.filter_ids(session, :filter_milestone, TaskFilter::ALL_MILESTONES)
     if shown and milestones.any?
       shown = milestones.include?(t.milestone_id)
     end
 
-    customers = TaskFilter.filter_ids(session, :filter_customer)
+    customers = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
     if shown and customers.any?
       shown = customers.include?(t.project.customer_id)
     end
 
-    projects = TaskFilter.filter_ids(session, :filter_project)
+    projects = TaskFilter.filter_ids(session, :filter_project, TaskFilter::ALL_PROJECTS)
     if shown and projects.any?
       shown = projects.include?(t.project.id)
     end
