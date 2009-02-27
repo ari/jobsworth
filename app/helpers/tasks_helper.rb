@@ -14,8 +14,10 @@ module TasksHelper
   def print_title
     filters = []
     title = "<div style=\"float:left\">"
-    if session[:filter_status].to_i >= 0
-      title << " #{_'%s tasks', Task.status_types[session[:filter_status].to_i]} ["
+    status_ids = TaskFilter.filter_status_ids(session)
+    if status_ids.any?
+      statuses = status_ids.map { |id| Task.status_types[id] }
+      title << " #{ _('%s tasks', statuses.join(", ")) } ["
     else
       title << "#{_'Tasks'} ["
     end
@@ -28,8 +30,9 @@ module TasksHelper
       filters << Project.find(session[:filter_project].to_i).name
     end
 
-    if session[:filter_user].to_i > 0
-      filters << User.find(session[:filter_user].to_i).name
+    TaskFilter.filter_user_ids(session, false).each do |id|
+      next if id == 0
+      filters << User.find(id).name
     end
 
     filters << current_user.company.name if filters.empty?
@@ -46,15 +49,18 @@ module TasksHelper
 
     shown = true
 
-    if session[:filter_status].to_i >= 0
-      if session[:filter_status].to_i == 0
-        shown = ( t.status == 0 || t.status == 1 ) if shown
-      elsif session[:filter_status].to_i == 2
-        shown = t.status > 1 if shown
-      else
-        shown = session[:filter_status].to_i == t.status if shown
-      end
-    end
+    # N.B. Is this still necessary? It seems like the deciding which 
+    # tasks is already done in the controller.
+
+    # if session[:filter_status].to_i >= 0
+    #   if session[:filter_status].to_i == 0
+    #     shown = ( t.status == 0 || t.status == 1 ) if shown
+    #   elsif session[:filter_status].to_i == 2
+    #     shown = t.status > 1 if shown
+    #   else
+    #     shown = session[:filter_status].to_i == t.status if shown
+    #   end
+    # end
 
     if session[:filter_milestone].to_i > 0 && shown
       shown = session[:filter_milestone].to_i == t.milestone_id if shown
@@ -68,9 +74,12 @@ module TasksHelper
       shown = session[:filter_project].to_i == t.project_id if shown
     end
 
-    if session[:filter_user].to_i > 0 && shown
-      shown = t.users.collect(&:id).include?( session[:filter_user].to_i ) if shown
-    elsif session[:filter_user].to_i < 0 && shown
+    user_ids = TaskFilter.filter_user_ids(session, false)
+    all_users = user_ids.delete(TaskFilter::ALL_USERS)
+    if shown and !all_users and user_ids.any?
+      task_user_ids = t.users.map { |u| u.id }
+      shown = user_ids.detect { |id| task_user_ids.include?(id) }
+    elsif shown and !all_users and TaskFilter.filter_user_ids(session, true).any?
       shown = t.users.empty?
     end
 
