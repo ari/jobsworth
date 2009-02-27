@@ -19,9 +19,6 @@ context "Schedule" do
   end 
 
   specify "/list should display and assign some tasks" do
-    # need to set status to allow open tasks:
-    @request.session[:filter_status] = -1
-
     get :list
     status.should_be :success
 
