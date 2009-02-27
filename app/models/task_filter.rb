@@ -76,7 +76,7 @@ class TaskFilter
     if project_ids.include?(ALL_PROJECTS) or project_ids.empty?
       @project_ids = controller.current_project_ids
     else
-      @project_ids = @session[:filter_project].join(", ")
+      @project_ids = project_ids.join(", ")
     end
 
   end
