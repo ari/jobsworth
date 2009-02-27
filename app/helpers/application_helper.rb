@@ -549,6 +549,37 @@ END_OF_HTML
     return res
   end
 
+  ###
+  # Returns the html to display options for the select used to filter tasks 
+  # by project, customer and milestone.
+  ###
+  def task_filter_options
+    res = content_tag(:option, _("[All Tasks]"), :value => 0, :class => "select_default")
+    filter_ids = [ session[:filter] ].flatten.compact
+
+    current_user.company.customers.each do |customer|
+      projects = customer.projects
+      next if projects.empty?
+
+      res += content_tag(:option, customer.name, :value => "c#{ customer.id }", 
+                         :class => "select_heading", :selected => filter_ids.include?("c#{ customer.id }"))
+      projects.each do |project|
+        res += content_tag(:option, "&nbsp&nbsp;#{ project.name }", :value => "p#{ project.id }", 
+                           :class => "select_item", :selected => filter_ids.include?("p#{ project.id }"))
+        project.milestones.each do |milestone|
+          res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ milestone.name }", 
+                             :value => "m#{ milestone.id }", :class => "select_subitem",
+                             :selected => filter_ids.include?("m#{ milestone.id }"))
+        end
+        res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ _("[Unassigned]") }", 
+                           :value => "u#{ project.id }", :class => "select_default select_subitem",
+                           :selected => filter_ids.include?("u#{ project.id }"))
+      end
+    end
+
+    return res
+  end
+
 end
 
 

@@ -1,14 +1,18 @@
 <%
-   @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
-
-if session[:filter_customer].to_i > 0
-  @all_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{session[:filter_customer]} AND completed_at IS NULL"])
+   customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+   if customer_ids.any?
+  @all_projects = current_user.projects.find(:all, 
+              :conditions => ["customer_id in (#{ customer_ids.join(",") }) AND completed_at IS NULL"])
 else
   @all_projects = current_user.projects
 end
 
-if session[:filter_project].to_i > 0
-  @users = Project.find(:first, :order => "name", :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_project]]).users.collect {|c| [ c.name, c.id.to_s ] }
+project_ids = TaskFilter.filter_ids(session, :filter_project)
+if project_ids.any?
+  projects = Project.find(:first, :order => "name", :conditions => 
+                          [ "company_id = ? AND id in (?)", current_user.company_id, "#{ project_ids.join(",") }" ])
+  @users = []
+  @users += projects.users.map {|c| [ c.name, c.id.to_s ] }
 else
   @user_ids = ProjectPermission.find(:all, :conditions => ["project_id IN (?)", @all_projects.collect{|p| p.id}] ).collect{|pp| pp.user_id }.uniq
   @user_ids = [0] if @user_ids.size == 0
@@ -18,7 +22,6 @@ end
 filter_count = 0
 
 %>
-  <% projects_and_milestones = current_user.projects.find(:all, :order => "projects.name, milestones.due_at, milestones.name", :conditions => "milestones.completed_at IS NULL", :include => [:milestones]).group_by{ |p| p.customer_id }.to_hash %>
 
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;"><legend><%= _'Filter'%></legend>
     <form action="setup_task_filters" method="post" style="margin:0;padding:0;">      <% 
@@ -28,24 +31,16 @@ filter_count = 0
       -%>
       <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
       
-      <select name="filter" id="filter" onchange="javascript:document.forms[1].submit();"> <!--  multiple="multiple" class="multiselect"> -->
-        <option value="0" class="select_default"><%= _("[All Tasks]") %></option>
-	
-        <% @clients.each do |c| %>
-        <% unless projects_and_milestones[c[1].to_i].blank? %>
-        <option value="c<%=c[1]%>" class="select_heading"<%= " selected" if c[1].to_i == session[:filter_customer].to_i %>><%= c[0] %></option>
-        <% projects_and_milestones[c[1].to_i].each do |p| %>
-        <option value="p<%= p.id %>" class="select_item"<%= " selected" if( p.id == session[:filter_project].to_i && -1 != session[:filter_milestone].to_i) %>>&nbsp;&nbsp;<%= p.name %></option>
-        <% unless p.milestones.blank? %>
-        <% p.milestones.each do |m| -%>
-        <option value="m<%=m.id%>" class="select_subitem"<%= " selected" if m.id == session[:filter_milestone].to_i%>>&nbsp;&nbsp;&nbsp;&nbsp;<%= m.name %></option>
-        <% end -%>
-        <option value="u<%=p.id%>" class="select_default select_subitem"<%= " selected" if session[:filter_milestone].to_i == -1 && session[:filter_project].to_i == p.id %>>&nbsp;&nbsp;&nbsp;&nbsp;<%= _("[Unassigned]") -%></option>
-        <% end %>
-        <% end -%>
-        <% end -%>
-        <% end %>
+      p<%= session[:filter_project] %>p
+      m<%= session[:filter_milestone] %>m
+      c<%= session[:filter_customer] %>c
+
+      x<%= TaskFilter.filter_ids(session, :filter_milestone) %>x
+
+      <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"> <!-- multiple="multiple"> class="multiselect">-->
+	<%= task_filter_options %>
       </select>
+
       <select name="filter_user[]" id="filter_user" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
         <option value="0" class="select_default"><%= _("[Any User]") %></option>
         <%= options_for_select @users, session[:filter_user] %>

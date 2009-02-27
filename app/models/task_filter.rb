@@ -5,6 +5,11 @@
 class TaskFilter
   UNASSIGNED_TASKS = -1
   ALL_USERS = 0
+  ALL_TASKS = 0
+  ALL_MILESTONES = 0
+  ALL_CUSTOMERS = 0
+  ALL_PROJECTS = 0
+  
 
   attr_accessor :session
   attr_accessor :current_user
@@ -13,13 +18,12 @@ class TaskFilter
   # Returns an array of user_ids which have been set as filters
   # in the given session.
   ###
-  def self.filter_user_ids(session, include_unassigned = true)
+  def self.filter_user_ids(session, unassigned_to_remove = nil)
     # When using views, session[:filter_user] will be an int.
     # When using filter selects, it will be an array.
     # We want it to always be an array, so convert it here:
-    ids = [ session[:filter_user] ].flatten.compact
-    ids = ids.map { |id| id.to_i }
-    ids.delete(-1) if !include_unassigned
+    ids = filter_ids(session, :filter_user)
+    ids.delete(unassigned_to_remove) if unassigned_to_remove
     return ids
   end
 
@@ -28,9 +32,23 @@ class TaskFilter
   # in the given session.
   ###
   def self.filter_status_ids(session)
-    ids = [ session[:filter_status] ].flatten.compact
+    return filter_ids(session, :filter_status)
+  end
+
+  ###
+  # Returns an array of ids set as filter in the given session and name.
+  ###
+  def self.filter_ids(session, filter_name)
+    ids = [session[filter_name.to_sym] ].flatten.compact
     ids = ids.map { |id| id.to_i }
     return ids
+  end
+
+
+  ###
+  # Returns an array of projects 
+  ###
+  def self.filter_projects(session)
   end
 
   ###
@@ -51,10 +69,11 @@ class TaskFilter
     @completed_milestone_ids = controller.completed_milestone_ids
     @extra_conditions = extra_conditions
     
-    if @session[:filter_project].to_i == 0
+    project_ids = TaskFilter.filter_ids(@session, :filter_project)
+    if project_ids.include?(ALL_PROJECTS) or project_ids.empty?
       @project_ids = controller.current_project_ids
     else
-      @project_ids = @session[:filter_project]
+      @project_ids = @session[:filter_project].join(", ")
     end
 
   end
@@ -137,25 +156,17 @@ class TaskFilter
 
     
     filter = filter_by_user
-
-    if session[:filter_milestone].to_i > 0
-      filter << "tasks.milestone_id = #{session[:filter_milestone]} AND "
-    elsif session[:filter_milestone].to_i < 0
-      filter << "(tasks.milestone_id IS NULL OR tasks.milestone_id = 0) AND "
-    end
-
+    filter << filter_by_milestone
     filter << filter_by_status
+    filter << filter_by_customer
 
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
     end 
 
-    unless session[:filter_customer].to_i == 0
-      filter << "tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", session[:filter_customer]]).collect(&:id).compact.join(',') }) AND "
-    end
+    filter << "(tasks.milestone_id NOT IN (#{@completed_milestone_ids}) OR tasks.milestone_id IS NULL) AND "
 
-    filter << "(tasks.milestone_id NOT IN (#{@completed_milestone_ids}) OR tasks.milestone_id IS NULL) "
-
+    filter = filter.gsub(/( AND )$/, "")
     return filter
   end
 
@@ -262,4 +273,53 @@ class TaskFilter
     status_values = "(#{ status_values }) AND " if !status_values.blank?
     return "#{ status_values } (#{ hidden }) AND "
   end
+
+  ###
+  # Returns a string to use for filtering the task to display
+  # based on the filter_milestone value in session.
+  ###
+  def filter_by_milestone
+    res = ""
+
+    milestones = TaskFilter.filter_ids(session, :filter_milestone)
+    if milestones.any? and !milestones.include?(ALL_MILESTONES)
+      unassigned = milestones.delete_if { |id| id < 0 }
+      filters = []
+      if milestones.any?
+        filters << "tasks.milestone_id in (#{ milestones.join(", ") }) "
+      end
+      
+      unassigned.each do |id|
+        project_id = -id + 1 # see note in application.rb#setup_task_filters
+        filters << "tasks.project_id = project_id and (tasks.milestone_id is null or tasks.milestone_id = 0)"
+      end
+      
+      res = filters.map { |f| "#{ f }" }.join(" OR ")
+      res = "(#{ res }) AND " if !res.blank?
+    end
+    
+    return res
+  end
+
+  ###
+  # Returns a string to use for filtering the task to display
+  # based on the filter_customer value in session.
+  ###
+  def filter_by_customer
+    ids = TaskFilter.filter_ids(session, :filter_customer)
+    return "" if ids.include?(ALL_CUSTOMERS) or ids.empty?
+
+    project_ids = []
+    ids.each do |id|
+      customer = Customer.find(id)
+      project_ids += customer.projects.map { |p| p.id }
+    end
+
+    if project_ids.empty?
+      return ""
+    else
+      return "tasks.project_id IN (#{ project_ids.join(", ") }) AND "
+    end
+  end
+
 end

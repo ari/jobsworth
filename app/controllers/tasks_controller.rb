@@ -49,7 +49,9 @@ class TasksController < ApplicationController
     @tags = {}
     @tags.default = 0
     @tags_total = 0
-    if session[:filter_project].to_i == 0
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+
+    if project_ids.include?(0) or project_ids.empty?
       project_ids = current_project_ids
     else
       project_ids = session[:filter_project]

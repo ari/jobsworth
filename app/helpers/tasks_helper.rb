@@ -22,12 +22,13 @@ module TasksHelper
       title << "#{_'Tasks'} ["
     end
 
-    if session[:filter_customer].to_i > 0
-      filters << Customer.find(session[:filter_customer].to_i).name
+    TaskFilter.filter_ids(session, :filter_customer).each do |id|
+      filters << Customer.find(id).name
     end
 
-    if session[:filter_project].to_i > 0
-      filters << Project.find(session[:filter_project].to_i).name
+    
+    TaskFilter.filter_ids(session, :filter_project).each do |id|
+      filters << Project.find(id).name
     end
 
     TaskFilter.filter_user_ids(session, false).each do |id|
@@ -62,16 +63,19 @@ module TasksHelper
     #   end
     # end
 
-    if session[:filter_milestone].to_i > 0 && shown
-      shown = session[:filter_milestone].to_i == t.milestone_id if shown
+    milestones = TaskFilter.filter_ids(session, :filter_milestone)
+    if shown and milestones.any?
+      shown = milestones.include?(t.milestone_id)
     end
 
-    if session[:filter_customer].to_i > 0 && shown
-      shown = session[:filter_customer].to_i == t.project.customer_id if shown
+    customers = TaskFilter.filter_ids(session, :filter_customer)
+    if shown and customers.any?
+      shown = customers.include?(t.project.customer_id)
     end
 
-    if session[:filter_project].to_i > 0 && shown
-      shown = session[:filter_project].to_i == t.project_id if shown
+    projects = TaskFilter.filter_ids(session, :filter_project)
+    if shown and projects.any?
+      shown = projects.include?(t.project.id)
     end
 
     user_ids = TaskFilter.filter_user_ids(session, false)
