@@ -23,6 +23,16 @@ class TaskFilter
   end
 
   ###
+  # Returns an array of status ids which have been set as filters
+  # in the given session.
+  ###
+  def self.filter_status_ids(session)
+    ids = [ session[:filter_status] ].flatten.compact
+    ids = ids.map { |id| id.to_i }
+    return ids
+  end
+
+  ###
   # Create a new task filter.
   #
   # controller should be the ActionController object that is using
@@ -133,21 +143,7 @@ class TaskFilter
       filter << "(tasks.milestone_id IS NULL OR tasks.milestone_id = 0) AND "
     end
 
-    unless session[:filter_status].to_i == -1 || session[:filter_status].to_i == -2
-      if session[:filter_status].to_i == 0
-        filter << "(tasks.status = 0 OR tasks.status = 1) AND "
-      elsif session[:filter_status].to_i == 2
-        filter << "(tasks.status > 1) AND "
-      else
-        filter << "tasks.status = #{session[:filter_status].to_i} AND "
-      end
-    end
-
-    if session[:filter_status].to_i == -2
-      filter << "tasks.hidden = 1 AND "
-    else
-      filter << "(tasks.hidden = 0 OR tasks.hidden IS NULL) AND "
-    end
+    filter << filter_by_status
 
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
@@ -236,4 +232,33 @@ class TaskFilter
     return "tasks.id IN (#{ task_ids.join(", ") }) AND "
   end
 
+  ###
+  # Returns a string to use for filtering the task to display
+  # based on the filter_status value in session.
+  ###
+  def filter_by_status
+    ids = TaskFilter.filter_status_ids(session)
+    status_values = []
+    hidden = "(tasks.hidden = 0 OR tasks.hidden IS NULL)"
+
+    if ids.include?(0)
+      status_values << "tasks.status = 0"
+      status_values << "tasks.status = 1"
+      ids.delete(0)
+    end
+    if ids.include?(2)
+      status_values << "tasks.status > 1"
+      ids.delete(2)
+    end
+    if ids.include?(-2)
+      hidden = "tasks.hidden = 1"
+      ids.delete(-2)
+    end
+
+    # the other values can be used untouched 
+    status_values += ids.map { |id| "tasks.status = #{ id }" }
+    status_values = status_values.join(" OR ")
+    status_values = "(#{ status_values }) AND " if !status_values.blank?
+    return "#{ status_values } (#{ hidden }) AND "
+  end
 end

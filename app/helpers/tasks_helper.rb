@@ -14,8 +14,10 @@ module TasksHelper
   def print_title
     filters = []
     title = "<div style=\"float:left\">"
-    if session[:filter_status].to_i >= 0
-      title << " #{_'%s tasks', Task.status_types[session[:filter_status].to_i]} ["
+    status_ids = TaskFilter.filter_status_ids(session)
+    if status_ids.any?
+      statuses = status_ids.map { |id| Task.status_types[id] }
+      title << " #{ _('%s tasks', statuses.join(", ")) } ["
     else
       title << "#{_'Tasks'} ["
     end
@@ -47,15 +49,18 @@ module TasksHelper
 
     shown = true
 
-    if session[:filter_status].to_i >= 0
-      if session[:filter_status].to_i == 0
-        shown = ( t.status == 0 || t.status == 1 ) if shown
-      elsif session[:filter_status].to_i == 2
-        shown = t.status > 1 if shown
-      else
-        shown = session[:filter_status].to_i == t.status if shown
-      end
-    end
+    # N.B. Is this still necessary? It seems like the deciding which 
+    # tasks is already done in the controller.
+
+    # if session[:filter_status].to_i >= 0
+    #   if session[:filter_status].to_i == 0
+    #     shown = ( t.status == 0 || t.status == 1 ) if shown
+    #   elsif session[:filter_status].to_i == 2
+    #     shown = t.status > 1 if shown
+    #   else
+    #     shown = session[:filter_status].to_i == t.status if shown
+    #   end
+    # end
 
     if session[:filter_milestone].to_i > 0 && shown
       shown = session[:filter_milestone].to_i == t.milestone_id if shown
