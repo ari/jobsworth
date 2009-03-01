@@ -242,7 +242,8 @@ function reset_owners() {
       <label for="task_requested_by"><%=_ 'Requested By' %></label>
       <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %><br/>
 
-        <label for="notification-input"><%= _"Notify" %></label><input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
+        <label for="notification-input"><%= _"Notify" %>&nbsp;&nbsp;<small><a href="#" onclick="javascript:updateList('<%= current_user.name %>');false">add me</a></small></label>
+        <input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
         <div style="clear:both; display:none;" id="notification-autocomplete"></div>
         <div style="clear:both;" id="notifications"></div>
 <script type="text/javascript">

@@ -4,6 +4,8 @@ javascripts:
   - prototype
   - jquery
   - jquery-ui
+  - jqueryDimensions
+  - jqueryMultiSelect
   - shadowbox
   - effects
   - dragdrop
@@ -28,4 +30,5 @@ stylesheets:
 - tt:
   - calendar-system
   - ui-datepicker
+  - jqueryMultiSelect
   - tt
