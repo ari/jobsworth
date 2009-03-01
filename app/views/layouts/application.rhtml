@@ -1,6 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <%= javascript_include_merged :base %>
@@ -35,19 +33,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <% @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company_id, current_user.company.name ]) %>
 
-<style type="text/css">
-<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-<%= @internal.css %>
-<% end %>
-<% unless current_user.option_floating_chat %>
-#presence {
-      position:relative;
-}
-<% end %>
-</style>
+	<style type="text/css">
+	<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
+	<%= @internal.css %>
+	<% end %>
+	<% unless current_user.option_floating_chat %>
+	#presence {
+	      position:relative;
+	}
+	<% end %>
+	</style>
 </head>
 <body id="body" style="height:100%;">
-  <div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
+	<div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
     <div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;max-width:600px;"><table border="0"><tr><td style="" id="message"><br/></td></tr></table></div>
     <div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
     <table width="100%" cellspacing="0" cellpadding="0">
@@ -95,13 +93,11 @@
             <table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
           </div>
 
-          <div class="content_body" style="margin-left: 4px; margin-right: 4px; padding-top: 0pt;"><div style="background-color: rgb(238, 238, 238);"><span style="border-color: rgb(238, 238, 238); border-width: 1px 2px 0px; border-top: 1px solid rgb(238, 238, 238); overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 0px; font-size: 1px; margin-left: 3px; margin-right: 3px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 2px; margin-right: 2px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 1px; font-size: 1px; margin-left: 1px; margin-right: 1px;"></span><span style="border-style: solid; border-color: rgb(238, 238, 238); border-width: 0px 1px; overflow: hidden; background-color: rgb(255, 255, 255); display: block; height: 2px; font-size: 1px; margin-left: 0px; margin-right: 0px;"></span></div><div style="border-left: 1px solid rgb(238, 238, 238); border-right: 1px solid rgb(238, 238, 238);">
-          <table width="100%" id="main-table">
-          <tr><td valign="top" id="main_col" style="height:100%;">
-          <%= @content_for_layout %>
-          </td>
-          <td id="right-menu-collapse" class="open" onclick="new Ajax.Request('/activities/toggle_menu', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;">&nbsp;</td>
-          <td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
+		<div class="content_body">
+		<table width="100%" id="main-table">
+			<tr><td valign="top" id="main_col" style="height:100%;"><%= @content_for_layout %></td>
+			<td id="right-menu-collapse" class="open" onclick="new Ajax.Request('/activities/toggle_menu', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;">&nbsp;</td>
+			<td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
 	    <table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
 
               <tr>
@@ -159,7 +155,7 @@
               </table>
             </td></tr>
           </table>
-          </div></td>
+          </td>
       </tr>
     </table>
     
