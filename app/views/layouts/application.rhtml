@@ -187,11 +187,11 @@
 	    </div>
 	  </div>
 	</div>
-	<div id="contact" style="padding-left:0.3em;border-top:1px solid #ccc;"><small><em>Clocking IT v0.99.3<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
+	<div id="contact" style="padding-left:0.3em;border-top:1px solid #ccc;"><small><em>Clocking IT<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
       </div>
     </div>
   <% else %>
-    <div id="contact" style="padding-left:0.3em;padding-top:1em;"><small><em>Clocking IT v0.99.3<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
+    <div id="contact" style="padding-left:0.3em;padding-top:1em;"><small><em>Clocking IT<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
   <% end %>
 
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
