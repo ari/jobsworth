@@ -1,5 +1,5 @@
 <%
-   customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+   customer_ids = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
    if customer_ids.any?
   @all_projects = current_user.projects.find(:all, 
               :conditions => ["customer_id in (#{ customer_ids.join(",") }) AND completed_at IS NULL"])
@@ -22,7 +22,6 @@ end
 filter_count = 0
 
 %>
-
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;"><legend><%= _'Filter'%></legend>
     <form action="setup_task_filters" method="post" style="margin:0;padding:0;">      <% 
           redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
@@ -30,12 +29,6 @@ filter_count = 0
           redir = url_for(redir_params.merge(:action => redir_action))
       -%>
       <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
-      
-      p<%= session[:filter_project] %>p
-      m<%= session[:filter_milestone] %>m
-      c<%= session[:filter_customer] %>c
-      a<%= TaskFilter.filter_ids(session, :filter_milestone).select { |id| id < 0 } %>a
-
       <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
 	<%= task_filter_options %>
       </select>
