@@ -49,12 +49,6 @@ class TaskFilter
 
 
   ###
-  # Returns an array of projects 
-  ###
-  def self.filter_projects(session)
-  end
-
-  ###
   # Create a new task filter.
   #
   # controller should be the ActionController object that is using
@@ -121,7 +115,7 @@ class TaskFilter
     to_include << { :dependants => [:users, :tags, :sheets, :todos, 
                                     { :project => :customer }, :milestone ] }
 
-    conditions = "tasks.project_id IN (#{@project_ids}) AND " + filter
+    conditions = filter
     conditions += " AND #{ @extra_conditions }" if !@extra_conditions.blank?
 
     Task.find(:all, 
@@ -157,17 +151,23 @@ class TaskFilter
   def filter
     filter = ""
 
-    
     filter = filter_by_user
-    filter << filter_by_milestone
     filter << filter_by_status
-    filter << filter_by_customer
+
+    or_filters = []
+    or_filters << filter_by_milestone
+    or_filters << filter_by_customer
+    or_filters.delete_if { |f| f.blank? }
+    filter << "(#{ or_filters.join(" OR ") }) AND " if !or_filters.empty?
 
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
     end 
 
     filter << "(tasks.milestone_id NOT IN (#{@completed_milestone_ids}) OR tasks.milestone_id IS NULL) AND "
+    # NB need this to be at the end in case filter_by_milestone adds in new 
+    # projects.
+    filter << "tasks.project_id IN (#{ @project_ids }) AND "
 
     filter = filter.gsub(/( AND )$/, "")
     return filter
@@ -286,19 +286,22 @@ class TaskFilter
 
     milestones = TaskFilter.filter_ids(session, :filter_milestone)
     if milestones.any? and !milestones.include?(ALL_MILESTONES)
-      unassigned = milestones.delete_if { |id| id < 0 }
+      unassigned = milestones.select { |id| id < 0 }
+      milestones -= unassigned
+
       filters = []
       if milestones.any?
+        milestone_projects = milestones.map{ |m| Milestone.find(m).project_id }
+        @project_ids += "," + milestone_projects.uniq.join(", ")
         filters << "tasks.milestone_id in (#{ milestones.join(", ") }) "
       end
       
       unassigned.each do |id|
-        project_id = -id + 1 # see note in application.rb#setup_task_filters
-        filters << "tasks.project_id = project_id and (tasks.milestone_id is null or tasks.milestone_id = 0)"
+        project_id = -(id + 1) # see note in application.rb#setup_task_filters
+        filters << "tasks.project_id = #{ project_id } and (tasks.milestone_id is null or tasks.milestone_id = 0)"
       end
       
       res = filters.map { |f| "#{ f }" }.join(" OR ")
-      res = "(#{ res }) AND " if !res.blank?
     end
     
     return res
@@ -321,7 +324,7 @@ class TaskFilter
     if project_ids.empty?
       return ""
     else
-      return "tasks.project_id IN (#{ project_ids.join(", ") }) AND "
+      return "tasks.project_id IN (#{ project_ids.join(", ") }) "
     end
   end
 

@@ -32,7 +32,7 @@ module TasksHelper
     end
 
     TaskFilter.filter_user_ids(session, false).each do |id|
-      filters << User.find(id).name unless id == TaskFilter::ALL_USERS
+      filters << User.find(id).name if id != TaskFilter::ALL_USERS and id > 0
     end
 
     filters << current_user.company.name if filters.empty?
@@ -46,11 +46,11 @@ module TasksHelper
   end
 
   def task_shown?(t)
-    shown = true
-
+    return true
     # N.B. Is this still necessary? It seems like the deciding which 
-    # tasks is already done in the controller.
+    # tasks is already done in the controller. BW
 
+    # shown = true
     # if session[:filter_status].to_i >= 0
     #   if session[:filter_status].to_i == 0
     #     shown = ( t.status == 0 || t.status == 1 ) if shown
@@ -72,6 +72,7 @@ module TasksHelper
     end
 
     projects = TaskFilter.filter_ids(session, :filter_project, TaskFilter::ALL_PROJECTS)
+    projects += milestones.map { |m| Milestone.find(m).project_id }
     if shown and projects.any?
       shown = projects.include?(t.project.id)
     end
