@@ -311,7 +311,6 @@ Localization.define('il_IL') do |l|
   l.store "Improvement", "שיפור"
   l.store "In Progress", "בתהליך עבודה"
   l.store "Information", "מידע"
-  l.store "Let me know", "ספרו לי"
   l.store "Linked from", "קושר מ-"
   l.store "New Feature", "אפשרויות חדשות"
   l.store "New Project", "New Project"

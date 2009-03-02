@@ -327,7 +327,6 @@ Localization.define('dk_DK') do |l|
   l.store "Improvement", "Forbedring"
   l.store "In Progress", "Under Udvikling"
   l.store "Information", "Information"
-  l.store "Let me know", "Lad mig vide det"
   l.store "Linked from", "Linket fra"
   l.store "New Feature", "Ny Funktion"
   l.store "New Project", "New Project"

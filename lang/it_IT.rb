@@ -343,7 +343,6 @@ Localization.define('it_IT') do |l|
   l.store "Improvement", "Miglioramento"
   l.store "In Progress", "In esecuzione"
   l.store "Information", "Informazione"
-  l.store "Let me know", "Lasciaci sapere"
   l.store "Linked from", "Collegato da"
   l.store "New Feature", "Nuova funzionalità"
   l.store "New Project", "Nuovo Progetto" # Mauro Roncali

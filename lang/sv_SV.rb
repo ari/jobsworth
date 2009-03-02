@@ -338,7 +338,6 @@ Localization.define('sv_SV') do |l|
   l.store "Improvement", "Förbättring"
   l.store "In Progress", "Pågående"
   l.store "Information", "Information" # Daniel Westergren
-  l.store "Let me know", "Berätta för oss"
   l.store "Linked from", "Länkad från"
   l.store "New Feature", "Ny Funktion"
   l.store "New Project", "Nytt projekt" # Daniel Westergren

@@ -50,13 +50,13 @@
 	<div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
 	<table width="100%" cellspacing="0" cellpadding="0">
 		<tr><td><div id="menu"><%= render(:partial => "layouts/menu") %></div>
-			<div id="globalMenu" width="100%">
-				<div id="menucontainer" width="100%">
-					  <div id="tabmenu" width="100%"><%= render :partial => "layouts/tabmenu" %></div>
+			<div id="globalMenu">
+				<div id="menucontainer">
+					  <div id="tabmenu"><%= render :partial => "layouts/tabmenu" %></div>
 				</div>
 			</div>
 		</td></tr>
-		<tr><td height="10px">&nbsp;</td></tr>
+		<tr><td>&nbsp;</td></tr>
 		<tr><td>
 			<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
 			unless news.nil? %>

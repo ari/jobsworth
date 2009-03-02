@@ -275,7 +275,6 @@ Localization.define('cz_CZ') do |l|
   l.store "Improvement", "Vylepšení" # Ladislav Nešněra
   l.store "In Progress", "?Probíhá" # Ladislav Nešněra
   l.store "Information", "Informace" # Ladislav Nešněra
-  l.store "Let me know", "?Upozornit" # Ladislav Nešněra
   l.store "New Feature", "Nová vlastnost" # Ladislav Nešněra
   l.store "New Project", "Nový projekt" # Ladislav Nešněra
   l.store "Preferences", "Preference" # Ladislav Nešněra

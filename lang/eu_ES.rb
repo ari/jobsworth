@@ -317,7 +317,6 @@ Localization.define('eu_ES') do |l|
   l.store "Improvement", "Hobekuntza"
   l.store "In Progress", "Hasita"
   l.store "Information", "Informazioa"
-  l.store "Let me know", "Jakinarazi iezadazu"
   l.store "Linked from", "Hurrengo orritik erreferentziatuta"
   l.store "New Feature", "Ezaugarri berria"
   l.store "New Project", "Proiektu berria" # Josu

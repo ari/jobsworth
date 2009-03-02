@@ -332,7 +332,6 @@ Localization.define('nl_NL') do |l|
   l.store "Improvement", "Verbetering"
   l.store "In Progress", "In Ontwikkeling"
   l.store "Information", "Informatie"
-  l.store "Let me know", "Laat het mij weten"
   l.store "Linked from", "Gekoppeld vanaf"
   l.store "New Feature", "Nieuwe Functionaliteit"
   l.store "New Project", "Nieuw Project" # Tom Niessink
