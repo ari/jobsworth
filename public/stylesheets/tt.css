@@ -387,33 +387,40 @@ input.checkbox {
   font-weight: bold;
 }
 
-.flash {
-  background-color: #ffff99;
-  color: #000000;
-  font-size: 14px;
-  padding: 0.2em 1em 0.2em 1em;
-  border-top: 1px solid #b7b7b7;
-  border-bottom: 1px solid #b7b7b7;
-  margin-bottom: 1em;
-}
-
-.news {
+/* messages which appear within the page */
+.inlineMessage {
+  padding-left: 1em;
+  padding-bottom: 4px;
+  padding-right: 1em;
+  padding-top: 4px;
   background-color: #B0D295;
-  color: #333333;
-  font-size: 14px;
-  padding: 0.2em 1em 0.2em 1em;
+  font-size: 12px;
   border-top: 1px solid #b7b7b7;
   border-bottom: 1px solid #b7b7b7;
   margin-bottom: 1em;
 }
 
-.news_date {
+#flash {
+  background-color: #ffff99;
+}
+
+#flash_message {
+  color: #666666;
+}
+
+#news {
+  background-color: #B0D295;
+}
+
+.inlineMessage .date {
   font-weight: bold;
 }
 
-.news a{
-  font-weight: bold;
+.inlineMessage a{
+  float: right;
 }
+
+/* --- */
 
 .ajax {
 }
@@ -1447,11 +1454,6 @@ li.help {
   color: #a6a6a6;
   background-color: #fbfbfb;
 }
-
-#flash_message {
-  color: #666666;
-}
-
 
 #page {
   padding-left: 0;

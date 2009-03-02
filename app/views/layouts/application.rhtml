@@ -60,16 +60,17 @@
 		<tr><td>
 			<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
 			unless news.nil? %>
-			<div id="news">
-				<table class="news" id="news_table"><tr><td width="1%" nowrap valign="top"><span class="news_date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span></td><td><span class="news_body" id="news_body"><%= news.body %></span></td><td align="right" width="1%" >
-				<%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },
-				:success => visual_effect(:fade, "news", :duration => 0.5) %></td></tr></table>
+			<div class="inlineMessage" id="news">
+				<span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span>
+				<%= news.body %>
+				<%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },:success => visual_effect(:fade, "news", :duration => 0.5) %>
 			</div>
 			<% end %>
 		</td></tr>
 		<tr><td>
-			<div id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
-				<table class="flash" id="flash_body" style="padding-right:1em;"><tr><td id="flash_message"><%= flash['notice'] %><br /></td><td width="1%" align=right><a href="#" onClick="Effect.Fade('flash'); return false;">[<%=_ 'Hide'%>]</a></td></tr></table>
+			<div class="inlineMessage" id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
+				<span id="flash_message"><%= flash['notice'] %></span>
+				<a onclick="jQuery('#flash').fadeOut(500); return false;" href="#">[<%=_ 'Hide'%>]</a>
 			</div>
 		</td></tr>
 		<tr><td valign="top" width="100%">
