@@ -59,24 +59,24 @@ context "ApplicationController" do
   specify "setup_task_filters should work for task,milestone,project filters" do    params = { :redirect_action => "index" }
 
     get :setup_task_filters, params.merge(:filter => "p123")
-    assert_equal "0", session[:filter_customer]
-    assert_equal "0", session[:filter_milestone]
-    assert_equal "123", session[:filter_project]
+    assert_equal [], session[:filter_customer]
+    assert_equal [], session[:filter_milestone]
+    assert_equal ["123"], session[:filter_project]
 
     get :setup_task_filters, params.merge(:filter => "u5000")
-    assert_equal "0", session[:filter_customer]
-    assert_equal "-1", session[:filter_milestone]
-    assert_equal "5000", session[:filter_project]
+    assert_equal [], session[:filter_customer]
+    assert_equal [-5001], session[:filter_milestone]
+    assert_equal [], session[:filter_project]
 
     get :setup_task_filters, params.merge(:filter => "m45")
-    assert_equal "0", session[:filter_customer]
-    assert_equal "45", session[:filter_milestone]
-    assert_equal "0",  session[:filter_project]
+    assert_equal [], session[:filter_customer]
+    assert_equal ["45"], session[:filter_milestone]
+    assert_equal [],  session[:filter_project]
 
     get :setup_task_filters, params.merge(:filter => "c1")
-    assert_equal "1", session[:filter_customer]
-    assert_equal "0", session[:filter_milestone]
-    assert_equal "0", session[:filter_project]
+    assert_equal ["1"], session[:filter_customer]
+    assert_equal [], session[:filter_milestone]
+    assert_equal [], session[:filter_project]
   end
   
 end

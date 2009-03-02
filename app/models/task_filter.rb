@@ -66,12 +66,12 @@ class TaskFilter
     @completed_milestone_ids = controller.completed_milestone_ids
     @extra_conditions = extra_conditions
     
-    project_ids = TaskFilter.filter_ids(@session, :filter_project)
-    if project_ids.include?(ALL_PROJECTS) or project_ids.empty?
-      @project_ids = controller.current_project_ids
-    else
-      @project_ids = project_ids.join(", ")
-    end
+    # project_ids = TaskFilter.filter_ids(@session, :filter_project)
+    # if project_ids.include?(ALL_PROJECTS) or project_ids.empty?
+    #   @project_ids = controller.current_project_ids
+    # else
+    #   @project_ids = project_ids.join(", ")
+    # end
 
   end
 
@@ -81,6 +81,7 @@ class TaskFilter
   def tasks
     if @tasks.nil?
       @tasks ||= (filtering_by_tags? ? tasks_by_tags : tasks_by_filters)
+      @tasks = filter_by_customers_projects_and_milestones(@tasks)
       @tasks = filter_by_properties(@tasks)
       @tasks = sort_tasks(@tasks)
     end
@@ -142,7 +143,7 @@ class TaskFilter
     return @selected_tags
   end
 
-  private
+#  private
 
   ###
   # Returns a string to use in a find conditions param to only get
@@ -154,20 +155,10 @@ class TaskFilter
     filter = filter_by_user
     filter << filter_by_status
 
-    or_filters = []
-    or_filters << filter_by_milestone
-    or_filters << filter_by_customer
-    or_filters.delete_if { |f| f.blank? }
-    filter << "(#{ or_filters.join(" OR ") }) AND " if !or_filters.empty?
-
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
     end 
-
     filter << "(tasks.milestone_id NOT IN (#{@completed_milestone_ids}) OR tasks.milestone_id IS NULL) AND "
-    # NB need this to be at the end in case filter_by_milestone adds in new 
-    # projects.
-    filter << "tasks.project_id IN (#{ @project_ids }) AND "
 
     filter = filter.gsub(/( AND )$/, "")
     return filter
@@ -194,6 +185,63 @@ class TaskFilter
     end
 
     return tasks
+  end
+
+  ###
+  # Removes any tasks from the given list that filters rule out.
+  ###
+  def filter_by_customers_projects_and_milestones(tasks)
+    if milestone_ids.empty? and project_ids.empty? and customer_ids.empty?
+      return tasks
+    end
+
+    res = []
+    tasks.each do |task|
+      project = task.project
+      milestone = task.milestone
+      customer = project.customer
+
+      if can_view_by_customer?(task)
+        res << task
+      elsif can_view_by_project?(task.project.id)
+        res << task
+      elsif can_view_by_milestone?(task)
+        res << task
+      end
+    end
+
+    return res
+  end
+
+  def can_view_by_customer?(task)
+    customer_ids.any? and customer_ids.include?(task.project.customer.id)
+  end
+
+  def can_view_by_project?(project_id)
+    project_ids.any? and project_ids.include?(project_id)
+  end
+
+  def can_view_by_milestone?(task)
+    return false if milestone_ids.empty?
+
+    milestone = task.milestone
+    if milestone
+      return milestone_ids.include?(milestone.id)
+    else
+      return milestone_ids.include?(-(task.project.id + 1))
+    end
+  end
+  
+  def customer_ids
+    @customer_ids ||= TaskFilter.filter_ids(session, :filter_customer, ALL_CUSTOMERS)
+  end
+
+  def project_ids
+    @project_ids ||= TaskFilter.filter_ids(session, :filter_project, ALL_PROJECTS)   
+  end
+
+  def milestone_ids
+    @milestone_ids ||= TaskFilter.filter_ids(session, :filter_milestone, ALL_MILESTONES)
   end
 
   ###
@@ -269,6 +317,10 @@ class TaskFilter
       hidden = "tasks.hidden = 1"
       ids.delete(-2)
     end
+    if ids.include?(-1) # all statuses
+      status_values.clear
+      ids.delete(-1)
+    end
 
     # the other values can be used untouched 
     status_values += ids.map { |id| "tasks.status = #{ id }" }
@@ -276,56 +328,4 @@ class TaskFilter
     status_values = "(#{ status_values }) AND " if !status_values.blank?
     return "#{ status_values } (#{ hidden }) AND "
   end
-
-  ###
-  # Returns a string to use for filtering the task to display
-  # based on the filter_milestone value in session.
-  ###
-  def filter_by_milestone
-    res = ""
-
-    milestones = TaskFilter.filter_ids(session, :filter_milestone)
-    if milestones.any? and !milestones.include?(ALL_MILESTONES)
-      unassigned = milestones.select { |id| id < 0 }
-      milestones -= unassigned
-
-      filters = []
-      if milestones.any?
-        milestone_projects = milestones.map{ |m| Milestone.find(m).project_id }
-        @project_ids += "," + milestone_projects.uniq.join(", ")
-        filters << "tasks.milestone_id in (#{ milestones.join(", ") }) "
-      end
-      
-      unassigned.each do |id|
-        project_id = -(id + 1) # see note in application.rb#setup_task_filters
-        filters << "tasks.project_id = #{ project_id } and (tasks.milestone_id is null or tasks.milestone_id = 0)"
-      end
-      
-      res = filters.map { |f| "#{ f }" }.join(" OR ")
-    end
-    
-    return res
-  end
-
-  ###
-  # Returns a string to use for filtering the task to display
-  # based on the filter_customer value in session.
-  ###
-  def filter_by_customer
-    ids = TaskFilter.filter_ids(session, :filter_customer)
-    return "" if ids.include?(ALL_CUSTOMERS) or ids.empty?
-
-    project_ids = []
-    ids.each do |id|
-      customer = Customer.find(id)
-      project_ids += customer.projects.map { |p| p.id }
-    end
-
-    if project_ids.empty?
-      return ""
-    else
-      return "tasks.project_id IN (#{ project_ids.join(", ") }) "
-    end
-  end
-
 end
