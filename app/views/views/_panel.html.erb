@@ -1,0 +1,12 @@
+<tr><td align="left" class="page_header tooltip" width="100%" title="<%= _'Custom saved filters showing a subset of your tasks'%>"><div style="float: left;"><%=_ 'Views' %></div><div style="float:right;padding-top:0.1em;"><%= link_to _('New'),	 :controller => 'views', :action => 'new' %></div></td></tr>
+<tr><td class="views_item" style="padding-top: 0.2em;"><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></td></tr>
+<tr><td class="views_item"><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></td></tr>
+<tr><td class="views_item"><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></td></tr>
+<tr><td class="views_item"><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></td></tr>
+<% project_ids = current_project_ids
+client_ids = current_projects.collect(&:customer_id).uniq.join(',')
+client_ids = "0" if client_ids.nil? || client_ids.empty?
+views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
+for view in views %>
+<tr><td class="views_item"><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></td><td align="right"><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if(view.user_id == current_user.id || current_user.admin?)%><%= "[#{_('Shared')}]" if(view.user_id != current_user.id && !current_user.admin?)%></td></tr>
+<% end %>
