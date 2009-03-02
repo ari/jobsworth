@@ -43,13 +43,13 @@
 	<% end %>
 	</style>
 </head>
-<body id="body" style="height:100%;">
+<body id="body">
 	<div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
 	<div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;max-width:600px;"><table border="0"><tr><td style="" id="message"><br/></td></tr></table></div>
 	<div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
 
 	<div id="menu"><%= render(:partial => "layouts/menu") %></div>
-	<div id="globalMenu"><div id="menucontainer"><div id="tabmenu"><%= render(:partial => "layouts/tabmenu")%></div></div></div>
+	<div id="globalMenu"><div id="tabmenu"><%= render(:partial => "layouts/tabmenu")%></div></div>
 
 	<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
 	unless news.nil? %>
@@ -65,34 +65,32 @@
 		<a onclick="jQuery('#flash').fadeOut(500); return false;" href="#">[<%=_ 'Hide'%>]</a>
 	</div>
 
-	<div class="content_body">
-		<table width="100%" id="main-table">
-			<tr>
-				<td valign="top" id="main_col" style="height:100%;"><%= @content_for_layout %></td>
-				<td id="right-menu-collapse" onclick="jQuery('#left_menu').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
-				<td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
-					<table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
-						<%= render(:partial => "views/panel") %>
-						<tr><td>&nbsp;</td></tr>
-						<tr><td align="left" width="100%">
-							<div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
-								<table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
-									<tr><td align="left" width="100%" class="page_header"><div class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div></td></tr>
-									<tr><td align="left" width="100%">
-										<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
-										<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
-									</td></tr>
-								</table>
-							</div>
-						</td></tr>
-						<%= render(:partial => "pages/panel") %>
-						<tr><td>&nbsp;</td></tr>
-						<tr><td><div id="tag-block"></td></tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-	</div>
+	<table width="100%" id="main-table" class="content_body">
+		<tr>
+			<td valign="top" id="main_col"><%= @content_for_layout %></td>
+			<td id="right-menu-collapse" onclick="jQuery('#left_menu').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
+			<td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
+				<table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
+					<%= render(:partial => "views/panel") %>
+					<tr><td>&nbsp;</td></tr>
+					<tr><td align="left" width="100%">
+						<div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
+							<table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
+								<tr><td align="left" width="100%" class="page_header"><div class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div></td></tr>
+								<tr><td align="left" width="100%">
+									<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
+									<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
+								</td></tr>
+							</table>
+						</div>
+					</td></tr>
+					<%= render(:partial => "pages/panel") %>
+					<tr><td>&nbsp;</td></tr>
+					<tr><td><div id="tag-block"></td></tr>
+				</table>
+			</td>
+		</tr>
+	</table>
 
 	<% if current_user.company.show_messaging %>
 	<div id="presence" class="full">

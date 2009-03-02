@@ -1253,26 +1253,15 @@ a.description {
 }
 
 #globalMenu{
-  position                : relative;
-  width                   : 100%;
-  height                  : 23px;
-  color                   : #cccccc;
-  padding                 : 0px;
-  margin                  : 0px;
+  position: relative;
+  width: 100%;
+  height: 23px;
+  color: #cccccc;
+  padding: 0px;
+  border-bottom: 3px solid white;
+  margin-bottom: 8px;
   background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
-/*  border-top: 1px solid #c8c8c8; */
-  border-left: 1px solid #c8c8c8;
-/*  border-bottom: 1px solid #c8c8c8; */
-  z-index: 2;
-}
-
-#menucontainer {
-  width: 100%;
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  float: left;
-  position: relative;
   z-index: 2;
 }
 
