@@ -560,7 +560,9 @@ END_OF_HTML
     project_ids = TaskFilter.filter_ids(session, :filter_project)
 
     current_user.company.customers.each do |customer|
-      projects = customer.projects
+      
+      projects = current_user.projects.find(:all, :conditions => { 
+                                              :customer_id => customer.id })
       next if projects.empty?
 
       res += content_tag(:option, customer.name, :value => "c#{ customer.id }", 

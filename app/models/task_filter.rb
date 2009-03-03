@@ -65,14 +65,7 @@ class TaskFilter
     @tz = controller.tz
     @completed_milestone_ids = controller.completed_milestone_ids
     @extra_conditions = extra_conditions
-    
-    # project_ids = TaskFilter.filter_ids(@session, :filter_project)
-    # if project_ids.include?(ALL_PROJECTS) or project_ids.empty?
-    #   @project_ids = controller.current_project_ids
-    # else
-    #   @project_ids = project_ids.join(", ")
-    # end
-
+    @select_project_ids = current_user.projects.map { |p| p.id }.join(", ")
   end
 
   ###
@@ -96,7 +89,7 @@ class TaskFilter
   def tasks_by_tags
     Task.tagged_with(selected_tags, {
                        :company_id => @company.id,
-                       :project_ids => @project_ids, 
+                       :project_ids => @select_project_ids, 
                        :filter_hidden => session[:filter_hidden], 
                        :filter_user => session[:filter_user], 
                        :filter_milestone => session[:filter_milestone], 
@@ -117,6 +110,7 @@ class TaskFilter
                                     { :project => :customer }, :milestone ] }
 
     conditions = filter
+    conditions += " AND tasks.project_id in (#{ @select_project_ids })"
     conditions += " AND #{ @extra_conditions }" if !@extra_conditions.blank?
 
     Task.find(:all, 
