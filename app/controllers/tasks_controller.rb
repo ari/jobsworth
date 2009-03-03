@@ -11,12 +11,15 @@ class TasksController < ApplicationController
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+ 
+    tf = TaskFilter.new(self, @session)
+    project_ids = @projects.map { |p| p[1] }
 
-    unless @projects.collect{ |p| p[1] }.include? session[:last_project_id].to_i
+    if !project_ids.include?(tf.project_ids.first)
       session[:last_project_id] = nil
     end
 
-    unless @projects.collect{ |p| p[1] }.include? session[:filter_project].to_i
+    if !project_ids.include?(tf.project_ids.first)
       session[:filter_project] = nil
     end
     
