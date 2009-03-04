@@ -70,24 +70,15 @@
 			<td valign="top" id="main_col"><%= @content_for_layout %></td>
 			<td id="right-menu-collapse" onclick="jQuery('#left_menu').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
 			<td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
-				<table align="left" style="width:100%;padding-left:0.5em;" class="projects" cellspacing=0 cellpadding=0>
-					<%= render(:partial => "views/panel") %>
-					<tr><td>&nbsp;</td></tr>
-					<tr><td align="left" width="100%">
-						<div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
-							<table align="left" style="width:100%;" cellspacing=0 cellpadding=0>
-								<tr><td align="left" width="100%" class="page_header"><div class="tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div></td></tr>
-								<tr><td align="left" width="100%">
-									<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
-									<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
-								</td></tr>
-							</table>
-						</div>
-					</td></tr>
-					<%= render(:partial => "pages/panel") %>
-					<tr><td>&nbsp;</td></tr>
-					<tr><td><div id="tag-block"></td></tr>
-				</table>
+				<%= render(:partial => "views/panel") %>
+				<div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
+					<div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
+					<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
+					<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
+					<br/>
+				</div>
+				<%= render(:partial => "pages/panel") %>
+				<div id="tag-block">
 			</td>
 		</tr>
 	</table>
