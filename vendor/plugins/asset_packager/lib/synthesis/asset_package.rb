@@ -1,22 +1,21 @@
-require 'yaml'
 module Synthesis
   class AssetPackage
 
     # class variables
-    @@asset_packages_yml = $asset_packages_yml ||
+    @@asset_packages_yml = $asset_packages_yml || 
       (File.exists?("#{RAILS_ROOT}/config/asset_packages.yml") ? YAML.load_file("#{RAILS_ROOT}/config/asset_packages.yml") : nil)
-
+  
     # singleton methods
     class << self
-
+      
       def merge_environments=(environments)
         @@merge_environments = environments
       end
-
+      
       def merge_environments
         @@merge_environments ||= ["production"]
       end
-
+      
       def parse_path(path)
         /^(?:(.*)\/)?([^\/]+)$/.match(path).to_a
       end
@@ -67,7 +66,7 @@ module Synthesis
 
       def delete_all
         @@asset_packages_yml.keys.each do |asset_type|
-          @@asset_packages_yml[asset_type].each { |p| self.new(asset_type, p).delete_all_builds }
+          @@asset_packages_yml[asset_type].each { |p| self.new(asset_type, p).delete_previous_build }
         end
       end
 
@@ -90,10 +89,10 @@ module Synthesis
       end
 
     end
-
+    
     # instance methods
     attr_accessor :asset_type, :target, :target_dir, :sources
-
+  
     def initialize(asset_type, package_hash)
       target_parts = self.class.parse_path(package_hash.keys.first)
       @target_dir = target_parts[1].to_s
@@ -103,74 +102,51 @@ module Synthesis
       @asset_path = ($asset_base_path ? "#{$asset_base_path}/" : "#{RAILS_ROOT}/public/") +
           "#{@asset_type}#{@target_dir.gsub(/^(.+)$/, '/\1')}"
       @extension = get_extension
-      @match_regex = Regexp.new("\\A#{@target}_\\d+.#{@extension}\\z")
+      @file_name = "#{@target}_packaged.#{@extension}"
+      @full_path = File.join(@asset_path, @file_name)
+    end
+  
+    def package_exists?
+      File.exists?(@full_path)
     end
 
     def current_file
-      @target_dir.gsub(/^(.+)$/, '\1/') +
-          Dir.new(@asset_path).entries.delete_if { |x| ! (x =~ @match_regex) }.sort.reverse[0].chomp(".#{@extension}")
+      build unless package_exists?
+
+      path = @target_dir.gsub(/^(.+)$/, '\1/')
+      "#{path}#{@target}_packaged"
     end
 
     def build
-      delete_old_builds
+      delete_previous_build
       create_new_build
     end
 
-    def delete_old_builds
-      Dir.new(@asset_path).entries.delete_if { |x| ! (x =~ @match_regex) }.each do |x|
-        File.delete("#{@asset_path}/#{x}") unless x.index(revision.to_s)
-      end
-    end
-
-    def delete_all_builds
-      Dir.new(@asset_path).entries.delete_if { |x| ! (x =~ @match_regex) }.each do |x|
-        File.delete("#{@asset_path}/#{x}")
-      end
+    def delete_previous_build
+      File.delete(@full_path) if File.exists?(@full_path)
     end
 
     private
-      def revision
-        unless @revision
-          revisions = [1]
-          @sources.each do |source|
-            revisions << get_file_revision("#{@asset_path}/#{source}.#{@extension}")
-          end
-          @revision = revisions.max
-        end
-        @revision
-      end
-
-      def get_file_revision(path)
-        if File.exists?(path)
-          begin
-            `svn info #{path} 2> /dev/null`[/Last Changed Rev: (.*?)\n/][/(\d+)/].to_i
-          rescue # use filename timestamp if not in subversion
-            File.mtime(path).to_i
-          end
-        else
-          0
-        end
-      end
-
       def create_new_build
-        if File.exists?("#{@asset_path}/#{@target}_#{revision}.#{@extension}")
-          log "Latest version already exists: #{@asset_path}/#{@target}_#{revision}.#{@extension}"
+        new_build_path = "#{@asset_path}/#{@target}_packaged.#{@extension}"
+        if File.exists?(new_build_path)
+          log "Latest version already exists: #{new_build_path}"
         else
-          File.open("#{@asset_path}/#{@target}_#{revision}.#{@extension}", "w") {|f| f.write(compressed_file) }
-          log "Created #{@asset_path}/#{@target}_#{revision}.#{@extension}"
+          File.open(new_build_path, "w") {|f| f.write(compressed_file) }
+          log "Created #{new_build_path}"
         end
       end
 
       def merged_file
         merged_file = ""
-        @sources.each {|s|
-          File.open("#{@asset_path}/#{s}.#{@extension}", "r") { |f|
-            merged_file += f.read + "\n"
+        @sources.each {|s| 
+          File.open("#{@asset_path}/#{s}.#{@extension}", "r") { |f| 
+            merged_file += f.read + "\n" 
           }
         }
         merged_file
       end
-
+    
       def compressed_file
         case @asset_type
           when "javascripts" then compress_js(merged_file)
@@ -180,25 +156,25 @@ module Synthesis
 
       def compress_js(source)
         jsmin_path = "#{RAILS_ROOT}/vendor/plugins/asset_packager/lib"
-        tmp_path = "#{RAILS_ROOT}/tmp/#{@target}_#{revision}"
-
+        tmp_path = "#{RAILS_ROOT}/tmp/#{@target}_packaged"
+      
         # write out to a temp file
         File.open("#{tmp_path}_uncompressed.js", "w") {|f| f.write(source) }
-
+      
         # compress file with JSMin library
         `ruby #{jsmin_path}/jsmin.rb <#{tmp_path}_uncompressed.js >#{tmp_path}_compressed.js \n`
 
         # read it back in and trim it
         result = ""
         File.open("#{tmp_path}_compressed.js", "r") { |f| result += f.read.strip }
-
+  
         # delete temp files if they exist
         File.delete("#{tmp_path}_uncompressed.js") if File.exists?("#{tmp_path}_uncompressed.js")
         File.delete("#{tmp_path}_compressed.js") if File.exists?("#{tmp_path}_compressed.js")
 
         result
       end
-
+  
       def compress_css(source)
         source.gsub!(/\s+/, " ")           # collapse space
         source.gsub!(/\/\*(.*?)\*\/ /, "") # remove comments - caution, might want to remove this if using css hacks
@@ -215,8 +191,12 @@ module Synthesis
           when "stylesheets" then "css"
         end
       end
-
+      
       def log(message)
+        self.class.log(message)
+      end
+      
+      def self.log(message)
         puts message
       end
 
@@ -227,6 +207,6 @@ module Synthesis
         file_list.reverse! if extension == "js"
         file_list
       end
-
+   
   end
 end
