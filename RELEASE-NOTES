@@ -2,8 +2,11 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+4 Mar 2009
+    Rename stylesheets to give them more consistent naming.    
+    
 2 Mar 2009
-    Clean up html structure, removing unneeded table in layout. Also fix indenting to make it easier to try and debug excessive nested html.
+    Clean up html structure, removing unneeded tables in layout. Also fix some indenting to make it easier to try and debug excessive nested html.
     Migrate several prototype calls across to jQuery
     Break up large layouts into some smaller pieces.
 
