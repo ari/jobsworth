@@ -2492,6 +2492,44 @@ input.scheduled {
 	background:transparent url(/images/tabs.gif) no-repeat scroll 0 0;
 }
 
-	#content ul.tabs li a:hover { color: #222222; }
-	#content ul.tabs li.active a, #content ul.tabs li.active { font-weight: bold;  border-bottom: 1px solid #FFFFFF; }
+#content ul.tabs li a:hover {
+	color: #222222;
+}
+#content ul.tabs li.active a, #content ul.tabs li.active {
+	font-weight: bold;  border-bottom: 1px solid #FFFFFF;
+}
 
+/* override some of the multiselect options to make it prettier */
+.multiSelect {
+	padding: 2px;
+	width: 180px;
+}
+.multiSelectOptions {
+	width: 185px;
+	margin: 0px;
+}
+
+.multiSelectOptions label {
+	font-size: 8pt;
+	padding: 0px;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	margin-top: 0px;
+	color: black;
+	text-align: bottom;
+}
+
+.multiSelectOptions input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0.5em;
+	text-align: bottom;
+}
+
+.multiSelectOptions LABEL.checked {
+	background: white;
+}
+
+.multiSelectOptions LABEL.hover {
+	background: white;
+}
