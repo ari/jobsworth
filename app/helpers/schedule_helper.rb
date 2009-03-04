@@ -80,7 +80,7 @@ EOF
   # Returns the html for the task filter fields on the gantt page.
   ###
   def gantt_filter
-    render(:partial => "common/tasks_filter", 
+    render(:partial => "task/filter", 
            :locals => { 
              :redirect_action => "gantt",
              :hide_grouping => true,
