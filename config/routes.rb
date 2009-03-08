@@ -14,6 +14,9 @@ ActionController::Routing::Routes.draw do |map|
 #    user.resources :moderators
 #  end
 
+  map.resources :resources
+  map.resources :resource_types
+
   map.resources :forums do |forum|
     forum.resources :topics, :name_prefix => nil do |topic|
       topic.resources :posts, :name_prefix => nil

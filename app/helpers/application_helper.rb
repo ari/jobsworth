@@ -584,6 +584,37 @@ END_OF_HTML
     return res
   end
 
+  ###
+  # Returns a submit tag suitable for the given object.
+  # (Create or Update)"
+  ###
+  def cit_submit_tag(object)
+    text = object.new_record? ? _("Create") : _("Update")
+    submit_tag(text, :class => 'nolabel')
+  end
+
+  ###
+  # Returns an element to use a handle for sorting the given
+  # object.
+  ###
+  def sortable_handle_tag(object)
+    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => "handle")
+
+    object.new_record? ? "" : image
+  end
+
+  ###
+  # Returns an element that can be used to remove the nearest
+  # li from the page. 
+  ###
+  def link_to_remove_li
+    image = image_tag("cross_small.png", :border => 0, 
+                      :alt => "#{ _("Remove") }")
+    link_to_function(image, '$(this).up("li").remove();')
+  end
+
+
+
 end
 
 

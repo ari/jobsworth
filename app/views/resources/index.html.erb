@@ -1,0 +1,10 @@
+<div class="page_header">
+  <%= link_to _("New resource"), new_resource_path %>
+  <%= link_to _("New resource type"), new_resource_type_path %>
+
+  <%= _"Resources" %>
+</div>
+
+<div class="resources">
+  <%= render :partial => @resources %>
+</dev>
