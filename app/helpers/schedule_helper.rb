@@ -80,7 +80,7 @@ EOF
   # Returns the html for the task filter fields on the gantt page.
   ###
   def gantt_filter
-    render(:partial => "task/filter", 
+    render(:partial => "tasks/filter", 
            :locals => { 
              :redirect_action => "gantt",
              :hide_grouping => true,
@@ -99,7 +99,7 @@ EOF
     redirect_params[:month] = params[:month] if params[:month]
     redirect_params[:year] = params[:year] if params[:year]
 
-    render(:partial => "task/tasks_filter", 
+    render(:partial => "tasks/filter", 
            :locals => { 
              :redirect_params => redirect_params,
              :hide_grouping => true,

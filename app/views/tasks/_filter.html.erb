@@ -91,7 +91,7 @@ filter_count = 0
 		<div id="filters-toggle"><a href="#" onclick="jQuery('#filters-toggle').hide();jQuery('#more-filters').show();return false;"><small><%= _('More filters')%></small></a></div>
 	<% end %>
 	<div id="more-filters" <% unless show_more_filters? %>style="display:none;"<% end -%>>
-		<%= render :partial => 'filter_property', :collection => current_user.company.properties %>
+		<%= render :partial => 'tasks/filter_property', :collection => current_user.company.properties %>
 		<% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
 			<input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%>
 		<% end -%>
