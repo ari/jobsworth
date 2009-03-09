@@ -6,5 +6,13 @@
 </label>
 <%= hidden_field_tag "resource[attribute_values][][resource_type_attribute_id]", attribute.resource_type_attribute.id %>
 <%= hidden_field_tag "resource[attribute_values][][id]", attribute.id %>
+
 <%= text_field_tag "resource[attribute_values][][value]", attribute.value, :id => div_id  %>
-<br />
+<br clear="both" />
+
+<% if attribute.errors.on("value") %>
+  <div class="error">
+    <%= attribute.errors.on("value") %>
+  </div>
+<% end %>
+

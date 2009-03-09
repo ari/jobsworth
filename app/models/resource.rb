@@ -5,8 +5,7 @@ class Resource < ActiveRecord::Base
   belongs_to :parent, :class_name => "Resource"
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
-           :order => "#{ ResourceTypeAttribute.table_name }.position asc, " +
-           "#{ ResourceAttribute.table_name }.id asc")
+           :dependent => :destroy)
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
@@ -21,11 +20,8 @@ class Resource < ActiveRecord::Base
     params.each do |values|
       attr_id = values[:id]
 
-      if attr_id.blank?
-        attr = build_new_attribute(values)
-      else
-        attr = resource_attributes.detect { |a| a.id == attr_id.to_i }
-      end
+      attr = resource_attributes.detect { |a| a.id == attr_id.to_i }
+      attr ||= build_new_attribute(values)
 
       attr.update_attributes(values)
       updated << attr
@@ -33,6 +29,19 @@ class Resource < ActiveRecord::Base
     
     missing = resource_attributes - updated
     resource_attributes.delete(missing)
+  end
+
+  ###
+  # Checks all attributes are valid
+  ###
+  def validate
+    res = true
+
+    resource_attributes.each do |attr|
+      res &&= attr.valid?
+    end
+
+    return res
   end
 
   private
