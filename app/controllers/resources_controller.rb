@@ -1,6 +1,4 @@
 class ResourcesController < ApplicationController
-  include ActionView::Helpers::UrlHelper
-
   # GET /resources
   # GET /resources.xml
   def index
@@ -98,7 +96,7 @@ class ResourcesController < ApplicationController
     attribute = resource.resource_attributes.find(params[:attr_id])
     
     body = "Requested password for resource "
-    body += link_to(resource, edit_resource_path(resource))
+    body += "<a href=\"#{ edit_resource_path(resource) }\">#{ resource.name }</a>"
 
     wl = WorkLog.new(:user => current_user,
                      :started_at => Time.now.utc,
