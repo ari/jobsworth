@@ -99,7 +99,7 @@ EOF
     redirect_params[:month] = params[:month] if params[:month]
     redirect_params[:year] = params[:year] if params[:year]
 
-    render(:partial => "common/tasks_filter", 
+    render(:partial => "task/tasks_filter", 
            :locals => { 
              :redirect_params => redirect_params,
              :hide_grouping => true,
