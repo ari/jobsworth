@@ -417,3 +417,23 @@ function toggleTaskUnread(icon) {
 
     jQuery.post("/tasks/set_unread",  parameters);
 }
+
+/*
+  Requests the available attributes for the given resource type
+  and updates the page with the returned values.
+*/
+function updateResourceAttributes(select) {
+    select = jQuery(select)
+    var typeId = select.val();
+    var target = jQuery("#attributes");
+
+    if (typeId == "") {
+	target.html("");
+    }
+    else {
+	var url = "/resources/attributes/?type_id=" + typeId;
+	jQuery.get(url, function(data) {
+	    target.html(data);
+	});
+    }
+}

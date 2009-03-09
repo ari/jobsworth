@@ -1,0 +1,36 @@
+<% form_for(@resource) do |f| %>
+<fieldset>
+  <label for="resource_name"><%= _("Name") %></label>
+  <%= f.text_field :name %>
+  <br />
+
+  <!-- TODO
+  <label for="resource_customer"><%= _("Client") %></label>
+  <%= f.text_field :customer_id  %>
+  <br />
+
+  <label for="resource_parent"><%= _("Parent") %></label>
+  <%= f.text_field :parent_id %>
+  <br />
+  -->
+
+  <label for="resource_type"><%= _("Type") %></label>
+  <%= f.select(:resource_type_id, resource_types_options_array, { :include_blank => true }, :onChange => "updateResourceAttributes(this)") %>
+  <br clear="both" />
+
+  <fieldset>
+    <legend><%= _("Attributes") %></legend>
+    <div id="attributes">
+      <% @resource.resource_attributes.each do |ra| %>
+        <%= render :partial => "attribute", :locals => { :attribute => ra } %>
+      <% end %>
+    </div>
+  </fieldset>
+
+  <%= cit_submit_tag(@resource) %>
+  <% if !@resource.new_record? %>
+    <br />or
+    <%= link_to(_("Delete"), resource_path(@resource), :method => :delete, :confirm => "Are you sure?") %>
+  <% end %>
+</fieldset>
+<% end %>

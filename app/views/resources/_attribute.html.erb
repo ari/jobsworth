@@ -1,0 +1,8 @@
+<% 
+   div_id = "attribute_#{ attribute.id }" 
+%>
+<label for="<%= div_id %>">
+  <%= attribute.name %>
+</label>
+<%= text_field_tag "a", "", :id => div_id  %>
+<br />

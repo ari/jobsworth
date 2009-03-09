@@ -338,6 +338,7 @@ ActiveRecord::Schema.define(:version => 20090308001428) do
 
   create_table "resource_attributes", :force => true do |t|
     t.integer  "resource_id"
+    t.integer  "resource_type_attribute_id"
     t.string   "value"
     t.string   "password"
     t.datetime "created_at"
@@ -370,7 +371,7 @@ ActiveRecord::Schema.define(:version => 20090308001428) do
     t.integer  "parent_id"
     t.string   "name"
     t.integer  "customer_id"
-    t.string   "notes"
+    t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

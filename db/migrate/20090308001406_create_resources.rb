@@ -6,7 +6,7 @@ class CreateResources < ActiveRecord::Migration
       t.integer :parent_id
       t.string :name
       t.integer :customer_id
-      t.string :notes
+      t.text :notes
 
       t.timestamps
     end

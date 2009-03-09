@@ -1,6 +1,6 @@
 class ResourceTypesController < ApplicationController
-  # GET /resources
-  # GET /resources.xml
+  # GET /resource_types
+  # GET /resource_types.xml
   def index
     @resource_types = current_user.company.resource_types
 
@@ -10,8 +10,8 @@ class ResourceTypesController < ApplicationController
     end
   end
 
-  # GET /resources/new
-  # GET /resources/new.xml
+  # GET /resource_types/new
+  # GET /resource_types/new.xml
   def new
     @resource_type = ResourceType.new
 
@@ -21,13 +21,13 @@ class ResourceTypesController < ApplicationController
     end
   end
 
-  # GET /resources/1/edit
+  # GET /resource_types/1/edit
   def edit
     @resource_type = current_user.company.resource_types.find(params[:id])
   end
 
-  # POST /resources
-  # POST /resources.xml
+  # POST /resource_types
+  # POST /resource_types.xml
   def create
     @resource_type = ResourceType.new(params[:resource_type])
     @resource_type.company = current_user.company
@@ -44,8 +44,8 @@ class ResourceTypesController < ApplicationController
     end
   end
 
-  # PUT /resources/1
-  # PUT /resources/1.xml
+  # PUT /resource_types/1
+  # PUT /resource_types/1.xml
   def update
     @resource_type = current_user.company.resource_types.find(params[:id])
     saved = @resource_type.update_attributes(params[:resource_type]) 
@@ -64,8 +64,8 @@ class ResourceTypesController < ApplicationController
     end
   end
 
-  # DELETE /resources/1
-  # DELETE /resources/1.xml
+  # DELETE /resource_types/1
+  # DELETE /resource_types/1.xml
   def destroy
     @resource_type = current_user.company.resource_types.find(params[:id])
     @resource_type.destroy
