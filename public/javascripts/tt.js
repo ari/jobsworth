@@ -437,3 +437,19 @@ function updateResourceAttributes(select) {
 	});
     }
 }
+
+/*
+  Adds a new field to allow people to have multiple values
+  for resource attributes.
+*/
+function addAttribute(link) {
+    link = jQuery(link);
+}
+
+/*
+  Removes the resource attribute to the link
+*/
+function removeAttribute(link) {
+    link = jQuery(link);
+    link.parent(".attribute").remove();
+}

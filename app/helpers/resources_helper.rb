@@ -14,13 +14,18 @@ module ResourcesHelper
   ###
   def value_field(attribute, name_prefix, field_id)
     type = attribute.resource_type_attribute
+
     if type.is_password? and !attribute.value.blank?
       res = "<div class=\"password\"></div>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
       res += link_to(_("Show password"), url)
     else
       res = text_field_tag("#{ name_prefix }[value]", attribute.value, 
-                           :id => field_id)
+                           :id => field_id, :class => "value")
+    end
+
+    if type.allows_multiple?
+      res += link_to_function(_("Add"), "addAttribute(this)")
     end
 
     return res
