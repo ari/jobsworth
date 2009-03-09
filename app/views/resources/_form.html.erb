@@ -21,8 +21,10 @@
   <fieldset>
     <legend><%= _("Attributes") %></legend>
     <div id="attributes">
-      <% @resource.resource_attributes.each do |ra| %>
-        <%= render :partial => "attribute", :locals => { :attribute => ra } %>
+      <% if !@resource.new_record? %>
+        <% @resource.all_attributes.each do |ra| %>
+          <%= render :partial => "attribute", :locals => { :attribute => ra } %> 
+        <% end %>
       <% end %>
     </div>
   </fieldset>

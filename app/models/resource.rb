@@ -32,6 +32,27 @@ class Resource < ActiveRecord::Base
   end
 
   ###
+  # This method returns an array of ResourceAttributes.
+  # These attributes are sorted according the to this objects
+  # ResourceType.
+  # If a value if missing, a new ResourceAttribute will be created
+  # but not saved.
+  ###
+  def all_attributes
+    res = []
+    resource_type.resource_type_attributes.each do |rta|
+      attrs = resource_attributes.select { |a| a.resource_type_attribute_id == rta.id }
+      if attrs.empty?
+        res << ResourceAttribute.new(:resource_type_attribute_id => rta.id)
+      else
+        res += attrs
+      end
+    end
+
+    return res
+  end
+
+  ###
   # Checks all attributes are valid
   ###
   def validate
