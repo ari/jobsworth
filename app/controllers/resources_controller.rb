@@ -30,11 +30,11 @@ class ResourcesController < ApplicationController
   # POST /resources
   # POST /resources.xml
   def create
-    @resource = Resource.new(params[:resource])
+    @resource = Resource.new
     @resource.company = current_user.company
 
     respond_to do |format|
-      if @resource.save
+      if @resource.update_attributes(params[:resource])
         flash[:notice] = 'Resource was successfully created.'
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { render :xml => @resource, :status => :created, :location => @resource }
@@ -49,7 +49,7 @@ class ResourcesController < ApplicationController
   # PUT /resources/1.xml
   def update
     @resource = current_user.company.resources.find(params[:id])
-    saved = @resource.update_attributes(params[:resource_type]) 
+    saved = @resource.update_attributes(params[:resource]) 
     @resource.company = current_user.company
     saved &&= @resource.save
 
@@ -80,7 +80,13 @@ class ResourcesController < ApplicationController
   # GET /resources/attributes/?type_id=1
   def attributes
     type = current_user.company.resource_types.find(params[:type_id])
-    attributes = type.resource_type_attributes
+    rtas = type.resource_type_attributes
+
+    attributes = rtas.map do |rta| 
+      attr = ResourceAttribute.new
+      attr.resource_type_attribute = rta
+      attr
+    end
 
     render :partial => "attribute", :collection => attributes
   end

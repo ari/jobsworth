@@ -2,7 +2,9 @@
    div_id = "attribute_#{ attribute.id }" 
 %>
 <label for="<%= div_id %>">
-  <%= attribute.name %>
+  <%= attribute.resource_type_attribute.name %>
 </label>
-<%= text_field_tag "a", "", :id => div_id  %>
+<%= hidden_field_tag "resource[attribute_values][][resource_type_attribute_id]", attribute.resource_type_attribute.id %>
+<%= hidden_field_tag "resource[attribute_values][][id]", attribute.id %>
+<%= text_field_tag "resource[attribute_values][][value]", attribute.value, :id => div_id  %>
 <br />

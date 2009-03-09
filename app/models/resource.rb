@@ -5,7 +5,8 @@ class Resource < ActiveRecord::Base
   belongs_to :parent, :class_name => "Resource"
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
-           :order => "#{ ResourceTypeAttribute.table_name }.position asc, id asc")
+           :order => "#{ ResourceTypeAttribute.table_name }.position asc, " +
+           "#{ ResourceAttribute.table_name }.id asc")
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
@@ -20,10 +21,8 @@ class Resource < ActiveRecord::Base
     params.each do |values|
       attr_id = values[:id]
 
-      if !attr_id
-        attr_type_id = values[:resource_type_attribute_id]
-        rta = resource_type.resource_type_attributes.find(attr_type_id)
-        attr = resource_attributes.build
+      if attr_id.blank?
+        attr = build_new_attribute(values)
       else
         attr = resource_attributes.detect { |a| a.id == attr_id.to_i }
       end
@@ -34,5 +33,24 @@ class Resource < ActiveRecord::Base
     
     missing = resource_attributes - updated
     resource_attributes.delete(missing)
+  end
+
+  private
+
+  ###
+  # Returns a new resource_attribute linked to this
+  # resource. 
+  ###
+  def build_new_attribute(values)
+    attr_type_id = values[:resource_type_attribute_id]
+    
+    # check we're using attributes from this company
+    rtas = []
+    company.resource_types.each { |rt| rtas += rt.resource_type_attributes }
+
+    rta = rtas.detect { |rta| rta.id == attr_type_id.to_i }
+    if rta
+      return resource_attributes.build 
+    end
   end
 end
