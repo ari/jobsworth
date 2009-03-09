@@ -41,6 +41,8 @@ class EventLog < ActiveRecord::Base
 
   FORUM_NEW_POST      = 60
 
+  RESOURCE_PASSWORD_REQUESTED = 70
+
   def started_at
     self.created_at
   end

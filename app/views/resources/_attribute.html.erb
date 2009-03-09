@@ -1,13 +1,17 @@
 <% 
-   div_id = "attribute_#{ attribute.id }" 
+   field_id = "attribute_#{ attribute.id }" 
+   prefix = "resource[attribute_values][]"
+   type = attribute.resource_type_attribute
 %>
-<label for="<%= div_id %>">
-  <%= attribute.resource_type_attribute.name %>
+<label for="<%= field_id %>">
+  <%= type.name %>
 </label>
-<%= hidden_field_tag "resource[attribute_values][][resource_type_attribute_id]", attribute.resource_type_attribute.id %>
-<%= hidden_field_tag "resource[attribute_values][][id]", attribute.id %>
 
-<%= text_field_tag "resource[attribute_values][][value]", attribute.value, :id => div_id  %>
+<%= hidden_field_tag "#{ prefix }[resource_type_attribute_id]", type.id %>
+<%= hidden_field_tag "#{ prefix }[id]", attribute.id %>
+
+<%= value_field(attribute, prefix, field_id) %>
+
 <br clear="both" />
 
 <% if attribute.errors.on("value") %>

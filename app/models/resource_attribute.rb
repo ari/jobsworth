@@ -7,7 +7,7 @@ class ResourceAttribute < ActiveRecord::Base
 
     regex = resource_type_attribute.validation_regex
     valid = true
-    if !regex.blank?
+    if !regex.blank? and !value.blank?
       valid = value.match(regex)
       errors.add("value", "Doesn't match regex") if !valid
     end

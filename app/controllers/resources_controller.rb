@@ -1,6 +1,7 @@
 class ResourcesController < ApplicationController
-  
- # GET /resources
+  include ActionView::Helpers::UrlHelper
+
+  # GET /resources
   # GET /resources.xml
   def index
     @resources = current_user.company.resources
@@ -89,6 +90,26 @@ class ResourcesController < ApplicationController
     end
 
     render :partial => "attribute", :collection => attributes
+  end
+
+  # GET /resources/1/show_password?attr_id=2
+  def show_password
+    resource = current_user.company.resources.find(params[:id])
+    attribute = resource.resource_attributes.find(params[:attr_id])
+    
+    body = "Requested password for resource "
+    body += link_to(resource, edit_resource_path(resource))
+
+    wl = WorkLog.new(:user => current_user,
+                     :started_at => Time.now.utc,
+                     :duration => 0,
+                     :company => current_user.company,
+                     :log_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
+                     :body => CGI::escapeHTML(body),
+                     :comment => true)
+    wl.save!
+    
+    render :text => attribute.value
   end
 
 end

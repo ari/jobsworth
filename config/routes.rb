@@ -14,7 +14,8 @@ ActionController::Routing::Routes.draw do |map|
 #    user.resources :moderators
 #  end
 
-  map.resources :resources, :collection => { :attributes => :get }
+  map.resources(:resources, :collection => { :attributes => :get },
+                :member => { :show_password => :get })
   map.resources :resource_types
 
   map.resources :forums do |forum|
