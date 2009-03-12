@@ -12,7 +12,7 @@ module ResourcesHelper
   # If it is a password field, adds a link to request the
   # unencrypted password.
   ###
-  def value_field(attribute, name_prefix, field_id)
+  def value_field(attribute, name_prefix, field_id, show_remove_link = false)
     type = attribute.resource_type_attribute
 
     if type.is_password? and !attribute.value.blank?
@@ -25,7 +25,15 @@ module ResourcesHelper
     end
 
     if type.allows_multiple?
-      res += link_to_function(_("Add"), "addAttribute(this)")
+      add_style = show_remove_link ? "display: none" : ""
+      remove_style = show_remove_link ? "" : "display: none;"
+
+      res += link_to_function(_("Add"), "addAttribute(this)", 
+                              :class => "add_attribute", 
+                              :style => add_style)
+      res += link_to_function(_("Remove"), "removeAttribute(this)", 
+                              :class => "remove_attribute", 
+                              :style => remove_style)
     end
 
     return res

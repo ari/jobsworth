@@ -444,6 +444,19 @@ function updateResourceAttributes(select) {
 */
 function addAttribute(link) {
     link = jQuery(link);
+    var origAttribute = link.parent(".attribute");
+
+    var newAttribute = origAttribute.clone();
+    newAttribute.find(".value").val("");
+    newAttribute.find("a.add_attribute").remove();
+    newAttribute.find(".attr_id").remove();
+
+    var removeLink = newAttribute.find("a.remove_attribute")
+    // for some reason this onclick needs to be manually set after cloning
+    removeLink.click(function() { removeAttribute(removeLink); })
+    removeLink.show();
+
+    origAttribute.after(newAttribute);
 }
 
 /*
@@ -452,7 +465,16 @@ function addAttribute(link) {
 function removeAttribute(link) {
     link = jQuery(link);
     link.parent(".attribute").remove();
+    console.log(link.parent(".attribute"));
 }
+// I'm not sure why, but we seem to need to add these for the event
+// to fire - onclick doesn't seem to work.
+jQuery(document).ready(function() {
+    jQuery(".remove_attribute").click(function(evt) { 
+	removeAttribute(evt.target); 
+    });
+});
+
 
 /*
   Removes the link from resource to task
