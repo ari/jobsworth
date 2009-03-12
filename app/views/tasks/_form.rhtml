@@ -352,6 +352,12 @@ jQuery('#task_due_at').datepicker();
 		<% end %>
 	</fieldset>
 
+        <fieldset id="task_resources">
+	  <legend><%=_ "Resources" %></legend>
+          <label for="resources_input"><%=_ "Linked resources" %></label>
+	  <%= text_field_with_auto_complete(:resource, :name, {},
+	      { :select => 'complete_value', :tokens => ',' }) %>
+	</fieldset>
     </td>
 </tr>
 

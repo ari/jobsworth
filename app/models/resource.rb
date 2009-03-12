@@ -86,6 +86,10 @@ class Resource < ActiveRecord::Base
     return res
   end
 
+  def to_s
+    name
+  end
+
   private
 
   ###
