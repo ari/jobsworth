@@ -112,5 +112,15 @@ class ResourcesController < ApplicationController
     render :text => attribute.value
   end
 
+  def auto_complete_for_resource_parent_id
+    search = params[:resource]
+    search = search[:parent_id] if search
+    @resources = []
+    
+    if !search.blank?
+      cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
+      @resources = current_user.company.resources.find(:all, :conditions => cond)
+    end
+  end
 end
 

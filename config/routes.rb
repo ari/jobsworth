@@ -14,7 +14,9 @@ ActionController::Routing::Routes.draw do |map|
 #    user.resources :moderators
 #  end
 
-  map.resources(:resources, :collection => { :attributes => :get },
+  map.resources(:resources, :collection => { 
+                  :attributes => :get, 
+                  :auto_complete_for_resource_parent => :get },
                 :member => { :show_password => :get })
   map.resources :resource_types
 

@@ -3,6 +3,8 @@ class Resource < ActiveRecord::Base
   belongs_to :customer
   belongs_to :resource_type
   belongs_to :parent, :class_name => "Resource"
+  has_many(:child_resources, :class_name => "Resource", 
+           :foreign_key => "parent_id")
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
            :dependent => :destroy)
@@ -10,6 +12,7 @@ class Resource < ActiveRecord::Base
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
+  validates_presence_of :name
 
   ###
   # Sets up attribute values for this resource using params.
