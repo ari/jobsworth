@@ -6,11 +6,13 @@
   <%= f.text_field :name %>
   <br />
 
-  <!-- TODO
   <label for="resource_customer"><%= _("Client") %></label>
-  <%= f.text_field :customer_id  %>
+  <%= f.select(:customer_id, 
+      current_user.company.customers.map { |c| [ c.name, c.id ] }, 
+      :include_blank => true) %>
   <br />
 
+  <!-- TODO
   <label for="resource_parent"><%= _("Parent") %></label>
   <%= f.text_field :parent_id %>
   <br />
