@@ -73,29 +73,14 @@ class TaskFilter
   ###
   def tasks
     if @tasks.nil?
-      @tasks ||= (filtering_by_tags? ? tasks_by_tags : tasks_by_filters)
+      @tasks = tasks_by_filters
       @tasks = filter_by_customers_projects_and_milestones(@tasks)
       @tasks = filter_by_properties(@tasks)
+      @tasks = filter_by_tags(@tasks)
       @tasks = sort_tasks(@tasks)
     end
 
     return @tasks
-  end
-
-  ###
-  # Returns tasks matching the tags in the params given
-  # at construction.
-  ###
-  def tasks_by_tags
-    Task.tagged_with(selected_tags, {
-                       :company_id => @company.id,
-                       :project_ids => @select_project_ids, 
-                       :filter_hidden => session[:filter_hidden], 
-                       :filter_user => session[:filter_user], 
-                       :filter_milestone => session[:filter_milestone], 
-                       :filter_status => session[:filter_status], 
-                       :filter_customer => session[:filter_customer] 
-                     })
   end
 
   ###
@@ -321,5 +306,23 @@ class TaskFilter
     status_values = status_values.join(" OR ")
     status_values = "(#{ status_values }) AND " if !status_values.blank?
     return "#{ status_values } (#{ hidden }) AND "
+  end
+
+  ###
+  # Returns an array containing any tasks in the param
+  # that have tags in selected_tags. If no tags are set, 
+  # all tasks will be returned.
+  ###
+  def filter_by_tags(tasks)
+    return tasks if !filtering_by_tags?
+
+    res = []
+    tasks.each do |task|
+      selected_tags.each do |tag|
+        res << task if task.has_tag?(tag)
+      end
+    end
+    
+    return res.uniq
   end
 end
