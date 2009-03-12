@@ -48,12 +48,14 @@ class ResourcesController < ApplicationController
   # PUT /resources/1.xml
   def update
     @resource = current_user.company.resources.find(params[:id])
-    saved = @resource.update_attributes(params[:resource]) 
+    @resource.attributes = params[:resource]
     @resource.company = current_user.company
-    saved &&= @resource.save
 
     respond_to do |format|
-      if saved
+      if @resource.save
+        # BW: not sure why these aren't getting updated automatically
+        @resource.resource_attributes.each { |ra| ra.save }
+
         flash[:notice] = 'Resource was successfully updated.'
         format.html { redirect_to(edit_resource_path(@resource)) }
         format.xml  { head :ok }

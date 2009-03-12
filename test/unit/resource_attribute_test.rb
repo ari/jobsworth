@@ -16,15 +16,16 @@ class ResourceAttributeTest < Test::Unit::TestCase
   def test_validation_regex_is_checked
     type_attr = @type.resource_type_attributes.first
     attr = ResourceAttribute.new
+    attr.resource = @resource
     attr.resource_type_attribute = type_attr
 
     type_attr.validation_regex = ""
-    assert attr.valid?
+    assert attr.check_regex
 
     type_attr.validation_regex = "\\d"
     attr.value = "1"
-    assert attr.validate
+    assert attr.check_regex
     attr.value = "a"
-    assert !attr.validate
+    assert !attr.check_regex
   end
 end

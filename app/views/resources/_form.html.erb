@@ -1,4 +1,6 @@
 <% form_for(@resource) do |f| %>
+<%= error_messages_for(:resource) %>
+
 <fieldset>
   <label for="resource_name"><%= _("Name") %></label>
   <%= f.text_field :name %>
@@ -21,10 +23,8 @@
   <fieldset>
     <legend><%= _("Attributes") %></legend>
     <div id="attributes">
-      <% if !@resource.new_record? %>
-        <% @resource.all_attributes.each do |ra| %>
-          <%= render :partial => "attribute", :locals => { :attribute => ra } %> 
-        <% end %>
+      <% @resource.all_attributes.each do |ra| %>
+      <%= render :partial => "attribute", :locals => { :attribute => ra } %> 
       <% end %>
       <label for="resource_notes"><%= _("Notes") %></label>
       <%= f.text_area :notes %>

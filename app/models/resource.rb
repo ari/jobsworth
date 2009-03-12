@@ -23,7 +23,7 @@ class Resource < ActiveRecord::Base
       attr = resource_attributes.detect { |a| a.id == attr_id.to_i }
       attr ||= build_new_attribute(values)
 
-      attr.update_attributes(values)
+      attr.attributes = values
       updated << attr
     end
     
@@ -39,6 +39,8 @@ class Resource < ActiveRecord::Base
   # but not saved.
   ###
   def all_attributes
+    return [] if resource_type.blank?
+
     res = []
     resource_type.resource_type_attributes.each do |rta|
       attrs = resource_attributes.select { |a| a.resource_type_attribute_id == rta.id }
@@ -58,8 +60,27 @@ class Resource < ActiveRecord::Base
   def validate
     res = true
 
-    resource_attributes.each do |attr|
-      res &&= attr.valid?
+    # check attributes are valid
+    invalid = resource_attributes.select { |attr| !attr.check_regex }
+    res = invalid.empty?
+
+    # add errors for any invalid attributes
+    invalid.each do |attr|
+      msg = "#{ attr.resource_type_attribute.name } doesn't match regex"
+      errors.add_to_base(msg)
+    end
+
+
+    # check for missing mandatory attributes
+    resource_type.resource_type_attributes.each do |rta|
+      next if !rta.is_mandatory?
+
+      attr = resource_attributes.detect { |ra| ra.resource_type_attribute == rta }
+      value = attr.value if attr
+      if value.blank?
+        res = false
+        errors.add_to_base("Missing value for mandatory #{ rta.name }")
+      end
     end
 
     return res

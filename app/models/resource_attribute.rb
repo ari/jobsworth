@@ -2,16 +2,21 @@ class ResourceAttribute < ActiveRecord::Base
   belongs_to :resource
   belongs_to :resource_type_attribute
 
-  def validate
+  ###
+  # If a validation regex is setup, checks the value matches
+  # that regex. Returns if it does, or if validation_regex.blank?
+  # Ideally this would be a validation, but I'm having trouble
+  # getting that working (BW)
+  ###
+  def check_regex
     return true if resource_type_attribute.nil?
 
     regex = resource_type_attribute.validation_regex
-    valid = true
+    res = true
     if !regex.blank? and !value.blank?
-      valid = value.match(regex)
-      errors.add("value", "Doesn't match regex") if !valid
+      res = value.match(regex)
     end
 
-    return valid
+    return res
   end
 end

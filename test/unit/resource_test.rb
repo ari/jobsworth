@@ -46,4 +46,15 @@ class ResourceTest < Test::Unit::TestCase
     assert_equal attr.id, new_attr.id
     assert_equal "T2", new_attr.value
   end
+
+  def test_not_valid_if_mandatory_fields_missing
+    assert @resource.validate
+
+    attr = @type.resource_type_attributes.first
+
+    attr.is_mandatory = true
+    @type.save
+
+    assert !@resource.validate
+  end
 end
