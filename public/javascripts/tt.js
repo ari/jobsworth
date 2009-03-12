@@ -453,3 +453,12 @@ function removeAttribute(link) {
     link = jQuery(link);
     link.parent(".attribute").remove();
 }
+
+/*
+  Removes the link from resource to task
+*/
+function removeTaskResource(link) {
+    link = jQuery(link);
+    var parent = link.parent(".resource_no");
+    parent.remove();
+}

@@ -49,6 +49,7 @@ class Task < ActiveRecord::Base
 
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
   has_many      :sheets
+  has_and_belongs_to_many :resources
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
@@ -1015,5 +1016,23 @@ class Task < ActiveRecord::Base
     end
 
     return unread
+  end
+
+  ###
+  # Sets up any links to resources that should be attached to this
+  # task. 
+  # Clears any existings links to resources.
+  ###
+  def set_resource_attributes(params)
+    return if !params
+
+    resources.clear
+
+    ids = params[:name].split(",")
+    ids += params[:ids] if params[:ids] and params[:ids].any?
+
+    ids.each do |id|
+      self.resources << company.resources.find(id)
+    end
   end
 end

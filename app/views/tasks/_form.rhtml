@@ -355,8 +355,22 @@ jQuery('#task_due_at').datepicker();
         <fieldset id="task_resources">
 	  <legend><%=_ "Resources" %></legend>
           <label for="resources_input"><%=_ "Linked resources" %></label>
-	  <%= text_field_with_auto_complete(:resource, :name, {},
+	  <%= text_field_with_auto_complete(:resource, :name, { :size => 12 },
 	      { :select => 'complete_value', :tokens => ',' }) %>
+	  <br clear="both" />
+
+	  <% @task.resources.each do |r| %>
+      	    <div class="resource_no">
+	      <% img = image_tag("cross_small.png", :border => 0, :class => "close-cross") %>
+	      <%= link_to_function(img, "removeTaskResource(this)") %>
+
+  	      <%= hidden_field_tag("resource[ids][]", r.id) %>
+	      <strong>#<%= r.id %></strong>
+	      <%= link_to(r, edit_resource_path(r)) %>
+
+              <span class="divider"></span>
+	    </div>
+	  <% end %>
 	</fieldset>
     </td>
 </tr>

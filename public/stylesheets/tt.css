@@ -496,6 +496,7 @@ fieldset label.ignore {
 #task_dependencies label,
 #task_attachments label,
 #task_project_selection label,
+#task_resources label,
 #task_information label, 
 #reports_filter label, 
 #reports_config label{
@@ -550,10 +551,10 @@ fieldset input.checkbox {
 	min-height: 25px;
 }
 
-	.dependency_no {
-		clear: both;
-		margin: 0.3em 0.5em 0 100px;
-	}
+.dependency_no, .resource_no {
+    clear: both;
+    margin: 0.3em 0.5em 0 100px;
+}
 
 #task_attachments em {
 	font-size: 90%;

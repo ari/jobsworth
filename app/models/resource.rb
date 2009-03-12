@@ -6,6 +6,7 @@ class Resource < ActiveRecord::Base
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
            :dependent => :destroy)
+  has_and_belongs_to_many :tasks
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id

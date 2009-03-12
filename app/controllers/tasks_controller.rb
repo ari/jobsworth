@@ -357,6 +357,7 @@ class TasksController < ApplicationController
       @task.set_watcher_attributes(params[:watchers], current_user)
       @task.set_owner_attributes(params[:users])
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_resource_attributes(params[:resource])
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id

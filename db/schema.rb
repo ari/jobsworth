@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090308001428) do
+ActiveRecord::Schema.define(:version => 20090312051643) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -375,6 +375,14 @@ ActiveRecord::Schema.define(:version => 20090308001428) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "resources_tasks", :id => false, :force => true do |t|
+    t.integer "resource_id"
+    t.integer "task_id"
+  end
+
+  add_index "resources_tasks", ["task_id"], :name => "index_resources_tasks_on_task_id"
+  add_index "resources_tasks", ["resource_id"], :name => "index_resources_tasks_on_resource_id"
 
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
