@@ -996,33 +996,35 @@ class TasksController < ApplicationController
     list
 
     filename = "clockingit_tasks"
+    filename_extras = []
 
-    if session[:filter_customer].to_i > 0
-      filename << "_"
-      filename << Customer.find( session[:filter_customer] ).name
+    tf = TaskFilter.new(self, session)
+    tf.customer_ids.each do |id|
+      next if id < 0
+      filename_extras << current_user.company.customers.find(id).name
+    end
+    tf.project_ids.each do |id|
+      next if id < 0
+      p = current_user.projects.find(id)
+      filename_extras << "#{p.customer.name}_#{p.name}"
+    end
+    tf.milestone_ids.each do |id|
+      next if id < 0
+      m = current_user.company.milestones.find(id)
+
+      filename_extras << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
+    end
+    TaskFilter.filter_user_ids(session, TaskFilter::ALL_USERS).each do |id|
+      next if id < 0
+      filename_extras << current_user.company.users.find(id).name
+    end
+    TaskFilter.filter_status_ids(session).each do |id|
+      value = Task.status_type(id)
+      filename_extras << value if !value.blank?
     end
 
-    if session[:filter_project].to_i > 0
-      p = Project.find( session[:filter_project] )
-      filename << "_"
-      filename << "#{p.customer.name}_#{p.name}"
-    end
-
-    if session[:filter_milestone].to_i > 0
-      m = Milestone.find( session[:filter_milestone] )
-      filename << "_"
-      filename << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
-    end
-
-    if session[:filter_user].to_i > 0
-      filename << "_"
-      filename <<  User.find(session[:filter_user]).name
-    end
-
-    if session[:filter_status].to_i > 0
-      filename << "_"
-      filename << Task.status_type(session[:filter_status].to_i)
-    end
+    filename_extras = filename_extras.join("_")
+    filename += "_#{ filename_extras }" if !filename_extras.blank?
 
     filename = filename.gsub(/ /, "_").gsub(/["']/, '').downcase
     filename << ".csv"
