@@ -1,0 +1,27 @@
+<div class="page_header">
+  <%= link_to _("New resource"), new_resource_path %>
+  <%= link_to _("New resource type"), new_resource_type_path %>
+
+  <%= _"Resource Types" %>
+</div>
+
+<div class="resource_types">
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <thead>
+      <th>Name</th>
+      <th>Attributes</th>
+      <th></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <% @resource_types.each do |rt| %>
+      <tr>
+	<td><%= rt.name %></td>
+	<td><%= rt.resource_type_attributes.count %></td>
+	<td><%= link_to _("Edit"), edit_resource_type_path(rt) %></td>
+	<td><%= link_to(_("Delete"), resource_type_path(rt), :method => :delete, :confirm => "Are you sure?") %></td>  
+      </tr>
+      <% end %> 
+    </tbody>
+  </table>
+</dev>

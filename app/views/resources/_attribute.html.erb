@@ -1,0 +1,17 @@
+<div class="attribute">
+  <% 
+     field_id = "attribute_#{ attribute.id }" 
+     prefix = "resource[attribute_values][]"
+     type = attribute.resource_type_attribute
+     same_as_last_type = (type == last_type)
+  %> 
+  <label for="<%= field_id %>">
+    <%= type.name %>
+  </label>
+
+  <%= hidden_field_tag("#{ prefix }[resource_type_attribute_id]", type.id, :class => "type_id") %>
+  <%= hidden_field_tag "#{ prefix }[id]", attribute.id, :class => "attr_id" %>
+  <%= value_field(attribute, prefix, field_id, same_as_last_type) %>
+  
+  <br clear="both" />
+</div>

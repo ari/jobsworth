@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  resource_type_id: 1
+  name: MyString
+  is_mandatory: false
+  allows_multiple: false
+  is_password: false
+  validation_regex: MyString
+  default_field_length: 1
+  sort_order: 1
+
+two:
+  resource_type_id: 1
+  name: MyString
+  is_mandatory: false
+  allows_multiple: false
+  is_password: false
+  validation_regex: MyString
+  default_field_length: 1
+  sort_order: 1

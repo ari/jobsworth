@@ -584,32 +584,36 @@ END_OF_HTML
     return res
   end
 
+  ###
+  # Returns a submit tag suitable for the given object.
+  # (Create or Update)"
+  ###
+  def cit_submit_tag(object)
+    text = object.new_record? ? _("Create") : _("Update")
+    submit_tag(text, :class => 'nolabel')
+  end
 
   ###
-  # Returns the project id that should be selected based on the current 
-  # session and filters.
-  ### 
-  def selected_project
-    if @task and @task.project_id > 0
-      selected_project = @task.project_id
-      last_project_id = TaskFilter.filter_ids(session, :last_project_id).first
-      project_id = TaskFilter.filter_ids(session, :filter_project).first
-    elsif last_project_id.to_i > 0 && Project.exists?(last_project_id)
-      selected_project = last_project_id
-    elsif project_id.to_i > 0 && Project.exists?(project_id)
-      selected_project = project_id
-    else
-      selected_project = current_user.projects.find(:first, :order => 'name').id
-    end
-  
-    begin
-      selected_project = current_user.projects.find(selected_project).id 
-    rescue 
-      selected_project = current_user.projects.find(:first, :order => 'name').id
-    end
+  # Returns an element to use a handle for sorting the given
+  # object.
+  ###
+  def sortable_handle_tag(object)
+    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => "handle")
 
-    return selected_project
+    object.new_record? ? "" : image
   end
+
+  ###
+  # Returns an element that can be used to remove the nearest
+  # li from the page. 
+  ###
+  def link_to_remove_li
+    image = image_tag("cross_small.png", :border => 0, 
+                      :alt => "#{ _("Remove") }")
+    link_to_function(image, '$(this).up("li").remove();')
+  end
+
+
 
 end
 

@@ -110,6 +110,19 @@ class TasksController < ApplicationController
     render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
   end
 
+  def auto_complete_for_resource_name
+    search = params[:resource]
+    search = search[:name] if search
+    search = search.split(",").last if search
+    @resources = []
+
+    if !search.blank?
+      conds = [ "lower(name) like ?", "%#{ search.downcase }%" ]
+      @resources = current_user.company.resources.find(:all, 
+                                                       :conditions => conds)
+    end
+  end
+
   # Return a json formatted list of users to refresh the User dropdown
   # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners
@@ -344,6 +357,7 @@ class TasksController < ApplicationController
       @task.set_watcher_attributes(params[:watchers], current_user)
       @task.set_owner_attributes(params[:users])
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_resource_attributes(params[:resource])
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id

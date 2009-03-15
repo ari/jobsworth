@@ -6,6 +6,7 @@ class Customer < ActiveRecord::Base
   has_many      :projects, :order => "name", :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files
+  has_many      :resources
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name

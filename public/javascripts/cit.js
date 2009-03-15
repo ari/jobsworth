@@ -417,3 +417,70 @@ function toggleTaskUnread(icon) {
 
     jQuery.post("/tasks/set_unread",  parameters);
 }
+
+/*
+  Requests the available attributes for the given resource type
+  and updates the page with the returned values.
+*/
+function updateResourceAttributes(select) {
+    select = jQuery(select)
+    var typeId = select.val();
+    var target = jQuery("#attributes");
+
+    if (typeId == "") {
+	target.html("");
+    }
+    else {
+	var url = "/resources/attributes/?type_id=" + typeId;
+	jQuery.get(url, function(data) {
+	    target.html(data);
+	});
+    }
+}
+
+/*
+  Adds a new field to allow people to have multiple values
+  for resource attributes.
+*/
+function addAttribute(link) {
+    link = jQuery(link);
+    var origAttribute = link.parent(".attribute");
+
+    var newAttribute = origAttribute.clone();
+    newAttribute.find(".value").val("");
+    newAttribute.find("a.add_attribute").remove();
+    newAttribute.find(".attr_id").remove();
+
+    var removeLink = newAttribute.find("a.remove_attribute")
+    // for some reason this onclick needs to be manually set after cloning
+    removeLink.click(function() { removeAttribute(removeLink); })
+    removeLink.show();
+
+    origAttribute.after(newAttribute);
+}
+
+/*
+  Removes the resource attribute to the link
+*/
+function removeAttribute(link) {
+    link = jQuery(link);
+    link.parent(".attribute").remove();
+    console.log(link.parent(".attribute"));
+}
+// I'm not sure why, but we seem to need to add these for the event
+// to fire - onclick doesn't seem to work.
+jQuery(document).ready(function() {
+    jQuery(".remove_attribute").click(function(evt) { 
+	removeAttribute(evt.target); 
+    });
+});
+
+
+/*
+  Removes the link from resource to task
+*/
+function removeTaskResource(link) {
+    link = jQuery(link);
+    var parent = link.parent(".resource_no");
+    parent.remove();
+}
