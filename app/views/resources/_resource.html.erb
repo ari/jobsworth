@@ -6,7 +6,7 @@
 <li class="<%= class_name %>" style="<%= style %>">
   <%= link_to resource.name, edit_resource_path(resource) %>
 </li>
-<% resource.child_resources.each do |r| %>
+<% child_resources(resource, @resources).each do |r| %>
   <%= render(:partial => "resource", 
   :locals => { :resource => r, :depth => depth + 1 }) %>
 <% end %>

@@ -43,7 +43,16 @@ module ResourcesHelper
   # Returns only resources with no parent resource.
   ###
   def resources_without_parents(resources)
-    resources.select { |r| r.parent.nil? }
+    resources.select do |r| 
+      r.parent.nil? or !resources.include?(r.parent)
+    end
+  end
+
+  ###
+  # Returns all child resources of resource that should be shown.
+  ###
+  def child_resources(resource, all_visible_resources)
+    resource.child_resources.select { |r| all_visible_resources.include?(r) }
   end
 
   ###
