@@ -625,14 +625,14 @@ END_OF_HTML
   # Returns the html to use to display a filter for the given 
   # 
   ###
-  def filter_for(meth, values)
+  def filter_for(meth, values, selected)
     label = meth.to_s.humanize.titleize
     default = _('Any %s', label)
     values.unshift([ default, "" ])
 
-    select_tag("filter[#{ meth }]", options_for_select(values),
+    select_tag("filter[#{ meth }][]", options_for_select(values, selected),
                { :multiple => true ,
-                 :class => "multiple",
+                 :class => "multiselect",
                  :onchange => "$('filter_form').submit();"
                })
   end

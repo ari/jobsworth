@@ -38,6 +38,9 @@ class ObjectFilter
   private
 
   def remove_empty_params(params)
+    return if !params
+
+
     res = {}
 
     params.each do |meth, values|
@@ -53,8 +56,8 @@ class ObjectFilter
   def should_filter?(objects, filter_params)
     res = true
 
-    res &&= false if !objects or !filter_params 
-    res &&= false if filter_params.empty?
+    res &&= false if !objects
+    res &&= false if !filter_params or filter_params.empty?
 
     klass = objects.first.class
     res &&= false if !klass.const_defined?("FILTERABLE")

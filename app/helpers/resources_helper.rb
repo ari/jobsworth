@@ -51,9 +51,11 @@ module ResourcesHelper
   ###
   def resource_type_filter
     values = current_user.company.resource_types
-    values = values.map { |rt| [ rt.name, rt.id ] }
+    values = values.map { |rt| [ rt.name, rt.id.to_s ] }
     
-    filter_for(:resource_type_id, values)
+    selected = session[:resource_filters]
+    selected = selected[:resource_type_id] if selected
+    filter_for(:resource_type_id, values, selected)
   end
 
   ###
@@ -62,9 +64,11 @@ module ResourcesHelper
   def customer_filter
     customers = current_user.projects.map { |p| p.customer }
     customers.delete_if { |c| c.resources.empty? }
-    customers = customers.map { |c| [ c.name, c.id ] }
+    customers = customers.map { |c| [ c.name, c.id.to_s ] }
     customers.uniq!
 
-    filter_for(:customer_id, customers)
+    selected = session[:resource_filters]
+    selected = selected[:customer_id] if selected
+    filter_for(:customer_id, customers, selected)
   end
 end
