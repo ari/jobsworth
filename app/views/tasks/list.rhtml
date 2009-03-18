@@ -1,60 +1,36 @@
-<table width="100%" cellpadding="0" cellspacing="0" id="content">
-  <tr>
-    <td style="padding-left: 1em;" valign="top">
-      <table cellpadding="0" width="99%" cellspacing="0" class="content">
-        <tr>
-          <td align="left" class="page_header">
-            <div style="float:left;"><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
-            <div style="float:right;">
-              <%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' },
-              :loading => "Element.show('loading');",
-              :complete => "Element.hide('loading');"
-              %>
-            </div>
-            <div style="float:right;"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
-            <% if session[:view].nil? %><div style="float:right;"><%= link_to( _("Save as View"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div><% end %>
-          </td>
-        </tr>
-        <tr>
-          <td align="left" style="padding-left:5px; padding-top:0.5em;" nowrap id="tasks_filter">
-	    <%= render(:partial => "common/tasks_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-          </td>
-        </tr>
+<div id="content">
+	<div class="page_header"><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %>
+		<div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
+		<div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
+		<% if session[:view].nil? %>
+			<div class="right"><%= link_to( _("Save as View"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div>
+		<% end %>
+	</div>
+	<%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+	
+	<div id="task_list">
+		<div id="print_title"><%= print_title %></div>
+		<%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
+	</div>
+</div>
 
-        <tr>
-          <td align=left id="task_list"><div id="print_title"><%= print_title %></div>
-            <%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
-          </td>
-        </tr>
-      </table>
-    </td>
-    <td valign="top" style="padding-right:0.5em;" id="tags">
-      <table cellpadding=0 width="99%" cellspacing="0" class="content">
-        <tr>
-          <td align="left" class="page_header" style="padding-left:1em;">
- 	    <% if current_user.admin? %><a href="/tasks/tags" style="float:right;">Edit</a><% end %>
-           <%=_ 'Tags' %>
-          </td>
-        </tr>
-      <% unless @selected_tags.empty? %>
-      <tr><td align="right"><span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span></td></tr>
-      <% end %>
+<div id="tags">
+	<div class="page_header""><%=_ 'Tags' %>
+		<% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+	</div>
 
-      <% for tag in @all_tags
-         if @selected_tags.include?(tag[0]) && @selected_tags.size > 0
-            link = (@selected_tags - [tag[0]]).join(',')
-         else
-            link = (@selected_tags + [tag[0]]).join(',')
-         end
+	<% unless @selected_tags.empty? %>
+		<span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
+	<% end %>
 
-         link = tag[0]
-
-      %>
-
-      <tr><td align="right"><span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><a href="/tasks/list?tag=<%=URI.encode(link)%>"><%= tag[0] %></a> (<%= @tags[tag[0]] %>)</span></td></tr>
-      <% end %>
-      </table>
-    </td>
-  </tr>
-</table>
-
+	<% for tag in @all_tags
+		if @selected_tags.include?(tag[0]) && @selected_tags.size > 0
+			link = (@selected_tags - [tag[0]]).join(',')
+		else
+			link = (@selected_tags + [tag[0]]).join(',')
+		end
+		link = tag[0]
+	%>
+		<span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><a href="/tasks/list?tag=<%=URI.encode(link)%>"><%= tag[0] %></a> (<%= @tags[tag[0]] %>)</span>
+	<% end %>
+</div>

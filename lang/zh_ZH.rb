@@ -291,7 +291,6 @@ Localization.define('zh_ZH') do |l|
   l.store "Improvement", "Improvement"
   l.store "In Progress", "In Progress"
   l.store "Information", "Information"
-  l.store "Let me know", "Let me know"
   l.store "Linked from", "Linked from"
   l.store "New Feature", "New Feature"
   l.store "New Project", "New Project"

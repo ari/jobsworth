@@ -372,7 +372,7 @@ class ApplicationController < ActionController::Base
 
   ###
   # This method sets up the session with any posted filter params.
-  # The parameters expected are in the views/common/_tasks_filter.rhtml
+  # The parameters expected are in the views/task/_filter.rhtml
   # file.
   ###
   def setup_task_filters

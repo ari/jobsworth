@@ -134,32 +134,6 @@ module TasksHelper
   end
 
   ###
-  # Returns the project id that should be selected based on the current 
-  # session and filters.
-  ### 
-  def selected_project
-    if @task.project_id > 0
-      selected_project = @task.project_id
-      last_project_id = TaskFilter.filter_ids(session, :last_project_id).first
-      project_id = TaskFilter.filter_ids(session, :filter_project).first
-    elsif last_project_id.to_i > 0 && Project.exists?(last_project_id)
-      selected_project = last_project_id
-    elsif project_id.to_i > 0 && Project.exists?(project_id)
-      selected_project = project_id
-    else
-      selected_project = current_user.projects.find(:first, :order => 'name').id
-    end
-  
-    begin
-      selected_project = current_user.projects.find(selected_project).id 
-    rescue 
-      selected_project = current_user.projects.find(:first, :order => 'name').id
-    end
-
-    return selected_project
-  end
-
-  ###
   # Returns the html to display a select field to set the tasks 
   # milestone. The current milestone (if set) will be selected.
   ###

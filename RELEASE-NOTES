@@ -1,0 +1,151 @@
+Clocking IT change history for new functionality and major bug fixes.
+
+For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
+
+4 Mar 2009
+    Rename stylesheets to give them more consistent naming.    
+    
+2 Mar 2009
+    Clean up html structure, removing unneeded tables in layout. Also fix some indenting to make it easier to try and debug excessive nested html.
+    Migrate several prototype calls across to jQuery
+    Break up large layouts into some smaller pieces.
+
+1 Mar 2009
+    Remove version number: 0.99.3 is not even remotely right.
+
+28 Feb 2009
+    Implementation of multi-select for filtering
+
+26 Feb 2009
+    Shortcut 'add me' for adding yourself to the notification list.
+    Read/unread status implemented. Now tasks are marked as unread for all watchers when an notification is sent, which puts a little star next to the task in the list view. Users can also use this star for flagging items which they wish to review.
+
+21 Feb 2009
+    Handle autolinking of URLs with : and +
+    Increase fontsize slightly for task links / names
+
+20 Feb 2009
+    Task browse, calendar and GANTT are now grouped together with common filter GUI and a new set of tabs to switch between their display. At the same time a bit of duplicate task filtering code was merged so this part will be more consistent and easier to modify in the future.
+
+13 Feb 2009
+    Users can now choose not to receive emails for their own changes to a task.
+
+12 Feb 2009
+    Further cleanup of right side of task edit view. Now merge dependencies into one block and also fix a broken close tag whic
+    Fix broken html with additional </td> and no matching open.
+    Move add attachments into the common block on the right side of the task edit view.
+
+5 Feb 2009
+    Have push_server find it's config file via relative path
+
+5 Feb 2009
+    fixed bug in report csv display
+
+31 Jan 2009
+    Creating new milestones from the task edit view now uses a shadowbox floating area and javascript has been moved to jquery
+
+29 Jan 2009
+    Stylesheets with full stops in the middle are not properly referenced by Rails.
+
+28 Jan 2009
+    Show last comment made on task in tooltip - Load dynamically after a 1 second delay.
+    Add shadowbox for image attachments. This uses the jquery library, so some fixes were made to activate jquery properly.
+    Attachments should be given the correct mime type and disposition when being transferred. This means that images will be displayed inline.
+
+27 Jan 2009
+    Make error messages from file uploading easier to debug.
+    Refactor login process so that:
+      1. Common code is in one place (how to find the company from the URL)
+      2. For the simple case with only one company, assume that incoming requests are routed to that company. That should solve a
+
+26 Jan 2009
+    Allow non default TCP port for Timer window
+
+25 Jan 2009
+    Give ProjectFiles a way to re-create thumbnails
+
+24 Jan 2009
+    Use same background as fieldsets for image thumbnails
+    Run db:migrate on schema init from setup.rb
+    Update documention and install allison rdoc templates in vendor folder to remove an external dependency.
+
+23 Jan 2009
+    Allow multi-file uploads for tasks
+    - Move upload parsing to new function
+    - User ImageOperations to getnerate thumbnails where appropriate
+    - Show thumbnails on task form if it exists
+    - Click Thumbnail to view full picture, link to download
+    Extract RMagick operations into a lib
+    Rework dropshadow generation to fix later ImageMagicks
+    - Also fix empty file in first upload slot
+    Ignore the IDEA configuration file for people using IDEA RubyMine.
+
+22 Jan 2009
+    Allow multiple file uploads at a time for ProjectFiles
+    Fix email notifications on incoming email comments
+
+22 Jan 2009
+    Add automatic Table of Contents for Wiki pages
+
+20 Jan 2009
+    Initial jQuery support
+
+15 Jan 2009
+    Custom properties work is now complete. Rather than the hardcoded 'type', 'severity' and 'priority', you can now define these properties in any way you choose. You can add new properties, add and edit the possible values and set the default values. Properties may be linked to icons and to colours which display in the list view. All reports, filters, saved views, and other code has been updated to accommodate these new custom properties. Drag and drop also works. Please allow some time for the database to be converted when you upgrade to this version.
+    Cleaned up the task information workflow, by rearranging elements and styles
+    
+14 Jan 2009
+    Include Created in CSV tasklist dump to get task lifespan
+    Allow time entry on tasks in all your projects
+    Include completion date in CSV tasklist dump
+    Finished cleaning up the labels, task property panes and the language used for tooltips and some labels
+
+12 Jan 2009
+    allow translators to move text in property filters
+
+3 Jan 2009
+    Allow hiding of dependencies from views and browse
+
+20 Dec 2008
+    Allow changing widget names again
+
+19 Dec 2008
+    Move work_log entries along with task when moving via drag and drop.
+
+13 Dec 2008
+    can sort property values now
+    more filters shows for custom prop filters on task list
+    can filter on custom properties
+    can remove property values
+    added custom properties to preferences menu
+    custom properties saving on new
+    display custom properties on task edit page
+
+12 Dec 2008
+    Merge branch 'master' into custom_properties
+    sort online users so test always passes
+    added some functional tests for property creation
+    can add, edit basic custom properties
+    set config values in NotificationsTest so all tests pass
+
+10 Dec 2008
+    Instead of owners being notified for every message added to a task, the owner is now added to the default list of people to
+    Then it becomes easy to remove the owner as a watcher if they are no longer relevant to the task.
+
+23 Nov 2008
+    Ignore OSX invisible DS_Store files as well as Eclipse project and path files.
+
+23 Nov 2008
+    Add rdoc to the project, along with script to easily update the docs.
+
+22 Nov 2008
+    add the ability to set the DB host, not everybody uses localhost
+
+20 Nov 2008
+    Removing an item should utilise a cross rather than a tick.
+
+9 Nov 2008
+    Remove hardcoded clockingit website URL.
+
+9 Nov 2008
+    Changed header to white so that logos with white backgrounds look better in the header block.

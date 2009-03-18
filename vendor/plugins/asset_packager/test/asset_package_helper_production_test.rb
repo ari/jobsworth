@@ -8,7 +8,6 @@ require 'mocha'
 require 'action_controller/test_process'
 
 ActionController::Base.logger = nil
-ActionController::Base.ignore_missing_templates = false
 ActionController::Routing::Routes.reload rescue nil
 
 $asset_packages_yml = YAML.load_file("#{RAILS_ROOT}/vendor/plugins/asset_packager/test/asset_packages.yml")
@@ -26,16 +25,9 @@ class AssetPackageHelperProductionTest < Test::Unit::TestCase
     self.stubs(:should_merge?).returns(true)
 
     @controller = Class.new do
-
-      attr_reader :request
-      def initialize
-        @request = Class.new do
-          def relative_url_root
-            ""
-          end
-        end.new
+      def request
+        @request ||= ActionController::TestRequest.new
       end
-
     end.new
 
     build_packages_once
@@ -49,11 +41,11 @@ class AssetPackageHelperProductionTest < Test::Unit::TestCase
   end
   
   def build_js_expected_string(*sources)
-    sources.map {|s| %(<script src="/javascripts/#{s}.js" type="text/javascript"></script>) }.join("\n")
+    sources.map {|s| javascript_include_tag(s) }.join("\n")
   end
     
   def build_css_expected_string(*sources)
-    sources.map {|s| %(<link href="/stylesheets/#{s}.css" rel="Stylesheet" type="text/css" media="screen" />) }.join("\n")
+    sources.map {|s| stylesheet_link_tag(s) }.join("\n")
   end
 
   def test_js_basic
@@ -143,11 +135,6 @@ class AssetPackageHelperProductionTest < Test::Unit::TestCase
     package_name3 = Synthesis::AssetPackage.find_by_target("stylesheets", "subdir/styles").current_file
     assert_dom_equal build_css_expected_string(package_name1, package_name2, package_name3), 
       stylesheet_link_merged(:base, :secondary, "subdir/styles")
-  end
-  
-  def test_image_tag
-    timestamp = rails_asset_id("images/rails.png")
-    assert_dom_equal %(<img alt="Rails" src="/images/rails.png?#{timestamp}" />), image_tag("rails")
   end
   
 end

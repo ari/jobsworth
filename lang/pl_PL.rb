@@ -342,7 +342,6 @@ Localization.define('pl_PL') do |l|
   l.store "Improvement", "Poprawka"
   l.store "In Progress", "W toku"
   l.store "Information", "Informacja"
-  l.store "Let me know", "Powiadom mnie"
   l.store "Linked from", "Linkowane z" # chester
   l.store "New Feature", "Nowa Cecha"
   l.store "New Project", "Nowy projekt" # GhandaL

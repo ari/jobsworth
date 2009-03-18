@@ -339,7 +339,6 @@ Localization.define('no_NO') do |l|
   l.store "Improvement", "Forbedring"
   l.store "In Progress", "Under Utvikling"
   l.store "Information", "Informasjon"
-  l.store "Let me know", "Fortell meg"
   l.store "Linked from", "Liket til fra"
   l.store "New Feature", "Ny Funksjonalitet"
   l.store "New Project", "Nytt Prosjekt"

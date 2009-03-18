@@ -4,9 +4,8 @@
 <html>
   <head>
     <%= javascript_include_merged :base %>
-    <%= javascript_include_merged :tt %>
     <%= javascript_include_tag "swfobject" %>
-    <%= stylesheet_link_merged :tt %>
+    <%= stylesheet_link_merged :base %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= stylesheet_link_tag "shortlist" %>
     <!--[if lt IE 7]>
@@ -49,7 +48,7 @@
         </td>
       </tr>
     </table>
-    <span id="contact" class="contact">Clocking IT v0.99.3 - <%=_ 'Feedback? Suggestions? Ideas? Bugs?'%> <a href="mailto:feedback@clockingit.com"><%=_ 'Let me know'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></span>
+    <span id="contact" class="contact">Clocking IT - <a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a> <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></span>
 
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
 

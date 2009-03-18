@@ -346,7 +346,6 @@ Localization.define('es_ES') do |l|
   l.store "Improvement", "Mejora"
   l.store "In Progress", "En progreso"
   l.store "Information", "Información"
-  l.store "Let me know", "Házmelo saber"
   l.store "Linked from", "Referenciado desde"
   l.store "New Feature", "Nueva característica"
   l.store "New Project", "Nuevo Proyecto" # Sergio Rael

@@ -311,7 +311,6 @@ Localization.define('ko_KO') do |l|
   l.store "Improvement", "개선 사항" # 심마로
   l.store "In Progress", "진행중" # 심마로
   l.store "Information", "정보" # 심마로
-  l.store "Let me know", "Let me know"
   l.store "New Feature", "새 기능" # 심마로
   l.store "New Project", "새 프로젝트" # 심마로
   l.store "Preferences", "설정" # 심마로

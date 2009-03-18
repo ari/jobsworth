@@ -346,7 +346,6 @@ Localization.define('fr_FR') do |l|
   l.store "Improvement", "Amélioration"
   l.store "In Progress", "En cours"
   l.store "Information", "Informations"
-  l.store "Let me know", "Ecrivez-moi !"
   l.store "Linked from", "Lié depuis"
   l.store "New Feature", "Nouvelle fonction"
   l.store "New Project", "Nouveau projet" # Brice

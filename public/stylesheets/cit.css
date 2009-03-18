@@ -140,10 +140,9 @@ h4 {
   text-align: left;
 }
 
-.pages_item {
-  font-size: 12px;
-  font-weight: bold;
-  padding-left: 0.5em;
+#left_menu {
+  padding-left: 10px;
+  text-align: left;
 }
 
 .shout_body {
@@ -165,13 +164,14 @@ h4 {
   font-weight: bold;
   border: 1px solid #e8e8e8;
   color: #423f54;
-  padding-left: 1em;
+  padding: 8px;
+  padding-right: 0px;
   padding-bottom: 0.15em;
   letter-spacing: 0.15em;
   padding-top: 0.29em;
   background-image: url(/images/header_bkg.gif);
   background-repeat: repeat-x;
-  width: 100%;
+  margin-bottom: 4px;
 }
 
 div.page_header {
@@ -186,7 +186,7 @@ div.page_header a {
   font-size: 11px;
   letter-spacing: 0em;
   text-transform: capitalize;
-  padding-right: 1em;
+  padding-right: 5px;
 }
 
 .tasks_updated_by {
@@ -394,33 +394,41 @@ input.checkbox {
   font-weight: bold;
 }
 
-.flash {
-  background-color: #ffff99;
-  color: #000000;
-  font-size: 14px;
-  padding: 0.2em 1em 0.2em 1em;
-  border-top: 1px solid #b7b7b7;
-  border-bottom: 1px solid #b7b7b7;
-  margin-bottom: 1em;
-}
-
-.news {
+/* messages which appear within the page */
+.inlineMessage {
+  padding-left: 1em;
+  padding-bottom: 4px;
+  padding-right: 1em;
+  padding-top: 4px;
   background-color: #B0D295;
-  color: #333333;
-  font-size: 14px;
-  padding: 0.2em 1em 0.2em 1em;
+  font-size: 12px;
   border-top: 1px solid #b7b7b7;
   border-bottom: 1px solid #b7b7b7;
-  margin-bottom: 1em;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
-.news_date {
+#flash {
+  background-color: #ffff99;
+}
+
+#flash_message {
+  color: #666666;
+}
+
+#news {
+  background-color: #B0D295;
+}
+
+.inlineMessage .date {
   font-weight: bold;
 }
 
-.news a{
-  font-weight: bold;
+.inlineMessage a{
+  float: right;
 }
+
+/* --- */
 
 .ajax {
 }
@@ -1253,26 +1261,15 @@ a.description {
 }
 
 #globalMenu{
-  position                : relative;
-  width                   : 100%;
-  height                  : 23px;
-  color                   : #cccccc;
-  padding                 : 0px;
-  margin                  : 0px;
+  position: relative;
+  width: 100%;
+  height: 23px;
+  color: #cccccc;
+  padding: 0px;
+  border-bottom: 3px solid white;
+  margin-bottom: 8px;
   background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
-/*  border-top: 1px solid #c8c8c8; */
-  border-left: 1px solid #c8c8c8;
-/*  border-bottom: 1px solid #c8c8c8; */
-  z-index: 2;
-}
-
-#menucontainer {
-  width: 100%;
-  padding: 0px 0px 0px 0px;
-  margin: 0px 0px 0px 0px;
-  float: left;
-  position: relative;
   z-index: 2;
 }
 
@@ -1455,11 +1452,6 @@ li.help {
   color: #a6a6a6;
   background-color: #fbfbfb;
 }
-
-#flash_message {
-  color: #666666;
-}
-
 
 #page {
   padding-left: 0;
@@ -2509,6 +2501,44 @@ input.scheduled {
 	background:transparent url(/images/tabs.gif) no-repeat scroll 0 0;
 }
 
-	#content ul.tabs li a:hover { color: #222222; }
-	#content ul.tabs li.active a, #content ul.tabs li.active { font-weight: bold;  border-bottom: 1px solid #FFFFFF; }
+#content ul.tabs li a:hover {
+	color: #222222;
+}
+#content ul.tabs li.active a, #content ul.tabs li.active {
+	font-weight: bold;  border-bottom: 1px solid #FFFFFF;
+}
 
+/* override some of the multiselect options to make it prettier */
+.multiSelect {
+	padding: 2px;
+	width: 180px;
+}
+.multiSelectOptions {
+	width: 185px;
+	margin: 0px;
+}
+
+.multiSelectOptions label {
+	font-size: 8pt;
+	padding: 0px;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+	margin-top: 0px;
+	color: black;
+	text-align: bottom;
+}
+
+.multiSelectOptions input {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 0.5em;
+	text-align: bottom;
+}
+
+.multiSelectOptions LABEL.checked {
+	background: white;
+}
+
+.multiSelectOptions LABEL.hover {
+	background: white;
+}

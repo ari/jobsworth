@@ -15,20 +15,17 @@ javascripts:
   - calendar-setup
   - application
   - jrails
-- tt:
+  - cit
   - juggernaut_javascript
-  - tt
 - portal:
   - prototype
   - tz
   - frontpage
 stylesheets:
 - base:
-  - scaffold
-- portal:
-  - portal
-- tt:
   - calendar-system
   - ui-datepicker
   - jqueryMultiSelect
-  - tt
+  - cit
+- portal:
+  - portal
