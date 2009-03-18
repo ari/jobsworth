@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class FilterTest < Test::Unit::TestCase
+class ObjectFilterTest < Test::Unit::TestCase
   fixtures :tasks
 
   def setup
-    @filter = Filter.new
+    @filter = ObjectFilter.new
   end
 
   def test_filter_with_no_params_returns_all_objects

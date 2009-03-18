@@ -1,4 +1,4 @@
-class Filter
+class ObjectFilter
 
   ###
   # Runs through the given objects and returns only
@@ -13,7 +13,7 @@ class Filter
   # Any filters based on methods not in FILTERABLE are ignored.
   ###
   def filter(objects, filter_params = {})
-    return objects if !objects or filter_params.empty?
+    return objects if !objects or !filter_params or filter_params.empty?
    
     klass = objects.first.class
     return objects if !klass.const_defined?("FILTERABLE")

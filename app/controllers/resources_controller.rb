@@ -4,6 +4,9 @@ class ResourcesController < ApplicationController
   def index
     @resources = current_user.company.resources
 
+    session[:resource_filters] = params[:filters] if params[:filters]
+    @resources = ObjectFilter.new.filter(@resources, session[:resource_filters])
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @resources }
