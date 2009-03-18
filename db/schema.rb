@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090222213047) do
+ActiveRecord::Schema.define(:version => 20090318233156) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -336,6 +336,54 @@ ActiveRecord::Schema.define(:version => 20090222213047) do
 
   add_index "property_values", ["property_id"], :name => "index_property_values_on_property_id"
 
+  create_table "resource_attributes", :force => true do |t|
+    t.integer  "resource_id"
+    t.integer  "resource_type_attribute_id"
+    t.string   "value"
+    t.string   "password"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resource_type_attributes", :force => true do |t|
+    t.integer  "resource_type_id"
+    t.string   "name"
+    t.boolean  "is_mandatory"
+    t.boolean  "allows_multiple"
+    t.boolean  "is_password"
+    t.string   "validation_regex"
+    t.integer  "default_field_length"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resource_types", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resources", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "resource_type_id"
+    t.integer  "parent_id"
+    t.string   "name"
+    t.integer  "customer_id"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "resources_tasks", :id => false, :force => true do |t|
+    t.integer "resource_id"
+    t.integer "task_id"
+  end
+
+  add_index "resources_tasks", ["task_id"], :name => "index_resources_tasks_on_task_id"
+  add_index "resources_tasks", ["resource_id"], :name => "index_resources_tasks_on_resource_id"
+
   create_table "scm_changesets", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -583,6 +631,8 @@ ActiveRecord::Schema.define(:version => 20090222213047) do
     t.boolean  "create_projects",                          :default => true
     t.boolean  "show_type_icons",                          :default => true
     t.boolean  "receive_own_notifications",                :default => true
+    t.boolean  "use_resources"
+    t.integer  "customer_id"
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"

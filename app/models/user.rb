@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   require_dependency 'digest/md5'
 
   belongs_to    :company
+  belongs_to    :customer
   has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name"
   has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name"
   has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project
