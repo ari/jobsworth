@@ -117,7 +117,14 @@ class TasksController < ApplicationController
     @resources = []
 
     if !search.blank?
-      conds = [ "lower(name) like ?", "%#{ search.downcase }%" ]
+      conds = "lower(name) like ?"
+      cond_params = [ "%#{ search.downcase }%" ]
+      if params[:customer_id]
+        conds += "and (customer_id is null or customer_id = ?)"
+        cond_params << params[:customer_id]
+      end
+
+      conds = [ conds ] + cond_params
       @resources = current_user.company.resources.find(:all, 
                                                        :conditions => conds)
     end

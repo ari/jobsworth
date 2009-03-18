@@ -172,4 +172,20 @@ module TasksHelper
     end
   end
 
+  ###
+  # Returns the html to display an auto complete for resources. Only resources
+  # belonging to customer id are returned. Unassigned resources (belonging to
+  # no customer are also returned though).
+  ###
+  def auto_complete_for_resources(customer_id)
+    options = {
+      :select => 'complete_value', 
+      :tokens => ',',
+      :url => { :action => "auto_complete_for_resource_name", 
+        :customer_id => customer_id }
+    }
+
+    return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
+  end
+
 end

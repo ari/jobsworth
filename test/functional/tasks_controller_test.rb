@@ -17,6 +17,11 @@ context "Tasks" do
     status.should.be :success
   end
 
+  specify "/new should render :success" do
+    get :new
+    status.should.be :success
+  end
+
   specify "/list should render :success" do
     company = companies("cit")
 
