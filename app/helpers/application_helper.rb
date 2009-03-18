@@ -613,7 +613,13 @@ END_OF_HTML
     link_to_function(image, '$(this).up("li").remove();')
   end
 
-
+  ###
+  # Returns the html class to use for the resources tab menu.
+  ###
+  def resource_class
+    name = controller.controller_name
+    return "active" if name == "resources" || name == "resource_types"
+  end
 
 end
 

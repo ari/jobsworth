@@ -108,6 +108,13 @@
     <% end %>
  </li>
 
+<li class="<%= resource_class %>">
+  <%= link_to(_("Resources"), resources_path) %>
+  <ul>
+    <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
+  </ul>
+</li>
+
   <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
   <li class="active"><%= link_to "#{_('New Task') + image_tag('tick.png',  :border => 0, :height => 16, :style => "margin-top:-2px;")}", {:controller => 'tasks', :action => 'new'}, :class => "active" %>
   <% else %>
