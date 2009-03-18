@@ -213,7 +213,7 @@ document.forms[0].username.focus();
 	      </td>
               <td valign="top" style="background-color:#FCFCFC;"><p class="text_black" align="center">Announcements</p>
                 <ul>
-		  <% @news.each do |news| %>
+		  <% (@news || []).each do |news| %>
                   <li><%= news.body %></li>
 		  <% end %>
                 </ul>
