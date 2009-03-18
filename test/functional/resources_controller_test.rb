@@ -7,6 +7,8 @@ context "Resources" do
     use_controller ResourcesController
     @request.with_subdomain("cit")
     user = users(:admin)
+    user.use_resources = true
+    user.save!
     @request.session[:user_id] = user.id
 
     company = user.company
@@ -17,6 +19,29 @@ context "Resources" do
     @resource = company.resources.build(:name => "test res")
     @resource.resource_type = @type
   end
+
+  specify "all should redirect if not use_resources set on user" do
+    user = User.find(@request.session[:user_id])
+    user.use_resources = false
+    user.save!
+
+    end_page = { :controller => "activities", :action => "list" }
+
+    get :new
+    assert_redirected_to(end_page)
+
+    get :edit, @resource.id
+    assert_redirected_to(end_page)
+
+    post :create, @resource.id
+    assert_redirected_to(end_page)
+
+    post :update, @resource.id
+    assert_redirected_to(end_page)
+
+    post :destroy, @resource.id
+    assert_redirected_to(end_page)
+  end 
 
   specify "/new should render :success" do
     get :new

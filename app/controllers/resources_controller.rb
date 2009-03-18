@@ -1,4 +1,6 @@
 class ResourcesController < ApplicationController
+  before_filter :check_permission
+
   # GET /resources
   # GET /resources.xml
   def index
@@ -128,6 +130,18 @@ class ResourcesController < ApplicationController
       cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
       @resources = current_user.company.resources.find(:all, :conditions => cond)
     end
+  end
+
+  private
+
+  def check_permission
+    can_view = true
+    if !current_user.use_resources?
+      can_view = false
+      redirect_to(:controller => "activities", :action => "list")
+    end
+
+    return can_view
   end
 end
 

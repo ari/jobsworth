@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090312051643) do
+ActiveRecord::Schema.define(:version => 20090318211346) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -631,6 +631,7 @@ ActiveRecord::Schema.define(:version => 20090312051643) do
     t.boolean  "create_projects",                          :default => true
     t.boolean  "show_type_icons",                          :default => true
     t.boolean  "receive_own_notifications",                :default => true
+    t.boolean  "use_resources"
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"

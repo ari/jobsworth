@@ -111,6 +111,8 @@ class TasksController < ApplicationController
   end
 
   def auto_complete_for_resource_name
+    return if !current_user.use_resources?
+
     search = params[:resource]
     search = search[:name] if search
     search = search.split(",").last if search
