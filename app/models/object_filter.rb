@@ -1,4 +1,5 @@
 class ObjectFilter
+  attr_accessor :logger
 
   ###
   # Runs through the given objects and returns only
@@ -13,20 +14,52 @@ class ObjectFilter
   # Any filters based on methods not in FILTERABLE are ignored.
   ###
   def filter(objects, filter_params = {})
-    return objects if !objects or !filter_params or filter_params.empty?
-   
-    klass = objects.first.class
-    return objects if !klass.const_defined?("FILTERABLE")
+    filter_params = remove_empty_params(filter_params)
+    return objects if !should_filter?(objects, filter_params)
 
+    klass = objects.first.class
     res = objects
     
     filter_params.each do |meth, values|
       filterable = klass.const_get("FILTERABLE")
       next if !filterable.include?(meth.to_sym)
 
-      res = res.select { |o| values.include?(o.send(meth)) }
+      res = res.select do |o| 
+        val = o.send(meth)
+        # even int params get passed in as strings, so
+        # try to_s too.
+        values.include?(val) or values.include?(val.to_s)
+      end
     end
 
     return res
   end
+
+  private
+
+  def remove_empty_params(params)
+    res = {}
+
+    params.each do |meth, values|
+      values = [ values ].flatten
+
+      values.delete_if { |v| v.blank? }
+      res[meth] = values if values.any?
+    end
+
+    return res
+  end
+
+  def should_filter?(objects, filter_params)
+    res = true
+
+    res &&= false if !objects or !filter_params 
+    res &&= false if filter_params.empty?
+
+    klass = objects.first.class
+    res &&= false if !klass.const_defined?("FILTERABLE")
+
+    return res
+  end
+
 end

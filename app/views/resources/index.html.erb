@@ -5,6 +5,15 @@
   <%= _"Resources" %>
 </div>
 
+<fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+  <legend><%= _'Filters' %></legend>
+  
+  <form id="filter_form">
+    <%= customer_filter %>
+    <%= resource_type_filter %>
+  </form>
+</fieldset>
+
 <div class="resources">
   <ul>
     <% resources_without_parents(@resources).each do |r| %>

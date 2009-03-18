@@ -2,14 +2,18 @@ class ResourcesController < ApplicationController
   # GET /resources
   # GET /resources.xml
   def index
-    @resources = current_user.company.resources
+    if params[:filter]
+      session[:resource_filters] = params[:filter]
+      redirect_to resources_path
+    else
+      @resources = current_user.company.resources
+      @resources = ObjectFilter.new.filter(@resources, 
+                                           session[:resource_filters])
 
-    session[:resource_filters] = params[:filters] if params[:filters]
-    @resources = ObjectFilter.new.filter(@resources, session[:resource_filters])
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @resources }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @resources }
+      end
     end
   end
 

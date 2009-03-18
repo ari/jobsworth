@@ -621,6 +621,22 @@ END_OF_HTML
     return "active" if name == "resources" || name == "resource_types"
   end
 
+  ###
+  # Returns the html to use to display a filter for the given 
+  # 
+  ###
+  def filter_for(meth, values)
+    label = meth.to_s.humanize.titleize
+    default = _('Any %s', label)
+    values.unshift([ default, "" ])
+
+    select_tag("filter[#{ meth }]", options_for_select(values),
+               { :multiple => true ,
+                 :class => "multiple",
+                 :onchange => "$('filter_form').submit();"
+               })
+  end
+
 end
 
 

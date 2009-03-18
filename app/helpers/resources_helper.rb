@@ -45,4 +45,26 @@ module ResourcesHelper
   def resources_without_parents(resources)
     resources.select { |r| r.parent.nil? }
   end
+
+  ###
+  # Returns the html to use to filter by resource types.
+  ###
+  def resource_type_filter
+    values = current_user.company.resource_types
+    values = values.map { |rt| [ rt.name, rt.id ] }
+    
+    filter_for(:resource_type_id, values)
+  end
+
+  ###
+  # Returns the html to use to filter by customers
+  ###
+  def customer_filter
+    customers = current_user.projects.map { |p| p.customer }
+    customers.delete_if { |c| c.resources.empty? }
+    customers = customers.map { |c| [ c.name, c.id ] }
+    customers.uniq!
+
+    filter_for(:customer_id, customers)
+  end
 end
