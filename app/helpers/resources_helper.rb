@@ -38,4 +38,11 @@ module ResourcesHelper
 
     return res
   end
+
+  ###
+  # Returns only resources with no parent resource.
+  ###
+  def resources_without_parents(resources)
+    resources.select { |r| r.parent.nil? }
+  end
 end
