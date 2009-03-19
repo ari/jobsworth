@@ -3,7 +3,8 @@
      field_id = "attribute_#{ attribute.id }" 
      prefix = "resource[attribute_values][]"
      type = attribute.resource_type_attribute
-     same_as_last_type = defined?(last_type) and (type == last_type)
+     same_as_last_type = (type == @last_type)
+     @last_type = type
   %> 
   <label for="<%= field_id %>">
     <%= type.name %>
