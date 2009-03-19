@@ -4,32 +4,7 @@
 #
 
 class Company < ActiveRecord::Base
-  has_many      :customers, :dependent => :destroy do
-    ###
-    # Searches the customers for this company and returns 
-    # any that have names or ids that match at least one of
-    # the given strings
-    ###
-    def search(strings)
-      conds = []
-      cond_params = []
-
-      strings.each do |s|
-        next if s.to_i <= 0
-        conds << "id = ?"
-        cond_params << s
-      end
-
-      strings.each do |s|
-        conds << "lower(name) like ?"
-        cond_params << "%#{ s.downcase.strip }%"
-      end
-
-      conds = [ conds.join(" or ") ] + cond_params
-      return find(:all, :conditions => conds)
-    end
-  end
-
+  has_many      :customers, :dependent => :destroy 
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => 'name'
   has_many      :milestones

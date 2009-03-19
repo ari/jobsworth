@@ -83,6 +83,6 @@ class SearchController < ApplicationController
     @chat_messages = ChatMessage.find_by_contents("#{chats} #{query}", {:limit => 100})
     
     # Find customers
-    @customers = current_user.company.customers.search(@keys)
+    @customers = Customer.search(current_user.company, @keys)
   end
 end

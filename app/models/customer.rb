@@ -19,6 +19,30 @@ class Customer < ActiveRecord::Base
     File.delete(r.logo_path) rescue begin end
   }
 
+  ###
+  # Searches the customers for company and returns 
+  # any that have names or ids that match at least one of
+  # the given strings
+  ###
+  def self.search(company, strings)
+    conds = []
+    cond_params = []
+    
+    strings.each do |s|
+      next if s.to_i <= 0
+      conds << "id = ?"
+      cond_params << s
+    end
+    
+    strings.each do |s|
+      conds << "lower(name) like ?"
+      cond_params << "%#{ s.downcase.strip }%"
+    end
+    
+    conds = [ conds.join(" or ") ] + cond_params
+    return company.customers.find(:all, :conditions => conds)
+  end
+
   def path
     File.join("#{RAILS_ROOT}", 'store', 'logos', self.company_id.to_s)
   end
