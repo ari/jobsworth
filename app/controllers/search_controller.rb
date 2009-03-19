@@ -82,5 +82,14 @@ class SearchController < ApplicationController
     chats = "+chat_id:\"#{chats}\""
     @chat_messages = ChatMessage.find_by_contents("#{chats} #{query}", {:limit => 100})
     
+    # Find customers
+    conds = [ "id = ?" ]
+    cond_params = [ query.to_i ]
+    @keys.each do |k|
+      conds << "lower(name) like ?"
+      cond_params << "%#{ k.downcase.strip }%"
+    end
+    conds = [ conds.join(" or ") ] + cond_params
+    @customers = current_user.company.customers.find(:all, :conditions => conds)
   end
 end
