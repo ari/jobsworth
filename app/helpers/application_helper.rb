@@ -611,6 +611,17 @@ END_OF_HTML
     return selected_project
   end
 
+  ###
+  # Returns the html to show pagination links for the given
+  #  array.
+  ###
+  def pagination_links(objects, count = 100)
+    will_paginate(objects, {
+                    :per_page => count,
+                    :next_label => _('Next') + ' &raquo;', 
+                    :prev_label => '&laquo; ' + _('Previous')
+                  })
+  end
 end
 
 
