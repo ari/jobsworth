@@ -1,10 +1,24 @@
 <table class="content" width="100%" style="padding-left:1em; padding-right:1em;" cellpadding="0" cellspacing="0">
-    <tr>
+  <tr>
     <td colspan="4" class="page_header">
       <div style="float:left;"><%=_ 'Clients' %></div>
       <div style="float:right;padding-top:0.15em;"><%= link_to _('New Client'), :action => 'new' %></div>
     </td>
-    </tr>
+  </tr>
+  
+  <tr>
+    <td colspan="4">
+      <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+	<legend><%= _'Filter'%></legend>
+	<form>
+	  <% (session[:client_name_filters] || []).each do |text| %>
+  	  <%= text %>
+	  <% end %>
+	</form>
+      </fieldset>
+    </td>
+  </tr>
+  
   <tr><td colspan=4>&nbsp;</td></tr>
   <tr>
     <th><%=_ 'Name' %></th>
@@ -13,17 +27,17 @@
     <th></th>
   </tr>
 
-<% for customer in @customers %>
-  <tr class="hoverrow">
-    <td><%=h customer.name %></td>
-    <td><%=h customer.contact_name %></td>
-    <td><%=h customer.contact_email %></td>
-    <td><%= link_to _('Edit'), :action => 'edit', :id => customer %>
-          <% if customer.name != 'Internal' && customer.name != current_user.company.name  && customer.projects.size == 0 %>
-    | <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete %s?", customer.name) %>
+  <% for customer in @customers %>
+    <tr class="hoverrow">
+      <td><%=h customer.name %></td>
+      <td><%=h customer.contact_name %></td>
+      <td><%=h customer.contact_email %></td>
+      <td><%= link_to _('Edit'), :action => 'edit', :id => customer %>
+        <% if customer.name != 'Internal' && customer.name != current_user.company.name  && customer.projects.size == 0 %>
+	| <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete %s?", customer.name) %>
         <% end %> </td>
-  </tr>
-<% end %>
+    </tr>
+    <% end %>
   <tr>
     <td colspan="4">
       <%= pagination_links(@customers) %>
