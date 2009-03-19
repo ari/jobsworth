@@ -484,3 +484,15 @@ function removeTaskResource(link) {
     var parent = link.parent(".resource_no");
     parent.remove();
 }
+
+/*
+  Retrieves the password from the given url, and updated
+  the nearest password div with the returned value.
+*/
+function showPassword(link, url) {
+    link = jQuery(link);
+    link.hide();
+
+    var passwordDiv = link.prev(".password");
+    passwordDiv.load(url);
+}

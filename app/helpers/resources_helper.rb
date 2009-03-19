@@ -18,7 +18,8 @@ module ResourcesHelper
     if type.is_password? and !attribute.value.blank?
       res = "<div class=\"password\"></div>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to(_("Show password"), url)
+      res += link_to_function(_("Show Password"), "showPassword(this, '#{ url }')")
+#      res += link_to(_("Show password"), url)
     else
       res = text_field_tag("#{ name_prefix }[value]", attribute.value, 
                            :id => field_id, :class => "value", 
