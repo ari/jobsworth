@@ -84,5 +84,8 @@ class SearchController < ApplicationController
     
     # Find customers
     @customers = Customer.search(current_user.company, @keys)
+
+    # Find users
+    @users = User.search(current_user.company, @keys)
   end
 end

@@ -35,6 +35,7 @@ class Customer < ActiveRecord::Base
     end
     
     strings.each do |s|
+      next if s.strip.blank?
       conds << "lower(name) like ?"
       cond_params << "%#{ s.downcase.strip }%"
     end

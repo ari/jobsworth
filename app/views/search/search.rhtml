@@ -127,6 +127,27 @@
   <tr><td>&nbsp;</td></tr>
 <% end %>
 
+<% if @users.length > 0 %>
+  <tr>
+    <td>
+      <div class="log_header"><%=_ "Users" %></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <ul style="padding-left: 0; margin-left:0;" id="search_customers">
+	<% @users.each do |@user| %>
+	  <li>
+	    <%= render :partial => "/users/user" %>
+	  </li>
+	  <% end %>
+      </ul>
+    </td>
+  </tr>
+
+  <tr><td>&nbsp;</td></tr>
+<% end %>
+
 </table></td></tr>
 
 </table>
