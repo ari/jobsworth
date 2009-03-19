@@ -13,6 +13,7 @@ Localization.define('cz_CZ') do |l|
   l.store "CSV", "CSV" # Ladislav Nešněra
   l.store "Dec", "Pro" # Ladislav Nešněra
   l.store "Due", "trvání" # Ladislav Nešněra
+  l.store "End", "End"
   l.store "Feb", "Úno" # Ladislav Nešněra
   l.store "Fri", "Pá" # Ladislav Nešněra
   l.store "Jan", "Led" # Ladislav Nešněra
@@ -28,10 +29,11 @@ Localization.define('cz_CZ') do |l|
   l.store "Sat", "So" # Ladislav Nešněra
   l.store "Sep", "Zář" # Ladislav Nešněra
   l.store "Sun", "Ne" # Ladislav Nešněra
-  l.store "Thu", "Út" # Ladislav Nešněra
+  l.store "Thu", "Čt"
   l.store "Tue", "Út" # Ladislav Nešněra
   l.store "Wed", "St" # Ladislav Nešněra
   l.store "and", "?a" # Ladislav Nešněra
+  l.store "Body", "Body"
   l.store "Chat", "Chat" # Ladislav Nešněra
   l.store "Date", "Datum" # Ladislav Nešněra
   l.store "Days", "Dny" # Aleš Satek
@@ -46,6 +48,7 @@ Localization.define('cz_CZ') do |l|
   l.store "Mine", "Hlavní" # Ladislav Nešněra
   l.store "Name", "Jméno" # Ladislav Nešněra
   l.store "Next", "Další" # Ladislav Nešněra
+  l.store "Note", "Note"
   l.store "Open", "Otevřít" # Ladislav Nešněra
   l.store "Read", "Číst" # Ladislav Nešněra
   l.store "Rows", "Řádky" # Ladislav Nešněra
@@ -57,14 +60,17 @@ Localization.define('cz_CZ') do |l|
   l.store "User", "Uživatel" # Ladislav Nešněra
   l.store "View", "Pohled" # Ladislav Nešněra
   l.store "Wait", "?Čekat" # Ladislav Nešněra
+  l.store "Week", "Week"
   l.store "Wiki", "Wiki" # Ladislav Nešněra
   l.store "Work", "?Práce" # Ladislav Nešněra
   l.store "days", "dnů" # Ladislav Nešněra
+  l.store "idle", "idle"
   l.store "59:04", "59:04" # Ladislav Nešněra
   l.store "April", "Dub" # Ladislav Nešněra
   l.store "Audit", "Audit" # Ladislav Nešněra
   l.store "Close", "Zavřít" # Ladislav Nešněra
   l.store "Email", "Email" # Ladislav Nešněra
+  l.store "Empty", "Empty"
   l.store "Files", "Soubor" # Ladislav Nešněra
   l.store "Forum", "Diskze" # Ladislav Nešněra
   l.store "Grant", "?Grant" # Ladislav Nešněra
@@ -87,10 +93,12 @@ Localization.define('cz_CZ') do |l|
   l.store "Views", "Pohledy" # Ladislav Nešněra
   l.store "Weeks", "Weeks"
   l.store "every", "?každý" # Ladislav Nešněra
+  l.store "lists", "lists"
   l.store "today", "dnes" # Ladislav Nešněra
   l.store "until", "?dokud" # Ladislav Nešněra
   l.store "%d day", ["%d den", "%d dnů"] # Ladislav Nešněra
   l.store "%s ago", "%s ?před" # Ladislav Nešněra
+  l.store "*bold*", "*bold*"
   l.store "Assign", "Přiřadit" # Ladislav Nešněra
   l.store "August", "Srpen" # Ladislav Nešněra
   l.store "Browse", "Zobrazit" # Ladislav Nešněra
@@ -124,8 +132,11 @@ Localization.define('cz_CZ') do |l|
   l.store "Worked", "Odpracováno" # Ladislav Nešněra
   l.store "[None]", "[?nic]" # Ladislav Nešněra
   l.store "[wdhm]", "[tdhm]" # Ladislav Nešněra
+  l.store "cancel", "cancel"
+  l.store "quotes", "quotes"
   l.store "%d days", ["%d den", "%d dnů"] # Ladislav Nešněra
   l.store "%d file", ["%d soubor", "%d souborů"] # Ladislav Nešněra
+  l.store "%d week", ["%d week", "%d week"]
   l.store "Blocker", "?Blocker" # Ladislav Nešněra
   l.store "Clients", "Zákazníci" # Ladislav Nešněra
   l.store "Columns", "Sloupce" # Ladislav Nešněra
@@ -148,7 +159,10 @@ Localization.define('cz_CZ') do |l|
   l.store "Summary", "Stručný popis" # Ladislav Nešněra
   l.store "Trivial", "Nezávažný" # Ladislav Nešněra
   l.store "Tuesday", "Úterý" # Ladislav Nešněra
+  l.store "Updated", "Updated"
   l.store "Welcome", "Vítejte" # Ladislav Nešněra
+  l.store "offline", "offline"
+  l.store "page %s", "page %s"
   l.store "%d month", ["%d měsíc", "%d měsíců"] # Ladislav Nešněra
   l.store "%d posts", ["%d ?zpráva", "%d ?zpráv"] # Ladislav Nešněra
   l.store "%s tasks", "%s úkolů" # Ladislav Nešněra
@@ -170,6 +184,7 @@ Localization.define('cz_CZ') do |l|
   l.store "Location", "Místo" # Ladislav Nešněra
   l.store "Modified", "Upraveno" # Ladislav Nešněra
   l.store "New File", "Nový soubor" # Ladislav Nešněra
+  l.store "New Note", "New Note"
   l.store "New Room", "Nová místnost" # Ladislav Nešněra
   l.store "New Task", "Nový úkol" # Ladislav Nešněra
   l.store "New User", "Nový uživatel" # Ladislav Nešněra
@@ -184,11 +199,14 @@ Localization.define('cz_CZ') do |l|
   l.store "Progress", "Průběh" # Ladislav Nešněra
   l.store "Projects", "Projekty" # Ladislav Nešněra
   l.store "QuickAdd", "?Přidat zjednodušeně" # Ladislav Nešněra
+  l.store "Resolved", "Resolved"
+  l.store "Reverted", "Reverted"
+  l.store "Revision", "Revision"
   l.store "Saturday", "Sobota" # Ladislav Nešněra
   l.store "Schedule", "Plán" # Ladislav Nešněra
   l.store "Severity", "Závažnost" # Ladislav Nešněra
   l.store "Singular", "Jednotné číslo" # Ladislav Nešněra
-  l.store "Thursday", "Úterý" # Ladislav Nešněra
+  l.store "Thursday", "Čtvrtek"
   l.store "Timeline", "Časový přehled" # Ladislav Nešněra
   l.store "Tomorrow", "Zítra" # Ladislav Nešněra
   l.store "Tutorial", "Průvodce" # Ladislav Nešněra
@@ -203,6 +221,7 @@ Localization.define('cz_CZ') do |l|
   l.store "%d folder", ["%d složka", "%d složek"] # Ladislav Nešněra
   l.store "%d minute", ["%d minuta", "%d minut"] # Ladislav Nešněra
   l.store "%d topics", ["%d ?téma", "%d ?témat"] # Ladislav Nešněra
+  l.store "%d voices", ["%d voices", "%d voices"]
   l.store "Completed", "Uzavřený" # Ladislav Nešněra
   l.store "Due Tasks", "Due Tasks"
   l.store "Duplicate", "Duplicitní" # Ladislav Nešněra
@@ -224,12 +243,14 @@ Localization.define('cz_CZ') do |l|
   l.store "Top Tasks", "?Hlavní úkoly" # Ladislav Nešněra
   l.store "Translate", "Překlad" # Ladislav Nešněra
   l.store "Use Forum", "?Přejít do Diskuze" # Ladislav Nešněra
-  l.store "Wednesday", "Čtvrtek" # Ladislav Nešněra
+  l.store "Wednesday", "Středa"
   l.store "Won't Fix", "Nevyžaduje opravu" # Ladislav Nešněra
   l.store "Won't fix", "Nevyžaduje opravu" # Ladislav Nešněra
   l.store "Work Done", "?Práce ukončena" # Ladislav Nešněra
   l.store "Yesterday", "Včera" # Ladislav Nešněra
+  l.store "_italics_", "_italics_"
   l.store "%d project", ["%d projekt", "%d projektů"] # Ladislav Nešněra
+  l.store "Activities", "Activities"
   l.store "Assignment", "Přiřazeno" # Ladislav Nešněra
   l.store "Attributes", "Atributy" # Ladislav Nešněra
   l.store "Chat Rooms", "Místnost" # Ladislav Nešněra
@@ -248,7 +269,9 @@ Localization.define('cz_CZ') do |l|
   l.store "Next month", "Následující měsíc" # Ladislav Nešněra
   l.store "Open Tasks", "Otevřít úkol" # Ladislav Nešněra
   l.store "Prioritize", "Dle priority" # Ladislav Nešněra
+  l.store "Reassigned", "Reassigned"
   l.store "Run Report", "Vytvořit sestavu" # Ladislav Nešněra
+  l.store "Save Reply", "Save Reply"
   l.store "Sub-totals", "Dílčí součet" # Ladislav Nešněra
   l.store "This Month", "Tento měsíc" # Ladislav Nešněra
   l.store "Time Range", "Časové rozpětí" # Ladislav Nešněra
@@ -258,6 +281,7 @@ Localization.define('cz_CZ') do |l|
   l.store "Unassigned", "Nepřiděleno" # Ladislav Nešněra
   l.store "View Tasks", "View Tasks"
   l.store "Widget Key", "?označení Widgetu" # Ladislav Nešněra
+  l.store "[All Tags]", "[All Tags]"
   l.store "[All Time]", "[?Kdykoliv]" # Ladislav Nešněra
   l.store "[Any Type]", "[Všechny typy]" # Ladislav Nešněra
   l.store "[Any User]", "[Všichni uživatelé]" # Ladislav Nešněra
@@ -298,7 +322,9 @@ Localization.define('cz_CZ') do |l|
   l.store "Hide Waiting", "?Skrýt pozastavené" # Ladislav Nešněra
   l.store "Last %d Days", ["Poslední %d den", "Posledních %d dnů"] # Ladislav Nešněra
   l.store "Last Updated", "Naposledy upravené" # Ladislav Nešněra
+  l.store "Leave Closed", "Leave Closed"
   l.store "Low Priority", "Nízká priorita" # Ladislav Nešněra
+  l.store "More filters", "More filters"
   l.store "Name / Email", "Jméno / Email" # Ladislav Nešněra
   l.store "Newest Tasks", "Nejnovější úkoly" # Ladislav Nešněra
   l.store "Notification", "Upozornění" # Ladislav Nešněra
@@ -314,6 +340,7 @@ Localization.define('cz_CZ') do |l|
   l.store "[Any Client]", "[Všichni zákazníci]" # Ladislav Nešněra
   l.store "[Any Status]", "[Všechny stavy]" # Ladislav Nešněra
   l.store "[Unassigned]", "[Nepřidělené]" # Ladislav Nešněra
+  l.store "about 1 year", "about 1 year"
   l.store "worked today", "dnes vykonáno" # Ladislav Nešněra
   l.store "Active %s ago", "Active %s ago"
   l.store "Administrator", "Administrátor" # Ladislav Nešněra
@@ -325,6 +352,7 @@ Localization.define('cz_CZ') do |l|
   l.store "Google Gadget", "Google Gadget"
   l.store "High Priority", "Vysoká priorita" # Ladislav Nešněra
   l.store "Monitor forum", "Monitor forum"
+  l.store "Monitor topic", "Monitor topic"
   l.store "My Open Tasks", "Moje rozpracované úkoly" # Ladislav Nešněra
   l.store "New Milestone", "New Milestone"
   l.store "Over Estimate", "Překročený odhad" # Ladislav Nešněra
@@ -348,12 +376,15 @@ Localization.define('cz_CZ') do |l|
   l.store "Depended on by", "?Zavislé dle" # Ladislav Nešněra
   l.store "Edit <b>%s</b>", "Upravit <b>%s</b>" # Ladislav Nešněra
   l.store "Edit Log Entry", "Edit Log Entry"
+  l.store "Edit Milestone", "Edit Milestone"
   l.store "Help Translate", "Upravit překlad" # Ladislav Nešněra
   l.store "New To-do Item", "?Nová položka úkolu" # Ladislav Nešněra
   l.store "Open <b>%s</b>", "Otevřít <b>%s</b>" # Ladislav Nešněra
   l.store "Organize Tasks", "?Uspořádat úkoly" # Ladislav Nešněra
   l.store "Remaining Work", "Zbývá udělat" # Ladislav Nešněra
+  l.store "Reply to topic", "Reply to topic"
   l.store "Revert to Open", "Znovuotevřít" # Ladislav Nešněra
+  l.store "Schedule saved", "Schedule saved"
   l.store "Set as Invalid", "Chybný" # Ladislav Nešněra
   l.store "Signup Message", "Signup Message"
   l.store "Wiki Additions", "?Přidáno do Wiki" # Ladislav Nešněra
@@ -364,19 +395,25 @@ Localization.define('cz_CZ') do |l|
   l.store "Database Backup", "Záloha databáze" # Ladislav Nešněra
   l.store "Duration Format", "?Duration tvar" # Ladislav Nešněra
   l.store "Duration Worked", "Duration Worked"
+  l.store "Formatting Help", "Formatting Help"
   l.store "Organizing Done", "Uspořádání provedeno" # Ladislav Nešněra
   l.store "Recent activity", "Poslední aktivity" # Ladislav Nešněra
   l.store "Set in Progress", "Set in Progress"
+  l.store "Task Priorities", "Task Priorities"
   l.store "Upload New File", "Upload New File"
   l.store "[Any Milestone]", "[Všechny milníky]" # Ladislav Nešněra
   l.store "creating a task", "?vytváření úkolu" # Ladislav Nešněra
   l.store "Advanced Options", "Pokročilé předvolby" # Ladislav Nešněra
   l.store "Archive Messages", "Archivní zpráva" # Ladislav Nešněra
   l.store "Company Settings", "Nastavení zákazníka" # Ladislav Nešněra
-  l.store "Complete Project", "Complete Project"
+  l.store "Complete Project", "Ukončit projekt" # vavrina
   l.store "Create New Forum", "Vytvořit novou diskuzi" # Ladislav Nešněra
   l.store "Delete <b>%s</b>", "Odstranit <b>%s</b>" # Ladislav Nešněra
   l.store "Delete Log Entry", "Delete Log Entry"
+  l.store "Delete Milestone", "Delete Milestone"
+  l.store "Gadget HTML Code", "Gadget HTML Code"
+  l.store "Leave as Invalid", "Leave as Invalid"
+  l.store "Monitoring topic", "Monitoring topic"
   l.store "Open to %s users", "Open to %s users"
   l.store "Open to everyone", "?Zpřístupnit všem" # Ladislav Nešněra
   l.store "Overall Progress", "Celkový průběh" # Ladislav Nešněra
@@ -388,29 +425,40 @@ Localization.define('cz_CZ') do |l|
   l.store "Access To Project", "Access To Project"
   l.store "Create New Folder", "Create New Folder"
   l.store "Delete <b>%s</b>.", "Odstranit <b>%s</b>." # Ladislav Nešněra
+  l.store "Hide Dependencies", "Hide Dependencies"
   l.store "Really delete %s?", "Skutečně odstranit %s?" # Ladislav Nešněra
+  l.store "Really revert %s?", "Really revert %s?"
   l.store "Recent Activities", "Poslední aktivity" # Ladislav Nešněra
+  l.store "Remove dependency", "Remove dependency"
   l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "Tasks / Day Chart"
+  l.store "Under revision by", "Under revision by"
+  l.store "Upload more files", "Upload more files"
   l.store "[Active Projects]", "[Aktivní projekty]" # Ladislav Nešněra
   l.store "[Closed Projects]", "[Uzavřené projekty]" # Ladislav Nešněra
   l.store "[Default Sorting]", "[Výchozí třídění]" # Ladislav Nešněra
   l.store "the documentation", "dokumentace" # Ladislav Nešněra
+  l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
+  l.store "%s / %s completed.", "%s / %s completed."
   l.store "Access to Projects", "Přístup ke projektům" # Ladislav Nešněra
+  l.store "Complete Milestone", "Complete Milestone"
   l.store "Hide Waiting Tasks", "?Skrýt čekající úkoly" # Ladislav Nešněra
   l.store "Last active %s ago", "?Poslední aktivity před %s" # Ladislav Nešněra
   l.store "Log entry saved...", "Log entry saved..."
   l.store "No recent activity", "No recent activity"
   l.store "Really abort work?", "Opravdu přerušit práci?" # Ladislav Nešněra
+  l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "?Zasílat novinky" # Ladislav Nešněra
-  l.store "Same as in English", "shodně s angličtinou" # Ladislav Nešněra
+  l.store "Same as in English", "Shodně s angličtinou" # vavrina
   l.store "Send Notifications", "Zasílat upozornění" # Ladislav Nešněra
   l.store "Task not worked on", "?Úkol nebyl zahájen" # Ladislav Nešněra
   l.store "less than a minute", "less than a minute"
-  l.store "Can Create Projects", "Mohou zatvářet projekty" # Ladislav Nešněra
+  l.store "Can Create Projects", "Mohou vytvářet projekty" # vavrina
   l.store "Remove notification", "Odstranit upozornění" # Ladislav Nešněra
   l.store "Show TaskType Icons", "Zobrazit typy úkolů jako ikony" # Ladislav Nešněra
   l.store "%d completed project", ["%d ukončený projekt", "%d ukončených projektů"] # Ladislav Nešněra
+  l.store "Completed Milestones", "Completed Milestones"
+  l.store "Find a Google Gadget", "Find a Google Gadget"
   l.store "Leave as in Progress", "Ponechat stav rozpracováno" # Ladislav Nešněra
   l.store "My In Progress Tasks", "Moje rozpracované úkoly" # Ladislav Nešněra
   l.store "Project was deleted.", "Project was deleted."
@@ -421,13 +469,16 @@ Localization.define('cz_CZ') do |l|
   l.store "Open to everyone from", "?Otevřít pro všechny z" # Ladislav Nešněra
   l.store "Projects / Milestones", "Projekty / Milníky" # Ladislav Nešněra
   l.store "Receive Notifications", "Zasílat upozornění" # Ladislav Nešněra
+  l.store "Showing Only Comments", "Showing Only Comments"
   l.store "%d completed milestone", ["%d ukončený milník", "%d ukončených milníků"] # Ladislav Nešněra
   l.store "Download Database Dump", "Stáhnout obsah databáze" # Ladislav Nešněra
   l.store "Edit project <b>%s</b>", "Upravit projekt <b>%s</b>" # Ladislav Nešněra
   l.store "Floating Messaging Bar", "Plovoucí pruh zpráv" # Ladislav Nešněra
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "invite some co-workers", "přizvat spolupracovníky" # Ladislav Nešněra
   l.store "Last %d Completed Tasks", ["Poslední %d ukončený úkol", "Posledních %d ukončených úkolů"] # Ladislav Nešněra
   l.store "%d translations updated.", ["%d překlad upraven.", "%d překladů upraveno."] # Ladislav Nešněra
+  l.store "Company settings updated", "Company settings updated"
   l.store "Edit milestone <b>%s</b>", "Upravit milník <b>%s</b>" # Ladislav Nešněra
   l.store "Open to everyone from %s", "?Otevřít pro všechny z %s" # Ladislav Nešněra
   l.store "Send notification emails", "Zaslat zprávu s upozorněním" # Ladislav Nešněra
@@ -438,28 +489,41 @@ Localization.define('cz_CZ') do |l|
   l.store "Logo successfully uploaded.", "Logo successfully uploaded."
   l.store "Pause working on <b>%s</b>.", "Pozastavit práci na <b>%s</b>." # Ladislav Nešněra
   l.store "Please always be courteous.", "Please always be courteous."
+  l.store "Please configure the widget", "Please configure the widget"
   l.store "Cancel working on <b>%s</b>.", "Zrušit práci na <b>%s</b>." # Ladislav Nešněra
+  l.store "Empty report, log more work!", "Empty report, log more work!"
+  l.store "Only show tasks of this type", "Only show tasks of this type"
   l.store "Resume working on <b>%s</b>.", "?Pokračovat v práci na <b>%s</b>." # Ladislav Nešněra
+  l.store "Avatar successfully uploaded.", "Avatar successfully uploaded."
   l.store "Really delete this log entry?", "Really delete this log entry?"
   l.store "Add earlier work to <b>%s</b>.", "?Přidat předchozí práci k  <b>%s</b>." # Ladislav Nešněra
   l.store "Grant %s access for <b>%s</b>?", "Grant %s access for <b>%s</b>?"
   l.store "Move <b>%s</b> to the Archive.", "Přesunout <b>%s</b> do archivu." # Ladislav Nešněra
+  l.store "Note was successfully created.", "Note was successfully created."
   l.store "Task was successfully created.", "Úkol byl úspěšně vytvořen." # Ladislav Nešněra
+  l.store "Task was successfully updated.", "Task was successfully updated."
   l.store "User was successfully updated.", "User was successfully updated."
   l.store "Remove %s access for <b>%s</b>?", "Odebrat %s přistup <b>%s</b>?" # Ladislav Nešněra
   l.store "Client was successfully created.", "Client was successfully created."
   l.store "Client was successfully updated.", "Client was successfully updated."
+  l.store "Download CSV file of this report", "Download CSV file of this report"
   l.store "Remove all access for <b>%s</b>?", "Odebrat veškerý přístup <b>%s</b>?" # Ladislav Nešněra
   l.store "Open to everyone using ClockingIT", "Otevřít pro všechny pomocí ClockingIT" # Ladislav Nešněra
   l.store "Preferences successfully updated.", "Předvolby byly úspěšně aktualizovány." # Ladislav Nešněra
   l.store "Project was successfully created.", "Projekt byl úspěšně vytvořen." # Ladislav Nešněra
   l.store "Project was successfully updated.", "Project was successfully updated."
   l.store "Done working on <b>%s</b> for now.", "?Pro tuto chvíli ukončit práce na <b>%s</b>." # Ladislav Nešněra
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Zpětná vazba? Doporučení? Nápady? Chyby?" # Ladislav Nešněra
   l.store "Ignore hidden tasks when scheduling", "Při plánování ignorovat skryté úkoly" # Ladislav Nešněra
+  l.store "Milestone was successfully created.", "Milestone was successfully created."
+  l.store "Milestone was successfully updated.", "Milestone was successfully updated."
+  l.store "View '%s' was successfully created.", "View '%s' was successfully created."
   l.store "Changes are not made live instantly.", "Některé úpravy nebyly dosud promítnuty." # Ladislav Nešněra
   l.store "This forum is currently unmoderated.", "This forum is currently unmoderated."
   l.store "Hide tasks deferred until a later time", "Skrýt odložené úkoly" # Ladislav Nešněra
+  l.store "Show tasks with at least this priority", "Show tasks with at least this priority"
+  l.store "Show tasks with at least this severity", "Show tasks with at least this severity"
   l.store "Really delete room and all transcripts?", "Opravdu odstranit místnost a všechny příspěvky?" # Ladislav Nešněra
   l.store "Revert <b>%s</b> to not completed status.", "Vrátit <b>%s</b> do stav nedokončeno?." # Ladislav Nešněra
   l.store "Easy access to commonly needed information.", "Snadný přístup k obykle požadovaným informacím." # Ladislav Nešněra
@@ -474,10 +538,13 @@ Localization.define('cz_CZ') do |l|
   l.store "Custom saved filters showing a subset of your tasks", "?Uživatelsky uložené filty zobrazit jako podskupinu vašich úkolů" # Ladislav Nešněra
   l.store "Save and activate schedule. Includes filtered tasks.", "Uloží? a aktivuje plán. Zahrne filtrované úkoly." # Ladislav Nešněra
   l.store "Please create a project to attach files / folders to.", "Please create a project to attach files / folders to."
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
   l.store "Revert schedule to saved state. Includes filtered tasks.", "?Vratí plán do dříve uloženého stavu. Zahrne filtrované úkoly." # Ladislav Nešněra
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutorial hidden. It will no longer be shown in the menu."
   l.store "Limit instant messaging to users sharing the same projects", "Omezit okamžité zasílání zpráv pouze na účastníky téhož projektu" # Ladislav Nešněra
   l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
+  l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Can't remove <b>yourself</b> or the <b>project creator</b>!"
+  l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutorial completed. It will no longer be shown in the menu."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Zobrazovat plovoucí panel v horní části obrazovky." # Ladislav Nešněra
   l.store "Send notification emails to people affected by these changes", "Zaslat upozornění osobám, kterých se tyto úpravy týkají" # Ladislav Nešněra
   l.store "Enter task numbers, separated by commas. Type text to search.", "Vlože čísla úkolu oddělená pomocí čárky. Zapište hledaný text." # Ladislav Nešněra

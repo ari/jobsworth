@@ -341,6 +341,7 @@ Localization.define('fr_FR') do |l|
   l.store "Description", "Description" # Brice
   l.store "Edit Client", "Modifier le client" # Brice
   l.store "Edit Folder", "Modifier le dossier" # Brice
+  l.store "Empty file.", "Fichier vide." # Lancrey
   l.store "End of week", "Fin de la semaine" # Brice
   l.store "Forum Posts", "Messages du forum" # Brice
   l.store "Improvement", "Amélioration"
@@ -377,6 +378,7 @@ Localization.define('fr_FR') do |l|
   l.store "Last Updated", "Dernière modification"
   l.store "Leave Closed", "Maintenir classé"
   l.store "Low Priority", "Faible priorité" # Lancrey
+  l.store "More filters", "Encore plus de filtres" # Brice
   l.store "Name / Email", "Nom / Email" # Brice
   l.store "Newest Tasks", "Nouvelles tâches"
   l.store "Notification", "Notification" # Brice
@@ -460,6 +462,7 @@ Localization.define('fr_FR') do |l|
   l.store "Duration Format", "Format de durée"
   l.store "Duration Worked", "Durée du travail accompli"
   l.store "Formatting Help", "Aide sur la mise en forme" # Brice
+  l.store "No such folder.", "Répertoire inexistant." # Brice
   l.store "Organizing Done", "Organisation terminée" # Brice
   l.store "Quick Reference", "Syntaxe abrégée"
   l.store "Recent activity", "Activité récente" # Brice
@@ -479,6 +482,7 @@ Localization.define('fr_FR') do |l|
   l.store "Delete Log Entry", "Supprimer l'entrée"
   l.store "Delete Milestone", "Supprimer le jalon"
   l.store "Gadget HTML Code", "Code HTML du Gadget" # Brice
+  l.store "Instant Messages", "Messages instantanés" # Brice
   l.store "Leave as Invalid", "Laisser invalide"
   l.store "Messages from %s", "Messages de %s" # Brice
   l.store "Monitoring forum", "Administration du forum" # Brice
@@ -496,6 +500,7 @@ Localization.define('fr_FR') do |l|
   l.store "Create New Folder", "Créer un nouveau dossier" # Brice
   l.store "Delete <b>%s</b>.", "Supprimer <b>%s</b>." # Brice
   l.store "Delete Transcript", "Supprimer la transcription" # Brice
+  l.store "Hide Dependencies", "Cacher les dépendances" # Brice
   l.store "No file selected.", "Aucun fichier sélectionné." # Brice
   l.store "Really delete %s?", "Confirmer la suppression de %s ?"
   l.store "Really revert %s?", "Confirmer la resaturation de %s ?"
@@ -504,6 +509,7 @@ Localization.define('fr_FR') do |l|
   l.store "Schedule reverted", "Planification réinitialisée" # Brice
   l.store "Tasks / Day Chart", "Tâches / Diagramme quotidien" # Brice
   l.store "Under revision by", "En cours de révision par"
+  l.store "Upload more files", "Joindre des fichiers" # Brice
   l.store "[Active Projects]", "[Projets actifs]" # Brice
   l.store "[Closed Projects]", "[Projects terminés]" # Brice
   l.store "[Default Sorting]", "[Tri par défaut]" # Brice
@@ -553,6 +559,7 @@ Localization.define('fr_FR') do |l|
   l.store "Download Database Dump", "Télécharger la base de données" # Lancrey
   l.store "Edit project <b>%s</b>", "Modifier le projet <b>%s</b>" # Brice
   l.store "Floating Messaging Bar", "Barre flottante de messages" # Brice
+  l.store "Hide Task Dependencies", "Cacher les dépendances des tâches" # Brice
   l.store "View '%s' was deleted.", "Vue '%s' supprimée."
   l.store "invite some co-workers", "inviter des collègues" # Brice
   l.store ", this topic is locked.", ", ce sujet est verrouillé." # Lancrey
@@ -571,7 +578,7 @@ Localization.define('fr_FR') do |l|
   l.store "Include completed projects", "Inclure les projets terminés" # Brice
   l.store "Save and activate schedule", "Sauvegarder et activer la planification" # Brice
   l.store "Stop working on <b>%s</b>.", "Arrêter de travailler sur <b>%s</b>."
-  l.store "Don't show this splash page", "Ne pas afficher cette écran d'accueil" # Brice
+  l.store "Don't show this splash page", "Ne pas afficher cet écran d'accueil" # Benoit Perche
   l.store "File successfully uploaded.", "Fichier envoyé."
   l.store "Logo successfully uploaded.", "Logo envoyé."
   l.store "Only admins can edit users.", "Seuls les administrateurs peuvent modifier les utilisateurs." # Brice
@@ -582,13 +589,15 @@ Localization.define('fr_FR') do |l|
   l.store "Cancel working on <b>%s</b>.", "Annuler le temps travaillé sur <b>%s</b>."
   l.store "Empty report, log more work!", "Le rapport est vide, saisissez plus de données de travail !"
   l.store "No file selected for upload.", "Aucun fichier sélectionné."
+  l.store "Only show tasks of this type", "N'afficher que les tâches de ce type" # Brice
   l.store "Really delete whole history?", "Souhaitez-vous vraiment supprimer tout l'historique ?" # Brice
   l.store "Resume working on <b>%s</b>.", "Reprendre le travail sur la tâche <b>%s</b>." # Brice
   l.store "Avatar successfully uploaded.", "Avatar téléchargé avec succès." # Brice
   l.store "Really delete this log entry?", "Confirmer la suppression de cette entrée ?"
+  l.store "Unable to find parent folder.", "Pas de répertoire parent ." # Brice
   l.store "Add earlier work to <b>%s</b>.", "Ajouter du travail précedent sur <b>%s</b>." # Brice
   l.store "Grant %s access for <b>%s</b>?", "Autoriser l'accès de %s à <b>%s</b>?" # Brice
-  l.store "Move <b>%s</b> to the Archive.", "Déplacer <b>%s</b> dans les archives"
+  l.store "Move <b>%s</b> to the Archive.", "Déplacer <b>%s</b> vers les archives" # Carlos MATIAS
   l.store "Note was successfully created.", "Note créée."
   l.store "Note was successfully updated.", "Note actualisée."
   l.store "Revert schedule to saved state", "Réinitialiser la planification à son état précédent" # Brice
@@ -606,6 +615,7 @@ Localization.define('fr_FR') do |l|
   l.store "Project was successfully created.", "Projet créé."
   l.store "Project was successfully updated.", "Projet actualisé."
   l.store "Done working on <b>%s</b> for now.", "Fin du travail sur <b>%s</b>"
+  l.store "Subscribe to this widgets RSS feed", "Souscrire au fil RSS de ce widget" # Brice
   l.store "You can't delete your own company.", "Vous ne pouvez pas supprimer votre propre société."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Des remarques, des suggestions, des idées, des bogues ?"
   l.store "Ignore hidden tasks when scheduling", "Ignorer les tâches cachées dans la planification" # Brice
@@ -618,6 +628,8 @@ Localization.define('fr_FR') do |l|
   l.store "This forum is currently unmoderated.", "Ce forum n'est pas modéré" # Brice
   l.store "Hide tasks deferred until a later time", "Cacher les tâches qui ont été repoussées" # Brice
   l.store "Only admins can edit company settings.", "Seuls les administrateurs peuvent modifier la configuration de la société." # Brice
+  l.store "Show tasks with at least this priority", "Afficher les tâches de priorité égale ou supérieure" # Brice
+  l.store "Show tasks with at least this severity", "Afficher les tâches d'importance égale ou supérieure" # Brice
   l.store "Limit userlist to users in same project", "Limiter la liste des utilisateurs à ceux du projet" # Brice
   l.store "Really delete room and all transcripts?", "Supprimer la salle et toutes les discussions ?" # Brice
   l.store "Revert <b>%s</b> to not completed status.", "Marquer <b>%s</b> comme inachevé."
@@ -671,7 +683,7 @@ Localization.define('fr_FR') do |l|
   l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "L'étape suivante est la %s. Vous pouvez également faire cela en cliquant sur le bouton %s dans le menu du haut. Pour des informations complémentaires sur les tâches, consultez %s sur le Wiki ClockingIT." # Brice
   l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "La première étape consiste en la %s. Vous n'êtes pas obligé de saisir de vraies données : vous pourrez effacer ce projet et en créer un nouveau une fois que vous serez familiarisé avec ClockingIT." # Brice
   l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project
-              you create and start over, once you get the hang of things.", "The first step is to %s. Don't worry about entering real data, you can always delete the project               you create and start over, once you get the hang of things." # Brice
+              you create and start over, once you get the hang of things.", "La première étape consiste en la %s. Vous n'êtes pas obligé de saisir de vraies données : vous pourrez effacer ce projet et en créer un nouveau une fois que vous serez familiarisé avec ClockingIT." # TAMARELLE
   l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "Lorsque le travail sur une tâche est terminé, vous pouvez soit cliquer sur une autre %s pour travailler sur une autre tâche, soit cliquer sur %s pour sauvegarder votre session de travail. Cliquer sur %s arrête le chronomètre sans enregistrer de travail." # Brice
   l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Une fois que vous aurez déclaré une ou plusieurs tâches, vous pourrez vous mettre au travail. Cliquez sur %s dans le menu du haut, sélectionnez une tâche et cliquez l'icône %s à sa gauche. Le chronomètre pour cette tâche se déclenche." # Brice
   l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "La dernière chose à faire, sauf si vous travaillez seul, c'est %s. Une fois que vous avez créé leur compte, donnez-leur les droits pour le projet sur lequel ils sont censés travailler via la page d'Edition du projet accessible depuis la %s." # Brice
