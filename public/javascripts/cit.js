@@ -417,3 +417,24 @@ function toggleTaskUnread(icon) {
 
     jQuery.post("/tasks/set_unread",  parameters);
 }
+
+/*
+ Clears the text in the given field
+*/
+function clearPrompt(field) {
+    field.value = "";
+}
+
+/*
+Removes the search filter the link belongs to and submits
+the containing form.
+*/
+function removeSearchFilter(link) {
+    link = jQuery(link);
+    var form = link.parents("form");
+    console.log(form);
+    console.log(link)
+    console.log(link.parents(".search_filter"));
+    link.parent(".search_filter").remove();
+    form.submit();
+}

@@ -10,11 +10,23 @@ class CustomersController < ApplicationController
   end
 
   def list
-    @customers = Customer.paginate(:order => "customers.name", 
-                                   :conditions => ["customers.company_id = ?", current_user.company_id], 
-                                   :page => params[:page],
-                                   :per_page => 100)
-#    @customers = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
+    if request.post?
+      session[:client_name_filters] = params[:search_text]
+      redirect_to :action => "list"
+    end
+    
+    filters = session[:client_name_filters]
+    if filters and filters.any?
+      @customers = Customer.search(current_user.company, filters)
+      @users = User.search(current_user.company, filters)
+      @paginate = false
+    else
+      @customers = Customer.paginate(:order => "customers.name", 
+                                     :conditions => ["customers.company_id = ?", current_user.company_id], 
+                                     :page => params[:page],
+                                     :per_page => 100)
+      @paginate = true
+    end
   end
 
   def show
