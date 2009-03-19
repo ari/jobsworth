@@ -2285,6 +2285,7 @@ a.widget-collapsed {
 
 #presence-bar { 
   float: right;
+  z-index: 9;
 }
 
 .presence-section { 
@@ -2297,6 +2298,7 @@ a.widget-collapsed {
   padding-top: 4px;
   width: 120px;
   height:21px;
+  z-index: 10;
 }
 
 .presence-section img { 
@@ -2327,19 +2329,25 @@ a.widget-collapsed {
   background-color: #ff9900 !important;
 }
 
+.presence-shadow {
+    padding: 6px 5px 0 6px;
+    background: transparent url(/images/chat_shadow.png) no-repeat center top;
+    margin: 0;
+    position: absolute;
+    margin-left: -131px;
+    display: block;
+    bottom: 25px;
+}
+
 .presence-popup { 
-  bottom: 26px;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  margin-left: -129px;
-  z-index: 10;
-  display: block;
-  width: 250px;
+  z-index: 9;
+  width: 246px;
   background-color: #fff;
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-top: 1px solid #ccc;
+  padding: 0 0 1px 0;
+  margin: 0;
 }
 
 .presence-chat-area { 

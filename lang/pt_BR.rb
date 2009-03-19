@@ -3,7 +3,7 @@ Localization.define('pt_BR') do |l|
   l.store "h", "h" # Hugo
   l.store "m", "m" # Hugo
   l.store "w", "s"
-  l.store "To", "Até"
+  l.store "To", "Até" # Christian Hartung
   l.store "by", "por"
   l.store "of", "de"
   l.store "or", "ou" # Yeltsin Lima
@@ -14,7 +14,7 @@ Localization.define('pt_BR') do |l|
   l.store "Aug", "Ago"
   l.store "CSV", "CSV"
   l.store "Dec", "Dez"
-  l.store "Due", "Due" # Johnatan Azevedo
+  l.store "Due", "Prazo" # José Leal Domingues Neto
   l.store "End", "Fim" # Pedro Henrique Braga Moreira
   l.store "Feb", "Fev"
   l.store "Fri", "Sex"
@@ -28,7 +28,7 @@ Localization.define('pt_BR') do |l|
   l.store "New", "Novo"
   l.store "Nov", "Nov" # Hugo
   l.store "Oct", "Out"
-  l.store "Sat", "Sáb"
+  l.store "Sat", "Sáb" # Dieison Rabêlo
   l.store "Sep", "Set"
   l.store "Sun", "Dom"
   l.store "Thu", "Qui"
@@ -38,7 +38,7 @@ Localization.define('pt_BR') do |l|
   l.store "ago", "Ago" # Yeltsin Lima
   l.store "and", "e"
   l.store "day", "dia" # Rodrigo Muniz
-  l.store "Body", "Conteúdo"
+  l.store "Body", "Conte" # Felipe Garrido
   l.store "Chat", "Chat" # José Eduardo
   l.store "Date", "Data"
   l.store "Days", "Dias" # Allan Balliberdin
@@ -52,7 +52,7 @@ Localization.define('pt_BR') do |l|
   l.store "Left", "Restante(s)" # Rodrigo Angeline - TI
   l.store "Mine", "Minhas" # José Eduardo
   l.store "Name", "Nome"
-  l.store "Next", "Próximo" # Marcelo Ubiali
+  l.store "Next", "Próximo" # Igor Alexander
   l.store "None", "Nenhum" # Peter Nothaft
   l.store "Note", "Notas" # Pedro Henrique Braga Moreira
   l.store "Open", "Aberto"
@@ -63,15 +63,15 @@ Localization.define('pt_BR') do |l|
   l.store "Tags", "Tags"
   l.store "Task", "Tarefa"
   l.store "Type", "Tipo"
-  l.store "User", "Usuário"
-  l.store "View", "Visualizar" # Yeltsin Lima
+  l.store "User", "Usuário" # Vitor Mattos
+  l.store "View", "Ver" # Marco Antonio Filho
   l.store "Wait", "Aguarde" # Marcelo Ubiali
   l.store "Week", "Semana"
   l.store "Wiki", "Wiki"
   l.store "Work", "Trabalhar"
   l.store "days", "Dias" # Marcelo Ubiali
   l.store "idle", "inativo" # Lucas Sander
-  l.store "last", "último" # Hugo
+  l.store "last", "último" # Tarcisio Freire
   l.store "59:04", "59:04"
   l.store "April", "Abril"
   l.store "Audit", "Auditoria"
@@ -79,37 +79,37 @@ Localization.define('pt_BR') do |l|
   l.store "Email", "Email"
   l.store "Empty", "Vazio" # Marcelo Ubiali
   l.store "Files", "Arquivos"
-  l.store "Forum", "Fórum" # Lucas Sander
+  l.store "Forum", "Fórum" # Rodrigo
   l.store "Grant", "Administrar"
   l.store "Major", "Principal"
-  l.store "March", "Março"
+  l.store "March", "Março" # Rodrigo
   l.store "Minor", "Menor"
   l.store "Notes", "Notas"
-  l.store "Owner", "Propietário"
-  l.store "Pivot", "Pivô" # Lucas Sander
+  l.store "Owner", "Proprietário" # Rodrigo
+  l.store "Pivot", "Pivô" # Vitor Mattos
   l.store "Posts", "Posts" # José Eduardo
   l.store "Saved", "Salvar" # Márcio Jordano
-  l.store "Start", "Início"
+  l.store "Start", "Iniciar" # Rodrigo
   l.store "Tasks", "Tarefas"
-  l.store "Title", "Título" # Marcelo Ubiali
+  l.store "Title", "Título" # Rodrigo
   l.store "To-do", "Fazer" # Adir
   l.store "Today", "Hoje"
-  l.store "Topic", "Tópico" # Marcelo Ubiali
+  l.store "Topic", "Tópico" # Rodrigo
   l.store "Total", "Total"
-  l.store "Users", "Usuários"
-  l.store "Views", "Visualizações"
+  l.store "Users", "Usuários" # Rodrigo
+  l.store "Views", "Ver" # Marco Antonio Filho
   l.store "Weeks", "Semanas" # Marco
   l.store "every", "todos" # Yeltsin Lima
   l.store "lists", "listas" # Márcio Jordano
   l.store "today", "hoje"
-  l.store "until", "até" # Tiago
+  l.store "until", "até" # Christian Hartung
   l.store "%d day", ["um dia", "%d dias"]
-  l.store "%s ago", "%s atrás" # Rodrigo Muniz
+  l.store "%s ago", "%s atrás" # Christian Hartung
   l.store "*bold*", "*negrito*"
-  l.store "Active", "ativo" # Tiago
+  l.store "Active", "Ativo" # Dieison Rabêlo
   l.store "Assign", "Alocar"
   l.store "August", "Agosto"
-  l.store "Browse", "Exibir" # José Eduardo
+  l.store "Browse", "Navegar" # Marco Antonio Filho
   l.store "Cancel", "Cancelar" # Yeltsin Lima
   l.store "Client", "Cliente"
   l.store "Closed", "Fechado"
@@ -127,12 +127,12 @@ Localization.define('pt_BR') do |l|
   l.store "No one", "Ninguém"
   l.store "Normal", "Normal"
   l.store "Online", "Conectado"
-  l.store "Paused", "Pausado" # Marcelo Ubiali
+  l.store "Paused", "Parado" # Marco Antonio Filho
   l.store "Plural", "Plural"
   l.store "Recent", "Recente" # Yeltsin Lima
   l.store "Revert", "Reverter"
   l.store "Search", "Buscar"
-  l.store "Shared", "Compartilhar"
+  l.store "Shared", "Compartilhado" # Dieison Rabêlo
   l.store "Status", "Estado" # José Eduardo
   l.store "Sticky", "Fixa" # José Eduardo
   l.store "Sunday", "Domingo"
@@ -147,7 +147,7 @@ Localization.define('pt_BR') do |l|
   l.store "[wdhm]", "[sdhm]"
   l.store "cancel", "cancelar"
   l.store "locked", "bloqueado" # Pedro Henrique Braga Moreira
-  l.store "quotes", "quotações" # José Eduardo
+  l.store "quotes", "aspas" # Dieison Rabêlo
   l.store "%d days", ["%d dia", "%d dias"] # Marcelo Ubiali
   l.store "%d file", ["%d arquivo", "%d arquivos"] # Marcelo Ubiali
   l.store "%d more", ["mais %d", "mais %d"] # José Eduardo
@@ -229,7 +229,7 @@ Localization.define('pt_BR') do |l|
   l.store "Severity", "Importância"
   l.store "Singular", "Singular"
   l.store "Thursday", "Quinta"
-  l.store "Timeline", "Linha do tempo" # José Eduardo
+  l.store "Timeline", "Histórico" # Pedro Henrique Braga Moreira
   l.store "Tomorrow", "Amanhã" # Marcelo Ubiali
   l.store "Tutorial", "Tutorial" # José Eduardo
   l.store "Use Chat", "Usar Chat" # Yeltsin Lima
@@ -256,7 +256,7 @@ Localization.define('pt_BR') do |l|
   l.store "Last Week", "Semana Passada"
   l.store "Last Year", "Ano Passado"
   l.store "Last post", "Último Post" # Yeltsin Lima
-  l.store "Milestone", "Marco" # Pedro Henrique Braga Moreira
+  l.store "Milestone", "Meta" # Paulo
   l.store "New Topic", "Novo Tópico" # Adir
   l.store "New topic", "Novo Tópico" # Yeltsin Lima
   l.store "Next Week", "Nova Semana" # Yeltsin Lima
@@ -327,7 +327,7 @@ Localization.define('pt_BR') do |l|
   l.store "[Any User]", "[Qualquer Usuário]"
   l.store "[New File]", "[Novo Arquivo]"
   l.store "[New User]", "[Novo Usuário]"
-  l.store "started %s", "started %s"
+  l.store "started %s", "iniciada %s" # Pedro Henrique Braga Moreira
   l.store "%d week ago", ["faz uma semana", "faz %d semanas"]
   l.store "1w 2d 3h 4m", "1s 2d 3h 4m" # Yeltsin Lima
   l.store "Assigned To", "Alocado para"
@@ -341,6 +341,7 @@ Localization.define('pt_BR') do |l|
   l.store "Description", "Descrição"
   l.store "Edit Client", "Editar Cliente" # Yeltsin Lima
   l.store "Edit Folder", "Editar diretório" # Pedro Henrique Braga Moreira
+  l.store "Empty file.", "Arquivo vazio." # Vitor Mattos
   l.store "End of week", "Fim de semana" # Yeltsin Lima
   l.store "Forum Posts", "Posts do Fórum" # Lucas Sander
   l.store "Improvement", "Melhoria"
@@ -412,15 +413,15 @@ Localization.define('pt_BR') do |l|
   l.store "Monitor forum", "Monitor do fórum" # André Persil
   l.store "Monitor topic", "Monitorar tópico" # José Eduardo
   l.store "My Open Tasks", "Minhas Tarefas Abertas"
-  l.store "New Milestone", "Novo marco" # Pedro Henrique Braga Moreira
+  l.store "New Milestone", "Nova meta" # Paulo
   l.store "No such file.", "Arquivo não encontrado" # Pedro Henrique Braga Moreira
   l.store "Over Estimate", "Acima da estimativa" # Pedro Henrique Braga Moreira
   l.store "Public Forums", "Fórum público" # Yeltsin Lima
   l.store "Show Calendar", "Ver Calendário"
-  l.store "Show Tooltips", "Ver Ajudas"
+  l.store "Show Tooltips", "Ver Dicas" # Dieison Rabêlo
   l.store "Status Change", "Troca de Status"
   l.store "Task Priority", "Prioridade de Tarefa"
-  l.store "Task Severity", "Importância de Tarea"
+  l.store "Task Severity", "Importância de Tarefa" # Dieison Rabêlo
   l.store "Time Estimate", "Tempo estimado"
   l.store "Use Messaging", "Usar mensagens" # José Eduardo
   l.store "[Active User]", "[Usuário Conectado]"
@@ -429,6 +430,7 @@ Localization.define('pt_BR') do |l|
   l.store "about %d hour", ["em torno de uma hora", "em torno de %d horas"]
   l.store "about 1 month", "aproximadamente 1 mês" # Lucas Sander
   l.store "half a minute", "meio minuto"
+  l.store "over %d years", ["acima de %d ano", "acima de %d anos"] # Pedro Henrique Braga Moreira
   l.store "Add New Widget", "Adicionar novo widget" # Yeltsin Lima
   l.store "Are your sure?", "Certeza?"
   l.store "Burndown Chart", "Gráfico Burndown" # Ivan Carlos
@@ -437,7 +439,7 @@ Localization.define('pt_BR') do |l|
   l.store "Depended on by", "Pré-requisito para" # Ana Luiza Bergamini
   l.store "Edit <b>%s</b>", "Editar <b>%s</b>" # Yeltsin Lima
   l.store "Edit Log Entry", "Editar entrada de histórico"
-  l.store "Edit Milestone", "Editar Marco" # Pedro Henrique Braga Moreira
+  l.store "Edit Milestone", "Editar Meta" # Paulo
   l.store "Full Reference", "Referência completa" # Yeltsin Lima
   l.store "Help Translate", "Ajudar na tradução" # Romulo Nunes
   l.store "Invalid Filter", "Filtro Inválido" # Pedro Henrique Braga Moreira
@@ -473,10 +475,10 @@ Localization.define('pt_BR') do |l|
   l.store "Advanced Options", "Opções Avançadas"
   l.store "Archive Messages", "Arquivar mensagens" # José Eduardo
   l.store "Chat Transcripts", "Transcrições do chat" # José Eduardo
-  l.store "Company Settings", "Configurações da empresa" # Yeltsin Lima
+  l.store "Company Settings", "Configurações" # Marco Antonio Filho
   l.store "Complete Project", "Finalizar Projeto"
   l.store "Create New Forum", "Criar novo fórum" # Yeltsin Lima
-  l.store "Delete <b>%s</b>", "Deletar <b>%s</b>" # Yeltsin Lima
+  l.store "Delete <b>%s</b>", "Remover <b>%s</b>" # Dieison Rabêlo
   l.store "Delete Log Entry", "Remover entrada de histórico"
   l.store "Delete Milestone", "Remover Marco" # Pedro Henrique Braga Moreira
   l.store "Gadget HTML Code", "Códio HTML do Gadget" # Pedro Henrique Braga Moreira
@@ -492,13 +494,14 @@ Localization.define('pt_BR') do |l|
   l.store "Set as Won't Fix", "Colocar como Sem Solução"
   l.store "Unassigned Tasks", "Tarefas Não Alocadas"
   l.store "User Information", "Informação do Usuário"
-  l.store "create a project", "Criar projeto" # Yeltsin Lima
+  l.store "create a project", "criar projeto" # Dieison Rabêlo
   l.store "%s / %s reverted.", "%s / %s revertido."
   l.store "??? -  [Pessoais]", "??? -  [Pessoais]" # José Eduardo
-  l.store "Access To Project", "Acessar O Projeto"
+  l.store "Access To Project", "Acesso ao Projeto" # Dieison Rabêlo
   l.store "Create New Folder", "Criar Nova Pasta" # Hugo
   l.store "Delete <b>%s</b>.", "Deletar <b>%s</b>." # Yeltsin Lima
   l.store "Delete Transcript", "Excluir transcrição" # José Eduardo
+  l.store "Hide Dependencies", "Esconder Dependências" # Pedro Henrique Braga Moreira
   l.store "No file selected.", "Nenhum arquivo selecionado." # Pedro Henrique Braga Moreira
   l.store "Really delete %s?", "Realmente deseja remover %s?"
   l.store "Really revert %s?", "Realmente deseja reverter %s?"
@@ -508,6 +511,7 @@ Localization.define('pt_BR') do |l|
   l.store "Tarefas Ordenadas", "Tarefas Ordenadas" # José Eduardo
   l.store "Tasks / Day Chart", "Gráfico Tarefas / Dia" # José Eduardo
   l.store "Under revision by", "Sob revisão de" # Pedro Henrique Braga Moreira
+  l.store "Upload more files", "Enviar mais arquivos" # Pedro Henrique Braga Moreira
   l.store "[Active Projects]", "[Projetos Ativos]" # Yeltsin Lima
   l.store "[Closed Projects]", "[Projetos Fechados]" # Yeltsin Lima
   l.store "[Default Sorting]", "[Classificação padrão]" # André Persil
@@ -515,9 +519,10 @@ Localization.define('pt_BR') do |l|
   l.store "%d open / %d tasks", ["%d aberta / %d tarefa", "%d abertas / %d tarefas"] # Pedro Henrique Braga Moreira
   l.store "%s / %s completed.", "%s / %s finalizado."
   l.store "Access to Projects", "Acesso ao Projeto" # Ericsson Oliveira
-  l.store "Complete Milestone", "Finalizar Marco" # Pedro Henrique Braga Moreira
+  l.store "Complete Milestone", "Finalizar Meta" # Paulo
   l.store "Completed Projects", "Projetos finalizados"
   l.store "Hide Waiting Tasks", "Esconder tarefas pendentes" # Yeltsin Lima
+  l.store "Invalid start date", "Data inicial inválida" # Vitor Mattos
   l.store "Last active %s ago", "Última atividade %s" # Yeltsin Lima
   l.store "Leave as Duplicate", "Manter como Duplicada" # José Eduardo
   l.store "Leave as Won't Fix", "Manter como Sem Solução" # José Eduardo
@@ -544,19 +549,20 @@ Localization.define('pt_BR') do |l|
   l.store "Project was deleted.", "Projeto removido."
   l.store "Report Configuration", "Configurar relatório"
   l.store "Restricted Messaging", "Mensagem restrita" # Pedro Henrique Braga Moreira
-  l.store "Showing Full History", "Exibindo Histórico Completa" # Eduardo
+  l.store "Showing Full History", "Exibindo Histórico Completo" # Dieison Rabêlo
   l.store "This topic is locked", "Este tópico está bloqueado" # Pedro Henrique Braga Moreira
   l.store "Use External Clients", "Usar Clientes Externos"
   l.store "less than %d seconds", ["menos de um segundo", "menos de %d segundos"]
   l.store "Open to everyone from", "Aberto para todos por" # André Persil
-  l.store "Projects / Milestones", "Projetos / Marcos" # Pedro Henrique Braga Moreira
+  l.store "Projects / Milestones", "Projetos / Metas" # Paulo
   l.store "Receive Notifications", "Receber Notificações"
   l.store "Showing Only Comments", "Mostrando Apenas Comentários" # Adir
-  l.store "%d completed milestone", ["um marco finalizado", "%d marcos finalizados"] # Pedro Henrique Braga Moreira
+  l.store "%d completed milestone", ["uma meta finalizada", "%d metas finalizadas"] # Paulo
   l.store "Add another dependency", "Adicionar outra dependência" # Yeltsin Lima
   l.store "Download Database Dump", "Fazer Download do Banco de Dados" # Pedro Henrique Braga Moreira
   l.store "Edit project <b>%s</b>", "Editar projeto <b>%s</b>"
   l.store "Floating Messaging Bar", "Barra de mensagem flutuante" # André Persil
+  l.store "Hide Task Dependencies", "Esconder Dependências de Tarefas" # Pedro Henrique Braga Moreira
   l.store "View '%s' was deleted.", "Visualização '%s' removida."
   l.store "invite some co-workers", "convidar alguns funcionários" # Yeltsin Lima
   l.store ", this topic is locked.", ", este tópico está bloquado." # Pedro Henrique Braga Moreira
@@ -566,7 +572,7 @@ Localization.define('pt_BR') do |l|
   l.store "%d translations updated.", ["%d tradução atualizada", "%d traduções atualizadas"] # Yeltsin Lima
   l.store "Company settings updated", "Configurações da empresa atualizadas" # Hugo
   l.store "Desempenho -  [Pessoais]", "Desempenho -  [Pessoais]" # José Eduardo
-  l.store "Edit milestone <b>%s</b>", "Editar marco <b>%s</b>" # Pedro Henrique Braga Moreira
+  l.store "Edit milestone <b>%s</b>", "Editar meta <b>%s</b>" # Paulo
   l.store "Open to everyone from %s", "Aberto para todos da %s" # Yeltsin Lima
   l.store "Send notification emails", "Enviar notificações por e-mail"
   l.store "w - Faculdade [Pessoais]", "s - Faculdade [Pessoais]" # José Eduardo
@@ -591,6 +597,7 @@ Localization.define('pt_BR') do |l|
   l.store "Cancel working on <b>%s</b>.", "Cancelar trabalho em <b>%s</b>."
   l.store "Empty report, log more work!", "Relatório vazio!"
   l.store "No file selected for upload.", "Nenhum arquivo selecionado para envio."
+  l.store "Only show tasks of this type", "Somente tarefas deste tipo" # Pedro Henrique Braga Moreira
   l.store "Really delete whole history?", "Deseja realmente apagar o histórico inteiro?" # Pedro Henrique Braga Moreira
   l.store "Resume working on <b>%s</b>.", "Continuar trabalho em <b>%s</b>." # Yeltsin Lima
   l.store "Avatar successfully uploaded.", "Avatar enviado com sucesso." # José Eduardo
@@ -616,23 +623,27 @@ Localization.define('pt_BR') do |l|
   l.store "Project was successfully created.", "Projeto criado com sucesso."
   l.store "Project was successfully updated.", "Projeto modificado com sucesso."
   l.store "Done working on <b>%s</b> for now.", "Trabalhando em <b>%s</b> por agora."
+  l.store "Subscribe to this widgets RSS feed", "Inscrever no RSS deste widget" # Pedro Henrique Braga Moreira
   l.store "You can't delete your own company.", "Não pode remover sua própria companhia."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Opiniões? Sugestões? Idéias? Erros?" # Romulo Nunes
   l.store "Ignore hidden tasks when scheduling", "Ignorar tarefas ocultas ao agendar" # Pedro Henrique Braga Moreira
   l.store "Milestone was successfully created.", "Marco criado com sucesso." # Pedro Henrique Braga Moreira
-  l.store "Milestone was successfully updated.", "Marco modificado com sucesso." # Pedro Henrique Braga Moreira
+  l.store "Milestone was successfully updated.", "Meta modificada com sucesso." # Paulo
   l.store "Restore <b>%s</b> from the Archive.", "Restaurar <b>%s</b> do Arquivo."
   l.store "View '%s' was successfully created.", "Visualização '%s' criada com sucesso."
   l.store "View '%s' was successfully updated.", "Visualização '%s' modificada com sucesso."
-  l.store "Changes are not made live instantly.", "Mudanças não são feitas instantaneamente" # Pedro Henrique Braga Moreira
-  l.store "This forum is currently unmoderated.", "Este fórum atualmente não é moderado" # Yeltsin Lima
+  l.store "Changes are not made live instantly.", "Mudanças não são feitas instantaneamente." # Dieison Rabêlo
+  l.store "This forum is currently unmoderated.", "Este fórum atualmente não é moderado." # Dieison Rabêlo
   l.store "Hide tasks deferred until a later time", "Esconder tarefas suspensas até outro período" # Pedro Henrique Braga Moreira
+  l.store "Show tasks with at least this priority", "Mostrar tarefas com no mínimo esta prioridade" # Pedro Henrique Braga Moreira
+  l.store "Show tasks with at least this severity", "Mostrar tarefas com no mínimo esta importância" # Pedro Henrique Braga Moreira
   l.store "Limit userlist to users in same project", "Limitar lista de usuários para usuários no mesmo projeto" # Hugo
   l.store "Really delete room and all transcripts?", "Realmente apagar a sala e as conversas?" # Pedro Henrique Braga Moreira
   l.store "Revert <b>%s</b> to not completed status.", "Reverter <b>%s</b> como não finalizado."
   l.store "Easy access to commonly needed information.", "Acesso fácil a informações mais requisitadas." # Pedro Henrique Braga Moreira
   l.store "Play sounds when new messages are received.", "Tocar som ao receber novas mensagens." # Pedro Henrique Braga Moreira
   l.store "Subscribe to the recent activities RSS feed", "Assinar o RSS de atividades recentes" # Pedro Henrique Braga Moreira
+  l.store "Permission denied while saving resized file.", "Permission denied while saving resized file."
   l.store "Subscribe to the iCal feed for your projects.", "Assinar o iCal para os seus projetos." # Pedro Henrique Braga Moreira
   l.store "Enter task due date, or click calendar button.", "Entre o prazo da tarefa, ou clique no botão de calendário." # Hugo
   l.store "Tarefas abertas - Vida e Consciência [Pessoais]", "Tarefas abertas - Vida e Consciência [Pessoais]" # Pedro Henrique Braga Moreira
@@ -671,17 +682,17 @@ Localization.define('pt_BR') do |l|
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Para criar um projeto fora desta página de boas-vindas, clique em %s no item %s do menu" # Pedro Henrique Braga Moreira
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Usuário criado com sucesso. Lembre de dar acesso a este usuário aos projetos necessários."
   l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Alterações feitas aqui não serão registradas na lista de Atividades nem enviadas como notificações." # Pedro Henrique Braga Moreira
-  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Deve criar um projeto para definir suas tarefas, ou receber permissão para criar tarefas em um projeto existente..."
+  l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Você precisa criar um projeto para definir suas tarefas, ou receber permissão para criar tarefas em um projeto existente..." # Dieison Rabêlo
   l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "Você pode ter quantas sala de chat quiser. Elas podem ser restritas a um projeto ou públicas entre todos os seus usuários." # Pedro Henrique Braga Moreira
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Recomenda-se uma imagem de tamanho 250x50px. O logotipo será apresentado no cabeçalho, no lugar de ClockingIt, e na página de login.)" # Pedro Henrique Braga Moreira
   l.store "Additional people to be notified on task changes<br />in addition to creator and asignee.<br/><br/>Ctrl-click to toggle.", "Pessoas adicionais que serão notificadas das mudanças da tarefa, além de<br/>seu criador e as pessoas alocadas:<br/><br/>Ctrl-click para selecionar."
-  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Você também pode adicionas <b>?mode=tasks</b> para somente tarefas, <b>?mode=logs</b> para somente registros de trabalho, <br/>ou <b>?mode=milestones</b> para somente marcos." # Pedro Henrique Braga Moreira
+  l.store "You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones.", "Você também pode adicionar <b>?mode=tasks</b> para somente tarefas, <b>?mode=logs</b> para somente registros de trabalho, <br/>ou <b>?mode=milestones</b> para somente marcos." # Dieison Rabêlo
   l.store "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate.", "Você pode tanto clicar no checkbox à esquerda do %s quanto editar a tarefa e mudar o estado para Fechar, Colocar como Sem Solução, Colocar como Inválida ou Colocar como Duplicada" # Pedro Henrique Braga Moreira
   l.store "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.", "Depois de trabalhar em uma tarefa, é hora de completá-la. Encontre sua tarefa clicando em %s no menu do topo, ou procure usando o campo Buscar, no mesmo menu." # Pedro Henrique Braga Moreira
   l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "O próximo passo é %s. Você também pode fazer isso clicando em %s no menu superior. Para mais informações sobre tarefas, dê uma olhada em %s em ClockingIT Wiki." # Pedro Henrique Braga Moreira
-  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "O primeiro passo é %s. Não se preocupe com informar dados reais, você sempre pode apagar o projeto que criou e comçar outro quando tiver tais dados." # Pedro Henrique Braga Moreira
+  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "O primeiro passo é %s. Não se preocupe em informar dados reais, você sempre pode apagar o projeto que criou e começar outro quando tiver tais dados." # Dieison Rabêlo
   l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project
-              you create and start over, once you get the hang of things.", "O primeiro passo é %s. Não se preocupe informando as informações reais, você poderá sempre apagar o projeto que você criou e, começar novamente." # Yeltsin Lima
+              you create and start over, once you get the hang of things.", "O primeiro passo é %s. Não se preocupe informando dados reais, você poderá sempre apagar o projeto que você criou e, começar novamente." # Dieison Rabêlo
   l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "Quando terminar aquela tarefa, clique em outro %s para continuar trabalhando mas em uma tarefa diferente, ou use %s para salvar seu trabalho. %s pára o temporizador sem salvar nenhum trabalho." # Pedro Henrique Braga Moreira
   l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Uma vez que você tem uma ou mais tarefas definidas, é hora de começar a trabalhar nelas. Clique em  %s no menu superior, escolha uma tarefa e clique em %s próximo a ela. O temporizador daquela tarefa começara a contar." # Pedro Henrique Braga Moreira
   l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "A última coisa a fazer é %s a menos que você esteja trabalhando sozinho. Uma vez criados os logins para eles, dê-lhes permissões aos projetos que eles estão trabalhando na página Editar Projeto, acessível em %" # Pedro Henrique Braga Moreira

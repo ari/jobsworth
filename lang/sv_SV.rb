@@ -48,6 +48,7 @@ Localization.define('sv_SV') do |l|
   l.store "High", "Hög"
   l.store "July", "Juli"
   l.store "June", "Juni"
+  l.store "Left", "Kvar" # Daniel Westergren
   l.store "Mine", "Mina" # Johan Helin
   l.store "Name", "Namn"
   l.store "Next", "Nästa" # Johan Helin
@@ -87,7 +88,7 @@ Localization.define('sv_SV') do |l|
   l.store "Pivot", "Pivot" # Daniel Westergren
   l.store "Posts", "Inlägg" # Daniel Westergren
   l.store "Saved", "Sparad" # Johan Helin
-  l.store "Start", "Start"
+  l.store "Start", "Start" # Patrik Juteståhl
   l.store "Tasks", "Uppgifter"
   l.store "Title", "Titel" # Johan Helin
   l.store "To-do", "Att göra" # Daniel Westergren
@@ -147,6 +148,7 @@ Localization.define('sv_SV') do |l|
   l.store "quotes", "citeringar" # Daniel Westergren
   l.store "%d days", ["%d dag", "%d dagar"] # Johan Helin
   l.store "%d file", ["%d fil", "%d filer"]
+  l.store "%d more", ["%d more", "%d more"]
   l.store "%d week", ["en vecka", "%d veckor"]
   l.store "Blocker", "Blockera"
   l.store "Clients", "Kunder"
@@ -165,6 +167,7 @@ Localization.define('sv_SV') do |l|
   l.store "October", "Oktober"
   l.store "Offline", "Offline" # Daniel Westergren
   l.store "Options", "Val"
+  l.store "Overdue", "Overdue"
   l.store "Preview", "Förhandsvisning"
   l.store "Project", "Projekt"
   l.store "Reports", "Rapporter"
@@ -179,7 +182,7 @@ Localization.define('sv_SV') do |l|
   l.store "%d month", ["en månad", "%d månader"]
   l.store "%d posts", ["%d inlägg", "%d inlägg"] # Daniel Westergren
   l.store "%s tasks", "%s uppgifter" # Daniel Westergren
-  l.store "1:2:3:04", "1:2:3:04"
+  l.store "1:2:3:04", "1:2:3:04" # Patrik Juteståhl
   l.store "1w2d3h4m", "1v2d3t4m"
   l.store "2w 3d 1h", "2v 3d 1t" # Johan Helin
   l.store "Any Room", "Alla Rum" # Daniel Westergren
@@ -209,7 +212,7 @@ Localization.define('sv_SV') do |l|
   l.store "One week", "En vecka" # Johan Helin
   l.store "Overview", "Överblick"
   l.store "Password", "Lösenord"
-  l.store "Position", "Position"
+  l.store "Position", "Position" # Patrik Juteståhl
   l.store "Previous", "Föregående" # Johan Helin
   l.store "Priority", "Prioritet"
   l.store "Progress", "Fortskridning"
@@ -220,7 +223,7 @@ Localization.define('sv_SV') do |l|
   l.store "Revision", "Revision" # Johan Helin
   l.store "Saturday", "Lördag"
   l.store "Schedule", "Kalender"
-  l.store "Severity", "Etikett"
+  l.store "Severity", "Allvarlighetsgrad" # Daniel Westergren
   l.store "Singular", "Singular"
   l.store "Thursday", "Torsdag"
   l.store "Timeline", "Tidslinje"
@@ -258,7 +261,7 @@ Localization.define('sv_SV') do |l|
   l.store "One month", "En månad" # Daniel Westergren
   l.store "Remaining", "Återstående" # Daniel Westergren
   l.store "Revisions", "Versioner" # Daniel Westergren
-  l.store "September", "September"
+  l.store "September", "september" # Daniel Westergren
   l.store "Task Type", "Typ av Uppgift"
   l.store "This Week", "Denna Vecka"
   l.store "This Year", "Detta År"
@@ -267,7 +270,7 @@ Localization.define('sv_SV') do |l|
   l.store "Use Forum", "Använd forum" # Daniel Westergren
   l.store "Wednesday", "Onsdag"
   l.store "Won't Fix", "Kommer ej att åtgärdas"
-  l.store "Won't fix", "Won't fix"
+  l.store "Won't fix", "Går ej att fixa" # Daniel Westergren
   l.store "Work Done", "Jobb avklarat" # Daniel Westergren
   l.store "Yesterday", "Igår" # Daniel Westergren
   l.store "_italics_", "_kursivt_" # Daniel Westergren
@@ -308,6 +311,7 @@ Localization.define('sv_SV') do |l|
   l.store "This Month", "Denna Månad"
   l.store "Time Range", "Tidsomfång"
   l.store "Time sheet", "Fullständig"
+  l.store "Total Done", "Total Done"
   l.store "Track Time", "Logga Tid"
   l.store "Transcript", "Utskrift" # Daniel Westergren
   l.store "Unassigned", "Ej tilldelad" # Daniel Westergren
@@ -326,10 +330,10 @@ Localization.define('sv_SV') do |l|
   l.store "Attach file", "Bifoga fil"
   l.store "Attachments", "Bilagor"
   l.store "Change room", "Byt rum" # Daniel Westergren
-  l.store "Custom Logo", "Egen Logo"
+  l.store "Custom Logo", "Egen logo" # Daniel Westergren
   l.store "Date Format", "Datumformat"
   l.store "Delete Room", "Ta bort rum" # Daniel Westergren
-  l.store "Delete View", "Radera Snabbvy"
+  l.store "Delete View", "Radera snabbvy" # Daniel Westergren
   l.store "Description", "Beskrivning"
   l.store "Edit Client", "Redigera kund" # Daniel Westergren
   l.store "Edit Folder", "Redigera mapp" # Daniel Westergren
@@ -340,12 +344,12 @@ Localization.define('sv_SV') do |l|
   l.store "Information", "Information" # Daniel Westergren
   l.store "Let me know", "Berätta för oss"
   l.store "Linked from", "Länkad från"
-  l.store "New Feature", "Ny Funktion"
+  l.store "New Feature", "Ny funktion" # Daniel Westergren
   l.store "New Project", "Nytt projekt" # Daniel Westergren
   l.store "Preferences", "Inställningar"
   l.store "Report Type", "Rapporttyp"
   l.store "Revision %s", "Version %s" # Daniel Westergren
-  l.store "Task Status", "Status för Uppgift"
+  l.store "Task Status", "Status för uppgift" # Daniel Westergren
   l.store "Time Format", "Tidsformat"
   l.store "Transcripts", "Arkiv" # Daniel Westergren
   l.store "Work Logged", "Work Logged"
@@ -360,18 +364,19 @@ Localization.define('sv_SV') do |l|
   l.store "Company Name", "Företagsnamn" # Daniel Westergren
   l.store "Contact name", "Namn"
   l.store "Create Forum", "Skapa forum" # Daniel Westergren
-  l.store "Current logo", "Aktiv Logo"
+  l.store "Current logo", "Aktiv logo" # Daniel Westergren
   l.store "Dependencies", "Beroende av"
-  l.store "Edit Project", "Redigera Projekt"
+  l.store "Edit Project", "Redigera projekt" # Daniel Westergren
   l.store "Edit Summary", "Redigera sammanfattning" # Daniel Westergren
   l.store "Hide Waiting", "Hide Waiting"
   l.store "Last %d Days", ["Senaste %d dagen", "Senaste %d dagarna"] # Daniel Westergren
   l.store "Last Updated", "Senaste uppdatering"
-  l.store "Leave Closed", "Lämna som Stängd"
+  l.store "Leave Closed", "Lämna som stängd" # Daniel Westergren
   l.store "Low Priority", "Låg prioritet" # Daniel Westergren
   l.store "Notify", "Namn / E-post" # Daniel Westergren
   l.store "Newest Tasks", "Nyaste Uppgifter"
   l.store "Notifications", "Meddelande"
+  l.store "More filters", "Fler filter" # Daniel Westergren
   l.store "Participants", "Deltagare" # Daniel Westergren
   l.store "Plan / GANTT", "Plan / GANTT"
   l.store "Recent Posts", "Senaste inlägg" # Daniel Westergren
@@ -403,15 +408,16 @@ Localization.define('sv_SV') do |l|
   l.store "Invite a user", "Bjud in en användare" # Daniel Westergren
   l.store "Monitor forum", "Övervaka forum" # Daniel Westergren
   l.store "Monitor topic", "Övervaka ämne" # Daniel Westergren
-  l.store "My Open Tasks", "Mina Uppgifter"
-  l.store "New Milestone", "Ny Milstolpe"
+  l.store "My Open Tasks", "Mina uppgifter" # Daniel Westergren
+  l.store "New Milestone", "Ny milstolpe" # Daniel Westergren
+  l.store "Over Estimate", "Over Estimate"
   l.store "Public Forums", "Allmänna forum" # Daniel Westergren
   l.store "Show Calendar", "Visa kalender"
   l.store "Show Tooltips", "Visa Tips"
   l.store "Status Change", "Statusförändring"
-  l.store "Task Priority", "Prioritet för Uppgift"
-  l.store "Task Severity", "Etikett för Uppgift"
-  l.store "Time Estimate", "Beräknad Tidsåtgång"
+  l.store "Task Priority", "Prioritet för uppgift" # Daniel Westergren
+  l.store "Task Severity", "Allvarlighetsgrad för uppgift" # Daniel Westergren
+  l.store "Time Estimate", "Beräknad tidsåtgång" # Daniel Westergren
   l.store "Use Messaging", "Använd meddelanden" # Daniel Westergren
   l.store "[Active User]", "[Aktiv Användare]"
   l.store "[Any Project]", "[Alla Projekt]"
@@ -443,7 +449,7 @@ Localization.define('sv_SV') do |l|
   l.store "Wiki Additions", "Wiki Additions"
   l.store "Workday Length", "Arbetsdagens längd"
   l.store "[Any Priority]", "[Alla Prioriteter]"
-  l.store "[Any Severity]", "[Alla Etiketter]"
+  l.store "[Any Severity]", "[Alla allvarlighetsgrader]" # Daniel Westergren
   l.store "Close <b>%s</b>", "Stäng <b>%s</b>"
   l.store "Database Backup", "Databasbackup" # Daniel Westergren
   l.store "Duration Format", "Tidsformat för loggning"
@@ -486,14 +492,16 @@ Localization.define('sv_SV') do |l|
   l.store "Create New Folder", "Skapa ny mapp" # Daniel Westergren
   l.store "Delete <b>%s</b>.", "Ta bort <b>%s</b>." # Daniel Westergren
   l.store "Delete Transcript", "Ta bort arkiv" # Daniel Westergren
+  l.store "Hide Dependencies", "Hide Dependencies"
   l.store "No file selected.", "Ingen fil vald" # Daniel Westergren
   l.store "Really delete %s?", "Är du säker på att du vill radera %s?"
   l.store "Really revert %s?", "Är du säker på att du vill Återställa %s?"
   l.store "Recent Activities", "Senaste aktiviteter"
   l.store "Remove dependency", "Radera beroendeförhållande"
   l.store "Schedule reverted", "Schedule reverted"
-  l.store "Tasks / Day Chart", "Tasks / Day Chart"
+  l.store "Tasks / Day Chart", "Uppgifter / Dagsagenda" # Patrik Juteståhl
   l.store "Under revision by", "Under revidering av"
+  l.store "Upload more files", "Upload more files"
   l.store "[Active Projects]", "[Aktiva projekt]" # Daniel Westergren
   l.store "[Closed Projects]", "[Avslutade projekt]" # Daniel Westergren
   l.store "[Default Sorting]", "[Standardsorteringsordning]" # Daniel Westergren
@@ -543,6 +551,7 @@ Localization.define('sv_SV') do |l|
   l.store "Download Database Dump", "Ladda ner databasfil" # Daniel Westergren
   l.store "Edit project <b>%s</b>", "Redigera projektet <b>%s</b>"
   l.store "Floating Messaging Bar", "Flytande meddelanderad" # Daniel Westergren
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "Snabbvy '%s' raderad."
   l.store "invite some co-workers", "bjud in några medarbetare" # Daniel Westergren
   l.store ", this topic is locked.", ", det här ämnet är låst" # Daniel Westergren
@@ -563,6 +572,7 @@ Localization.define('sv_SV') do |l|
   l.store "Don't show this splash page", "Visa inte den här informationssidan" # Daniel Westergren
   l.store "File successfully uploaded.", "Fil laddades upp utan problem."
   l.store "Logo successfully uploaded.", "Logo lastet opp."
+  l.store "Only admins can edit users.", "Only admins can edit users."
   l.store "Pause working on <b>%s</b>.", "Gör paus i arbetet med <b>%s</b>" # Daniel Westergren
   l.store "Please always be courteous.", "Please always be courteous."
   l.store "Please configure the widget", "Please configure the widget"
@@ -570,6 +580,7 @@ Localization.define('sv_SV') do |l|
   l.store "Cancel working on <b>%s</b>.", "Avbryt arbetet med <b>%s</b>."
   l.store "Empty report, log more work!", "Rapporten är tom, du måste logga arbetstid innan du kan ta ut en rapport."
   l.store "No file selected for upload.", "Du har inte valt någon fil att ladda upp."
+  l.store "Only show tasks of this type", "Visa bara uppgifter av den här typen" # Daniel Westergren
   l.store "Really delete whole history?", "Villd u verkligen ta bort all historik?" # Daniel Westergren
   l.store "Resume working on <b>%s</b>.", "Återuppta arbete med <b>%s</b>." # Daniel Westergren
   l.store "Avatar successfully uploaded.", "Bilden uppladdad" # Daniel Westergren
@@ -593,6 +604,7 @@ Localization.define('sv_SV') do |l|
   l.store "Project was successfully created.", "Projekt skapades utan problem."
   l.store "Project was successfully updated.", "Projekt uppdaterades utan problem."
   l.store "Done working on <b>%s</b> for now.", "Arbetat klart med <b>%s</b> för tillfället."
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "You can't delete your own company.", "Du kan inte radera ditt eget företag."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Återkoppling? Förslag? Idéer? Fel?"
   l.store "Ignore hidden tasks when scheduling", "Ignorera gömda uppgifter vid schemaläggning" # Daniel Westergren
@@ -604,6 +616,8 @@ Localization.define('sv_SV') do |l|
   l.store "Changes are not made live instantly.", "Ändringar syns inte direkt" # Daniel Westergren
   l.store "This forum is currently unmoderated.", "Det här forumet är för närvarande inte modererat" # Daniel Westergren
   l.store "Hide tasks deferred until a later time", "Göm uppgifter som är uppskjutna till senare" # Daniel Westergren
+  l.store "Show tasks with at least this priority", "Visa uppgiter med minst den här prioriteten" # Daniel Westergren
+  l.store "Show tasks with at least this severity", "Visa uppgifter med minst den här allvarlighetsgraden" # Daniel Westergren
   l.store "Limit userlist to users in same project", "Begränsa användarlista till användare i samma projekt" # Daniel Westergren
   l.store "Really delete room and all transcripts?", "Vill du verkligen ta bort rummet och hela arkivet?" # Daniel Westergren
   l.store "Revert <b>%s</b> to not completed status.", "Ställ om <b>%s</b> status till ej färdig"
@@ -640,6 +654,7 @@ Localization.define('sv_SV') do |l|
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Kommer att ändras till storlekarna 25x25 och 50x50, och behåller bredd-höjd-förhållandet)" # Daniel Westergren
   l.store "Text entered will be saved automatically to your current work notes.", "Text som skriv in kommer automatiskt att sparas till dina arbetsanteckningar." # Daniel Westergren
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "För en personlig ström, byt ut <b>ical_all</b> mot <b>ical</b>" # Daniel Westergren
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
   l.store "Project was successfully created. Add users who need access to this project.", "Projekt skapades utan problem. Ge tillgång till användare som behöver åtkomst till projektet."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "För att skapa ett projekt utanför den här välkomstsidan, klicka på %s i menyalternativet %s" # Daniel Westergren
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Användare skapades utan problem. Glöm inte att tilldela användaren tillgång till de projekt som hon/han behöver deltaga i."
@@ -657,7 +672,7 @@ Localization.define('sv_SV') do |l|
               you create and start over, once you get the hang of things.", "The first step is to %s. Don't worry about entering real data, you can always delete the project" # Martin Persson
   l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "När du har jobbat färdigt med en uppgift kan du antingen klicka på en annan %s för att fortsätta att arbeta men på en annan uppgift, eller använda %s för att spara det här arbetet. %s stannar timern utan att logga något arbete." # Daniel Westergren
   l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "När du har lagt till en eller flera uppgifter är det dags att börja arbeta på dem. Klicka på %s i toppmenyn, välj en uppgift och klicka på %s intill. Timern för den uppgiften börjar räkna." # Daniel Westergren
-  l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "Det sista att göra är %, såvida du inte arbetar ensam. När du har skapat inloggning för dem, ge dem tillgång till projektet som de ska arbeta med från Redigera projekt-sidan, som man hittar från %s." # Daniel Westergren
+  l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "Det sista att göra är %s såvida du inte arbetar ensam. När du har skapat inloggning för dem, ge dem tillgång till projektet som de ska arbeta med från Redigera projekt-sidan, som man hittar från %s." # Patrik Juteståhl
   l.store "If you require further help, check the <a href=\"http://forum.clockingit.com\" target=\"_new\">forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">wiki</a> or email us at <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>.", "Om du behöver mer hjälp, kolla in <a href=\"http://forum.clockingit.com\" target=\"_new\">forumet</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">wikin</a> eller maila oss på <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>." # Daniel Westergren
   l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Nästa är %s. Du kan även göra detta genom att klicka på knappen %s i toppmenyn. Flr mer information om uppgifter, kolla in <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">dokumentationen</a> i ClockingIT-wikin." # Daniel Westergren
 end

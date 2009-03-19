@@ -8,7 +8,7 @@ Localization.define('eu_ES') do |l|
   l.store "of", "-"
   l.store "or", "edo"
   l.store "Add", "Add"
-  l.store "Age", "Urteak" # Josu
+  l.store "Age", "Urteak" # Josu Ansola
   l.store "All", "Denak"
   l.store "Apr", "Api"
   l.store "Aug", "Abu"
@@ -34,7 +34,7 @@ Localization.define('eu_ES') do |l|
   l.store "Thu", "Ost"
   l.store "Tue", "Asa"
   l.store "Wed", "Asz"
-  l.store "ago", "orain dela" # Josu
+  l.store "ago", "orain dela" # Josu Ansola
   l.store "and", "eta"
   l.store "day", "egun"
   l.store "Body", "Edukia"
@@ -48,7 +48,8 @@ Localization.define('eu_ES') do |l|
   l.store "High", "Handia"
   l.store "July", "Uztaila"
   l.store "June", "Ekaina"
-  l.store "Mine", "Nirea" # Josu
+  l.store "Left", "Left"
+  l.store "Mine", "Nirea" # Josu Ansola
   l.store "Name", "Izena"
   l.store "Next", "Next"
   l.store "Note", "Note"
@@ -56,13 +57,13 @@ Localization.define('eu_ES') do |l|
   l.store "Read", "Irakurri"
   l.store "Rows", "Errenkadak"
   l.store "Save", "Gorde"
-  l.store "Show", "Ikusi" # Josu
+  l.store "Show", "Ikusi" # Josu Ansola
   l.store "Tags", "Etiketak"
   l.store "Task", "Ataza"
   l.store "Type", "Mota"
   l.store "User", "Erabiltzailea"
-  l.store "View", "Bista" # Josu
-  l.store "Wait", "Itxaron" # Josu
+  l.store "View", "Bista" # Josu Ansola
+  l.store "Wait", "Itxaron" # Josu Ansola
   l.store "Week", "astea"
   l.store "Wiki", "Wiki"
   l.store "Work", "Lan egin"
@@ -104,7 +105,7 @@ Localization.define('eu_ES') do |l|
   l.store "Assign", "Esleitu"
   l.store "August", "Abuztua"
   l.store "Browse", "Bistak"
-  l.store "Cancel", "Ezeztatu" # Josu
+  l.store "Cancel", "Ezeztatu" # Josu Ansola
   l.store "Client", "Bezeroa"
   l.store "Closed", "Itxita"
   l.store "Create", "Sortu"
@@ -112,8 +113,9 @@ Localization.define('eu_ES') do |l|
   l.store "Defect", "Akatsa"
   l.store "Delete", "Ezabatu"
   l.store "Filter", "Iragazki"
-  l.store "Forums", "Foroak" # Josu
+  l.store "Forums", "Foroak" # Josu Ansola
   l.store "Friday", "Ostirala"
+  l.store "Locked", "Locked"
   l.store "Lowest", "Oso Baxua"
   l.store "Monday", "Astelehena"
   l.store "Months", "Months"
@@ -121,12 +123,13 @@ Localization.define('eu_ES') do |l|
   l.store "Normal", "Normala"
   l.store "Online", "Konektatuta"
   l.store "Paused", "Paused"
-  l.store "Plural", "Plurala" # Josu
+  l.store "Plural", "Plurala" # Josu Ansola
   l.store "Recent", "Recent"
   l.store "Revert", "Berriz jarri"
   l.store "Search", "Bilatu"
   l.store "Shared", "Partekatutakoak"
   l.store "Status", "Egoera"
+  l.store "Sticky", "Sticky"
   l.store "Sunday", "Igandea"
   l.store "Target", "Helburua"
   l.store "Update", "Update"
@@ -139,8 +142,9 @@ Localization.define('eu_ES') do |l|
   l.store "[wdhm]", "[aeom]"
   l.store "cancel", "cancel"
   l.store "quotes", "quotes"
-  l.store "%d days", ["%d egun", "%d egun"] # Josu
+  l.store "%d days", ["%d egun", "%d egun"] # Josu Ansola
   l.store "%d file", ["%d fitxategia", "%d fitxategiak"]
+  l.store "%d more", ["%d more", "%d more"]
   l.store "%d week", ["aste 1", "%d aste"]
   l.store "Blocker", "Altuena"
   l.store "Clients", "Bezeroak"
@@ -149,13 +153,13 @@ Localization.define('eu_ES') do |l|
   l.store "Company", "Erakundea"
   l.store "Contact", "Kontaktua"
   l.store "Created", "Sortuta"
-  l.store "Destroy", "Ezabatu" # Josu
+  l.store "Destroy", "Ezabatu" # Josu Ansola
   l.store "History", "Historia"
   l.store "Invalid", "Baliogabea"
   l.store "January", "Urtarrila"
-  l.store "Loading", "Kargatzen" # Josu
+  l.store "Loading", "Kargatzen" # Josu Ansola
   l.store "Log Out", "Irten"
-  l.store "Members", "Kideak" # Josu
+  l.store "Members", "Kideak" # Josu Ansola
   l.store "October", "Urria"
   l.store "Offline", "Deskonektatuta"
   l.store "Options", "Aukerak"
@@ -163,6 +167,7 @@ Localization.define('eu_ES') do |l|
   l.store "Preview", "Aurrebista"
   l.store "Project", "Proiektua"
   l.store "Reports", "Txostenak"
+  l.store "Sort By", "Sort By"
   l.store "Summary", "Laburpena"
   l.store "Trivial", "Garrantzi gabekoa"
   l.store "Tuesday", "Asteartea"
@@ -178,7 +183,7 @@ Localization.define('eu_ES') do |l|
   l.store "Archived", "Artxibatua"
   l.store "Attached", "Attached"
   l.store "Comments", "Comments"
-  l.store "Complete", "Burututa" # Josu
+  l.store "Complete", "Burututa" # Josu Ansola
   l.store "Critical", "Kritikoa"
   l.store "December", "Abendua"
   l.store "Download", "Jaitsi"
@@ -186,14 +191,15 @@ Localization.define('eu_ES') do |l|
   l.store "Estimate", "Estimate"
   l.store "Everyone", "Everyone"
   l.store "February", "Otsaila"
+  l.store "Group By", "Group By"
   l.store "Language", "Hizkuntza"
   l.store "Location", "Herria"
   l.store "Modified", "Aldatuta"
-  l.store "New File", "Fitxategi berria" # Josu
+  l.store "New File", "Fitxategi berria" # Josu Ansola
   l.store "New Note", "Ohar Berria"
-  l.store "New Room", "Gela berria" # Josu
+  l.store "New Room", "Gela berria" # Josu Ansola
   l.store "New Task", "Ataza berria"
-  l.store "New User", "Erabiltzaile berria" # Josu
+  l.store "New User", "Erabiltzaile berria" # Josu Ansola
   l.store "New View", "Bista Berria"
   l.store "New logo", "Logo berria"
   l.store "November", "Azaroa"
@@ -216,12 +222,13 @@ Localization.define('eu_ES') do |l|
   l.store "Timeline", "Historia"
   l.store "Tomorrow", "Tomorrow"
   l.store "Tutorial", "Tutoretza"
-  l.store "Use Chat", "Txata erabili" # Josu
-  l.store "Use Wiki", "Wikia erabili" # Josu
+  l.store "Use Chat", "Txata erabili" # Josu Ansola
+  l.store "Use Wiki", "Wikia erabili" # Josu Ansola
   l.store "Username", "Erabiltzailearen izena"
   l.store "Work Log", "Lan historia"
-  l.store "Workload", "Lan karga" # Josu
+  l.store "Workload", "Lan karga" # Josu Ansola
   l.store "[Delete]", "[Ezabatu]"
+  l.store "[No one]", "[No one]"
   l.store "tomorrow", "bihar"
   l.store "%d folder", ["%d karpeta", "%d karpetak"]
   l.store "%d minute", ["minutu 1", "%d minutu"]
@@ -233,16 +240,18 @@ Localization.define('eu_ES') do |l|
   l.store "Edit Note", "Oharra Editatu"
   l.store "Edit User", "Erabiltzailea editatu"
   l.store "Edit View", "Bista Editatu"
+  l.store "Edit post", "Edit post"
   l.store "Estimated", "Estimated"
   l.store "Last Post", "Last Post"
   l.store "Last Week", "Aurreko astea"
   l.store "Last Year", "Aurreko urtea"
   l.store "Last post", "Last post"
   l.store "Milestone", "Zedarria"
+  l.store "New Topic", "New Topic"
   l.store "New topic", "New topic"
-  l.store "Next Week", "Hurrengo astea" # Josu
-  l.store "Next week", "Hurrengo astea" # Josu
-  l.store "One month", "Hilabete bat" # Josu
+  l.store "Next Week", "Hurrengo astea" # Josu Ansola
+  l.store "Next week", "Hurrengo astea" # Josu Ansola
+  l.store "One month", "Hilabete bat" # Josu Ansola
   l.store "Remaining", "Remaining"
   l.store "September", "Iraila"
   l.store "Task Type", "Ataza mota"
@@ -250,12 +259,12 @@ Localization.define('eu_ES') do |l|
   l.store "This Year", "Urte hau"
   l.store "Timesheet", "Denbora orria"
   l.store "Top Tasks", "Ataza nagusiak"
-  l.store "Translate", "Itzuli" # Josu
-  l.store "Use Forum", "Foroa erabili" # Josu
+  l.store "Translate", "Itzuli" # Josu Ansola
+  l.store "Use Forum", "Foroa erabili" # Josu Ansola
   l.store "Wednesday", "Asteazkena"
   l.store "Won't Fix", "Soluzio gabe"
-  l.store "Work Done", "Burututako lana" # Josu
-  l.store "Yesterday", "Atzo" # Josu
+  l.store "Work Done", "Burututako lana" # Josu Ansola
+  l.store "Yesterday", "Atzo" # Josu Ansola
   l.store "_italics_", "_italics_"
   l.store "entries..", "sarrera..."
   l.store "yesterday", "atzo"
@@ -264,7 +273,7 @@ Localization.define('eu_ES') do |l|
   l.store "Activities", "Aktibitateak"
   l.store "Assignment", "Assignment"
   l.store "Attributes", "Ezaugarriak"
-  l.store "Chat Rooms", "Txat gelak" # Josu
+  l.store "Chat Rooms", "Txat gelak" # Josu Ansola
   l.store "Client CSS", "Bezeroaren CSS-a"
   l.store "Depends on", "Menpe dago"
   l.store "Group Tags", "Etiketak batu"
@@ -277,11 +286,12 @@ Localization.define('eu_ES') do |l|
   l.store "Local Time", "Local Time"
   l.store "Milestones", "Zedarriak"
   l.store "Moderators", "Moderators"
-  l.store "New Avatar", "Abatar berria" # Josu
+  l.store "New Avatar", "Abatar berria" # Josu Ansola
   l.store "New Client", "Bezero Berria"
-  l.store "New Folder", "Karpeta berria" # Josu
-  l.store "Next month", "Hurrengo hilabetea" # Josu
+  l.store "New Folder", "Karpeta berria" # Josu Ansola
+  l.store "Next month", "Hurrengo hilabetea" # Josu Ansola
   l.store "Open Tasks", "Irekitako atazak"
+  l.store "Post Topic", "Post Topic"
   l.store "Prioritize", "Lehenetsi"
   l.store "Reassigned", "Berriz esleitua"
   l.store "Run Report", "Txostena ikusi"
@@ -290,8 +300,9 @@ Localization.define('eu_ES') do |l|
   l.store "This Month", "Hilabete hau"
   l.store "Time Range", "Denbora tartea"
   l.store "Time sheet", "Time sheet"
+  l.store "Total Done", "Total Done"
   l.store "Track Time", "Denbora Kontrola"
-  l.store "Unassigned", "Esleitu gabea" # Josu
+  l.store "Unassigned", "Esleitu gabea" # Josu Ansola
   l.store "View Tasks", "View Tasks"
   l.store "Widget Key", "Widget Key"
   l.store "[All Tags]", "[Etiketa guztiak]"
@@ -309,10 +320,10 @@ Localization.define('eu_ES') do |l|
   l.store "Change room", "Change room"
   l.store "Custom Logo", "Logo pertsonalizatua"
   l.store "Date Format", "Dataren formatua"
-  l.store "Delete Room", "Gela ezabatu" # Josu
+  l.store "Delete Room", "Gela ezabatu" # Josu Ansola
   l.store "Delete View", "Bista Ezabatu"
   l.store "Description", "Deskribapena"
-  l.store "End of week", "Aste bukaera" # Josu
+  l.store "End of week", "Aste bukaera" # Josu Ansola
   l.store "Forum Posts", "Forum Posts"
   l.store "Improvement", "Hobekuntza"
   l.store "In Progress", "Hasita"
@@ -320,7 +331,7 @@ Localization.define('eu_ES') do |l|
   l.store "Let me know", "Jakinarazi iezadazu"
   l.store "Linked from", "Hurrengo orritik erreferentziatuta"
   l.store "New Feature", "Ezaugarri berria"
-  l.store "New Project", "Proiektu berria" # Josu
+  l.store "New Project", "Proiektu berria" # Josu Ansola
   l.store "Preferences", "Aukerak"
   l.store "Report Type", "Txosten mota"
   l.store "Task Status", "Atazaren egoera"
@@ -328,12 +339,13 @@ Localization.define('eu_ES') do |l|
   l.store "Transcripts", "Transcripts"
   l.store "Work Logged", "Work Logged"
   l.store "Work Status", "Work Status"
-  l.store "[All Tasks]", "[Ataza guztiak]" # Josu
+  l.store "[All Tasks]", "[Ataza guztiak]" # Josu Ansola
   l.store "[Next page]", "[Hurrengo orria]"
   l.store "%d month ago", ["orain dela hilabete 1", "orain dela %d hilabete"]
   l.store "%s reverted.", "%s berriz egin da."
+  l.store "Active Tasks", "Active Tasks"
   l.store "Burnup Chart", "Burnup Chart"
-  l.store "Company Name", "Erakundearen izena" # Josu
+  l.store "Company Name", "Erakundearen izena" # Josu Ansola
   l.store "Contact name", "Kontakturako Izena"
   l.store "Create Forum", "Create Forum"
   l.store "Current logo", "Oraingo Logoa"
@@ -350,15 +362,15 @@ Localization.define('eu_ES') do |l|
   l.store "Notifications", "Jakinarazpen"
   l.store "Notify Users", "Erabiltzaileei jakinarazi"
   l.store "Participants", "Participants"
-  l.store "Plan / GANTT", "Plan a/ GANTTa" # Josu
+  l.store "Plan / GANTT", "Plan a/ GANTTa" # Josu Ansola
   l.store "Recent Posts", "Recent Posts"
   l.store "Requested By", "Nork eskatua"
-  l.store "Save as View", "Bista gisara gorde" # Josu
+  l.store "Save as View", "Bista gisara gorde" # Josu Ansola
   l.store "Send Message", "Send Message"
-  l.store "Show Avatars", "Abatarrak erakutsi" # Josu
+  l.store "Show Avatars", "Abatarrak erakutsi" # Josu Ansola
   l.store "Timer Window", "Timer Window"
   l.store "Users Online", "Users Online"
-  l.store "Wiki Changes", "Wikiaren aldaketak" # Josu
+  l.store "Wiki Changes", "Wikiaren aldaketak" # Josu Ansola
   l.store "[Any Client]", "[Edozein bezero]"
   l.store "[Any Status]", "[Edozein egoera]"
   l.store "[Unassigned]", "[Esleitu gabe]"
@@ -367,10 +379,10 @@ Localization.define('eu_ES') do |l|
   l.store "%s completed.", "%s burututa."
   l.store "Active %s ago", "Active %s ago"
   l.store "Administrator", "Administratzailea"
-  l.store "Are you sure?", "Ziur al zaude?" # Josu
+  l.store "Are you sure?", "Ziur al zaude?" # Josu Ansola
   l.store "Contact email", "Kontakturako E-posta"
   l.store "Custom Avatar", "Custom Avatar"
-  l.store "Days per Week", "Egun asteko" # Josu
+  l.store "Days per Week", "Egun asteko" # Josu Ansola
   l.store "Enable Sounds", "Enable Sounds"
   l.store "File too big.", "Fitxategia handiegia da."
   l.store "Google Gadget", "Google Gadget"
@@ -380,7 +392,8 @@ Localization.define('eu_ES') do |l|
   l.store "Monitor topic", "Monitor topic"
   l.store "My Open Tasks", "Nire irekitako atazak"
   l.store "New Milestone", "Zedarri berria"
-  l.store "Public Forums", "Foro publikoak" # Josu
+  l.store "Over Estimate", "Over Estimate"
+  l.store "Public Forums", "Foro publikoak" # Josu Ansola
   l.store "Show Calendar", "Egutegia Ikusi"
   l.store "Show Tooltips", "Laguntza Ikusi"
   l.store "Status Change", "Egoera aldaketa"
@@ -392,25 +405,26 @@ Localization.define('eu_ES') do |l|
   l.store "[Any Project]", "[Edozein proiektu]"
   l.store "[No Grouping]", "[No Grouping]"
   l.store "about %d hour", ["ordu 1 gutxi gorabehera", "%d ordu gutxi gorabehera"]
-  l.store "about 1 month", "hilabete 1" # Josu
+  l.store "about 1 month", "hilabete 1" # Josu Ansola
   l.store "half a minute", "minutu erdi"
-  l.store "Add New Widget", "Widget berria gehitu" # Josu
+  l.store "Add New Widget", "Widget berria gehitu" # Josu Ansola
   l.store "Are your sure?", "¿Ziur zaude?"
   l.store "Burndown Chart", "Burndown Chart"
-  l.store "Current Avatar", "Momentuko abatarra" # Josu
+  l.store "Current Avatar", "Momentuko abatarra" # Josu Ansola
   l.store "Delete Project", "Proiektua ezabatu"
   l.store "Depended on by", "Depended on by"
   l.store "Edit <b>%s</b>", "Edit <b>%s</b>"
   l.store "Edit Log Entry", "Sarrera historikoa editatu"
   l.store "Edit Milestone", "Zedarria Editatu"
   l.store "Full Reference", "Erreferentzia Osoa"
-  l.store "Help Translate", "Itzulpenean lagundu" # Josu
+  l.store "Help Translate", "Itzulpenean lagundu" # Josu Ansola
   l.store "New To-do Item", "New To-do Item"
   l.store "Open <b>%s</b>", "Open <b>%s</b>"
   l.store "Organize Tasks", "Organize Tasks"
-  l.store "Remaining Work", "Falta den lana" # Josu
+  l.store "Remaining Work", "Falta den lana" # Josu Ansola
   l.store "Reply to topic", "Reply to topic"
   l.store "Revert to Open", "Berriz ireki"
+  l.store "Schedule saved", "Schedule saved"
   l.store "Search Results", "Emaitzetan bilatu"
   l.store "Set as Invalid", "Baliogabea jarri"
   l.store "Signup Message", "Mezua Sinatu"
@@ -426,21 +440,24 @@ Localization.define('eu_ES') do |l|
   l.store "Formatting Help", "Formatting Help"
   l.store "Organizing Done", "Organizing Done"
   l.store "Quick Reference", "Erreferentzia Laburra"
+  l.store "Recent activity", "Recent activity"
   l.store "Set in Progress", "Lanean jarri"
+  l.store "Task Priorities", "Task Priorities"
   l.store "Upload New File", "Fitxategi berria igo"
   l.store "[Any Milestone]", "[Edozein zedarri]"
   l.store "[Previous page]", "[Aurreko orria]"
   l.store "creating a task", "creating a task"
   l.store "Advanced Options", "Aukera aurreratuak"
-  l.store "Company Settings", "Erakundearen aukerak" # Josu
+  l.store "Company Settings", "Erakundearen aukerak" # Josu Ansola
   l.store "Complete Project", "Proiektua bukatu"
-  l.store "Create New Forum", "Foro berria sortu" # Josu
-  l.store "Delete <b>%s</b>", "Ezabatu <b>%s</b>" # Josu
+  l.store "Create New Forum", "Foro berria sortu" # Josu Ansola
+  l.store "Delete <b>%s</b>", "Ezabatu <b>%s</b>" # Josu Ansola
   l.store "Delete Log Entry", "Sarrera historikoa ezabatu"
   l.store "Delete Milestone", "Zedarria Ezabatu"
+  l.store "Gadget HTML Code", "Gadget HTML Code"
   l.store "Leave as Invalid", "Baliogabea utzi"
   l.store "Open to %s users", "Open to %s users"
-  l.store "Open to everyone", "Guztiei zabaldu" # Josu
+  l.store "Open to everyone", "Guztiei zabaldu" # Josu Ansola
   l.store "Overall Progress", "Aurrerapen orokorra"
   l.store "Set as Duplicate", "Bikoiztua jarri"
   l.store "Set as Won't Fix", "Soluzio gabe jarri"
@@ -449,15 +466,18 @@ Localization.define('eu_ES') do |l|
   l.store "create a project", "create a project"
   l.store "%s / %s reverted.", "%s / %s izena aldatu da."
   l.store "Access To Project", "Proiektura sartu"
-  l.store "Delete <b>%s</b>.", "Ezabatu <b>%s</b>." # Josu
+  l.store "Delete <b>%s</b>.", "Ezabatu <b>%s</b>." # Josu Ansola
+  l.store "Hide Dependencies", "Hide Dependencies"
   l.store "Really delete %s?", "¿%s ezabatu nahi al duzu?"
   l.store "Really revert %s?", "¿Berriz jarri al nahi duzu %s bezala?"
   l.store "Recent Activities", "Azken aktibitateak"
   l.store "Remove dependency", "Ezabatu dependentzia"
+  l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "Tasks / Day Chart"
   l.store "Under revision by", "-(e)k berrikusten"
+  l.store "Upload more files", "Upload more files"
   l.store "[Active Projects]", "[Active Projects]"
-  l.store "[Closed Projects]", "[Itxitako Proiektuak]" # Josu
+  l.store "[Closed Projects]", "[Itxitako Proiektuak]" # Josu Ansola
   l.store "[Default Sorting]", "[Default Sorting]"
   l.store "the documentation", "the documentation"
   l.store "%d open / %d tasks", ["%d open / %d tasks", "%d open / %d tasks"]
@@ -471,9 +491,10 @@ Localization.define('eu_ES') do |l|
   l.store "Leave as Won't Fix", "Soluzio gabe utzi"
   l.store "Log entry saved...", "Sarrera historikoa gordeta..."
   l.store "No recent activity", "No recent activity"
-  l.store "Really abort work?", "Lana ezabatu nahi al duzu?" # Josu
+  l.store "Really abort work?", "Lana ezabatu nahi al duzu?" # Josu Ansola
   l.store "Really delete tag?", "Really delete tag?"
   l.store "Receive Newsletter", "Receive Newsletter"
+  l.store "Same as in English", "Same as in English"
   l.store "Send Notifications", "Jakinarazpenak Bidali"
   l.store "less than a minute", "minutu bat baino gutxiago"
   l.store "Can Create Projects", "Can Create Projects"
@@ -483,6 +504,7 @@ Localization.define('eu_ES') do |l|
   l.store "[Without Milestone]", "[Zedarri gabe]"
   l.store "%d completed project", ["proiektu 1 itxita", "%d proiektu itxita"]
   l.store "Completed Milestones", "Burututako Zedarriak"
+  l.store "Find a Google Gadget", "Find a Google Gadget"
   l.store "Leave as in Progress", "Lanean utzi"
   l.store "Log entry deleted...", "Sarrera historikoa ezabatuta..."
   l.store "My In Progress Tasks", "Nire hasitako atazak"
@@ -500,6 +522,7 @@ Localization.define('eu_ES') do |l|
   l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "<b>%s</b> proiektua editatu"
   l.store "Floating Messaging Bar", "Floating Messaging Bar"
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "'%s' Bista ezabatuta."
   l.store "invite some co-workers", "invite some co-workers"
   l.store "Last %d Completed Tasks", ["Last %d Completed Tasks", "Last %d Completed Tasks"]
@@ -511,6 +534,7 @@ Localization.define('eu_ES') do |l|
   l.store "Invalid due date ignored.", "Baliogabezko entrega-epea ez da kontutan hartu."
   l.store "and copy permissions from", "and copy permissions from"
   l.store "CSS successfully uploaded.", "CSS egoki igo da."
+  l.store "Delete this topic forever?", "Delete this topic forever?"
   l.store "Grant access to <b>%s</b>?", "¿<b>%s</b> - (r)i baimena eman?"
   l.store "Include completed projects", "Include completed projects"
   l.store "Save and activate schedule", "Save and activate schedule"
@@ -525,7 +549,9 @@ Localization.define('eu_ES') do |l|
   l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b> lana ezeztatu."
   l.store "Empty report, log more work!", "Txostena hutsik dago, sortu lan sarrera gehiago!"
   l.store "No file selected for upload.", "Ez da fitxategirik aukeratu igotzeko."
+  l.store "Only show tasks of this type", "Only show tasks of this type"
   l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
+  l.store "Avatar successfully uploaded.", "Avatar successfully uploaded."
   l.store "Really delete this log entry?", "¿Sarrera hau historikotik ezabatu nahi al duzu?"
   l.store "Add earlier work to <b>%s</b>.", "Add earlier work to <b>%s</b>."
   l.store "Grant %s access for <b>%s</b>?", "%s –ren baimena emana <b>%s</b> -(r)i?"
@@ -546,6 +572,7 @@ Localization.define('eu_ES') do |l|
   l.store "Project was successfully created.", "Proiektua egoki sortu da."
   l.store "Project was successfully updated.", "Proiektua egoki aldatu da."
   l.store "Done working on <b>%s</b> for now.", "<b>%s</b> burututa dagoeneko"
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "You can't delete your own company.", "Ezin duzu zure erakundea ezabatu."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Iruzkinak? ¿Iradokizunak? ¿Ideiak? ¿Akatsak?"
   l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
@@ -557,6 +584,8 @@ Localization.define('eu_ES') do |l|
   l.store "Changes are not made live instantly.", "Changes are not made live instantly."
   l.store "This forum is currently unmoderated.", "This forum is currently unmoderated."
   l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Show tasks with at least this priority", "Show tasks with at least this priority"
+  l.store "Show tasks with at least this severity", "Show tasks with at least this severity"
   l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
   l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
   l.store "Revert <b>%s</b> to not completed status.", "Utzi <b>%s</b> itxi gabe."
@@ -568,12 +597,14 @@ Localization.define('eu_ES') do |l|
   l.store "Show icons next to tasks representing their type.", "Show icons next to tasks representing their type."
   l.store "The message will be included in the signup email.", "Mezua e-postaren sinaduran gehituko da."
   l.store "Start working on <b>%s</b>. Click again when done.", "<b>%s</b> lanean hasi. Sakatu berriz gelditzeko"
+  l.store "Unable to find task belonging to you with that ID.", "Unable to find task belonging to you with that ID."
   l.store "Bookmark this link to quickly open the Timer Window", "Bookmark this link to quickly open the Timer Window"
   l.store "Custom saved filters showing a subset of your tasks", "Custom saved filters showing a subset of your tasks"
   l.store "Error sending creation email. Account still created.", "Sortze e-posta ezin izan da bidali. Kontua aurretik sortua da."
   l.store "Save and activate schedule. Includes filtered tasks.", "Save and activate schedule. Includes filtered tasks."
   l.store "Please delete all projects for %s before deleting it.", "Mesedez, ezabatu %s –(r)en proiektu guztiak bera ezabatu aurretik."
   l.store "Log entry already saved from another browser instance.", "Sarrera historikoa beste leiho baten sortu da."
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
   l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Izkutatutako tutoretza. Ez da berriz menuan agertuko."
   l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
@@ -592,6 +623,7 @@ Localization.define('eu_ES') do |l|
   l.store "Project was successfully created. Add users who need access to this project.", "Proiektua egoki sortu da. Gaineratu proiektuarekin lan egingo duten erabiltzaileak."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remeber to give this user access to needed projects.", "Erabiltzailea egoki sortu da. Gogoratu ezazu beharrezko proiektuetan baimena ematea."
+  l.store "User was successfully created. Remember to give this user access to needed projects.", "User was successfully created. Remember to give this user access to needed projects."
   l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Changes done here will not be logged in the Activity log or sent out as notifications."
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Atazak esleiteko proiektua sortu edo dagoeneko sortutako baten baimena izan behar duzu."
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)"

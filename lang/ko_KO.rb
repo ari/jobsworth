@@ -131,7 +131,7 @@ Localization.define('ko_KO') do |l|
   l.store "Update", "업데이트" # 심마로
   l.store "Upload", "업로드" # 심마로
   l.store "Urgent", "Urgent" # 심마로
-  l.store "Worked", "작업기간" # 심마로
+  l.store "Worked", "기간" # 심마로
   l.store "[None]", "[없음]" # 심마로
   l.store "[wdhm]", "[wdhm]" # 심마로
   l.store "cancel", "취소" # 심마로
@@ -337,6 +337,7 @@ Localization.define('ko_KO') do |l|
   l.store "Leave Closed", "완료됨으로 둠" # 심마로
   l.store "Low Priority", "낮은 우선순위" # 심마로
   l.store "Notify", "이름 / 이메일" # 심마로
+  l.store "Name / Email", "이름 / 이메일" # 심마로
   l.store "Newest Tasks", "최신 작업" # 심마로
   l.store "Notifications", "알림" # 심마로
   l.store "Participants", "참가자" # 심마로
@@ -394,6 +395,7 @@ Localization.define('ko_KO') do |l|
   l.store "Help Translate", "번역을 도와주세요" # 심마로
   l.store "New To-do Item", "새 할일 항목" # 심마로
   l.store "Open <b>%s</b>", "Open <b>%s</b>"
+  l.store "Organize Tasks", "Organize Tasks"
   l.store "Remaining Work", "남은 업무" # 심마로
   l.store "Reply to topic", "Reply to topic"
   l.store "Revert to Open", "오픈상태로 되돌림" # 심마로
@@ -410,6 +412,7 @@ Localization.define('ko_KO') do |l|
   l.store "Duration Format", "기간 포맷" # 심마로
   l.store "Duration Worked", "Duration Worked"
   l.store "Formatting Help", "포매팅 도움말" # 심마로
+  l.store "Organizing Done", "Organizing Done"
   l.store "Recent activity", "최근 활동" # 심마로
   l.store "Set in Progress", "진행중 설정" # 심마로
   l.store "Task Priorities", "작업 우선순위" # 심마로
@@ -438,6 +441,8 @@ Localization.define('ko_KO') do |l|
   l.store "Access To Project", "프로젝트에 접근" # 심마로
   l.store "Create New Folder", "새 폴더 생성" # 심마로
   l.store "Delete <b>%s</b>.", "<b>%s</b> 삭제." # 심마로
+  l.store "Hide Dependencies", "Hide Dependencies"
+  l.store "No file selected.", "No file selected."
   l.store "Really delete %s?", "정말로 %s 를 삭제할까요?" # 심마로
   l.store "Really revert %s?", "정말로 %s를 되돌릴까요?" # 심마로
   l.store "Recent Activities", "최근 활동" # 심마로
@@ -445,6 +450,7 @@ Localization.define('ko_KO') do |l|
   l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "작업 / 일 차트" # 심마로
   l.store "Under revision by", "Under revision by"
+  l.store "Upload more files", "Upload more files"
   l.store "[Active Projects]", "[진행중인 프로젝트]" # 심마로
   l.store "[Closed Projects]", "[완료된 프로젝트]" # 심마로
   l.store "[Default Sorting]", "[디폴트 순서]" # 심마로
@@ -484,6 +490,7 @@ Localization.define('ko_KO') do |l|
   l.store "Download Database Dump", "데이터베이스 덤프를 다운로드하기" # 심마로
   l.store "Edit project <b>%s</b>", "프로젝트 <b>%s</b> 편집" # 심마로
   l.store "Floating Messaging Bar", "플로팅 메시징 바" # 심마로
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "뷰 '%s'가 삭제되었습니다." # 심마로
   l.store "invite some co-workers", "공동 작업자 초대하기" # 심마로
   l.store "Last %d Completed Tasks", ["최근 완료된 작업 %d 개", "최근 완료된 작업 %d 개"] # 심마로
@@ -505,6 +512,7 @@ Localization.define('ko_KO') do |l|
   l.store "Please configure the widget", "위젯을 설정해 주세요" # 심마로
   l.store "Cancel working on <b>%s</b>.", "Cancel working on <b>%s</b>."
   l.store "Empty report, log more work!", "보고서가 비었습니다. 일을 더 해 주세요!" # 심마로
+  l.store "Only show tasks of this type", "Only show tasks of this type"
   l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
   l.store "Avatar successfully uploaded.", "아바타가 잘 업로드되었습니다." # 심마로
   l.store "Really delete this log entry?", "Really delete this log entry?"
@@ -525,6 +533,7 @@ Localization.define('ko_KO') do |l|
   l.store "Project was successfully created.", "프로젝트가 잘 생성되었습니다." # 심마로
   l.store "Project was successfully updated.", "프로젝트가 잘 업데이트되었습니다." # 심마로
   l.store "Done working on <b>%s</b> for now.", "Done working on <b>%s</b> for now."
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "Feedback? Suggestions? Ideas? Bugs?", "피드백, 제안, 아이디어, 버그 있나요?" # 심마로
   l.store "Ignore hidden tasks when scheduling", "스케줄링할 때 숨은 작업은 무시함" # 심마로
   l.store "Restore <b>%s</b> from the Archive.", "Restore <b>%s</b> from the Archive."
@@ -533,6 +542,8 @@ Localization.define('ko_KO') do |l|
   l.store "Changes are not made live instantly.", "변경은 즉시 적용되지 않습니다." # 심마로
   l.store "This forum is currently unmoderated.", "이 포럼에는 조정자가 없습니다." # 심마로
   l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Show tasks with at least this priority", "Show tasks with at least this priority"
+  l.store "Show tasks with at least this severity", "Show tasks with at least this severity"
   l.store "Really delete room and all transcripts?", "대화방과 모든 대화 기록을 삭제하시겠습니까?" # 심마로
   l.store "Revert <b>%s</b> to not completed status.", "<b>%s</b> 를 완료되지 않은 상태로 되돌림" # 심마로
   l.store "Easy access to commonly needed information.", "공통으로 필요한 정보에 쉽게 접근하도록 합니다." # 심마로
