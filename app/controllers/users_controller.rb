@@ -22,7 +22,7 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.new
+    @user = User.new(params[:user])
     @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
@@ -67,6 +67,7 @@ class UsersController < ApplicationController
       redirect_to :action => 'edit_preferences'
       return
     end
+    puts current_user.company
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 

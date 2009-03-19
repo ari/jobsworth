@@ -4,6 +4,12 @@
 <label for="user_username"><%=_ 'Username' %></label><%= text_field 'user', 'username'  %><br/>
 <label for="user_password"><%=_ 'Password' %></label><%= password_field 'user', 'password'  %><br/>
 <label for="user_email"><%=_ 'Email' %></label><%= text_field 'user', 'email'  %><br/>
+
+<label for="user_customer_id"><%=_ "Customer" %></label>
+<%= select("user", "customer_id", 
+    current_user.company.customers.map { |c| [ c.name, c.id ] }) %>
+<br/>
+
 <% if @user.autologin && !@user.autologin.empty? %>
 <label><%=_ 'Widget Key' %></label><div style="float:left;margin-top:3px;"><%= @user.autologin %></div><br/>
 <% end %>

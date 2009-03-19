@@ -20,3 +20,12 @@
 <%= submit_tag "Upload", :class => 'nolabel' %>
 <% end %>
 </fieldset>
+
+<fieldset>
+  <legend><%= _"Users" %></legend>
+  <%= create_users_link(@customer) %>
+
+  <% for @user in @customer.users %>
+    <%= render :partial => "/users/user" %>
+  <% end %>
+</fieldset>
