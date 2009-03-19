@@ -72,8 +72,8 @@ module ResourcesHelper
   # Returns the html to use to filter by customers
   ###
   def customer_filter
-    customers = current_user.projects.map { |p| p.customer }
-    customers.delete_if { |c| c.resources.empty? }
+    customers = current_user.company.resources.map { |r| r.customer }
+    customers.compact!
     customers = customers.map { |c| [ c.name, c.id.to_s ] }
     customers.uniq!
 

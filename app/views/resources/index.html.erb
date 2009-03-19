@@ -9,6 +9,7 @@
   <legend><%= _'Filters' %></legend>
   
   <form id="filter_form">
+    <%= current_user.projects.map { |p| p.customer } %>
     <%= hidden_field_tag "filter[filtering]", "true" %>
     <%= customer_filter %>
     <%= resource_type_filter %>
