@@ -13,13 +13,13 @@
     <%= link_to_remove_li %>
 
     <label><%=_ "Mandatory?" %></label>
-    <%= f.check_box :is_mandatory, :index => attribute.id %>
+    <%= boolean_choice_field(f, :is_mandatory, attribute) %>
 
     <label><%=_ "Password?" %></label>
-    <%= f.check_box :is_password, :index => attribute.id %>
+    <%= boolean_choice_field(f, :is_password, attribute) %>
 
     <label><%=_ "Allows multiple?" %></label>
-    <%= f.check_box :allows_multiple, :index => attribute.id %>
+    <%= boolean_choice_field(f, :allows_multiple, attribute) %>
 
     <label><%=_ "Validation Regex" %></label>
     <%= f.text_field :validation_regex, :index => attribute.id %>

@@ -21,7 +21,8 @@ module ResourcesHelper
       res += link_to(_("Show password"), url)
     else
       res = text_field_tag("#{ name_prefix }[value]", attribute.value, 
-                           :id => field_id, :class => "value")
+                           :id => field_id, :class => "value", 
+                           :size => type.default_field_length)
     end
 
     if type.allows_multiple?
