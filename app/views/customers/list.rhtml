@@ -24,7 +24,11 @@
         <% end %> </td>
   </tr>
 <% end %>
-  <tr><td colspan=4>&nbsp;</td></tr>
+  <tr>
+    <td colspan="4">
+      <%= pagination_links(@customers) %>
+    </td>
+  </tr>
 </table>
 
 <br />

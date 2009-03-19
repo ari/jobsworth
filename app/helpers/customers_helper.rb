@@ -13,4 +13,16 @@ module CustomersHelper
 
     return link_to(_("Create User"), url)
   end
+
+  ###
+  # Returns the html to show pagination links for the given
+  # customers array.
+  ###
+  def pagination_links(customers)
+    will_paginate(@customers, { 
+                    :per_page => 100,
+                    :next_label => _('Next') + ' &raquo;', 
+                    :prev_label => '&laquo; ' + _('Previous')
+                  })
+  end
 end
