@@ -14,22 +14,25 @@ module TasksHelper
   def print_title
     filters = []
     title = "<div style=\"float:left\">"
-    if session[:filter_status].to_i >= 0
-      title << " #{_'%s tasks', Task.status_types[session[:filter_status].to_i]} ["
+    status_ids = TaskFilter.filter_status_ids(session)
+    if status_ids.any?
+      statuses = status_ids.map { |id| Task.status_types[id] }
+      title << " #{ _('%s tasks', statuses.join(", ")) } ["
     else
       title << "#{_'Tasks'} ["
     end
 
-    if session[:filter_customer].to_i > 0
-      filters << Customer.find(session[:filter_customer].to_i).name
+    TaskFilter.filter_ids(session, :filter_customer).each do |id|
+      filters << Customer.find(id).name unless id == TaskFilter::ALL_CUSTOMERS
     end
 
-    if session[:filter_project].to_i > 0
-      filters << Project.find(session[:filter_project].to_i).name
+    
+    TaskFilter.filter_ids(session, :filter_project).each do |id|
+      filters << Project.find(id).name unless id == TaskFilter::ALL_PROJECTS
     end
 
-    if session[:filter_user].to_i > 0
-      filters << User.find(session[:filter_user].to_i).name
+    TaskFilter.filter_user_ids(session, false).each do |id|
+      filters << User.find(id).name if id != TaskFilter::ALL_USERS and id > 0
     end
 
     filters << current_user.company.name if filters.empty?
@@ -43,34 +46,43 @@ module TasksHelper
   end
 
   def task_shown?(t)
+    return true
+    # N.B. Is this still necessary? It seems like the deciding which 
+    # tasks is already done in the controller. BW
 
-    shown = true
+    # shown = true
+    # if session[:filter_status].to_i >= 0
+    #   if session[:filter_status].to_i == 0
+    #     shown = ( t.status == 0 || t.status == 1 ) if shown
+    #   elsif session[:filter_status].to_i == 2
+    #     shown = t.status > 1 if shown
+    #   else
+    #     shown = session[:filter_status].to_i == t.status if shown
+    #   end
+    # end
 
-    if session[:filter_status].to_i >= 0
-      if session[:filter_status].to_i == 0
-        shown = ( t.status == 0 || t.status == 1 ) if shown
-      elsif session[:filter_status].to_i == 2
-        shown = t.status > 1 if shown
-      else
-        shown = session[:filter_status].to_i == t.status if shown
-      end
+    milestones = TaskFilter.filter_ids(session, :filter_milestone, TaskFilter::ALL_MILESTONES)
+    if shown and milestones.any?
+      shown = milestones.include?(t.milestone_id)
     end
 
-    if session[:filter_milestone].to_i > 0 && shown
-      shown = session[:filter_milestone].to_i == t.milestone_id if shown
+    customers = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
+    if shown and customers.any?
+      shown = customers.include?(t.project.customer_id)
     end
 
-    if session[:filter_customer].to_i > 0 && shown
-      shown = session[:filter_customer].to_i == t.project.customer_id if shown
+    projects = TaskFilter.filter_ids(session, :filter_project, TaskFilter::ALL_PROJECTS)
+    projects += milestones.map { |m| Milestone.find(m).project_id }
+    if shown and projects.any?
+      shown = projects.include?(t.project.id)
     end
 
-    if session[:filter_project].to_i > 0 && shown
-      shown = session[:filter_project].to_i == t.project_id if shown
-    end
-
-    if session[:filter_user].to_i > 0 && shown
-      shown = t.users.collect(&:id).include?( session[:filter_user].to_i ) if shown
-    elsif session[:filter_user].to_i < 0 && shown
+    user_ids = TaskFilter.filter_user_ids(session, false)
+    all_users = user_ids.delete(TaskFilter::ALL_USERS)
+    if shown and !all_users and user_ids.any?
+      task_user_ids = t.users.map { |u| u.id }
+      shown = user_ids.detect { |id| task_user_ids.include?(id) }
+    elsif shown and !all_users and TaskFilter.filter_user_ids(session, true).any?
       shown = t.users.empty?
     end
 
@@ -119,6 +131,19 @@ module TasksHelper
       end 
     end
     res
+  end
+
+  ###
+  # Returns the html to display a select field to set the tasks 
+  # milestone. The current milestone (if set) will be selected.
+  ###
+  def milestone_select(perms)
+    if @task.id
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
+    else
+      milestone_id = TaskFilter.new(self, session).milestone_ids.first
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => milestone_id || 0 }, perms['milestone'])
+    end
   end
 
 end

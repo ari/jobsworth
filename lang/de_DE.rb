@@ -348,7 +348,6 @@ Localization.define('de_DE') do |l|
   l.store "Improvement", "Verbesserungsvorschlag"
   l.store "In Progress", "In Bearbeitung"
   l.store "Information", "Information" # Tim Zech
-  l.store "Let me know", "Lass es mich wissen" # Uwe Kelderbacher
   l.store "Linked from", "Verlinkt von" # Tim Zech
   l.store "New Feature", "Neue Funktionalität"
   l.store "New Project", "Neues Projekt" # Tim Zech

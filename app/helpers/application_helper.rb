@@ -549,6 +549,68 @@ END_OF_HTML
     return res
   end
 
+  ###
+  # Returns the html to display options for the select used to filter tasks 
+  # by project, customer and milestone.
+  ###
+  def task_filter_options
+    res = content_tag(:option, _("[All Tasks]"), :value => 0, :class => "select_default")
+    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+
+    current_user.company.customers.each do |customer|
+      
+      projects = current_user.projects.find(:all, :conditions => { 
+                                              :customer_id => customer.id })
+      next if projects.empty?
+
+      res += content_tag(:option, customer.name, :value => "c#{ customer.id }", 
+                         :class => "select_heading", :selected => customer_ids.include?(customer.id))
+      projects.each do |project|
+        res += content_tag(:option, "&nbsp&nbsp;#{ project.name }", :value => "p#{ project.id }", 
+                           :class => "select_item", :selected => project_ids.include?(project.id))
+        project.milestones.each do |milestone|
+          res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ milestone.name }", 
+                             :value => "m#{ milestone.id }", :class => "select_subitem",
+                             :selected => milestone_ids.include?(milestone.id))
+        end
+        res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ _("[Unassigned]") }", 
+                           :value => "u#{ project.id }", :class => "select_default select_subitem",
+                           :selected => milestone_ids.include?(- project.id - 1))
+      end
+    end
+
+    return res
+  end
+
+
+  ###
+  # Returns the project id that should be selected based on the current 
+  # session and filters.
+  ### 
+  def selected_project
+    if @task and @task.project_id > 0
+      selected_project = @task.project_id
+      last_project_id = TaskFilter.filter_ids(session, :last_project_id).first
+      project_id = TaskFilter.filter_ids(session, :filter_project).first
+    elsif last_project_id.to_i > 0 && Project.exists?(last_project_id)
+      selected_project = last_project_id
+    elsif project_id.to_i > 0 && Project.exists?(project_id)
+      selected_project = project_id
+    else
+      selected_project = current_user.projects.find(:first, :order => 'name').id
+    end
+  
+    begin
+      selected_project = current_user.projects.find(selected_project).id 
+    rescue 
+      selected_project = current_user.projects.find(:first, :order => 'name').id
+    end
+
+    return selected_project
+  end
+
 end
 
 

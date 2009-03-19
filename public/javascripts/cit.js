@@ -381,10 +381,39 @@ function clearOtherDefaults(sender) {
     });
 }
 
-// move the tags block to the right[#left_menu] menu
 jQuery(document).ready(function() {
-	jQuery('#tags').hide();
-	var tagsHTML = jQuery('#tags').html();
-	jQuery('#tag-block').html(tagsHTML);
+    // move the tags block to the right[#left_menu] menu
+    jQuery('#tags').hide();
+    var tagsHTML = jQuery('#tags').html();
+    jQuery('#tag-block').html(tagsHTML);
+
+    // initialize any multi select fields
+    // NB. Seem to need to do it one-by-one to get noneSelected
+    // option to work properly. Feel free to change it if you want.
+    var multis = jQuery(".multiselect");
+    for (var i = 0; i < multis.length; i++) {
+	var elem = multis[i];
+	var options = {
+	    selectAll : false,
+	    noneSelected : elem.options[0].text,
+	    oneOrMoreSelected : "*"
+	};
+	jQuery(elem).multiSelect(options, elem.onchange);
+    }
 });
 
+/*
+ Marks the task sender belongs to as unread.
+ Also removes the "unread" class from the task html.
+ */
+function toggleTaskUnread(icon) {
+    var task = jQuery(icon).parents(".task");
+    
+    var unread = task.hasClass("unread");
+    task.toggleClass("unread");
+
+    var taskId = task.attr("id").replace("task_", "");
+    var parameters = { "id" : taskId, "read" : unread };
+
+    jQuery.post("/tasks/set_unread",  parameters);
+}

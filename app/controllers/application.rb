@@ -372,45 +372,47 @@ class ApplicationController < ActionController::Base
 
   ###
   # This method sets up the session with any posted filter params.
-  # The parameters expected are in the views/common/_tasks_filter.rhtml
+  # The parameters expected are in the views/task/_filter.rhtml
   # file.
   ###
   def setup_task_filters
     f = params[:filter]
 
-    if f.nil? || f.empty? || f == "0"
+    filter_ids = [ params[:filter] ].flatten.compact
+    if filter_ids.empty? or filter_ids.include?(TaskFilter::ALL_TASKS)
       session[:filter_customer] = "0"
       session[:filter_milestone] = "0"
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'c'
-      session[:filter_customer] = f[1..-1]
-      session[:filter_milestone] = "0"
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'p'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "0"
-      session[:filter_project] = f[1..-1]
-    elsif f[0..0] == 'm'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = f[1..-1]
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'u'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "-1"
-      session[:filter_project] = f[1..-1]
-    end
+      session[:filter_project] = 0
+    else
+      customers = []
+      milestones = []
+      projects = []
+      
+      filter_ids.each do |id|
+        code = id[0, 1]
+        id = id[1, id.length]
 
+        customers << id if code == "c"
+        projects << id if code == "p"
+        milestones << id if code == "m"
+        # this is a bit of hack - we're using (- projectid - 1) to signify
+        # "milestones that are unassigned in the project with that id"
+        # We need to subtract 1 more as -1 is used by views to signify any unassigned
+        # milestone.
+        milestones << - (id.to_i + 1) if code == "u"
+      end
+        
+      session[:filter_customer] = customers
+      session[:filter_project] = projects
+      session[:filter_milestone] = milestones
+    end
+    
     filter_names =  [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority, :colors, :icons ]
     filter_names.each do |filter|
       session[filter] = params[filter]
     end
 
     # set any filters on custom properties
-    current_user.company.properties.each do |prop|
-      filter = prop.filter_name
-      session[filter] = params[filter]
-    end
-
     current_user.company.properties.each do |prop|
       filter = prop.filter_name
       session[filter] = params[filter]
@@ -424,5 +426,4 @@ class ApplicationController < ActionController::Base
 
     redirect_to(params[:redirect_action])
   end
-  
 end

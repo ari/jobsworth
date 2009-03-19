@@ -61,6 +61,32 @@ class WorkLog < ActiveRecord::Base
     return [results.total_hits, results]
   end
 
+  ###
+  # Creates and saves a worklog for the given task.
+  # If comment is given, it will be escaped before saving.
+  # The newly created worklog is returned. 
+  ###
+  def self.create_for_task(task, user, comment)
+    worklog = WorkLog.new
+    worklog.user = user
+    worklog.company = task.project.company
+    worklog.customer = task.project.customer
+    worklog.project = task.project
+    worklog.task = task
+    worklog.started_at = Time.now.utc
+    worklog.duration = 0
+    worklog.log_type = EventLog::TASK_CREATED
+
+    if !comment.blank?
+      worklog.body =  CGI::escapeHTML(comment)
+      worklog.comment = true
+    end 
+    
+    worklog.save
+
+    return worklog
+  end
+
   def ended_at
     self.started_at + self.duration + self.paused_duration
   end

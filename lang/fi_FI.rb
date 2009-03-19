@@ -330,7 +330,6 @@ Localization.define('fi_FI') do |l|
   l.store "Improvement", "Parannus"
   l.store "In Progress", "Kesken"
   l.store "Information", "Informaatio"
-  l.store "Let me know", "Kerro meille"
   l.store "Linked from", "Linkitetty kohteesta" # Toni Huuskonen
   l.store "New Feature", "Uusi ominaisuus" # Toni Huuskonen
   l.store "New Project", "Uusi projekti" # Aki Saksola

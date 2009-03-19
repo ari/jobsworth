@@ -347,7 +347,6 @@ Localization.define('pt_BR') do |l|
   l.store "Improvement", "Melhoria"
   l.store "In Progress", "Em andamento" # José Eduardo
   l.store "Information", "Informação"
-  l.store "Let me know", "Conte-me"
   l.store "Linked from", "Ligado de" # Pedro Henrique Braga Moreira
   l.store "New Feature", "Nova característica"
   l.store "New Project", "Novo projeto" # Yeltsin Lima

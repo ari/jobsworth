@@ -4,8 +4,7 @@
 <html>
   <head>
     <%= javascript_include_merged :base %>
-    <%= javascript_include_merged :tt %>
-    <%= stylesheet_link_merged :tt %>
+    <%= stylesheet_link_merged :base %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= stylesheet_link_tag "shortlist" %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>

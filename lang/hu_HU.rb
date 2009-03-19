@@ -308,7 +308,6 @@ Localization.define('hu_HU') do |l|
   l.store "Improvement", "Fejlesztés" # Jozsef
   l.store "In Progress", "Folyamatban" # Jozsef
   l.store "Information", "Információ" # Jozsef
-  l.store "Let me know", "Szólj nekem" # Jozsef
   l.store "New Feature", "Új feature" # Jozsef
   l.store "New Project", "Új Projekt" # Jozsef
   l.store "Preferences", "Beállítások" # Jozsef

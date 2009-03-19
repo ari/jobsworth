@@ -62,9 +62,6 @@ class ActivitiesController < ApplicationController
   def toggle_menu
     session[:collapse_menu] ||= 0
     session[:collapse_menu] = 1 - session[:collapse_menu].to_i
-    render :update do |page|
-      page.toggle('left_menu')
-    end
   end
 
 end

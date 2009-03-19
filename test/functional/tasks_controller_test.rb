@@ -33,4 +33,23 @@ context "Tasks" do
     assert group.length > 0
   end
 
+  specify "/list should works with tags" do
+    company = companies("cit")
+    user = company.users.first
+    @request.session[:filter_user] = [ user.id.to_s ]
+
+    # need to create a task to ensure the task partials get rendered
+    task = Task.new(:name => "Test", :project_id => company.projects.last.id)
+    task.company = company
+    task.set_tags = "tag1"
+    task.task_owners.build(:user => user)
+    task.save!
+
+    get :list, :tag => "tag1"
+    status.should.be :success
+
+    # ensure at least 1 task was rendered
+    group = assigns["groups"].first
+    assert group.length > 0
+  end
 end

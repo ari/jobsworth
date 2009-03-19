@@ -839,6 +839,19 @@ class Task < ActiveRecord::Base
   end 
 
   ###
+  # Returns an array of all users setup as owners or
+  # watchers of this task.
+  ###
+  def all_related_users
+    recipients = []
+    recipients += users
+    recipients += watchers
+    recipients = recipients.uniq.compact
+
+    return recipients
+  end
+
+  ###
   # Returns an array of email addresses of people who should be 
   # notified about changes to this task.
   ###
@@ -849,11 +862,8 @@ class Task < ActiveRecord::Base
         user_who_made_change.receive_notifications?
       recipients << user_who_made_change
     end
-
-    # add in watchers and users
-    recipients += users.select { |u| u.receive_notifications? }
-    recipients += watchers.select { |u| u.receive_notifications? }
-    recipients = recipients.uniq.compact
+    
+    recipients += all_related_users.select { |u| u.receive_notifications? }
 
     # remove them if they don't want their own notifications. 
     # do it here rather than at start of method in case they're 
@@ -875,5 +885,135 @@ class Task < ActiveRecord::Base
     emails = emails.uniq
 
     return emails
+  end
+
+  ###
+  # Sets the notifications and notify_emails for this task 
+  # based on watcher_params.
+  # Existing notifications WILL be cleared by this method.
+  ###
+  def set_watcher_attributes(watcher_params, current_user)
+    return if watcher_params.nil?
+
+    self.notifications.destroy_all
+    self.notify_emails = nil
+
+    watcher_params.uniq.each do |elem|
+      elem.split(',').each do |w|
+        u = User.find_by_name(w, :conditions => [ "company_id = ?", 
+                                                  current_user.company_id])
+        if u # Found user
+          Notification.create(:user => u, :task => self)
+        else # Not a user, check for email address
+          if w.include?('@') && 
+              !(notify_emails && notify_emails.include?(w))
+            self.notify_emails ||= ""
+            self.notify_emails << "," unless self.notify_emails.empty?
+            self.notify_emails << w
+          end
+        end
+      end
+    end
+
+    self.save
+  end
+
+  ###
+  # Sets the owners of this task from owner_params.
+  # Existing owners WILL  be cleared by this method.
+  ###
+  def set_owner_attributes(owner_params)
+    return if owner_params.nil?
+
+    self.task_owners.destroy_all
+
+    owner_params.each do |o|
+      next if o.to_i == 0
+      u = company.users.find(o.to_i)
+      TaskOwner.create(:user => u, :task => self)
+    end
+  end
+
+  ###
+  # Sets the dependencies of this this from dependency_params.
+  # Existing and unused dependencies WILL be cleared by this method.
+  ###
+  def set_dependency_attributes(dependency_params, project_ids)
+    return if dependency_params.nil?
+
+    new_dependencies = []
+    dependency_params.each do |d|
+      d.split(",").each do |dep|
+        dep.strip!
+        next if dep.to_i == 0
+
+        conditions = [ "project_id IN (#{ project_ids }) " +
+                       " AND task_num = ?", dep ]
+        t = Task.find(:first, :conditions => conditions)
+        new_dependencies << t if t
+      end
+    end
+
+    removed = self.dependencies - new_dependencies
+    self.dependencies.delete(removed)
+
+    new_dependencies.each do |t|
+      existing = self.dependencies.detect { |d| d.id == t.id }
+      self.dependencies << t if !existing
+    end
+    
+    self.save
+  end
+
+  ###
+  # This method will mark this task as unread for any
+  # setup watchers or task owners.
+  # The exclude param should be a user or array of users whose unread
+  # status will not be updated. For example, the person who wrote a
+  # comment should probably be excluded.
+  ###
+  def mark_as_unread(exclude = [])
+    exclude = [ exclude ].flatten # make sure it's an array.
+
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+    
+    notifications.each do |n|
+      n.update_attribute(:unread, true) if !exclude.include?(n.user)
+    end
+  end
+
+  ###
+  # Sets this task as read for user.
+  # If read is passed, and false, sets the task
+  # as unread for user.
+  ###
+  def set_task_read(user, read = true)
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+    
+    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications.each do |n|
+      n.update_attribute(:unread, !read)
+    end
+  end
+
+  ###
+  # Returns true if this task is marked as unread for user.
+  ###
+  def unread?(user)
+    # TODO: if we merge owners and notifications into one table, should
+    # clean this up.
+    notifications = self.notifications + self.task_owners
+    unread = false
+
+    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications.each do |n|
+      unread ||= n.unread?
+    end
+
+    return unread
   end
 end

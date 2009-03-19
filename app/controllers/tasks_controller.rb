@@ -11,12 +11,15 @@ class TasksController < ApplicationController
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+ 
+    tf = TaskFilter.new(self, @session)
+    project_ids = @projects.map { |p| p[1] }
 
-    unless @projects.collect{ |p| p[1] }.include? session[:last_project_id].to_i
+    if !project_ids.include?(tf.project_ids.first)
       session[:last_project_id] = nil
     end
 
-    unless @projects.collect{ |p| p[1] }.include? session[:filter_project].to_i
+    if !project_ids.include?(tf.project_ids.first)
       session[:filter_project] = nil
     end
     
@@ -49,7 +52,9 @@ class TasksController < ApplicationController
     @tags = {}
     @tags.default = 0
     @tags_total = 0
-    if session[:filter_project].to_i == 0
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+
+    if project_ids.include?(0) or project_ids.empty?
       project_ids = current_project_ids
     else
       project_ids = session[:filter_project]
@@ -184,81 +189,29 @@ class TasksController < ApplicationController
     end
     
     if @task.save
-
       session[:last_project_id] = @task.project_id
-      
-      if params[:watchers]
-        params[:watchers].uniq.each do |elem|
-          elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
-            unless u.nil?
-              # Found user
-              n = Notification.new(:user => u, :task => @task)
-              n.save
-            else
-              # Not a user, check for email address
-              if w.include?('@') && !(@task.notify_emails && @task.notify_emails.include?(w))
-                @task.notify_emails ||= ""
-                @task.notify_emails << "," unless @task.notify_emails.empty?
-                @task.notify_emails << w
-              end
-            end
-          end
-        end
-        @task.save
-      end
 
-      if params[:users]
-        params[:users].each do |o|
-          next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
-          to = TaskOwner.new(:user => u, :task => @task)
-          to.save
-        end
-      end
-
-      if params[:dependencies]
-        params[:dependencies].each do |d|
-          deps = d.split(',')
-          deps.each do |dep|
-            dep.strip!
-            next if dep.to_i == 0
-            t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", dep])
-            unless t.nil?
-              @task.dependencies << t
-            end
-          end
-        end
-        @task.save
-      end
+      @task.set_watcher_attributes(params[:watchers], current_user)
+      @task.set_owner_attributes(params[:users])
+      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
 
       create_attachments(@task)
-      
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_CREATED
-      if (!params[:comment].nil? && params[:comment].length > 0)
-        worklog.body =  CGI::escapeHTML(params[:comment])
-        worklog.comment = true
-      end 
+      worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      worklog.save
       if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
+        begin
+          Notifications::deliver_created(@task, current_user, params[:comment])
+        rescue
+          # TODO: (from BW) why is this here? 
+          # If deliver_created throws an exception don't we want to know about it?
+        end
       end
 
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
       flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
 
       return if request.xhr?
-
       redirect_from_last
     else
       @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -388,72 +341,9 @@ class TasksController < ApplicationController
         @task.repeat = nil
       end
 
-      @task.notifications.destroy_all if @task.notifications.size > 0
-      @task.notify_emails = nil
-      unless params[:watchers].nil?
-        params[:watchers].uniq.each do |elem|
-          elem.split(',').each do |w|
-            u = User.find_by_name(w, :conditions => ["company_id = ?", current_user.company_id])
-            unless u.nil?
-              # Found user
-              n = Notification.new(:user => u, :task => @task)
-              n.save
-            else
-              # Not a user, check for email address
-              if w.include?('@')
-                @task.notify_emails ||= ""
-                @task.notify_emails << "," unless @task.notify_emails.empty?
-                @task.notify_emails << w
-              end
-            end
-          end
-        end
-      end
-
-      unless params[:users].nil?
-        @task.task_owners.destroy_all
-        params[:users].uniq.each do |o|
-          logger.info("Adding user #{o} to #{@task.id}")
-          next if o.to_i == 0
-          u = User.find(o.to_i, :conditions => ["company_id = ?", current_user.company_id])
-          to = TaskOwner.new(:user => u, :task => @task)
-          to.save
-        end
-      end
-
-      if params[:dependencies]
-        
-        in_deps = []
-        new_dependencies = []
-
-        params[:dependencies].each do |d|
-          deps = d.split(',')
-          deps.each do |dep|
-            dep.strip!
-            next if [0, @task.id].include? dep.to_i
-            in_deps << [dep.to_i]
-          end
-        end
-        
-        in_deps.compact.uniq.each do |dep|
-          t = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", current_user.company_id, dep])
-          unless t.nil?
-            new_dependencies << t
-          end
-        end
-        
-        removed = @task.dependencies - new_dependencies
-        @task.dependencies.delete(removed) if removed.size > 0
-
-        added = (new_dependencies - @task.dependencies)
-        added.each do |a|
-          t = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND id = ?", a])
-          unless t.nil?
-            @task.dependencies << t
-          end
-        end
-        
-      end
+      @task.set_watcher_attributes(params[:watchers], current_user)
+      @task.set_owner_attributes(params[:users])
+      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id
@@ -1106,33 +996,35 @@ class TasksController < ApplicationController
     list
 
     filename = "clockingit_tasks"
+    filename_extras = []
 
-    if session[:filter_customer].to_i > 0
-      filename << "_"
-      filename << Customer.find( session[:filter_customer] ).name
+    tf = TaskFilter.new(self, session)
+    tf.customer_ids.each do |id|
+      next if id < 0
+      filename_extras << current_user.company.customers.find(id).name
+    end
+    tf.project_ids.each do |id|
+      next if id < 0
+      p = current_user.projects.find(id)
+      filename_extras << "#{p.customer.name}_#{p.name}"
+    end
+    tf.milestone_ids.each do |id|
+      next if id < 0
+      m = current_user.company.milestones.find(id)
+
+      filename_extras << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
+    end
+    TaskFilter.filter_user_ids(session, TaskFilter::ALL_USERS).each do |id|
+      next if id < 0
+      filename_extras << current_user.company.users.find(id).name
+    end
+    TaskFilter.filter_status_ids(session).each do |id|
+      value = Task.status_type(id)
+      filename_extras << value if !value.blank?
     end
 
-    if session[:filter_project].to_i > 0
-      p = Project.find( session[:filter_project] )
-      filename << "_"
-      filename << "#{p.customer.name}_#{p.name}"
-    end
-
-    if session[:filter_milestone].to_i > 0
-      m = Milestone.find( session[:filter_milestone] )
-      filename << "_"
-      filename << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
-    end
-
-    if session[:filter_user].to_i > 0
-      filename << "_"
-      filename <<  User.find(session[:filter_user]).name
-    end
-
-    if session[:filter_status].to_i > 0
-      filename << "_"
-      filename << Task.status_type(session[:filter_status].to_i)
-    end
+    filename_extras = filename_extras.join("_")
+    filename += "_#{ filename_extras }" if !filename_extras.blank?
 
     filename = filename.gsub(/ /, "_").gsub(/["']/, '').downcase
     filename << ".csv"
@@ -1672,6 +1564,19 @@ class TasksController < ApplicationController
     end 
   end 
 
+  ###
+  # This action just sets the unread status for a task.
+  ###
+  def set_unread
+    task = Task.find(params[:id], 
+                     :conditions => "project_id IN (#{current_project_ids})")
+
+    read = params[:read] != "false"
+    task.set_task_read(current_user, read)
+
+    render :text => "", :layout => false
+  end
+
   private
 
   ###
@@ -1696,22 +1601,32 @@ class TasksController < ApplicationController
       projects.each { |p| group_ids[p.full_name] = p.id }
       items = projects.collect(&:full_name).sort
       groups = Task.group_by(tasks, items) { |t,i| t.project.full_name == i }
+
     elsif session[:group_by].to_i == 4 # Milestones
-      filter = ""
-      if session[:filter_milestone].to_i > 0
-        m = Milestone.find(session[:filter_milestone], :conditions => ["project_id IN (#{current_project_ids}) AND completed_at IS NULL"], :order => "due_at, name") rescue nil
-        filter = " AND project_id = #{m.project_id}" if m
-      elsif session[:filter_project].to_i > 0
-        filter = " AND project_id = #{session[:filter_project]}"
-      elsif session[:filter_customer].to_i > 0
-        pids = current_user.company.customers.find(session[:filter_customer]).projects.collect{|p| p.id}.join(',') rescue '0'
-        filter = " AND project_id IN (#{pids})"
-                                                                                           end
-      milestones = Milestone.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})#{filter} AND completed_at IS NULL", current_user.company_id], :order => "due_at, name")
+      tf = TaskFilter.new(self, session)
+      
+      if tf.milestone_ids.any?
+        filter = " AND id in (#{ tf.milestone_ids.join(",") })"
+      elsif tf.project_ids.any?
+        filter = " AND project_id in (#{ tf.project_ids.join(",") })"
+      elsif tf.customer_ids.any?
+        projects = []
+        tf.customer_ids.each { |id| projects += Customer.find(id).projects }
+        projects = projects.map { |p| p.id }
+        filter = " AND project_id IN (#{ projects.join(",") })"
+      end
+
+      conditions = "company_id = #{ current_user.company.id }"
+      conditions += " AND project_id IN (#{current_project_ids})#{filter} "
+      conditions += " AND completed_at IS NULL"
+
+      milestones = Milestone.find(:all, :conditions => conditions, 
+                                  :order => "due_at, name")
       milestones.each { |m| group_ids[m.name + " / " + m.project.name] = m.id }
       group_ids['Unassigned'] = 0
       items = ["Unassigned"] +  milestones.collect{ |m| m.name + " / " + m.project.name }
       groups = Task.group_by(tasks, items) { |t,i| (t.milestone ? (t.milestone.name + " / " + t.project.name) : "Unassigned" ) == i }
+
     elsif session[:group_by].to_i == 5 # Users
       users = current_user.company.users
       users.each { |u| group_ids[u.name] = u.id }
@@ -1767,4 +1682,5 @@ class TasksController < ApplicationController
 
     return [ group_ids, groups ]
     end
-  end
+
+end

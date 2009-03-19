@@ -23,6 +23,7 @@
  classes << " task_done" if task.done?
  classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
  classes << " #{task.dom_id}"
+ classes << " unread" if task.unread?(current_user)	   
 -%>
 class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
@@ -91,6 +92,9 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <img src="/images/spacer.gif" width="16" height="16" border="0"/>
    <% end -%>
    </div>
+  <div class="unread_icon">
+  	<a href="#" onclick="toggleTaskUnread(this); return false;"><span>*</span></a>
+  </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
    <div class="task-name" style="padding-left:2px;">
