@@ -44,6 +44,14 @@ class Customer < ActiveRecord::Base
     return company.customers.find(:all, :conditions => conds)
   end
 
+  ###
+  # Returns true if this customer if the internal customer for
+  # its company.
+  ###
+  def internal_customer?
+    self == company.internal_customer
+  end
+
   def path
     File.join("#{RAILS_ROOT}", 'store', 'logos', self.company_id.to_s)
   end
@@ -57,7 +65,7 @@ class Customer < ActiveRecord::Base
   end
 
   def full_name
-    if self.name == 'Internal' || self.name == self.company.name
+    if internal_customer?
       self.company.name
     else
       self.name

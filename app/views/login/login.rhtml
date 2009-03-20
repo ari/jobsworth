@@ -81,7 +81,7 @@ label {
   color: #000;
 }
 
-<% @internal = Customer.find(:first, :conditions => ["(name = 'Internal' or name = ?) AND company_id = ?", @company.name, @company.id]) %>
+<% @internal = @company.internal_customer %>
 <% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
 <%= @internal.css %>
 <% end %>
