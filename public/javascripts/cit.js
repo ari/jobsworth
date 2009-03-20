@@ -438,3 +438,16 @@ function removeSearchFilter(link) {
     link.parent(".search_filter").remove();
     form.submit();
 }
+
+function addProjectToUser(input, li) {
+    li = jQuery(li);
+    var value = li.find(".complete_value").text();
+    
+    var url = document.location.toString();
+    url = url.replace("/edit/", "/project/");
+    jQuery.get(url, { project_id: value }, function(data) {
+	jQuery("#add_user").before(data);
+    });
+
+    input.value = "";
+}

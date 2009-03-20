@@ -263,5 +263,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def auto_complete_for_project_name
+    text = params[:project]
+    text = text[:name] if text
 
+    @projects = []
+    if !text.blank?
+      conds = [ "lower(name) like ?", "%#{ text }%" ]
+      @projects = current_user.company.projects.find(:all, :conditions => conds)
+    end
+  end
+
+  def project
+    @user = current_user.company.users.find(params[:id])
+    project = current_user.company.projects.find(params[:project_id])
+
+    render(:partial => "project", :locals => { :project => project })
+  end
 end
