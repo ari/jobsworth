@@ -19,6 +19,10 @@ class CustomersController < ApplicationController
     if filters and filters.any?
       @customers = Customer.search(current_user.company, filters)
       @users = User.search(current_user.company, filters)
+      # add any missing customers to the list
+      @users.each { |u| @customers << u.customer }
+      @customers = @customers.flatten.uniq
+
       @paginate = false
     else
       @customers = Customer.paginate(:order => "customers.name", 

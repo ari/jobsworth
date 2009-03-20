@@ -5,55 +5,32 @@
       <div style="float:right;padding-top:0.15em;"><%= link_to _('New Client'), :action => 'new' %></div>
     </td>
   </tr>
-  
-  <tr>
-    <td colspan="4">
-      <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
-	<legend><%= _'Filter'%></legend>
-	<form method="post" action="">
-	  <% # seem to need this submit here or else enter doesn't submit after %>
-          <% # adding in new search fields %>
- 	  <input type="submit" style="display: none" />
 
-	  <div id="customer_search_filters">
-	    <% filters = session[:client_name_filters] || [] %>
-	    <% filters.each do |text| %>
-	      <div class="search_filter">
-       	        <%= text_field_tag("search_text[]", text, :index => nil) %>
-		<%= link_to_function(image_tag("cross_small.png", :border => 0), 
-		"removeSearchFilter(this)") %>
-		<br />
-	      </div>
-            <% end %>
-	    <% if filters.empty? %>
-	      <%= render :partial => "search_filter_prompt" %>
-	    <% end %>
-	  </div>
-	  <%= add_search_filter_link %>
-	</form>
-      </fieldset>
+  <%= render :partial => "filter" %>
+
+  <tr colspan="4">
+    <td>
+      <ul>
+	<% @customers.each do |customer| %>
+  	  <li>
+	    <%= link_to(h(customer.name), :action => "edit", :id => customer) %>
+	  </li>
+	  <%= users_for_customer(@users, customer) %>
+        <% end %>
+      </ul>
     </td>
   </tr>
-  
-  <tr><td colspan=4>&nbsp;</td></tr>
-  <tr>
-    <th><%=_ 'Name' %></th>
-    <th><%=_ 'Contact' %></th>
-    <th><%=_ 'Email' %></th>
-    <th></th>
-  </tr>
-
-  <% for customer in @customers %>
-    <tr class="hoverrow">
-      <td><%=h customer.name %></td>
-      <td><%=h customer.contact_name %></td>
-      <td><%=h customer.contact_email %></td>
-      <td><%= link_to _('Edit'), :action => 'edit', :id => customer %>
-        <% if customer.name != 'Internal' && customer.name != current_user.company.name  && customer.projects.size == 0 %>
-	| <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete %s?", customer.name) %>
-        <% end %> </td>
-    </tr>
-    <% end %>
+  <!-- <% for customer in @customers %> -->
+  <!--   <tr class="hoverrow"> -->
+  <!--     <td><%=h customer.name %></td> -->
+  <!--     <td><%=h customer.contact_name %></td> -->
+  <!--     <td><%=h customer.contact_email %></td> -->
+  <!--     <td><%= link_to _('Edit'), :action => 'edit', :id => customer %> -->
+  <!--       <% if customer.name != 'Internal' && customer.name != current_user.company.name  && customer.projects.size == 0 %> -->
+  <!-- 	| <%= link_to _('Delete'), {:action => 'destroy', :id => customer}, :confirm => _("Really delete %s?", customer.name) %> -->
+  <!--       <% end %> </td> -->
+  <!--   </tr> -->
+  <!--   <% end %> -->
   <tr>
     <td colspan="4">
       <%= pagination_links(@customers) if @paginate %>
