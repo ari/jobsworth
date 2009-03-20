@@ -18,7 +18,6 @@ context "SearchController" do
     get :search, :query => "testclient"
 
     found = assigns["customers"]
-    found.each { |c| puts c.name }
     assert_equal 1, found.length
 
     status.should.be :success

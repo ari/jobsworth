@@ -1,5 +1,5 @@
 <table class="content" width="100%" 
-       id="permission" style="margin-left:0;margin-right:0;">
+       id="permission permission_list" style="margin-left:0;margin-right:0;">
   <tr>
     <th><%=_ 'Project' %></th>
     <th><%=_ 'Read' %></th>
@@ -17,7 +17,7 @@
     <th></th>
   </tr>
   
-  <%= render :partial => "project", :collection => current_user.projects %>
+  <%= render :partial => "/users/project", :collection => current_user.projects %>
   <tr id="add_user">
     <td>
       <%= _("Add user to project") %>
@@ -25,7 +25,8 @@
     <td colspan="11">
       <%= text_field_with_auto_complete(:project, :name, {},
 	  :after_update_element => "addProjectToUser",
-	  :select => "complete_value") %>
+	  :select => "complete_value",
+          :url => "/users/auto_complete_for_project_name") %>
     </td>
   </tr>
 </table>

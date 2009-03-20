@@ -278,6 +278,9 @@ class UsersController < ApplicationController
     @user = current_user.company.users.find(params[:id])
     project = current_user.company.projects.find(params[:project_id])
 
+    ProjectPermission.new(:user => @user, :company => @user.company, 
+                          :project => project).save
+
     render(:partial => "project", :locals => { :project => project })
   end
 end

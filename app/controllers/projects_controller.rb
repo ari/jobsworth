@@ -142,7 +142,7 @@ class ProjectsController < ApplicationController
 
     if params[:user_edit]
       @user = current_user.company.users.find(params[:user_id])
-      render :partial => "users/project_permissions"
+      render :partial => "/users/project_permissions"
     else 
       @project = current_user.projects.find(params[:id])
       @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
