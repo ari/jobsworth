@@ -13,7 +13,11 @@
       <ul>
 	<% @customers.each do |customer| %>
   	  <li>
+	    <% if !customer %>
+	      <%=_ "No Client" %>
+	    <% else %>
 	    <%= link_to(h(customer.name), :action => "edit", :id => customer) %>
+	    <% end %>
 	  </li>
 	  <%= users_for_customer(@users, customer) %>
         <% end %>

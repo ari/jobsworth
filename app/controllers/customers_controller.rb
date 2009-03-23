@@ -5,13 +5,16 @@ class CustomersController < ApplicationController
   require_dependency 'RMagick'
 
   def index
-    list
-    render :action => 'list'
+    redirect_to(:action => 'list')
   end
 
   def list
     if request.post?
-      session[:client_name_filters] = params[:search_text]
+      filters = params[:search_text]
+      # need to get rid of any blanks because we don't want to search for them 
+      # or have them show up in the list.
+      filters.delete_if { |s| s.strip.blank? } if filters
+      session[:client_name_filters] = filters
       redirect_to :action => "list"
     end
     

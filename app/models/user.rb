@@ -78,23 +78,8 @@ class User < ActiveRecord::Base
   # the given strings
   ###
   def self.search(company, strings)
-    conds = []
-    cond_params = []
-    
-    strings.each do |s|
-      next if s.to_i <= 0
-      conds << "id = ?"
-      cond_params << s
-    end
-    
-    strings.each do |s|
-      next if s.strip.blank?
-      conds << "lower(name) like ?"
-      cond_params << "%#{ s.downcase.strip }%"
-    end
-    
-    conds = [ conds.join(" or ") ] + cond_params
-    return company.users.find(:all, :conditions => conds)
+    return company.users.find(:all, 
+                              :conditions => Search.search_conditions_for(strings))
   end
 
   def path
