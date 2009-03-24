@@ -18,7 +18,7 @@
 
     <% @project.users.each do |@user| %>
       <%= render(:partial => "/users/project", :locals => { 
-      :name => @user.name, :project => @project }) %>
+      :name => @user.name, :project => @project, :user_edit => false }) %>
     <% end %>
 
     <tr id="add_user">

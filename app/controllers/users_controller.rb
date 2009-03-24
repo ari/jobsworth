@@ -281,6 +281,6 @@ class UsersController < ApplicationController
     ProjectPermission.new(:user => @user, :company => @user.company, 
                           :project => project).save
 
-    render(:partial => "project", :locals => { :project => project })
+    render(:partial => "project", :locals => { :project => project, :user_edit => true })
   end
 end
