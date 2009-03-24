@@ -1,5 +1,5 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
-        <td><%= "#{project.name} [#{project.customer.name}]" %></td>
+        <td><%= h(name || project.name) %></td>
 
 <%
       user_granted = project.users.include? @user

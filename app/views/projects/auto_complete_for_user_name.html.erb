@@ -1,0 +1,8 @@
+<ul>
+  <% @users.each do |u| %>
+  <li>
+    [#<span class="complete_value"><%= u.id %></span>]
+    <%= u.name %>
+  </li>
+  <% end %>
+</ul>
