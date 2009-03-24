@@ -10,7 +10,8 @@ class WikiRevision < ActiveRecord::Base
   PRE = /<pre>(.*?)<\/pre>/m
 #  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
 
-  TaskNumber = /[^&]#([0-9]+)[^;"]/
+  TaskNumbers = /[^&]#([0-9]+)[^;"]/
+  TaskNumber = /([^&])#([0-9]+)([^;"])/
 
   ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, 'utf-8')
 
@@ -97,8 +98,10 @@ class WikiRevision < ActiveRecord::Base
       end
    }
 
-
-    body.gsub!( TaskNumber, '<a href="/tasks/view/\1">#\1</a>')
+    body.gsub!( TaskNumbers ) { |m| 
+      _, before, num, after = TaskNumber.match(m).to_a
+      "#{before}<a href=\"/tasks/view/#{num}\">##{num}</a>#{after}"
+    }
 
     i = 0
     while i < pres.size

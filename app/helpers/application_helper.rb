@@ -281,7 +281,7 @@ module ApplicationHelper
   def wrap_text(txt, col = 80)
 
     txt.chars.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
-    txt.gsub!(/#([0-9]+[^;"])/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
+    txt.gsub!(/#([0-9]+)/, "<a href=\"/tasks/view/\\1\">#\\1</a>")
     txt.gsub!(/([\w\.\-\+]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})/i, '<a href="mailto:\\0">\\0</a>')
     txt.gsub!(/(http\S+(?:gif|jpg|png))(\?.*)?/i, "<a href=\"\\0\" target=\"blank\"><img src=\"\\0\" border=\"0\" onload=\"inline_image(this);\"/></a>")
     txt.gsub!(URL_MATCH) {|m|
