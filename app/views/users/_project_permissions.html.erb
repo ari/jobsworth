@@ -24,7 +24,7 @@
       <%= _("Add user to project") %>
     </td>
     <td colspan="11">
-      <%= text_field_with_auto_complete(:project, :name, {},
+      <%= text_field_with_auto_complete(:project, :name, { :value => "" },
 	  :after_update_element => "addProjectToUser",
 	  :select => "complete_value",
           :url => "/users/auto_complete_for_project_name") %>
