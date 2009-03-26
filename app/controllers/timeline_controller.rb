@@ -24,12 +24,12 @@ class TimelineController < ApplicationController
       filter << " AND (work_logs.log_type = #{EventLog::TASK_COMMENT} OR work_logs.comment = 1)" if params[:filter_status].to_i == EventLog::TASK_COMMENT
       filter << " AND work_logs.log_type = #{EventLog::TASK_MODIFIED}" if params[:filter_status].to_i == EventLog::TASK_MODIFIED
       filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
+      filter << " AND work_logs.log_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
     end 
 
     if filter.length > 0
       work_log = true
     end
-
 
     case params[:filter_date].to_i
     when 1
@@ -55,7 +55,7 @@ class TimelineController < ApplicationController
     if params[:filter_project].to_i > 0
       filter = " AND work_logs.project_id = #{params[:filter_project]}" + filter
     else
-      filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL)" + filter
+      filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL or work_logs.project_id = 0)" + filter
     end
     
     if( ([EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i) || work_log == false)
@@ -77,7 +77,7 @@ class TimelineController < ApplicationController
       end
       
     else 
-      @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND (work_logs.project_id IN (#{current_project_ids}) or work_logs.project_id = 0)", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
     end 
   end
 

@@ -63,6 +63,7 @@
                  @status << [_("Forum Posts"), EventLog::FORUM_NEW_POST.to_s] if current_user.company.show_forum?
                  @status << [_("Wiki Additions"), EventLog::WIKI_CREATED.to_s] if current_user.company.show_wiki?
                  @status << [_("Wiki Changes"), EventLog::WIKI_MODIFIED.to_s] if current_user.company.show_wiki?
+                 @status <<  [_("Resource password request"), EventLog::RESOURCE_PASSWORD_REQUESTED.to_s] if current_user.use_resources?
 
               %>
               <%= options_for_select @status, params[:filter_status] %>

@@ -613,7 +613,50 @@ END_OF_HTML
     link_to_function(image, '$(this).up("li").remove();')
   end
 
+  ###
+  # Returns the html class to use for the resources tab menu.
+  ###
+  def resource_class
+    name = controller.controller_name
+    return "active" if name == "resources"
+  end
 
+  ###
+  # Returns the html to use to display a filter for the given 
+  # 
+  ###
+  def filter_for(meth, values, selected)
+    label = meth.to_s.humanize.titleize
+    default = _('Any %s', label)
+    values.unshift([ default, "" ])
+
+    select_tag("filter[#{ meth }][]", options_for_select(values, selected),
+               { :multiple => true ,
+                 :class => "multiselect",
+                 :onchange => "$('filter_form').submit();"
+               })
+  end
+
+  ###
+  # Returns the project id that should be selected based on the current 
+  # session and filters.
+  ### 
+  def selected_project
+    if @task and @task.project_id > 0
+      selected_project = @task.project_id
+      last_project_id = TaskFilter.filter_ids(session, :last_project_id).first
+      project_id = TaskFilter.filter_ids(session, :filter_project).first
+    elsif last_project_id.to_i > 0 && Project.exists?(last_project_id)
+      selected_project = last_project_id
+    elsif project_id.to_i > 0 && Project.exists?(project_id)
+      selected_project = project_id
+    else
+      selected_project = current_user.projects.find(:first, :order => 'name').id
+    end
+  
+
+    return selected_project
+  end
 
 end
 

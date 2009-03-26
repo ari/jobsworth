@@ -14,6 +14,8 @@ class Resource < ActiveRecord::Base
   validates_presence_of :resource_type_id
   validates_presence_of :name
 
+  FILTERABLE = [ :customer_id, :resource_type_id ]
+
   ###
   # Sets up attribute values for this resource using params.
   # Any existing values for resource attribute types defined

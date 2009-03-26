@@ -24,14 +24,13 @@
   <fieldset>
     <legend><%= _("Attributes") %></legend>
     <div id="attributes">
-      <% last_type = nil %>
       <% @resource.all_attributes.each do |ra| %>
-        <%= render(:partial => "attribute", :locals => { :attribute => ra, :last_type => last_type }) %> 
-        <% last_type = ra.resource_type_attribute %>
+        <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
       <% end %>
-      <label for="resource_notes"><%= _("Notes") %></label>
-      <%= f.text_area :notes %>
     </div>
+
+    <label for="resource_notes"><%= _("Notes") %></label>
+    <%= f.text_area :notes %>
   </fieldset>
 
   <%= cit_submit_tag(@resource) %>

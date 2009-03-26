@@ -1,12 +1,21 @@
 class ResourcesController < ApplicationController
+  before_filter :check_permission
+
   # GET /resources
   # GET /resources.xml
   def index
-    @resources = current_user.company.resources
+    if params[:filter]
+      session[:resource_filters] = params[:filter]
+      redirect_to resources_path
+    else
+      @resources = current_user.company.resources
+      @resources = ObjectFilter.new.filter(@resources, 
+                                           session[:resource_filters])
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @resources }
+      respond_to do |format|
+        format.html # index.html.erb
+        format.xml  { render :xml => @resources }
+      end
     end
   end
 
@@ -19,6 +28,10 @@ class ResourcesController < ApplicationController
       format.html # new.html.erb
       format.xml  { render :xml => @resource }
     end
+  end
+
+  def show
+    redirect_to(params.merge(:action => "edit"))
   end
 
   # GET /resources/1/edit
@@ -98,11 +111,12 @@ class ResourcesController < ApplicationController
     attribute = resource.resource_attributes.find(params[:attr_id])
     
     body = "Requested password for resource "
-    body += "<a href=\"#{ edit_resource_path(resource) }\">#{ resource.name }</a>"
+    body += "#{ resource_path(resource) } - #{ resource.name }"
 
     wl = WorkLog.new(:user => current_user,
                      :started_at => Time.now.utc,
                      :duration => 0,
+                     :comment => 0,
                      :company => current_user.company,
                      :log_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
                      :body => CGI::escapeHTML(body),
@@ -121,6 +135,18 @@ class ResourcesController < ApplicationController
       cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
       @resources = current_user.company.resources.find(:all, :conditions => cond)
     end
+  end
+
+  private
+
+  def check_permission
+    can_view = true
+    if !current_user.use_resources?
+      can_view = false
+      redirect_to(:controller => "activities", :action => "list")
+    end
+
+    return can_view
   end
 end
 

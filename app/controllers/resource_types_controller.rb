@@ -1,4 +1,6 @@
 class ResourceTypesController < ApplicationController
+  before_filter :check_permission
+
   # GET /resource_types
   # GET /resource_types.xml
   def index
@@ -76,4 +78,15 @@ class ResourceTypesController < ApplicationController
     end
   end
 
+  private
+
+  def check_permission
+    can_view = true
+    if !current_user.admin?
+      can_view = false
+      redirect_to(:controller => "activities", :action => "list")
+    end
+
+    return can_view
+  end
 end

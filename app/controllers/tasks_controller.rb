@@ -111,13 +111,22 @@ class TasksController < ApplicationController
   end
 
   def auto_complete_for_resource_name
+    return if !current_user.use_resources?
+
     search = params[:resource]
     search = search[:name] if search
     search = search.split(",").last if search
     @resources = []
 
     if !search.blank?
-      conds = [ "lower(name) like ?", "%#{ search.downcase }%" ]
+      conds = "lower(name) like ?"
+      cond_params = [ "%#{ search.downcase }%" ]
+      if params[:customer_id]
+        conds += "and (customer_id is null or customer_id = ?)"
+        cond_params << params[:customer_id]
+      end
+
+      conds = [ conds ] + cond_params
       @resources = current_user.company.resources.find(:all, 
                                                        :conditions => conds)
     end

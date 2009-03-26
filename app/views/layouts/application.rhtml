@@ -70,7 +70,7 @@
 			<td valign="top" id="main_col"><%= @content_for_layout %></td>
 			<td id="right-menu-collapse" onclick="jQuery('#left_menu').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
 			<td align="right" valign="top" style="width:15%;<%= "display:none;" if session[:collapse_menu].to_i > 0 %>" id="left_menu">
-				<%= render(:partial => "views/panel") %>
+				<%= render(:partial => "/views/panel") %>
 				<div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
 					<div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
 					<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
