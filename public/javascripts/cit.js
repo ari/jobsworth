@@ -477,6 +477,18 @@ jQuery(document).ready(function() {
 
 
 /*
+  Adds the selected dependency to the task currently being edited.
+  The task must be saved for the dependency to be permanently linked.
+*/
+function addDependencyToTask(input, li) {
+    var id = jQuery(li).find(".complete_value").text();
+    jQuery(input).val("");
+
+    jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
+	jQuery("#task_dependencies").append(data);
+    });
+}
+/*
   Adds the selected resource to the task currently being edited.
   The task must be saved for the resource to be permanently linked.
 */
@@ -485,7 +497,7 @@ function addResourceToTask(input, li) {
     jQuery(input).val("");
 
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
-	jQuery("#task_resources").append(data);
+	jQuery("#task_resources .dependencies").append(data);
     });
 }
 /*

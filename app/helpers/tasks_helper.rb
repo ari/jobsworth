@@ -163,4 +163,19 @@ module TasksHelper
     return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
   end
 
+  ###
+  # Returns the html to display an auto complete for task dependencies. When
+  # a choice is made, the dependency will be added to the page (but not saved
+  # to the db until the task is saved)
+  ###
+  def auto_complete_for_dependencies
+    auto_complete_field('dependencies_input', 
+                        { :url => { :action => 'dependency_targets' }, 
+                          :min_chars => 1, 
+                          :frequency => 0.5, 
+                          :indicator => 'loading', 
+                          :after_update_element => "addDependencyToTask"
+                        })
+  end
+
 end

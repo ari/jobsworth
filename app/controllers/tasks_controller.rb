@@ -137,6 +137,15 @@ class TasksController < ApplicationController
     render(:partial => "resource", :locals => { :resource => resource })
   end
 
+  def dependency
+    id = params[:dependency_id]
+    conditions = { :project_id => current_projects }
+    dependency = current_user.company.tasks.find(id, :conditions => conditions)
+
+    render(:partial => "dependency", 
+           :locals => { :dependency => dependency, :perms => {} })
+  end
+
   # Return a json formatted list of users to refresh the User dropdown
   # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners

@@ -297,35 +297,25 @@ jQuery('#task_due_at').datepicker();
 
         <label for="dependencies_input"><%=_ 'Depends on'%></label>
         <% if perms['prioritize'].empty? %>
-        <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
-        <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
-        <%= auto_complete_field 'dependencies_input', { :url => { :action => 'dependency_targets' }, :min_chars => 1, :frequency => 0.5, :indicator => 'loading', :select => 'complete_value', :tokens => ',' } %>
+          <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
+          <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+	  <%= auto_complete_for_dependencies %>
         <% else %>
-        <input name="dependencies[]" size="12" type="text" disabled="disabled">
+          <input name="dependencies[]" size="12" type="text" disabled="disabled">
         <% end %>
 
-        <% @task.dependencies.each do |d| %>
-        	<div id="dep_<%=d.id%>" class="dependency_no">
-	        <% if perms['prioritize'].empty? %>
-	            <a href="#" onclick="javascript:new Element.remove('dep_<%=d.id%>'); false;" ><img src="/images/cross_small.png" class="close-cross" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
-	        <% end %>
-	        
-	        <% if d.done? %>
-	        	<img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(d) %>
-	        	<input name="dependencies[]" type="hidden" value="<%=d.task_num%>">
-        	<span class="divider"></span>
-	        </div>
-        <% end %>
+	<span class="dependencies">
+	  <%= render :partial => "dependency", :collection => @task.dependencies, :locals => { :perms => perms } %>
+        </span>
 
-		<% unless @task.dependants.empty? %>
-			<div style="clear:both">
-			<label for="dependants"><%=_ "Depended on by"%></label>
-			<% @task.dependants.each do |d| %>
-				<%= link_to_task(d) %><br/>
-			<% end %>
-			</div>
-		<% end %>
-	
+	 <% unless @task.dependants.empty? %>
+  	   <div style="clear:both">
+	     <label for="dependants"><%=_ "Depended on by"%></label>
+	     <% @task.dependants.each do |d| %>
+	     <%= link_to_task(d) %><br/>
+	     <% end %>
+	   </div>
+	 <% end %>
 	</fieldset>
 	
 	<fieldset id="task_attachments" style="padding-right:0;">
