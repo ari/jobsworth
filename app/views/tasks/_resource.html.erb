@@ -4,7 +4,8 @@
   
   <%= hidden_field_tag("resource[ids][]", resource.id) %>
   <strong>#<%= resource.id %></strong>
-  <%= link_to(resource, edit_resource_path(resource)) %>
+  <%= link_to(resource, edit_resource_path(resource, :layout => "popup"),
+      :rel => "shadowbox;height=480;width=640;player=iframe") %>
   
   <span class="divider"></span>
 </div>
