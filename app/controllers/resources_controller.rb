@@ -110,7 +110,7 @@ class ResourcesController < ApplicationController
   # GET /resources/1/show_password?attr_id=2
   def show_password
     resource = current_user.company.resources.find(params[:id])
-    attribute = resource.resource_attributes.find(params[:attr_id])
+    @attribute = resource.resource_attributes.find(params[:attr_id])
     
     body = "Requested password for resource "
     body += "#{ resource_path(resource) } - #{ resource.name }"
@@ -118,14 +118,13 @@ class ResourcesController < ApplicationController
     wl = WorkLog.new(:user => current_user,
                      :started_at => Time.now.utc,
                      :duration => 0,
-                     :comment => 0,
+                     :comment => false,
                      :company => current_user.company,
                      :log_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
-                     :body => CGI::escapeHTML(body),
-                     :comment => true)
+                     :body => CGI::escapeHTML(body)
+                     )
     wl.save!
-    
-    render :text => attribute.value
+    render :partial => "show_password", :layout => false
   end
 
   def auto_complete_for_resource_parent_id
