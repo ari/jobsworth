@@ -27,8 +27,9 @@
       <% @resource.all_attributes.each do |ra| %>
         <%= render(:partial => "attribute", :locals => { :attribute => ra }) %> 
       <% end %>
-      <label for="resource_notes"><%= _("Notes") %></label>
     </div>
+
+    <label for="resource_notes"><%= _("Notes") %></label>
     <%= f.text_area :notes %>
   </fieldset>
 

@@ -12,13 +12,13 @@
     <%= sortable_handle_tag(attribute) %>
     <%= link_to_remove_li %>
 
-    <label><%=_ "Mandatory?" %></label>
+    <label><%=_ "Mandatory" %></label>
     <%= boolean_choice_field(f, :is_mandatory, attribute) %>
 
-    <label><%=_ "Password?" %></label>
+    <label><%=_ "This attribute is a password" %></label>
     <%= boolean_choice_field(f, :is_password, attribute) %>
 
-    <label><%=_ "Allows multiple?" %></label>
+    <label><%=_ "Allows multiple" %></label>
     <%= boolean_choice_field(f, :allows_multiple, attribute) %>
 
     <label><%=_ "Validation Regex" %></label>

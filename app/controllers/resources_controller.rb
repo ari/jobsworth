@@ -30,6 +30,10 @@ class ResourcesController < ApplicationController
     end
   end
 
+  def show
+    redirect_to(params.merge(:action => "edit"))
+  end
+
   # GET /resources/1/edit
   def edit
     @resource = current_user.company.resources.find(params[:id])
@@ -107,7 +111,7 @@ class ResourcesController < ApplicationController
     attribute = resource.resource_attributes.find(params[:attr_id])
     
     body = "Requested password for resource "
-    body += "<a href=\"#{ edit_resource_path(resource) }\">#{ resource.name }</a>"
+    body += "#{ resource_path(resource) } - #{ resource.name }"
 
     wl = WorkLog.new(:user => current_user,
                      :started_at => Time.now.utc,

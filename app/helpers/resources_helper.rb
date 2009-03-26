@@ -15,7 +15,7 @@ module ResourcesHelper
   def value_field(attribute, name_prefix, field_id, show_remove_link = false)
     type = attribute.resource_type_attribute
 
-    if type.is_password? and !attribute.value.blank?
+    if type.is_password? and !attribute.new_record? and !attribute.value.blank?
       res = "<div class=\"password\"></div>"
       url = show_password_resource_path(@resource, :attr_id => attribute.id)
       res += link_to_function(_("Show Password"), "showPassword(this, '#{ url }')")
@@ -30,7 +30,7 @@ module ResourcesHelper
       add_style = show_remove_link ? "display: none" : ""
       remove_style = show_remove_link ? "" : "display: none;"
 
-      res += link_to_function(_("Add"), "addAttribute(this)", 
+      res += link_to_function(_("Add another"), "addAttribute(this)", 
                               :class => "add_attribute", 
                               :style => add_style)
       res += link_to_function(_("Remove"), "removeAttribute(this)", 

@@ -20,9 +20,9 @@ describe "ResourceTypesController", ActionController::TestCase do
     @resource.resource_type = @type
   end
 
-  specify "all should redirect if not use_resources set on user" do
+  specify "all should redirect if not admin set on user" do
     user = User.find(@request.session[:user_id])
-    user.use_resources = false
+    user.admin = false
     user.save!
 
     end_page = { :controller => "activities", :action => "list" }

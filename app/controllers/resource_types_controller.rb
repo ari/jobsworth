@@ -82,7 +82,7 @@ class ResourceTypesController < ApplicationController
 
   def check_permission
     can_view = true
-    if !current_user.use_resources?
+    if !current_user.admin?
       can_view = false
       redirect_to(:controller => "activities", :action => "list")
     end

@@ -100,9 +100,6 @@
 <% if current_user.use_resources? %>
   <li class="<%= resource_class %>">
     <%= link_to(_("Resources"), resources_path) %>
-    <ul>
-      <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
-    </ul>
   </li>
 <% end %>
 
@@ -127,6 +124,7 @@
  <ul>
        <li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
        <li><%= link_to _('Custom Properties'), properties_path %></li>
+       <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
      </ul>
   <% end %>
   </li>

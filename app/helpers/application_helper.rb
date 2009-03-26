@@ -618,7 +618,7 @@ END_OF_HTML
   ###
   def resource_class
     name = controller.controller_name
-    return "active" if name == "resources" || name == "resource_types"
+    return "active" if name == "resources"
   end
 
   ###
