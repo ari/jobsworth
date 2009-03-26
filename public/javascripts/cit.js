@@ -330,19 +330,19 @@ function toggleChatPopupEvent(e) {
 function toggleChatPopup(el) {
   if( Element.hasClassName(el.up(), 'presence-section-active') ) {
     Element.removeClassName(el.up(), 'presence-section-active');
-    $$("#" + el.up().id + " .presence-popup").each(function(e) { Element.hide(e); });
+    $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.hide(e); });
     new Ajax.Request('/shout/chat_hide/' + el.up().id, {asynchronous:true, evalScripts:true});
   } else if(Element.hasClassName(el.up(), 'presence-section')) {
     $$('.presence-section-active').each(function(el) {
 					  Element.removeClassName(el, 'presence-section-active');
-					  $$(".presence-popup").each(function(el) { Element.hide(el); });
+					  $$(".presence-shadow").each(function(el) { Element.hide(el); });
 					});
     Element.addClassName(el.up(), 'presence-section-active');
 
     if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
       Element.removeClassName(el.up(), 'presence-section-pending');
     }
-    $$("#" + el.up().id + " .presence-popup").each(function(e) { Element.show(e); });
+    $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.show(e); });
     $$("#" + el.up().id + " input").each(function(e) { e.focus(); });
 
     new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});

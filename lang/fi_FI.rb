@@ -279,6 +279,7 @@ Localization.define('fi_FI') do |l|
   l.store "Delete All", "Delete All"
   l.store "Depends on", "Riippuu projektista/tehtävästä"
   l.store "Edit Forum", "Edit Forum"
+  l.store "Edit Topic", "Edit Topic"
   l.store "Group Tags", "Ryhmätagit" # Toni Huuskonen
   l.store "Last Login", "Kirjautui viimeksi" # Aki Saksola
   l.store "Last Month", "Viime kuukausi" # Toni Huuskonen
@@ -323,6 +324,7 @@ Localization.define('fi_FI') do |l|
   l.store "Delete View", "Poista näkymä" # Toni Huuskonen
   l.store "Description", "Kuvaus"
   l.store "Edit Client", "Muokkaa asiakasta" # Aki Saksola
+  l.store "Edit Folder", "Edit Folder"
   l.store "End of week", "Viikon loppuun" # Aki Saksola
   l.store "Forum Posts", "Forum-viestit" # Toni Huuskonen
   l.store "Improvement", "Parannus"
@@ -451,6 +453,7 @@ Localization.define('fi_FI') do |l|
   l.store "Leave as Invalid", "Jätä kelvottomaksi" # Aki Saksola
   l.store "Messages from %s", "Messages from %s"
   l.store "Monitoring forum", "Valvo foorumia" # Toni Huuskonen
+  l.store "Monitoring topic", "Monitoring topic"
   l.store "Open to %s users", "Open to %s users"
   l.store "Open to everyone", "Avoin kaikille" # Toni Huuskonen
   l.store "Overall Progress", "Kokonaisvaltainen edistys" # Aki Saksola
@@ -463,6 +466,7 @@ Localization.define('fi_FI') do |l|
   l.store "Access To Project", "Pääsy projektiin" # Toni Huuskonen
   l.store "Create New Folder", "Luo uusi kansio" # Aki Saksola
   l.store "Delete <b>%s</b>.", "Poista <b>%s</b>." # Aki Saksola
+  l.store "Hide Dependencies", "Hide Dependencies"
   l.store "No file selected.", "Ei tiedostoa valittu." # Toni Huuskonen
   l.store "Really delete %s?", "Haluatko varmasti poistaa %s:n?" # Toni Huuskonen
   l.store "Really revert %s?", "Peru %s?"
@@ -470,6 +474,7 @@ Localization.define('fi_FI') do |l|
   l.store "Remove dependency", "Poista riippuvuus"
   l.store "Tasks / Day Chart", "Tehtävää päivässä -kaavio" # Toni Huuskonen
   l.store "Under revision by", "Tarkastaja:"
+  l.store "Upload more files", "Upload more files"
   l.store "[Active Projects]", "[Aktiiviset projektit]" # Aki Saksola
   l.store "[Closed Projects]", "[Suljetut projektit]" # Aki Saksola
   l.store "[Default Sorting]", "[Default Sorting]"
@@ -511,11 +516,13 @@ Localization.define('fi_FI') do |l|
   l.store "Open to everyone from", "Avoinna seuraaville:" # Aki Saksola
   l.store "Projects / Milestones", "Projektit / virstanpylväät" # Toni Huuskonen
   l.store "Receive Notifications", "Ota vastaan ilmoitukset" # Toni Huuskonen
+  l.store "Showing Only Comments", "Showing Only Comments"
   l.store "%d completed milestone", ["saavutettu virstanpylväs", "%d saavutettua virstanpylvästä"] # Toni Huuskonen
   l.store "Add another dependency", "Lisää riippuvuus"
   l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Muokkaa projektia <b>%s</b>"
   l.store "Floating Messaging Bar", "Kelluva ilmoituspalkki" # Aki Saksola
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "Näkymä '%s' poistettu." # Toni Huuskonen
   l.store "invite some co-workers", "kutsu joitain työtovereita" # Aki Saksola
   l.store ", this topic is locked.", ", tämä aihe on lukittu." # Toni Huuskonen
@@ -543,6 +550,7 @@ Localization.define('fi_FI') do |l|
   l.store "Cancel working on <b>%s</b>.", "Keskeytä työ <b>%s</b>."
   l.store "Empty report, log more work!", "Tyhjä raportti, loggaa enemmän töitä!"
   l.store "No file selected for upload.", "Ei tiedostoja valittu."
+  l.store "Only show tasks of this type", "Only show tasks of this type"
   l.store "Really delete whole history?", "Really delete whole history?"
   l.store "Resume working on <b>%s</b>.", "Jatka työtä: <b>%s</b>." # Aki Saksola
   l.store "Avatar successfully uploaded.", "Avatar ladattu onnistuneesti." # Toni Huuskonen
@@ -567,6 +575,7 @@ Localization.define('fi_FI') do |l|
   l.store "Project was successfully created.", "Projekti luotu." # Aki Saksola
   l.store "Project was successfully updated.", "Projekti päivitetty." # Aki Saksola
   l.store "Done working on <b>%s</b> for now.", "<b>%s</b> valmis toistaiseksi."
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "You can't delete your own company.", "Et voi poistaa omaa yhtiötäsi."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Palaute? Ehdotukset? Ideat? Bugit?"
   l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
@@ -578,6 +587,8 @@ Localization.define('fi_FI') do |l|
   l.store "Changes are not made live instantly.", "Muutokset eivät päivity heti." # Aki Saksola
   l.store "This forum is currently unmoderated.", "This forum is currently unmoderated."
   l.store "Hide tasks deferred until a later time", "Hide tasks deferred until a later time"
+  l.store "Show tasks with at least this priority", "Show tasks with at least this priority"
+  l.store "Show tasks with at least this severity", "Show tasks with at least this severity"
   l.store "Really delete room and all transcripts?", "Really delete room and all transcripts?"
   l.store "Revert <b>%s</b> to not completed status.", "Palauta <b>%s</b> keskeneräiseksi"
   l.store "Easy access to commonly needed information.", "Helppo pääsy usein käytettyihin tietoihin." # Aki Saksola
@@ -596,6 +607,7 @@ Localization.define('fi_FI') do |l|
   l.store "Please create a project to attach files / folders to.", "Luo projekti johon liität tiedostoja/kansioita." # Aki Saksola
   l.store "Please delete all projects for %s before deleting it.", "Poista kaikki projektit liittyen %s ennen toimeksiantajan poistoa."
   l.store "Log entry already saved from another browser instance.", "Loki jo tallennettu toisesta selaimesta." # Aki Saksola
+  l.store "You don't have access to create tasks on this project.", "You don't have access to create tasks on this project."
   l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Perehdytys piilotettu. Tämän jälkeen sitä ei enää näy menussa."
   l.store "Limit instant messaging to users sharing the same projects", "Limit instant messaging to users sharing the same projects"
