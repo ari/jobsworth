@@ -116,6 +116,7 @@ class ResourcesController < ApplicationController
     wl = WorkLog.new(:user => current_user,
                      :started_at => Time.now.utc,
                      :duration => 0,
+                     :comment => 0,
                      :company => current_user.company,
                      :log_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
                      :body => CGI::escapeHTML(body),
