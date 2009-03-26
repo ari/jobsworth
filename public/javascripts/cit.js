@@ -485,7 +485,7 @@ function addDependencyToTask(input, li) {
     jQuery(input).val("");
 
     jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
-	jQuery("#task_dependencies").append(data);
+	jQuery("#task_dependencies .dependencies").append(data);
     });
 }
 /*
@@ -497,7 +497,7 @@ function addResourceToTask(input, li) {
     jQuery(input).val("");
 
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
-	jQuery("#task_resources .dependencies").append(data);
+	jQuery("#task_resources").append(data);
     });
 }
 /*

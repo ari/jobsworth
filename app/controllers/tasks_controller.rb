@@ -230,6 +230,7 @@ class TasksController < ApplicationController
       @task.set_watcher_attributes(params[:watchers], current_user)
       @task.set_owner_attributes(params[:users])
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
