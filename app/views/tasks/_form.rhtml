@@ -360,18 +360,7 @@ jQuery('#task_due_at').datepicker();
 	    <%= auto_complete_for_resources(customer_id) %>
 	    <br clear="both" />
 	    
-	    <% @task.resources.each do |r| %>
-      	      <div class="resource_no">
-		<% img = image_tag("cross_small.png", :border => 0, :class => "close-cross") %>
-	        <%= link_to_function(img, "removeTaskResource(this)") %>
-
-  		<%= hidden_field_tag("resource[ids][]", r.id) %>
-		<strong>#<%= r.id %></strong>
-		<%= link_to(r, edit_resource_path(r)) %>
-
-		<span class="divider"></span>
-              </div>
-    	    <% end %>
+	    <%= render :partial => "resource", :collection => @task.resources %>
           </fieldset>
         <% end %>
     </td>

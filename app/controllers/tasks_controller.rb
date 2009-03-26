@@ -132,6 +132,11 @@ class TasksController < ApplicationController
     end
   end
 
+  def resource
+    resource = current_user.company.resources.find(params[:resource_id])
+    render(:partial => "resource", :locals => { :resource => resource })
+  end
+
   # Return a json formatted list of users to refresh the User dropdown
   # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners

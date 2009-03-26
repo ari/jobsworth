@@ -156,7 +156,8 @@ module TasksHelper
       :select => 'complete_value', 
       :tokens => ',',
       :url => { :action => "auto_complete_for_resource_name", 
-        :customer_id => customer_id }
+        :customer_id => customer_id },
+      :after_update_element => "addResourceToTask"
     }
 
     return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
