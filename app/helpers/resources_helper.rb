@@ -82,4 +82,18 @@ module ResourcesHelper
     selected = selected[:customer_id] if selected
     filter_for(:customer_id, customers, selected)
   end
+
+  ###
+  # Returns the html to display the given event log occured on.
+  # If this is just the same as the last used date, returns nil.
+  ###
+  def history_date_if_needed(log)
+    date = tz.utc_to_local(log.updated_at).strftime("%A, %d %B %Y") 
+    if date != @last_date
+      res = content_tag(:div, date, :class => "log_header")
+      @last_date = date
+    end
+
+    return res
+  end
 end

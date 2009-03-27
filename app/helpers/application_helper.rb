@@ -658,6 +658,22 @@ END_OF_HTML
     return selected_project
   end
 
+  ###
+  # Returns the title for the given log. If the log has no title,
+  # creates a sensible one.
+  # If the log has a target, tries to link to that targets page.
+  ###
+  def log_title_for(log)
+    title = log.title
+    title ||= "#{ log.target.class.name.humanize } - #{ log.target }"
+
+    if log.target and log.target.respond_to?(:to_url)
+      title = link_to(title, log.target.to_url)
+    end
+
+    return title
+  end
+
 end
 
 

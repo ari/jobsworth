@@ -2437,10 +2437,6 @@ input.scheduled {
   
 }
 
-#property_values li.property_value, #resource_type_attributes li {
-    padding: 8px 0px 5px 0px;
-}
-
 #wiki-toc {
     border: 2px dotted #ccc;
     float: right;
@@ -2549,4 +2545,38 @@ input.scheduled {
 
 .multiSelectOptions LABEL.hover {
 	background: white;
+}
+
+fieldset.basic label {
+    margin-bottom: 0.3em;
+    margin-right: 0.5em;
+    text-align: right;
+    width: 15em;
+}
+fieldset.basic input {
+    margin-top: 0.2em;
+}
+
+/* #property_values li.property_value, #resource_type_attributes li { */
+fieldset.basic li {
+    padding: 15px 0px 15px 0px !important;
+}
+
+.history .hoverrow {
+    clear: both;
+    padding-bottom: 40px;
+}
+.history .time, .history .body {
+    font-size: 12px;
+}
+.history .time {
+    text-align: center;
+    float: left;
+    width: 5em;
+}
+.history .body {
+    float: left;
+}
+.history .avatar {
+    float:right;
 }

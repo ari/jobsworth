@@ -132,6 +132,20 @@ class TasksController < ApplicationController
     end
   end
 
+  def resource
+    resource = current_user.company.resources.find(params[:resource_id])
+    render(:partial => "resource", :locals => { :resource => resource })
+  end
+
+  def dependency
+    id = params[:dependency_id]
+    conditions = { :project_id => current_projects }
+    dependency = current_user.company.tasks.find(id, :conditions => conditions)
+
+    render(:partial => "dependency", 
+           :locals => { :dependency => dependency, :perms => {} })
+  end
+
   # Return a json formatted list of users to refresh the User dropdown
   # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
   def get_owners
@@ -216,6 +230,7 @@ class TasksController < ApplicationController
       @task.set_watcher_attributes(params[:watchers], current_user)
       @task.set_owner_attributes(params[:users])
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])

@@ -1,4 +1,6 @@
 class Resource < ActiveRecord::Base
+  include ERB::Util
+
   belongs_to :company
   belongs_to :customer
   belongs_to :resource_type
@@ -8,6 +10,7 @@ class Resource < ActiveRecord::Base
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
            :dependent => :destroy)
+  has_many :event_logs, :as => :target, :order => "updated_at desc"
   has_and_belongs_to_many :tasks
 
   validates_presence_of :company_id
@@ -61,6 +64,25 @@ class Resource < ActiveRecord::Base
   end
 
   ###
+  # Returns an array of strings that describe any
+  # unsaved changes to the current resource
+  ###
+  def changes_as_html
+    res = []
+    self.changes.each do |name, values|
+      old_value = values[0]
+      new_value = values[1]
+
+      str = "<strong>#{ h(name.humanize) }</strong>: "
+      str += "#{ h(old_value) } -> #{ h(new_value) }"
+
+      res << str
+    end
+
+    return res
+  end
+
+  ###
   # Checks all attributes are valid
   ###
   def validate
@@ -94,6 +116,10 @@ class Resource < ActiveRecord::Base
 
   def to_s
     name
+  end
+
+  def to_url
+    { :action => "edit", :controller => "resources", :id => id }
   end
 
   private
