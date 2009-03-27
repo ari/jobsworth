@@ -65,11 +65,13 @@ class ResourcesController < ApplicationController
     @resource = current_user.company.resources.find(params[:id])
     @resource.attributes = params[:resource]
     @resource.company = current_user.company
-
+    log = log_resource_changes(@resource)
+    
     respond_to do |format|
       if @resource.save
         # BW: not sure why these aren't getting updated automatically
         @resource.resource_attributes.each { |ra| ra.save }
+        log.save! if log
 
         flash[:notice] = 'Resource was successfully updated.'
         format.html { redirect_to(edit_resource_path(@resource)) }
@@ -154,6 +156,26 @@ class ResourcesController < ApplicationController
   ###
   def calc_layout
     params[:layout] || "application"
+  end
+
+  ###
+  # Returns an unsaved event log of any changed attributes in resource.
+  # Save the response to add it to the system event log.
+  ###
+  def log_resource_changes(resource)
+    all_changes = resource.changes_as_html
+    resource.resource_attributes.each { |ra| all_changes += ra.changes_as_html }
+
+    return if all_changes.empty?
+
+    body = all_changes.join(", ")
+    el = EventLog.new(:user => current_user,
+                 :company => current_user.company,
+                 :event_type => EventLog::RESOURCE_CHANGE,
+                 :body => body,
+                 :target => @resource
+                 )
+    return el
   end
 end
 

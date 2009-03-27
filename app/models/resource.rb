@@ -1,4 +1,6 @@
 class Resource < ActiveRecord::Base
+  include ERB::Util
+
   belongs_to :company
   belongs_to :customer
   belongs_to :resource_type
@@ -56,6 +58,25 @@ class Resource < ActiveRecord::Base
       else
         res += attrs
       end
+    end
+
+    return res
+  end
+
+  ###
+  # Returns an array of strings that describe any
+  # unsaved changes to the current resource
+  ###
+  def changes_as_html
+    res = []
+    self.changes.each do |name, values|
+      old_value = values[0]
+      new_value = values[1]
+
+      str = "<strong>#{ h(name.humanize) }</strong>: "
+      str += "#{ h(old_value) } -> #{ h(new_value) }"
+
+      res << str
     end
 
     return res

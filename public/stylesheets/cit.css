@@ -2554,8 +2554,9 @@ fieldset.basic li {
     padding: 15px 0px 15px 0px !important;
 }
 
-.history li {
-    height: 30px;
+.history .hoverrow {
+    clear: both;
+    padding-bottom: 40px;
 }
 .history .time, .history .body {
     font-size: 12px;
