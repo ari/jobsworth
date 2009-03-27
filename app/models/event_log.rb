@@ -6,6 +6,7 @@
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
   belongs_to :user
+  belongs_to :company
 
   TASK_CREATED       = 1
   TASK_COMPLETED     = 2

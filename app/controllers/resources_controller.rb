@@ -115,15 +115,13 @@ class ResourcesController < ApplicationController
     body = "Requested password for resource "
     body += "#{ resource_path(resource) } - #{ resource.name }"
 
-    wl = WorkLog.new(:user => current_user,
-                     :started_at => Time.now.utc,
-                     :duration => 0,
-                     :comment => false,
+    el = EventLog.new(:user => current_user,
                      :company => current_user.company,
-                     :log_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
-                     :body => CGI::escapeHTML(body)
+                     :event_type => EventLog::RESOURCE_PASSWORD_REQUESTED,
+                     :body => CGI::escapeHTML(body),
+                      :target => resource
                      )
-    wl.save!
+    el.save!
     render :partial => "show_password", :layout => false
   end
 

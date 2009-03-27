@@ -2553,3 +2553,21 @@ fieldset.basic input {
 fieldset.basic li {
     padding: 15px 0px 15px 0px !important;
 }
+
+.history li {
+    height: 30px;
+}
+.history .time, .history .body {
+    font-size: 12px;
+}
+.history .time {
+    text-align: center;
+    float: left;
+    width: 5em;
+}
+.history .body {
+    float: left;
+}
+.history .avatar {
+    float:right;
+}

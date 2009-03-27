@@ -6,4 +6,8 @@
 
 <div id="content">
   <%= render :partial => "form" %>
+  
+  <br />
+
+  <%= render :partial => "history", :locals => { :resource => @resource } %>
 </div>

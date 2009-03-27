@@ -1,0 +1,25 @@
+<div class="history">
+  <div class="page_header">
+    <%= _("History") %>
+  </div>
+
+  <br />
+
+  <ul>
+    <% resource.event_logs.each do |log| %>
+      <%= history_date_if_needed(log) %>
+
+      <li class="hoverrow">
+	<div class="avatar">
+	  <%= avatar_for(log.user, 25) if log.user %>
+	</div>
+	<div class="time">
+	  <%= tz.utc_to_local(log.started_at).strftime(current_user.time_format) %>
+	</div>
+	<div class="body">
+	  <%= h(log.body) %>
+	</div>
+      </li>
+    <% end %>
+  </ul>
+</div>
