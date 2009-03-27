@@ -97,6 +97,10 @@ class Resource < ActiveRecord::Base
     name
   end
 
+  def to_url
+    { :action => "edit", :controller => "resources", :id => id }
+  end
+
   private
 
   ###
