@@ -2,6 +2,9 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+28 Mar 2009
+    Resources system created. This allows the administrator to define resources types and attributes. Resources can then be created and organised hierarchically.
+
 4 Mar 2009
     Rename stylesheets to give them more consistent naming.    
     
