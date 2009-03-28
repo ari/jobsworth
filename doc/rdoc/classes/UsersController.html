@@ -337,98 +337,98 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000364'>
+<a href='#M000469'>
 avatar<br/>
 </a>
 
 
 
 
-<a href='#M000354'>
+<a href='#M000459'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000363'>
+<a href='#M000468'>
 delete_avatar<br/>
 </a>
 
 
 
 
-<a href='#M000359'>
+<a href='#M000464'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000355'>
+<a href='#M000460'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000357'>
+<a href='#M000462'>
 edit_preferences<br/>
 </a>
 
 
 
 
-<a href='#M000360'>
+<a href='#M000465'>
 impersonate<br/>
 </a>
 
 
 
 
-<a href='#M000351'>
+<a href='#M000456'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000352'>
+<a href='#M000457'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000353'>
+<a href='#M000458'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000356'>
+<a href='#M000461'>
 update<br/>
 </a>
 
 
 
 
-<a href='#M000358'>
+<a href='#M000463'>
 update_preferences<br/>
 </a>
 
 
 
 
-<a href='#M000361'>
+<a href='#M000466'>
 update_seen_news<br/>
 </a>
 
 
 
 
-<a href='#M000362'>
+<a href='#M000467'>
 upload_avatar<br/>
 </a>
 
@@ -451,9 +451,9 @@ upload_avatar<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000364"><br/></a>
+<a class="small" name="M000469"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000364'>
+<a href='#M000469'>
 
 
 avatar
@@ -463,7 +463,7 @@ avatar
 </a>
 </h3>
 
-<p class="source_link" id="M000364-show-link"><a onclick="toggle('M000364-source'); toggleText('M000364-link'); return false;" href="#" id="M000364-link">Show source...</a></p><div class="source" id="M000364-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 252</span>
+<p class="source_link" id="M000469-show-link"><a onclick="toggle('M000469-source'); toggleText('M000469-link'); return false;" href="#" id="M000469-link">Show source...</a></p><div class="source" id="M000469-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 252</span>
 252:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">avatar</span>
 253:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 254:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">avatar?</span>
@@ -478,9 +478,9 @@ avatar
 263:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000354"><br/></a>
+<a class="small" name="M000459"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000354'>
+<a href='#M000459'>
 
 
 create
@@ -490,7 +490,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000354-show-link"><a onclick="toggle('M000354-source'); toggleText('M000354-link'); return false;" href="#" id="M000354-link">Show source...</a></p><div class="source" id="M000354-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 33</span>
+<p class="source_link" id="M000459-show-link"><a onclick="toggle('M000459-source'); toggleText('M000459-link'); return false;" href="#" id="M000459-link">Show source...</a></p><div class="source" id="M000459-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 33</span>
 33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 34:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 35:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Only admins can edit users.&quot;</span>)
@@ -523,9 +523,9 @@ create
 62:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000363"><br/></a>
+<a class="small" name="M000468"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000363'>
+<a href='#M000468'>
 
 
 delete_avatar
@@ -535,7 +535,7 @@ delete_avatar
 </a>
 </h3>
 
-<p class="source_link" id="M000363-show-link"><a onclick="toggle('M000363-source'); toggleText('M000363-link'); return false;" href="#" id="M000363-link">Show source...</a></p><div class="source" id="M000363-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 243</span>
+<p class="source_link" id="M000468-show-link"><a onclick="toggle('M000468-source'); toggleText('M000468-link'); return false;" href="#" id="M000468-link">Show source...</a></p><div class="source" id="M000468-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 243</span>
 243:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">delete_avatar</span>
 244:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>] )
 245:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">nil?</span>
@@ -546,9 +546,9 @@ delete_avatar
 250:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000359"><br/></a>
+<a class="small" name="M000464"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000359'>
+<a href='#M000464'>
 
 
 destroy
@@ -558,7 +558,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000359-show-link"><a onclick="toggle('M000359-source'); toggleText('M000359-link'); return false;" href="#" id="M000359-link">Show source...</a></p><div class="source" id="M000359-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 108</span>
+<p class="source_link" id="M000464-show-link"><a onclick="toggle('M000464-source'); toggleText('M000464-link'); return false;" href="#" id="M000464-link">Show source...</a></p><div class="source" id="M000464-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 108</span>
 108:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 109:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 110:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Only admins can delete users&quot;</span>)
@@ -579,9 +579,9 @@ destroy
 125:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000355"><br/></a>
+<a class="small" name="M000460"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000355'>
+<a href='#M000460'>
 
 
 edit
@@ -591,7 +591,7 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000355-show-link"><a onclick="toggle('M000355-source'); toggleText('M000355-link'); return false;" href="#" id="M000355-link">Show source...</a></p><div class="source" id="M000355-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 64</span>
+<p class="source_link" id="M000460-show-link"><a onclick="toggle('M000460-source'); toggleText('M000460-link'); return false;" href="#" id="M000460-link">Show source...</a></p><div class="source" id="M000460-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 64</span>
 64:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 65:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 66:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Only admins can edit users.&quot;</span>)
@@ -602,9 +602,9 @@ edit
 71:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000357"><br/></a>
+<a class="small" name="M000462"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000357'>
+<a href='#M000462'>
 
 
 edit_preferences
@@ -614,15 +614,15 @@ edit_preferences
 </a>
 </h3>
 
-<p class="source_link" id="M000357-show-link"><a onclick="toggle('M000357-source'); toggleText('M000357-link'); return false;" href="#" id="M000357-link">Show source...</a></p><div class="source" id="M000357-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 94</span>
+<p class="source_link" id="M000462-show-link"><a onclick="toggle('M000462-source'); toggleText('M000462-link'); return false;" href="#" id="M000462-link">Show source...</a></p><div class="source" id="M000462-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 94</span>
 94:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_preferences</span>
 95:     <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
 96:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000360"><br/></a>
+<a class="small" name="M000465"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000360'>
+<a href='#M000465'>
 
 
 impersonate
@@ -635,7 +635,7 @@ impersonate
 Used while debugging
 </p>
 
-<p class="source_link" id="M000360-show-link"><a onclick="toggle('M000360-source'); toggleText('M000360-link'); return false;" href="#" id="M000360-link">Show source...</a></p><div class="source" id="M000360-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 128</span>
+<p class="source_link" id="M000465-show-link"><a onclick="toggle('M000465-source'); toggleText('M000465-link'); return false;" href="#" id="M000465-link">Show source...</a></p><div class="source" id="M000465-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 128</span>
 128:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">impersonate</span>
 129:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">9</span>
 130:       <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
@@ -650,9 +650,9 @@ Used while debugging
 139:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000351"><br/></a>
+<a class="small" name="M000456"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000351'>
+<a href='#M000456'>
 
 
 index
@@ -662,16 +662,16 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000351-show-link"><a onclick="toggle('M000351-source'); toggleText('M000351-link'); return false;" href="#" id="M000351-link">Show source...</a></p><div class="source" id="M000351-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 5</span>
+<p class="source_link" id="M000456-show-link"><a onclick="toggle('M000456-source'); toggleText('M000456-link'); return false;" href="#" id="M000456-link">Show source...</a></p><div class="source" id="M000456-source"><pre>   <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 5</span>
 5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
 6:     <span class="ruby-identifier">list</span>
 7:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
 8:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000352"><br/></a>
+<a class="small" name="M000457"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000352'>
+<a href='#M000457'>
 
 
 list
@@ -681,7 +681,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000352-show-link"><a onclick="toggle('M000352-source'); toggleText('M000352-link'); return false;" href="#" id="M000352-link">Show source...</a></p><div class="source" id="M000352-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 10</span>
+<p class="source_link" id="M000457-show-link"><a onclick="toggle('M000457-source'); toggleText('M000457-link'); return false;" href="#" id="M000457-link">Show source...</a></p><div class="source" id="M000457-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 11:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 12:       <span class="ruby-ivar">@users</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">paginate</span>(<span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;users.name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;users.company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>], <span class="ruby-identifier">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:page</span>], <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:projects</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:customer</span> } )
@@ -691,9 +691,9 @@ list
 16:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000353"><br/></a>
+<a class="small" name="M000458"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000353'>
+<a href='#M000458'>
 
 
 new
@@ -703,7 +703,7 @@ new
 </a>
 </h3>
 
-<p class="source_link" id="M000353-show-link"><a onclick="toggle('M000353-source'); toggleText('M000353-link'); return false;" href="#" id="M000353-link">Show source...</a></p><div class="source" id="M000353-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 18</span>
+<p class="source_link" id="M000458-show-link"><a onclick="toggle('M000458-source'); toggleText('M000458-link'); return false;" href="#" id="M000458-link">Show source...</a></p><div class="source" id="M000458-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 18</span>
 18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
 19:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 20:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Only admins can edit users.&quot;</span>)
@@ -720,9 +720,9 @@ new
 31:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000356"><br/></a>
+<a class="small" name="M000461"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000356'>
+<a href='#M000461'>
 
 
 update
@@ -732,7 +732,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000356-show-link"><a onclick="toggle('M000356-source'); toggleText('M000356-link'); return false;" href="#" id="M000356-link">Show source...</a></p><div class="source" id="M000356-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 73</span>
+<p class="source_link" id="M000461-show-link"><a onclick="toggle('M000461-source'); toggleText('M000461-link'); return false;" href="#" id="M000461-link">Show source...</a></p><div class="source" id="M000461-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 73</span>
 73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 74:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 75:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Only admins can edit users.&quot;</span>)
@@ -755,9 +755,9 @@ update
 92:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000358"><br/></a>
+<a class="small" name="M000463"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000358'>
+<a href='#M000463'>
 
 
 update_preferences
@@ -767,7 +767,7 @@ update_preferences
 </a>
 </h3>
 
-<p class="source_link" id="M000358-show-link"><a onclick="toggle('M000358-source'); toggleText('M000358-link'); return false;" href="#" id="M000358-link">Show source...</a></p><div class="source" id="M000358-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 98</span>
+<p class="source_link" id="M000463-show-link"><a onclick="toggle('M000463-source'); toggleText('M000463-link'); return false;" href="#" id="M000463-link">Show source...</a></p><div class="source" id="M000463-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 98</span>
  98:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_preferences</span>
  99:     <span class="ruby-ivar">@user</span> = <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 100:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@user</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>])
@@ -779,9 +779,9 @@ update_preferences
 106:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000361"><br/></a>
+<a class="small" name="M000466"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000361'>
+<a href='#M000466'>
 
 
 update_seen_news
@@ -791,7 +791,7 @@ update_seen_news
 </a>
 </h3>
 
-<p class="source_link" id="M000361-show-link"><a onclick="toggle('M000361-source'); toggleText('M000361-link'); return false;" href="#" id="M000361-link">Show source...</a></p><div class="source" id="M000361-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 141</span>
+<p class="source_link" id="M000466-show-link"><a onclick="toggle('M000466-source'); toggleText('M000466-link'); return false;" href="#" id="M000466-link">Show source...</a></p><div class="source" id="M000466-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 141</span>
 141:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_seen_news</span>
 142:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
 143:       <span class="ruby-ivar">@user</span> = <span class="ruby-identifier">current_user</span>
@@ -804,9 +804,9 @@ update_seen_news
 150:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000362"><br/></a>
+<a class="small" name="M000467"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000362'>
+<a href='#M000467'>
 
 
 upload_avatar
@@ -816,7 +816,7 @@ upload_avatar
 </a>
 </h3>
 
-<p class="source_link" id="M000362-show-link"><a onclick="toggle('M000362-source'); toggleText('M000362-link'); return false;" href="#" id="M000362-link">Show source...</a></p><div class="source" id="M000362-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 152</span>
+<p class="source_link" id="M000467-show-link"><a onclick="toggle('M000467-source'); toggleText('M000467-link'); return false;" href="#" id="M000467-link">Show source...</a></p><div class="source" id="M000467-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/users_controller.rb, line 152</span>
 152:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">upload_avatar</span>
 153:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'user'</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'user'</span>][<span class="ruby-value str">'tmp_file'</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-value str">'user'</span>][<span class="ruby-value str">'tmp_file'</span>].<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">'original_filename'</span>)
 154:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'No file selected.'</span>)

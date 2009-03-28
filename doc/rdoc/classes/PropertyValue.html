@@ -335,14 +335,14 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000437'>
+<a href='#M000532'>
 sort_rank<br/>
 </a>
 
 
 
 
-<a href='#M000438'>
+<a href='#M000533'>
 to_s<br/>
 </a>
 
@@ -373,9 +373,9 @@ Examples of PropertyValues include High, Medium, Low, In progress.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000437"><br/></a>
+<a class="small" name="M000532"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000437'>
+<a href='#M000532'>
 
 
 sort_rank
@@ -388,15 +388,15 @@ sort_rank
 Returns an int to use for sorting tasks with this property value.
 </p>
 
-<p class="source_link" id="M000437-show-link"><a onclick="toggle('M000437-source'); toggleText('M000437-link'); return false;" href="#" id="M000437-link">Show source...</a></p><div class="source" id="M000437-source"><pre>    <span class="ruby-comment cmt"># File app/models/property_value.rb, line 13</span>
+<p class="source_link" id="M000532-show-link"><a onclick="toggle('M000532-source'); toggleText('M000532-link'); return false;" href="#" id="M000532-link">Show source...</a></p><div class="source" id="M000532-source"><pre>    <span class="ruby-comment cmt"># File app/models/property_value.rb, line 13</span>
 13:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort_rank</span>
 14:     <span class="ruby-ivar">@sort_rank</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">index</span>(<span class="ruby-keyword kw">self</span>))
 15:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000438"><br/></a>
+<a class="small" name="M000533"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000438'>
+<a href='#M000533'>
 
 
 to_s
@@ -406,9 +406,9 @@ to_s
 </a>
 </h3>
 
-<p class="source_link" id="M000438-show-link"><a onclick="toggle('M000438-source'); toggleText('M000438-link'); return false;" href="#" id="M000438-link">Show source...</a></p><div class="source" id="M000438-source"><pre>    <span class="ruby-comment cmt"># File app/models/property_value.rb, line 17</span>
+<p class="source_link" id="M000533-show-link"><a onclick="toggle('M000533-source'); toggleText('M000533-link'); return false;" href="#" id="M000533-link">Show source...</a></p><div class="source" id="M000533-source"><pre>    <span class="ruby-comment cmt"># File app/models/property_value.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
-18:     <span class="ruby-identifier">value</span>
+18:     <span class="ruby-node">&quot;#{ value }&quot;</span>
 19:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 

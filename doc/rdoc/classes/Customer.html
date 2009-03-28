@@ -335,35 +335,35 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000125'>
+<a href='#M000059'>
 full_name<br/>
 </a>
 
 
 
 
-<a href='#M000126'>
+<a href='#M000060'>
 logo?<br/>
 </a>
 
 
 
 
-<a href='#M000124'>
+<a href='#M000058'>
 logo_path<br/>
 </a>
 
 
 
 
-<a href='#M000122'>
+<a href='#M000056'>
 path<br/>
 </a>
 
 
 
 
-<a href='#M000123'>
+<a href='#M000057'>
 store_name<br/>
 </a>
 
@@ -390,9 +390,9 @@ A logical grouping of projects, called Client inside ClockingIT.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000125"><br/></a>
+<a class="small" name="M000059"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000125'>
+<a href='#M000059'>
 
 
 full_name
@@ -402,19 +402,19 @@ full_name
 </a>
 </h3>
 
-<p class="source_link" id="M000125-show-link"><a onclick="toggle('M000125-source'); toggleText('M000125-link'); return false;" href="#" id="M000125-link">Show source...</a></p><div class="source" id="M000125-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 33</span>
-33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
-34:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'Internal'</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span>
-35:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span>
-36:     <span class="ruby-keyword kw">else</span>
-37:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
-38:     <span class="ruby-keyword kw">end</span>
-39:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000059-show-link"><a onclick="toggle('M000059-source'); toggleText('M000059-link'); return false;" href="#" id="M000059-link">Show source...</a></p><div class="source" id="M000059-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 34</span>
+34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
+35:     <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'Internal'</span> <span class="ruby-operator">||</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span>
+36:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span>
+37:     <span class="ruby-keyword kw">else</span>
+38:       <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>
+39:     <span class="ruby-keyword kw">end</span>
+40:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000126"><br/></a>
+<a class="small" name="M000060"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000126'>
+<a href='#M000060'>
 
 
 logo?
@@ -424,15 +424,15 @@ logo?
 </a>
 </h3>
 
-<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 41</span>
-41:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logo?</span>
-42:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">logo_path</span>)
-43:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000060-show-link"><a onclick="toggle('M000060-source'); toggleText('M000060-link'); return false;" href="#" id="M000060-link">Show source...</a></p><div class="source" id="M000060-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 42</span>
+42:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logo?</span>
+43:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">logo_path</span>)
+44:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000124"><br/></a>
+<a class="small" name="M000058"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000124'>
+<a href='#M000058'>
 
 
 logo_path
@@ -442,15 +442,15 @@ logo_path
 </a>
 </h3>
 
-<p class="source_link" id="M000124-show-link"><a onclick="toggle('M000124-source'); toggleText('M000124-link'); return false;" href="#" id="M000124-link">Show source...</a></p><div class="source" id="M000124-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 29</span>
-29:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logo_path</span>
-30:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">path</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">store_name</span>)
-31:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000058-show-link"><a onclick="toggle('M000058-source'); toggleText('M000058-link'); return false;" href="#" id="M000058-link">Show source...</a></p><div class="source" id="M000058-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 30</span>
+30:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">logo_path</span>
+31:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">path</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">store_name</span>)
+32:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000122"><br/></a>
+<a class="small" name="M000056"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000122'>
+<a href='#M000056'>
 
 
 path
@@ -460,15 +460,15 @@ path
 </a>
 </h3>
 
-<p class="source_link" id="M000122-show-link"><a onclick="toggle('M000122-source'); toggleText('M000122-link'); return false;" href="#" id="M000122-link">Show source...</a></p><div class="source" id="M000122-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 21</span>
-21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">path</span>
-22:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{RAILS_ROOT}&quot;</span>, <span class="ruby-value str">'store'</span>, <span class="ruby-value str">'logos'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company_id</span>.<span class="ruby-identifier">to_s</span>)
-23:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000056-show-link"><a onclick="toggle('M000056-source'); toggleText('M000056-link'); return false;" href="#" id="M000056-link">Show source...</a></p><div class="source" id="M000056-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 22</span>
+22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">path</span>
+23:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{RAILS_ROOT}&quot;</span>, <span class="ruby-value str">'store'</span>, <span class="ruby-value str">'logos'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company_id</span>.<span class="ruby-identifier">to_s</span>)
+24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000123"><br/></a>
+<a class="small" name="M000057"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000123'>
+<a href='#M000057'>
 
 
 store_name
@@ -478,10 +478,10 @@ store_name
 </a>
 </h3>
 
-<p class="source_link" id="M000123-show-link"><a onclick="toggle('M000123-source'); toggleText('M000123-link'); return false;" href="#" id="M000123-link">Show source...</a></p><div class="source" id="M000123-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 25</span>
-25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">store_name</span>
-26:     <span class="ruby-node">&quot;logo_#{self.id}&quot;</span>
-27:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000057-show-link"><a onclick="toggle('M000057-source'); toggleText('M000057-link'); return false;" href="#" id="M000057-link">Show source...</a></p><div class="source" id="M000057-source"><pre>    <span class="ruby-comment cmt"># File app/models/customer.rb, line 26</span>
+26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">store_name</span>
+27:     <span class="ruby-node">&quot;logo_#{self.id}&quot;</span>
+28:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

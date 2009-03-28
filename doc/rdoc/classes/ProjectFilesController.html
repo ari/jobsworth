@@ -337,119 +337,119 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000278'>
+<a href='#M000380'>
 create_folder<br/>
 </a>
 
 
 
 
-<a href='#M000282'>
+<a href='#M000384'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000283'>
+<a href='#M000385'>
 destroy_folder<br/>
 </a>
 
 
 
 
-<a href='#M000273'>
+<a href='#M000375'>
 download<br/>
 </a>
 
 
 
 
-<a href='#M000280'>
+<a href='#M000382'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000276'>
+<a href='#M000378'>
 edit_folder<br/>
 </a>
 
 
 
 
-<a href='#M000285'>
+<a href='#M000387'>
 file_type_from_filename<br/>
 </a>
 
 
 
 
-<a href='#M000269'>
+<a href='#M000371'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000270'>
+<a href='#M000372'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000284'>
+<a href='#M000386'>
 move<br/>
 </a>
 
 
 
 
-<a href='#M000274'>
+<a href='#M000376'>
 new_file<br/>
 </a>
 
 
 
 
-<a href='#M000275'>
+<a href='#M000377'>
 new_folder<br/>
 </a>
 
 
 
 
-<a href='#M000271'>
+<a href='#M000373'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000272'>
+<a href='#M000374'>
 thumbnail<br/>
 </a>
 
 
 
 
-<a href='#M000281'>
+<a href='#M000383'>
 update<br/>
 </a>
 
 
 
 
-<a href='#M000277'>
+<a href='#M000379'>
 update_folder<br/>
 </a>
 
 
 
 
-<a href='#M000279'>
+<a href='#M000381'>
 upload<br/>
 </a>
 
@@ -478,9 +478,9 @@ icon
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000278"><br/></a>
+<a class="small" name="M000380"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000278'>
+<a href='#M000380'>
 
 
 create_folder
@@ -490,7 +490,7 @@ create_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000278-show-link"><a onclick="toggle('M000278-source'); toggleText('M000278-link'); return false;" href="#" id="M000278-link">Show source...</a></p><div class="source" id="M000278-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 120</span>
+<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 120</span>
 120:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_folder</span>
 121:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:folder</span>])
 122:     <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
@@ -508,9 +508,9 @@ create_folder
 134:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000282"><br/></a>
+<a class="small" name="M000384"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000282'>
+<a href='#M000384'>
 
 
 destroy
@@ -520,41 +520,41 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000282-show-link"><a onclick="toggle('M000282-source'); toggleText('M000282-link'); return false;" href="#" id="M000282-link">Show source...</a></p><div class="source" id="M000282-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 244</span>
-244:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
-245:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-246: 
-247:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">nil?</span>
-248:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;No such file.&quot;</span>)
-249:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-250:       <span class="ruby-keyword kw">return</span>
-251:     <span class="ruby-keyword kw">end</span>
-252: 
-253:     <span class="ruby-keyword kw">begin</span>
-254:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">file_path</span>)
-255:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">thumbnail_path</span>)
-256:     <span class="ruby-keyword kw">rescue</span>
-257:     <span class="ruby-keyword kw">end</span>
-258:     <span class="ruby-identifier">l</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">event_logs</span>.<span class="ruby-identifier">new</span>
-259:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">company_id</span>
-260:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">project_id</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_id</span>
-261:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>
-262:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">event_type</span> = <span class="ruby-constant">EventLog</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE_DELETED</span>
-263:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;{@file.name} deleted&quot;</span>
-264:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">save</span>
-265: 
-266:     <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">destroy</span>
-267: 
-268:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
-269: 
-270:     <span class="ruby-identifier">redirect_from_last</span>
-271: 
-272:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000384-show-link"><a onclick="toggle('M000384-source'); toggleText('M000384-link'); return false;" href="#" id="M000384-link">Show source...</a></p><div class="source" id="M000384-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 245</span>
+245:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
+246:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+247: 
+248:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">nil?</span>
+249:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;No such file.&quot;</span>)
+250:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+251:       <span class="ruby-keyword kw">return</span>
+252:     <span class="ruby-keyword kw">end</span>
+253: 
+254:     <span class="ruby-keyword kw">begin</span>
+255:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">file_path</span>)
+256:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">thumbnail_path</span>)
+257:     <span class="ruby-keyword kw">rescue</span>
+258:     <span class="ruby-keyword kw">end</span>
+259:     <span class="ruby-identifier">l</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">event_logs</span>.<span class="ruby-identifier">new</span>
+260:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">company_id</span>
+261:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">project_id</span> = <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_id</span>
+262:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>
+263:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">event_type</span> = <span class="ruby-constant">EventLog</span><span class="ruby-operator">::</span><span class="ruby-constant">FILE_DELETED</span>
+264:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;{@file.name} deleted&quot;</span>
+265:     <span class="ruby-identifier">l</span>.<span class="ruby-identifier">save</span>
+266: 
+267:     <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">destroy</span>
+268: 
+269:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">request</span>.<span class="ruby-identifier">xhr?</span>
+270: 
+271:     <span class="ruby-identifier">redirect_from_last</span>
+272: 
+273:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000283"><br/></a>
+<a class="small" name="M000385"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000283'>
+<a href='#M000385'>
 
 
 destroy_folder
@@ -564,23 +564,23 @@ destroy_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000283-show-link"><a onclick="toggle('M000283-source'); toggleText('M000283-link'); return false;" href="#" id="M000283-link">Show source...</a></p><div class="source" id="M000283-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 274</span>
-274:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy_folder</span>
-275:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>] )
-276: 
-277:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">nil?</span>
-278:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;No such folder.&quot;</span>)
-279:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-280:       <span class="ruby-keyword kw">return</span>
-281:     <span class="ruby-keyword kw">end</span>
-282: 
-283:     <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">destroy</span>
-284:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000385-show-link"><a onclick="toggle('M000385-source'); toggleText('M000385-link'); return false;" href="#" id="M000385-link">Show source...</a></p><div class="source" id="M000385-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 275</span>
+275:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy_folder</span>
+276:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>] )
+277: 
+278:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">nil?</span>
+279:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;No such folder.&quot;</span>)
+280:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+281:       <span class="ruby-keyword kw">return</span>
+282:     <span class="ruby-keyword kw">end</span>
+283: 
+284:     <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">destroy</span>
+285:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000273"><br/></a>
+<a class="small" name="M000375"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000273'>
+<a href='#M000375'>
 
 
 download
@@ -590,7 +590,7 @@ download
 </a>
 </h3>
 
-<p class="source_link" id="M000273-show-link"><a onclick="toggle('M000273-source'); toggleText('M000273-link'); return false;" href="#" id="M000273-link">Show source...</a></p><div class="source" id="M000273-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 62</span>
+<p class="source_link" id="M000375-show-link"><a onclick="toggle('M000375-source'); toggleText('M000375-link'); return false;" href="#" id="M000375-link">Show source...</a></p><div class="source" id="M000375-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 62</span>
 62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">download</span>
 63:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 64:     <span class="ruby-keyword kw">if</span> (<span class="ruby-ivar">@project_files</span>.<span class="ruby-identifier">mime_type</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/image.*/</span>)
@@ -602,9 +602,9 @@ download
 70:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000280"><br/></a>
+<a class="small" name="M000382"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000280'>
+<a href='#M000382'>
 
 
 edit
@@ -614,15 +614,15 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000280-show-link"><a onclick="toggle('M000280-source'); toggleText('M000280-link'); return false;" href="#" id="M000280-link">Show source...</a></p><div class="source" id="M000280-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 232</span>
-232:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
-233:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-234:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000382-show-link"><a onclick="toggle('M000382-source'); toggleText('M000382-link'); return false;" href="#" id="M000382-link">Show source...</a></p><div class="source" id="M000382-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 233</span>
+233:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
+234:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+235:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000276"><br/></a>
+<a class="small" name="M000378"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000276'>
+<a href='#M000378'>
 
 
 edit_folder
@@ -632,7 +632,7 @@ edit_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000276-show-link"><a onclick="toggle('M000276-source'); toggleText('M000276-link'); return false;" href="#" id="M000276-link">Show source...</a></p><div class="source" id="M000276-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 102</span>
+<p class="source_link" id="M000378-show-link"><a onclick="toggle('M000378-source'); toggleText('M000378-link'); return false;" href="#" id="M000378-link">Show source...</a></p><div class="source" id="M000378-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 102</span>
 102:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_folder</span>
 103:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 104:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -642,9 +642,9 @@ edit_folder
 108:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000269"><br/></a>
+<a class="small" name="M000371"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000269'>
+<a href='#M000371'>
 
 
 index
@@ -654,7 +654,7 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000269-show-link"><a onclick="toggle('M000269-source'); toggleText('M000269-link'); return false;" href="#" id="M000269-link">Show source...</a></p><div class="source" id="M000269-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 6</span>
+<p class="source_link" id="M000371-show-link"><a onclick="toggle('M000371-source'); toggleText('M000371-link'); return false;" href="#" id="M000371-link">Show source...</a></p><div class="source" id="M000371-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 6</span>
  6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  7:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">empty?</span>
  8:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Please create a project to attach files / folders to.'</span>)
@@ -666,9 +666,9 @@ index
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000270"><br/></a>
+<a class="small" name="M000372"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000270'>
+<a href='#M000372'>
 
 
 list
@@ -678,7 +678,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000270-show-link"><a onclick="toggle('M000270-source'); toggleText('M000270-link'); return false;" href="#" id="M000270-link">Show source...</a></p><div class="source" id="M000270-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 16</span>
+<p class="source_link" id="M000372-show-link"><a onclick="toggle('M000372-source'); toggleText('M000372-link'); return false;" href="#" id="M000372-link">Show source...</a></p><div class="source" id="M000372-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 17:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">empty?</span>
 18:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Please create a project to attach files / folders to.'</span>)
@@ -701,9 +701,9 @@ list
 35:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000284"><br/></a>
+<a class="small" name="M000386"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000284'>
+<a href='#M000386'>
 
 
 move
@@ -713,60 +713,60 @@ move
 </a>
 </h3>
 
-<p class="source_link" id="M000284-show-link"><a onclick="toggle('M000284-source'); toggleText('M000284-link'); return false;" href="#" id="M000284-link">Show source...</a></p><div class="source" id="M000284-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 286</span>
-286:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">move</span>
-287:     <span class="ruby-identifier">elements</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
-288: 
-289:     <span class="ruby-identifier">drag_id</span> = <span class="ruby-identifier">elements</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">'_'</span>)[<span class="ruby-value">2</span>]
-290:     <span class="ruby-identifier">drop_id</span> = <span class="ruby-identifier">elements</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">'_'</span>)[<span class="ruby-value">2</span>]
-291: 
-292:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">elements</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-value str">'folder'</span>)
-293:       <span class="ruby-ivar">@drag</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drag_id</span>)
-294: 
-295:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">nil?</span>
-296:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-297:         <span class="ruby-keyword kw">return</span>
-298:       <span class="ruby-keyword kw">end</span>
-299: 
-300:       <span class="ruby-ivar">@drop</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drop_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">drop_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-301:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">nil?</span>
-302:         <span class="ruby-comment cmt"># Moving to root</span>
-303:         <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span> = <span class="ruby-keyword kw">nil</span>
-304:         <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;..&quot;</span>, <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">project</span>)
-305:         <span class="ruby-ivar">@up</span> = <span class="ruby-keyword kw">false</span>
-306:       <span class="ruby-keyword kw">else</span>
-307:         <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span> = (<span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">parent_id</span>
-308:         <span class="ruby-ivar">@up</span> = <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span>
-309:         <span class="ruby-ivar">@folder</span> = <span class="ruby-ivar">@drop</span>
-310:       <span class="ruby-keyword kw">end</span>
-311:       <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">save</span>
-312:     <span class="ruby-keyword kw">else</span>
-313: 
-314:       <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drag_id</span>)
-315:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">nil?</span>
-316:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
-317:         <span class="ruby-keyword kw">return</span>
-318:       <span class="ruby-keyword kw">end</span>
-319: 
-320:       <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drop_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">drop_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-321:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">nil?</span>
-322:         <span class="ruby-comment cmt"># Move to root directory</span>
-323:         <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> = <span class="ruby-keyword kw">nil</span>
-324:         <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;..&quot;</span>, <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project</span>)
-325:         <span class="ruby-ivar">@up</span> = <span class="ruby-keyword kw">false</span>
-326:       <span class="ruby-keyword kw">else</span>
-327:         <span class="ruby-ivar">@up</span> = ( <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">id</span>))
-328:         <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> = <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">id</span>
-329:       <span class="ruby-keyword kw">end</span>
-330:       <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">save</span>
-331:     <span class="ruby-keyword kw">end</span>
-332: 
-333:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000386-show-link"><a onclick="toggle('M000386-source'); toggleText('M000386-link'); return false;" href="#" id="M000386-link">Show source...</a></p><div class="source" id="M000386-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 287</span>
+287:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">move</span>
+288:     <span class="ruby-identifier">elements</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
+289: 
+290:     <span class="ruby-identifier">drag_id</span> = <span class="ruby-identifier">elements</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">'_'</span>)[<span class="ruby-value">2</span>]
+291:     <span class="ruby-identifier">drop_id</span> = <span class="ruby-identifier">elements</span>[<span class="ruby-value">1</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">'_'</span>)[<span class="ruby-value">2</span>]
+292: 
+293:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">elements</span>[<span class="ruby-value">0</span>].<span class="ruby-identifier">include?</span>(<span class="ruby-value str">'folder'</span>)
+294:       <span class="ruby-ivar">@drag</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drag_id</span>)
+295: 
+296:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">nil?</span>
+297:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+298:         <span class="ruby-keyword kw">return</span>
+299:       <span class="ruby-keyword kw">end</span>
+300: 
+301:       <span class="ruby-ivar">@drop</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drop_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">drop_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+302:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">nil?</span>
+303:         <span class="ruby-comment cmt"># Moving to root</span>
+304:         <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span> = <span class="ruby-keyword kw">nil</span>
+305:         <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;..&quot;</span>, <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">project</span>)
+306:         <span class="ruby-ivar">@up</span> = <span class="ruby-keyword kw">false</span>
+307:       <span class="ruby-keyword kw">else</span>
+308:         <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span> = (<span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">parent_id</span>
+309:         <span class="ruby-ivar">@up</span> = <span class="ruby-ivar">@drop</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">parent_id</span>
+310:         <span class="ruby-ivar">@folder</span> = <span class="ruby-ivar">@drop</span>
+311:       <span class="ruby-keyword kw">end</span>
+312:       <span class="ruby-ivar">@drag</span>.<span class="ruby-identifier">save</span>
+313:     <span class="ruby-keyword kw">else</span>
+314: 
+315:       <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drag_id</span>)
+316:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">nil?</span>
+317:         <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>
+318:         <span class="ruby-keyword kw">return</span>
+319:       <span class="ruby-keyword kw">end</span>
+320: 
+321:       <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">drop_id</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">drop_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+322:       <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">nil?</span>
+323:         <span class="ruby-comment cmt"># Move to root directory</span>
+324:         <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> = <span class="ruby-keyword kw">nil</span>
+325:         <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:name</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;..&quot;</span>, <span class="ruby-identifier">:project</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project</span>)
+326:         <span class="ruby-ivar">@up</span> = <span class="ruby-keyword kw">false</span>
+327:       <span class="ruby-keyword kw">else</span>
+328:         <span class="ruby-ivar">@up</span> = ( <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span>.<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder</span>.<span class="ruby-identifier">parent_id</span> <span class="ruby-operator">==</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">id</span>))
+329:         <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span> = <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">id</span>
+330:       <span class="ruby-keyword kw">end</span>
+331:       <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">save</span>
+332:     <span class="ruby-keyword kw">end</span>
+333: 
+334:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000274"><br/></a>
+<a class="small" name="M000376"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000274'>
+<a href='#M000376'>
 
 
 new_file
@@ -776,7 +776,7 @@ new_file
 </a>
 </h3>
 
-<p class="source_link" id="M000274-show-link"><a onclick="toggle('M000274-source'); toggleText('M000274-link'); return false;" href="#" id="M000274-link">Show source...</a></p><div class="source" id="M000274-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 73</span>
+<p class="source_link" id="M000376-show-link"><a onclick="toggle('M000376-source'); toggleText('M000376-link'); return false;" href="#" id="M000376-link">Show source...</a></p><div class="source" id="M000376-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 73</span>
 73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new_file</span>
 74:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 75:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -789,9 +789,9 @@ new_file
 82:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000275"><br/></a>
+<a class="small" name="M000377"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000275'>
+<a href='#M000377'>
 
 
 new_folder
@@ -801,7 +801,7 @@ new_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000275-show-link"><a onclick="toggle('M000275-source'); toggleText('M000275-link'); return false;" href="#" id="M000275-link">Show source...</a></p><div class="source" id="M000275-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 84</span>
+<p class="source_link" id="M000377-show-link"><a onclick="toggle('M000377-source'); toggleText('M000377-link'); return false;" href="#" id="M000377-link">Show source...</a></p><div class="source" id="M000377-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 84</span>
  84:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new_folder</span>
  85:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
  86:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -821,9 +821,9 @@ new_folder
 100:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000271"><br/></a>
+<a class="small" name="M000373"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000271'>
+<a href='#M000373'>
 
 
 show
@@ -833,7 +833,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000271-show-link"><a onclick="toggle('M000271-source'); toggleText('M000271-link'); return false;" href="#" id="M000271-link">Show source...</a></p><div class="source" id="M000271-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 37</span>
+<p class="source_link" id="M000373-show-link"><a onclick="toggle('M000373-source'); toggleText('M000373-link'); return false;" href="#" id="M000373-link">Show source...</a></p><div class="source" id="M000373-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
 38:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 39: 
@@ -847,9 +847,9 @@ show
 47:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000272"><br/></a>
+<a class="small" name="M000374"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000272'>
+<a href='#M000374'>
 
 
 thumbnail
@@ -859,11 +859,11 @@ thumbnail
 </a>
 </h3>
 <p>
-Show the <a href="ProjectFilesController.html#M000272">thumbnail</a> for a
+Show the <a href="ProjectFilesController.html#M000374">thumbnail</a> for a
 given image
 </p>
 
-<p class="source_link" id="M000272-show-link"><a onclick="toggle('M000272-source'); toggleText('M000272-link'); return false;" href="#" id="M000272-link">Show source...</a></p><div class="source" id="M000272-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 50</span>
+<p class="source_link" id="M000374-show-link"><a onclick="toggle('M000374-source'); toggleText('M000374-link'); return false;" href="#" id="M000374-link">Show source...</a></p><div class="source" id="M000374-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 50</span>
 50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">thumbnail</span>
 51:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 52: 
@@ -877,9 +877,9 @@ given image
 60:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000281"><br/></a>
+<a class="small" name="M000383"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000281'>
+<a href='#M000383'>
 
 
 update
@@ -889,19 +889,19 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000281-show-link"><a onclick="toggle('M000281-source'); toggleText('M000281-link'); return false;" href="#" id="M000281-link">Show source...</a></p><div class="source" id="M000281-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 236</span>
-236:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
-237:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-238:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>])
-239:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to update file'</span>)
-240:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span>
-241:     <span class="ruby-keyword kw">end</span>
-242:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000383-show-link"><a onclick="toggle('M000383-source'); toggleText('M000383-link'); return false;" href="#" id="M000383-link">Show source...</a></p><div class="source" id="M000383-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 237</span>
+237:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
+238:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+239:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>])
+240:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to update file'</span>)
+241:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">project_folder_id</span>
+242:     <span class="ruby-keyword kw">end</span>
+243:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000277"><br/></a>
+<a class="small" name="M000379"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000277'>
+<a href='#M000379'>
 
 
 update_folder
@@ -911,7 +911,7 @@ update_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000277-show-link"><a onclick="toggle('M000277-source'); toggleText('M000277-link'); return false;" href="#" id="M000277-link">Show source...</a></p><div class="source" id="M000277-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 110</span>
+<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 110</span>
 110:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_folder</span>
 111:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{current_project_ids})&quot;</span>])
 112:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:folder</span>])
@@ -923,9 +923,9 @@ update_folder
 118:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000279"><br/></a>
+<a class="small" name="M000381"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000279'>
+<a href='#M000381'>
 
 
 upload
@@ -935,7 +935,7 @@ upload
 </a>
 </h3>
 
-<p class="source_link" id="M000279-show-link"><a onclick="toggle('M000279-source'); toggleText('M000279-link'); return false;" href="#" id="M000279-link">Show source...</a></p><div class="source" id="M000279-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 136</span>
+<p class="source_link" id="M000381-show-link"><a onclick="toggle('M000381-source'); toggleText('M000381-link'); return false;" href="#" id="M000381-link">Show source...</a></p><div class="source" id="M000381-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 136</span>
 136:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">upload</span>
 137:     <span class="ruby-identifier">project_files</span> = []
 138:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'tmp_files'</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'tmp_files'</span>].<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;&quot;</span>}.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> 
@@ -959,87 +959,88 @@ upload
 156: 
 157:       <span class="ruby-identifier">project_file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">new</span>
 158:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">project_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file'</span>][<span class="ruby-value str">'project_id'</span>].<span class="ruby-identifier">to_i</span>
-159: 
-160:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
-161:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>
-162:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">filename</span> = <span class="ruby-identifier">filename</span>
-163:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>][<span class="ruby-identifier">idx</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>][<span class="ruby-identifier">idx</span>].<span class="ruby-identifier">blank?</span>
-164:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">save</span>
-165:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">reload</span>
-166:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">customer_id</span> = <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span>
-167: 
-168:       <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>) <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>)
-169:         <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
-170:         <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>, <span class="ruby-value">0777</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
-171:                                                     <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">destroy</span>
-172:                                                     <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to create storage directory.'</span>)
-173:                                                     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
-174:                                                     <span class="ruby-keyword kw">return</span>
-175:                                                   <span class="ruby-keyword kw">end</span>
-176:       <span class="ruby-keyword kw">end</span>
-177:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
-178:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span>, <span class="ruby-value str">&quot;wb&quot;</span>, <span class="ruby-value">0777</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>( <span class="ruby-identifier">tmp_file</span>.<span class="ruby-identifier">read</span> ) } <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
-179:                                                                                               <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">destroy</span>
-180:                                                                                               <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Permission denied while saving file.&quot;</span>)
-181:                                                                                               <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
-182:                                                                                               <span class="ruby-keyword kw">return</span>
-183:                                                                                             <span class="ruby-keyword kw">end</span>
-184: 
-185:       <span class="ruby-keyword kw">if</span>( <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> )
-186:         <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>( <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span> )
-187: 
-188:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">filename</span>[<span class="ruby-regexp re">/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-189:           <span class="ruby-identifier">image</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">get_image</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span> )
-190:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
-191:             <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> = <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_IMG</span>
-192:             <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">mime_type</span> = <span class="ruby-identifier">image</span>.<span class="ruby-identifier">mime_type</span>
-193:                                                 <span class="ruby-identifier">thumb</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">thumbnail</span>(<span class="ruby-identifier">image</span>,<span class="ruby-value">124</span>)
-194: 
-195:             <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
-196:             <span class="ruby-identifier">t</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">thumbnail_path</span>, <span class="ruby-value str">&quot;w&quot;</span>, <span class="ruby-value">0777</span>)
-197:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">thumb</span>.<span class="ruby-identifier">to_blob</span>)
-198:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">close</span>
-199:           <span class="ruby-keyword kw">end</span>
-200:         <span class="ruby-keyword kw">end</span>
-201:         <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
-202:       
-203:         <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> = <span class="ruby-identifier">file_type_from_filename</span>(<span class="ruby-identifier">filename</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_IMG</span>
-204: 
-205:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">save</span>
-206:           <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to save file.'</span>)
-207:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
-208:         <span class="ruby-keyword kw">else</span>
-209:           <span class="ruby-identifier">project_files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">project_file</span>
-210:         <span class="ruby-keyword kw">end</span> 
-211: 
-212:       <span class="ruby-keyword kw">end</span> 
-213: 
-214:     <span class="ruby-keyword kw">end</span> 
-215: 
-216:     <span class="ruby-identifier">responds_to_parent</span> <span class="ruby-keyword kw">do</span>
-217:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-218:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_files</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> 
-219:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">hide</span>(<span class="ruby-value str">'inline_form'</span>)
-220:           <span class="ruby-identifier">project_files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">project_file</span><span class="ruby-operator">|</span>
-221:             <span class="ruby-identifier">page</span>.<span class="ruby-identifier">insert_html</span> <span class="ruby-identifier">:after</span>, <span class="ruby-value str">'dir_sep'</span>, <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'file_cell'</span>,  <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:project_files</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">project_file</span> }
-222:             <span class="ruby-identifier">page</span>.<span class="ruby-identifier">visual_effect</span>(<span class="ruby-identifier">:highlight</span>, <span class="ruby-node">&quot;file_cell_#{project_file.id}&quot;</span>, <span class="ruby-identifier">:duration</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2.0</span>)
-223:           <span class="ruby-keyword kw">end</span> 
-224:         <span class="ruby-keyword kw">else</span>
-225:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">visual_effect</span>(<span class="ruby-identifier">:shake</span>,<span class="ruby-value str">'inline_form'</span>)
-226:         <span class="ruby-keyword kw">end</span> 
-227:       <span class="ruby-keyword kw">end</span> 
-228: 
-229:     <span class="ruby-keyword kw">end</span>
-230:   <span class="ruby-keyword kw">end</span></pre></div>
+159:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">project_folder_id</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file'</span>][<span class="ruby-value str">'project_folder_id'</span>]
+160: 
+161:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
+162:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">user_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>
+163:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">filename</span> = <span class="ruby-identifier">filename</span>
+164:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>][<span class="ruby-identifier">idx</span>] <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'file_names'</span>][<span class="ruby-identifier">idx</span>].<span class="ruby-identifier">blank?</span>
+165:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">save</span>
+166:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">reload</span>
+167:       <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">customer_id</span> = <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span>
+168: 
+169:       <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>) <span class="ruby-operator">||</span> <span class="ruby-operator">!</span><span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>)
+170:         <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
+171:         <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">mkdir</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">path</span>, <span class="ruby-value">0777</span>) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+172:                                                     <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">destroy</span>
+173:                                                     <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to create storage directory.'</span>)
+174:                                                     <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
+175:                                                     <span class="ruby-keyword kw">return</span>
+176:                                                   <span class="ruby-keyword kw">end</span>
+177:       <span class="ruby-keyword kw">end</span>
+178:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
+179:       <span class="ruby-constant">File</span>.<span class="ruby-identifier">open</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span>, <span class="ruby-value str">&quot;wb&quot;</span>, <span class="ruby-value">0777</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">write</span>( <span class="ruby-identifier">tmp_file</span>.<span class="ruby-identifier">read</span> ) } <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+180:                                                                                               <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">destroy</span>
+181:                                                                                               <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Permission denied while saving file.&quot;</span>)
+182:                                                                                               <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
+183:                                                                                               <span class="ruby-keyword kw">return</span>
+184:                                                                                             <span class="ruby-keyword kw">end</span>
+185: 
+186:       <span class="ruby-keyword kw">if</span>( <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> )
+187:         <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_size</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">size?</span>( <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span> )
+188: 
+189:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">filename</span>[<span class="ruby-regexp re">/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+190:           <span class="ruby-identifier">image</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">get_image</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_path</span> )
+191:                                         <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
+192:             <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> = <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_IMG</span>
+193:             <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">mime_type</span> = <span class="ruby-identifier">image</span>.<span class="ruby-identifier">mime_type</span>
+194:                                                 <span class="ruby-identifier">thumb</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">thumbnail</span>(<span class="ruby-identifier">image</span>,<span class="ruby-value">124</span>)
+195: 
+196:             <span class="ruby-constant">File</span>.<span class="ruby-identifier">umask</span>(<span class="ruby-value">0</span>)
+197:             <span class="ruby-identifier">t</span> = <span class="ruby-constant">File</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">thumbnail_path</span>, <span class="ruby-value str">&quot;w&quot;</span>, <span class="ruby-value">0777</span>)
+198:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">write</span>(<span class="ruby-identifier">thumb</span>.<span class="ruby-identifier">to_blob</span>)
+199:             <span class="ruby-identifier">t</span>.<span class="ruby-identifier">close</span>
+200:           <span class="ruby-keyword kw">end</span>
+201:         <span class="ruby-keyword kw">end</span>
+202:         <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
+203:       
+204:         <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> = <span class="ruby-identifier">file_type_from_filename</span>(<span class="ruby-identifier">filename</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">file_type</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_IMG</span>
+205: 
+206:         <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">project_file</span>.<span class="ruby-identifier">save</span>
+207:           <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Unable to save file.'</span>) <span class="ruby-operator">+</span> <span class="ruby-node">&quot; [#{project_file.filename}]&quot;</span>
+208:           <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>][<span class="ruby-identifier">:project_folder_id</span>]
+209:         <span class="ruby-keyword kw">else</span>
+210:           <span class="ruby-identifier">project_files</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">project_file</span>
+211:         <span class="ruby-keyword kw">end</span> 
+212: 
+213:       <span class="ruby-keyword kw">end</span> 
+214: 
+215:     <span class="ruby-keyword kw">end</span> 
+216: 
+217:     <span class="ruby-identifier">responds_to_parent</span> <span class="ruby-keyword kw">do</span>
+218:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+219:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_files</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> 
+220:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">hide</span>(<span class="ruby-value str">'inline_form'</span>)
+221:           <span class="ruby-identifier">project_files</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">project_file</span><span class="ruby-operator">|</span>
+222:             <span class="ruby-identifier">page</span>.<span class="ruby-identifier">insert_html</span> <span class="ruby-identifier">:after</span>, <span class="ruby-value str">'dir_sep'</span>, <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'file_cell'</span>,  <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:project_files</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">project_file</span> }
+223:             <span class="ruby-identifier">page</span>.<span class="ruby-identifier">visual_effect</span>(<span class="ruby-identifier">:highlight</span>, <span class="ruby-node">&quot;file_cell_#{project_file.id}&quot;</span>, <span class="ruby-identifier">:duration</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">2.0</span>)
+224:           <span class="ruby-keyword kw">end</span> 
+225:         <span class="ruby-keyword kw">else</span>
+226:           <span class="ruby-identifier">page</span>.<span class="ruby-identifier">visual_effect</span>(<span class="ruby-identifier">:shake</span>,<span class="ruby-value str">'inline_form'</span>)
+227:         <span class="ruby-keyword kw">end</span> 
+228:       <span class="ruby-keyword kw">end</span> 
+229: 
+230:     <span class="ruby-keyword kw">end</span>
+231:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000285"><br/></a>
+<a class="small" name="M000387"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000285'>
+<a href='#M000387'>
 
 
 file_type_from_filename
@@ -1049,44 +1050,44 @@ file_type_from_filename
 </a>
 </h3>
 
-<p class="source_link" id="M000285-show-link"><a onclick="toggle('M000285-source'); toggleText('M000285-link'); return false;" href="#" id="M000285-link">Show source...</a></p><div class="source" id="M000285-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 338</span>
-338:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_type_from_filename</span>(<span class="ruby-identifier">filename</span>)
-339:     <span class="ruby-identifier">file_types</span> = { 
-340:       <span class="ruby-value str">'doc'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_DOC</span>, 
-341:       <span class="ruby-value str">'txt'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_TXT</span>,
-342:       <span class="ruby-value str">'xls'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
-343:       <span class="ruby-value str">'sxc'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
-344:       <span class="ruby-value str">'csv'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
-345:       <span class="ruby-value str">'avi'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
-346:       <span class="ruby-value str">'mpeg'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
-347:       <span class="ruby-value str">'mpg'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
-348:       <span class="ruby-value str">'mov'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_MOV</span>,
-349:       <span class="ruby-value str">'swf'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_SWF</span>,
-350:       <span class="ruby-value str">'fla'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_FLA</span>,
-351:       <span class="ruby-value str">'xml'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XML</span>,
-352:       <span class="ruby-value str">'html'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_HTML</span>,
-353: 
-354:       <span class="ruby-value str">'css'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_CSS</span>,
-355:       <span class="ruby-value str">'zip'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ZIP</span>,
-356:       <span class="ruby-value str">'rar'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_RAR</span>,
-357:       <span class="ruby-value str">'tgz'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_TGZ</span>,
-358: 
-359:       <span class="ruby-value str">'mp3'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
-360:       <span class="ruby-value str">'wav'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
-361:       <span class="ruby-value str">'ogg'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
-362:       <span class="ruby-value str">'aiff'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
-363:       <span class="ruby-value str">'iso'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ISO</span>,
-364:       <span class="ruby-value str">'sql'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_SQL</span>,
-365:       <span class="ruby-value str">'asf'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ASF</span>,
-366:       <span class="ruby-value str">'wmv'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_WMV</span>
-367:     }
-368: 
-369:     <span class="ruby-identifier">_</span>,<span class="ruby-identifier">ext</span> = <span class="ruby-regexp re">/\.([^\.]+)$/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">filename</span>).<span class="ruby-identifier">to_a</span>
-370: 
-371:     <span class="ruby-identifier">file_type</span> = <span class="ruby-identifier">file_types</span>[<span class="ruby-identifier">ext</span>.<span class="ruby-identifier">downcase</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ext</span>
-372:     <span class="ruby-identifier">file_type</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_UNKNOWN</span>
-373:     <span class="ruby-identifier">file_type</span>
-374:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000387-show-link"><a onclick="toggle('M000387-source'); toggleText('M000387-link'); return false;" href="#" id="M000387-link">Show source...</a></p><div class="source" id="M000387-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 339</span>
+339:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_type_from_filename</span>(<span class="ruby-identifier">filename</span>)
+340:     <span class="ruby-identifier">file_types</span> = { 
+341:       <span class="ruby-value str">'doc'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_DOC</span>, 
+342:       <span class="ruby-value str">'txt'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_TXT</span>,
+343:       <span class="ruby-value str">'xls'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
+344:       <span class="ruby-value str">'sxc'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
+345:       <span class="ruby-value str">'csv'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XLS</span>,
+346:       <span class="ruby-value str">'avi'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
+347:       <span class="ruby-value str">'mpeg'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
+348:       <span class="ruby-value str">'mpg'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AVI</span>,
+349:       <span class="ruby-value str">'mov'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_MOV</span>,
+350:       <span class="ruby-value str">'swf'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_SWF</span>,
+351:       <span class="ruby-value str">'fla'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_FLA</span>,
+352:       <span class="ruby-value str">'xml'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_XML</span>,
+353:       <span class="ruby-value str">'html'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_HTML</span>,
+354: 
+355:       <span class="ruby-value str">'css'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_CSS</span>,
+356:       <span class="ruby-value str">'zip'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ZIP</span>,
+357:       <span class="ruby-value str">'rar'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_RAR</span>,
+358:       <span class="ruby-value str">'tgz'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_TGZ</span>,
+359: 
+360:       <span class="ruby-value str">'mp3'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
+361:       <span class="ruby-value str">'wav'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
+362:       <span class="ruby-value str">'ogg'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
+363:       <span class="ruby-value str">'aiff'</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_AUDIO</span>,
+364:       <span class="ruby-value str">'iso'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ISO</span>,
+365:       <span class="ruby-value str">'sql'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_SQL</span>,
+366:       <span class="ruby-value str">'asf'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_ASF</span>,
+367:       <span class="ruby-value str">'wmv'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_WMV</span>
+368:     }
+369: 
+370:     <span class="ruby-identifier">_</span>,<span class="ruby-identifier">ext</span> = <span class="ruby-regexp re">/\.([^\.]+)$/</span>.<span class="ruby-identifier">match</span>(<span class="ruby-identifier">filename</span>).<span class="ruby-identifier">to_a</span>
+371: 
+372:     <span class="ruby-identifier">file_type</span> = <span class="ruby-identifier">file_types</span>[<span class="ruby-identifier">ext</span>.<span class="ruby-identifier">downcase</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">ext</span>
+373:     <span class="ruby-identifier">file_type</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_UNKNOWN</span>
+374:     <span class="ruby-identifier">file_type</span>
+375:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

@@ -331,28 +331,49 @@ Module: ReportsHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000607'>
+<a href='#M000688'>
+client_select<br/>
+</a>
+
+
+
+
+<a href='#M000686'>
 display_select<br/>
 </a>
 
 
 
 
-<a href='#M000608'>
+<a href='#M000689'>
+project_select<br/>
+</a>
+
+
+
+
+<a href='#M000687'>
 show_advanced?<br/>
 </a>
 
 
 
 
-<a href='#M000605'>
+<a href='#M000690'>
+sorted_projects<br/>
+</a>
+
+
+
+
+<a href='#M000684'>
 total_amount_worked<br/>
 </a>
 
 
 
 
-<a href='#M000606'>
+<a href='#M000685'>
 total_task_worked<br/>
 </a>
 
@@ -375,9 +396,40 @@ total_task_worked<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000607"><br/></a>
+<a class="small" name="M000688"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000607'>
+<a href='#M000688'>
+
+
+client_select
+
+()
+
+</a>
+</h3>
+<p>
+Returns the html to display a select tag to choose the client/customer to
+use for reporting.
+</p>
+
+<p class="source_link" id="M000688-show-link"><a onclick="toggle('M000688-source'); toggleText('M000688-link'); return false;" href="#" id="M000688-link">Show source...</a></p><div class="source" id="M000688-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 71</span>
+71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">client_select</span>
+72:     <span class="ruby-identifier">options</span> = []
+73:     <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Client]'</span>), <span class="ruby-value str">'0'</span>]
+74:     <span class="ruby-identifier">options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">sorted_projects</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> 
+75:       [ <span class="ruby-identifier">p</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">p</span>.<span class="ruby-identifier">customer</span>.<span class="ruby-identifier">id</span> ]
+76:     <span class="ruby-keyword kw">end</span>
+77:     <span class="ruby-identifier">options</span>.<span class="ruby-identifier">uniq!</span>
+78: 
+79:     <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>][<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>]
+80:     
+81:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">select</span>(<span class="ruby-value str">&quot;report&quot;</span>, <span class="ruby-value str">&quot;client_id&quot;</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">:selected</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">selected</span>) 
+82:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000686"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000686'>
 
 
 display_select
@@ -391,7 +443,7 @@ Returns a select tag to use to choose what to display in the report. name
 should probably be &quot;rows&quot; or &quot;columns&quot;
 </p>
 
-<p class="source_link" id="M000607-show-link"><a onclick="toggle('M000607-source'); toggleText('M000607-link'); return false;" href="#" id="M000607-link">Show source...</a></p><div class="source" id="M000607-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 25</span>
+<p class="source_link" id="M000686-show-link"><a onclick="toggle('M000686-source'); toggleText('M000686-link'); return false;" href="#" id="M000686-link">Show source...</a></p><div class="source" id="M000686-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 25</span>
 25:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">display_select</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">default_selected</span>)
 26:     <span class="ruby-identifier">options</span> = [
 27:                [<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Tasks&quot;</span>), <span class="ruby-value str">&quot;1&quot;</span>],
@@ -416,9 +468,64 @@ should probably be &quot;rows&quot; or &quot;columns&quot;
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000608"><br/></a>
+<a class="small" name="M000689"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000608'>
+<a href='#M000689'>
+
+
+project_select
+
+()
+
+</a>
+</h3>
+<p>
+Returns the html to display a select tag to choose the project to use for
+reporting.
+</p>
+
+<p class="source_link" id="M000689-show-link"><a onclick="toggle('M000689-source'); toggleText('M000689-link'); return false;" href="#" id="M000689-link">Show source...</a></p><div class="source" id="M000689-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 88</span>
+ 88:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">project_select</span>
+ 89:     <span class="ruby-identifier">options</span> = []
+ 90:     <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active Projects]'</span>), <span class="ruby-value">0</span> ]
+ 91:     <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>), <span class="ruby-value">-1</span> ]
+ 92:     <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Closed Projects]'</span>), <span class="ruby-value">-2</span> ]
+ 93: 
+ 94:     <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>][<span class="ruby-identifier">:project_id</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>]
+ 95:     <span class="ruby-identifier">selected</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">selected_project</span>
+ 96:     <span class="ruby-identifier">selected</span> = <span class="ruby-identifier">selected</span>.<span class="ruby-identifier">to_i</span>
+ 97: 
+ 98:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>] <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>][<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+ 99:       <span class="ruby-identifier">customer</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>][<span class="ruby-identifier">:client_id</span>])
+100:       <span class="ruby-identifier">projects</span> = <span class="ruby-identifier">customer</span>.<span class="ruby-identifier">projects</span>
+101:     <span class="ruby-keyword kw">end</span>
+102: 
+103:     <span class="ruby-identifier">projects</span> = <span class="ruby-identifier">sorted_projects</span>(<span class="ruby-identifier">projects</span>)
+104:     <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span>
+105:       <span class="ruby-identifier">options</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-node">&quot;#{ p.customer.name } - #{ p.name }&quot;</span>, <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> ]
+106:     <span class="ruby-keyword kw">end</span>
+107:     
+108:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">select</span>(<span class="ruby-value str">&quot;report&quot;</span>, <span class="ruby-value str">&quot;project_id&quot;</span>, <span class="ruby-identifier">options</span>, <span class="ruby-identifier">:selected</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">selected</span>)
+109: 
+110:    <span class="ruby-comment cmt">#  &lt;% if params[:report] &amp;&amp; params[:report][:client_id].to_i &gt; 0 %&gt;</span>
+111: <span class="ruby-comment cmt">#   &lt;%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1], [_('[Closed Projects]'), -2]] + </span>
+112: <span class="ruby-comment cmt">#               current_user.projects.find(:all, :order =&gt; 'name', :conditions =&gt; [&quot;customer_id = ?&quot;, params[:report][:client_id]] ).collect {|c| [ &quot;#{c.name}&quot;, c.id ] } + </span>
+113: <span class="ruby-comment cmt">#               current_user.completed_projects.find(:all, :order =&gt; 'name', :conditions =&gt; [&quot;customer_id = ?&quot;, params[:report][:client_id]] ).collect {|c| [ &quot;#{c.name} - #{_'Completed'}&quot;, c.id ] }, </span>
+114: <span class="ruby-comment cmt">#               :selected =&gt; ((params[:report] &amp;&amp; params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %&gt;&lt;br/&gt;</span>
+115: <span class="ruby-comment cmt"># &lt;% else %&gt;</span>
+116: <span class="ruby-comment cmt">#   &lt;%= select 'report', 'project_id', [[_('[Active Projects]'), 0], [_('[Any Project]'), -1], [_('[Closed Projects]'), -2]] + </span>
+117: <span class="ruby-comment cmt">#               current_user.projects.find(:all, :order =&gt; 'name').collect {|c| [ &quot;#{c.name} / #{c.customer.name == 'Internal' ? current_user.company.name : c.customer.name }&quot;, c.id ] } + </span>
+118: <span class="ruby-comment cmt">#                 current_user.completed_projects.find(:all, :order =&gt; 'name').collect {|c| [ &quot;#{c.name} / #{c.customer.name == 'Internal' ? current_user.company.name : c.customer.name }&quot; + &quot; - #{_'Completed'}&quot;, c.id ] }, </span>
+119: <span class="ruby-comment cmt">#               :selected =&gt; ((params[:report] &amp;&amp; params[:report][:project_id]) ? params[:report][:project_id].to_i : session[:filter_project].to_i) %&gt;&lt;br/&gt;</span>
+120: 
+121: 
+122: <span class="ruby-comment cmt">#   end</span>
+123:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000687"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000687'>
 
 
 show_advanced?
@@ -432,7 +539,7 @@ Returns true if the advances section of the report config section should be
 shown.
 </p>
 
-<p class="source_link" id="M000608-show-link"><a onclick="toggle('M000608-source'); toggleText('M000608-link'); return false;" href="#" id="M000608-link">Show source...</a></p><div class="source" id="M000608-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 52</span>
+<p class="source_link" id="M000687-show-link"><a onclick="toggle('M000687-source'); toggleText('M000687-link'); return false;" href="#" id="M000687-link">Show source...</a></p><div class="source" id="M000687-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 52</span>
 52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_advanced?</span>
 53:     <span class="ruby-identifier">show</span> = <span class="ruby-keyword kw">false</span>
 54:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:report</span>]
@@ -449,9 +556,43 @@ shown.
 65:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000605"><br/></a>
+<a class="small" name="M000690"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000605'>
+<a href='#M000690'>
+
+
+sorted_projects
+
+(projects = nil)
+
+</a>
+</h3>
+<p>
+Returns an array of projects sorted by name. Active projects will be listed
+first (in name order), then completed projects listed next (in name order
+there too). Pass in an array of projects to only sort those projects.
+Otherwise all projects for the current_user will be returned.
+</p>
+
+<p class="source_link" id="M000690-show-link"><a onclick="toggle('M000690-source'); toggleText('M000690-link'); return false;" href="#" id="M000690-link">Show source...</a></p><div class="source" id="M000690-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 132</span>
+132:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sorted_projects</span>(<span class="ruby-identifier">projects</span> = <span class="ruby-keyword kw">nil</span>)
+133:     <span class="ruby-identifier">to_sort</span> = <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-value">? </span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">projects</span>
+134: 
+135:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">to_sort</span>.<span class="ruby-identifier">sort</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p1</span>, <span class="ruby-identifier">p2</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p1</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">p2</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> }
+136: 
+137:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span>
+138:       <span class="ruby-identifier">res</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">sort</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">p1</span>, <span class="ruby-identifier">p2</span><span class="ruby-operator">|</span>
+139:         <span class="ruby-identifier">p1</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">p2</span>.<span class="ruby-identifier">name</span>.<span class="ruby-identifier">downcase</span>
+140:       <span class="ruby-keyword kw">end</span>
+141:     <span class="ruby-keyword kw">end</span>
+142:     
+143:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
+144:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000684"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000684'>
 
 
 total_amount_worked
@@ -461,7 +602,7 @@ total_amount_worked
 </a>
 </h3>
 
-<p class="source_link" id="M000605-show-link"><a onclick="toggle('M000605-source'); toggleText('M000605-link'); return false;" href="#" id="M000605-link">Show source...</a></p><div class="source" id="M000605-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 3</span>
+<p class="source_link" id="M000684-show-link"><a onclick="toggle('M000684-source'); toggleText('M000684-link'); return false;" href="#" id="M000684-link">Show source...</a></p><div class="source" id="M000684-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_amount_worked</span>(<span class="ruby-identifier">logs</span>)
 4:     <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
 5:     <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">log</span> <span class="ruby-keyword kw">in</span> <span class="ruby-identifier">logs</span> 
@@ -471,9 +612,9 @@ total_amount_worked
 9:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000606"><br/></a>
+<a class="small" name="M000685"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000606'>
+<a href='#M000685'>
 
 
 total_task_worked
@@ -483,7 +624,7 @@ total_task_worked
 </a>
 </h3>
 
-<p class="source_link" id="M000606-show-link"><a onclick="toggle('M000606-source'); toggleText('M000606-link'); return false;" href="#" id="M000606-link">Show source...</a></p><div class="source" id="M000606-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 11</span>
+<p class="source_link" id="M000685-show-link"><a onclick="toggle('M000685-source'); toggleText('M000685-link'); return false;" href="#" id="M000685-link">Show source...</a></p><div class="source" id="M000685-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/reports_helper.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">total_task_worked</span>(<span class="ruby-identifier">logs</span>, <span class="ruby-identifier">task_id</span>)
 12:     <span class="ruby-identifier">total</span> = <span class="ruby-value">0</span>
 13:     <span class="ruby-keyword kw">for</span> <span class="ruby-identifier">log</span> <span class="ruby-keyword kw">in</span> <span class="ruby-identifier">logs</span>
