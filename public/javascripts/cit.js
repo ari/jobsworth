@@ -520,3 +520,19 @@ function showPassword(link, url) {
     var passwordDiv = link.prev(".password");
     passwordDiv.load(url);
 }
+
+/*
+  Checkboxes for nested forms cause trouble in params parsing 
+  when index => nil. This function fixes the problem by disabling the
+  form element that is not in use.
+*/
+function nestedCheckboxChanged(checkbox) {
+    checkbox = jQuery(checkbox);
+    var checked = checkbox.attr("checked");
+    
+    var hiddenField = checkbox.next();
+    if (hiddenField.attr("name") == checkbox.attr("name")) {
+	hiddenField.attr("disabled", checked);
+	console.log(hiddenField);
+    }
+}
