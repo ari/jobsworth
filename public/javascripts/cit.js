@@ -400,6 +400,8 @@ jQuery(document).ready(function() {
 	};
 	jQuery(elem).multiSelect(options, elem.onchange);
     }
+
+    fixNestedCheckboxes();
 });
 
 /*
@@ -519,4 +521,33 @@ function showPassword(link, url) {
 
     var passwordDiv = link.prev(".password");
     passwordDiv.load(url);
+}
+
+/*
+  Checkboxes for nested forms cause trouble in params parsing 
+  when index => nil. This function fixes the problem by disabling the
+  form element that is not in use.
+*/
+function nestedCheckboxChanged(checkbox) {
+    checkbox = jQuery(checkbox);
+    var checked = checkbox.attr("checked");
+    
+    var hiddenField = checkbox.next();
+    if (hiddenField.attr("name") == checkbox.attr("name")) {
+	hiddenField.attr("disabled", checked);
+    }
+}
+
+/*
+    The function nestedCheckboxChanged will fix any 
+    checkboxes that are changed, but this function should be called 
+    on page load to fix any already in the page (generally because they
+    failed a validation.
+*/
+function fixNestedCheckboxes() {
+    var checkboxes = jQuery(".nested_checkbox");
+    for (var i = 0; i < checkboxes.length; i++) {
+	var cb = checkboxes[i];
+	nestedCheckboxChanged(cb) 
+    }
 }

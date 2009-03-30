@@ -674,6 +674,27 @@ END_OF_HTML
     return title
   end
 
+  ###
+  # Returns the html to show a choice field for field called name.
+  # Ideally, this would use a checkbox, but checkboxes seem to be 
+  # confusing the arrays in the params that rails gets, so using
+  # a select for now.
+  ###
+  def nested_boolean_choice_field(form, name, attribute, opts = {})
+    on_change = (attribute.new_record? ? "nestedCheckboxChanged(this)" : nil)
+    class_name = (attribute.new_record? ? "nested_checkbox" : nil)
+
+    if opts[:onChange] and on_change
+      on_change += "; #{ opts[:onChange] }"
+    end
+
+    opts[:class] = "#{ opts[:class] }  #{ class_name }"
+
+    options = opts.merge({ :onChange => on_change, :index => attribute.id })
+    return form.check_box(name, options)
+  end
+
 end
+
 
 
