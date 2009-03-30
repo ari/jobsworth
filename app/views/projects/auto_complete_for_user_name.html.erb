@@ -1,8 +1,9 @@
 <ul>
   <% @users.each do |u| %>
   <li>
-    [#<span class="complete_value"><%= u.id %></span>]
+    <span style="display: none" class="complete_value"><%= u.id %></span>
     <%= u.name %>
+    (<%= u.company.name if u.company %>)
   </li>
   <% end %>
 </ul>
