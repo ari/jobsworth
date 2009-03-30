@@ -50,6 +50,10 @@ class ResourceTypesController < ApplicationController
   # PUT /resource_types/1.xml
   def update
     @resource_type = current_user.company.resource_types.find(params[:id])
+
+    # need to set type_attributes param when all have been deleted
+    params[:resource_type][:type_attributes] ||= {}
+
     saved = @resource_type.update_attributes(params[:resource_type]) 
     @resource_type.company = current_user.company
     saved &&= @resource_type.save
