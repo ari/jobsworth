@@ -467,7 +467,6 @@ function addAttribute(link) {
 function removeAttribute(link) {
     link = jQuery(link);
     link.parent(".attribute").remove();
-    console.log(link.parent(".attribute"));
 }
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.

@@ -2,6 +2,10 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+30 Mar 2009
+   Resources types can be defined, resources can be added and linked to tasks. There is a new user permission "use_resources" that allows/disallows people to see them. Resource types can only be setup by Administrators.
+   Fix bugs with checkboxes in nested forms. Revert things that were using selects with Yes/No to use checkboxes instead.
+
 28 Mar 2009
     Resources system created. This allows the administrator to define resources types and attributes. Resources can then be created and organised hierarchically.
 
