@@ -18,6 +18,7 @@ class Company < ActiveRecord::Base
   has_many      :views, :dependent => :destroy
   has_many      :resources, :dependent => :destroy
   has_many      :resource_types, :dependent => :destroy
+  has_many      :custom_attributes, :dependent => :destroy
 
 
 #  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/

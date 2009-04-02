@@ -5,9 +5,9 @@ module CustomAttributeMethods
   # the current objects class.
   ###
   def available_custom_attributes
-    CustomAttribute.find(:all, 
-                         :conditions => { :attributable_type => self.class.name },
-                         :order => "position")
+    company.custom_attributes.find(:all, 
+                                   :conditions => { :attributable_type => self.class.name },
+                                   :order => "position")
   end
 
   ###
@@ -49,6 +49,7 @@ module CustomAttributeMethods
 
       # find an existing value
       cav = custom_attribute_values.detect { |v| v.custom_attribute_id == attr_id.to_i }
+      cav = nil if updated.include?(cav)
 
       # create a new one if none found
       cav ||= custom_attribute_values.build(:custom_attribute_id => attr_id)

@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(:version => 20090402033916) do
   end
 
   create_table "custom_attributes", :force => true do |t|
+    t.integer  "company_id"
     t.string   "attributable_type"
     t.string   "display_name"
     t.string   "ldap_attribute_type"
