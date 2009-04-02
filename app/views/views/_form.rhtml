@@ -3,7 +3,6 @@
 <%
   @clients = current_user.projects.collect{ |p| [p.customer.name, p.customer.id] }.uniq.sort
   @projects = current_user.projects.collect {|p| [p.name + " / " + p.customer.name, p.id]}
-  @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id]).collect {|c| [ c.name, c.id.to_s ] }
   @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["project_id IN(#{current_project_ids}) AND completed_at IS NULL"]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
 %>
 
@@ -64,12 +63,10 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
     </select><br/>
   <% end %>
 
-  <% if @users.size > 0 %>
-  <label for="view_filter_user_id"><%=_ 'User' %></label><select name="view[filter_user_id]" id="view_filter_user_id">
-      <% @users = [[_("[Any User]"), "0"],[_("[Active User]"),"-2"],[_("[Unassigned]"), "-1"]] + @users  %>
-      <%= options_for_select @users, @view.filter_user_id.to_s %>
-    </select><br/>
-  <% end %>
+  <label for="user_name"><%=_ "User "%></label>
+  <%= hidden_field_tag("view[filter_user_id]", @view.filter_user_id, :id => "view_fiter_user_id", :class => "auto_complete_user_id") %>
+  <%= text_field_with_auto_complete(:user, :name, { :value => User.find(:first, :conditions => { :id => @view.filter_user_id  }) },
+  	    :after_update_element => "updateUserField") %>
 
   <label for="view_filter_status"><%=_ 'Status' %></label><%= select 'view', 'filter_status', [[_('[Any Status]'), '-1'],[_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3],[_('Invalid'),4],[_('Duplicate'),5], [_('Archived'), -2]], :selected => @view.filter_status %><br/>
 	    <% current_user.company.properties.each do |p| -%>

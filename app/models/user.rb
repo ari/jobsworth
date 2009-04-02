@@ -279,6 +279,13 @@ class User < ActiveRecord::Base
       "/images/presence-offline.png"
     end
   end
+
+  def to_s
+    str = [ name ]
+    str << "(#{ customer.name })" if customer
+
+    str.join(" ")
+  end
   
 
 end

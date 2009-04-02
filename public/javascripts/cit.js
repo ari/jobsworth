@@ -461,3 +461,20 @@ function addUserToProject(input, li) {
 
     input.value = "";
 }
+
+/*
+ This function adds in the selected value to the previous autocomplete.
+ The autocomplete text field itself will be updated with the user name, and
+ a hidden field directly before the text field will be updated with the user id.
+*/
+function updateUserField(input, li) {
+    li = jQuery(li);
+    input = jQuery(input);
+
+    var id = li.find(".complete_value").text();
+    input.siblings(".auto_complete_user_id").val(id);
+
+    li.find(".complete_value").remove();
+    console.log(li);
+    input.val(li.text());
+}

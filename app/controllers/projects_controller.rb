@@ -279,15 +279,4 @@ class ProjectsController < ApplicationController
                                                :include => [ :customer, :milestones]);
     @completed_projects = current_user.completed_projects.find(:all)
   end
-  
-  def auto_complete_for_user_name
-    text = params[:user]
-    text = text[:name] if text
-
-    @users = []
-    if !text.blank?
-      conds = Search.search_conditions_for(text)
-      @users = current_user.company.users.find(:all, :conditions => conds)
-    end
-  end
 end

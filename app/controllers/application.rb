@@ -426,4 +426,21 @@ class ApplicationController < ActionController::Base
 
     redirect_to(params[:redirect_action])
   end
+
+  
+  ###
+  # Returns the list to use for auto completes for user names.
+  ###
+  def auto_complete_for_user_name
+    text = params[:user]
+    text = text[:name] if text
+
+    @users = []
+    if !text.blank?
+      conds = Search.search_conditions_for(text)
+      @users = current_user.company.users.find(:all, :conditions => conds)
+    end
+
+    render(:partial => "/users/auto_complete_for_user_name")
+  end
 end
