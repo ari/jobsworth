@@ -1,0 +1,11 @@
+<% attrs = CustomAttribute.attributes_for(object) %>
+
+<% if attrs.any? %>
+<fieldset class="basic">
+  <legend><%=_ "Custom Attributes" %></legend>
+  
+  <% attrs.each do |attr| %>
+    <label><%= attr.display_name %></label>
+  <% end %>
+</fieldset>
+<% end %>

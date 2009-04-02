@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  attributable_type: MyString
+  display_name: MyString
+  ldap_attribute_type: MyString
+  mandatory: false
+  multiple: false
+  max_length: 1
+
+two:
+  attributable_type: MyString
+  display_name: MyString
+  ldap_attribute_type: MyString
+  mandatory: false
+  multiple: false
+  max_length: 1

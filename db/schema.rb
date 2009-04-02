@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090318211346) do
+ActiveRecord::Schema.define(:version => 20090402033916) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -62,6 +62,27 @@ ActiveRecord::Schema.define(:version => 20090318211346) do
 
   add_index "companies", ["subdomain"], :name => "companies_subdomain_index", :unique => true
   add_index "companies", ["name"], :name => "companies_name_index"
+
+  create_table "custom_attribute_values", :force => true do |t|
+    t.integer  "custom_attribute_id"
+    t.integer  "attributable_id"
+    t.string   "attributable_type"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "custom_attributes", :force => true do |t|
+    t.string   "attributable_type"
+    t.string   "display_name"
+    t.string   "ldap_attribute_type"
+    t.boolean  "mandatory"
+    t.boolean  "multiple"
+    t.integer  "max_length"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "customers", :force => true do |t|
     t.integer  "company_id",                   :default => 0,  :null => false
@@ -632,6 +653,7 @@ ActiveRecord::Schema.define(:version => 20090318211346) do
     t.boolean  "show_type_icons",                          :default => true
     t.boolean  "receive_own_notifications",                :default => true
     t.boolean  "use_resources"
+    t.integer  "customer_id"
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"
