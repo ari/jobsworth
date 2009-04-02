@@ -2,6 +2,8 @@
 # ClockingIT.
 
 class Customer < ActiveRecord::Base
+  include CustomAttributeMethods
+
   belongs_to    :company
   has_many      :projects, :order => "name", :dependent => :destroy
   has_many      :work_logs

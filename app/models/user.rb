@@ -1,6 +1,7 @@
 # A user from a company
 
 class User < ActiveRecord::Base
+  include CustomAttributeMethods
 
   require_dependency 'digest/md5'
 
