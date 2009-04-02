@@ -10,4 +10,6 @@
 <p><label for="customer_css"><%=_ 'Client CSS' %></label><%= text_area 'customer', 'css'  %></p>
 <br />
 <!--[eoform:customer]-->
+<%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>
+
 
