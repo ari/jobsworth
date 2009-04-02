@@ -1,11 +1,17 @@
-<% attrs = object.available_custom_attributes %>
+<% values = object.all_custom_attribute_values %>
 
-<% if attrs.any? %>
+<% if values.any? %>
 <fieldset class="basic">
   <legend><%=_ "Custom Attributes" %></legend>
   
-  <% attrs.each do |attr| %>
-    <label><%= attr.display_name %></label>
+  <% values.each do |value| %>
+    <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
+    <% fields_for(prefix, value) do |f| %>
+      <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
+
+      <label><%= value.custom_attribute.display_name %></label>
+      <%= f.text_field(:value, :index => nil) %>
+    <% end %>
   <% end %>
 </fieldset>
 <% end %>
