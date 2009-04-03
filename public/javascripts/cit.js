@@ -479,6 +479,7 @@ function updateUserField(input, li) {
     li.find(".complete_value").remove();
     console.log(li);
     input.val(li.text());
+}
 
 /*
   Requests the available attributes for the given resource type
