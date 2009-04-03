@@ -1,10 +1,6 @@
 <% values = object.all_custom_attribute_values %>
 
-<% if values.any? %>
-<fieldset class="basic">
-  <legend><%=_ "Custom Attributes" %></legend>
-  
-  <% values.each do |value| %>
+<% values.each do |value| %>
   <div class="attribute">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
     <% fields_for(prefix, value) do |f| %>
@@ -17,6 +13,4 @@
     
     <br clear="both" />
   </div>
-  <% end %>
-</fieldset>
 <% end %>

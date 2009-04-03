@@ -3,8 +3,6 @@
 <!--[form:user]-->
 <%= render :partial => "user_information" %>
 
-<%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
-
 <fieldset class="basic">
 <legend><%=_ 'Options' %></legend>
 <label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %><br/>

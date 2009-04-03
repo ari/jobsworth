@@ -13,4 +13,6 @@
 <% if @user.autologin && !@user.autologin.empty? %>
 <label><%=_ 'Widget Key' %></label><div style="float:left;margin-top:3px;"><%= @user.autologin %></div><br/>
 <% end %>
+
+<%= render(:partial => "/common/custom_attributes", :locals => { :object => @user }) %>
 </fieldset>

@@ -4,7 +4,8 @@
       <td class="page_header" colspan="5">
 	<div style="float:left;"><%=_ 'Properties' %></div>
 	<div style="float:right;padding-top:0.1em;">
-	  <%= link_to 'New Property', new_property_path %>
+	  <%= link_to(_("Custom Attributes"), :controller => "custom_attributes", :action => "index")  if current_user.admin? %>
+	  <%= link_to(_("New Property"), new_property_path) %>
 	</div>
       </td>
     </tr>
