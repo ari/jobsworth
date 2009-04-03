@@ -9,19 +9,39 @@ class CustomAttributesController < ApplicationController
   end
 
   def edit
-    find_params = { 
-      :order => "position", 
-      :conditions => { :attributable_type => params[:type] } 
-    }
-
-    @attributes = current_user.company.custom_attributes.find(:all, find_params)
+    @attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
   end
 
   def update
-    
+    update_existing_attributes(params) if params[:custom_attributes]
+    create_new_attributes(params) if params[:new_custom_attributes]
+
+    flash[:notice] = _("Custom attributes updated")
+    redirect_to(:action => "edit", :type => params[:type])
   end
 
   private
+
+  def update_existing_attributes(params)
+    attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
+
+    updated = []
+    params[:custom_attributes].each do |id, values|
+      attr = attributes.detect { |ca| ca.id == id.to_i }
+      updated << attr
+
+      attr.update_attributes(values)
+    end
+    missing = attributes - updated
+    missing.each { |ca| ca.destroy }
+  end
+
+  def create_new_attributes(params)
+    params[:new_custom_attributes].each do |values|
+      values[:attributable_type] = params[:type]
+      current_user.company.custom_attributes.create(values)
+    end
+  end
 
   def check_permission
     if !current_user.admin?
