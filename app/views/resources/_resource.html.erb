@@ -1,0 +1,12 @@
+<% 
+   style = "margin-left: #{ depth * 24 }px" 
+   class_name = depth > 0 ? "child depth_#{ depth }" : ""
+%>
+
+<li class="<%= class_name %>" style="<%= style %>">
+  <%= link_to resource.name, edit_resource_path(resource) %>
+</li>
+<% child_resources(resource, @resources).each do |r| %>
+  <%= render(:partial => "resource", 
+  :locals => { :resource => r, :depth => depth + 1 }) %>
+<% end %>

@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
   has_many      :work_logs, :dependent => :destroy
   has_many      :project_files, :dependent => :destroy
   has_many      :project_folders, :dependent => :destroy
-  has_many      :milestones, :dependent => :destroy
+  has_many      :milestones, :dependent => :destroy, :order => "due_at asc, lower(name) asc"
   has_many      :forums, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
 

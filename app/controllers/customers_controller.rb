@@ -41,7 +41,7 @@ class CustomersController < ApplicationController
   end
 
   def new
-    @customer = Customer.new
+    @customer = current_user.company.customers.new
   end
 
   def create

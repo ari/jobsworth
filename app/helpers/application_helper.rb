@@ -584,6 +584,58 @@ END_OF_HTML
     return res
   end
 
+  ###
+  # Returns a submit tag suitable for the given object.
+  # (Create or Update)"
+  ###
+  def cit_submit_tag(object)
+    text = object.new_record? ? _("Create") : _("Update")
+    submit_tag(text, :class => 'nolabel')
+  end
+
+  ###
+  # Returns an element to use a handle for sorting the given
+  # object.
+  ###
+  def sortable_handle_tag(object)
+    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => "handle")
+
+    object.new_record? ? "" : image
+  end
+
+  ###
+  # Returns an element that can be used to remove the nearest
+  # li from the page. 
+  ###
+  def link_to_remove_li
+    image = image_tag("cross_small.png", :border => 0, 
+                      :alt => "#{ _("Remove") }")
+    link_to_function(image, '$(this).up("li").remove();')
+  end
+
+  ###
+  # Returns the html class to use for the resources tab menu.
+  ###
+  def resource_class
+    name = controller.controller_name
+    return "active" if name == "resources"
+  end
+
+  ###
+  # Returns the html to use to display a filter for the given 
+  # 
+  ###
+  def filter_for(meth, values, selected)
+    label = meth.to_s.humanize.titleize
+    default = _('Any %s', label)
+    values.unshift([ default, "" ])
+
+    select_tag("filter[#{ meth }][]", options_for_select(values, selected),
+               { :multiple => true ,
+                 :class => "multiselect",
+                 :onchange => "$('filter_form').submit();"
+               })
+  end
 
   ###
   # Returns the project id that should be selected based on the current 
@@ -622,6 +674,70 @@ END_OF_HTML
                     :prev_label => '&laquo; ' + _('Previous')
                   })
   end
+
+    ###
+  # Returns the title for the given log. If the log has no title,
+  # creates a sensible one.
+  # If the log has a target, tries to link to that targets page.
+  ###
+  def log_title_for(log)
+    title = log.title
+    title ||= "#{ log.target.class.name.humanize } - #{ log.target }"
+
+    if log.target and log.target.respond_to?(:to_url)
+      title = link_to(title, log.target.to_url)
+    end
+
+    return title
+  end
+
+  ###
+  # Returns the html to show a choice field for field called name.
+  # Ideally, this would use a checkbox, but checkboxes seem to be 
+  # confusing the arrays in the params that rails gets, so using
+  # a select for now.
+  ###
+  def nested_boolean_choice_field(form, name, attribute, opts = {})
+    on_change = (attribute.new_record? ? "nestedCheckboxChanged(this)" : nil)
+    class_name = (attribute.new_record? ? "nested_checkbox" : nil)
+
+    if opts[:onChange] and on_change
+      on_change += "; #{ opts[:onChange] }"
+    end
+
+    opts[:class] = "#{ opts[:class] }  #{ class_name }"
+
+    options = opts.merge({ :onChange => on_change, :index => attribute.id })
+    return form.check_box(name, options)
+  end
+
+  ###
+  # Returns the html to display add/remove links for the given attribute value.
+  # If the value isn't a multi type, returns nothing.
+  ###
+  def multi_links(custom_attribute_value)
+    res = ""
+    value = custom_attribute_value
+    attr = value.custom_attribute
+
+    if attr.multiple?
+      same_type = (attr == @last_type)
+      @last_type = attr
+
+      add_style = same_type ? "display: none" : ""
+      remove_style = same_type ? "" : "display: none;"
+      
+      res += link_to_function(_("Add another"), "addAttribute(this)", 
+                                :class => "add_attribute", 
+                                :style => add_style) 
+      res += link_to_function(_("Remove"), "removeAttribute(this)", 
+                              :class => "remove_attribute", 
+                              :style => remove_style)
+    end
+
+    return res
+  end
 end
+
 
 

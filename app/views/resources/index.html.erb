@@ -1,0 +1,23 @@
+<div class="page_header">
+  <%= link_to _("New resource"), new_resource_path %>
+
+  <%= _"Resources" %>
+</div>
+
+<fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+  <legend><%= _'Filters' %></legend>
+  
+  <form id="filter_form">
+    <%= hidden_field_tag "filter[filtering]", "true" %>
+    <%= customer_filter %>
+    <%= resource_type_filter %>
+  </form>
+</fieldset>
+
+<div class="resources">
+  <ul>
+    <% resources_without_parents(@resources).each do |r| %>
+    <%= render(:partial => "resource", :locals => { :resource => r, :depth => 0 }) %>
+    <% end %> 
+  </ul>
+</dev>

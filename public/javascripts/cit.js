@@ -400,6 +400,8 @@ jQuery(document).ready(function() {
 	};
 	jQuery(elem).multiSelect(options, elem.onchange);
     }
+
+    fixNestedCheckboxes();
 });
 
 /*
@@ -477,4 +479,134 @@ function updateUserField(input, li) {
     li.find(".complete_value").remove();
     console.log(li);
     input.val(li.text());
+
+/*
+  Requests the available attributes for the given resource type
+  and updates the page with the returned values.
+*/
+function updateResourceAttributes(select) {
+    select = jQuery(select)
+    var typeId = select.val();
+    var target = jQuery("#attributes");
+
+    if (typeId == "") {
+	target.html("");
+    }
+    else {
+	var url = "/resources/attributes/?type_id=" + typeId;
+	jQuery.get(url, function(data) {
+	    target.html(data);
+	});
+    }
+}
+
+/*
+  Adds a new field to allow people to have multiple values
+  for resource attributes.
+*/
+function addAttribute(link) {
+    link = jQuery(link);
+    var origAttribute = link.parent(".attribute");
+
+    var newAttribute = origAttribute.clone();
+    newAttribute.find(".value").val("");
+    newAttribute.find("a.add_attribute").remove();
+    newAttribute.find(".attr_id").remove();
+
+    var removeLink = newAttribute.find("a.remove_attribute")
+    // for some reason this onclick needs to be manually set after cloning
+    removeLink.click(function() { removeAttribute(removeLink); })
+    removeLink.show();
+
+    origAttribute.after(newAttribute);
+}
+
+/*
+  Removes the resource attribute to the link
+*/
+function removeAttribute(link) {
+    link = jQuery(link);
+    link.parent(".attribute").remove();
+}
+// I'm not sure why, but we seem to need to add these for the event
+// to fire - onclick doesn't seem to work.
+jQuery(document).ready(function() {
+    jQuery(".remove_attribute").click(function(evt) { 
+	removeAttribute(evt.target); 
+    });
+});
+
+
+/*
+  Adds the selected dependency to the task currently being edited.
+  The task must be saved for the dependency to be permanently linked.
+*/
+function addDependencyToTask(input, li) {
+    var id = jQuery(li).find(".complete_value").text();
+    jQuery(input).val("");
+
+    jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
+	jQuery("#task_dependencies .dependencies").append(data);
+    });
+}
+/*
+  Adds the selected resource to the task currently being edited.
+  The task must be saved for the resource to be permanently linked.
+*/
+function addResourceToTask(input, li) {
+    var id = jQuery(li).find(".complete_value").text();
+    jQuery(input).val("");
+
+    jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
+	jQuery("#task_resources").append(data);
+    });
+}
+/*
+  Removes the link from resource to task
+*/
+function removeTaskResource(link) {
+    link = jQuery(link);
+    var parent = link.parent(".resource_no");
+    parent.remove();
+}
+
+/*
+  Retrieves the password from the given url, and updated
+  the nearest password div with the returned value.
+*/
+function showPassword(link, url) {
+    link = jQuery(link);
+    link.hide();
+
+    var passwordDiv = link.prev(".password");
+    passwordDiv.load(url);
+}
+
+/*
+  Checkboxes for nested forms cause trouble in params parsing 
+  when index => nil. This function fixes the problem by disabling the
+  form element that is not in use.
+*/
+function nestedCheckboxChanged(checkbox) {
+    checkbox = jQuery(checkbox);
+    var checked = checkbox.attr("checked");
+    
+    var hiddenField = checkbox.next();
+    if (hiddenField.attr("name") == checkbox.attr("name")) {
+	hiddenField.attr("disabled", checked);
+    }
+}
+
+/*
+    The function nestedCheckboxChanged will fix any 
+    checkboxes that are changed, but this function should be called 
+    on page load to fix any already in the page (generally because they
+    failed a validation.
+*/
+function fixNestedCheckboxes() {
+    var checkboxes = jQuery(".nested_checkbox");
+    for (var i = 0; i < checkboxes.length; i++) {
+	var cb = checkboxes[i];
+	nestedCheckboxChanged(cb) 
+    }
 }
