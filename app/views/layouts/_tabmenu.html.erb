@@ -125,6 +125,7 @@
        <li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
        <li><%= link_to _('Custom Properties'), properties_path %></li>
        <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
+       <li><%= link_to(_("Custom Attributes"), :controller => "custom_attributes", :action => "index") %></li>
      </ul>
   <% end %>
   </li>
