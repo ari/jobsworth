@@ -43,4 +43,5 @@ class CustomAttributeMethodsTests < Test::Unit::TestCase
     assert_equal 1, user.custom_attribute_values.length
     assert_equal "Test value 1", user.custom_attribute_values.first.value
   end
+
 end

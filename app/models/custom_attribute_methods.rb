@@ -24,7 +24,9 @@ module CustomAttributeMethods
 
     available_custom_attributes.each do |attr|
       conds = { :attributable_type => self.class.name, :attributable_id => self.id }
-      existing = attr.custom_attribute_values.find(:all, :conditions => conds)
+      existing = custom_attribute_values.select do |cav|
+        cav.custom_attribute == attr
+      end
 
       if existing.empty?
         res << attr.custom_attribute_values.build(conds.merge(:custom_attribute_id => attr.id))
@@ -64,5 +66,22 @@ module CustomAttributeMethods
     # anything still in existing_values hasn't been updated, so delete.
     missing = custom_attribute_values - updated
     custom_attribute_values.delete(missing)
+  end
+
+  def validate
+    valid = true
+
+    invalid = custom_attribute_values.select { |cav| !cav.valid? }
+    if invalid.any?
+      valid = false
+
+      invalid.each do |cav|
+        cav.errors.each do |attr, err|
+          errors.add_to_base(err)
+        end
+      end
+    end
+
+    return valid
   end
 end
