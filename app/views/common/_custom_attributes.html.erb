@@ -5,13 +5,18 @@
   <legend><%=_ "Custom Attributes" %></legend>
   
   <% values.each do |value| %>
+  <div class="attribute">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
     <% fields_for(prefix, value) do |f| %>
       <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
 
       <label><%= value.custom_attribute.display_name %></label>
       <%= f.text_field(:value, :index => nil) %>
+      <%= multi_links(value) %>
     <% end %>
+    
+    <br clear="both" />
+  </div>
   <% end %>
 </fieldset>
 <% end %>

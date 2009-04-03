@@ -699,6 +699,32 @@ END_OF_HTML
     return form.check_box(name, options)
   end
 
+  ###
+  # Returns the html to display add/remove links for the given attribute value.
+  # If the value isn't a multi type, returns nothing.
+  ###
+  def multi_links(custom_attribute_value)
+    res = ""
+    value = custom_attribute_value
+    attr = value.custom_attribute
+
+    if attr.multiple?
+      same_type = (attr == @last_type)
+      @last_type = attr
+
+      add_style = same_type ? "display: none" : ""
+      remove_style = same_type ? "" : "display: none;"
+      
+      res += link_to_function(_("Add another"), "addAttribute(this)", 
+                                :class => "add_attribute", 
+                                :style => add_style) 
+      res += link_to_function(_("Remove"), "removeAttribute(this)", 
+                              :class => "remove_attribute", 
+                              :style => remove_style)
+    end
+
+    return res
+  end
 end
 
 
