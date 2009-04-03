@@ -611,3 +611,21 @@ function fixNestedCheckboxes() {
 	nestedCheckboxChanged(cb) 
     }
 }
+
+/*
+ Toggles the visiblity of the element next to sender.
+ Updates the text of sender to "Show" or "Hide" as appropriate.
+*/
+function togglePreviousElement(sender) {
+    sender = jQuery(sender);
+    var toggle = sender.prev();
+
+    if (toggle.is(':visible')) {
+	sender.text("Show");
+    }
+    else {
+	sender.text("Hide");
+    }
+
+    toggle.toggle();
+}
