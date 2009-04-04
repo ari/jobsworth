@@ -311,6 +311,7 @@ Localization.define('ko_KO') do |l|
   l.store "Improvement", "개선 사항" # 심마로
   l.store "In Progress", "진행중" # 심마로
   l.store "Information", "정보" # 심마로
+  l.store "Let me know", "Let me know"
   l.store "New Feature", "새 기능" # 심마로
   l.store "New Project", "새 프로젝트" # 심마로
   l.store "Preferences", "설정" # 심마로
@@ -335,10 +336,10 @@ Localization.define('ko_KO') do |l|
   l.store "Last Updated", "마지막 업데이트" # 심마로
   l.store "Leave Closed", "완료됨으로 둠" # 심마로
   l.store "Low Priority", "낮은 우선순위" # 심마로
-  l.store "Notify", "이름 / 이메일" # 심마로
+  l.store "More filters", "More filters"
   l.store "Name / Email", "이름 / 이메일" # 심마로
   l.store "Newest Tasks", "최신 작업" # 심마로
-  l.store "Notifications", "알림" # 심마로
+  l.store "Notification", "알림" # 심마로
   l.store "Participants", "참가자" # 심마로
   l.store "Plan / GANTT", "계획 / 간트차트" # 심마로
   l.store "Recent Posts", "최근 포스트" # 심마로
@@ -470,7 +471,7 @@ Localization.define('ko_KO') do |l|
   l.store "Send Notifications", "알림 보내기" # 심마로
   l.store "less than a minute", "1분 이하" # 심마로
   l.store "Can Create Projects", "프로젝트 생성 가능" # 심마로
-  l.store "Remove", "알림 제거" # 심마로
+  l.store "Remove notification", "알림 제거" # 심마로
   l.store "Show TaskType Icons", "작업타입 아이콘 보기" # 심마로
   l.store "%d completed project", ["완료된 프로젝트 %d 개", "완료된 프로젝트 %d 개"] # 심마로
   l.store "Find a Google Gadget", "구글 가젯 찾아보기" # 심마로

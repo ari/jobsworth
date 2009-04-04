@@ -323,11 +323,13 @@ Localization.define('eu_ES') do |l|
   l.store "Delete Room", "Gela ezabatu" # Josu Ansola
   l.store "Delete View", "Bista Ezabatu"
   l.store "Description", "Deskribapena"
+  l.store "Edit Client", "Edit Client"
   l.store "End of week", "Aste bukaera" # Josu Ansola
   l.store "Forum Posts", "Forum Posts"
   l.store "Improvement", "Hobekuntza"
   l.store "In Progress", "Hasita"
   l.store "Information", "Informazioa"
+  l.store "Let me know", "Jakinarazi iezadazu"
   l.store "Linked from", "Hurrengo orritik erreferentziatuta"
   l.store "New Feature", "Ezaugarri berria"
   l.store "New Project", "Proiektu berria" # Josu Ansola
@@ -356,9 +358,10 @@ Localization.define('eu_ES') do |l|
   l.store "Last Updated", "Azken eguneratzea"
   l.store "Leave Closed", "Itxita utzi"
   l.store "Low Priority", "Low Priority"
-  l.store "Notify", "Name / Email"
+  l.store "More filters", "More filters"
+  l.store "Name / Email", "Name / Email"
   l.store "Newest Tasks", "Ataza berriak"
-  l.store "Notifications", "Jakinarazpen"
+  l.store "Notification", "Jakinarazpen"
   l.store "Notify Users", "Erabiltzaileei jakinarazi"
   l.store "Participants", "Participants"
   l.store "Plan / GANTT", "Plan a/ GANTTa" # Josu Ansola
@@ -497,7 +500,7 @@ Localization.define('eu_ES') do |l|
   l.store "Send Notifications", "Jakinarazpenak Bidali"
   l.store "less than a minute", "minutu bat baino gutxiago"
   l.store "Can Create Projects", "Can Create Projects"
-  l.store "Remove", "Remove notification"
+  l.store "Remove notification", "Remove notification"
   l.store "Restricted Userlist", "Restricted Userlist"
   l.store "Show TaskType Icons", "Show TaskType Icons"
   l.store "[Without Milestone]", "[Zedarri gabe]"

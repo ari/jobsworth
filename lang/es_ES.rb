@@ -308,7 +308,7 @@ Localization.define('es_ES') do |l|
   l.store "Prioritize", "Priorizar"
   l.store "Reassigned", "Reasignado" # Sergio Rael
   l.store "Run Report", "Ver informe"
-  l.store "Save Reply", "Guardar respuesta" # Alejandro Macho-Quevedo
+  l.store "Save Reply", "Enviar Respuesta" # Favio
   l.store "Sub-totals", "Subtotales"
   l.store "This Month", "Este mes"
   l.store "Time Range", "Intervalo de tiempo"
@@ -347,6 +347,7 @@ Localization.define('es_ES') do |l|
   l.store "Improvement", "Mejora"
   l.store "In Progress", "En progreso"
   l.store "Information", "Información"
+  l.store "Let me know", "Házmelo saber"
   l.store "Linked from", "Referenciado desde"
   l.store "New Feature", "Nueva característica"
   l.store "New Project", "Nuevo Proyecto" # Sergio Rael
@@ -377,9 +378,10 @@ Localization.define('es_ES') do |l|
   l.store "Last Updated", "Última Actualización" # Informático
   l.store "Leave Closed", "Dejar cerrada"
   l.store "Low Priority", "Baja Prioridad" # Informático
-  l.store "Notify", "Nombre / E-mail" # Federico
+  l.store "More filters", "Mas filtros" # Alfredo
+  l.store "Name / Email", "Nombre / E-mail" # Federico
   l.store "Newest Tasks", "Tareas +Nuevas" # Informático
-  l.store "Notifications", "Notificación"
+  l.store "Notification", "Notificación"
   l.store "Participants", "Participantes" # darkpollo
   l.store "Plan / GANTT", "Plan / GANTT" # Gumer
   l.store "Recent Posts", "Posts recientes" # Keber
@@ -519,6 +521,7 @@ Localization.define('es_ES') do |l|
   l.store "Complete Milestone", "Completar hito" # Alejandro Macho-Quevedo
   l.store "Completed Projects", "Proyectos terminados"
   l.store "Hide Waiting Tasks", "Ocultar tareas pendientes" # Keber
+  l.store "Invalid start date", "Fecha de inicio invàlida" # musta
   l.store "Last active %s ago", "Ultima vez activo hace %s" # Luis Mendoza
   l.store "Leave as Duplicate", "Dejar como duplicada" # Alejandro Macho-Quevedo
   l.store "Leave as Won't Fix", "Dejar como sin solución" # Alejandro Macho-Quevedo
@@ -532,12 +535,13 @@ Localization.define('es_ES') do |l|
   l.store "Task not worked on", "Tareas en la que no se ha trabajado" # Informático
   l.store "less than a minute", "menos de un minuto"
   l.store "Can Create Projects", "Puede crear proyectos" # Alejandro Macho-Quevedo
-  l.store "Remove", "Quitar notificación" # Jordán
+  l.store "Remove notification", "Quitar notificación" # Jordán
   l.store "Restricted Userlist", "Lista de usuarios restringida" # Alejandro Macho-Quevedo
   l.store "Show TaskType Icons", "Mostrar iconos tipo tarea" # Alejandro Macho-Quevedo
   l.store "[Without Milestone]", "[Sin hito]" # Alejandro Macho-Quevedo
   l.store "%d completed project", ["un proyecto terminado", "%d proyectos terminados"]
   l.store "Completed Milestones", "Hitos completados"
+  l.store "Empty file uploaded.", "Subido fichero en blanco." # JOSE LUIS
   l.store "Find a Google Gadget", "Encontrar un Gadget de Google" # Francisco Benavent
   l.store "Leave as in Progress", "Dejar en progreso" # Alejandro Macho-Quevedo
   l.store "Log entry deleted...", "Entrada de histórico eliminada..."
@@ -614,7 +618,7 @@ Localization.define('es_ES') do |l|
   l.store "Project was successfully created.", "Proyecto creado satisfactoriamente."
   l.store "Project was successfully updated.", "Proyecto modificado satisfactoriamente."
   l.store "Done working on <b>%s</b> for now.", "Trabajado en <b>%s</b> hasta el momento."
-  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
+  l.store "Subscribe to this widgets RSS feed", "Subscríbete al RSS feed de este widget" # Favio
   l.store "You can't delete your own company.", "No puede borrar su propia compañia."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Comentarios? ¿Sugerencias? ¿Ideas? ¿Fallos?"
   l.store "Ignore hidden tasks when scheduling", "Ignore tareas ocultas cuando planifique" # Claudio Covacevich

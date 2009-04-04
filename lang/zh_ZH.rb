@@ -13,7 +13,7 @@ Localization.define('zh_ZH') do |l|
   l.store "CSV", "CSV" # zhoupeng
   l.store "Dec", "十二月" # zhoupeng
   l.store "Due", "预计" # zhoupeng
-  l.store "End", "End"
+  l.store "End", "结束" # weyllor
   l.store "Feb", "二月" # zhoupeng
   l.store "Fri", "星期五" # zhoupeng
   l.store "Jan", "一月" # zhoupeng
@@ -45,11 +45,11 @@ Localization.define('zh_ZH') do |l|
   l.store "July", "七月" # zhoupeng
   l.store "June", "六月" # zhoupeng
   l.store "Left", "左" # zhoupeng
-  l.store "Mine", "Mine"
+  l.store "Mine", "我的" # weyllor
   l.store "Name", "名称" # zhoupeng
   l.store "Next", "下一个" # zhoupeng
   l.store "None", "无" # zhoupeng
-  l.store "Note", "Note"
+  l.store "Note", "笔记" # weyllor
   l.store "Open", "开放" # zhoupeng
   l.store "Read", "读取" # zhoupeng
   l.store "Rows", "行" # zhoupeng
@@ -61,7 +61,7 @@ Localization.define('zh_ZH') do |l|
   l.store "User", "用户" # zhoupeng
   l.store "View", "查看" # zhoupeng
   l.store "Wait", "等待" # zhoupeng
-  l.store "Week", "Week"
+  l.store "Week", "周" # weyllor
   l.store "Wiki", "维基" # zhoupeng
   l.store "Work", "工作" # zhoupeng
   l.store "days", "天" # zhoupeng
@@ -82,6 +82,7 @@ Localization.define('zh_ZH') do |l|
   l.store "Owner", "拥有者" # zhoupeng
   l.store "Pivot", "重点" # zhoupeng
   l.store "Posts", "粘贴" # zhoupeng
+  l.store "Saved", "已保存" # weyllor
   l.store "Start", "开始" # zhoupeng
   l.store "Tasks", "任务" # zhoupeng
   l.store "Title", "标题" # zhoupeng
@@ -172,7 +173,7 @@ Localization.define('zh_ZH') do |l|
   l.store "1:2:3:04", "1:2:3:04" # zhoupeng
   l.store "1w2d3h4m", "1周2天3小时4分钟" # zhoupeng
   l.store "2w 3d 1h", "2周 3天 1小时" # zhoupeng
-  l.store "Any Room", "Any Room"
+  l.store "Any Room", "任何房间" # weyllor
   l.store "Archived", "归档" # zhoupeng
   l.store "Attached", "附件" # zhoupeng
   l.store "Comments", "注释" # zhoupeng
@@ -257,13 +258,14 @@ Localization.define('zh_ZH') do |l|
   l.store "Won't fix", "不会修正" # zhoupeng
   l.store "Work Done", "工作完成" # zhoupeng
   l.store "Yesterday", "昨天" # zhoupeng
-  l.store "_italics_", "_italics_"
+  l.store "_italics_", "_斜体_" # weyllor
   l.store "%d project", ["%d 项目", "%d 项目"] # zhoupeng
   l.store "Activities", "活动" # zhoupeng
   l.store "Assignment", "分配" # zhoupeng
   l.store "Attributes", "属性" # zhoupeng
   l.store "Chat Rooms", "交流屋" # zhoupeng
   l.store "Client CSS", "客户端样式" # zhoupeng
+  l.store "Delete All", "删除所有" # weyllor
   l.store "Depends on", "取决于" # zhoupeng
   l.store "Edit Forum", "编辑论坛" # zhoupeng
   l.store "Last Login", "最后登陆" # zhoupeng
@@ -298,6 +300,7 @@ Localization.define('zh_ZH') do |l|
   l.store "[All Time]", "[全部时间]" # zhoupeng
   l.store "[Any Type]", "[任何类型]" # zhoupeng
   l.store "[Any User]", "[任何用户]" # zhoupeng
+  l.store "started %s", "started %s"
   l.store "1w 2d 3h 4m", "1周 2天 3时 4分" # zhoupeng
   l.store "Assigned To", "被分配给" # zhoupeng
   l.store "Attach file", "附加文件" # zhoupeng
@@ -338,6 +341,7 @@ Localization.define('zh_ZH') do |l|
   l.store "Edit Project", "编辑项目" # zhoupeng
   l.store "Edit Summary", "编辑摘要" # zhoupeng
   l.store "Hide Waiting", "隐藏等待状态" # zhoupeng
+  l.store "Last %d Days", ["Last %d Days", "Last %d Days"]
   l.store "Last Updated", "最近更新" # zhoupeng
   l.store "Leave Closed", "保持关闭" # zhoupeng
   l.store "Low Priority", "低优先级" # zhoupeng
@@ -434,6 +438,7 @@ Localization.define('zh_ZH') do |l|
   l.store "Delete <b>%s</b>", "删除 <b>%s</b>" # zhoupeng
   l.store "Delete Log Entry", "Delete Log Entry"
   l.store "Leave as Invalid", "Leave as Invalid"
+  l.store "Messages from %s", "Messages from %s"
   l.store "Monitoring forum", "Monitoring forum"
   l.store "Open to %s users", "开放给 %s 用户" # zhoupeng
   l.store "Open to everyone", "开放给任何人" # zhoupeng
@@ -493,6 +498,7 @@ Localization.define('zh_ZH') do |l|
   l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "视图 '%s' 已删除" # zhoupeng
   l.store "invite some co-workers", "邀请合作" # zhoupeng
+  l.store "Last %d Completed Tasks", ["Last %d Completed Tasks", "Last %d Completed Tasks"]
   l.store "%d translations updated.", ["%d 翻译被更新", "%d 翻译被更新"] # zhoupeng
   l.store "Company settings updated", "公司设置更新" # zhoupeng
   l.store "Edit milestone <b>%s</b>", "编辑里程碑 <b>%s</b>" # zhoupeng
@@ -513,6 +519,7 @@ Localization.define('zh_ZH') do |l|
   l.store "Cancel working on <b>%s</b>.", "取消工作 <b>%s</b>." # zhoupeng
   l.store "Empty report, log more work!", "Empty report, log more work!"
   l.store "Only show tasks of this type", "只显示此类型任务" # zhoupeng
+  l.store "Really delete whole history?", "Really delete whole history?"
   l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
   l.store "Avatar successfully uploaded.", "Avatar successfully uploaded."
   l.store "Really delete this log entry?", "Really delete this log entry?"

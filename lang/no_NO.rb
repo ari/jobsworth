@@ -374,7 +374,7 @@ Localization.define('no_NO') do |l|
   l.store "More filters", "Flere filter" # Jan Åge Johnsen
   l.store "Name / Email", "Navn / Email" # Erlend Simonsen
   l.store "Newest Tasks", "Nyeste Oppgaver"
-  l.store "Notifications", "Varsling"
+  l.store "Notification", "Varsling"
   l.store "Participants", "Deltakere"
   l.store "Plan / GANTT", "Planlegg / GANTT"
   l.store "Recent Posts", "Siste Innlegg"
@@ -520,7 +520,7 @@ Localization.define('no_NO') do |l|
   l.store "Task not worked on", "Oppgave ikke påbegynt." # Robert Svendsen
   l.store "less than a minute", "mindre enn ett minutt"
   l.store "Can Create Projects", "Kan Opprette Prosjekter" # Ronny Hanssen
-  l.store "Remove", "Fjerne varsling" # Ronny Hanssen
+  l.store "Remove notification", "Fjerne varsling" # Ronny Hanssen
   l.store "Restricted Userlist", "Begrenset Brukerliste"
   l.store "Show TaskType Icons", "Vis Type-ikon for Oppgaver" # Ronny Hanssen
   l.store "[Without Milestone]", "[Uten Milepæl]"

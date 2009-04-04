@@ -342,6 +342,7 @@ Localization.define('sv_SV') do |l|
   l.store "Improvement", "Förbättring"
   l.store "In Progress", "Pågående"
   l.store "Information", "Information" # Daniel Westergren
+  l.store "Let me know", "Berätta för oss"
   l.store "Linked from", "Länkad från"
   l.store "New Feature", "Ny funktion" # Daniel Westergren
   l.store "New Project", "Nytt projekt" # Daniel Westergren
@@ -372,10 +373,10 @@ Localization.define('sv_SV') do |l|
   l.store "Last Updated", "Senaste uppdatering"
   l.store "Leave Closed", "Lämna som stängd" # Daniel Westergren
   l.store "Low Priority", "Låg prioritet" # Daniel Westergren
-  l.store "Notify", "Namn / E-post" # Daniel Westergren
-  l.store "Newest Tasks", "Nyaste Uppgifter"
-  l.store "Notifications", "Meddelande"
   l.store "More filters", "Fler filter" # Daniel Westergren
+  l.store "Name / Email", "Namn / E-post" # Daniel Westergren
+  l.store "Newest Tasks", "Nyaste uppgifter" # Daniel Westergren
+  l.store "Notification", "Meddelande"
   l.store "Participants", "Deltagare" # Daniel Westergren
   l.store "Plan / GANTT", "Plan / GANTT"
   l.store "Recent Posts", "Senaste inlägg" # Daniel Westergren
@@ -524,7 +525,7 @@ Localization.define('sv_SV') do |l|
   l.store "Task not worked on", "Uppgiften ej påbörjad" # Daniel Westergren
   l.store "less than a minute", "mindre än en minut"
   l.store "Can Create Projects", "Kan skapa projekt" # Daniel Westergren
-  l.store "Remove", "Ta bort notifiering" # Daniel Westergren
+  l.store "Remove notification", "Ta bort notifiering" # Daniel Westergren
   l.store "Restricted Userlist", "Begränsad användarlista" # Daniel Westergren
   l.store "Show TaskType Icons", "Show TaskType Icons"
   l.store "[Without Milestone]", "[Utan Milstolpe]"

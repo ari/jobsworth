@@ -343,6 +343,7 @@ Localization.define('pl_PL') do |l|
   l.store "Improvement", "Poprawka"
   l.store "In Progress", "W toku"
   l.store "Information", "Informacja"
+  l.store "Let me know", "Powiadom mnie"
   l.store "Linked from", "Linkowane z" # chester
   l.store "New Feature", "Nowa Cecha"
   l.store "New Project", "Nowy projekt" # GhandaL
@@ -373,9 +374,10 @@ Localization.define('pl_PL') do |l|
   l.store "Last Updated", "Ostatnio zmodyfikowany"
   l.store "Leave Closed", "Pozostaw Zamknięte"
   l.store "Low Priority", "Niski priorytet" # chester
-  l.store "Notify", "Nazwa / Email" # chester
+  l.store "More filters", "Więcej filtrów" # Lukas
+  l.store "Name / Email", "Nazwa / Email" # chester
   l.store "Newest Tasks", "Najnowsze zadania"
-  l.store "Notifications", "Powiadomienie"
+  l.store "Notification", "Powiadomienie"
   l.store "Participants", "Uczestnicy" # chester
   l.store "Plan / GANTT", "Plan / GANTT" # chester
   l.store "Recent Posts", "Ostatnie posty" # chester
@@ -525,8 +527,8 @@ Localization.define('pl_PL') do |l|
   l.store "Task not worked on", "Nie rozpoczęte zadania" # Lukas
   l.store "less than a minute", "mniej niż minuta"
   l.store "Can Create Projects", "Może Tworzyć Projekty" # Marcin H
-  l.store "Remove", "Usuń powiadomienie" # chester
-  l.store "Restricted Userlist", "Restricted Userlist"
+  l.store "Remove notification", "Usuń powiadomienie" # chester
+  l.store "Restricted Userlist", "Ograniczona lista użytkowników" # Lukas
   l.store "Show TaskType Icons", "Pokaż ikony typu zadania" # chester
   l.store "[Without Milestone]", "[Bez Kroków]"
   l.store "%d completed project", ["jeden ukończony projekt", "%d ukończonych projektów"]

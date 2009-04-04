@@ -308,6 +308,7 @@ Localization.define('hu_HU') do |l|
   l.store "Improvement", "Fejlesztés" # Jozsef
   l.store "In Progress", "Folyamatban" # Jozsef
   l.store "Information", "Információ" # Jozsef
+  l.store "Let me know", "Szólj nekem" # Jozsef
   l.store "New Feature", "Új feature" # Jozsef
   l.store "New Project", "Új Projekt" # Jozsef
   l.store "Preferences", "Beállítások" # Jozsef
@@ -331,9 +332,10 @@ Localization.define('hu_HU') do |l|
   l.store "Last Updated", "Utolsó módosítás" # Szabó Dénes
   l.store "Leave Closed", "Zárva tartás" # Szabó Dénes
   l.store "Low Priority", "Alacsony Prioritás" # Jozsef
-  l.store "Notify", "Név / Email" # Jozsef
-  l.store "Notifications", "Jelzések" # Jozsef
+  l.store "More filters", "Még több szűrő" # Szabó Dénes
+  l.store "Name / Email", "Név / Email" # Jozsef
   l.store "Newest Tasks", "Legfrisebb feladatok" # Szabó Dénes
+  l.store "Notification", "Jelzések" # Jozsef
   l.store "Participants", "Résztvevők" # Jozsef
   l.store "Plan / GANTT", "Terv / GANTT" # Jozsef
   l.store "Recent Posts", "Legutóbbi postok" # Jozsef
@@ -463,7 +465,7 @@ Localization.define('hu_HU') do |l|
   l.store "Task not worked on", "Task not worked on"
   l.store "less than a minute", "kevesebb, mint egy perc" # Jozsef
   l.store "Can Create Projects", "Létrehozhat Projektet" # Jozsef
-  l.store "Remove", "Értesítés eltávolítása" # Jozsef
+  l.store "Remove notification", "Értesítés eltávolítása" # Jozsef
   l.store "Show TaskType Icons", "Mutassa a feladatfüggő ikonokat" # Jozsef
   l.store "Completed Milestones", "Befejezett mérföldkövek" # Szabó Dénes
   l.store "Leave as in Progress", "Hagyd a folyamatban" # Szabó Dénes
@@ -499,6 +501,7 @@ Localization.define('hu_HU') do |l|
   l.store "Please always be courteous.", "Mindig légy udvarias." # Jozsef
   l.store "Please configure the widget", "Please configure the widget"
   l.store "Cancel working on <b>%s</b>.", "Cancel working on <b>%s</b>."
+  l.store "Empty report, log more work!", "Empty report, log more work!"
   l.store "Only show tasks of this type", "Csak az ilyen típusu feladatok mutatása" # Istvan DEMETER
   l.store "Resume working on <b>%s</b>.", "Resume working on <b>%s</b>."
   l.store "Avatar successfully uploaded.", "Avatar successfully uploaded."

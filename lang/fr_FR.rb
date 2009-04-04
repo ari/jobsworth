@@ -347,6 +347,7 @@ Localization.define('fr_FR') do |l|
   l.store "Improvement", "Amélioration"
   l.store "In Progress", "En cours"
   l.store "Information", "Informations"
+  l.store "Let me know", "Ecrivez-moi !"
   l.store "Linked from", "Lié depuis"
   l.store "New Feature", "Nouvelle fonction"
   l.store "New Project", "Nouveau projet" # Brice
@@ -377,9 +378,10 @@ Localization.define('fr_FR') do |l|
   l.store "Last Updated", "Dernière modification"
   l.store "Leave Closed", "Maintenir classé"
   l.store "Low Priority", "Faible priorité" # Lancrey
-  l.store "Notify", "Nom / Email" # Brice
+  l.store "More filters", "Encore plus de filtres" # Brice
+  l.store "Name / Email", "Nom / Email" # Brice
   l.store "Newest Tasks", "Nouvelles tâches"
-  l.store "Notifications", "Notification" # Brice
+  l.store "Notification", "Notification" # Brice
   l.store "Participants", "Participants" # Brice
   l.store "Plan / GANTT", "Planification / GANTT" # Brice
   l.store "Recent Posts", "Messages récents" # Brice
@@ -429,6 +431,7 @@ Localization.define('fr_FR') do |l|
   l.store "about %d hour", ["près d'une heure", "près de %d heures"]
   l.store "about 1 month", "environ 1 mois" # Brice
   l.store "half a minute", "30 secondes"
+  l.store "over %d years", ["plus d'%d an", "plus de %d ans"] # Brice
   l.store "Add New Widget", "Ajouter un nouveau Widget" # Brice
   l.store "Are your sure?", "Etes-vous certain ?"
   l.store "Burndown Chart", "Diagramme Burndown" # Lancrey
@@ -531,7 +534,7 @@ Localization.define('fr_FR') do |l|
   l.store "Task not worked on", "Tâche en attente" # Brice
   l.store "less than a minute", "moins d'une minute"
   l.store "Can Create Projects", "Peut créer des projets" # Brice
-  l.store "Remove", "Supprimer la notification" # Brice
+  l.store "Remove notification", "Supprimer la notification" # Brice
   l.store "Restricted Userlist", "Liste restreinte d'utilisateurs" # Brice
   l.store "Show TaskType Icons", "Montrer les icônes de type de tâche" # Lancrey
   l.store "[Without Milestone]", "[Sans jalon]"
@@ -634,6 +637,7 @@ Localization.define('fr_FR') do |l|
   l.store "Easy access to commonly needed information.", "Pour un accès rapide à des informations courantes" # Lancrey
   l.store "Play sounds when new messages are received.", "Avertissement sonore lors de la réception d'un message." # Brice
   l.store "Subscribe to the recent activities RSS feed", "Souscrire à la syndication RSS de l'activité du projet" # Brice
+  l.store "Permission denied while saving resized file.", "Permission denied while saving resized file."
   l.store "Subscribe to the iCal feed for your projects.", "Souscrire à la syndication iCal pour vos projets" # Brice
   l.store "Enter task due date, or click calendar button.", "Saisissez une date de fin de tâche, ou cliquez sur le bouton du calendrier." # Brice
   l.store "Show icons next to tasks representing their type.", "Montre les icônes indiquant le type de tâche" # Lancrey

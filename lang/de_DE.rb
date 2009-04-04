@@ -147,6 +147,7 @@ Localization.define('de_DE') do |l|
   l.store "[Prev]", "[Vorherige]"
   l.store "[wdhm]", "[wtsm]"
   l.store "cancel", "Abbrechen" # Tim Zech
+  l.store "locked", "gesperrt" # Muckel
   l.store "quotes", "Anführungszeichen" # Stefan Hofmann
   l.store "%d days", ["einem Tag", "%d Tage"] # Tim Zech
   l.store "%d file", ["eine Datei", "%d Dateien"] # Tim Zech
@@ -348,6 +349,7 @@ Localization.define('de_DE') do |l|
   l.store "Improvement", "Verbesserungsvorschlag"
   l.store "In Progress", "In Bearbeitung"
   l.store "Information", "Information" # Tim Zech
+  l.store "Let me know", "Lass es mich wissen" # Uwe Kelderbacher
   l.store "Linked from", "Verlinkt von" # Tim Zech
   l.store "New Feature", "Neue Funktionalität"
   l.store "New Project", "Neues Projekt" # Tim Zech
@@ -378,9 +380,10 @@ Localization.define('de_DE') do |l|
   l.store "Last Updated", "Zuletzt aktualisiert"
   l.store "Leave Closed", "Abgeschlossen lassen"
   l.store "Low Priority", "Geringe Priorität" # Phillipp Koops
-  l.store "Notify", "Name / E-Mail" # Tim Zech
+  l.store "More filters", "Mehr Filter" # Guy Simonow
+  l.store "Name / Email", "Name / E-Mail" # Tim Zech
   l.store "Newest Tasks", "Neueste Aufgaben"
-  l.store "Notifications", "Benachrichtigung"
+  l.store "Notification", "Benachrichtigung"
   l.store "Participants", "Teilnehmer" # Tim Zech
   l.store "Plan / GANTT", "Plan / GANTT" # Tim Zech
   l.store "Recent Posts", "Letzte Beiträge" # Tim Zech
@@ -390,6 +393,7 @@ Localization.define('de_DE') do |l|
   l.store "Show Avatars", "Zeige Avatare" # Tim Zech
   l.store "Show History", "Zeige Verlauf" # Tim Zech
   l.store "Timer Window", "Timer Fenster" # Tim Zech
+  l.store "Topic locked", "Beitrag gesperrt" # Muckel
   l.store "Users Online", "Benutzer Online" # Tim Zech
   l.store "Wiki Changes", "Wiki Änderungen" # Tim Zech
   l.store "[Any Client]", "[Alle Kunden]"
@@ -535,7 +539,7 @@ Localization.define('de_DE') do |l|
   l.store "Task not worked on", "Aufgaben die nicht bearbeitet werden" # kertal
   l.store "less than a minute", "weniger als eine Minute"
   l.store "Can Create Projects", "Kann Projekt erstellen" # Mark
-  l.store "Remove", "Benachrichtigung entfernen" # Tim Zech
+  l.store "Remove notification", "Benachrichtigung entfernen" # Tim Zech
   l.store "Restricted Userlist", "Eingeschränkte Benutzerliste" # Tim Zech
   l.store "Show TaskType Icons", "Zeige Aufgabenart Icons" # Phillipp Koops
   l.store "[Without Milestone]", "[Ohne Meilenstein]"
@@ -550,6 +554,7 @@ Localization.define('de_DE') do |l|
   l.store "Report Configuration", "Berichtseinstellungen"
   l.store "Restricted Messaging", "Eingeschränkter Nachrichtenservice" # Uwe Kelderbacher
   l.store "Showing Full History", "Zeige den vollständigen Verlauf" # Tim Zech
+  l.store "This topic is locked", "Dieser Beitrag wurde gesperrt" # Muckel
   l.store "Use External Clients", "Externe Kunden benutzen"
   l.store "less than %d seconds", "weniger als %d Sekunden"
   l.store "Jüngste Aktivitäten", "Jüngste Aktivitäten" # Tim Zech
@@ -565,6 +570,7 @@ Localization.define('de_DE') do |l|
   l.store "Hide Task Dependencies", "Aufgabenabhängigkeiten verstecken" # Manuel Schaeidt 
   l.store "View '%s' was deleted.", "Ansicht '%s' wurde gelöscht."
   l.store "invite some co-workers", "Mitarbeiter einladen" # Tim Zech
+  l.store ", this topic is locked.", ", dieser Beitrag ist gesperrt." # Muckel
   l.store "Last %d Completed Tasks", ["Letzte fertiggestellte Aufgabe", "Letzten %d fertiggestellten Aufgaben"] # Phillipp Koops
   l.store "%d translations updated.", ["Eine Übersetzung aktualisiert.", "%d Übersetzungen aktualisiert."] # Tim Zech
   l.store "Company settings updated", "Firmen-Einstellungen aktualisiert" # Tim Zech
