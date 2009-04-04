@@ -335,7 +335,7 @@ ActiveRecord::BaseWithoutTable
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000299'>
+<a href='#M000304'>
 find_all<br/>
 </a>
 
@@ -365,9 +365,9 @@ Generated chat transcripts, based on the chats done
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000299"><br/></a>
+<a class="small" name="M000304"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000299'>
+<a href='#M000304'>
 
 
 find_all
@@ -377,7 +377,7 @@ find_all
 </a>
 </h3>
 
-<p class="source_link" id="M000299-show-link"><a onclick="toggle('M000299-source'); toggleText('M000299-link'); return false;" href="#" id="M000299-link">Show source...</a></p><div class="source" id="M000299-source"><pre>    <span class="ruby-comment cmt"># File app/models/transcript.rb, line 10</span>
+<p class="source_link" id="M000304-show-link"><a onclick="toggle('M000304-source'); toggleText('M000304-link'); return false;" href="#" id="M000304-link">Show source...</a></p><div class="source" id="M000304-source"><pre>    <span class="ruby-comment cmt"># File app/models/transcript.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">find_all</span>(<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">channel_ids</span>)
 11:     <span class="ruby-comment cmt"># MySQL</span>
 12:     <span class="ruby-identifier">find_by_sql</span>([<span class="ruby-value str">&quot;SELECT DISTINCT shout_channel_id, user_id, DAY(created_at) as day,MONTH(created_at) as month, YEAR(created_at) as year FROM shouts WHERE shout_channel_id IN (?) AND (company_id IS NULL OR company_id = ?) AND message_type = 0 ORDER BY created_at desc&quot;</span>, <span class="ruby-identifier">channel_ids</span>, <span class="ruby-identifier">company_id</span>])

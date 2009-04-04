@@ -372,6 +372,13 @@ authorize<br/>
 
 
 
+<a href='#M000053'>
+auto_complete_for_user_name<br/>
+</a>
+
+
+
+
 <a href='#M000042'>
 completed_milestone_ids<br/>
 </a>
@@ -697,6 +704,36 @@ Make sure the session is logged in
 171:     <span class="ruby-keyword kw">end</span>
 172:     <span class="ruby-keyword kw">true</span>
 173:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000053"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000053'>
+
+
+auto_complete_for_user_name
+
+()
+
+</a>
+</h3>
+<p>
+Returns the list to use for auto completes for user names.
+</p>
+
+<p class="source_link" id="M000053-show-link"><a onclick="toggle('M000053-source'); toggleText('M000053-link'); return false;" href="#" id="M000053-link">Show source...</a></p><div class="source" id="M000053-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/application.rb, line 434</span>
+434:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for_user_name</span>
+435:     <span class="ruby-identifier">text</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:user</span>]
+436:     <span class="ruby-identifier">text</span> = <span class="ruby-identifier">text</span>[<span class="ruby-identifier">:name</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">text</span>
+437: 
+438:     <span class="ruby-ivar">@users</span> = []
+439:     <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">text</span>.<span class="ruby-identifier">blank?</span>
+440:       <span class="ruby-identifier">conds</span> = <span class="ruby-constant">Search</span>.<span class="ruby-identifier">search_conditions_for</span>(<span class="ruby-identifier">text</span>)
+441:       <span class="ruby-ivar">@users</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">conds</span>)
+442:     <span class="ruby-keyword kw">end</span>
+443: 
+444:     <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;/users/auto_complete_for_user_name&quot;</span>)
+445:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 <a class="small" name="M000042"><br/></a>

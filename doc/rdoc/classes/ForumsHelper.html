@@ -331,14 +331,14 @@ Module: ForumsHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000672'>
+<a href='#M000688'>
 recent_forum_activity<br/>
 </a>
 
 
 
 
-<a href='#M000671'>
+<a href='#M000687'>
 recent_topic_activity<br/>
 </a>
 
@@ -361,9 +361,9 @@ recent_topic_activity<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000672"><br/></a>
+<a class="small" name="M000688"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000672'>
+<a href='#M000688'>
 
 
 recent_forum_activity
@@ -376,16 +376,16 @@ recent_forum_activity
 used to know if a forum has changed since we read it last
 </p>
 
-<p class="source_link" id="M000672-show-link"><a onclick="toggle('M000672-source'); toggleText('M000672-link'); return false;" href="#" id="M000672-link">Show source...</a></p><div class="source" id="M000672-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/forums_helper.rb, line 9</span>
+<p class="source_link" id="M000688-show-link"><a onclick="toggle('M000688-source'); toggleText('M000688-link'); return false;" href="#" id="M000688-link">Show source...</a></p><div class="source" id="M000688-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/forums_helper.rb, line 9</span>
  9:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recent_forum_activity</span>(<span class="ruby-identifier">forum</span>)
 10:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">forum</span>.<span class="ruby-identifier">topics</span>.<span class="ruby-identifier">first</span>
 11:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">forum</span>.<span class="ruby-identifier">recent_topics</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">replied_at</span> <span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:forums</span>][<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">id</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">last_active</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:forums</span>]
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000671"><br/></a>
+<a class="small" name="M000687"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000671'>
+<a href='#M000687'>
 
 
 recent_topic_activity
@@ -398,7 +398,7 @@ recent_topic_activity
 used to know if a topic has changed since we read it last
 </p>
 
-<p class="source_link" id="M000671-show-link"><a onclick="toggle('M000671-source'); toggleText('M000671-link'); return false;" href="#" id="M000671-link">Show source...</a></p><div class="source" id="M000671-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/forums_helper.rb, line 4</span>
+<p class="source_link" id="M000687-show-link"><a onclick="toggle('M000687-source'); toggleText('M000687-link'); return false;" href="#" id="M000687-link">Show source...</a></p><div class="source" id="M000687-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/forums_helper.rb, line 4</span>
 4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recent_topic_activity</span>(<span class="ruby-identifier">topic</span>)
 5:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">topic</span>.<span class="ruby-identifier">replied_at</span> <span class="ruby-operator">&gt;</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:topics</span>][<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">id</span>] <span class="ruby-operator">||</span> <span class="ruby-identifier">last_active</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:topics</span>]
 6:   <span class="ruby-keyword kw">end</span></pre></div>

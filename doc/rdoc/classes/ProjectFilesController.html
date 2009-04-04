@@ -337,119 +337,119 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000380'>
+<a href='#M000385'>
 create_folder<br/>
 </a>
 
 
 
 
-<a href='#M000384'>
+<a href='#M000389'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000385'>
+<a href='#M000390'>
 destroy_folder<br/>
 </a>
 
 
 
 
-<a href='#M000375'>
+<a href='#M000380'>
 download<br/>
 </a>
 
 
 
 
-<a href='#M000382'>
+<a href='#M000387'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000378'>
+<a href='#M000383'>
 edit_folder<br/>
 </a>
 
 
 
 
-<a href='#M000387'>
+<a href='#M000392'>
 file_type_from_filename<br/>
 </a>
 
 
 
 
-<a href='#M000371'>
+<a href='#M000376'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000372'>
+<a href='#M000377'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000386'>
+<a href='#M000391'>
 move<br/>
 </a>
 
 
 
 
-<a href='#M000376'>
+<a href='#M000381'>
 new_file<br/>
 </a>
 
 
 
 
-<a href='#M000377'>
+<a href='#M000382'>
 new_folder<br/>
 </a>
 
 
 
 
-<a href='#M000373'>
+<a href='#M000378'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000374'>
+<a href='#M000379'>
 thumbnail<br/>
 </a>
 
 
 
 
-<a href='#M000383'>
+<a href='#M000388'>
 update<br/>
 </a>
 
 
 
 
-<a href='#M000379'>
+<a href='#M000384'>
 update_folder<br/>
 </a>
 
 
 
 
-<a href='#M000381'>
+<a href='#M000386'>
 upload<br/>
 </a>
 
@@ -478,9 +478,9 @@ icon
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000380"><br/></a>
+<a class="small" name="M000385"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000380'>
+<a href='#M000385'>
 
 
 create_folder
@@ -490,7 +490,7 @@ create_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 120</span>
+<p class="source_link" id="M000385-show-link"><a onclick="toggle('M000385-source'); toggleText('M000385-link'); return false;" href="#" id="M000385-link">Show source...</a></p><div class="source" id="M000385-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 120</span>
 120:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_folder</span>
 121:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:folder</span>])
 122:     <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
@@ -508,9 +508,9 @@ create_folder
 134:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000384"><br/></a>
+<a class="small" name="M000389"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000384'>
+<a href='#M000389'>
 
 
 destroy
@@ -520,7 +520,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000384-show-link"><a onclick="toggle('M000384-source'); toggleText('M000384-link'); return false;" href="#" id="M000384-link">Show source...</a></p><div class="source" id="M000384-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 245</span>
+<p class="source_link" id="M000389-show-link"><a onclick="toggle('M000389-source'); toggleText('M000389-link'); return false;" href="#" id="M000389-link">Show source...</a></p><div class="source" id="M000389-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 245</span>
 245:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 246:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 247: 
@@ -552,9 +552,9 @@ destroy
 273:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000385"><br/></a>
+<a class="small" name="M000390"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000385'>
+<a href='#M000390'>
 
 
 destroy_folder
@@ -564,7 +564,7 @@ destroy_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000385-show-link"><a onclick="toggle('M000385-source'); toggleText('M000385-link'); return false;" href="#" id="M000385-link">Show source...</a></p><div class="source" id="M000385-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 275</span>
+<p class="source_link" id="M000390-show-link"><a onclick="toggle('M000390-source'); toggleText('M000390-link'); return false;" href="#" id="M000390-link">Show source...</a></p><div class="source" id="M000390-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 275</span>
 275:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy_folder</span>
 276:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find_by_id</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>] )
 277: 
@@ -578,9 +578,9 @@ destroy_folder
 285:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000375"><br/></a>
+<a class="small" name="M000380"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000375'>
+<a href='#M000380'>
 
 
 download
@@ -590,7 +590,7 @@ download
 </a>
 </h3>
 
-<p class="source_link" id="M000375-show-link"><a onclick="toggle('M000375-source'); toggleText('M000375-link'); return false;" href="#" id="M000375-link">Show source...</a></p><div class="source" id="M000375-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 62</span>
+<p class="source_link" id="M000380-show-link"><a onclick="toggle('M000380-source'); toggleText('M000380-link'); return false;" href="#" id="M000380-link">Show source...</a></p><div class="source" id="M000380-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 62</span>
 62:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">download</span>
 63:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 64:     <span class="ruby-keyword kw">if</span> (<span class="ruby-ivar">@project_files</span>.<span class="ruby-identifier">mime_type</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/image.*/</span>)
@@ -602,9 +602,9 @@ download
 70:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000382"><br/></a>
+<a class="small" name="M000387"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000382'>
+<a href='#M000387'>
 
 
 edit
@@ -614,15 +614,15 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000382-show-link"><a onclick="toggle('M000382-source'); toggleText('M000382-link'); return false;" href="#" id="M000382-link">Show source...</a></p><div class="source" id="M000382-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 233</span>
+<p class="source_link" id="M000387-show-link"><a onclick="toggle('M000387-source'); toggleText('M000387-link'); return false;" href="#" id="M000387-link">Show source...</a></p><div class="source" id="M000387-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 233</span>
 233:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 234:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 235:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000378"><br/></a>
+<a class="small" name="M000383"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000378'>
+<a href='#M000383'>
 
 
 edit_folder
@@ -632,7 +632,7 @@ edit_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000378-show-link"><a onclick="toggle('M000378-source'); toggleText('M000378-link'); return false;" href="#" id="M000378-link">Show source...</a></p><div class="source" id="M000378-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 102</span>
+<p class="source_link" id="M000383-show-link"><a onclick="toggle('M000383-source'); toggleText('M000383-link'); return false;" href="#" id="M000383-link">Show source...</a></p><div class="source" id="M000383-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 102</span>
 102:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit_folder</span>
 103:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 104:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -642,9 +642,9 @@ edit_folder
 108:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000371"><br/></a>
+<a class="small" name="M000376"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000371'>
+<a href='#M000376'>
 
 
 index
@@ -654,7 +654,7 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000371-show-link"><a onclick="toggle('M000371-source'); toggleText('M000371-link'); return false;" href="#" id="M000371-link">Show source...</a></p><div class="source" id="M000371-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 6</span>
+<p class="source_link" id="M000376-show-link"><a onclick="toggle('M000376-source'); toggleText('M000376-link'); return false;" href="#" id="M000376-link">Show source...</a></p><div class="source" id="M000376-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 6</span>
  6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  7:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">empty?</span>
  8:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Please create a project to attach files / folders to.'</span>)
@@ -666,9 +666,9 @@ index
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000372"><br/></a>
+<a class="small" name="M000377"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000372'>
+<a href='#M000377'>
 
 
 list
@@ -678,7 +678,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000372-show-link"><a onclick="toggle('M000372-source'); toggleText('M000372-link'); return false;" href="#" id="M000372-link">Show source...</a></p><div class="source" id="M000372-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 16</span>
+<p class="source_link" id="M000377-show-link"><a onclick="toggle('M000377-source'); toggleText('M000377-link'); return false;" href="#" id="M000377-link">Show source...</a></p><div class="source" id="M000377-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 17:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">empty?</span>
 18:       <span class="ruby-identifier">flash</span>[<span class="ruby-value str">'notice'</span>] = <span class="ruby-identifier">_</span>(<span class="ruby-value str">'Please create a project to attach files / folders to.'</span>)
@@ -701,9 +701,9 @@ list
 35:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000386"><br/></a>
+<a class="small" name="M000391"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000386'>
+<a href='#M000391'>
 
 
 move
@@ -713,7 +713,7 @@ move
 </a>
 </h3>
 
-<p class="source_link" id="M000386-show-link"><a onclick="toggle('M000386-source'); toggleText('M000386-link'); return false;" href="#" id="M000386-link">Show source...</a></p><div class="source" id="M000386-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 287</span>
+<p class="source_link" id="M000391-show-link"><a onclick="toggle('M000391-source'); toggleText('M000391-link'); return false;" href="#" id="M000391-link">Show source...</a></p><div class="source" id="M000391-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 287</span>
 287:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">move</span>
 288:     <span class="ruby-identifier">elements</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">split</span>(<span class="ruby-value str">' '</span>)
 289: 
@@ -764,9 +764,9 @@ move
 334:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000376"><br/></a>
+<a class="small" name="M000381"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000376'>
+<a href='#M000381'>
 
 
 new_file
@@ -776,7 +776,7 @@ new_file
 </a>
 </h3>
 
-<p class="source_link" id="M000376-show-link"><a onclick="toggle('M000376-source'); toggleText('M000376-link'); return false;" href="#" id="M000376-link">Show source...</a></p><div class="source" id="M000376-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 73</span>
+<p class="source_link" id="M000381-show-link"><a onclick="toggle('M000381-source'); toggleText('M000381-link'); return false;" href="#" id="M000381-link">Show source...</a></p><div class="source" id="M000381-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 73</span>
 73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new_file</span>
 74:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 75:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -789,9 +789,9 @@ new_file
 82:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000377"><br/></a>
+<a class="small" name="M000382"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000377'>
+<a href='#M000382'>
 
 
 new_folder
@@ -801,7 +801,7 @@ new_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000377-show-link"><a onclick="toggle('M000377-source'); toggleText('M000377-link'); return false;" href="#" id="M000377-link">Show source...</a></p><div class="source" id="M000377-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 84</span>
+<p class="source_link" id="M000382-show-link"><a onclick="toggle('M000382-source'); toggleText('M000382-link'); return false;" href="#" id="M000382-link">Show source...</a></p><div class="source" id="M000382-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 84</span>
  84:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new_folder</span>
  85:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
  86:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'projects'</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'new'</span>
@@ -821,9 +821,9 @@ new_folder
 100:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000373"><br/></a>
+<a class="small" name="M000378"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000373'>
+<a href='#M000378'>
 
 
 show
@@ -833,7 +833,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000373-show-link"><a onclick="toggle('M000373-source'); toggleText('M000373-link'); return false;" href="#" id="M000373-link">Show source...</a></p><div class="source" id="M000373-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 37</span>
+<p class="source_link" id="M000378-show-link"><a onclick="toggle('M000378-source'); toggleText('M000378-link'); return false;" href="#" id="M000378-link">Show source...</a></p><div class="source" id="M000378-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
 38:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 39: 
@@ -847,9 +847,9 @@ show
 47:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000374"><br/></a>
+<a class="small" name="M000379"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000374'>
+<a href='#M000379'>
 
 
 thumbnail
@@ -859,11 +859,11 @@ thumbnail
 </a>
 </h3>
 <p>
-Show the <a href="ProjectFilesController.html#M000374">thumbnail</a> for a
+Show the <a href="ProjectFilesController.html#M000379">thumbnail</a> for a
 given image
 </p>
 
-<p class="source_link" id="M000374-show-link"><a onclick="toggle('M000374-source'); toggleText('M000374-link'); return false;" href="#" id="M000374-link">Show source...</a></p><div class="source" id="M000374-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 50</span>
+<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 50</span>
 50:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">thumbnail</span>
 51:     <span class="ruby-ivar">@project_files</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 52: 
@@ -877,9 +877,9 @@ given image
 60:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000383"><br/></a>
+<a class="small" name="M000388"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000383'>
+<a href='#M000388'>
 
 
 update
@@ -889,7 +889,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000383-show-link"><a onclick="toggle('M000383-source'); toggleText('M000383-link'); return false;" href="#" id="M000383-link">Show source...</a></p><div class="source" id="M000383-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 237</span>
+<p class="source_link" id="M000388-show-link"><a onclick="toggle('M000388-source'); toggleText('M000388-link'); return false;" href="#" id="M000388-link">Show source...</a></p><div class="source" id="M000388-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 237</span>
 237:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 238:     <span class="ruby-ivar">@file</span> = <span class="ruby-constant">ProjectFile</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id = ? AND project_id IN (#{current_project_ids})&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
 239:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@file</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:file</span>])
@@ -899,9 +899,9 @@ update
 243:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000379"><br/></a>
+<a class="small" name="M000384"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000379'>
+<a href='#M000384'>
 
 
 update_folder
@@ -911,7 +911,7 @@ update_folder
 </a>
 </h3>
 
-<p class="source_link" id="M000379-show-link"><a onclick="toggle('M000379-source'); toggleText('M000379-link'); return false;" href="#" id="M000379-link">Show source...</a></p><div class="source" id="M000379-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 110</span>
+<p class="source_link" id="M000384-show-link"><a onclick="toggle('M000384-source'); toggleText('M000384-link'); return false;" href="#" id="M000384-link">Show source...</a></p><div class="source" id="M000384-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 110</span>
 110:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_folder</span>
 111:     <span class="ruby-ivar">@folder</span> = <span class="ruby-constant">ProjectFolder</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;project_id IN (#{current_project_ids})&quot;</span>])
 112:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@folder</span>.<span class="ruby-identifier">update_attributes</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:folder</span>])
@@ -923,9 +923,9 @@ update_folder
 118:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000381"><br/></a>
+<a class="small" name="M000386"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000381'>
+<a href='#M000386'>
 
 
 upload
@@ -935,7 +935,7 @@ upload
 </a>
 </h3>
 
-<p class="source_link" id="M000381-show-link"><a onclick="toggle('M000381-source'); toggleText('M000381-link'); return false;" href="#" id="M000381-link">Show source...</a></p><div class="source" id="M000381-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 136</span>
+<p class="source_link" id="M000386-show-link"><a onclick="toggle('M000386-source'); toggleText('M000386-link'); return false;" href="#" id="M000386-link">Show source...</a></p><div class="source" id="M000386-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 136</span>
 136:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">upload</span>
 137:     <span class="ruby-identifier">project_files</span> = []
 138:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'tmp_files'</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-value str">'tmp_files'</span>].<span class="ruby-identifier">select</span>{<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span> <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;&quot;</span>}.<span class="ruby-identifier">size</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> 
@@ -1038,9 +1038,9 @@ upload
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000387"><br/></a>
+<a class="small" name="M000392"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000387'>
+<a href='#M000392'>
 
 
 file_type_from_filename
@@ -1050,7 +1050,7 @@ file_type_from_filename
 </a>
 </h3>
 
-<p class="source_link" id="M000387-show-link"><a onclick="toggle('M000387-source'); toggleText('M000387-link'); return false;" href="#" id="M000387-link">Show source...</a></p><div class="source" id="M000387-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 339</span>
+<p class="source_link" id="M000392-show-link"><a onclick="toggle('M000392-source'); toggleText('M000392-link'); return false;" href="#" id="M000392-link">Show source...</a></p><div class="source" id="M000392-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/project_files_controller.rb, line 339</span>
 339:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_type_from_filename</span>(<span class="ruby-identifier">filename</span>)
 340:     <span class="ruby-identifier">file_types</span> = { 
 341:       <span class="ruby-value str">'doc'</span>  =<span class="ruby-operator">&gt;</span> <span class="ruby-constant">ProjectFile</span><span class="ruby-operator">::</span><span class="ruby-constant">FILETYPE_DOC</span>, 

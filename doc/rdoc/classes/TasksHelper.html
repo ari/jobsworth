@@ -331,49 +331,49 @@ Module: TasksHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000767'>
+<a href='#M000793'>
 auto_complete_for_dependencies<br/>
 </a>
 
 
 
 
-<a href='#M000766'>
+<a href='#M000792'>
 auto_complete_for_resources<br/>
 </a>
 
 
 
 
-<a href='#M000765'>
+<a href='#M000791'>
 milestone_select<br/>
 </a>
 
 
 
 
-<a href='#M000761'>
+<a href='#M000787'>
 pri_color<br/>
 </a>
 
 
 
 
-<a href='#M000762'>
+<a href='#M000788'>
 print_title<br/>
 </a>
 
 
 
 
-<a href='#M000764'>
+<a href='#M000790'>
 render_task_dependants<br/>
 </a>
 
 
 
 
-<a href='#M000763'>
+<a href='#M000789'>
 task_shown?<br/>
 </a>
 
@@ -396,9 +396,9 @@ task_shown?<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000767"><br/></a>
+<a class="small" name="M000793"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000767'>
+<a href='#M000793'>
 
 
 auto_complete_for_dependencies
@@ -413,7 +413,7 @@ choice is made, the dependency will be added to the page (but not saved to
 the db until the task is saved)
 </p>
 
-<p class="source_link" id="M000767-show-link"><a onclick="toggle('M000767-source'); toggleText('M000767-link'); return false;" href="#" id="M000767-link">Show source...</a></p><div class="source" id="M000767-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 173</span>
+<p class="source_link" id="M000793-show-link"><a onclick="toggle('M000793-source'); toggleText('M000793-link'); return false;" href="#" id="M000793-link">Show source...</a></p><div class="source" id="M000793-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 173</span>
 173:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for_dependencies</span>
 174:     <span class="ruby-identifier">auto_complete_field</span>(<span class="ruby-value str">'dependencies_input'</span>, 
 175:                         { <span class="ruby-identifier">:url</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'dependency_targets'</span> }, 
@@ -425,9 +425,9 @@ the db until the task is saved)
 181:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000766"><br/></a>
+<a class="small" name="M000792"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000766'>
+<a href='#M000792'>
 
 
 auto_complete_for_resources
@@ -442,7 +442,7 @@ belonging to customer id are returned. Unassigned resources (belonging to
 no customer are also returned though).
 </p>
 
-<p class="source_link" id="M000766-show-link"><a onclick="toggle('M000766-source'); toggleText('M000766-link'); return false;" href="#" id="M000766-link">Show source...</a></p><div class="source" id="M000766-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 156</span>
+<p class="source_link" id="M000792-show-link"><a onclick="toggle('M000792-source'); toggleText('M000792-link'); return false;" href="#" id="M000792-link">Show source...</a></p><div class="source" id="M000792-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 156</span>
 156:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for_resources</span>(<span class="ruby-identifier">customer_id</span>)
 157:     <span class="ruby-identifier">options</span> = {
 158:       <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'complete_value'</span>, 
@@ -456,9 +456,9 @@ no customer are also returned though).
 166:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000765"><br/></a>
+<a class="small" name="M000791"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000765'>
+<a href='#M000791'>
 
 
 milestone_select
@@ -472,7 +472,7 @@ Returns the html to display a select field to set the tasks milestone. The
 current milestone (if set) will be selected.
 </p>
 
-<p class="source_link" id="M000765-show-link"><a onclick="toggle('M000765-source'); toggleText('M000765-link'); return false;" href="#" id="M000765-link">Show source...</a></p><div class="source" id="M000765-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 140</span>
+<p class="source_link" id="M000791-show-link"><a onclick="toggle('M000791-source'); toggleText('M000791-link'); return false;" href="#" id="M000791-link">Show source...</a></p><div class="source" id="M000791-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 140</span>
 140:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">milestone_select</span>(<span class="ruby-identifier">perms</span>)
 141:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@task</span>.<span class="ruby-identifier">id</span>
 142:       <span class="ruby-identifier">milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'due_at, name'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND project_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">selected_project</span>])
@@ -485,9 +485,9 @@ current milestone (if set) will be selected.
 149:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000761"><br/></a>
+<a class="small" name="M000787"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000761'>
+<a href='#M000787'>
 
 
 pri_color
@@ -497,7 +497,7 @@ pri_color
 </a>
 </h3>
 
-<p class="source_link" id="M000761-show-link"><a onclick="toggle('M000761-source'); toggleText('M000761-link'); return false;" href="#" id="M000761-link">Show source...</a></p><div class="source" id="M000761-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
+<p class="source_link" id="M000787-show-link"><a onclick="toggle('M000787-source'); toggleText('M000787-link'); return false;" href="#" id="M000787-link">Show source...</a></p><div class="source" id="M000787-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pri_color</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">priority</span>)
  4:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#b0d295&quot;</span>
  5:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#f2ab99&quot;</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">severity</span>)<span class="ruby-operator">/</span><span class="ruby-value">2.0</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span><span class="ruby-value">.5</span>
@@ -510,9 +510,9 @@ pri_color
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000762"><br/></a>
+<a class="small" name="M000788"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000762'>
+<a href='#M000788'>
 
 
 print_title
@@ -522,7 +522,7 @@ print_title
 </a>
 </h3>
 
-<p class="source_link" id="M000762-show-link"><a onclick="toggle('M000762-source'); toggleText('M000762-link'); return false;" href="#" id="M000762-link">Show source...</a></p><div class="source" id="M000762-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
+<p class="source_link" id="M000788-show-link"><a onclick="toggle('M000788-source'); toggleText('M000788-link'); return false;" href="#" id="M000788-link">Show source...</a></p><div class="source" id="M000788-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">print_title</span>
 15:     <span class="ruby-identifier">filters</span> = []
 16:     <span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;&lt;div style=\&quot;float:left\&quot;&gt;&quot;</span>
@@ -558,9 +558,9 @@ print_title
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000764"><br/></a>
+<a class="small" name="M000790"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000764'>
+<a href='#M000790'>
 
 
 render_task_dependants
@@ -570,7 +570,7 @@ render_task_dependants
 </a>
 </h3>
 
-<p class="source_link" id="M000764-show-link"><a onclick="toggle('M000764-source'); toggleText('M000764-link'); return false;" href="#" id="M000764-link">Show source...</a></p><div class="source" id="M000764-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 93</span>
+<p class="source_link" id="M000790-show-link"><a onclick="toggle('M000790-source'); toggleText('M000790-link'); return false;" href="#" id="M000790-link">Show source...</a></p><div class="source" id="M000790-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 93</span>
  93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">t</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">root_present</span>)
  94:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
  95:     <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">||=</span> []
@@ -615,9 +615,9 @@ render_task_dependants
 134:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000763"><br/></a>
+<a class="small" name="M000789"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000763'>
+<a href='#M000789'>
 
 
 task_shown?
@@ -627,7 +627,7 @@ task_shown?
 </a>
 </h3>
 
-<p class="source_link" id="M000763-show-link"><a onclick="toggle('M000763-source'); toggleText('M000763-link'); return false;" href="#" id="M000763-link">Show source...</a></p><div class="source" id="M000763-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 48</span>
+<p class="source_link" id="M000789-show-link"><a onclick="toggle('M000789-source'); toggleText('M000789-link'); return false;" href="#" id="M000789-link">Show source...</a></p><div class="source" id="M000789-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 48</span>
 48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
 49:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
 50:     <span class="ruby-comment cmt"># N.B. Is this still necessary? It seems like the deciding which </span>

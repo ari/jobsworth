@@ -335,21 +335,21 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000126'>
+<a href='#M000129'>
 first<br/>
 </a>
 
 
 
 
-<a href='#M000127'>
+<a href='#M000130'>
 first<br/>
 </a>
 
 
 
 
-<a href='#M000128'>
+<a href='#M000131'>
 last<br/>
 </a>
 
@@ -380,9 +380,9 @@ to a project
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000126"><br/></a>
+<a class="small" name="M000129"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000126'>
+<a href='#M000129'>
 
 
 first
@@ -392,15 +392,15 @@ first
 </a>
 </h3>
 
-<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 22</span>
+<p class="source_link" id="M000129-show-link"><a onclick="toggle('M000129-source'); toggleText('M000129-link'); return false;" href="#" id="M000129-link">Show source...</a></p><div class="source" id="M000129-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 22</span>
 22:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first</span>
 23:       <span class="ruby-ivar">@first_topic</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>)
 24:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000127"><br/></a>
+<a class="small" name="M000130"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000127'>
+<a href='#M000130'>
 
 
 first
@@ -410,15 +410,15 @@ first
 </a>
 </h3>
 
-<p class="source_link" id="M000127-show-link"><a onclick="toggle('M000127-source'); toggleText('M000127-link'); return false;" href="#" id="M000127-link">Show source...</a></p><div class="source" id="M000127-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 30</span>
+<p class="source_link" id="M000130-show-link"><a onclick="toggle('M000130-source'); toggleText('M000130-link'); return false;" href="#" id="M000130-link">Show source...</a></p><div class="source" id="M000130-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 30</span>
 30:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">first</span>
 31:       <span class="ruby-ivar">@first_recent_topic</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>)
 32:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000128"><br/></a>
+<a class="small" name="M000131"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000128'>
+<a href='#M000131'>
 
 
 last
@@ -428,7 +428,7 @@ last
 </a>
 </h3>
 
-<p class="source_link" id="M000128-show-link"><a onclick="toggle('M000128-source'); toggleText('M000128-link'); return false;" href="#" id="M000128-link">Show source...</a></p><div class="source" id="M000128-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 36</span>
+<p class="source_link" id="M000131-show-link"><a onclick="toggle('M000131-source'); toggleText('M000131-link'); return false;" href="#" id="M000131-link">Show source...</a></p><div class="source" id="M000131-source"><pre>    <span class="ruby-comment cmt"># File app/models/forum.rb, line 36</span>
 36:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last</span>
 37:       <span class="ruby-ivar">@last_post</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:include</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">:user</span>)
 38:     <span class="ruby-keyword kw">end</span></pre></div>

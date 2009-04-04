@@ -337,14 +337,14 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000442'>
+<a href='#M000454'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000443'>
+<a href='#M000455'>
 destroy<br/>
 </a>
 
@@ -367,9 +367,9 @@ destroy<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000442"><br/></a>
+<a class="small" name="M000454"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000442'>
+<a href='#M000454'>
 
 
 create
@@ -379,7 +379,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000442-show-link"><a onclick="toggle('M000442-source'); toggleText('M000442-link'); return false;" href="#" id="M000442-link">Show source...</a></p><div class="source" id="M000442-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/monitorships_controller.rb, line 3</span>
+<p class="source_link" id="M000454-show-link"><a onclick="toggle('M000454-source'); toggleText('M000454-link'); return false;" href="#" id="M000454-link">Show source...</a></p><div class="source" id="M000454-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/monitorships_controller.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
  4:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>]
  5:       <span class="ruby-ivar">@monitorship</span> = <span class="ruby-constant">Monitorship</span>.<span class="ruby-identifier">find_or_create_by_user_id_and_monitorship_id_and_monitorship_type</span>(<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>], <span class="ruby-value str">'topic'</span>)
@@ -398,9 +398,9 @@ create
 18:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000443"><br/></a>
+<a class="small" name="M000455"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000443'>
+<a href='#M000455'>
 
 
 destroy
@@ -410,7 +410,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000443-show-link"><a onclick="toggle('M000443-source'); toggleText('M000443-link'); return false;" href="#" id="M000443-link">Show source...</a></p><div class="source" id="M000443-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/monitorships_controller.rb, line 20</span>
+<p class="source_link" id="M000455-show-link"><a onclick="toggle('M000455-source'); toggleText('M000455-link'); return false;" href="#" id="M000455-link">Show source...</a></p><div class="source" id="M000455-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/monitorships_controller.rb, line 20</span>
 20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 21:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>]
 22:       <span class="ruby-constant">Monitorship</span>.<span class="ruby-identifier">update_all</span> [<span class="ruby-value str">'active = ?'</span>, <span class="ruby-keyword kw">false</span>], [<span class="ruby-value str">'user_id = ? and monitorship_id = ? and monitorship_type = ?'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:topic_id</span>], <span class="ruby-value str">'topic'</span>]

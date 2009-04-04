@@ -337,70 +337,70 @@ Object
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000543'>
+<a href='#M000559'>
 &lt;=&gt;<br/>
 </a>
 
 
 
 
-<a href='#M000549'>
+<a href='#M000565'>
 []<br/>
 </a>
 
 
 
 
-<a href='#M000548'>
+<a href='#M000564'>
 all<br/>
 </a>
 
 
 
 
-<a href='#M000542'>
+<a href='#M000558'>
 formatted_offset<br/>
 </a>
 
 
 
 
-<a href='#M000544'>
+<a href='#M000560'>
 name<br/>
 </a>
 
 
 
 
-<a href='#M000547'>
+<a href='#M000563'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000541'>
+<a href='#M000557'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000545'>
+<a href='#M000561'>
 to_s<br/>
 </a>
 
 
 
 
-<a href='#M000546'>
+<a href='#M000562'>
 tzinfo<br/>
 </a>
 
 
 
 
-<a href='#M000550'>
+<a href='#M000566'>
 us_zones<br/>
 </a>
 
@@ -461,9 +461,9 @@ us_zones<br/>
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000549"><br/></a>
+<a class="small" name="M000565"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000549'>
+<a href='#M000565'>
 
 
 []
@@ -474,14 +474,14 @@ us_zones<br/>
 </h3>
 <p>
 Locate a specific time zone object. If the argument is a string, it is
-interpreted to mean the <a href="TZInfoExt.html#M000544">name</a> of the
+interpreted to mean the <a href="TZInfoExt.html#M000560">name</a> of the
 timezone to locate. If it is a numeric value it is either the hour offset,
 or the second offset, of the timezone to find. (The first one with that
 offset will be returned.) Returns <tt>nil</tt> if no such time zone is
 known to the system.
 </p>
 
-<p class="source_link" id="M000549-show-link"><a onclick="toggle('M000549-source'); toggleText('M000549-link'); return false;" href="#" id="M000549-link">Show source...</a></p><div class="source" id="M000549-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 286</span>
+<p class="source_link" id="M000565-show-link"><a onclick="toggle('M000565-source'); toggleText('M000565-link'); return false;" href="#" id="M000565-link">Show source...</a></p><div class="source" id="M000565-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 286</span>
 286:     <span class="ruby-keyword kw">def</span> <span class="ruby-operator">[]</span>(<span class="ruby-identifier">arg</span>)
 287:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">arg</span>
 288:         <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>
@@ -496,9 +496,9 @@ known to the system.
 297:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000548"><br/></a>
+<a class="small" name="M000564"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000548'>
+<a href='#M000564'>
 
 
 all
@@ -508,12 +508,12 @@ all
 </a>
 </h3>
 <p>
-Return an array of <a href="TZInfoExt.html#M000548">all</a> TzinfoTimezone
+Return an array of <a href="TZInfoExt.html#M000564">all</a> TzinfoTimezone
 objects. There are multiple TzinfoTimezone objects per time zone, in many
 cases, to make it easier for users to find their own time zone.
 </p>
 
-<p class="source_link" id="M000548-show-link"><a onclick="toggle('M000548-source'); toggleText('M000548-link'); return false;" href="#" id="M000548-link">Show source...</a></p><div class="source" id="M000548-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 217</span>
+<p class="source_link" id="M000564-show-link"><a onclick="toggle('M000564-source'); toggleText('M000564-link'); return false;" href="#" id="M000564-link">Show source...</a></p><div class="source" id="M000564-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 217</span>
 217:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all</span>
 218:       <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@@zones</span>
 219:         <span class="ruby-ivar">@@zones</span> = []
@@ -579,9 +579,9 @@ cases, to make it easier for users to find their own time zone.
 279:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000547"><br/></a>
+<a class="small" name="M000563"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000547'>
+<a href='#M000563'>
 
 
 new
@@ -592,20 +592,20 @@ new
 </h3>
 <p>
 Return a TzinfoTimezone instance with the given <a
-href="TZInfoExt.html#M000544">name</a>, or <tt>nil</tt> if no such
+href="TZInfoExt.html#M000560">name</a>, or <tt>nil</tt> if no such
 TzinfoTimezone instance exists. (This exists to support the use of this
 class with the composed_of macro.)
 </p>
 
-<p class="source_link" id="M000547-show-link"><a onclick="toggle('M000547-source'); toggleText('M000547-link'); return false;" href="#" id="M000547-link">Show source...</a></p><div class="source" id="M000547-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 210</span>
+<p class="source_link" id="M000563-show-link"><a onclick="toggle('M000563-source'); toggleText('M000563-link'); return false;" href="#" id="M000563-link">Show source...</a></p><div class="source" id="M000563-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 210</span>
 210:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>(<span class="ruby-identifier">name</span>)
 211:       <span class="ruby-keyword kw">self</span>[<span class="ruby-identifier">name</span>]
 212:     <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000541"><br/></a>
+<a class="small" name="M000557"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000541'>
+<a href='#M000557'>
 
 
 new
@@ -615,23 +615,23 @@ new
 </a>
 </h3>
 <p>
-Create a <a href="TZInfoExt.html#M000541">new</a> TzinfoTimezone object
-with the given <a href="TZInfoExt.html#M000544">name</a> and offset. The
+Create a <a href="TZInfoExt.html#M000557">new</a> TzinfoTimezone object
+with the given <a href="TZInfoExt.html#M000560">name</a> and offset. The
 offset is the number of seconds that this time zone is offset from UTC
 (GMT). Seconds were chosen as the offset unit because that is the unit that
 Ruby uses to represent time zone offsets (see Time#utc_offset).
 </p>
 
-<p class="source_link" id="M000541-show-link"><a onclick="toggle('M000541-source'); toggleText('M000541-link'); return false;" href="#" id="M000541-link">Show source...</a></p><div class="source" id="M000541-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 158</span>
+<p class="source_link" id="M000557-show-link"><a onclick="toggle('M000557-source'); toggleText('M000557-link'); return false;" href="#" id="M000557-link">Show source...</a></p><div class="source" id="M000557-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 158</span>
 158:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">name</span>, <span class="ruby-identifier">utc_offset</span>)
 159:     <span class="ruby-ivar">@name</span> = <span class="ruby-identifier">name</span>
 160:     <span class="ruby-ivar">@utc_offset</span> = <span class="ruby-identifier">utc_offset</span>
 161:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000550"><br/></a>
+<a class="small" name="M000566"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000550'>
+<a href='#M000566'>
 
 
 us_zones
@@ -645,7 +645,7 @@ A convenience method for returning a collection of TzinfoTimezone objects
 for time zones in the USA.
 </p>
 
-<p class="source_link" id="M000550-show-link"><a onclick="toggle('M000550-source'); toggleText('M000550-link'); return false;" href="#" id="M000550-link">Show source...</a></p><div class="source" id="M000550-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 305</span>
+<p class="source_link" id="M000566-show-link"><a onclick="toggle('M000566-source'); toggleText('M000566-link'); return false;" href="#" id="M000566-link">Show source...</a></p><div class="source" id="M000566-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 305</span>
 305:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">us_zones</span>
 306:       <span class="ruby-identifier">all</span>.<span class="ruby-identifier">find_all</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">z</span><span class="ruby-operator">|</span> <span class="ruby-identifier">z</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">=~</span> <span class="ruby-constant">US_ZONES</span> }
 307:     <span class="ruby-keyword kw">end</span></pre></div>
@@ -655,9 +655,9 @@ for time zones in the USA.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000543"><br/></a>
+<a class="small" name="M000559"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000543'>
+<a href='#M000559'>
 
 
 &lt;=&gt;
@@ -668,10 +668,10 @@ for time zones in the USA.
 </h3>
 <p>
 Compare this time zone to the parameter. The two are comapred first on
-their offsets, and then by <a href="TZInfoExt.html#M000544">name</a>.
+their offsets, and then by <a href="TZInfoExt.html#M000560">name</a>.
 </p>
 
-<p class="source_link" id="M000543-show-link"><a onclick="toggle('M000543-source'); toggleText('M000543-link'); return false;" href="#" id="M000543-link">Show source...</a></p><div class="source" id="M000543-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 177</span>
+<p class="source_link" id="M000559-show-link"><a onclick="toggle('M000559-source'); toggleText('M000559-link'); return false;" href="#" id="M000559-link">Show source...</a></p><div class="source" id="M000559-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 177</span>
 177:   <span class="ruby-keyword kw">def</span> <span class="ruby-operator">&lt;=&gt;</span>(<span class="ruby-identifier">zone</span>)
 178:     <span class="ruby-identifier">result</span> = (<span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">zone</span>.<span class="ruby-identifier">utc_offset</span>)
 179:     <span class="ruby-identifier">result</span> = (<span class="ruby-identifier">name</span> <span class="ruby-operator">&lt;=&gt;</span> <span class="ruby-identifier">zone</span>.<span class="ruby-identifier">name</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">result</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
@@ -679,9 +679,9 @@ their offsets, and then by <a href="TZInfoExt.html#M000544">name</a>.
 181:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000542"><br/></a>
+<a class="small" name="M000558"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000542'>
+<a href='#M000558'>
 
 
 formatted_offset
@@ -696,7 +696,7 @@ Returns the offset of this time zone as a formatted string, of the format
 If <tt>colon</tt> is false, a colon will not be inserted into the result.
 </p>
 
-<p class="source_link" id="M000542-show-link"><a onclick="toggle('M000542-source'); toggleText('M000542-link'); return false;" href="#" id="M000542-link">Show source...</a></p><div class="source" id="M000542-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 167</span>
+<p class="source_link" id="M000558-show-link"><a onclick="toggle('M000558-source'); toggleText('M000558-link'); return false;" href="#" id="M000558-link">Show source...</a></p><div class="source" id="M000558-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 167</span>
 167:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">formatted_offset</span>(<span class="ruby-identifier">colon</span>=<span class="ruby-keyword kw">true</span>)
 168:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
 169:     <span class="ruby-identifier">sign</span> = (<span class="ruby-identifier">utc_offset</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-value">-1</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>)
@@ -706,9 +706,9 @@ If <tt>colon</tt> is false, a colon will not be inserted into the result.
 173:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000544"><br/></a>
+<a class="small" name="M000560"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000544'>
+<a href='#M000560'>
 
 
 name
@@ -718,15 +718,15 @@ name
 </a>
 </h3>
 
-<p class="source_link" id="M000544-show-link"><a onclick="toggle('M000544-source'); toggleText('M000544-link'); return false;" href="#" id="M000544-link">Show source...</a></p><div class="source" id="M000544-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 183</span>
+<p class="source_link" id="M000560-show-link"><a onclick="toggle('M000560-source'); toggleText('M000560-link'); return false;" href="#" id="M000560-link">Show source...</a></p><div class="source" id="M000560-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 183</span>
 183:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name</span>
 184:     <span class="ruby-constant">MAPPING</span>[<span class="ruby-ivar">@name</span>]
 185:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000545"><br/></a>
+<a class="small" name="M000561"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000545'>
+<a href='#M000561'>
 
 
 to_s
@@ -739,15 +739,15 @@ to_s
 Returns a textual representation of this time zone.
 </p>
 
-<p class="source_link" id="M000545-show-link"><a onclick="toggle('M000545-source'); toggleText('M000545-link'); return false;" href="#" id="M000545-link">Show source...</a></p><div class="source" id="M000545-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 188</span>
+<p class="source_link" id="M000561-show-link"><a onclick="toggle('M000561-source'); toggleText('M000561-link'); return false;" href="#" id="M000561-link">Show source...</a></p><div class="source" id="M000561-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 188</span>
 188:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_s</span>
 189:     <span class="ruby-node">&quot;(GMT#{formatted_offset}) #{@name}&quot;</span>
 190:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000546"><br/></a>
+<a class="small" name="M000562"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000546'>
+<a href='#M000562'>
 
 
 tzinfo
@@ -757,7 +757,7 @@ tzinfo
 </a>
 </h3>
 
-<p class="source_link" id="M000546-show-link"><a onclick="toggle('M000546-source'); toggleText('M000546-link'); return false;" href="#" id="M000546-link">Show source...</a></p><div class="source" id="M000546-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 192</span>
+<p class="source_link" id="M000562-show-link"><a onclick="toggle('M000562-source'); toggleText('M000562-link'); return false;" href="#" id="M000562-link">Show source...</a></p><div class="source" id="M000562-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/login_helper.rb, line 192</span>
 192:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">tzinfo</span>
 193:     <span class="ruby-keyword kw">return</span> <span class="ruby-ivar">@tzinfo</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@tzinfo</span>
 194:     <span class="ruby-ivar">@tzinfo</span> = <span class="ruby-constant">MAPPING</span>[<span class="ruby-identifier">name</span>]

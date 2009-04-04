@@ -337,42 +337,42 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000074'>
+<a href='#M000077'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000076'>
+<a href='#M000079'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000077'>
+<a href='#M000080'>
 find_or_initialize_forum<br/>
 </a>
 
 
 
 
-<a href='#M000072'>
+<a href='#M000075'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000073'>
+<a href='#M000076'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000075'>
+<a href='#M000078'>
 update<br/>
 </a>
 
@@ -405,9 +405,9 @@ update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000074"><br/></a>
+<a class="small" name="M000077"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000074'>
+<a href='#M000077'>
 
 
 create
@@ -417,7 +417,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000074-show-link"><a onclick="toggle('M000074-source'); toggleText('M000074-link'); return false;" href="#" id="M000074-link">Show source...</a></p><div class="source" id="M000074-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 26</span>
+<p class="source_link" id="M000077-show-link"><a onclick="toggle('M000077-source'); toggleText('M000077-link'); return false;" href="#" id="M000077-link">Show source...</a></p><div class="source" id="M000077-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 27:     <span class="ruby-ivar">@forum</span>.<span class="ruby-identifier">attributes</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:forum</span>]
 28:     <span class="ruby-ivar">@forum</span>.<span class="ruby-identifier">company_id</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>
@@ -429,9 +429,9 @@ create
 34:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000076"><br/></a>
+<a class="small" name="M000079"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000076'>
+<a href='#M000079'>
 
 
 destroy
@@ -441,7 +441,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000076-show-link"><a onclick="toggle('M000076-source'); toggleText('M000076-link'); return false;" href="#" id="M000076-link">Show source...</a></p><div class="source" id="M000076-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 48</span>
+<p class="source_link" id="M000079-show-link"><a onclick="toggle('M000079-source'); toggleText('M000079-link'); return false;" href="#" id="M000079-link">Show source...</a></p><div class="source" id="M000079-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 48</span>
 48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 49:     <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 50:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">forums_path</span>
@@ -464,9 +464,9 @@ destroy
 67:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000072"><br/></a>
+<a class="small" name="M000075"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000072'>
+<a href='#M000075'>
 
 
 index
@@ -476,7 +476,7 @@ index
 </a>
 </h3>
 
-<p class="source_link" id="M000072-show-link"><a onclick="toggle('M000072-source'); toggleText('M000072-link'); return false;" href="#" id="M000072-link">Show source...</a></p><div class="source" id="M000072-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 4</span>
+<p class="source_link" id="M000075-show-link"><a onclick="toggle('M000075-source'); toggleText('M000075-link'); return false;" href="#" id="M000075-link">Show source...</a></p><div class="source" id="M000075-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 4</span>
  4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  5:     <span class="ruby-ivar">@forums</span> = <span class="ruby-constant">Forum</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;company_id IS NULL, position, name&quot;</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
  6:     <span class="ruby-comment cmt"># reset the page of each forum we have visited when we go back to index</span>
@@ -488,9 +488,9 @@ index
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000073"><br/></a>
+<a class="small" name="M000076"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000073'>
+<a href='#M000076'>
 
 
 show
@@ -500,7 +500,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000073-show-link"><a onclick="toggle('M000073-source'); toggleText('M000073-link'); return false;" href="#" id="M000073-link">Show source...</a></p><div class="source" id="M000073-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 14</span>
+<p class="source_link" id="M000076-show-link"><a onclick="toggle('M000076-source'); toggleText('M000076-link'); return false;" href="#" id="M000076-link">Show source...</a></p><div class="source" id="M000076-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
 15:     <span class="ruby-identifier">respond_to</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">format</span><span class="ruby-operator">|</span>
 16:       <span class="ruby-identifier">format</span>.<span class="ruby-identifier">html</span> <span class="ruby-keyword kw">do</span>
@@ -514,9 +514,9 @@ show
 24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000075"><br/></a>
+<a class="small" name="M000078"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000075'>
+<a href='#M000078'>
 
 
 update
@@ -526,7 +526,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000075-show-link"><a onclick="toggle('M000075-source'); toggleText('M000075-link'); return false;" href="#" id="M000075-link">Show source...</a></p><div class="source" id="M000075-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 36</span>
+<p class="source_link" id="M000078-show-link"><a onclick="toggle('M000078-source'); toggleText('M000078-link'); return false;" href="#" id="M000078-link">Show source...</a></p><div class="source" id="M000078-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 36</span>
 36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 37:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 38:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@forum</span>.<span class="ruby-identifier">company_id</span>.<span class="ruby-identifier">nil?</span>
@@ -544,9 +544,9 @@ update
 <h1>Protected Instance Methods</h1>
 
 
-<a class="small" name="M000077"><br/></a>
+<a class="small" name="M000080"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000077'>
+<a href='#M000080'>
 
 
 find_or_initialize_forum
@@ -556,7 +556,7 @@ find_or_initialize_forum
 </a>
 </h3>
 
-<p class="source_link" id="M000077-show-link"><a onclick="toggle('M000077-source'); toggleText('M000077-link'); return false;" href="#" id="M000077-link">Show source...</a></p><div class="source" id="M000077-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 70</span>
+<p class="source_link" id="M000080-show-link"><a onclick="toggle('M000080-source'); toggleText('M000080-link'); return false;" href="#" id="M000080-link">Show source...</a></p><div class="source" id="M000080-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/forums_controller.rb, line 70</span>
 70:     <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">find_or_initialize_forum</span>
 71:       <span class="ruby-ivar">@forum</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] <span class="ruby-operator">?</span> <span class="ruby-constant">Forum</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-node">&quot;company_id IS NULL OR (company_id = ? AND (project_id IS NULL OR project_id IN (#{current_project_ids})))&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>]) <span class="ruby-operator">:</span> <span class="ruby-constant">Forum</span>.<span class="ruby-identifier">new</span>
 72:     <span class="ruby-keyword kw">end</span></pre></div>

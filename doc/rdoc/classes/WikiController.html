@@ -337,42 +337,42 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000254'>
+<a href='#M000257'>
 cancel<br/>
 </a>
 
 
 
 
-<a href='#M000255'>
+<a href='#M000258'>
 cancel_create<br/>
 </a>
 
 
 
 
-<a href='#M000252'>
+<a href='#M000255'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000253'>
+<a href='#M000256'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000251'>
+<a href='#M000254'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000256'>
+<a href='#M000259'>
 versions<br/>
 </a>
 
@@ -395,9 +395,9 @@ versions<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000254"><br/></a>
+<a class="small" name="M000257"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000254'>
+<a href='#M000257'>
 
 
 cancel
@@ -407,7 +407,7 @@ cancel
 </a>
 </h3>
 
-<p class="source_link" id="M000254-show-link"><a onclick="toggle('M000254-source'); toggleText('M000254-link'); return false;" href="#" id="M000254-link">Show source...</a></p><div class="source" id="M000254-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 65</span>
+<p class="source_link" id="M000257-show-link"><a onclick="toggle('M000257-source'); toggleText('M000257-link'); return false;" href="#" id="M000257-link">Show source...</a></p><div class="source" id="M000257-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 65</span>
 65:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cancel</span>
 66:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND name = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
 67:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@page</span>
@@ -419,9 +419,9 @@ cancel
 73:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000255"><br/></a>
+<a class="small" name="M000258"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000255'>
+<a href='#M000258'>
 
 
 cancel_create
@@ -431,15 +431,15 @@ cancel_create
 </a>
 </h3>
 
-<p class="source_link" id="M000255-show-link"><a onclick="toggle('M000255-source'); toggleText('M000255-link'); return false;" href="#" id="M000255-link">Show source...</a></p><div class="source" id="M000255-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 75</span>
+<p class="source_link" id="M000258-show-link"><a onclick="toggle('M000258-source'); toggleText('M000258-link'); return false;" href="#" id="M000258-link">Show source...</a></p><div class="source" id="M000258-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 75</span>
 75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">cancel_create</span>
 76:     <span class="ruby-identifier">redirect_from_last</span>
 77:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000252"><br/></a>
+<a class="small" name="M000255"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000252'>
+<a href='#M000255'>
 
 
 create
@@ -449,7 +449,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000252-show-link"><a onclick="toggle('M000252-source'); toggleText('M000252-link'); return false;" href="#" id="M000252-link">Show source...</a></p><div class="source" id="M000252-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 17</span>
+<p class="source_link" id="M000255-show-link"><a onclick="toggle('M000255-source'); toggleText('M000255-link'); return false;" href="#" id="M000255-link">Show source...</a></p><div class="source" id="M000255-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 18:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND name = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
 19: 
@@ -485,9 +485,9 @@ create
 49:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000253"><br/></a>
+<a class="small" name="M000256"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000253'>
+<a href='#M000256'>
 
 
 edit
@@ -497,7 +497,7 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000253-show-link"><a onclick="toggle('M000253-source'); toggleText('M000253-link'); return false;" href="#" id="M000253-link">Show source...</a></p><div class="source" id="M000253-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 51</span>
+<p class="source_link" id="M000256-show-link"><a onclick="toggle('M000256-source'); toggleText('M000256-link'); return false;" href="#" id="M000256-link">Show source...</a></p><div class="source" id="M000256-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 51</span>
 51:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 52:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND name = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]])
 53:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@page</span>.<span class="ruby-identifier">nil?</span>
@@ -513,9 +513,9 @@ edit
 63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000251"><br/></a>
+<a class="small" name="M000254"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000251'>
+<a href='#M000254'>
 
 
 show
@@ -525,7 +525,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000251-show-link"><a onclick="toggle('M000251-source'); toggleText('M000251-link'); return false;" href="#" id="M000251-link">Show source...</a></p><div class="source" id="M000251-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 3</span>
+<p class="source_link" id="M000254-show-link"><a onclick="toggle('M000254-source'); toggleText('M000254-link'); return false;" href="#" id="M000254-link">Show source...</a></p><div class="source" id="M000254-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
  4:     <span class="ruby-identifier">name</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">'Frontpage'</span>
  5: 
@@ -541,9 +541,9 @@ show
 15:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000256"><br/></a>
+<a class="small" name="M000259"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000256'>
+<a href='#M000259'>
 
 
 versions
@@ -553,7 +553,7 @@ versions
 </a>
 </h3>
 
-<p class="source_link" id="M000256-show-link"><a onclick="toggle('M000256-source'); toggleText('M000256-link'); return false;" href="#" id="M000256-link">Show source...</a></p><div class="source" id="M000256-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 79</span>
+<p class="source_link" id="M000259-show-link"><a onclick="toggle('M000259-source'); toggleText('M000259-link'); return false;" href="#" id="M000259-link">Show source...</a></p><div class="source" id="M000259-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/wiki_controller.rb, line 79</span>
 79:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">versions</span>
 80:     <span class="ruby-ivar">@page</span> = <span class="ruby-constant">WikiPage</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND name = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>]] )
 81:   <span class="ruby-keyword kw">end</span></pre></div>

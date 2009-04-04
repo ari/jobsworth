@@ -335,7 +335,7 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000095'>
+<a href='#M000098'>
 last_active<br/>
 </a>
 
@@ -363,9 +363,9 @@ channel)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000095"><br/></a>
+<a class="small" name="M000098"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000095'>
+<a href='#M000098'>
 
 
 last_active
@@ -375,7 +375,7 @@ last_active
 </a>
 </h3>
 
-<p class="source_link" id="M000095-show-link"><a onclick="toggle('M000095-source'); toggleText('M000095-link'); return false;" href="#" id="M000095-link">Show source...</a></p><div class="source" id="M000095-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout_channel.rb, line 14</span>
+<p class="source_link" id="M000098-show-link"><a onclick="toggle('M000098-source'); toggleText('M000098-link'); return false;" href="#" id="M000098-link">Show source...</a></p><div class="source" id="M000098-source"><pre>    <span class="ruby-comment cmt"># File app/models/shout_channel.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">last_active</span>
 15:     <span class="ruby-identifier">s</span> = <span class="ruby-constant">Shout</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;shout_channel_id = ?&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>], <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;id desc&quot;</span>)
 16:     <span class="ruby-identifier">s</span> <span class="ruby-value">? </span><span class="ruby-identifier">s</span>.<span class="ruby-identifier">created_at</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">nil</span>
