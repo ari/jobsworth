@@ -142,7 +142,7 @@ class ProjectsController < ApplicationController
 
     if params[:user_edit]
       @user = current_user.company.users.find(params[:user_id])
-      render :partial => "users/project_permissions"
+      render :partial => "/users/project_permissions"
     else 
       @project = current_user.projects.find(params[:id])
       @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
@@ -272,8 +272,11 @@ class ProjectsController < ApplicationController
   end
 
   def list
-    @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name', :include => [ :customer, :milestones]);
+    @projects = current_user.projects.paginate(:all, 
+                                               :order => 'customer_id',
+                                               :page => params[:page],
+                                               :per_page => 100,
+                                               :include => [ :customer, :milestones]);
     @completed_projects = current_user.completed_projects.find(:all)
   end
-  
 end

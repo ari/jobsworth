@@ -4,7 +4,7 @@
 #
 
 class Company < ActiveRecord::Base
-  has_many      :customers, :dependent => :destroy
+  has_many      :customers, :dependent => :destroy 
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => 'name'
   has_many      :milestones
@@ -18,6 +18,7 @@ class Company < ActiveRecord::Base
   has_many      :views, :dependent => :destroy
   has_many      :resources, :dependent => :destroy
   has_many      :resource_types, :dependent => :destroy
+  has_many      :custom_attributes, :dependent => :destroy
 
 
 #  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/
@@ -33,7 +34,8 @@ class Company < ActiveRecord::Base
   # A small kludge is needed,as it was previously called Internal, now it has the same
   # name as the parent company.
   def internal_customer
-    customers.find(:first, :conditions => ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id], :order => 'id')
+    conds = ["(name = ? OR name = 'Internal') AND company_id = ? ", self.name, self.id]
+    @internal_customer ||= customers.find(:first, :conditions => conds, :order => 'id')
   end
 
   ###

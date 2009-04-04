@@ -30,7 +30,7 @@
 
 	<title><%= controller.controller_name + " / " + controller.action_name %></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<% @internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company_id, current_user.company.name ]) %>
+	  <% @internal = current_user.company.internal_customer %>
 
 	<style type="text/css">
 	<% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>

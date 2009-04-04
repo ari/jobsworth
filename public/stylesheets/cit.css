@@ -2556,6 +2556,14 @@ fieldset.basic label {
 fieldset.basic input {
     margin-top: 0.2em;
 }
+fieldset.basic a.toggle {
+  float: left;
+  clear: right;
+  text-align: left;
+  margin-top: 0.5em;
+  margin-right: 0.1em;
+  margin-bottom: 0.2em;
+}
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 fieldset.basic li {

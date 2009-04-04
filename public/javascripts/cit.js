@@ -421,6 +421,67 @@ function toggleTaskUnread(icon) {
 }
 
 /*
+ Clears the text in the given field
+*/
+function clearPrompt(field) {
+    field.value = "";
+}
+
+/*
+Removes the search filter the link belongs to and submits
+the containing form.
+*/
+function removeSearchFilter(link) {
+    link = jQuery(link);
+    var form = link.parents("form");
+    link.parent(".search_filter").remove();
+    form.submit();
+}
+
+function addProjectToUser(input, li) {
+    li = jQuery(li);
+    var value = li.find(".complete_value").text();
+    
+    var url = document.location.toString();
+    url = url.replace("/edit/", "/project/");
+    jQuery.get(url, { project_id: value }, function(data) {
+	jQuery("#add_user").before(data);
+    });
+
+    input.value = "";
+}
+
+function addUserToProject(input, li) {
+    li = jQuery(li);
+    var value = li.find(".complete_value").text();
+    
+    var url = document.location.toString();
+    url = url.replace("/edit/", "/ajax_add_permission/");
+    jQuery.get(url, { user_id : value }, function(data) {
+	jQuery("#user_table").html(data);
+    });
+
+    input.value = "";
+}
+
+/*
+ This function adds in the selected value to the previous autocomplete.
+ The autocomplete text field itself will be updated with the user name, and
+ a hidden field directly before the text field will be updated with the user id.
+*/
+function updateUserField(input, li) {
+    li = jQuery(li);
+    input = jQuery(input);
+
+    var id = li.find(".complete_value").text();
+    input.siblings(".auto_complete_user_id").val(id);
+
+    li.find(".complete_value").remove();
+    console.log(li);
+    input.val(li.text());
+}
+
+/*
   Requests the available attributes for the given resource type
   and updates the page with the returned values.
 */
@@ -549,4 +610,22 @@ function fixNestedCheckboxes() {
 	var cb = checkboxes[i];
 	nestedCheckboxChanged(cb) 
     }
+}
+
+/*
+ Toggles the visiblity of the element next to sender.
+ Updates the text of sender to "Show" or "Hide" as appropriate.
+*/
+function togglePreviousElement(sender) {
+    sender = jQuery(sender);
+    var toggle = sender.prev();
+
+    if (toggle.is(':visible')) {
+	sender.text("Show");
+    }
+    else {
+	sender.text("Hide");
+    }
+
+    toggle.toggle();
 }

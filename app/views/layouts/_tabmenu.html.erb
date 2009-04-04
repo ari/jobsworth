@@ -139,13 +139,6 @@
   <% end %>
   <% end %>
 
-
-  <% if controller.controller_name == "users" && controller.action_name != "edit_preferences" %>
-     <li class="active right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
-  <% else %>
-     <li class="right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right" %></li>
-  <% end %>
-
   <% end %>
 
   <li class="right" id="search_menu"><% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %>

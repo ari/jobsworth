@@ -22,7 +22,7 @@ class UsersController < ApplicationController
       return
     end
 
-    @user = User.new
+    @user = User.new(params[:user])
     @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
@@ -67,6 +67,7 @@ class UsersController < ApplicationController
       redirect_to :action => 'edit_preferences'
       return
     end
+    puts current_user.company
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 
@@ -262,5 +263,24 @@ class UsersController < ApplicationController
     end
   end
 
+  def auto_complete_for_project_name
+    text = params[:project]
+    text = text[:name] if text
 
+    @projects = []
+    if !text.blank?
+      conds = [ "lower(name) like ?", "%#{ text }%" ]
+      @projects = current_user.company.projects.find(:all, :conditions => conds)
+    end
+  end
+
+  def project
+    @user = current_user.company.users.find(params[:id])
+    project = current_user.company.projects.find(params[:project_id])
+
+    ProjectPermission.new(:user => @user, :company => @user.company, 
+                          :project => project).save
+
+    render(:partial => "project", :locals => { :project => project, :user_edit => true })
+  end
 end
