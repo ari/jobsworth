@@ -1,10 +1,11 @@
 <div id="content">
-	<div class="page_header"><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %>
+	<div class="page_header">
 		<div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
 		<div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
 		<% if session[:view].nil? %>
 			<div class="right"><%= link_to( _("Save as View"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %></div>
 		<% end %>
+                <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
 	</div>
 	<%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 	
