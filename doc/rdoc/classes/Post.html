@@ -335,35 +335,35 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000087'>
+<a href='#M000684'>
 company_id<br/>
 </a>
 
 
 
 
-<a href='#M000085'>
+<a href='#M000682'>
 editable_by?<br/>
 </a>
 
 
 
 
-<a href='#M000088'>
+<a href='#M000685'>
 project_id<br/>
 </a>
 
 
 
 
-<a href='#M000089'>
+<a href='#M000686'>
 started_at<br/>
 </a>
 
 
 
 
-<a href='#M000086'>
+<a href='#M000683'>
 to_xml<br/>
 </a>
 
@@ -391,9 +391,9 @@ href="Forum.html">Forum</a>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000087"><br/></a>
+<a class="small" name="M000684"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000087'>
+<a href='#M000684'>
 
 
 company_id
@@ -403,15 +403,15 @@ company_id
 </a>
 </h3>
 
-<p class="source_link" id="M000087-show-link"><a onclick="toggle('M000087-source'); toggleText('M000087-link'); return false;" href="#" id="M000087-link">Show source...</a></p><div class="source" id="M000087-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 44</span>
+<p class="source_link" id="M000684-show-link"><a onclick="toggle('M000684-source'); toggleText('M000684-link'); return false;" href="#" id="M000684-link">Show source...</a></p><div class="source" id="M000684-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 44</span>
 44:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">company_id</span>
 45:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span>
 46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000085"><br/></a>
+<a class="small" name="M000682"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000085'>
+<a href='#M000682'>
 
 
 editable_by?
@@ -421,15 +421,15 @@ editable_by?
 </a>
 </h3>
 
-<p class="source_link" id="M000085-show-link"><a onclick="toggle('M000085-source'); toggleText('M000085-link'); return false;" href="#" id="M000085-link">Show source...</a></p><div class="source" id="M000085-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 34</span>
+<p class="source_link" id="M000682-show-link"><a onclick="toggle('M000682-source'); toggleText('M000682-link'); return false;" href="#" id="M000682-link">Show source...</a></p><div class="source" id="M000682-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 34</span>
 34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">editable_by?</span>(<span class="ruby-identifier">user</span>)
 35:     <span class="ruby-identifier">user</span> <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user_id</span> <span class="ruby-operator">||</span> (<span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">company_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">company_id</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">2</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">user</span>.<span class="ruby-identifier">moderator_of?</span>(<span class="ruby-identifier">topic</span>.<span class="ruby-identifier">forum_id</span>))
 36:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000088"><br/></a>
+<a class="small" name="M000685"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000088'>
+<a href='#M000685'>
 
 
 project_id
@@ -439,15 +439,15 @@ project_id
 </a>
 </h3>
 
-<p class="source_link" id="M000088-show-link"><a onclick="toggle('M000088-source'); toggleText('M000088-link'); return false;" href="#" id="M000088-link">Show source...</a></p><div class="source" id="M000088-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 48</span>
+<p class="source_link" id="M000685-show-link"><a onclick="toggle('M000685-source'); toggleText('M000685-link'); return false;" href="#" id="M000685-link">Show source...</a></p><div class="source" id="M000685-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 48</span>
 48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">project_id</span>
 49:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">forum</span>.<span class="ruby-identifier">project_id</span>
 50:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000089"><br/></a>
+<a class="small" name="M000686"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000089'>
+<a href='#M000686'>
 
 
 started_at
@@ -457,15 +457,15 @@ started_at
 </a>
 </h3>
 
-<p class="source_link" id="M000089-show-link"><a onclick="toggle('M000089-source'); toggleText('M000089-link'); return false;" href="#" id="M000089-link">Show source...</a></p><div class="source" id="M000089-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 52</span>
+<p class="source_link" id="M000686-show-link"><a onclick="toggle('M000686-source'); toggleText('M000686-link'); return false;" href="#" id="M000686-link">Show source...</a></p><div class="source" id="M000686-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 52</span>
 52:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
 53:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
 54:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000086"><br/></a>
+<a class="small" name="M000683"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000086'>
+<a href='#M000683'>
 
 
 to_xml
@@ -475,7 +475,7 @@ to_xml
 </a>
 </h3>
 
-<p class="source_link" id="M000086-show-link"><a onclick="toggle('M000086-source'); toggleText('M000086-link'); return false;" href="#" id="M000086-link">Show source...</a></p><div class="source" id="M000086-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 38</span>
+<p class="source_link" id="M000683-show-link"><a onclick="toggle('M000683-source'); toggleText('M000683-link'); return false;" href="#" id="M000683-link">Show source...</a></p><div class="source" id="M000683-source"><pre>    <span class="ruby-comment cmt"># File app/models/post.rb, line 38</span>
 38:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_xml</span>(<span class="ruby-identifier">options</span> = {})
 39:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">||=</span> []
 40:     <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:except</span>] <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:topic_title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:forum_name</span>

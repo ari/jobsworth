@@ -1,4 +1,4 @@
-<% internal = Customer.find(:first, :conditions => ["company_id = ? AND (name = 'Internal' or name = ?)", current_user.company_id, current_user.company.name]) %>
+<% internal = current_user.company.internal_customer %>
 <% if !internal.nil? && internal.logo? %>
 <%= tag("img", {:src => "/customers/show_logo/#{internal.id}", :border => 0 } ) %>
 <% else %>

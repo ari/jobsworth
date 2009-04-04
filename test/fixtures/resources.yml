@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  company_id: 1
+  resource_type_id: 1
+  name: MyString
+  customer_id: 1
+  notes: MyString
+
+two:
+  company_id: 1
+  resource_type_id: 1
+  name: MyString
+  customer_id: 1
+  notes: MyString

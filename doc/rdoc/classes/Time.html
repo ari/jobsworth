@@ -337,7 +337,7 @@ Object
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000008'>
+<a href='#M000165'>
 strftime_localized<br/>
 </a>
 
@@ -360,9 +360,9 @@ strftime_localized<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000008"><br/></a>
+<a class="small" name="M000165"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000008'>
+<a href='#M000165'>
 
 
 strftime_localized
@@ -372,7 +372,7 @@ strftime_localized
 </a>
 </h3>
 
-<p class="source_link" id="M000008-show-link"><a onclick="toggle('M000008-source'); toggleText('M000008-link'); return false;" href="#" id="M000008-link">Show source...</a></p><div class="source" id="M000008-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 73</span>
+<p class="source_link" id="M000165-show-link"><a onclick="toggle('M000165-source'); toggleText('M000165-link'); return false;" href="#" id="M000165-link">Show source...</a></p><div class="source" id="M000165-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 73</span>
 73:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">strftime_localized</span>(<span class="ruby-identifier">format</span>)
 74:     <span class="ruby-identifier">format</span> = <span class="ruby-identifier">format</span>.<span class="ruby-identifier">dup</span>
 75:     <span class="ruby-identifier">format</span>.<span class="ruby-identifier">gsub!</span>(<span class="ruby-regexp re">/%a/</span>, <span class="ruby-identifier">_</span>(<span class="ruby-constant">Date</span><span class="ruby-operator">::</span><span class="ruby-constant">ABBR_DAYNAMES</span>[<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wday</span>]))

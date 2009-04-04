@@ -1,0 +1,11 @@
+<div class="page_header">
+  <%= _"Custom Attributes" %>
+</div>
+
+<ul>
+  <% @attributables.each do |class_name, human_name| %>
+  <li>
+    <%= link_to(human_name, :action => "edit", :type => class_name) %>
+  </li>
+  <% end %> 
+</ul>

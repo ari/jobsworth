@@ -1,4 +1,4 @@
-  <table class="content" width="100%" style="margin-left:0;margin-right:0;">
+  <table class="content" id="user_table" width="100%" style="margin-left:0;margin-right:0;">
     <tr>
       <th><%=_ 'Online' %></th>
       <th><%=_ 'User' %></th>
@@ -16,75 +16,24 @@
       <th><%=_ 'All' %></th>
     </tr>
 
-<% for u in @users %>
-<tr class="hoverrow" id="user-<%= u.id %>">
-<td align="center"><%= if user_online?( u.id ) then image_tag('status_online.png', :title => 'Online', :class => 'centered') else image_tag('status_offline.png', :title => 'Offline', :class => 'centered') end %></td>
-<td><%= u.name %></td>
+    <% @project.users.each do |@user| %>
+      <%= render(:partial => "/users/project", :locals => { 
+      :name => @user.name, :project => @project, :user_edit => false }) %>
+    <% end %>
 
-<%
-       user_granted = @project.users.include? u
-
-     perm = u.project_permissions.find(:first, :conditions => ["project_id=?", @project.id])
-
-     perms = ['comment', 'work', 'close', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
-
-%>
-
-<% if user_granted && (u.id != @project.user_id && u.id != current_user.id ) %>
-      <td align="center">
-       <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove all access for <b>%s</b>?", u.name), :class => "tooltip centered"),
-          :update => 'permission_list',
-          :url => { :action => 'ajax_remove_permission', :user_id => u.id, :id => @project.id },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');"
-          %>
+    <tr id="add_user">
+      <td>
+	<%= _("Add user to project") %>
       </td>
-
-      <% for p in perms %>
-      <td align="center">
-             <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove %s access for <b>%s</b>?", p, u.name), :class => "tooltip centered"),
-        :update => 'permission_list',
-        :url => { :action => 'ajax_remove_permission', :user_id => u.id, :id => @project.id, :perm => p },
-        :loading => "Element.show('loading');",
-        :complete => "Element.hide('loading');" if perm.can? p %>
-       <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant %s access for <b>%s</b>?", p, u.name), :class => "tooltip centered"),
-        :update => 'permission_list',
-        :url => { :action => 'ajax_add_permission', :user_id => u.id, :id => @project.id, :perm => p },
-        :loading => "Element.show('loading');",
-        :complete => "Element.hide('loading');" unless perm.can? p %>
+      <td colspan="11">
+	<%= text_field_with_auto_complete(:user, :name, { :value => "" },
+	    :after_update_element => "addUserToProject",
+	:select => "complete_value",
+        :url => "/projects/auto_complete_for_user_name") %>
       </td>
-      <% end %>
-
-<% elsif user_granted %>
-      <td align="center">
-        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") %>
-      </td>
-      <% for p in perms %>
-      <td align="center">
-        <%= image_tag("user_suit.png", :border => 0, :title => "Can't remove <b>yourself</b> or the <b>project creator</b>!", :class => "tooltip centered") if perm.can? p %>
-        <%= image_tag("delete.png", :border => 0, :title => _("Can't remove <b>yourself</b> or the <b>project creator</b>!"), :class => "tooltip centered") unless perm.can? p %>
-      </td>
-      <% end %>
-<% else %>
-      <td align="center">
-        <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant access to <b>%s</b>?", u.name), :class => "tooltip centered"),
-          :update => 'permission_list',
-          :url => { :action => 'ajax_add_permission', :user_id => u.id, :id => @project.id },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');updateDnD();"
-          %>
-      </td>
-      <td colspan="11"></td>
-<% end %>
-
-
-
-
-
-
-</tr>
-<% end %>
+    </tr>
 </table>
+
   <script type="text/javascript" language="javascript" charset="utf-8">
     updateTooltips();
   </script>

@@ -1,0 +1,5 @@
+<ul>
+  <% @users.each do |u| %>
+  <li><span style="display: none" class="complete_value"><%= u.id %></span><%= u %></li>
+  <% end %>
+</ul>

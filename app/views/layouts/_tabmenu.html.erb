@@ -97,6 +97,12 @@
     <% end %>
  </li>
 
+<% if current_user.use_resources? %>
+  <li class="<%= resource_class %>">
+    <%= link_to(_("Resources"), resources_path) %>
+  </li>
+<% end %>
+
   <% if controller.controller_name == "tasks" && controller.action_name == 'new'  %>
   <li class="active"><%= link_to "#{_('New Task') + image_tag('tick.png',  :border => 0, :height => 16, :style => "margin-top:-2px;")}", {:controller => 'tasks', :action => 'new'}, :class => "active" %>
   <% else %>
@@ -118,6 +124,7 @@
  <ul>
        <li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
        <li><%= link_to _('Custom Properties'), properties_path %></li>
+       <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
      </ul>
   <% end %>
   </li>
@@ -130,13 +137,6 @@
     <% else %>
     <li class="right"><%= link_to "#{_('Clients')}", { :controller => 'customers', :action => 'list'}, :class => "right" %></li>
   <% end %>
-  <% end %>
-
-
-  <% if controller.controller_name == "users" && controller.action_name != "edit_preferences" %>
-     <li class="active right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right active"%></li>
-  <% else %>
-     <li class="right"><%= link_to "#{_('Users')}", { :controller => 'users', :action => 'list'}, :class => "right" %></li>
   <% end %>
 
   <% end %>

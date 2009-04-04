@@ -11,11 +11,14 @@ class TimelineController < ApplicationController
       @filter_params[fp] = params[fp] unless params[fp].blank?
     end
 
-    if( [EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i || params[:filter_status].nil? )
+    event_log_types = [ EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, 
+                        EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
+    if(event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
       filter << " AND event_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
       filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
       filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
       filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
+      filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
     else
       filter << " AND work_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
       filter << " AND work_logs.log_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
@@ -29,7 +32,6 @@ class TimelineController < ApplicationController
     if filter.length > 0
       work_log = true
     end
-
 
     case params[:filter_date].to_i
     when 1
@@ -55,10 +57,10 @@ class TimelineController < ApplicationController
     if params[:filter_project].to_i > 0
       filter = " AND work_logs.project_id = #{params[:filter_project]}" + filter
     else
-      filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL)" + filter
+      filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL or work_logs.project_id = 0)" + filter
     end
     
-    if( ([EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED, EventLog::WIKI_MODIFIED].include? params[:filter_status].to_i) || work_log == false)
+    if !work_log or event_log_types.include?(params[:filter_status].to_i)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
       
@@ -77,7 +79,7 @@ class TimelineController < ApplicationController
       end
       
     else 
-      @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND work_logs.project_id IN (#{current_project_ids})", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND (work_logs.project_id IN (#{current_project_ids}) or work_logs.project_id = 0)", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
     end 
   end
 

@@ -101,12 +101,52 @@
 <% for @message in @chat_messages %>
 <tr><td class="channel-user" nowrap><a href="/shout/chat_browse/<%= @message.chat.target_id %>"><%= render :partial => 'shout/chat_info', :locals => {:user => current_user}  %></a></td><td class="channel-message"><%= render :partial => 'search_chat' %></td></tr>
 <% end %>
-
-
 </table></td></tr>
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
+<% if @customers.length > 0 %>
+  <tr>
+    <td>
+      <div class="log_header"><%=_ "Clients" %></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <ul style="padding-left: 0; margin-left:0;" id="search_customers">
+	<% @customers.each do |c| %>
+	  <li>
+	    <%= link_to(c.name, :controller => "customers", :action => "edit", 
+	    :id => c.id) %>
+	  </li>
+	  <% end %>
+      </ul>
+    </td>
+  </tr>
+
+  <tr><td>&nbsp;</td></tr>
+<% end %>
+
+<% if @users.length > 0 %>
+  <tr>
+    <td>
+      <div class="log_header"><%=_ "Users" %></div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <ul style="padding-left: 0; margin-left:0;" id="search_customers">
+	<% @users.each do |@user| %>
+	  <li>
+	    <%= render :partial => "/users/user" %>
+	  </li>
+	  <% end %>
+      </ul>
+    </td>
+  </tr>
+
+  <tr><td>&nbsp;</td></tr>
+<% end %>
 
 </table></td></tr>
 

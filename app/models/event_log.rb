@@ -6,6 +6,7 @@
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
   belongs_to :user
+  belongs_to :company
 
   TASK_CREATED       = 1
   TASK_COMPLETED     = 2
@@ -40,6 +41,9 @@ class EventLog < ActiveRecord::Base
   MILESTONE_REVERTED  = 53
 
   FORUM_NEW_POST      = 60
+
+  RESOURCE_PASSWORD_REQUESTED = 70
+  RESOURCE_CHANGE = 71
 
   def started_at
     self.created_at

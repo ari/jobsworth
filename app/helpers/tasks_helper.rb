@@ -139,11 +139,45 @@ module TasksHelper
   ###
   def milestone_select(perms)
     if @task.id
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
+      milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
     else
       milestone_id = TaskFilter.new(self, session).milestone_ids.first
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + Milestone.find(:all, :order => 'name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project] ).collect {|c| [ c.name, c.id ] }, {:selected => milestone_id || 0 }, perms['milestone'])
+      milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => milestone_id || 0 }, perms['milestone'])
     end
+  end
+
+  ###
+  # Returns the html to display an auto complete for resources. Only resources
+  # belonging to customer id are returned. Unassigned resources (belonging to
+  # no customer are also returned though).
+  ###
+  def auto_complete_for_resources(customer_id)
+    options = {
+      :select => 'complete_value', 
+      :tokens => ',',
+      :url => { :action => "auto_complete_for_resource_name", 
+        :customer_id => customer_id },
+      :after_update_element => "addResourceToTask"
+    }
+
+    return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
+  end
+
+  ###
+  # Returns the html to display an auto complete for task dependencies. When
+  # a choice is made, the dependency will be added to the page (but not saved
+  # to the db until the task is saved)
+  ###
+  def auto_complete_for_dependencies
+    auto_complete_field('dependencies_input', 
+                        { :url => { :action => 'dependency_targets' }, 
+                          :min_chars => 1, 
+                          :frequency => 0.5, 
+                          :indicator => 'loading', 
+                          :after_update_element => "addDependencyToTask"
+                        })
   end
 
 end

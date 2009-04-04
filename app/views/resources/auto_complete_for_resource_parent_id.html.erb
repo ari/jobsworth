@@ -1,0 +1,8 @@
+<ul>
+  <% @resources.each do |r| %>
+  <li>
+    [#<span class="complete_value"><%= r.id %></span>]
+    <%= r %>
+  </li>
+  <% end %>
+</ul>

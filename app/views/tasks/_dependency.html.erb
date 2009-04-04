@@ -1,0 +1,10 @@
+<div id="dep_<%= dependency.id %>" class="dependency_no">
+  <% if perms.empty? or perms['prioritize'].empty? %>
+    <a href="#" onclick="javascript:new Element.remove('dep_<%= dependency.id %>'); return false;" ><img src="/images/cross_small.png" class="close-cross" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
+  <% end %>
+  
+  <% if dependency.done? %>
+    <img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(dependency) %>
+    <input name="dependencies[]" type="hidden" value="<%=dependency.task_num%>">
+    <span class="divider"></span>
+</div>
