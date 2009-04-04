@@ -444,9 +444,6 @@ input, textarea {
   border: 1px solid #dcdcdc;
 /*  background: #FFFFFF url(/images/bg.png) repeat-x 0 0 ; */
 }
-input, textarea {
-  padding: 0px 2px 0px 2px;
-}
 
 input.button { border: auto; }
 
