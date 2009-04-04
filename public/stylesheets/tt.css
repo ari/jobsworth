@@ -372,9 +372,6 @@ input, textarea {
   background-color: #fff;
 /*  background: #FFFFFF url(/images/bg.png) repeat-x 0 0 ; */
 }
-input, textarea {
-  padding: 0px 2px 0px 2px;
-}
 
 
 fieldset label {
