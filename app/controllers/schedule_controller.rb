@@ -10,15 +10,17 @@ class ScheduleController < ApplicationController
 
     today = Time.now.to_date
 
-    @year = params[:year] unless params[:year].nil?
-    @month = params[:month] unless params[:month].nil?
+    @year = params[:year].to_i unless params[:year].nil?
+    @month = params[:month].to_i unless params[:month].nil?
 
     @year ||= today.year
     @month ||= today.month
 
+    start_date = tz.local_to_utc(Date.civil(@year, @month, 1).to_time)
+    end_date = start_date.next_month
+
     # Find all tasks for the current month, should probably be adjusted to use
-    # TimeZone for current User instead of UTC.
-    conditions = "tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}' AND ((tasks.due_at is NOT NULL AND tasks.due_at > '#{@year}-#{@month}-01 00:00:00' AND tasks.due_at < '#{@year}-#{@month}-31 23:59:59') OR (tasks.completed_at is NOT NULL AND tasks.completed_at > '#{@year}-#{@month}-01 00:00:00' AND tasks.completed_at < '#{@year}-#{@month}-31 23:59:59'))"
+    conditions = "tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}' AND ((tasks.due_at is NOT NULL AND tasks.due_at >= '#{start_date.to_s(:db)}' AND tasks.due_at <= '#{end_date.to_s(:db)}') OR (tasks.completed_at is NOT NULL AND tasks.completed_at >= '#{start_date.to_s(:db)}' AND tasks.completed_at <= '#{end_date.to_s(:db)}'))"
     task_filter = TaskFilter.new(self, params, conditions)
     @tasks = task_filter.tasks
 
