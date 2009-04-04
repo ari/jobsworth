@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class="basic">
 <legend><%=_ 'Preferences' %></legend>
 
 <% form_tag :action => 'update_preferences', :id => @user do %>
@@ -9,7 +9,7 @@
 
 </fieldset>
 
-<fieldset>
+<fieldset class="basic">
 <legend><%=_ 'Custom Avatar' %></legend>
 
 <% if @user.avatar? -%>
