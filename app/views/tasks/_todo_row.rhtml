@@ -1,10 +1,12 @@
 <li id="<%=@todo.dom_id%>" class="<%=@todo.css_classes%>"><%= check_box("todo", "done", { "title" => (@todo.done? ? _('Open <b>%s</b>', @todo.name) : _("Close <b>%s</b>", @todo.name)),  :class => "button tooltip checkbox", :id => "button_#{@todo.id}",
 									  :onclick => "new Ajax.Request('/tasks/todo_check_ajax/#{@todo.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}})"}) -%>
- <%= @todo.name %>
+ <%=h @todo.name %>
 <% if @todo.done? %>
        <%= "[#{tz.utc_to_local(@todo.completed_at).strftime("#{current_user.time_format} #{current_user.date_format}")}]" %>
        <%= "[#{@todo.completed_by_user.name}]" if @todo.completed_by_user %>
+<% else %>
+&nbsp;<a href="#" onclick="new Ajax.Request('/tasks/todo_edit_ajax/<%=@todo.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("application_form_edit.png", :border => 0, :title => _("Edit <b>%s</b>.", @todo.name), :class => "tooltip")%></a>
 <% end %>
-&nbsp;<a href="#" onclick="new Ajax.Request('/tasks/todo_delete_ajax/<%=@todo.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("cross_small.png", :border => 0, :title => _("Delete <b>%s</b>.", @todo.name), :class => "tooltip")%></a>
+&nbsp;<a href="#" onclick="new Ajax.Request('/tasks/todo_delete_ajax/<%=@todo.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("cross_small.png", :border => 0, :title => _("Delete <b>%s</b>.", h(@todo.name)), :class => "tooltip")%></a>
 </li>
 

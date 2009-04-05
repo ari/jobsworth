@@ -1,0 +1,6 @@
+<li id="<%=@todo.dom_id%>" class="<%=@todo.css_classes%>">
+<form action="/tasks/todo_edit_ajax/<%=@todo.id%>" id="todo-form-<%=@todo.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/todo_edit_ajax/<%=@todo.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Form.serialize(this)}); return false;" >
+    <input type="text" id="todo_text_<%=@todo.dom_id%>" name="todo[name]" value="<%=h @todo.name%>"> <%= _('or') %> <a href="#" onclick="new Ajax.Request('/tasks/todo_edit_cancel_ajax/<%=@todo.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');} }); return false;"><%=_('Cancel')%></a>
+</form>
+</li>
+
