@@ -4,7 +4,7 @@
     @user_ids << p.users.collect{ |pu| pu.id }
   end
 
-  @user_ids = [0] if @user_ids.size == 0
+  @user_ids = [0] if @user_ids.flatten.compact.size == 0
   @users = User.find(:all, :conditions => ["id IN (#{@user_ids.flatten.compact.uniq.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
 %>
 <div id="content">
