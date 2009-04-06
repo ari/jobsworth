@@ -1,3 +1,7 @@
+<div class="page_header">
+  <%= _("Custom Attributes for %s", params[:type].pluralize) %>
+</div>
+
 <div id="content">
   <% form_tag(:action => "update") do %>
     <%= hidden_field_tag(:type, params[:type]) %>
