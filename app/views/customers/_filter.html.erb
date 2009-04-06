@@ -1,0 +1,29 @@
+  <tr>
+    <td colspan="4">
+      <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+	<legend><%= _'Filter'%></legend>
+	<form method="post" action="">
+	  <% # seem to need this submit here or else enter doesn't submit after %>
+          <% # adding in new search fields %>
+ 	  <input type="submit" style="display: none" />
+
+	  <div id="customer_search_filters">
+	    <% filters = session[:client_name_filters] || [] %>
+	    <% filters.each do |text| %>
+	      <div class="search_filter">
+       	        <%= text_field_tag("search_text[]", text, :index => nil) %>
+		<%= link_to_function(image_tag("cross_small.png", :border => 0), 
+		"removeSearchFilter(this)") %>
+		<br />
+	      </div>
+            <% end %>
+	    <% if filters.empty? %>
+	      <%= render :partial => "search_filter_prompt" %>
+	    <% end %>
+	  </div>
+	  <%= add_search_filter_link %>
+	</form>
+      </fieldset>
+    </td>
+  </tr>
+  

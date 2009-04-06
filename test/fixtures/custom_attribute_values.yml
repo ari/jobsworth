@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  custom_attribute_id: 1
+  attributable_id: 1
+  attributable_type: MyString
+  value: MyString
+
+two:
+  custom_attribute_id: 1
+  attributable_id: 1
+  attributable_type: MyString
+  value: MyString

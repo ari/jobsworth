@@ -1,10 +1,13 @@
 # A user from a company
 
 class User < ActiveRecord::Base
+  has_many :custom_attribute_values, :as => :attributable, :dependent => :destroy
+  include CustomAttributeMethods
 
   require_dependency 'digest/md5'
 
   belongs_to    :company
+  belongs_to    :customer
   has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name"
   has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name"
   has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project
@@ -70,6 +73,16 @@ class User < ActiveRecord::Base
   after_create			:generate_widgets
   
   attr_protected :uuid, :autologin
+
+  ###
+  # Searches the users for company and returns 
+  # any that have names or ids that match at least one of
+  # the given strings
+  ###
+  def self.search(company, strings)
+    return company.users.find(:all, 
+                              :conditions => Search.search_conditions_for(strings))
+  end
 
   def path
     File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)
@@ -267,6 +280,13 @@ class User < ActiveRecord::Base
     else 
       "/images/presence-offline.png"
     end
+  end
+
+  def to_s
+    str = [ name ]
+    str << "(#{ customer.name })" if customer
+
+    str.join(" ")
   end
   
 

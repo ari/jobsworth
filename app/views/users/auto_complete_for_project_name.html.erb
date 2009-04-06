@@ -1,0 +1,8 @@
+<ul>
+  <% @projects.each do |p| %>
+  <li>
+    [#<span class="complete_value"><%= p.id %></span>]
+    <%= p.full_name %>
+  </li>
+  <% end %>
+</ul>
