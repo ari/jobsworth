@@ -64,9 +64,9 @@ new Form.Element.EventObserver('view_filter_project_id', function(element, value
   <% end %>
 
   <label for="user_name"><%=_ "User "%></label>
-  <%= hidden_field_tag("view[filter_user_id]", @view.filter_user_id, :id => "view_fiter_user_id", :class => "auto_complete_user_id") %>
+  <%= hidden_field_tag("view[filter_user_id]", @view.filter_user_id, :id => "view_fiter_user_id", :class => "auto_complete_id") %>
   <%= text_field_with_auto_complete(:user, :name, { :value => User.find(:first, :conditions => { :id => @view.filter_user_id  }) },
-  	    :after_update_element => "updateUserField") %>
+  	    :after_update_element => "updateAutoCompleteField") %>
 
   <label for="view_filter_status"><%=_ 'Status' %></label><%= select 'view', 'filter_status', [[_('[Any Status]'), '-1'],[_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3],[_('Invalid'),4],[_('Duplicate'),5], [_('Archived'), -2]], :selected => @view.filter_status %><br/>
 	    <% current_user.company.properties.each do |p| -%>

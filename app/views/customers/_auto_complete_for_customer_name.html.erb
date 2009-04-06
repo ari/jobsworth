@@ -1,0 +1,5 @@
+<ul>
+  <% @customers.each do |c| %>
+  <li><span style="display: none" class="complete_value"><%= c.id %></span><%= c %></li>
+  <% end %>
+</ul>

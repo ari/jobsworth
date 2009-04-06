@@ -443,4 +443,20 @@ class ApplicationController < ActionController::Base
 
     render(:partial => "/users/auto_complete_for_user_name")
   end
+
+  ###
+  # Returns the list to use for auto completes for customer names.
+  ###
+  def auto_complete_for_customer_name
+    text = params[:customer]
+    text = text[:name] if text
+
+    @customers = []
+    if !text.blank?
+      conds = Search.search_conditions_for(text)
+      @customers = current_user.company.customers.find(:all, :conditions => conds)
+    end
+
+    render(:partial => "/customers/auto_complete_for_customer_name")
+  end
 end

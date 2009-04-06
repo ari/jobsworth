@@ -5,9 +5,10 @@
 <label for="user_password"><%=_ 'Password' %></label><%= password_field 'user', 'password'  %><br/>
 <label for="user_email"><%=_ 'Email' %></label><%= text_field 'user', 'email'  %><br/>
 
-<label for="user_customer_id"><%=_ "Customer" %></label>
-<%= select("user", "customer_id", 
-    current_user.company.customers.map { |c| [ c.name, c.id ] }) %>
+<label for="user_customer_id"><%=_ "Client" %></label>
+<%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
+<%= text_field_with_auto_complete(:customer, :name, { :value => @user.customer },
+:after_update_element => "updateAutoCompleteField") %>
 <br/>
 
 <% if @user.autologin && !@user.autologin.empty? %>

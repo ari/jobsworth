@@ -65,4 +65,7 @@ class Customer < ActiveRecord::Base
     File.exist?(self.logo_path)
   end
 
+  def to_s
+    full_name
+  end
 end
