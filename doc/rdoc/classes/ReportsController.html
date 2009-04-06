@@ -337,77 +337,84 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000265'>
+<a href='#M000270'>
+clean_value<br/>
+</a>
+
+
+
+
+<a href='#M000271'>
 create_csv<br/>
 </a>
 
 
 
 
-<a href='#M000263'>
+<a href='#M000268'>
 do_column<br/>
 </a>
 
 
 
 
-<a href='#M000262'>
+<a href='#M000267'>
 do_row<br/>
 </a>
 
 
 
 
-<a href='#M000268'>
+<a href='#M000274'>
 filter_logs_by_properties<br/>
 </a>
 
 
 
 
-<a href='#M000266'>
+<a href='#M000272'>
 get_csv<br/>
 </a>
 
 
 
 
-<a href='#M000258'>
+<a href='#M000263'>
 get_date_header<br/>
 </a>
 
 
 
 
-<a href='#M000259'>
+<a href='#M000264'>
 get_date_key<br/>
 </a>
 
 
 
 
-<a href='#M000267'>
+<a href='#M000273'>
 get_projects<br/>
 </a>
 
 
 
 
-<a href='#M000260'>
+<a href='#M000265'>
 key_from_worklog<br/>
 </a>
 
 
 
 
-<a href='#M000264'>
+<a href='#M000269'>
 list<br/>
 </a>
 
 
 
 
-<a href='#M000261'>
+<a href='#M000266'>
 name_from_worklog<br/>
 </a>
 
@@ -435,9 +442,33 @@ well as CSV downloading.
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000265"><br/></a>
+<a class="small" name="M000270"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000265'>
+<a href='#M000270'>
+
+
+clean_value
+
+(value)
+
+</a>
+</h3>
+
+<p class="source_link" id="M000270-show-link"><a onclick="toggle('M000270-source'); toggleText('M000270-link'); return false;" href="#" id="M000270-link">Show source...</a></p><div class="source" id="M000270-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 503</span>
+503:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">clean_value</span>(<span class="ruby-identifier">value</span>)
+504:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">value</span>
+505:     <span class="ruby-keyword kw">begin</span>
+506:       <span class="ruby-identifier">res</span> = [<span class="ruby-identifier">value</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
+507:     <span class="ruby-keyword kw">rescue</span>
+508:     <span class="ruby-keyword kw">end</span>
+509: 
+510:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
+511:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000271"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000271'>
 
 
 create_csv
@@ -447,59 +478,56 @@ create_csv
 </a>
 </h3>
 
-<p class="source_link" id="M000265-show-link"><a onclick="toggle('M000265-source'); toggleText('M000265-link'); return false;" href="#" id="M000265-link">Show source...</a></p><div class="source" id="M000265-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 503</span>
-503:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_csv</span>
-504:     <span class="ruby-identifier">csv_string</span> = <span class="ruby-value str">&quot;&quot;</span>
-505:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span>
-506:       <span class="ruby-identifier">csv_string</span> = <span class="ruby-constant">FasterCSV</span>.<span class="ruby-identifier">generate</span>( <span class="ruby-identifier">:col_sep</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;,&quot;</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
-507: 
-508:         <span class="ruby-identifier">header</span> = [<span class="ruby-keyword kw">nil</span>]
-509:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-510:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-511:           <span class="ruby-keyword kw">begin</span>
-512:             <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>.<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
-513:           <span class="ruby-keyword kw">rescue</span>
-514:             <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">value</span> ]
-515:           <span class="ruby-keyword kw">end</span>
-516:         <span class="ruby-keyword kw">end</span>
-517:         <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Total&quot;</span>)]
-518:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header</span>
-519: 
-520:         <span class="ruby-ivar">@rows</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-521:           <span class="ruby-identifier">row</span> = []
-522:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">value</span>[<span class="ruby-value str">'__'</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>)]
-523:           <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
-524:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-525:             <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
-526:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Fixnum</span>)
-527:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">gsub</span>(<span class="ruby-regexp re">/&lt;[a-zA-Z\/][^&gt;]*&gt;/</span>,<span class="ruby-value str">''</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]
-528:             <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
-529:           <span class="ruby-keyword kw">end</span>
-530:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@row_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span>]
-531:           <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
-532:         <span class="ruby-keyword kw">end</span>
-533: 
-534:         <span class="ruby-identifier">row</span> = []
-535:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">'Total'</span>)]
-536:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
-537:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
-538:           <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
-539:           <span class="ruby-identifier">val</span> = <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-540:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
-541:         <span class="ruby-keyword kw">end</span>
-542:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@total</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>]
-543:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
-544: 
-545: 
-546:       <span class="ruby-keyword kw">end</span>
-547:     <span class="ruby-keyword kw">end</span>
-548:     <span class="ruby-identifier">csv_string</span>
-549:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000271-show-link"><a onclick="toggle('M000271-source'); toggleText('M000271-link'); return false;" href="#" id="M000271-link">Show source...</a></p><div class="source" id="M000271-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 513</span>
+513:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_csv</span>
+514:     <span class="ruby-identifier">csv_string</span> = <span class="ruby-value str">&quot;&quot;</span>
+515:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_headers</span>
+516:       <span class="ruby-identifier">csv_string</span> = <span class="ruby-constant">FasterCSV</span>.<span class="ruby-identifier">generate</span>( <span class="ruby-identifier">:col_sep</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;,&quot;</span> ) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">csv</span><span class="ruby-operator">|</span>
+517: 
+518:         <span class="ruby-identifier">header</span> = [<span class="ruby-keyword kw">nil</span>]
+519:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+520:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+521:           <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">clean_value</span>(<span class="ruby-identifier">value</span>)
+522:         <span class="ruby-keyword kw">end</span>
+523:         <span class="ruby-identifier">header</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Total&quot;</span>)]
+524:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">header</span>
+525: 
+526:         <span class="ruby-ivar">@rows</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+527:           <span class="ruby-identifier">row</span> = []
+528:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [ <span class="ruby-identifier">clean_value</span>(<span class="ruby-identifier">value</span>[<span class="ruby-value str">&quot;__&quot;</span>]) ]
+529: <span class="ruby-comment cmt">#          row &lt;&lt; [value['__'].gsub(/&lt;[a-zA-Z\/][^&gt;]*&gt;/,'')]</span>
+530:           <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+531:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+532:             <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
+533:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Fixnum</span>)
+534:             <span class="ruby-identifier">val</span> = <span class="ruby-identifier">clean_value</span>(<span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">val</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">value</span>[<span class="ruby-identifier">k</span>]
+535:             <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
+536:           <span class="ruby-keyword kw">end</span>
+537:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@row_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span>]
+538:           <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
+539:         <span class="ruby-keyword kw">end</span>
+540: 
+541:         <span class="ruby-identifier">row</span> = []
+542:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">_</span>(<span class="ruby-value str">'Total'</span>)]
+543:         <span class="ruby-ivar">@column_headers</span>.<span class="ruby-identifier">sort</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">key</span>,<span class="ruby-identifier">value</span><span class="ruby-operator">|</span>
+544:           <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">key</span> <span class="ruby-operator">==</span> <span class="ruby-value str">'__'</span>
+545:           <span class="ruby-identifier">val</span> = <span class="ruby-keyword kw">nil</span>
+546:           <span class="ruby-identifier">val</span> = <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>]<span class="ruby-operator">/</span><span class="ruby-value">60</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@column_totals</span>[<span class="ruby-identifier">key</span>] <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+547:           <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-identifier">val</span>]
+548:         <span class="ruby-keyword kw">end</span>
+549:         <span class="ruby-identifier">row</span> <span class="ruby-operator">&lt;&lt;</span> [<span class="ruby-ivar">@total</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>]
+550:         <span class="ruby-identifier">csv</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">row</span>
+551: 
+552: 
+553:       <span class="ruby-keyword kw">end</span>
+554:     <span class="ruby-keyword kw">end</span>
+555:     <span class="ruby-identifier">csv_string</span>
+556:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000263"><br/></a>
+<a class="small" name="M000268"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000263'>
+<a href='#M000268'>
 
 
 do_column
@@ -509,7 +537,7 @@ do_column
 </a>
 </h3>
 
-<p class="source_link" id="M000263-show-link"><a onclick="toggle('M000263-source'); toggleText('M000263-link'); return false;" href="#" id="M000263-link">Show source...</a></p><div class="source" id="M000263-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 145</span>
+<p class="source_link" id="M000268-show-link"><a onclick="toggle('M000268-source'); toggleText('M000268-link'); return false;" href="#" id="M000268-link">Show source...</a></p><div class="source" id="M000268-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 145</span>
 145:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">do_column</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">key</span>)
 146:     <span class="ruby-identifier">logger</span>.<span class="ruby-identifier">debug</span>(<span class="ruby-node">&quot;#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}&quot;</span>)
 147: 
@@ -562,9 +590,9 @@ do_column
 194:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000262"><br/></a>
+<a class="small" name="M000267"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000262'>
+<a href='#M000267'>
 
 
 do_row
@@ -574,7 +602,7 @@ do_row
 </a>
 </h3>
 
-<p class="source_link" id="M000262-show-link"><a onclick="toggle('M000262-source'); toggleText('M000262-link'); return false;" href="#" id="M000262-link">Show source...</a></p><div class="source" id="M000262-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 127</span>
+<p class="source_link" id="M000267-show-link"><a onclick="toggle('M000267-source'); toggleText('M000267-link'); return false;" href="#" id="M000267-link">Show source...</a></p><div class="source" id="M000267-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 127</span>
 127:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">do_row</span>(<span class="ruby-identifier">rkey</span>, <span class="ruby-identifier">rname</span>, <span class="ruby-identifier">vkey</span>, <span class="ruby-identifier">duration</span>)
 128:     <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@rows</span>[<span class="ruby-identifier">rkey</span>]
 129:       <span class="ruby-ivar">@rows</span>[ <span class="ruby-identifier">rkey</span> ] <span class="ruby-operator">||=</span> { }
@@ -593,9 +621,9 @@ do_row
 142:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000268"><br/></a>
+<a class="small" name="M000274"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000268'>
+<a href='#M000274'>
 
 
 filter_logs_by_properties
@@ -609,26 +637,26 @@ Remove any logs that don&#8216;t match the property filters selected by the
 user.
 </p>
 
-<p class="source_link" id="M000268-show-link"><a onclick="toggle('M000268-source'); toggleText('M000268-link'); return false;" href="#" id="M000268-link">Show source...</a></p><div class="source" id="M000268-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 585</span>
-585:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter_logs_by_properties</span>(<span class="ruby-identifier">logs</span>, <span class="ruby-identifier">property_filters</span>)
-586:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">logs</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">property_filters</span>.<span class="ruby-identifier">empty?</span>
-587: 
-588:     <span class="ruby-identifier">res</span> = []
-589:     <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span>
-590:       <span class="ruby-identifier">all_matched</span> = <span class="ruby-keyword kw">true</span>
-591:       <span class="ruby-identifier">property_filters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">property</span>, <span class="ruby-identifier">property_value</span><span class="ruby-operator">|</span>
-592:         <span class="ruby-identifier">all_matched</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">property_value</span>(<span class="ruby-identifier">property</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">property_value</span>
-593:       <span class="ruby-keyword kw">end</span>
-594:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">all_matched</span>
-595:     <span class="ruby-keyword kw">end</span>
-596:     
-597:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
-598:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000274-show-link"><a onclick="toggle('M000274-source'); toggleText('M000274-link'); return false;" href="#" id="M000274-link">Show source...</a></p><div class="source" id="M000274-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 592</span>
+592:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter_logs_by_properties</span>(<span class="ruby-identifier">logs</span>, <span class="ruby-identifier">property_filters</span>)
+593:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">logs</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">property_filters</span>.<span class="ruby-identifier">empty?</span>
+594: 
+595:     <span class="ruby-identifier">res</span> = []
+596:     <span class="ruby-identifier">logs</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">l</span><span class="ruby-operator">|</span>
+597:       <span class="ruby-identifier">all_matched</span> = <span class="ruby-keyword kw">true</span>
+598:       <span class="ruby-identifier">property_filters</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">property</span>, <span class="ruby-identifier">property_value</span><span class="ruby-operator">|</span>
+599:         <span class="ruby-identifier">all_matched</span> <span class="ruby-operator">&amp;&amp;=</span> <span class="ruby-identifier">l</span>.<span class="ruby-identifier">task</span>.<span class="ruby-identifier">property_value</span>(<span class="ruby-identifier">property</span>) <span class="ruby-operator">==</span> <span class="ruby-identifier">property_value</span>
+600:       <span class="ruby-keyword kw">end</span>
+601:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">l</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">all_matched</span>
+602:     <span class="ruby-keyword kw">end</span>
+603:     
+604:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>
+605:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000266"><br/></a>
+<a class="small" name="M000272"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000266'>
+<a href='#M000272'>
 
 
 get_csv
@@ -638,23 +666,23 @@ get_csv
 </a>
 </h3>
 
-<p class="source_link" id="M000266-show-link"><a onclick="toggle('M000266-source'); toggleText('M000266-link'); return false;" href="#" id="M000266-link">Show source...</a></p><div class="source" id="M000266-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 551</span>
-551:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_csv</span>
-552:     <span class="ruby-ivar">@report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ? AND company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
-553:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@report</span>
-554:       <span class="ruby-identifier">send_data</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report</span>,
-555:                 <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'text/csv; charset=utf-8; header=present'</span>,
-556:                 <span class="ruby-identifier">:filename</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">filename</span>)
-557:     <span class="ruby-keyword kw">else</span>
-558:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
-559:     <span class="ruby-keyword kw">end</span>
-560: 
-561:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000272-show-link"><a onclick="toggle('M000272-source'); toggleText('M000272-link'); return false;" href="#" id="M000272-link">Show source...</a></p><div class="source" id="M000272-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 558</span>
+558:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_csv</span>
+559:     <span class="ruby-ivar">@report</span> = <span class="ruby-constant">GeneratedReport</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;user_id = ? AND company_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>])
+560:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@report</span>
+561:       <span class="ruby-identifier">send_data</span>(<span class="ruby-ivar">@report</span>.<span class="ruby-identifier">report</span>,
+562:                 <span class="ruby-identifier">:type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'text/csv; charset=utf-8; header=present'</span>,
+563:                 <span class="ruby-identifier">:filename</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@report</span>.<span class="ruby-identifier">filename</span>)
+564:     <span class="ruby-keyword kw">else</span>
+565:       <span class="ruby-identifier">redirect_to</span> <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'list'</span>
+566:     <span class="ruby-keyword kw">end</span>
+567: 
+568:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000258"><br/></a>
+<a class="small" name="M000263"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000258'>
+<a href='#M000263'>
 
 
 get_date_header
@@ -664,7 +692,7 @@ get_date_header
 </a>
 </h3>
 
-<p class="source_link" id="M000258-show-link"><a onclick="toggle('M000258-source'); toggleText('M000258-link'); return false;" href="#" id="M000258-link">Show source...</a></p><div class="source" id="M000258-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 8</span>
+<p class="source_link" id="M000263-show-link"><a onclick="toggle('M000263-source'); toggleText('M000263-link'); return false;" href="#" id="M000263-link">Show source...</a></p><div class="source" id="M000263-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 8</span>
  8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_date_header</span>(<span class="ruby-identifier">w</span>)
  9:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@range</span>.<span class="ruby-identifier">to_i</span>
 10:       <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">w</span>.<span class="ruby-identifier">started_at</span>).<span class="ruby-identifier">strftime_localized</span>(<span class="ruby-value str">&quot;%a &lt;br/&gt;%d/%m&quot;</span>)
@@ -684,9 +712,9 @@ get_date_header
 24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000259"><br/></a>
+<a class="small" name="M000264"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000259'>
+<a href='#M000264'>
 
 
 get_date_key
@@ -696,7 +724,7 @@ get_date_key
 </a>
 </h3>
 
-<p class="source_link" id="M000259-show-link"><a onclick="toggle('M000259-source'); toggleText('M000259-link'); return false;" href="#" id="M000259-link">Show source...</a></p><div class="source" id="M000259-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 26</span>
+<p class="source_link" id="M000264-show-link"><a onclick="toggle('M000264-source'); toggleText('M000264-link'); return false;" href="#" id="M000264-link">Show source...</a></p><div class="source" id="M000264-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 26</span>
 26:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_date_key</span>(<span class="ruby-identifier">w</span>)
 27:     <span class="ruby-keyword kw">if</span> [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">include?</span> <span class="ruby-ivar">@range</span>.<span class="ruby-identifier">to_i</span>
 28:       <span class="ruby-node">&quot;#{tz.utc_to_local(w.started_at).to_date.year} #{tz.utc_to_local(w.started_at).to_date.strftime_localized('%u')}&quot;</span>
@@ -708,9 +736,9 @@ get_date_key
 34:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000267"><br/></a>
+<a class="small" name="M000273"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000267'>
+<a href='#M000273'>
 
 
 get_projects
@@ -720,28 +748,28 @@ get_projects
 </a>
 </h3>
 
-<p class="source_link" id="M000267-show-link"><a onclick="toggle('M000267-source'); toggleText('M000267-link'); return false;" href="#" id="M000267-link">Show source...</a></p><div class="source" id="M000267-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 563</span>
-563:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
-564:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-565:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
-566:         <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-567:     <span class="ruby-keyword kw">else</span>
-568:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
-569:                    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }
-570:                    ).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
-571:     <span class="ruby-keyword kw">end</span>
-572: 
-573:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Closed Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
-574: 
-575:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
-576:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
-577:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
-578:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000273-show-link"><a onclick="toggle('M000273-source'); toggleText('M000273-link'); return false;" href="#" id="M000273-link">Show source...</a></p><div class="source" id="M000273-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 570</span>
+570:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_projects</span>
+571:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
+572:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
+573:         <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span>).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; / &quot; + p.customer.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+574:     <span class="ruby-keyword kw">else</span>
+575:       <span class="ruby-ivar">@projects</span> = (<span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{p.name.gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> } <span class="ruby-operator">+</span>
+576:                    <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">completed_projects</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'name'</span> , <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;projects.customer_id = ?&quot;</span>, <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:client_id</span>] ]).<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;{\&quot;text\&quot;:\&quot;#{(p.name + &quot; - &quot; + _('Completed')).gsub(/&quot;/,'\&quot;')}\&quot;, \&quot;value\&quot;:\&quot;#{p.id.to_s}\&quot;}&quot;</span> }
+577:                    ).<span class="ruby-identifier">join</span>(<span class="ruby-value str">','</span>)
+578:     <span class="ruby-keyword kw">end</span>
+579: 
+580:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">'{&quot;options&quot;:[{&quot;value&quot;:&quot;0&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Active Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-1&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Any Project]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;},{&quot;value&quot;:&quot;-2&quot;, &quot;text&quot;:&quot;'</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">'[Closed Projects]'</span>) <span class="ruby-operator">+</span> <span class="ruby-value str">'&quot;}'</span>
+581: 
+582:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;, #{@projects}&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-ivar">@projects</span>.<span class="ruby-identifier">empty?</span>
+583:     <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">']}'</span>
+584:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">res</span>
+585:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000260"><br/></a>
+<a class="small" name="M000265"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000260'>
+<a href='#M000265'>
 
 
 key_from_worklog
@@ -751,7 +779,7 @@ key_from_worklog
 </a>
 </h3>
 
-<p class="source_link" id="M000260-show-link"><a onclick="toggle('M000260-source'); toggleText('M000260-link'); return false;" href="#" id="M000260-link">Show source...</a></p><div class="source" id="M000260-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 36</span>
+<p class="source_link" id="M000265-show-link"><a onclick="toggle('M000265-source'); toggleText('M000265-link'); return false;" href="#" id="M000265-link">Show source...</a></p><div class="source" id="M000265-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 36</span>
 36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">key_from_worklog</span>(<span class="ruby-identifier">w</span>, <span class="ruby-identifier">r</span>)
 37:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
 38:       <span class="ruby-node">&quot;#{w.customer.name} #{w.project.name} #{w.task.name} #{w.task.task_num}&quot;</span>
@@ -800,9 +828,9 @@ key_from_worklog
 81:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000264"><br/></a>
+<a class="small" name="M000269"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000264'>
+<a href='#M000269'>
 
 
 list
@@ -812,7 +840,7 @@ list
 </a>
 </h3>
 
-<p class="source_link" id="M000264-show-link"><a onclick="toggle('M000264-source'); toggleText('M000264-link'); return false;" href="#" id="M000264-link">Show source...</a></p><div class="source" id="M000264-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 197</span>
+<p class="source_link" id="M000269-show-link"><a onclick="toggle('M000269-source'); toggleText('M000269-link'); return false;" href="#" id="M000269-link">Show source...</a></p><div class="source" id="M000269-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 197</span>
 197:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list</span>
 198:     <span class="ruby-identifier">sql_filter</span> = <span class="ruby-value str">&quot;&quot;</span>
 199:     <span class="ruby-identifier">date_filter</span> = <span class="ruby-value str">&quot;&quot;</span>
@@ -1120,9 +1148,9 @@ list
 501:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000261"><br/></a>
+<a class="small" name="M000266"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000261'>
+<a href='#M000266'>
 
 
 name_from_worklog
@@ -1132,7 +1160,7 @@ name_from_worklog
 </a>
 </h3>
 
-<p class="source_link" id="M000261-show-link"><a onclick="toggle('M000261-source'); toggleText('M000261-link'); return false;" href="#" id="M000261-link">Show source...</a></p><div class="source" id="M000261-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 83</span>
+<p class="source_link" id="M000266-show-link"><a onclick="toggle('M000266-source'); toggleText('M000266-link'); return false;" href="#" id="M000266-link">Show source...</a></p><div class="source" id="M000266-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/reports_controller.rb, line 83</span>
  83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name_from_worklog</span>(<span class="ruby-identifier">w</span>,<span class="ruby-identifier">r</span>)
  84:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
  85:       <span class="ruby-node">&quot;#{w.task.issue_num} &lt;a href=\&quot;/tasks/view/#{w.task.task_num}\&quot;&gt;#{w.task.name}&lt;/a&gt; &lt;br /&gt;&lt;small&gt;#{w.task.full_name}&lt;/small&gt;&quot;</span>

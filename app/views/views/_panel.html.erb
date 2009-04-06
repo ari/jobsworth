@@ -1,5 +1,6 @@
-<div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>"><%=_ 'Views' %>
+<div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
 	<div class="right"><%= link_to _('New'),	 :controller => 'views', :action => 'new' %></div>
+	<div><%=_ 'Views' %></div>
 </div>
 
 <%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%><br/>
@@ -14,10 +15,10 @@ client_ids = "0" if client_ids.nil? || client_ids.empty?
 views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
 
 for view in views %>
-	<%= link_to view.name, :controller => 'views', :action => 'select', :id => view %>
 	<div class="right">
 		<small><%= link_to _('Edit'), :controller => 'views', :action => 'edit', :id => view if(view.user_id == current_user.id || current_user.admin?)%></small>
 		<%= "[#{_('Shared')}]" if(view.user_id != current_user.id && !current_user.admin?)%>
-	</div><br/>
+	</div>
+	<div><%= link_to view.name, :controller => 'views', :action => 'select', :id => view %></div>
 <% end %>
 <br/>

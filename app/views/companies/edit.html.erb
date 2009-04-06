@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset class="basic">
 <legend><%=_ 'Company Settings' %></legend>
 <% form_tag :action => 'update' do %>
   <%= render :partial => "settings" %>
@@ -8,7 +8,7 @@
 </fieldset>
 
 <% @customer = current_user.company.internal_customer %>
-<fieldset>
+<fieldset class="basic">
 <legend><%=_ 'Custom Logo' %></legend>
 <% if @customer.logo? -%>
   <label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/customers/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => 'customers', :action => "delete_logo", :id => "#{@customer.id}" %><br/>
@@ -24,7 +24,7 @@
 </fieldset>
 
 <% if false %>
-<fieldset>
+<fieldset class="basic">
     <legend><%= _('Database Backup') %></legend>
     <form action="http://repo.clockingit.com/dump/" method="post">
         <input type="hidden" name="uuid" value="<%= current_user.uuid %>" />

@@ -18,7 +18,7 @@ Localization.define('it_IT') do |l|
   l.store "End", "Fine" # Paolo Formenti
   l.store "Feb", "Feb" # PIetro Sacchi
   l.store "Fri", "Ven"
-  l.store "Jan", "Geb"
+  l.store "Jan", "Gen" # Luca Erzegovesi
   l.store "Jul", "Lug"
   l.store "Jun", "Giu" # Luca Erzegovesi
   l.store "Low", "Basso"
@@ -61,7 +61,7 @@ Localization.define('it_IT') do |l|
   l.store "Save", "Salva"
   l.store "Show", "Visualizza" # Mauro Roncali
   l.store "Tags", "Tag"
-  l.store "Task", "Task" # PIetro Sacchi
+  l.store "Task", "Compito" # Filippo
   l.store "Type", "Tipo"
   l.store "User", "Utente"
   l.store "View", "Vista" # Mauro Roncali
@@ -69,7 +69,7 @@ Localization.define('it_IT') do |l|
   l.store "Week", "Settimana"
   l.store "Wiki", "Wiki" # PIetro Sacchi
   l.store "Work", "Lavoro"
-  l.store "days", "guirni"
+  l.store "days", "giorni" # Luca Erzegovesi
   l.store "idle", "In attesa" # PIetro Sacchi
   l.store "last", "ultimo"
   l.store "59:04", "59:04" # PIetro Sacchi
@@ -166,7 +166,7 @@ Localization.define('it_IT') do |l|
   l.store "Log Out", "Esci"
   l.store "Members", "Membri" # Mauro Roncali
   l.store "October", "Ottobre"
-  l.store "Offline", "Non inlinea"
+  l.store "Offline", "Non in linea" # Luca Erzegovesi
   l.store "Options", "Opzioni"
   l.store "Overdue", "Oltre la scadenza" # PIetro Sacchi
   l.store "Preview", "Anteprima"
@@ -174,7 +174,7 @@ Localization.define('it_IT') do |l|
   l.store "Reports", "Reportistica" # PIetro Sacchi
   l.store "Sort By", "Ordina Per" # Mauro Roncali
   l.store "Summary", "Sommario"
-  l.store "Trivial", "Complessi"
+  l.store "Trivial", "Banale" # Luca Erzegovesi
   l.store "Tuesday", "Martedì"
   l.store "Updated", "Aggiornato"
   l.store "Welcome", "Benvenuto" # Mauro Roncali
@@ -182,7 +182,7 @@ Localization.define('it_IT') do |l|
   l.store "page %s", "pagina %s" # PIetro Sacchi
   l.store "%d month", ["un mese", "%d mesi"]
   l.store "%d posts", ["%d posts", "%d posts"] # PIetro Sacchi
-  l.store "%s tasks", "%s tasks" # Mauro Roncali
+  l.store "%s tasks", "%s compiti" # Filippo
   l.store "1:2:3:04", "1:2:3:04" # PIetro Sacchi
   l.store "1w2d3h4m", "1v2d3t4m"
   l.store "2w 3d 1h", "2s 3g 1o" # PIetro Sacchi
@@ -196,7 +196,7 @@ Localization.define('it_IT') do |l|
   l.store "Download", "Download" # PIetro Sacchi
   l.store "Due Date", "Termine"
   l.store "Estimate", "Stima" # Mauro Roncali
-  l.store "Everyone", "Everyone" # PIetro Sacchi
+  l.store "Everyone", "Tutti" # Filippo
   l.store "February", "Febbraio"
   l.store "Group By", "Raggruppa secondo" # M. L. Giannotta
   l.store "Language", "Lingua" # M. L. Giannotta
@@ -224,7 +224,7 @@ Localization.define('it_IT') do |l|
   l.store "Revision", "Revisione"
   l.store "Saturday", "Sabato"
   l.store "Schedule", "Programma"
-  l.store "Severity", "Gravità"
+  l.store "Severity", "Criticità" # Filippo
   l.store "Singular", "Singolare" # Mauro Roncali
   l.store "Thursday", "Giovedì"
   l.store "Timeline", "Timeline" # PIetro Sacchi
@@ -243,7 +243,7 @@ Localization.define('it_IT') do |l|
   l.store "%d topics", ["%d topics", "%d topics"] # PIetro Sacchi
   l.store "%d voices", ["%d voices", "%d voices"] # PIetro Sacchi
   l.store "Completed", "Completato"
-  l.store "Due Tasks", "Compiti Aperti" # M. L. Giannotta
+  l.store "Due Tasks", "Compiti scaduti" # Filippo
   l.store "Duplicate", "Duplica" # M. L. Giannotta
   l.store "Edit Note", "Modifica Nota"
   l.store "Edit User", "Modifica Utente"
@@ -295,7 +295,7 @@ Localization.define('it_IT') do |l|
   l.store "Leave Room", "Lascia la Stanza" # PIetro Sacchi
   l.store "Leave room", "Lascia la stanza" # PIetro Sacchi
   l.store "Loading...", "Caricamento..." # Mauro Roncali
-  l.store "Local Time", "Local Time" # PIetro Sacchi
+  l.store "Local Time", "Ora locale" # Filippo
   l.store "Milestones", "Milestone"
   l.store "Moderators", "Moderatori" # Mauro Roncali
   l.store "New Avatar", "Nuovo Avatar" # Mauro Roncali
@@ -311,8 +311,8 @@ Localization.define('it_IT') do |l|
   l.store "Sub-totals", "Subtotali"
   l.store "This Month", "Questo mese"
   l.store "Time Range", "Intervallo"
-  l.store "Time sheet", "Tempo foglio"
-  l.store "Total Done", "Tutto Completo" # M. L. Giannotta
+  l.store "Time sheet", "Time sheet" # Luca Erzegovesi
+  l.store "Total Done", "Totale Fatto" # Luca Erzegovesi
   l.store "Track Time", "Traccia tempo"
   l.store "Unassigned", "Non assegnato" # Mauro Roncali
   l.store "View Tasks", "Visualizza Compiti" # M. L. Giannotta
@@ -339,10 +339,11 @@ Localization.define('it_IT') do |l|
   l.store "Edit Client", "Edita il Cliente" # PIetro Sacchi
   l.store "Edit Folder", "Edita Cartella" # PIetro Sacchi
   l.store "End of week", "Fine della settimana" # Mauro Roncali
-  l.store "Forum Posts", "Forum Posts" # PIetro Sacchi
+  l.store "Forum Posts", "Posts del Forum" # Filippo
   l.store "Improvement", "Miglioramento"
   l.store "In Progress", "In esecuzione"
   l.store "Information", "Informazione"
+  l.store "Let me know", "Lasciaci sapere"
   l.store "Linked from", "Collegato da"
   l.store "New Feature", "Nuova funzionalità"
   l.store "New Project", "Nuovo Progetto" # Mauro Roncali
@@ -373,11 +374,12 @@ Localization.define('it_IT') do |l|
   l.store "Last Updated", "Ultimo aggiornamento"
   l.store "Leave Closed", "Lascia chiuso"
   l.store "Low Priority", "bassa priorita'" # PIetro Sacchi
-  l.store "Notify", "Nome/ Email" # Mauro Roncali
+  l.store "More filters", "piu' filtri" # PIetro Sacchi
+  l.store "Name / Email", "Nome/ Email" # Mauro Roncali
   l.store "Newest Tasks", "Nuovi Compiti" # M. L. Giannotta
-  l.store "Notifications", "Notifica" # Bevar
+  l.store "Notification", "Notifica" # Bevar
   l.store "Participants", "Partecipanti" # PIetro Sacchi
-  l.store "Plan / GANTT", "Plan / GANTT" # PIetro Sacchi
+  l.store "Plan / GANTT", "Piano / GANTT" # Luca Erzegovesi
   l.store "Recent Posts", "Posts Recenti" # Mauro Roncali
   l.store "Requested By", "Richiesto da"
   l.store "Save as View", "Salva come vista"
@@ -414,8 +416,8 @@ Localization.define('it_IT') do |l|
   l.store "Show Calendar", "Mostra calendario"
   l.store "Show Tooltips", "Mostra suggerimenti"
   l.store "Status Change", "Cambia stato"
-  l.store "Task Priority", "Priorità del Task"
-  l.store "Task Severity", "Criticità del Task"
+  l.store "Task Priority", "Priorità del Compito" # Filippo
+  l.store "Task Severity", "Criticità del Compito" # Filippo
   l.store "Time Estimate", "Tempo stimato"
   l.store "Use Messaging", "Usa messggi" # Mauro Roncali
   l.store "[Active User]", "[Utente attivo]"
@@ -429,7 +431,7 @@ Localization.define('it_IT') do |l|
   l.store "Burndown Chart", "Grafico Burndown" # PIetro Sacchi
   l.store "Current Avatar", "Avatar attuale" # Mauro Roncali
   l.store "Delete Project", "Elimina Progetto"
-  l.store "Depended on by", "Dipende da" # Mauro Roncali
+  l.store "Depended on by", "Dipendono da questo" # Luca Erzegovesi
   l.store "Edit <b>%s</b>", "modifica <b>%s</b>" # Mauro Roncali
   l.store "Edit Log Entry", "Modifica voce di diario"
   l.store "Edit Milestone", "Modifica Milestone"
@@ -440,7 +442,7 @@ Localization.define('it_IT') do |l|
   l.store "Open <b>%s</b>", "Apri <b>%s</b>" # Mauro Roncali
   l.store "Organize Tasks", "Organizza Tasks" # Mauro Roncali
   l.store "Remaining Work", "Lavoro Rimanente" # Mauro Roncali
-  l.store "Reply to topic", "Risposndi al topic" # Mauro Roncali
+  l.store "Reply to topic", "Rispondi al topic" # Luca Erzegovesi
   l.store "Revert to Open", "Ripristina ad Aperto"
   l.store "Schedule saved", "Schedulazione Salvata" # PIetro Sacchi
   l.store "Search Results", "Cerca risultati"
@@ -451,7 +453,7 @@ Localization.define('it_IT') do |l|
   l.store "[Any Priority]", "[Qualunque priorità]"
   l.store "[Any Severity]", "[Qualunque criticità]"
   l.store "Close <b>%s</b>", "Chiudi <b>%s</b>"
-  l.store "Database Backup", "Database Backup" # M. L. Giannotta
+  l.store "Database Backup", "Backup del Database" # Filippo
   l.store "Duration Format", "Formato della durata"
   l.store "Duration Worked", "Tempo lavorato"
   l.store "Formatting Help", "Aiuto Formattazione" # PIetro Sacchi
@@ -475,6 +477,7 @@ Localization.define('it_IT') do |l|
   l.store "Delete Log Entry", "Elimina voce di diario"
   l.store "Delete Milestone", "Elimina Milestone"
   l.store "Gadget HTML Code", "Gadget HTML Code" # PIetro Sacchi
+  l.store "Instant Messages", "Messaggio Istantaneo" # PIetro Sacchi
   l.store "Leave as Invalid", "Lascia come non valido"
   l.store "Messages from %s", "Messagdi da %s" # Luca Erzegovesi
   l.store "Monitoring forum", "Traccia il Forum" # PIetro Sacchi
@@ -491,14 +494,17 @@ Localization.define('it_IT') do |l|
   l.store "Access To Project", "Accesso al Progetto"
   l.store "Create New Folder", "Crea nuova cartella" # Mauro Roncali
   l.store "Delete <b>%s</b>.", "Cancellare <b>%s</b>." # PIetro Sacchi
+  l.store "Delete Transcript", "Cancella Trascrizione" # PIetro Sacchi
+  l.store "Hide Dependencies", "Nascondi Dipendenze" # PIetro Sacchi
   l.store "No file selected.", "Nessun file selezionato." # Mauro Roncali
   l.store "Really delete %s?", "Conferma eliminazione %s?"
   l.store "Really revert %s?", "Conferma ripristino %s?"
   l.store "Recent Activities", "Attività recenti"
   l.store "Remove dependency", "Rimuovi dipendenza"
-  l.store "Schedule reverted", "Schedule reverted"
+  l.store "Schedule reverted", "Schedulazione Invertita" # PIetro Sacchi
   l.store "Tasks / Day Chart", "Grafico Tasks/Giorno" # PIetro Sacchi
   l.store "Under revision by", "In fase di revisione da"
+  l.store "Upload more files", "Aggiungi più file" # PIetro Sacchi
   l.store "[Active Projects]", "[Progetti Attivi]" # PIetro Sacchi
   l.store "[Closed Projects]", "[Progetti Chiusi]" # PIetro Sacchi
   l.store "[Default Sorting]", "[Ordinamento di Default]" # PIetro Sacchi
@@ -522,7 +528,7 @@ Localization.define('it_IT') do |l|
   l.store "Task not worked on", "Task non lavorato da" # PIetro Sacchi
   l.store "less than a minute", "meno di un minuto"
   l.store "Can Create Projects", "In grado di creare progetti" # PIetro Sacchi
-  l.store "Remove", "Cancella notifica" # Bevar
+  l.store "Remove notification", "Cancella notifica" # Bevar
   l.store "Restricted Userlist", "Lista utenti Ristretta" # PIetro Sacchi
   l.store "Show TaskType Icons", "Visualizza icona del tipo task" # Mauro Roncali
   l.store "[Without Milestone]", "[Senza Milestone]"
@@ -534,9 +540,9 @@ Localization.define('it_IT') do |l|
   l.store "My In Progress Tasks", "I miei task in lavorazione"
   l.store "Project was deleted.", "Il Progetto è stato eliminato."
   l.store "Report Configuration", "Configura report"
-  l.store "Restricted Messaging", "Restricted Messaging"
+  l.store "Restricted Messaging", "Messaggistica Limitata" # PIetro Sacchi
   l.store "Showing Full History", "Guarda la Storia Completa" # PIetro Sacchi
-  l.store "This topic is locked", "This topic is locked"
+  l.store "This topic is locked", "Questo Topic e' bloccato" # PIetro Sacchi
   l.store "Use External Clients", "Usa clienti esterni"
   l.store "less than %d seconds", "meno di %d secondi"
   l.store "Open to everyone from", "Aperto a tutti da" # PIetro Sacchi
@@ -545,12 +551,13 @@ Localization.define('it_IT') do |l|
   l.store "Showing Only Comments", "Visualizza solo i commenti" # Mauro Roncali
   l.store "%d completed milestone", ["Un milestone completo", "%d milestone completi"]
   l.store "Add another dependency", "Tutte le altre dipendenze"
-  l.store "Download Database Dump", "Download Database Dump"
+  l.store "Download Database Dump", "Scarica il Dump del Database" # PIetro Sacchi
   l.store "Edit project <b>%s</b>", "Modifica progetto <b>%s</b>"
   l.store "Floating Messaging Bar", "Barra dei Messaggi Flottante" # PIetro Sacchi
+  l.store "Hide Task Dependencies", "Cancella le dipendenze del Task" # PIetro Sacchi
   l.store "View '%s' was deleted.", "La vista '%s' è stata cancellata."
   l.store "invite some co-workers", "Invita alcuni collaboratori" # PIetro Sacchi
-  l.store ", this topic is locked.", ", this topic is locked."
+  l.store ", this topic is locked.", ", Questo topic e' bloccato." # PIetro Sacchi
   l.store "Last %d Completed Tasks", ["Ultimo %d Task Completato", "Ultimi %d Task Completati"] # Mauro Roncali
   l.store "%d translations updated.", ["%d traduzione aggiornata.", "%d traduzioni aggiornate."] # PIetro Sacchi
   l.store "Company settings updated", "Preferenze azienda Impostate e salvate" # PIetro Sacchi
@@ -558,6 +565,7 @@ Localization.define('it_IT') do |l|
   l.store "Open to everyone from %s", "Aperto a tutti da %s" # PIetro Sacchi
   l.store "Send notification emails", "Manda notifiche email"
   l.store "Invalid due date ignored.", "Data di scadenza non valida, verrà ignorata."
+  l.store "Really delete transcript?", "Vuoi Realmente Cancellare la Trascrizione?" # PIetro Sacchi
   l.store "and copy permissions from", "e permesso di copia da" # PIetro Sacchi
   l.store "CSS successfully uploaded.", "CSS è stato caricato con successo."
   l.store "Delete this topic forever?", "Cancellare questo topic per sempre?" # PIetro Sacchi
@@ -568,6 +576,7 @@ Localization.define('it_IT') do |l|
   l.store "Don't show this splash page", "Non mostrare questa \"splash page\"" # PIetro Sacchi
   l.store "File successfully uploaded.", "Il file è stato caricato con successo."
   l.store "Logo successfully uploaded.", "Il Logo è stato caricato con successo."
+  l.store "Only admins can edit users.", "Solo gli amministratori possono editare gli utenti" # PIetro Sacchi
   l.store "Pause working on <b>%s</b>.", "Pausa lavorando su <b>%s</b>." # PIetro Sacchi
   l.store "Please always be courteous.", "Sii sempre cortese." # PIetro Sacchi
   l.store "Please configure the widget", "Per favore configura il widget" # PIetro Sacchi
@@ -575,6 +584,7 @@ Localization.define('it_IT') do |l|
   l.store "Cancel working on <b>%s</b>.", "Annulla lavoro su <b>%s</b>."
   l.store "Empty report, log more work!", "Il report è vuoto, è necessario inserire più lavoro!"
   l.store "No file selected for upload.", "Non è stato selezionato alcun file per l'upload."
+  l.store "Only show tasks of this type", "Visualizza solo i task di questo tipo" # PIetro Sacchi
   l.store "Really delete whole history?", "Sicuro di voler cancellare l'intera cronologia?" # M. L. Giannotta
   l.store "Resume working on <b>%s</b>.", "RIprendendo la lavorazione su  <b>%s</b>." # PIetro Sacchi
   l.store "Avatar successfully uploaded.", "Avatar aggiornato con successo" # PIetro Sacchi
@@ -599,6 +609,7 @@ Localization.define('it_IT') do |l|
   l.store "Project was successfully created.", "Il Progetto è stato creato con successo."
   l.store "Project was successfully updated.", "Il Progetto è stato aggiornato con successo."
   l.store "Done working on <b>%s</b> for now.", "Lavori svolti per <b>%s</b> finora."
+  l.store "Subscribe to this widgets RSS feed", "Sottoscriviti all'RSS di questo Widget" # PIetro Sacchi
   l.store "You can't delete your own company.", "Non puoi cancellare la tua stessa ditta."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Feedback? Suggerimenti? Idee? Bugs?"
   l.store "Ignore hidden tasks when scheduling", "Ignora task nascosti quando scheduli" # Mauro Roncali
@@ -610,14 +621,17 @@ Localization.define('it_IT') do |l|
   l.store "Changes are not made live instantly.", "Le modifiche non saranno in linea istantaneamente." # PIetro Sacchi
   l.store "This forum is currently unmoderated.", "Questo forum è attualmente senza moderatore." # M. L. Giannotta
   l.store "Hide tasks deferred until a later time", "Nascondi compiti procrastinati a data da definirsi." # M. L. Giannotta
-  l.store "Limit userlist to users in same project", "Limit userlist to users in same project"
+  l.store "Only admins can edit company settings.", "Solo gli Amministratori possono modificare i dati dell'Azienda." # Filippo
+  l.store "Show tasks with at least this priority", "Mostra Compiti con almeno questa Priorità" # Filippo
+  l.store "Show tasks with at least this severity", "Mostra Compiti con almeno questa Criticità" # Filippo
+  l.store "Limit userlist to users in same project", "LImita la lista utenti agli utenti nello stesso progetto" # PIetro Sacchi
   l.store "Really delete room and all transcripts?", "Vuoi veramente cancellare la stanza e tutte le discussioni registrate?" # PIetro Sacchi
   l.store "Revert <b>%s</b> to not completed status.", "Ripristina <b>%s</b> ad uno stato incompleto"
   l.store "Easy access to commonly needed information.", "Accesso facile alle informazioni comuni." # M. L. Giannotta
   l.store "Play sounds when new messages are received.", "Emetti un suono quando ricevi un nuovo messaggio." # M. L. Giannotta
   l.store "Subscribe to the recent activities RSS feed", "Iscriviti alla feed RSS relativa alle attività recenti"
   l.store "Subscribe to the iCal feed for your projects.", "Sottiscrivi il feed iCal per  i tuoi progetti" # M. L. Giannotta
-  l.store "Enter task due date, or click calendar button.", "Entra la scadenza per questo compito, o clicca sul calendario." # M. L. Giannotta
+  l.store "Enter task due date, or click calendar button.", "Inserisci la scadenza per questo compito, o clicca sul calendario." # Filippo
   l.store "Show icons next to tasks representing their type.", "Mostra icone che rappresentino il loro tipo accanto ai compiti." # M. L. Giannotta
   l.store "The message will be included in the signup email.", "Il messaggio verrà allegato nell'email accettata."
   l.store "Unable to find that task in any of your projects.", "Impossibile trovare questo compito in nessuno dei tuoi progetti." # M. L. Giannotta
@@ -634,20 +648,21 @@ Localization.define('it_IT') do |l|
   l.store "Revert schedule to saved state. Includes filtered tasks.", "Revert schedule to saved state. Includes filtered tasks."
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutorial nascosto. Non sarà più visualizzato nel menu."
   l.store "Limit instant messaging to users sharing the same projects", "Limita i messaggi istantanei agli utenti che condividono lo stesso progetto." # M. L. Giannotta
-  l.store "Only your notes will be included in the notification email", "Only your notes will be included in the notification email"
+  l.store "Only your notes will be included in the notification email", "Solo le tue Note saranno incluse nelle email di notifica" # Filippo
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "Non è possibile cancellare <b>te</b> o il <b>creatore del progetto</b>!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutorial completato. Non sarà più visualizzato nel menu."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Keep the messaging bar floating at the bottom of the screen."
   l.store "Send notification emails to people affected by these changes", "Send notification emails to people affected by these changes"
-  l.store "Enter task numbers, separated by commas. Type text to search.", "Enter task numbers, separated by commas. Type text to search."
-  l.store "Create a private forum for people with access to this project?", "Create a private forum for people with access to this project?"
-  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Welcome to ClockingIT. To get started, follow the steps below."
+  l.store "Enter task numbers, separated by commas. Type text to search.", "Inserire il numero del task, separato dalle virgola , testo per ricercare" # PIetro Sacchi
+  l.store "Create a private forum for people with access to this project?", "Creare un Forum privato per le persone che hanno accesso a questo Progetto?" # Filippo
+  l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Benvenuto in ClockingIT. Per inizare, segui i passi indicati sotto." # Gian Luca Matteucci
   l.store "If you require further help, check the %s, %s or email us at %s", "If you require further help, check the %s, %s or email us at %s"
-  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)"
+  l.store "Either the project doesn't exist, or you don't have access to it.", "Il Progetto non esiste o non hai accesso ad esso!" # Filippo
+  l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Sarà ridimensionata a 25x25 e 50x50, preservandone la proporzionalità)" # Filippo
   l.store "Either the milestone doesn't exist, or you don't have access to it.", "Either the milestone doesn't exist, or you don't have access to it."
   l.store "Text entered will be saved automatically to your current work notes.", "Text entered will be saved automatically to your current work notes."
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL."
-  l.store "You're not allowed to create new projects. Have your admin give you access.", "You're not allowed to create new projects. Have your admin give you access."
+  l.store "You're not allowed to create new projects. Have your admin give you access.", "Non hai il permesso di creare nuovi progetti. Chiedere all'amministratore" # PIetro Sacchi
   l.store "Project was successfully created. Add users who need access to this project.", "Il Progetto è stato creato con successo. Aggiungi gli utenti che devono accedere a questo progetto."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "To create a project outside of this welcome page, click %s in the %s menu entry"
   l.store "User was successfully created. Remember to give this user access to needed projects.", "L'utente è stato creato con successo. RIcorda di autorizzare questo utente ad i propri progetti."
@@ -660,8 +675,8 @@ Localization.define('it_IT') do |l|
   l.store "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate.", "You can either click the checkbox to the left of the %s or you can edit the task and change the status to Closed, Won't Fix, Invalid or Duplicate."
   l.store "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu.", "After working on a task, it's time to complete it. Find your task by clicking %s on the top menu, or search for it from the search field in the same menu."
   l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki.", "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at %s on the ClockingIT Wiki."
-  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things."
+  l.store "The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", "Il primo passo consiste nel %s. Non preoccuparti di inserire dti reali, potrai sempre cancellare il progetto che hai creato e ricominciare da capo, dopo aver capito come funziona il sistema." # Gian Luca Matteucci
   l.store "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work.", "When done working on that task, either click another %s to continue working but on a different task, or use %s to save off this work. %s stops the timer without logging any work."
-  l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running."
+  l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Definito uno o più Compiti, è tempo di cominciare a lavorarci su! Clicca %s dal Menu di navigazione, scegli un Compito e clicca il %s vicino ad esso. Il timer per quel Compito sarà avviato." # Filippo
   l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s."
 end

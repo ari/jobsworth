@@ -654,11 +654,6 @@ END_OF_HTML
       selected_project = current_user.projects.find(:first, :order => 'name').id
     end
   
-    begin
-      selected_project = current_user.projects.find(selected_project).id 
-    rescue 
-      selected_project = current_user.projects.find(:first, :order => 'name').id
-    end
 
     return selected_project
   end

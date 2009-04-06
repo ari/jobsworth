@@ -140,7 +140,7 @@ Localization.define('es_ES') do |l|
   l.store "Update", "Actualizar" # Paco
   l.store "Upload", "Subir"
   l.store "Urgent", "Urgente"
-  l.store "Worked", "Trabajando" # Paco
+  l.store "Worked", "Trabajado" # David
   l.store "[Next]", "[Siguiente]"
   l.store "[None]", "[Ninguno]"
   l.store "[Prev]", "[Anterior]"
@@ -182,7 +182,7 @@ Localization.define('es_ES') do |l|
   l.store "offline", "desconectado" # darkpollo
   l.store "page %s", "página %s" # darkpollo
   l.store "%d month", ["%d mes", "%d meses"] # Federico
-  l.store "%d posts", ["%d post", "%d posts"] # Keber Flores
+  l.store "%d posts", ["%d artículo", "%d artículos"] # David
   l.store "%s tasks", "%s tareas" # darkpollo
   l.store "1:2:3:04", "1:2:3:04" # darkpollo
   l.store "1w2d3h4m", "1s2d3h4m"
@@ -254,7 +254,7 @@ Localization.define('es_ES') do |l|
   l.store "Last Post", "Último envío" # Juan Camilo
   l.store "Last Week", "La semana pasada"
   l.store "Last Year", "El año pasado"
-  l.store "Last post", "Última pub" # Federico
+  l.store "Last post", "Último artículo" # David
   l.store "Milestone", "Hito"
   l.store "New Topic", "Nuevo tema" # Alejandro Macho-Quevedo
   l.store "New topic", "Nuevo tema" # Sergio Rael
@@ -308,7 +308,7 @@ Localization.define('es_ES') do |l|
   l.store "Prioritize", "Priorizar"
   l.store "Reassigned", "Reasignado" # Sergio Rael
   l.store "Run Report", "Ver informe"
-  l.store "Save Reply", "Guardar respuesta" # Alejandro Macho-Quevedo
+  l.store "Save Reply", "Enviar Respuesta" # Favio
   l.store "Sub-totals", "Subtotales"
   l.store "This Month", "Este mes"
   l.store "Time Range", "Intervalo de tiempo"
@@ -326,9 +326,10 @@ Localization.define('es_ES') do |l|
   l.store "[Any User]", "[Cualquier Usuario]" # Informático
   l.store "[New File]", "[Nuevo Fichero]" # Informático
   l.store "[New User]", "[Nuevo usuario]"
+  l.store "started %s", "comenzada %s" # JOSE LUIS
   l.store "%d week ago", ["hace %d semana", "hace %d semanas"] # Federico
   l.store "1w 2d 3h 4m", "1s 2d 3h 4m"
-  l.store "Abrir tarea", "Abrir tarea"
+  l.store "Abrir tarea", "Abrir tarea" # Francisco Villalobos Palma
   l.store "Assigned To", "Asignada a" # Antonio Montesinos
   l.store "Attach file", "Adjuntar fichero" # Informático
   l.store "Attachments", "Adjuntos" # Sergio Rael
@@ -346,6 +347,7 @@ Localization.define('es_ES') do |l|
   l.store "Improvement", "Mejora"
   l.store "In Progress", "En progreso"
   l.store "Information", "Información"
+  l.store "Let me know", "Házmelo saber"
   l.store "Linked from", "Referenciado desde"
   l.store "New Feature", "Nueva característica"
   l.store "New Project", "Nuevo Proyecto" # Sergio Rael
@@ -376,9 +378,10 @@ Localization.define('es_ES') do |l|
   l.store "Last Updated", "Última Actualización" # Informático
   l.store "Leave Closed", "Dejar cerrada"
   l.store "Low Priority", "Baja Prioridad" # Informático
-  l.store "Notify", "Nombre / E-mail" # Federico
+  l.store "More filters", "Mas filtros" # Alfredo
+  l.store "Name / Email", "Nombre / E-mail" # Federico
   l.store "Newest Tasks", "Tareas +Nuevas" # Informático
-  l.store "Notifications", "Notificación"
+  l.store "Notification", "Notificación"
   l.store "Participants", "Participantes" # darkpollo
   l.store "Plan / GANTT", "Plan / GANTT" # Gumer
   l.store "Recent Posts", "Posts recientes" # Keber
@@ -428,6 +431,7 @@ Localization.define('es_ES') do |l|
   l.store "about %d hour", ["alrededor de %d hora", "alrededor de %d horas"] # Federico
   l.store "about 1 month", "alrededor de 1 mes" # Sergio Rael
   l.store "half a minute", "medio minuto"
+  l.store "over %d years", ["sobre %d año", "sobre %d años"] # Francisco Villalobos Palma
   l.store "Add New Widget", "Añadir Widget" # Keber
   l.store "Are your sure?", "¿Está seguro?"
   l.store "Burndown Chart", "Gráfico Burndown" # Francisco Benavent
@@ -497,6 +501,7 @@ Localization.define('es_ES') do |l|
   l.store "Create New Folder", "Crear nueva carpeta" # Alejandro Macho-Quevedo
   l.store "Delete <b>%s</b>.", "Borrar <b>%s</b>." # Rodolfo Vel
   l.store "Delete Transcript", "Borrar transcripción" # Gumer
+  l.store "Hide Dependencies", "Ocultar dependencias" # Núria
   l.store "No file selected.", "No ha seleccionado archivo." # Rodolfo Vel
   l.store "Really delete %s?", "¿De verdad desea borrar %s?"
   l.store "Really revert %s?", "¿De verdad quiere ponerlo de nuevo como %s?"
@@ -505,6 +510,7 @@ Localization.define('es_ES') do |l|
   l.store "Schedule reverted", "Planificación restaurada" # Gumer
   l.store "Tasks / Day Chart", "Tareas / Gráfico diario" # Keber
   l.store "Under revision by", "Está siendo revisado por"
+  l.store "Upload more files", "Subir más archivos" # Francisco Villalobos Palma
   l.store "[Active Projects]", "[Proyectos Activos]" # Luis Mendoza
   l.store "[Closed Projects]", "[Proyectos Cerrados]" # Luis Mendoza
   l.store "[Default Sorting]", "[Orden por defecto]" # Alejandro Macho-Quevedo
@@ -515,6 +521,7 @@ Localization.define('es_ES') do |l|
   l.store "Complete Milestone", "Completar hito" # Alejandro Macho-Quevedo
   l.store "Completed Projects", "Proyectos terminados"
   l.store "Hide Waiting Tasks", "Ocultar tareas pendientes" # Keber
+  l.store "Invalid start date", "Fecha de inicio invàlida" # musta
   l.store "Last active %s ago", "Ultima vez activo hace %s" # Luis Mendoza
   l.store "Leave as Duplicate", "Dejar como duplicada" # Alejandro Macho-Quevedo
   l.store "Leave as Won't Fix", "Dejar como sin solución" # Alejandro Macho-Quevedo
@@ -528,12 +535,13 @@ Localization.define('es_ES') do |l|
   l.store "Task not worked on", "Tareas en la que no se ha trabajado" # Informático
   l.store "less than a minute", "menos de un minuto"
   l.store "Can Create Projects", "Puede crear proyectos" # Alejandro Macho-Quevedo
-  l.store "Remove", "Quitar notificación" # Jordán
+  l.store "Remove notification", "Quitar notificación" # Jordán
   l.store "Restricted Userlist", "Lista de usuarios restringida" # Alejandro Macho-Quevedo
   l.store "Show TaskType Icons", "Mostrar iconos tipo tarea" # Alejandro Macho-Quevedo
   l.store "[Without Milestone]", "[Sin hito]" # Alejandro Macho-Quevedo
   l.store "%d completed project", ["un proyecto terminado", "%d proyectos terminados"]
   l.store "Completed Milestones", "Hitos completados"
+  l.store "Empty file uploaded.", "Subido fichero en blanco." # JOSE LUIS
   l.store "Find a Google Gadget", "Encontrar un Gadget de Google" # Francisco Benavent
   l.store "Leave as in Progress", "Dejar en progreso" # Alejandro Macho-Quevedo
   l.store "Log entry deleted...", "Entrada de histórico eliminada..."
@@ -549,12 +557,13 @@ Localization.define('es_ES') do |l|
   l.store "Projects / Milestones", "Proyectos / Objetivos" # Jordán
   l.store "Receive Notifications", "Recibir notificaciones"
   l.store "Showing Only Comments", "Mostrar Solo Comentarios" # Luis Mendoza
-  l.store "visión global ARAWEB", "visión global ARAWEB"
+  l.store "visión global ARAWEB", "visión global ARAWEB" # Francisco Villalobos Palma
   l.store "%d completed milestone", ["un hito terminado", "%d hitos terminados"]
   l.store "Add another dependency", "Agregar otra dependencia" # Luis Mendoza
   l.store "Download Database Dump", "Descargar base de datos" # Alejandro Macho-Quevedo
   l.store "Edit project <b>%s</b>", "Editar proyecto <b>%s</b>"
   l.store "Floating Messaging Bar", "Barra de mensajeria flotante" # Alejandro Macho-Quevedo
+  l.store "Hide Task Dependencies", "Ocultar dependencias de tareas" # Núria
   l.store "View '%s' was deleted.", "Vista '%s' eliminada."
   l.store "invite some co-workers", "invitar colaboradores" # Luis Mendoza
   l.store ", this topic is locked.", ", este tema esta bloqueado." # Luis Mendoza
@@ -584,6 +593,7 @@ Localization.define('es_ES') do |l|
   l.store "Cancel working on <b>%s</b>.", "Cancelar trabajo en <b>%s</b>."
   l.store "Empty report, log more work!", "Informe vacío, ¡Cree más entradas de trabajo!"
   l.store "No file selected for upload.", "Ningún fichero seleccionado para subir." # Informático
+  l.store "Only show tasks of this type", "Mostrar solo tareas de este tipo" # Alfredo
   l.store "Really delete whole history?", "Desea borrar toda la historia?" # Informático
   l.store "Resume working on <b>%s</b>.", "Reiniciar trabajo en <b>%s</b>." # Informático
   l.store "Avatar successfully uploaded.", "Avatar cargado satisfactoriamente." # Claudio Covacevich
@@ -608,6 +618,7 @@ Localization.define('es_ES') do |l|
   l.store "Project was successfully created.", "Proyecto creado satisfactoriamente."
   l.store "Project was successfully updated.", "Proyecto modificado satisfactoriamente."
   l.store "Done working on <b>%s</b> for now.", "Trabajado en <b>%s</b> hasta el momento."
+  l.store "Subscribe to this widgets RSS feed", "Subscríbete al RSS feed de este widget" # Favio
   l.store "You can't delete your own company.", "No puede borrar su propia compañia."
   l.store "Feedback? Suggestions? Ideas? Bugs?", "¿Comentarios? ¿Sugerencias? ¿Ideas? ¿Fallos?"
   l.store "Ignore hidden tasks when scheduling", "Ignore tareas ocultas cuando planifique" # Claudio Covacevich
@@ -616,15 +627,18 @@ Localization.define('es_ES') do |l|
   l.store "Restore <b>%s</b> from the Archive.", "Restaurar <b>%s</b> del Archivo."
   l.store "View '%s' was successfully created.", "Vista '%s' creada satisfactoriamente."
   l.store "View '%s' was successfully updated.", "Vista '%s' modificada satisfactoriamente."
-  l.store "Changes are not made live instantly.", "Los cambios no seran mostrados instantáneamente" # Federico
+  l.store "Changes are not made live instantly.", "Los cambios no serán mostrados instantáneamente" # Federico
   l.store "This forum is currently unmoderated.", "Este foro no está moderado actualmente." # Keber
   l.store "Hide tasks deferred until a later time", "Ocultar tareas diferidas hasta otro momento" # Informático
+  l.store "Show tasks with at least this priority", "Mostrar tareas con al menos esta prioridad" # Alfredo
+  l.store "Show tasks with at least this severity", "Mostrar tareas con al menos esta severidad" # Alfredo
   l.store "Limit userlist to users in same project", "Limitar la lista de usuarios a los del mismo proyecto" # Informático
   l.store "Really delete room and all transcripts?", "Realmente borrar la sala y todas sus transcripciones?" # Claudio Covacevich
   l.store "Revert <b>%s</b> to not completed status.", "Volver <b>%s</b> al estado no completado." # Francisco Benavent
   l.store "Easy access to commonly needed information.", "Acceso fácil a informacion comunmente necesitada" # Francisco Benavent
   l.store "Play sounds when new messages are received.", "Reproducir sonidos cuando se reciban nuevos mensajes." # Francisco Benavent
   l.store "Subscribe to the recent activities RSS feed", "Suscribirse al feed RSS de actividades recientes" # Francisco Benavent
+  l.store "Permission denied while saving resized file.", "Permiso denegado mientras se guarda el archivo cuyo tamaño ha cambiado" # David
   l.store "Subscribe to the iCal feed for your projects.", "Suscribirse al feed iCal para sus proyectos." # Francisco Benavent
   l.store "Enter task due date, or click calendar button.", "Entrar fecha de fin de tarea, o usar boton de calendario" # Francisco Benavent
   l.store "Show icons next to tasks representing their type.", "Mostrar iconos junto a las tareas representando su tipo." # Francisco Benavent
@@ -643,11 +657,11 @@ Localization.define('es_ES') do |l|
   l.store "Revert schedule to saved state. Includes filtered tasks.", "Revertir la agenda al último estado guardado. Incluye tareas filtradas." # Keber Flores
   l.store "Tutorial hidden. It will no longer be shown in the menu.", "Tutorial escondido. No se volverá a mostrar en el menú."
   l.store "Limit instant messaging to users sharing the same projects", "Limitar mensajeria instantánea para usuarios compartiendo los mismos proyectos." # Federico
-  l.store "Only your notes will be included in the notification email", "Solo sus notas seran incluidas en el mensaje de notificacion" # Informático
+  l.store "Only your notes will be included in the notification email", "Solo sus notas serán incluidas en el mensaje de notificación" # Federico
   l.store "Can't remove <b>yourself</b> or the <b>project creator</b>!", "¡No se puede eliminar <b>a usted mismo</b> a al <b>creador del proyecto</b>!"
   l.store "Tutorial completed. It will no longer be shown in the menu.", "Tutorial completado. No se volverá a mostrar en el menú."
   l.store "Keep the messaging bar floating at the bottom of the screen.", "Mantener la barra de mensajes flotando al fondo de la pantalla." # Keber Flores
-  l.store "Send notification emails to people affected by these changes", "Enviar notificacion a personas afectadas por los cambios" # Informático
+  l.store "Send notification emails to people affected by these changes", "Enviar notificación a personas afectadas por los cambios" # Federico
   l.store "Enter task numbers, separated by commas. Type text to search.", "Intruduzca los numeros de tareas separados por comas. escriba un texto para buscar." # Informático
   l.store "Create a private forum for people with access to this project?", "Crear un foro privado para personas con acceso a este proyecto?" # Francisco Benavent
   l.store "Welcome to ClockingIT. To get started, follow the steps below.", "Bienvenido a ClockingIT. Para comenzar, siga los pasos a continuación." # Keber Flores
@@ -655,13 +669,13 @@ Localization.define('es_ES') do |l|
   l.store "Either the project doesn't exist, or you don't have access to it.", "O el proyecto no existe o Ud. no tiene acceso a el." # Informático
   l.store "(Will be resized to 25x25 and 50x50 while preserving aspect ratio)", "(Se redimensionará a 25x25 y 50x50 con igual relacion de aspecto)" # Informático
   l.store "Either the milestone doesn't exist, or you don't have access to it.", "El hito no existe o usted no tiene permisos para acceder a él." # Juan Camilo
-  l.store "Text entered will be saved automatically to your current work notes.", "El texto entrado sera automaticamente gusrdado en sus notas de trabajo." # Informático
+  l.store "Text entered will be saved automatically to your current work notes.", "El texto entrado será automaticamente guardado en sus notas de trabajo." # Federico
   l.store "For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.", "Para un feed personal, sustituya <b>ical_all</b> por <b>ical</b> en la URL." # Francisco Benavent
   l.store "You're not allowed to create new projects. Have your admin give you access.", "Usted no está autorizado a crear nuevos proyectos. Su administrador debe darle acceso." # Keber Flores
   l.store "Project was successfully created. Add users who need access to this project.", "Proyecto creado satisfactoriamente. Añada los usuarios que necesiten tener acceso a este proyecto."
   l.store "To create a project outside of this welcome page, click %s in the %s menu entry", "Para crear un proyecto fuera de esta página de bienvenida, haga click en %s del menú %s" # Keber Flores
   l.store "User was successfully created. Remember to give this user access to needed projects.", "Usuario creado satisfactoriamente. Recuerde dar acceso a este usuario a los proyectos que necesite."
-  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Los cambios hechos aqui no seran registrados, ni enviados como notificaciones." # Informático
+  l.store "Changes done here will not be logged in the Activity log or sent out as notifications.", "Los cambios hechos aqui no serán registrados, ni enviados como notificaciones." # Federico
   l.store "You need to create a project to hold your tasks, or get access to create tasks in an existing project...", "Debe crear un proyecto para asignar sus tareas, o tener permiso para crear tareas en un proyecto existente..."
   l.store "You can have as many chat rooms as you like. They can be limited to a project or public across all your users.", "Ud puede crear cuantas salas de chat desee. Pueden ser limitadas a proyectos, o publicas para todos sus usuarios." # Informático
   l.store "(250x50px should look good. The logo will be shown up top instead of the ClockingIT one, and on your login page.)", "(Se recomienda un tamaño de imagen de 250x50px. El logotipo se mostrará en la cabecera, en lugar del de ClockingIt, y en la página de inicio de sesión.)"
@@ -677,5 +691,5 @@ Localization.define('es_ES') do |l|
   l.store "Once you have one or more tasks defined, it's time to start working on them. Click %s on the top menu, pick a task and click the %s next to it. The timer for that task starts running.", "Una vez que tenga una o más tareas definidas, es hora de trabajar en ellas. Presione %s en el menú superior, seleccione una tarea y haga click en el %s junto a ella. El medidor de tiempo para dicha tarea comenzará a correr." # Keber Flores
   l.store "The last thing to do, is %s unless you're working alone. Once you have created logins for them, grant them access to the projects they are to work on from the Edit Project page, accessible from the %s.", "La última cosa por hacer, es %s a menos que trabaje solo. Una vez que haya creado cuentas para ellos, deles acceso a los proyectos en los que trabajan desde la página Editar Proyecto, accesible desde  %s" # Keber Flores
   l.store "If you require further help, check the <a href=\"http://forum.clockingit.com\" target=\"_new\">forum</a>, <a href=\"http://wiki.clockingit.com\" target=\"_new\">wiki</a> or email us at <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>.", "Si necesita más ayuda, revise el <a href=\"http://forum.clockingit.com\" target=\"_new\">foro</a>,  <a href=\"http://wiki.clockingit.com\" target=\"_new\">wiki</a> o envíenos un email a <a href=\"mailto:support@clockingit.com\">support@clockingit.com</a>." # Juan Camilo
-  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Lo siguiente es %s. También puede hacerlo mediante un click sobre el botón %s en el menú. Para más información sobre tareas, mire <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">la documentación</a>en el Wiki deClockingIT ." # Keber Flores
+  l.store "Next up is %s. You can also do it by clicking the %s button up in the top menu. For more information about tasks, have a look at <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">the documentation</a> on the ClockingIT Wiki.", "Lo siguiente es %s. También puede hacerlo mediante un click sobre el botón %s en el menú. Para más información sobre tareas, mire <a href=\"http://wiki.clockingit.com/wiki:tutorial#tasks\" target=\"_new\">la documentación</a>en la Wiki deClockingIT ." # Jorge
 end

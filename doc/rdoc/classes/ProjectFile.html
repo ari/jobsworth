@@ -335,70 +335,77 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000098'>
+<a href='#M000141'>
 file_extension<br/>
 </a>
 
 
 
 
-<a href='#M000092'>
+<a href='#M000134'>
 file_path<br/>
 </a>
 
 
 
 
-<a href='#M000096'>
+<a href='#M000138'>
 full_name<br/>
 </a>
 
 
 
 
-<a href='#M000099'>
+<a href='#M000140'>
 generate_thumbnail<br/>
 </a>
 
 
 
 
-<a href='#M000095'>
+<a href='#M000142'>
+generate_thumbnail<br/>
+</a>
+
+
+
+
+<a href='#M000137'>
 name<br/>
 </a>
 
 
 
 
-<a href='#M000090'>
+<a href='#M000132'>
 path<br/>
 </a>
 
 
 
 
-<a href='#M000097'>
+<a href='#M000139'>
 started_at<br/>
 </a>
 
 
 
 
-<a href='#M000091'>
+<a href='#M000133'>
 store_name<br/>
 </a>
 
 
 
 
-<a href='#M000094'>
+<a href='#M000136'>
 thumbnail?<br/>
 </a>
 
 
 
 
-<a href='#M000093'>
+<a href='#M000135'>
 thumbnail_path<br/>
 </a>
 
@@ -591,9 +598,9 @@ href="ProjectFolder.html">ProjectFolder</a>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000098"><br/></a>
+<a class="small" name="M000141"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000098'>
+<a href='#M000141'>
 
 
 file_extension
@@ -607,18 +614,18 @@ Lookup, guesstimate if fail, the file extension For example:
 &#8216;text/rss+xml&#8217; =&gt; &quot;xml&quot;
 </p>
 
-<p class="source_link" id="M000098-show-link"><a onclick="toggle('M000098-source'); toggleText('M000098-link'); return false;" href="#" id="M000098-link">Show source...</a></p><div class="source" id="M000098-source"><pre>     <span class="ruby-comment cmt"># File app/models/project_file.rb, line 102</span>
-102:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_extension</span>
-103:       <span class="ruby-identifier">set</span> = <span class="ruby-constant">Mime</span><span class="ruby-operator">::</span><span class="ruby-constant">LOOKUP</span>[<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mime_type</span>]
-104:       <span class="ruby-identifier">sym</span> = <span class="ruby-identifier">set</span>.<span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-value str">&quot;@symbol&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">set</span>
-105:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sym</span>
-106:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">$1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mime_type</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/(\w+)$/</span>
-107:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000141-show-link"><a onclick="toggle('M000141-source'); toggleText('M000141-link'); return false;" href="#" id="M000141-link">Show source...</a></p><div class="source" id="M000141-source"><pre>     <span class="ruby-comment cmt"># File app/models/project_file.rb, line 122</span>
+122:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_extension</span>
+123:       <span class="ruby-identifier">set</span> = <span class="ruby-constant">Mime</span><span class="ruby-operator">::</span><span class="ruby-constant">LOOKUP</span>[<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mime_type</span>]
+124:       <span class="ruby-identifier">sym</span> = <span class="ruby-identifier">set</span>.<span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-value str">&quot;@symbol&quot;</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">set</span>
+125:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">sym</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">sym</span>
+126:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">$1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">mime_type</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/(\w+)$/</span>
+127:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000092"><br/></a>
+<a class="small" name="M000134"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000092'>
+<a href='#M000134'>
 
 
 file_path
@@ -628,15 +635,15 @@ file_path
 </a>
 </h3>
 
-<p class="source_link" id="M000092-show-link"><a onclick="toggle('M000092-source'); toggleText('M000092-link'); return false;" href="#" id="M000092-link">Show source...</a></p><div class="source" id="M000092-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 69</span>
+<p class="source_link" id="M000134-show-link"><a onclick="toggle('M000134-source'); toggleText('M000134-link'); return false;" href="#" id="M000134-link">Show source...</a></p><div class="source" id="M000134-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 69</span>
 69:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">file_path</span>
 70:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">path</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">store_name</span>)
 71:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000096"><br/></a>
+<a class="small" name="M000138"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000096'>
+<a href='#M000138'>
 
 
 full_name
@@ -646,7 +653,7 @@ full_name
 </a>
 </h3>
 
-<p class="source_link" id="M000096-show-link"><a onclick="toggle('M000096-source'); toggleText('M000096-link'); return false;" href="#" id="M000096-link">Show source...</a></p><div class="source" id="M000096-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 87</span>
+<p class="source_link" id="M000138-show-link"><a onclick="toggle('M000138-source'); toggleText('M000138-link'); return false;" href="#" id="M000138-link">Show source...</a></p><div class="source" id="M000138-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 87</span>
 87:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">full_name</span>
 88:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">project_folder</span>
 89:       <span class="ruby-node">&quot;#{project_folder.full_path}/#{name}&quot;</span>
@@ -656,9 +663,9 @@ full_name
 93:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000099"><br/></a>
+<a class="small" name="M000140"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000099'>
+<a href='#M000140'>
 
 
 generate_thumbnail
@@ -668,31 +675,65 @@ generate_thumbnail
 </a>
 </h3>
 
-<p class="source_link" id="M000099-show-link"><a onclick="toggle('M000099-source'); toggleText('M000099-link'); return false;" href="#" id="M000099-link">Show source...</a></p><div class="source" id="M000099-source"><pre>     <span class="ruby-comment cmt"># File app/models/project_file.rb, line 109</span>
-109:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">generate_thumbnail</span>(<span class="ruby-identifier">size</span> = <span class="ruby-value">124</span>)
-110:     <span class="ruby-identifier">image</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">get_image</span>( <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">file_path</span> ) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
-111:                                                                   <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
-112:                                                                   <span class="ruby-keyword kw">end</span> 
-113:     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
-114:       <span class="ruby-comment cmt"># Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory</span>
-115:       <span class="ruby-comment cmt"># very fast. </span>
-116:       <span class="ruby-identifier">res</span> = <span class="ruby-node">%x[convert #{self.file_path}  -thumbnail &quot;124x124&quot; \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]</span>
-117:       <span class="ruby-identifier">puts</span> <span class="ruby-identifier">res</span>
-118: 
-119: <span class="ruby-comment cmt">#      thumb = ImageOperations::thumbnail(image, size)</span>
-120: <span class="ruby-comment cmt">#      f = File.new(self.thumbnail_path, &quot;w&quot;, 0777)</span>
-121: <span class="ruby-comment cmt">#      f.write(thumb.to_blob)</span>
-122: <span class="ruby-comment cmt">#      f.close</span>
-123:     <span class="ruby-keyword kw">end</span>
-124:     <span class="ruby-identifier">image</span> = <span class="ruby-identifier">thumb</span> = <span class="ruby-keyword kw">nil</span>
-125:     <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
-126:     <span class="ruby-keyword kw">true</span>
-127:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000140-show-link"><a onclick="toggle('M000140-source'); toggleText('M000140-link'); return false;" href="#" id="M000140-link">Show source...</a></p><div class="source" id="M000140-source"><pre>     <span class="ruby-comment cmt"># File app/models/project_file.rb, line 99</span>
+ 99:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">generate_thumbnail</span>(<span class="ruby-identifier">size</span> = <span class="ruby-value">124</span>)
+100:     <span class="ruby-identifier">image</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">get_image</span>( <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">file_path</span> ) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+101:                                                                   <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+102:                                                                   <span class="ruby-keyword kw">end</span> 
+103:     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
+104:       <span class="ruby-comment cmt"># Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory</span>
+105:       <span class="ruby-comment cmt"># very fast. </span>
+106:       <span class="ruby-identifier">res</span> = <span class="ruby-node">%x[convert #{self.file_path}  -thumbnail &quot;124x124&quot; \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]</span>
+107:       <span class="ruby-identifier">puts</span> <span class="ruby-identifier">res</span>
+108: 
+109: <span class="ruby-comment cmt">#      thumb = ImageOperations::thumbnail(image, size)</span>
+110: <span class="ruby-comment cmt">#      f = File.new(self.thumbnail_path, &quot;w&quot;, 0777)</span>
+111: <span class="ruby-comment cmt">#      f.write(thumb.to_blob)</span>
+112: <span class="ruby-comment cmt">#      f.close</span>
+113:     <span class="ruby-keyword kw">end</span>
+114:     <span class="ruby-identifier">image</span> = <span class="ruby-identifier">thumb</span> = <span class="ruby-keyword kw">nil</span>
+115:     <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
+116:     <span class="ruby-keyword kw">true</span>
+117:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000095"><br/></a>
+<a class="small" name="M000142"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000095'>
+<a href='#M000142'>
+
+
+generate_thumbnail
+
+(size = 124)
+
+</a>
+</h3>
+
+<p class="source_link" id="M000142-show-link"><a onclick="toggle('M000142-source'); toggleText('M000142-link'); return false;" href="#" id="M000142-link">Show source...</a></p><div class="source" id="M000142-source"><pre>     <span class="ruby-comment cmt"># File app/models/project_file.rb, line 129</span>
+129:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">generate_thumbnail</span>(<span class="ruby-identifier">size</span> = <span class="ruby-value">124</span>)
+130:     <span class="ruby-identifier">image</span> = <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">get_image</span>( <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">file_path</span> ) <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">begin</span>
+131:                                                                   <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">false</span>
+132:                                                                   <span class="ruby-keyword kw">end</span> 
+133:     <span class="ruby-keyword kw">if</span> <span class="ruby-constant">ImageOperations</span><span class="ruby-operator">::</span><span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
+134:       <span class="ruby-comment cmt"># Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory</span>
+135:       <span class="ruby-comment cmt"># very fast. </span>
+136:       <span class="ruby-identifier">res</span> = <span class="ruby-node">%x[convert #{self.file_path}  -thumbnail &quot;124x124&quot; \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]</span>
+137:       <span class="ruby-identifier">puts</span> <span class="ruby-identifier">res</span>
+138: 
+139: <span class="ruby-comment cmt">#      thumb = ImageOperations::thumbnail(image, size)</span>
+140: <span class="ruby-comment cmt">#      f = File.new(self.thumbnail_path, &quot;w&quot;, 0777)</span>
+141: <span class="ruby-comment cmt">#      f.write(thumb.to_blob)</span>
+142: <span class="ruby-comment cmt">#      f.close</span>
+143:     <span class="ruby-keyword kw">end</span>
+144:     <span class="ruby-identifier">image</span> = <span class="ruby-identifier">thumb</span> = <span class="ruby-keyword kw">nil</span>
+145:     <span class="ruby-constant">GC</span>.<span class="ruby-identifier">start</span>
+146:     <span class="ruby-keyword kw">true</span>
+147:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000137"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000137'>
 
 
 name
@@ -702,15 +743,15 @@ name
 </a>
 </h3>
 
-<p class="source_link" id="M000095-show-link"><a onclick="toggle('M000095-source'); toggleText('M000095-link'); return false;" href="#" id="M000095-link">Show source...</a></p><div class="source" id="M000095-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 83</span>
+<p class="source_link" id="M000137-show-link"><a onclick="toggle('M000137-source'); toggleText('M000137-link'); return false;" href="#" id="M000137-link">Show source...</a></p><div class="source" id="M000137-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 83</span>
 83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">name</span>
 84:     <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'name'</span>].<span class="ruby-identifier">blank?</span> <span class="ruby-value">? </span><span class="ruby-identifier">filename</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@attributes</span>[<span class="ruby-value str">'name'</span>]
 85:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000090"><br/></a>
+<a class="small" name="M000132"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000090'>
+<a href='#M000132'>
 
 
 path
@@ -720,15 +761,15 @@ path
 </a>
 </h3>
 
-<p class="source_link" id="M000090-show-link"><a onclick="toggle('M000090-source'); toggleText('M000090-link'); return false;" href="#" id="M000090-link">Show source...</a></p><div class="source" id="M000090-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 61</span>
+<p class="source_link" id="M000132-show-link"><a onclick="toggle('M000132-source'); toggleText('M000132-link'); return false;" href="#" id="M000132-link">Show source...</a></p><div class="source" id="M000132-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 61</span>
 61:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">path</span>
 62:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{RAILS_ROOT}&quot;</span>, <span class="ruby-value str">'store'</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">company_id</span>.<span class="ruby-identifier">to_s</span>)
 63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000097"><br/></a>
+<a class="small" name="M000139"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000097'>
+<a href='#M000139'>
 
 
 started_at
@@ -738,15 +779,15 @@ started_at
 </a>
 </h3>
 
-<p class="source_link" id="M000097-show-link"><a onclick="toggle('M000097-source'); toggleText('M000097-link'); return false;" href="#" id="M000097-link">Show source...</a></p><div class="source" id="M000097-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 95</span>
+<p class="source_link" id="M000139-show-link"><a onclick="toggle('M000139-source'); toggleText('M000139-link'); return false;" href="#" id="M000139-link">Show source...</a></p><div class="source" id="M000139-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 95</span>
 95:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">started_at</span>
 96:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>
 97:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000091"><br/></a>
+<a class="small" name="M000133"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000091'>
+<a href='#M000133'>
 
 
 store_name
@@ -756,15 +797,15 @@ store_name
 </a>
 </h3>
 
-<p class="source_link" id="M000091-show-link"><a onclick="toggle('M000091-source'); toggleText('M000091-link'); return false;" href="#" id="M000091-link">Show source...</a></p><div class="source" id="M000091-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 65</span>
+<p class="source_link" id="M000133-show-link"><a onclick="toggle('M000133-source'); toggleText('M000133-link'); return false;" href="#" id="M000133-link">Show source...</a></p><div class="source" id="M000133-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 65</span>
 65:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">store_name</span>
 66:     <span class="ruby-node">&quot;#{self.id}#{&quot;_&quot; + self.task_id.to_s if self.task_id.to_i &gt; 0}_#{self.filename}&quot;</span>
 67:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000094"><br/></a>
+<a class="small" name="M000136"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000094'>
+<a href='#M000136'>
 
 
 thumbnail?
@@ -774,15 +815,15 @@ thumbnail?
 </a>
 </h3>
 
-<p class="source_link" id="M000094-show-link"><a onclick="toggle('M000094-source'); toggleText('M000094-link'); return false;" href="#" id="M000094-link">Show source...</a></p><div class="source" id="M000094-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 79</span>
+<p class="source_link" id="M000136-show-link"><a onclick="toggle('M000136-source'); toggleText('M000136-link'); return false;" href="#" id="M000136-link">Show source...</a></p><div class="source" id="M000136-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 79</span>
 79:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">thumbnail?</span>
 80:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">exist?</span>(<span class="ruby-identifier">thumbnail_path</span>)
 81:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000093"><br/></a>
+<a class="small" name="M000135"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000093'>
+<a href='#M000135'>
 
 
 thumbnail_path
@@ -796,7 +837,7 @@ The thumbnails are jpg&#8216;s even though they keep their original
 extension.
 </p>
 
-<p class="source_link" id="M000093-show-link"><a onclick="toggle('M000093-source'); toggleText('M000093-link'); return false;" href="#" id="M000093-link">Show source...</a></p><div class="source" id="M000093-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 75</span>
+<p class="source_link" id="M000135-show-link"><a onclick="toggle('M000135-source'); toggleText('M000135-link'); return false;" href="#" id="M000135-link">Show source...</a></p><div class="source" id="M000135-source"><pre>    <span class="ruby-comment cmt"># File app/models/project_file.rb, line 75</span>
 75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">thumbnail_path</span>
 76:     <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">path</span>, <span class="ruby-value str">&quot;thumb_&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">store_name</span>)
 77:   <span class="ruby-keyword kw">end</span></pre></div>

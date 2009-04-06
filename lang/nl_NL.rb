@@ -48,6 +48,7 @@ Localization.define('nl_NL') do |l|
   l.store "High", "Hoog"
   l.store "July", "Juli"
   l.store "June", "Juni"
+  l.store "Left", "Links" # Marc Bijl
   l.store "Mine", "Van Mij" # Jonathan van Woudenberg
   l.store "Name", "Naam"
   l.store "Next", "Volgende" # Tom Niessink
@@ -68,7 +69,7 @@ Localization.define('nl_NL') do |l|
   l.store "Wiki", "Wiki" # Tom Niessink
   l.store "Work", "Werk"
   l.store "days", "dagen" # Tom Niessink
-  l.store "idle", "idle"
+  l.store "idle", "pauze" # Maarten van Rooijen
   l.store "last", "laatste" # Tom Niessink
   l.store "59:04", "59:04" # Tom Niessink
   l.store "April", "April" # Tom Niessink
@@ -146,6 +147,7 @@ Localization.define('nl_NL') do |l|
   l.store "quotes", "quotes"
   l.store "%d days", ["%d dag", "%d dagen"] # Tom Niessink
   l.store "%d file", ["%d bestand", "%d bestanden"] # Tom Niessink
+  l.store "%d more", ["%d more", "%d more"]
   l.store "%d week", ["één week", "%d weken"]
   l.store "Blocker", "Blokkerend"
   l.store "Clients", "Klanten"
@@ -164,6 +166,7 @@ Localization.define('nl_NL') do |l|
   l.store "October", "Oktober"
   l.store "Offline", "off-line"
   l.store "Options", "Opties"
+  l.store "Overdue", "Overdue"
   l.store "Preview", "Voorbeeld"
   l.store "Project", "Project" # Tom Niessink
   l.store "Reports", "Rapporten"
@@ -174,6 +177,7 @@ Localization.define('nl_NL') do |l|
   l.store "Updated", "Gewijzigd" # Tom Niessink
   l.store "Welcome", "Welkom" # Tom Niessink
   l.store "offline", "offline" # Jonathan van Woudenberg
+  l.store "page %s", "pagina %s" # Maarten van Rooijen
   l.store "%d month", ["één maand", "%d maanden"]
   l.store "%d posts", ["%d bericht", "%d berichten"] # Tom Niessink
   l.store "%s tasks", "%s taken" # Jonathan van Woudenberg
@@ -207,6 +211,7 @@ Localization.define('nl_NL') do |l|
   l.store "One week", "Eén week" # Tom Niessink
   l.store "Overview", "Overzicht"
   l.store "Password", "Wachtwoord"
+  l.store "Position", "Positie" # Maarten van Rooijen
   l.store "Previous", "Vorige" # Tom Niessink
   l.store "Priority", "Prioriteit"
   l.store "Progress", "Vordering" # Tom Niessink
@@ -220,7 +225,7 @@ Localization.define('nl_NL') do |l|
   l.store "Severity", "Impact"
   l.store "Singular", "Enkelvoudig" # Tom Niessink
   l.store "Thursday", "Donderdag"
-  l.store "Timeline", "Tijdlog"
+  l.store "Timeline", "Tijdlijn" # Bas Wanders
   l.store "Tomorrow", "Morgen" # Tom Niessink
   l.store "Tutorial", "Introductie"
   l.store "Use Chat", "Gebruik Chat" # Tom Niessink
@@ -236,7 +241,7 @@ Localization.define('nl_NL') do |l|
   l.store "%d topics", ["%d onderwerp", "%d onderwerpen"] # Tom Niessink
   l.store "%d voices", ["%d stem", "%d stemmen"] # Jonathan van Woudenberg
   l.store "Completed", "Afgesloten"
-  l.store "Due Tasks", "Due Tasks"
+  l.store "Due Tasks", "Achterstallige taken" # Bas Wanders
   l.store "Duplicate", "Dubbele"
   l.store "Edit Note", "Wijzig Notitie"
   l.store "Edit User", "Wijzig Gebruiker"
@@ -254,6 +259,7 @@ Localization.define('nl_NL') do |l|
   l.store "Next week", "Vorige week" # Tom Niessink
   l.store "One month", "Eén maand" # Tom Niessink
   l.store "Remaining", "Overblijvend" # Jonathan van Woudenberg
+  l.store "Revisions", "Revisies" # Maarten van Rooijen
   l.store "September", "September" # Tom Niessink
   l.store "Task Type", "Taak Type"
   l.store "This Week", "Deze Week"
@@ -263,7 +269,7 @@ Localization.define('nl_NL') do |l|
   l.store "Use Forum", "Gebruik Forum" # Tom Niessink
   l.store "Wednesday", "Woensdag"
   l.store "Won't Fix", "Zal niet opgelost worden"
-  l.store "Won't fix", "Won't fix"
+  l.store "Won't fix", "Wordt niet gemaakt" # Maarten van Rooijen
   l.store "Work Done", "Volbracht Werk" # Tom Niessink
   l.store "Yesterday", "Gisteren" # Tom Niessink
   l.store "_italics_", "_schuingedrukt_" # Jonathan van Woudenberg
@@ -278,7 +284,8 @@ Localization.define('nl_NL') do |l|
   l.store "Client CSS", "Klant CSS"
   l.store "Delete All", "Alles verwijderen" # Dylan Verheul
   l.store "Depends on", "Afhankelijk van" # Tom Niessink
-  l.store "Edit Topic", "Edit Topic"
+  l.store "Edit Forum", "Edit Forum"
+  l.store "Edit Topic", "Wijzig item" # Bas Wanders
   l.store "Group Tags", "Groepeer op Tags"
   l.store "Last Login", "Laatste Aanmelding"
   l.store "Last Month", "Vorige Maand"
@@ -303,6 +310,7 @@ Localization.define('nl_NL') do |l|
   l.store "This Month", "Deze Maand"
   l.store "Time Range", "Tijdsreeks"
   l.store "Time sheet", "Tijdslijst"
+  l.store "Total Done", "Total Done"
   l.store "Track Time", "Tijd Registratie"
   l.store "Unassigned", "Niet toegewezen" # Tom Niessink
   l.store "View Tasks", "Bekijk Taken" # Tom Niessink
@@ -332,14 +340,17 @@ Localization.define('nl_NL') do |l|
   l.store "Improvement", "Verbetering"
   l.store "In Progress", "In Ontwikkeling"
   l.store "Information", "Informatie"
+  l.store "Let me know", "Laat het mij weten"
   l.store "Linked from", "Gekoppeld vanaf"
   l.store "New Feature", "Nieuwe Functionaliteit"
   l.store "New Project", "Nieuw Project" # Tom Niessink
   l.store "Preferences", "Instellingen"
   l.store "Report Type", "Rapport Type"
+  l.store "Revision %s", "Revision %s"
   l.store "Task Status", "Taak Status"
   l.store "Time Format", "Tijdsaanduiding"
   l.store "Transcripts", "Transcripten" # Tom Niessink
+  l.store "Work Logged", "Werk gelogd" # Maarten van Rooijen
   l.store "Work Status", "Werk Status" # Martin
   l.store "[All Tasks]", "[AlleTaken]" # Tom Niessink
   l.store "[Next page]", "[Volgende Pagina]"
@@ -356,12 +367,14 @@ Localization.define('nl_NL') do |l|
   l.store "Edit Project", "Project Wijzigen"
   l.store "Edit Summary", "Wijzig Samenvatting" # Tom Niessink
   l.store "Hide Waiting", "Verberg Wachtend" # Tom Niessink
+  l.store "Last %d Days", ["Last %d Days", "Laatste %d dagen"] # Maarten van Rooijen
   l.store "Last Updated", "Laatst aangepast"
   l.store "Leave Closed", "Laat gesloten"
   l.store "Low Priority", "Lage Prioriteit" # Martin
-  l.store "Notify", "Naam / E-mail" # Tom Niessink
+  l.store "More filters", "Meer filters" # Maarten van Rooijen
+  l.store "Name / Email", "Naam / E-mail" # Tom Niessink
   l.store "Newest Tasks", "Nieuwste Taken"
-  l.store "Notifications", "Berichten"
+  l.store "Notification", "Berichten"
   l.store "Participants", "Deelnemers" # Martin
   l.store "Plan / GANTT", "Planning / GANTT" # Tom Niessink
   l.store "Recent Posts", "Recente Berichten" # Tom Niessink
@@ -394,6 +407,7 @@ Localization.define('nl_NL') do |l|
   l.store "Monitor topic", "Monitor topic"
   l.store "My Open Tasks", "Mijn Openstaande Taken"
   l.store "New Milestone", "Nieuwe Mijlpaal"
+  l.store "Over Estimate", "Over Estimate"
   l.store "Public Forums", "Publieke Forums" # Tom Niessink
   l.store "Show Calendar", "Kalender Tonen"
   l.store "Show Tooltips", "Helpballonnen Tonen"
@@ -434,10 +448,10 @@ Localization.define('nl_NL') do |l|
   l.store "[Any Priority]", "[Alle Prioriteiten]" # Tom Niessink
   l.store "[Any Severity]", "[Alle Impactniveau's]" # Tom Niessink
   l.store "Close <b>%s</b>", "Sluit <b>%s</b>"
-  l.store "Database Backup", "Database Backup"
+  l.store "Database Backup", "Database Backup" # Marc Bijl
   l.store "Duration Format", "Weergave Tijdsduur"
   l.store "Duration Worked", "Gewerkte tijd"
-  l.store "Formatting Help", "Formatting Help"
+  l.store "Formatting Help", "Aanpassen Help" # Maarten van Rooijen
   l.store "Organizing Done", "Organizing Done"
   l.store "Quick Reference", "Verkorte Beschrijving"
   l.store "Recent activity", "Recente Activiteit" # Martin
@@ -456,6 +470,7 @@ Localization.define('nl_NL') do |l|
   l.store "Delete <b>%s</b>", "Verwijder <b>%s</b>" # Tom Niessink
   l.store "Delete Log Entry", "Verwijder log-item"
   l.store "Delete Milestone", "Verwijder Mijlpaal"
+  l.store "Gadget HTML Code", "Gadget HTML Code"
   l.store "Instant Messages", "Instant Messages"
   l.store "Leave as Invalid", "Laat op Ongeldig staan"
   l.store "Messages from %s", "Messages from %s"
@@ -472,6 +487,9 @@ Localization.define('nl_NL') do |l|
   l.store "Access To Project", "Toegang tot Project"
   l.store "Create New Folder", "Maak een nieuwe Map" # Jonathan van Woudenberg
   l.store "Delete <b>%s</b>.", "Verwijder <b>%s</b>." # Tom Niessink
+  l.store "Delete Transcript", "Delete Transcript"
+  l.store "Hide Dependencies", "Verberg afhankelijkheden" # Maarten van Rooijen
+  l.store "No file selected.", "Geen file geslecteerd" # Maarten van Rooijen
   l.store "Really delete %s?", "Wil je %s echt verwijderen?" # Jonathan van Woudenberg
   l.store "Really revert %s?", "%s echt terugzetten?"
   l.store "Recent Activities", "Recente activiteiten"
@@ -479,6 +497,7 @@ Localization.define('nl_NL') do |l|
   l.store "Schedule reverted", "Schedule reverted"
   l.store "Tasks / Day Chart", "Tasks / Day Chart"
   l.store "Under revision by", "Gereviseerd door"
+  l.store "Upload more files", "Upload meer files" # Maarten van Rooijen
   l.store "[Active Projects]", "[Actieve Projecten]" # Tom Niessink
   l.store "[Closed Projects]", "[Gesloten Projecten]" # Tom Niessink
   l.store "[Default Sorting]", "[Standaard Volgorde]" # Tom Niessink
@@ -488,52 +507,56 @@ Localization.define('nl_NL') do |l|
   l.store "Access to Projects", "Toegang tot Projecten" # Jonathan van Woudenberg
   l.store "Complete Milestone", "Sluit Mijlpaal af"
   l.store "Completed Projects", "Afgesloten Projecten"
-  l.store "Hide Waiting Tasks", "Verberd Wachtende Taken" # Tom Niessink
+  l.store "Hide Waiting Tasks", "Verberg Wachtende Taken" # Bas Wanders
   l.store "Last active %s ago", "Laaste activiteit %s geleden" # Tom Niessink
   l.store "Leave as Duplicate", "Laat staan op Dubbel"
   l.store "Leave as Won't Fix", "Laat staan op wordt niet opgelost"
   l.store "Log entry saved...", "Werk-Log item opgeslagen..."
   l.store "No recent activity", "Geen recentelijke activiteit" # Tom Niessink
   l.store "Really abort work?", "Weet je zeker dat je dit werk wilt afbreken?" # Tom Niessink
-  l.store "Really delete tag?", "Really delete tag?"
+  l.store "Really delete tag?", "Tag echt verwijderen?" # Maarten van Rooijen
   l.store "Receive Newsletter", "Ontvang Nieuwsbrief" # Tom Niessink
   l.store "Same as in English", "Zelfde als in het engels" # Tom Niessink
   l.store "Send Notifications", "Verstuur Meldingen"
-  l.store "Task not worked on", "Task not worked on"
+  l.store "Task not worked on", "Taken waar niet aan wordt gewerkt" # Maarten van Rooijen
   l.store "less than a minute", "minder dan één minuut"
-  l.store "Can Create Projects", "Can Create Projects"
-  l.store "Remove", "Verwijder notificatie" # Tom Niessink
+  l.store "Can Create Projects", "Kan projecten aanmaken" # Maarten van Rooijen
+  l.store "Remove notification", "Verwijder notificatie" # Tom Niessink
   l.store "Restricted Userlist", "Lijst beperkte gebruikers" # Tom Niessink
-  l.store "Show TaskType Icons", "Show TaskType Icons"
+  l.store "Show TaskType Icons", "Laat taak type iconen zien" # Maarten van Rooijen
   l.store "%d completed project", ["één project afgerond", "%d projecten afgerond"]
   l.store "Completed Milestones", "Afgesloten Mijlpalen"
+  l.store "Find a Google Gadget", "Zoek een Google Gadget" # Maarten van Rooijen
   l.store "Leave as in Progress", "Laat in behandeling staan"
   l.store "Log entry deleted...", "Werk-log item verwijderd..."
-  l.store "My In Progress Tasks", "Mijn Taken in Behandling"
+  l.store "My In Progress Tasks", "Mijn Taken in Behandeling" # Marc Bijl
   l.store "Project was deleted.", "Project verwijderd."
   l.store "Report Configuration", "Rapport Configuratie"
-  l.store "Restricted Messaging", "Restricted Messaging"
+  l.store "Restricted Messaging", "Prive messaging" # Maarten van Rooijen
   l.store "Showing Full History", "Volledige Historie Zichtbaar" # Tom Niessink
   l.store "Use External Clients", "Gebruik externe klanten"
   l.store "less than %d seconds", "minder dan %d sekonden"
   l.store "Open to everyone from", "Beschikbaar voor iedereen in" # Tom Niessink
   l.store "Projects / Milestones", "Projecten / Mijlpalen" # Tom Niessink
   l.store "Receive Notifications", "Ontvange Meldingen"
-  l.store "Showing Only Comments", "Showing Only Comments"
+  l.store "Showing Only Comments", "Alleen commentaar weergeven" # Maarten van Rooijen
   l.store "%d completed milestone", ["één mijlpaal afgerond", "%d mijlpalen afgerond"]
   l.store "Add another dependency", "Voeg afhankelijkheid toe" # Tom Niessink
   l.store "Download Database Dump", "Download Database Dump"
   l.store "Edit project <b>%s</b>", "Project <b>%s</b> Wijzigen"
   l.store "Floating Messaging Bar", "Zwevende Berichtenbalk" # Tom Niessink
+  l.store "Hide Task Dependencies", "Hide Task Dependencies"
   l.store "View '%s' was deleted.", "Overzicht '%s' is verwijderd."
   l.store "invite some co-workers", "nodig collega's uit" # Tom Niessink
+  l.store "Last %d Completed Tasks", ["Last %d Completed Tasks", "Last %d Completed Tasks"]
   l.store "%d translations updated.", ["%d vertaling gewijzigd.", "%d vertalingen gewijzigd."] # Tom Niessink
-  l.store "Company settings updated", "Company settings updated"
+  l.store "Company settings updated", "Bedrijfsinstellingen bijgewerkt" # Maarten van Rooijen
   l.store "Edit milestone <b>%s</b>", "Mijlpaal<b>%s</b> Wijzigen"
   l.store "Open to everyone from %s", "Beschikbaar voor iedereen in %s" # Tom Niessink
   l.store "Send notification emails", "Verstuur email notificaties"
   l.store "Invalid due date ignored.", "Ongeldige einddatum ingevuld; deze wordt genegeerd."
-  l.store "and copy permissions from", "and copy permissions from"
+  l.store "Really delete transcript?", "Transcript echt deleten?" # Maarten van Rooijen
+  l.store "and copy permissions from", "en kopieer permissies van" # Bas Wanders
   l.store "CSS successfully uploaded.", "CSS met succes geplaatst."
   l.store "Delete this topic forever?", "Dit onderwerp permanent verwijderen?" # Jonathan van Woudenberg
   l.store "Grant access to <b>%s</b>?", "Verleen toegang aan <b>%s</b>?"
@@ -543,12 +566,15 @@ Localization.define('nl_NL') do |l|
   l.store "Don't show this splash page", "Laat deze opstartpagina niet meer zien" # Tom Niessink
   l.store "File successfully uploaded.", "Bestand met succes geplaatst."
   l.store "Logo successfully uploaded.", "Logo met succes geplaatst."
+  l.store "Only admins can edit users.", "Only admins can edit users."
   l.store "Pause working on <b>%s</b>.", "Pauzeer werk aan <b>%s</b>." # Tom Niessink
   l.store "Please always be courteous.", "Please always be courteous."
+  l.store "Please configure the widget", "Please configure the widget"
   l.store "Unable to save log entry...", "Kan het werk-log item niet opslaan..."
   l.store "Cancel working on <b>%s</b>.", "Stop werken aan <b>%s</b>."
   l.store "Empty report, log more work!", "Leeg rapport, registreer meer werk!"
   l.store "No file selected for upload.", "Geen bestand geselecteerd op te plaatsen."
+  l.store "Only show tasks of this type", "Only show tasks of this type"
   l.store "Really delete whole history?", "Really delete whole history?"
   l.store "Resume working on <b>%s</b>.", "Vervolg werk aan <b>%s</b>." # Tom Niessink
   l.store "Avatar successfully uploaded.", "Avatar succesvol geüpload." # Jonathan van Woudenberg
@@ -573,6 +599,7 @@ Localization.define('nl_NL') do |l|
   l.store "Project was successfully created.", "Project aangemaakt."
   l.store "Project was successfully updated.", "Project gewijzigd."
   l.store "Done working on <b>%s</b> for now.", "Voorlopig klaar met werken aan <b>%s</b>."
+  l.store "Subscribe to this widgets RSS feed", "Subscribe to this widgets RSS feed"
   l.store "You can't delete your own company.", "Je kunt je eigen bedrijf niet verwijderen." # Jonathan van Woudenberg
   l.store "Feedback? Suggestions? Ideas? Bugs?", "Opmerkingen? Suggesties? Ideeën? Fouten?"
   l.store "Ignore hidden tasks when scheduling", "Ignore hidden tasks when scheduling"
@@ -584,6 +611,8 @@ Localization.define('nl_NL') do |l|
   l.store "Changes are not made live instantly.", "Wijzigingen worden niet direct actueel (live) gemaakt." # Tom Niessink
   l.store "This forum is currently unmoderated.", "Dit forum wordt momenteel niet beheerd." # Jonathan van Woudenberg
   l.store "Hide tasks deferred until a later time", "Verberg taken verschoven naar later tijdstip" # Tom Niessink
+  l.store "Show tasks with at least this priority", "Show tasks with at least this priority"
+  l.store "Show tasks with at least this severity", "Show tasks with at least this severity"
   l.store "Limit userlist to users in same project", "Limiteer gebruikerslijst tot gebruikers uit hetzelfde project" # Tom Niessink
   l.store "Really delete room and all transcripts?", "Weet je zeker dat je deze chatroom en bijbehorende transcripten wilt verwijderen?" # Tom Niessink
   l.store "Revert <b>%s</b> to not completed status.", "Zet <b>%s</b> op niet afgerond"

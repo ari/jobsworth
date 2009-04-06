@@ -492,10 +492,14 @@ class TasksController < ApplicationController
           update_type = :reverted
         end
 
+        if( @old_task.status == 6 )
+          @task.hide_until = nil
+        end 
+
       end
 
-			files = create_attachments(@task)
-			files.each do |filename|
+      files = create_attachments(@task)
+      files.each do |filename|
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 

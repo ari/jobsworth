@@ -331,35 +331,49 @@ Module: TasksHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000675'>
+<a href='#M000793'>
+auto_complete_for_dependencies<br/>
+</a>
+
+
+
+
+<a href='#M000792'>
+auto_complete_for_resources<br/>
+</a>
+
+
+
+
+<a href='#M000791'>
+milestone_select<br/>
+</a>
+
+
+
+
+<a href='#M000787'>
 pri_color<br/>
 </a>
 
 
 
 
-<a href='#M000676'>
+<a href='#M000788'>
 print_title<br/>
 </a>
 
 
 
 
-<a href='#M000678'>
+<a href='#M000790'>
 render_task_dependants<br/>
 </a>
 
 
 
 
-<a href='#M000679'>
-show_more_filters?<br/>
-</a>
-
-
-
-
-<a href='#M000677'>
+<a href='#M000789'>
 task_shown?<br/>
 </a>
 
@@ -382,9 +396,98 @@ task_shown?<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000675"><br/></a>
+<a class="small" name="M000793"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000675'>
+<a href='#M000793'>
+
+
+auto_complete_for_dependencies
+
+()
+
+</a>
+</h3>
+<p>
+Returns the html to display an auto complete for task dependencies. When a
+choice is made, the dependency will be added to the page (but not saved to
+the db until the task is saved)
+</p>
+
+<p class="source_link" id="M000793-show-link"><a onclick="toggle('M000793-source'); toggleText('M000793-link'); return false;" href="#" id="M000793-link">Show source...</a></p><div class="source" id="M000793-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 173</span>
+173:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for_dependencies</span>
+174:     <span class="ruby-identifier">auto_complete_field</span>(<span class="ruby-value str">'dependencies_input'</span>, 
+175:                         { <span class="ruby-identifier">:url</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'dependency_targets'</span> }, 
+176:                           <span class="ruby-identifier">:min_chars</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>, 
+177:                           <span class="ruby-identifier">:frequency</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span><span class="ruby-value">.5</span>, 
+178:                           <span class="ruby-identifier">:indicator</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'loading'</span>, 
+179:                           <span class="ruby-identifier">:after_update_element</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;addDependencyToTask&quot;</span>
+180:                         })
+181:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000792"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000792'>
+
+
+auto_complete_for_resources
+
+(customer_id)
+
+</a>
+</h3>
+<p>
+Returns the html to display an auto complete for resources. Only resources
+belonging to customer id are returned. Unassigned resources (belonging to
+no customer are also returned though).
+</p>
+
+<p class="source_link" id="M000792-show-link"><a onclick="toggle('M000792-source'); toggleText('M000792-link'); return false;" href="#" id="M000792-link">Show source...</a></p><div class="source" id="M000792-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 156</span>
+156:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">auto_complete_for_resources</span>(<span class="ruby-identifier">customer_id</span>)
+157:     <span class="ruby-identifier">options</span> = {
+158:       <span class="ruby-identifier">:select</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'complete_value'</span>, 
+159:       <span class="ruby-identifier">:tokens</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">','</span>,
+160:       <span class="ruby-identifier">:url</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;auto_complete_for_resource_name&quot;</span>, 
+161:         <span class="ruby-identifier">:customer_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">customer_id</span> },
+162:       <span class="ruby-identifier">:after_update_element</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;addResourceToTask&quot;</span>
+163:     }
+164: 
+165:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">text_field_with_auto_complete</span>(<span class="ruby-identifier">:resource</span>, <span class="ruby-identifier">:name</span>, { <span class="ruby-identifier">:size</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">12</span> }, <span class="ruby-identifier">options</span>)
+166:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000791"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000791'>
+
+
+milestone_select
+
+(perms)
+
+</a>
+</h3>
+<p>
+Returns the html to display a select field to set the tasks milestone. The
+current milestone (if set) will be selected.
+</p>
+
+<p class="source_link" id="M000791-show-link"><a onclick="toggle('M000791-source'); toggleText('M000791-link'); return false;" href="#" id="M000791-link">Show source...</a></p><div class="source" id="M000791-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 140</span>
+140:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">milestone_select</span>(<span class="ruby-identifier">perms</span>)
+141:     <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@task</span>.<span class="ruby-identifier">id</span>
+142:       <span class="ruby-identifier">milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'due_at, name'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND project_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">selected_project</span>])
+143:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">select</span>(<span class="ruby-value str">'task'</span>, <span class="ruby-value str">'milestone_id'</span>, [[<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;[None]&quot;</span>), <span class="ruby-value str">&quot;0&quot;</span>]] <span class="ruby-operator">+</span> <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> [ <span class="ruby-identifier">c</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">c</span>.<span class="ruby-identifier">id</span> ] }, {}, <span class="ruby-identifier">perms</span>[<span class="ruby-value str">'milestone'</span>])
+144:     <span class="ruby-keyword kw">else</span>
+145:       <span class="ruby-identifier">milestone_id</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword kw">self</span>, <span class="ruby-identifier">session</span>).<span class="ruby-identifier">milestone_ids</span>.<span class="ruby-identifier">first</span>
+146:       <span class="ruby-identifier">milestones</span> = <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'due_at, name'</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">'company_id = ? AND project_id = ? AND completed_at IS NULL'</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">id</span>, <span class="ruby-identifier">selected_project</span>])
+147:       <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">select</span>(<span class="ruby-value str">'task'</span>, <span class="ruby-value str">'milestone_id'</span>, [[<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;[None]&quot;</span>), <span class="ruby-value str">&quot;0&quot;</span>]] <span class="ruby-operator">+</span> <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">collect</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span> [ <span class="ruby-identifier">c</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">c</span>.<span class="ruby-identifier">id</span> ] }, {<span class="ruby-identifier">:selected</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">milestone_id</span> <span class="ruby-operator">||</span> <span class="ruby-value">0</span> }, <span class="ruby-identifier">perms</span>[<span class="ruby-value str">'milestone'</span>])
+148:     <span class="ruby-keyword kw">end</span>
+149:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
+
+<a class="small" name="M000787"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000787'>
 
 
 pri_color
@@ -394,7 +497,7 @@ pri_color
 </a>
 </h3>
 
-<p class="source_link" id="M000675-show-link"><a onclick="toggle('M000675-source'); toggleText('M000675-link'); return false;" href="#" id="M000675-link">Show source...</a></p><div class="source" id="M000675-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
+<p class="source_link" id="M000787-show-link"><a onclick="toggle('M000787-source'); toggleText('M000787-link'); return false;" href="#" id="M000787-link">Show source...</a></p><div class="source" id="M000787-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 3</span>
  3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">pri_color</span>(<span class="ruby-identifier">severity</span>, <span class="ruby-identifier">priority</span>)
  4:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#b0d295&quot;</span>
  5:     <span class="ruby-identifier">color</span> = <span class="ruby-value str">&quot;#f2ab99&quot;</span> <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">priority</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">severity</span>)<span class="ruby-operator">/</span><span class="ruby-value">2.0</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span><span class="ruby-value">.5</span>
@@ -407,9 +510,9 @@ pri_color
 12:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000676"><br/></a>
+<a class="small" name="M000788"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000676'>
+<a href='#M000788'>
 
 
 print_title
@@ -419,42 +522,45 @@ print_title
 </a>
 </h3>
 
-<p class="source_link" id="M000676-show-link"><a onclick="toggle('M000676-source'); toggleText('M000676-link'); return false;" href="#" id="M000676-link">Show source...</a></p><div class="source" id="M000676-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
+<p class="source_link" id="M000788-show-link"><a onclick="toggle('M000788-source'); toggleText('M000788-link'); return false;" href="#" id="M000788-link">Show source...</a></p><div class="source" id="M000788-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 14</span>
 14:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">print_title</span>
 15:     <span class="ruby-identifier">filters</span> = []
 16:     <span class="ruby-identifier">title</span> = <span class="ruby-value str">&quot;&lt;div style=\&quot;float:left\&quot;&gt;&quot;</span>
-17:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span>
-18:       <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; #{_'%s tasks', Task.status_types[session[:filter_status].to_i]} [&quot;</span>
-19:     <span class="ruby-keyword kw">else</span>
-20:       <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{_'Tasks'} [&quot;</span>
-21:     <span class="ruby-keyword kw">end</span>
-22: 
-23:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-24:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>].<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">name</span>
-25:     <span class="ruby-keyword kw">end</span>
-26: 
-27:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-28:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>].<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">name</span>
-29:     <span class="ruby-keyword kw">end</span>
-30: 
-31:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-32:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>].<span class="ruby-identifier">to_i</span>).<span class="ruby-identifier">name</span>
-33:     <span class="ruby-keyword kw">end</span>
-34: 
-35:     <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filters</span>.<span class="ruby-identifier">empty?</span>
-36: 
-37:     <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">filters</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' / '</span>)
-38: 
-39:     <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;]&lt;/div&gt;&lt;div style=\&quot;float:right\&quot;&gt;#{tz.now.strftime_localized(&quot;#{current_user.time_format} #{current_user.date_format}&quot;)}&lt;/div&gt;&lt;div style=\&quot;clear:both\&quot;&gt;&lt;/div&gt;&quot;</span>
-40: 
-41:     <span class="ruby-node">&quot;&lt;h3&gt;#{title}&lt;/h3&gt;&quot;</span>
-42: 
-43:   <span class="ruby-keyword kw">end</span></pre></div>
+17:     <span class="ruby-identifier">status_ids</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_status_ids</span>(<span class="ruby-identifier">session</span>)
+18:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">status_ids</span>.<span class="ruby-identifier">any?</span>
+19:       <span class="ruby-identifier">statuses</span> = <span class="ruby-identifier">status_ids</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-constant">Task</span>.<span class="ruby-identifier">status_types</span>[<span class="ruby-identifier">id</span>] }
+20:       <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot; #{ _('%s tasks', statuses.join(&quot;, &quot;)) } [&quot;</span>
+21:     <span class="ruby-keyword kw">else</span>
+22:       <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;#{_'Tasks'} [&quot;</span>
+23:     <span class="ruby-keyword kw">end</span>
+24: 
+25:     <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-identifier">:filter_customer</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+26:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Customer</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>).<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_CUSTOMERS</span>
+27:     <span class="ruby-keyword kw">end</span>
+28: 
+29:     
+30:     <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-identifier">:filter_project</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+31:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">Project</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>).<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_PROJECTS</span>
+32:     <span class="ruby-keyword kw">end</span>
+33: 
+34:     <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_user_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-keyword kw">false</span>).<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span>
+35:       <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-constant">User</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>).<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_USERS</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+36:     <span class="ruby-keyword kw">end</span>
+37: 
+38:     <span class="ruby-identifier">filters</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">name</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">filters</span>.<span class="ruby-identifier">empty?</span>
+39: 
+40:     <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">filters</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">' / '</span>)
+41: 
+42:     <span class="ruby-identifier">title</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;]&lt;/div&gt;&lt;div style=\&quot;float:right\&quot;&gt;#{tz.now.strftime_localized(&quot;#{current_user.time_format} #{current_user.date_format}&quot;)}&lt;/div&gt;&lt;div style=\&quot;clear:both\&quot;&gt;&lt;/div&gt;&quot;</span>
+43: 
+44:     <span class="ruby-node">&quot;&lt;h3&gt;#{title}&lt;/h3&gt;&quot;</span>
+45: 
+46:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000678"><br/></a>
+<a class="small" name="M000790"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000678'>
+<a href='#M000790'>
 
 
 render_task_dependants
@@ -464,85 +570,54 @@ render_task_dependants
 </a>
 </h3>
 
-<p class="source_link" id="M000678-show-link"><a onclick="toggle('M000678-source'); toggleText('M000678-link'); return false;" href="#" id="M000678-link">Show source...</a></p><div class="source" id="M000678-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 81</span>
- 81:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">t</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">root_present</span>)
- 82:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
- 83:     <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">||=</span> []
- 84: 
- 85:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
- 86: 
- 87:     <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
- 88: 
- 89:     <span class="ruby-ivar">@deps</span> = []
- 90: 
- 91:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
- 92:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>})
- 93:     <span class="ruby-keyword kw">else</span> 
- 94:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root_present</span>
- 95:         <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
- 96:         <span class="ruby-identifier">parents</span> = []
- 97:         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">t</span>
- 98:         <span class="ruby-keyword kw">while</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">p</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
- 99:           <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
-100:           <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dep</span><span class="ruby-operator">|</span>
-101:             <span class="ruby-identifier">root</span> = <span class="ruby-identifier">dep</span> <span class="ruby-keyword kw">if</span>((<span class="ruby-operator">!</span><span class="ruby-identifier">dep</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">dep</span>.<span class="ruby-identifier">id</span>) ) )
-102:           <span class="ruby-keyword kw">end</span>
-103:           <span class="ruby-identifier">root</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>))
-104:           <span class="ruby-identifier">p</span> = <span class="ruby-identifier">root</span>
-105:           <span class="ruby-ivar">@deps</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">id</span>
-106:         <span class="ruby-keyword kw">end</span>
-107:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">root</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">nil?</span>
-108:       <span class="ruby-keyword kw">else</span>
-109:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">:override_filter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">shown</span> }) <span class="ruby-keyword kw">if</span>( ((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>)
-110: 
-111:         <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
-112: 
-113:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-114:           <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
-115:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">id</span>
-116:             <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">child</span>, (((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">depth</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span> )
-117:           <span class="ruby-keyword kw">end</span>
+<p class="source_link" id="M000790-show-link"><a onclick="toggle('M000790-source'); toggleText('M000790-link'); return false;" href="#" id="M000790-link">Show source...</a></p><div class="source" id="M000790-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 93</span>
+ 93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">t</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">root_present</span>)
+ 94:     <span class="ruby-identifier">res</span> = <span class="ruby-value str">&quot;&quot;</span>
+ 95:     <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">||=</span> []
+ 96: 
+ 97:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
+ 98: 
+ 99:     <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
+100: 
+101:     <span class="ruby-ivar">@deps</span> = []
+102: 
+103:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span>
+104:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>})
+105:     <span class="ruby-keyword kw">else</span> 
+106:       <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root_present</span>
+107:         <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
+108:         <span class="ruby-identifier">parents</span> = []
+109:         <span class="ruby-identifier">p</span> = <span class="ruby-identifier">t</span>
+110:         <span class="ruby-keyword kw">while</span>(<span class="ruby-operator">!</span><span class="ruby-identifier">p</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>)
+111:           <span class="ruby-identifier">root</span> = <span class="ruby-keyword kw">nil</span>
+112:           <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">dep</span><span class="ruby-operator">|</span>
+113:             <span class="ruby-identifier">root</span> = <span class="ruby-identifier">dep</span> <span class="ruby-keyword kw">if</span>((<span class="ruby-operator">!</span><span class="ruby-identifier">dep</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> (<span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">dep</span>.<span class="ruby-identifier">id</span>) ) )
+114:           <span class="ruby-keyword kw">end</span>
+115:           <span class="ruby-identifier">root</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span> <span class="ruby-keyword kw">if</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@deps</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">p</span>.<span class="ruby-identifier">dependencies</span>.<span class="ruby-identifier">first</span>.<span class="ruby-identifier">id</span>))
+116:           <span class="ruby-identifier">p</span> = <span class="ruby-identifier">root</span>
+117:           <span class="ruby-ivar">@deps</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">id</span>
 118:         <span class="ruby-keyword kw">end</span>
-119:       <span class="ruby-keyword kw">end</span> 
-120:     <span class="ruby-keyword kw">end</span>
-121:     <span class="ruby-identifier">res</span>
-122:   <span class="ruby-keyword kw">end</span></pre></div>
+119:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">root</span>, <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span>) <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">root</span>.<span class="ruby-identifier">nil?</span>
+120:       <span class="ruby-keyword kw">else</span>
+121:         <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;task_row&quot;</span>, <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:task</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">t</span>, <span class="ruby-identifier">:depth</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">depth</span>, <span class="ruby-identifier">:override_filter</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-operator">!</span><span class="ruby-identifier">shown</span> }) <span class="ruby-keyword kw">if</span>( ((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>)
+122: 
+123:         <span class="ruby-ivar">@printed_ids</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">id</span>
+124: 
+125:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
+126:           <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">child</span><span class="ruby-operator">|</span>
+127:             <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@printed_ids</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">child</span>.<span class="ruby-identifier">id</span>
+128:             <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">render_task_dependants</span>(<span class="ruby-identifier">child</span>, (((<span class="ruby-operator">!</span><span class="ruby-identifier">t</span>.<span class="ruby-identifier">done?</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">dependants</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">shown</span>) <span class="ruby-operator">?</span> (<span class="ruby-identifier">depth</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">2</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">depth</span>, <span class="ruby-keyword kw">true</span> )
+129:           <span class="ruby-keyword kw">end</span>
+130:         <span class="ruby-keyword kw">end</span>
+131:       <span class="ruby-keyword kw">end</span> 
+132:     <span class="ruby-keyword kw">end</span>
+133:     <span class="ruby-identifier">res</span>
+134:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000679"><br/></a>
+<a class="small" name="M000789"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000679'>
-
-
-show_more_filters?
-
-()
-
-</a>
-</h3>
-<p>
-Returns true if the more filters area should be shown.
-</p>
-
-<p class="source_link" id="M000679-show-link"><a onclick="toggle('M000679-source'); toggleText('M000679-link'); return false;" href="#" id="M000679-link">Show source...</a></p><div class="source" id="M000679-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 127</span>
-127:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_more_filters?</span>
-128:     <span class="ruby-identifier">show</span> = (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_type</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-1&quot;</span>) 
-129:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_priority</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-10&quot;</span>) 
-130:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_severity</span>] <span class="ruby-operator">!=</span> <span class="ruby-value str">&quot;-10&quot;</span>)
-131:     <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> (<span class="ruby-identifier">session</span>[<span class="ruby-identifier">:hide_dependencies</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>)
-132: 
-133:     <span class="ruby-comment cmt"># we also need to show filter if any custom properties are set</span>
-134:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">prop</span><span class="ruby-operator">|</span>
-135:       <span class="ruby-identifier">show</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">prop</span>.<span class="ruby-identifier">filter_name</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-136:     <span class="ruby-keyword kw">end</span>
-137: 
-138:     <span class="ruby-identifier">show</span>
-139:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000677"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000677'>
+<a href='#M000789'>
 
 
 task_shown?
@@ -552,42 +627,51 @@ task_shown?
 </a>
 </h3>
 
-<p class="source_link" id="M000677-show-link"><a onclick="toggle('M000677-source'); toggleText('M000677-link'); return false;" href="#" id="M000677-link">Show source...</a></p><div class="source" id="M000677-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 45</span>
-45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
-46: 
-47:     <span class="ruby-identifier">shown</span> = <span class="ruby-keyword kw">true</span>
-48: 
-49:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;=</span> <span class="ruby-value">0</span>
-50:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span>
-51:         <span class="ruby-identifier">shown</span> = ( <span class="ruby-identifier">t</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">0</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">==</span> <span class="ruby-value">1</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-52:       <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-value">2</span>
-53:         <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">status</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-54:       <span class="ruby-keyword kw">else</span>
-55:         <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_status</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">status</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-56:       <span class="ruby-keyword kw">end</span>
-57:     <span class="ruby-keyword kw">end</span>
-58: 
-59:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">shown</span>
-60:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_milestone</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone_id</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-61:     <span class="ruby-keyword kw">end</span>
-62: 
-63:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">shown</span>
-64:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_customer</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-65:     <span class="ruby-keyword kw">end</span>
-66: 
-67:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">shown</span>
-68:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_project</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">t</span>.<span class="ruby-identifier">project_id</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-69:     <span class="ruby-keyword kw">end</span>
-70: 
-71:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">shown</span>
-72:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">collect</span>(<span class="ruby-operator">&amp;</span><span class="ruby-identifier">:id</span>).<span class="ruby-identifier">include?</span>( <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>].<span class="ruby-identifier">to_i</span> ) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span>
-73:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">session</span>[<span class="ruby-identifier">:filter_user</span>].<span class="ruby-identifier">to_i</span> <span class="ruby-operator">&lt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">shown</span>
-74:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
-75:     <span class="ruby-keyword kw">end</span>
-76: 
-77: 
-78:     <span class="ruby-identifier">shown</span>
-79:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000789-show-link"><a onclick="toggle('M000789-source'); toggleText('M000789-link'); return false;" href="#" id="M000789-link">Show source...</a></p><div class="source" id="M000789-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/tasks_helper.rb, line 48</span>
+48:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">task_shown?</span>(<span class="ruby-identifier">t</span>)
+49:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">true</span>
+50:     <span class="ruby-comment cmt"># N.B. Is this still necessary? It seems like the deciding which </span>
+51:     <span class="ruby-comment cmt"># tasks is already done in the controller. BW</span>
+52: 
+53:     <span class="ruby-comment cmt"># shown = true</span>
+54:     <span class="ruby-comment cmt"># if session[:filter_status].to_i &gt;= 0</span>
+55:     <span class="ruby-comment cmt">#   if session[:filter_status].to_i == 0</span>
+56:     <span class="ruby-comment cmt">#     shown = ( t.status == 0 || t.status == 1 ) if shown</span>
+57:     <span class="ruby-comment cmt">#   elsif session[:filter_status].to_i == 2</span>
+58:     <span class="ruby-comment cmt">#     shown = t.status &gt; 1 if shown</span>
+59:     <span class="ruby-comment cmt">#   else</span>
+60:     <span class="ruby-comment cmt">#     shown = session[:filter_status].to_i == t.status if shown</span>
+61:     <span class="ruby-comment cmt">#   end</span>
+62:     <span class="ruby-comment cmt"># end</span>
+63: 
+64:     <span class="ruby-identifier">milestones</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-identifier">:filter_milestone</span>, <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_MILESTONES</span>)
+65:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">any?</span>
+66:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>.<span class="ruby-identifier">milestone_id</span>)
+67:     <span class="ruby-keyword kw">end</span>
+68: 
+69:     <span class="ruby-identifier">customers</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-identifier">:filter_customer</span>, <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_CUSTOMERS</span>)
+70:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">any?</span>
+71:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">customer_id</span>)
+72:     <span class="ruby-keyword kw">end</span>
+73: 
+74:     <span class="ruby-identifier">projects</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-identifier">:filter_project</span>, <span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_PROJECTS</span>)
+75:     <span class="ruby-identifier">projects</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">milestones</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">m</span><span class="ruby-operator">|</span> <span class="ruby-constant">Milestone</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">m</span>).<span class="ruby-identifier">project_id</span> }
+76:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">any?</span>
+77:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">projects</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">t</span>.<span class="ruby-identifier">project</span>.<span class="ruby-identifier">id</span>)
+78:     <span class="ruby-keyword kw">end</span>
+79: 
+80:     <span class="ruby-identifier">user_ids</span> = <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_user_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-keyword kw">false</span>)
+81:     <span class="ruby-identifier">all_users</span> = <span class="ruby-identifier">user_ids</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-constant">TaskFilter</span><span class="ruby-operator">::</span><span class="ruby-constant">ALL_USERS</span>)
+82:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">shown</span> <span class="ruby-keyword kw">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">all_users</span> <span class="ruby-keyword kw">and</span> <span class="ruby-identifier">user_ids</span>.<span class="ruby-identifier">any?</span>
+83:       <span class="ruby-identifier">task_user_ids</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">id</span> }
+84:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">user_ids</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-identifier">task_user_ids</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">id</span>) }
+85:     <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">shown</span> <span class="ruby-keyword kw">and</span> <span class="ruby-operator">!</span><span class="ruby-identifier">all_users</span> <span class="ruby-keyword kw">and</span> <span class="ruby-constant">TaskFilter</span>.<span class="ruby-identifier">filter_user_ids</span>(<span class="ruby-identifier">session</span>, <span class="ruby-keyword kw">true</span>).<span class="ruby-identifier">any?</span>
+86:       <span class="ruby-identifier">shown</span> = <span class="ruby-identifier">t</span>.<span class="ruby-identifier">users</span>.<span class="ruby-identifier">empty?</span>
+87:     <span class="ruby-keyword kw">end</span>
+88: 
+89: 
+90:     <span class="ruby-identifier">shown</span>
+91:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

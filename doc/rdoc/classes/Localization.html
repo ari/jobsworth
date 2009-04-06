@@ -331,42 +331,42 @@ Module: Localization
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000610'>
+<a href='#M000694'>
 _<br/>
 </a>
 
 
 
 
-<a href='#M000611'>
+<a href='#M000695'>
 define<br/>
 </a>
 
 
 
 
-<a href='#M000614'>
+<a href='#M000698'>
 l10s<br/>
 </a>
 
 
 
 
-<a href='#M000613'>
+<a href='#M000697'>
 lang<br/>
 </a>
 
 
 
 
-<a href='#M000612'>
+<a href='#M000696'>
 load<br/>
 </a>
 
 
 
 
-<a href='#M000609'>
+<a href='#M000693'>
 locales<br/>
 </a>
 
@@ -389,9 +389,9 @@ locales<br/>
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000610"><br/></a>
+<a class="small" name="M000694"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000610'>
+<a href='#M000694'>
 
 
 _
@@ -401,7 +401,7 @@ _
 </a>
 </h3>
 
-<p class="source_link" id="M000610-show-link"><a onclick="toggle('M000610-source'); toggleText('M000610-link'); return false;" href="#" id="M000610-link">Show source...</a></p><div class="source" id="M000610-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 10</span>
+<p class="source_link" id="M000694-show-link"><a onclick="toggle('M000694-source'); toggleText('M000694-link'); return false;" href="#" id="M000694-link">Show source...</a></p><div class="source" id="M000694-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 10</span>
 10:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">_</span>(<span class="ruby-identifier">string_to_localize</span>, <span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
 11:     <span class="ruby-identifier">translated</span> = <span class="ruby-ivar">@@l10s</span>[<span class="ruby-ivar">@@lang</span>][<span class="ruby-identifier">string_to_localize</span>] 
 12:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">translated</span>.<span class="ruby-identifier">nil?</span>
@@ -430,9 +430,9 @@ _
 35:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000611"><br/></a>
+<a class="small" name="M000695"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000611'>
+<a href='#M000695'>
 
 
 define
@@ -442,16 +442,16 @@ define
 </a>
 </h3>
 
-<p class="source_link" id="M000611-show-link"><a onclick="toggle('M000611-source'); toggleText('M000611-link'); return false;" href="#" id="M000611-link">Show source...</a></p><div class="source" id="M000611-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 37</span>
+<p class="source_link" id="M000695-show-link"><a onclick="toggle('M000695-source'); toggleText('M000695-link'); return false;" href="#" id="M000695-link">Show source...</a></p><div class="source" id="M000695-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">define</span>(<span class="ruby-identifier">lang</span> = <span class="ruby-identifier">:default</span>)
 38:     <span class="ruby-ivar">@@l10s</span>[<span class="ruby-identifier">lang</span>] <span class="ruby-operator">||=</span> {}
 39:     <span class="ruby-keyword kw">yield</span> <span class="ruby-ivar">@@l10s</span>[<span class="ruby-identifier">lang</span>]
 40:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000614"><br/></a>
+<a class="small" name="M000698"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000614'>
+<a href='#M000698'>
 
 
 l10s
@@ -461,15 +461,15 @@ l10s
 </a>
 </h3>
 
-<p class="source_link" id="M000614-show-link"><a onclick="toggle('M000614-source'); toggleText('M000614-link'); return false;" href="#" id="M000614-link">Show source...</a></p><div class="source" id="M000614-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 53</span>
+<p class="source_link" id="M000698-show-link"><a onclick="toggle('M000698-source'); toggleText('M000698-link'); return false;" href="#" id="M000698-link">Show source...</a></p><div class="source" id="M000698-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 53</span>
 53:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">l10s</span>
 54:     <span class="ruby-ivar">@@l10s</span>
 55:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000613"><br/></a>
+<a class="small" name="M000697"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000613'>
+<a href='#M000697'>
 
 
 lang
@@ -479,7 +479,7 @@ lang
 </a>
 </h3>
 
-<p class="source_link" id="M000613-show-link"><a onclick="toggle('M000613-source'); toggleText('M000613-link'); return false;" href="#" id="M000613-link">Show source...</a></p><div class="source" id="M000613-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 47</span>
+<p class="source_link" id="M000697-show-link"><a onclick="toggle('M000697-source'); toggleText('M000697-link'); return false;" href="#" id="M000697-link">Show source...</a></p><div class="source" id="M000697-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 47</span>
 47:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">lang</span>(<span class="ruby-identifier">locale</span> = <span class="ruby-keyword kw">nil</span>)
 48:     <span class="ruby-ivar">@@lang</span> = <span class="ruby-identifier">locale</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">locale</span>
 49:     <span class="ruby-ivar">@@l10s</span>[<span class="ruby-ivar">@@lang</span>] <span class="ruby-operator">||=</span> { }
@@ -487,9 +487,9 @@ lang
 51:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000612"><br/></a>
+<a class="small" name="M000696"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000612'>
+<a href='#M000696'>
 
 
 load
@@ -499,16 +499,16 @@ load
 </a>
 </h3>
 
-<p class="source_link" id="M000612-show-link"><a onclick="toggle('M000612-source'); toggleText('M000612-link'); return false;" href="#" id="M000612-link">Show source...</a></p><div class="source" id="M000612-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 42</span>
+<p class="source_link" id="M000696-show-link"><a onclick="toggle('M000696-source'); toggleText('M000696-link'); return false;" href="#" id="M000696-link">Show source...</a></p><div class="source" id="M000696-source"><pre>    <span class="ruby-comment cmt"># File lib/localization.rb, line 42</span>
 42:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">load</span>
 43:     <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{RAILS_ROOT}/lang/*.rb&quot;</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">require</span> <span class="ruby-identifier">t</span> }
 44:     <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">glob</span>(<span class="ruby-node">&quot;#{RAILS_ROOT}/lang/custom/*.rb&quot;</span>){ <span class="ruby-operator">|</span><span class="ruby-identifier">t</span><span class="ruby-operator">|</span> <span class="ruby-identifier">require</span> <span class="ruby-identifier">t</span> }
 45:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000609"><br/></a>
+<a class="small" name="M000693"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000609'>
+<a href='#M000693'>
 
 
 locales
@@ -518,7 +518,7 @@ locales
 </a>
 </h3>
 
-<p class="source_link" id="M000609-show-link"><a onclick="toggle('M000609-source'); toggleText('M000609-link'); return false;" href="#" id="M000609-link">Show source...</a></p><div class="source" id="M000609-source"><pre>   <span class="ruby-comment cmt"># File lib/localization.rb, line 6</span>
+<p class="source_link" id="M000693-show-link"><a onclick="toggle('M000693-source'); toggleText('M000693-link'); return false;" href="#" id="M000693-link">Show source...</a></p><div class="source" id="M000693-source"><pre>   <span class="ruby-comment cmt"># File lib/localization.rb, line 6</span>
 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">locales</span>
 7:     [[<span class="ruby-value str">'English'</span>, <span class="ruby-value str">'en_US'</span>], [<span class="ruby-value str">'Česky'</span>, <span class="ruby-value str">'cz_CZ'</span>], [<span class="ruby-value str">'简体中文'</span>, <span class="ruby-value str">'zh_ZH'</span>], [<span class="ruby-value str">'Dansk'</span>, <span class="ruby-value str">'dk_DK'</span>], [<span class="ruby-value str">'Deutsch'</span>, <span class="ruby-value str">'de_DE'</span>], [<span class="ruby-value str">'Euskara'</span>, <span class="ruby-value str">'eu_ES'</span>], [<span class="ruby-value str">'Español'</span>, <span class="ruby-value str">'es_ES'</span>], [<span class="ruby-value str">'Français'</span>, <span class="ruby-value str">'fr_FR'</span>], [<span class="ruby-value str">'עברית'</span>, <span class="ruby-value str">'il_IL'</span>], [<span class="ruby-value str">'Italiano'</span>, <span class="ruby-value str">'it_IT'</span>], [<span class="ruby-value str">'한국어'</span>, <span class="ruby-value str">'ko_KO'</span>], [<span class="ruby-value str">'Lietuvių kalba'</span>,<span class="ruby-value str">'lt_LT'</span>], [<span class="ruby-value str">'Magyar'</span>, <span class="ruby-value str">'hu_HU'</span>], [<span class="ruby-value str">'Nederlands'</span>, <span class="ruby-value str">'nl_NL'</span>], [<span class="ruby-value str">'Norsk'</span>, <span class="ruby-value str">'no_NO'</span>], [<span class="ruby-value str">'Polski'</span>, <span class="ruby-value str">'pl_PL'</span>], [<span class="ruby-value str">'Português Brazilian'</span>, <span class="ruby-value str">'pt_BR'</span>], [<span class="ruby-value str">'Suomi'</span>, <span class="ruby-value str">'fi_FI'</span>], [<span class="ruby-value str">'Svensk'</span>, <span class="ruby-value str">'sv_SV'</span>]]
 8:   <span class="ruby-keyword kw">end</span></pre></div>

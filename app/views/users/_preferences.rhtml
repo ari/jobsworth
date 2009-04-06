@@ -11,7 +11,7 @@
 
 <!--[form:user]-->
 <%= render :partial => "user_information" %>
-<fieldset>
+<fieldset class="basic">
 <legend><%=_ 'Options' %></legend>
 <label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %><br/>
 <label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %><br/>
