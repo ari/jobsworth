@@ -9,11 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD:db/schema.rb
-ActiveRecord::Schema.define(:version => 20090318233156) do
-=======
-ActiveRecord::Schema.define(:version => 20090402033916) do
->>>>>>> ldap_attributes:db/schema.rb
+ActiveRecord::Schema.define(:version => 20090406211451) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
