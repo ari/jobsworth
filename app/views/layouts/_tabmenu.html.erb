@@ -123,7 +123,7 @@
   <% if current_user.admin > 0 %>
  <ul>
        <li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
-       <li><%= link_to _('Custom Properties'), properties_path %></li>
+       <li><%= link_to _('Custom Properties'), :controller => "custom_attributes", :action => "index" %></li>
        <li><%= link_to(_("Resource Types"), resource_types_path) %></li>
      </ul>
   <% end %>

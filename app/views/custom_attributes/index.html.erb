@@ -1,5 +1,5 @@
 <div class="page_header">
-  <%= _"Custom Attributes" %>
+  <%= _"Custom Properties" %>
 </div>
 
 <ul>
@@ -8,4 +8,5 @@
     <%= link_to(human_name.pluralize, :action => "edit", :type => class_name) %>
   </li>
   <% end %> 
+  <li><%= link_to(_("Tasks"), properties_path) %></li>
 </ul>
