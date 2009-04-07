@@ -1460,6 +1460,51 @@ class TasksController < ApplicationController
 
   end
 
+  def todo_edit_ajax
+    if params[:id].blank?
+      return
+    end
+
+    @todo = Todo.find(:first, :conditions => ["todos.id = ? AND tasks.project_id IN (#{current_project_ids})", params[:id]], :include => [:task] )
+    unless @todo
+      return
+    end
+
+    if params[:todo].blank? || params[:todo][:name].blank?
+      render :update do |page|
+        page.replace @todo.dom_id, :partial => "todo_edit_row"
+        page << "$('todo_text_#{@todo.dom_id}').focus();"
+      end 
+    else 
+      @todo.name = params[:todo][:name]
+      @todo.save
+      render :update do |page|
+        page.replace_html @todo.dom_id, :partial => "todo_row"
+        page << "Sortable.create(\"todo-#{@todo.task.dom_id}\", {containment:'todo-#{@todo.task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@todo.task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize(\"todo-#{@todo.task.dom_id}\")})}, only:'todo-active'})"
+        page.call("updateTooltips")
+      end 
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @todo.task.id)}');", ["tasks_#{current_user.company_id}"])
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+    end 
+  end
+
+  def todo_edit_cancel_ajax
+    if params[:id].blank?
+      return
+    end
+
+    @todo = Todo.find(:first, :conditions => ["todos.id = ? AND tasks.project_id IN (#{current_project_ids})", params[:id]], :include => [:task] )
+    unless @todo
+      return
+    end
+
+    render :update do |page|
+      page.replace @todo.dom_id, :partial => "todo_row"
+      page << "Sortable.create(\"todo-#{@todo.task.dom_id}\", {containment:'todo-#{@todo.task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@todo.task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize(\"todo-#{@todo.task.dom_id}\")})}, only:'todo-active'})"
+    end 
+
+  end 
+
   def todo_check_ajax
     begin
       @todo = Todo.find(params[:id])

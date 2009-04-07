@@ -105,7 +105,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <%= link_to_task_with_highlight(task, @keys)  -%>
    <% end %>
      <span id="todo-status-<%= task.dom_id %>">
-       <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="Element.toggle('todo-container-<%=task.dom_id%>'); return false;"><%=task.todo_status%></a>
+       <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="Element.toggle('todo-container-<%=task.dom_id%>'); Sortable.create('todo-<%=task.dom_id%>', {containment:'todo-<%=task.dom_id%>', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/<%=task.id%>', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-<%=task.dom_id%>')})}, only:'todo-active'}); return false;"><%=task.todo_status%></a>
      </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
      <% if task.duration.to_i > 0 -%>
