@@ -12,7 +12,7 @@ class OrganizationalUnitsController < ApplicationController
     respond_to do |format|
       if @org_unit.save
         flash[:notice] = 'Organization Unit was successfully created.'
-        format.html { redirect_to(:id => @customer.id, :action => "edit", :controller => "customers") }
+        format.html { send_to_customer_page }
       else
         format.html { render :action => "new" }
       end
@@ -31,7 +31,7 @@ class OrganizationalUnitsController < ApplicationController
         @org_unit.update_attribute(:customer_id, @customer.id)
 
         flash[:notice] = 'Organization Unit was successfully updated.'
-        format.html { redirect_to(:id => @customer.id, :action => "edit", :controller => "customers") }
+        format.html { send_to_customer_page }
       else
         format.html { render :action => "edit" }
       end
@@ -43,10 +43,11 @@ class OrganizationalUnitsController < ApplicationController
     @org_unit.destroy
 
     respond_to do |format|
-      format.html { redirect_to(:id => @customer.id, :action => "edit", :controller => "customers") }
+      format.html { send_to_customer_page }
       format.xml  { head :ok }
     end
   end
+
   private
 
   def load_customer
@@ -61,5 +62,10 @@ class OrganizationalUnitsController < ApplicationController
         @customer = org_unit.customer
       end
     end
+  end
+
+  def send_to_customer_page
+    redirect_to(:id => @customer.id, :action => "edit", 
+                :controller => "customers", :anchor => "organizational_units")
   end
 end

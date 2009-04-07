@@ -18,9 +18,9 @@ context "UsersController" do
     status.should.be :success
   end
 
-  specify "/update should redirect to /customers/list" do
+  specify "/update should redirect to /customers/edit" do
     post(:update, :id => @user.id, :user => { :name => "test" })
 
-    assert_redirected_to :controller => "customers", :action => "list"
+    assert_redirected_to :controller => "customers", :action => "edit"
   end
 end

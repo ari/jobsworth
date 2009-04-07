@@ -22,7 +22,7 @@
 <% end %>
 </fieldset>
 
-<fieldset>
+<fieldset id="users">
   <legend><%= _"Users" %></legend>
   <%= create_users_link(@customer) %>
 
@@ -31,14 +31,15 @@
   <% end %>
 </fieldset>
 
-<fieldset class="basic">
+<fieldset class="basic" id="organizational_units">
   <legend><%= _"Organization Units" %></legend>
+  <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+  <br />
+  
   <% @customer.organizational_units.each do |org_unit| %>
   <div class="org_unit">
     <%= link_to(org_unit, edit_organizational_unit_path(org_unit)) %>
   </div>
   <% end %>
-  <br />
-  <%= link_to(_("Add Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
 </fieldset>
 </div>
