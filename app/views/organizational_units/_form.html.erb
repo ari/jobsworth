@@ -1,0 +1,16 @@
+<% form_for(@org_unit) do |f| %>
+  <%= f.error_messages %>
+  <%= f.hidden_field(:customer_id) %>
+
+  <fieldset class="basic">
+    <%= render(:partial => "/common/custom_attributes", :locals => { :object => @org_unit }) %>
+    <%= cit_submit_tag(@org_unit) %>
+    <% if !@org_unit.new_record? %>
+    <br />or
+    <%= link_to(_("Delete"), 
+	organizational_unit_path(@org_unit, :customer_id => @org_unit.customer.id), 
+    :method => :delete, :confirm => "Are you sure?") %>
+    <% end %>
+  </fieldset>
+<% end %>
+

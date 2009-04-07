@@ -1,3 +1,4 @@
+<div id="content">
 <fieldset class="basic">
 <legend><%=_ 'Edit Client' %></legend>
 
@@ -29,3 +30,15 @@
     <%= render :partial => "/users/user" %>
   <% end %>
 </fieldset>
+
+<fieldset class="basic">
+  <legend><%= _"Organization Units" %></legend>
+  <% @customer.organizational_units.each do |org_unit| %>
+  <div class="org_unit">
+    <%= link_to(org_unit, edit_organizational_unit_path(org_unit)) %>
+  </div>
+  <% end %>
+  <br />
+  <%= link_to(_("Add Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+</fieldset>
+</div>

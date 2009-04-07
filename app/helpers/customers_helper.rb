@@ -19,7 +19,7 @@ module CustomersHelper
   # search filter field.
   ###
   def add_search_filter_link
-    link_to_function "Add search filter" do |page|
+    link_to_function _("Add search filter") do |page|
       page.insert_html(:bottom, "customer_search_filters",
                        :partial => "search_filter_prompt")
     end

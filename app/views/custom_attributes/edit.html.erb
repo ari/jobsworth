@@ -1,5 +1,5 @@
 <div class="page_header">
-  <%= _("Custom Properties for %s", params[:type].pluralize) %>
+  <%= _("Custom Properties for %s", params[:type].tableize.gsub("_", " ").pluralize) %>
 </div>
 
 <div id="content">
