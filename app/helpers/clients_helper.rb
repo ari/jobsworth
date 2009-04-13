@@ -1,4 +1,4 @@
-module CustomersHelper
+module ClientsHelper
 
   ###
   # Returns the html to link to a page to create a user

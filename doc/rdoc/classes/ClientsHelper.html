@@ -1,4 +1,4 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Module: ImageOperations</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Module: ClientsHelper</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
 // Allison template
 // Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
 
@@ -316,13 +316,13 @@ addEvent(window, 'load', highlightSymbols, false);
 addEvent(window, 'load', hacks, false);
 </script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
 </p><span><h1 id="title">
-Module: ImageOperations
+Module: ClientsHelper
 </h1></span>
 </div><div class="clear"></div><div id="left">
 
 <div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
 
-<a href="../files/lib/image_operations_rb.html">lib/image_operations.rb</a>
+<a href="../files/app/helpers/clients_helper_rb.html">app/helpers/clients_helper.rb</a>
 
 </div>
 
@@ -331,42 +331,28 @@ Module: ImageOperations
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000784'>
-get_image<br/>
+<a href='#M000720'>
+add_search_filter_link<br/>
 </a>
 
 
 
 
-<a href='#M000785'>
-is_image?<br/>
+<a href='#M000719'>
+create_users_link<br/>
 </a>
 
 
 
 
-<a href='#M000786'>
-scale_down<br/>
-</a>
-
-
-
-
-<a href='#M000787'>
-shadow<br/>
-</a>
-
-
-
-
-<a href='#M000788'>
-thumbnail<br/>
+<a href='#M000721'>
+users_for_customer<br/>
 </a>
 
 
 </div>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
-<h1 id="item_name">Module: ImageOperations</h1>
+<h1 id="item_name">Module: ClientsHelper</h1>
 
 
 
@@ -379,118 +365,90 @@ thumbnail<br/>
 
 
 
-<h1>Public Class Methods</h1>
+<h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000784"><br/></a>
+<a class="small" name="M000720"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000784'>
+<a href='#M000720'>
 
 
-get_image
+add_search_filter_link
 
-(filename)
+()
 
 </a>
 </h3>
+<p>
+Returns the html for a link that adds in a new search filter field.
+</p>
 
-<p class="source_link" id="M000784-show-link"><a onclick="toggle('M000784-source'); toggleText('M000784-link'); return false;" href="#" id="M000784-link">Show source...</a></p><div class="source" id="M000784-source"><pre>   <span class="ruby-comment cmt"># File lib/image_operations.rb, line 4</span>
-4:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">get_image</span>(<span class="ruby-identifier">filename</span>)
-5:     <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">Image</span>.<span class="ruby-identifier">read</span>( <span class="ruby-identifier">filename</span> ).<span class="ruby-identifier">first</span>
-6:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000720-show-link"><a onclick="toggle('M000720-source'); toggleText('M000720-link'); return false;" href="#" id="M000720-link">Show source...</a></p><div class="source" id="M000720-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/clients_helper.rb, line 21</span>
+21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_search_filter_link</span>
+22:     <span class="ruby-identifier">link_to_function</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Add search filter&quot;</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+23:       <span class="ruby-identifier">page</span>.<span class="ruby-identifier">insert_html</span>(<span class="ruby-identifier">:bottom</span>, <span class="ruby-value str">&quot;customer_search_filters&quot;</span>,
+24:                        <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;search_filter_prompt&quot;</span>)
+25:     <span class="ruby-keyword kw">end</span>
+26:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000785"><br/></a>
+<a class="small" name="M000719"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000785'>
+<a href='#M000719'>
 
 
-is_image?
+create_users_link
 
-(image)
+(customer)
 
 </a>
 </h3>
+<p>
+Returns the html to link to a page to create a user for the given customer
+</p>
 
-<p class="source_link" id="M000785-show-link"><a onclick="toggle('M000785-source'); toggleText('M000785-link'); return false;" href="#" id="M000785-link">Show source...</a></p><div class="source" id="M000785-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 8</span>
- 8:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">is_image?</span>(<span class="ruby-identifier">image</span>)
- 9:     <span class="ruby-identifier">image</span> <span class="ruby-value">? </span>(<span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span> <span class="ruby-operator">?</span> <span class="ruby-keyword kw">true</span> <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>) <span class="ruby-operator">:</span> <span class="ruby-keyword kw">false</span>
-10:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000719-show-link"><a onclick="toggle('M000719-source'); toggleText('M000719-link'); return false;" href="#" id="M000719-link">Show source...</a></p><div class="source" id="M000719-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/clients_helper.rb, line 7</span>
+ 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_users_link</span>(<span class="ruby-identifier">customer</span>)
+ 8:     <span class="ruby-identifier">url</span> = {
+ 9:       <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;users&quot;</span>, 
+10:       <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span>, 
+11:       <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:customer_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">id</span> }
+12:     }
+13: 
+14:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Create User&quot;</span>), <span class="ruby-identifier">url</span>)
+15:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000786"><br/></a>
+<a class="small" name="M000721"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000786'>
+<a href='#M000721'>
 
 
-scale_down
+users_for_customer
 
-(image, size)
+(users, customer)
 
 </a>
 </h3>
+<p>
+Returns html to display any users in the given list that belong to the
+given customer.
+</p>
 
-<p class="source_link" id="M000786-show-link"><a onclick="toggle('M000786-source'); toggleText('M000786-link'); return false;" href="#" id="M000786-link">Show source...</a></p><div class="source" id="M000786-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 12</span>
-12:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
-13:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">size</span>
-14:       <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
-15:         <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>
-16:       <span class="ruby-keyword kw">else</span>
-17:         <span class="ruby-identifier">scale</span> = <span class="ruby-identifier">size</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>
-18:       <span class="ruby-keyword kw">end</span>
-19:       
-20:       <span class="ruby-identifier">image</span>.<span class="ruby-identifier">scale!</span>(<span class="ruby-identifier">scale</span>)
-21:     <span class="ruby-keyword kw">end</span>
-22:     <span class="ruby-identifier">image</span>
-23:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000787"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000787'>
-
-
-shadow
-
-( image )
-
-</a>
-</h3>
-
-<p class="source_link" id="M000787-show-link"><a onclick="toggle('M000787-source'); toggleText('M000787-link'); return false;" href="#" id="M000787-link">Show source...</a></p><div class="source" id="M000787-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 25</span>
-25:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">shadow</span>( <span class="ruby-identifier">image</span> )
-26:     <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">image</span>.<span class="ruby-identifier">dup</span>
-27:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">background_color</span> = <span class="ruby-value str">&quot;#666666&quot;</span>
-28:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">erase!</span>
-29:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">border!</span>(<span class="ruby-value">26</span>, <span class="ruby-value">26</span>, <span class="ruby-value str">&quot;#fafafa&quot;</span>)
-30:     <span class="ruby-identifier">shadow</span> = <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">blur_image</span>(<span class="ruby-value">0</span>, <span class="ruby-value">8</span><span class="ruby-operator">/</span><span class="ruby-value">2</span>)
-31:     <span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">composite</span>( <span class="ruby-identifier">image</span>, <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">NorthWestGravity</span>,
-32:                       (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">columns</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">columns</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>,
-33:                       (<span class="ruby-identifier">shadow</span>.<span class="ruby-identifier">rows</span>    <span class="ruby-operator">-</span> <span class="ruby-identifier">image</span>.<span class="ruby-identifier">rows</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span> <span class="ruby-operator">-</span> <span class="ruby-value">4</span>,
-34:                       <span class="ruby-constant">Magick</span><span class="ruby-operator">::</span><span class="ruby-constant">OverCompositeOp</span>
-35:                       ).<span class="ruby-identifier">trim!</span>
-36:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000788"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000788'>
-
-
-thumbnail
-
-(image, size)
-
-</a>
-</h3>
-
-<p class="source_link" id="M000788-show-link"><a onclick="toggle('M000788-source'); toggleText('M000788-link'); return false;" href="#" id="M000788-link">Show source...</a></p><div class="source" id="M000788-source"><pre>    <span class="ruby-comment cmt"># File lib/image_operations.rb, line 38</span>
-38:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">thumbnail</span>(<span class="ruby-identifier">image</span>, <span class="ruby-identifier">size</span>)
-39:     <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">scale_down</span>(<span class="ruby-identifier">image</span>,<span class="ruby-identifier">size</span>)
-40:     <span class="ruby-identifier">thumb</span> = <span class="ruby-identifier">shadow</span>(<span class="ruby-identifier">thumb</span>)
-41:     <span class="ruby-identifier">thumb</span>.<span class="ruby-identifier">format</span> = <span class="ruby-value str">'jpg'</span>
-42:     <span class="ruby-identifier">thumb</span>
-43:   <span class="ruby-keyword kw">end</span></pre></div>
+<p class="source_link" id="M000721-show-link"><a onclick="toggle('M000721-source'); toggleText('M000721-link'); return false;" href="#" id="M000721-link">Show source...</a></p><div class="source" id="M000721-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/clients_helper.rb, line 32</span>
+32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">users_for_customer</span>(<span class="ruby-identifier">users</span>, <span class="ruby-identifier">customer</span>)
+33:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">users</span>.<span class="ruby-identifier">nil?</span>
+34: 
+35:     <span class="ruby-identifier">res</span> = []
+36:     <span class="ruby-identifier">users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span>
+37:       <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">customer</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">customer</span>
+38:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">h</span>(<span class="ruby-identifier">u</span>.<span class="ruby-identifier">name</span>), 
+39:                      <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;users&quot;</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">u</span>)
+40:     <span class="ruby-keyword kw">end</span>
+41: 
+42:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;&lt;li style=\&quot;margin-left: 24px\&quot;&gt;#{ str }&lt;/li&gt;&quot;</span> }
+43:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
+44:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
 

@@ -1,8 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>File: customers_controller.rb</title><link type="text/css" href="../../.././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Module: OrganizationalUnitHelper</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
 // Allison template
 // Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
 
-var href_base = '../../.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
+var href_base = '.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
 
 function $(id) {
     if (document.getElementById)
@@ -315,26 +315,31 @@ addEvent(window, 'load', stripe, false);
 addEvent(window, 'load', highlightSymbols, false);
 addEvent(window, 'load', hacks, false);
 </script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
-app/controllers/customers_controller.rb
 </p><span><h1 id="title">
-File: customers_controller.rb
+Module: OrganizationalUnitHelper
 </h1></span>
 </div><div class="clear"></div><div id="left">
 
+<div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
 
+<a href="../files/app/helpers/organizational_unit_helper_rb.html">app/helpers/organizational_unit_helper.rb</a>
 
-
-<div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
-<h1 id="item_name">File: customers_controller.rb</h1>
-
-<div id="description"><p>
-Handle CRUD dealing with Clients, as well as upload of logos.
-</p>
-<p>
-Logo and CSS should be used when printing reports, or generating a PDF of a
-report.
-</p>
 </div>
+
+
+
+<div class="navigation top" id="methods"><h3>Methods</h3>
+
+
+<a href='#M000725'>
+add_org_unit_link<br/>
+</a>
+
+
+</div>
+<div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
+<h1 id="item_name">Module: OrganizationalUnitHelper</h1>
+
 
 
 
@@ -342,6 +347,37 @@ report.
 <p></p>
 
 
+
+
+
+
+<h1>Public Instance Methods</h1>
+
+
+<a class="small" name="M000725"><br/></a>
+<div class="method_block"><h3>
+<a href='#M000725'>
+
+
+add_org_unit_link
+
+()
+
+</a>
+</h3>
+<p>
+Returns the html for a link that adds in a new organizational unit
+</p>
+
+<p class="source_link" id="M000725-show-link"><a onclick="toggle('M000725-source'); toggleText('M000725-link'); return false;" href="#" id="M000725-link">Show source...</a></p><div class="source" id="M000725-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/organizational_unit_helper.rb, line 7</span>
+ 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_org_unit_link</span>
+ 8:     <span class="ruby-identifier">link_to_function</span>(<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Add Organizational Unit&quot;</span>)) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
+ 9:       <span class="ruby-ivar">@org_unit</span> = <span class="ruby-constant">OrganizationalUnit</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:customer</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@customer</span>)
+10:       <span class="ruby-identifier">page</span>.<span class="ruby-identifier">insert_html</span>(<span class="ruby-identifier">:bottom</span>, <span class="ruby-value str">&quot;org_units&quot;</span>,
+11:                        <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;org_unit&quot;</span>)
+12:     <span class="ruby-keyword kw">end</span>
+13:   <span class="ruby-keyword kw">end</span></pre></div>
+</div>
 
 
 

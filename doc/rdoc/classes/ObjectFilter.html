@@ -337,21 +337,21 @@ Object
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000191'>
+<a href='#M000182'>
 filter<br/>
 </a>
 
 
 
 
-<a href='#M000192'>
+<a href='#M000183'>
 remove_empty_params<br/>
 </a>
 
 
 
 
-<a href='#M000193'>
+<a href='#M000184'>
 should_filter?<br/>
 </a>
 
@@ -384,9 +384,9 @@ should_filter?<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000191"><br/></a>
+<a class="small" name="M000182"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000191'>
+<a href='#M000182'>
 
 
 filter
@@ -409,7 +409,7 @@ should be: { :name =&gt; [ &quot;a&quot;, &quot;b&quot; ] }.
 Any filters based on methods not in FILTERABLE are ignored.
 </p>
 
-<p class="source_link" id="M000191-show-link"><a onclick="toggle('M000191-source'); toggleText('M000191-link'); return false;" href="#" id="M000191-link">Show source...</a></p><div class="source" id="M000191-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 16</span>
+<p class="source_link" id="M000182-show-link"><a onclick="toggle('M000182-source'); toggleText('M000182-link'); return false;" href="#" id="M000182-link">Show source...</a></p><div class="source" id="M000182-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 16</span>
 16:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter</span>(<span class="ruby-identifier">objects</span>, <span class="ruby-identifier">filter_params</span> = {})
 17:     <span class="ruby-identifier">filter_params</span> = <span class="ruby-identifier">remove_empty_params</span>(<span class="ruby-identifier">filter_params</span>)
 18:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">objects</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">should_filter?</span>(<span class="ruby-identifier">objects</span>, <span class="ruby-identifier">filter_params</span>)
@@ -437,9 +437,9 @@ Any filters based on methods not in FILTERABLE are ignored.
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000192"><br/></a>
+<a class="small" name="M000183"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000192'>
+<a href='#M000183'>
 
 
 remove_empty_params
@@ -449,7 +449,7 @@ remove_empty_params
 </a>
 </h3>
 
-<p class="source_link" id="M000192-show-link"><a onclick="toggle('M000192-source'); toggleText('M000192-link'); return false;" href="#" id="M000192-link">Show source...</a></p><div class="source" id="M000192-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 40</span>
+<p class="source_link" id="M000183-show-link"><a onclick="toggle('M000183-source'); toggleText('M000183-link'); return false;" href="#" id="M000183-link">Show source...</a></p><div class="source" id="M000183-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 40</span>
 40:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">remove_empty_params</span>(<span class="ruby-identifier">params</span>)
 41:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>
 42: 
@@ -467,9 +467,9 @@ remove_empty_params
 54:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000193"><br/></a>
+<a class="small" name="M000184"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000193'>
+<a href='#M000184'>
 
 
 should_filter?
@@ -479,7 +479,7 @@ should_filter?
 </a>
 </h3>
 
-<p class="source_link" id="M000193-show-link"><a onclick="toggle('M000193-source'); toggleText('M000193-link'); return false;" href="#" id="M000193-link">Show source...</a></p><div class="source" id="M000193-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 56</span>
+<p class="source_link" id="M000184-show-link"><a onclick="toggle('M000184-source'); toggleText('M000184-link'); return false;" href="#" id="M000184-link">Show source...</a></p><div class="source" id="M000184-source"><pre>    <span class="ruby-comment cmt"># File app/models/object_filter.rb, line 56</span>
 56:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">should_filter?</span>(<span class="ruby-identifier">objects</span>, <span class="ruby-identifier">filter_params</span>)
 57:     <span class="ruby-identifier">res</span> = <span class="ruby-keyword kw">true</span>
 58: 

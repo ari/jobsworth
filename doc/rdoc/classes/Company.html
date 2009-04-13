@@ -335,70 +335,70 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000120'>
+<a href='#M000111'>
 create_default_properties<br/>
 </a>
 
 
 
 
-<a href='#M000125'>
+<a href='#M000116'>
 default_sort_array<br/>
 </a>
 
 
 
 
-<a href='#M000119'>
+<a href='#M000110'>
 internal_customer<br/>
 </a>
 
 
 
 
-<a href='#M000123'>
+<a href='#M000114'>
 maximum_sort_rank<br/>
 </a>
 
 
 
 
-<a href='#M000128'>
+<a href='#M000119'>
 priority_property<br/>
 </a>
 
 
 
 
-<a href='#M000124'>
+<a href='#M000115'>
 rank_by_properties<br/>
 </a>
 
 
 
 
-<a href='#M000127'>
+<a href='#M000118'>
 severity_property<br/>
 </a>
 
 
 
 
-<a href='#M000121'>
+<a href='#M000112'>
 sort<br/>
 </a>
 
 
 
 
-<a href='#M000122'>
+<a href='#M000113'>
 sort_properties<br/>
 </a>
 
 
 
 
-<a href='#M000126'>
+<a href='#M000117'>
 type_property<br/>
 </a>
 
@@ -431,9 +431,9 @@ href="mailto:admin@clockingit.com">admin@clockingit.com</a>)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000120"><br/></a>
+<a class="small" name="M000111"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000120'>
+<a href='#M000111'>
 
 
 create_default_properties
@@ -447,7 +447,7 @@ Creates the default properties used for describing tasks. Returns an array
 of the created properties.
 </p>
 
-<p class="source_link" id="M000120-show-link"><a onclick="toggle('M000120-source'); toggleText('M000120-link'); return false;" href="#" id="M000120-link">Show source...</a></p><div class="source" id="M000120-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 45</span>
+<p class="source_link" id="M000111-show-link"><a onclick="toggle('M000111-source'); toggleText('M000111-link'); return false;" href="#" id="M000111-link">Show source...</a></p><div class="source" id="M000111-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 45</span>
 45:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_default_properties</span>
 46:     <span class="ruby-identifier">new_props</span> = []
 47:     <span class="ruby-constant">Property</span>.<span class="ruby-identifier">defaults</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">property_params</span>, <span class="ruby-identifier">property_values_params</span><span class="ruby-operator">|</span>
@@ -469,9 +469,9 @@ of the created properties.
 63:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000125"><br/></a>
+<a class="small" name="M000116"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000125'>
+<a href='#M000116'>
 
 
 default_sort_array
@@ -481,11 +481,11 @@ default_sort_array
 </a>
 </h3>
 <p>
-Returns the default array to <a href="Company.html#M000121">sort</a> tasks
+Returns the default array to <a href="Company.html#M000112">sort</a> tasks
 by for this company.
 </p>
 
-<p class="source_link" id="M000125-show-link"><a onclick="toggle('M000125-source'); toggleText('M000125-link'); return false;" href="#" id="M000125-link">Show source...</a></p><div class="source" id="M000125-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 115</span>
+<p class="source_link" id="M000116-show-link"><a onclick="toggle('M000116-source'); toggleText('M000116-link'); return false;" href="#" id="M000116-link">Show source...</a></p><div class="source" id="M000116-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 115</span>
 115:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_sort_array</span>(<span class="ruby-identifier">task</span>)
 116:     <span class="ruby-identifier">array</span> = []
 117:     
@@ -493,9 +493,9 @@ by for this company.
 119:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000119"><br/></a>
+<a class="small" name="M000110"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000119'>
+<a href='#M000110'>
 
 
 internal_customer
@@ -510,16 +510,16 @@ was previously called Internal, now it has the same name as the parent
 company.
 </p>
 
-<p class="source_link" id="M000119-show-link"><a onclick="toggle('M000119-source'); toggleText('M000119-link'); return false;" href="#" id="M000119-link">Show source...</a></p><div class="source" id="M000119-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 36</span>
+<p class="source_link" id="M000110-show-link"><a onclick="toggle('M000110-source'); toggleText('M000110-link'); return false;" href="#" id="M000110-link">Show source...</a></p><div class="source" id="M000110-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 36</span>
 36:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">internal_customer</span>
 37:     <span class="ruby-identifier">conds</span> = [<span class="ruby-value str">&quot;(name = ? OR name = 'Internal') AND company_id = ? &quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">name</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>]
 38:     <span class="ruby-ivar">@internal_customer</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:first</span>, <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">conds</span>, <span class="ruby-identifier">:order</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">'id'</span>)
 39:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000123"><br/></a>
+<a class="small" name="M000114"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000123'>
+<a href='#M000114'>
 
 
 maximum_sort_rank
@@ -529,19 +529,19 @@ maximum_sort_rank
 </a>
 </h3>
 <p>
-Returns the maximum <a href="Company.html#M000121">sort</a> rank a task
+Returns the maximum <a href="Company.html#M000112">sort</a> rank a task
 could possibly have.
 </p>
 
-<p class="source_link" id="M000123-show-link"><a onclick="toggle('M000123-source'); toggleText('M000123-link'); return false;" href="#" id="M000123-link">Show source...</a></p><div class="source" id="M000123-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 93</span>
+<p class="source_link" id="M000114-show-link"><a onclick="toggle('M000114-source'); toggleText('M000114-link'); return false;" href="#" id="M000114-link">Show source...</a></p><div class="source" id="M000114-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 93</span>
 93:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">maximum_sort_rank</span>
 94:     <span class="ruby-ivar">@maximum_sort_rank</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">sort_properties</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">rank</span>, <span class="ruby-identifier">property</span><span class="ruby-operator">|</span> <span class="ruby-identifier">rank</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">length</span> }
 95:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000128"><br/></a>
+<a class="small" name="M000119"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000128'>
+<a href='#M000119'>
 
 
 priority_property
@@ -554,15 +554,15 @@ priority_property
 Returns the property to use to represent a tasks priority.
 </p>
 
-<p class="source_link" id="M000128-show-link"><a onclick="toggle('M000128-source'); toggleText('M000128-link'); return false;" href="#" id="M000128-link">Show source...</a></p><div class="source" id="M000128-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 136</span>
+<p class="source_link" id="M000119-show-link"><a onclick="toggle('M000119-source'); toggleText('M000119-link'); return false;" href="#" id="M000119-link">Show source...</a></p><div class="source" id="M000119-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 136</span>
 136:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">priority_property</span>
 137:     <span class="ruby-ivar">@priority_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Priority&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Priority&quot;</span>) }
 138:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000124"><br/></a>
+<a class="small" name="M000115"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000124'>
+<a href='#M000115'>
 
 
 rank_by_properties
@@ -576,7 +576,7 @@ Returns an int to to use to rank the task according to properties set up as
 default_sort.
 </p>
 
-<p class="source_link" id="M000124-show-link"><a onclick="toggle('M000124-source'); toggleText('M000124-link'); return false;" href="#" id="M000124-link">Show source...</a></p><div class="source" id="M000124-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 101</span>
+<p class="source_link" id="M000115-show-link"><a onclick="toggle('M000115-source'); toggleText('M000115-link'); return false;" href="#" id="M000115-link">Show source...</a></p><div class="source" id="M000115-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 101</span>
 101:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rank_by_properties</span>(<span class="ruby-identifier">task</span>)
 102:     <span class="ruby-identifier">rank_by_properties</span> = <span class="ruby-identifier">sort_properties</span>.<span class="ruby-identifier">inject</span>(<span class="ruby-value">0</span>) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">rank</span>, <span class="ruby-identifier">property</span><span class="ruby-operator">|</span>
 103:       <span class="ruby-identifier">pv</span> = <span class="ruby-identifier">task</span>.<span class="ruby-identifier">property_value</span>(<span class="ruby-identifier">property</span>)
@@ -589,9 +589,9 @@ default_sort.
 110:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000127"><br/></a>
+<a class="small" name="M000118"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000127'>
+<a href='#M000118'>
 
 
 severity_property
@@ -604,15 +604,15 @@ severity_property
 Returns the property to use to represent a tasks severity.
 </p>
 
-<p class="source_link" id="M000127-show-link"><a onclick="toggle('M000127-source'); toggleText('M000127-link'); return false;" href="#" id="M000127-link">Show source...</a></p><div class="source" id="M000127-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 130</span>
+<p class="source_link" id="M000118-show-link"><a onclick="toggle('M000118-source'); toggleText('M000118-link'); return false;" href="#" id="M000118-link">Show source...</a></p><div class="source" id="M000118-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 130</span>
 130:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">severity_property</span>
 131:     <span class="ruby-ivar">@severity_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Severity&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Severity&quot;</span>) }
 132:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000121"><br/></a>
+<a class="small" name="M000112"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000121'>
+<a href='#M000112'>
 
 
 sort
@@ -623,12 +623,12 @@ sort
 </h3>
 <p>
 Sorts the given tasks in the default <a
-href="Company.html#M000121">sort</a> order. Default sorting uses the
+href="Company.html#M000112">sort</a> order. Default sorting uses the
 completed at time, the due date, task num and any custom properties with
 the default_sort parameter.
 </p>
 
-<p class="source_link" id="M000121-show-link"><a onclick="toggle('M000121-source'); toggleText('M000121-link'); return false;" href="#" id="M000121-link">Show source...</a></p><div class="source" id="M000121-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 70</span>
+<p class="source_link" id="M000112-show-link"><a onclick="toggle('M000112-source'); toggleText('M000112-link'); return false;" href="#" id="M000112-link">Show source...</a></p><div class="source" id="M000112-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 70</span>
 70:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort</span>(<span class="ruby-identifier">tasks</span>)
 71:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">tasks</span>.<span class="ruby-identifier">sort_by</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">task</span><span class="ruby-operator">|</span> 
 72:       <span class="ruby-identifier">array</span> = []
@@ -643,9 +643,9 @@ the default_sort parameter.
 81:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000122"><br/></a>
+<a class="small" name="M000113"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000122'>
+<a href='#M000113'>
 
 
 sort_properties
@@ -658,15 +658,15 @@ sort_properties
 Returns an array of properties that should be used for sorting tasks.
 </p>
 
-<p class="source_link" id="M000122-show-link"><a onclick="toggle('M000122-source'); toggleText('M000122-link'); return false;" href="#" id="M000122-link">Show source...</a></p><div class="source" id="M000122-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 86</span>
+<p class="source_link" id="M000113-show-link"><a onclick="toggle('M000113-source'); toggleText('M000113-link'); return false;" href="#" id="M000113-link">Show source...</a></p><div class="source" id="M000113-source"><pre>    <span class="ruby-comment cmt"># File app/models/company.rb, line 86</span>
 86:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">sort_properties</span>
 87:     <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">default_sort</span> }
 88:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000126"><br/></a>
+<a class="small" name="M000117"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000126'>
+<a href='#M000117'>
 
 
 type_property
@@ -679,7 +679,7 @@ type_property
 Returns the property to use to represent a tasks type.
 </p>
 
-<p class="source_link" id="M000126-show-link"><a onclick="toggle('M000126-source'); toggleText('M000126-link'); return false;" href="#" id="M000126-link">Show source...</a></p><div class="source" id="M000126-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 124</span>
+<p class="source_link" id="M000117-show-link"><a onclick="toggle('M000117-source'); toggleText('M000117-link'); return false;" href="#" id="M000117-link">Show source...</a></p><div class="source" id="M000117-source"><pre>     <span class="ruby-comment cmt"># File app/models/company.rb, line 124</span>
 124:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">type_property</span>
 125:     <span class="ruby-ivar">@type_property</span> <span class="ruby-operator">||=</span> <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">detect</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value str">&quot;Type&quot;</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Type&quot;</span>) }
 126:   <span class="ruby-keyword kw">end</span></pre></div>

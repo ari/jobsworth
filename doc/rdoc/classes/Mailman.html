@@ -335,14 +335,14 @@ ActionMailer::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000440'>
+<a href='#M000431'>
 get_body<br/>
 </a>
 
 
 
 
-<a href='#M000441'>
+<a href='#M000432'>
 receive<br/>
 </a>
 
@@ -369,9 +369,9 @@ Receive and handle emails sent to tasks
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000440"><br/></a>
+<a class="small" name="M000431"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000440'>
+<a href='#M000431'>
 
 
 get_body
@@ -381,7 +381,7 @@ get_body
 </a>
 </h3>
 
-<p class="source_link" id="M000440-show-link"><a onclick="toggle('M000440-source'); toggleText('M000440-link'); return false;" href="#" id="M000440-link">Show source...</a></p><div class="source" id="M000440-source"><pre>    <span class="ruby-comment cmt"># File app/models/mailman.rb, line 5</span>
+<p class="source_link" id="M000431-show-link"><a onclick="toggle('M000431-source'); toggleText('M000431-link'); return false;" href="#" id="M000431-link">Show source...</a></p><div class="source" id="M000431-source"><pre>    <span class="ruby-comment cmt"># File app/models/mailman.rb, line 5</span>
  5:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_body</span>(<span class="ruby-identifier">email</span>)
  6:       <span class="ruby-identifier">body</span> = <span class="ruby-keyword kw">nil</span>
  7: 
@@ -400,9 +400,9 @@ get_body
 20:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000441"><br/></a>
+<a class="small" name="M000432"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000441'>
+<a href='#M000432'>
 
 
 receive
@@ -412,7 +412,7 @@ receive
 </a>
 </h3>
 
-<p class="source_link" id="M000441-show-link"><a onclick="toggle('M000441-source'); toggleText('M000441-link'); return false;" href="#" id="M000441-link">Show source...</a></p><div class="source" id="M000441-source"><pre>     <span class="ruby-comment cmt"># File app/models/mailman.rb, line 22</span>
+<p class="source_link" id="M000432-show-link"><a onclick="toggle('M000432-source'); toggleText('M000432-link'); return false;" href="#" id="M000432-link">Show source...</a></p><div class="source" id="M000432-source"><pre>     <span class="ruby-comment cmt"># File app/models/mailman.rb, line 22</span>
  22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">receive</span>(<span class="ruby-identifier">email</span>)
  23:     <span class="ruby-identifier">e</span> = <span class="ruby-constant">Email</span>.<span class="ruby-identifier">new</span>
  24:     <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to</span> = <span class="ruby-identifier">email</span>.<span class="ruby-identifier">to</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;, &quot;</span>)

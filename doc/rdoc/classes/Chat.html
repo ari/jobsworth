@@ -335,7 +335,7 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000567'>
+<a href='#M000569'>
 unread<br/>
 </a>
 
@@ -366,9 +366,9 @@ individual counts and statuses
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000567"><br/></a>
+<a class="small" name="M000569"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000567'>
+<a href='#M000569'>
 
 
 unread
@@ -378,7 +378,7 @@ unread
 </a>
 </h3>
 
-<p class="source_link" id="M000567-show-link"><a onclick="toggle('M000567-source'); toggleText('M000567-link'); return false;" href="#" id="M000567-link">Show source...</a></p><div class="source" id="M000567-source"><pre>    <span class="ruby-comment cmt"># File app/models/chat.rb, line 15</span>
+<p class="source_link" id="M000569-show-link"><a onclick="toggle('M000569-source'); toggleText('M000569-link'); return false;" href="#" id="M000569-link">Show source...</a></p><div class="source" id="M000569-source"><pre>    <span class="ruby-comment cmt"># File app/models/chat.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unread</span>
 16:     <span class="ruby-constant">ChatMessage</span>.<span class="ruby-identifier">count</span>(<span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;chat_id = ? AND chat_messages.id &gt; ? AND archived = 0&quot;</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">id</span>, <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">last_seen</span>.<span class="ruby-identifier">to_i</span>])
 17:   <span class="ruby-keyword kw">end</span></pre></div>
