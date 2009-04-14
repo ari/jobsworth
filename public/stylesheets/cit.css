@@ -2561,6 +2561,9 @@ fieldset.basic a.toggle {
   margin-right: 0.1em;
   margin-bottom: 0.2em;
 }
+fieldset.basic a.toggle.below {
+    clear: both;
+}
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 fieldset.basic li {
