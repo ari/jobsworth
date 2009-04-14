@@ -13,7 +13,7 @@
       <% end %>
     </ul>
     
-    <%= sortable_element("resource_type_attributes", :handle => "handle") %>
+    <%= sortable_element("resource_type_attributes", :handle => "handle", :onUpdate => "function() { updatePositionFields('#resource_type_attributes') }") %>
     <br clear="both" />
     <%= add_attribute_link %>
   </fieldset>
