@@ -2,6 +2,16 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+14 Apr 2009
+   Clients are now linked to users. This means all users belong to a client (their company) and existing users have been migrated into client 1.
+   The user interface has been substantially reworked to cope with thousands of users and thousands of clients.
+   Consistent naming implemented so that clients aren't sometimes called customers. This means changing controllers and URLs.
+   Many places where popups used to be used to select users or clients are now autocomplete.
+
+10 Apr 2009
+   Added custom attributes to clients and to users. This means you can now define additional fields for storing telephone numbers, emails, addresses or anything else you'd like per user and client.
+   Add organizationalUnit. This maps to the same concept in LDAP which is often used for departments or physical locations (eg. offices, stores, etc)
+
 30 Mar 2009
    Resources types can be defined, resources can be added and linked to tasks. There is a new user permission "use_resources" that allows/disallows people to see them. Resource types can only be setup by Administrators.
    Fix bugs with checkboxes in nested forms. Revert things that were using selects with Yes/No to use checkboxes instead.
