@@ -337,63 +337,63 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000157'>
+<a href='#M000148'>
 add<br/>
 </a>
 
 
 
 
-<a href='#M000159'>
+<a href='#M000150'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000158'>
+<a href='#M000149'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000160'>
+<a href='#M000151'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000164'>
+<a href='#M000155'>
 filter_from_filter_by<br/>
 </a>
 
 
 
 
-<a href='#M000162'>
+<a href='#M000153'>
 save_order<br/>
 </a>
 
 
 
 
-<a href='#M000156'>
+<a href='#M000147'>
 show<br/>
 </a>
 
 
 
 
-<a href='#M000163'>
+<a href='#M000154'>
 toggle_display<br/>
 </a>
 
 
 
 
-<a href='#M000161'>
+<a href='#M000152'>
 update<br/>
 </a>
 
@@ -458,9 +458,9 @@ update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000157"><br/></a>
+<a class="small" name="M000148"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000157'>
+<a href='#M000148'>
 
 
 add
@@ -470,7 +470,7 @@ add
 </a>
 </h3>
 
-<p class="source_link" id="M000157-show-link"><a onclick="toggle('M000157-source'); toggleText('M000157-link'); return false;" href="#" id="M000157-link">Show source...</a></p><div class="source" id="M000157-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 365</span>
+<p class="source_link" id="M000148-show-link"><a onclick="toggle('M000148-source'); toggleText('M000148-link'); return false;" href="#" id="M000148-link">Show source...</a></p><div class="source" id="M000148-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 365</span>
 365:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add</span>
 366:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
 367:       <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;if(! $('add-widget' ) ) {&quot;</span>
@@ -483,9 +483,9 @@ add
 374:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000159"><br/></a>
+<a class="small" name="M000150"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000159'>
+<a href='#M000150'>
 
 
 create
@@ -495,7 +495,7 @@ create
 </a>
 </h3>
 
-<p class="source_link" id="M000159-show-link"><a onclick="toggle('M000159-source'); toggleText('M000159-link'); return false;" href="#" id="M000159-link">Show source...</a></p><div class="source" id="M000159-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 390</span>
+<p class="source_link" id="M000150-show-link"><a onclick="toggle('M000150-source'); toggleText('M000150-link'); return false;" href="#" id="M000150-link">Show source...</a></p><div class="source" id="M000150-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 390</span>
 390:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 391:     <span class="ruby-ivar">@widget</span> = <span class="ruby-constant">Widget</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:widget</span>])
 392:     <span class="ruby-ivar">@widget</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">current_user</span>
@@ -533,9 +533,9 @@ create
 424:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000158"><br/></a>
+<a class="small" name="M000149"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000158'>
+<a href='#M000149'>
 
 
 destroy
@@ -545,7 +545,7 @@ destroy
 </a>
 </h3>
 
-<p class="source_link" id="M000158-show-link"><a onclick="toggle('M000158-source'); toggleText('M000158-link'); return false;" href="#" id="M000158-link">Show source...</a></p><div class="source" id="M000158-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 376</span>
+<p class="source_link" id="M000149-show-link"><a onclick="toggle('M000149-source'); toggleText('M000149-link'); return false;" href="#" id="M000149-link">Show source...</a></p><div class="source" id="M000149-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 376</span>
 376:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 377:     <span class="ruby-keyword kw">begin</span>
 378:       <span class="ruby-ivar">@widget</span> = <span class="ruby-constant">Widget</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
@@ -561,9 +561,9 @@ destroy
 388:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000160"><br/></a>
+<a class="small" name="M000151"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000160'>
+<a href='#M000151'>
 
 
 edit
@@ -573,7 +573,7 @@ edit
 </a>
 </h3>
 
-<p class="source_link" id="M000160-show-link"><a onclick="toggle('M000160-source'); toggleText('M000160-link'); return false;" href="#" id="M000160-link">Show source...</a></p><div class="source" id="M000160-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 426</span>
+<p class="source_link" id="M000151-show-link"><a onclick="toggle('M000151-source'); toggleText('M000151-link'); return false;" href="#" id="M000151-link">Show source...</a></p><div class="source" id="M000151-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 426</span>
 426:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 427:     <span class="ruby-keyword kw">begin</span>
 428:       <span class="ruby-ivar">@widget</span> = <span class="ruby-constant">Widget</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
@@ -596,9 +596,9 @@ edit
 445:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000162"><br/></a>
+<a class="small" name="M000153"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000162'>
+<a href='#M000153'>
 
 
 save_order
@@ -608,7 +608,7 @@ save_order
 </a>
 </h3>
 
-<p class="source_link" id="M000162-show-link"><a onclick="toggle('M000162-source'); toggleText('M000162-link'); return false;" href="#" id="M000162-link">Show source...</a></p><div class="source" id="M000162-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 467</span>
+<p class="source_link" id="M000153-show-link"><a onclick="toggle('M000153-source'); toggleText('M000153-link'); return false;" href="#" id="M000153-link">Show source...</a></p><div class="source" id="M000153-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 467</span>
 467:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">save_order</span>
 468:     [<span class="ruby-value">0</span>,<span class="ruby-value">1</span>,<span class="ruby-value">2</span>].<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
 469:       <span class="ruby-identifier">pos</span> = <span class="ruby-value">0</span>
@@ -626,9 +626,9 @@ save_order
 481:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000156"><br/></a>
+<a class="small" name="M000147"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000156'>
+<a href='#M000147'>
 
 
 show
@@ -638,7 +638,7 @@ show
 </a>
 </h3>
 
-<p class="source_link" id="M000156-show-link"><a onclick="toggle('M000156-source'); toggleText('M000156-link'); return false;" href="#" id="M000156-link">Show source...</a></p><div class="source" id="M000156-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 9</span>
+<p class="source_link" id="M000147-show-link"><a onclick="toggle('M000147-source'); toggleText('M000147-link'); return false;" href="#" id="M000147-link">Show source...</a></p><div class="source" id="M000147-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 9</span>
   9:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show</span>
  10:     <span class="ruby-keyword kw">begin</span>
  11:       <span class="ruby-ivar">@widget</span> = <span class="ruby-constant">Widget</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
@@ -994,9 +994,9 @@ show
 361:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000163"><br/></a>
+<a class="small" name="M000154"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000163'>
+<a href='#M000154'>
 
 
 toggle_display
@@ -1006,7 +1006,7 @@ toggle_display
 </a>
 </h3>
 
-<p class="source_link" id="M000163-show-link"><a onclick="toggle('M000163-source'); toggleText('M000163-link'); return false;" href="#" id="M000163-link">Show source...</a></p><div class="source" id="M000163-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 483</span>
+<p class="source_link" id="M000154-show-link"><a onclick="toggle('M000154-source'); toggleText('M000154-link'); return false;" href="#" id="M000154-link">Show source...</a></p><div class="source" id="M000154-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 483</span>
 483:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">toggle_display</span>
 484:     <span class="ruby-keyword kw">begin</span>
 485:       <span class="ruby-ivar">@widget</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">widgets</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
@@ -1035,9 +1035,9 @@ toggle_display
 508:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000161"><br/></a>
+<a class="small" name="M000152"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000161'>
+<a href='#M000152'>
 
 
 update
@@ -1047,7 +1047,7 @@ update
 </a>
 </h3>
 
-<p class="source_link" id="M000161-show-link"><a onclick="toggle('M000161-source'); toggleText('M000161-link'); return false;" href="#" id="M000161-link">Show source...</a></p><div class="source" id="M000161-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 447</span>
+<p class="source_link" id="M000152-show-link"><a onclick="toggle('M000152-source'); toggleText('M000152-link'); return false;" href="#" id="M000152-link">Show source...</a></p><div class="source" id="M000152-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 447</span>
 447:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 448:     <span class="ruby-keyword kw">begin</span>
 449:       <span class="ruby-ivar">@widget</span> = <span class="ruby-constant">Widget</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>], <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> [<span class="ruby-value str">&quot;company_id = ? AND user_id = ?&quot;</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company_id</span>, <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">id</span>])
@@ -1073,9 +1073,9 @@ update
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000164"><br/></a>
+<a class="small" name="M000155"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000164'>
+<a href='#M000155'>
 
 
 filter_from_filter_by
@@ -1085,7 +1085,7 @@ filter_from_filter_by
 </a>
 </h3>
 
-<p class="source_link" id="M000164-show-link"><a onclick="toggle('M000164-source'); toggleText('M000164-link'); return false;" href="#" id="M000164-link">Show source...</a></p><div class="source" id="M000164-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 512</span>
+<p class="source_link" id="M000155-show-link"><a onclick="toggle('M000155-source'); toggleText('M000155-link'); return false;" href="#" id="M000155-link">Show source...</a></p><div class="source" id="M000155-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/widgets_controller.rb, line 512</span>
 512:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">filter_from_filter_by</span>
 513:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-ivar">@widget</span>.<span class="ruby-identifier">filter_by</span>
 514:     <span class="ruby-keyword kw">case</span> <span class="ruby-ivar">@widget</span>.<span class="ruby-identifier">filter_by</span>[<span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">0</span>]

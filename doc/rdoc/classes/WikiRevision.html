@@ -335,21 +335,21 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000431'>
+<a href='#M000422'>
 to_html<br/>
 </a>
 
 
 
 
-<a href='#M000432'>
+<a href='#M000423'>
 to_plain_html<br/>
 </a>
 
 
 
 
-<a href='#M000430'>
+<a href='#M000421'>
 update_references<br/>
 </a>
 
@@ -434,9 +434,9 @@ A single revision of a <a href="WikiPage.html">WikiPage</a>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000431"><br/></a>
+<a class="small" name="M000422"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000431'>
+<a href='#M000422'>
 
 
 to_html
@@ -446,7 +446,7 @@ to_html
 </a>
 </h3>
 
-<p class="source_link" id="M000431-show-link"><a onclick="toggle('M000431-source'); toggleText('M000431-link'); return false;" href="#" id="M000431-link">Show source...</a></p><div class="source" id="M000431-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 57</span>
+<p class="source_link" id="M000422-show-link"><a onclick="toggle('M000422-source'); toggleText('M000422-link'); return false;" href="#" id="M000422-link">Show source...</a></p><div class="source" id="M000422-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 57</span>
  57:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_html</span>
  58:     <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">body</span>.<span class="ruby-identifier">blank?</span>
  59:     
@@ -508,9 +508,9 @@ to_html
 115:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000432"><br/></a>
+<a class="small" name="M000423"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000432'>
+<a href='#M000423'>
 
 
 to_plain_html
@@ -520,15 +520,15 @@ to_plain_html
 </a>
 </h3>
 
-<p class="source_link" id="M000432-show-link"><a onclick="toggle('M000432-source'); toggleText('M000432-link'); return false;" href="#" id="M000432-link">Show source...</a></p><div class="source" id="M000432-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 117</span>
+<p class="source_link" id="M000423-show-link"><a onclick="toggle('M000423-source'); toggleText('M000423-link'); return false;" href="#" id="M000423-link">Show source...</a></p><div class="source" id="M000423-source"><pre>     <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 117</span>
 117:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_plain_html</span>
 118:     <span class="ruby-identifier">body</span>
 119:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000430"><br/></a>
+<a class="small" name="M000421"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000430'>
+<a href='#M000421'>
 
 
 update_references
@@ -538,7 +538,7 @@ update_references
 </a>
 </h3>
 
-<p class="source_link" id="M000430-show-link"><a onclick="toggle('M000430-source'); toggleText('M000430-link'); return false;" href="#" id="M000430-link">Show source...</a></p><div class="source" id="M000430-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 20</span>
+<p class="source_link" id="M000421-show-link"><a onclick="toggle('M000421-source'); toggleText('M000421-link'); return false;" href="#" id="M000421-link">Show source...</a></p><div class="source" id="M000421-source"><pre>    <span class="ruby-comment cmt"># File app/models/wiki_revision.rb, line 20</span>
 20:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_references</span>
 21: 
 22:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">destroy_all</span> <span class="ruby-keyword kw">if</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">wiki_page</span>.<span class="ruby-identifier">references</span>.<span class="ruby-identifier">size</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>

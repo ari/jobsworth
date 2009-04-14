@@ -337,49 +337,49 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000521'>
+<a href='#M000512'>
 check_permission<br/>
 </a>
 
 
 
 
-<a href='#M000518'>
+<a href='#M000509'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000520'>
+<a href='#M000511'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000517'>
+<a href='#M000508'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000515'>
+<a href='#M000506'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000516'>
+<a href='#M000507'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000519'>
+<a href='#M000510'>
 update<br/>
 </a>
 
@@ -402,9 +402,9 @@ update<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000518"><br/></a>
+<a class="small" name="M000509"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000518'>
+<a href='#M000509'>
 
 
 create
@@ -417,7 +417,7 @@ create
 POST /resource_types POST /resource_types.xml
 </p>
 
-<p class="source_link" id="M000518-show-link"><a onclick="toggle('M000518-source'); toggleText('M000518-link'); return false;" href="#" id="M000518-link">Show source...</a></p><div class="source" id="M000518-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 33</span>
+<p class="source_link" id="M000509-show-link"><a onclick="toggle('M000509-source'); toggleText('M000509-link'); return false;" href="#" id="M000509-link">Show source...</a></p><div class="source" id="M000509-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 33</span>
 33:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 34:     <span class="ruby-ivar">@resource_type</span> = <span class="ruby-constant">ResourceType</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:resource_type</span>])
 35:     <span class="ruby-ivar">@resource_type</span>.<span class="ruby-identifier">company</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>
@@ -435,9 +435,9 @@ POST /resource_types POST /resource_types.xml
 47:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000520"><br/></a>
+<a class="small" name="M000511"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000520'>
+<a href='#M000511'>
 
 
 destroy
@@ -450,7 +450,7 @@ destroy
 DELETE /resource_types/1 DELETE /resource_types/1.xml
 </p>
 
-<p class="source_link" id="M000520-show-link"><a onclick="toggle('M000520-source'); toggleText('M000520-link'); return false;" href="#" id="M000520-link">Show source...</a></p><div class="source" id="M000520-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 75</span>
+<p class="source_link" id="M000511-show-link"><a onclick="toggle('M000511-source'); toggleText('M000511-link'); return false;" href="#" id="M000511-link">Show source...</a></p><div class="source" id="M000511-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 75</span>
 75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 76:     <span class="ruby-ivar">@resource_type</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 77:     <span class="ruby-ivar">@resource_type</span>.<span class="ruby-identifier">destroy</span>
@@ -462,9 +462,9 @@ DELETE /resource_types/1 DELETE /resource_types/1.xml
 83:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000517"><br/></a>
+<a class="small" name="M000508"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000517'>
+<a href='#M000508'>
 
 
 edit
@@ -477,15 +477,15 @@ edit
 GET /resource_types/1/edit
 </p>
 
-<p class="source_link" id="M000517-show-link"><a onclick="toggle('M000517-source'); toggleText('M000517-link'); return false;" href="#" id="M000517-link">Show source...</a></p><div class="source" id="M000517-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 27</span>
+<p class="source_link" id="M000508-show-link"><a onclick="toggle('M000508-source'); toggleText('M000508-link'); return false;" href="#" id="M000508-link">Show source...</a></p><div class="source" id="M000508-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 27</span>
 27:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 28:     <span class="ruby-ivar">@resource_type</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 29:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000515"><br/></a>
+<a class="small" name="M000506"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000515'>
+<a href='#M000506'>
 
 
 index
@@ -498,7 +498,7 @@ index
 GET /resource_types GET /resource_types.xml
 </p>
 
-<p class="source_link" id="M000515-show-link"><a onclick="toggle('M000515-source'); toggleText('M000515-link'); return false;" href="#" id="M000515-link">Show source...</a></p><div class="source" id="M000515-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 6</span>
+<p class="source_link" id="M000506-show-link"><a onclick="toggle('M000506-source'); toggleText('M000506-link'); return false;" href="#" id="M000506-link">Show source...</a></p><div class="source" id="M000506-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 6</span>
  6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  7:     <span class="ruby-ivar">@resource_types</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>
  8: 
@@ -509,9 +509,9 @@ GET /resource_types GET /resource_types.xml
 13:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000516"><br/></a>
+<a class="small" name="M000507"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000516'>
+<a href='#M000507'>
 
 
 new
@@ -524,7 +524,7 @@ new
 GET /resource_types/new GET /resource_types/new.xml
 </p>
 
-<p class="source_link" id="M000516-show-link"><a onclick="toggle('M000516-source'); toggleText('M000516-link'); return false;" href="#" id="M000516-link">Show source...</a></p><div class="source" id="M000516-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 17</span>
+<p class="source_link" id="M000507-show-link"><a onclick="toggle('M000507-source'); toggleText('M000507-link'); return false;" href="#" id="M000507-link">Show source...</a></p><div class="source" id="M000507-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
 18:     <span class="ruby-ivar">@resource_type</span> = <span class="ruby-constant">ResourceType</span>.<span class="ruby-identifier">new</span>
 19: 
@@ -535,9 +535,9 @@ GET /resource_types/new GET /resource_types/new.xml
 24:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000519"><br/></a>
+<a class="small" name="M000510"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000519'>
+<a href='#M000510'>
 
 
 update
@@ -550,7 +550,7 @@ update
 PUT /resource_types/1 PUT /resource_types/1.xml
 </p>
 
-<p class="source_link" id="M000519-show-link"><a onclick="toggle('M000519-source'); toggleText('M000519-link'); return false;" href="#" id="M000519-link">Show source...</a></p><div class="source" id="M000519-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 51</span>
+<p class="source_link" id="M000510-show-link"><a onclick="toggle('M000510-source'); toggleText('M000510-link'); return false;" href="#" id="M000510-link">Show source...</a></p><div class="source" id="M000510-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 51</span>
 51:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 52:     <span class="ruby-ivar">@resource_type</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 53: 
@@ -578,9 +578,9 @@ PUT /resource_types/1 PUT /resource_types/1.xml
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000521"><br/></a>
+<a class="small" name="M000512"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000521'>
+<a href='#M000512'>
 
 
 check_permission
@@ -590,7 +590,7 @@ check_permission
 </a>
 </h3>
 
-<p class="source_link" id="M000521-show-link"><a onclick="toggle('M000521-source'); toggleText('M000521-link'); return false;" href="#" id="M000521-link">Show source...</a></p><div class="source" id="M000521-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 87</span>
+<p class="source_link" id="M000512-show-link"><a onclick="toggle('M000512-source'); toggleText('M000512-link'); return false;" href="#" id="M000512-link">Show source...</a></p><div class="source" id="M000512-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/resource_types_controller.rb, line 87</span>
 87:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">check_permission</span>
 88:     <span class="ruby-identifier">can_view</span> = <span class="ruby-keyword kw">true</span>
 89:     <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin?</span>

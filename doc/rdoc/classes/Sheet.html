@@ -335,14 +335,14 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000580'>
+<a href='#M000589'>
 duration<br/>
 </a>
 
 
 
 
-<a href='#M000579'>
+<a href='#M000588'>
 paused?<br/>
 </a>
 
@@ -369,9 +369,9 @@ And active worksheet, linked to a task and a user
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000580"><br/></a>
+<a class="small" name="M000589"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000580'>
+<a href='#M000589'>
 
 
 duration
@@ -381,7 +381,7 @@ duration
 </a>
 </h3>
 
-<p class="source_link" id="M000580-show-link"><a onclick="toggle('M000580-source'); toggleText('M000580-link'); return false;" href="#" id="M000580-link">Show source...</a></p><div class="source" id="M000580-source"><pre>    <span class="ruby-comment cmt"># File app/models/sheet.rb, line 12</span>
+<p class="source_link" id="M000589-show-link"><a onclick="toggle('M000589-source'); toggleText('M000589-link'); return false;" href="#" id="M000589-link">Show source...</a></p><div class="source" id="M000589-source"><pre>    <span class="ruby-comment cmt"># File app/models/sheet.rb, line 12</span>
 12:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">duration</span>
 13:     <span class="ruby-identifier">d</span> = (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-operator">-</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">created_at</span>).<span class="ruby-identifier">to_i</span>
 14:     <span class="ruby-identifier">d</span> = <span class="ruby-identifier">d</span> <span class="ruby-operator">-</span> (<span class="ruby-constant">Time</span>.<span class="ruby-identifier">now</span>.<span class="ruby-identifier">utc</span> <span class="ruby-operator">-</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">paused_at</span>).<span class="ruby-identifier">to_i</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">paused_at</span>.<span class="ruby-identifier">nil?</span>
@@ -389,9 +389,9 @@ duration
 16:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000579"><br/></a>
+<a class="small" name="M000588"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000579'>
+<a href='#M000588'>
 
 
 paused?
@@ -401,7 +401,7 @@ paused?
 </a>
 </h3>
 
-<p class="source_link" id="M000579-show-link"><a onclick="toggle('M000579-source'); toggleText('M000579-link'); return false;" href="#" id="M000579-link">Show source...</a></p><div class="source" id="M000579-source"><pre>    <span class="ruby-comment cmt"># File app/models/sheet.rb, line 8</span>
+<p class="source_link" id="M000588-show-link"><a onclick="toggle('M000588-source'); toggleText('M000588-link'); return false;" href="#" id="M000588-link">Show source...</a></p><div class="source" id="M000588-source"><pre>    <span class="ruby-comment cmt"># File app/models/sheet.rb, line 8</span>
  8:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">paused?</span>
  9:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">paused_at</span> <span class="ruby-operator">!=</span> <span class="ruby-keyword kw">nil</span>
 10:   <span class="ruby-keyword kw">end</span></pre></div>

@@ -86,7 +86,7 @@ class UsersController < ApplicationController
     
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
-      redirect_to(:controller => "customers", :action => 'edit', 
+      redirect_to(:controller => "clients", :action => 'edit', 
                   :id => @user.customer, :anchor => "users")
     else
       render :action => 'edit'
@@ -116,14 +116,14 @@ class UsersController < ApplicationController
 
     if current_user.id == params[:id].to_i
       flash['notice'] = _("You can't delete yourself.")
-      redirect_to(:controller => "customers", :action => 'list')
+      redirect_to(:controller => "clients", :action => 'list')
       return
     end
 
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
     ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{current_user.company_id} AND creator_id = #{@user.id}")
     @user.destroy
-    redirect_to(:controller => "customers", :action => 'list')
+    redirect_to(:controller => "clients", :action => 'list')
   end
 
   # Used while debugging
@@ -137,7 +137,7 @@ class UsersController < ApplicationController
         session[:sheet] = nil
       end
     end
-    redirect_to(:controller => "customers", :action => 'list')
+    redirect_to(:controller => "clients", :action => 'list')
   end
 
   def update_seen_news

@@ -457,6 +457,6 @@ class ApplicationController < ActionController::Base
       @customers = current_user.company.customers.find(:all, :conditions => conds)
     end
 
-    render(:partial => "/customers/auto_complete_for_customer_name")
+    render(:partial => "/clients/auto_complete_for_customer_name")
   end
 end

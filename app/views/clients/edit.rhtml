@@ -1,0 +1,58 @@
+<div id="content">
+<fieldset class="basic">
+<legend><%=_ 'Edit Client' %></legend>
+<% form_tag :action => 'update', :id => @customer do %>
+  <%= render :partial => "form" %>
+  <label>&nbsp;</label>
+  <%= submit_tag _("Save"), :class => "nolabel" %>
+<% end %>
+</fieldset>
+
+<fieldset class="basic">
+  <legend><%=_ "Custom Skin" %></legend>
+  <div style="display: none;">
+    <% if @customer.logo? -%>
+    <p><label for="current_logo"><%=_ 'Current logo' %></label><%= tag("img", {:src => "/clients/show_logo/#{@customer.id}", :border => 0 } ) %><%= link_to _("[Delete]"), :controller => "clients", :action => "delete_logo", :id => "#{@customer.id}" %></p>
+    <% end -%>
+    <% form_tag({ :action => 'upload_logo'}, { :multipart => "true" }) do %>
+    <p><label for="customer_tmp_file"><%=_ 'File', 1 %></label><%= file_field 'customer', 'tmp_file' %></p><br/>
+    <%= hidden_field_tag "customer[id]", "#{@customer.id}" %>
+    <label>&nbsp;</label>
+    <%= submit_tag "Upload", :class => 'nolabel' %>
+    <% end %>
+    
+    <% form_tag :action => 'update', :id => @customer do %> 
+    <p>
+      <label for="customer_css"><%=_ 'Client CSS' %></label>
+      <%= text_area 'customer', 'css', :id => "customer_css" %>
+    </p>
+    <br clear="both" />
+    <label></label>
+    <%= submit_tag _("Save"), :class => "nolabel" %>
+    <% end -%>
+  </div>
+
+  <%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle below") %>
+</fieldset>
+
+<fieldset id="users">
+  <legend><%= _"Users" %></legend>
+  <%= create_users_link(@customer) %>
+
+  <% for @user in @customer.users %>
+    <%= render :partial => "/users/user" %>
+  <% end %>
+</fieldset>
+
+<fieldset class="basic" id="organizational_units">
+  <legend><%= _"Organization Units" %></legend>
+  <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
+  <br /><br />
+  
+  <% @customer.organizational_units.each do |org_unit| %>
+  <div class="org_unit">
+    <%= link_to(org_unit, edit_organizational_unit_path(org_unit)) %>
+  </div>
+  <% end %>
+</fieldset>
+</div>

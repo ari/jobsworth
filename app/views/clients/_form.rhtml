@@ -7,11 +7,6 @@
 <p><label for="customer_contact_email"><%=_ 'Contact email' %></label><%= text_field 'customer', 'contact_email'  %></p>
 
 <p><label for="customer_contact_name"><%=_ 'Contact name' %></label><%= text_field 'customer', 'contact_name'  %></p>
-<p>
-  <label for="customer_css"><%=_ 'Client CSS' %></label>
-  <%= text_area 'customer', 'css', :id => "customer_css", :style => "display: none"  %>
-  <%= link_to_function("Show", "togglePreviousElement(this)", :class => "toggle") %>
-</p>
 <br />
 <!--[eoform:customer]-->
 <%= render(:partial => "/common/custom_attributes", :locals => { :object => @customer }) %>

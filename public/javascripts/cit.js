@@ -628,3 +628,13 @@ function togglePreviousElement(sender) {
 
     toggle.toggle();
 }
+
+function updatePositionFields(listSelector) {
+    var list = jQuery(listSelector);
+    var children = list.children();
+
+    for (var i = 0; i < children.length; i++) {
+	var positionField = jQuery(children[i]).find(".position");
+	positionField.val(i + 1);
+    }
+}

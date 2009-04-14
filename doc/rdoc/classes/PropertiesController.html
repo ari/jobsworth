@@ -337,56 +337,56 @@ ApplicationController
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000186'>
+<a href='#M000177'>
 create<br/>
 </a>
 
 
 
 
-<a href='#M000188'>
+<a href='#M000179'>
 destroy<br/>
 </a>
 
 
 
 
-<a href='#M000185'>
+<a href='#M000176'>
 edit<br/>
 </a>
 
 
 
 
-<a href='#M000183'>
+<a href='#M000174'>
 index<br/>
 </a>
 
 
 
 
-<a href='#M000184'>
+<a href='#M000175'>
 new<br/>
 </a>
 
 
 
 
-<a href='#M000189'>
+<a href='#M000180'>
 order<br/>
 </a>
 
 
 
 
-<a href='#M000187'>
+<a href='#M000178'>
 update<br/>
 </a>
 
 
 
 
-<a href='#M000190'>
+<a href='#M000181'>
 update_existing_property_values<br/>
 </a>
 
@@ -409,9 +409,9 @@ update_existing_property_values<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000186"><br/></a>
+<a class="small" name="M000177"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000186'>
+<a href='#M000177'>
 
 
 create
@@ -424,7 +424,7 @@ create
 POST /properties POST /properties.xml
 </p>
 
-<p class="source_link" id="M000186-show-link"><a onclick="toggle('M000186-source'); toggleText('M000186-link'); return false;" href="#" id="M000186-link">Show source...</a></p><div class="source" id="M000186-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 34</span>
+<p class="source_link" id="M000177-show-link"><a onclick="toggle('M000177-source'); toggleText('M000177-link'); return false;" href="#" id="M000177-link">Show source...</a></p><div class="source" id="M000177-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 34</span>
 34:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create</span>
 35:     <span class="ruby-ivar">@property</span> = <span class="ruby-constant">Property</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:property</span>])
 36:     <span class="ruby-ivar">@property</span>.<span class="ruby-identifier">property_values</span>.<span class="ruby-identifier">build</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:new_property_values</span>]) <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:new_property_values</span>]
@@ -443,9 +443,9 @@ POST /properties POST /properties.xml
 49:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000188"><br/></a>
+<a class="small" name="M000179"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000188'>
+<a href='#M000179'>
 
 
 destroy
@@ -458,7 +458,7 @@ destroy
 DELETE /properties/1 DELETE /properties/1.xml
 </p>
 
-<p class="source_link" id="M000188-show-link"><a onclick="toggle('M000188-source'); toggleText('M000188-link'); return false;" href="#" id="M000188-link">Show source...</a></p><div class="source" id="M000188-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 77</span>
+<p class="source_link" id="M000179-show-link"><a onclick="toggle('M000179-source'); toggleText('M000179-link'); return false;" href="#" id="M000179-link">Show source...</a></p><div class="source" id="M000179-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 77</span>
 77:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">destroy</span>
 78:     <span class="ruby-ivar">@property</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 79:     <span class="ruby-ivar">@property</span>.<span class="ruby-identifier">destroy</span>
@@ -470,9 +470,9 @@ DELETE /properties/1 DELETE /properties/1.xml
 85:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000185"><br/></a>
+<a class="small" name="M000176"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000185'>
+<a href='#M000176'>
 
 
 edit
@@ -485,15 +485,15 @@ edit
 GET /properties/1/edit
 </p>
 
-<p class="source_link" id="M000185-show-link"><a onclick="toggle('M000185-source'); toggleText('M000185-link'); return false;" href="#" id="M000185-link">Show source...</a></p><div class="source" id="M000185-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 28</span>
+<p class="source_link" id="M000176-show-link"><a onclick="toggle('M000176-source'); toggleText('M000176-link'); return false;" href="#" id="M000176-link">Show source...</a></p><div class="source" id="M000176-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 28</span>
 28:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">edit</span>
 29:     <span class="ruby-ivar">@property</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 30:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000183"><br/></a>
+<a class="small" name="M000174"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000183'>
+<a href='#M000174'>
 
 
 index
@@ -506,7 +506,7 @@ index
 GET /properties GET /properties.xml
 </p>
 
-<p class="source_link" id="M000183-show-link"><a onclick="toggle('M000183-source'); toggleText('M000183-link'); return false;" href="#" id="M000183-link">Show source...</a></p><div class="source" id="M000183-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 4</span>
+<p class="source_link" id="M000174-show-link"><a onclick="toggle('M000174-source'); toggleText('M000174-link'); return false;" href="#" id="M000174-link">Show source...</a></p><div class="source" id="M000174-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 4</span>
  4:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">index</span>
  5:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">admin</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
  6:       <span class="ruby-ivar">@properties</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>
@@ -520,9 +520,9 @@ GET /properties GET /properties.xml
 14:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000184"><br/></a>
+<a class="small" name="M000175"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000184'>
+<a href='#M000175'>
 
 
 new
@@ -535,7 +535,7 @@ new
 GET /properties/new GET /properties/new.xml
 </p>
 
-<p class="source_link" id="M000184-show-link"><a onclick="toggle('M000184-source'); toggleText('M000184-link'); return false;" href="#" id="M000184-link">Show source...</a></p><div class="source" id="M000184-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 18</span>
+<p class="source_link" id="M000175-show-link"><a onclick="toggle('M000175-source'); toggleText('M000175-link'); return false;" href="#" id="M000175-link">Show source...</a></p><div class="source" id="M000175-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 18</span>
 18:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">new</span>
 19:     <span class="ruby-ivar">@property</span> = <span class="ruby-constant">Property</span>.<span class="ruby-identifier">new</span>
 20: 
@@ -546,9 +546,9 @@ GET /properties/new GET /properties/new.xml
 25:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000189"><br/></a>
+<a class="small" name="M000180"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000189'>
+<a href='#M000180'>
 
 
 order
@@ -558,7 +558,7 @@ order
 </a>
 </h3>
 
-<p class="source_link" id="M000189-show-link"><a onclick="toggle('M000189-source'); toggleText('M000189-link'); return false;" href="#" id="M000189-link">Show source...</a></p><div class="source" id="M000189-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 87</span>
+<p class="source_link" id="M000180-show-link"><a onclick="toggle('M000180-source'); toggleText('M000180-link'); return false;" href="#" id="M000180-link">Show source...</a></p><div class="source" id="M000180-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 87</span>
  87:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">order</span>
  88:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:property_values</span>]
  89:       <span class="ruby-identifier">values</span> = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:property_values</span>].<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">id</span><span class="ruby-operator">|</span> <span class="ruby-constant">PropertyValue</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">id</span>) }
@@ -575,9 +575,9 @@ order
 100:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000187"><br/></a>
+<a class="small" name="M000178"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000187'>
+<a href='#M000178'>
 
 
 update
@@ -590,7 +590,7 @@ update
 PUT /properties/1 PUT /properties/1.xml
 </p>
 
-<p class="source_link" id="M000187-show-link"><a onclick="toggle('M000187-source'); toggleText('M000187-link'); return false;" href="#" id="M000187-link">Show source...</a></p><div class="source" id="M000187-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 53</span>
+<p class="source_link" id="M000178-show-link"><a onclick="toggle('M000178-source'); toggleText('M000178-link'); return false;" href="#" id="M000178-link">Show source...</a></p><div class="source" id="M000178-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 53</span>
 53:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update</span>
 54:     <span class="ruby-ivar">@property</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">properties</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>])
 55:     <span class="ruby-identifier">update_existing_property_values</span>(<span class="ruby-ivar">@property</span>, <span class="ruby-identifier">params</span>)
@@ -618,9 +618,9 @@ PUT /properties/1 PUT /properties/1.xml
 <h1>Private Instance Methods</h1>
 
 
-<a class="small" name="M000190"><br/></a>
+<a class="small" name="M000181"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000190'>
+<a href='#M000181'>
 
 
 update_existing_property_values
@@ -630,7 +630,7 @@ update_existing_property_values
 </a>
 </h3>
 
-<p class="source_link" id="M000190-show-link"><a onclick="toggle('M000190-source'); toggleText('M000190-link'); return false;" href="#" id="M000190-link">Show source...</a></p><div class="source" id="M000190-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 104</span>
+<p class="source_link" id="M000181-show-link"><a onclick="toggle('M000181-source'); toggleText('M000181-link'); return false;" href="#" id="M000181-link">Show source...</a></p><div class="source" id="M000181-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/properties_controller.rb, line 104</span>
 104:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">update_existing_property_values</span>(<span class="ruby-identifier">property</span>, <span class="ruby-identifier">params</span>)
 105:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-operator">!</span><span class="ruby-identifier">property</span> <span class="ruby-keyword kw">or</span> <span class="ruby-operator">!</span><span class="ruby-identifier">params</span>[<span class="ruby-identifier">:property_values</span>]
 106: 

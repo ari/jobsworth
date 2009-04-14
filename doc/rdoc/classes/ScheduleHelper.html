@@ -331,28 +331,28 @@ Module: ScheduleHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000783'>
+<a href='#M000795'>
 event_tip<br/>
 </a>
 
 
 
 
-<a href='#M000785'>
+<a href='#M000797'>
 gantt_filter<br/>
 </a>
 
 
 
 
-<a href='#M000786'>
+<a href='#M000798'>
 schedule_filter<br/>
 </a>
 
 
 
 
-<a href='#M000784'>
+<a href='#M000796'>
 show_calendar<br/>
 </a>
 
@@ -375,9 +375,9 @@ show_calendar<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000783"><br/></a>
+<a class="small" name="M000795"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000783'>
+<a href='#M000795'>
 
 
 event_tip
@@ -387,7 +387,7 @@ event_tip
 </a>
 </h3>
 
-<p class="source_link" id="M000783-show-link"><a onclick="toggle('M000783-source'); toggleText('M000783-link'); return false;" href="#" id="M000783-link">Show source...</a></p><div class="source" id="M000783-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 3</span>
+<p class="source_link" id="M000795-show-link"><a onclick="toggle('M000795-source'); toggleText('M000795-link'); return false;" href="#" id="M000795-link">Show source...</a></p><div class="source" id="M000795-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 3</span>
 3:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">event_tip</span>(<span class="ruby-identifier">e</span>)
 4:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Task</span>) <span class="ruby-operator">||</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Milestone</span>)
 5:       <span class="ruby-identifier">e</span>.<span class="ruby-identifier">to_tip</span>(<span class="ruby-identifier">:duration_format</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">duration_format</span>, <span class="ruby-identifier">:workday_duration</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">workday_duration</span>, <span class="ruby-identifier">:days_per_week</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">days_per_week</span>, <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">current_user</span>)
@@ -397,9 +397,9 @@ event_tip
 9:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000785"><br/></a>
+<a class="small" name="M000797"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000785'>
+<a href='#M000797'>
 
 
 gantt_filter
@@ -412,7 +412,7 @@ gantt_filter
 Returns the html for the task filter fields on the gantt page.
 </p>
 
-<p class="source_link" id="M000785-show-link"><a onclick="toggle('M000785-source'); toggleText('M000785-link'); return false;" href="#" id="M000785-link">Show source...</a></p><div class="source" id="M000785-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 83</span>
+<p class="source_link" id="M000797-show-link"><a onclick="toggle('M000797-source'); toggleText('M000797-link'); return false;" href="#" id="M000797-link">Show source...</a></p><div class="source" id="M000797-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 83</span>
 83:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">gantt_filter</span>
 84:     <span class="ruby-identifier">render</span>(<span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;tasks/filter&quot;</span>, 
 85:            <span class="ruby-identifier">:locals</span> =<span class="ruby-operator">&gt;</span> { 
@@ -426,9 +426,9 @@ Returns the html for the task filter fields on the gantt page.
 93:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000786"><br/></a>
+<a class="small" name="M000798"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000786'>
+<a href='#M000798'>
 
 
 schedule_filter
@@ -441,7 +441,7 @@ schedule_filter
 Returns the html for the task filter fields on the schedule page .
 </p>
 
-<p class="source_link" id="M000786-show-link"><a onclick="toggle('M000786-source'); toggleText('M000786-link'); return false;" href="#" id="M000786-link">Show source...</a></p><div class="source" id="M000786-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 98</span>
+<p class="source_link" id="M000798-show-link"><a onclick="toggle('M000798-source'); toggleText('M000798-link'); return false;" href="#" id="M000798-link">Show source...</a></p><div class="source" id="M000798-source"><pre>     <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 98</span>
  98:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">schedule_filter</span>
  99:     <span class="ruby-identifier">redirect_params</span> = {}
 100:     <span class="ruby-identifier">redirect_params</span>[<span class="ruby-identifier">:month</span>] = <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:month</span>] <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:month</span>]
@@ -460,9 +460,9 @@ Returns the html for the task filter fields on the schedule page .
 113:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000784"><br/></a>
+<a class="small" name="M000796"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000784'>
+<a href='#M000796'>
 
 
 show_calendar
@@ -472,7 +472,7 @@ show_calendar
 </a>
 </h3>
 
-<p class="source_link" id="M000784-show-link"><a onclick="toggle('M000784-source'); toggleText('M000784-link'); return false;" href="#" id="M000784-link">Show source...</a></p><div class="source" id="M000784-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 11</span>
+<p class="source_link" id="M000796-show-link"><a onclick="toggle('M000796-source'); toggleText('M000796-link'); return false;" href="#" id="M000796-link">Show source...</a></p><div class="source" id="M000796-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/schedule_helper.rb, line 11</span>
 11:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">show_calendar</span>(<span class="ruby-identifier">options</span> = {}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
 12:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;No year given&quot;</span>  <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">defined?</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:year</span>]
 13:     <span class="ruby-identifier">raise</span> <span class="ruby-constant">ArgumentError</span>, <span class="ruby-value str">&quot;No month given&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-keyword kw">defined?</span> <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:month</span>]

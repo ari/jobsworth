@@ -331,28 +331,28 @@ Module: CustomAttributeMethods
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000778'>
+<a href='#M000790'>
 all_custom_attribute_values<br/>
 </a>
 
 
 
 
-<a href='#M000777'>
+<a href='#M000789'>
 available_custom_attributes<br/>
 </a>
 
 
 
 
-<a href='#M000779'>
+<a href='#M000791'>
 set_custom_attribute_values=<br/>
 </a>
 
 
 
 
-<a href='#M000780'>
+<a href='#M000792'>
 validate<br/>
 </a>
 
@@ -375,9 +375,9 @@ validate<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000778"><br/></a>
+<a class="small" name="M000790"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000778'>
+<a href='#M000790'>
 
 
 all_custom_attribute_values
@@ -389,14 +389,14 @@ all_custom_attribute_values
 <p>
 Returns an array of the custom attributes values defined for the current
 object. This will include *at least* the ones defined in <a
-href="CustomAttributeMethods.html#M000777">available_custom_attributes</a>.
+href="CustomAttributeMethods.html#M000789">available_custom_attributes</a>.
 </p>
 <p>
 If there are multiple values defined for one attribute type, they will be
 returned as a nested array.
 </p>
 
-<p class="source_link" id="M000778-show-link"><a onclick="toggle('M000778-source'); toggleText('M000778-link'); return false;" href="#" id="M000778-link">Show source...</a></p><div class="source" id="M000778-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 22</span>
+<p class="source_link" id="M000790-show-link"><a onclick="toggle('M000790-source'); toggleText('M000790-link'); return false;" href="#" id="M000790-link">Show source...</a></p><div class="source" id="M000790-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 22</span>
 22:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">all_custom_attribute_values</span>
 23:     <span class="ruby-identifier">res</span> = []
 24: 
@@ -417,9 +417,9 @@ returned as a nested array.
 39:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000777"><br/></a>
+<a class="small" name="M000789"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000777'>
+<a href='#M000789'>
 
 
 available_custom_attributes
@@ -433,7 +433,7 @@ Returns the custom attributes that should be displayed for the current
 objects class.
 </p>
 
-<p class="source_link" id="M000777-show-link"><a onclick="toggle('M000777-source'); toggleText('M000777-link'); return false;" href="#" id="M000777-link">Show source...</a></p><div class="source" id="M000777-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 7</span>
+<p class="source_link" id="M000789-show-link"><a onclick="toggle('M000789-source'); toggleText('M000789-link'); return false;" href="#" id="M000789-link">Show source...</a></p><div class="source" id="M000789-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 7</span>
  7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">available_custom_attributes</span>
  8:     <span class="ruby-identifier">company</span>.<span class="ruby-identifier">custom_attributes</span>.<span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, 
  9:                                    <span class="ruby-identifier">:conditions</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:attributable_type</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">class</span>.<span class="ruby-identifier">name</span> },
@@ -441,9 +441,9 @@ objects class.
 11:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000779"><br/></a>
+<a class="small" name="M000791"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000779'>
+<a href='#M000791'>
 
 
 set_custom_attribute_values=
@@ -457,7 +457,7 @@ Sets up attribute values for this object. Any existing attribute values
 that are defined, but not passed in will be removed.
 </p>
 
-<p class="source_link" id="M000779-show-link"><a onclick="toggle('M000779-source'); toggleText('M000779-link'); return false;" href="#" id="M000779-link">Show source...</a></p><div class="source" id="M000779-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 46</span>
+<p class="source_link" id="M000791-show-link"><a onclick="toggle('M000791-source'); toggleText('M000791-link'); return false;" href="#" id="M000791-link">Show source...</a></p><div class="source" id="M000791-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 46</span>
 46:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">set_custom_attribute_values=</span>(<span class="ruby-identifier">params</span>)
 47:     <span class="ruby-identifier">updated</span> = []
 48: 
@@ -484,9 +484,9 @@ that are defined, but not passed in will be removed.
 69:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000780"><br/></a>
+<a class="small" name="M000792"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000780'>
+<a href='#M000792'>
 
 
 validate
@@ -496,7 +496,7 @@ validate
 </a>
 </h3>
 
-<p class="source_link" id="M000780-show-link"><a onclick="toggle('M000780-source'); toggleText('M000780-link'); return false;" href="#" id="M000780-link">Show source...</a></p><div class="source" id="M000780-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 71</span>
+<p class="source_link" id="M000792-show-link"><a onclick="toggle('M000792-source'); toggleText('M000792-link'); return false;" href="#" id="M000792-link">Show source...</a></p><div class="source" id="M000792-source"><pre>    <span class="ruby-comment cmt"># File app/models/custom_attribute_methods.rb, line 71</span>
 71:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">validate</span>
 72:     <span class="ruby-identifier">valid</span> = <span class="ruby-keyword kw">true</span>
 73: 

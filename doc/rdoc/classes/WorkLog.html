@@ -335,21 +335,21 @@ ActiveRecord::Base
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000055'>
+<a href='#M000056'>
 create_for_task<br/>
 </a>
 
 
 
 
-<a href='#M000056'>
+<a href='#M000057'>
 ended_at<br/>
 </a>
 
 
 
 
-<a href='#M000054'>
+<a href='#M000055'>
 full_text_search<br/>
 </a>
 
@@ -377,9 +377,9 @@ work entries
 <h1>Public Class Methods</h1>
 
 
-<a class="small" name="M000055"><br/></a>
+<a class="small" name="M000056"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000055'>
+<a href='#M000056'>
 
 
 create_for_task
@@ -393,7 +393,7 @@ Creates and saves a worklog for the given task. If comment is given, it
 will be escaped before saving. The newly created worklog is returned.
 </p>
 
-<p class="source_link" id="M000055-show-link"><a onclick="toggle('M000055-source'); toggleText('M000055-link'); return false;" href="#" id="M000055-link">Show source...</a></p><div class="source" id="M000055-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 69</span>
+<p class="source_link" id="M000056-show-link"><a onclick="toggle('M000056-source'); toggleText('M000056-link'); return false;" href="#" id="M000056-link">Show source...</a></p><div class="source" id="M000056-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 69</span>
 69:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">create_for_task</span>(<span class="ruby-identifier">task</span>, <span class="ruby-identifier">user</span>, <span class="ruby-identifier">comment</span>)
 70:     <span class="ruby-identifier">worklog</span> = <span class="ruby-constant">WorkLog</span>.<span class="ruby-identifier">new</span>
 71:     <span class="ruby-identifier">worklog</span>.<span class="ruby-identifier">user</span> = <span class="ruby-identifier">user</span>
@@ -416,9 +416,9 @@ will be escaped before saving. The newly created worklog is returned.
 88:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000054"><br/></a>
+<a class="small" name="M000055"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000054'>
+<a href='#M000055'>
 
 
 full_text_search
@@ -428,7 +428,7 @@ full_text_search
 </a>
 </h3>
 
-<p class="source_link" id="M000054-show-link"><a onclick="toggle('M000054-source'); toggleText('M000054-link'); return false;" href="#" id="M000054-link">Show source...</a></p><div class="source" id="M000054-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 55</span>
+<p class="source_link" id="M000055-show-link"><a onclick="toggle('M000055-source'); toggleText('M000055-link'); return false;" href="#" id="M000055-link">Show source...</a></p><div class="source" id="M000055-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 55</span>
 55:   <span class="ruby-keyword kw">def</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">full_text_search</span>(<span class="ruby-identifier">q</span>, <span class="ruby-identifier">options</span> = {})
 56:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">nil</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">q</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-identifier">q</span><span class="ruby-operator">==</span><span class="ruby-value str">&quot;&quot;</span>
 57:     <span class="ruby-identifier">default_options</span> = {<span class="ruby-identifier">:limit</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">10</span>, <span class="ruby-identifier">:page</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value">1</span>}
@@ -443,9 +443,9 @@ full_text_search
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000056"><br/></a>
+<a class="small" name="M000057"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000056'>
+<a href='#M000057'>
 
 
 ended_at
@@ -455,7 +455,7 @@ ended_at
 </a>
 </h3>
 
-<p class="source_link" id="M000056-show-link"><a onclick="toggle('M000056-source'); toggleText('M000056-link'); return false;" href="#" id="M000056-link">Show source...</a></p><div class="source" id="M000056-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 90</span>
+<p class="source_link" id="M000057-show-link"><a onclick="toggle('M000057-source'); toggleText('M000057-link'); return false;" href="#" id="M000057-link">Show source...</a></p><div class="source" id="M000057-source"><pre>    <span class="ruby-comment cmt"># File app/models/work_log.rb, line 90</span>
 90:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ended_at</span>
 91:     <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">started_at</span> <span class="ruby-operator">+</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">duration</span> <span class="ruby-operator">+</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">paused_duration</span>
 92:   <span class="ruby-keyword kw">end</span></pre></div>

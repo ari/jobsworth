@@ -116,7 +116,7 @@
       <ul style="padding-left: 0; margin-left:0;" id="search_customers">
 	<% @customers.each do |c| %>
 	  <li>
-	    <%= link_to(c.name, :controller => "customers", :action => "edit", 
+	    <%= link_to(c.name, :controller => "clients", :action => "edit", 
 	    :id => c.id) %>
 	  </li>
 	  <% end %>

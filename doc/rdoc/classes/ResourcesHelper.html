@@ -331,49 +331,49 @@ Module: ResourcesHelper
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000797'>
+<a href='#M000809'>
 child_resources<br/>
 </a>
 
 
 
 
-<a href='#M000799'>
+<a href='#M000811'>
 customer_filter<br/>
 </a>
 
 
 
 
-<a href='#M000800'>
+<a href='#M000812'>
 history_date_if_needed<br/>
 </a>
 
 
 
 
-<a href='#M000798'>
+<a href='#M000810'>
 resource_type_filter<br/>
 </a>
 
 
 
 
-<a href='#M000794'>
+<a href='#M000806'>
 resource_types_options_array<br/>
 </a>
 
 
 
 
-<a href='#M000796'>
+<a href='#M000808'>
 resources_without_parents<br/>
 </a>
 
 
 
 
-<a href='#M000795'>
+<a href='#M000807'>
 value_field<br/>
 </a>
 
@@ -396,9 +396,9 @@ value_field<br/>
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000797"><br/></a>
+<a class="small" name="M000809"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000797'>
+<a href='#M000809'>
 
 
 child_resources
@@ -411,15 +411,15 @@ child_resources
 Returns all child resources of resource that should be shown.
 </p>
 
-<p class="source_link" id="M000797-show-link"><a onclick="toggle('M000797-source'); toggleText('M000797-link'); return false;" href="#" id="M000797-link">Show source...</a></p><div class="source" id="M000797-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 56</span>
+<p class="source_link" id="M000809-show-link"><a onclick="toggle('M000809-source'); toggleText('M000809-link'); return false;" href="#" id="M000809-link">Show source...</a></p><div class="source" id="M000809-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 56</span>
 56:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">child_resources</span>(<span class="ruby-identifier">resource</span>, <span class="ruby-identifier">all_visible_resources</span>)
 57:     <span class="ruby-identifier">resource</span>.<span class="ruby-identifier">child_resources</span>.<span class="ruby-identifier">select</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">all_visible_resources</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">r</span>) }
 58:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000799"><br/></a>
+<a class="small" name="M000811"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000799'>
+<a href='#M000811'>
 
 
 customer_filter
@@ -432,7 +432,7 @@ customer_filter
 Returns the html to use to filter by customers
 </p>
 
-<p class="source_link" id="M000799-show-link"><a onclick="toggle('M000799-source'); toggleText('M000799-link'); return false;" href="#" id="M000799-link">Show source...</a></p><div class="source" id="M000799-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 75</span>
+<p class="source_link" id="M000811-show-link"><a onclick="toggle('M000811-source'); toggleText('M000811-link'); return false;" href="#" id="M000811-link">Show source...</a></p><div class="source" id="M000811-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 75</span>
 75:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">customer_filter</span>
 76:     <span class="ruby-identifier">customers</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resources</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">customer</span> }
 77:     <span class="ruby-identifier">customers</span>.<span class="ruby-identifier">compact!</span>
@@ -445,9 +445,9 @@ Returns the html to use to filter by customers
 84:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000800"><br/></a>
+<a class="small" name="M000812"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000800'>
+<a href='#M000812'>
 
 
 history_date_if_needed
@@ -461,7 +461,7 @@ Returns the html to display the given event log occured on. If this is just
 the same as the last used date, returns nil.
 </p>
 
-<p class="source_link" id="M000800-show-link"><a onclick="toggle('M000800-source'); toggleText('M000800-link'); return false;" href="#" id="M000800-link">Show source...</a></p><div class="source" id="M000800-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 90</span>
+<p class="source_link" id="M000812-show-link"><a onclick="toggle('M000812-source'); toggleText('M000812-link'); return false;" href="#" id="M000812-link">Show source...</a></p><div class="source" id="M000812-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 90</span>
 90:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">history_date_if_needed</span>(<span class="ruby-identifier">log</span>)
 91:     <span class="ruby-identifier">date</span> = <span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">log</span>.<span class="ruby-identifier">updated_at</span>).<span class="ruby-identifier">strftime</span>(<span class="ruby-value str">&quot;%A, %d %B %Y&quot;</span>) 
 92:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">date</span> <span class="ruby-operator">!=</span> <span class="ruby-ivar">@last_date</span>
@@ -473,9 +473,9 @@ the same as the last used date, returns nil.
 98:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000798"><br/></a>
+<a class="small" name="M000810"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000798'>
+<a href='#M000810'>
 
 
 resource_type_filter
@@ -488,7 +488,7 @@ resource_type_filter
 Returns the html to use to filter by resource types.
 </p>
 
-<p class="source_link" id="M000798-show-link"><a onclick="toggle('M000798-source'); toggleText('M000798-link'); return false;" href="#" id="M000798-link">Show source...</a></p><div class="source" id="M000798-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 63</span>
+<p class="source_link" id="M000810-show-link"><a onclick="toggle('M000810-source'); toggleText('M000810-link'); return false;" href="#" id="M000810-link">Show source...</a></p><div class="source" id="M000810-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 63</span>
 63:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">resource_type_filter</span>
 64:     <span class="ruby-identifier">values</span> = <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>
 65:     <span class="ruby-identifier">values</span> = <span class="ruby-identifier">values</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">rt</span><span class="ruby-operator">|</span> [ <span class="ruby-identifier">rt</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">rt</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> ] }
@@ -499,9 +499,9 @@ Returns the html to use to filter by resource types.
 70:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000794"><br/></a>
+<a class="small" name="M000806"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000794'>
+<a href='#M000806'>
 
 
 resource_types_options_array
@@ -514,15 +514,15 @@ resource_types_options_array
 Returns an array that can be used to select what the type of a resource is.
 </p>
 
-<p class="source_link" id="M000794-show-link"><a onclick="toggle('M000794-source'); toggleText('M000794-link'); return false;" href="#" id="M000794-link">Show source...</a></p><div class="source" id="M000794-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 6</span>
+<p class="source_link" id="M000806-show-link"><a onclick="toggle('M000806-source'); toggleText('M000806-link'); return false;" href="#" id="M000806-link">Show source...</a></p><div class="source" id="M000806-source"><pre>   <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 6</span>
 6:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">resource_types_options_array</span>
 7:     <span class="ruby-identifier">current_user</span>.<span class="ruby-identifier">company</span>.<span class="ruby-identifier">resource_types</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">rt</span><span class="ruby-operator">|</span> [<span class="ruby-identifier">rt</span>.<span class="ruby-identifier">name</span>, <span class="ruby-identifier">rt</span>.<span class="ruby-identifier">id</span>] }
 8:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000796"><br/></a>
+<a class="small" name="M000808"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000796'>
+<a href='#M000808'>
 
 
 resources_without_parents
@@ -535,7 +535,7 @@ resources_without_parents
 Returns only resources with no parent resource.
 </p>
 
-<p class="source_link" id="M000796-show-link"><a onclick="toggle('M000796-source'); toggleText('M000796-link'); return false;" href="#" id="M000796-link">Show source...</a></p><div class="source" id="M000796-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 47</span>
+<p class="source_link" id="M000808-show-link"><a onclick="toggle('M000808-source'); toggleText('M000808-link'); return false;" href="#" id="M000808-link">Show source...</a></p><div class="source" id="M000808-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 47</span>
 47:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">resources_without_parents</span>(<span class="ruby-identifier">resources</span>)
 48:     <span class="ruby-identifier">resources</span>.<span class="ruby-identifier">select</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span><span class="ruby-operator">|</span> 
 49:       <span class="ruby-identifier">r</span>.<span class="ruby-identifier">parent</span>.<span class="ruby-identifier">nil?</span> <span class="ruby-keyword kw">or</span> <span class="ruby-operator">!</span><span class="ruby-identifier">resources</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">r</span>.<span class="ruby-identifier">parent</span>)
@@ -543,9 +543,9 @@ Returns only resources with no parent resource.
 51:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000795"><br/></a>
+<a class="small" name="M000807"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000795'>
+<a href='#M000807'>
 
 
 value_field
@@ -559,7 +559,7 @@ Returns the html to display the value for attribute. If it is a password
 field, adds a link to request the unencrypted password.
 </p>
 
-<p class="source_link" id="M000795-show-link"><a onclick="toggle('M000795-source'); toggleText('M000795-link'); return false;" href="#" id="M000795-link">Show source...</a></p><div class="source" id="M000795-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 15</span>
+<p class="source_link" id="M000807-show-link"><a onclick="toggle('M000807-source'); toggleText('M000807-link'); return false;" href="#" id="M000807-link">Show source...</a></p><div class="source" id="M000807-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/resources_helper.rb, line 15</span>
 15:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">value_field</span>(<span class="ruby-identifier">attribute</span>, <span class="ruby-identifier">name_prefix</span>, <span class="ruby-identifier">field_id</span>, <span class="ruby-identifier">show_remove_link</span> = <span class="ruby-keyword kw">false</span>)
 16:     <span class="ruby-identifier">type</span> = <span class="ruby-identifier">attribute</span>.<span class="ruby-identifier">resource_type_attribute</span>
 17: 

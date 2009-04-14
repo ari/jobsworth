@@ -1,8 +1,8 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>Module: CustomersHelper</title><link type="text/css" href=".././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/><title>File: organizational_units_controller.rb</title><link type="text/css" href="../../.././rdoc-style.css" media="screen" rel="stylesheet"/><script type="text/javascript">
 // Allison template
 // Copyright 2007, 2008 Cloudburst, LLC. Licensed under the AFL 3. See the included LICENSE file.
 
-var href_base = '.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
+var href_base = '../../.././rdoc-style.css'.replace(/(.*\/).*/, '$1'); // inline js is good for something  
 
 function $(id) {
     if (document.getElementById)
@@ -315,44 +315,17 @@ addEvent(window, 'load', stripe, false);
 addEvent(window, 'load', highlightSymbols, false);
 addEvent(window, 'load', hacks, false);
 </script></head><body><div id="container"><div class="curve" id="preheader_curve_0"></div><div class="curve" id="preheader_curve_1"></div><div class="curve" id="preheader_curve_2"></div><div class="curve" id="preheader_curve_3"></div><div class="curve" id="preheader_curve_4"></div><div class="curve" id="preheader_curve_5"></div><div id="header"><p>
+app/controllers/organizational_units_controller.rb
 </p><span><h1 id="title">
-Module: CustomersHelper
+File: organizational_units_controller.rb
 </h1></span>
 </div><div class="clear"></div><div id="left">
 
-<div class="navigation darker top" id="defined_in"><h3>Defined in</h3>
-
-<a href="../files/app/helpers/customers_helper_rb.html">app/helpers/customers_helper.rb</a>
-
-</div>
 
 
 
-<div class="navigation top" id="methods"><h3>Methods</h3>
-
-
-<a href='#M000712'>
-add_search_filter_link<br/>
-</a>
-
-
-
-
-<a href='#M000711'>
-create_users_link<br/>
-</a>
-
-
-
-
-<a href='#M000713'>
-users_for_customer<br/>
-</a>
-
-
-</div>
 <div id="spacer"></div><div class="navigation darker index" id="class_wrapper"><div class="list_header"><h3>All classes</h3></div><div class="list_header_link"><a onclick="toggle('class'); toggleText('class_link'); return false;" href="#" id="class_link">Hide...</a></div><div class="clear"></div><div id="class"><form><label for="filter_class">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('class', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_class"></input></form></div></div><div class="navigation darker index" id="file_wrapper"><div class="list_header"><h3>All files</h3></div><div class="list_header_link"><a onclick="toggle('file'); toggleText('file_link'); return false;" href="#" id="file_link">Hide...</a></div><div class="clear"></div><div id="file"><form><label for="filter_file">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('file', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_file"></input></form></div></div><div class="navigation darker index" id="method_wrapper"><div class="list_header"><h3>All methods</h3></div><div class="list_header_link"><a onclick="toggle('method'); toggleText('method_link'); return false;" href="#" id="method_link">Show...</a></div><div class="clear"></div><div id="method"><form><label for="filter_method">Filter:&nbsp;&nbsp;</label><input type="text" onKeyUp="return filterList('method', this.value, event);" onKeyPress="return disableSubmit(event);" id="filter_method"></input></form></div></div></div><div id="content">
-<h1 id="item_name">Module: CustomersHelper</h1>
+<h1 id="item_name">File: organizational_units_controller.rb</h1>
 
 
 
@@ -361,95 +334,6 @@ users_for_customer<br/>
 <p></p>
 
 
-
-
-
-
-<h1>Public Instance Methods</h1>
-
-
-<a class="small" name="M000712"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000712'>
-
-
-add_search_filter_link
-
-()
-
-</a>
-</h3>
-<p>
-Returns the html for a link that adds in a new search filter field.
-</p>
-
-<p class="source_link" id="M000712-show-link"><a onclick="toggle('M000712-source'); toggleText('M000712-link'); return false;" href="#" id="M000712-link">Show source...</a></p><div class="source" id="M000712-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/customers_helper.rb, line 21</span>
-21:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_search_filter_link</span>
-22:     <span class="ruby-identifier">link_to_function</span> <span class="ruby-value str">&quot;Add search filter&quot;</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
-23:       <span class="ruby-identifier">page</span>.<span class="ruby-identifier">insert_html</span>(<span class="ruby-identifier">:bottom</span>, <span class="ruby-value str">&quot;customer_search_filters&quot;</span>,
-24:                        <span class="ruby-identifier">:partial</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;search_filter_prompt&quot;</span>)
-25:     <span class="ruby-keyword kw">end</span>
-26:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000711"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000711'>
-
-
-create_users_link
-
-(customer)
-
-</a>
-</h3>
-<p>
-Returns the html to link to a page to create a user for the given customer
-</p>
-
-<p class="source_link" id="M000711-show-link"><a onclick="toggle('M000711-source'); toggleText('M000711-link'); return false;" href="#" id="M000711-link">Show source...</a></p><div class="source" id="M000711-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/customers_helper.rb, line 7</span>
- 7:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">create_users_link</span>(<span class="ruby-identifier">customer</span>)
- 8:     <span class="ruby-identifier">url</span> = {
- 9:       <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;users&quot;</span>, 
-10:       <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;new&quot;</span>, 
-11:       <span class="ruby-identifier">:user</span> =<span class="ruby-operator">&gt;</span> { <span class="ruby-identifier">:customer_id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-ivar">@customer</span>.<span class="ruby-identifier">id</span> }
-12:     }
-13: 
-14:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">_</span>(<span class="ruby-value str">&quot;Create User&quot;</span>), <span class="ruby-identifier">url</span>)
-15:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
-
-<a class="small" name="M000713"><br/></a>
-<div class="method_block"><h3>
-<a href='#M000713'>
-
-
-users_for_customer
-
-(users, customer)
-
-</a>
-</h3>
-<p>
-Returns html to display any users in the given list that belong to the
-given customer.
-</p>
-
-<p class="source_link" id="M000713-show-link"><a onclick="toggle('M000713-source'); toggleText('M000713-link'); return false;" href="#" id="M000713-link">Show source...</a></p><div class="source" id="M000713-source"><pre>    <span class="ruby-comment cmt"># File app/helpers/customers_helper.rb, line 32</span>
-32:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">users_for_customer</span>(<span class="ruby-identifier">users</span>, <span class="ruby-identifier">customer</span>)
-33:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">users</span>.<span class="ruby-identifier">nil?</span>
-34: 
-35:     <span class="ruby-identifier">res</span> = []
-36:     <span class="ruby-identifier">users</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">u</span><span class="ruby-operator">|</span>
-37:       <span class="ruby-keyword kw">next</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">u</span>.<span class="ruby-identifier">customer</span> <span class="ruby-operator">!=</span> <span class="ruby-identifier">customer</span>
-38:       <span class="ruby-identifier">res</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">link_to</span>(<span class="ruby-identifier">h</span>(<span class="ruby-identifier">u</span>.<span class="ruby-identifier">name</span>), 
-39:                      <span class="ruby-identifier">:controller</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;users&quot;</span>, <span class="ruby-identifier">:action</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-value str">&quot;edit&quot;</span>, <span class="ruby-identifier">:id</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-identifier">u</span>)
-40:     <span class="ruby-keyword kw">end</span>
-41: 
-42:     <span class="ruby-identifier">res</span> = <span class="ruby-identifier">res</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">str</span><span class="ruby-operator">|</span> <span class="ruby-node">&quot;&lt;li style=\&quot;margin-left: 24px\&quot;&gt;#{ str }&lt;/li&gt;&quot;</span> }
-43:     <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">res</span>.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;\n&quot;</span>)
-44:   <span class="ruby-keyword kw">end</span></pre></div>
-</div>
 
 
 

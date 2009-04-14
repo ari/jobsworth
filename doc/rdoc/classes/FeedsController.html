@@ -344,63 +344,63 @@ Icalendar<br/>
 <div class="navigation top" id="methods"><h3>Methods</h3>
 
 
-<a href='#M000175'>
+<a href='#M000166'>
 get_action<br/>
 </a>
 
 
 
 
-<a href='#M000180'>
+<a href='#M000171'>
 ical<br/>
 </a>
 
 
 
 
-<a href='#M000179'>
+<a href='#M000170'>
 ical_all<br/>
 </a>
 
 
 
 
-<a href='#M000181'>
+<a href='#M000172'>
 igoogle<br/>
 </a>
 
 
 
 
-<a href='#M000182'>
+<a href='#M000173'>
 igoogle_feed<br/>
 </a>
 
 
 
 
-<a href='#M000176'>
+<a href='#M000167'>
 rss<br/>
 </a>
 
 
 
 
-<a href='#M000178'>
+<a href='#M000169'>
 to_duration<br/>
 </a>
 
 
 
 
-<a href='#M000177'>
+<a href='#M000168'>
 to_localtime<br/>
 </a>
 
 
 
 
-<a href='#M000174'>
+<a href='#M000165'>
 unsubscribe<br/>
 </a>
 
@@ -434,9 +434,9 @@ href="mailto:admin@clockingit.com">admin@clockingit.com</a>)
 <h1>Public Instance Methods</h1>
 
 
-<a class="small" name="M000175"><br/></a>
+<a class="small" name="M000166"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000175'>
+<a href='#M000166'>
 
 
 get_action
@@ -446,7 +446,7 @@ get_action
 </a>
 </h3>
 
-<p class="source_link" id="M000175-show-link"><a onclick="toggle('M000175-source'); toggleText('M000175-link'); return false;" href="#" id="M000175-link">Show source...</a></p><div class="source" id="M000175-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 37</span>
+<p class="source_link" id="M000166-show-link"><a onclick="toggle('M000166-source'); toggleText('M000166-link'); return false;" href="#" id="M000166-link">Show source...</a></p><div class="source" id="M000166-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 37</span>
 37:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">get_action</span>(<span class="ruby-identifier">log</span>)
 38:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">task</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">task_id</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
 39:       <span class="ruby-identifier">action</span> = <span class="ruby-value str">&quot;Completed&quot;</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">log</span>.<span class="ruby-identifier">log_type</span> <span class="ruby-operator">==</span> <span class="ruby-constant">EventLog</span><span class="ruby-operator">::</span><span class="ruby-constant">TASK_COMPLETED</span>
@@ -468,9 +468,9 @@ get_action
 55:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000180"><br/></a>
+<a class="small" name="M000171"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000180'>
+<a href='#M000171'>
 
 
 ical
@@ -480,7 +480,7 @@ ical
 </a>
 </h3>
 
-<p class="source_link" id="M000180-show-link"><a onclick="toggle('M000180-source'); toggleText('M000180-link'); return false;" href="#" id="M000180-link">Show source...</a></p><div class="source" id="M000180-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 187</span>
+<p class="source_link" id="M000171-show-link"><a onclick="toggle('M000171-source'); toggleText('M000171-link'); return false;" href="#" id="M000171-link">Show source...</a></p><div class="source" id="M000171-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 187</span>
 187:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ical</span>(<span class="ruby-identifier">mode</span> = <span class="ruby-identifier">:personal</span>)
 188: 
 189:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
@@ -683,9 +683,9 @@ ical
 386:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000179"><br/></a>
+<a class="small" name="M000170"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000179'>
+<a href='#M000170'>
 
 
 ical_all
@@ -695,15 +695,15 @@ ical_all
 </a>
 </h3>
 
-<p class="source_link" id="M000179-show-link"><a onclick="toggle('M000179-source'); toggleText('M000179-link'); return false;" href="#" id="M000179-link">Show source...</a></p><div class="source" id="M000179-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 183</span>
+<p class="source_link" id="M000170-show-link"><a onclick="toggle('M000170-source'); toggleText('M000170-link'); return false;" href="#" id="M000170-link">Show source...</a></p><div class="source" id="M000170-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 183</span>
 183:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ical_all</span>
 184:     <span class="ruby-identifier">ical</span>(<span class="ruby-identifier">:all</span>)
 185:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000181"><br/></a>
+<a class="small" name="M000172"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000181'>
+<a href='#M000172'>
 
 
 igoogle
@@ -713,15 +713,15 @@ igoogle
 </a>
 </h3>
 
-<p class="source_link" id="M000181-show-link"><a onclick="toggle('M000181-source'); toggleText('M000181-link'); return false;" href="#" id="M000181-link">Show source...</a></p><div class="source" id="M000181-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 389</span>
+<p class="source_link" id="M000172-show-link"><a onclick="toggle('M000172-source'); toggleText('M000172-link'); return false;" href="#" id="M000172-link">Show source...</a></p><div class="source" id="M000172-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 389</span>
 389:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">igoogle</span>
 390:     <span class="ruby-identifier">render</span> <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
 391:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000182"><br/></a>
+<a class="small" name="M000173"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000182'>
+<a href='#M000173'>
 
 
 igoogle_feed
@@ -731,7 +731,7 @@ igoogle_feed
 </a>
 </h3>
 
-<p class="source_link" id="M000182-show-link"><a onclick="toggle('M000182-source'); toggleText('M000182-link'); return false;" href="#" id="M000182-link">Show source...</a></p><div class="source" id="M000182-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 393</span>
+<p class="source_link" id="M000173-show-link"><a onclick="toggle('M000173-source'); toggleText('M000173-link'); return false;" href="#" id="M000173-link">Show source...</a></p><div class="source" id="M000173-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 393</span>
 393:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">igoogle_feed</span>
 394:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_uid</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:up_uid</span>].<span class="ruby-identifier">empty?</span>
 395:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:text</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-node">&quot;Please enter your widget key in this gadgets settings. The key can be found on your &lt;a href=\&quot;http://#{user.company.subdomain}.#{$CONFIG[:domain]}/users/edit_preferences\&quot;&gt;preferences page&lt;/a&gt;.&quot;</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
@@ -852,9 +852,9 @@ igoogle_feed
 510:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000176"><br/></a>
+<a class="small" name="M000167"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000176'>
+<a href='#M000167'>
 
 
 rss
@@ -867,7 +867,7 @@ rss
 Get the RSS feed, based on the secret key passed on the url
 </p>
 
-<p class="source_link" id="M000176-show-link"><a onclick="toggle('M000176-source'); toggleText('M000176-link'); return false;" href="#" id="M000176-link">Show source...</a></p><div class="source" id="M000176-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 58</span>
+<p class="source_link" id="M000167-show-link"><a onclick="toggle('M000167-source'); toggleText('M000167-link'); return false;" href="#" id="M000167-link">Show source...</a></p><div class="source" id="M000167-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 58</span>
  58:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">rss</span>
  59:     <span class="ruby-keyword kw">return</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">blank?</span>
  60: 
@@ -986,9 +986,9 @@ Get the RSS feed, based on the secret key passed on the url
 173:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000178"><br/></a>
+<a class="small" name="M000169"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000178'>
+<a href='#M000169'>
 
 
 to_duration
@@ -998,15 +998,15 @@ to_duration
 </a>
 </h3>
 
-<p class="source_link" id="M000178-show-link"><a onclick="toggle('M000178-source'); toggleText('M000178-link'); return false;" href="#" id="M000178-link">Show source...</a></p><div class="source" id="M000178-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 179</span>
+<p class="source_link" id="M000169-show-link"><a onclick="toggle('M000169-source'); toggleText('M000169-link'); return false;" href="#" id="M000169-link">Show source...</a></p><div class="source" id="M000169-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 179</span>
 179:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_duration</span>(<span class="ruby-identifier">dur</span>)
 180:     <span class="ruby-identifier">format_duration</span>(<span class="ruby-identifier">dur</span><span class="ruby-operator">/</span><span class="ruby-value">60</span>, <span class="ruby-value">1</span>, <span class="ruby-value">8</span> <span class="ruby-operator">*</span> <span class="ruby-value">60</span>).<span class="ruby-identifier">upcase</span>
 181:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000177"><br/></a>
+<a class="small" name="M000168"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000177'>
+<a href='#M000168'>
 
 
 to_localtime
@@ -1016,15 +1016,15 @@ to_localtime
 </a>
 </h3>
 
-<p class="source_link" id="M000177-show-link"><a onclick="toggle('M000177-source'); toggleText('M000177-link'); return false;" href="#" id="M000177-link">Show source...</a></p><div class="source" id="M000177-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 175</span>
+<p class="source_link" id="M000168-show-link"><a onclick="toggle('M000168-source'); toggleText('M000168-link'); return false;" href="#" id="M000168-link">Show source...</a></p><div class="source" id="M000168-source"><pre>     <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 175</span>
 175:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_localtime</span>(<span class="ruby-identifier">tz</span>, <span class="ruby-identifier">time</span>)
 176:     <span class="ruby-constant">DateTime</span>.<span class="ruby-identifier">parse</span>(<span class="ruby-identifier">tz</span>.<span class="ruby-identifier">utc_to_local</span>(<span class="ruby-identifier">time</span>).<span class="ruby-identifier">to_s</span>)
 177:   <span class="ruby-keyword kw">end</span></pre></div>
 </div>
 
-<a class="small" name="M000174"><br/></a>
+<a class="small" name="M000165"><br/></a>
 <div class="method_block"><h3>
-<a href='#M000174'>
+<a href='#M000165'>
 
 
 unsubscribe
@@ -1034,7 +1034,7 @@ unsubscribe
 </a>
 </h3>
 
-<p class="source_link" id="M000174-show-link"><a onclick="toggle('M000174-source'); toggleText('M000174-link'); return false;" href="#" id="M000174-link">Show source...</a></p><div class="source" id="M000174-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 17</span>
+<p class="source_link" id="M000165-show-link"><a onclick="toggle('M000165-source'); toggleText('M000165-link'); return false;" href="#" id="M000165-link">Show source...</a></p><div class="source" id="M000165-source"><pre>    <span class="ruby-comment cmt"># File app/controllers/feeds_controller.rb, line 17</span>
 17:   <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">unsubscribe</span>
 18:     <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">nil?</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">params</span>[<span class="ruby-identifier">:id</span>].<span class="ruby-identifier">empty?</span>
 19:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:nothing</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">true</span>, <span class="ruby-identifier">:layout</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-keyword kw">false</span>
