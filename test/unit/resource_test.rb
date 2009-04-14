@@ -57,4 +57,14 @@ class ResourceTest < Test::Unit::TestCase
 
     assert !@resource.validate
   end
+
+  def test_validate_does_not_fail_when_resource_type_not_set
+    @resource.resource_type = nil
+
+    begin
+      assert @resource.validate
+    rescue
+      assert_equal "", "Shouldn't throw an error"
+    end
+  end
 end
