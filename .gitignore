@@ -24,3 +24,4 @@ tmp
 .buildpath
 .project
 .idea
+environment.local
