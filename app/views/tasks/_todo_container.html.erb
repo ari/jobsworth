@@ -1,22 +1,17 @@
-   <div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless @current_sheet && @current_sheet.task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
-    <ul id="todo-<%=task.dom_id%>" class="task-todo">
-       <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
-         <%= render :partial => "tasks/todo_row" %>
-      <% end %>
-    </ul>
+<div id="todo-container-<%=task.dom_id%>" class="todo-container"<% unless @current_sheet && @current_sheet.task_id == task.id && task.todos.size > 0 %> style="display:none;"<% end %>>
+  <ul id="todo-<%=task.dom_id%>" class="task-todo">
+    <% task.todos.select{ |t| t.completed_at.nil? }.each do |@todo| %>
+      <%= render :partial => "tasks/todo_row" %>
+    <% end %>
+  </ul>
 
-<form action="/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>" id="todo-form-<%=task.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Form.serialize(this)}); return false;" style="display:none;">
+  <form action="/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>" id="todo-form-<%=task.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Form.serialize(this)}); return false;" style="display:none;">
     <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <a href="#" onclick="Element.hide('todo-form-<%=task.dom_id%>');$('new-todo-<%=task.dom_id%>').show(); return false;"><%=_('Cancel')%></a>
-</form>
-    <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><a href="#" onclick="$('todo-form-<%=task.dom_id%>').show();$('new-todo-<%=task.dom_id%>').hide();$('todo_text_<%=task.id%>').focus();; return false;"><%=_'New To-do Item'%></a></small></span>
-    <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
-      <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
-        <%= render :partial => "tasks/todo_row" %>
-      <% end %>
-    </ul>
-<script type="text/javascript">
-//<![CDATA[
-Sortable.create("todo-<%=task.dom_id%>", {containment:'todo-<%=task.dom_id%>', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/<%=task.id%>', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize("todo-<%=task.dom_id%>")})}, only:'todo-active'})
-//]]>
-</script>
-  </div>
+  </form>
+  <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><a href="#" onclick="$('todo-form-<%=task.dom_id%>').show();$('new-todo-<%=task.dom_id%>').hide();$('todo_text_<%=task.id%>').focus();; return false;"><%=_'New To-do Item'%></a></small></span>
+  <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
+    <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
+      <%= render :partial => "tasks/todo_row" %>
+   <% end %>
+  </ul>
+</div>
