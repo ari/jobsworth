@@ -67,7 +67,6 @@ class UsersController < ApplicationController
       redirect_to :action => 'edit_preferences'
       return
     end
-    puts current_user.company
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 
