@@ -45,13 +45,14 @@ module CustomAttributeMethods
   ###
   def set_custom_attribute_values=(params)
     updated = []
+    existing = custom_attribute_values.clone
 
     params.each do |values|
       attr_id = values[:custom_attribute_id]
 
       # find an existing value
-      cav = custom_attribute_values.detect { |v| v.custom_attribute_id == attr_id.to_i }
-      cav = nil if updated.include?(cav)
+      cav = existing.detect { |v| v.custom_attribute_id == attr_id.to_i }
+      existing.delete(cav)
 
       # create a new one if none found
       cav ||= custom_attribute_values.build(:custom_attribute_id => attr_id)
