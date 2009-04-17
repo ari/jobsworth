@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
 
   include Misc
+  helper :task_filter
 
 #  helper :all
 

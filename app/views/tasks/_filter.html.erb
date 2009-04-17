@@ -16,21 +16,12 @@
       </select>
 
       <div id="filter_user" class="filter">
+	<%= query_menu("user", :collection => @users) %>
+
 	<% 
 	   filters_selected = TaskFilter.filter_user_ids(session) 
 	   unassigned = TaskFilter::UNASSIGNED_TASKS
 	   %>
-	<ul class="querymenu" id="filter_user">
-	  <li>
-	    <span><%= _("Users") %></span>
-	    <ul class="menu">
-	      <% @users.each do |u| -%>
-	      <li class="add">
-		<%= link_to_function(u.name, "addTaskFilter(this, #{ u.id }, 'filter_user[]')") %>
-	      </li>
-	      <% end -%>
-	    </ul>
-	</ul>
 
 	<ul class="menu">
 	  <li class="all" style="display: <%= filters_selected.empty? ? "" : "none" %>">
