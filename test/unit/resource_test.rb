@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ResourceTest < Test::Unit::TestCase
-  fixtures :companies
+  fixtures :companies, :customers
 
   def setup
     company = Company.find(:first)
@@ -9,8 +9,12 @@ class ResourceTest < Test::Unit::TestCase
     @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
     @type.save!
 
+    customer = company.customers.build(:name => "test cust")
+    customer.save!
+
     @resource = company.resources.build(:name => "test res")
     @resource.resource_type = @type
+    @resource.customer = customer
   end
 
   def test_attribute_values_creates_new_attributes
@@ -66,5 +70,16 @@ class ResourceTest < Test::Unit::TestCase
     rescue
       assert_equal "", "Shouldn't throw an error"
     end
+  end
+
+  def test_customer_is_required
+    customer = @resource.customer
+    assert @resource.valid?
+
+    @resource.customer = nil
+    assert !@resource.valid?
+
+    @resource.customer = customer
+    assert @resource.valid?
   end
 end

@@ -86,7 +86,9 @@ class Resource < ActiveRecord::Base
   # Checks all attributes are valid
   ###
   def validate
-    res = true
+    # check customer is present
+    res = !customer.nil?
+    errors.add_to_base(_("Client can't be blank")) if customer.nil?
 
     # check attributes are valid
     invalid = resource_attributes.select { |attr| !attr.check_regex }

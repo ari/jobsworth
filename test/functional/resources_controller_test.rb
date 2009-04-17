@@ -16,8 +16,12 @@ context "Resources" do
     @type.new_type_attributes = [ { :name => "a1" }, { :name => "a2" } ]
     @type.save!
 
+    customer = company.customers.build(:name => "test cust")
+    customer.save!
+
     @resource = company.resources.build(:name => "test res")
     @resource.resource_type = @type
+    @resource.customer = customer
   end
 
   specify "all should redirect if not use_resources set on user" do
