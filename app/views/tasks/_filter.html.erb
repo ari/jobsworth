@@ -10,6 +10,7 @@
 	 redir = url_for(redir_params.merge(:action => redir_action))
       -%>
       <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
+
       <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
 	<%= task_filter_options %>
       </select>
