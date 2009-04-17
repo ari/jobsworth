@@ -7,9 +7,9 @@
   <br />
 
   <label for="resource_customer"><%= _("Client") %></label>
-  <%= f.select(:customer_id, 
-      current_user.company.customers.map { |c| [ c.name, c.id ] }, 
-      :include_blank => true) %>
+  <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
+  <%= text_field_with_auto_complete(:customer, :name, { :value => @resource.customer },
+  :after_update_element => "updateAutoCompleteField") %>
   <br />
 
   <label for="resource_parent"><%= _("Parent resource") %></label>

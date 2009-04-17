@@ -2566,7 +2566,7 @@ fieldset.basic a.toggle.below {
 }
 
 /* #property_values li.property_value, #resource_type_attributes li { */
-fieldset.basic li {
+fieldset.basic li.attribute, fieldset.basic li.property_value {
     padding: 15px 0px 15px 0px !important;
 }
 
