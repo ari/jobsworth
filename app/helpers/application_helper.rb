@@ -732,6 +732,30 @@ END_OF_HTML
 
     return res
   end
+
+  ###
+  # Initialises the instance variables needed to display the task
+  # filter partial.
+  ###
+  def init_filter_variables
+    customer_ids = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
+    if customer_ids.any?
+      @all_projects = current_user.projects.find(:all, :conditions => ["customer_id in (#{ customer_ids.join(",") }) AND completed_at IS NULL"])
+    else
+      @all_projects = current_user.projects
+    end
+
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+    if project_ids.any? and !project_ids.include?(TaskFilter::ALL_PROJECTS)
+      projects = Project.find(:first, :order => "name", :conditions => [ "company_id = ? AND id in (?)", current_user.company_id, "#{ project_ids.join(",") }" ])
+      @users = projects.users
+    else
+      @user_ids = ProjectPermission.find(:all, :conditions => ["project_id IN (?)", @all_projects.collect{|p| p.id}] ).collect{|pp| pp.user_id }.uniq
+      @user_ids = [0] if @user_ids.size == 0
+      @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name")
+    end
+  end
+
 end
 
 

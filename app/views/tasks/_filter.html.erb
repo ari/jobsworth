@@ -1,43 +1,51 @@
 <div nowrap id="tasks_filter">
-<%
-customer_ids = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
-if customer_ids.any?
-	@all_projects = current_user.projects.find(:all, :conditions => ["customer_id in (#{ customer_ids.join(",") }) AND completed_at IS NULL"])
-else
-	@all_projects = current_user.projects
-end
-
-project_ids = TaskFilter.filter_ids(session, :filter_project)
-if project_ids.any? and !project_ids.include?(TaskFilter::ALL_PROJECTS)
-	projects = Project.find(:first, :order => "name", :conditions => [ "company_id = ? AND id in (?)", current_user.company_id, "#{ project_ids.join(",") }" ])
-	@users = []
-	@users += projects.users.map {|c| [ c.name, c.id.to_s ] }
-else
-	@user_ids = ProjectPermission.find(:all, :conditions => ["project_id IN (?)", @all_projects.collect{|p| p.id}] ).collect{|pp| pp.user_id }.uniq
-	@user_ids = [0] if @user_ids.size == 0
-	@users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name").collect{|u| [u.name, u.id.to_s]}
-end
-
-filter_count = 0
-%>
-<fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
-	<legend><%= _'Filter'%></legend>
-	<form action="setup_task_filters" method="post" style="margin:0;padding:0;">
-<% 
-	redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
-	redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
-	redir = url_for(redir_params.merge(:action => redir_action))
--%>
-	<input type="hidden" name="redirect_action" value="<%= redir %>" /> 
-	<select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
+  <% init_filter_variables %>
+  
+  <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+    <legend><%= _'Filter'%></legend>
+    <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
+      <% 
+	 redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
+	 redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
+	 redir = url_for(redir_params.merge(:action => redir_action))
+      -%>
+      <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
+      <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
 	<%= task_filter_options %>
-	</select>
+      </select>
 
-	<select name="filter_user[]" id="filter_user" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
-		<option value="0" class="select_default"><%= _("[Any User]") %></option>
-		<%= options_for_select @users, session[:filter_user] %>
-		<option value="-1" class="select_default"<%= " selected" if TaskFilter.filter_user_ids(session).include?(-1) %>><%= _("[Unassigned]") %></option>
-	</select>
+      <div id="filter_user" class="filter">
+	<% 
+	   filters_selected = TaskFilter.filter_user_ids(session) 
+	   unassigned = TaskFilter::UNASSIGNED_TASKS
+	   %>
+	<ul class="querymenu" id="filter_user">
+	  <li>
+	    <span><%= _("Users") %></span>
+	    <ul class="menu">
+	      <% @users.each do |u| -%>
+	      <li class="add">
+		<%= link_to_function(u.name, "addTaskFilter(this, #{ u.id }, 'filter_user[]')") %>
+	      </li>
+	      <% end -%>
+	    </ul>
+	</ul>
+
+	<ul class="menu">
+	  <li class="all" style="display: <%= filters_selected.empty? ? "" : "none" %>">
+	    <%= _("[Any User]") %>
+	  </li>
+	  <% filters_selected.each do |id| -%>
+	  <% if id != unassigned -%>
+  	  <% u = User.find(id) -%>
+          <li class="cut">
+	    <%= link_to_function(u.name, "removeTaskFilter(this)") -%>
+	    <%= hidden_field_tag("filter_user[]", u.id) %>
+	  </li>
+	  <% end -%>
+	  <% end -%>
+	</ul>
+      </div>
 
 	<select name="filter_status[]" id="filter_status" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">
 		<option value="-1" class="select_default"><%= _("[Any Status]") %></option>

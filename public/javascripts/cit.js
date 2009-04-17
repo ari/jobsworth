@@ -387,20 +387,6 @@ jQuery(document).ready(function() {
     var tagsHTML = jQuery('#tags').html();
     jQuery('#tag-block').html(tagsHTML);
 
-    // initialize any multi select fields
-    // NB. Seem to need to do it one-by-one to get noneSelected
-    // option to work properly. Feel free to change it if you want.
-    var multis = jQuery(".multiselect");
-    for (var i = 0; i < multis.length; i++) {
-	var elem = multis[i];
-	var options = {
-	    selectAll : false,
-	    noneSelected : elem.options[0].text,
-	    oneOrMoreSelected : "*"
-	};
-	jQuery(elem).multiSelect(options, elem.onchange);
-    }
-
     fixNestedCheckboxes();
 });
 
@@ -637,4 +623,19 @@ function updatePositionFields(listSelector) {
 	var positionField = jQuery(children[i]).find(".position");
 	positionField.val(i + 1);
     }
+}
+
+/* FILTER METHODS */
+function removeTaskFilter(sender) {
+    var li = jQuery(sender).parent();
+    li.remove();
+
+    jQuery("#filter_form").submit();
+}
+
+function addTaskFilter(sender, id, field_name) {
+    var li = jQuery(sender);
+    var html = "<input type='hidden' name='" + field_name + "' value='" + id + "' />";
+    li.append(html);
+    jQuery("#filter_form").submit();
 }
