@@ -57,4 +57,14 @@ context "Tasks" do
     group = assigns["groups"].first
     assert group.length > 0
   end
+
+  specify "/update should render form ok when failing update" do
+    task = Task.first
+    # post something that will cause a validation to fail
+    post(:update, :id => task.id, :task => { :name => "" })
+
+    assert_template "tasks/edit"
+    status.should.be :success
+  end
+
 end
