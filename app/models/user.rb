@@ -52,9 +52,6 @@ class User < ActiveRecord::Base
   validates_length_of           :password,  :maximum=>200, :allow_nil => true
   validates_presence_of         :password
 
-  validates_length_of           :email,  :maximum=>200, :allow_nil => true
-  validates_presence_of         :email
-
   validates_presence_of         :company
 
   after_destroy { |r|

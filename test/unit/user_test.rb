@@ -74,18 +74,6 @@ class UserTest < Test::Unit::TestCase
     
   end
 
-  def test_validate_email
-    u = User.new
-    u.name = "a"
-    u.username = "a"
-    u.password = "a"
-    u.company = companies(:cit)
-
-    assert !u.save
-    assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['email']
-  end
-
   def test_validate_company_id
     u = User.new
     u.name = "a"
