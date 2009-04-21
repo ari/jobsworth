@@ -171,7 +171,7 @@ class User < ActiveRecord::Base
       else
         "/users/avatar/#{self.id}?" + File.mtime(avatar_path).to_i.to_s
       end
-    else
+    elsif email
       if secure
 	"https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
       else

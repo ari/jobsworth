@@ -214,5 +214,15 @@ class UserTest < Test::Unit::TestCase
     @user.last_seen_at = Time.now.utc - 10.minutes
     assert_match /status-idle/, @user.online_status_name
   end
+
+  def test_avatar_url_without_email
+    assert !@user.avatar?
+
+    @user.email = nil
+    assert_nil @user.avatar_url
+
+    @user.email = "test@test.com"
+    assert_not_nil @user.avatar_url
+  end
   
 end
