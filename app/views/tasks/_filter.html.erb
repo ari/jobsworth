@@ -16,27 +16,12 @@
       </select>
 
       <div id="filter_user" class="filter">
-	<%= query_menu("user", :collection => @users) %>
+	<%= query_menu("user", objects_to_names_and_ids(@users)) %>
+	<%= selected_filter_values("user", selected_user_names_and_ids) %>
+      </div>
 
-	<% 
-	   filters_selected = TaskFilter.filter_user_ids(session) 
-	   unassigned = TaskFilter::UNASSIGNED_TASKS
-	   %>
-
-	<ul class="menu">
-	  <li class="all" style="display: <%= filters_selected.empty? ? "" : "none" %>">
-	    <%= _("[Any User]") %>
-	  </li>
-	  <% filters_selected.each do |id| -%>
-	  <% if id != unassigned -%>
-  	  <% u = User.find(id) -%>
-          <li class="cut">
-	    <%= link_to_function(u.name, "removeTaskFilter(this)") -%>
-	    <%= hidden_field_tag("filter_user[]", u.id) %>
-	  </li>
-	  <% end -%>
-	  <% end -%>
-	</ul>
+      <div class="filter">
+	<%= query_menu("status", available_statuses) %>
       </div>
 
 	<select name="filter_status[]" id="filter_status" onchange="javascript:document.forms[1].submit();" multiple="multiple" class="multiselect">

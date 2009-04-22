@@ -30,14 +30,65 @@ module TaskFilterHelper
   # :names_and_ids - an array of arrays like [ name, id ]
   # :collection - an array of objects that will be converted to names_and_ids
   ###
-  def query_menu(name, options = {})
+  def query_menu(name, names_and_ids)
+    options = {}
     options[:filter_name] = name
-
-    if (collection = options[:collection])
-      options[:names_and_ids] = collection.map { |o| [ o.name, o.id ] }
-    end
+    options[:names_and_ids] = names_and_ids
 
     return render(:partial => "/tasks/querymenu", :locals => options)
+  end
+
+  ###
+  # Returns an array of names and ids
+  ###
+  def objects_to_names_and_ids(collection)
+    return collection.map { |o| [ o.name, o.id ] }
+  end
+
+  ###
+  # Returns the html to display the selected values in the current filter.
+  ###
+  def selected_filter_values(name, selected_names_and_ids)
+    locals = {
+      :selected_names_and_ids => selected_names_and_ids,
+      :filter_name => name,
+      :all_label => _("[Any #{ name.titleize }]"),
+      :unassigned => TaskFilter::UNASSIGNED_TASKS
+    }
+    locals[:display_all_label] = "none" if selected_names_and_ids.any?
+
+    return render(:partial => "/tasks/selected_filter_values", :locals => locals)
+  end
+
+  ###
+  # Returns an array containing the name and id of users currently
+  # selected in the filter. Handles "unassigned" tasks too.
+  ###
+  def selected_user_names_and_ids
+    return TaskFilter.filter_user_ids(session).map do |id|
+      if id == TaskFilter::UNASSIGNED_TASKS
+        [ _("Unassigned"), id ]
+      else
+        user = current_user.company.users.find(id)
+        [ user.name, id ]
+      end
+    end
+  end
+  
+  ###
+  # Returns an array of statuses that can be used to filter.
+  ###
+  def available_statuses
+    statuses = []
+    statuses << [_("Open"), "0"]
+    statuses << [_("In Progress"), "1"]
+    statuses << [_("Closed"), "2"]
+    statuses << [_("Won't Fix"), "3"]
+    statuses << [_("Invalid"), "4"]
+    statuses << [_("Duplicate"), "5"]
+    statuses << [_("Archived"), "-2"]
+
+    return statuses
   end
 
 end
