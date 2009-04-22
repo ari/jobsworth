@@ -509,23 +509,6 @@ END_OF_HTML
   end
 
   ###
-  # Returns true if the more filters area should be shown.
-  ###
-  def show_more_filters?
-    show = (session[:filter_type] != "-1") 
-    show ||= (session[:filter_priority] != "-10") 
-    show ||= (session[:filter_severity] != "-10")
-    show ||= (session[:hide_dependencies].to_i != 0)
-
-    # we also need to show filter if any custom properties are set
-    current_user.company.properties.each do |prop|
-      show ||= session[prop.filter_name].to_i > 0
-    end
-
-    show
-  end
-
-  ###
   # Returns the html for lis and links for the different task views.
   ###
   def task_view_links

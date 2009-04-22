@@ -65,7 +65,7 @@ module TaskFilterHelper
   # selected in the filter. Handles "unassigned" tasks too.
   ###
   def selected_user_names_and_ids
-    res =  TaskFilter.filter_user_ids(session).map do |id|
+    res = TaskFilter.filter_user_ids(session).map do |id|
       if id == TaskFilter::UNASSIGNED_TASKS
         [ _("Unassigned"), id ]
       elsif id > 0

@@ -3,11 +3,9 @@
     <%= all_label -%>
   </li>
   <% selected_names_and_ids.each do |name, id| -%>
-    <% if id != unassigned -%>
-      <li class="cut">
-	<%= link_to_function(name, "removeTaskFilter(this)") -%>
-	<%= hidden_field_tag("filter_#{ filter_name }[]", id) %>
-      </li>
-    <% end -%>
+    <li class="cut">
+      <%= link_to_function(name, "removeTaskFilter(this)") -%>
+      <%= hidden_field_tag("filter_#{ filter_name }[]", id) %>
+    </li>
   <% end -%>
 </ul>
