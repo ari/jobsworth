@@ -1,10 +1,10 @@
 <ul class="querymenu">
   <li>
-    <span><%= _(filter_name.pluralize.titleize) %></span>
+    <span><%= label %></span>
     <ul class="menu">
       <% names_and_ids.each do |name, id| -%>
         <li class="add">
-	  <%= link_to_function(name, "addTaskFilter(this, #{ id }, 'filter_#{ filter_name }[]')") %>	  
+	  <%= link_to_function(name, "addTaskFilter(this, #{ id }, '#{ filter_name }[]')") %>	  
 	</li>
       <% end -%>
     </ul>

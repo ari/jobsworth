@@ -16,13 +16,13 @@
       </select>
 
       <div id="filter_user" class="filter">
-	<%= query_menu("user", objects_to_names_and_ids(@users)) %>
-	<%= selected_filter_values("user", selected_user_names_and_ids) %>
+	<%= query_menu("filter_user", objects_to_names_and_ids(@users)) %>
+	<%= selected_filter_values("filter_user", selected_user_names_and_ids) %>
       </div>
 
       <div class="filter">
-	<%= query_menu("status", available_statuses) %>
-	<%= selected_filter_values("status", selected_status_names_and_ids) %>
+	<%= query_menu("filter_status", available_statuses) %>
+	<%= selected_filter_values("filter_status", selected_status_names_and_ids) %>
       </div>
   
 	<% if !local_assigns[:hide_grouping] or !hide_grouping -%>
@@ -66,9 +66,10 @@
 	<br />
 	<div id="more-filters">
 	  <%= render :partial => 'tasks/filter_property', :collection => current_user.company.properties %>
-            <% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
-	      <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%>
-	    <% end -%>
+          
+          <% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
+	    <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%>
+	  <% end -%>
 	</div>
     </form>
   </fieldset>
