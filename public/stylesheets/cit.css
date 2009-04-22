@@ -2591,19 +2591,19 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 /* Menus
 ------------------------------------------ */
 	
-ul.querymenu {
+#content ul.querymenu {
 	margin: 0;
 	padding: 0;
 	font-size: 90%;
 	z-index: 200000;
 	}
-ul.querymenu li {
+#content ul.querymenu li {
 	position: relative;
 	margin: 0;
 	padding: 0;
 	background: none;
 	}
-ul.querymenu li span {	
+#content ul.querymenu li span {	
 	display: block;
 	padding: 3px 10px 3px 16px;
 	font-weight: bold;
@@ -2612,7 +2612,7 @@ ul.querymenu li span {
 	border-top: 1px solid #a9a9a9;
 	border-bottom: 1px solid #888;
 	}
-ul.querymenu li a {
+#content ul.querymenu li a {
 	display: block;
 	width: auto;
 	margin: 0;
@@ -2621,7 +2621,7 @@ ul.querymenu li a {
 	background: none;
 	border-width: 0;
 	}
-ul.querymenu li ul {
+#content ul.querymenu li ul {
 	position: absolute;
 	left: -999em;
 	height: auto;
@@ -2637,20 +2637,20 @@ ul.querymenu li ul {
 	border-right: 1px solid #aa9;
 	z-index: 120;
 	}
-ul.querymenu li ul li {
+#content ul.querymenu li ul li {
 	position: relative;
 	width: 159px;
 	background: none;
 	border-bottom: 1px solid #888;
 	}
-ul.querymenu li:hover ul {
+#content ul.querymenu li:hover ul {
 	left: auto;
 	}
-ul.querymenu li:hover span {
+#content ul.querymenu li:hover span {
 	background: url(../img/select.png) no-repeat -200px 45%;
 }
 
-ul.querymenu li ul li ul {
+#content ul.querymenu li ul li ul {
 	position: absolute;
 	top: -1px;
 	margin-left: -160px;
@@ -2663,25 +2663,25 @@ ul.querymenu li ul li ul {
 	overflow: hidden;
 	white-space: nowrap;
 	}
-ul.querymenu li ul li ul li {	
+#content ul.querymenu li ul li ul li {	
 	border-left: 1px solid #aa9;
 	border-right: 1px solid #aa9;
 }
-ul.querymenu li:hover ul ul {
+#content ul.querymenu li:hover ul ul {
 	left: -999em;
 	}
-ul.querymenu li li:hover ul {
+#content ul.querymenu li li:hover ul {
 	left: auto;
 	}
-ul.querymenu li li:hover a {
+#content ul.querymenu li li:hover a {
 }
-ul.querymenu li li:hover a {
+#content ul.querymenu li li:hover a {
 }
 
 	
 #content ul.menu {
 	/*margin: 0.5em 0;*/
-	margin: 0px 0px 6px;
+	margin: 0px 0px 15px;
 	padding: 10 0 0 0;	
 	}
 #content ul.menu li {
@@ -2723,7 +2723,8 @@ ul.querymenu li li:hover a {
 }
 
 /* TASK FILTERS */
-#tasks_filter .filter {
-    margin: 10px 0px;
-    width: 200px;
+#tasks_filter .filters {
+    float: left;
+    margin: 10px 10px;
+    width: 30%;
 }

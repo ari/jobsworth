@@ -4,73 +4,36 @@
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
     <legend><%= _'Filter'%></legend>
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
-      <% 
-	 redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
-	 redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
-	 redir = url_for(redir_params.merge(:action => redir_action))
-      -%>
-      <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
+      <div class="builtin filters">
+	<% 
+	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
+	   redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
+	   redir = url_for(redir_params.merge(:action => redir_action))
+	-%>
+	<input type="hidden" name="redirect_action" value="<%= redir %>" /> 
 
-      <select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
-	<%= task_filter_options %>
-      </select>
+	<select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
+	  <%= task_filter_options %>
+	</select>
 
-      <div id="filter_user" class="filter">
-	<%= query_menu("filter_user", objects_to_names_and_ids(@users)) %>
-	<%= selected_filter_values("filter_user", selected_user_names_and_ids) %>
-      </div>
-
-      <div class="filter">
-	<%= query_menu("filter_status", available_statuses) %>
-	<%= selected_filter_values("filter_status", selected_status_names_and_ids) %>
-      </div>
-  
-	<% if !local_assigns[:hide_grouping] or !hide_grouping -%>
-		<select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
-			<option value="0" class="select_default"><%= _("[No Grouping]") %></option>
-<%
-			@group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Status"), "7"], [_("Requested By"), "11"]]
-			current_user.company.properties.each do |prop|
-			@group_by << [ prop.name, prop.filter_name ]
-			end
-%>
-			<%= options_for_select @group_by, session[:group_by] %>
-		</select>
-	<% end -%>
-  
-	<% if !local_assigns[:hide_sorting] or !hide_sorting -%>
-		<select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
-			<option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
-			<% @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"], [_("Recent"), "4"]] %>
-			<%= options_for_select @sort, session[:sort] %>
-		</select>
-	<% end -%>
-
-	<% if !local_assigns[:hide_colors] or !hide_colors -%>
-		<select name="colors" id="colors" onchange="javascript:document.forms[1].submit();">
-			<option value="0" class="select_default"><%= _("[Default colors]") %></option>
-			<% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
-			<%= options_for_select(options, session[:colors]) %>
-		</select>
-	<% end -%>
-
-	<% if !local_assigns[:hide_icons] or !hide_icons -%>
-		<select name="icons" id="icons" onchange="javascript:document.forms[1].submit();">
-			<option value="0" class="select_default"><%= _("[Default icons]") %></option>
-			<% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
-			<%= options_for_select(options, session[:icons]) %>
-		</select>
-	<% end -%>
-
-	<input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip"> <%=_ 'Hide Waiting'%></div>
-	<br />
-	<div id="more-filters">
-	  <%= render :partial => 'tasks/filter_property', :collection => current_user.company.properties %>
-          
-          <% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
-	    <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();"><div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip"> <%=_ 'Hide Dependencies'%>
-	  <% end -%>
+	<div id="filter_user" class="filter">
+	  <%= query_menu("filter_user", objects_to_names_and_ids(@users)) %>
+	  <%= selected_filter_values("filter_user", selected_user_names_and_ids) %>
 	</div>
+
+	<div class="filter">
+	  <%= query_menu("filter_status", available_statuses) %>
+	  <%= selected_filter_values("filter_status", selected_status_names_and_ids) %>
+	</div>
+      </div>
+  
+      <div class="extra filters">
+	<%= render :partial => 'tasks/filter_property', :collection => current_user.company.properties %>
+      </div>
+
+      <div class="display filters">
+	<%= render(:partial => "filter_display_options", :locals => local_assigns) %>
+      </div>
     </form>
   </fieldset>
 
