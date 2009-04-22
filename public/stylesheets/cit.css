@@ -2728,3 +2728,10 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     margin: 10px 10px;
     width: 30%;
 }
+
+#tasks_filter .filters label {
+    width: 105px;
+}
+#tasks_filter .filters input {
+    margin: 0px
+}

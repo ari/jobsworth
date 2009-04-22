@@ -1,4 +1,5 @@
 <% if !local_assigns[:hide_grouping] or !hide_grouping -%>
+<label for="group_by"><%= _("Grouping") %></label>
 <select name="group_by" id="group_by" onchange="javascript:document.forms[1].submit();">
   <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
   <%
@@ -13,6 +14,7 @@
 <% end -%>
 
 <% if !local_assigns[:hide_sorting] or !hide_sorting -%>
+<label for="sort_by"><%= _("Sorting") %></label>
 <select name="sort" id="sort" onchange="javascript:document.forms[1].submit();">
   <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
   <% @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"], [_("Recent"), "4"]] %>
@@ -22,6 +24,7 @@
 <% end -%>
 
 <% if !local_assigns[:hide_colors] or !hide_colors -%>
+<label for="colors"><%= _("Colors") %></label>
 <select name="colors" id="colors" onchange="javascript:document.forms[1].submit();">
   <option value="0" class="select_default"><%= _("[Default colors]") %></option>
   <% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
@@ -31,6 +34,7 @@
 <% end -%>
 
 <% if !local_assigns[:hide_icons] or !hide_icons -%>
+<label for="icons"><%= _("Icons") %></label>
 <select name="icons" id="icons" onchange="javascript:document.forms[1].submit();">
   <option value="0" class="select_default"><%= _("[Default icons]") %></option>
   <% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
@@ -39,15 +43,15 @@
 <br />
 <% end -%>
 
+<label for="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip">
+  <%=_ 'Hide Waiting'%>  
+</label>
 <input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
-<div style="float:left;padding-top:2px;" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip">
-  <%=_ 'Hide Waiting'%>
-</div>
 <br />
      
 <% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
-  <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
-  <div style="float:left;padding-top:2px;" title="<%= _('Hide Task Dependencies') %>" class="tooltip">
+  <label for="hide_deferred" title="<%= _('Hide Task Dependencies') %>" class="tooltip">
     <%=_ 'Hide Dependencies'%>
-  </div>
+  </label>
+  <input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
 <% end -%>
