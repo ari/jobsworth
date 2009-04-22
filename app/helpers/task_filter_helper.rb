@@ -55,7 +55,7 @@ module TaskFilterHelper
       :all_label => _("[Any #{ name.titleize }]"),
       :unassigned => TaskFilter::UNASSIGNED_TASKS
     }
-    locals[:display_all_label] = "none" if selected_names_and_ids.any?
+    locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
 
     return render(:partial => "/tasks/selected_filter_values", :locals => locals)
   end
@@ -65,13 +65,26 @@ module TaskFilterHelper
   # selected in the filter. Handles "unassigned" tasks too.
   ###
   def selected_user_names_and_ids
-    return TaskFilter.filter_user_ids(session).map do |id|
+    res =  TaskFilter.filter_user_ids(session).map do |id|
       if id == TaskFilter::UNASSIGNED_TASKS
         [ _("Unassigned"), id ]
-      else
+      elsif id > 0
         user = current_user.company.users.find(id)
         [ user.name, id ]
       end
+    end
+
+    return res.compact
+  end
+
+  ###
+  # Returns an array containing the name and id of statuses currently
+  # selected in the filter. 
+  ###
+  def selected_status_names_and_ids
+    selected = TaskFilter.filter_status_ids(session)
+    return available_statuses.select do |name, id|
+      selected.include?(id.to_i)
     end
   end
   
