@@ -320,7 +320,7 @@ class ViewsController < ApplicationController
     session[:filter_priority] = "-10"
     reset_property_filters
 
-    redirect_to :controller => 'tasks', :action => 'list'
+    redirect_to(:controller => 'tasks', :action => 'list')
   end
 
   def get_projects
