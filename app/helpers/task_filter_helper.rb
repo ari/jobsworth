@@ -134,6 +134,9 @@ module TaskFilterHelper
     customers = projects.map { |p| p.customer }.uniq
     customers = customers.sort_by { |c| c.name.downcase }
     selected += selected_filters_for(:customer, customers)
+
+    milestones = projects.inject([]) { |array, project| array += project.milestones }
+    selected += selected_filters_for(:milestone, milestones)
     
     values = objects_to_names_and_ids(customers, :prefix => "c")
 
@@ -141,18 +144,27 @@ module TaskFilterHelper
       customer_id = customer_id[1, customer_id.length]
       projects = current_user.projects.find(:all, :conditions => { 
                                               :customer_id => customer_id })
-      values = objects_to_names_and_ids(projects, :prefix => "p")
-
-      add_filter_html(values, "filter") do |project_id|
-        project_id = project_id[1, project_id.length]
-        project = current_user.projects.detect { |p| p.id == project_id.to_i }
-        values = objects_to_names_and_ids(project.milestones, :prefix => "m")
-
-        add_filter_html(values, "filter")
-      end
+      add_filter_html(filter_values_for_projects(projects), "filter")
     end
 
     res += selected_filter_values("filter", selected, _("Client/Project"))
+
+    return res
+  end
+
+  ###
+  # Returns the filter links for the given projects. Milestones are
+  # also included.
+  ###
+  def filter_values_for_projects(projects)
+    res = []
+
+    projects.each do |project|
+      res << [ project.name, "p#{ project.id }" ]
+      project.milestones.each do |milestone|
+        res << [ "- #{ milestone.name }", "m#{ milestone.id }" ]
+      end
+    end
 
     return res
   end
