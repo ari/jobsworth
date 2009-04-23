@@ -10,7 +10,7 @@ _darcs
 /nbproject
 config/database.yml
 config/ferret_server.yml
-config/environment.rb
+config/environment.local.rb
 config/juggernaut_config.yml
 semantic.cache
 public/javascripts/base_*.js

@@ -185,7 +185,7 @@ File.open("config/database.yml", "w") do |file|
   file.puts db_config
 end
 
-puts "  Creating config/environment.rb"
+puts "  Creating config/environment.local.rb"
 
 env = []
 File.open("config/environment.rb-example") do |file|
@@ -197,7 +197,7 @@ env = env.join
 
 env.gsub!(/clockingit\.com/, domain)
 
-File.open("config/environment.rb", "w") do |file|
+File.open("config/environment.local.rb", "w") do |file|
   file.puts env
 end
 
