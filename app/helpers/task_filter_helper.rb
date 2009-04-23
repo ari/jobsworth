@@ -29,11 +29,12 @@ module TaskFilterHelper
   # If label is passed, that will be used as the label for the menu. If that is
   # not passed, a pretty version of name will be used instead.
   ###
-  def query_menu(name, names_and_ids, label = nil)
+  def query_menu(name, names_and_ids, label = nil, &block)
     options = {}
     options[:label] = label || name.gsub(/filter_/, "").pluralize.titleize
     options[:filter_name] = name
     options[:names_and_ids] = names_and_ids
+    options[:callback] = block
 
     return render(:partial => "/tasks/querymenu", :locals => options)
   end
@@ -57,7 +58,7 @@ module TaskFilterHelper
   ###
   # Returns the html to display the selected values in the current filter.
   ###
-  def selected_filter_values(name, selected_names_and_ids, label = nil)
+  def selected_filter_values(name, selected_names_and_ids, label = nil, &block)
     label ||= name.gsub(/^filter_/, "").titleize
 
     locals = {
@@ -68,7 +69,7 @@ module TaskFilterHelper
     }
     locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
 
-    return render(:partial => "/tasks/selected_filter_values", :locals => locals)
+    return render(:partial => "/tasks/selected_filter_values", :locals => locals, &block)
   end
 
   ###
@@ -121,24 +122,60 @@ module TaskFilterHelper
   # The list of currently selected filters will be included in the return value.
   ###
   def customer_project_and_milestones_query_menus
-    res = ""
+    selected = []
 
     customer_ids = TaskFilter.filter_ids(session, :filter_customer)
     milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
     project_ids = TaskFilter.filter_ids(session, :filter_project)
 
-    customers = current_user.projects.map { |p| p.customer }
-    customers = customers.uniq
+    projects = current_user.projects
+    selected += selected_filters_for(:project, projects)
+
+    customers = projects.map { |p| p.customer }.uniq
     customers = customers.sort_by { |c| c.name.downcase }
-    selected = customers.select { |c| customer_ids.include?(c.id) }
+    selected += selected_filters_for(:customer, customers)
     
     values = objects_to_names_and_ids(customers, :prefix => "c")
-    res += query_menu("filter", values, _("Clients/Projects"))
 
-    values = objects_to_names_and_ids(selected, :prefix => "c")
-    res += selected_filter_values("filter", values, _("Client/Project"))
+    res = query_menu("filter", values, _("Clients/Projects")) do |customer_id|
+      customer_id = customer_id[1, customer_id.length]
+      projects = current_user.projects.find(:all, :conditions => { 
+                                              :customer_id => customer_id })
+      values = objects_to_names_and_ids(projects, :prefix => "p")
+      add_filter_html(values, "filter")
+    end
+
+    res += selected_filter_values("filter", selected, _("Client/Project"))
 
     return res
+  end
+
+  ###
+  # Returns the html to list the links to add filters to the current filter.
+  ###
+  def add_filter_html(names_and_ids, filter_name, callback = nil)
+    res = []
+
+    names_and_ids.each do |name, id|
+      content = link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')")
+      content += callback.call(id) if callback
+      res << content_tag(:li, content, :class => "add")
+    end
+
+    content = res.join(" ")
+    return content_tag(:ul, content, :class => "menu")
+  end
+
+  ###
+  # Returns an array of [ name, id ] pairs that are set in the current
+  # session filter for the given type.
+  ###
+  def selected_filters_for(type, collection)
+    prefix = type.to_s[0, 1]
+    ids = TaskFilter.filter_ids(session, "filter_#{ type }".to_sym)
+    
+    selected = collection.select { |o| ids.include?(o.id) }
+    return objects_to_names_and_ids(selected, :prefix => prefix)
   end
 
 end

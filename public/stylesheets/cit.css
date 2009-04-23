@@ -2653,7 +2653,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 #content ul.querymenu li ul li ul {
 	position: absolute;
 	top: -1px;
-	margin-left: -160px;
+	margin-left: 160px;
 	font-size: 100%;
 	background: #fff;
 	border-width: 0;

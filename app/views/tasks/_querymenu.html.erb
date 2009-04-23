@@ -1,11 +1,6 @@
 <ul class="querymenu">
   <li>
     <span><%= label %></span>
-    <ul class="menu">
-      <% names_and_ids.each do |name, id| -%>
-        <li class="add">
-	  <%= link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')") %>	  
-	</li>
-      <% end -%>
-    </ul>
+    <%= add_filter_html(names_and_ids, filter_name, callback) %>
+  </li>
 </ul>
