@@ -1,126 +1,16 @@
-<%= error_messages_for 'view' %>
-
-<%
-  @clients = current_user.projects.collect{ |p| [p.customer.name, p.customer.id] }.uniq.sort
-  @projects = current_user.projects.collect {|p| [p.name + " / " + p.customer.name, p.id]}
-  @milestones = Milestone.find(:all, :order => "due_at", :conditions => ["project_id IN(#{current_project_ids}) AND completed_at IS NULL"]).collect {|c| [ c.name + " / " + c.project.name, c.id.to_s ] }
-%>
-
 <!--[form:view]-->
-<label for="view_name"><%=_ 'Name' %></label><%= text_field :view, :name  %><br/>
-<label for="view_tags"><%=_ 'Tags' %></label><%= text_field :view, :filter_tags  %>
-  <div class="auto_complete" id="view_tags_auto_complete" style="display:none;"></div>
-<script type="text/javascript">
-new Autocompleter.Local('view_filter_tags', 'view_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 11});
-</script>
+<label for="view_name"><%=_ 'Name' %></label>
+<%= text_field :view, :name  %>
 <br/>
-  <% if @clients.size > 0 %>
-  <label for="view_filter_customer_id"><%=_ 'Client' %></label><select name="view[filter_customer_id]" id="view_filter_customer_id">
-      <% @clients = [[_("[Any Client]"), "0"]] + @clients  %>
-      <%= options_for_select @clients, @view.filter_customer_id %>
-    </select><br/>
-  <% end %>
 
-  <script type="text/javascript">
-//<![CDATA[
-new Form.Element.EventObserver('view_filter_customer_id', function(element, value) {new Ajax.Updater('view_filter_project_id', '/views/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'customer_id=' + value, insertion: updateSelect})})
-//]]>
+<label for="view_tags"><%=_ 'Tags' %></label>
+<%= text_field :view, :filter_tags  %>
+<div class="auto_complete" id="view_tags_auto_complete" style="display:none;"></div>
+<script type="text/javascript">
+  new Autocompleter.Local('view_filter_tags', 'view_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 11});
 </script>
 
-  <%#= observe_field 'view_filter_customer_id', { :url => { :controller => 'views', :action => 'get_projects' }, :update => 'view_filter_project_id', :with => 'customer_id', :loading => "Element.show('loading');", :complete => "Element.hide('loading');" } %>
-
-  <label for="view_filter_project_id"><%=_ 'Project' %></label><select name="view[filter_project_id]" id="view_filter_project_id">
-      <% if @projects.size > 0 %>
-      <% @projects = [[_("[Any Project]"), "0"]] + @projects %>
-      <% else %>
-      <% @projects = [[_("[Any Project]"), "0"]] + @projects %>
-      <% end %>
-
-      <%= options_for_select @projects, @view.filter_project_id %>
-    </select><br/>
-
-
-  <script type="text/javascript">
-//<![CDATA[
-new Form.Element.EventObserver('view_filter_project_id', function(element, value) {new Ajax.Updater('view_filter_milestone_id', '/views/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect})})
-//]]>
-</script>
-
-  <script type="text/javascript">
-//<![CDATA[
-new Form.Element.EventObserver('view_filter_project_id', function(element, value) {new Ajax.Updater('view_filter_user_id', '/views/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect})})
-//]]>
-</script>
-
-  <%#= observe_field 'view_filter_project_id', { :url => { :controller => 'views', :action => 'get_milestones' }, :update => 'view_filter_milestone_id', :with => 'project_id', :loading => "Element.show('loading');", :complete => "Element.hide('loading');" } %>
-
-  <%#= observe_field 'view_filter_project_id', { :url => { :controller => 'views', :action => 'get_owners' }, :update => 'view_filter_user_id', :with => 'project_id', :loading => "Element.show('loading');", :complete => "Element.hide('loading');" } %>
-
-  <% if @milestones.size > 0 %>
-  <label for="view_filter_milestone_id"><%=_ 'Milestone' %></label><select name="view[filter_milestone_id]" id="view_filter_milestone_id">
-      <% @milestones = [[_("[Any Milestone]"), "0"]] + @milestones  %>
-      <%= options_for_select @milestones, @view.filter_milestone_id.to_s %>
-    </select><br/>
-  <% end %>
-
-  <label for="user_name"><%=_ "User "%></label>
-  <%= hidden_field_tag("view[filter_user_id]", @view.filter_user_id, :id => "view_fiter_user_id", :class => "auto_complete_id") %>
-  <%= text_field_with_auto_complete(:user, :name, { :value => User.find(:first, :conditions => { :id => @view.filter_user_id  }) },
-  	    :after_update_element => "updateAutoCompleteField") %>
-
-  <label for="view_filter_status"><%=_ 'Status' %></label><%= select 'view', 'filter_status', [[_('[Any Status]'), '-1'],[_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3],[_('Invalid'),4],[_('Duplicate'),5], [_('Archived'), -2]], :selected => @view.filter_status %><br/>
-	    <% current_user.company.properties.each do |p| -%>
-	    <label for="<%= p.filter_name %>"><%= p %></label>
-	    <select name="view[properties][]" id="<%= p.filter_name %>">
-	      <option value="" class="select_default">
-		<%= "[#{_('Any %s', p.name)}]" %>
-	      </option>
-	      <% p.property_values.each do |pv| -%>
-	        <option value="<%= pv.id %>" <%= @view.property_values.index(pv) ? "selected" : ""  %>>
-		  <%= pv %>
-		</option>
-	      <% end -%>
-	    </select>
-	    <% end -%>
-
-
-  <label for="view_auto_group"><%=_ 'Group By' %></label>
-          <select name="view[auto_group]" id="view_auto_group">
-              <option value="0" class="select_default"><%= _("[No Grouping]") %></option>
-
-              <%
-                 @group_by = [[_("Tags"), "1"],[_("Clients"), "2"],[_("Projects"), "3"],[_("Milestones"), "4"],[_("Projects / Milestones"), "10"],[_("Users"), "5"],[_("Task Type"), "6"],[_("Status"), "7"],[_("Priority"), "9"],[_("Severity"), "8"]]
-              %>
-              <%= options_for_select @group_by, @view.auto_group.to_s %>
-            </select><br/>
-  <label for="view_sort"><%=_ 'Sort By' %></label>
-
-            <select name="view[sort]" id="view_sort">
-              <option value="0" class="select_default"><%= _("[Default Sorting]") %></option>
-              <%
-                 @sort = [[_("Due Date"), "1"],[_("Age"), "2"],[_("Name"), "3"], [_("Recent"), "4"] ]
-              %>
-              <%= options_for_select @sort, @view.sort.to_s %>
-            </select><br/>
-
-	    <label for="colors"><%=_ "Colors" %></label>
-            <select name="view[colors]" id="colors">
-              <option value="0" class="select_default"><%= _("[Default colors]") %></option>
-	      <% options = Property.all_with_colors(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
-              <%= options_for_select(options, @view.colors.to_s) %>
-            </select>
-	    <br />
-
-	    <label for="icons"><%=_ "Icons" %></label>
-            <select name="view[icons]" id="icons">
-              <option value="0" class="select_default"><%= _("[Default icons]") %></option>
-	      <% options = Property.all_with_icons(current_user.company).map { |p| [ p.name, p.id.to_s ] } %>
-              <%= options_for_select(options, @view.icons.to_s) %>
-            </select>
-	    <br />
-
-
-  <label for="view_hide_deferred"><%=_ 'Hide Waiting Tasks' %></label><input type="checkbox" name="view[hide_deferred]" id="view_hide_deferred" value="1" <%= @view.hide_deferred.to_i > 0 ? "checked" : "" %>><br/>
-  <label for="view_hide_dependencies"><%=_ 'Hide Task Dependencies' %></label><input type="checkbox" name="view[hide_dependencies]" id="view_hide_dependencies" value="1" <%= @view.hide_dependencies.to_i > 0 ? "checked" : "" %>><br/>
-  <label for="view_shared"><%=_ 'Shared' %></label><input type="checkbox" name="view[shared]" id="view_shared" value="1" <%= @view.shared.to_i > 0 ? "checked" : "" %>><br/>
+<label for="view_shared"><%=_ 'Shared' %></label>
+<input type="checkbox" name="view[shared]" id="view_shared" value="1">
+<br/>
 <!--[eoform:view]-->

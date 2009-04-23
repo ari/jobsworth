@@ -1,73 +1,37 @@
+require "fastercsv"
+
 # Save a set of filters for access later on, with some predefined Views
 #
 class ViewsController < ApplicationController
+  layout :calc_layout
 
   def new
     @view = View.new
-    @view.filter_status = -1
-    @view.filter_type_id = -1
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-  end
-
-  def create
-    @view = View.new
-    @view.company_id = current_user.company_id
-    @view.user_id = current_user.id
-    @view.attributes = params[:view]
-
-    if @view.save
-      flash['notice'] = _("View '%s' was successfully created.", @view.name)
-      redirect_to :action => 'select', :id => @view.id
-    else
-      render :action => 'new'
-    end
-  end
-
-  def edit
-    if current_user.admin?
-      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    else 
-      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
-    end 
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-  end
-
-  def update
-    if current_user.admin?
-      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    else 
-      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
-    end 
-
-    @view.attributes = params[:view]
-    @view.shared = 0 if params[:view][:shared].nil?
-    @view.auto_group = 0 unless params[:view][:auto_group]
-    @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
-      unless t.length == 0
-        t.strip.downcase
-      else
-        nil
-      end
-      }.compact.join(',')
-    if @view.save
-
-      flash['notice'] = _("View '%s' was successfully updated.", @view.name)
-      redirect_to :action => 'select', :id => @view.id
-    else
-      render :action => 'edit'
-    end
   end
 
   def save_filter
     @view = View.new(params[:view])
+    tf = TaskFilter.new(self, session)
 
     @view.company_id = current_user.company_id
     @view.user_id = current_user.id
 
-    @view.filter_user_id = session[:filter_user].join(",")
-    @view.filter_project_id = session[:filter_project].join(",")
-    @view.filter_milestone_id = session[:filter_milestone].join(",")
-    @view.filter_status = session[:filter_status].join(",")
+
+    user_ids = TaskFilter.filter_user_ids(session).to_csv
+    @view.filter_user_id = user_ids if !user_ids.blank?
+
+    project_ids = tf.project_ids.to_csv
+    @view.filter_project_id = project_ids if !project_ids.blank?
+
+    milestone_ids = tf.milestone_ids.to_csv
+    @view.filter_milestone_id = milestone_ids if !milestone_ids.blank?
+
+    customer_ids = tf.customer_ids.to_csv
+    @view.filter_customer_id = customer_ids if !customer_ids.blank?
+
+    status_ids = TaskFilter.filter_status_ids(session)
+    @view.filter_status = status_ids if !status_ids.blank?
 
     @view.auto_group = session[:group_by].to_i
     @view.hide_deferred = session[:hide_deferred].to_i
@@ -385,4 +349,14 @@ class ViewsController < ApplicationController
       session[p.filter_name] = nil
     end
   end
+
+  ###
+  # Returns the layout to use to display the current request.
+  # Add a "layout" param to the request to use a different layout.
+  ###
+  def calc_layout
+    params[:layout] || "application"
+  end
+
+
 end
