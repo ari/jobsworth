@@ -9,7 +9,7 @@
    filter_values = filter_values.map { |v| v.to_i }
 -%>
 
-<%= query_menu(filter_property.filter_name, objects_to_names_and_ids(values, :value),
+<%= query_menu(filter_property.filter_name, objects_to_names_and_ids(values, :name_method => :value),
     filter_property.name) %>
-<%= selected_filter_values(filter_name, objects_to_names_and_ids(selected, :value),
+<%= selected_filter_values(filter_name, objects_to_names_and_ids(selected, :name_method => :value),
     filter_property.name) %>

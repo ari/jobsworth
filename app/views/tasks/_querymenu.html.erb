@@ -4,7 +4,7 @@
     <ul class="menu">
       <% names_and_ids.each do |name, id| -%>
         <li class="add">
-	  <%= link_to_function(name, "addTaskFilter(this, #{ id }, '#{ filter_name }[]')") %>	  
+	  <%= link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')") %>	  
 	</li>
       <% end -%>
     </ul>

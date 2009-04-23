@@ -41,8 +41,17 @@ module TaskFilterHelper
   ###
   # Returns an array of names and ids
   ###
-  def objects_to_names_and_ids(collection, name_method = :name)
-    return collection.map { |o| [ o.send(name_method), o.id ] }
+  def objects_to_names_and_ids(collection, options = {})
+    defaults = { :name_method => :name }
+    options = defaults.merge(options)
+
+    return collection.map do |o| 
+      name = o.send(options[:name_method])
+      id = o.id
+      id = "#{ options[:prefix] }#{ id }" if options[:prefix]
+
+      [ name, id ]
+    end
   end
 
   ###
@@ -104,6 +113,32 @@ module TaskFilterHelper
     statuses << [_("Archived"), "-2"]
 
     return statuses
+  end
+
+  ###
+  # Returns the html to display the filters to select customers, projects
+  # and milestones.
+  # The list of currently selected filters will be included in the return value.
+  ###
+  def customer_project_and_milestones_query_menus
+    res = ""
+
+    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+
+    customers = current_user.projects.map { |p| p.customer }
+    customers = customers.uniq
+    customers = customers.sort_by { |c| c.name.downcase }
+    selected = customers.select { |c| customer_ids.include?(c.id) }
+    
+    values = objects_to_names_and_ids(customers, :prefix => "c")
+    res += query_menu("filter", values, _("Clients/Projects"))
+
+    values = objects_to_names_and_ids(selected, :prefix => "c")
+    res += selected_filter_values("filter", values, _("Client/Project"))
+
+    return res
   end
 
 end

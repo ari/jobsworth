@@ -12,9 +12,7 @@
 	-%>
 	<input type="hidden" name="redirect_action" value="<%= redir %>" /> 
 
-	<select name="filter[]" id="filter" onchange="javascript:document.forms[1].submit();"  multiple="multiple" class="multiselect">
-	  <%= task_filter_options %>
-	</select>
+	<%= customer_project_and_milestones_query_menus %>
 
 	<div id="filter_user" class="filter">
 	  <%= query_menu("filter_user", objects_to_names_and_ids(@users)) %>
