@@ -26,11 +26,11 @@
       </div>
   
       <div class="extra filters">
-	<%= render :partial => 'tasks/filter_property', :collection => current_user.company.properties %>
+	<%= render :partial => "tasks/filter_property", :collection => current_user.company.properties %>
       </div>
 
       <div class="display filters">
-	<%= render(:partial => "filter_display_options", :locals => local_assigns) %>
+	<%= render(:partial => "tasks/filter_display_options", :locals => local_assigns) %>
       </div>
     </form>
   </fieldset>
