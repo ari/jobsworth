@@ -59,17 +59,20 @@ class ViewsController < ApplicationController
   end
 
   def save_filter
-    @view = View.new
-    @view.filter_user_id = session[:filter_user].to_i
-    @view.filter_project_id = session[:filter_project].to_i
-    @view.filter_milestone_id = session[:filter_milestone].to_i
+    @view = View.new(params[:view])
+
+    @view.company_id = current_user.company_id
+    @view.user_id = current_user.id
+
+    @view.filter_user_id = session[:filter_user].join(",")
+    @view.filter_project_id = session[:filter_project].join(",")
+    @view.filter_milestone_id = session[:filter_milestone].join(",")
+    @view.filter_status = session[:filter_status].join(",")
+
     @view.auto_group = session[:group_by].to_i
     @view.hide_deferred = session[:hide_deferred].to_i
     @view.hide_dependencies = session[:hide_dependencies].to_i
-    @view.filter_status = session[:filter_status].to_i
-    @view.filter_type_id = session[:filter_type].to_i
-    @view.filter_severity = session[:filter_severity].to_i
-    @view.filter_priority = session[:filter_priority].to_i
+
     @view.sort = session[:sort].to_i
     @view.colors = session[:colors].to_i
     @view.icons = session[:icons].to_i
@@ -82,8 +85,13 @@ class ViewsController < ApplicationController
       end
       }.compact.join(',') if params[:tags]
 
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-    render :action => 'new'
+    if @view.save
+      flash['notice'] = _("View '%s' was successfully updated.", @view.name)
+      redirect_to :action => 'select', :id => @view.id
+    else
+      flash["notice"] = _("Error saving view")
+      redirect_to(:back)
+    end
   end
 
   def destroy
@@ -100,20 +108,23 @@ class ViewsController < ApplicationController
   def select
     @view = View.find(params[:id], :conditions => ["company_id = ? AND (user_id = ? OR shared = 1)", current_user.company_id, current_user.id])
 
-    session[:filter_user] = @view.filter_user_id.to_s if (@view.filter_user_id >= 0 || @view.filter_user_id == -1)
-    session[:filter_user] = current_user.id.to_s if @view.filter_user_id == -2
-    session[:filter_project] = @view.filter_project_id.to_s
+    session[:filter_user] = @view.filter_user_id
+    session[:filter_project] = @view.filter_project_id
+    session[:filter_status] = @view.filter_status
+    session[:filter_milestone] = @view.filter_milestone_id
+    session[:filter_customer] = @view.filter_customer_id.to_s
+
     session[:last_project_id] = session[:filter_project]
-    session[:filter_milestone] = @view.filter_milestone_id.to_s
+
     session[:group_by] = @view.auto_group.to_s
     session[:hide_deferred] = @view.hide_deferred.to_s
     session[:hide_dependencies] = @view.hide_dependencies.to_s
     session[:filter_hidden] = "0"
-    session[:filter_status] = @view.filter_status
+
     session[:filter_type] = @view.filter_type_id.to_s
     session[:filter_severity] = @view.filter_severity.to_s
     session[:filter_priority] = @view.filter_priority.to_s
-    session[:filter_customer] = @view.filter_customer_id.to_s
+
     session[:sort] = @view.sort.to_s
     session[:colors] = @view.colors.to_s
     session[:icons] = @view.icons.to_s
