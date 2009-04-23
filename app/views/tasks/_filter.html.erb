@@ -4,6 +4,8 @@
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
     <legend><%= _'Filter'%></legend>
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
+      <%= link_to_function("Hide Filter", "togglePreviousElement(this, \"#tasks_filter\")", :class => "hideLink") %>
+
       <div class="builtin filters">
 	<% 
 	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")

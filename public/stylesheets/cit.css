@@ -2735,3 +2735,6 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 #tasks_filter .filters input {
     margin: 0px
 }
+#tasks_filter .hideLink {
+    float: right;
+}
