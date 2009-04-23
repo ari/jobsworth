@@ -37,7 +37,7 @@
     </form>
 
     <div class="right save_link">
-      <%= link_to( _("Save Filter"), {:controller => 'views', :action => 'save_filter', :tags => @selected_tags.join(',')}) %>
+      <%= link_to( _("Save Filter"), {:controller => 'views', :action => 'save_filter', :tags => params[:tags]}) %>
     </div>
   </fieldset>
 
