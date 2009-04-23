@@ -142,7 +142,14 @@ module TaskFilterHelper
       projects = current_user.projects.find(:all, :conditions => { 
                                               :customer_id => customer_id })
       values = objects_to_names_and_ids(projects, :prefix => "p")
-      add_filter_html(values, "filter")
+
+      add_filter_html(values, "filter") do |project_id|
+        project_id = project_id[1, project_id.length]
+        project = current_user.projects.detect { |p| p.id == project_id.to_i }
+        values = objects_to_names_and_ids(project.milestones, :prefix => "m")
+
+        add_filter_html(values, "filter")
+      end
     end
 
     res += selected_filter_values("filter", selected, _("Client/Project"))
@@ -153,8 +160,9 @@ module TaskFilterHelper
   ###
   # Returns the html to list the links to add filters to the current filter.
   ###
-  def add_filter_html(names_and_ids, filter_name, callback = nil)
+  def add_filter_html(names_and_ids, filter_name, callback = nil, &block)
     res = []
+    callback ||= block
 
     names_and_ids.each do |name, id|
       content = link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')")
