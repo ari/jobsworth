@@ -2689,38 +2689,23 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	background: none;
 	}
 #content ul.menu li.all {
-	padding-left: 16px;
+	padding-left: 6px;
 	color: #888;
-	background: url(../img/cut.png) no-repeat 5px 4px;
-	}
+}
 #content ul.menu li.cut a {
 	padding-left: 16px;
 	color: #666;
-	background: url(../img/cut.png) no-repeat 5px 4px;
-	}
+	background: url(/images/cross_small.png) no-repeat 2px 2px;
+}
 #content ul.menu li.add a {
-	padding-left: 16px;
+	padding-left: 20px;
 	color: #666;
-	background: url(../img/add.png) no-repeat 5px 4px;
-	}
-#content ul.menu li.add.version a {
-	padding-left: 24px;
-	color: #666;
-	background: url(../img/add.png) no-repeat 13px 4px;
-	}
+	background: url(/images/add.png) no-repeat 2px 2px;
+}
 #content ul.menu li a:hover {
 	color: #000;
-	background-position: -195px 4px;
-	}
-#content ul.menu li.read a {
-	padding-left: 14px;
-	color: #666;
-	background: url(../img/read.png) no-repeat 0 4px;
-	}
-#content ul.menu li.read a:hover {
-	color: #000;
-	background-position: -600px 4px;
 }
+
 
 /* TASK FILTERS */
 #tasks_filter .filters {
