@@ -3,6 +3,7 @@ class OrganizationalUnit < ActiveRecord::Base
   include CustomAttributeMethods
 
   belongs_to :customer
+  named_scope :active, :conditions => { :active => true }
 
   def company
     customer.company
