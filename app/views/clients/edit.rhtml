@@ -49,7 +49,7 @@
   <%= link_to(_("Create Organizational Unit"), new_organizational_unit_path(:customer_id => @customer.id)) %>
   <br /><br />
   
-  <% @customer.organizational_units.each do |org_unit| %>
+  <% @customer.organizational_units.find(:all, :conditions => { :active => true }).each do |org_unit| %>
   <div class="org_unit">
     <%= link_to(org_unit, edit_organizational_unit_path(org_unit)) %>
   </div>
