@@ -1,6 +1,10 @@
       <div id="<%=@user.dom_id%>" class="user-block">
 	<div class="user-heading hoverrow">
-	  <div style="float:left;" class="user-avatar"><%= "<img src=\"#{@user.avatar_url(25)}\" class=\"photo\" />" %></div>
+	  <div style="float:left;" class="user-avatar">
+	    <% if !(defined? show_avatar) or show_avatar -%>
+	      <%= "<img src=\"#{@user.avatar_url(25)}\" class=\"photo\" />" %>
+	    <% end -%>
+	  </div>
 	  <div style="float:right;" class="user-action">
 	    <%= link_to image_tag("user_edit.png", :border => 0, :title => _("Edit <b>%s</b>", @user.name), :class => "tooltip"), :controller => 'users', :action => 'edit', :id => @user %> 
 	    <%  if(@user.id != current_user.id && !user_online?( @user.id)) %>
