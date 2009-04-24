@@ -107,7 +107,10 @@ class ViewsController < ApplicationController
     reset_property_filters
     # set filters for property values
     @view.property_values.each do |pv|
-      session[pv.property.filter_name] = pv.id
+      filter_name = pv.property.filter_name
+      values = session[filter_name] || []
+      values << pv.id
+      session[filter_name] = values
     end
 
     @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
