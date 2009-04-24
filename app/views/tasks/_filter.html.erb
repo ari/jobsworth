@@ -3,8 +3,8 @@
   
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
     <legend><%= _'Filter'%></legend>
+    <%= link_to_function("Hide", "togglePreviousElement(this, \"#filter_form\")", :class => "hideLink") %>
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
-      <%= link_to_function("Hide Filter", "togglePreviousElement(this, \"#tasks_filter\")", :class => "hideLink") %>
 
       <div class="builtin filters">
 	<% 
@@ -34,13 +34,14 @@
       <div class="display filters">
 	<%= render(:partial => "tasks/filter_display_options", :locals => local_assigns) %>
       </div>
+      <div class="right save_link">
+	<%= link_to( _("Save Filter"), { :controller => "views", :action => "new", :tags => params[:tags], :layout => "popup" },
+	:rel => "shadowbox;height=280;width=640;player=iframe") %>
+      </div>
     </form>
-
-    <div class="right save_link">
-      <%= link_to( _("Save Filter"), { :controller => "views", :action => "new", :tags => params[:tags], :layout => "popup" },
-      :rel => "shadowbox;height=280;width=640;player=iframe") %>
-    </div>
   </fieldset>
+
+
 
 <div class="task_view_links">
   <ul class="tabs">
