@@ -41,6 +41,17 @@ class ViewsController < ApplicationController
     @view.colors = session[:colors].to_i
     @view.icons = session[:icons].to_i
 
+    @view.property_values.clear
+    current_user.company.properties.each do |prop|
+      value_ids = session[prop.filter_name]
+      next if !value_ids
+
+      value_ids.each do |id|
+        value = prop.property_values.detect { |pv| pv.id == id.to_i }
+        @view.property_values << value if value
+      end
+    end
+
     @view.filter_tags = params[:tags].split(',').collect{ |t|
       unless t.length == 0
         t.strip.downcase
