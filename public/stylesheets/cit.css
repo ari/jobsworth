@@ -2610,8 +2610,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	color: #555;
 	background: url(../img/select.png) no-repeat 0 45%;
 	border-top: 1px solid #a9a9a9;
-	border-bottom: 1px solid #888;
-	}
+}
 #content ul.querymenu li a {
 	display: block;
 	width: auto;
@@ -2681,7 +2680,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	
 #content ul.menu {
 	/*margin: 0.5em 0;*/
-	margin: 0px 0px 15px;
+	margin: 0px 0px 5px;
 	padding: 10 0 0 0;	
 	}
 #content ul.menu li {
@@ -2689,7 +2688,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	background: none;
 	}
 #content ul.menu li.all {
-	padding-left: 6px;
+	padding-left: 16px;
 	color: #888;
 }
 #content ul.menu li.cut a {
