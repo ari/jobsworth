@@ -12,7 +12,8 @@
   <div class="auto_complete" id="view_tags_auto_complete" style="display:none;"></div>
   <script type="text/javascript">
     new Autocompleter.Local('view_filter_tags', 'view_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 11});
-																  </script>
+  </script>
+  <br />
 
   <label for="view_shared"><%=_ 'Shared' %></label>
   <input type="checkbox" name="view[shared]" id="view_shared" value="1">
