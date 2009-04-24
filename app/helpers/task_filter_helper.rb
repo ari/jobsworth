@@ -179,7 +179,9 @@ module TaskFilterHelper
     names_and_ids.each do |name, id|
       content = link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')")
       content += callback.call(id) if callback
-      res << content_tag(:li, content, :class => "add")
+      classname = "add"
+      classname += " first" if res.empty?
+      res << content_tag(:li, content, :class => classname)
     end
 
     content = res.join(" ")

@@ -2641,7 +2641,10 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	width: 159px;
 	background: none;
 	border-bottom: 1px solid #888;
-	}
+}
+#content ul.querymenu li ul li.first {
+	border-top: 1px solid #888;
+}
 #content ul.querymenu li:hover ul {
 	left: auto;
 	}
