@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090406223947) do
+ActiveRecord::Schema.define(:version => 20090424075511) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -234,6 +234,8 @@ ActiveRecord::Schema.define(:version => 20090406223947) do
     t.integer  "customer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "name"
+    t.boolean  "active",      :default => true
   end
 
   create_table "pages", :force => true do |t|
@@ -676,12 +678,12 @@ ActiveRecord::Schema.define(:version => 20090406223947) do
     t.integer "user_id"
     t.integer "shared",              :default => 0
     t.integer "auto_group",          :default => 0
-    t.integer "filter_customer_id",  :default => 0
-    t.integer "filter_project_id",   :default => 0
-    t.integer "filter_milestone_id", :default => 0
-    t.integer "filter_user_id",      :default => 0
+    t.string  "filter_customer_id",  :default => "0"
+    t.string  "filter_project_id",   :default => "0"
+    t.string  "filter_milestone_id", :default => "0"
+    t.string  "filter_user_id",      :default => "0"
     t.string  "filter_tags",         :default => ""
-    t.integer "filter_status",       :default => 0
+    t.string  "filter_status",       :default => "0"
     t.integer "filter_type_id",      :default => 0
     t.integer "hide_deferred"
     t.integer "sort",                :default => 0

@@ -1,78 +1,56 @@
+require "fastercsv"
+
 # Save a set of filters for access later on, with some predefined Views
 #
 class ViewsController < ApplicationController
+  layout :calc_layout
 
   def new
     @view = View.new
-    @view.filter_status = -1
-    @view.filter_type_id = -1
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-  end
-
-  def create
-    @view = View.new
-    @view.company_id = current_user.company_id
-    @view.user_id = current_user.id
-    @view.attributes = params[:view]
-
-    if @view.save
-      flash['notice'] = _("View '%s' was successfully created.", @view.name)
-      redirect_to :action => 'select', :id => @view.id
-    else
-      render :action => 'new'
-    end
-  end
-
-  def edit
-    if current_user.admin?
-      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    else 
-      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
-    end 
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-  end
-
-  def update
-    if current_user.admin?
-      @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    else 
-      @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
-    end 
-
-    @view.attributes = params[:view]
-    @view.shared = 0 if params[:view][:shared].nil?
-    @view.auto_group = 0 unless params[:view][:auto_group]
-    @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
-      unless t.length == 0
-        t.strip.downcase
-      else
-        nil
-      end
-      }.compact.join(',')
-    if @view.save
-
-      flash['notice'] = _("View '%s' was successfully updated.", @view.name)
-      redirect_to :action => 'select', :id => @view.id
-    else
-      render :action => 'edit'
-    end
   end
 
   def save_filter
-    @view = View.new
-    @view.filter_user_id = session[:filter_user].to_i
-    @view.filter_project_id = session[:filter_project].to_i
-    @view.filter_milestone_id = session[:filter_milestone].to_i
+    @view = View.new(params[:view])
+    tf = TaskFilter.new(self, session)
+
+    @view.company_id = current_user.company_id
+    @view.user_id = current_user.id
+
+
+    user_ids = TaskFilter.filter_user_ids(session).to_csv
+    @view.filter_user_id = user_ids if !user_ids.blank?
+
+    project_ids = tf.project_ids.to_csv
+    @view.filter_project_id = project_ids if !project_ids.blank?
+
+    milestone_ids = tf.milestone_ids.to_csv
+    @view.filter_milestone_id = milestone_ids if !milestone_ids.blank?
+
+    customer_ids = tf.customer_ids.to_csv
+    @view.filter_customer_id = customer_ids if !customer_ids.blank?
+
+    status_ids = TaskFilter.filter_status_ids(session)
+    @view.filter_status = status_ids if !status_ids.blank?
+
     @view.auto_group = session[:group_by].to_i
     @view.hide_deferred = session[:hide_deferred].to_i
     @view.hide_dependencies = session[:hide_dependencies].to_i
-    @view.filter_status = session[:filter_status].to_i
-    @view.filter_type_id = session[:filter_type].to_i
-    @view.filter_severity = session[:filter_severity].to_i
-    @view.filter_priority = session[:filter_priority].to_i
+
     @view.sort = session[:sort].to_i
     @view.colors = session[:colors].to_i
     @view.icons = session[:icons].to_i
+
+    @view.property_values.clear
+    current_user.company.properties.each do |prop|
+      value_ids = session[prop.filter_name]
+      next if !value_ids
+
+      value_ids.each do |id|
+        value = prop.property_values.detect { |pv| pv.id == id.to_i }
+        @view.property_values << value if value
+      end
+    end
 
     @view.filter_tags = params[:tags].split(',').collect{ |t|
       unless t.length == 0
@@ -82,8 +60,13 @@ class ViewsController < ApplicationController
       end
       }.compact.join(',') if params[:tags]
 
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
-    render :action => 'new'
+    if @view.save
+      flash['notice'] = _("View '%s' was successfully updated.", @view.name)
+      redirect_to :action => 'select', :id => @view.id
+    else
+      flash["notice"] = _("Error saving view")
+      redirect_to(:back)
+    end
   end
 
   def destroy
@@ -100,20 +83,23 @@ class ViewsController < ApplicationController
   def select
     @view = View.find(params[:id], :conditions => ["company_id = ? AND (user_id = ? OR shared = 1)", current_user.company_id, current_user.id])
 
-    session[:filter_user] = @view.filter_user_id.to_s if (@view.filter_user_id >= 0 || @view.filter_user_id == -1)
-    session[:filter_user] = current_user.id.to_s if @view.filter_user_id == -2
-    session[:filter_project] = @view.filter_project_id.to_s
+    session[:filter_user] = @view.filter_user_id
+    session[:filter_project] = @view.filter_project_id
+    session[:filter_status] = @view.filter_status
+    session[:filter_milestone] = @view.filter_milestone_id
+    session[:filter_customer] = @view.filter_customer_id.to_s
+
     session[:last_project_id] = session[:filter_project]
-    session[:filter_milestone] = @view.filter_milestone_id.to_s
+
     session[:group_by] = @view.auto_group.to_s
     session[:hide_deferred] = @view.hide_deferred.to_s
     session[:hide_dependencies] = @view.hide_dependencies.to_s
     session[:filter_hidden] = "0"
-    session[:filter_status] = @view.filter_status
+
     session[:filter_type] = @view.filter_type_id.to_s
     session[:filter_severity] = @view.filter_severity.to_s
     session[:filter_priority] = @view.filter_priority.to_s
-    session[:filter_customer] = @view.filter_customer_id.to_s
+
     session[:sort] = @view.sort.to_s
     session[:colors] = @view.colors.to_s
     session[:icons] = @view.icons.to_s
@@ -121,7 +107,10 @@ class ViewsController < ApplicationController
     reset_property_filters
     # set filters for property values
     @view.property_values.each do |pv|
-      session[pv.property.filter_name] = pv.id
+      filter_name = pv.property.filter_name
+      values = session[filter_name] || []
+      values << pv.id
+      session[filter_name] = values
     end
 
     @view.filter_tags = @view.filter_tags.split(',').collect{ |t|
@@ -320,7 +309,7 @@ class ViewsController < ApplicationController
     session[:filter_priority] = "-10"
     reset_property_filters
 
-    redirect_to :controller => 'tasks', :action => 'list'
+    redirect_to(:controller => 'tasks', :action => 'list')
   end
 
   def get_projects
@@ -374,4 +363,14 @@ class ViewsController < ApplicationController
       session[p.filter_name] = nil
     end
   end
+
+  ###
+  # Returns the layout to use to display the current request.
+  # Add a "layout" param to the request to use a different layout.
+  ###
+  def calc_layout
+    params[:layout] || "application"
+  end
+
+
 end

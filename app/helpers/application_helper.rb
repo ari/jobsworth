@@ -509,23 +509,6 @@ END_OF_HTML
   end
 
   ###
-  # Returns true if the more filters area should be shown.
-  ###
-  def show_more_filters?
-    show = (session[:filter_type] != "-1") 
-    show ||= (session[:filter_priority] != "-10") 
-    show ||= (session[:filter_severity] != "-10")
-    show ||= (session[:hide_dependencies].to_i != 0)
-
-    # we also need to show filter if any custom properties are set
-    current_user.company.properties.each do |prop|
-      show ||= session[prop.filter_name].to_i > 0
-    end
-
-    show
-  end
-
-  ###
   # Returns the html for lis and links for the different task views.
   ###
   def task_view_links
@@ -544,41 +527,6 @@ END_OF_HTML
       class_names << "active" if params.merge(url_opts) == params
 
       res += content_tag(:li, link, :class => class_names.join(" "))
-    end
-
-    return res
-  end
-
-  ###
-  # Returns the html to display options for the select used to filter tasks 
-  # by project, customer and milestone.
-  ###
-  def task_filter_options
-    res = content_tag(:option, _("[All Tasks]"), :value => 0, :class => "select_default")
-    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
-    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
-    project_ids = TaskFilter.filter_ids(session, :filter_project)
-
-    current_user.company.customers.each do |customer|
-      
-      projects = current_user.projects.find(:all, :conditions => { 
-                                              :customer_id => customer.id })
-      next if projects.empty?
-
-      res += content_tag(:option, customer.name, :value => "c#{ customer.id }", 
-                         :class => "select_heading", :selected => customer_ids.include?(customer.id))
-      projects.each do |project|
-        res += content_tag(:option, "&nbsp&nbsp;#{ project.name }", :value => "p#{ project.id }", 
-                           :class => "select_item", :selected => project_ids.include?(project.id))
-        project.milestones.each do |milestone|
-          res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ milestone.name }", 
-                             :value => "m#{ milestone.id }", :class => "select_subitem",
-                             :selected => milestone_ids.include?(milestone.id))
-        end
-        res += content_tag(:option, "&nbsp&nbsp;&nbsp&nbsp;#{ _("[Unassigned]") }", 
-                           :value => "u#{ project.id }", :class => "select_default select_subitem",
-                           :selected => milestone_ids.include?(- project.id - 1))
-      end
     end
 
     return res
@@ -732,6 +680,7 @@ END_OF_HTML
 
     return res
   end
+
 end
 
 

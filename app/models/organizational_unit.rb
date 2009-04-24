@@ -3,16 +3,17 @@ class OrganizationalUnit < ActiveRecord::Base
   include CustomAttributeMethods
 
   belongs_to :customer
+  named_scope :active, :conditions => { :active => true }
 
   def company
     customer.company
   end
 
   def to_s
-    if custom_attribute_values.any?
-      return custom_attribute_values.first.value
-    else
-      super
-    end
+    res = name
+    res ||= custom_attribute_values.first.value if custom_attribute_values.any?
+    res ||= super
+
+    return res
   end
 end

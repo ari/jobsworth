@@ -1,11 +1,27 @@
-<fieldset id="content">
-<legend><%=_ 'New View' %></legend>
+<fieldset id="content" class="basic">
+  <legend><%=_ "Save Filter" %></legend>
 
-<% form_tag :action => 'create' do %>
-  <%= render :partial => "form" %>
+  <% form_tag :action => "save_filter" do %>
+
+  <label for="view_name"><%=_ 'Name' %></label>
+  <%= text_field :view, :name  %>
+  <br/>
+
+  <label for="view_tags"><%=_ 'Tags' %></label>
+  <%= text_field :view, :filter_tags  %>
+  <div class="auto_complete" id="view_tags_auto_complete" style="display:none;"></div>
+  <script type="text/javascript">
+    new Autocompleter.Local('view_filter_tags', 'view_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 11});
+  </script>
+  <br />
+
+  <label for="view_shared"><%=_ 'Shared' %></label>
+  <input type="checkbox" name="view[shared]" id="view_shared" value="1">
+  <br/>
+
   <label>&nbsp;</label><div class="buttons">
-  <%= submit_tag _("Create"), :class => 'nolabel' %>
+    <%= submit_tag _("Create"), :class => 'nolabel' %>
   </div>
-<% end %>
+  <% end %>
 
 </fieldset>
