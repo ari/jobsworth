@@ -650,3 +650,19 @@ function removeTaskUser(sender) {
     sender = jQuery(sender);
     sender.parent(".user").remove();
 }
+
+function toggleTaskIcon(sender, baseClassName, enabledClassName) {
+    var div = jQuery(sender).parents(".user");
+
+    var input = div.find("input." + baseClassName);
+    var icon = div.find(".icon." + baseClassName);
+
+    if (input.attr("disabled")) {
+	icon.addClass(enabledClassName)
+	input.attr("disabled", false);
+    }
+    else {
+	input.attr("disabled", true);
+	icon.removeClass(enabledClassName);
+    }
+}

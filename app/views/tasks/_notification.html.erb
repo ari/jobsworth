@@ -1,5 +1,9 @@
 <% user = notification -%>
 <div class="user">
+  <%= hidden_field_tag("user[]", user.id) %>
+  <%= hidden_field_tag("assigned[]", user.id, :disabled => !@task.users.include?(user), :class => "assigned") %>
+  <%= hidden_field_tag("notify[]", user.id, :class => "notify") %>
+
   <label>
     <%= assigned_icon(@task, user) %>
     <%= notify_icon(@task, user) %>

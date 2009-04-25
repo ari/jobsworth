@@ -1430,10 +1430,10 @@ a.description {
     height: 16px;
     width: 16px;
 }
-#taskform .user .icon.assigned {
+#taskform .user .icon.is_assigned {
     background-image: url(/images/user.png);
 }
-#taskform .user .icon.notify {
+#taskform .user .icon.should_notify {
     background-image: url(/images/email.png);    
 }
 .prog-border {

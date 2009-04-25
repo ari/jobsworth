@@ -226,12 +226,13 @@ module TasksHelper
   # is allowed to assign for the task project.
   ###
   def assigned_icon(task, user)
-    classname = "icon"
-    classname += " assigned" if task.users.include?(user)
-    content = content_tag(:span, "", :class => classname)
+    classname = "icon tooltip assigned"
+    classname += " is_assigned" if task.users.include?(user)
+    content = content_tag(:span, "*", :class => classname, 
+                          :title => _("Click to toggle whether this task is assigned to this user"))
 
     if current_user.can?(task.project, "reassign")
-      content = link_to_function(content)
+      content = link_to_function(content, "toggleTaskIcon(this, 'assigned', 'is_assigned')")
     end
 
     return content
@@ -243,11 +244,12 @@ module TasksHelper
   # The icon will have a link to toggle this attribute.
   ###
   def notify_icon(task, user)
-    classname = "icon"
-    classname += " notify"
+    classname = "icon tooltip notify"
+    classname += " should_notify"
 
-    content = content_tag(:span, "", :class => classname)
-    content = link_to_function(content)
+    content = content_tag(:span, "*", :class => classname, 
+                          :title => _("Click to toggle whether this user will receive a notification when task is saved"))
+    content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify')")
 
     return content
   end
