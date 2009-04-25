@@ -11,10 +11,6 @@ module ApplicationHelper
     current_users.size
   end
 
-  def user_online?(user_id)
-    c = User.count( :conditions => "id = #{user_id} AND last_ping_at > '#{2.minutes.ago.utc.to_s(:db)}' AND company_id=#{current_user.company_id}" ) > 0
-  end
-
   def user_name
     current_user.name
   end

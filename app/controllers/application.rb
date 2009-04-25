@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
   include Misc
   helper :task_filter
+  helper :users
 
 #  helper :all
 
@@ -408,7 +409,10 @@ class ApplicationController < ActionController::Base
       session[:filter_milestone] = milestones
     end
     
-    filter_names =  [:filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority, :colors, :icons ]
+    filter_names =  [:filter_user, :filter_hidden, :filter_status, :group_by, 
+                     :hide_deferred, :hide_dependencies, :sort, :filter_type, 
+                     :filter_severity, :filter_priority, :colors, :icons, 
+                     :show_all_unread ]
     filter_names.each do |filter|
       session[filter] = params[filter]
     end

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090424075511) do
+ActiveRecord::Schema.define(:version => 20090425013258) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -692,6 +692,7 @@ ActiveRecord::Schema.define(:version => 20090424075511) do
     t.integer "hide_dependencies"
     t.integer "colors"
     t.integer "icons"
+    t.boolean "show_all_unread",     :default => false
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"

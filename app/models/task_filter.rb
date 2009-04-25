@@ -77,6 +77,7 @@ class TaskFilter
       @tasks = filter_by_customers_projects_and_milestones(@tasks)
       @tasks = filter_by_properties(@tasks)
       @tasks = filter_by_tags(@tasks)
+      @tasks += unread_tasks if session[:show_all_unread]
       @tasks = sort_tasks(@tasks)
     end
 
@@ -324,5 +325,18 @@ class TaskFilter
     end
     
     return res.uniq
+  end
+
+  ###
+  # Returns all unread tasks for the current user.
+  ###
+  def unread_tasks
+    notifications = current_user.notifications.unread
+    notifications += current_user.task_owners.unread
+    
+    tasks = notifications.map { |n| n.task }
+    tasks = tasks.uniq
+
+    return tasks
   end
 end

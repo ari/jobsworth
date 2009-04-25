@@ -40,7 +40,7 @@
   <%= create_users_link(@customer) %>
 
   <% for @user in @customer.users %>
-    <%= render :partial => "/users/user" %>
+    <%= render(:partial => "/users/user", :locals => { :show_avatar => false }) %>
   <% end %>
 </fieldset>
 
