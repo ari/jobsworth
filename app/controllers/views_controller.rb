@@ -5,6 +5,22 @@ require "fastercsv"
 class ViewsController < ApplicationController
   layout :calc_layout
 
+  DEFAULTS = {
+    :view => nil,
+    :filter_user => [],
+    :filter_customer => [],
+    :filter_project => [],
+    :filter_milestone => [],
+    :filter_status => [],
+    :hide_deferred => 0,
+    :hide_dependencies => 0,
+    :show_all_unread => 0,
+    :colors => 0,
+    :icons => 0,
+    :group_by => "",
+    :sort => ""
+  }
+
   def new
     @view = View.new
     @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids })
@@ -127,110 +143,56 @@ class ViewsController < ApplicationController
   end
 
   def select_milestone
-	  @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id]) rescue begin
-       flash['notice'] = _('Either the milestone doesn\'t exist, or you don\'t have access to it.')
-       redirect_from_last
-       return
-	  end
-    session[:filter_user] = "0"
-    session[:filter_project] = @milestone.project.id.to_s
-    session[:last_project_id] = session[:filter_project]
-    session[:filter_milestone] = @milestone.id.to_s
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:filter_type] = "-1"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    session[:view] = nil
-    reset_property_filters
+    begin
+      @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    rescue
+      flash['notice'] = _('Either the milestone doesn\'t exist, or you don\'t have access to it.')
+      redirect_from_last
+      return
+    end
+
+    set_session_filters(:filter_milestone => @milestone.id,
+                        :last_project_id => session[:filter_project])
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_project
-    @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id]) rescue begin
+    begin
+    @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id])
+    rescue 
       flash['notice'] = _('Either the project doesn\'t exist, or you don\'t have access to it.')
       redirect_from_last
       return
     end
-    session[:filter_user] = "0"
-    session[:filter_project] = @project.id.to_s
-    session[:last_project_id] = session[:filter_project]
-    session[:filter_milestone] = "0"
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:filter_type] = "-1"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    session[:view] = nil
-    reset_property_filters
+
+    set_session_filters(:filter_project => @project.id, 
+                        :last_project_id => session[:filter_project])
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_user
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    session[:filter_user] = @user.id.to_s
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:filter_type] = "-1"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    session[:view] = nil
-    reset_property_filters
+
+    set_session_filters(:filter_user => @user.id)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_client
     @client = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    session[:filter_user] = "0"
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:filter_type] = "-1"
-    session[:filter_customer] = @client.id
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    session[:view] = nil
-    reset_property_filters
+    
+    set_session_filters(:filter_customer => @client.id)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def all_tasks
-
     @view = View.new
     @view.name = _('Open Tasks')
 
-    session[:view] = @view
-
-    session[:filter_user] = "0"
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:filter_status] = "0"
-    session[:filter_hidden] = "0"
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_type] = "-1"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    reset_property_filters
+    set_session_filters(:view => @view)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -238,20 +200,8 @@ class ViewsController < ApplicationController
   def my_tasks
     @view = View.new
     @view.name = _('My Open Tasks')
-
-    session[:view] = @view
-    session[:filter_user] = current_user.id.to_s
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:filter_status] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_type] = "-1"
-    session[:hide_deferred] = "1"
-    session[:hide_dependencies] = "0"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    reset_property_filters
+    
+    set_session_filters(:view => @view, :filter_user => current_user.id)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -260,19 +210,8 @@ class ViewsController < ApplicationController
     @view = View.new
     @view.name = _('My In Progress Tasks')
 
-    session[:view] = @view
-    session[:filter_user] = current_user.id.to_s
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:filter_status] = "1"
-    session[:filter_hidden] = "0"
-    session[:filter_type] = "-1"
-    session[:hide_deferred] = "1"
-    session[:hide_dependencies] = "0"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    reset_property_filters
+    set_session_filters(:filter_user => current_user.id,
+                        :filter_status => 1)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
@@ -281,33 +220,13 @@ class ViewsController < ApplicationController
     @view = View.new
     @view.name = _('Unassigned Tasks')
 
-    session[:view] = @view
-    session[:filter_user] = "-1"
-    session[:filter_project] = "0"
-    session[:filter_milestone] = "0"
-    session[:filter_status] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_type] = "-1"
-    session[:hide_deferred] = "0"
-    session[:hide_dependencies] = "0"
-    session[:filter_customer] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    reset_property_filters
+    set_session_filters(:view => @view, :filter_user => -1)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def browse
-    session[:view] = nil
-    session[:filter_status] = "0"
-    session[:filter_hidden] = "0"
-    session[:filter_type] = "-1"
-    session[:hide_deferred] = "1"
-    session[:hide_dependencies] = "0"
-    session[:filter_severity] = "-10"
-    session[:filter_priority] = "-10"
-    reset_property_filters
+    set_session_filters({})
 
     redirect_to(:controller => 'tasks', :action => 'list')
   end
@@ -353,6 +272,7 @@ class ViewsController < ApplicationController
     render :text => res
   end
 
+  private
 
   ###
   # Removes any property filters from the current
@@ -372,5 +292,17 @@ class ViewsController < ApplicationController
     params[:layout] || "application"
   end
 
+  ###
+  # Sets the session to use the given filters. Any values
+  # not passed are set to their defaults.
+  ###
+  def set_session_filters(filters)
+    reset_property_filters
+    filters = DEFAULTS.merge(filters)
+
+    filters.each do |filter, value|
+      session[filter] = value
+    end
+  end
 
 end
