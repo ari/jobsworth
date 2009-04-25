@@ -2728,3 +2728,10 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 #tasks_filter .save_link {
     clear: both;
 }
+
+#customer_search_filters {
+    float: left;
+}
+.filter_options {
+    float: right;
+}
