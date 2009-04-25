@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090425013258) do
+ActiveRecord::Schema.define(:version => 20090425034010) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -86,14 +86,15 @@ ActiveRecord::Schema.define(:version => 20090425013258) do
   end
 
   create_table "customers", :force => true do |t|
-    t.integer  "company_id",                   :default => 0,  :null => false
-    t.string   "name",          :limit => 200, :default => "", :null => false
+    t.integer  "company_id",                   :default => 0,    :null => false
+    t.string   "name",          :limit => 200, :default => "",   :null => false
     t.string   "contact_email", :limit => 200
     t.string   "contact_name",  :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "css"
     t.integer  "binary_id"
+    t.boolean  "active",                       :default => true
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
@@ -404,6 +405,7 @@ ActiveRecord::Schema.define(:version => 20090425013258) do
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "active",           :default => true
   end
 
   create_table "resources_tasks", :id => false, :force => true do |t|
@@ -663,6 +665,7 @@ ActiveRecord::Schema.define(:version => 20090425013258) do
     t.boolean  "receive_own_notifications",                :default => true
     t.boolean  "use_resources"
     t.integer  "customer_id"
+    t.boolean  "active",                                   :default => true
   end
 
   add_index "users", ["uuid"], :name => "users_uuid_index"

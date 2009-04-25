@@ -17,7 +17,7 @@ context "OrganizationalUnits" do
   end
 
   specify "/edit should render :success" do
-    org_unit = OrganizationalUnit.new.save!
+    org_unit = OrganizationalUnit.new(:name => "test org unit").save!
     get :new, :id => org_unit.id, :customer_id => @user.company.customers.first.id
     status.should.be :success
   end

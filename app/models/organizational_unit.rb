@@ -5,6 +5,8 @@ class OrganizationalUnit < ActiveRecord::Base
   belongs_to :customer
   named_scope :active, :conditions => { :active => true }
 
+  validates_presence_of :name
+
   def company
     customer.company
   end
