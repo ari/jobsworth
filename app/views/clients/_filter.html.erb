@@ -3,10 +3,27 @@
       <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
 	<legend><%= _'Filter'%></legend>
 	<form method="post" action="">
-	  <% # seem to need this submit here or else enter doesn't submit after %>
-          <% # adding in new search fields %>
+	  <% # seem to need this submit here or else enter doesn't submit after -%>
+          <% # adding in new search fields -%>
  	  <input type="submit" style="display: none" />
 
+
+ 	  <div class="filter_options" style="float: right">
+	    <label for="search_users">
+	      <%= _("Search users") %>
+	    </label>
+	    <%= check_box_tag(:search_users, 1, !session[:client_search_ignore_users], 
+		:class => "checkbox", :onChange => "jQuery(this).parents('form').submit()") %>
+	    <br />
+
+	    <label for="search_clients">
+	      <%= _("Search clients") %>
+	    </label>
+	    <%= check_box_tag(:search_clients, 1, !session[:client_search_ignore_clients], 
+		:class => "checkbox", :onChange => "jQuery(this).parents('form').submit()") %>
+	    <br />
+	  </div>
+	  
 	  <div id="customer_search_filters">
 	    <% filters = session[:client_name_filters] || [] %>
 	    <% filters.each do |text| %>
@@ -21,6 +38,7 @@
 	      <%= render :partial => "search_filter_prompt" %>
 	    <% end %>
 	  </div>
+	  <br clear="both" />
 	  <%= add_search_filter_link %>
 	</form>
       </fieldset>

@@ -10,22 +10,24 @@ class ClientsController < ApplicationController
 
   def list
     if request.post?
-      filters = params[:search_text]
-      # need to get rid of any blanks because we don't want to search for them 
-      # or have them show up in the list.
-      filters.delete_if { |s| s.strip.blank? } if filters
-      session[:client_name_filters] = filters
+      setup_filters_in_session
       redirect_to :action => "list"
     end
     
     filters = session[:client_name_filters]
     if filters and filters.any?
-      @customers = Customer.search(current_user.company, filters)
-      @users = User.search(current_user.company, filters)
-      # add any missing customers to the list
-      @users.each { |u| @customers << u.customer }
-      @customers = @customers.flatten.uniq
+      @customers = []
 
+      if !session[:client_search_ignore_clients]
+        @customers = Customer.search(current_user.company, filters)
+      end
+      if !session[:client_search_ignore_users]
+        @users = User.search(current_user.company, filters)
+        # add any missing customers to the list
+        @users.each { |u| @customers << u.customer }
+      end
+
+      @customers = @customers.flatten.uniq
       @paginate = false
     else
       @customers = Customer.paginate(:order => "customers.name", 
@@ -199,4 +201,14 @@ class ClientsController < ApplicationController
     GC.start
   end
 
+  def setup_filters_in_session
+    filters = params[:search_text]
+    # need to get rid of any blanks because we don't want to search for them 
+    # or have them show up in the list.
+    filters.delete_if { |s| s.strip.blank? } if filters
+    session[:client_name_filters] = filters
+    
+    session[:client_search_ignore_users] = !params[:search_users]
+    session[:client_search_ignore_clients] = !params[:search_clients]
+  end
 end
