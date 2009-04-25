@@ -201,7 +201,8 @@ class ViewsController < ApplicationController
     @view = View.new
     @view.name = _('My Open Tasks')
     
-    set_session_filters(:view => @view, :filter_user => current_user.id)
+    set_session_filters(:view => @view, :filter_user => current_user.id,
+                        :filter_status => 0)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end
