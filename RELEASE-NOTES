@@ -2,6 +2,17 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+25 April 2009
+   Speed improvements to the user view. Previously displaying hundreds of users was very slow due to loading all those avatars.
+   'Active' flag added to clients, customers, organizational units and resources. This allows you to keep historical data (eg. users linked to tasks) but still disable them from appearing in the user interface
+   IMPORTANT: config/environment.rb now has a localised friend config/environment.local.rb. This means that your config in environment.rb will be overwritten when you upgrade via git. Please copy environment.rb-example to environment.local.rb and adjust any configuration for your local needs.
+   
+24 April 2009
+   A new task filtering interface now implemented! This allows you to select multiple milestones, users, etc but without the clunkiness of the previous design. Also added is a filter to always show unread tasks even if they don't match the rest of your filtered choices.
+   
+15 April 2009
+   Organizational units can now have custom attributes.
+
 14 Apr 2009
    Clients are now linked to users. This means all users belong to a client (their company) and existing users have been migrated into client 1.
    The user interface has been substantially reworked to cope with thousands of users and thousands of clients.
