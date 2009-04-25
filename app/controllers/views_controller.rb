@@ -11,7 +11,7 @@ class ViewsController < ApplicationController
     :filter_customer => [],
     :filter_project => [],
     :filter_milestone => [],
-    :filter_status => [],
+    :filter_status => [ 0 ],
     :hide_deferred => 0,
     :hide_dependencies => 0,
     :show_all_unread => 0,
