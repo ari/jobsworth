@@ -644,3 +644,9 @@ function addTaskFilter(sender, id, field_name) {
     li.append(html);
     jQuery("#filter_form").submit();
 }
+
+/* TASK OWNER METHODS */
+function removeTaskUser(sender) {
+    sender = jQuery(sender);
+    sender.parent(".user").remove();
+}

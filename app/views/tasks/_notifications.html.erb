@@ -1,0 +1,26 @@
+<fieldset id="task_notify" style="padding-right:0;">
+  <legend><%=_ 'Notifications' %></legend>
+
+  <label for="task_requested_by"><%=_ 'Requested By' %></label>
+  <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
+  <br/>
+
+  <div id="owner_separator"></div>
+
+  <label for="notification-input">
+    <%= _"Notify" %>&nbsp;&nbsp;
+    <small>
+      <a href="#" onclick="javascript:updateList('<%= current_user.name %>');false">
+	add me
+      </a>
+    </small>
+  </label>
+
+  <input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
+  <div style="clear:both; display:none;" id="notification-autocomplete"></div>
+  <div style="clear:both;" id="notifications"></div>
+
+  <%= render(:partial => "notification", :collection => (@task.users + @task.watchers).uniq) %>
+</script>
+
+</fieldset>

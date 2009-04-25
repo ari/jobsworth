@@ -1,0 +1,11 @@
+<% user = notification -%>
+<div class="user">
+  <label>
+    <%= assigned_icon(@task, user) %>
+    <%= notify_icon(@task, user) %>
+  </label>
+
+  <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to(user.name, :controller => "users", :action => "edit", :id => user) %>
+  <br />
+</div>

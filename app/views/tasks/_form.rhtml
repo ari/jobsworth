@@ -73,43 +73,6 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 	  <span id="add_milestone"><a href="/milestones/quick_new?project_id=<%=selected_project%>" rel="shadowbox;height=300;width=460;player=iframe"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
   </div>
 	  <br/>
-
-<%
-
-users = Project.find(selected_project).users.find(:all, :order => 'name' ) rescue [] 
-
-resource_string = "<select id=\"task_users\" name=\"users[]\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('Unassigned')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('') + "</select>"
-resource_string = resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
-
-owner_string = ''
-num = 0
-unless @task.users.empty?
-  @task.users.each do |u|
-    owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>" if num == 0
-    owner_string << "<div id=\"owner_#{num}\"><label for=\"dummy\"></label>" if num != 0
-    owner_string <<  "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{(u.id == us.id ? "selected=\"selected\"" : '')}>#{us.name}</option>"}.join('').gsub(/'/,"\\\\\'") + "</select>" #, perms['reassign'] )
-
-    if( perms['reassign'].keys.size == 0 )
-      owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a>" if num == 0
-      owner_string << "<a href=\"#\" onclick=\"javascript:new Element.remove('owner_#{num}');return false;\"><img src=\"/images/user_delete.png\" border=\"0\" style=\"padding:0;margin:0;\"/></a>" if num != 0
-    end
-    owner_string << "</div>"
-    num = num + 1
-  end
-  owner_string = owner_string.split(/\n/).join('')
-else
-  owner_string = "<select name=\"users[]\" id=\"task_users\" #{"disabled=\"disabled\"" if @task.project && !current_user.can?( @task.project, 'reassign' )}><option value=\"\">[#{_('No one')}]</option>" + users.collect{|us| "<option value=\"#{us.id}\" #{"selected" if (us.id == current_user.id && @task.created_at.nil?) }>#{us.name}</option>"}.join('') + "</select>" #, perms['reassign']
-  owner_string = owner_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
-
-  if perms['reassign'].keys.size == 0
-    owner_string = "<div id=\"owner_#{num}\"><label for=\"dummy\">#{_('Assigned To')}</label>#{owner_string}"
-    owner_string << "<a href=\"#\" onclick=\"javascript:add_owner();return false;\"><img src=\"/images/user_add.png\" border=\"0\" style=\"padding:2px 0 0 0;margin:0;\"/></a></div>"
-  end
-  num = num + 1
-end
-
-%>
-
       <% if current_user.option_tracktime.to_i == 1%>
        <label for="task_duration"><%=_ 'Time Estimate' %></label>
       <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
@@ -140,102 +103,10 @@ end
 
 	<label for="task_status"><%= _("Status") %></label>
 	<%= status_field(@task) %>
-
       </fieldset>
 
-      <fieldset id="task_notify" style="padding-right:0;">
-        <legend><%=_ 'Notifications' %></legend>
+      <%= render(:partial => "notifications", :locals => { :perms => perms }) %>
 
-<script type="text/javascript">
-var num = <%=num%>;
-var resource = '<%= resource_string %>';
-var selected_user = "0";
-function add_owner() {
-        new Insertion.Before("owner_separator", '<div id="owner_' + num + '"><label for="dummy"></label>' + resource + '<a href="#" onclick="javascript:new Element.remove(\'owner_' + num + '\');return false;"><img src="/images/user_delete.png" border="0" style="padding:0;margin:0;"/></a></div>');
-        num = num + 1;
-}
-
-function remember_user() {
-
-  for( var i = 1; i < num; i++ ) {
-      if( $("owner_" + i) ) {
-         new Element.remove("owner_" + i);
-      }
-  }
-
-  var element = $('task_users');
-  if( typeof element == 'array' ) {
-     selected_user = "0"
-   } else {
-     selected_user = element.value
-   }
-
-
-}
-
-function reset_owners() {
-  for( var i = 1; i < num; i++ ) {
-      if( $("owner_" + i) ) {
-         new Element.remove("owner_" + i);
-      }
-  }
-  $('task_users').value = selected_user;
-}
-</script>
-
-       <%= owner_string %>
-      <div id="owner_separator"></div>
-      <label for="task_requested_by"><%=_ 'Requested By' %></label>
-      <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %><br/>
-
-        <label for="notification-input"><%= _"Notify" %>&nbsp;&nbsp;<small><a href="#" onclick="javascript:updateList('<%= current_user.name %>');false">add me</a></small></label>
-        <input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
-        <div style="clear:both; display:none;" id="notification-autocomplete"></div>
-        <div style="clear:both;" id="notifications"></div>
-<script type="text/javascript">
-var watchers = <%= @task.watchers.size + (@task.notify_emails.nil? ? 0 : @task.notify_emails.count(',')) %>;
-
-function updateList(text) {
-   new Insertion.Top($('notifications'), '<div id="watcher-' + watchers + '" class="notify-row"><a href="#" class="close-cross" onclick="javascript:new Element.remove(\'watcher-' + watchers + '\');false"><img src="/images/cross_small.png" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a><div class="notify-user">' + text + '</div><input type="hidden" name="watchers[]" value="' + text + '" /></div>' );
-   watchers += 1;
-}
-
-function addNotification(el) {
-   updateList(Element.collectTextNodesIgnoreClass(el, 'informal'));
-   $('notification-input').clear();
-   return false;
-}
-
-function maybeAddNotification(event) {
-      switch(event.keyCode) {
-       case Event.KEY_TAB:
-       case Event.KEY_RETURN:
-          if($('notification-input').value.length > 0 && !$('notification-autocomplete').visible() ) {
-             updateList($('notification-input').value);
-             $('notification-input').clear();
-             Event.stop(event);
-          }
-     }
-}
-
-Event.observe($('notification-input'), "keypress", maybeAddNotification);
-
-new Autocompleter.Local('notification-input', 'notification-autocomplete', [<%= @notify_targets.collect {|n| "'#{n.gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:1, frequency: 0, choices: 15, fullSearch:true, updateElement:addNotification});
-
-<% if @task.notify_emails %>
-  <% @task.notify_emails.split(',').sort.each do |w| %>
-updateList('<%= w.gsub(/'/, "\\\\\'") %>');
-  <% end %>
-<% end %>
-<% @task.watchers.collect(&:name).sort.each do |w| %>
-updateList('<%= w.gsub(/'/, "\\\\\'") %>');
-<% end %>
-
-jQuery('#task_due_at').datepicker();
-
-</script>
-
-      </fieldset>
       <fieldset id="task_attr" style="padding-right:0;">
         <legend><%=_ 'Attributes' %></legend>
 	<% 

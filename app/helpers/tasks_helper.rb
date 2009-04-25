@@ -199,8 +199,10 @@ module TasksHelper
     options << [_("Leave as Duplicate"), 5] if task.status == 5
     options << [_("Wait Until"), 6] if task.status < 2
     
-    can_close = {:disabled => "disabled"} unless current_user.can?(task.project, 'close')
-    can_close ||= {}
+    can_close = {}
+    if task.project and current_user.can?(task.project, 'close')
+      can_close[:disabled] = "disabled"
+    end
 					
     defer_options = []
     defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
@@ -216,5 +218,37 @@ module TasksHelper
     res += "</div>"
 
     return res
+  end
+
+  ###
+  # Returns an icon to set whether user is assigned to task.
+  # The icon will have a link to toggle this attribute if the user
+  # is allowed to assign for the task project.
+  ###
+  def assigned_icon(task, user)
+    classname = "icon"
+    classname += " assigned" if task.users.include?(user)
+    content = content_tag(:span, "", :class => classname)
+
+    if current_user.can?(task.project, "reassign")
+      content = link_to_function(content)
+    end
+
+    return content
+  end
+
+  ###
+  # Returns an icon to set whether a user should receive notifications
+  # for task.
+  # The icon will have a link to toggle this attribute.
+  ###
+  def notify_icon(task, user)
+    classname = "icon"
+    classname += " notify"
+
+    content = content_tag(:span, "", :class => classname)
+    content = link_to_function(content)
+
+    return content
   end
 end
