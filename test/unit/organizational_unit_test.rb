@@ -1,8 +1,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-describe "OrganizationalUnit", ActiveSupport::TestCase do
-  # Replace this with your real tests.
-  it "should be true" do
-    assert true
+class OrganizationalUnitTest < Test::Unit::TestCase
+  def test_requires_name
+    ou = OrganizationalUnit.new
+
+    assert !ou.valid?
+    ou.name = "AA"
+    assert ou.valid?
   end
 end
