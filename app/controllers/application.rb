@@ -28,7 +28,6 @@ class ApplicationController < ActionController::Base
 #  before_filter :clear_cache
                                        
   after_filter :set_charset
-  after_filter OutputCompressionFilter
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
