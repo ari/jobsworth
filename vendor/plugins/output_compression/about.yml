@@ -1,0 +1,7 @@
+author: Tom Fakes
+summary: Provide compression of dynamically generated content
+homepage: http://blog.craz8.com
+plugin: http://craz8.com/svn/trunk/plugins/output_compression
+license: MIT
+version: 0.0.1
+rails_version: 1.0+

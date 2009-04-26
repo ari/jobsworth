@@ -74,11 +74,11 @@ end
 module ActionController
   module Components
     protected
-      alias :original_request_for_component :request_for_component
       def request_for_component(options)
         request_for_component = original_request_for_component(options)
         request_for_component.is_component_request = true
         return request_for_component
       end
+      alias :original_request_for_component :request_for_component
   end
 end
