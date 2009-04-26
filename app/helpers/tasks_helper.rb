@@ -200,7 +200,7 @@ module TasksHelper
     options << [_("Wait Until"), 6] if task.status < 2
     
     can_close = {}
-    if task.project and current_user.can?(task.project, 'close')
+    if task.project and !current_user.can?(task.project, 'close')
       can_close[:disabled] = "disabled"
     end
 					
