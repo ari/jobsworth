@@ -4,23 +4,33 @@
 # you don't control web/app server and can't set it the proper way
 # ENV['RAILS_ENV'] ||= 'production'
 
-# RAILS_GEM_VERSION="2.3.2"
+# Specifies gem version of Rails to use when vendor/rails is not present
+RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.run do |config|
-  # Settings in config/environments/* take precedence those specified here
+require File.join(File.dirname(__FILE__), '../lib/localization.rb')
+Localization.load
 
-  # Skip frameworks you're not going to use
-  # config.frameworks -= [ :action_web_service, :action_mailer ]
+
+Rails::Initializer.run do |config|
+  # Settings in config/environments/* take precedence over those specified here.
+  # Application configuration should go into files in config/initializers
+  # -- all .rb files in that directory are automatically loaded.
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  # Force all environments to use the same logger level
-  # (by default production uses :info, the others :debug)
-  # config.log_level = :debug
+  # Only load the plugins named here, in the order given (default is alphabetical).
+  # :all can be used as a placeholder for all plugins not explicitly named
+  # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
+
+  # Skip frameworks you're not going to use. To use Rails without a database,
+  # you must remove the Active Record framework.
+  # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
+
 
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake create_sessions_table')
@@ -33,12 +43,13 @@ Rails::Initializer.run do |config|
   # Activate observers that should always be running
   # config.active_record.observers = :cacher, :garbage_collector
 
-  # Make Active Record use UTC-base instead of local time
-  config.active_record.default_timezone = :utc
+  # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
+  # Run "rake -D time" for a list of tasks for finding time zone names.
+  config.time_zone = 'UTC'
 
-  # Use Active Record's schema dumper instead of SQL when creating the test database
-  # (enables use of different database adapters for development and test environments)
-  # config.active_record.schema_format = :ruby
+  # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+  # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
+  # config.i18n.default_locale = :de
 
   # See Rails::Configuration for more options
   config.logger = Logger.new("#{RAILS_ROOT}/log/#{ENV['RAILS_ENV']}.log", 5)
@@ -46,12 +57,12 @@ Rails::Initializer.run do |config|
   config.gem 'splattael-activerecord_base_without_table',	:lib    => 'activerecord_base_without_table',
 															:source => 'http://gems.github.com'
 
-  #config.gem 'rails', :version => '2.3.2'
-  #config.gem 'actionpack', :version => '2.3.2'
-  #config.gem 'actionmailer', :version => '2.3.2'
-  #config.gem 'activerecord', :version => '2.3.2'
-  #config.gem 'activeresource', :version => '2.3.2'
-  #config.gem 'activesupport', :version => '2.3.2'
+  config.gem 'rails', :version => '2.3.2'
+  config.gem 'actionpack', :version => '2.3.2'
+  config.gem 'actionmailer', :version => '2.3.2'
+  config.gem 'activerecord', :version => '2.3.2'
+  config.gem 'activeresource', :version => '2.3.2'
+  config.gem 'activesupport', :version => '2.3.2'
           
   config.gem 'mysql', :version => '2.7'
   config.gem 'daemons', :version => '1.0.10'
@@ -66,10 +77,10 @@ Rails::Initializer.run do |config|
   config.gem 'RedCloth', :version => '4.1.9'
   config.gem 'rmagick', :version => '2.9.1'
   config.gem 'ZenTest', :version => '4.0.0'
-  config.gem 'hoe', :version => '1.12.1'
+  #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   config.gem 'test-spec', :version => '0.10.0', :lib => 'test/spec'
-  config.gem 'echoe', :version => '3.1.1'
+  #config.gem 'echoe', :version => '3.1.1'
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
   
@@ -89,16 +100,11 @@ ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 #   inflect.uncountable %w( fish sheep )
 # end
 
+ActiveRecord::Base.verification_timeout = 14400
 require File.join(File.dirname(__FILE__), '../lib/rails_extensions')
-require_dependency 'tzinfo'
-include TZInfo
 
+load File.join(File.dirname(__FILE__), 'environment.local.rb')
 require File.join(File.dirname(__FILE__), '../lib/misc.rb')
 
-
-ActiveRecord::Base.verification_timeout = 14400
-
-load "environment.local.rb" if File.exists?("environment.local.rb")
-
-Localization.load
-
+require_dependency 'tzinfo'
+include TZInfo
