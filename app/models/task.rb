@@ -888,51 +888,50 @@ class Task < ActiveRecord::Base
     return emails
   end
 
+  
   ###
-  # Sets the notifications and notify_emails for this task 
-  # based on watcher_params.
-  # Existing notifications WILL be cleared by this method.
+  # Sets the task watchers for this task.
+  # Existing watchers WILL be cleared by this method.
   ###
-  def set_watcher_attributes(watcher_params, current_user)
-    return if watcher_params.nil?
+  def set_watcher_ids(watcher_ids)
+    return if watcher_ids.nil?
 
     self.notifications.destroy_all
-    self.notify_emails = nil
 
-    watcher_params.uniq.each do |elem|
-      elem.split(',').each do |w|
-        u = User.find_by_name(w, :conditions => [ "company_id = ?", 
-                                                  current_user.company_id])
-        if u # Found user
-          Notification.create(:user => u, :task => self)
-        else # Not a user, check for email address
-          if w.include?('@') && 
-              !(notify_emails && notify_emails.include?(w))
-            self.notify_emails ||= ""
-            self.notify_emails << "," unless self.notify_emails.empty?
-            self.notify_emails << w
-          end
-        end
-      end
+    watcher_ids.each do |id|
+      next if id.to_i == 0
+      user = company.users.find(id)
+      Notification.create(:user => user, :task => self)
     end
-
-    self.save
   end
 
   ###
-  # Sets the owners of this task from owner_params.
+  # Sets the owners of this task from owner_ids.
   # Existing owners WILL  be cleared by this method.
   ###
-  def set_owner_attributes(owner_params)
-    return if owner_params.nil?
+  def set_owner_ids(owner_ids)
+    return if owner_ids.nil?
 
     self.task_owners.destroy_all
 
-    owner_params.each do |o|
+    owner_ids.each do |o|
       next if o.to_i == 0
       u = company.users.find(o.to_i)
       TaskOwner.create(:user => u, :task => self)
     end
+  end
+
+  ###
+  # Sets up any task owners or watchers from the given params.
+  # Any existings ones not in the given params will be removed.
+  ###
+  def set_users(params)
+    all_users = params[:users] || []
+    owners = params[:assigned] || []
+    watchers = all_users - owners
+
+    set_owner_ids(owners)
+    set_watcher_ids(watchers)
   end
 
   ###

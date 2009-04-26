@@ -666,3 +666,20 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
 	icon.removeClass(enabledClassName);
     }
 }
+
+/*
+  Adds the selected user to the current tasks list of users
+*/
+function addUserToTask(input, li) {
+    jQuery(input).val("");
+
+    var id = jQuery(li).find(".complete_value").text();
+
+    var url = document.location.toString();
+    url = url.replace("/edit/", "/add_notification/");
+    url = url.replace("#", "");
+
+    jQuery.get(url, { user_id : id }, function(data) {
+	jQuery("#task_notify").append(data);
+    });
+}

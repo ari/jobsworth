@@ -231,7 +231,7 @@ module TasksHelper
     content = content_tag(:span, "*", :class => classname, 
                           :title => _("Click to toggle whether this task is assigned to this user"))
 
-    if current_user.can?(task.project, "reassign")
+    if task.project.nil? or current_user.can?(task.project, "reassign")
       content = link_to_function(content, "toggleTaskIcon(this, 'assigned', 'is_assigned')")
     end
 
@@ -264,5 +264,19 @@ module TasksHelper
                        :partial => "notification", 
                        :locals => { :notification => current_user })
     end
+  end
+
+  ###
+  # Returns a field that will allow users or email address to be added
+  # to the task notify list.
+  ###
+  def add_notifier_field
+    html_options = {
+      :size => "12", 
+      :title => _("Add users by name or email"), 
+      :class => "tooltip"
+    }
+    text_field_with_auto_complete(:user, :name, html_options,
+                                  :after_update_element => "addUserToTask")
   end
 end
