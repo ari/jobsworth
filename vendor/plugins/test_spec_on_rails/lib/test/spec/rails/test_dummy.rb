@@ -1,7 +1,10 @@
 # Base class for testcase/response/request/controller mocks
 class Test::Spec::Rails::TestDummy
   include Test::Unit::Assertions
-  include ActionController::Assertions
+  
+  if defined?(ActionController::TestCase::Assertions)
+    include ActionController::TestCase::Assertions
+  end
 
   def initialize(testcase)
     @controller = testcase.instance_variable_get('@controller')

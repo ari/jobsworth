@@ -1,5 +1,9 @@
 class Test::Spec::Should
-  include ActionController::Assertions
+  include Test::Unit::Assertions
+  
+  if defined?(ActionController::TestCase::Assertions)
+    include ActionController::TestCase::Assertions
+  end
   
   alias :_old_equal :equal
   def equal(*args)
@@ -26,7 +30,11 @@ class Test::Spec::Should
 end
 
 class Test::Spec::ShouldNot
-  include ActionController::Assertions
+  include Test::Unit::Assertions
+  
+  if defined?(ActionController::TestCase::Assertions)
+    include ActionController::TestCase::Assertions
+  end
   
   alias :_old_equal :equal
   def equal(*args,&block)

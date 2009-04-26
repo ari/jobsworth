@@ -1,3 +1,5 @@
+07/01/08 - should.render now takes optional response code [Matthew Bass]
+
 06/28/08 - Added should.render for testing template rendering [Matthew Bass]
 
 05/15/08 - First pass at overriding generators to produce specs [Matthew Bass]

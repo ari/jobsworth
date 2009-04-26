@@ -1,6 +1,6 @@
 module Test::Spec::Rails::ShouldValidate
   def validate
-    assert_valid @object
+    assert @object.valid?
   end
   alias :validated :validate
 end

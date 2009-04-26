@@ -28,6 +28,5 @@ class Test::Unit::TestCase
   
   def layout
     Test::Spec::Rails::TestLayout.new(self)
-  end
-  
+  end  
 end

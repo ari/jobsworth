@@ -22,7 +22,7 @@ end
 module Test::Spec::Rails::ShouldNotRedirect
   # Test that we weren't redirected
   def redirect(options = {})
-    @object.assert_response :success # TODO: fix me
+    @object.assert_response :success
   end
   alias :redirect_to   :redirect
   alias :redirected    :redirect
