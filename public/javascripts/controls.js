@@ -437,14 +437,14 @@ Autocompleter.Local = Class.create(Autocompleter.Base, {
 
           while (foundPos != -1) {
             if (foundPos == 0 && elem.length != entry.length) { 
-              ret.push("<li><u>" + elem.substr(0, entry.length) + "</u>" + 
+              ret.push("<li><strong>" + elem.substr(0, entry.length) + "</strong>" + 
                 elem.substr(entry.length) + "</li>");
               break;
             } else if (entry.length >= instance.options.partialChars && 
               instance.options.partialSearch && foundPos != -1) {
               if (instance.options.fullSearch || /\s/.test(elem.substr(foundPos-1,1))) {
-                partial.push("<li>" + elem.substr(0, foundPos) + "<u>" +
-                  elem.substr(foundPos, entry.length) + "</u>" + elem.substr(
+                partial.push("<li>" + elem.substr(0, foundPos) + "<strong>" +
+                  elem.substr(foundPos, entry.length) + "</strong>" + elem.substr(
                   foundPos + entry.length) + "</li>");
                 break;
               }

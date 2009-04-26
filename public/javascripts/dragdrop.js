@@ -1,4 +1,4 @@
-// Copyright (c) 2005-2007 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
+// Copyright (c) 2005-2008 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005-2007 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
 // 
 // script.aculo.us is freely distributable under the terms of an MIT-style license.
@@ -150,16 +150,16 @@ var Draggables = {
   },
   
   activate: function(draggable) {
-//    if(draggable.options.delay) { 
+    if(draggable.options.delay) { 
       this._timeout = setTimeout(function() { 
         Draggables._timeout = null; 
         window.focus(); 
         Draggables.activeDraggable = draggable; 
-      }.bind(this), 0.2); 
-//    } else {
-//      window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
-//      this.activeDraggable = draggable;
-//    }
+      }.bind(this), draggable.options.delay); 
+    } else {
+      window.focus(); // allows keypress events if window isn't currently focused, fails for Safari
+      this.activeDraggable = draggable;
+    }
   },
   
   deactivate: function() {
@@ -248,8 +248,7 @@ var Draggable = Class.create({
       scrollSensitivity: 20,
       scrollSpeed: 15,
       snap: false,  // false, or xy or [x,y] or function(x,y){ return [x,y] }
-      delay: 0,
-      onclick: function(element) {}
+      delay: 0
     };
     
     if(!arguments[1] || Object.isUndefined(arguments[1].endeffect))
@@ -448,14 +447,9 @@ var Draggable = Class.create({
   },
   
   endDrag: function(event) {
-    if(this.dragging) {
-      this.stopScrolling();
-      this.finishDrag(event, true);
-	 } else {
-      if (this.options.onclick) {
-        this.options.onclick(this.element);
-      }
-    }
+    if(!this.dragging) return;
+    this.stopScrolling();
+    this.finishDrag(event, true);
     Event.stop(event);
   },
   
