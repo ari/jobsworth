@@ -1,47 +1,5 @@
 #!/usr/bin/env ruby
 
-begin
-  require 'rubygems'
-rescue LoadError
-  puts "Please install the latest version of RubyGems to get started."
-  exit
-end
-
-missing_dep = false
-missing_deps = []
-
-deps = { 'tzinfo' => 'tzinfo', 'redcloth' => 'RedCloth', 'rake' => 'rake', 'ferret' => 'ferret', 
-  'fastercsv' => 'fastercsv', 'eventmachine' => 'eventmachine',  'RMagick' => 'rmagick', 
-  'icalendar' => 'icalendar', 'mongrel' => 'mongrel', 'zentest' => 'ZenTest', 'hoe' => 'hoe',
-  'google_chart' => 'gchartrb', 'json' => 'json', 'test/spec' => 'test-spec', 'echoe' => 'echoe'
-}
-
-puts "Verifying dependencies..."
-
-deps.keys.each do |dep|
-  begin
-    require dep
-  rescue LoadError
-    missing_deps << deps[dep]
-  end
-end
-
-if missing_deps.size > 0
-  puts "Please install required Ruby Gems:"
-  puts "  sudo gem install #{missing_deps.join(" ")} -r"
-  puts
-  if missing_deps.include? "rmagick"
-    puts "rmagick requires ImageMagick. If you're unable to install ImageMagick 6.3.0+, which the latest"
-    puts "version of rmagick requires, please install version 1.5.14 instead: "
-    puts "  sudo gem install rmagick -v 1.5.14 -r"
-  end
-
-  exit
-end
-
-puts "Dependencies verified..."
-puts
-
 puts "*******************************************************************************************"
 puts "This setup script will overwrite any configuration files you've already created in config/*"
 puts "If you don't want this to happen, please press <Ctrl-c> to abort."
@@ -67,7 +25,7 @@ dbpw.strip!
 dbhost.strip!
 
 puts
-puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database."
+puts "Using '#{dbuser}' / '#{dbpw}' to access the '#{db}' database on '#{dbhost}'."
 puts
 
 
@@ -75,7 +33,7 @@ puts
 puts "Please create the database and user for ClockingIT by running something like this: "
 puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
 puts
-puts "Press <Return> to continue"
+puts "Press <Return> once you have done this."
 gets
 puts
 
