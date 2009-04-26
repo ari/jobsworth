@@ -631,6 +631,7 @@ function updatePositionFields(listSelector) {
 }
 
 /* FILTER METHODS */
+
 function removeTaskFilter(sender) {
     var li = jQuery(sender).parent();
     li.remove();
@@ -683,4 +684,26 @@ function addUserToTask(input, li) {
     jQuery.get(url, { user_id : id }, function(data) {
 	jQuery("#task_notify").append(data);
     });
+}
+
+/*
+  Highlights any notification users who will be receiving an email
+  about this task.
+*/
+function highlightActiveNotifications() {
+    var users = jQuery("#taskform .user");
+    var hasComment = jQuery("#comment").val() != "";
+    var isNew = (document.location.toString().indexOf("/new") > 0);
+
+    for (var i = 0; i < users.length; i++) {
+	var div = jQuery(users[i]);
+	var notify = div.find(".icon.should_notify");
+	if ((hasComment || isNew)
+	    && notify.length > 0) {
+	    div.addClass("will_notify");
+	}
+	else {
+	    div.removeClass("will_notify");
+	}
+    }
 }

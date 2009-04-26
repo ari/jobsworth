@@ -249,7 +249,7 @@ module TasksHelper
 
     content = content_tag(:span, "*", :class => classname, 
                           :title => _("Click to toggle whether this user will receive a notification when task is saved"))
-    content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify')")
+    content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify'); highlightActiveNotifications()")
 
     return content
   end

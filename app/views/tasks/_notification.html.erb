@@ -1,5 +1,9 @@
-<% user = notification -%>
-<div class="user">
+<% 
+   user = notification 
+   classname = "user" 
+   classname += " will_notify" if @task.new_record?
+-%>
+<div class="<%= classname %>">
   <%= hidden_field_tag("users[]", user.id) %>
   <%= hidden_field_tag("assigned[]", user.id, :disabled => !@task.users.include?(user), :class => "assigned") %>
   <%= hidden_field_tag("notify[]", user.id, :class => "notify") %>

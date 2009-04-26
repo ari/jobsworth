@@ -1414,6 +1414,9 @@ a.description {
     padding-bottom: 3px;
     padding-top: 2px;
 }
+#taskform .user.active {
+    border: 2px solid yellow;
+}
 #taskform .user label {
     margin-top: 0px;
     padding: 0px;
@@ -1423,6 +1426,9 @@ a.description {
 }
 #taskform .user .removeLink {
     float: right
+}
+#taskform .user.will_notify {
+    background-color: #ffff99;
 }
 #taskform .user .icon {
     background-color: white;
