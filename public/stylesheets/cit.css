@@ -2639,7 +2639,6 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	padding: 3px 10px 3px 16px;
 	font-weight: bold;
 	color: #555;
-	background: url(../img/select.png) no-repeat 0 45%;
 	border-top: 1px solid #a9a9a9;
 }
 #content ul.querymenu li a {
@@ -2680,7 +2679,6 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 	left: auto;
 	}
 #content ul.querymenu li:hover span {
-	background: url(../img/select.png) no-repeat -200px 45%;
 }
 
 #content ul.querymenu li ul li ul {
