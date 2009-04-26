@@ -253,4 +253,16 @@ module TasksHelper
 
     return content
   end
+
+  ###
+  # Returns a link that add the current user to the current tasks user list
+  # when clicked.
+  ###
+  def add_me_link
+    link_to_function(_("add me")) do |page|
+      page.insert_html(:bottom, "task_notify", 
+                       :partial => "notification", 
+                       :locals => { :notification => current_user })
+    end
+  end
 end

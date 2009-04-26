@@ -1410,6 +1410,10 @@ a.description {
   font-size: 11px;
 }
 
+#taskform .user {
+    padding-bottom: 3px;
+    padding-top: 2px;
+}
 #taskform .user label {
     margin-top: 0px;
     padding: 0px;
@@ -1426,6 +1430,7 @@ a.description {
     background-position:0 150%;
     background-repeat:no-repeat;
     float: right;
+    font-size: 0px;
     padding-left: 5px;
     height: 16px;
     width: 16px;

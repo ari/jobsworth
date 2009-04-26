@@ -1,3 +1,5 @@
+<% users = (@task.users + @task.watchers).uniq -%>
+
 <fieldset id="task_notify" style="padding-right:0;">
   <legend><%=_ 'Notifications' %></legend>
 
@@ -8,19 +10,20 @@
   <div id="owner_separator"></div>
 
   <label for="notification-input">
-    <%= _"Notify" %>&nbsp;&nbsp;
-    <small>
-      <a href="#" onclick="javascript:updateList('<%= current_user.name %>');false">
-	add me
-      </a>
-    </small>
+    <%= _"Notify" %>
+    <% if !users.include?(current_user) -%>
+      &nbsp;&nbsp;
+      <small>
+	<%= add_me_link %>
+      </small>
+      <% end -%>
   </label>
 
   <input type="text" size="12" name="watchers[]" id="notification-input" title="<%=_("Add users by name or email")%>" class="tooltip">
   <div style="clear:both; display:none;" id="notification-autocomplete"></div>
   <div style="clear:both;" id="notifications"></div>
 
-  <%= render(:partial => "notification", :collection => (@task.users + @task.watchers).uniq) %>
+  <%= render(:partial => "notification", :collection => users) %>
 </script>
 
 </fieldset>
