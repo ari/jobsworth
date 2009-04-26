@@ -1652,7 +1652,8 @@ class TasksController < ApplicationController
   end
 
   def add_notification
-    @task = current_user.company.tasks.find(params[:id])
+    @task = Task.new
+    #current_user.company.tasks.find(params[:id])
     user = current_user.company.users.find(params[:user_id])
     
     render(:partial => "notification", :locals => { :notification => user })

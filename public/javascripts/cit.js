@@ -678,6 +678,7 @@ function addUserToTask(input, li) {
     var url = document.location.toString();
     url = url.replace("/edit/", "/add_notification/");
     url = url.replace("#", "");
+    var url = "/tasks/add_notification";
 
     jQuery.get(url, { user_id : id }, function(data) {
 	jQuery("#task_notify").append(data);
