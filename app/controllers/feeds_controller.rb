@@ -10,8 +10,6 @@ class FeedsController < ApplicationController
 
   include Icalendar
 
-  session :off
-
   skip_before_filter :authorize
 
   def unsubscribe
