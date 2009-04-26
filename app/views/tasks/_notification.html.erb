@@ -1,12 +1,16 @@
 <% 
    user = notification 
    classname = "user" 
-   classname += " will_notify" if @task.new_record?
+   if @task.new_record? and user.receive_notifications?
+     classname += " will_notify" 
+   end
 -%>
 <div class="<%= classname %>">
   <%= hidden_field_tag("users[]", user.id) %>
-  <%= hidden_field_tag("assigned[]", user.id, :disabled => !@task.users.include?(user), :class => "assigned") %>
-  <%= hidden_field_tag("notify[]", user.id, :class => "notify") %>
+  <%= hidden_field_tag("assigned[]", user.id, :class => "assigned",
+      :disabled => !@task.users.include?(user)) %>
+  <%= hidden_field_tag("notify[]", user.id, :class => "notify",
+  :disabled => !user.receive_notifications?) %>
 
   <label>
     <%= assigned_icon(@task, user) %>

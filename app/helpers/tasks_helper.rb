@@ -245,7 +245,7 @@ module TasksHelper
   ###
   def notify_icon(task, user)
     classname = "icon tooltip notify"
-    classname += " should_notify"
+    classname += " should_notify" if user.receive_notifications?
 
     content = content_tag(:span, "*", :class => classname, 
                           :title => _("Click to toggle whether this user will receive a notification when task is saved"))
