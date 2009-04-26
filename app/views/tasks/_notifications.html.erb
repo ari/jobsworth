@@ -1,0 +1,27 @@
+<% users = (@task.users + @task.watchers).uniq -%>
+
+<fieldset id="task_notify" style="padding-right:0;">
+  <legend><%=_ 'Notifications' %></legend>
+
+  <label for="task_requested_by"><%=_ 'Requested By' %></label>
+  <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
+  <br/>
+
+  <div id="owner_separator"></div>
+
+  <label for="notification-input">
+    <%= _"Notify" %>
+    <% if !users.include?(current_user) -%>
+      &nbsp;&nbsp;
+      <small>
+	<%= add_me_link %>
+      </small>
+      <% end -%>
+  </label>
+
+  <%= add_notifier_field %>
+  <br clear="both" />
+  <%= render(:partial => "notification", :collection => users) %>
+</script>
+
+</fieldset>

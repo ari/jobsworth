@@ -1,0 +1,23 @@
+<% 
+   user = notification 
+   classname = "user" 
+   if @task.new_record? and user.receive_notifications?
+     classname += " will_notify" 
+   end
+-%>
+<div class="<%= classname %>">
+  <%= hidden_field_tag("users[]", user.id) %>
+  <%= hidden_field_tag("assigned[]", user.id, :class => "assigned",
+      :disabled => !@task.users.include?(user)) %>
+  <%= hidden_field_tag("notify[]", user.id, :class => "notify",
+  :disabled => !user.receive_notifications?) %>
+
+  <label>
+    <%= assigned_icon(@task, user) %>
+    <%= notify_icon(@task, user) %>
+  </label>
+
+  <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
+  <%= link_to(user.name, :controller => "users", :action => "edit", :id => user) %>
+  <br />
+</div>

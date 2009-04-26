@@ -631,6 +631,7 @@ function updatePositionFields(listSelector) {
 }
 
 /* FILTER METHODS */
+
 function removeTaskFilter(sender) {
     var li = jQuery(sender).parent();
     li.remove();
@@ -643,4 +644,66 @@ function addTaskFilter(sender, id, field_name) {
     var html = "<input type='hidden' name='" + field_name + "' value='" + id + "' />";
     li.append(html);
     jQuery("#filter_form").submit();
+}
+
+/* TASK OWNER METHODS */
+function removeTaskUser(sender) {
+    sender = jQuery(sender);
+    sender.parent(".user").remove();
+}
+
+function toggleTaskIcon(sender, baseClassName, enabledClassName) {
+    var div = jQuery(sender).parents(".user");
+
+    var input = div.find("input." + baseClassName);
+    var icon = div.find(".icon." + baseClassName);
+
+    if (input.attr("disabled")) {
+	icon.addClass(enabledClassName)
+	input.attr("disabled", false);
+    }
+    else {
+	input.attr("disabled", true);
+	icon.removeClass(enabledClassName);
+    }
+}
+
+/*
+  Adds the selected user to the current tasks list of users
+*/
+function addUserToTask(input, li) {
+    jQuery(input).val("");
+
+    var id = jQuery(li).find(".complete_value").text();
+
+    var url = document.location.toString();
+    url = url.replace("/edit/", "/add_notification/");
+    url = url.replace("#", "");
+    var url = "/tasks/add_notification";
+
+    jQuery.get(url, { user_id : id }, function(data) {
+	jQuery("#task_notify").append(data);
+    });
+}
+
+/*
+  Highlights any notification users who will be receiving an email
+  about this task.
+*/
+function highlightActiveNotifications() {
+    var users = jQuery("#taskform .user");
+    var hasComment = jQuery("#comment").val() != "";
+    var isNew = (document.location.toString().indexOf("/new") > 0);
+
+    for (var i = 0; i < users.length; i++) {
+	var div = jQuery(users[i]);
+	var notify = div.find(".icon.should_notify");
+	if ((hasComment || isNew)
+	    && notify.length > 0) {
+	    div.addClass("will_notify");
+	}
+	else {
+	    div.removeClass("will_notify");
+	}
+    }
 }

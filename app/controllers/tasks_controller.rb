@@ -227,21 +227,17 @@ class TasksController < ApplicationController
     if @task.save
       session[:last_project_id] = @task.project_id
 
-      @task.set_watcher_attributes(params[:watchers], current_user)
-      @task.set_owner_attributes(params[:users])
+      @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      if params['notify'].to_i == 1
-        begin
-          Notifications::deliver_created(@task, current_user, params[:comment])
-        rescue
-          # TODO: (from BW) why is this here? 
-          # If deliver_created throws an exception don't we want to know about it?
-        end
+      notify = params[:notify] || []
+      if notify.any?
+        notify = notify.map { |id| current_user.company.users.find(id).email }
+        Notifications::deliver_created(@task, current_user, notify, params[:comment])
       end
 
       Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
@@ -369,8 +365,7 @@ class TasksController < ApplicationController
         @task.repeat = nil
       end
 
-      @task.set_watcher_attributes(params[:watchers], current_user)
-      @task.set_owner_attributes(params[:users])
+      @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
 
@@ -519,8 +514,11 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        if(params['notify'].to_i == 1)
-          Notifications::deliver_changed( update_type, @task, current_user, email_body.gsub(/<[^>]*>/,'')) rescue nil
+        notify = params[:notify] || []
+        if worklog.comment and notify.any?
+          notify = notify.map { |id| current_user.company.users.find(id).email }
+          Notifications::deliver_changed(update_type, @task, current_user, notify,
+                                         email_body.gsub(/<[^>]*>/,''))
         end
       end
 
@@ -1009,10 +1007,7 @@ class TasksController < ApplicationController
         @log.task.status = params[:task][:status].to_i
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
-        Notifications::deliver_changed( status_type, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1) rescue nil
 
-      elsif !params[:log][:body].blank? && params[:log][:body] != old_note &&  params['notify'].to_i == 1
-        Notifications::deliver_changed( :comment, @log.task, current_user, params[:log][:body].gsub(/<[^>]*>/,'')) rescue nil
       end
 
       @log.task.save
@@ -1656,6 +1651,14 @@ class TasksController < ApplicationController
     render :text => "", :layout => false
   end
 
+  def add_notification
+    @task = Task.new
+    #current_user.company.tasks.find(params[:id])
+    user = current_user.company.users.find(params[:user_id])
+    
+    render(:partial => "notification", :locals => { :notification => user })
+  end
+
   private
 
   ###
@@ -1777,4 +1780,5 @@ class TasksController < ApplicationController
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
   end
+
 end

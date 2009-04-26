@@ -24,7 +24,11 @@
 <label for="user_option_externalclients"><%=_ 'Use External Clients' %></label><%= check_box 'user', 'option_externalclients' %><br/>
 <label for="user_option_avatars"><%=_ 'Show Avatars' %></label><%= check_box 'user', 'option_avatars' %><br/>
 <label for="user_send_notifications"><%=_ 'Send Notifications' %></label><%= check_box 'user', 'send_notifications' %><br/>
-<label for="user_receive_notifications"><%=_ 'Receive Notifications' %></label><%= check_box 'user', 'receive_notifications' %><br/>
+<label for="user_receive_notifications" class="tooltip" title="<%= _("If checked, you will be set to receive email notifications when added to a task. This can be turned on or off per task") %>">
+  <%=_ 'Receive Notifications By Default' %>
+</label>
+<%= check_box 'user', 'receive_notifications' %>
+<br/>
 <label for="user_receive_own_notifications"><%=_ 'Receive Own Notifications' %></label><%= check_box 'user', 'receive_own_notifications' %><br/>
 <label for="user_newsletter"><%=_ 'Receive Newsletter' %></label><%= check_box 'user', 'newsletter' %><br/>
 <label for="user_option_floating_chat"><%=_ 'Floating Messaging Bar' %></label><%= check_box 'user', 'option_floating_chat', {:class => 'tooltip', :title => _("Keep the messaging bar floating at the bottom of the screen.")} %><br/>

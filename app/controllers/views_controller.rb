@@ -11,7 +11,7 @@ class ViewsController < ApplicationController
     :filter_customer => [],
     :filter_project => [],
     :filter_milestone => [],
-    :filter_status => [],
+    :filter_status => [ 0 ],
     :hide_deferred => 0,
     :hide_dependencies => 0,
     :show_all_unread => 0,
@@ -201,7 +201,8 @@ class ViewsController < ApplicationController
     @view = View.new
     @view.name = _('My Open Tasks')
     
-    set_session_filters(:view => @view, :filter_user => current_user.id)
+    set_session_filters(:view => @view, :filter_user => current_user.id,
+                        :filter_status => 0)
 
     redirect_to :controller => 'tasks', :action => 'list'
   end

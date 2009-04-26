@@ -533,7 +533,7 @@ END_OF_HTML
   # (Create or Update)"
   ###
   def cit_submit_tag(object)
-    text = object.new_record? ? _("Create") : _("Update")
+    text = object.new_record? ? _("Create") : _("Save")
     submit_tag(text, :class => 'nolabel')
   end
 
