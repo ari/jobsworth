@@ -1,9 +1,0 @@
-#!/usr/bin/env ruby
-
-path = File.expand_path(File.dirname(__FILE__) + "/../lib/allison")
-
-if ARGV.first == "--path"
-  puts path
-else
-  system("rdoc", "--template", path, "--inline-source", *ARGV)
-end
