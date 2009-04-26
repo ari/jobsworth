@@ -31,7 +31,11 @@ class NotificationsTest < Test::Unit::TestCase
     @expected.body     = read_fixture('created')
     @expected.date     = Time.now
 
-    assert_equal @expected.encoded, Notifications.create_created(tasks(:normal_task), users(:admin), "", @expected.date).encoded
+    task = tasks(:normal_task)
+    user = users(:admin)
+    notification = Notifications.create_created(task, user, task.notification_email_addresses(user), 
+                                                "", @expected.date)
+    assert_equal @expected.encoded, notification.encoded
   end
 
   def test_changed
@@ -42,8 +46,13 @@ class NotificationsTest < Test::Unit::TestCase
     @expected['Mime-Version'] = '1.0'
     @expected.body    = read_fixture('changed')
     @expected.date    = Time.now
-
-    assert_equal @expected.encoded, Notifications.create_changed(:completed, tasks(:normal_task), users(:admin), "Task Changed", @expected.date).encoded
+    
+    task = tasks(:normal_task)
+    user = users(:admin)
+    notification = Notifications.create_changed(:completed, task, user,
+                                                task.notification_email_addresses(user),
+                                                "Task Changed", @expected.date)
+    assert_equal @expected.encoded, notification.encoded
   end
 
   private

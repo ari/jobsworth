@@ -234,14 +234,11 @@ class TasksController < ApplicationController
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-#       if params['notify'].to_i == 1
-#         begin
-#           Notifications::deliver_created(@task, current_user, params[:comment])
-#         rescue
-#           # TODO: (from BW) why is this here? 
-#           # If deliver_created throws an exception don't we want to know about it?
-#         end
-#       end
+      notify = params[:notify] || []
+      if notify.any?
+        notify = notify.map { |id| current_user.company.users.find(id).email }
+        Notifications::deliver_created(@task, current_user, notify, params[:comment])
+      end
 
       Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
@@ -517,9 +514,12 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-#         if(params['notify'].to_i == 1)
-#           Notifications::deliver_changed( update_type, @task, current_user, email_body.gsub(/<[^>]*>/,'')) rescue nil
-#         end
+        notify = params[:notify] || []
+        if worklog.comment and notify.any?
+          notify = notify.map { |id| current_user.company.users.find(id).email }
+          Notifications::deliver_changed(update_type, @task, current_user, notify,
+                                         email_body.gsub(/<[^>]*>/,''))
+        end
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -1007,10 +1007,7 @@ class TasksController < ApplicationController
         @log.task.status = params[:task][:status].to_i
         @log.task.updated_by_id = current_user.id
         @log.task.completed_at = Time.now.utc
-        Notifications::deliver_changed( status_type, @log.task, current_user, params[:log][:body] ) if(params['notify'].to_i == 1) rescue nil
 
-      elsif !params[:log][:body].blank? && params[:log][:body] != old_note &&  params['notify'].to_i == 1
-        Notifications::deliver_changed( :comment, @log.task, current_user, params[:log][:body].gsub(/<[^>]*>/,'')) rescue nil
       end
 
       @log.task.save

@@ -5,20 +5,20 @@ class Notifications < ActionMailer::Base
 
   require  File.join(File.dirname(__FILE__), '../../lib/misc')
 
-  def created(task, user, note = "", sent_at = Time.now)
+  def created(task, user, recipients, note = "", sent_at = Time.now)
     task.mark_as_unread(user)
  
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
-    @recipients = task.notification_email_addresses(user)
+    @recipients = recipients
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
     @reply_to   = "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
   end
 
-  def changed(update_type, task, user, change, sent_at = Time.now)
+  def changed(update_type, task, user, recipients, change, sent_at = Time.now)
     task.mark_as_unread(user)
 
     @subject = case update_type
@@ -32,7 +32,7 @@ class Notifications < ActionMailer::Base
 
     @body       = {:task => task, :user => user, :change => change}
 
-    @recipients = task.notification_email_addresses(user)
+    @recipients = recipients
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at
