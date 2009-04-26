@@ -100,7 +100,6 @@ ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 #   inflect.uncountable %w( fish sheep )
 # end
 
-ActiveRecord::Base.verification_timeout = 14400
 require File.join(File.dirname(__FILE__), '../lib/rails_extensions')
 
 load File.join(File.dirname(__FILE__), 'environment.local.rb')
