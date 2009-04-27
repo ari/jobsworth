@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090427062608) do
+ActiveRecord::Schema.define(:version => 20090427074955) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -786,5 +786,12 @@ ActiveRecord::Schema.define(:version => 20090427062608) do
   add_index "work_logs", ["company_id", "project_id", "log_type", "started_at"], :name => "work_logs_company_project_index"
   add_index "work_logs", ["user_id", "started_at"], :name => "work_logs_user_id_started_at_index"
   add_index "work_logs", ["duration"], :name => "work_logs_duration_idx"
+
+  create_table "work_logs_notifications", :id => false, :force => true do |t|
+    t.integer "work_log_id"
+    t.integer "user_id"
+  end
+
+  add_index "work_logs_notifications", ["work_log_id", "user_id"], :name => "index_work_logs_notifications_on_work_log_id_and_user_id"
 
 end

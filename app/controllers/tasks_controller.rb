@@ -1790,10 +1790,9 @@ class TasksController < ApplicationController
       users = ids.map { |id| current_user.company.users.find(id) }
       emails = users.map { |u| u.email }.uniq.compact
 
-      comments = users.map do |u|
-        "#{ u.name } (#{ u.email })"
-       end
-
+      worklog.users = users
+      
+      comments = users.map { |u| "#{ u.name } (#{ u.email })" }
       comment = _("Notification emails sent to %s", comments.join(", "))
       worklog.body ||= ""
       worklog.body += "\n\n" if !worklog.body.blank?
