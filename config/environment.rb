@@ -54,16 +54,15 @@ Rails::Initializer.run do |config|
   # See Rails::Configuration for more options
   config.logger = Logger.new("#{RAILS_ROOT}/log/#{ENV['RAILS_ENV']}.log", 5)
   
-  config.gem 'splattael-activerecord_base_without_table',	:lib    => 'activerecord_base_without_table',
-															:source => 'http://gems.github.com'
-
   config.gem 'rails', :version => '2.3.2'
   config.gem 'actionpack', :version => '2.3.2'
   config.gem 'actionmailer', :version => '2.3.2'
   config.gem 'activerecord', :version => '2.3.2'
   config.gem 'activeresource', :version => '2.3.2'
   config.gem 'activesupport', :version => '2.3.2'
-          
+  
+  config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
+        
   config.gem 'mysql', :version => '2.7'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine', :version => '0.12.6'
