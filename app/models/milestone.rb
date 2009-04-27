@@ -43,7 +43,7 @@ class Milestone < ActiveRecord::Base
 
   def description_wrapped
     unless description.blank?
-      self.description.chars.gsub(/(.{1,80})( +|$)\n?|(.{80})/, "\\1\\3\n")[0..1024]
+       truncate( word_wrap(self.description, :line_width => 80), :length => 1000)
     else
       nil
     end
