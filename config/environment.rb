@@ -72,7 +72,7 @@ Rails::Initializer.run do |config|
   config.gem 'acts_as_ferret', :version => '0.4.3'
   config.gem 'fastercsv', :version => '1.4.0'
   config.gem 'icalendar', :version => '1.1.0'
-  config.gem 'tzinfo', :version => '0.3.12'
+  config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.1.9'
   config.gem 'rmagick', :version => '2.9.1'
   config.gem 'ZenTest', :version => '4.0.0'
