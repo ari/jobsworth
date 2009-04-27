@@ -234,7 +234,7 @@ class TasksController < ApplicationController
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      notify(@task) do |recipients|
+      notify(@task, worklog) do |recipients|
         Notifications::deliver_created(@task, current_user, recipients, params[:comment])
       end
 
@@ -512,7 +512,7 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        notify(@task) do |recipients|
+        notify(@task, worklog) do |recipients|
           Notifications::deliver_changed(update_type, @task, current_user, recipients,
                                          email_body.gsub(/<[^>]*>/,''))
         end
@@ -1779,15 +1779,26 @@ class TasksController < ApplicationController
 
   ###
   # This method will set up notifications. A block should be passed that will
-  # send the actual emails, but this method will update the owners, etc
+  # send the actual emails, but this method will update the owners, worklog, etc
   # as required.
   ###
-  def notify(task, &block)
+  def notify(task, worklog, &block)
     ids = params[:notify] || []
     users = []
+
     if ids.any?
       users = ids.map { |id| current_user.company.users.find(id) }
       emails = users.map { |u| u.email }.uniq.compact
+
+      comments = users.map do |u|
+        "#{ u.name } (#{ u.email })"
+       end
+
+      comment = _("Notification emails sent to %s", comments.join(", "))
+      worklog.body ||= ""
+      worklog.body += "\n\n" if !worklog.body.blank?
+      worklog.body += comment
+      worklog.save
       
       yield(emails)
     end
