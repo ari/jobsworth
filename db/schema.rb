@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090425034010) do
+ActiveRecord::Schema.define(:version => 20090427062608) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -225,7 +225,8 @@ ActiveRecord::Schema.define(:version => 20090425034010) do
   create_table "notifications", :force => true do |t|
     t.integer "task_id"
     t.integer "user_id"
-    t.boolean "unread",  :default => false
+    t.boolean "unread",               :default => false
+    t.boolean "notified_last_change", :default => true
   end
 
   add_index "notifications", ["user_id", "task_id"], :name => "index_notifications_on_user_id_task_id"
@@ -531,7 +532,8 @@ ActiveRecord::Schema.define(:version => 20090425034010) do
   create_table "task_owners", :force => true do |t|
     t.integer "user_id"
     t.integer "task_id"
-    t.boolean "unread",  :default => false
+    t.boolean "unread",               :default => false
+    t.boolean "notified_last_change", :default => true
   end
 
   add_index "task_owners", ["task_id", "user_id"], :name => "task_owners_task_id_user_id_index"

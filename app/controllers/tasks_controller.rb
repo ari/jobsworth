@@ -234,10 +234,8 @@ class TasksController < ApplicationController
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      notify = params[:notify] || []
-      if notify.any?
-        notify = notify.map { |id| current_user.company.users.find(id).email }
-        Notifications::deliver_created(@task, current_user, notify, params[:comment])
+      notify(@task) do |recipients|
+        Notifications::deliver_created(@task, current_user, recipients, params[:comment])
       end
 
       Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
@@ -514,10 +512,8 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        notify = params[:notify] || []
-        if worklog.comment and notify.any?
-          notify = notify.map { |id| current_user.company.users.find(id).email }
-          Notifications::deliver_changed(update_type, @task, current_user, notify,
+        notify(@task) do |recipients|
+          Notifications::deliver_changed(update_type, @task, current_user, recipients,
                                          email_body.gsub(/<[^>]*>/,''))
         end
       end
@@ -1779,6 +1775,24 @@ class TasksController < ApplicationController
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
+  end
+
+  ###
+  # This method will set up notifications. A block should be passed that will
+  # send the actual emails, but this method will update the owners, etc
+  # as required.
+  ###
+  def notify(task, &block)
+    ids = params[:notify] || []
+    users = []
+    if ids.any?
+      users = ids.map { |id| current_user.company.users.find(id) }
+      emails = users.map { |u| u.email }.uniq.compact
+      
+      yield(emails)
+    end
+
+    task.mark_as_notified_last_change(users)
   end
 
 end
