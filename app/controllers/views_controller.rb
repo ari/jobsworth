@@ -3,7 +3,7 @@ require "fastercsv"
 # Save a set of filters for access later on, with some predefined Views
 #
 class ViewsController < ApplicationController
-  layout :calc_layout
+  layout :decide_layout
 
   DEFAULTS = {
     :view => nil,
@@ -283,14 +283,6 @@ class ViewsController < ApplicationController
     current_user.company.properties.each do |p|
       session[p.filter_name] = nil
     end
-  end
-
-  ###
-  # Returns the layout to use to display the current request.
-  # Add a "layout" param to the request to use a different layout.
-  ###
-  def calc_layout
-    params[:layout] || "application"
   end
 
   ###

@@ -1,7 +1,7 @@
 class ResourcesController < ApplicationController
   before_filter :check_permission
 
-  layout :calc_layout
+  layout :decide_layout
 
   # GET /resources
   # GET /resources.xml
@@ -148,14 +148,6 @@ class ResourcesController < ApplicationController
     end
 
     return can_view
-  end
-
-  ###
-  # Returns the layout to use to display the current request.
-  # Add a "layout" param to the request to use a different layout.
-  ###
-  def calc_layout
-    params[:layout] || "application"
   end
 
   ###

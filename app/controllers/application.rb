@@ -464,4 +464,13 @@ class ApplicationController < ActionController::Base
 
     render(:partial => "/clients/auto_complete_for_customer_name")
   end
+
+  ###
+  # Returns the layout to use to display the current request.
+  # Add a "layout" param to the request to use a different layout.
+  ###
+  def decide_layout
+    params[:layout] || "application"
+  end
+
 end
