@@ -13,7 +13,9 @@
       
       <br clear="both" />
       <%= link_to_add_attribute %>
-      
+      <%= sortable_element("attributes", :handle => "handle", 
+      :onUpdate => "function() { updatePositionFields('#attributes') }") %>
+
       <%= submit_tag(_("Update"), :class => "nolabel") %>
     </fieldset>
   <% end %>

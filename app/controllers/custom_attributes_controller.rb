@@ -41,8 +41,12 @@ class CustomAttributesController < ApplicationController
   end
 
   def create_new_attributes(params)
-    params[:new_custom_attributes].each do |values|
+    attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
+    offset = attributes.length
+
+    params[:new_custom_attributes].each_with_index do |values, i|
       values[:attributable_type] = params[:type]
+      values[:position] = offset + i
       current_user.company.custom_attributes.create(values)
     end
   end
