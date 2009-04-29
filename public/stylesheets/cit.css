@@ -314,6 +314,7 @@ img {
   padding: 0;
   margin: 0;
   display: inline-block;
+  border:  0;
 }
 
 input.checkbox { 
@@ -1421,9 +1422,6 @@ a.description {
     margin-top: 0px;
     padding: 0px;
 }
-#taskform .user img {
-    border: 0;
-}
 #taskform .user .removeLink {
     float: right
 }
@@ -1716,6 +1714,14 @@ h4 {
 #wiki-quickref p {
   margin:0;
   padding:0;
+}
+
+.disclosure {
+	background-image: url('/images/expand-indicator.png');
+	background-repeat: 	no-repeat;
+	height:  13px;
+	width:  13px;
+	padding-left: 20px;
 }
 
 .select_heading  {
