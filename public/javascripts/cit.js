@@ -522,6 +522,15 @@ jQuery(document).ready(function() {
     });
 });
 
+/*
+  Adds a set of blank attribute fields to the custome attribute edit form
+*/
+function addAttributeFields() {
+    jQuery.get("/custom_attributes/fields", { }, function(data) {
+	jQuery("#attributes").append(data);
+    });
+    
+}
 
 /*
   Adds the selected dependency to the task currently being edited.

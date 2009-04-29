@@ -20,6 +20,10 @@ class CustomAttributesController < ApplicationController
     redirect_to(:action => "edit", :type => params[:type])
   end
 
+  def fields
+    render(:partial => "attribute", :locals => { :attribute => CustomAttribute.new })
+  end
+
   private
 
   def update_existing_attributes(params)
