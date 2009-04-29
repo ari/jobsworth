@@ -75,7 +75,7 @@ Rails::Initializer.run do |config|
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.1.9'
   config.gem 'rmagick', :version => '2.9.1', :lib => 'RMagick'
-  config.gem 'ZenTest', :version => '4.0.0'
+  config.gem 'ZenTest', :version => '4.0.0', :lib => 'zentest'
   #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   #config.gem 'echoe', :version => '3.1.1'
