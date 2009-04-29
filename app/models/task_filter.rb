@@ -286,7 +286,7 @@ class TaskFilter
 
     if ids.include?(0)
       status_values << "tasks.status = 0"
-      status_values << "tasks.status = 1"
+#      status_values << "tasks.status = 1"
       ids.delete(0)
     end
     if ids.include?(2)
