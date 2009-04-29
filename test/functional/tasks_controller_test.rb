@@ -1,28 +1,28 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Tasks" do
+class TasksControllerText < ActionController::TestCase
   fixtures :users, :companies, :tasks
   
-  setup do
+  def setup
     use_controller TasksController
 
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
   end
   
-  specify "/edit should render :success" do
+  test "/edit should render :success" do
     task = tasks(:normal_task)
 
     get :edit, :id => task
     status.should.be :success
   end
 
-  specify "/new should render :success" do
+  test "/new should render :success" do
     get :new
     status.should.be :success
   end
 
-  specify "/list should render :success" do
+  test "/list should render :success" do
     company = companies("cit")
 
     # need to create a task to ensure the task partials get rendered
@@ -38,7 +38,7 @@ context "Tasks" do
     assert group.length > 0
   end
 
-  specify "/list should works with tags" do
+  test "/list should works with tags" do
     company = companies("cit")
     user = company.users.first
     @request.session[:filter_user] = [ user.id.to_s ]
@@ -58,7 +58,7 @@ context "Tasks" do
     assert group.length > 0
   end
 
-  specify "/update should render form ok when failing update" do
+  test "/update should render form ok when failing update" do
     task = Task.first
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })

@@ -1,9 +1,9 @@
 require 'test_helper'
 
-context "SearchController" do
+class SearchControllerText < ActionController::TestCase
   fixtures(:users)
   
-  setup do
+  def setup
     use_controller SearchController
 
     @request.with_subdomain('cit')
@@ -12,7 +12,7 @@ context "SearchController" do
   end
   
 
-  specify "/search should include clients" do
+  test "/search should include clients" do
     @user.company.customers.new(:name => "testclient").save!
 
     get :search, :query => "testclient"

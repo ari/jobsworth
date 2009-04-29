@@ -1,9 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Resources" do
+class ResourcesControllerTest < ActionController::TestCase
   fixtures :companies, :users
 
-  setup do
+  def setup
     use_controller ResourcesController
     @request.with_subdomain("cit")
     user = users(:admin)
@@ -24,7 +24,7 @@ context "Resources" do
     @resource.customer = customer
   end
 
-  specify "all should redirect if not use_resources set on user" do
+  test "all should redirect if not use_resources set on user" do
     user = User.find(@request.session[:user_id])
     user.use_resources = false
     user.save!
@@ -47,19 +47,19 @@ context "Resources" do
     assert_redirected_to(end_page)
   end 
 
-  specify "/new should render :success" do
+  test "/new should render :success" do
     get :new
     status.should.be :success
   end
 
-  specify "/edit should render :success" do
+  test "/edit should render :success" do
     assert @resource.save
     get :edit, :id => @resource.id
 
     status.should.be :success
   end
 
-  specify "/index should render :success" do
+  test "/index should render :success" do
     assert @resource.save
 
     get :index

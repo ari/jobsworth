@@ -106,7 +106,7 @@ class TasksController < ApplicationController
     projects = "+project_id:\"#{projects}\"" 
 
     # Find the tasks
-    @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
+    @tasks = Task.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
     render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
   end
 

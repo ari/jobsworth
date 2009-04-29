@@ -1,9 +1,9 @@
 require 'test_helper'
 
-context "UsersController" do
+class UsersControllerText < ActionController::TestCase
   fixtures(:users)
   
-  setup do
+  def setup
     use_controller UsersController
 
     @request.with_subdomain('cit')
@@ -12,13 +12,13 @@ context "UsersController" do
   end
   
 
-  specify "/edit should render :success" do
+  test "/edit should render :success" do
     get :edit, :id => @user.id
 
     status.should.be :success
   end
 
-  specify "/update should redirect to /clients/edit" do
+  test "/update should redirect to /clients/edit" do
     post(:update, :id => @user.id, :user => { :name => "test" })
 
     assert_redirected_to :controller => "clients", :action => "edit"

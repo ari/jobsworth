@@ -1,21 +1,21 @@
 require 'test_helper'
 
-context "Properties" do
+class PropertiesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :properties
   
-  setup do
+  def setup
     use_controller PropertiesController
 
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
   end
   
-  specify "/index should render :success" do
+  test "/index should render :success" do
     get :index
     status.should.be :success
   end
 
-  specify "/create should create and redirect" do
+  test "/create should create and redirect" do
     old_count = Property.count
 
     post(:create, 
@@ -26,7 +26,7 @@ context "Properties" do
                                  ])
 
     assert_equal old_count + 1, Property.count
-    response.should.redirect :action => 'edit'
+    response.should.redirect(:action => 'edit', :id => assigns["property"])
 
     created = assigns['property']
     assert_equal "Test", created.name
@@ -36,7 +36,7 @@ context "Properties" do
   end
 
 
-  specify "/update should update and redirect" do
+  test "/update should update and redirect" do
     property = companies(:cit).properties.create
     pv = property.property_values.create(:value => 'val_old')
     old_count = Property.count
@@ -56,15 +56,15 @@ context "Properties" do
     assert_equal "val_new", created.property_values.last.value
   end
 
-  specify "/edit should restrict to company" do
+  test "/edit should restrict to company" do
     should_be_restricted(:edit)
   end
 
-  specify "/update should restrict to company" do
+  test "/update should restrict to company" do
     should_be_restricted(:update, true, 302)
   end
 
-  specify "/destroy should restrict to company" do
+  test "/destroy should restrict to company" do
     should_be_restricted(:destroy, true, 302)
   end
 

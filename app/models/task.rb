@@ -6,7 +6,6 @@
 #   dependants (tasks which should be done after this one),
 #   todos, and sheets
 #
-
 class Task < ActiveRecord::Base
 
   include Misc
@@ -584,7 +583,7 @@ class Task < ActiveRecord::Base
     default_options = {:limit => 20, :page => 1}
     options = default_options.merge options
     options[:offset] = options[:limit] * (options.delete(:page).to_i-1)
-    results = Task.find_by_contents(q, options)
+    results = Task.find_with_ferret(q, options)
     return [results.total_hits, results]
   end
 

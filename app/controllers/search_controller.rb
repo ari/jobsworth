@@ -41,10 +41,10 @@ class SearchController < ApplicationController
     projects = "+project_id:\"#{projects}\"" unless projects == ""
 
     # Find the tasks
-    @tasks = Task.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
+    @tasks = Task.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
 
     # Find the worklogs
-    @logs = WorkLog.find_by_contents("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
+    @logs = WorkLog.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
 
     # Find chat messages
     rooms = ""
@@ -55,11 +55,11 @@ class SearchController < ApplicationController
     end
     rooms = "0" if rooms == ""
     rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
-    @shouts = Shout.find_by_contents("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 100})
+    @shouts = Shout.find_with_ferret("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 100})
 
 
     # Find Wikis
-    @wiki_pages = WikiPage.find_by_contents("+company_id:#{current_user.company_id} #{query}", {:limit => 100})
+    @wiki_pages = WikiPage.find_with_ferret("+company_id:#{current_user.company_id} #{query}", {:limit => 100})
 
 
     # Find posts
@@ -70,7 +70,7 @@ class SearchController < ApplicationController
       forums << "#{f.id}"
     end
     forums = "+forum_id:\"#{forums}\""
-    @posts = Post.find_by_contents("+company_id:#{current_user.company_id} #{forums} #{query}", {:limit => 100})
+    @posts = Post.find_with_ferret("+company_id:#{current_user.company_id} #{forums} #{query}", {:limit => 100})
 
     # Find instant messages
     chats = ""
@@ -80,7 +80,7 @@ class SearchController < ApplicationController
     end
     chats = "0" if chats == ""
     chats = "+chat_id:\"#{chats}\""
-    @chat_messages = ChatMessage.find_by_contents("#{chats} #{query}", {:limit => 100})
+    @chat_messages = ChatMessage.find_with_ferret("#{chats} #{query}", {:limit => 100})
     
     # Find customers
     @customers = Customer.search(current_user.company, @keys)

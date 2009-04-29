@@ -1,15 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-context "Schedule" do
+
+class ScheduleControllerText < ActionController::TestCase
   fixtures :users, :companies, :tasks
   
-  setup do
+  def setup
     use_controller ScheduleController
     @request.with_subdomain("cit")
     @request.session[:user_id] = users(:admin).id
   end
 
-  specify "/gantt should display and assign some tasks" do
+  test "/gantt should display and assign some tasks" do
     get :gantt
     status.should_be :success
 
@@ -18,7 +19,7 @@ context "Schedule" do
     assert tasks.length > 0
   end 
 
-  specify "/list should display and assign some tasks" do
+  test "/list should display and assign some tasks" do
     get :list
     status.should_be :success
 
