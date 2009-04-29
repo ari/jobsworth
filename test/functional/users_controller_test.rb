@@ -1,11 +1,9 @@
 require 'test_helper'
 
-class UsersControllerText < ActionController::TestCase
+class UsersControllerTest < ActionController::TestCase
   fixtures(:users)
   
   def setup
-    use_controller UsersController
-
     @request.with_subdomain('cit')
     @user = users(:admin)
     @request.session[:user_id] = @user.id
@@ -14,8 +12,7 @@ class UsersControllerText < ActionController::TestCase
 
   test "/edit should render :success" do
     get :edit, :id => @user.id
-
-    status.should.be :success
+    assert_response :success
   end
 
   test "/update should redirect to /clients/edit" do

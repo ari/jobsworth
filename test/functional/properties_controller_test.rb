@@ -4,15 +4,13 @@ class PropertiesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :properties
   
   def setup
-    use_controller PropertiesController
-
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
   end
   
   test "/index should render :success" do
     get :index
-    status.should.be :success
+    assert_response :success
   end
 
   test "/create should create and redirect" do
@@ -26,7 +24,7 @@ class PropertiesControllerTest < ActionController::TestCase
                                  ])
 
     assert_equal old_count + 1, Property.count
-    response.should.redirect(:action => 'edit', :id => assigns["property"])
+    assert_redirected_to(:action => 'edit', :id => assigns["property"])
 
     created = assigns['property']
     assert_equal "Test", created.name
@@ -48,7 +46,7 @@ class PropertiesControllerTest < ActionController::TestCase
          :new_property_values => [ { :value => 'val_new' } ])
 
     assert_equal old_count, Property.count
-    response.should.redirect :action => 'edit'
+    assert_redirected_to :action => 'edit'
 
     created = assigns['property']
     assert_equal "Test", created.name
@@ -76,7 +74,7 @@ class PropertiesControllerTest < ActionController::TestCase
     method = (post ? :post : :get)
 
     send(method, action, :id => allowed_property)
-    status.should.be expected
+    assert_response expected
 
     begin
       send(method, action, :id => not_allowed)

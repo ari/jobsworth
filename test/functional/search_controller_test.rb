@@ -1,11 +1,9 @@
 require 'test_helper'
 
-class SearchControllerText < ActionController::TestCase
+class SearchControllerTest < ActionController::TestCase
   fixtures(:users)
   
   def setup
-    use_controller SearchController
-
     @request.with_subdomain('cit')
     @user = users(:admin)
     @request.session[:user_id] = @user.id
@@ -19,7 +17,6 @@ class SearchControllerText < ActionController::TestCase
 
     found = assigns["customers"]
     assert_equal 1, found.length
-
-    status.should.be :success
+    assert_response :success
   end
 end

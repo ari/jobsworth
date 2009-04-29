@@ -1,41 +1,40 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ApplicationControllerText < ActionController::TestCase
+class ApplicationControllerTest < ActionController::TestCase
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs
   
   def setup
-     use_controller ActivitiesController
-
+    @controller = ActivitiesController.new
      @request.with_subdomain('cit')
      @request.session[:user_id] = users(:admin).id
   end
 
   test "should get current_user" do
      get :index
-     @controller.current_user.should.equal(users(:admin))
+     assert_equal users(:admin), @controller.current_user
   end
 
   test "user 1 should be admin" do
      get :index
-     assigns(:current_user).admin?.should.be true
+     assert assigns(:current_user).admin?
   end
 
   test "user 2 should NOT be admin" do
      @request.session[:user_id] = users(:fudge).id
      get :index
-     assigns(:current_user).admin?.should.be false
+     assert !assigns(:current_user).admin?
   end
 
   test "should get all online users" do
      get :index
-     @controller.current_users.size.should.be 2
+     assert_equal 2, @controller.current_users.size
   end
 
   test "parse_time should handle 1w2d3h4m" do
      get :index
-     @controller.parse_time("1w2d3h4m").should.be(200040)
-     @controller.parse_time("4m").should.be(240)
-     @controller.parse_time("1d").should.be(27000)
+     assert_equal 200040, @controller.parse_time("1w2d3h4m")
+     assert_equal 240, @controller.parse_time("4m")
+     assert_equal 27000, @controller.parse_time("1d")
   end
 
   test "setup_task_filters should work for single selects" do

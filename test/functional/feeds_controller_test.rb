@@ -4,31 +4,21 @@ class FeedsControllerTest < ActionController::TestCase
   fixtures :users
   
   def setup 
-    use_controller FeedsController
     @request.host = 'cit.local.host'
   end
   
   test "should not redirect to login" do
     get :rss, { :id => '1234567890abcdefghijklmnopqrstuv'}
   end 
-end
-
-class FeedUsersControllerTest < ActionController::TestCase
-  fixtures :users
-  
-  def setup
-    use_controller FeedsController
-    @request.host = 'cit.local.host'
-  end 
   
   test "should be able to unsubscribe" do 
     user = User.find_by_uuid('1234567890abcdefghijklmnopqrstuv')
-    user.newsletter.should.equal 1
+    assert_equal 1, user.newsletter
     get :unsubscribe, { :id => '1234567890abcdefghijklmnopqrstuv'}
     unsubbed = User.find_by_uuid('1234567890abcdefghijklmnopqrstuv')
-    unsubbed.newsletter.should.equal 0
-    status.should.be :success
-    body.should.include 'unsubscribed'
+    assert_equal 0, unsubbed.newsletter
+    assert_response :success
+    assert @response.body.index("unsubscribed")
   end
 
 #   xtest "should get RSS"

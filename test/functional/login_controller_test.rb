@@ -4,7 +4,6 @@ class LoginControllerTest < ActionController::TestCase
   fixtures :users, :companies, :customers
   
   def setup
-    use_controller LoginController
     @request.host = 'cit.local.host'
   end 
   
@@ -22,24 +21,24 @@ class LoginControllerTest < ActionController::TestCase
     post :take_signup, { :username => 'newuser', :password => 'newpassword', :password_again => 'newpassword', :name => "New User", :email => "new@clockingit.com", :company => 'New Company',
       :subdomain => 'newsubdomain', :user => {:time_zone => 'Europe/Oslo' } }
 
-    User.count.should.equal user_count + 1
-    Company.count.should.equal company_count + 1
-    Customer.count.should.equal customer_count + 1
+    assert_equal User.count, user_count + 1
+    assert_equal Company.count, company_count + 1
+    assert_equal Customer.count, customer_count + 1
 
-    should.redirect
+    assert_response 302
   end 
   
   test "should not login without username and password" do
     post :validate, :user => { 'username' => '', 'password' => '' }
-    should.redirect_to :controller => 'login', :action => 'login'
+    assert_redirected_to :controller => 'login', :action => 'login'
   end 
 
   test "should be able to log in" do
     post :validate, :user => { 'username' => 'test', 'password' => 'password' }
-    should.redirect_to :controller => 'activities', :action => 'list'
+    assert_redirected_to :controller => 'activities', :action => 'list'
 
-    assigns(:user).should.not.be.nil?
-    session[:user_id].should.equal users(:admin).id
+    assert_not_nil assigns(:user)
+    assert_equal users(:admin).id, session[:user_id]
   end 
 
 end 

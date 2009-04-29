@@ -1,18 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ViewsControllerText < ActionController::TestCase
+class ViewsControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :properties
   
   def setup
-    use_controller ViewsController
-
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
   end
   
   test "/new should render :success" do
     get :new
-    status.should.be :success
+    assert_response :success
   end
 
   test "/save_filter should save properties" do

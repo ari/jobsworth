@@ -12,8 +12,7 @@ class CompanyTest < ActiveRecord::TestCase
   end
 
   def test_internal_customer
-#    @company.internal_customer.id.should.be 1
-    @company.internal_customer.name.should.equal "Internal"
+    assert_equal "Internal", @company.internal_customer.name
   end
 
   def test_subdomain_uniqueness
@@ -21,12 +20,12 @@ class CompanyTest < ActiveRecord::TestCase
     company.name = "Test"
     company.subdomain = 'cit'
     
-    company.should.not.validate
-    company.errors.on(:subdomain).should.not.be.blank
+    assert !company.valid?
+    assert company.errors.on(:subdomain).any?
     
     company.subdomain = 'unique-name'
-    company.should.validate
-    company.errors.on(:subdomain).should.be.blank
+    assert company.valid?
+    assert_nil company.errors.on(:subdomain)
   end
 
   def test_company_should_create_default_properties_on_create

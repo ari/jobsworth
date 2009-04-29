@@ -1,11 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class TasksControllerText < ActionController::TestCase
+class TasksControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks
   
   def setup
-    use_controller TasksController
-
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
   end
@@ -14,12 +12,12 @@ class TasksControllerText < ActionController::TestCase
     task = tasks(:normal_task)
 
     get :edit, :id => task
-    status.should.be :success
+    assert_response :success
   end
 
   test "/new should render :success" do
     get :new
-    status.should.be :success
+    assert_response :success
   end
 
   test "/list should render :success" do
@@ -31,7 +29,7 @@ class TasksControllerText < ActionController::TestCase
     task.save!
 
     get :list
-    status.should.be :success
+    assert_response :success
 
     # ensure at least 1 task was rendered
     group = assigns["groups"].first
@@ -51,7 +49,7 @@ class TasksControllerText < ActionController::TestCase
     task.save!
 
     get :list, :tag => "tag1"
-    status.should.be :success
+    assert_response :success
 
     # ensure at least 1 task was rendered
     group = assigns["groups"].first
@@ -64,7 +62,7 @@ class TasksControllerText < ActionController::TestCase
     post(:update, :id => task.id, :task => { :name => "" })
 
     assert_template "tasks/edit"
-    status.should.be :success
+    assert_response :success
   end
 
 end

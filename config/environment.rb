@@ -78,7 +78,6 @@ Rails::Initializer.run do |config|
   config.gem 'ZenTest', :version => '4.0.0'
   #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
-  config.gem 'test-spec', :version => '0.10.0', :lib => 'test/spec'
   #config.gem 'echoe', :version => '3.1.1'
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.

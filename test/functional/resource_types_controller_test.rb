@@ -1,10 +1,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-describe "ResourceTypesController", ActionController::TestCase do
+class ResourceTypesControllerTest < ActionController::TestCase
   fixtures :companies, :users
 
-  setup do
-    use_controller ResourceTypesController
+  def setup
     @request.with_subdomain("cit")
     user = users(:admin)
     user.use_resources = true
@@ -20,7 +19,7 @@ describe "ResourceTypesController", ActionController::TestCase do
     @resource.resource_type = @type
   end
 
-  specify "all should redirect if not admin set on user" do
+  test "all should redirect if not admin set on user" do
     user = User.find(@request.session[:user_id])
     user.admin = false
     user.save!

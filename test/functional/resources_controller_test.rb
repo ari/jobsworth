@@ -4,7 +4,6 @@ class ResourcesControllerTest < ActionController::TestCase
   fixtures :companies, :users
 
   def setup
-    use_controller ResourcesController
     @request.with_subdomain("cit")
     user = users(:admin)
     user.use_resources = true
@@ -49,21 +48,21 @@ class ResourcesControllerTest < ActionController::TestCase
 
   test "/new should render :success" do
     get :new
-    status.should.be :success
+    assert_response :success
   end
 
   test "/edit should render :success" do
     assert @resource.save
     get :edit, :id => @resource.id
 
-    status.should.be :success
+    assert_response :success
   end
 
   test "/index should render :success" do
     assert @resource.save
 
     get :index
-    status.should.be :success
+    assert_response :success
 
     resources = assigns["resources"]
     assert resources.length > 0
