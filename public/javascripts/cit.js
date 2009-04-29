@@ -608,7 +608,6 @@ function togglePreviousElement(sender, selector) {
     if (selector) {
 	toggle = jQuery(selector);
     }
-    console.log(toggle);
 
     if (toggle.is(':visible')) {
 	sender.text("Show");
