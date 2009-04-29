@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiPageTest < Test::Unit::TestCase
+class WikiPageTest < ActiveRecord::TestCase
   fixtures :wiki_pages
 
   # Replace this with your real tests.

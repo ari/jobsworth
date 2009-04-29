@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ResourceTest < Test::Unit::TestCase
+class ResourceTest < ActiveRecord::TestCase
   fixtures :companies, :customers
 
   def setup

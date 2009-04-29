@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class CustomAttributeValueTest < Test::Unit::TestCase
+class CustomAttributeValueTest < ActiveRecord::TestCase
   fixtures :users, :companies
 
   def setup

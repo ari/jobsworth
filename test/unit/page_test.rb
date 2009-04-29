@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class PageTest < Test::Unit::TestCase
+class PageTest < ActiveRecord::TestCase
   fixtures :pages
 
   def setup

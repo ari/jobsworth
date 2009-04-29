@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 require 'notifications'
 
 
-class NotificationsTest < Test::Unit::TestCase
+class NotificationsTest < ActiveRecord::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
   CHARSET = "utf-8"
   fixtures :users, :tasks, :projects, :customers, :companies

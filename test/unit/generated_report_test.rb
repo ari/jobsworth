@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class GeneratedReportTest < Test::Unit::TestCase
+class GeneratedReportTest < ActiveRecord::TestCase
   fixtures :generated_reports
 
   # Replace this with your real tests.

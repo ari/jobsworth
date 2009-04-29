@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class IcalEntryTest < Test::Unit::TestCase
+class IcalEntryTest < ActiveRecord::TestCase
   fixtures :ical_entries
 
   # Replace this with your real tests.

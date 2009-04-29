@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ScmProjectTest < Test::Unit::TestCase
+class ScmProjectTest < ActiveRecord::TestCase
   fixtures :scm_projects
 
   # Replace this with your real tests.

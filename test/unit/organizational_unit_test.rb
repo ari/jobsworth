@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class OrganizationalUnitTest < Test::Unit::TestCase
+class OrganizationalUnitTest < ActiveRecord::TestCase
   def test_requires_name
     ou = OrganizationalUnit.new
 

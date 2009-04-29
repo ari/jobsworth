@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ProjectPermissionTest < Test::Unit::TestCase
+class ProjectPermissionTest < ActiveRecord::TestCase
   fixtures :project_permissions
 
   # Replace this with your real tests.

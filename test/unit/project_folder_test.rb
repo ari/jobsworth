@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ProjectFolderTest < Test::Unit::TestCase
+class ProjectFolderTest < ActiveRecord::TestCase
   fixtures :project_folders
 
   # Replace this with your real tests.

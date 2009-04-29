@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class ObjectFilterTest < Test::Unit::TestCase
+class ObjectFilterTest < ActiveRecord::TestCase
   fixtures :tasks
 
   def setup

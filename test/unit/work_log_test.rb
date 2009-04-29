@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WorkLogTest < Test::Unit::TestCase
+class WorkLogTest < ActiveRecord::TestCase
   fixtures :work_logs
 
   def setup

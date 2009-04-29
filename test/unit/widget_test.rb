@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WidgetTest < Test::Unit::TestCase
+class WidgetTest < ActiveRecord::TestCase
   fixtures :users, :tasks, :widgets
 
   def setup

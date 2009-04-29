@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class UserTest < Test::Unit::TestCase
+class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
 
   def setup
