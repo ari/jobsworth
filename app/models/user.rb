@@ -1,10 +1,9 @@
 # A user from a company
+require 'digest/md5'
 
 class User < ActiveRecord::Base
   has_many :custom_attribute_values, :as => :attributable, :dependent => :destroy
   include CustomAttributeMethods
-
-  require_dependency 'digest/md5'
 
   belongs_to    :company
   belongs_to    :customer
