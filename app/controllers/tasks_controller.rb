@@ -512,9 +512,11 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save
 
-        notify(@task, worklog) do |recipients|
-          Notifications::deliver_changed(update_type, @task, current_user, recipients,
-                                         email_body.gsub(/<[^>]*>/,''))
+        if params[:comment] and !params[:comment].blank?
+          notify(@task, worklog) do |recipients|
+            Notifications::deliver_changed(update_type, @task, current_user, recipients,
+                                           email_body.gsub(/<[^>]*>/,''))
+          end
         end
       end
 
@@ -1787,7 +1789,9 @@ class TasksController < ApplicationController
     users = []
 
     if ids.any?
-      users = ids.map { |id| current_user.company.users.find(id) }
+      all_users = ids.map { |id| current_user.company.users.find(id) }
+      users = all_users.clone
+      users.delete(current_user) if !current_user.receive_own_notifications?
       emails = users.map { |u| u.email }.uniq.compact
 
       worklog.users = users
@@ -1802,7 +1806,7 @@ class TasksController < ApplicationController
       yield(emails)
     end
 
-    task.mark_as_notified_last_change(users)
+    task.mark_as_notified_last_change(all_users)
   end
 
 end
