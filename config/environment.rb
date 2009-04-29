@@ -74,7 +74,7 @@ Rails::Initializer.run do |config|
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.1.9'
-  config.gem 'rmagick', :version => '2.9.1'
+  config.gem 'rmagick', :version => '2.9.1', :lib => 'RMagick'
   config.gem 'ZenTest', :version => '4.0.0'
   #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'

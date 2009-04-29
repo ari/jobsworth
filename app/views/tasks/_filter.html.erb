@@ -1,9 +1,10 @@
+<a href="#" onclick="jQuery('#tasks_filter').toggle('slow')" class="disclosure">
+	<%= _'Filter'%>
+</a>
 <div nowrap id="tasks_filter">
   <% init_filter_variables %>
   
   <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
-    <legend><%= _'Filter'%></legend>
-    <%= link_to_function("Hide", "togglePreviousElement(this, \"#filter_form\")", :class => "hideLink") %>
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
 
       <div class="builtin filters">
