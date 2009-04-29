@@ -336,6 +336,8 @@ class TaskFilter
     
     tasks = notifications.map { |n| n.task }
     tasks = tasks.uniq
+    # only get open / in progress tasks
+    tasks = tasks.select { |t| (t.status == 0 or t.status == 1) }
 
     return tasks
   end

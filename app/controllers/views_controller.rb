@@ -227,7 +227,10 @@ class ViewsController < ApplicationController
   end
 
   def browse
-    set_session_filters({})
+    set_session_filters(:filter_status => [ 0, 1 ], 
+                        :show_all_unread => 1, 
+                        :filter_user => current_user.id,
+                        :hide_deferred => 1)
 
     redirect_to(:controller => 'tasks', :action => 'list')
   end
