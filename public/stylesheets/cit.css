@@ -2611,6 +2611,10 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     padding: 15px 0px 15px 0px !important;
 }
 
+.add_attribute, .remove_attribute {
+    padding-left: 10px;
+}
+
 .history .hoverrow {
     clear: both;
     padding-bottom: 40px;
