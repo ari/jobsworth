@@ -20,15 +20,6 @@
 	<% unless @selected_tags.empty? %>
 		<span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
 	<% end %>
-
-	<% for tag in @all_tags
-		if @selected_tags.include?(tag[0]) && @selected_tags.size > 0
-			link = (@selected_tags - [tag[0]]).join(',')
-		else
-			link = (@selected_tags + [tag[0]]).join(',')
-		end
-		link = tag[0]
-	%>
-		<span class="<%= (@selected_tags.include?(tag[0])) ? "tag_active" : "tag" %>"><a href="/tasks/list?tag=<%=URI.encode(link)%>"><%= tag[0] %></a> (<%= @tags[tag[0]] %>)</span>
-	<% end %>
+	
+	<%= tag_links(@all_tags) %>
 </div>
