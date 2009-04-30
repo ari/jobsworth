@@ -282,4 +282,19 @@ module TasksHelper
     text_field_with_auto_complete(:user, :name, html_options,
                                   :after_update_element => "addUserToTask")
   end
+
+  ###
+  # Returns links to filter the current task list by tags
+  ###
+  def tag_links(tags_to_counts_hash)
+    links = []
+    
+    tags_to_counts_hash.each do |tag, count|
+      name = tag.name
+      links << link_to("#{ name } (#{ count })", params.merge(:tag => name))
+    end
+    
+    links = links.sort.join(", ")
+    return links
+  end
 end

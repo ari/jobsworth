@@ -123,6 +123,23 @@ class TaskFilter
     return @selected_tags
   end
 
+  ###
+  # Returns a map of tags to their count in the current list. Only tags
+  # with count > 0 will be included.
+  ###
+  def tag_counts
+    if @tag_counts.nil?
+      @tag_counts = {}
+      tasks.each do |task|
+        task.tags.each do |tag|
+          @tag_counts[tag] = (@tag_counts[tag] || 0) + 1
+        end
+      end
+    end
+
+    return @tag_counts
+  end
+
 #  private
 
   ###

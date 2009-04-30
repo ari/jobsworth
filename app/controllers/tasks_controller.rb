@@ -63,9 +63,8 @@ class TasksController < ApplicationController
     task_filter = TaskFilter.new(self, params)
     @selected_tags = task_filter.selected_tags || []
     @tasks = task_filter.tasks
+    @all_tags = task_filter.tag_counts
 
-    # Most popular tags, currently unlimited.
-    @all_tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => project_ids, :filter_hidden => session[:filter_hidden], :filter_customer => session[:filter_customer]})
     @group_ids, @groups = group_tasks(@tasks)
   end
 
