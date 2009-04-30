@@ -4,6 +4,9 @@ For comprehensive details of every change, please consult http://github.com/ari/
 
 27 April 2009
 	Update to Rails 2.3.2 and upgrade all associated plugins and gems at the same time. This should give us some significant speed improvements.
+	IMPORTANT: because of an update to the ferret search server, please run:
+        # rake ferret:rebuild_all_indexes RAILS_ENV=production
+	This will rebuild the search indices.
 	
 26 April 2009
    Change the list of users who will be notified when a task is changed. There is now option to allow the user to choose who should receive a notification on a per-task per-user basis.
