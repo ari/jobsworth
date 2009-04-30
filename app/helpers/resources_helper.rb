@@ -14,16 +14,17 @@ module ResourcesHelper
   ###
   def value_field(attribute, name_prefix, field_id, show_remove_link = false)
     type = attribute.resource_type_attribute
+    value = attribute.value
+    if attribute.new_record? and type.is_password?
+      value = _("User")
+    end
 
-    if type.is_password? and !attribute.new_record? and !attribute.value.blank?
-      res = "<div class=\"password\"></div>"
-      url = show_password_resource_path(@resource, :attr_id => attribute.id)
-      res += link_to_function(_("Show Password"), "showPassword(this, '#{ url }')")
-#      res += link_to(_("Show password"), url)
-    else
-      res = text_field_tag("#{ name_prefix }[value]", attribute.value, 
-                           :id => field_id, :class => "value", 
-                           :size => type.default_field_length)
+    res = text_field_tag("#{ name_prefix }[value]", value, 
+                         :id => field_id, :class => "value", 
+                         :size => type.default_field_length)
+
+    if type.is_password?
+      res += password_field(attribute, type, name_prefix, field_id)
     end
 
     if type.allows_multiple?
@@ -36,6 +37,21 @@ module ResourcesHelper
       res += link_to_function(_("Remove"), "removeAttribute(this)", 
                               :class => "remove_attribute", 
                               :style => remove_style)
+    end
+
+    return res
+  end
+
+  def password_field(attribute, type, name_prefix, field_id)
+    res = ""
+    if attribute.new_record? or attribute.password.blank?
+      res = text_field_tag("#{ name_prefix }[password]", "Password",
+                           :id => field_id, :class => "password", 
+                           :size => type.default_field_length)
+    else 
+      res = "<div class=\"password\"></div>"
+      url = show_password_resource_path(@resource, :attr_id => attribute.id)
+      res += link_to_function(_("Show Password"), "showPassword(this, '#{ url }')")
     end
 
     return res
