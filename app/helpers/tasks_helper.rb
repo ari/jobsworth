@@ -204,7 +204,7 @@ module TasksHelper
       can_close[:disabled] = "disabled"
     end
 					
-    defer_options = []
+    defer_options = [ "" ]
     defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
     defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
     defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
@@ -214,7 +214,7 @@ module TasksHelper
     
     res = select('task', 'status', options, {:selected => @task.status}, can_close)
     res += '<div id="defer_options" style="display:none;">'
-    res += select('task', 'hide_until', defer_options)
+    res += select('task', 'hide_until', defer_options, { }, :disabled => "disabled")
     res += "</div>"
 
     return res
