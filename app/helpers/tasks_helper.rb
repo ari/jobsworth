@@ -214,7 +214,7 @@ module TasksHelper
     
     res = select('task', 'status', options, {:selected => @task.status}, can_close)
     res += '<div id="defer_options" style="display:none;">'
-    res += select('task', 'hide_until', defer_options, { }, :disabled => "disabled")
+    res += select('task', 'hide_until', defer_options, { :selected => "" })
     res += "</div>"
 
     return res
