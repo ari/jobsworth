@@ -82,6 +82,10 @@ class ResourceTypesController < ApplicationController
     end
   end
 
+  def attribute
+    render(:partial => "attribute", :locals => { :attribute => ResourceTypeAttribute.new })
+  end
+
   private
 
   def check_permission

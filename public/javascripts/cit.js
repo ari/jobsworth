@@ -523,13 +523,13 @@ jQuery(document).ready(function() {
 });
 
 /*
-  Adds a set of blank attribute fields to the custome attribute edit form
+  Does a get request to the given url. The response is appended
+  to any element matching selector.
 */
-function addAttributeFields() {
-    jQuery.get("/custom_attributes/fields", { }, function(data) {
-	jQuery("#attributes").append(data);
+function appendPartial(url, selector) {
+    jQuery.get(url, { }, function(data) {
+	jQuery(selector).append(data);
     });
-    
 }
 
 /*

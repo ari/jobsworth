@@ -4,12 +4,8 @@ module ResourceTypesHelper
   # resource type.
   ###
   def add_attribute_link
-    link_to_function(_("Add another attribute")) do |page|
-      attr = @resource_type.resource_type_attributes.build
-      page.insert_html(:bottom, "resource_type_attributes", 
-                       :partial => "attribute", 
-                       :locals => { :attribute => attr })
-    end
+    js = "appendPartial('/resource_types/attribute', '#resource_type_attributes')"
+    link_to_function(_("Add another attribute"), js)
   end
 
 end

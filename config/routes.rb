@@ -18,7 +18,7 @@ ActionController::Routing::Routes.draw do |map|
                   :attributes => :get, 
                   :auto_complete_for_resource_parent => :get },
                 :member => { :show_password => :get })
-  map.resources :resource_types
+  map.resources :resource_types, :collection => { :attribute => :get }
   map.resources :organizational_units
 
   map.resources :forums do |forum|
