@@ -22,6 +22,7 @@ javascripts:
   - frontpage
 stylesheets:
 - base:
+  - ui-lightness/jquery-ui
   - calendar-system
   - ui-datepicker
   - cit
