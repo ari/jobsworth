@@ -29,6 +29,3 @@
 <% else %>
 [<%= worked_nice(total_today) %> <%=_ 'today'%>]
 <% end %>
-<script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (@current_sheet ? ((@current_sheet.paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(@current_sheet.duration/60) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
-</script>
