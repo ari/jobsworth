@@ -13,6 +13,14 @@ function Hover(prefix, element) {
 function ClearHover() {
 }
 
+// show progress spinner (should be replaced with jquery-ui later
+function showProgress() {
+	jQuery('loading').show('fast');
+}
+function hideProgress() {
+	jQuery('loading').hide('fast');
+}
+
 function updateLoading(event){
 
   if($('loading').visible) {

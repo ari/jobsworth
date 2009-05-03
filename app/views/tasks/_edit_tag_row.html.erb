@@ -16,8 +16,8 @@
                       %> | 
 		      <%= link_to_remote _("Delete"), {
                       :url => { :controller => 'tasks', :action => 'delete_tag', :id => @tag },
-                      :loading => "Element.show('loading');",
-                      :complete => "Element.hide('loading');",
+                      :loading => "showProgress();",
+                      :complete => "hideProgress();",
                       :confirm => _("Really delete tag?") },
                       { :class => 'delete' }
                       %></span>

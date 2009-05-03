@@ -24,8 +24,8 @@
     <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove all access for <b>%s</b>?", @user.name), :class => "tooltip centered"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
-    :loading => "Element.show('loading');",
-    :complete => "Element.hide('loading');"
+    :loading => "showProgress();",
+    :complete => "hideProgress();"
     %>
   </td>
   
@@ -34,13 +34,13 @@
       <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove %s access for <b>%s</b>?", p, @user.name), :class => "tooltip centered"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
-      :loading => "Element.show('loading');",
-      :complete => "Element.hide('loading');" if perm.can? p %>
+      :loading => "showProgress();",
+      :complete => "hideProgress();" if perm.can? p %>
       <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant %s access for <b>%s</b>?", p, @user.name), :class => "tooltip centered"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
-      :loading => "Element.show('loading');",
-      :complete => "Element.hide('loading');" unless perm.can? p %>
+      :loading => "showProgress();",
+      :complete => "hideProgress();" unless perm.can? p %>
     </td>
   <% end %>
 
@@ -49,8 +49,8 @@
     <%= link_to_remote image_tag("delete.png", :border => 0, :title => _("Grant access to <b>%s</b>?", @user.name), :class => "tooltip centered"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
-    :loading => "Element.show('loading');",
-    :complete => "Element.hide('loading');updateDnD();"
+    :loading => "showProgress();",
+    :complete => "hideProgress();updateDnD();"
     %>
   </td>
   <td colspan="11"></td>

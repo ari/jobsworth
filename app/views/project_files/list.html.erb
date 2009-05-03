@@ -4,13 +4,13 @@
          <div style="float:left;"><%=_ 'Files' %> - <%= @current_folder.full_path %></div>
          <div style="float:right;padding-top:0.1em">
            <%= link_to_remote _('New File'), :url => {:action => 'new_file', :id => @current_folder},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
            %>
            /
            <%= link_to_remote _('New Folder'), :url => {:action => 'new_folder', :id => @current_folder},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
            %>
            </div>
        </td>

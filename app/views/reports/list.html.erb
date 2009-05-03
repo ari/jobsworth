@@ -231,7 +231,7 @@ Event.observe($('report_range'), "blur", function(e) {
 );
 
 
-new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'client_id=' + value, insertion: updateSelect})})
+new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'client_id=' + value, insertion: updateSelect})})
 
 
 // ]]>

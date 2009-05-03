@@ -4,8 +4,8 @@
       <div style="float:left;"><%=_ 'Chat Rooms' %></div>
       <% if( (current_user.admin > 0) || (current_user.projects.size > 0) ) %>
       <div style="float:right;padding-top:0.1em;"><%= link_to_remote _('New Room'), :url => { :action => 'new_ajax' },
-              :loading => "Element.show('loading');",
-              :complete => "Element.hide('loading');"
+              :loading => "showProgress();",
+              :complete => "hideProgress();"
               %>
       </div>
       <% end %>

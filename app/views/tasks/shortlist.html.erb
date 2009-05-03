@@ -44,8 +44,8 @@
     </div>
     <% if session[:filter_project_short].to_i > 0 || session[:filter_milestone_short].to_i > 0 %>
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax' },
-       :loading => "Element.show('loading');",
-       :complete => "Element.hide('loading');",
+       :loading => "showProgress();",
+       :complete => "hideProgress();",
        :success => "$('task_name').clear();" do %>
     <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
 <% end %>
@@ -54,8 +54,8 @@
 <div style="float:right;"><a href="#" onclick="Element.toggle('shortlist-new-project-container');">[<%= _('New Project')%>]</a></div>
 <div id="shortlist-new-project-container" style="display:none;">
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax', :controller => 'projects' },
-       :loading => "Element.show('loading');",
-       :complete => "Element.hide('loading');",
+       :loading => "showProgress();",
+       :complete => "hideProgress();",
        :success => "$('project_name').clear();" do %>
     <input type="text" name="project[name]" id="project_name" value="<%= _ 'New Project' %>"/>
 <% end %>

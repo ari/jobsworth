@@ -4,8 +4,8 @@
 <% else -%>
 <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name) ),
                         :url => {:controller => 'tasks', :action => 'start_work_edit_ajax', :id => task },
-                        :loading => "Element.show('loading');",
-                        :complete => "Element.hide('loading');") -%>
+                        :loading => "showProgress();",
+                        :complete => "hideProgress();") -%>
 <% end -%>
 <%= link_to(image_tag("add.png", :border => 0, :class => "tooltip work_icon", :title => _("Add earlier work to <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'add_work', :id => task})  -%>
 <% end -%>

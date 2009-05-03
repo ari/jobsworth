@@ -20,13 +20,13 @@
   <%= link_to _('Show'), :action => 'show', :id => project_files %>
   | <%= link_to_remote _('Edit'),
                                    :url => { :action => 'edit', :id => project_files},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
      %>
   | <%= link_to_remote _('Delete'),
                                    :url => { :action => 'destroy', :id => project_files},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');",
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();",
                                    :confirm => _("Are you sure?")
      %>
   </div>

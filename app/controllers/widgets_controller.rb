@@ -412,7 +412,7 @@ class WidgetsController < ApplicationController
         page.<< "widget.setTitle(title);"
         page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
         page << "portal.add(widget, #{@widget.column});"
-        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});"
+        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();portal.refreshHeights();}, onLoading:function(request){showProgress();}});"
 
         page << "updateTooltips();"
         page << "portal.refreshHeights();"
@@ -459,7 +459,7 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"
         page.replace_html "name-#{@widget.dom_id}", @widget.name
-        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});"
+        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}});"
       end
     end
   end
