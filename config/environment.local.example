@@ -1,7 +1,8 @@
 $CONFIG = {
-	:domain => "clockingit.com",
-	:replyto => "admin",
-	:from => "admin",
+	:domain => "clockingit.com",  # The client specific hostname will be prepended to this domain
+	:email_domain => "clockingit.com",
+	:replyto => "admin",  # Note that this is not a full email address, just the part before the @
+	:from => "admin",  # Note that this is not a full email address, just the part before the @
 	:prefix => "[ClockingIT]",
 	:productName => "ClockingIT"
 }
