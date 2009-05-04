@@ -77,12 +77,9 @@ module ResourcesHelper
   # Returns the html to use to filter by resource types.
   ###
   def resource_type_filter
-    values = current_user.company.resource_types
-    values = values.map { |rt| [ rt.name, rt.id.to_s ] }
-    
-    selected = session[:resource_filters]
-    selected = selected[:resource_type_id] if selected
-    filter_for(:resource_type_id, values, selected)
+    return filter_for(:resource_type_id, 
+                      objects_to_names_and_ids(current_user.company.resource_types),
+                      session[:resource_filters], _("Resource Type"))
   end
 
   ###
@@ -90,13 +87,10 @@ module ResourcesHelper
   ###
   def customer_filter
     customers = current_user.company.resources.map { |r| r.customer }
-    customers.compact!
-    customers = customers.map { |c| [ c.name, c.id.to_s ] }
-    customers.uniq!
+    customers = customers.compact.uniq
 
-    selected = session[:resource_filters]
-    selected = selected[:customer_id] if selected
-    filter_for(:customer_id, customers, selected)
+    return filter_for(:customer_id, objects_to_names_and_ids(customers),
+                      session[:resource_filters], _("Customer"))
   end
 
   ###
