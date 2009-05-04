@@ -2754,8 +2754,8 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 }
 
 
-/* TASK FILTERS */
-#tasks_filter .filters {
+/* FILTERS */
+#tasks_filter .filters, #filter_form .filters {
     float: left;
     margin: 10px 10px;
     width: 30%;

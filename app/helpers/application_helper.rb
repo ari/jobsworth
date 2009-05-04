@@ -566,18 +566,20 @@ END_OF_HTML
 
   ###
   # Returns the html to use to display a filter for the given 
-  # 
+  # method, etc
   ###
-  def filter_for(meth, values, selected)
-    label = meth.to_s.humanize.titleize
-    default = _('Any %s', label)
-    values.unshift([ default, "" ])
+  def filter_for(meth, names_and_ids, session_filters, label = nil)
+    label ||= _(meth.to_s.humanize.titleize)
+    default = _('[Any %s', label)
 
-    select_tag("filter[#{ meth }][]", options_for_select(values, selected),
-               { :multiple => true ,
-                 :class => "multiselect",
-                 :onchange => "$('filter_form').submit();"
-               })
+    session_filters ||= {}
+    selected = session_filters[meth] || []
+    selected = names_and_ids.select { |name, id| selected.include?(id.to_s) }
+
+    res = query_menu("filter[#{ meth }]", names_and_ids, label)
+    res += selected_filter_values("filter[#{ meth }]", selected, label)
+
+    return res
   end
 
   ###
