@@ -1,25 +1,25 @@
 <div id="content">
-	<div class="page_header">
-		<div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
-		<div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
-                <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
-	</div>
-	<%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-	
-	<div id="task_list">
-		<div id="print_title"><%= print_title %></div>
-		<%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
-	</div>
+  <div class="page_header">
+    <div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "Element.show('loading');", :complete => "Element.hide('loading');" %></div>
+    <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
+    <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
+  </div>
+  <%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+  
+  <div id="task_list">
+    <div id="print_title"><%= print_title %></div>
+    <%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
+  </div>
 </div>
 
 <div id="tags">
-	<div class="page_header""><%=_ 'Tags' %>
-		<% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
-	</div>
+  <div class="page_header""><%=_ 'Tags' %>
+			   <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+</div>
 
-	<% unless @selected_tags.empty? %>
-		<span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
-	<% end %>
-	
-	<%= tag_links(@all_tags) %>
+<% unless @selected_tags.empty? %>
+<span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
+<% end %>
+
+<%= tag_links(@all_tags) %>
 </div>

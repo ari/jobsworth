@@ -1707,16 +1707,23 @@ class TasksController < ApplicationController
       groups = Task.group_by(tasks, items) { |t,i| (t.milestone ? (t.milestone.name + " / " + t.project.name) : "Unassigned" ) == i }
 
     elsif session[:group_by].to_i == 5 # Users
-      users = current_user.company.users
+      unassigned = _("Unassigned")
+
+      # only get users in currently shown tasks
+      users = tasks.inject([]) { |array, task| array += task.users }
+      users = users.uniq.sort_by { |u| u.name }
+
       users.each { |u| group_ids[u.name] = u.id }
-      group_ids[_('Unassigned')] = 0
-      items = [_("Unassigned")] + users.collect(&:name).sort
+      group_ids[unassigned] = 0
+      items = [ unassigned ] + users.map { |u| u.name }
+
       groups = Task.group_by(tasks, items) { |t,i|
         if t.users.size > 0
           res = t.users.collect(&:name).include? i
         else
           res = (_("Unassigned") == i)
-          end
+        end
+
         res
       }
     elsif session[:group_by].to_i == 7 # Status
