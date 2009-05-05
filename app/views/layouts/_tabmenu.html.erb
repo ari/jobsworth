@@ -17,11 +17,9 @@
 <% end %>
 </li>
 
-  <% if controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name) %>
-  <li class="active"><%= link_to "#{_('Browse')}", { :controller => 'views', :action => 'browse'}, :class => "active" %>
-  <% else %>
-  <li><%= link_to "#{_('Browse')}", :controller => 'views', :action => 'browse' %>
-  <% end %>
+    <% class_name = "active" if (controller.controller_name == "tasks" && !['timeline', 'new'].include?(controller.action_name)) -%>
+    <li class="<%= class_name %>">
+      <%= link_to(_("Browse"), { :controller => "tasks", :action => "list" }, :class => class_name) %>
 <ul>
   <li><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></li>
       <li><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></li>
