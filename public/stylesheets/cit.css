@@ -2779,3 +2779,8 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 .filter_options {
     float: right;
 }
+
+#reorganize_tasks {
+    font-size: 10px;
+    float: right;
+}

@@ -42,6 +42,12 @@
     </form>
   </fieldset>
 
+  <% if (!local_assigns[:hide_organize] or !hide_organize) and can_organize? %>
+  <div id="reorganize_tasks">
+    <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
+    <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
+  </div>
+  <% end %>
 
 
 <div class="task_view_links">
@@ -51,12 +57,5 @@
 </div>
 
 <div id="quick_add_container" style="display:none;"></div>
-<% if (!local_assigns[:hide_organize] or !hide_organize) and can_organize? %>
-<div style="float:right;">
-  <small>
-    <a id="reorder" href="#" onclick="$$( '.handle', '.task-group' ).each(function(value, index) { value.show();});Element.show('done_reordering');Element.hide('reorder');"><%= _'Organize Tasks' %></a>
-    <a id="done_reordering" href="#" style="display:none;" onclick="$$( '.handle' ).each(function(value, index) { value.hide();});Element.hide('done_reordering');Element.show('reorder'); $$('.task-group').each( function(value, index) { if( $$( '#' + value.id + ' div').length == 1 ){ value.hide();};});"><%= _'Organizing Done'%></a>
-  </small>
-</div>
-<% end %>
+
 </div>
