@@ -8,9 +8,6 @@ javascripts:
   - effects
   - dragdrop
   - controls
-  - calendar
-  - calendar-en
-  - calendar-setup
   - application
   - jrails
   - cit
@@ -22,8 +19,6 @@ javascripts:
 stylesheets:
 - base:
   - ui-lightness/jquery-ui
-  - calendar-system
-  - ui-datepicker
   - cit
 - portal:
   - portal

@@ -1,16 +1,12 @@
+<script type="text/javascript">jQuery("#milestone_due_at").datepicker({dateFormat: '<%= current_user.dateFormat %>'});</script>
 <%= error_messages_for 'milestone' %>
 
-<!--[form:milestone]-->
 <label for="milestone_name"><%=_ 'Name' %></label><%= text_field 'milestone', 'name'  %><br/>
-<label for="milestone_due_at"><%=_ 'Due Date' %></label><%= calendar_field 'milestone', 'due_at', { :class => 'date', :field_title => 'Due Date', :button_title => 'Show Calendar' },
-        { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true }
-        %><br/>
-
+<label for="milestone_due_at"><%=_ 'Due Date' %></label><%= text_field 'milestone', 'due_at', :size => 12 %><br/>
 <label for="milestone_user_id"><%=_ 'Owner' %></label><%= select 'milestone', 'user_id', User.find(:all, :order => 'name',
     :conditions => ['company_id = ?', current_user.company.id] ).collect {|c| [ c.name, c.id ] }, :include_blank => true  %><br/>
 
 <label for="milestone_description"><%=_ 'Description' %></label><%= text_area 'milestone', 'description', :rows => 10  %><br/>
 
 <%= hidden_field_tag "milestone[project_id]", @milestone.project_id %>
-<!--[eoform:milestone]-->
 

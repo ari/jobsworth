@@ -1,14 +1,7 @@
 <%= error_messages_for 'log' %>
 
-<!--[form:log]-->
-<label for="log_started_at"><%=_ 'Start' %></label>
-<%= calendar_field 'log', 'started_at', { :class => 'date', :field_title => 'Start', :button_title => _('Show Calendar'), :size => '15' },
-        { :ifFormat => "#{current_user.date_format} #{current_user.time_format}", :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true, :showsTime => true, :timeformat => "24" } %><br/>
+<label for="log_started_at"><%=_ 'Start' %></label><%= text_field 'log', 'started_at', :size => 12 %><br/>
 <% if @log.log_type != EventLog::TASK_COMMENT %>
-<label for="log_duration"><%=_ 'Duration Worked' %></label><%= text_field 'log', 'duration', {:value => worked_nice(@log.duration/60), :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m') }  %><br/>
+	<label for="log_duration"><%=_ 'Duration Worked' %></label><%= text_field 'log', 'duration', {:value => worked_nice(@log.duration/60), :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m') }  %><br/>
 <% end %>
 <label for="log_body"><%=_ 'Notes' %></label><%= text_area 'log', 'body', :rows => 10  %><br/>
-
-
-<!--[eoform:log]-->
-
