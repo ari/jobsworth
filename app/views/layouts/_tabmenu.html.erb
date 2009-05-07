@@ -5,9 +5,11 @@
     <% end %>
 
 	<li<%= " class='active'" if active == "activities/list" %>><%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'list' %>
+	<% if active == "activities/list" %>
         <ul>
             <li><%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %></li>
         </ul>
+    <% end %>
 </li>
 
     <li<%= " class='active'" if active.starts_with?('tasks/') %><%= link_to(_("Browse"), :controller => "tasks", :action => "list" ) %>
