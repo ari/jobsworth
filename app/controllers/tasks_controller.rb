@@ -1802,12 +1802,14 @@ class TasksController < ApplicationController
 
       worklog.users = users
       
-      comments = users.map { |u| "#{ u.name } (#{ u.email })" }
-      comment = _("Notification emails sent to %s", comments.join(", "))
-      worklog.body ||= ""
-      worklog.body += "\n\n" if !worklog.body.blank?
-      worklog.body += comment
-      worklog.save
+      if users.any?
+        comments = users.map { |u| "#{ u.name } (#{ u.email })" }
+        comment = _("Notification emails sent to %s", comments.join(", "))
+        worklog.body ||= ""
+        worklog.body += "\n\n" if !worklog.body.blank?
+        worklog.body += comment
+        worklog.save
+      end
       
       yield(emails)
     end
