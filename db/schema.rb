@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090504060420) do
+ActiveRecord::Schema.define(:version => 20090511031856) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(:version => 20090504060420) do
     t.datetime "updated_at"
     t.boolean  "default_sort"
     t.boolean  "default_color"
+    t.boolean  "mandatory",     :default => false
   end
 
   add_index "properties", ["company_id"], :name => "index_properties_on_company_id"

@@ -6,11 +6,15 @@
     <%= f.text_field :name %>
     <br />
 
-    <label for="property_default_sort"><%=_ "Sort tasks by this property by default?" %></label>
+    <label for="property_mandatory"><%=_ "Tasks require a value for this property to save " %></label>
+    <%= f.check_box :mandatory %>
+    <br />
+
+    <label for="property_default_sort"><%=_ "Sort tasks by this property by default" %></label>
     <%= f.check_box :default_sort %>
     <br />
 
-    <label for="property_default_color"><%=_ "Color tasks by this property by default?" %></label>
+    <label for="property_default_color"><%=_ "Color tasks by this property by default" %></label>
     <%= f.check_box :default_color %>
     <br />
 

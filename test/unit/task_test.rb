@@ -305,4 +305,21 @@ class TaskTest < ActiveRecord::TestCase
     assert n.unread?
     assert @task.unread?(u1)
   end
+
+  def test_validate_checks_mandatory_properties
+    property = @task.company.properties.first
+    property.update_attribute(:mandatory, true)
+
+    @task.task_property_values.clear
+    assert !@task.valid?
+    assert @task.errors.any?
+
+    @task.set_property_value(property, property.property_values.first)
+    assert @task.valid?
+
+    property.update_attribute(:mandatory, false)
+    @task.company.properties.reload
+    @task.task_property_values.clear
+    assert @task.valid?
+  end
 end

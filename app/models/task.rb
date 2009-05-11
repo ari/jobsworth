@@ -1062,4 +1062,21 @@ class Task < ActiveRecord::Base
       self.resources << company.resources.find(id)
     end
   end
+
+  ###
+  # Custom validation for tasks.
+  ###
+  def validate
+    res = true
+
+    mandatory_properties = company.properties.select { |p| p.mandatory? }
+    mandatory_properties.each do |p|
+      if !property_value(p)
+        res = false
+        errors.add_to_base(_("%s is required", p.name))
+      end
+    end
+
+    return res
+  end
 end

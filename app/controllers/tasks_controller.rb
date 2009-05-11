@@ -405,8 +405,6 @@ class TasksController < ApplicationController
       assigned_ids = (params[:assigned] || [])
       assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
       if old_users != assigned_ids
-        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-        logger.info("#{old_users} != #{params[:users].collect{|u| u.to_i}.sort.join(',')}")
         @task.users.reload
         new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
         body << "- <strong>Assignment</strong>: #{new_name}\n"
