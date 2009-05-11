@@ -33,7 +33,6 @@
       for view in views %>
       <li><%= link_to(view.name, { :controller => 'views', :action => 'select', :id => view }) %><%= link_to("[#{_('Edit')}]", {:controller => 'views', :action => 'edit', :id => view}) if view.user_id == current_user.id %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></li>
   <% end %>
-  <li><%= link_to "[#{_('New View')}]",  :controller => 'views', :action => 'new' %></li>
 </ul>
  </li>
 
