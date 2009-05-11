@@ -6,7 +6,8 @@ class Resource < ActiveRecord::Base
   belongs_to :resource_type
   belongs_to :parent, :class_name => "Resource"
   has_many(:child_resources, :class_name => "Resource", 
-           :foreign_key => "parent_id")
+           :foreign_key => "parent_id", 
+           :order => "lower(name)")
   has_many(:resource_attributes, 
            :include => :resource_type_attribute,
            :dependent => :destroy)

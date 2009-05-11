@@ -16,7 +16,7 @@ class Company < ActiveRecord::Base
   has_many      :tags, :dependent => :destroy, :order => 'name'
   has_many      :properties, :dependent => :destroy
   has_many      :views, :dependent => :destroy
-  has_many      :resources, :dependent => :destroy
+  has_many      :resources, :dependent => :destroy, :order => "lower(name)"
   has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
   has_many      :custom_attributes, :dependent => :destroy
 
