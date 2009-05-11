@@ -407,10 +407,18 @@ class ApplicationController < ActionController::Base
       session[:filter_project] = projects
       session[:filter_milestone] = milestones
     end
+
+    # These filters use the query menu html, but can only have a single value.
+    # Just grab the first value to use that. 
+    single_filters = [ :sort, :group_by, :colors, :icons ]
+    single_filters.each do |filter|
+      values = params[filter] || []
+      session[filter] = values.first
+    end
     
-    filter_names =  [:filter_user, :filter_hidden, :filter_status, :group_by, 
-                     :hide_deferred, :hide_dependencies, :sort, :filter_type, 
-                     :filter_severity, :filter_priority, :colors, :icons, 
+    filter_names =  [:filter_user, :filter_hidden, :filter_status,
+                     :hide_deferred, :hide_dependencies, :filter_type, 
+                     :filter_severity, :filter_priority,
                      :show_all_unread ]
     filter_names.each do |filter|
       session[filter] = params[filter]

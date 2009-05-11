@@ -58,13 +58,14 @@ module TaskFilterHelper
   ###
   # Returns the html to display the selected values in the current filter.
   ###
-  def selected_filter_values(name, selected_names_and_ids, label = nil, &block)
+  def selected_filter_values(name, selected_names_and_ids, label = nil, default_label_text = "Any", &block)
     label ||= name.gsub(/^filter_/, "").titleize
+    selected_names_and_ids ||= []
 
     locals = {
       :selected_names_and_ids => selected_names_and_ids,
       :filter_name => name,
-      :all_label => _("[Any %s]", label),
+      :all_label => _("[#{ default_label_text } %s]", label),
       :unassigned => TaskFilter::UNASSIGNED_TASKS
     }
     locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
@@ -198,6 +199,41 @@ module TaskFilterHelper
     
     selected = collection.select { |o| ids.include?(o.id) }
     return objects_to_names_and_ids(selected, :prefix => prefix)
+  end
+
+  ###
+  # Returns the possible values for sorting tasks by.
+  ###
+  def sort_options
+    options = []
+    options << [_("Due Date"), "1"]
+    options << [_("Age"), "2"]
+    options << [_("Name"), "3"]
+    options << [_("Recent"), "4"]
+
+    return options
+  end
+
+  ###
+  # Returns the possible values for grouping tasks by.
+  ###
+  def group_by_options
+     options = [
+                [_("Tags"), "1"],
+                [_("Clients"), "2"],
+                [_("Projects"), "3"],
+                [_("Milestones"), "4"],
+                [_("Projects / Milestones"), "10"],
+                [_("Users"), "5"],
+                [_("Status"), "7"], 
+                [_("Requested By"), "11"]
+               ]
+
+    current_user.company.properties.each do |prop|
+      options << [ prop.name, prop.filter_name ]
+    end
+
+    return options
   end
 
 end
