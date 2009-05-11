@@ -13,7 +13,8 @@
             <%
             @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name").collect{ |c| [c.name, c.id.to_s]}
             @projects = current_user.projects.collect {|p| [p.name, p.id.to_s]}
-            @users = User.find(:all, :order => "name", :conditions => ["company_id = ?", current_user.company_id]).collect {|c| [ c.name, c.id.to_s ] }
+	    @users = @logs.map { |l| l.user }.uniq.compact.sort_by { |u| u.name }
+	    @users = objects_to_names_and_ids(@users)
 
             filter_count = 0
             %>
@@ -43,12 +44,10 @@
             </select>
             <% end %>
 
-            <% if @users.size > 1 %>
             <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
               <% @users = [[_("[Any User]"), "0"]] + @users %>
-              <%= options_for_select @users, params[:filter_user] %>
+              <%= options_for_select @users, params[:filter_user].to_i %>
             </select>
-            <% end %>
 
             <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
               <%
