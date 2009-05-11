@@ -402,7 +402,10 @@ class TasksController < ApplicationController
         body << "- <strong>Description</strong> changed\n"
       end
 
-      if params[:users] && old_users != params[:users].uniq.collect{|u| u.to_i}.sort.join(',')
+      assigned_ids = (params[:assigned] || [])
+      assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
+      if old_users != assigned_ids
+        logger.info("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         logger.info("#{old_users} != #{params[:users].collect{|u| u.to_i}.sort.join(',')}")
         @task.users.reload
         new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
@@ -1802,12 +1805,14 @@ class TasksController < ApplicationController
 
       worklog.users = users
       
-      comments = users.map { |u| "#{ u.name } (#{ u.email })" }
-      comment = _("Notification emails sent to %s", comments.join(", "))
-      worklog.body ||= ""
-      worklog.body += "\n\n" if !worklog.body.blank?
-      worklog.body += comment
-      worklog.save
+      if users.any?
+        comments = users.map { |u| "#{ u.name } (#{ u.email })" }
+        comment = _("Notification emails sent to %s", comments.join(", "))
+        worklog.body ||= ""
+        worklog.body += "\n\n" if !worklog.body.blank?
+        worklog.body += comment
+        worklog.save
+      end
       
       yield(emails)
     end
