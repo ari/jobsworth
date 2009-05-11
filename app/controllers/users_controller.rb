@@ -86,8 +86,12 @@ class UsersController < ApplicationController
     
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
-      redirect_to(:controller => "clients", :action => 'edit', 
-                  :id => @user.customer, :anchor => "users")
+      if @user.customer
+        redirect_to(:controller => "clients", :action => 'edit', 
+                    :id => @user.customer, :anchor => "users")
+      else
+        redirect_to(:controller => "clients", :action => "list")
+      end
     else
       render :action => 'edit'
     end
