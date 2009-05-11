@@ -33,7 +33,6 @@ class ViewsController < ApplicationController
     @view.company_id = current_user.company_id
     @view.user_id = current_user.id
 
-
     user_ids = TaskFilter.filter_user_ids(session).to_csv
     @view.filter_user_id = user_ids if !user_ids.blank?
 
@@ -46,7 +45,7 @@ class ViewsController < ApplicationController
     customer_ids = tf.customer_ids.to_csv
     @view.filter_customer_id = customer_ids if !customer_ids.blank?
 
-    status_ids = TaskFilter.filter_status_ids(session)
+    status_ids = TaskFilter.filter_status_ids(session).to_csv
     @view.filter_status = status_ids if !status_ids.blank?
 
     @view.auto_group = session[:group_by].to_i
@@ -99,11 +98,11 @@ class ViewsController < ApplicationController
   def select
     @view = View.find(params[:id], :conditions => ["company_id = ? AND (user_id = ? OR shared = 1)", current_user.company_id, current_user.id])
 
-    session[:filter_user] = @view.filter_user_id
-    session[:filter_project] = @view.filter_project_id
-    session[:filter_status] = @view.filter_status
-    session[:filter_milestone] = @view.filter_milestone_id
-    session[:filter_customer] = @view.filter_customer_id.to_s
+    session[:filter_user] = (@view.filter_user_id || "").parse_csv
+    session[:filter_project] = (@view.filter_project_id || "").parse_csv
+    session[:filter_status] = (@view.filter_status || "").parse_csv
+    session[:filter_milestone] = (@view.filter_milestone_id || "").parse_csv
+    session[:filter_customer] = (@view.filter_customer_id || "").parse_csv
 
     session[:last_project_id] = session[:filter_project]
 

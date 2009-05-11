@@ -69,10 +69,15 @@ module CustomAttributeMethods
     custom_attribute_values.delete(missing)
   end
 
+  ###
+  # Checks if this object, and all associated values are valid. Adds errors
+  # to base if not.
+  ###
   def validate
     valid = true
 
     invalid = custom_attribute_values.select { |cav| !cav.valid? }
+
     if invalid.any?
       valid = false
 
