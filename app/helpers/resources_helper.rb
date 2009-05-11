@@ -87,7 +87,7 @@ module ResourcesHelper
   ###
   def customer_filter
     customers = current_user.company.resources.map { |r| r.customer }
-    customers = customers.compact.uniq
+    customers = customers.compact.uniq.sort_by { |c| c.name.downcase }
 
     return filter_for(:customer_id, objects_to_names_and_ids(customers),
                       session[:resource_filters], _("Customer"))
