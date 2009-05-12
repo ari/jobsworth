@@ -33,12 +33,12 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
   <div style="float:left; padding-left:0.4em;">
     <% unless task.done? %>
       <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_check', :id => task },
-                                                                :loading => "Element.show('loading');",
-                                                                :complete => "Element.hide('loading');" ), :class => "button tooltip", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
+                                                                :loading => "showProgress();",
+                                                                :complete => "hideProgress();" ), :class => "button tooltip", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% else %>
       <%= check_box("task", "done", {"title" => _("Revert <b>%s</b> to not completed status.", task.name), "onclick" => remote_function(:url => { :controller => 'tasks', :action => 'ajax_uncheck', :id => task },
-                                                                :loading => "Element.show('loading');",
-                                                                :complete => "Element.hide('loading');" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
+                                                                :loading => "showProgress();",
+                                                                :complete => "hideProgress();" ), :class => "button tooltip", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% end %>
 
     <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
@@ -47,8 +47,8 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
       <% else -%>
         <%= link_to_remote( image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name)),
                         :url => {:controller => 'tasks', :action => 'start_work_ajax', :id => task },
-                        :loading => "Element.show('loading');",
-                        :complete => "Element.hide('loading');") -%>
+                        :loading => "showProgress();",
+                        :complete => "hideProgress();") -%>
       <% end -%>
    <% else -%>
      <img src="/images/spacer.gif" width="16" height="16" border="0"/>
@@ -80,32 +80,32 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
       <% if @current_sheet && @current_sheet.task.id == task.id -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');" -%>
+          :loading => "showProgress();",
+          :complete => "hideProgress();" -%>
         <% if @current_sheet.paused? %>
           <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task },
-            :loading => "Element.show('loading');",
-            :complete => "Element.hide('loading');" -%>
+            :loading => "showProgress();",
+            :complete => "hideProgress();" -%>
         <% else %>
           <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task },
-            :loading => "Element.show('loading');",
-            :complete => "Element.hide('loading');" -%>
+            :loading => "showProgress();",
+            :complete => "hideProgress();" -%>
         <% end %>
       <% else -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
             <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
-                  :loading => "Element.show('loading');",
-                  :complete => "Element.hide('loading');",
+                  :loading => "showProgress();",
+                  :complete => "hideProgress();",
                   :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
           <% else -%>
             <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
-                  :loading => "Element.show('loading');",
-                  :complete => "Element.hide('loading');",
+                  :loading => "showProgress();",
+                  :complete => "hideProgress();",
                   :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
           <% end -%>
         <% end -%>

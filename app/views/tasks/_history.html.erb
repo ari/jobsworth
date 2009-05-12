@@ -4,13 +4,13 @@
       <td align="left" colspan="3" class="page_header"><div style="float:left;"><%= _ 'History' %></div><div style="float:right;font-size:9px;padding-top:0.2em;padding-right:1.5em;text-transform: none; font-weight: none; letter-spacing:0">
 <% if session[:only_comments].to_i == 0 %>
            <%= link_to_remote _('Showing Full History'), :url => {:action => 'toggle_history', :id => @task.id },
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
            %>
 <% else %>
            <%= link_to_remote _('Showing Only Comments'), :url => {:action => 'toggle_history', :id => @task.id},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
            %>
 <% end %>
 </div></td>

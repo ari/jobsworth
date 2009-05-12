@@ -2,8 +2,8 @@
 <legend>Editing Project File</legend>
 
 <% form_remote_tag :url => {:action => 'update', :id => @file },
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');" do  %>
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();" do  %>
   <%= render :partial => "form_edit" %>
   <label>&nbsp;</label><div class="buttons">
   <%= submit_tag _("Update"), :class => 'nolabel' %>

@@ -146,7 +146,7 @@ end
 puts "  Creating config/environment.local.rb"
 
 env = []
-File.open("config/environment.rb-example") do |file|
+File.open("config/environment.local.example") do |file|
   while line = file.gets
     env << line
   end

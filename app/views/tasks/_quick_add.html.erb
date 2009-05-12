@@ -12,8 +12,8 @@
 %>
 
 <% form_remote_tag :url => { :action => 'create_ajax' } ,
-       :loading => "Element.show('loading');",
-       :complete => "Element.hide('loading');",
+       :loading => "showProgress();",
+       :complete => "hideProgress();",
        :html => { :id => 'quick-add-form' } do
 %>
 
@@ -38,7 +38,7 @@
      </select>
 <script type="text/javascript">
 //<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
 new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
 //]]>
 </script>

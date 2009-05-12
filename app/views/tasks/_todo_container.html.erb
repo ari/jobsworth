@@ -5,7 +5,7 @@
     <% end %>
   </ul>
 
-  <form action="/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>" id="todo-form-<%=task.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Form.serialize(this)}); return false;" style="display:none;">
+  <form action="/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>" id="todo-form-<%=task.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:Form.serialize(this)}); return false;" style="display:none;">
     <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <a href="#" onclick="Element.hide('todo-form-<%=task.dom_id%>');$('new-todo-<%=task.dom_id%>').show(); return false;"><%=_('Cancel')%></a>
   </form>
   <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><a href="#" onclick="$('todo-form-<%=task.dom_id%>').show();$('new-todo-<%=task.dom_id%>').hide();$('todo_text_<%=task.id%>').focus();; return false;"><%=_'New To-do Item'%></a></small></span>

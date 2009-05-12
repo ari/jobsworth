@@ -24,13 +24,13 @@
   <% if !folder.new_record? && (@up.nil? || @up == false) %>
   <%= link_to_remote _('Edit'),
        :url => { :action => 'edit_folder', :id => folder},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');"
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();"
      %>
   | <%= link_to_remote _('Delete'),
                                    :url => { :action => 'destroy_folder', :id => folder},
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');",
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();",
                                    :confirm => _("Are you sure?")
      %>
 <% else %>

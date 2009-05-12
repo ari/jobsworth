@@ -37,34 +37,34 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <% if(@current_sheet && @current_sheet.task_id == task.id) -%>
         <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
           :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
-          :loading => "Element.show('loading');",
-          :complete => "Element.hide('loading');",
+          :loading => "showProgress();",
+          :complete => "hideProgress();",
           :confirm => _("Really abort work?")
             -%>
         <% if @current_sheet.paused? %>
           <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
-            :loading => "Element.show('loading');",
-            :complete => "Element.hide('loading');" -%>
+            :loading => "showProgress();",
+            :complete => "hideProgress();" -%>
         <% else %>
           <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
             :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
-            :loading => "Element.show('loading');",
-            :complete => "Element.hide('loading');" -%>
+            :loading => "showProgress();",
+            :complete => "hideProgress();" -%>
         <% end %>
     <% else -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
             <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
-                  :loading => "Element.show('loading');",
-                  :complete => "Element.hide('loading');",
+                  :loading => "showProgress();",
+                  :complete => "hideProgress();",
                   :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
           <% else -%>
             <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
                   :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
-                  :loading => "Element.show('loading');",
-                  :complete => "Element.hide('loading');",
+                  :loading => "showProgress();",
+                  :complete => "hideProgress();",
                   :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
           <% end -%>
         <% end -%>
@@ -75,10 +75,10 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
   <div style="float:left; padding-left:0.3em;">
     <% unless task.done? %>
-      <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_check/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}})",
+      <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_check/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}})",
 	  :class => "button tooltip checkbox", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% else %>
-      <%= check_box("task", "done", {"title" => _("Revert <b>%s</b> to not completed status.", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_uncheck/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}})",
+      <%= check_box("task", "done", {"title" => _("Revert <b>%s</b> to not completed status.", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_uncheck/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}})",
 		      :class => "button tooltip checkbox", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
     <% end %>
 
@@ -86,7 +86,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
       <% if @current_sheet && @current_sheet.task_id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link work-icon" } )  -%>
       <% else -%>
-        <a href="#" onclick="new Ajax.Request('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}}); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
+        <a href="#" onclick="new Ajax.Request('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}}); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
       <% end -%>
    <% else -%>
      <img src="/images/spacer.gif" width="16" height="16" border="0"/>

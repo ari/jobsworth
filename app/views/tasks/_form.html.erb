@@ -48,7 +48,7 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 
           <script type="text/javascript">
 //<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'project_id=' + value, insertion: updateSelect })});
+new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
 new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
 //]]>
 </script>
@@ -67,27 +67,18 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 <% else %>
       <%= hidden_field_tag "task[duration]", "#{(@task.duration.to_i > 0 ? worked_nice(@task.duration) : "")}" %>
 <% end %>
+	<script type="text/javascript">
+		jQuery(function() {
+			jQuery("#due_at").datepicker({constrainInput: false, dateFormat: '<%= current_user.dateFormat %>'});
+		});
+	</script>
       <label for="task_due_at"><%=_ 'Due Date' %></label>
-        <% if perms['prioritize'].empty? %>
-          <% if( (current_user.locale || 'en_US') == 'en_US' )
-               date_tooltip = _("Enter task due date, or click calendar button.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
-             else
-               date_tooltip = _("Enter task due date, or click calendar button.")
-             end %>
-          <% if @task.repeat && @task.repeat.length > 0 %>
-          <%= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar'), :value => @task.repeat_summary }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
-          <% else %>
-	  <input type="text" name="task[due_at]" id="task_due_at" size="12"/>
-          <%#= calendar_field 'task', 'due_at', { :class => 'date tooltip', :field_title => date_tooltip, :button_title => _('Show Calendar') }, { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2006, 2010], :step => 1, :showOthers => true } %>
-          <% end %>
-          <br/>
-        <% else %>
-          <% if @task.repeat && @task.repeat.length > 0 %>
-        <%= text_field 'task', 'due_at', {:size => 12, :value => @task.repeat_summary}.merge(perms['prioritize']) %><br/>
-          <% else %>
-        <%= text_field 'task', 'due_at', {:size => 12}.merge(perms['prioritize']) %><br/>
-          <% end %>
-        <% end %>
+		<% date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>") %>
+		<% if @task.repeat && @task.repeat.length > 0 %>
+			<%= text_field 'task', 'due_at', {:id => 'due_at', :class => 'tooltip', :title => date_tooltip, :size => 12, :value => @task.repeat_summary}.merge(perms['prioritize']) %><br/>
+		<% else %>
+			<%= text_field 'task', 'due_at', {:id => 'due_at', :class => 'tooltip', :title => date_tooltip, :size => 12}.merge(perms['prioritize']) %><br/>
+		<% end %>
 
 	<label for="task_status"><%= _("Status") %></label>
 	<%= status_field(@task) %>

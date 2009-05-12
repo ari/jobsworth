@@ -2,8 +2,8 @@
 <tr>
   <td valign="top">
 <% form_remote_tag :url => { :action => 'create_ajax' } ,
-       :loading => "Element.show('loading');",
-       :complete => "Element.hide('loading');",
+       :loading => "showProgress();",
+       :complete => "hideProgress();",
        :html => { :id => 'channel-add-form' } do
 %>
 

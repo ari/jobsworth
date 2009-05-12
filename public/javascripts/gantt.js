@@ -12,7 +12,6 @@ function ganttDragging(e) {
       ganttLastX = x;
     }
   }
-
 }
 
 function ganttDragEnd(ev) {
@@ -23,7 +22,6 @@ function ganttDragEnd(ev) {
 
 
   new Ajax.Request('/schedule/gantt_drag/' + e.id + "?x=" + x + "&w=" + w);
-
 }
 
 
@@ -33,5 +31,18 @@ function ganttDragStart(ev) {
   var w = Element.getWidth(e);
   var x = Element.positionedOffset(e)[0];
   setTimeout( function() { ganttDragging(e);} , 1000);
-
 }
+
+jQuery(document).ready(function() {
+	jQuery("input[id^=due-]").datepicker({dateFormat: userDateFormat});
+	jQuery("input[id^=due-tasks]").blur(function(){
+		value = jQuery(this).val();
+		id = jQuery(this).attr('id').match(/\d+/);
+		jQuery.post('/schedule/reschedule/' + id,{due: value});
+	});
+	jQuery("input[id^=due-milestones]").blur(function(){
+		value = jQuery(this).val();
+		id = jQuery(this).attr('id').match(/\d+/);
+			jQuery.post('/schedule/reschedule_milestone/' + id,{due: value});
+	});
+});

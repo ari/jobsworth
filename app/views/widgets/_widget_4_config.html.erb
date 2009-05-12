@@ -1,7 +1,7 @@
 <div id="config-<%= @widget.dom_id %>" style="display:none;" class="widget-config">
 <% form_remote_tag :url => {:controller => 'widgets', :action => 'update', :id => @widget },
-                                   :loading => "Element.show('loading');",
-                                   :complete => "Element.hide('loading');" do  %>
+                                   :loading => "showProgress();",
+                                   :complete => "hideProgress();" do  %>
 <label for="widget_name"><%= _("Title") %></label><%= text_field 'widget', 'name', {:size => 10} %> 
 <%= select( 'widget', 'number', [[_('Days'),7],[_('Weeks'),30],[_('Months'),180]]) %>
 <%= select( 'widget', 'mine', [[_('Mine'),true],[_('Everyone'),false]]) %>

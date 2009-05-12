@@ -4,14 +4,10 @@ javascripts:
   - prototype
   - jquery
   - jquery-ui
-  - jqueryDimensions
   - shadowbox
   - effects
   - dragdrop
   - controls
-  - calendar
-  - calendar-en
-  - calendar-setup
   - application
   - jrails
   - cit
@@ -22,8 +18,7 @@ javascripts:
   - frontpage
 stylesheets:
 - base:
-  - calendar-system
-  - ui-datepicker
+  - ui-lightness/jquery-ui
   - cit
 - portal:
   - portal

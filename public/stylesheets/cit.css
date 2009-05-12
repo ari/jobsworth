@@ -259,11 +259,10 @@ body, p, ol, ul, td, tr {
 }
   
 .unread_icon a {
-	display: block;
-	width: 12px;
-	height: 12px;
-	/**/
-	background-color: #000000;
+  display: block;
+  width: 12px;
+  height: 12px;
+
   background-image: url(../images/unread.png);
   background-position: 0 100%;
   background-repeat: no-repeat;

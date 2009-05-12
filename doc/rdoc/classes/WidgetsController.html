@@ -521,7 +521,7 @@ create
 412:         <span class="ruby-identifier">page</span>.<span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;widget.setTitle(title);&quot;</span>
 413:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;widget.setContent('&lt;span class=\&quot;optional\&quot;&gt;#{h(_('Please configure the widget'))}&lt;/span&gt;');&quot;</span>
 414:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;portal.add(widget, #{@widget.column});&quot;</span>
-415:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');portal.refreshHeights();}, onLoading:function(request){Element.show('loading');}});&quot;</span>
+415:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();portal.refreshHeights();}, onLoading:function(request){showProgress();}});&quot;</span>
 416: 
 417:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;updateTooltips();&quot;</span>
 418:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;portal.refreshHeights();&quot;</span>
@@ -1063,7 +1063,7 @@ update
 459:       <span class="ruby-identifier">render</span> <span class="ruby-identifier">:update</span> <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">page</span><span class="ruby-operator">|</span>
 460:         <span class="ruby-identifier">page</span>.<span class="ruby-identifier">remove</span> <span class="ruby-node">&quot;config-#{@widget.dom_id}&quot;</span>
 461:         <span class="ruby-identifier">page</span>.<span class="ruby-identifier">replace_html</span> <span class="ruby-node">&quot;name-#{@widget.dom_id}&quot;</span>, <span class="ruby-ivar">@widget</span>.<span class="ruby-identifier">name</span>
-462:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});&quot;</span>
+462:         <span class="ruby-identifier">page</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-node">&quot;new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}});&quot;</span>
 463:       <span class="ruby-keyword kw">end</span>
 464:     <span class="ruby-keyword kw">end</span>
 465:   <span class="ruby-keyword kw">end</span></pre></div>

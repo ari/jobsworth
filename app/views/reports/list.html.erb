@@ -1,3 +1,9 @@
+<script type="text/javascript">
+	jQuery(function() {
+		jQuery("#start_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
+		jQuery("#stop_date").datepicker({dateFormat: '<%= current_user.dateFormat %>'});
+	});
+</script>
   <table cellspacing=0 cellpadding=0 class="content" width="99%" style="margin-left: 1em;padding-right:1em;" id="content">
   <tr><td align=left colspan=2 class="page_header"><%=_ 'Reports' %></td></tr>
   <tr>
@@ -108,10 +114,8 @@
 <% else %>
 <div id="date_range" style="display:none;">
 <% end %>
-<label for="report_start_date"><%=_ 'From' %></label><%= calendar_field 'report', 'start_date', { :class => 'date', :field_title => 'Start Date', :button_title => _('Show Calendar'), :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""},
-        { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
-<label for="report_stop_date"><%=_ 'To' %></label><%= calendar_field 'report', 'stop_date', { :class => 'date', :field_title => 'Stop Date', :button_title => _('Show Calendar'), :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : "" },
-        { :ifFormat => current_user.date_format, :firstDay => 1, :range => [2005, 2010], :step => 1, :showOthers => true  }%><br/>
+<label for="report_start_date"><%=_ 'From' %></label><%= text_field 'report', 'start_date', {:id => 'start_date', :size => 12, :value => (params[:report] && params[:report][:start_date]) ? params[:report][:start_date] : ""} %><br/>        
+<label for="report_stop_date"><%=_ 'To' %></label><%= text_field 'report', 'stop_date', {:id => 'stop_date', :size => 12, :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""} %><br/>
 </div>
 
 <div id="subtotals"<%= " style=\"display:none;\"" if params[:report].nil? || !["3", "2"].include?(params[:report][:type])  %>>
@@ -231,7 +235,7 @@ Event.observe($('report_range'), "blur", function(e) {
 );
 
 
-new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:'client_id=' + value, insertion: updateSelect})})
+new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'client_id=' + value, insertion: updateSelect})})
 
 
 // ]]>

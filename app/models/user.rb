@@ -262,12 +262,24 @@ class User < ActiveRecord::Base
     @tz
   end
 
+  # Get date formatter in a form suitable for jQuery-UI
+  def dateFormat
+  	return 'mm/dd/yy' if self.date_format == '%m/%d/%Y'
+  	return 'dd/mm/yy' if self.date_format == '%d/%m/%Y' 
+  	return 'yy/mm/dd' if self.date_format == '%Y-%m-%d'
+  end
+  
   def shout_nick
     n = nil
-    n = name.gsub(/[^\s\w]+/, '').split(" ") if name
-    n = ["Anonymous"] if(n.nil? || n.empty?)
+    # Upcase first character of all words in a string, and truncate all middle words with first character + ".".
+	# eg. "elvis aaron presley" => "Elvis A. Presley"
+    # n = name.gsub(/[^\s\w]+/, '').split(" ") if name
+    # n = ["Anonymous"] if(n.nil? || n.empty?)
 
-    "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
+    # "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
+    
+    # disabled since it seems superfluous and doesn't work in Rails 2.3
+    n= name
   end
 
   def online_status_icon

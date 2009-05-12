@@ -11,24 +11,21 @@
 
   <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
       :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => 0 },
-      :loading => "Element.show('loading');",
-      :complete => "Element.hide('loading');" -%>
+      :loading => "showProgress();",
+      :complete => "hideProgress();" -%>
   <% if @current_sheet.paused? %>
     <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
         :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => 0 },
-        :loading => "Element.show('loading');",
-        :complete => "Element.hide('loading');" -%>
+        :loading => "showProgress();",
+        :complete => "hideProgress();" -%>
   <% else %>
     <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
         :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => 0 },
-        :loading => "Element.show('loading');",
-        :complete => "Element.hide('loading');" -%>
+        :loading => "showProgress();",
+        :complete => "hideProgress();" -%>
   <% end %>
   <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link" } )  -%>
 <%= info_string %>
 <% else %>
 [<%= worked_nice(total_today) %> <%=_ 'today'%>]
 <% end %>
-<script type="text/javascript" language="javascript" charset="utf-8">
-document.title = "<%= (@current_sheet ? ((@current_sheet.paused? ? "[#{_('Paused').upcase}] " : "") + worked_nice(@current_sheet.duration/60) + task.issue_name + " / ClockingIT") : "ClockingIT") %>";
-</script>
