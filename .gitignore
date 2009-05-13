@@ -5,7 +5,6 @@
 _darcs
 \.svn
 /index
-/log
 /store
 /nbproject
 config/database.yml
