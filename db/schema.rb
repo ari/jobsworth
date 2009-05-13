@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090511031856) do
+ActiveRecord::Schema.define(:version => 20090513215204) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -675,7 +675,7 @@ ActiveRecord::Schema.define(:version => 20090511031856) do
   add_index "users", ["company_id", "name"], :name => "users_company_id_index"
   add_index "users", ["last_ping_at"], :name => "users_last_ping_at_idx"
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
-  add_index "users", ["username"], :name => "users_username_index"
+  add_index "users", ["username", "company_id"], :name => "index_users_on_username_and_company_id", :unique => true
   add_index "users", ["uuid"], :name => "users_uuid_index"
 
   create_table "views", :force => true do |t|
