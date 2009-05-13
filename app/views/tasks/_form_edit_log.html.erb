@@ -1,7 +1,15 @@
 <%= error_messages_for 'log' %>
 
-<label for="log_started_at"><%=_ 'Start' %></label><%= text_field 'log', 'started_at', :size => 12 %><br/>
+<label for="log_started_at"><%=_ 'Start' %></label>
+<%= text_field 'log', 'started_at', :value => formatted_datetime_for_current_user(@log.started_at) %>
+<br/>
+
 <% if @log.log_type != EventLog::TASK_COMMENT %>
-	<label for="log_duration"><%=_ 'Duration Worked' %></label><%= text_field 'log', 'duration', {:value => worked_nice(@log.duration/60), :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m') }  %><br/>
+  <label for="log_duration"><%=_ 'Duration Worked' %></label>
+  <%= text_field 'log', 'duration', {:value => worked_nice(@log.duration/60), :size => 10, :class => 'tooltip', :title => _('1w 2d 3h 4m') }  %>
+  <br/>
 <% end %>
-<label for="log_body"><%=_ 'Notes' %></label><%= text_area 'log', 'body', :rows => 10  %><br/>
+
+<label for="log_body"><%=_ 'Notes' %></label>
+<%= text_area 'log', 'body', :rows => 10  %>
+<br/>

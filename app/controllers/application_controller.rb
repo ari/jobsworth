@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Misc
   helper :task_filter
   helper :users
+  helper :date_and_time
 
 #  helper :all
 
