@@ -152,6 +152,6 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 <%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
 <% end %>
 <script type="text/javascript">
-$('task_name').focus();
+jQuery('task_name').focus();
 </script>
 <br/>

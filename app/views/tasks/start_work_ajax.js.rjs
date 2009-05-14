@@ -15,9 +15,9 @@ else
   page << "$('worklog_body').clear();"
   page << "$('worklog-saved').innerHTML = '';"
   page << "if(! $('work-log').visible() ) {"
-  page << "$('work-log').show();"
+  page << "jQuery('work-log').show();"
   page << "}"
-  page << "$('worklog_body').focus();"
+  page << "jQuery('worklog_body').focus();"
   page << "}"
   
   page << "if($('menu_info')) {"

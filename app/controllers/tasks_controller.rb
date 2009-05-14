@@ -1287,7 +1287,7 @@ class TasksController < ApplicationController
           page.call "$('#{el}').clear"
         end
         page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
-        page << "$('task_name').focus();"
+        page << "jQuery('task_name').focus();"
         page.call("updateTooltips")
       end
     end
@@ -1356,7 +1356,7 @@ class TasksController < ApplicationController
       render :update do |page|
         page.insert_html :bottom, "shortlist-tasks", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
         page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
-        page << "$('task_name').focus();"
+        page << "jQuery('task_name').focus();"
         page.call("fixShortLinks")
         page.call("updateTooltips")
       end
@@ -1441,7 +1441,7 @@ class TasksController < ApplicationController
         page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
         page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
         page << "$('todo_text_#{@task.id}').clear();"
-        page << "$('todo_text_#{@task.id}').focus();"
+        page << "jQuery('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
         page.visual_effect :highlight, @todo.dom_id
         page << "Sortable.create('todo-#{@task.dom_id}', {containment:'todo-#{@task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-#{@task.dom_id}')})}, only:'todo-active'})"
@@ -1463,7 +1463,7 @@ class TasksController < ApplicationController
     if params[:todo].blank? || params[:todo][:name].blank?
       render :update do |page|
         page.replace @todo.dom_id, :partial => "todo_edit_row"
-        page << "$('todo_text_#{@todo.dom_id}').focus();"
+        page << "jQuery('todo_text_#{@todo.dom_id}').focus();"
       end 
     else 
       @todo.name = params[:todo][:name]
