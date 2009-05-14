@@ -226,6 +226,15 @@ class User < ActiveRecord::Base
     self.admin > 0
   end
 
+  ###
+  # Returns true if this user is allowed to view the clients section
+  # of the website.
+  ###
+  def can_view_clients?
+    self.admin? or 
+      (self.read_clients? and self.option_externalclients?)
+  end
+
   def currently_online
     User.find(:all, :conditions => ["company_id = ? AND last_seen_at > ?", self.company, Time.now.utc-5.minutes])
   end

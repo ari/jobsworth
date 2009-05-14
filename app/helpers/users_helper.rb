@@ -10,4 +10,5 @@ module UsersHelper
       return image_tag('status_offline.png', :title => _('Offline'), :class => 'tooltip')
     end
   end
+
 end
