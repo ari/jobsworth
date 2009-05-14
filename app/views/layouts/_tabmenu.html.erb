@@ -77,10 +77,10 @@
 			</ul>
 		<% end %>
 	</li>
-	<% if current_user.admin > 0 %>
-		<% if current_user.option_externalclients.to_i == 1%>
-			<li class="right<%= " active" if active.starts_with?('clients/') %>"><li class="right active"><%= link_to "#{_('Clients')}", :controller => "clients", :action => 'list' %></li>
-		<% end %>
+	<% if current_user.can_view_clients? %>
+           <li class="right<%= " active" if active.starts_with?('clients/') %>">
+	     <%= link_to "#{_('Clients')}", :controller => "clients", :action => 'list' %>
+	   </li>
 	<% end %>
 
 	<li class="right" id="search_menu"><% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if(jQuery('query').val() == '#{_('Search')}') {jQuery('query').val(''); jQuery('query').removeClassName('optional');};"    }%>

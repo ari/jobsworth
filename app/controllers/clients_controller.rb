@@ -4,6 +4,8 @@
 class ClientsController < ApplicationController
   require_dependency 'RMagick'
 
+  before_filter :check_can_access
+
   def index
     redirect_to(:action => 'list')
   end
@@ -210,5 +212,32 @@ class ClientsController < ApplicationController
     
     session[:client_search_ignore_users] = !params[:search_users]
     session[:client_search_ignore_clients] = !params[:search_clients]
+  end
+
+  private
+
+  ###
+  # Checks to see if the current user is allowed to view this section
+  # of the site.
+  ###
+  def check_can_access
+    res = false
+    read_actions = [ "index", "list", "edit" ]
+    new_actions = [ "new", "create" ]
+    edit_actions = [ "edit", "update", "destroy", "update_logo" ]
+
+    res ||= (action_name == "show_logo")
+    res ||= current_user.admin?
+
+    if current_user.option_externalclients?
+      res ||= (current_user.read_clients? and read_actions.include?(action_name))
+      res ||= (current_user.edit_clients? and edit_actions.include?(action_name))
+      res ||= (current_user.create_clients? and new_actions.include?(action_name))
+    end
+
+    if !res
+      flash[:notice] = _("Access denied")
+      redirect_from_last
+    end
   end
 end
