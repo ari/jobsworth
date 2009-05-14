@@ -27,7 +27,7 @@ Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', acce
 </script>
 <% end -%>
   <% if g[k].size == 0 %>
-  <%= javascript_tag "$('task-group_#{@group_ids[k]}').hide();" %>
+  <%= javascript_tag "jQuery('task-group_#{@group_ids[k]}').hide();" %>
   <% end %>
 
 

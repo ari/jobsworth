@@ -1,6 +1,6 @@
 jQuery.noConflict();
 
 Shadowbox.loadSkin('classic', '/javascripts/shadowbox');
-window.onload = function(){
+jQuery(document).ready(function(){
     Shadowbox.init();
-};
+});

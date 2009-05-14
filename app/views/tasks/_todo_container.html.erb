@@ -6,9 +6,9 @@
   </ul>
 
   <form action="/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>" id="todo-form-<%=task.dom_id%>" method="post" onsubmit="new Ajax.Request('/tasks/create_todo_ajax/<%=task.id%>?depth=<%=depth%>', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:Form.serialize(this)}); return false;" style="display:none;">
-    <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <a href="#" onclick="Element.hide('todo-form-<%=task.dom_id%>');$('new-todo-<%=task.dom_id%>').show(); return false;"><%=_('Cancel')%></a>
+    <input type="text" id="todo_text_<%=task.id%>" name="todo[name]"> <%= _('or') %> <a href="#" onclick="Element.hide('todo-form-<%=task.dom_id%>');jQuery('new-todo-<%=task.dom_id%>').show();"><%=_('Cancel')%></a>
   </form>
-  <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><a href="#" onclick="$('todo-form-<%=task.dom_id%>').show();$('new-todo-<%=task.dom_id%>').hide();jQuery('todo_text_<%=task.id%>').focus();; return false;"><%=_'New To-do Item'%></a></small></span>
+  <span id="new-todo-<%=task.dom_id%>" style="padding-left:1.8em;"><small><a href="#" onclick="jQuery('todo-form-<%=task.dom_id%>').show();jQuery('new-todo-<%=task.dom_id%>').hide();jQuery('todo_text_<%=task.id%>').focus();; return false;"><%=_'New To-do Item'%></a></small></span>
   <ul id="todo-done-<%=task.dom_id%>" class="task-todo">
     <% task.todos.select{ |t| t.completed_at }.each do |@todo| %>
       <%= render :partial => "tasks/todo_row" %>

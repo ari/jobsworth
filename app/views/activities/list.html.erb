@@ -22,11 +22,11 @@
 // <![CDATA[
 
 function onOverWidget(portal, widget) {
-   $$("#" +widget._getId() + " .widget-menu").each( function(e) {e.show();} );
+   jQuery('.widget-menu,'+'#' +widget._getId()).show();
 } 
    
 function onOutWidget(portal, widget) {
-   $$("#" +widget._getId() + " .widget-menu").each( function(e) {e.hide();} );
+   jQuery('.widget-menu,'+'#' +widget._getId()).hide();
 }
    
 var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );
@@ -41,7 +41,7 @@ title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header")
 widget.setTitle(title);
 widget.setContent('<span class="optional"><br/><%= _'Loading...'%></span>');
 portal.add(widget, <%=@widget.column%>);
-<%= "$('content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
+<%= "jQuery('content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
 <% end %>
 <% (current_user.widgets.select{|w| !w.collapsed?} + current_user.widgets.select{|w| w.collapsed?} ).each do |@widget| %>
 new Ajax.Request('/widgets/show/<%=@widget.id%>', {asynchronous:true, evalScripts:true, onComplete:function(request){portal.refreshHeights();} });

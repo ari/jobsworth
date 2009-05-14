@@ -80,9 +80,9 @@ class TasksController < ApplicationController
     p = current_user.projects.find(params[:project_id]) rescue nil
     script = ""
     if p && current_user.can?(p, 'milestone')
-      script = "\n<script type=\"text/javascript\">if($('add_milestone')){$('add_milestone').show();}</script>"
+      script = "\n<script type=\"text/javascript\">jQuery('add_milestone').show();</script>"
     else 
-      script = "\n<script type=\"text/javascript\">if($('add_milestone')){$('add_milestone').hide();}</script>"
+      script = "\n<script type=\"text/javascript\">jQuery('add_milestone').hide();</script>"
     end 
     render :text => "#{res}#{script}"
   end
@@ -1284,7 +1284,7 @@ class TasksController < ApplicationController
       render :update do |page|
         page.insert_html :top, "task_list", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
         ['task_name', 'task_set_tags', 'task_description', 'dependencies_input', 'task_duration'].each do |el|
-          page.call "$('#{el}').clear"
+          page.call "jQuery('#{el}').val('')"
         end
         page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
         page << "jQuery('task_name').focus();"
@@ -1440,7 +1440,7 @@ class TasksController < ApplicationController
       render :update do |page|
         page.insert_html :bottom, "todo-#{@task.dom_id}", :partial => "tasks/todo_row"
         page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "Element.toggle('todo-container-#{@task.dom_id}');", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
-        page << "$('todo_text_#{@task.id}').clear();"
+        page << "jQuery('todo_text_#{@task.id}').val('');"
         page << "jQuery('todo_text_#{@task.id}').focus();"
         page.call("updateTooltips")
         page.visual_effect :highlight, @todo.dom_id
