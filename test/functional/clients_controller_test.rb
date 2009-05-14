@@ -120,7 +120,7 @@ class ClientsControllerTest < ActionController::TestCase
 
   def assert_filter_failed
     assert_response 302
-    assert_equal "Access denied",  @response.flash[:notice]
+    assert_equal "Access denied",  @response.flash["notice"]
   end
   
 end

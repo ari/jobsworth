@@ -236,7 +236,7 @@ class ClientsController < ApplicationController
     end
 
     if !res
-      flash[:notice] = _("Access denied")
+      flash["notice"] = _("Access denied")
       redirect_from_last
     end
   end
