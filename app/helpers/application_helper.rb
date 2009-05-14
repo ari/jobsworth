@@ -445,13 +445,11 @@ END_OF_HTML
   end
 
   ###
-  # Returns an element that can be used to remove the nearest
-  # li from the page. 
+  # Returns an element that can be used to remove the parent element from the page. 
   ###
-  def link_to_remove_li
-    image = image_tag("cross_small.png", :border => 0, 
-                      :alt => "#{ _("Remove") }")
-    link_to_function(image, '$(this).up("li").remove();')
+  def link_to_remove_parent
+    image = image_tag("cross_small.png", :border => 0, :alt => "#{ _("Remove") }")
+    link_to_function(image, 'jQuery(this).parent().remove();')
   end
 
   ###
