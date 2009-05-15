@@ -359,7 +359,7 @@ function toggleChatPopup(el) {
 
 function closeChat(el) {
   new Ajax.Request('/shout/chat_close/' + el.up().id, {asynchronous:true, evalScripts:true});
-  Element.remove(el);
+  jQuery(el).remove();
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
