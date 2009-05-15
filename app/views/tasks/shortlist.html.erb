@@ -51,7 +51,7 @@
 <% end %>
 
 <% if current_user.create_projects? %>
-<div style="float:right;"><a href="#" onclick="Element.toggle('shortlist-new-project-container');">[<%= _('New Project')%>]</a></div>
+<div style="float:right;"><a href="#" onclick="jQuery('shortlist-new-project-container').toggle();">[<%= _('New Project')%>]</a></div>
 <div id="shortlist-new-project-container" style="display:none;">
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax', :controller => 'projects' },
        :loading => "showProgress();",

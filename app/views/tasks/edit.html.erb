@@ -57,7 +57,7 @@ jQuery('comment').focus();
   <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
     <tr><td>&nbsp;</td></tr>
     <tr><td align="left" class="page_header"><div style="float:left;"><%= _ 'To-do' %>
-	    <span id="todo-status-<%= @task.dom_id %>"><a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="Element.toggle('todo-container-<%=@task.dom_id%>'); return false;"><%=@task.todo_status%></a></span>
+	    <span id="todo-status-<%= @task.dom_id %>"><a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('todo-container-<%=@task.dom_id%>').toggle();"><%=@task.todo_status%></a></span>
        </div></td></tr>
     <tr><td style="padding-top:0.5em;"><%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %></td></tr>
   </table>
