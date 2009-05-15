@@ -190,19 +190,19 @@ function inline_image(el) {
 function HideAjax() {
   var a = document.getElementsByClassName( 'ajax', 'div' );
   for( var i = 0; i < a.length; i++ )
-    Element.hide(a[i]);
+    jQuery(a[i]).hide();
 }
 
 function HideMenus() {
   var a = document.getElementsByClassName( 'amenu', 'div' );
   for( var i = 0; i < a.length; i++ )
-    Element.hide(a[i]);
+    jQuery(a[i]).hide();
 }
 
 function ShowMenus() {
   var a = document.getElementsByClassName( 'amenu', 'div' );
   for( var i = 0; i < a.length; i++ )
-    Element.show(a[i]);
+    jQuery(a[i]).show();
 }
 
 function HideDummy() {
@@ -245,17 +245,17 @@ function UpdateDnD() {
 function EnableDND() {
   Element.hide('enable_dnd');
   HideMenus();
-  Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("components_sortable")});}, only:'component', tree:true});
-  Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("tasks_sortable")});}, only:'task', tree:true});
+  Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('loading').show();}, parameters:Sortable.serialize("components_sortable")});}, only:'component', tree:true});
+  Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('loading').show();}, parameters:Sortable.serialize("tasks_sortable")});}, only:'task', tree:true});
   var h = document.getElementsByClassName( 'handle', 'img' );;
   for( var i = 0; i < h.length; i++ ) {
-    Element.show( h[i] );
+    jQuery( h[i] ).show();
   }
   var h = document.getElementsByClassName( 'handle_comp', 'img' );;
   for( var i = 0; i < h.length; i++ ) {
-    Element.show( h[i] );
+    jQuery( h[i] ).show();
   }
-  Element.show('disable_dnd');
+  jQuery('disable_dnd').show();
 }
 
 function DisableDND() {
@@ -269,7 +269,7 @@ function DisableDND() {
   for( var i = 0; i < h.length; i++ ) {
     Element.hide( h[i] );
   }
-  Element.show('enable_dnd');
+  jQuery('enable_dnd').show();
 }
 
 function do_update(user, url) {
@@ -320,7 +320,7 @@ function fixShortLinks() {
   $$('a.stop-work-link').each(function(e) {
       if( e.href != '#' ) {
         Event.observe(e, "click", function(e) {
-            new Ajax.Request('/tasks/stop_work_shortlist', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}});
+            new Ajax.Request('/tasks/stop_work_shortlist', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('loading').show();}});
             return false;
           });
         e.href = '#';
@@ -350,7 +350,7 @@ function toggleChatPopup(el) {
     if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
       Element.removeClassName(el.up(), 'presence-section-pending');
     }
-    $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.show(e); });
+    $$("#" + el.up().id + " .presence-shadow").each(function(e) { jQuery(e).show(); });
     $$("#" + el.up().id + " input").each(function(e) { e.focus(); });
 
     new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});

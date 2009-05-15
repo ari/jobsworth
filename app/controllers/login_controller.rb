@@ -45,7 +45,7 @@ class LoginController < ApplicationController
     current_user.last_ping_at = nil
     
     # Let other logged in Users in same Company know that User logged out.
-    Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged out..');Element.show('flash'); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
+    Juggernaut.send("do_execute(#{current_user.id}, \"Element.update('flash_message', '#{current_user.username} logged out..');jQuery('flash').show(); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
 
     chat_update = render_to_string :update do |page|
       page << "if(jQuery('presence-online')) {"
@@ -116,7 +116,7 @@ class LoginController < ApplicationController
     session[:filter_customer] ||= "0"
     
     # Let others know User logged in
-    Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');Element.show('flash');new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
+    Juggernaut.send("do_execute(#{logged_in.id}, \"Element.update('flash_message', '#{logged_in.username} logged in..');jQuery('flash').show();new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
 
     chat_update = render_to_string :update do |page|
       page << "if(jQuery('presence-online')) {"

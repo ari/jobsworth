@@ -407,7 +407,7 @@ class WidgetsController < ApplicationController
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
         page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/edit/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/destroy/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
 
-        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"new Ajax.Request(\\\'/widgets/toggle_display/#{@widget.id}\\\',{asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide(\\\'loading\\\');portal.refreshHeights();}, onLoading:function(request){Element.show(\\\'loading\\\');}});\">&nbsp;</a>';"
+        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"new Ajax.Request(\\\'/widgets/toggle_display/#{@widget.id}\\\',{asynchronous:true, evalScripts:true, onComplete:function(request){jQuery(\\\'loading\\\').hide();portal.refreshHeights();}, onLoading:function(request){jQuery(\\\'loading\\\').show();}});\">&nbsp;</a>';"
         page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
         page.<< "widget.setTitle(title);"
         page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
