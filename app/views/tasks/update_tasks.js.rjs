@@ -1,11 +1,7 @@
-page.select(".#{@task.dom_id}").each do |t|
-  page.replace t, :partial => "task_row", :locals => {:task => @task}
-  page.visual_effect(:highlight, t, :duration => 2.0)
-end 
+page.replace ".#{@task.dom_id}", :partial => "task_row", :locals => {:task => @task}
+page.visual_effect(:highlight, ".#{@task.dom_id}", :duration => 2.0)
 
 page.delay(0.1) do 
-  page.select(".#{@task.dom_id}").each do |t|
-    page.visual_effect(:highlight, t, :duration => 2.0)
-  end 
+  page.visual_effect(:highlight, ".#{@task.dom_id}", :duration => 2.0)
 end
 page.call("updateTooltips")
