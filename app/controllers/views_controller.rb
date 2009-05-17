@@ -48,7 +48,7 @@ class ViewsController < ApplicationController
     status_ids = TaskFilter.filter_status_ids(session).to_csv
     @view.filter_status = status_ids if !status_ids.blank?
 
-    @view.auto_group = session[:group_by].to_i
+    @view.auto_group = session[:group_by]
     @view.hide_deferred = session[:hide_deferred].to_i
     @view.hide_dependencies = session[:hide_dependencies].to_i
 
