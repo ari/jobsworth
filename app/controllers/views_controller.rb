@@ -55,6 +55,7 @@ class ViewsController < ApplicationController
     @view.sort = session[:sort].to_i
     @view.colors = session[:colors].to_i
     @view.icons = session[:icons].to_i
+    @view.show_all_unread = session[:show_all_unread].to_i
 
     @view.property_values.clear
     current_user.company.properties.each do |prop|
@@ -118,6 +119,7 @@ class ViewsController < ApplicationController
     session[:sort] = @view.sort.to_s
     session[:colors] = @view.colors.to_s
     session[:icons] = @view.icons.to_s
+    session[:show_all_unread] = @view.show_all_unread ? 1 : 0
 
     reset_property_filters
     # set filters for property values
