@@ -1257,20 +1257,10 @@ class TasksController < ApplicationController
     unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
       @logs = []
     end
-
-    render :update do |page|
-      page.replace_html 'task_history', :partial => 'history'
-      page.visual_effect(:highlight, "task_history", :duration => 2.0)
-    end
   end
 
   def quick_add
     self.new
-    render :update do |page|
-      page.replace_html 'quick_add_container', :partial => 'quick_add'
-      page.show('quick_add_container')
-      page.visual_effect(:highlight, "quick_add_container", :duration => 0.5)
-    end
   end
 
   def create_ajax
