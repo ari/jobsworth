@@ -20,12 +20,10 @@ for g in groups
 <%= render :partial => "tag_row", :locals => { :groups => g[k], :parent => "", :depth => depth + 1} %>
 </div>
 <% if can_organize? -%>
-<script type="text/javascript">
-//<![CDATA[
-Droppables.add("task-group_<%=@group_ids[k]%>", {hoverclass:'group-active', accept:'task', greedy:true, onDrop:function(element, dropElement){jQuery(element).remove(); new Ajax.Request('/tasks/move', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
-//]]>
-</script>
+  <%= drop_receiving_element("task-group_#{ @group_ids[k] }", :accept => ".task", 
+  :hoverclass => "group-active", :greedy => true, :onDrop => "moveTask") %>
 <% end -%>
+
   <% if g[k].size == 0 %>
   <%= javascript_tag "jQuery('task-group_#{@group_ids[k]}').hide();" %>
   <% end %>
