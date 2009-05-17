@@ -1,7 +1,7 @@
 <fieldset id="content" class="basic">
   <legend><%=_ "Save Filter" %></legend>
 
-  <% form_remote_tag(:url => { :action => "save_filter" }, :success => "self.parent.Shadowbox.close();" ) do -%>
+  <% form_remote_tag(:url => { :action => "save_filter" }, :success => "self.parent.location.reload();" ) do -%>
 
   <label for="view_name"><%=_ 'Name' %></label>
   <%= text_field :view, :name  %>
