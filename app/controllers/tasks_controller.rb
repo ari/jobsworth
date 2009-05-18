@@ -1268,12 +1268,8 @@ class TasksController < ApplicationController
   end
 
   def create_shortlist_ajax
-
     if !params[:task][:name] || params[:task][:name].empty?
-      render :update do |page|
-        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "#ff9999")
-      end
-      return
+      render(:highlight, :locals => { :target => "shortlist" }) and return
     end
 
     @task = Task.new
@@ -1292,19 +1288,14 @@ class TasksController < ApplicationController
       @task.project_id = session[:filter_project_short].to_i
       @task.milestone_id = nil
     else
-      render :update do |page|
-        page.visual_effect(:highlight, "shortlist", :duration => 0.5, :startcolor => "#ff9999")
-      end
-      return
+      render(:highlight, :locals => { :target => "shortlist" }) and return
     end
 
     @task.save
     @task.reload
 
-    unless @task.id
-      render :update do |page|
-        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "#ff9999")
-      end
+    if @task.id.nil?
+      render(:highlight, :locals => { :target => "quick_add_container" }) and return
     else
       to = TaskOwner.new(:user => current_user, :task => @task)
       to.save
@@ -1326,14 +1317,6 @@ class TasksController < ApplicationController
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-
-      render :update do |page|
-        page.insert_html :bottom, "shortlist-tasks", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
-        page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
-        page << "jQuery('task_name').focus();"
-        page.call("fixShortLinks")
-        page.call("updateTooltips")
-      end
     end
   end
 
@@ -1383,12 +1366,10 @@ class TasksController < ApplicationController
 
 
   def create_todo_ajax
+    todo_form_id = "todo-form-#{ params[:id] }"
 
     if params[:todo][:name].blank?
-      render :update do |page|
-        page.visual_effect(:highlight, "todo-form-#{params[:id]}", :duration => 0.5, :startcolor => "#ff9999")
-      end
-      return
+      render(:highlight, :locals => { :target => "todo_form_id" }) and return
     end
 
     @task = Task.find(:first, :conditions => ["id = ? AND project_id IN (#{current_project_ids})", params[:id]])
