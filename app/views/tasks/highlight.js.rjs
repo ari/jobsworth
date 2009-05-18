@@ -1,1 +1,1 @@
-page.visual_effect(:highlight, @highlight_target, :duration => 0.5, :startcolor => "#ff9999")
+page.visual_effect(:highlight, @highlight_target, :duration => 0.5, :startcolor => "'#ff9999'")
