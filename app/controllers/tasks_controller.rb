@@ -1481,50 +1481,23 @@ class TasksController < ApplicationController
   end 
 
   def delete_tag
-    tag = current_user.company.tags.find(params[:id]) rescue nil
-    if tag
-      tag.destroy
-      render :update do |page|
-        page.remove tag.dom_id
-      end 
-    else 
-      render :nothing => true
-    end 
+    @tag = current_user.company.tags.find(params[:id]) rescue nil
+    @tag.destroy if @tag
   end 
 
   def save_tag
     @tag = current_user.company.tags.find(params[:id]) rescue nil
     if @tag && !params['tag-name'].blank?
-      if Tag.exists?(:company_id => current_user.company_id, :name => params['tag-name'])
-        
-        @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
-        if @existing.id != @tag.id
-          @tag.tasks.each do |t|
-            @existing.tasks << t
-          end 
-          @tag.destroy
-          render :update do |page|
-            page[@tag.dom_id].remove
-            @tag = @existing
-            page[@tag.dom_id].replace :partial => 'edit_tag_row'
-          end 
-        else
-          render :update do |page|
-            page[@tag.dom_id].replace :partial => 'edit_tag_row'
-          end 
-
-        end 
-
+      @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
+      if @existing and @existing != @tag
+        @tag.tasks.each { |t| @existing.tasks << t }
+        @existing.save
+        @tag.destroy
       else 
         @tag.name = params['tag-name']
         @tag.save
-        render :update do |page|
-          page[@tag.dom_id].replace :partial => 'edit_tag_row'
-        end 
       end 
-    else 
-      render :nothing => true
-    end 
+    end
   end
 
   def get_comment
