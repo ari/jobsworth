@@ -136,7 +136,7 @@
 
 <label for="report_user_id"><%=_ 'User' %></label>
 <%= select 'report', 'user_id', [[_('[Any User]'), '0']] + User.find(:all, :order => 'name', :conditions => ['company_id = ?', current_user.company_id] ).collect {|c| [ c.name, c.id ] }, :selected => ((params[:report] && params[:report][:user_id]) ? params[:report][:user_id].to_i : current_user.id) %><br/>
-<div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="jQuery('advanced').toggle();"><%=_ 'Advanced Options' %></a></div>
+<div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="jQuery('#advanced').toggle();"><%=_ 'Advanced Options' %></a></div>
 
 
 <div id="advanced" <%= "style=\"display:none;\"" unless show_advanced? %>>
@@ -176,9 +176,9 @@ new Autocompleter.Local('report_tags', 'report_tags_auto_complete', [<%= @tags.c
 
 Event.observe($('report_range'), "change", function(e) {
 if( $('report_range').value == "7" ) {
-     jQuery('date_range').show();
+     jQuery('#date_range').show();
   } else {
-     jQuery('date_range').hide();
+     jQuery('#date_range').hide();
   }
   return false;
 }
@@ -186,9 +186,9 @@ if( $('report_range').value == "7" ) {
 
 Event.observe($('report_range'), "blur", function(e) {
 if( $('report_range').value == "7" ) {
-     jQuery('date_range').show();
+     jQuery('#date_range').show();
   } else {
-     jQuery('date_range').hide();
+     jQuery('#date_range').hide();
   }
   return false;
 }
@@ -196,21 +196,21 @@ if( $('report_range').value == "7" ) {
 
 Event.observe($('report_type'), "change", function(e) {
   if( $('report_type').value == "1" || $('report_type').value == "4" ) {
-    jQuery('pivot_config').show();
+    jQuery('#pivot_config').show();
   } else {
-     jQuery('pivot_config').hide();
+     jQuery('#pivot_config').hide();
   }
 
   if( $('report_type').value == "4" ) {
-    jQuery('date-select').hide();
+    jQuery('#date-select').hide();
   } else {
-    jQuery('date-select').show();
+    jQuery('#date-select').show();
   }
 
   if( $('report_type').value == "3" || $('report_type').value == "2" ) {
-    jQuery('subtotals').show();
+    jQuery('#subtotals').show();
   } else {
-     jQuery('subtotals').hide();
+     jQuery('#subtotals').hide();
   }
 
 
@@ -220,15 +220,15 @@ Event.observe($('report_type'), "change", function(e) {
 
 Event.observe($('report_range'), "blur", function(e) {
   if( $('report_type').value == "1" ) {
-     jQuery('pivot_config').show();
+     jQuery('#pivot_config').show();
   } else {
-     jQuery('pivot_config').hide();
+     jQuery('#pivot_config').hide();
   }
 
   if( $('report_type').value == "3" || $('report_type').value == "2" ) {
-    jQuery('subtotals').show();
+    jQuery('#subtotals').show();
   } else {
-     jQuery('subtotals').hide();
+     jQuery('#subtotals').hide();
   }
   return false;
 }

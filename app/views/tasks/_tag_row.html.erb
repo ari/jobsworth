@@ -25,7 +25,7 @@ for g in groups
 <% end -%>
 
   <% if g[k].size == 0 %>
-  <%= javascript_tag "jQuery('task-group_#{@group_ids[k]}').hide();" %>
+  <%= javascript_tag "jQuery('#task-group_#{@group_ids[k]}').hide();" %>
   <% end %>
 
 

@@ -2,7 +2,7 @@ if session[:history] && session[:history][0].include?('/search/search')
   page.replace "task_#{@task.id}", :partial => "search/search_task", :locals => {:task => @task}
 else
   page.remove "task_#{@task.id}"
-  page << "if(jQuery('done_sep_0')) {"
+  page << "if(jQuery('#done_sep_0')) {"
   page.insert_html :before, "done_sep_0", :partial => "task_row", :locals => {:task => @task }
   page << "}"
 end

@@ -38,7 +38,7 @@
 	  <div>
             <div class="information-header"><%= _('Projects') %></div>
             <div class="information-value" style="float:left;">
-	    <%= link_to_function _("%d project", @user.projects.size), "jQuery('projects-#{@user.dom_id}').toggle();" %>
+	    <%= link_to_function _("%d project", @user.projects.size), "jQuery('#projects-#{@user.dom_id}').toggle();" %>
 	    <div id="projects-<%=@user.dom_id%>" style="display:none;">
 	    <%= @user.projects.collect{|p| "<a href=\"/views/select_project/#{p.id}\">#{h(p.full_name)}</a>"}.join("<br/> ") %>
             </div>

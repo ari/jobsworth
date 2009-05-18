@@ -31,11 +31,11 @@
          </div>
          <% if @invite_targets.size > 0 %>
          <br/>
-         <%= link_to_function _('Invite a user'), "jQuery('channel-invite').toggle();jQuery('channel-invite-user').focus();" %>
+         <%= link_to_function _('Invite a user'), "jQuery('#channel-invite').toggle();jQuery('channel-invite-user').focus();" %>
          <div id="channel-invite" style="display:none;">
            <%= form_remote_tag :url => { :action => 'invite_ajax', :id => @room.id } ,
            :loading => "showProgress();",
-           :complete => "hideProgress();$('channel-invite-user').clear();jQuery('channel-invite-user').focus();"
+           :complete => "hideProgress();$('channel-invite-user').clear();jQuery('#channel-invite-user').focus();"
            %>
            <input type="text" name="invite_user" id="channel-invite-user"/>
            <div style="clear:both; display:none;" id="invite-autocomplete"></div>
@@ -57,7 +57,7 @@
 <div style="float:left;width:80%;"><textarea name="shout[body]" id="shout_body" style="width:100%" rows="2"></textarea></div><div style="float:left;"><div style="padding-left:0.5em;"><input type="submit" name="Send" value="<%= _'Send Message' %>" class="nolabel" style="vertical-align:top;margin-left:5px;margin-top:1px;"></div><div style="margin-left:1em;margin-top:0em;"><%= link_to _('Leave room'),  :action => 'leave', :id => @room.id %><br /><%= link_to _('Change room'),  :action => 'list' %></div></div>
 </form>
 <script type="text/javascript">
-jQuery('shout_body').focus();
+jQuery('#shout_body').focus();
 window.setTimeout('checkConnection()', 5000.0);
 <% if @invite_targets.size > 0 %>
 new Autocompleter.Local('channel-invite-user', 'invite-autocomplete', [<%= @invite_targets.collect {|n| "'#{n.gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:1, frequency: 0, choices: 15, fullSearch:true});

@@ -65,12 +65,12 @@
 // <![CDATA[
 Event.observe('project_<%= project.id %>', "mouseover", function(e) {
 <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-  jQuery('edit_project_<%=project.id%>').show();
+  jQuery('#edit_project_<%=project.id%>').show();
 <% end %>
 });
 Event.observe('project_<%= project.id %>', "mouseout", function(e) {
 <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-  jQuery('edit_project_<%=project.id%>').hide();
+  jQuery('#edit_project_<%=project.id%>').hide();
 <% end %>
 });
 // ]]>

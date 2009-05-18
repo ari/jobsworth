@@ -10,7 +10,7 @@
    end
 %>
 <label for="widget_widget_type"><%= _("Type") %></label><%= select( 'widget', 'widget_type', gadgets) %>
-<%= submit_tag _("Create"), :class => "nolabel" %> <%=_'or'%> <%= link_to_function(_('Cancel'), "jQuery('add-widget').remove();") %>
+<%= submit_tag _("Create"), :class => "nolabel" %> <%=_'or'%> <%= link_to_function(_('Cancel'), "jQuery('#add-widget').remove();") %>
 <% end %>
 </div>
 

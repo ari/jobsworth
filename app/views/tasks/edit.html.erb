@@ -33,16 +33,16 @@ form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "t
 <script type="text/javascript">
 Event.observe($('task_status'), "change", function(e) {
   if( $('task_status').value == "6" ) {
-    jQuery('defer_options').show();
+    jQuery('#defer_options').show();
   } else {
-    jQuery('defer_options').hide();
+    jQuery('#defer_options').hide();
   }
 
   return false;
 }
 );
 
-jQuery('comment').focus();
+jQuery('#comment').focus();
 </script>
 <style type="text/css">
 .todo-container {
@@ -68,4 +68,4 @@ jQuery('comment').focus();
 
 
 </div>
-<script type="text/javascript">jQuery('todo-container-<%=@task.dom_id%>').show();</script>
+<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>

@@ -22,10 +22,10 @@
 // <![CDATA[
 <% if current_user.can?(milestone.project, 'milestone') %>
 Event.observe('milestone_<%= milestone.id %>', "mouseover", function(e) {
-    jQuery('edit_milestone_<%=milestone.id%>:hidden').show();
+    jQuery('#edit_milestone_<%=milestone.id%>:hidden').show();
 });
 Event.observe('milestone_<%= milestone.id %>', "mouseout", function(e) {
-    jQuery('edit_milestone_<%=milestone.id%>:visible').hide();
+    jQuery('#edit_milestone_<%=milestone.id%>:visible').hide();
 });
 <% end %>
 // ]]>

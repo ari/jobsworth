@@ -28,7 +28,7 @@
 
     <label for="channel_description"><%=_ 'Description' %></label><%= text_area 'channel', 'description', { :cols => 17, :rows => 4 } %><br />
     <label>&nbsp;</label>
-<%= submit_tag _("Create"), :class => "nolabel" %><div style="float:left;margin-top:0.3em;"> <span class="optional"><%= _'or' %></span> <a href="#" onclick="jQuery('channel-add-container').hide();"><%= _'Cancel'%></a></div>
+<%= submit_tag _("Create"), :class => "nolabel" %><div style="float:left;margin-top:0.3em;"> <span class="optional"><%= _'or' %></span> <a href="#" onclick="jQuery('#channel-add-container').hide();"><%= _'Cancel'%></a></div>
       <br/>
       <br/>
   </fieldset>
@@ -40,6 +40,6 @@
 </tr>
 </table>
 <script type="text/javascript">
-jQuery('channel_name').focus();
+jQuery('#channel_name').focus();
 </script>
 <br/>

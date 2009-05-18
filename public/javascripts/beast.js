@@ -10,9 +10,9 @@ var TopicForm = {
 var LoginForm = {
   checkLogin: function(txt) {
     if(txt.value.match(/^https?:\/\//)) {
-      jQuery('password_fields').hide();
+      jQuery('#password_fields').hide();
     } else {
-      jQuery('password_fields').show();
+      jQuery('#password_fields').show();
     }
   }
 }
@@ -20,7 +20,7 @@ var LoginForm = {
 var EditForm = {
   // show the form
   init: function(postId) {
-    jQuery('edit-post-' + postId + '_spinner').show();
+    jQuery('#edit-post-' + postId + '_spinner').show();
     this.clearReplyId();
   },
 
@@ -50,8 +50,8 @@ var EditForm = {
   isEditing: function(postId) {
     if (this.currentReplyId() == postId.toString())
     {
-      jQuery('edit').show();
-      jQuery('edit_post_body').focus();
+      jQuery('#edit').show();
+      jQuery('#edit_post_body').focus();
       return true;
     }
     return false;
@@ -60,7 +60,7 @@ var EditForm = {
   // close reply, clear current reply id
   cancel: function() {
     this.clearReplyId();
-    jQuery('edit').hide()
+    jQuery('#edit').hide()
   }
 }
 
@@ -68,8 +68,8 @@ var ReplyForm = {
   // yes, i use setTimeout for a reason
   init: function() {
     EditForm.cancel();
-    jQuery('reply').toggle();
-    jQuery('post_body').focus();
+    jQuery('#reply').toggle();
+    jQuery('#post_body').focus();
     // for Safari which is sometime weird
 //    setTimeout('$(\"post_body\").focus();',50);
   }
