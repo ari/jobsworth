@@ -45,12 +45,12 @@ class LoginController < ApplicationController
     current_user.last_ping_at = nil
     
     # Let other logged in Users in same Company know that User logged out.
-    Juggernaut.send("do_execute(#{current_user.id}, \"jQuery('flash_message').val('#{current_user.username} logged out..');jQuery('flash').show(); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
+    Juggernaut.send("do_execute(#{current_user.id}, \"jQuery('#flash_message').val('#{current_user.username} logged out..');jQuery('flash').show(); new Effect.Highlight('flash_message', {duration:2.0});\");", ["info_#{current_user.company_id}"])
 
     chat_update = render_to_string :update do |page|
-      page << "if(jQuery('presence-online')) {"
+      page << "if(jQuery('#presence-online')) {"
       page.replace_html 'presence-online', (online_users).to_s
-      page << "if(jQuery('presence-toggle-#{current_user.dom_id}')) {"
+      page << "if(jQuery('#presence-toggle-#{current_user.dom_id}')) {"
       page << "$('presence-img-#{current_user.dom_id}').src=\"#{current_user.online_status_icon}\";"
       page << "}"
       page << "}"
@@ -116,12 +116,12 @@ class LoginController < ApplicationController
     session[:filter_customer] ||= "0"
     
     # Let others know User logged in
-    Juggernaut.send("do_execute(#{logged_in.id}, \"jQuery('flash_message').val('#{logged_in.username} logged in..');jQuery('flash').show();new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
+    Juggernaut.send("do_execute(#{logged_in.id}, \"jQuery('#flash_message').val('#{logged_in.username} logged in..');jQuery('flash').show();new Effect.Highlight('flash_message',{duration:2.0});\");", ["info_#{logged_in.company_id}"])
 
     chat_update = render_to_string :update do |page|
-      page << "if(jQuery('presence-online')) {"
+      page << "if(jQuery('#presence-online')) {"
       page.replace_html 'presence-online', (online_users).to_s
-      page << "if(jQuery('presence-toggle-#{logged_in.dom_id}')) {"
+      page << "if(jQuery('#presence-toggle-#{logged_in.dom_id}')) {"
       page << "$('presence-img-#{logged_in.dom_id}').src=\"#{logged_in.online_status_icon}\";"
       page << "}"
       page << "}"

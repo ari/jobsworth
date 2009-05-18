@@ -80,9 +80,9 @@ class TasksController < ApplicationController
     p = current_user.projects.find(params[:project_id]) rescue nil
     script = ""
     if p && current_user.can?(p, 'milestone')
-      script = "\n<script type=\"text/javascript\">jQuery('add_milestone').show();</script>"
+      script = "\n<script type=\"text/javascript\">jQuery('#add_milestone').show();</script>"
     else 
-      script = "\n<script type=\"text/javascript\">jQuery('add_milestone').hide();</script>"
+      script = "\n<script type=\"text/javascript\">jQuery('#add_milestone').hide();</script>"
     end 
     render :text => "#{res}#{script}"
   end

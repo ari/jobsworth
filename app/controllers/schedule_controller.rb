@@ -715,9 +715,9 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       if @schedule_in_progress
-        page << "jQuery('gantt-save-revert').show();"
+        page << "jQuery('#gantt-save-revert').show();"
       else 
-        page << "jQuery('gantt-save-revert').hide();"
+        page << "jQuery('#gantt-save-revert').hide();"
       end
       
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
@@ -786,9 +786,9 @@ class ScheduleController < ApplicationController
     
     render :update do |page|
       if @schedule_in_progress
-        page << "jQuery('gantt-save-revert').show();"
+        page << "jQuery('#gantt-save-revert').show();"
       else 
-        page << "jQuery('gantt-save-revert').hide();"
+        page << "jQuery('#gantt-save-revert').hide();"
       end
       page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
       page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")

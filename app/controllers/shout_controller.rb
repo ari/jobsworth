@@ -443,7 +443,7 @@ class ShoutController < ApplicationController
         page << "}"
         page.delay(0.1) do 
           page << "toggleChatPopup($('presence-toggle-#{@user.dom_id}'));"
-          page << "jQuery('chat-#{@user.dom_id}').focus();"
+          page << "jQuery('#chat-#{@user.dom_id}').focus();"
         end
       end
     else 
