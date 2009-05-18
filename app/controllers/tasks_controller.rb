@@ -1265,22 +1265,6 @@ class TasksController < ApplicationController
 
   def create_ajax
     self.create
-    unless @task.id
-      render :update do |page|
-        page.visual_effect(:highlight, "quick_add_container", :duration => 0.5, :startcolor => "#ff9999")
-      end
-    else
-      @task.reload
-      render :update do |page|
-        page.insert_html :top, "task_list", :partial => 'task_row', :locals => { :task => @task, :depth => 0}
-        ['task_name', 'task_set_tags', 'task_description', 'dependencies_input', 'task_duration'].each do |el|
-          page.call "jQuery('#{el}').val('')"
-        end
-        page.visual_effect(:highlight, "task_#{@task.id}", :duration => 1.5)
-        page << "jQuery('task_name').focus();"
-        page.call("updateTooltips")
-      end
-    end
   end
 
   def create_shortlist_ajax

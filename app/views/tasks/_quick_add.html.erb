@@ -141,7 +141,7 @@ new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @ta
 
 </tr>
 </table>
-<%= submit_tag _("Create"), :class => "nolabel" %> <%= _'or'%> <a href="#" onclick="jQuery('quick_add_container').hide();"><%= _'Cancel' %></a>
+<%= submit_tag _("Create"), :class => "nolabel" %> <%= _'or'%> <a href="#" onclick="jQuery('#quick_add_container').hide();"><%= _'Cancel' %></a>
 <%= check_box_tag 'notify', '1', (current_user.send_notifications > 0) %><%=_ 'Send notification emails'%><br/>
 <% end %>
 <script type="text/javascript">jQuery('task_name').focus();</script>
