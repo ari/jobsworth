@@ -22,7 +22,7 @@
   			  <label for="task_description"><%=_ 'Description' %></label>
 			  <%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
 			  <label for="comment"><%=_ 'Comment' %></label>
-			  <%= text_area_tag 'comment', {}, { :rows => 8, :style => "width:80%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
+			  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:80%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
                         </div>
 	
 			<span class="divider"></span>
