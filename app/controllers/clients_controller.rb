@@ -29,7 +29,8 @@ class ClientsController < ApplicationController
         @users.each { |u| @customers << u.customer }
       end
 
-      @customers = @customers.flatten.uniq
+      @customers = @customers.flatten.uniq.compact
+      @customers = @customers.sort_by { |c| c.name.downcase }
       @paginate = false
     else
       @customers = Customer.paginate(:order => "customers.name", 

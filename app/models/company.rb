@@ -4,7 +4,7 @@
 #
 
 class Company < ActiveRecord::Base
-  has_many      :customers, :dependent => :destroy 
+  has_many      :customers, :dependent => :destroy, :order => "lower(name)"
   has_many      :users, :dependent => :destroy
   has_many      :projects, :dependent => :destroy, :order => 'name'
   has_many      :milestones
