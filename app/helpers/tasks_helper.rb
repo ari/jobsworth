@@ -34,49 +34,14 @@ module TasksHelper
 
   end
 
-  def task_shown?(t)
-    return true
-    # N.B. Is this still necessary? It seems like the deciding which 
-    # tasks is already done in the controller. BW
-
-    # shown = true
-    # if session[:filter_status].to_i >= 0
-    #   if session[:filter_status].to_i == 0
-    #     shown = ( t.status == 0 || t.status == 1 ) if shown
-    #   elsif session[:filter_status].to_i == 2
-    #     shown = t.status > 1 if shown
-    #   else
-    #     shown = session[:filter_status].to_i == t.status if shown
-    #   end
-    # end
-
-    milestones = TaskFilter.filter_ids(session, :filter_milestone, TaskFilter::ALL_MILESTONES)
-    if shown and milestones.any?
-      shown = milestones.include?(t.milestone_id)
-    end
-
-    customers = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
-    if shown and customers.any?
-      shown = customers.include?(t.project.customer_id)
-    end
-
-    projects = TaskFilter.filter_ids(session, :filter_project, TaskFilter::ALL_PROJECTS)
-    projects += milestones.map { |m| Milestone.find(m).project_id }
-    if shown and projects.any?
-      shown = projects.include?(t.project.id)
-    end
-
-    user_ids = TaskFilter.filter_user_ids(session, false)
-    all_users = user_ids.delete(TaskFilter::ALL_USERS)
-    if shown and !all_users and user_ids.any?
-      task_user_ids = t.users.map { |u| u.id }
-      shown = user_ids.detect { |id| task_user_ids.include?(id) }
-    elsif shown and !all_users and TaskFilter.filter_user_ids(session, true).any?
-      shown = t.users.empty?
-    end
-
-
-    shown
+  ###
+  # Returns true if the given tasks should be shown in the list.
+  # The only time it won't return true is if the task is closed and the
+  # filter isn't set to show the closed tasks.
+  ###
+  def task_shown?(task)
+    status_ids = TaskFilter.filter_status_ids(session)
+    return (status_ids.empty? or status_ids.include?(task.status))
   end
 
   def render_task_dependants(t, depth, root_present)
