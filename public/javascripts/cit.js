@@ -713,8 +713,10 @@ function highlightActiveNotifications() {
 
     for (var i = 0; i < users.length; i++) {
 	var div = jQuery(users[i]);
+	var willNeverReceive = div.hasClass("will_never_receive");
 	var notify = div.find(".icon.should_notify");
-	if ((hasComment || isNew)
+	if (!willNeverReceive &&
+	    (hasComment || isNew)
 	    && notify.length > 0) {
 	    div.addClass("will_notify");
 	}
