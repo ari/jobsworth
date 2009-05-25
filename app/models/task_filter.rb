@@ -77,7 +77,7 @@ class TaskFilter
       @tasks = filter_by_customers_projects_and_milestones(@tasks)
       @tasks = filter_by_properties(@tasks)
       @tasks = filter_by_tags(@tasks)
-      @tasks += unread_tasks if session[:show_all_unread]
+      @tasks += unread_tasks if session[:show_all_unread].to_i > 0
       @tasks = sort_tasks(@tasks)
     end
 
