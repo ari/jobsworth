@@ -46,7 +46,7 @@ class ViewsController < ApplicationController
     @view.filter_customer_id = customer_ids if !customer_ids.blank?
 
     status_ids = TaskFilter.filter_status_ids(session).to_csv
-    @view.filter_status = status_ids if !status_ids.blank?
+    @view.filter_status = status_ids
 
     @view.auto_group = session[:group_by]
     @view.hide_deferred = session[:hide_deferred].to_i
