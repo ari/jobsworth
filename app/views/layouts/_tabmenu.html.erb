@@ -83,7 +83,7 @@
 	   </li>
 	<% end %>
 
-	<li class="right" id="search_menu"><% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if(jQuery('#query').val() == '#{_('Search')}') {jQuery('query').val(''); jQuery('query').removeClassName('optional');};"    }%>
+	<li class="right" id="search_menu"><% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if(jQuery('#query').val() == '#{_('Search')}') {jQuery('#query').val(''); jQuery('#query').removeClass('optional');};"    }%>
     <% end %>
     </li>
 </ul>
