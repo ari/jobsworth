@@ -1,120 +1,83 @@
-== Welcome to ClockingIT v0.99.3
+== Installing CIT on your server
+=== Step 1: Getting the source
 
-ClockingIT is relased under the terms of the MIT License, see LICENSE
-for more information.
+The source is released under the MIT/X Consortium License.
 
-== Getting started
+The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
 
-1. sudo apt-get install libmagick9-dev imagemagick ruby1.8 ruby1.8-dev rubygems ri rdoc rake
+  git clone git://github.com/ari/clockingit.git
 
-2. ruby ./setup.rb
-   Follow the instructions and answer the questions.
 
-== Support
+=== Step 2: Prerequsites
 
-* mailto:admin@clockingit.com
-* http://wiki.clockingit.com/wiki:source
-* http://forum.clockingit.com/
+You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work.
 
-== Example for Apache conf
+Install the following packages. Under FreeBSD this can be easily done using 'portinstall' and then each of these ports:
 
-  <VirtualHost *:80>
-    ServerName *.clockingit.com
-    DocumentRoot /path/application/public/
-    ErrorLog /path/application/log/server.log
+* ruby18-gems
+* ruby18-mysql
+* rubygem-rake
+* ImageMagick
 
-    <Directory /path/application/public/>
-      Options ExecCGI FollowSymLinks
-      AllowOverride all
-      Allow from all
-      Order allow,deny
-    </Directory>
-  </VirtualHost>
+Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed.
 
-== Example for Apache using mod_rewrite
+Then install Phusion Passenger from http://www.modrails.com/install.html You can also run CIT with Mongrel, but it tends to be a little easier with Phusion to set up. Make sure you set up the appropriate virtual host in Apache.
 
-This will redirect requests for http://server.my_domain.com to https://server.my_domain.com
-and will proxy requests for https://server.my_domain.com to http://hostname.clockingit.com:3000 on the localhost
-The end-user who is contacting server.my_domain.com does not know that the request is being proxied, because apache will change the "Host:" values to itself as it sends back the response. The proxy request is performed on the localhost, which is informed by /etc/hosts that hostname.clockingit.com points to 127.0.0.1
+=== Step 3: Ruby gems
 
-### Insecure VirtualHost ###
-<VirtualHost *:80>
-ServerAdmin root@my_domain.com
-ServerName server.my_domain.com
-UseCanonicalName Off
-# Force clients from the Internet to use HTTPS
-RewriteEngine on
-RewriteRule ^/?(.*)$ https://server.my_domain.com/$1 [L,R]
-</VirtualHost>
+There are a bunch of gems which are needed for running CIT. If you cd into the top of your clockingIT installation, then type:
 
-### SSL VirtualHost ###
-<VirtualHost *:443>
-ServerAdmin root@my_domain.com
-ServerName server.my_domain.com
-UseCanonicalName Off
-SSLCertificateFile /home/clockingit/ssl.cert.pem
-SSLCertificateKeyFile /home/clockingit/ssl.key.pem
+  rake gems
 
-ProxyRequests Off
-<Proxy *>
-Order Allow,Deny
-Allow from all
-</Proxy>
-RewriteEngine On
-RewriteRule ^/(.*)$ http://hostname.clockingit.com:3000/$1 [P,NC]
-ProxyPassReverse / http://hostname.clockingit.com:3000/
-</VirtualHost>
+That will tell you what you need to install.
 
-== Description of contents
+=== Step 4: Setup
 
-app
-  Holds all the code that's specific to this particular application.
+  ruby setup.rb
 
-app/controllers
-  Holds controllers that should be named like weblog_controller.rb for
-  automated URL mapping. All controllers should descend from
-  ActionController::Base.
+== Upgrading to a newer revision
 
-app/models
-  Holds models that should be named like post.rb.
-  Most models will descend from ActiveRecord::Base.
+  git checkout db/schema.rb
+  git pull
 
-app/views
-  Holds the template files for the view that should be named like
-  weblog/index.rhtml for the WeblogController#index action. All views use eRuby
-  syntax. This directory can also be used to keep stylesheets, images, and so on
-  that can be symlinked to public.
+Next, make sure the database is updated and javascript/css rebuilt.
 
-app/helpers
-  Holds view helpers that should be named like weblog_helper.rb.
+  rake db:migrate RAILS_ENV=production
+  rake asset:packager:build_all
 
-app/apis
-  Holds API classes for web services.
+Depending on which environment you are updating, you can change the RAIL_ENV value to “test” or “development” and the appropriate database will be updated.
 
-config
-  Configuration files for the Rails environment, the routing map, the database, and other dependencies.
+Find the daemons running with
 
-components
-  Self-contained mini-applications that can bundle together controllers, models, and views.
+  ps ax | grep ruby
 
-db
-  Contains the database schema in schema.rb.  db/migrate contains all
-  the sequence of Migrations for your schema.
+then kill each of the three running daemons.
 
-lib
-  Application specific libraries. Basically, any kind of custom code that doesn't
-  belong under controllers, models, or helpers. This directory is in the load path.
+Restart daemons
 
-public
-  The directory available for the web server. Contains subdirectories for images, stylesheets,
-  and javascripts. Also contains the dispatchers and the default HTML files.
+  cd /usr/local/www/clockingit
+  nohup ./script/push_server &
+  ./script/ferret_server -e production start
+  apachectl restart
 
-script
-  Helper scripts for automation and generation.
+== Setting up Email Integration
 
-test
-  Unit and functional tests along with fixtures.
+You need to setup your email solution so that it sends all emails for a subdomain to your rails user, and setup the alias so that it runs the mailman script.
 
-vendor
-  External libraries that the application depends on. Also includes the plugins subdirectory.
-  This directory is in the load path.
+Assuming that you already have your DNS and MX set correctly, we'll configure sendmail to pass all emails sent to domain.com to ClockingIT so that replies can go back to the task. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
+
+* Add an entry to /etc/mail/local-host-names to contain your domain
+
+  domain.com
+
+* Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
+
+  cit: "|/path/to/cit/script/runner -e production 'Mailman.receive(STDIN.read)'"
+
+* Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
+
+  @domain.com        cit
+
+* run “make” in /etc/mail
+
+* run “make restart” in /etc/mail
