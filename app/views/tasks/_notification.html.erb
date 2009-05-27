@@ -3,7 +3,7 @@
    classname = "user" 
    if @task.new_record? and @task.should_be_notified?(user)
      classname += " will_notify" 
-   elsif current_user == user and !user.receive_own_notifications? and @task.users.include?(user)
+   elsif current_user == user and !user.receive_own_notifications?
      classname += " will_never_receive"
    end
 -%>
