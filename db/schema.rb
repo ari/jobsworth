@@ -21,6 +21,9 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "created_at",                    :null => false
   end
 
+  add_index "activities", ["company_id"], :name => "fk_activities_company_id"
+  add_index "activities", ["user_id"], :name => "fk_activities_user_id"
+
   create_table "chat_messages", :force => true do |t|
     t.integer  "chat_id"
     t.integer  "user_id"
@@ -32,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
 
   add_index "chat_messages", ["chat_id", "created_at"], :name => "index_chat_messages_on_chat_id_and_created_at"
   add_index "chat_messages", ["chat_id", "id", "archived"], :name => "chat_messages_chat_id_id_archived_index"
+  add_index "chat_messages", ["user_id"], :name => "fk_chat_messages_user_id"
 
   create_table "chats", :force => true do |t|
     t.integer  "user_id"
@@ -85,6 +89,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "updated_at"
   end
 
+  add_index "custom_attributes", ["company_id"], :name => "fk_custom_attributes_company_id"
+
   create_table "customers", :force => true do |t|
     t.integer  "company_id",                   :default => 0,    :null => false
     t.string   "name",          :limit => 200, :default => "",   :null => false
@@ -118,6 +124,9 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "updated_at"
   end
 
+  add_index "emails", ["company_id"], :name => "fk_emails_company_id"
+  add_index "emails", ["user_id"], :name => "fk_emails_user_id"
+
   create_table "event_logs", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -135,6 +144,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "event_logs", ["company_id", "project_id", "created_at"], :name => "event_logs_company_id_project_id_created_at_index"
   add_index "event_logs", ["company_id", "project_id"], :name => "index_event_logs_on_company_id_and_project_id"
   add_index "event_logs", ["target_id", "target_type"], :name => "index_event_logs_on_target_id_and_target_type"
+  add_index "event_logs", ["user_id"], :name => "fk_event_logs_user_id"
 
   create_table "forums", :force => true do |t|
     t.integer "company_id"
@@ -157,6 +167,9 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.text     "report"
     t.datetime "created_at"
   end
+
+  add_index "generated_reports", ["company_id"], :name => "fk_generated_reports_company_id"
+  add_index "generated_reports", ["user_id"], :name => "fk_generated_reports_user_id"
 
   create_table "ical_entries", :force => true do |t|
     t.integer "task_id"
@@ -199,6 +212,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "milestones", ["company_id"], :name => "milestones_company_id_index"
   add_index "milestones", ["project_id", "completed_at", "due_at", "name"], :name => "milestones_project_id_completed_at_due_at_name"
   add_index "milestones", ["project_id"], :name => "milestones_project_id_index"
+  add_index "milestones", ["user_id"], :name => "fk_milestones_user_id"
 
   create_table "moderatorships", :force => true do |t|
     t.integer "forum_id"
@@ -206,6 +220,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   end
 
   add_index "moderatorships", ["forum_id"], :name => "index_moderatorships_on_forum_id"
+  add_index "moderatorships", ["user_id"], :name => "fk_moderatorships_user_id"
 
   create_table "monitorships", :force => true do |t|
     t.integer "monitorship_id"
@@ -253,6 +268,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
 
   add_index "pages", ["company_id", "project_id", "name"], :name => "pages_company_id_project_id_name"
   add_index "pages", ["company_id", "updated_at", "name"], :name => "pages_company_id_updated_at_name_index"
+  add_index "pages", ["user_id"], :name => "fk_pages_user_id"
 
   create_table "posts", :force => true do |t|
     t.integer  "user_id"
@@ -289,6 +305,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
   add_index "project_files", ["project_folder_id"], :name => "index_project_files_on_project_folder_id"
   add_index "project_files", ["task_id"], :name => "index_project_files_on_task_id"
+  add_index "project_files", ["user_id"], :name => "fk_project_files_user_id"
 
   create_table "project_folders", :force => true do |t|
     t.string   "name"
@@ -318,6 +335,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.boolean  "can_milestone",  :default => false
   end
 
+  add_index "project_permissions", ["company_id"], :name => "fk_project_permissions_company_id"
   add_index "project_permissions", ["project_id", "user_id"], :name => "project_permissions_project_id_user_id_index"
   add_index "project_permissions", ["user_id"], :name => "project_permissions_user_id_index"
 
@@ -343,6 +361,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "projects", ["company_id"], :name => "projects_company_id_index"
   add_index "projects", ["completed_at", "customer_id", "name"], :name => "projects_completed_at_customer_id_name_index"
   add_index "projects", ["customer_id"], :name => "projects_customer_id_index"
+  add_index "projects", ["user_id"], :name => "fk_projects_user_id"
 
   create_table "properties", :force => true do |t|
     t.integer  "company_id"
@@ -398,6 +417,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "updated_at"
   end
 
+  add_index "resource_types", ["company_id"], :name => "fk_resource_types_company_id"
+
   create_table "resources", :force => true do |t|
     t.integer  "company_id"
     t.integer  "resource_type_id"
@@ -409,6 +430,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "updated_at"
     t.boolean  "active",           :default => true
   end
+
+  add_index "resources", ["company_id"], :name => "fk_resources_company_id"
 
   create_table "resources_tasks", :id => false, :force => true do |t|
     t.integer "resource_id"
@@ -432,6 +455,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
 
   add_index "scm_changesets", ["author"], :name => "scm_changesets_author_index"
   add_index "scm_changesets", ["commit_date"], :name => "scm_changesets_commit_date_index"
+  add_index "scm_changesets", ["company_id"], :name => "fk_scm_changesets_company_id"
+  add_index "scm_changesets", ["user_id"], :name => "fk_scm_changesets_user_id"
 
   create_table "scm_files", :force => true do |t|
     t.integer  "project_id"
@@ -442,6 +467,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "commit_date"
   end
 
+  add_index "scm_files", ["company_id"], :name => "fk_scm_files_company_id"
   add_index "scm_files", ["project_id"], :name => "scm_files_project_id_index"
 
   create_table "scm_projects", :force => true do |t|
@@ -455,6 +481,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.text     "location"
   end
 
+  add_index "scm_projects", ["company_id"], :name => "fk_scm_projects_company_id"
+
   create_table "scm_revisions", :force => true do |t|
     t.integer  "company_id"
     t.integer  "project_id"
@@ -467,8 +495,10 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.string   "state"
   end
 
+  add_index "scm_revisions", ["company_id"], :name => "fk_scm_revisions_company_id"
   add_index "scm_revisions", ["scm_changeset_id"], :name => "scm_revisions_scm_changeset_id_index"
   add_index "scm_revisions", ["scm_file_id"], :name => "scm_revisions_scm_file_id_index"
+  add_index "scm_revisions", ["user_id"], :name => "fk_scm_revisions_user_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :limit => 32
@@ -522,6 +552,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "shouts", ["company_id", "shout_channel_id", "message_type", "created_at"], :name => "shouts_company_id_index"
   add_index "shouts", ["created_at"], :name => "shouts_created_at_index"
   add_index "shouts", ["shout_channel_id"], :name => "index_shouts_on_shout_channel_id"
+  add_index "shouts", ["user_id"], :name => "fk_shouts_user_id"
 
   create_table "tags", :force => true do |t|
     t.integer "company_id"
@@ -625,6 +656,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
   add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
+  add_index "topics", ["user_id"], :name => "fk_topics_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "name",                      :limit => 200, :default => "",      :null => false
@@ -705,6 +737,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   end
 
   add_index "views", ["company_id", "shared", "name"], :name => "views_company_id_shared_name_index"
+  add_index "views", ["user_id"], :name => "fk_views_user_id"
 
   create_table "views_property_values", :id => false, :force => true do |t|
     t.integer "view_id"
@@ -733,6 +766,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.text     "gadget_url"
   end
 
+  add_index "widgets", ["company_id"], :name => "fk_widgets_company_id"
   add_index "widgets", ["user_id", "column", "position"], :name => "widgets_user_id_column_position_index"
 
   create_table "wiki_pages", :force => true do |t|
@@ -765,6 +799,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.string   "change"
   end
 
+  add_index "wiki_revisions", ["user_id"], :name => "fk_wiki_revisions_user_id"
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"
 
   create_table "work_logs", :force => true do |t|
@@ -796,6 +831,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.integer "user_id"
   end
 
+  add_index "work_logs_notifications", ["user_id"], :name => "fk_work_logs_notifications_user_id"
   add_index "work_logs_notifications", ["work_log_id", "user_id"], :name => "index_work_logs_notifications_on_work_log_id_and_user_id"
 
 end
