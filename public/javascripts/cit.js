@@ -594,7 +594,7 @@ function nestedCheckboxChanged(checkbox) {
     checkbox = jQuery(checkbox);
     var checked = checkbox.attr("checked");
     
-    var hiddenField = checkbox.next();
+    var hiddenField = checkbox.prev();
     if (hiddenField.attr("name") == checkbox.attr("name")) {
 	hiddenField.attr("disabled", checked);
     }
