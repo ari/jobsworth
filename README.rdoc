@@ -62,22 +62,20 @@ Restart daemons
 
 == Setting up Email Integration
 
-You need to setup your email solution so that it sends all emails for a subdomain to your rails user, and setup the alias so that it runs the mailman script.
+You need to set up your email software so that it sends all emails for a subdomain to your rails user, and set up the alias so that it runs the mailman script.
 
-Assuming that you already have your DNS and MX set correctly, we'll configure sendmail to pass all emails sent to domain.com to ClockingIT so that replies can go back to the task. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
+For example to configure sendmail to pass to ClockingIT all emails sent to domain.com. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
 
-* Add an entry to /etc/mail/local-host-names to contain your domain
+Add an entry to /etc/mail/local-host-names to contain your domain
 
   domain.com
 
-* Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
+Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
 
   cit: "|/path/to/cit/script/runner -e production 'Mailman.receive(STDIN.read)'"
 
-* Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
+Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
   @domain.com        cit
 
-* run “make” in /etc/mail
-
-* run “make restart” in /etc/mail
+run “make; make restart” in /etc/mail
