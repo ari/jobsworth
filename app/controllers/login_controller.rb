@@ -8,22 +8,7 @@ class LoginController < ApplicationController
   layout 'login'
 
   def index
-    @user = User.new
     render :action => 'login'
-
-    @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
-  end
-
-  def screenshots
-  end
-
-  def policy
-  end
-
-  def terms
-  end
-  
-  def about
   end
 
   # Display the login page

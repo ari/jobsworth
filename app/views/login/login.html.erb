@@ -15,6 +15,16 @@ end
 
 <body>
 <% unless @company.nil? %>
+<!--[if IE 6]>
+	<div id="ie6_upgrade_message">
+		<h4>We've noticed you're using Internet Explorer 6...</h4>
+		<p>IE6 is a bit old, and may not properly show you the best parts of this website. We recommend that you upgrade to one of the following browsers:</p>
+		<ul>
+			<li><a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx">Internet Explorer 8</a></li>
+			<li><a href="http://www.getfirefox.com/">Firefox</a></li>
+		</ul>
+	</div>
+<![endif]-->
 	<div id="login">
 		<%= tag("img", {:src => "/clients/show_logo/#{@internal.id}" } ) %>
 		<% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>

@@ -31,6 +31,12 @@ form {
 	top: 5px;
 }
 
+#ie6_upgrade_message {
+	color: black;
+	display: block;
+	padding: 15px;
+	background-color: #ffe4b7;
+}
 p {
 	clear: both;
 	padding-bottom: 15px;
