@@ -78,4 +78,4 @@ Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to
 
   @domain.com        cit
 
-run Òmake; make restartÓ in /etc/mail
+run "make; make restart" in /etc/mail
