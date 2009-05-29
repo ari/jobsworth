@@ -4,7 +4,7 @@
 class ClientsController < ApplicationController
   require_dependency 'RMagick'
 
-  before_filter :check_can_access
+  before_filter :check_can_access, :except => [:show_logo]
 
   def index
     redirect_to(:action => 'list')
@@ -181,22 +181,17 @@ class ClientsController < ApplicationController
 
   # Show a clients logo
   def show_logo
+	company = company_from_subdomain
+	client = Customer.find(params[:id],  :conditions => ["company_id = ?", company.id])
 
-    if request.subdomains && request.subdomains.first != 'www'
-      company = Company.find(:first, :conditions => ["subdomain = ?", request.subdomains.first])
-      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", company.id])
-    else
-      @customer = Customer.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
-    end
-
-    unless @customer.logo?
+    unless client.logo?
       render :nothing => true
       return
     end
 
-    image = Magick::Image.read( @customer.logo_path ).first
+    image = Magick::Image.read( client.logo_path ).first
     if image
-      send_file @customer.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+      send_file client.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
     else
       render :nothing => true
     end

@@ -323,12 +323,5 @@ class LoginController < ApplicationController
 
   private
 
-  def company_from_subdomain
-    subdomain = request.subdomains.first if request.subdomains
 
-    company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-    company ||= Company.find(:first, :conditions => ["id = 1"])
-
-    return company
-  end
 end

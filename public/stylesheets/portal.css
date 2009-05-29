@@ -1,179 +1,80 @@
 body {
-  background: #e8e8e8;
-  margin: 0;
-  padding: 0;
-  font: 10.5pt/1.3em "Trebuchet MS", Trebuchet, Helvetica, Arial;
+	color: white;
+	font-family: verdana, sans-serif;
+	font-size: 11px;
+	margin: 0;
+	padding: 0;
 }
 
-h1 {
-  margin-left: 50px;
+#login {
+	margin: auto;
+	padding: 40px;
+	width: 428px;
+}
+
+form {
+	padding-left: 50px;
+	padding-bottom: 50px;
+	padding-right: 50px;
+	padding-top: 66px;
+	background-repeat: no-repeat;
+	background-image: url('/images/login.jpg');
+	width: 428px;
+	height: 378px;
+}
+
+#name {
+	font-weight: 100;
+	font-size: 14px;
+	position: relative;
+	left: 80px;
+	top: 5px;
+}
+
+p {
+	clear: both;
+	padding-bottom: 15px;
 }
 
 img {
-  border: none;
+	border: none;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
   
 a { 
-  color: #038;
+	color: #a1c3f1;
+	text-decoration: none;
 }
 
 a:hover {
-  color: #5b2d08;
+	color: #5b2d08;
+	text-decoration: underline;
 }
 
-
-ul li {
-  list-style-image: url('/images/portal/comment.png');
-  margin-right: 7px;
-  color: #038;
-  font-size: 0.80em;
+inputbox {
+	height: 25x;
+}
+label {
+	width: 100px;
+	float: left;
+}
+button {
+	float: none;
+	left: 220px;
+	top: 200px;
+	position: relative;
+	height: 41px;
+	width: 110px;
+	background-repeat: no-repeat;
+	background-image: url('/images/Login-button.png');
+	background-color: transparent;
+	border: none;
+	clear: none;
 }
 
-/* FRAME */
-
-#wrapper{
-  width: 970px;
-  background:transparent url(/images/portal/shadow.gif) repeat-y scroll center top !important;
-  margin: 0 auto;
+#notice {
+	font-size: 1.1em;
+	color: red;
 }
-
-#top {
-  font-size: 106%; 
-  text-decoration: none;
-  color: #FCFCFC;
-  width: 930px;
-  margin-left:30px;
-}
-
-.logo {
-  margin: 20px 0 0 0;
-}
-
-a.menu_top{
-color: #000;
-text-decoration: none;
-margin: 50px 40px 0 0;
-font-weight:bold;
-float:right;
-}
-
-a.menu_top_sign{
-color: #FF9900;
-text-decoration: none;
-margin: 50px 40px 0 0;
-font-weight:bold;
-float:right;
-}
-
-#top a:hover { 
-  text-decoration: underline;
-}
-
-.menu_white{
-  color: #FFF;
-  font-size: 1.2em; 
-  font-weight:bold;
-  padding-right: 20px;
-  text-align:center;
-}
-
-.text_white{
-  color: #FFF;
-  font-size: 1.3em; 
-  font-weight:bold;
-  margin: 20px 20px 20px 20px;
-}
-
-.text_white_small{
-  color: #FFF;
-  font-size: 0.8em; 
-  font-weight:normal;
-  margin:0;
-}
-
-.text_black{
-color: #3D3D3D;
-font-size: 1.2em;
-line-height: 22px;
-margin: 20px 20px 20px 20px;
-font-family: Georgia, Times, serif;
-}
-
-.black{
-color: #3D3D3D;
-line-height: 22px;
-margin: 20px 20px 20px 20px;
-font-family: Georgia, Times, serif;
-}
-
-a.bar{
-color: #FFF;
-text-decoration: none;
-float:right;
-font-size: 0.90em;
-text-decoration: none;
-padding-right: 20px;
-font-family: Verdana, "Times New Roman", Times, serif;}
-.orange {
-color: #FF9900; 
-font-weight:bold;
-}         
-
-
-.flag{
-padding-right: 6px;
-padding-right: 10 px;
-}
-
-.footer{
-font-size: 0.70em;
-color: #ccc;
-text-align: center;
-}
-
-a.footer{
-color: #FFF;
-text-decoration: underline;
-text-align: center;
-font-size: 1.1em;
-}
-
-#notice { 
-  color: #ff6666;
-}        
-
-.fieldWithErrors input, .fieldWithErrors textarea, .fieldWithErrors select {
-  background-color: red;
-  border: 2px solid red;
-}
-
-#ErrorExplanation {
-  width: 400px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-  background-color: #f0f0f0;
-}
-
-#ErrorExplanation h2 {
-  text-align: left;
-  font-weight: bold;
-  padding: 5px 5px 5px 15px;
-  font-size: 12px;
-  margin: -7px;
-  background-color: #c00;
-  color: #fff;
-}
-
-#ErrorExplanation p {
-  color: #333;
-  margin-bottom: 0;
-  padding: 5px;
-}
-
-#ErrorExplanation ul li {
-  font-size: 12px;
-  list-style: square;
-}
-

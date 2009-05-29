@@ -1,147 +1,47 @@
 <html>
 <head>
 <title><%= $CONFIG[:productName] %></title>
-<%= stylesheet_link_merged :base %>
-<style type="text/css">
-body {
-  background-color: #CCCCCC;
-  margin: 0;
-  padding: 0;
-}
-
-#menu {
-  color: #423f54;
-  font-size: 14px;
-  font-weight: bold;
-  background-color: #c5cacf;
-  margin: 0.5em;
-  border: 1px solid #b7b7b7;
-}
-
-a {
-  color: #566ca5;
-  text-decoration: none;
-  font-weight: bold;
-}
-a:hover {
-  text-decoration: underline;
-}
-
-#container {
-  width:715px;
-  height: 538px;
-  position:relative;
-  left: 50%;
-  margin-left: -357px;
-  background-color: #F8F4EE;
-  background: url(/images/login_box.jpg) no-repeat 0% 0;
-}
-input:focus, textarea:focus { border: 1px solid #FC0; }
-input, textarea, select { border: 1px solid #AAA; }
-
-#notice {
-  width: 384px;
-  border: 2px solid red;
-  padding: 7px;
-  margin-bottom: 10px;
-  background-color: #ffffff;
-}
-
-#footer {
-  text-align:center;
-  font-size:11px;
-  color: #999;
-}
-
-body {
-  background: none;
-  background-color: #F8F4EE;
-}
-
-table, td, tr {
-  background: none;
-  color: #fff;
-}
-
-label {
-  color: #fff;
-  font-size: 17px;
-}
-
-.inputbox {
-  font-size: 20px;
-}
-
-#header {
-  height: 75px;
-}
-
-#notice {
-  color: #000;
-}
-
+<%= stylesheet_link_merged :portal %>
 <%
 if !@company.nil?
 	@internal = @company.internal_customer
 	if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-<%= @internal.css %>
+<style type="text/css"><%= @internal.css%></style>
 <%
-end
+	end
 end
 %>
-
-</style>
-
-<!--[if IE]>
-<style type="text/css">
-.inputbox {
-  font-size: 18px;
-}
-</style>
-<![endif]-->
-
 </head>
 
 <body>
 <% unless @company.nil? %>
-  <div id="header">
-    <div style="float: left;">
-        <img src="/images/login_logo.png" />
-    </div>
-    <div style="padding-top:24px;color:#999;letter-spacing:0.2em;text-transform:uppercase;font-size:8px;">&copy; 2005-2008 <a href="http://www.clockingit.com">ClockingIT 0.99.3</a><br /><a href="mailto:admin@clockingit.com">Erlend &amp; Ellen Simonsen</a></div>
-  </div>
-<div id="container">
-  <div style="font-size:24px;font-weight:bold;text-align:center;padding-top:161px;font-style:italic;padding-left:0;padding-right:0;"><%= @company.name %></div>
-  <div style="position:absolute;top:210px;left:160px;">
-  <table width="450px" cellpadding="0" cellspacing="0" id="login_box">
-  <tr><td align="center">
-  <% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>
-  <table border="0" cellpadding="2" cellspacing="0" style="width:280px;">
-  <tr><td align="left"><label for="username"><strong>Username</strong></label></td></tr>
-  <tr><td><input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="12" tabindex="1" /></td></tr>
-  <tr><td align="left"><label for="password"><strong>Password</strong></label></td></tr>
-  <tr><td><input type="password" id="password" name="user[password]" class="inputbox" size="12" alt="password" tabindex="2"/> <small><a href="/login/forgotten_password" tabindex="5">Forgot?</a></small></td></tr>
-  <tr><td align="left"><label for="remember"></label></td></tr>
-  <tr><td style="padding-top:26px;">
-         <button type="submit" name="Submit" value="Login" style="background:none;border:none;cursor:pointer;" tabindex="4"><img src="/images/button_login.png" style="vertical-align:middle;"/></button> 
-         <input type="checkbox" id="remember" name="remember" class="inputbox" value="1" tabindex="3"/><strong><small>Remember me</small></strong></td></tr>
-  <tr><td style="padding-top:1.5em;">&nbsp;</td></tr>
-  <tr><td></td></tr>
-  </table>
-  <% if flash[:notice] %><div id="notice" align="center"><%= flash[:notice] %><% flash.clear %></div><% end %>
-  <% end %>
-  </td></tr>
-  </table>
-  </div>
-</div>
-<div id="footer">
-</div>
-<script type="text/javascript">
-document.forms[0].username.focus();
-</script>
+	<div id="login">
+		<%= tag("img", {:src => "/clients/show_logo/#{@internal.id}" } ) %>
+		<% form_tag( {:action => 'validate'}, {:id => "loginform"}) do %>
+			<div id="name"><%= @company.name %> project management</div>
+			<button type="submit" name="Submit" value="Login" tabindex="4"></button>
+			<p>
+				<label for="username">Username</label>
+				<input name="user[username]" id="username" type="text" class="inputbox" alt="username" size="12" tabindex="1" />
+			</p>
+			<p>
+				<label for="password">Password</label>
+				<input type="password" id="password" name="user[password]" class="inputbox" size="12" alt="password" tabindex="2"/>
+				<small><a href="/login/forgotten_password" tabindex="3">Forgot password</a></small>
+			</p>
+			<p>
+				<input type="checkbox" id="remember" name="remember" value="1" tabindex="5"/>
+				<label for="remember">Remember me</label>
+			</p>
+			<% if flash[:notice] %>
+				<div id="notice"><%= flash[:notice] %><% flash.clear %></div>
+			<% end %>
+		<% end %>
+	</div>
+	<script type="text/javascript">document.forms[0].username.focus();</script>
 
 <% else %>
-Please set up Clocking IT by running the setup.rb script.
+	<h1>Please set up Clocking IT by running the setup.rb script.</h1>
 <% end %>
 </body>
 </html>
