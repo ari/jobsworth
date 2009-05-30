@@ -64,6 +64,12 @@ class LoginController < ApplicationController
   end
 
   def validate
+  	if params[:forgot] == 'true'
+  		mail_password
+  		redirect_to :action => 'login'
+  		return
+  	end
+  	
     @user = User.new(params[:user])
     @company = company_from_subdomain
     unless logged_in = @user.login(@company)
@@ -118,36 +124,6 @@ class LoginController < ApplicationController
     
     redirect_from_last
   end
-
-  def forgotten_password
-
-  end
-
-  # Mail the User his/her credentials for all Users on the requested
-  # email address
-  def take_forgotten
-    flash[:notice] = ""
-    error = 0
-
-    if params[:email].nil? || params[:email].length == 0
-      flash[:notice] += "* Enter your email<br/>"
-      error = 1
-    elsif User.count( :conditions => ["email = ?", params[:email]]) == 0
-      flash[:notice] += "* No such email<br/>"
-      error = 1
-    end
-
-    if( error == 0 )
-      @users = User.find(:all, :conditions => ["email = ?", params[:email]])
-      @users.each do |u|
-         Signup::deliver_forgot_password(u)
-      end
-    end
-
-    flash[:notice] = "Mail sent"
-    redirect_to :action => 'login'
-  end
-
 
   def signup
     @user = User.new
@@ -308,5 +284,23 @@ class LoginController < ApplicationController
 
   private
 
+  # Mail the User his/her credentials for all Users on the requested
+  # email address
+  def mail_password
+    if params[:email].nil? || params[:email].length == 0
+      flash[:notice] = "Enter your email address."
+      return
+	end
+
+    if User.count( :conditions => ["email = ?", params[:email]]) > 0
+      @users = User.find(:all, :conditions => ["email = ?", params[:email]])
+      @users.each do |u|
+         Signup::deliver_forgot_password(u)
+      end
+    end
+
+	# tell user it was successful even if we didn't find the user, for security.
+    flash[:notice] = "Mail sent"
+  end
 
 end
