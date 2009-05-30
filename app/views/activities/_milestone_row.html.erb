@@ -18,15 +18,13 @@
         </div>
       </td>
     </tr>
-<script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
 <% if current_user.can?(milestone.project, 'milestone') %>
-Event.observe('milestone_<%= milestone.id %>', "mouseover", function(e) {
+<script type="text/javascript" language="javascript" charset="utf-8">
+jQuery('#milestone_<%= milestone.id %>').hover( function () {
     jQuery('#edit_milestone_<%=milestone.id%>:hidden').show();
-});
-Event.observe('milestone_<%= milestone.id %>', "mouseout", function(e) {
+}, function () {
     jQuery('#edit_milestone_<%=milestone.id%>:visible').hide();
 });
-<% end %>
-// ]]>
 </script>
+<% end %>
+

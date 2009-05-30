@@ -1,16 +1,9 @@
-page << "if($('task_#{@task.id}')) {"
 page.replace "task_#{@task.id}", :partial => "task_row", :locals => {:task => @task, :depth => params[:depth].to_i || 0 }
-page << "}"
 
-page << "if($('shortlist-legend')) {"
 page.replace_html "shortlist-legend", :partial => "tasks/short_legend"
 page.call "fixShortLinks"
-page << "}"
 
-
-page << "if($('work-log') && $('work-log').visible ) {"
 page['work-log'].hide
-page << "}"
 
 page.call "UpdateDnD"
 

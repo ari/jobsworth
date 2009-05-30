@@ -121,22 +121,22 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 // <![CDATA[
 var userId=<%=current_user.id%>;
-Event.observe(window, "load", function(e) {
-<% if current_user.option_tooltips.to_i == 1 %>
-  makeTooltips(1);
-<% else %>
-  makeTooltips(0);
-<% end %>
-
-<% if controller.controller_name == 'shout' && controller.action_name == 'room' %>
-  init_shout();
-  $('contact').scrollTo();
-  window.scrollBy(0,200);
-<% end %>
-
-Event.observe($('presence-toggle-users'), "click", function(ev) { 
-		  toggleChatPopupEvent(ev); 
-		  });
+jQuery(document).ready(function () {
+	<% if current_user.option_tooltips.to_i == 1 %>
+	  makeTooltips(1);
+	<% else %>
+	  makeTooltips(0);
+	<% end %>
+	
+	<% if controller.controller_name == 'shout' && controller.action_name == 'room' %>
+	  init_shout();
+	  $('contact').scrollTo();
+	  window.scrollBy(0,200);
+	<% end %>
+	
+	jQuery('#presence-toggle-users').click(function () {
+		toggleChatPopupEvent(ev); 
+	});
 });
 
 new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});

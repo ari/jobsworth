@@ -47,8 +47,11 @@
               :confirm => _("Really delete transcript?")
               %></div>
 <script type="text/javascript" language="javascript" charset="utf-8">
-  Event.observe($('transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>'), "mousemove", function(e) {jQuery('#transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>').show();} );
-  Event.observe($('transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>'), "mouseout", function(e) {jQuery('#transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>').hide();} );
+jQuery('#transcript_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>').hover(function () {
+	jQuery('#transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>').show();
+}, function () {
+jQuery('#transcript_delete_<%=v['channel'].id%>_<%=v['date'].strftime('%y-%m-%d')%>').hide();
+});
 </script>
 <% end %>
 <div class="channel-access">

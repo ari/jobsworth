@@ -62,13 +62,11 @@
           <% end %>
         </div>
 <script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
-Event.observe('project_<%= project.id %>', "mouseover", function(e) {
+jQuery('#project_<%= project.id %>').hover(function () {
 <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
   jQuery('#edit_project_<%=project.id%>').show();
 <% end %>
-});
-Event.observe('project_<%= project.id %>', "mouseout", function(e) {
+},function () {
 <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
   jQuery('#edit_project_<%=project.id%>').hide();
 <% end %>
