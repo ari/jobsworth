@@ -137,4 +137,15 @@ class Company < ActiveRecord::Base
     @priority_property ||= properties.detect { |p| p.name == "Priority" || p.name == _("Priority") }
   end
 
+  ###
+  #	Returns the URL to the installation
+  ###
+  def site_URL
+  	if $CONFIG[:SSL]
+		url = "https://"
+	else
+		url = "http://"
+	end
+	url += subdomain + $CONFIG[:domain]
+  end
 end

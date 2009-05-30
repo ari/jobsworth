@@ -4,7 +4,8 @@ $CONFIG = {
 	:replyto => "admin",  # Note that this is not a full email address, just the part before the @
 	:from => "admin",  # Note that this is not a full email address, just the part before the @
 	:prefix => "[ClockingIT]",
-	:productName => "ClockingIT"
+	:productName => "ClockingIT",
+	:SSL => false
 }
 
 ActionMailer::Base.smtp_settings = {

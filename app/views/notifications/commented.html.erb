@@ -1,17 +1,3 @@
-
-
-o------ please reply above this line ------o
-
+<%= render(:partial => "_task_header") %>
 <%= @note %>
-
-............................................
-
-This task <%= @task.id %> was just updated with the information above. If you have any further comments to make, please reply to this email above the line.
-
-To see the history of this task, visit:
-http://<%= @user.company.subdomain%>.<%= $CONFIG[:domain] %>/tasks/view/<%=@task.task_num%>
-
-
-Sent to <%= "${@user.name} <${@user.email}>" %>
--------------------->
-<%= $CONFIG[:productName] %>
+<%= render(:partial => "_task_footer") %>

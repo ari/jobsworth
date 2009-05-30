@@ -2,6 +2,10 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+30 May 2009
+	There is a whole new login screen.
+	If you are using Clocking IT behind an SSL configured web server, you can now add a configuration parameter to environment.local.rb so that outgoing emails are sent with https links in them.	
+	
 27 April 2009
 	Update to Rails 2.3.2 and upgrade all associated plugins and gems at the same time. This should give us some significant speed improvements.
 	IMPORTANT: because of an update to the ferret search server, please run:
