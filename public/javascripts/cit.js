@@ -350,8 +350,8 @@ function toggleChatPopup(el) {
     if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
       Element.removeClassName(el.up(), 'presence-section-pending');
     }
-    $$("#" + el.up().id + " .presence-shadow").each(function(e) { jQuery(e).show(); });
-    $$("#" + el.up().id + " input").each(function(e) { e.focus(); });
+    jQuery("#" + el.up().id + " .presence-shadow").show();
+    jQuery("#" + el.up().id + " input").focus();
 
     new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});
   }
