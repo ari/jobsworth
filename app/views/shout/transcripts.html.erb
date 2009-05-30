@@ -73,12 +73,12 @@
 <script type="text/javascript" language="javascript" charset="utf-8">
 
 function filter_transcripts() {
-  var val = $('transcript-filter-select').value;
+  var val = jQuery('$transcript-filter-select').val();
   if( val == "0" ) {
-     $$('#transcript-list .transcript').each(function(el) { jQuery(el).show(); });
+     jQuery('#transcript-list .transcript').show();
   } else {
-     $$('#transcript-list .transcript').each(function(el) { jQuery(el).hide(); });
-     $$("#transcript-list .channel-" + val).each(function(el) { jQuery(el).show(); });
+     jQuery('#transcript-list .transcript').hide();
+     jQuery("#transcript-list .channel-" + val).show();
   }
 }
 

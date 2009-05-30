@@ -344,7 +344,7 @@ class ShoutController < ApplicationController
       page.visual_effect(:appear, 'passive-chat-container', :duration => 0.5)
       page.delay(5.0) do
         page["shout_#{@shout.id}"].remove
-        page << "if($$('#passive-chat .channel-message').length == 0) {"
+        page << "if(jQuery('#passive-chat .channel-message').length == 0) {"
         page.hide 'passive-chat-container'
         page << "}"
       end
