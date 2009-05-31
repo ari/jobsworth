@@ -1,8 +1,8 @@
-<%= render(:partial => "_task_header") %>
+<%= render(:partial => "task_header") %>
 <%= @task.issue_name%>
 <%= "-" * @task.issue_name.length %>
 <%= "\n#{@change}\n" if @change.length > 0 -%>
 
 <%= "Description:\n#{@task.description}\n" if @task.description.length > 0 -%>
 
-<%= render(:partial => "_footer") %>
+<%= render(:partial => "task_footer") %>

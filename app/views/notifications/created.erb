@@ -1,4 +1,4 @@
-<%= render(:partial => "_task_header") %>
+<%= render(:partial => "task_header") %>
 <%= @task.issue_name %>
 <%= "-" * @task.issue_name.length %>
 
@@ -22,4 +22,4 @@
 <%= "#{@user.name}:\n#{@note}\n" if @note && @note.length > 0 -%>
 <%= "\n" if @note && @note.length > 0 -%>
 <%= "Description:\n" + @task.description if @task.description.length > 0 %>
-<%= render(:partial => "_task_footer") %>
+<%= render(:partial => "task_footer") %>
