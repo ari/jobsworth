@@ -506,7 +506,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.datetime "updated_at"
   end
 
-  add_index "sessions", ["session_id"], :name => "sessions_session_id_index", :unique => true
+  add_index "sessions", ["session_id"], :name => "session_id_key", :unique => true
 
   create_table "sheets", :force => true do |t|
     t.integer  "user_id",         :default => 0, :null => false
@@ -704,6 +704,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.boolean  "read_clients",                             :default => false
     t.boolean  "create_clients",                           :default => false
     t.boolean  "edit_clients",                             :default => false
+    t.boolean  "can_approve_work_logs"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
@@ -815,6 +816,8 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.integer  "scm_changeset_id"
     t.integer  "paused_duration",  :default => 0
     t.boolean  "comment",          :default => false
+    t.datetime "exported"
+    t.boolean  "approved"
   end
 
   add_index "work_logs", ["company_id", "project_id", "log_type", "started_at"], :name => "work_logs_company_project_index"
