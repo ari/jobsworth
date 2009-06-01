@@ -2,7 +2,6 @@
 # as well as CSV downloading.
 #
 class ReportsController < ApplicationController
-
   require_dependency 'fastercsv'
 
   def get_date_header(w)
@@ -195,7 +194,12 @@ class ReportsController < ApplicationController
     elsif key == "6_approved"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, w.approved?.to_s)
+      body = "#{ w.approved? }"
+      if current_user.can_approve_work_logs?
+        body = "<a href='#' onclick='toggleWorkLogApproval(this, #{ w.id }); return false;'>"
+        body += "#{ w.approved? }</a>"
+      end
+      do_row(rkey, row_name, key, body)
     elsif (attr = custom_attribute_from_key(key))
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
