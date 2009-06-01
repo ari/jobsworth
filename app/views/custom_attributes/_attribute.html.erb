@@ -19,8 +19,10 @@
     <label><%=_ "Mandatory" %></label>
     <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
 
-    <label><%=_ "Allows multiple" %></label>
-    <%= nested_boolean_choice_field(f, :multiple, attribute) %>
+    <span class="multiple" style="display: <%= preset ? "none" : "" %>">>
+      <label><%=_ "Allows multiple" %></label>
+      <%= nested_boolean_choice_field(f, :multiple, attribute) %>
+    </span>
 
     <span class="max_length" style="display: <%= preset ? "none" : "" %>">
       <label><%=_ "Maximum field length " %></label>

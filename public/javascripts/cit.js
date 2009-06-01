@@ -541,16 +541,17 @@ function updateAttributeFields(checkbox) {
     var parent = checkbox.parents(".attribute");
     var maxLength = parent.find(".max_length");
     var choices = parent.find(".choices");
+    var multiple = parent.find(".multiple");
 
     if (preset) {
-	maxLength.hide();
-	maxLength.find("input").val("");
+	multiple.hide().find("input").attr("checked", false);
+	maxLength.hide().find("input").val("");
 	choices.show();
     }
     else {
+	multiple.show();
 	maxLength.show();
-	choices.hide();
-	choices.find("input").remove();
+	choices.hide().find("input").remove();
     }
 }
 
