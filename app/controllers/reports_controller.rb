@@ -74,6 +74,8 @@ class ReportsController < ApplicationController
       "#{w.task.requested_by}"
     elsif r == 21
       "4_user"
+    elsif r == 22
+      "6_approved"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
     elsif (match = r.match(/ca_(\d+)/))
@@ -118,6 +120,8 @@ class ReportsController < ApplicationController
       "#{w.task.requested_by}"
     elsif r == 21
       _("User")
+    elsif r == 22
+      _("Approved")
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
     elsif (match = r.match(/ca_(\d+)/))
@@ -188,6 +192,10 @@ class ReportsController < ApplicationController
       body = w.body
       body.gsub!(/\n/, " <br/>") if body
       do_row(rkey, row_name, key, body)
+    elsif key == "6_approved"
+      rkey = key_from_worklog(w, 13).to_s
+      row_name = name_from_worklog(w, 15)
+      do_row(rkey, row_name, key, w.approved?.to_s)
     elsif (attr = custom_attribute_from_key(key))
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
@@ -483,6 +491,7 @@ class ReportsController < ApplicationController
           w.available_custom_attributes.each do |ca|
             columns << "ca_#{ ca.id }"
           end
+          columns << 22
 
           columns.each do |k|
             key = key_from_worklog(w, k)
@@ -499,17 +508,17 @@ class ReportsController < ApplicationController
 
     end
 
-#     csv = create_csv if @column_headers && @column_headers.size > 1
-#     unless csv.nil? || csv.empty?
-#       @generated_report = GeneratedReport.new
-#       @generated_report.company = current_user.company
-#       @generated_report.user = current_user
-#       @generated_report.filename = filename + ".csv"
-#       @generated_report.report = csv
-#       @generated_report.save
-#     else
-#       flash['notice'] = _("Empty report, log more work!") if params[:report]
-#     end
+    csv = create_csv if @column_headers && @column_headers.size > 1
+    unless csv.nil? || csv.empty?
+      @generated_report = GeneratedReport.new
+      @generated_report.company = current_user.company
+      @generated_report.user = current_user
+      @generated_report.filename = filename + ".csv"
+      @generated_report.report = csv
+      @generated_report.save
+    else
+      flash['notice'] = _("Empty report, log more work!") if params[:report]
+    end
 
   end
 
