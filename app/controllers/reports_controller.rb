@@ -194,7 +194,7 @@ class ReportsController < ApplicationController
     elsif key == "6_approved"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      body = "#{ w.approved? }"
+      body = w.approved? ? _("Yes") : _("No")
       if current_user.can_approve_work_logs?
         body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
         body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
