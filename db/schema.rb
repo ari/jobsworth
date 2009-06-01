@@ -67,6 +67,13 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "companies", ["name"], :name => "companies_name_index"
   add_index "companies", ["subdomain"], :name => "companies_subdomain_index", :unique => true
 
+  create_table "custom_attribute_choices", :force => true do |t|
+    t.integer  "custom_attribute_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "custom_attribute_values", :force => true do |t|
     t.integer  "custom_attribute_id"
     t.integer  "attributable_id"

@@ -5,6 +5,7 @@ class CustomAttribute < ActiveRecord::Base
 
   belongs_to :company
   has_many :custom_attribute_values, :dependent => :destroy
+  has_many :custom_attribute_choices, :dependent => :destroy
   belongs_to :attributable, :polymorphic => true
 
   ###

@@ -531,6 +531,30 @@ jQuery(document).ready(function() {
 });
 
 /*
+ Shows / hides applicabel attribute fields depending on the value
+ of checkbox
+*/
+function updateAttributeFields(checkbox) {
+    checkbox = jQuery(checkbox);
+    var preset = checkbox.is(":checked");
+
+    var parent = checkbox.parents(".attribute");
+    var maxLength = parent.find(".max_length");
+    var choices = parent.find(".choices");
+
+    if (preset) {
+	maxLength.hide();
+	maxLength.find("input").val("");
+	choices.show();
+    }
+    else {
+	maxLength.show();
+	choices.hide();
+	choices.find("input").remove();
+    }
+}
+
+/*
   Does a get request to the given url. The response is appended
   to any element matching selector.
 */

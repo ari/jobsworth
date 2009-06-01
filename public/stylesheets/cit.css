@@ -2607,12 +2607,17 @@ fieldset.basic a.toggle.below {
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 fieldset.basic li.attribute, fieldset.basic li.property_value {
-    padding: 15px 0px 15px 0px !important;
+    padding: 20px 0px 20px 0px !important;
 }
 
-.add_attribute, .remove_attribute {
+.remove_attribute {
     padding-left: 10px;
 }
+.add_attribute {
+    display: block;
+    padding: 20px 0px 10px 0px;
+}
+
 
 .history .hoverrow {
     clear: both;
@@ -2784,3 +2789,4 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     font-size: 10px;
     float: right;
 }
+

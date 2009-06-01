@@ -6,6 +6,7 @@ class CustomAttributesController < ApplicationController
     @attributables << [ "User", _("User") ]
     @attributables << [ "Customer", _("Client") ]
     @attributables << [ "OrganizationalUnit", _("Organizational Unit") ]
+    @attributables << [ "WorkLogs", _("Work Logs") ]
   end
 
   def edit

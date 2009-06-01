@@ -2,6 +2,10 @@
 # Has a duration in seconds for work entries
 
 class WorkLog < ActiveRecord::Base
+  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy, 
+           # set validate = false because validate method is over-ridden and does that for us
+           :validate => false)
+  include CustomAttributeMethods
 
   acts_as_ferret({ :fields => ['body', 'company_id', 'project_id'], :remote => true })
 
