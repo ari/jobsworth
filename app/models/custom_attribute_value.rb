@@ -1,6 +1,7 @@
 class CustomAttributeValue < ActiveRecord::Base
   belongs_to :custom_attribute
   belongs_to :attributable, :polymorphic => true
+  belongs_to :choice, :class_name => "CustomAttributeChoice"
 
   def validate
     valid = true

@@ -70,6 +70,21 @@ module CustomAttributeMethods
   end
 
   ###
+  # Returns an array of strings that are currently selected
+  # for the given attribute.
+  ###
+  def values_for(attribute)
+    vals = custom_attribute_values.select { |cav| cav.custom_attribute == attribute }
+    return vals.map do |cav|
+      if cav.choice
+        cav.choice.value
+      else
+        cav.value
+      end
+    end
+  end
+
+  ###
   # Checks if this object, and all associated values are valid. Adds errors
   # to base if not.
   ###

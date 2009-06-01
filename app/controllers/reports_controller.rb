@@ -76,8 +76,9 @@ class ReportsController < ApplicationController
       "4_user"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
+    elsif (match = r.match(/ca_(\d+)/))
+      r
     end
-    
   end
 
   def name_from_worklog(w,r)
@@ -119,6 +120,8 @@ class ReportsController < ApplicationController
       _("User")
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
+    elsif (match = r.match(/ca_(\d+)/))
+      w.company.custom_attributes.find(match[1]).display_name
     end
 
   end
@@ -143,7 +146,7 @@ class ReportsController < ApplicationController
 
 
   def do_column(w, key)
-    logger.debug("#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}")
+    logger.info("#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}")
 
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
@@ -185,6 +188,11 @@ class ReportsController < ApplicationController
       body = w.body
       body.gsub!(/\n/, " <br/>") if body
       do_row(rkey, row_name, key, body)
+    elsif (attr = custom_attribute_from_key(key))
+      rkey = key_from_worklog(w, 13).to_s
+      row_name = name_from_worklog(w, 15)
+      value = w.values_for(attr).join(", ")
+      do_row(rkey, row_name, key, value)
     else
       rkey = key_from_worklog(w, @row_value).to_s
       row_name = name_from_worklog(w, @row_value)
@@ -471,7 +479,12 @@ class ReportsController < ApplicationController
           end 
         when 3
           # Time sheet
-          [16, 17, 18, 21, 19].each do |k|
+          columns = [ 16, 17, 18, 21, 19 ]
+          w.available_custom_attributes.each do |ca|
+            columns << "ca_#{ ca.id }"
+          end
+
+          columns.each do |k|
             key = key_from_worklog(w, k)
             unless @column_headers[ key ]
               @column_headers[ key ] = name_from_worklog( w, k )
@@ -486,17 +499,17 @@ class ReportsController < ApplicationController
 
     end
 
-    csv = create_csv if @column_headers && @column_headers.size > 1
-    unless csv.nil? || csv.empty?
-      @generated_report = GeneratedReport.new
-      @generated_report.company = current_user.company
-      @generated_report.user = current_user
-      @generated_report.filename = filename + ".csv"
-      @generated_report.report = csv
-      @generated_report.save
-    else
-      flash['notice'] = _("Empty report, log more work!") if params[:report]
-    end
+#     csv = create_csv if @column_headers && @column_headers.size > 1
+#     unless csv.nil? || csv.empty?
+#       @generated_report = GeneratedReport.new
+#       @generated_report.company = current_user.company
+#       @generated_report.user = current_user
+#       @generated_report.filename = filename + ".csv"
+#       @generated_report.report = csv
+#       @generated_report.save
+#     else
+#       flash['notice'] = _("Empty report, log more work!") if params[:report]
+#     end
 
   end
 
@@ -602,5 +615,14 @@ class ReportsController < ApplicationController
     end
     
     return res
+  end
+
+  def custom_attribute_from_key(str)
+    match = str.match(/ca_(\d+)/)
+    if match
+      return current_user.company.custom_attributes.detect do |ca|
+        ca.id == match[1].to_i
+      end
+    end
   end
 end
