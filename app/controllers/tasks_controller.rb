@@ -1529,6 +1529,13 @@ class TasksController < ApplicationController
     render(:partial => "notification", :locals => { :notification => user })
   end
 
+  def update_work_log
+    log = current_user.company.work_logs.find(params[:id])
+    updated = log.update_attributes(params[:work_log])
+
+    render :text => updated.to_s
+  end
+
   private
 
   ###

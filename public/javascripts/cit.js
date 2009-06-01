@@ -122,7 +122,7 @@ function hide(e){
 function fetchComment(e) {
   var elements = e.toString().split("/");
   var taskId = elements[elements.size()-1];
-  new Ajax.Request('/tasks/get_comment/' + taskId, {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
+  new Ajax.Request('/tasks/get_comment/' + taskId + ".js", {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
 }
 
 function updateComment(taskId) {
@@ -782,4 +782,15 @@ function moveTask(event, ui) {
 	       { id : element.id + " " + dropTarget.id }, 
 	       null,
 	      "script")
+}
+
+/*
+  Toggles the approval status of the given work log
+*/
+function toggleWorkLogApproval(sender, workLogId) {
+    var checked = jQuery(sender).attr("checked");
+
+    jQuery.post("/tasks/update_work_log", {
+	id : workLogId,
+	"work_log[approved]" : checked });
 }

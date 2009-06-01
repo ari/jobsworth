@@ -196,8 +196,8 @@ class ReportsController < ApplicationController
       row_name = name_from_worklog(w, 15)
       body = "#{ w.approved? }"
       if current_user.can_approve_work_logs?
-        body = "<a href='#' onclick='toggleWorkLogApproval(this, #{ w.id }); return false;'>"
-        body += "#{ w.approved? }</a>"
+        body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
+        body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
       end
       do_row(rkey, row_name, key, body)
     elsif (attr = custom_attribute_from_key(key))
