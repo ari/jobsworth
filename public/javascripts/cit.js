@@ -122,7 +122,7 @@ function hide(e){
 function fetchComment(e) {
   var elements = e.toString().split("/");
   var taskId = elements[elements.size()-1];
-  new Ajax.Request('/tasks/get_comment/' + taskId, {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
+  new Ajax.Request('/tasks/get_comment/' + taskId + ".js", {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
 }
 
 function updateComment(taskId) {
