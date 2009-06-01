@@ -13,7 +13,7 @@
       <% if ca and ca.preset? %>
         <%= f.select(:choice_id, 
 	    objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value), 
-	    :index => nil) %>
+	{}, :index => nil) %>
 
       <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
         <%= f.text_area(:value, :index => nil) %>
