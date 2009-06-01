@@ -16,4 +16,12 @@ class CustomAttribute < ActiveRecord::Base
     return company.custom_attributes.find(:all, :order => "position", 
                                           :conditions => conds)
   end
+
+  ###
+  # Returns true if this attribute has a preset list of
+  # possible choices
+  ###
+  def preset?
+    custom_attribute_choices.any?
+  end
 end

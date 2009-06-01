@@ -958,7 +958,8 @@ class TasksController < ApplicationController
 
   def save_log
     @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    
+    @log.update_attributes(params[:work_log])
+
     old_duration = @log.duration
     old_note = @log.body
     

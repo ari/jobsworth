@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.text     "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "choice_id"
   end
 
   create_table "custom_attributes", :force => true do |t|
