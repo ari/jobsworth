@@ -2,10 +2,20 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+1 June 2009
+	Exception emails are now sent to the system admin. This makes it much easier to diagnose problems. In order to use this feature, please add these two lines to the bottom of environment.local.rb
+	ExceptionNotifier.exception_recipients = [ "email@example.com" ]
+	ExceptionNotifier.sender_address = %("Application Error" <email@server.com>)
+
 30 May 2009
 	There is a whole new login screen.
 	If you are using Clocking IT behind an SSL configured web server, you can now add a configuration parameter to environment.local.rb so that outgoing emails are sent with https links in them.	
 	
+29 May 2009
+	Outgoing emails now respect the SSL status and product name of the installation. Make sure these lines are in the config block in environment.local.rb
+	:productName => "some task tracking system"
+	:SSL => true
+
 27 April 2009
 	Update to Rails 2.3.2 and upgrade all associated plugins and gems at the same time. This should give us some significant speed improvements.
 	IMPORTANT: because of an update to the ferret search server, please run:
