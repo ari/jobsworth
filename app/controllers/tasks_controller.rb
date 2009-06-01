@@ -40,7 +40,7 @@ class TasksController < ApplicationController
     @notify_targets = @notify_targets.flatten.uniq
     @notify_targets ||= []
   end
-
+  
   def index
     redirect_to 'list'
   end
