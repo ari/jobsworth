@@ -541,27 +541,44 @@ function updateAttributeFields(checkbox) {
     var parent = checkbox.parents(".attribute");
     var maxLength = parent.find(".max_length");
     var choices = parent.find(".choices");
+    var choiceLink = parent.find(".add_choice_link");
     var multiple = parent.find(".multiple");
 
     if (preset) {
 	multiple.hide().find("input").attr("checked", false);
 	maxLength.hide().find("input").val("");
 	choices.show();
+	choiceLink.show();
     }
     else {
 	multiple.show();
 	maxLength.show();
-	choices.hide().find("input").remove();
+	choices.hide().html("");
+	choiceLink.hide();
     }
+}
+
+/*
+ Adds fields to setup a new custom attribute choice.
+*/
+function addAttributeChoices(sender) {
+    var choices = jQuery(sender).parent().find('.choices');
+    var callback = function() { updatePositionFields(choices); }
+
+    appendPartial('/custom_attributes/choice/#{ attribute.id }', choices, callback);
 }
 
 /*
   Does a get request to the given url. The response is appended
   to any element matching selector.
+  If a callback function is given, that will be called after the partial
+  has been loaded and added to the page.
 */
-function appendPartial(url, selector) {
+function appendPartial(url, selector, callback) {
     jQuery.get(url, { }, function(data) {
 	jQuery(selector).append(data);
+
+	if (callback) { callback.call(); }
     });
 }
 
@@ -667,6 +684,7 @@ function updatePositionFields(listSelector) {
 
     for (var i = 0; i < children.length; i++) {
 	var positionField = jQuery(children[i]).find(".position");
+	console.log(positionField);
 	positionField.val(i + 1);
     }
 }

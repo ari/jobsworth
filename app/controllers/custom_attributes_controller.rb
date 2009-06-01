@@ -25,6 +25,16 @@ class CustomAttributesController < ApplicationController
     render(:partial => "attribute", :locals => { :attribute => CustomAttribute.new })
   end
 
+  def choice
+    attribute = CustomAttribute.new
+    if params[:id]
+      attribute = current_user.company.custom_attributes.find(params[:id])
+    end
+
+    render(:partial => "choice", :locals => { 
+             :attribute => attribute, :choice => CustomAttributeChoice.new })
+  end
+
   private
 
   def update_existing_attributes(params)

@@ -2604,6 +2604,14 @@ fieldset.basic a.toggle {
 fieldset.basic a.toggle.below {
     clear: both;
 }
+fieldset.basic .right_link {
+    clear:right;
+    float:left;
+    margin-bottom:0.2em;
+    margin-right:0.1em;
+    margin-top:0.5em;
+    text-align:left;
+}
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 fieldset.basic li.attribute, fieldset.basic li.property_value {

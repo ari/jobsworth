@@ -8,7 +8,7 @@ class CustomAttribute < ActiveRecord::Base
   belongs_to :attributable, :polymorphic => true
 
   has_many :custom_attribute_choices, :dependent => :destroy
-  accepts_nested_attributes_for(:custom_attribute_values, :allow_destroy => true)
+  accepts_nested_attributes_for(:custom_attribute_choices, :allow_destroy => true)
 
   ###
   # Returns the attributes setup for the given type in company.
@@ -25,6 +25,32 @@ class CustomAttribute < ActiveRecord::Base
   ###
   def preset?
     custom_attribute_choices.any?
+  end
+
+  ###
+  # Updates the custom_choice_attributes association based on 
+  # the given params.
+  # Any choices not included in the params will be deleted.
+  ###
+  def choice_attributes=(params)
+    return if params.nil?
+    choices = custom_attribute_choices.clone
+
+    updated = []
+    params.each do |id, attrs|
+      if id.to_i == 0
+        # create a new one
+        choice = custom_attribute_choices.build(attrs)
+      else
+        choice = choices.detect { |ca| ca.id == id.to_i }
+      end
+
+      updated << choice
+      choice.update_attributes(attrs)
+    end
+
+    missing = choices - updated
+    missing.each { |c| c.destroy }
   end
 
   ###

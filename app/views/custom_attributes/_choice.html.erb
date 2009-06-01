@@ -1,0 +1,7 @@
+<span class="choice">
+  <% fields_for(choice_prefix(choice, attribute), choice) do |cf| -%>
+    <label><%=_ "Choice" %></label>
+    <%= cf.text_field(:value) %>
+    <%= cf.hidden_field :position, :class => "position" %>
+  <% end -%>
+</span>

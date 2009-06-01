@@ -1,11 +1,9 @@
 <li class="attribute">
   <% 
-     prefix = "custom_attributes"
-     prefix = "new_#{ prefix }" if attribute.new_record? 
      preset = attribute.custom_attribute_choices.any?
    -%>
 
-  <% fields_for(prefix, attribute) do |f| %>
+  <% fields_for(prefix(attribute), attribute) do |f| %>
     <%= f.hidden_field :position, :index => attribute.id, :class => "position" %>
 
     <label><%=_ "Name" %></label>
@@ -19,7 +17,7 @@
     <label><%=_ "Mandatory" %></label>
     <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
 
-    <span class="multiple" style="display: <%= preset ? "none" : "" %>">>
+    <span class="multiple" style="display: <%= preset ? "none" : "" %>">
       <label><%=_ "Allows multiple" %></label>
       <%= nested_boolean_choice_field(f, :multiple, attribute) %>
     </span>
@@ -30,10 +28,12 @@
     </span>
 
     <span class="choices" style="display: <%= preset ? "" : "none" %>">
-      <label title="One per line"><%=_ "Choices" %></label>
-      <%= f.text_area :choices_as_text, :index => attribute.id, :rows => 10 %>
+      <%= render(:partial => "choice", :collection => attribute.custom_attribute_choices,
+      :locals => { :attribute => attribute }) %>
     </span>
-    
+    <label></label>
+    <%= add_choice_link(attribute) %>
+
   <% end %>
   <br />
 </li>
