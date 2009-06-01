@@ -4,6 +4,8 @@
 class ReportsController < ApplicationController
   require_dependency 'fastercsv'
 
+  TIMESHEET = 3
+
   def get_date_header(w)
     if [0,1,2].include? @range.to_i
       tz.utc_to_local(w.started_at).strftime_localized("%a <br/>%d/%m")
@@ -415,6 +417,7 @@ class ReportsController < ApplicationController
       end
 
       @logs = filter_logs_by_properties(@logs, task_property_filters)
+      @logs = filter_logs_by_params(@logs, params)
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
@@ -489,7 +492,7 @@ class ReportsController < ApplicationController
             end
             do_column(w, key)
           end 
-        when 3
+        when TIMESHEET
           # Time sheet
           columns = [ 16, 17, 18, 21, 19 ]
           w.available_custom_attributes.each do |ca|
@@ -628,6 +631,21 @@ class ReportsController < ApplicationController
     end
     
     return res
+  end
+
+  ###
+  # Does any extra filtering of the logs depending on 
+  # params.
+  ###
+  def filter_logs_by_params(logs, params)
+    report_params = params[:report] || {}
+
+    hide_approved = report_params[:hide_approved].to_i > 0
+    if @type == TIMESHEET and hide_approved
+      logs = logs.select { |wl| !wl.approved? }
+    end
+
+    return logs
   end
 
   def custom_attribute_from_key(str)

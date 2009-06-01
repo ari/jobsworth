@@ -142,4 +142,17 @@ module ReportsHelper
     
     return res
   end
+
+  ###
+  # Returns a css style to apply to an element that should
+  # only be shown on a timesheet report.
+  ###
+  def timesheet_field_style
+    display = ""
+    if params[:report].nil? || !["3", "2"].include?(params[:report][:type])
+      display = "none"
+    end
+
+    return "display: #{ display }"
+  end
 end

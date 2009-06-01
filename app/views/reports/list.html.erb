@@ -118,9 +118,16 @@
 <label for="report_stop_date"><%=_ 'To' %></label><%= text_field 'report', 'stop_date', {:id => 'stop_date', :size => 12, :value => (params[:report] && params[:report][:stop_date]) ? params[:report][:stop_date] : ""} %><br/>
 </div>
 
-<div id="subtotals"<%= " style=\"display:none;\"" if params[:report].nil? || !["3", "2"].include?(params[:report][:type])  %>>
+<div id="subtotals" style="<%= timesheet_field_style %>">
 <label for="report_subtotals"><%=_ 'Sub-totals' %></label>
 <%= check_box 'report', 'subtotals', :checked => (params[:report] && params[:report][:subtotals].to_i == 1) ? "checked" : "" %><br/>
+</div>
+
+<div id="approved" style="<%= timesheet_field_style %>">
+<label for="report_hide_approved"><%=_ "Hide approved logs" %></label>
+<%= check_box 'report', "hide_approved", 
+    :checked => (params[:report] && params[:report][:hide_approved].to_i == 1) %>
+<br/>
 </div>
 
 </fieldset>
@@ -195,6 +202,8 @@ if( $('report_range').value == "7" ) {
 );
 
 Event.observe($('report_type'), "change", function(e) {
+  var reportType = jQuery("#report_type").val();
+
   if( $('report_type').value == "1" || $('report_type').value == "4" ) {
     jQuery('#pivot_config').show();
   } else {
@@ -207,12 +216,19 @@ Event.observe($('report_type'), "change", function(e) {
     jQuery('#date-select').show();
   }
 
+  
   if( $('report_type').value == "3" || $('report_type').value == "2" ) {
     jQuery('#subtotals').show();
   } else {
      jQuery('#subtotals').hide();
   }
 
+  if (reportType == "3") {
+    jQuery("#approved").show();
+  }
+  else {
+    jQuery("#approved").hide();
+  }
 
   return false;
 }
