@@ -38,11 +38,10 @@ class CustomAttribute < ActiveRecord::Base
 
     updated = []
     params.each do |id, attrs|
-      if id.to_i == 0
+      choice = choices.detect { |ca| ca.id == id.to_i }
+      if choice.nil?
         # create a new one
         choice = custom_attribute_choices.build(attrs)
-      else
-        choice = choices.detect { |ca| ca.id == id.to_i }
       end
 
       updated << choice
