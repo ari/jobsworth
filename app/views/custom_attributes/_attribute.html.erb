@@ -27,10 +27,10 @@
       <%= f.text_field :max_length, :index => attribute.id %>
     </span>
 
-    <span class="choices" style="display: <%= preset ? "" : "none" %>">
+    <ul class="choices" style="display: <%= preset ? "" : "none" %>">
       <%= render(:partial => "choice", :collection => attribute.custom_attribute_choices,
       :locals => { :attribute => attribute }) %>
-    </span>
+    </ul>
     <label></label>
     <%= add_choice_link(attribute) %>
 

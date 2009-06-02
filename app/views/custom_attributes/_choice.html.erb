@@ -1,7 +1,8 @@
-<span class="choice">
+<li class="choice">
   <% fields_for(choice_prefix(choice, attribute), choice) do |cf| -%>
     <label><%=_ "Choice" %></label>
     <%= cf.text_field(:value) %>
     <%= cf.hidden_field :position, :class => "position" %>
+    <%= link_to_function(_("Remove Choice"), "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
   <% end -%>
-</span>
+</li>

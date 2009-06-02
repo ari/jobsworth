@@ -24,7 +24,7 @@ module CustomAttributesHelper
   ###
   def choice_prefix(choice, attribute)
     res = prefix(attribute)
-    choice_id = (choice_id || Time.now).to_i
+    choice_id = (choice.id || Time.now).to_i
     res += "[#{ attribute.id }][choice_attributes][#{ choice_id }]"
 
     return res
