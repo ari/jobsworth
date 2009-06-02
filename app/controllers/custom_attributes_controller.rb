@@ -42,6 +42,9 @@ class CustomAttributesController < ApplicationController
 
     updated = []
     (params[:custom_attributes] || {}).each do |id, values|
+      # need to ensure this is set so can delete all
+      values[:choice_attributes] ||= {}
+
       attr = attributes.detect { |ca| ca.id == id.to_i }
       updated << attr
 
