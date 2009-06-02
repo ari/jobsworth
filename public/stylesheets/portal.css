@@ -20,7 +20,7 @@ form {
 }
 
 #name {
-	font-weight: 100;
+	font-weight: bold;
 	font-size: 14px;
 	position: relative;
 	left: 80px;
