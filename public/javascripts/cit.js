@@ -565,7 +565,15 @@ function addAttributeChoices(sender) {
     var choices = jQuery(sender).parent().find('.choices');
     var callback = function() { updatePositionFields(choices); }
 
-    appendPartial('/custom_attributes/choice/#{ attribute.id }', choices, callback);
+    var attribute = jQuery(sender).parents(".attribute");
+    var attrId = attribute.attr("id").split("_").pop();
+
+    if (attrId == "attribute") {
+	// new attribute, so just ignore
+	attrId = "";
+    }
+    var url = "/custom_attributes/choice/" + attrId;
+    appendPartial(url, choices, callback);
 }
 
 /*
@@ -684,7 +692,6 @@ function updatePositionFields(listSelector) {
 
     for (var i = 0; i < children.length; i++) {
 	var positionField = jQuery(children[i]).find(".position");
-	console.log(positionField);
 	positionField.val(i + 1);
     }
 }

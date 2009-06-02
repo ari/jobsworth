@@ -14,7 +14,7 @@ class CustomAttributesController < ApplicationController
   end
 
   def update
-    update_existing_attributes(params) if params[:custom_attributes]
+    update_existing_attributes(params) 
     create_new_attributes(params) if params[:new_custom_attributes]
 
     flash[:notice] = _("Custom attributes updated")
@@ -41,7 +41,7 @@ class CustomAttributesController < ApplicationController
     attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
 
     updated = []
-    params[:custom_attributes].each do |id, values|
+    (params[:custom_attributes] || {}).each do |id, values|
       attr = attributes.detect { |ca| ca.id == id.to_i }
       updated << attr
 
