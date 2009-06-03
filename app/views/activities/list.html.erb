@@ -22,11 +22,13 @@
 // <![CDATA[
 
 function onOverWidget(portal, widget) {
-   jQuery('.widget-menu,'+'#' +widget._getId()).show();
+  // show the widget menu
+  jQuery("#" + widget._getId() + " .widget-menu").show();
 } 
    
 function onOutWidget(portal, widget) {
-   jQuery('.widget-menu,'+'#' +widget._getId()).hide();
+  // hide the widget menu (not the whole widget!)
+  jQuery("#" + widget._getId() + " .widget-menu").hide();
 }
    
 var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );

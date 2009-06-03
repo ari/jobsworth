@@ -690,15 +690,18 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
 function addUserToTask(input, li) {
     jQuery(input).val("");
 
-    var id = jQuery(li).find(".complete_value").text();
+    var userId = jQuery(li).find(".complete_value").text();
+    var taskId = jQuery("#task_id").val();
 
     var url = document.location.toString();
     url = url.replace("/edit/", "/add_notification/");
     url = url.replace("#", "");
     var url = "/tasks/add_notification";
 
-    jQuery.get(url, { user_id : id }, function(data) {
+    var params = { user_id : userId, id : taskId }
+    jQuery.get(url, params, function(data) {
 	jQuery("#task_notify").append(data);
+	highlightActiveNotifications();
     });
 }
 
