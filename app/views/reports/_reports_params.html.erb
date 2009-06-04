@@ -1,5 +1,5 @@
 <% form_tag :action => 'list' do %>
-<fieldset style="margin-right:10; width: 45%; float:left;" id="reports_config">
+<fieldset id="reports_config">
 <legend><%=_ 'Report Configuration' %></legend>
 <label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
                 [_("Pivot"), "1"],
@@ -44,7 +44,7 @@
 </div>
 
 </fieldset>
-<fieldset  style="padding-right:0; width: 45%; float: right;" id="reports_filter">
+<fieldset id="reports_filter">
 <legend><%=_ 'Filter' %></legend>
 <label for="report_client_id"><%=_ 'Client' %></label>
 <%= client_select %>

@@ -1598,6 +1598,15 @@ li.help {
   vertical-align: top;
 }
 
+#reports_config {
+    float: left;
+    width: 45%;
+}
+#reports_filter {
+    float: right;
+    width: 45%;
+}
+
 #wiki-info {
   margin: 1em;
   padding: 1em;
