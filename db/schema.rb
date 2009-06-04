@@ -67,6 +67,14 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "companies", ["name"], :name => "companies_name_index"
   add_index "companies", ["subdomain"], :name => "companies_subdomain_index", :unique => true
 
+  create_table "custom_attribute_choices", :force => true do |t|
+    t.integer  "custom_attribute_id"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "position"
+  end
+
   create_table "custom_attribute_values", :force => true do |t|
     t.integer  "custom_attribute_id"
     t.integer  "attributable_id"
@@ -74,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.text     "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "choice_id"
   end
 
   create_table "custom_attributes", :force => true do |t|
@@ -624,6 +633,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
+  add_index "tasks", ["task_num", "company_id"], :name => "index_tasks_on_task_num_and_company_id", :unique => true
 
   create_table "todos", :force => true do |t|
     t.integer  "task_id"
