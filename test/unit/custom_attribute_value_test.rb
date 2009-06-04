@@ -36,6 +36,7 @@ class CustomAttributeValueTest < ActiveRecord::TestCase
     cav = CustomAttributeValue.new(:attributable_id => @user.id, 
                                    :attributable_type => "User",
                                    :custom_attribute_id => @attr.id)
+
     cav.value = nil
     assert !cav.valid?
 
@@ -43,6 +44,14 @@ class CustomAttributeValueTest < ActiveRecord::TestCase
     assert !cav.valid?
 
     cav.value = "something"
+    assert cav.valid?
+
+    # check with choice selected
+    choice = @attr.custom_attribute_choices.build(:value => "test choice")
+    choice.save!
+
+    cav.value = nil
+    cav.choice = choice
     assert cav.valid?
   end
 

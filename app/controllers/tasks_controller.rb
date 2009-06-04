@@ -964,14 +964,12 @@ class TasksController < ApplicationController
     old_note = @log.body
     
     if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
-      logger.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
       begin
         due_date = DateTime.strptime( params[:log][:started_at], "#{current_user.date_format} #{current_user.time_format}" )
         logger.info(due_date)
         logger.info("AAA")
         params[:log][:started_at] = tz.local_to_utc(due_date)
       rescue
-        logger.info("AAXXXX")
         logger.info($!.to_s)
         params[:log][:started_at] = Time.now.utc
       end
