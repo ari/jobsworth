@@ -5,7 +5,7 @@ module ResourceTypesHelper
   ###
   def add_attribute_link
     js = "appendPartial('/resource_types/attribute', '#resource_type_attributes')"
-    link_to_function(_("Add another attribute"), js)
+    link_to_function(_("Add another attribute"), js, :class => "add_attribute")
   end
 
 end

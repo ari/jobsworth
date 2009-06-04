@@ -2,8 +2,9 @@
 # as well as CSV downloading.
 #
 class ReportsController < ApplicationController
-
   require_dependency 'fastercsv'
+
+  TIMESHEET = 3
 
   def get_date_header(w)
     if [0,1,2].include? @range.to_i
@@ -74,10 +75,13 @@ class ReportsController < ApplicationController
       "#{w.task.requested_by}"
     elsif r == 21
       "4_user"
+    elsif r == 22
+      "6_approved"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
+    elsif (match = r.match(/ca_(\d+)/))
+      r
     end
-    
   end
 
   def name_from_worklog(w,r)
@@ -117,8 +121,12 @@ class ReportsController < ApplicationController
       "#{w.task.requested_by}"
     elsif r == 21
       _("User")
+    elsif r == 22
+      _("Approved")
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
+    elsif (match = r.match(/ca_(\d+)/))
+      w.company.custom_attributes.find(match[1]).display_name
     end
 
   end
@@ -143,7 +151,7 @@ class ReportsController < ApplicationController
 
 
   def do_column(w, key)
-    logger.debug("#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}")
+    logger.info("#{ key } - #{w.task_id} ##{w.task.task_num} || #{w.duration.to_i}")
 
     @column_totals[ key ] += w.duration unless ["comment", "1_start", "2_end", "3_task", "4_note"].include?(key)
 
@@ -185,6 +193,20 @@ class ReportsController < ApplicationController
       body = w.body
       body.gsub!(/\n/, " <br/>") if body
       do_row(rkey, row_name, key, body)
+    elsif key == "6_approved"
+      rkey = key_from_worklog(w, 13).to_s
+      row_name = name_from_worklog(w, 15)
+      body = w.approved? ? _("Yes") : _("No")
+      if current_user.can_approve_work_logs?
+        body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
+        body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
+      end
+      do_row(rkey, row_name, key, body)
+    elsif (attr = custom_attribute_from_key(key))
+      rkey = key_from_worklog(w, 13).to_s
+      row_name = name_from_worklog(w, 15)
+      value = w.values_for(attr).join(", ")
+      do_row(rkey, row_name, key, value)
     else
       rkey = key_from_worklog(w, @row_value).to_s
       row_name = name_from_worklog(w, @row_value)
@@ -395,6 +417,7 @@ class ReportsController < ApplicationController
       end
 
       @logs = filter_logs_by_properties(@logs, task_property_filters)
+      @logs = filter_logs_by_params(@logs, params)
 
       # Swap to an appropriate range based on entries returned
       for w in @logs
@@ -469,9 +492,15 @@ class ReportsController < ApplicationController
             end
             do_column(w, key)
           end 
-        when 3
+        when TIMESHEET
           # Time sheet
-          [16, 17, 18, 21, 19].each do |k|
+          columns = [ 16, 17, 18, 21, 19 ]
+          w.available_custom_attributes.each do |ca|
+            columns << "ca_#{ ca.id }"
+          end
+          columns << 22
+
+          columns.each do |k|
             key = key_from_worklog(w, k)
             unless @column_headers[ key ]
               @column_headers[ key ] = name_from_worklog( w, k )
@@ -602,5 +631,29 @@ class ReportsController < ApplicationController
     end
     
     return res
+  end
+
+  ###
+  # Does any extra filtering of the logs depending on 
+  # params.
+  ###
+  def filter_logs_by_params(logs, params)
+    report_params = params[:report] || {}
+
+    hide_approved = report_params[:hide_approved].to_i > 0
+    if @type == TIMESHEET and hide_approved
+      logs = logs.select { |wl| !wl.approved? }
+    end
+
+    return logs
+  end
+
+  def custom_attribute_from_key(str)
+    match = str.match(/ca_(\d+)/)
+    if match
+      return current_user.company.custom_attributes.detect do |ca|
+        ca.id == match[1].to_i
+      end
+    end
   end
 end

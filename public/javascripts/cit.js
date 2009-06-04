@@ -531,12 +531,62 @@ jQuery(document).ready(function() {
 });
 
 /*
+ Shows / hides applicabel attribute fields depending on the value
+ of checkbox
+*/
+function updateAttributeFields(checkbox) {
+    checkbox = jQuery(checkbox);
+    var preset = checkbox.is(":checked");
+
+    var parent = checkbox.parents(".attribute");
+    var maxLength = parent.find(".max_length");
+    var choices = parent.find(".choices");
+    var choiceLink = parent.find(".add_choice_link");
+    var multiple = parent.find(".multiple");
+
+    if (preset) {
+	multiple.hide().find("input").attr("checked", false);
+	maxLength.hide().find("input").val("");
+	choices.show();
+	choiceLink.show();
+    }
+    else {
+	multiple.show();
+	maxLength.show();
+	choices.hide().html("");
+	choiceLink.hide();
+    }
+}
+
+/*
+ Adds fields to setup a new custom attribute choice.
+*/
+function addAttributeChoices(sender) {
+    var choices = jQuery(sender).parent().find('.choices');
+    var callback = function() { updatePositionFields(choices); }
+
+    var attribute = jQuery(sender).parents(".attribute");
+    var attrId = attribute.attr("id").split("_").pop();
+
+    if (attrId == "attribute") {
+	// new attribute, so just ignore
+	attrId = "";
+    }
+    var url = "/custom_attributes/choice/" + attrId;
+    appendPartial(url, choices, callback);
+}
+
+/*
   Does a get request to the given url. The response is appended
   to any element matching selector.
+  If a callback function is given, that will be called after the partial
+  has been loaded and added to the page.
 */
-function appendPartial(url, selector) {
+function appendPartial(url, selector, callback) {
     jQuery.get(url, { }, function(data) {
 	jQuery(selector).append(data);
+
+	if (callback) { callback.call(); }
     });
 }
 
@@ -742,4 +792,15 @@ function moveTask(event, ui) {
 	       { id : element.id + " " + dropTarget.id }, 
 	       null,
 	      "script")
+}
+
+/*
+  Toggles the approval status of the given work log
+*/
+function toggleWorkLogApproval(sender, workLogId) {
+    var checked = jQuery(sender).attr("checked");
+
+    jQuery.post("/tasks/update_work_log", {
+	id : workLogId,
+	"work_log[approved]" : checked });
 }

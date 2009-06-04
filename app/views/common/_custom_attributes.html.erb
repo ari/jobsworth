@@ -3,15 +3,26 @@
 <% values.each do |value| %>
   <div class="attribute">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
+    <% ca = value.custom_attribute -%>
+
     <% fields_for(prefix, value) do |f| %>
       <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
 
       <label><%= value.custom_attribute.display_name %></label>
-      <% if value.custom_attribute.max_length.to_i >= 100 -%>
+
+      <% if ca and ca.preset? %>
+        <% options = objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value) -%>
+	<% options.unshift("") if ca.mandatory? -%>
+        <%= f.select(:choice_id, options, {}, :index => nil) %>
+
+      <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
         <%= f.text_area(:value, :index => nil) %>
+
       <% else -%>
         <%= f.text_field(:value, :index => nil) %>
+
       <% end -%>
+
       <%= multi_links(value) %>
     <% end %>
     

@@ -6,6 +6,7 @@ class CustomAttributesController < ApplicationController
     @attributables << [ "User", _("User") ]
     @attributables << [ "Customer", _("Client") ]
     @attributables << [ "OrganizationalUnit", _("Organizational Unit") ]
+    @attributables << [ "WorkLog", _("Work Log") ]
   end
 
   def edit
@@ -13,7 +14,7 @@ class CustomAttributesController < ApplicationController
   end
 
   def update
-    update_existing_attributes(params) if params[:custom_attributes]
+    update_existing_attributes(params) 
     create_new_attributes(params) if params[:new_custom_attributes]
 
     flash[:notice] = _("Custom attributes updated")
@@ -24,13 +25,26 @@ class CustomAttributesController < ApplicationController
     render(:partial => "attribute", :locals => { :attribute => CustomAttribute.new })
   end
 
+  def choice
+    attribute = CustomAttribute.new
+    if params[:id]
+      attribute = current_user.company.custom_attributes.find(params[:id])
+    end
+
+    render(:partial => "choice", :locals => { 
+             :attribute => attribute, :choice => CustomAttributeChoice.new })
+  end
+
   private
 
   def update_existing_attributes(params)
     attributes = CustomAttribute.attributes_for(current_user.company, params[:type])
 
     updated = []
-    params[:custom_attributes].each do |id, values|
+    (params[:custom_attributes] || {}).each do |id, values|
+      # need to ensure this is set so can delete all
+      values[:choice_attributes] ||= {}
+
       attr = attributes.detect { |ca| ca.id == id.to_i }
       updated << attr
 
