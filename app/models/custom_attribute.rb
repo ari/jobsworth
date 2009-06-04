@@ -37,6 +37,10 @@ class CustomAttribute < ActiveRecord::Base
     choices = custom_attribute_choices.clone
 
     updated = []
+
+    # need to sort to ensure new attributes are created at end of list
+    params = params.sort_by { |id, attrs| id.to_i }
+
     params.each do |id, attrs|
       choice = choices.detect { |ca| ca.id == id.to_i }
       if choice.nil?
