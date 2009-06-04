@@ -957,27 +957,23 @@ class TasksController < ApplicationController
 
   def save_log
     @log = current_user.company.work_logs.find(params[:id])
-    old_duration = @log.duration
-    old_note = @log.body
-    params[:log][:started_at] = date_from_params(params[:log], :started_at)
-    params[:log][:comment] = !@log.body.blank?
-#       @log.started_at = Time.now.utc if(@log.started_at.blank? || (params[:log] && (params[:log][:started_at].blank?)) )
+    @task = @log.task
 
-#       @log.duration = parse_time(params[:log][:duration])
-#       @log.duration = old_duration if((old_duration / 60) == (@log.duration / 60)) 
+    # parse some params
+    params[:work_log][:started_at] = date_from_params(params[:work_log], :started_at)
+    params[:work_log][:duration] = parse_time(params[:work_log][:duration])
+    params[:work_log][:comment] = !params[:work_log][:body].blank?
 
-#       @log.task.updated_by_id = current_user.id
-
-    @log.update_attributes(params[:work_log])
-    if @log.update_attributes(params[:log])
+    if @log.update_attributes(params[:work_log])
       update_task_for_log(@log, params[:task])
-
       flash['notice'] = _("Log entry saved...")
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-
+      redirect_from_last
+    else
+      flash["notice"] = _("Error saving log entry")
+      render :edit_log
     end
-    redirect_from_last
   end
 
   def get_csv

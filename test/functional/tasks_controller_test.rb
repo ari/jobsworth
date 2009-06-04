@@ -5,7 +5,8 @@ class TasksControllerTest < ActionController::TestCase
   
   def setup
     @request.with_subdomain('cit')
-    @request.session[:user_id] = users(:admin).id
+    @user = users(:admin)
+    @request.session[:user_id] = @user.id
   end
   
   test "/edit should render :success" do
@@ -63,6 +64,28 @@ class TasksControllerTest < ActionController::TestCase
 
     assert_template "tasks/edit"
     assert_response :success
+  end
+
+  test "/save_log should update work log" do
+    task = Task.first
+    log = WorkLog.new(:started_at => Time.now.utc, :task => task,
+                      :duration => 60, :company => @user.company)
+    log.save!
+
+
+    new_time = Time.now.yesterday
+    params = { 
+      :started_at => new_time, 
+      :duration => "120m",
+      :body => "test body"
+    }
+    post(:save_log, :id => log.id, :work_log => params)
+    
+    log = WorkLog.find(log.id)
+#    assert_equal new_time.utc, log.started_at
+    assert_equal 7200, log.duration
+    assert_equal "test body", log.body
+    assert log.comment?
   end
 
 end
