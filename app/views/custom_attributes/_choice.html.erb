@@ -3,6 +3,7 @@
     <label><%=_ "Choice" %></label>
     <%= cf.text_field(:value) %>
     <%= cf.hidden_field :position, :class => "position" %>
+    <%= sortable_handle_tag(choice) %>
     <%= link_to_function(_("Remove Choice"), "jQuery(this).parents('.choice').remove()", :class => "remove_attribute") %>
   <% end -%>
 </li>

@@ -7,7 +7,7 @@ class CustomAttribute < ActiveRecord::Base
   has_many :custom_attribute_values, :dependent => :destroy
   belongs_to :attributable, :polymorphic => true
 
-  has_many :custom_attribute_choices, :dependent => :destroy
+  has_many :custom_attribute_choices, :order => "position asc", :dependent => :destroy
   accepts_nested_attributes_for(:custom_attribute_choices, :allow_destroy => true)
 
   ###

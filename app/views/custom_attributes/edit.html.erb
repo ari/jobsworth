@@ -13,7 +13,7 @@
       
       <br clear="both" />
       <%= link_to_add_attribute %>
-      <%= sortable_element("attributes", :handle => "handle", 
+      <%= sortable_element("attributes", :handle => ".handle.custom_attribute", 
       :onUpdate => "function() { updatePositionFields('#attributes') }") %>
 
       <%= submit_tag(_("Update"), :class => "nolabel") %>

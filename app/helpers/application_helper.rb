@@ -439,7 +439,8 @@ END_OF_HTML
   # object.
   ###
   def sortable_handle_tag(object)
-    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => "handle")
+    class_name = "handle #{ object.class.name.underscore }"
+    image = image_tag("move.gif", :border => 0, :alt => "#{ _("Move") }", :class => class_name)
 
     object.new_record? ? "" : image
   end
