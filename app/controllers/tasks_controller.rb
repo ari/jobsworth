@@ -2,7 +2,6 @@
 # Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 #
 class TasksController < ApplicationController
-
 #  cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
 #    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
 #    :cancel_work_ajax, :destroy_log ]
@@ -957,63 +956,21 @@ class TasksController < ApplicationController
   end
 
   def save_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    @log.update_attributes(params[:work_log])
-
+    @log = current_user.company.work_logs.find(params[:id])
     old_duration = @log.duration
     old_note = @log.body
-    
-    if !params[:log].nil? && !params[:log][:started_at].nil? && params[:log][:started_at].length > 0
-      begin
-        due_date = DateTime.strptime( params[:log][:started_at], "#{current_user.date_format} #{current_user.time_format}" )
-        logger.info(due_date)
-        logger.info("AAA")
-        params[:log][:started_at] = tz.local_to_utc(due_date)
-      rescue
-        logger.info($!.to_s)
-        params[:log][:started_at] = Time.now.utc
-      end
-    end
+    params[:log][:started_at] = date_from_params(params[:log], :started_at)
+    params[:log][:comment] = !@log.body.blank?
+#       @log.started_at = Time.now.utc if(@log.started_at.blank? || (params[:log] && (params[:log][:started_at].blank?)) )
 
+#       @log.duration = parse_time(params[:log][:duration])
+#       @log.duration = old_duration if((old_duration / 60) == (@log.duration / 60)) 
+
+#       @log.task.updated_by_id = current_user.id
+
+    @log.update_attributes(params[:work_log])
     if @log.update_attributes(params[:log])
-
-
-      @log.started_at = Time.now.utc if(@log.started_at.blank? || (params[:log] && (params[:log][:started_at].blank?)) )
-
-      @log.duration = parse_time(params[:log][:duration])
-      @log.duration = old_duration if((old_duration / 60) == (@log.duration / 60)) 
-
-      @log.task.updated_by_id = current_user.id
-
-      @log.comment = !@log.body.blank?
-      
-      if params[:task] && params[:task][:status].to_i != @log.task.status
-
-        status_type = :completed
-
-        if params[:task][:status].to_i < 2
-          @log.log_type = EventLog::TASK_WORK_ADDED 
-          status_type = :updated
-        end 
-        
-        if params[:task][:status].to_i > 1 && @log.task.status < 2
-          @log.log_type = EventLog::TASK_COMPLETED 
-          status_type = :completed
-        end 
-
-        if params[:task][:status].to_i < 2 && @log.task.status > 1
-          @log.log_type = EventLog::TASK_REVERTED 
-          status_type= :reverted
-        end 
-        
-        @log.task.status = params[:task][:status].to_i
-        @log.task.updated_by_id = current_user.id
-        @log.task.completed_at = Time.now.utc
-
-      end
-
-      @log.task.save
-      @log.save
+      update_task_for_log(@log, params[:task])
 
       flash['notice'] = _("Log entry saved...")
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -1694,6 +1651,39 @@ class TasksController < ApplicationController
 
     task.mark_as_notified_last_change(all_users)
     task.mark_as_unread(current_user)
+  end
+
+  ###
+  # Updates the task linked to log.
+  ###
+  def update_task_for_log(log, task_params)
+    return if task_params.nil?
+    new_status = task_params[:status].to_i
+
+    if new_status != log.task.status
+      status_type = :completed
+
+      if new_status < 2
+        log.log_type = EventLog::TASK_WORK_ADDED 
+        status_type = :updated
+      end 
+      
+      if new_status > 1 && log.task.status < 2
+        log.log_type = EventLog::TASK_COMPLETED 
+        status_type = :completed
+      end 
+      
+      if new_status < 2 && log.task.status > 1
+        log.log_type = EventLog::TASK_REVERTED 
+        status_type= :reverted
+      end 
+      
+      log.task.status = new_status
+      log.task.updated_by_id = current_user.id
+      log.task.completed_at = Time.now.utc
+    end
+    
+    log.task.save
   end
 
 end
