@@ -32,7 +32,6 @@
 <label>&nbsp;</label>
 <div class="buttons">
 <%= submit_tag _("Save"), :class => 'nolabel' %>
-<%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Only your notes will be included in the notification email')} %> <%=_ 'Send notification emails' %>
 </div>
 
 <% end %>
