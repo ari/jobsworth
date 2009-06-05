@@ -1,13 +1,12 @@
+require "rss/maker"
+require "icalendar"
+require "google_chart"
+
 #
 # Provide a RSS feed of Project WorkLog activities.
 # Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 #
 class FeedsController < ApplicationController
-
-  require_dependency 'rss/maker'
-  require_dependency 'icalendar'
-  require_dependency 'google_chart'
-
   include Icalendar
 
   skip_before_filter :authorize
@@ -94,7 +93,7 @@ class FeedsController < ApplicationController
           i.title ||= "#{action}"
           i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
           i.description = log.body unless log.body.blank?
-          i.date = user.tz.utc_to_local(log.started_at)
+          i.date = log.started_at.utc
           i.author = log.user.name unless log.user.nil?
           action = nil
         end

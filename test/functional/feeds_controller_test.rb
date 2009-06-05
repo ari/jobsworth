@@ -8,7 +8,9 @@ class FeedsControllerTest < ActionController::TestCase
   end
   
   test "should not redirect to login" do
-    get :rss, { :id => '1234567890abcdefghijklmnopqrstuv'}
+    user = User.first
+    get :rss, { :id => user.uuid }
+    assert_response :success
   end 
   
   test "should be able to unsubscribe" do 
