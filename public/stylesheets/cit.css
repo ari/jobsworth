@@ -1600,6 +1600,7 @@ li.help {
 
 #reports_config {
     float: left;
+    margin-top: 0;
     width: 45%;
 }
 #reports_filter {
