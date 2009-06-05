@@ -1,8 +1,16 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
-  # Replace this with your real tests.
-  def test_truth
-    assert true
+  fixtures :users, :companies, :tasks
+  
+  def setup
+    @request.with_subdomain('cit')
+    @user = users(:admin)
+    @request.session[:user_id] = @user.id
+  end
+
+  test "list should render" do
+    get :list
+    assert_response :success
   end
 end

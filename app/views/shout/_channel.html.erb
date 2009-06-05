@@ -7,8 +7,11 @@
               :confirm => _("Really delete room and all transcripts?")
               %></div>
 <script type="text/javascript" language="javascript" charset="utf-8">
-  Event.observe($('channel_<%=channel.id%>'), "mousemove", function(e) {jQuery('#channel_delete_<%=channel.id%>').show();} );
-  Event.observe($('channel_<%=channel.id%>'), "mouseout", function(e) {jQuery('#channel_delete_<%=channel.id%>').hide();} );
+jQuery('#channel_<%=channel.id%>').hover( function () {
+	jQuery('#channel_delete_<%=channel.id%>').show();
+}, function () {
+	jQuery('#channel_delete_<%=channel.id%>').hide();
+});
 </script>
 <% end %>
 

@@ -5,6 +5,6 @@ This task <%= @task.id %> was just updated with the information above. If you ha
 To see the history of this task, visit:
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
 
-Sent to <%= "${@user.name} <${@user.email}>" %>
+Sent to <%= "#{@user.name} <#{@user.email}>" %>
 -------------------->
 <%= $CONFIG[:productName] %>

@@ -55,16 +55,14 @@
 <%= flash_plugin(session[:channels]) %>
 
 <script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
 var userId=<%=current_user.id%>;
-Event.observe(window, "load", function(e) {
+jQuery(document).ready(function () {
 <% if current_user.option_tooltips.to_i == 1 %>
   makeTooltips(1);
 <% else %>
   makeTooltips(0);
 <% end %>
 });
-// ]]>
 </script>
 
 </body>

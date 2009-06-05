@@ -94,81 +94,70 @@
 </td></tr>
 </table>
 <script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
-
-Event.observe($('report_range'), "change", function(e) {
-if( $('report_range').value == "7" ) {
+jQuery('#report_range').change(function() {
+if( jQuery('#report_range').val() == "7" ) {
      jQuery('#date_range').show();
   } else {
      jQuery('#date_range').hide();
   }
   return false;
-}
-);
+});
 
-Event.observe($('report_range'), "blur", function(e) {
-if( $('report_range').value == "7" ) {
+jQuery('#report_range').blur(function() {
+if( jQuery('#report_type').val() == "7" ) {
      jQuery('#date_range').show();
   } else {
      jQuery('#date_range').hide();
   }
   return false;
-}
-);
+});
 
-Event.observe($('report_type'), "change", function(e) {
-  var reportType = jQuery("#report_type").val();
+jQuery('#report_type').change(function() {
+	var reportType = jQuery('#report_type').val();
+	if( reportType == "1" || reportType == "4" ) {
+		jQuery('#pivot_config').show();
+	} else {
+		jQuery('#pivot_config').hide();
+	}
+	
+	if( reportType == "4" ) {
+		jQuery('#date-select').hide();
+	} else {
+		jQuery('#date-select').show();
+	}
+	
+	if( reportType == "3" || reportType == "2" ) {
+		jQuery('#subtotals').show();
+	} else {
+		jQuery('#subtotals').hide();
+        }
 
-  if( $('report_type').value == "1" || $('report_type').value == "4" ) {
-    jQuery('#pivot_config').show();
-  } else {
-     jQuery('#pivot_config').hide();
-  }
+        if (reportType == "3") {
+          jQuery("#approved").show();
+        }
+        else {
+          jQuery("#approved").hide();
+        }
+	return false;
+});
 
-  if( $('report_type').value == "4" ) {
-    jQuery('#date-select').hide();
-  } else {
-    jQuery('#date-select').show();
-  }
-
-  
-  if( $('report_type').value == "3" || $('report_type').value == "2" ) {
-    jQuery('#subtotals').show();
-  } else {
-     jQuery('#subtotals').hide();
-  }
-
-  if (reportType == "3") {
-    jQuery("#approved").show();
-  }
-  else {
-    jQuery("#approved").hide();
-  }
-
-  return false;
-}
-);
-
-Event.observe($('report_range'), "blur", function(e) {
-  if( $('report_type').value == "1" ) {
-     jQuery('#pivot_config').show();
-  } else {
-     jQuery('#pivot_config').hide();
-  }
-
-  if( $('report_type').value == "3" || $('report_type').value == "2" ) {
-    jQuery('#subtotals').show();
-  } else {
-     jQuery('#subtotals').hide();
-  }
-  return false;
-}
-);
-
+jQuery('#report_range').blur(function() {
+	var reportType = jQuery('#report_type').val();
+	if( reportType == "1" ) {
+		jQuery('#pivot_config').show();
+	} else {
+		jQuery('#pivot_config').hide();
+	}
+	
+	if( reportType == "3" || reportType == "2" ) {
+		jQuery('#subtotals').show();
+	} else {
+		jQuery('#subtotals').hide();
+	}
+	return false;
+});
 
 new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'client_id=' + value, insertion: updateSelect})})
 
-
-// ]]>
 </script>
 

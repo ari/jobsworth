@@ -66,43 +66,27 @@
   </fieldset>
 </div>
 <script type="text/javascript" language="javascript" charset="utf-8">
-// <![CDATA[
 fixShortLinks();
-if($('task_name')) {
-Element.observe('task_name', 'focus', function(e) {
-  var el = Event.element(e);
-  if(el.value == '<%= _'New Task' %>') {
-    Event.element(e).clear();
-    el.removeClassName('initial');
+jQuery('#task_name').focus(function() {
+  if(jQuery(this).val() == '<%= _'New Task' %>') {
+    jQuery(this).removeClass('initial');
   }
 });
-}
 
-
-if($('project_name')) {
-Element.observe('project_name', 'focus', function(e) {
-  var el = Event.element(e);
-  if(el.value == '<%= _'New Project' %>') {
-    Event.element(e).clear();
-    el.removeClassName('initial');
+jQuery('#project_name').focus(function() {
+  if(jQuery(this).value == '<%= _'New Project' %>') {
+    jQuery(this).removeClass('initial');
   }
 });
-}
 
-Event.observe(window, "load", function(e) {
-  var el = $('task_name');
-  if( el && el.value == '<%= _'New Task' %>') {
-    el.addClassName('initial');
+jQuery(document).ready(function () {
+  if( jQuery('#task_name').val() == '<%= _'New Task' %>') {
+    jQuery('#task_name').addClass('initial');
   }
-  el = $('project_name');
-  if( el && el.value == '<%= _'New Project' %>') {
-    el.addClassName('initial');
+  if( jQuery('#project_name').val() == '<%= _'New Project' %>') {
+    jQuery('#project_name').addClass('initial');
   }
 
   new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});
-
-
 });
-
-// ]]>
 </script>

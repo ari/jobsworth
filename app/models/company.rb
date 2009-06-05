@@ -146,6 +146,6 @@ class Company < ActiveRecord::Base
 	else
 		url = "http://"
 	end
-	url += subdomain + $CONFIG[:domain]
+	url += subdomain + "." + $CONFIG[:domain]
   end
 end
