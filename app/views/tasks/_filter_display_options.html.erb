@@ -1,3 +1,4 @@
+<div style="<%= @task_only_option_style %>">
 <% if !local_assigns[:hide_grouping] or !hide_grouping -%>
   <%= query_menu("group_by", group_by_options, "Grouping") %>
   <% selected = group_by_options.select { |name, id| id.to_s == session[:group_by] } %>
@@ -23,8 +24,9 @@
   <% selected = properties.select { |name, id| id.to_s == session[:icons] } %>
   <%= selected_filter_values("icons", selected, "icons", "Default") %>
 <% end -%>
-
 <br />
+</div>
+
 <label for="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip">
   <%=_ 'Hide Waiting'%>  
 </label>

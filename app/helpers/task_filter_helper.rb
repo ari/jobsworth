@@ -25,7 +25,6 @@ module TaskFilterHelper
     hide_display_options = locals[:hide_display_options]
     if hide_display_options
       @task_only_option_style = "display: none;" 
-      @width_style = " width: 45%;"
     end
   end
 

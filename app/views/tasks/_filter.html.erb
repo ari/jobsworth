@@ -11,7 +11,7 @@
 
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
 
-      <div class="builtin filters" style="<%= @builtin_style %>;<%= @width_style %>">
+      <div class="builtin filters" style="<%= @builtin_style %>">
 	<% 
 	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
 	   redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
@@ -32,11 +32,11 @@
 	</div>
       </div>
   
-      <div class="extra filters" style="<%= @width_style %>">
+      <div class="extra filters">
 	<%= render :partial => "tasks/filter_property", :collection => current_user.company.properties %>
       </div>
 
-      <div class="display filters" style="<%= @task_only_option_style %>"
+      <div class="display filters">
 	<%= render(:partial => "tasks/filter_display_options", :locals => local_assigns) %>
       </div>
       <div class="right save_link" style="<%= @task_only_option_style %>">

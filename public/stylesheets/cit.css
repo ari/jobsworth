@@ -2782,7 +2782,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 #tasks_filter .filters, #filter_form .filters {
     float: left;
     margin: 10px 10px;
-    width: 30%;
+    width: 29%;
 }
 
 #tasks_filter .filters label {
