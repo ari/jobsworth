@@ -13,4 +13,19 @@ class ReportsControllerTest < ActionController::TestCase
     get :list
     assert_response :success
   end
+
+  test "post list should render and contain logs" do
+    t1 = Task.first
+    t1.work_logs.build(:started_at => Time.now).save!
+
+    post :list, :report => {
+      :type => ReportsController::TIMESHEET,
+      :range => 0
+    }
+    assert_response :success
+    worklogs = assigns["logs"]
+    assert worklogs.any?
+
+    puts worklogs
+  end
 end
