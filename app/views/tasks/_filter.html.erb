@@ -32,11 +32,11 @@
 	</div>
       </div>
   
-      <div class="extra filters" style="<%= @task_only_option_style %>">
+      <div class="extra filters">
 	<%= render :partial => "tasks/filter_property", :collection => current_user.company.properties %>
       </div>
 
-      <div class="display filters">
+      <div class="display filters" style="<%= @task_only_option_style %>"
 	<%= render(:partial => "tasks/filter_display_options", :locals => local_assigns) %>
       </div>
       <div class="right save_link" style="<%= @task_only_option_style %>">
