@@ -16,7 +16,8 @@ class ReportsControllerTest < ActionController::TestCase
 
   test "post list should render and contain logs" do
     t1 = Task.first
-    t1.work_logs.build(:started_at => Time.now).save!
+    log = t1.work_logs.build(:started_at => Time.now)
+    log.save!
 
     post :list, :report => {
       :type => ReportsController::TIMESHEET,
@@ -24,8 +25,6 @@ class ReportsControllerTest < ActionController::TestCase
     }
     assert_response :success
     worklogs = assigns["logs"]
-    assert worklogs.any?
-
-    puts worklogs
+    assert worklogs.include?(log)
   end
 end
