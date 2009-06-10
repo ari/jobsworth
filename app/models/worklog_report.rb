@@ -43,6 +43,8 @@ class WorklogReport
   # Calculates and returns the date range of the work logs
   ###
   def range
+    return @range if @range
+
     # Swap to an appropriate range based on entries returned
     start_date = self.start_date
     end_date = self.end_date
@@ -52,21 +54,21 @@ class WorklogReport
       end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
     end
 
-    range = nil
+    @range = nil
     if start_date && end_date
       days = end_date - start_date
       if days <= 1.days
-        range = 0
+        @range = 0
       elsif days <= 7.days
-        range = 1
+        @range = 1
       elsif days <= 31.days
-        range = 3
+        @range = 3
       else
-        range = 5
+        @range = 5
       end
     end
 
-    return range
+    return @range
   end
 
   private

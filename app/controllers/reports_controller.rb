@@ -23,13 +23,14 @@ class ReportsController < ApplicationController
 
       start_date = report.start_date
       end_date = report.end_date
-      @range = report.range
 
       @row_value = options[:rows]
       @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
       @column_value = options[:columns]
       @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
 
+      
+      @range = report.range
 
       @total = 0
       @row_totals = { }
