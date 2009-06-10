@@ -1,6 +1,6 @@
-<% form_tag :action => 'list' do %>
 <fieldset id="reports_config">
 <legend><%=_ 'Report Configuration' %></legend>
+<% form_tag({ :action => 'list' }, :method => :get) do %>
 <label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
                 [_("Pivot"), "1"],
                 [_("Audit"), "2"],
@@ -43,14 +43,15 @@
 <br/>
 </div>
 
+<br clear="both" />
+<div style="padding-top:0.5em; float: right;">
+  <%= submit_tag _("Run Report"), :class => "nolabel" %>
+</div>
+
+<% end %>
 </fieldset>
 
 <%= render(:partial => "/tasks/filter", :locals => { :hide_display_options => true }) %>
 
 </div>
-<br clear="both" />
-<div style="padding-top:0.5em; text-align: center;">
-  <%= submit_tag _("Run Report"), :class => "nolabel" %>
-</div>
-<% end %>
 
