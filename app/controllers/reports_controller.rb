@@ -23,31 +23,13 @@ class ReportsController < ApplicationController
 
       start_date = report.start_date
       end_date = report.end_date
+      @range = report.range
 
       @row_value = options[:rows]
       @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
       @column_value = options[:columns]
       @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
 
-
-      # Swap to an appropriate range based on entries returned
-      for w in @logs
-        start_date = tz.utc_to_local(w.started_at) if(start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
-        end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
-      end
-
-      if start_date && end_date
-        @days = end_date - start_date
-        if @days <= 1.days
-          @range = 0
-        elsif @days <= 7.days
-          @range = 1
-        elsif @days <= 31.days
-          @range = 3
-        else
-          @range = 5
-        end
-      end
 
       @total = 0
       @row_totals = { }

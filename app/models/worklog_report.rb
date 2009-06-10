@@ -3,10 +3,6 @@
 # as a timesheet, audit, etc
 ###
 class WorklogReport
-  #       filename = "clockingit"
-#       filename << "_" + ["pivot", "audit", "time_sheet", "workload"][@type-1]
-
-
   ###
   # A sorted array of worklogs that match the setup 
   # for this report.
@@ -39,8 +35,38 @@ class WorklogReport
     @tz = controller.tz
     @type = params[:type].to_i
 
-    init_range(params)
+    init_start_and_end_dates(params)
     init_work_logs(tasks)
+  end
+
+  ###
+  # Calculates and returns the date range of the work logs
+  ###
+  def range
+    # Swap to an appropriate range based on entries returned
+    start_date = self.start_date
+    end_date = self.end_date
+
+    for w in work_logs
+      start_date = tz.utc_to_local(w.started_at) if(start_date.nil? || (tz.utc_to_local(w.started_at) < start_date))
+      end_date = tz.utc_to_local(w.started_at) if(end_date.nil? || (tz.utc_to_local(w.started_at) > end_date))
+    end
+
+    range = nil
+    if start_date && end_date
+      days = end_date - start_date
+      if days <= 1.days
+        range = 0
+      elsif days <= 7.days
+        range = 1
+      elsif days <= 31.days
+        range = 3
+      else
+        range = 5
+      end
+    end
+
+    return range
   end
 
   private
@@ -48,7 +74,7 @@ class WorklogReport
   ###
   # Set up the start and end date for work logs to be included.
   ###
-  def init_range(params)
+  def init_start_and_end_dates(params)
     range = params[:range].to_i
     case range
     when 0
