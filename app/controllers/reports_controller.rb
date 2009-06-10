@@ -13,7 +13,6 @@ class ReportsController < ApplicationController
     @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
     
     if options = params[:report]
-      debugger
       report = WorklogReport.new(self, options)
       start_date = report.start_date
       end_date = report.end_date
@@ -65,7 +64,6 @@ class ReportsController < ApplicationController
 
       for w in @logs
         next if (w.task_id.to_i == 0) || w.duration.to_i == 0
-        debugger
         @total += w.duration
 
         case @type
