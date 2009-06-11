@@ -49,7 +49,10 @@ class ReportsControllerTest < ActionController::TestCase
     assert_response :success
     worklogs = assigns["logs"]
     assert worklogs.any?
+
     if type != WorklogReport::WORKLOAD
+      # workload report creates new placeholder logs, so created one
+      # won't be included.
       assert worklogs.include?(log)
     end
   end
