@@ -33,6 +33,7 @@ class WorklogReport
   attr_reader :rows
   attr_reader :row_totals
   attr_reader :total
+  attr_reader :generated_report
 
   ###
   # Creates a report for the given tasks and params
@@ -45,9 +46,15 @@ class WorklogReport
     @type = params[:type].to_i
     @current_user = controller.current_user
 
+    @row_value = params[:rows]
+    @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
+    @column_value = params[:columns]
+    @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
+
     init_start_and_end_dates(params)
     init_work_logs(tasks, params)
     init_rows_and_columns
+    init_csv
   end
 
   ###
@@ -512,5 +519,80 @@ class WorklogReport
     end
   end
 
+
+  ###
+  # Creates a CSV, saves it and sets up the generated_report instance var
+  ###
+  def init_csv
+    if @column_headers && @column_headers.size > 1
+      csv = create_csv
+      if !csv.blank?
+        @generated_report = GeneratedReport.new
+        @generated_report.company = current_user.company
+        @generated_report.user = current_user
+        @generated_report.filename = "clockingit_report.csv"
+        @generated_report.report = csv
+        @generated_report.save    
+      end
+    end
+  end
+
+  ###
+  # Creates the actual CSV and returns a CSV string
+  ###
+  def create_csv
+    csv_string = ""
+    if @column_headers
+      csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
+
+        header = [nil]
+        @column_headers.sort.each do |key,value|
+          next if key == '__'
+          header << clean_value(value)
+        end
+        header << [_("Total")]
+        csv << header
+
+        @rows.sort.each do |key, value|
+          row = []
+          row << [ clean_value(value["__"]) ]
+          @column_headers.sort.each do |k,v|
+            next if k == '__'
+            val = nil
+            val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
+            val = clean_value(value[k]) if val.nil? && value[k]
+            row << [val]
+          end
+          row << [@row_totals[key]/60]
+          csv << row
+        end
+
+        row = []
+        row << [_('Total')]
+        @column_headers.sort.each do |key,value|
+          next if key == '__'
+          val = nil
+          val = @column_totals[key]/60 if @column_totals[key] > 0
+          row << [val]
+        end
+        row << [@total/60]
+        csv << row
+      end
+    end
+    csv_string
+  end
+
+  ###
+  # Cleans up a CSV value
+  ###
+  def clean_value(value)
+    res = value
+    begin
+      res = [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
+    rescue
+    end
+
+    return res
+  end
 
 end

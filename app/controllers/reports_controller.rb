@@ -19,30 +19,17 @@ class ReportsController < ApplicationController
       @logs = report.work_logs
       @range = report.range
 
-      @row_value = options[:rows]
-      @row_value = @row_value.to_i == 0 ? @row_value : @row_value.to_i
-      @column_value = options[:columns]
-      @column_value = @column_value.to_i == 0 ? @column_value : @column_value.to_i
-
       @column_headers = report.column_headers
       @column_totals = report.column_totals
       @rows = report.rows
       @row_totals = report.row_totals
       @total = report.total
+      @generated_report = report.generated_report
     end
 
-    csv = create_csv if @column_headers && @column_headers.size > 1
-    unless csv.nil? || csv.empty?
-      @generated_report = GeneratedReport.new
-      @generated_report.company = current_user.company
-      @generated_report.user = current_user
-      @generated_report.filename = "clockingit_report.csv"
-      @generated_report.report = csv
-      @generated_report.save
-    else
+    if @generated_report.nil?
       flash['notice'] = _("Empty report, log more work!") if params[:report]
     end
-
   end
 
   def get_csv
@@ -72,63 +59,6 @@ class ReportsController < ApplicationController
     res << ", #{@projects}" unless @projects.nil? || @projects.empty?
     res << ']}'
     render :text => res
-  end
-
-  private
-
-  def clean_value(value)
-    res = value
-    begin
-      res = [value.gsub(/<[a-zA-Z\/][^>]*>/,'')]
-    rescue
-    end
-
-    return res
-  end
-
-  def create_csv
-    csv_string = ""
-    if @column_headers
-      csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
-
-        header = [nil]
-        @column_headers.sort.each do |key,value|
-          next if key == '__'
-          header << clean_value(value)
-        end
-        header << [_("Total")]
-        csv << header
-
-        @rows.sort.each do |key, value|
-          row = []
-          row << [ clean_value(value["__"]) ]
-#          row << [value['__'].gsub(/<[a-zA-Z\/][^>]*>/,'')]
-          @column_headers.sort.each do |k,v|
-            next if k == '__'
-            val = nil
-            val = value[k]/60 if value[k] && value[k].is_a?(Fixnum)
-            val = clean_value(value[k]) if val.nil? && value[k]
-            row << [val]
-          end
-          row << [@row_totals[key]/60]
-          csv << row
-        end
-
-        row = []
-        row << [_('Total')]
-        @column_headers.sort.each do |key,value|
-          next if key == '__'
-          val = nil
-          val = @column_totals[key]/60 if @column_totals[key] > 0
-          row << [val]
-        end
-        row << [@total/60]
-        csv << row
-
-
-      end
-    end
-    csv_string
   end
 
 end
