@@ -34,6 +34,7 @@ class ReportsControllerTest < ActionController::TestCase
 
   def assert_report_works(type)
     t1 = Task.first
+    t1.update_attributes(:duration => 1000)
     log = t1.work_logs.build(:started_at => Time.now, :duration => 60,
                              :company => @user.company, :user => @user,
                              :customer => @user.company.customers.first,
@@ -47,6 +48,9 @@ class ReportsControllerTest < ActionController::TestCase
     }
     assert_response :success
     worklogs = assigns["logs"]
-    assert worklogs.include?(log)
+    assert worklogs.any?
+    if type != WorklogReport::WORKLOAD
+      assert worklogs.include?(log)
+    end
   end
 end
