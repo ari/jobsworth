@@ -157,7 +157,5 @@ jQuery('#report_range').blur(function() {
 	return false;
 });
 
-new Form.Element.EventObserver('report_client_id', function(element, value) {new Ajax.Updater('report_project_id', '/reports/get_projects', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'client_id=' + value, insertion: updateSelect})})
-
 </script>
 

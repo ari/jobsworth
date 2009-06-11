@@ -4,7 +4,7 @@ module TaskFilterHelper
   # Initialises the instance variables needed to display the task
   # filter partial.
   ###
-  def init_filter_variables
+  def init_filter_variables(locals)
     customer_ids = TaskFilter.filter_ids(session, :filter_customer, TaskFilter::ALL_CUSTOMERS)
     if customer_ids.any?
       @all_projects = current_user.projects.find(:all, :conditions => ["customer_id in (#{ customer_ids.join(",") }) AND completed_at IS NULL"])
@@ -20,6 +20,11 @@ module TaskFilterHelper
       @user_ids = ProjectPermission.find(:all, :conditions => ["project_id IN (?)", @all_projects.collect{|p| p.id}] ).collect{|pp| pp.user_id }.uniq
       @user_ids = [0] if @user_ids.size == 0
       @users = User.find(:all, :conditions => ["id IN (#{@user_ids.join(',')})"], :order => "name")
+    end
+
+    hide_display_options = locals[:hide_display_options]
+    if hide_display_options
+      @task_only_option_style = "display: none;" 
     end
   end
 
@@ -234,6 +239,10 @@ module TaskFilterHelper
     end
 
     return options
+  end
+
+  def show_filter_legend?
+    return controller_name == "reports"
   end
 
 end

@@ -155,4 +155,17 @@ module ReportsHelper
 
     return "display: #{ display }"
   end
+
+  ###
+  # Returns the task html to display the task filter on the report
+  # page.
+  ###
+  def report_task_filter
+    locals =  {
+      :hide_display_options => true,
+      :redirect_action => "list", 
+      :redirect_params => params
+    }
+    return render(:partial => "/tasks/filter", :locals => locals)
+  end
 end

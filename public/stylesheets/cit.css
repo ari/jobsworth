@@ -1600,7 +1600,11 @@ li.help {
 
 #reports_config {
     float: left;
+    margin-top: 0;
     width: 45%;
+}
+#reports_params fieldset {
+    margin-top: 0px;
 }
 #reports_filter {
     float: right;
@@ -2778,10 +2782,15 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 
 
 /* FILTERS */
+#tasks_filter fieldset {
+    margin-bottom: 1em;
+    padding-bottom: 0.5em;
+    padding-left: 1em;
+}
 #tasks_filter .filters, #filter_form .filters {
     float: left;
     margin: 10px 10px;
-    width: 30%;
+    width: 29%;
 }
 
 #tasks_filter .filters label {

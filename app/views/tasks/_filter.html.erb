@@ -1,16 +1,20 @@
-<a href="#" onclick="jQuery('#tasks_filter').toggle('slow')" class="disclosure">
-	<%= _'Filter'%>
+<% init_filter_variables(local_assigns) %>
+  
+<a href="#" onclick="jQuery('#tasks_filter').toggle('slow')" class="disclosure" style="<%= @task_only_option_style %>">
+  <%= _'Filter'%>
 </a>
 <div nowrap id="tasks_filter">
-  <% init_filter_variables %>
-  
-  <fieldset style="padding-bottom:0.5em;margin-bottom:1em;padding-left:1em;">
+  <fieldset>
+    <% if show_filter_legend? -%>
+      <legend><%= _("Task Filter") %></legend>
+    <% end %>
+
     <form id="filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
 
-      <div class="builtin filters">
+      <div class="builtin filters" style="<%= @builtin_style %>">
 	<% 
 	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
-	   redir_params = (local_assigns[:redirect_params] ? redirect_params : {})										          	 
+	   redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
 	   redir = url_for(redir_params.merge(:action => redir_action))
 	-%>
 	<input type="hidden" name="redirect_action" value="<%= redir %>" /> 
@@ -35,7 +39,7 @@
       <div class="display filters">
 	<%= render(:partial => "tasks/filter_display_options", :locals => local_assigns) %>
       </div>
-      <div class="right save_link">
+      <div class="right save_link" style="<%= @task_only_option_style %>">
 	<%= link_to( _("Save Filter"), { :controller => "views", :action => "new", :tags => params[:tags], :layout => "popup" },
 	:rel => "shadowbox;height=280;width=640;player=iframe") %>
       </div>
@@ -50,7 +54,7 @@
   <% end %>
 
 
-<div class="task_view_links">
+<div class="task_view_links" style="<%= @task_only_option_style %>">
   <ul class="tabs">
     <%= task_view_links %>
   </ul>

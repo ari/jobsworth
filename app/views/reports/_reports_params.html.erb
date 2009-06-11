@@ -1,6 +1,6 @@
-<% form_tag :action => 'list' do %>
 <fieldset id="reports_config">
 <legend><%=_ 'Report Configuration' %></legend>
+<% form_tag({ :action => 'list' }, :method => :get) do %>
 <label for="report_type"><%=_ 'Report Type' %></label><%= select( "report", "type", [
                 [_("Pivot"), "1"],
                 [_("Audit"), "2"],
@@ -43,47 +43,15 @@
 <br/>
 </div>
 
-</fieldset>
-<fieldset id="reports_filter">
-<legend><%=_ 'Filter' %></legend>
-<label for="report_client_id"><%=_ 'Client' %></label>
-<%= client_select %>
-<br />
-
-<label for="report_project_id"><%=_ 'Project' %></label>
-<%= project_select %>
-<br />
-
-<label for="report_user_id"><%=_ 'User' %></label>
-<%= select 'report', 'user_id', [[_('[Any User]'), '0']] + User.find(:all, :order => 'name', :conditions => ['company_id = ?', current_user.company_id] ).collect {|c| [ c.name, c.id ] }, :selected => ((params[:report] && params[:report][:user_id]) ? params[:report][:user_id].to_i : current_user.id) %><br/>
-<div align="right" style="clear:both;padding-right:1.5em;"><a href="#" onclick="jQuery('#advanced').toggle();"><%=_ 'Advanced Options' %></a></div>
-
-
-<div id="advanced" <%= "style=\"display:none;\"" unless show_advanced? %>>
-<label for="report_type_id"><%=_ 'Status' %></label>
-<%= select 'report', 'status', [[_('[Any Status]'), '-1'], [_('Open'),0],[_('In Progress'),1],[_('Closed'),2],[_('Won\'t Fix'),3], [_('Invalid'), 4], [_('Duplicate'), 5]], :selected => ((params[:report] && params[:report][:status]) ? params[:report][:status].to_i : "-1")  %><br/>
-<% current_user.company.properties.each do |p| -%>
-  <label for="report_#{ property.filter_name }"><%= p.name %></label>
-    <% 
-       options = [ [ _("Any %s", p.name), "" ] ]
-       options += p.property_values.map { |pv| [ pv.to_s, pv.id.to_s ] } 
-       -%>
-    <%= select "report", p.filter_name, options, :selected => (params[:report] and params[:report][p.filter_name.to_sym]) %>
-<% end -%>
-<label for="report_tags"><%=_ 'Tags' %></label><%= text_field 'report', 'tags', {:size => 12, :value => (params[:report] && params[:report][:tags]) ? params[:report][:tags] : "", :autocomplete => "off"} %><br/>
-<div class="auto_complete" id="report_tags_auto_complete" style="display:none;" align="left"></div>
-<% unless @tags.nil? %>
-<script type="text/javascript">
-new Autocompleter.Local('report_tags', 'report_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
-</script>
-<% end %>
-
-
-</div>
-</fieldset>
-</div>
 <br clear="both" />
-<div style="padding-top:0.5em; text-align: center;">
+<div style="padding-top:0.5em; float: right;">
   <%= submit_tag _("Run Report"), :class => "nolabel" %>
 </div>
+
 <% end %>
+</fieldset>
+
+<%= report_task_filter %>
+
+</div>
+

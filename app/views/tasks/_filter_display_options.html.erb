@@ -1,3 +1,4 @@
+<div style="<%= @task_only_option_style %>">
 <% if !local_assigns[:hide_grouping] or !hide_grouping -%>
   <%= query_menu("group_by", group_by_options, "Grouping") %>
   <% selected = group_by_options.select { |name, id| id.to_s == session[:group_by] } %>
@@ -23,19 +24,20 @@
   <% selected = properties.select { |name, id| id.to_s == session[:icons] } %>
   <%= selected_filter_values("icons", selected, "icons", "Default") %>
 <% end -%>
-
 <br />
+</div>
+
 <label for="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip">
   <%=_ 'Hide Waiting'%>  
 </label>
-<input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
+<input type="checkbox" name="hide_deferred" id="hide_deferred" title="<%= _('Hide tasks deferred until a later time') %>" class="tooltip" value="1" <%= session[:hide_deferred].to_i > 0 ? "checked" : "" %> onChange="jQuery('#filter_form').submit();">
 <br />
 
 <% if !local_assigns[:hide_hide_dependencies] or !hide_hide_dependencies -%>
 <label for="hide_deferred" title="<%= _('Hide Task Dependencies') %>" class="tooltip">
   <%=_ 'Hide Dependencies'%>
 </label>
-<input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
+<input type="checkbox" name="hide_dependencies" id="hide_dependencies" title="<%= _('Hide Task Dependencies') %>" class="tooltip" value="1" <%= session[:hide_dependencies].to_i > 0 ? "checked" : "" %> onChange="jQuery('#filter_form').submit();">
 <br />
 <% end -%>
 
@@ -43,5 +45,5 @@
 <label for="show_all_unread" title="<%= msg %>" class="tooltip">
   <%=_ "Show all unread" %>  
 </label>
-<input type="checkbox" name="show_all_unread" id="show_all_unread" title="<%= msg %>" class="tooltip" value="1" <%= session[:show_all_unread].to_i > 0 ? "checked" : "" %> onChange="javascript:document.forms[1].submit();">
+<input type="checkbox" name="show_all_unread" id="show_all_unread" title="<%= msg %>" class="tooltip" value="1" <%= session[:show_all_unread].to_i > 0 ? "checked" : "" %> onChange="jQuery('#filter_form').submit();">
 <br />
