@@ -3,8 +3,6 @@ require "fastercsv"
 # as well as CSV downloading.
 #
 class ReportsController < ApplicationController
-  TIMESHEET = 3
-
   def list
     sql_filter = ""
     date_filter = ""
@@ -84,7 +82,7 @@ class ReportsController < ApplicationController
             end
             do_column(w, key)
           end 
-        when TIMESHEET
+        when WorklogReport::TIMESHEET
           # Time sheet
           columns = [ 16, 17, 18, 21, 19 ]
           w.available_custom_attributes.each do |ca|
@@ -215,7 +213,7 @@ class ReportsController < ApplicationController
     report_params = params[:report] || {}
 
     hide_approved = report_params[:hide_approved].to_i > 0
-    if @type == TIMESHEET and hide_approved
+    if @type == WorklogReport::TIMESHEET and hide_approved
       logs = logs.select { |wl| !wl.approved? }
     end
 
@@ -304,7 +302,7 @@ class ReportsController < ApplicationController
       "6_approved"
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
-    elsif (match = r.match(/ca_(\d+)/))
+    elsif r and (match = r.match(/ca_(\d+)/))
       r
     end
   end
@@ -350,7 +348,7 @@ class ReportsController < ApplicationController
       _("Approved")
     elsif (property = Property.find_by_filter_name(current_user.company, r))
       w.task.property_value(property)
-    elsif (match = r.match(/ca_(\d+)/))
+    elsif r and (match = r.match(/ca_(\d+)/))
       w.company.custom_attributes.find(match[1]).display_name
     end
 

@@ -3,6 +3,11 @@
 # as a timesheet, audit, etc
 ###
 class WorklogReport
+  PIVOT = 1
+  AUDIT = 2
+  TIMESHEET = 3
+  WORKLOAD = 4
+
   ###
   # A sorted array of worklogs that match the setup 
   # for this report.
@@ -21,9 +26,6 @@ class WorklogReport
 
   attr_reader :start_date
   attr_reader :end_date
-
-  TIMESHEET = 3
-  WORKLOAD = 4
 
   ###
   # Creates a report for the given tasks and params
@@ -151,7 +153,7 @@ class WorklogReport
       (@start_date.nil? or log.started_at >= @start_date) and
         (@end_date.nil? or log.started_at <= @end_date)
     end
-
+    
     @work_logs = logs.sort_by { |log| log.started_at }
   end
 

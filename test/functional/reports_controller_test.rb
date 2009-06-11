@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ReportsControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks
+  fixtures :users, :companies, :tasks, :customers
   
   def setup
     @request.with_subdomain('cit')
@@ -14,13 +14,35 @@ class ReportsControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "post list should render and contain logs" do
+  test "pivot report should render" do
+    assert_report_works(WorklogReport::PIVOT)
+  end
+
+  test "audit report should render" do
+    assert_report_works(WorklogReport::AUDIT)
+  end
+
+  test "timesheet report should render" do
+    assert_report_works(WorklogReport::TIMESHEET)
+  end
+
+  test "workload report should render" do
+    assert_report_works(WorklogReport::WORKLOAD)
+  end
+
+  private
+
+  def assert_report_works(type)
     t1 = Task.first
-    log = t1.work_logs.build(:started_at => Time.now)
+    log = t1.work_logs.build(:started_at => Time.now, :duration => 60,
+                             :company => @user.company, :user => @user,
+                             :customer => @user.company.customers.first,
+                             :project => t1.project)
     log.save!
 
+
     post :list, :report => {
-      :type => ReportsController::TIMESHEET,
+      :type => type,
       :range => 0
     }
     assert_response :success
