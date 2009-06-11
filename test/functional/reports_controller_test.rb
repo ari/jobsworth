@@ -49,7 +49,8 @@ class ReportsControllerTest < ActionController::TestCase
     assert_response :success
     assert_not_nil assigns["generated_report"]
 
-    worklogs = assigns["logs"]
+    report = assigns["worklog_report"]
+    worklogs = report.work_logs
     assert worklogs.any?
     if type != WorklogReport::WORKLOAD
       # workload report creates new placeholder logs, so created one

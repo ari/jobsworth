@@ -26,8 +26,15 @@ class WorklogReport
 
   attr_reader :start_date
   attr_reader :end_date
+
+  ###
+  # The user this report is for
+  ###
   attr_reader :current_user
 
+  ###
+  # Various variables used for display 
+  ###
   attr_reader :column_headers
   attr_reader :column_totals
   attr_reader :rows

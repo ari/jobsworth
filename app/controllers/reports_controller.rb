@@ -11,23 +11,17 @@ class ReportsController < ApplicationController
     @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
     
     if options = params[:report]
-      report = WorklogReport.new(self, options)
-      start_date = report.start_date
-      end_date = report.end_date
-      @type = report.type
+      @worklog_report = WorklogReport.new(self, options)
 
-      @logs = report.work_logs
-      @range = report.range
-
-      @column_headers = report.column_headers
-      @column_totals = report.column_totals
-      @rows = report.rows
-      @row_totals = report.row_totals
-      @total = report.total
-      @generated_report = report.generated_report
+      @column_headers = @worklog_report.column_headers
+      @column_totals = @worklog_report.column_totals
+      @rows = @worklog_report.rows
+      @row_totals = @worklog_report.row_totals
+      @total = @worklog_report.total
+      @generated_report = @worklog_report.generated_report
     end
 
-    if @generated_report.nil?
+    if @column_headers.nil? or @column_headers.length <= 1
       flash['notice'] = _("Empty report, log more work!") if params[:report]
     end
   end
