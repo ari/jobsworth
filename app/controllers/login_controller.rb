@@ -17,7 +17,7 @@ class LoginController < ApplicationController
       redirect_to :controller => 'activities', :action => 'list'
     else
       @company = company_from_subdomain
-      @news ||= NewsItem.find(:all, :conditions => "portal = 1", :order => "id desc", :limit => 3)
+      @news ||= NewsItem.find(:all, :conditions => [ "portal = ?", true ], :order => "id desc", :limit => 3)
       render :action => 'login', :layout => false
     end   
   end
