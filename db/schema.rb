@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090615102406) do
+ActiveRecord::Schema.define(:version => 20090618215014) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -75,6 +75,8 @@ ActiveRecord::Schema.define(:version => 20090615102406) do
     t.integer  "position"
   end
 
+  add_index "custom_attribute_choices", ["custom_attribute_id"], :name => "index_custom_attribute_choices_on_custom_attribute_id"
+
   create_table "custom_attribute_values", :force => true do |t|
     t.integer  "custom_attribute_id"
     t.integer  "attributable_id"
@@ -84,6 +86,9 @@ ActiveRecord::Schema.define(:version => 20090615102406) do
     t.datetime "updated_at"
     t.integer  "choice_id"
   end
+
+  add_index "custom_attribute_values", ["attributable_id", "attributable_type"], :name => "by_attributables"
+  add_index "custom_attribute_values", ["custom_attribute_id"], :name => "index_custom_attribute_values_on_custom_attribute_id"
 
   create_table "custom_attributes", :force => true do |t|
     t.integer  "company_id"
@@ -98,6 +103,7 @@ ActiveRecord::Schema.define(:version => 20090615102406) do
     t.datetime "updated_at"
   end
 
+  add_index "custom_attributes", ["company_id", "attributable_type"], :name => "index_custom_attributes_on_company_id_and_attributable_type"
   add_index "custom_attributes", ["company_id"], :name => "fk_custom_attributes_company_id"
 
   create_table "customers", :force => true do |t|
@@ -840,7 +846,7 @@ ActiveRecord::Schema.define(:version => 20090615102406) do
   add_index "work_logs", ["user_id", "started_at"], :name => "work_logs_user_id_started_at_index"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
 
-  create_table "work_logs_notifications", :force => true do |t|
+  create_table "work_logs_notifications", :id => false, :force => true do |t|
     t.integer "work_log_id"
     t.integer "user_id"
   end
