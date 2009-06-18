@@ -28,30 +28,10 @@ class AddForeignKeysForCompany < ActiveRecord::Migration
   }
 
   def self.up
-    TABLES.each do |reference_name, tables|
-      column_name = reference_name.to_s.singularize.foreign_key
-
-      tables.each do |table| 
-        begin
-          foreign_key(table, column_name, reference_name)
-        rescue
-          puts "ERROR"
-          puts $!
-        end
-      end
-    end
+    add_foreign_keys_for(TABLES)
   end
 
   def self.down
-    TABLES.each do |reference_name, tables|
-      column_name = reference_name.to_s.singularize.foreign_key
-      tables.each do |table| 
-        begin
-          remove_foreign_key(table, column_name, reference_name) 
-        rescue
-          puts $!
-        end
-      end
-    end
+   remove_foreign_key_for(TABLES)
   end
 end

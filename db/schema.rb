@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20090618215014) do
   end
 
   add_index "activities", ["company_id"], :name => "fk_activities_company_id"
+  add_index "activities", ["customer_id"], :name => "fk_activities_customer_id"
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "chat_messages", :force => true do |t|
@@ -270,6 +271,8 @@ ActiveRecord::Schema.define(:version => 20090618215014) do
     t.boolean  "active",      :default => true
   end
 
+  add_index "organizational_units", ["customer_id"], :name => "fk_organizational_units_customer_id"
+
   create_table "pages", :force => true do |t|
     t.string   "name",       :limit => 200, :default => "", :null => false
     t.text     "body"
@@ -318,6 +321,7 @@ ActiveRecord::Schema.define(:version => 20090618215014) do
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
+  add_index "project_files", ["customer_id"], :name => "fk_project_files_customer_id"
   add_index "project_files", ["project_folder_id"], :name => "index_project_files_on_project_folder_id"
   add_index "project_files", ["task_id"], :name => "index_project_files_on_task_id"
   add_index "project_files", ["user_id"], :name => "fk_project_files_user_id"

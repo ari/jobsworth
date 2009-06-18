@@ -17,4 +17,41 @@ module MigrationHelpers
 
     execute %{alter table #{from_table} drop foreign key #{constraint_name}}
   end
+
+  ###
+  # Adds foreign keys for all tables given. Tables should be hash
+  # where the target table name is the key. The key should point
+  # to an array of all table names which should reference that target.
+  ###
+  def add_foreign_keys_for(tables)
+    tables.each do |reference_name, tables|
+      column_name = reference_name.to_s.singularize.foreign_key
+
+      tables.each do |table| 
+        begin
+          foreign_key(table, column_name, reference_name)
+        rescue
+          puts "ERROR"
+          puts $!
+        end
+      end
+    end
+  end
+
+  ###
+  # Removes foreign keys for all tables given.
+  # See add_foreign_keys_for for the format of tables.
+  ###
+  def remove_foreign_keys_for(tables)
+    tables.each do |reference_name, tables|
+      column_name = reference_name.to_s.singularize.foreign_key
+      tables.each do |table| 
+        begin
+          remove_foreign_key(table, column_name, reference_name) 
+        rescue
+          puts $!
+        end
+      end
+    end
+  end
 end
