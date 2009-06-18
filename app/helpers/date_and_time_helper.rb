@@ -24,7 +24,7 @@ module DateAndTimeHelper
       str = params[key_name]
       format = "#{current_user.date_format} #{current_user.time_format}"
       date = DateTime.strptime(str, format)
-      res = tc.local_to_utc(date) if date
+      res = tz.local_to_utc(date) if date
     rescue
       # just fall back to default if error
     end
