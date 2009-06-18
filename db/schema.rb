@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090618225835) do
+ActiveRecord::Schema.define(:version => 20090618230241) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -416,6 +416,9 @@ ActiveRecord::Schema.define(:version => 20090618225835) do
     t.datetime "updated_at"
   end
 
+  add_index "resource_attributes", ["resource_id"], :name => "fk_resource_attributes_resource_id"
+  add_index "resource_attributes", ["resource_type_attribute_id"], :name => "fk_resource_attributes_resource_type_attribute_id"
+
   create_table "resource_type_attributes", :force => true do |t|
     t.integer  "resource_type_id"
     t.string   "name"
@@ -428,6 +431,8 @@ ActiveRecord::Schema.define(:version => 20090618225835) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "resource_type_attributes", ["resource_type_id"], :name => "fk_resource_type_attributes_resource_type_id"
 
   create_table "resource_types", :force => true do |t|
     t.integer  "company_id"
