@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090618215014) do
+ActiveRecord::Schema.define(:version => 20090618225835) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -702,7 +702,7 @@ ActiveRecord::Schema.define(:version => 20090618215014) do
     t.string   "time_format"
     t.integer  "send_notifications",                       :default => 1
     t.integer  "receive_notifications",                    :default => 1
-    t.string   "uuid"
+    t.string   "uuid",                                                          :null => false
     t.integer  "seen_welcome",                             :default => 0
     t.string   "locale",                                   :default => "en_US"
     t.integer  "duration_format",                          :default => 0
@@ -710,7 +710,7 @@ ActiveRecord::Schema.define(:version => 20090618215014) do
     t.integer  "posts_count",                              :default => 0
     t.integer  "newsletter",                               :default => 1
     t.integer  "option_avatars",                           :default => 1
-    t.string   "autologin"
+    t.string   "autologin",                                                     :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                     :default => true
     t.integer  "days_per_week",                            :default => 5
