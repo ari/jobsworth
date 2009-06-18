@@ -31,7 +31,7 @@ form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "t
 </table>
 <% end %>
 <script type="text/javascript">
-jQuery('#task_status').onchange(function() {
+jQuery('#task_status').change(function() {
 	if( jQuery('#task_status').val() == "6" ) {
 		jQuery('#defer_options').show();
 	} else {
