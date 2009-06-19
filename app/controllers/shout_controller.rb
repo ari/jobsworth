@@ -366,7 +366,7 @@ class ShoutController < ApplicationController
     id = params[:id].split(/-/).last
     @user = User.find(id, :conditions => ["company_id = ?", current_user.company_id] )
     @chat = Chat.find(:first, :conditions => ["user_id = ? AND target_id = ?", current_user.id, @user.id])
-    ChatMessage.update_all("archived = 1", ["chat_id = ?", @chat.id])
+    ChatMessage.update_all("archived = TRUE", ["chat_id = ?", @chat.id])
     render :nothing => true
   end
   

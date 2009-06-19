@@ -8,7 +8,7 @@ class Forum < ActiveRecord::Base
   belongs_to :company
   belongs_to :project
 
-  acts_as_list :scope => 'company_id'
+  acts_as_list :scope => :company_id
 
   validates_presence_of :name
 
