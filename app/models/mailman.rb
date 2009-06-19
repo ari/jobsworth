@@ -9,7 +9,8 @@ class Mailman < ActionMailer::Base
     
     if email.multipart? then
       email.parts.each do |m|
-        puts m.content_type
+        next if body
+
         if m.content_type.downcase == "text/plain"
           body = m.body
         elsif m.multipart?
@@ -20,7 +21,7 @@ class Mailman < ActionMailer::Base
     
     body ||= email.body
     new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
-    return body[0, new_body_end]
+    return body[0, new_body_end].strip
   end
 
   def receive(email)
@@ -46,7 +47,7 @@ class Mailman < ActionMailer::Base
 
     e.save
 
-#    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
+    #    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 
     target = nil
     email.to.each do |to|
@@ -59,15 +60,12 @@ class Mailman < ActionMailer::Base
     end
 
     if target && target.is_a?(Task)
-      puts "Found target [#{target.name}]"
       notify_targets = target.project.users.collect{ |u| u.email.downcase }.flatten.uniq
       notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", target.project_id]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip.downcase } }.flatten.uniq
 
       if notify_targets.include?(email.from.first.downcase)
         if email.has_attachments?
           email.attachments.each do |attachment|
-
-#            Rails.logger "Attachement[#{attachment.original_filename}]"
 
             task_file = ProjectFile.new()
             task_file.company = e.user.company
@@ -89,13 +87,12 @@ class Mailman < ActionMailer::Base
 
             File.umask(0)
             File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) } rescue begin
- #                                                                                         Rails.logger "Unable to save attachment.."
-                                                                                          task_file.destroy
-                                                                                          task_file = nil
-                                                                                        end
+                                                                                                   #                                                                                         Rails.logger "Unable to save attachment.."
+                                                                                                   task_file.destroy
+                                                                                                   task_file = nil
+                                                                                                 end
             if task_file
               task_file.file_size = File.size(task_file.file_path)
-  #            Rails.logger "Attachment saved[#{task_file.file_path}][#{task_file.file_size}]"
               task_file.save
             end
 
@@ -128,7 +125,7 @@ class Mailman < ActionMailer::Base
         end
 
         Notifications::deliver_changed( :comment, target, user, e.body.gsub(/<[^>]*>/,'')) rescue begin
-#                                                                                                    Rails.logger "Error sending notificaiton email"
+                                                                                                    #                                                                                                    Rails.logger "Error sending notificaiton email"
                                                                                                   end 
       else
         # Unknown email
@@ -136,14 +133,6 @@ class Mailman < ActionMailer::Base
       end
     end
 
-#      if email.has_attachments?
-#        for attachment in email.attachments
-#          page.attachments.create({
-#            :file => attachment,
-#            :description => email.subject
-#          })
-#        end
-#      end
     return e
-    end
   end
+end
