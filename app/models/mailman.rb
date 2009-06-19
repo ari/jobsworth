@@ -1,22 +1,27 @@
 # Receive and handle emails sent to tasks
 
 class Mailman < ActionMailer::Base
+  # The marker in the email body that shows where the new content ends
+  BODY_SPLIT = "o------ please reply above this line ------o"
 
   def get_body(email)
-      body = nil
+    body = nil
+    
+    if email.multipart? then
+      email.parts.each do |m|
+        next if body
 
-      if email.multipart? then
-        email.parts.each do |m|
-          puts m.content_type
-          if m.content_type.downcase == "text/plain"
-            body = m.body
-          elsif m.multipart?
-            body = get_body(m)
-          end
+        if m.content_type.downcase == "text/plain"
+          body = m.body
+        elsif m.multipart?
+          body = get_body(m)
         end
       end
-
-      body ||= email.body
+    end
+    
+    body ||= email.body
+    new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
+    return body[0, new_body_end].strip
   end
 
   def receive(email)
@@ -32,7 +37,6 @@ class Mailman < ActionMailer::Base
     email.to.each do |to|
       next unless to.include?($CONFIG[:domain])
       subdomain = to.split('@')[1].split('.')[0]
-#      Rails.logger "Looking for #{subdomain}.."
       company ||= Company.find_by_subdomain(subdomain)
     end
 
@@ -43,34 +47,25 @@ class Mailman < ActionMailer::Base
 
     e.save
 
-#    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
+    #    return if(e.from.downcase.include? $CONFIG[:domain] || company.nil?)
 
     target = nil
     email.to.each do |to|
       if to.include?("task-")
-#        Rails.logger "looking for a task"
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
-#          Rails.logger "Looking for task[#{task_num}] from [#{company.name}]"
           target = Task.find(:first, :conditions => ["company_id = ? AND task_num = ?", company.id, task_num])
         end
       end
     end
 
-    puts "target[#{target}]"
-
     if target && target.is_a?(Task)
-      puts "Found target [#{target.name}]"
       notify_targets = target.project.users.collect{ |u| u.email.downcase }.flatten.uniq
       notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", target.project_id]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip.downcase } }.flatten.uniq
-
-#      Rails.logger "Possible participants[#{notify_targets.join(', ')}]"
 
       if notify_targets.include?(email.from.first.downcase)
         if email.has_attachments?
           email.attachments.each do |attachment|
-
-#            Rails.logger "Attachement[#{attachment.original_filename}]"
 
             task_file = ProjectFile.new()
             task_file.company = e.user.company
@@ -92,13 +87,12 @@ class Mailman < ActionMailer::Base
 
             File.umask(0)
             File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) } rescue begin
- #                                                                                         Rails.logger "Unable to save attachment.."
-                                                                                          task_file.destroy
-                                                                                          task_file = nil
-                                                                                        end
+                                                                                                   #                                                                                         Rails.logger "Unable to save attachment.."
+                                                                                                   task_file.destroy
+                                                                                                   task_file = nil
+                                                                                                 end
             if task_file
               task_file.file_size = File.size(task_file.file_path)
-  #            Rails.logger "Attachment saved[#{task_file.file_path}][#{task_file.file_size}]"
               task_file.save
             end
 
@@ -131,7 +125,7 @@ class Mailman < ActionMailer::Base
         end
 
         Notifications::deliver_changed( :comment, target, user, e.body.gsub(/<[^>]*>/,'')) rescue begin
-#                                                                                                    Rails.logger "Error sending notificaiton email"
+                                                                                                    #                                                                                                    Rails.logger "Error sending notificaiton email"
                                                                                                   end 
       else
         # Unknown email
@@ -139,13 +133,6 @@ class Mailman < ActionMailer::Base
       end
     end
 
-#      if email.has_attachments?
-#        for attachment in email.attachments
-#          page.attachments.create({
-#            :file => attachment,
-#            :description => email.subject
-#          })
-#        end
-#      end
-    end
+    return e
   end
+end
