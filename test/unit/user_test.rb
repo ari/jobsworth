@@ -212,5 +212,5 @@ class UserTest < ActiveRecord::TestCase
     @user.email = "test@test.com"
     assert_not_nil @user.avatar_url
   end
-  
+
 end

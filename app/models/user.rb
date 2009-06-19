@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
+  has_many      :work_log_notifications, :dependent => :destroy
   has_many      :shouts, :dependent => :nullify
 
   has_many      :notifications, :dependent => :destroy

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090615091416) do
+ActiveRecord::Schema.define(:version => 20090618230241) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
   end
 
   add_index "activities", ["company_id"], :name => "fk_activities_company_id"
+  add_index "activities", ["customer_id"], :name => "fk_activities_customer_id"
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "chat_messages", :force => true do |t|
@@ -75,6 +76,8 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.integer  "position"
   end
 
+  add_index "custom_attribute_choices", ["custom_attribute_id"], :name => "index_custom_attribute_choices_on_custom_attribute_id"
+
   create_table "custom_attribute_values", :force => true do |t|
     t.integer  "custom_attribute_id"
     t.integer  "attributable_id"
@@ -84,6 +87,9 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.datetime "updated_at"
     t.integer  "choice_id"
   end
+
+  add_index "custom_attribute_values", ["attributable_id", "attributable_type"], :name => "by_attributables"
+  add_index "custom_attribute_values", ["custom_attribute_id"], :name => "index_custom_attribute_values_on_custom_attribute_id"
 
   create_table "custom_attributes", :force => true do |t|
     t.integer  "company_id"
@@ -98,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.datetime "updated_at"
   end
 
+  add_index "custom_attributes", ["company_id", "attributable_type"], :name => "index_custom_attributes_on_company_id_and_attributable_type"
   add_index "custom_attributes", ["company_id"], :name => "fk_custom_attributes_company_id"
 
   create_table "customers", :force => true do |t|
@@ -264,6 +271,8 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.boolean  "active",      :default => true
   end
 
+  add_index "organizational_units", ["customer_id"], :name => "fk_organizational_units_customer_id"
+
   create_table "pages", :force => true do |t|
     t.string   "name",       :limit => 200, :default => "", :null => false
     t.text     "body"
@@ -312,6 +321,7 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
+  add_index "project_files", ["customer_id"], :name => "fk_project_files_customer_id"
   add_index "project_files", ["project_folder_id"], :name => "index_project_files_on_project_folder_id"
   add_index "project_files", ["task_id"], :name => "index_project_files_on_task_id"
   add_index "project_files", ["user_id"], :name => "fk_project_files_user_id"
@@ -406,6 +416,9 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.datetime "updated_at"
   end
 
+  add_index "resource_attributes", ["resource_id"], :name => "fk_resource_attributes_resource_id"
+  add_index "resource_attributes", ["resource_type_attribute_id"], :name => "fk_resource_attributes_resource_type_attribute_id"
+
   create_table "resource_type_attributes", :force => true do |t|
     t.integer  "resource_type_id"
     t.string   "name"
@@ -418,6 +431,8 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "resource_type_attributes", ["resource_type_id"], :name => "fk_resource_type_attributes_resource_type_id"
 
   create_table "resource_types", :force => true do |t|
     t.integer  "company_id"
@@ -692,7 +707,7 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.string   "time_format"
     t.integer  "send_notifications",                       :default => 1
     t.integer  "receive_notifications",                    :default => 1
-    t.string   "uuid"
+    t.string   "uuid",                                                          :null => false
     t.integer  "seen_welcome",                             :default => 0
     t.string   "locale",                                   :default => "en_US"
     t.integer  "duration_format",                          :default => 0
@@ -700,7 +715,7 @@ ActiveRecord::Schema.define(:version => 20090615091416) do
     t.integer  "posts_count",                              :default => 0
     t.integer  "newsletter",                               :default => 1
     t.integer  "option_avatars",                           :default => 1
-    t.string   "autologin"
+    t.string   "autologin",                                                     :null => false
     t.datetime "remember_until"
     t.boolean  "option_floating_chat",                     :default => true
     t.integer  "days_per_week",                            :default => 5

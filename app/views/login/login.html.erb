@@ -32,7 +32,7 @@ end
 			<button type="submit" name="Submit" value="Login" tabindex="4"></button>
 			<p>
 				<label for="username">Username</label>
-				<input name="user[username]" type="text" class="inputbox" alt="username" size="12" tabindex="1" />
+				<input name="user[username]" type="text" class="inputbox username" alt="username" size="12" tabindex="1" />
 			</p>
 			<p>
 				<label for="password">Password</label>
@@ -41,7 +41,7 @@ end
 				<small><a onclick="document.loginform.forgot='true';document.loginform.submit()" href="#" tabindex="3">Forgot password</a></small>
 			</p>
 			<p>
-				<input type="checkbox" name="remember" value="1" tabindex="5"/>
+				<input type="checkbox" name="remember" id="remember" value="1" tabindex="5"/>
 				<label id="remember" for="remember">Remember me</label>
 			</p>
 			<% if flash[:notice] %>
@@ -49,8 +49,6 @@ end
 			<% end %>
 		<% end %>
 	</div>
-	<script type="text/javascript">document.forms[0].username.focus();</script>
-
 <% else %>
 	<h1>Please set up Clocking IT by running the setup.rb script.</h1>
 <% end %>
