@@ -45,7 +45,7 @@ Next, make sure the database is updated and javascript/css rebuilt.
   rake db:migrate RAILS_ENV=production
   rake asset:packager:build_all
 
-Depending on which environment you are updating, you can change the RAIL_ENV value to “test” or “development” and the appropriate database will be updated.
+Depending on which environment you are updating, you can change the RAIL_ENV value to "test" or "development" and the appropriate database will be updated.
 
 Find the daemons running with
 
