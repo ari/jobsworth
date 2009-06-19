@@ -12,14 +12,31 @@ The easiest way to get the source and easily update it from time to time is with
 
 You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work.
 
-Install the following packages. Under FreeBSD this can be easily done using 'portinstall' and then each of these ports:
+Install the following packages:
 
-* ruby18-gems
-* ruby18-mysql
-* rubygem-rake
+* ruby1 gems
+* ruby mysql driver (you could also choose postgresql)
+* rake
 * ImageMagick
 
+How to install these will differ on each platform. Some possibilities:
+
+==== FreeBSD
+
+# portinstall ruby18-gems ruby18-mysql rubygem-rake ImageMagick
+
+==== OSX
+
+First install the Macports system from http://www.macports.org. That will require that you have the developer tools installed first. Then:
+
+# sudo port install rb-rubygems rb-mysql rb-rake ImageMagick
+
+==== Other
+
 Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed.
+
+
+=== Step 2b: Phusion Passenger
 
 Then install Phusion Passenger from http://www.modrails.com/install.html You can also run CIT with Mongrel, but it tends to be a little easier with Phusion to set up. Make sure you set up the appropriate virtual host in Apache.
 
