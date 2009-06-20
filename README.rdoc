@@ -10,11 +10,11 @@ The easiest way to get the source and easily update it from time to time is with
 
 === Step 2: Prerequsites
 
-You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work.
+You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL has been heavily tested, and some people are running postgresql.
 
 Install the following packages:
 
-* ruby1 gems
+* ruby gems
 * ruby mysql driver (you could also choose postgresql)
 * rake
 * ImageMagick
