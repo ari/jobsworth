@@ -188,50 +188,15 @@ function inline_image(el) {
 }
 
 function HideAjax() {
-  var a = document.getElementsByClassName( 'ajax', 'div' );
-  for( var i = 0; i < a.length; i++ )
-    jQuery(a[i]).hide();
+  jQuery('div.ajax').hide();
 }
 
 function HideMenus() {
-  var a = document.getElementsByClassName( 'amenu', 'div' );
-  for( var i = 0; i < a.length; i++ )
-    jQuery(a[i]).hide();
+  jQuery('div.amenu').hide();
 }
 
 function ShowMenus() {
-  var a = document.getElementsByClassName( 'amenu', 'div' );
-  for( var i = 0; i < a.length; i++ )
-    jQuery(a[i]).show();
-}
-
-function HideDummy() {
-//  var a = document.getElementsByClassName( 'dummy', 'li' );
-//  for( var i = 0; i < a.length; i++ ) {
-//    Element.removeClassName( a[i], "task");
-//    Element.hide(a[i]);
-//  }
-
-//  var a = document.getElementsByClassName( 'dummy', 'ul' );
-//  for( var i = 0; i < a.length; i++ ) {
-//    Element.removeClassName( a[i], "comp_drag");
-//    Element.hide(a[i]);
-//  }
-
-}
-
-function ShowDummy() {
-//  var a = document.getElementsByClassName( 'dummy', 'li' );
-//  for( var i = 0; i < a.length; i++ ) {
-//    Element.addClassName( a[i], "task");
-//    Element.show(a[i]);
-//  }
-//  var a = document.getElementsByClassName( 'dummy', 'ul' );
-//  for( var i = 0; i < a.length; i++ ) {
-//    Element.addClassName( a[i], "component_drag");
-//    Element.show(a[i]);
-//  }
-//  UpdateDnD();
+  jQuery('div.amenu').show();
 }
 
 function UpdateDnD() {
@@ -243,32 +208,20 @@ function UpdateDnD() {
 }
 
 function EnableDND() {
-  Element.hide('enable_dnd');
+  jQuery('#enable_dnd').hide();
   HideMenus();
   Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('#loading').show();}, parameters:Sortable.serialize("components_sortable")});}, only:'component', tree:true});
   Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('#loading').show();}, parameters:Sortable.serialize("tasks_sortable")});}, only:'task', tree:true});
-  var h = document.getElementsByClassName( 'handle', 'img' );;
-  for( var i = 0; i < h.length; i++ ) {
-    jQuery( h[i] ).show();
-  }
-  var h = document.getElementsByClassName( 'handle_comp', 'img' );;
-  for( var i = 0; i < h.length; i++ ) {
-    jQuery( h[i] ).show();
-  }
+  jQuery('img.handle').show();
+  jQuery('img.handle_comp').show();
   jQuery('#disable_dnd').show();
 }
 
 function DisableDND() {
-  Element.hide('disable_dnd');
+  jQuery('#disable_dnd').hide();
   ShowMenus();
-  var h = document.getElementsByClassName( 'handle', 'img' );;
-  for( var i = 0; i < h.length; i++ ) {
-    Element.hide( h[i] );
-  }
-  var h = document.getElementsByClassName( 'handle_comp', 'img' );;
-  for( var i = 0; i < h.length; i++ ) {
-    Element.hide( h[i] );
-  }
+  jQuery('img.handle').hide();
+  jQuery('img.handle_comp').hide();
   jQuery('#enable_dnd').show();
 }
 
@@ -280,7 +233,6 @@ function do_update(user, url) {
 
 function do_execute(user, code) {
   if( user != userId ) {
-//    alert(code);
     eval(code);
   }
 }
