@@ -1628,6 +1628,7 @@ class TasksController < ApplicationController
   def notify(task, worklog, &block)
     ids = params[:notify] || []
     all_users = []
+    debugger
 
     if ids.any?
       all_users = ids.map { |id| current_user.company.users.find(id) }

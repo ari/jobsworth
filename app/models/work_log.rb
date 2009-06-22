@@ -18,8 +18,8 @@ class WorkLog < ActiveRecord::Base
 
   has_one    :ical_entry, :dependent => :destroy
   has_one    :event_log, :as => :target, :dependent => :destroy
-
-  has_and_belongs_to_many :users, :join_table => "work_logs_notifications"
+  has_many    :work_log_notifications, :dependent => :destroy
+  has_many    :users, :through => :work_log_notifications
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry

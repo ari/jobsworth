@@ -855,7 +855,7 @@ ActiveRecord::Schema.define(:version => 20090618230241) do
   add_index "work_logs", ["user_id", "started_at"], :name => "work_logs_user_id_started_at_index"
   add_index "work_logs", ["user_id", "task_id"], :name => "work_logs_user_id_index"
 
-  create_table "work_logs_notifications", :id => false, :force => true do |t|
+  create_table "work_logs_notifications", :force => true do |t|
     t.integer "work_log_id"
     t.integer "user_id"
   end
