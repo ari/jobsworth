@@ -51,8 +51,8 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  # See Rails::Configuration for more options
-  config.logger = Logger.new("#{RAILS_ROOT}/log/#{ENV['RAILS_ENV']}.log", 5)
+  # Rotate logs when they reach 1Mb and keep 5 old logs
+  config.logger = Logger.new(config.log_path, 5, 1024*1024)
   
   config.gem 'rails', :version => '2.3.2'
   config.gem 'actionpack', :version => '2.3.2'
