@@ -13,7 +13,10 @@ function Hover(prefix, element) {
 function ClearHover() {
 }
 
-// show progress spinner (should be replaced with jquery-ui later
+
+// -------------------------
+// show progress spinner
+//
 function showProgress() {
 	jQuery('#loading').show('fast');
 }
@@ -21,30 +24,16 @@ function hideProgress() {
 	jQuery('#loading').hide('fast');
 }
 
-function updateLoading(event){
-
-  if($('loading').visible) {
-
-    var scrollposY=0;
-    if (window.pageYOffset){
-      scrollposY = window.pageYOffset;
-    }
-    else if (document.documentElement && document.documentElement.scrollTop){
-      scrollposY = document.documentElement.scrollTop;
-        }
-    else if (document.getElementById("body").scrollTop){
-      scrollposY = document.getElementById("body").scrollTop;
-    }
-
-    $("loading").style.top = (scrollposY + event.clientY - 8) + "px";
-    $("loading").style.left = event.clientX + 10 +"px";
-    $("loading").style.zIndex=9;
-  }
-}
-
-Event.observe(window, "load", function(e) {
-    Event.observe(document, "mousemove", function(e) {updateLoading(e);} );
+jQuery(document).mousemove(function(e) {
+	if(jQuery('#loading').is(':visible') {
+		jQuery("#loading").css({
+            top: (e.pageY  - 8) + "px",
+            left: (e.pageX + 10) + "px"
+        });
+	}
 });
+// -------------------------
+
 
 function tip(myEvent,tip){
   var scrollposY=0;

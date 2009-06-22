@@ -431,11 +431,10 @@ input.checkbox {
 .ajax {
 }
 
-div#loading {
+#loading {
   position: absolute;
+  z-index: 9;
 }
-
-body > div#loading { position: fixed; }
 
 input:focus, textarea:focus { border: 1px solid #FC0; }
 input, textarea {
