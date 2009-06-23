@@ -136,9 +136,9 @@ class TasksController < ApplicationController
   end
 
   def dependency
-    id = params[:dependency_id]
-    conditions = { :project_id => current_projects }
-    dependency = current_user.company.tasks.find(id, :conditions => conditions)
+    task_num = params[:dependency_id]
+    conditions = { :task_num => task_num, :project_id => current_projects }
+    dependency = current_user.company.tasks.find(:first, :conditions => conditions)
 
     render(:partial => "dependency", 
            :locals => { :dependency => dependency, :perms => {} })
@@ -264,12 +264,13 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}] ) rescue begin
-                                                                                                                           flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
-                                                                                                                           redirect_from_last
-                                                                                                                           return
-                                                                                                                         end 
-                                                                                                                           
+    @task = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", params[:id]])
+
+    if @task.nil?
+      flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+      redirect_from_last
+      return
+    end 
     
     init_form_variables(@task)
   end

@@ -12,8 +12,19 @@ class TasksControllerTest < ActionController::TestCase
   test "/edit should render :success" do
     task = tasks(:normal_task)
 
-    get :edit, :id => task
+    get :edit, :id => task.task_num
     assert_response :success
+  end
+
+  test "/edit should find task by task num" do
+    task = tasks(:normal_task)
+    task.update_attribute(:task_num, task.task_num - 1)
+
+    get :edit, :id => task.task_num
+    assert_equal task, assigns["task"]
+
+    get :edit, :id => task.id
+    assert_not_equal task, assigns["task"]
   end
 
   test "/new should render :success" do

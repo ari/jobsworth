@@ -363,7 +363,7 @@ class ApplicationController < ActionController::Base
   end
 
   def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.id}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{task.name}</a>"
+    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.task_num}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{task.name}</a>"
   end
 
   def double_escape(txt)
