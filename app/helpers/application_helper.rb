@@ -383,7 +383,7 @@ END_OF_HTML
     group_by = session[:group_by]
     if group_by.to_i > 2 and @tasks
       gb = group_by.to_i
-      affected_projects = @tasks.collect(&:project).uniq
+      affected_projects = @tasks.flatten.collect(&:project).uniq
       can = case gb
             when 3  then current_user.can_all?(affected_projects, 'reassign')
             when 4  then current_user.can_all?(affected_projects, 'reassign')
