@@ -10,7 +10,8 @@ module Localization
   def self._(string_to_localize, *args)
     translated = @@l10s[@@lang][string_to_localize] 
     if translated.nil?
-      l = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", @@lang, string_to_localize])
+      l = nil
+      l = Locale.find(:first, :conditions => ["locales.locale = ? AND locales.key = ?", @@lang, string_to_localize]) rescue nil
       if @@lang != :default && l.nil?
         l = Locale.new
         l.locale = @@lang
