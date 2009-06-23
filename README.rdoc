@@ -23,34 +23,42 @@ How to install these will differ on each platform. Some possibilities:
 
 ==== FreeBSD
 
-# portinstall ruby18-gems ruby18-mysql rubygem-rake ImageMagick
+  portinstall ruby18-gems ruby18-mysql rubygem-rake ImageMagick
 
 ==== OSX
 
-First install the Macports system from http://www.macports.org. That will require that you have the developer tools installed first. Then:
+First install the Macports system from http://www.macports.org. Then:
 
-# sudo port install rb-rubygems rb-mysql rb-rake ImageMagick
+  sudo port install rb-rubygems rb-mysql rb-rake ImageMagick
 
 ==== Other
 
 Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed.
 
 
-=== Step 2b: Phusion Passenger
+=== Step 3: Phusion Passenger
 
-Then install Phusion Passenger from http://www.modrails.com/install.html You can also run CIT with Mongrel, but it tends to be a little easier with Phusion to set up. Make sure you set up the appropriate virtual host in Apache.
+Install Phusion Passenger from http://www.modrails.com/install.html You can also run CIT with Mongrel, but it tends to be a little easier with Phusion to set up.
 
-=== Step 3: Ruby gems
+Naturally you'll want to be running Apache httpd and have an appropriate virtual host set up. There are lots of great resources out there to help with that. The virtual host should point to the top of the CIT installation directory.
 
-There are a bunch of gems which are needed for running CIT. If you cd into the top of your clockingIT installation, then type:
+
+=== Step 4: Setup configuration and database
+
+  ruby setup.rb
+  
+  
+=== Step 5: Ruby gems
+
+There are a few Ruby gems which are needed for running CIT. Change directory into the top of your CIT installation, then type:
 
   rake gems
 
-That will tell you what you need to install.
+That will tell you what you need to install and help you install them.
 
-=== Step 4: Setup
 
-  ruby setup.rb
+
+
 
 == Upgrading to a newer revision
 
