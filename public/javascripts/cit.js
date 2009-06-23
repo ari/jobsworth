@@ -25,7 +25,7 @@ function hideProgress() {
 }
 
 jQuery(document).mousemove(function(e) {
-	if(jQuery('#loading').is(':visible') {
+	if(jQuery('#loading').is(':visible')) {
 		jQuery("#loading").css({
             top: (e.pageY  - 8) + "px",
             left: (e.pageX + 10) + "px"
