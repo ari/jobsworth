@@ -2,6 +2,21 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+24 June 2009
+    Now all URLs reference the task number and not an internal task ID which should not be visible to the user.
+
+17 June 2009
+	Many database constraints and indexes have been added. This will improve speed and also ensure database integrity. Care should be taken when applying these updates to ensure you don't have existing bad data which prevents the constraints from being added.
+	
+16 June 2009
+	Some fixes implemented to allow postgresql to be used.
+
+10 June 2009
+	Rework entire filter section on reports page to bring it more into alignment with the filter for tasks. This means that your previous filter state is preserved when moving from tasks to reports.
+	
+3 June 2009
+	Work logs now can have custom attributes.
+
 1 June 2009
 	Exception emails are now sent to the system admin. This makes it much easier to diagnose problems. In order to use this feature, please add these two lines to the bottom of environment.local.rb
 	ExceptionNotifier.exception_recipients = [ "email@example.com" ]
