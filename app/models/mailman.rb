@@ -90,47 +90,62 @@ class Mailman < ActionMailer::Base
   end
 
   def add_email_to_task(e, email, task)
-    notify_targets = task.project.users.map { |u| u.email }
-    notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id]).collect{ |t| t.notify_emails.split(',')}.flatten.uniq
-    notify_targets = notify_targets.flatten.compact.uniq
-    notify_targets = notify_targets.map { |nt| nt.strip.downcase }
+    return if !should_accept_email?(email, task)
 
-    if notify_targets.include?(email.from.first.downcase)
-      if email.has_attachments?
-        email.attachments.each do |attachment|
-          add_attachment(e, task, attachment)
-        end
+    if email.has_attachments?
+      email.attachments.each do |attachment|
+        add_attachment(e, task, attachment)
       end
-        
-      w = WorkLog.new(:user => e.user, :company => task.project.company,
-                      :customer => task.project.customer,
-                      :task => task, :started_at => Time.now.utc,
-                      :duration => 0, :log_type => EventLog::TASK_COMMENT,
-                      :body => e.body)
-      w.save
-      
-      w.event_log.user = e.user
-      w.event_log.save
-      
-      user = nil
-      if e.user.nil?
-        user = User.new
-        user.name = email.from.first
-        user.email = email.from.first
-        user.receive_notifications = 1
-      else
-        user = e.user
-      end
-        
-      recipients = task.users - [ e.user ]
-      Notifications::deliver_changed(:comment, task, e.user, recipients,
-                                     e.body.gsub(/<[^>]*>/,''))
     end
+    
+    # worklogs need a user, so just use the first admin user if the
+    # email didn't give us one
+    if e.user.nil?
+      e.user = task.company.users.first(:conditions => { :admin => true })
+      e.body += "\nEmail from: #{ e.from }"
+    end
+
+    w = WorkLog.new(:user => e.user, :company => task.project.company,
+                    :customer => task.project.customer,
+                    :task => task, :started_at => Time.now.utc,
+                    :duration => 0, :log_type => EventLog::TASK_COMMENT,
+                    :body => e.body)
+    w.save
+    
+    w.event_log.user = e.user
+    w.event_log.save
+    
+    user = nil
+    if e.user.nil?
+      user = User.new
+      user.name = email.from.first
+      user.email = email.from.first
+      user.receive_notifications = 1
+    else
+      user = e.user
+    end
+    
+    recipients = task.users - [ e.user ]
+    Notifications::deliver_changed(:comment, task, e.user, recipients,
+                                   e.body.gsub(/<[^>]*>/,''))
+  end
+
+  # Returns true if the email should be accepted
+  def should_accept_email?(email, task)
+    # for now, let's try just accepting everything
+    return true
+
+    # This is the old code:
+#     notify_targets = task.project.users.map { |u| u.email }
+#     notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id]).collect{ |t| t.notify_emails.split(',')}.flatten.uniq
+#     notify_targets = notify_targets.flatten.compact.uniq
+#     notify_targets = notify_targets.map { |nt| nt.strip.downcase }
+#     return  notify_targets.include?(email.from.first.downcase)
   end
 
   def add_attachment(e, target, attachment)
     task_file = ProjectFile.new()
-    task_file.company = e.user.company
+    task_file.company = target.company
     task_file.customer = target.project.customer
     task_file.project = target.project
     task_file.task = target

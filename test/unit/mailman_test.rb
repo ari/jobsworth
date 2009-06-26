@@ -76,26 +76,40 @@ class MailmanTest < ActiveSupport::TestCase
 
   context "an email with no task information" do
     setup do
-      to = "anything@#{ $CONFIG[:domain] }"
-      from = @user.email
+      @to = "anything@#{ $CONFIG[:domain] }"
+      @from = @user.email
 
-      mail = test_mail(to, from)
-      @tmail = TMail::Mail.parse(mail)
+      @project = @company.projects.last
+      @company.preference_attributes = { "incoming_email_project" => @project.id }
     end
 
     should "be added to incoming_email_project preference for company" do
-      project = @company.projects.last
-      count = project.tasks.count
-
-      @company.preference_attributes = { "incoming_email_project" => project.id }
-
+      count = @project.tasks.count
+      mail = test_mail(@to, @from)
+      @tmail = TMail::Mail.parse(mail)
       Mailman.receive(@tmail.to_s)
 
-      assert_equal count + 1, project.tasks.count
+      assert_equal count + 1, @project.tasks.count
       task = Task.find(:first, :order => "id desc")
 
       assert_equal @tmail.subject, task.name
       assert_equal "Comment", task.work_logs.first.body
+    end
+
+    should "have the original senders email in comment if no user with that email" do
+      # need an admin user for this
+      @company.users.first.update_attribute(:admin, true)
+      # need only one company  
+      Company.all.each { |c| c.destroy if c != @company }
+
+      count = @project.tasks.count
+      mail = test_mail("to@random", "from@random")
+      @tmail = TMail::Mail.parse(mail)
+      Mailman.receive(@tmail.to_s)
+
+      assert_equal count + 1, @project.tasks.count
+      task = Task.find(:first, :order => "id desc")
+      assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
   end
