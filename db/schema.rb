@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090618230241) do
+ActiveRecord::Schema.define(:version => 20090626005038) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -301,6 +301,17 @@ ActiveRecord::Schema.define(:version => 20090618230241) do
   add_index "posts", ["forum_id", "created_at"], :name => "index_posts_on_forum_id"
   add_index "posts", ["topic_id"], :name => "index_posts_on_topic_id"
   add_index "posts", ["user_id", "created_at"], :name => "index_posts_on_user_id"
+
+  create_table "preferences", :force => true do |t|
+    t.integer  "preferencable_id"
+    t.string   "preferencable_type"
+    t.string   "key"
+    t.string   "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "preferences", ["preferencable_id", "preferencable_type"], :name => "index_preferences_on_preferencable_id_and_preferencable_type"
 
   create_table "project_files", :force => true do |t|
     t.integer  "company_id",                       :default => 0,                          :null => false

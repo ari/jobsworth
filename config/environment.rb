@@ -79,6 +79,7 @@ Rails::Initializer.run do |config|
   #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   #config.gem 'echoe', :version => '3.1.1'
+  config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
   

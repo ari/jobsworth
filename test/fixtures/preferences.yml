@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  preferencable_id: 1
+  preferencable_type: MyString
+  key: MyString
+  value: MyString
+
+two:
+  preferencable_id: 1
+  preferencable_type: MyString
+  key: MyString
+  value: MyString

@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class CompanyTest < ActiveRecord::TestCase
   fixtures :companies, :customers
 
+  should_have_many :preferences
+
   def setup
     @company = companies(:cit)
   end
@@ -51,6 +53,28 @@ class CompanyTest < ActiveRecord::TestCase
     ensure_property_method_works_with_translation(:type_property)
     ensure_property_method_works_with_translation(:severity_property)
     ensure_property_method_works_with_translation(:priority_property)
+  end
+
+  test "preference_attributes should create preferences" do
+    assert @company.preferences.empty?
+    @company.preference_attributes = { "p1" => "v1", "p2" => "v2" }
+    assert_equal 2, @company.preferences.length
+  end
+
+  test "preference_attributes should update existing preferences" do
+    assert @company.preferences.empty?
+    assert @company.preferences.build(:key => "p1", :value => "v1").save!
+    assert_equal 1, @company.preferences.length
+
+    @company.preference_attributes = { :p1 => "v2" }
+    assert_equal 1, @company.preferences.length
+    assert_equal "v2", @company.preferences.first.value
+  end
+
+  test "preference should return the attribute" do
+    assert @company.preferences.build(:key => "p1", :value => "v1").save!
+    assert_equal "v1", @company.preference("p1")
+    assert_nil @company.preference("p2")
   end
 
 
