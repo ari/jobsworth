@@ -21,3 +21,4 @@ tmp
 .buildpath
 .project
 .idea
+lib/scripts/*.rb
