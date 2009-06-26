@@ -102,7 +102,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    <% if controller.controller_name != 'search' %>
      <%= link_to_task(task) -%>
    <% else %>
-     <%= link_to_task_with_highlight(task, @keys)  -%>
+     <%= link_to_task(task, false, @keys)  -%>
    <% end %>
      <span id="todo-status-<%= task.dom_id %>">
        <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="jQuery('#todo-container-<%=task.dom_id%>').toggle(); Sortable.create('todo-<%=task.dom_id%>', {containment:'todo-<%=task.dom_id%>', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/<%=task.id%>', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-<%=task.dom_id%>')})}, only:'todo-active'}); return false;"><%=task.todo_status%></a>
