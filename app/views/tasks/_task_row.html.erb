@@ -74,14 +74,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
   <div style="float:left; padding-left:0.3em;">
-    <% unless task.done? %>
-      <%= check_box("task", "done", { "title" => _("Close <b>%s</b>", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_check/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}})",
-	  :class => "button tooltip checkbox", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
-    <% else %>
-      <%= check_box("task", "done", {"title" => _("Revert <b>%s</b> to not completed status.", task.name), "onclick" => "new Ajax.Request('/tasks/ajax_uncheck/#{task.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}})",
-		      :class => "button tooltip checkbox", :checked => "checked", :id => "button_#{task.id}" }.merge(can_complete) ) -%>
-    <% end %>
-
     <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
       <% if @current_sheet && @current_sheet.task_id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link work-icon" } )  -%>
