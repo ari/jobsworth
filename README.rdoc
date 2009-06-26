@@ -23,7 +23,7 @@ How to install these will differ on each platform. Some possibilities:
 
 ==== FreeBSD
 
-  portinstall ruby18-gems ruby18-mysql rubygem-rake ImageMagick
+  portinstall ruby-iconv ruby18-gems ruby18-mysql rubygem-rake ImageMagick
 
 ==== OSX
 
