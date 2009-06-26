@@ -180,7 +180,8 @@ class Mailman < ActionMailer::Base
     task = Task.new(:name => email.subject, 
                     :project => project,
                     :company => project.company,
-                    :description => "") 
+                    :description => "",
+                    :duration => 0) 
     task.set_task_num(project.company.id)
     task.watchers << email.user if email.user
     # need to do without_validations to get around validation
