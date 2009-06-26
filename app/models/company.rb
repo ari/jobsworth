@@ -20,6 +20,9 @@ class Company < ActiveRecord::Base
   has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
   has_many      :custom_attributes, :dependent => :destroy
 
+  has_many      :preferences, :as => :preferencable
+  include PreferenceMethods
+
 
 #  validates_format_of :contact_email, :with => /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/
 #  validates_length_of :contact_name,  :in=>3..200
