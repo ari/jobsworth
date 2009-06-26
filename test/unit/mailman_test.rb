@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MailmanTest < ActiveSupport::TestCase
-  fixtures :tasks, :users, :companies
+  fixtures :tasks, :users, :companies, :projects
   
   def setup
     @task = Task.first
@@ -74,10 +74,39 @@ class MailmanTest < ActiveSupport::TestCase
     assert_equal 1, @task.attachments.count
   end
 
+  context "an email with no task information" do
+    setup do
+      to = "anything@#{ $CONFIG[:domain] }"
+      from = @user.email
+
+      mail = test_mail(to, from)
+      @tmail = TMail::Mail.parse(mail)
+    end
+
+    should "be added to incoming_email_project preference for company" do
+      project = @company.projects.last
+      count = project.tasks.count
+
+      @company.preference_attributes = { "incoming_email_project" => project.id }
+
+      Mailman.receive(@tmail.to_s)
+
+      assert_equal count + 1, project.tasks.count
+      task = Task.find(:first, :order => "id desc")
+
+      assert_equal @tmail.subject, task.subject
+      assert_equal "AAxxx", task.work_logs.first.body
+    end
+
+  end
+
 
   private
   
-  def test_mail
+  def test_mail(to = nil, from = nil)
+    from ||= @user.email
+    to ||= "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
+
     str = <<-EOS
 Return-Path: <brad@lucky-dip.net>
 X-Original-To: brad@lucky-dip.net
@@ -92,8 +121,8 @@ Received: from 192-168-1-106.tpgi.com.au (60-242-202-41.static.tpgi.com.au [60.2
 	by clamps.lucky-dip.net (Postfix) with ESMTPA id 19A1F1BAB20
 	for <brad@lucky-dip.net>; Fri, 19 Jun 2009 10:40:49 +1000 (EST)
 Message-Id: <291D51CB-24F1-431E-91A4-C099A8E60222@lucky-dip.net>
-From: <#{ @user.email }>
-To: <task-#{ @task.task_num }@#{ $CONFIG[:domain ]}>
+From: <#{ from }>
+To: <#{ to }>
 Content-Type: multipart/mixed; boundary=Apple-Mail-6-776876370
 Mime-Version: 1.0 (Apple Message framework v935.3)
 Subject: test subject
