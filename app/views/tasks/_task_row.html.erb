@@ -29,7 +29,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 <% @task = task %>
 <div id="row-<%=task.dom_id%>" class="task-row" style="width:100%;">
   <% if current_user.show_type_icons? %>
-    <div style="float:left;padding-top:1px;padding-right:2px;padding-left:2px;" class="task-icon"><%= task_icon(task) %></div>
+    <div class="task-icon"><%= task_icon(task) %></div>
   <% end %>
 
   <% if(@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
@@ -93,7 +93,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    <% end -%>
    </div>
   <div class="unread_icon">
-  	<a href="#" onclick="toggleTaskUnread(this); return false;"><span>*</span></a>
+  	<a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
   </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
