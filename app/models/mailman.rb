@@ -45,8 +45,11 @@ class Mailman < ActionMailer::Base
     e.save
 
     target = target_for(email, company)
-    if target && target.is_a?(Task)
+    if target and target.is_a?(Task)
       add_email_to_task(e, email, target)
+    elsif target and target.is_a?(Project)
+      task = create_task_from_email(e, target)
+      add_email_to_task(e, email, task)
     else
       # Unknown email
       begin
@@ -154,6 +157,15 @@ class Mailman < ActionMailer::Base
       task_file.file_size = File.size(task_file.file_path)
       task_file.save
     end
+  end
+
+  def create_task_from_email(email, project)
+    task = project.tasks.build(:name => email.subject, 
+                               :company => project.company,
+                               :description => "") 
+    task.save!
+
+    return task
   end
 
 end

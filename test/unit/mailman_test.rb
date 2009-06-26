@@ -94,8 +94,8 @@ class MailmanTest < ActiveSupport::TestCase
       assert_equal count + 1, project.tasks.count
       task = Task.find(:first, :order => "id desc")
 
-      assert_equal @tmail.subject, task.subject
-      assert_equal "AAxxx", task.work_logs.first.body
+      assert_equal @tmail.subject, task.name
+      assert_equal "Comment", task.work_logs.first.body
     end
 
   end
