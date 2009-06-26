@@ -37,6 +37,9 @@ class Mailman < ActionMailer::Base
       subdomain = to.split('@')[1].split('.')[0]
       company ||= Company.find_by_subdomain(subdomain)
     end
+    # if company not found but we're using a single company install, just
+    # use that one
+    company ||= Company.first if Company.count == 1
     
     if company
       e.company = company
@@ -47,16 +50,13 @@ class Mailman < ActionMailer::Base
     target = target_for(email, company)
     if target and target.is_a?(Task)
       add_email_to_task(e, email, target)
+
     elsif target and target.is_a?(Project)
       task = create_task_from_email(e, target)
       add_email_to_task(e, email, task)
+
     else
-      # Unknown email
-      begin
-        Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
-      rescue
-        puts $!
-      end
+      Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
     end
     
     return e
@@ -90,8 +90,10 @@ class Mailman < ActionMailer::Base
   end
 
   def add_email_to_task(e, email, task)
-    notify_targets = task.project.users.collect{ |u| u.email.downcase }.flatten.uniq
-    notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip.downcase } }.flatten.uniq
+    notify_targets = task.project.users.map { |u| u.email }
+    notify_targets += Task.find(:all, :conditions => ["project_id = ? AND notify_emails IS NOT NULL and notify_emails <> ''", task.project_id]).collect{ |t| t.notify_emails.split(',')}.flatten.uniq
+    notify_targets = notify_targets.flatten.compact.uniq
+    notify_targets = notify_targets.map { |nt| nt.strip.downcase }
 
     if notify_targets.include?(email.from.first.downcase)
       if email.has_attachments?
@@ -160,10 +162,15 @@ class Mailman < ActionMailer::Base
   end
 
   def create_task_from_email(email, project)
-    task = project.tasks.build(:name => email.subject, 
-                               :company => project.company,
-                               :description => "") 
-    task.save!
+    task = Task.new(:name => email.subject, 
+                    :project => project,
+                    :company => project.company,
+                    :description => "") 
+    task.set_task_num(project.company.id)
+    task.watchers << email.user if email.user
+    # need to do without_validations to get around validation
+    # errors on custom attributes
+    task.save(false)
 
     return task
   end
