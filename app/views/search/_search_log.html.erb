@@ -32,7 +32,7 @@
   </td>
   <td class="log" valign="top"><div style="float:left;"><strong>
 <% if log.task && log.task_id > 0  %>
-<%= link_to_task_with_highlight(log.task, @keys) %>
+<%= link_to_task(log.task, false, @keys) %>
 <% elsif log.scm_changeset && log.scm_changeset_id.to_i > 0 %>
 <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(highlight_all(log.scm_changeset.name, @keys)), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
           <br /><%= "<span class=\"optional\">#{highlight_all(log.scm_changeset.full_name, @keys)}</span> " %>

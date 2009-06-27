@@ -57,7 +57,7 @@ class="task <%=classes%>" style="position:relative;<% if depth > 1 %>margin-left
 
    <div style="float:left;padding-left:2px;">
 
-   <%= link_to_task_with_highlight(task, @keys)  -%>
+   <%= link_to_task(task, false,@keys)  -%>
 
    <small>
      <%= "(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})" if (current_user.option_tracktime.to_i == 1 && task.duration.to_i > 0) %>

@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   helper_method :current_project_ids
   helper_method :completed_milestone_ids
   helper_method :worked_nice
+  helper_method :link_to_task
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
@@ -362,10 +363,6 @@ class ApplicationController < ActionController::Base
     session[:last_active] ||= Time.now.utc
   end
 
-  def link_to_task(task)
-    "<strong><small>#{task.issue_num}</small></strong> <a href=\"/tasks/edit/#{task.task_num}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{task.name}</a>"
-  end
-
   def double_escape(txt)
     res = txt.gsub(/channel-message-mine/,'channel-message-others')
     res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
@@ -494,4 +491,29 @@ class ApplicationController < ActionController::Base
 
     return company
   end
+
+  private
+
+  # Returns a link to the given task. 
+  # If highlight keys is given, that text will be highlighted in 
+  # the link.
+  def link_to_task(task, truncate = true, highlight_keys = [])
+    link = "<strong>#{task.issue_num}</strong> "
+
+    url = url_for(:id => task.task_num, :controller => 'tasks', :action => 'edit')
+
+    title = task.to_tip(:duration_format => current_user.duration_format, 
+                        :workday_duration => current_user.workday_duration, 
+                        :days_per_week => current_user.days_per_week, 
+                        :user => current_user)
+    title = highlight_all(title, highlight_keys)
+
+    html = { :class => "tooltip#{task.css_classes}", :title => title }
+    text = truncate ? task.name : self.class.helpers.truncate(task.name, 80)
+    text = highlight_all(text, highlight_keys)
+    
+    link += self.class.helpers.link_to(text, url, html)
+    return link
+  end
+
 end

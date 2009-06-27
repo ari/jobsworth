@@ -238,7 +238,7 @@ class TasksController < ApplicationController
 
       Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
-      flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully created.')}"
+      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
       return if request.xhr?
       redirect_from_last
@@ -520,7 +520,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
 
-      flash['notice'] ||= "#{link_to_task(@task)} - #{_('Task was successfully updated.')}"
+      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
       redirect_from_last
     else
       init_form_variables(@task)
