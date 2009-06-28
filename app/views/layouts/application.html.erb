@@ -16,15 +16,6 @@
 	  <%= javascript_include_tag "flotr" %>
 	<% end %>
 	<%= yield :tinymce_init %>
-
-	<!--[if lt IE 7]>
-	  <%= javascript_include_tag "IE7" %>
-<style type="text/css">
-#presence {
-	  position:relative;
-}
-</style>
-	<![endif]-->
 	<%= stylesheet_link_tag "print", { :media => "print" } %>
 	<%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
