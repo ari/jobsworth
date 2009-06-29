@@ -70,7 +70,8 @@ class SearchController < ApplicationController
       forums << "#{f.id}"
     end
     forums = "+forum_id:\"#{forums}\""
-    @posts = Post.find_with_ferret("+company_id:#{current_user.company_id} #{forums} #{query}", {:limit => 100})
+    @posts = Post.find_with_ferret("+company_id:#{current_user.company_id} #{forums} #{query}", 
+                                   {:limit => 100})
 
     # Find instant messages
     chats = ""

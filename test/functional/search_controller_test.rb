@@ -19,4 +19,9 @@ class SearchControllerTest < ActionController::TestCase
     assert_equal 1, found.length
     assert_response :success
   end
+
+  test "/search should render with no query" do
+    get :search, :query => ""
+    assert_response :success
+  end
 end
