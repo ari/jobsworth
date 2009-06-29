@@ -840,7 +840,7 @@ pre.auto_generated {
   color: #CCCCCC;
   font-size: 9px;
   padding-top: 1em;
-  padding-left: 2em;
+  padding-left:0.3em;
 }
 
 .contact a {
