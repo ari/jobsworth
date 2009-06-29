@@ -125,9 +125,11 @@ class Mailman < ActionMailer::Base
       user = e.user
     end
     
-    recipients = task.users - [ e.user ]
-    Notifications::deliver_changed(:comment, task, e.user, recipients,
-                                   e.body.gsub(/<[^>]*>/,''))
+    recipients = (task.users - [ e.user ]).compact.uniq.flatten
+    if recipients.any?
+      Notifications::deliver_changed(:comment, task, e.user, recipients,
+                                     e.body.gsub(/<[^>]*>/,''))
+    end
   end
 
   # Returns true if the email should be accepted
