@@ -9,6 +9,6 @@
 <% unless @action == 'deleted' -%>
 http://<%= @user.company.subdomain%>.<%= $CONFIG[:domain] %>/views/select_milestone/<%= @milestone.id %>
 <% end -%>
-Sent to <%= "${@user.name} <${@user.email}>" %>
+
 -------------------->
 <%= $CONFIG[:productName] %>
