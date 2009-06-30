@@ -13,7 +13,7 @@
             </form>
 </td></tr>
 
-<% if @tasks.size > 0 %>
+<% if @tasks and @tasks.any? %>
   <tr>
     <td>
       <div class="log_header"><%=_ 'Tasks' %></div>
@@ -30,7 +30,7 @@
   <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @logs.size > 0 %>
+<% if @logs and @logs.any? %>
   <tr>
     <td class="log_header">
       <%=_ 'Activities' %>
@@ -44,7 +44,7 @@
   <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @posts.size > 0 %>
+<% if @posts and @posts.any? %>
 <tr>
   <td class="log_header">
     <%=_ 'Forum Posts' %>
@@ -59,7 +59,7 @@
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @wiki_pages.size > 0 %>
+<% if @wiki_pages and @wiki_pages.any? %>
 <tr>
   <td class="log_header">
     <%=_ 'Wiki' %>
@@ -74,7 +74,7 @@
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @shouts.size > 0 %>
+<% if @shouts and @shouts.any? %>
   <tr>
     <td class="log_header">
     <%=_ 'Chat' %>
@@ -90,7 +90,7 @@
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @chat_messages.size > 0 %>
+<% if @chat_messages and @chat_messages.any? %>
 <tr>
   <td class="log_header">
     <%=_ 'Instant Messages' %>
@@ -105,7 +105,7 @@
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @customers.length > 0 %>
+<% if @customers and @customers.any? %>
   <tr>
     <td>
       <div class="log_header"><%=_ "Clients" %></div>
@@ -127,7 +127,7 @@
   <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @users.length > 0 %>
+<% if @users and @users.any? %>
   <tr>
     <td>
       <div class="log_header"><%=_ "Users" %></div>
