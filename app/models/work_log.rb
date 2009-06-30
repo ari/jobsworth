@@ -97,4 +97,13 @@ class WorkLog < ActiveRecord::Base
     self.started_at + self.duration + self.paused_duration
   end
 
+  # Sets the associated customer using the given name
+  def customer_name=(name)
+    self.customer = company.customers.find_by_name(name)
+  end
+  # Returns the name of the associated customer
+  def customer_name
+    customer.name if customer
+  end
+
 end
