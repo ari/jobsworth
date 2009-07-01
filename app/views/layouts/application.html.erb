@@ -16,15 +16,6 @@
 	  <%= javascript_include_tag "flotr" %>
 	<% end %>
 	<%= yield :tinymce_init %>
-
-	<!--[if lt IE 7]>
-	  <%= javascript_include_tag "IE7" %>
-<style type="text/css">
-#presence {
-	  position:relative;
-}
-</style>
-	<![endif]-->
 	<%= stylesheet_link_tag "print", { :media => "print" } %>
 	<%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
 
@@ -112,7 +103,7 @@
 		</div>
 	</div>
 	<% else %>
-	<div id="contact" style="padding-left:0.3em;padding-top:1em;"><small><em>Clocking IT<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
+	<div id="contact"><% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></div>
 	<% end %>
 
 <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>

@@ -54,16 +54,10 @@ Rails::Initializer.run do |config|
   # Rotate logs when they reach 1Mb and keep 5 old logs
   config.logger = Logger.new(config.log_path, 5, 1024*1024)
   
-  config.gem 'rails', :version => '2.3.2'
-  config.gem 'actionpack', :version => '2.3.2'
-  config.gem 'actionmailer', :version => '2.3.2'
-  config.gem 'activerecord', :version => '2.3.2'
-  config.gem 'activeresource', :version => '2.3.2'
-  config.gem 'activesupport', :version => '2.3.2'
-  
+
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
         
-  config.gem 'mysql', :version => '2.7'
+  config.gem 'mysql'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine', :version => '0.12.6'
   config.gem 'json', :version => '1.1.4'
@@ -74,18 +68,17 @@ Rails::Initializer.run do |config|
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.1.9'
-  config.gem 'rmagick', :version => '2.9.1', :lib => 'RMagick'
+  config.gem 'rmagick', :lib => 'RMagick'
   config.gem 'ZenTest', :version => '4.0.0', :lib => 'zentest'
-  #config.gem 'hoe', :version => '1.12.1'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
-  #config.gem 'echoe', :version => '3.1.1'
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
   
   # Required for development only
-  config.gem 'allison', :version => '2.0.3'
-  config.gem 'markaby', :version => '0.5'
+  config.gem 'allison'
+  config.gem 'markaby'
+  config.gem 'fiveruns_tuneup'
 end
 
 ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")

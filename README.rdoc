@@ -23,7 +23,7 @@ How to install these will differ on each platform. Some possibilities:
 
 ==== FreeBSD
 
-  portinstall ruby18-gems ruby18-mysql rubygem-rake ImageMagick
+  portinstall ruby-iconv ruby18-gems ruby18-mysql rubygem-rake ImageMagick
 
 ==== OSX
 
@@ -52,10 +52,12 @@ Naturally you'll want to be running Apache httpd and have an appropriate virtual
 
 There are a few Ruby gems which are needed for running CIT. Change directory into the top of your CIT installation, then type:
 
-  rake gems
+  rake gems:install
 
-That will tell you what you need to install and help you install them.
+That will install the gems you need.
 
+If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5 and 10.6), then try this
+  sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
 

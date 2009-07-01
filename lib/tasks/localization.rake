@@ -1,8 +1,6 @@
 require 'date'
 require 'lib/localization'
 
-require 'config/environment'
-
 namespace :locale do
 
   desc "Restore translations into database"

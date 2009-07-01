@@ -1,10 +1,9 @@
 ............................................
 
-This task <%= @task.id %> was just updated with the information above. If you have any further comments to make, please reply to this email above the line.
+This task <%= @task.task_num %> was just updated with the information above. If you have any further comments to make, please reply to this email above the line.
 
 To see the history of this task, visit:
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
 
-Sent to <%= "#{@user.name} <#{@user.email}>" %>
 -------------------->
 <%= $CONFIG[:productName] %>
