@@ -44,6 +44,10 @@ class Task < ActiveRecord::Base
 
   has_many :task_property_values, :dependent => :destroy
 
+  has_many :task_customers, :dependent => :destroy
+  has_many :customers, :through => :task_customers, :order => "customers.name asc"
+  adds_and_removes_using_params :customers
+
   has_one       :ical_entry
 
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"

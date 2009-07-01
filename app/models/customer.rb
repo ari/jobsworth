@@ -14,6 +14,9 @@ class Customer < ActiveRecord::Base
   has_many      :users, :order => "lower(name)"
   has_many      :resources
 
+  has_many :task_customers, :dependent => :destroy
+  has_many :tasks, :through => :task_customers
+
   has_many      :organizational_units 
 
   validates_length_of           :name,  :maximum=>200

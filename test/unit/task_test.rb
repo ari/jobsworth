@@ -3,6 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 class TaskTest < ActiveRecord::TestCase
   fixtures :tasks, :projects, :users, :companies, :customers, :properties, :property_values
 
+  should_have_many :task_customers, :dependent => :destroy
+  should_have_many :customers, :through => :task_customers
+
   def setup
     @task = tasks(:normal_task)
   end
@@ -321,5 +324,30 @@ class TaskTest < ActiveRecord::TestCase
     @task.company.properties.reload
     @task.task_property_values.clear
     assert @task.valid?
+  end
+
+  context "a normal task" do
+    setup do
+      @task = Task.first
+    end
+
+    should "add and remove task customers using customer_attributes=" do
+      c1 = Customer.first
+      c2 = Customer.last
+      assert_not_equal c1, c2
+
+      assert_equal 0, @task.customers.length
+      @task.customer_attributes = { 
+        c1.id => { "member" => "1" },
+        c2.id => { "member" => "1" } 
+      }
+      assert_equal 2, @task.customers.length
+
+      @task.customer_attributes = { 
+        c1.id => { "add" => "1" }
+      }
+      assert_equal 1, @task.customers.length
+      assert_equal c1, @task.task_customers.first.customer
+    end
   end
 end

@@ -1420,7 +1420,13 @@ a.description {
     margin-top: 0px;
     padding: 0px;
 }
-#taskform .user .removeLink {
+#taskform #task_customers {
+    clear: both;
+}
+#taskform #task_customers .customer {
+    clear: both;
+}
+#taskform .user .removeLink, #taskform #task_customers .removeLink {
     float: right
 }
 #taskform .user.will_notify {

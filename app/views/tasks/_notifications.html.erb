@@ -3,6 +3,13 @@
 <fieldset id="task_notify" style="padding-right:0;">
   <legend><%=_ 'Notifications' %></legend>
 
+  <label for="clients"><%=_ "Clients" %></label>
+  <%= text_field_with_auto_complete(:customer, :name, 
+      { :size => 12, :value => "" }, :after_update_element => "addCustomerToTask") %>
+  <div id="task_customers">
+    <%= render :partial => "task_customer", :collection => @task.customers %>
+  </div>
+
   <label for="task_requested_by"><%=_ 'Requested By' %></label>
   <%= text_field 'task', 'requested_by', {:size => 12}.merge(perms['edit']) %>
   <br/>

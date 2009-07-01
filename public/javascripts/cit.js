@@ -684,15 +684,27 @@ function addUserToTask(input, li) {
     var userId = jQuery(li).find(".complete_value").text();
     var taskId = jQuery("#task_id").val();
 
-    var url = document.location.toString();
-    url = url.replace("/edit/", "/add_notification/");
-    url = url.replace("#", "");
     var url = "/tasks/add_notification";
-
     var params = { user_id : userId, id : taskId }
     jQuery.get(url, params, function(data) {
 	jQuery("#task_notify").append(data);
 	highlightActiveNotifications();
+    });
+}
+
+/*
+  Adds the selected customer to the current task list of clients
+*/
+function addCustomerToTask(input, li) {
+    jQuery(input).val("");
+
+    var clientId = jQuery(li).find(".complete_value").text();
+    var taskId = jQuery("#task_id").val();
+
+    var url = "/tasks/add_client";
+    var params = { client_id : clientId, id : taskId }
+    jQuery.get(url, params, function(data) {
+	jQuery("#task_customers").append(data);
     });
 }
 

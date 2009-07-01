@@ -1480,6 +1480,18 @@ class TasksController < ApplicationController
     render(:partial => "notification", :locals => { :notification => user })
   end
 
+  def add_client
+    @task = current_user.company.tasks.new
+    if !params[:id].blank?
+      @task = current_user.company.tasks.find(params[:id])
+    end
+
+    customer = current_user.company.customers.find(params[:client_id])
+    @task.task_customers.build(:customer => customer)
+    
+    render(:partial => "task_customer", :locals => { :task_customer => customer })
+  end
+
   def update_work_log
     log = current_user.company.work_logs.find(params[:id])
     updated = log.update_attributes(params[:work_log])

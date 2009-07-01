@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  customer_id: 1
+  task_id: 1
+
+two:
+  customer_id: 1
+  task_id: 1

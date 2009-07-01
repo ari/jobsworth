@@ -3,6 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 class CustomerTest < ActiveRecord::TestCase
   fixtures :companies, :customers
 
+  should_have_many :task_customers, :dependent => :destroy
+  should_have_many :tasks, :through => :task_customers
+
   def setup
     @internal = customers(:internal_customer)
     @external = customers(:external_customer)
