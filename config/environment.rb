@@ -75,6 +75,10 @@ Rails::Initializer.run do |config|
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
   
+  # Required for development only
+   config.gem 'allison'
+   config.gem 'markaby'
+   config.gem 'fiveruns_tuneup'
 end
 
 ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
