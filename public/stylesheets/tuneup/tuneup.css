@@ -1,0 +1,197 @@
+/*
+Copyright (c) 2008, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 2.5.1
+*/
+/* Modified to target #tuneup div */
+#tuneup div,#tuneup dl,#tuneup dt,#tuneup dd,#tuneup ul,#tuneup ol,#tuneup #tuneup li,#tuneup h1,#tuneup h2,#tuneup h3,#tuneup h4,#tuneup h5,#tuneup h6,#tuneup pre,#tuneup code,#tuneup form,#tuneup fieldset,#tuneup #tuneup legend,#tuneup input,#tuneup textarea,#tuneup p,#tuneup blockquote,#tuneup th,#tuneup td{margin:0;padding:0;}
+#tuneup table{border-collapse:collapse;border-spacing:0;}
+#tuneup fieldset,#tuneup img{border:0;}
+#tuneup address,#tuneup caption,#tuneup cite,#tuneup code,#tuneup dfn,#tuneup em,#tuneup strong,#tuneup th,#tuneup var{font-style:normal;font-weight:normal;}
+#tuneup li{list-style:none;}
+#tuneup caption,#tuneup th{text-align:left;}
+#tuneup h1,#tuneup h2,#tuneup h3,#tuneup h4,#tuneup h5,#tuneup h6{font-size:100%;font-weight:normal;}
+#tuneup q:before,#tuneup q:after{content:'';}
+#tuneup abbr,#tuneup acronym {border:0;font-variant:normal;}
+#tuneup sup {vertical-align:text-top;}
+#tuneup sub {vertical-align:text-bottom;}
+#tuneup input,#tuneup textarea,#tuneup select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+#tuneup input,#tuneup textarea,#tuneup select{*font-size:100%;}
+#tuneup legend{color:#000;}
+#tuneup body {font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}
+#tuneup table {font-size:inherit;font:100%;}
+#tuneup pre,#tuneup code,#tuneup kbd,#tuneup samp,#tuneup tt{font-family:monospace;*font-size:108%;line-height:100%;}
+
+#tuneup-flash div,#tuneup-flash dl,#tuneup-flash dt,#tuneup-flash dd,#tuneup-flash ul,#tuneup-flash ol,#tuneup-flash #tuneup-flash li,#tuneup-flash h1,#tuneup-flash h2,#tuneup-flash h3,#tuneup-flash h4,#tuneup-flash h5,#tuneup-flash h6,#tuneup-flash pre,#tuneup-flash code,#tuneup-flash form,#tuneup-flash fieldset,#tuneup-flash #tuneup-flash legend,#tuneup-flash input,#tuneup-flash textarea,#tuneup-flash p,#tuneup-flash blockquote,#tuneup-flash th,#tuneup-flash td{margin:0;padding:0;}
+#tuneup-flash table{border-collapse:collapse;border-spacing:0;}
+#tuneup-flash fieldset,#tuneup-flash img{border:0;}
+#tuneup-flash address,#tuneup-flash caption,#tuneup-flash cite,#tuneup-flash code,#tuneup-flash dfn,#tuneup-flash em,#tuneup-flash strong,#tuneup-flash th,#tuneup-flash var{font-style:normal;font-weight:normal;}
+#tuneup-flash li{list-style:none;}
+#tuneup-flash caption,#tuneup-flash th{text-align:left;}
+#tuneup-flash h1,#tuneup-flash h2,#tuneup-flash h3,#tuneup-flash h4,#tuneup-flash h5,#tuneup-flash h6{font-size:100%;font-weight:normal;}
+#tuneup-flash q:before,#tuneup-flash q:after{content:'';}
+#tuneup-flash abbr,#tuneup-flash acronym {border:0;font-variant:normal;}
+#tuneup-flash sup {vertical-align:text-top;}
+#tuneup-flash sub {vertical-align:text-bottom;}
+#tuneup-flash input,#tuneup-flash textarea,#tuneup-flash select{font-family:inherit;font-size:inherit;font-weight:inherit;}
+#tuneup-flash input,#tuneup-flash textarea,#tuneup-flash select{*font-size:100%;}
+#tuneup-flash legend{color:#000;}
+#tuneup-flash body {font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}
+#tuneup-flash table {font-size:inherit;font:100%;}
+#tuneup-flash pre,#tuneup-flash code,#tuneup-flash kbd,#tuneup-flash samp,#tuneup-flash tt{font-family:monospace;*font-size:108%;line-height:100%;}
+/* END YUI RESET */
+
+/* Styling */
+#tuneup { position: relative; height: 50px; color: #ddd; background: #000 url(/images/tuneup/head.gif) 0 100% repeat-x; padding: 0; font-family: "Helvetica Neue", "Lucida Grande", Calibri, Helvetica, Verdana, sans-serif; font-size: 12px; }
+#tuneup #tuneup-content { margin-left: 220px; color: #ddd; height: 50px; vertical-align: middle; text-align: left; }
+#tuneup #tuneup-root-bar { float: right; }
+#tuneup a, #tuneup a:visited, #tuneup a:active { color: #fff; text-decoration: underline; font-size: 12px; border: 0; }
+
+#tuneup #tuneup-logo { float: left;}
+#tuneup label { display: inline; font-size: 13px; font-weight: normal; color: #CCC; padding: 2px 2px; }
+#tuneup label, #tuneup button { margin: 0 6px 0 20px; }
+
+#tuneup #tuneup-content p.tuneup-full { height: 50px; line-height: 50px; vertical-align: middle; padding: 0; background-color: transparent; }
+#tuneup .small { font-size: 10px; color: #666; padding: 0 8px 0 8px;}
+
+
+#tuneup .tuneup-bar { margin: 0 4px; margin-left: 10px; height: 15px; list-style: none; }
+#tuneup .tuneup-bar li { float:left; height: 20px; color: #fff; line-height: 20px; vertical-align: middle; font-size: 11px; padding: 0 4px;
+  background-image: url(/images/tuneup/fade.png);
+  background-position: bottom left;
+  background-repeat: repeat-x;
+}
+#tuneup .tuneup-layer-model { background-color: #FF9800; }
+#tuneup .tuneup-layer-view { background-color: #38D023; }
+#tuneup .tuneup-layer-controller { background-color: #3388D5; }
+#tuneup .tuneup-bar li.tuneup-layer-other { background: #222 url(/images/tuneup/fade_down.png) top left repeat-x;}
+
+#tuneup #tuneup-data { position: relative;}
+#tuneup #tuneup-top { position: absolute; top: 0px; right: 10px; padding: 0; margin: 0 0 0 150px;  z-index: 11000; }
+#tuneup #tuneup-top #tuneup-save-link { float: right; line-height: 45px; vertical-align: bottom; text-align: center; font-weight: bold; padding: 0 9px 0 20px; background: url(/images/tuneup/pointer.gif) 0 50% no-repeat; }
+#tuneup #tuneup-back-to-run-link { float: right; line-height: 15px; vertical-align: bottom; text-align: center; padding: 8px; background-color: #333; -moz-border-radius: 5px; margin: 7px 10px 0px 0px; border: 1px solid black;}
+#tuneup #tuneup-summary {float: right; padding: 9px; width: 400px; padding-bottom: 17px; margin-top: 3px; text-align: center; color: #ddd; -moz-border-radius: 6px 6px 0 0; }
+
+#tuneup #tuneup-data:hover #tuneup-summary { /* h */
+  border-bottom: 0px;
+  background: #000;
+}
+#tuneup #tuneup-details { display: none; position: absolute; top: 46px; right: 10px; padding: 9px; text-align: left; z-index: 10999;}
+#tuneup #tuneup-data:hover #tuneup-details { /* h */
+  display: block;
+  background: #000;
+  min-width: 300px;
+  -moz-border-radius: 6px 0 6px 6px;
+}
+
+#tuneup ul#tuneup-details ul.tuneup-step-info { margin: 0; padding: 0; }
+#tuneup ul#tuneup-details li.tuneup-title { float: left; overflow: hidden; height: 20px; margin: 0 10px 0 0; padding: 0; color: #ddd; font-size: 12px; text-transform: none; font-weight: inherit;}
+#tuneup ul#tuneup-details li.tuneup-title p { background-color: transparent; }
+#tuneup ul#tuneup-details li.tuneup-title strong { color: #fff; font-weight: bold; }
+#tuneup ul#tuneup-details li.tuneup-title span.time { float: right; text-transform: none; font-size: 11px; font-weight: normal; margin-right: 0px; }
+
+#tuneup ul#tuneup-details li.tuneup-title a, ul#tuneup-details li.tuneup-title a:active, ul#tuneup-details li.tuneup-title a:visited {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-decoration: none;
+  text-align: left;
+  position: inherit;
+}
+
+#tuneup .tuneup-bar li { text-align: center; }
+
+#tuneup #tuneup-details li.fiveruns_tuneup_step { clear: left; padding: 0 0 0 4px; background: url(/images/tuneup/pip.gif) 4px 0 no-repeat; margin: 2px 0; }
+#tuneup #tuneup-details li.fiveruns_tuneup_step.with-children {  background: url(/images/tuneup/arrows.gif) 4px 0 no-repeat;}
+#tuneup #tuneup-details li.fiveruns_tuneup_step.with-children.tuneup-opened { background: url(/images/tuneup/arrows.gif) 4px -20px no-repeat; }
+
+#tuneup ul#tuneup-details span.time { margin-right: 12px; }
+
+#tuneup li .children { display: none; }
+
+#tuneup_spinner { position: absolute; z-index: 11002; top: 15px; right: 30px; }
+
+#tuneup ul#tuneup-details li.tuneup-detail-bar {
+	float:left;
+  margin: 0 0 0 0;
+  height: 20px;
+	width: 300px;
+  padding: 0;
+}
+#tuneup ul#tuneup-details li.tuneup-title { padding-left: 16px; width: 400px; }
+
+#tuneup ul#tuneup-details ul.fiveruns_tuneup_children { background: #111; }
+#tuneup ul#tuneup-details ul li.tuneup-title { width: 396px; }
+
+#tuneup ul#tuneup-details ul ul.fiveruns_tuneup_children { background: #222;}
+#tuneup ul#tuneup-details ul ul li.tuneup-title { width: 392px; }
+
+#tuneup ul#tuneup-details ul ul ul.fiveruns_tuneup_children { background: #333;}
+#tuneup ul#tuneup-details ul ul ul li.tuneup-title { width: 388px; }
+
+#tuneup ul#tuneup-details ul ul ul ul.fiveruns_tuneup_children { background: #444;}
+#tuneup ul#tuneup-details ul ul ul ul li.tuneup-title { width: 384px; }
+
+#tuneup ul#tuneup-details ul ul ul ul ul.fiveruns_tuneup_children { background: #555;}
+#tuneup ul#tuneup-details ul ul ul ul ul li.tuneup-title { width: 380px; }
+
+#tuneup ul#tuneup-details ul ul ul ul ul ul.fiveruns_tuneup_children { background: #666;}
+
+#tuneup ul#tuneup-details ul ul ul ul ul ul li.tuneup-title { width: 376px; }
+#tuneup ul#tuneup-details ul ul ul ul ul ul ul li.tuneup-title { width: 372px; }
+#tuneup ul#tuneup-details ul ul ul ul ul ul ul ul li.tuneup-title { width: 368px; }
+
+#tuneup-flash { display: none; text-align: left; font-size: 12px; padding: 5px; color: #000; border-bottom: 1px #000 solid; }
+#tuneup-flash emph { color: #666; font-style: italic; }
+#tuneup-flash p { font-family: sans-serif; margin: 0; }
+#tuneup-flash p { padding: 0; padding-left: 20px; font-family: sans-serif; background: none; color: #000; border: 0; }
+#tuneup-flash.tuneup-show { display: block; }
+#tuneup-flash.tuneup-error {  background: #FDFCDB; }
+#tuneup-flash.tuneup-error p { background:  url(/images/tuneup/warning.gif) 0 50% no-repeat; }
+#tuneup-flash.tuneup-notice { padding-left: 0; background: #E4FFDE; }
+
+#tuneup #tuneup-details .tuneup-bar { width: 300px; height: 20px; padding: 0; margin: 0 !important; }
+#tuneup #tuneup-details .tuneup-bar li { height: 20px; padding: 0; margin: 0  !important; }
+
+#tuneup #tuneup-details a.tuneup-sql { color: 001999; margin-left: 10px; }
+#tuneup #tuneup-details a img { border: 0; }
+
+#tuneup .tuneup-halo { display: none; margin-left: 4px; }
+#tuneup .tuneup-step-info:hover .tuneup-halo { display: inline; }
+
+#tuneup textarea { background: none; overflow: auto; color: #fff; font-size: 12px; font-family: sans-serif; padding: 4px; border: 0; font-family: monospace; }
+#tuneup table { border: 0; margin-top: 4px; background: #111; } /* sql */
+#tuneup th { background: #000; padding: 4px; color: #fff; font-size: 12px; text-align: left; border: 0; font-weight: bold; border: 1px #333 solid; border-left: 0; border-top: 0; }
+#tuneup td { background: #111; padding: 4px; color: #ddd; font-size: 12px; text-align: left; border: 0; }
+
+#tuneup #tuneup-schema { display: none; position: absolute; top: 46px; right: 754px; padding: 9px; text-align: left; z-index: 10998; background: #000; opacity: 0.85; color: #ddd; overflow: hidden; -moz-border-radius: 6px; }
+
+#tuneup h1 {
+  background: transparent url(/images/tuneup/logo_clear.png) center left no-repeat;
+  border: 0;
+  color: white;
+  display: block;
+  float: left;
+  font-family: 'Helvetica Neue';
+  font-size: 18px;
+  font-weight: bold;
+  height: 50px;
+  letter-spacing: 1px;
+  line-height: 50px;
+  margin: 0 18px 0 18px;
+  padding: 0 0 0 38px;
+  text-shadow: rgb(0, 0, 0) -1px -1px 0px;
+  vertical-align: middle;
+}
+
+#tuneup #tuneup-schema h3 { color: #fff; font-weight: bold; font-size: 14px; margin-bottom: 5px; }
+#tuneup #tuneup-data:hover #tuneup-schema { display: block; }
+#tuneup #tuneup-schema table, #tuneup #tuneup-schema tr { background: transparent; }
+#tuneup #tuneup-schema th { background: #111; color: #fff; border: 0 }
+#tuneup #tuneup-schema td { background: #000; font-family: monospace; color: #ddd; padding: 1px; font-size: 11px; }
+#tuneup #tuneup-trend { float: right; width: 100px; }
+
+#tuneup button { background: none; border: 0; margin: 0; padding: 0; height: 50px; line-height: 50px; vertical-align: middle; }
+
+a.tuneup-step-link { padding-left: 20px; margin-left: -20px; outline: none;}

@@ -15,11 +15,3 @@ config.action_view.debug_rjs                         = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
-
-Rails::Initializer.run do |config|
-  
-  # Required for development only
-  config.gem 'allison', :version => '2.0.3'
-  config.gem 'markaby', :version => '0.5'
-  config.gem 'fiveruns_tuneup'
-end
