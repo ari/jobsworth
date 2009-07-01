@@ -306,4 +306,13 @@ module TasksHelper
     return options
   end
 
+  # Returns a list of customers/clients that could a log
+  # could potentially be attached to
+  def work_log_customer_options(log)
+    res = @log.task.customers.clone
+    res << @log.task.project.customer
+
+    return res.uniq.compact
+  end
+
 end
