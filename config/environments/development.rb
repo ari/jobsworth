@@ -15,3 +15,8 @@ config.action_view.debug_rjs                         = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+# Required for development only
+config.gem 'allison'
+config.gem 'markaby'
+config.gem 'fiveruns_tuneup'
