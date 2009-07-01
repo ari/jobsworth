@@ -315,4 +315,22 @@ module TasksHelper
     return res.uniq.compact
   end
 
+  # Returns html to display the due date selector for task
+  def due_date_field(task, permissions)
+    date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
+
+    options = { 
+      :id => "due_at", :class => "tooltip", :title => date_tooltip,
+      :size => 12,
+      :value => formatted_date_for_current_user(task.due_date)
+    }
+    options = options.merge(permissions["prioritize"])
+
+    if !task.repeat.blank?
+      options[:value] = @task.repeat_summary
+    end
+
+    return text_field("task", "due_at", options)
+  end
+
 end

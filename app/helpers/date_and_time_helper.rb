@@ -11,6 +11,12 @@ module DateAndTimeHelper
     datetime.strftime("#{ current_user.date_format } #{ current_user.time_format }") if datetime
   end
 
+  # Returns a string of the given date formatted according to the
+  # current user's preferences
+  def formatted_date_for_current_user(date)
+    date.strftime("#{ current_user.date_format }") if date
+  end
+
   ###
   # Parses the date string at params[key_name] according to the 
   # current user's prefs. If no date is found, the current
