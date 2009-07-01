@@ -8,7 +8,7 @@
 
 <% if @log.log_type != EventLog::TASK_COMMENT %>
   <%= f.label :customer_name, _("Client") %>
-  <%= f.select :customer_id, [ current_user.customer ] + @log.task.customers %>
+  <%= f.select :customer_id, work_log_customer_options(@log) %>
 
   <label for="work_log_duration"><%=_ 'Duration Worked' %></label>
   <%= f.text_field(:duration, :value => worked_nice(@log.duration/60), 
