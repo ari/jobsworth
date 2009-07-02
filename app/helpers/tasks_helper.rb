@@ -312,7 +312,8 @@ module TasksHelper
     res = @log.task.customers.clone
     res << @log.task.project.customer
 
-    return res.uniq.compact
+    res = res.uniq.compact
+    return objects_to_names_and_ids(res)
   end
 
   # Returns html to display the due date selector for task
