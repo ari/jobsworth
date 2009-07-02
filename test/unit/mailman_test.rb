@@ -114,6 +114,38 @@ class MailmanTest < ActiveSupport::TestCase
 
   end
 
+  context "a single company install" do
+    setup do
+      # need an admin user for this
+      @company.users.first.update_attribute(:admin, true)
+      # need only one company  
+      Company.all.each { |c| c.destroy if c != @company }
+
+      @project = @company.projects.last
+      @company.preference_attributes = { "incoming_email_project" => @project.id }
+
+      mail = test_mail("to@random", "from@random")
+      @tmail = TMail::Mail.parse(mail)
+    end
+
+    should "add users to task as assigned" do
+      @tmail.to = [ @tmail.to, User.first.email ]
+
+      Mailman.receive(@tmail.to_s)
+
+      task = Task.first(:order => "id desc")
+      assert task.users.include?(User.first)
+    end
+
+    should "add users in cc as watchers" do
+      @tmail.cc = [ User.first.email ]
+      Mailman.receive(@tmail.to_s)
+
+      task = Task.first(:order => "id desc")
+      assert task.watchers.include?(User.first)
+    end
+  end
+
 
   private
   

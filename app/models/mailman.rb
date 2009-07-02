@@ -52,7 +52,7 @@ class Mailman < ActionMailer::Base
       add_email_to_task(e, email, target)
 
     elsif target and target.is_a?(Project)
-      task = create_task_from_email(e, target)
+      task = create_task_from_email(email, target)
       add_email_to_task(e, email, task)
 
     else
@@ -185,7 +185,17 @@ class Mailman < ActionMailer::Base
                     :description => "",
                     :duration => 0) 
     task.set_task_num(project.company.id)
-    task.watchers << email.user if email.user
+
+    (email.to || []).each do |email_addr|
+      user = project.company.users.find_by_email(email_addr.strip)
+      task.users << user if user
+    end
+    (email.cc || []).each do |email_addr|
+      user = project.company.users.find_by_email(email_addr.strip)
+      task.watchers << user if user
+    end
+#    task.watchers << email.user if email.user
+
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(false)
