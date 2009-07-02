@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TasksControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :tasks
+  fixtures :users, :companies, :tasks, :customers, :projects
   
   def setup
     @request.with_subdomain('cit')
@@ -74,6 +74,18 @@ class TasksControllerTest < ActionController::TestCase
     post(:update, :id => task.id, :task => { :name => "" })
 
     assert_template "tasks/edit"
+    assert_response :success
+  end
+
+  should "render create ok" do
+    task = Task.first
+    customer = Customer.first
+    project = customer.projects.first 
+    
+    post(:create, :id => task.id, :task => { 
+           :project_id => project.id,
+           :customer_attributes => { customer.id => "1" } })
+
     assert_response :success
   end
 

@@ -179,7 +179,8 @@ class TasksController < ApplicationController
     tags = params[:task][:set_tags]
     params[:task][:set_tags] = nil
 
-    @task = current_user.company.tasks.new(params[:task])
+    @task = current_user.company.tasks.new
+    @task.attributes = params[:task]
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
