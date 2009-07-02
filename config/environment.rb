@@ -77,7 +77,7 @@ Rails::Initializer.run do |config|
   # Required for development only
    config.gem 'allison'
    config.gem 'markaby'
-   config.gem 'fiveruns_tuneup'
+#   config.gem 'fiveruns_tuneup'
 end
 
 ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
