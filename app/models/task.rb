@@ -1,3 +1,5 @@
+require "active_record_extensions"
+
 # A task
 #
 # Belongs to a project, milestone, creator
