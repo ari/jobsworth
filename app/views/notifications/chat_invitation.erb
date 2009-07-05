@@ -1,6 +1,6 @@
 <%= @user.name %> is inviting you to chat in <%= @room.name %>:
 
-http://<%= @user.company.subdomain%>.<%= $CONFIG[:domain] %>/shout/room/<%= @room.id %>
+<%= @user.company.site_URL%>/shout/room/<%= @room.id %>
 
 -------------------->
 <%= $CONFIG[:productName] %>

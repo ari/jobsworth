@@ -3,7 +3,7 @@
 <%= @post.body %>
 
 <% unless @post.forum.company_id.nil? -%>
-http://<%= @user.company.subdomain%>.<%= $CONFIG[:domain] %>/forums/<%= @post.forum.id %>/topics/<%= @post.topic.id %>#posts-<%= @post.id %>
+<%= @user.company.site_URL%>/forums/<%= @post.forum.id %>/topics/<%= @post.topic.id %>#posts-<%= @post.id %>
 <% end -%>
 
 -------------------->

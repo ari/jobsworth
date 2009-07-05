@@ -25,7 +25,7 @@ class FeedsController < ApplicationController
     user.newsletter = 0
     user.save
 
-    render :text => "You're now unsubscribed... http://#{user.company.subdomain}.#{$CONFIG[:domain]}"
+    render :text => "You're now unsubscribed... #{@user.company.site_URL}"
 
   end
 
@@ -79,7 +79,7 @@ class FeedsController < ApplicationController
       # Create the RSS
       content = RSS::Maker.make("2.0") do |m|
         m.channel.title = "#{user.company.name} Activities"
-        m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/activities/list"
+        m.channel.link = "#{@user.company.site_URL}/activities/list"
         m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
         m.items.do_sort = true # sort items by date
       
@@ -89,7 +89,7 @@ class FeedsController < ApplicationController
           i = m.items.new_item
           i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
           i.title ||= "#{action}"
-          i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}" unless log.task.nil?
+          i.link = "#{@user.company.site_URL}/tasks/view/#{log.task.task_num}" unless log.task.nil?
           i.description = log.body unless log.body.blank?
           i.date = log.started_at.utc
           i.author = log.user.name unless log.user.nil?
@@ -134,7 +134,7 @@ class FeedsController < ApplicationController
         # Create the RSS
         content = RSS::Maker.make("2.0") do |m|
           m.channel.title = widget.name
-          m.channel.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/list"
+          m.channel.link = "#{@user.company.site_URL}/tasks/list"
           m.channel.description = widget.name
           m.items.do_sort = true # sort items by date
           tasks.each do |task|
@@ -267,7 +267,7 @@ class FeedsController < ApplicationController
       event.duration = "PT#{user.workday_duration}M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
-      event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/views/select_milestone/#{m.id}"
+      event.url = "#{@user.company.site_URL}/views/select_milestone/#{m.id}"
       event.summary = "Milestone: #{m.name}"
 
       if m.description
@@ -302,7 +302,7 @@ class FeedsController < ApplicationController
       todo.created = to_localtime(tz, t.created_at)
       todo.uid =  "t#{t.id}_#{todo.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       todo.organizer = "MAILTO:#{t.users.first.email}" if t.users.size > 0
-      todo.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{t.task_num}"
+      todo.url = "#{@user.company.site_URL}/tasks/view/#{t.task_num}"
       todo.summary = "#{t.issue_name}"
 
       description = t.description.gsub(/<[^>]*>/,'').gsub(/[\r]/, '') if t.description
@@ -347,7 +347,7 @@ class FeedsController < ApplicationController
       event.uid = "l#{log.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{log.user.email}"
 
-      event.url = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{log.task.task_num}"
+      event.url = "#{@user.company.site_URL}/tasks/view/#{log.task.task_num}"
 
       action = get_action(log)
 
@@ -387,7 +387,7 @@ class FeedsController < ApplicationController
 
   def igoogle_feed
     if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"http://#{user.company.subdomain}.#{$CONFIG[:domain]}/users/edit_preferences\">preferences page</a>.", :layout => false
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{@user.company.site_URL}/users/edit_preferences\">preferences page</a>.", :layout => false
       return
     end
 
