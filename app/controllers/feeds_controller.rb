@@ -140,7 +140,7 @@ class FeedsController < ApplicationController
           tasks.each do |task|
             i = m.items.new_item
             i.title = "#{task.issue_name}"
-            i.link = "http://#{user.company.subdomain}.#{$CONFIG[:domain]}/tasks/view/#{task.task_num}"
+            i.link = "#{@user.company.site_URL}/tasks/view/#{task.task_num}"
             i.description = task.description unless task.description.blank?
             i.date = user.tz.utc_to_local(task.created_at)
             i.author = task.creator.name unless task.creator.nil?
@@ -154,9 +154,9 @@ class FeedsController < ApplicationController
           xmlns:dc="http://purl.org/dc/elements/1.1/"
           xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
           <channel>
-            <title>No such ClockingIT widget</title>
-            <link>http://www.clockingit.com/</link>
-            <description>No such ClockingIT widget.</description>
+            <title>No such widget</title>
+            <link>#{@user.company.site_URL}</link>
+            <description>No such widget.</description>
           </channel>
         </rss>'
       end 
