@@ -11,4 +11,9 @@ module CompaniesHelper
     return select_tag(name, options)
   end
 
+  # Returns an array of file names for custom scripts stored in the
+  # lib/scripts dir
+  def all_custom_scripts
+    Dir.glob("#{ RAILS_ROOT }/lib/scripts/*.rb").map { |f| File.basename(f) }
+  end
 end
