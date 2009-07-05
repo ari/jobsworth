@@ -1,11 +1,9 @@
+# Provide a RSS feed of Project WorkLog activities.
+#
 require "rss/maker"
 require "icalendar"
 require "google_chart"
 
-#
-# Provide a RSS feed of Project WorkLog activities.
-# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
-#
 class FeedsController < ApplicationController
   include Icalendar
 

@@ -1,5 +1,5 @@
 # Placeholder for the upcoming API for ClockingIT
-# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
+#
 class ApiController < ApplicationController
 
   # Return a list of Projects
