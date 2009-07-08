@@ -25,7 +25,7 @@ class FeedsController < ApplicationController
     user.newsletter = 0
     user.save
 
-    render :text => "You're now unsubscribed... #{@user.company.site_URL}"
+    render :text => "You're now unsubscribed... #{user.company.site_URL}"
 
   end
 
@@ -79,7 +79,7 @@ class FeedsController < ApplicationController
       # Create the RSS
       content = RSS::Maker.make("2.0") do |m|
         m.channel.title = "#{user.company.name} Activities"
-        m.channel.link = "#{@user.company.site_URL}/activities/list"
+        m.channel.link = "#{user.company.site_URL}/activities/list"
         m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
         m.items.do_sort = true # sort items by date
       
