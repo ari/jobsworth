@@ -7,6 +7,7 @@ class Notifications < ActionMailer::Base
 
   def created(task, user, recipients, note = "", sent_at = Time.now)
     task.mark_as_unread(user)
+    @task = task
  
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
@@ -20,6 +21,7 @@ class Notifications < ActionMailer::Base
 
   def changed(update_type, task, user, recipients, change, sent_at = Time.now)
     task.mark_as_unread(user)
+    @task = task
 
     @subject = case update_type
                when :completed  then "#{$CONFIG[:prefix]} #{_'Resolved'}: #{task.issue_name} -> #{_(task.status_type)} [#{task.project.name}] (#{user.name})"

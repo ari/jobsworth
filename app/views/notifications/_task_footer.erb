@@ -2,8 +2,10 @@
 
 This task <%= @task.task_num %> was just updated with the information above. If you have any further comments to make, please reply to this email above the line.
 
+<% if show_task_link?(@task, @recipients) -%>
 To see the history of this task, visit:
 <%= @user.company.site_URL%>/tasks/view/<%=@task.task_num%>
+<% end -%>
 
 -------------------->
 <%= $CONFIG[:productName] %>

@@ -36,7 +36,7 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_created(@task, @user, 
                                                     @task.notification_email_addresses(@user), 
                                                     "", @expected.date)
-        assert_equal @expected.encoded, notification.encoded
+        assert_equal @expected.encoded.strip, notification.encoded.strip
       end
 
       should "create changed mail as expected" do
@@ -47,7 +47,7 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
-        assert_equal @expected.encoded, notification.encoded
+        assert_equal @expected.encoded.strip, notification.encoded.strip
         assert_not_nil @expected.body.index("/tasks/view/")
       end
     end
@@ -64,14 +64,14 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
-#        assert_nil notification.body.index("/tasks/view/")
+        assert_nil notification.body.index("/tasks/view/")
       end      
 
       should "create created mail without view task link" do
         notification = Notifications.create_created(@task, @user, 
                                                     @task.notification_email_addresses(@user), 
                                                     "", @expected.date)
-#        assert_nil notification.body.index("/tasks/view/")
+        assert_nil notification.body.index("/tasks/view/")
       end      
     end
   end
