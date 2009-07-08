@@ -240,6 +240,11 @@ class User < ActiveRecord::Base
       (self.read_clients? and self.option_externalclients?)
   end
 
+  # Returns true if this user is allowed to view the given task.
+  def can_view_task?(task)
+    projects.include?(task.project)
+  end
+
   def currently_online
     User.find(:all, :conditions => ["company_id = ? AND last_seen_at > ?", self.company, Time.now.utc-5.minutes])
   end

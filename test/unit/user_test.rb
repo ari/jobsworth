@@ -213,4 +213,16 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil @user.avatar_url
   end
 
+  should "return true to can_view_task? when in project for that task" do
+    task = @user.projects.first.tasks.first
+    assert_not_nil task
+    assert @user.can_view_task?(task)
+  end
+  should "return false to can_view_task? when not in project for that task" do
+    task = @user.projects.first.tasks.first
+    assert_not_nil task
+    @user.projects.clear
+    assert !@user.can_view_task?(task)
+  end
+
 end

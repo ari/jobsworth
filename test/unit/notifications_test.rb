@@ -44,13 +44,35 @@ class NotificationsTest < ActiveRecord::TestCase
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
         
-        task = tasks(:normal_task)
-        user = users(:admin)
         notification = Notifications.create_changed(:completed, @task, @user,
-                                                    @task.notification_email_addresses(user),
+                                                    @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
         assert_equal @expected.encoded, notification.encoded
+        assert_not_nil @expected.body.index("/tasks/view/")
       end
+    end
+
+    context "a user without access to the task" do
+      setup do
+        @task = tasks(:normal_task)
+        @user = users(:tester)
+        @user.project_permissions.destroy_all
+        assert !@task.project.users.include?(@user)
+      end
+
+      should "create changed mail without view task link" do
+        notification = Notifications.create_changed(:completed, @task, @user,
+                                                    @task.notification_email_addresses(@user),
+                                                    "Task Changed", @expected.date)
+#        assert_nil notification.body.index("/tasks/view/")
+      end      
+
+      should "create created mail without view task link" do
+        notification = Notifications.create_created(@task, @user, 
+                                                    @task.notification_email_addresses(@user), 
+                                                    "", @expected.date)
+#        assert_nil notification.body.index("/tasks/view/")
+      end      
     end
   end
 
