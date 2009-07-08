@@ -1655,7 +1655,9 @@ class TasksController < ApplicationController
         worklog.save
       end
       
-      yield(emails) if emails.any?
+      emails.each do |email|
+        yield(email) 
+      end
     end
 
     task.mark_as_notified_last_change(all_users)

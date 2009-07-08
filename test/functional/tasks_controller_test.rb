@@ -77,10 +77,51 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  context "a task with a few users attached" do
+    setup do
+      ActionMailer::Base.deliveries = []
+      @task = Task.first
+      @task.users << @task.company.users
+      @task.save!
+      assert_emails 0
+      @notify = @task.users.map { |u| u.id }
+    end
+
+    should "send emails to each user when adding a comment" do
+      post(:update, :id => @task.id, :task => { },
+           :notify => @notify, 
+           :comment => "a test comment")
+      assert_emails @task.users.length
+      assert_redirected_to "/activities/list"
+    end
+  end
+
+  context "a new task with a few users attached" do
+    setup do
+      ActionMailer::Base.deliveries = []
+      assert_emails 0
+      @user_ids = @user.company.users.map { |u| u.id }
+    end
+
+    should "send emails to each user when creating" do
+      post(:create, :users => @user_ids, :assigned => @user_ids,
+           :notify => @user_ids, 
+           :task => { 
+             :name => "test", 
+             :description => "",
+             :project_id => @user.company.projects.last.id
+           })
+
+      new_task = assigns(:task)
+      assert_emails new_task.users.length
+      assert_redirected_to "/activities/list"
+    end
+  end
+
   should "render create ok" do
     task = Task.first
     customer = Customer.first
-    project = customer.projects.first 
+    project = customer.projects.first
     
     post(:create, :id => task.id, :task => { 
            :project_id => project.id,
