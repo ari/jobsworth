@@ -7,61 +7,60 @@ class NotificationsTest < ActiveRecord::TestCase
   CHARSET = "utf-8"
   fixtures :users, :tasks, :projects, :customers, :companies
 
-  include ActionMailer::Quoting
+  context "a normal notification" do
+    setup do
+      # need to hard code these configs because the fixtured have hard coded values
+      $CONFIG[:domain] = "clockingit.com"
+      $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
 
-  def setup
-    ActionMailer::Base.delivery_method = :test
-    ActionMailer::Base.perform_deliveries = true
-    ActionMailer::Base.deliveries = []
+      @expected = TMail::Mail.new
+      @expected.set_content_type "text", "plain", { "charset" => CHARSET }
 
-    @expected = TMail::Mail.new
-    @expected.set_content_type "text", "plain", { "charset" => CHARSET }
+      @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+      @expected.reply_to = 'task-1@cit.clockingit.com'
+      @expected.to       = 'admin@clockingit.com'
+      @expected['Mime-Version'] = '1.0'
+      @expected.date     = Time.now
+    end
 
-    # need to hard code these configs because the fixtured have hard coded values
-    $CONFIG[:domain] = "clockingit.com"
-    $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
-  end
+    context "with a user with access to the task" do
+      setup do
+        @task = tasks(:normal_task)
+        @user = users(:admin)
+      end
 
-  def test_created
-    @expected.subject  = '[ClockingIT] Created: [#1] Test [Test Project] (Unassigned)'
-    @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
-    @expected.reply_to = 'task-1@cit.clockingit.com'
-    @expected.to       = 'admin@clockingit.com'
-    @expected['Mime-Version'] = '1.0'
-    @expected.body     = read_fixture('created')
-    @expected.date     = Time.now
+      should "create created mail as expected" do
+        @expected.subject  = '[ClockingIT] Created: [#1] Test [Test Project] (Unassigned)'
+        @expected.body     = read_fixture('created')
 
-    task = tasks(:normal_task)
-    user = users(:admin)
-    notification = Notifications.create_created(task, user, task.notification_email_addresses(user), 
-                                                "", @expected.date)
-    assert_equal @expected.encoded, notification.encoded
-  end
+        notification = Notifications.create_created(@task, @user, 
+                                                    @task.notification_email_addresses(@user), 
+                                                    "", @expected.date)
+        assert_equal @expected.encoded, notification.encoded
+      end
 
-  def test_changed
-    @expected.subject = '[ClockingIT] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
-    @expected.from    = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
-    @expected['Reply-To'] = 'task-1@cit.clockingit.com'
-    @expected.to      = 'admin@clockingit.com'
-    @expected['Mime-Version'] = '1.0'
-    @expected.body    = read_fixture('changed')
-    @expected.date    = Time.now
-    
-    task = tasks(:normal_task)
-    user = users(:admin)
-    notification = Notifications.create_changed(:completed, task, user,
-                                                task.notification_email_addresses(user),
-                                                "Task Changed", @expected.date)
-    assert_equal @expected.encoded, notification.encoded
+      should "create changed mail as expected" do
+        @expected.subject = '[ClockingIT] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
+        @expected['Mime-Version'] = '1.0'
+        @expected.body    = read_fixture('changed')
+        
+        task = tasks(:normal_task)
+        user = users(:admin)
+        notification = Notifications.create_changed(:completed, @task, @user,
+                                                    @task.notification_email_addresses(user),
+                                                    "Task Changed", @expected.date)
+        assert_equal @expected.encoded, notification.encoded
+      end
+    end
   end
 
   private
-    def read_fixture(action)
-      IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
-    end
+  def read_fixture(action)
+    IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
+  end
 
-    def encode(subject)
-      quoted_printable(subject, CHARSET)
-    end
+  def encode(subject)
+    quoted_printable(subject, CHARSET)
+  end
 end
 
