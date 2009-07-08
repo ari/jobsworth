@@ -1,5 +1,4 @@
 # Handle tasks for a Company / User
-# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 #
 class TasksController < ApplicationController
 #  cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,

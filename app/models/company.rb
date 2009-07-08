@@ -1,7 +1,5 @@
 # A logical grouping of all users sharing projects
 #
-# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
-#
 
 class Company < ActiveRecord::Base
   has_many      :customers, :dependent => :destroy, :order => "lower(name)"

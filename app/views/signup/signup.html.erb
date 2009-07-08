@@ -1,19 +1,5 @@
-Welcome to Clocking IT!
+Welcome to <%= $CONFIG[:productName] %>
 
-Your site is located at http://<%= @company.subdomain %>.<%= $CONFIG[:domain] %>
+Your site is located at <%= @user.company.site_URL%>
 
-Your login information
-----------------------
-Username: <%= @user.username %>
-Password: <%= @user.password %>
-
-If other people from <%= @company.name %> would like to participate,
-you can add them from inside Clocking IT, on the Users page. If they try to
-sign up themselves, they'll end up in a different company.
-
-If you need help, have suggestions, find bugs, or just want to give me
-some feedback, feel free to mail me at admin@clockingit.com
-
-Regards,
-Erlend Simonsen
-
+Your username is <%= @user.username %>

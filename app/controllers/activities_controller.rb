@@ -1,6 +1,5 @@
 # Show recent activities, and handle the simple tutorial
 #
-# Author:: Erlend Simonsen (mailto:admin@clockingit.com)
 class ActivitiesController < ApplicationController
 
   # Redirect to list
