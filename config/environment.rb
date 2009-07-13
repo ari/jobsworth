@@ -79,7 +79,7 @@ Rails::Initializer.run do |config|
   # be required for your own development should be in this file:
   custom_gems_file = "#{ RAILS_ROOT }/config/custom.gems.rb"
   load custom_gems_file if File.exist?(custom_gems_file)
-  load_custom_gems(config)
+  load_custom_gems(config) if respond_to?(:load_custom_gems)
 end
 
 ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
