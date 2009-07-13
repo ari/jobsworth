@@ -73,11 +73,13 @@ Rails::Initializer.run do |config|
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
-  
-  # Required for development only
-   config.gem 'allison'
-   config.gem 'markaby'
-   config.gem 'fiveruns_tuneup'
+
+  # CUSTOM GEMS
+  # Any gem files which aren't needed for the system to work, but may
+  # be required for your own development should be in this file:
+  custom_gems_file = "#{ RAILS_ROOT }/config/custom.gems.rb"
+  load custom_gems_file if File.exist?(custom_gems_file)
+  load_custom_gems(config)
 end
 
 ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
