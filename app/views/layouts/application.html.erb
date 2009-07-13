@@ -106,7 +106,7 @@
 	<div id="contact"><% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></div>
 	<% end %>
 
-<%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info' }, :frequency => 90 ) -%>
+<%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info', :format => "js" }, :frequency => 90 ) -%>
 
 <%= flash_plugin(session[:channels]) %>
 <script type="text/javascript" language="javascript" charset="utf-8">
