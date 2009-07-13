@@ -11,6 +11,9 @@
     <%= sortable_handle_tag(attribute) %>
     <%= link_to_remove_parent %>
 
+    <label><%=_ "LDAP Name" %></label>
+    <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
+
     <label><%=_ "Use only preset choices" %></label>
     <%= check_box_tag(:preset, 1, preset, :onChange => "updateAttributeFields(this)") %>
 
