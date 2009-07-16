@@ -15,7 +15,9 @@ class OrganizationalUnitsControllerTest < ActionController::TestCase
   end
 
   test "/edit should render :success" do
-    org_unit = OrganizationalUnit.new(:name => "test org unit").save!
+    org_unit = OrganizationalUnit.new(:name => "test org unit")
+    org_unit.save!
+
     get :new, :id => org_unit.id, :customer_id => @user.company.customers.first.id
     assert_response :success
   end
