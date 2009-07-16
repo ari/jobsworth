@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  require_dependency 'RMagick'
-
   layout :decide_layout
 
   def index

@@ -2,9 +2,6 @@
 
 class AdminController < ApplicationController
 
-  require_dependency 'RMagick'
-
-
   before_filter :authorize
   def index
 

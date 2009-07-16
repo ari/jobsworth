@@ -484,12 +484,14 @@ class ApplicationController < ActionController::Base
   # Which company does the served hostname correspond to?
   ###
   def company_from_subdomain
-    subdomain = request.subdomains.first if request.subdomains
+    if @company.nil?
+      subdomain = request.subdomains.first if request.subdomains
 
-    company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-    company ||= Company.find(:first, :conditions => ["id = 1"])
-
-    return company
+      @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
+      @company ||= Company.find(:first, :conditions => ["id = 1"])
+    end
+    
+    return @company
   end
 
   private

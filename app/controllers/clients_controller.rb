@@ -2,8 +2,6 @@
 #
 # Logo and CSS should be used when printing reports, or generating a PDF of a report.
 class ClientsController < ApplicationController
-  require_dependency 'RMagick'
-
   before_filter :check_can_access, :except => [:show_logo]
 
   def index
@@ -181,22 +179,17 @@ class ClientsController < ApplicationController
 
   # Show a clients logo
   def show_logo
-	company = company_from_subdomain
-	client = Customer.find(params[:id],  :conditions => ["company_id = ?", company.id])
+    company = company_from_subdomain
+    client = company.customers.find(params[:id])
 
-    unless client.logo?
-      render :nothing => true
-      return
-    end
-
-    image = Magick::Image.read( client.logo_path ).first
-    if image
-      send_file client.logo_path, :filename => "logo", :type => image.mime_type, :disposition => 'inline'
+    if client.logo?
+      # N.B. Modern browsers don't seem to mind us not sending the mime type here, 
+      # so let's save an expensive call to rmagick and just send through the file
+      # Tested with FF 3.5, Opera 10, Safari 4.0, IE7, Chrome 2.0
+      send_file(client.logo_path, :filename => "logo", :disposition => "inline")
     else
       render :nothing => true
     end
-    image = nil
-    GC.start
   end
 
   def setup_filters_in_session
