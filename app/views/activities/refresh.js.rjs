@@ -1,6 +1,6 @@
 current_user.widgets.each do |widget|
   if widget.configured?
-    page << "new Ajax.Request('/widgets/show/#{widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();portal.refreshHeights();}, onLoading:function(request){showProgress();}});"
+    page << "jQuery.get('/widgets/show/#{widget.id}', function(data){ portal.refreshHeights();});"
   end   
 end 
 

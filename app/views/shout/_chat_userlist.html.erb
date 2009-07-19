@@ -8,7 +8,7 @@
       </div>
       <div>
     <% if u.id != current_user.id %>
-      <a href="#" <%= "class=\"presence-user-row-idle\"" if u.idle?%> <%= "class=\"presence-user-row-offline\"" if u.offline?%>  onclick="new Ajax.Request('/shout/chat_add/<%=u.id%>', {asynchronous:true, evalScripts:true}); return false;" ><%= h u.name %><%= " (#{_'idle'})" if u.idle? %><%= " (#{_'offline'})" if u.offline? %></a>
+      <a href="#" <%= "class=\"presence-user-row-idle\"" if u.idle?%> <%= "class=\"presence-user-row-offline\"" if u.offline?%>  onclick="jQuery.get('/shout/chat_add/<%=u.id%>');" ><%= h u.name %><%= " (#{_'idle'})" if u.idle? %><%= " (#{_'offline'})" if u.offline? %></a>
       <% if u.idle? || u.online? %>
       <br/><span class="optional"><%= _('Active %s ago', (u.idle? ? time_ago_in_words(u.last_seen_at) : time_ago_in_words(u.last_ping_at) ) ) %></span>
       <% end %>
