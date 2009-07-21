@@ -88,7 +88,7 @@ class TaskFilter
   # Returns tasks matching the filters set up in the current session.
   ###
   def tasks_by_filters
-    to_include = [ :users, :tags, :sheets, :todos, :dependencies, :milestone ]
+    to_include = [ :users, :tags, :sheets, :todos, :dependencies, :milestone, :notifications ]
     to_include << { :company => :properties}
     to_include << { :project => :customer }
     to_include << { :task_property_values => { :property_value => :property } }
