@@ -2,6 +2,9 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+21 July 2009
+	Upgraded to Rails 2.3.3
+
 26 June 2009
 	Incoming emails with no task number are now dropped into a default project set in the company settings view.
 

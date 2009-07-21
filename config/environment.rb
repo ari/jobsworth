@@ -5,7 +5,7 @@
 # ENV['RAILS_ENV'] ||= 'production'
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.2' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
 
 
 # Bootstrap the Rails environment, frameworks, and default configuration
@@ -57,14 +57,15 @@ Rails::Initializer.run do |config|
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
   config.gem 'mysql'
   config.gem 'daemons', :version => '1.0.10'
-  config.gem 'eventmachine', :version => '0.12.6'
-  config.gem 'json', :version => '1.1.4'
+  config.gem 'eventmachine', :version => '0.12.8'
+  config.gem 'json', :version => '1.1.7'
   config.gem 'mislav-will_paginate', :version => '2.3.8', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'ferret', :version => '0.11.6'
-  config.gem 'fastercsv', :version => '1.4.0'
+#  config.gem 'acts_as_ferret', :version => '0.4.3'  #installed as a plugin since the gem version breaks
+  config.gem 'fastercsv', :version => '1.5.0'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
-  config.gem 'RedCloth', :version => '4.1.9'
+  config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'rmagick', :lib => 'RMagick'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
 

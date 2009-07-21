@@ -11,12 +11,9 @@ class CustomerTest < ActiveRecord::TestCase
     @external = customers(:external_customer)
   end
 
-  def test_truth
-    assert_kind_of Customer,  @internal
-  end
-  
   def test_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}"), @internal.path
+    path = File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}")
+    assert_equal path, @internal.path
   end
 
   def test_store_name

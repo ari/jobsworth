@@ -119,7 +119,7 @@ function hide(e){
 function fetchComment(e) {
   var elements = e.toString().split("/");
   var taskId = elements[elements.size()-1];
-  new Ajax.Request('/tasks/get_comment/' + taskId + ".js", {asynchronous:true, evalScripts:true, onComplete:function(request){updateComment(taskId);} } );
+  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
 }
 
 function updateComment(taskId) {
@@ -224,7 +224,7 @@ function DisableDND() {
 
 function do_update(user, url) {
   if( user != userId ) {
-    new Ajax.Request(url, {asynchronous: true, evalScripts: true });
+      jQuery.get(url);
   }
 }
 
@@ -269,7 +269,7 @@ function fixShortLinks() {
   $$('a.stop-work-link').each(function(e) {
       if( e.href != '#' ) {
         Event.observe(e, "click", function(e) {
-            new Ajax.Request('/tasks/stop_work_shortlist', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('#loading').show();}});
+              jQuery.get('/tasks/stop_work_shortlist');
             return false;
           });
         e.href = '#';
@@ -288,7 +288,7 @@ function toggleChatPopup(el) {
   if( Element.hasClassName(el.up(), 'presence-section-active') ) {
     Element.removeClassName(el.up(), 'presence-section-active');
     $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.hide(e); });
-    new Ajax.Request('/shout/chat_hide/' + el.up().id, {asynchronous:true, evalScripts:true});
+	jQuery.get('/shout/chat_hide/' + el.up().id);
   } else if(Element.hasClassName(el.up(), 'presence-section')) {
     $$('.presence-section-active').each(function(el) {
 					  Element.removeClassName(el, 'presence-section-active');
@@ -302,12 +302,12 @@ function toggleChatPopup(el) {
     jQuery("#" + el.up().id + " .presence-shadow").show();
     jQuery("#" + el.up().id + " input").focus();
 
-    new Ajax.Request('/shout/chat_show/' + el.up().id, {asynchronous:true, evalScripts:true});
+      jQuery.get('/shout/chat_show/' + el.up().id);
   }
 }
 
 function closeChat(el) {
-  new Ajax.Request('/shout/chat_close/' + el.up().id, {asynchronous:true, evalScripts:true});
+  jQuery.get('/shout/chat_close/' + el.up().id);
   jQuery(el).remove();
 }
 
