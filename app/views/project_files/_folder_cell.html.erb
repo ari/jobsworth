@@ -15,7 +15,7 @@
 </div>
 <script type="text/javascript">
 //<![CDATA[
-Droppables.add("folder_cell_<%=folder.id%>", {accept:'project-<%=folder.project_id%>', hoverclass:'folder-active', onDrop:function(element, dropElement){jQuery(element).hide(); new Ajax.Request('/project_files/move', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'id=' + encodeURIComponent(element.id + " " + dropElement.id)})}})
+Droppables.add("folder_cell_<%=folder.id%>", {accept:'project-<%=folder.project_id%>', hoverclass:'folder-active', onDrop:function(element, dropElement){jQuery(element).hide(); jQuery.get('/project_files/move', { id:  encodeURIComponent(element.id + " " + dropElement.id)} ) }})
 //]]>
 </script>
 

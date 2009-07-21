@@ -17,6 +17,7 @@ function ClearHover() {
 // -------------------------
 // show progress spinner
 //
+
 function showProgress() {
 	jQuery('#loading').show('fast');
 }
@@ -32,6 +33,13 @@ jQuery(document).mousemove(function(e) {
         });
 	}
 });
+
+jQuery("#loading").bind("ajaxSend", function(){
+   jQuery(this).show('fast');
+ }).bind("ajaxComplete", function(){
+   jQuery(this).hide('fast');
+});
+
 // -------------------------
 
 

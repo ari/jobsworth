@@ -405,14 +405,14 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove 'add-widget'
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
-        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/edit/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"new Ajax.Request(\\\'/widgets/destroy/#{@widget.id}\\\', {asynchronous:true, evalScripts:true}); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
+        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"jQuery.get(\\\'/widgets/edit/#{@widget.id}\\\');\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.get(\\\'/widgets/destroy/#{@widget.id}\\\');\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
 
-        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"new Ajax.Request(\\\'/widgets/toggle_display/#{@widget.id}\\\',{asynchronous:true, evalScripts:true, onComplete:function(request){jQuery(\\\'loading\\\').hide();portal.refreshHeights();}, onLoading:function(request){jQuery(\\\'loading\\\').show();}});\">&nbsp;</a>';"
+        page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"jQuery.get(\\\'/widgets/toggle_display/#{@widget.id}\\\',function(data) {portal.refreshHeights();} );\">&nbsp;</a>';"
         page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
         page.<< "widget.setTitle(title);"
         page << "widget.setContent('<span class=\"optional\">#{h(_('Please configure the widget'))}</span>');"
         page << "portal.add(widget, #{@widget.column});"
-        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();portal.refreshHeights();}, onLoading:function(request){showProgress();}});"
+        page << "jQuery.get('/widgets/show/#{@widget.id}', function(data) {portal.refreshHeights();} );"
 
         page << "updateTooltips();"
         page << "portal.refreshHeights();"
@@ -459,7 +459,7 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"
         page.replace_html "name-#{@widget.dom_id}", @widget.name
-        page << "new Ajax.Request('/widgets/show/#{@widget.id}', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}});"
+        page << "jQuery.get('/widgets/show/#{@widget.id}');"
       end
     end
   end
