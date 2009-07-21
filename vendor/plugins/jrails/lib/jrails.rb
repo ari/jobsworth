@@ -260,7 +260,7 @@ module ActionView
 			end
 			
 			def initialize(generator, pattern)
-				super(generator, "#{JQUERY_VAR}(#{pattern.to_json})")
+				super(generator, "#{JQUERY_VAR}(#{pattern.as_json})")
 			end
 		end
 		

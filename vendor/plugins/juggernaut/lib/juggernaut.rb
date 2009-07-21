@@ -13,7 +13,7 @@ def self.send(data,chan = ["default"])
   begin
     @socket = TCPSocket.new(FS_APP_CONFIG["PUSH_HOST"], FS_APP_CONFIG["PUSH_PORT"])
     fc = { :message => data, :secret => FS_APP_CONFIG["PUSH_SECRET"], :broadcast => 1, :channels => chan}
-    @socket.print fc.to_json + "\0"
+    @socket.print fc.as_json + "\0"
     @socket.flush
   rescue
   ensure
