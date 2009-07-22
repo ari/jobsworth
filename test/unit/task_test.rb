@@ -332,8 +332,8 @@ class TaskTest < ActiveRecord::TestCase
     end
 
     should "add and remove task customers using customer_attributes=" do
-      c1 = Customer.first
-      c2 = Customer.last
+      c1 = @task.company.customers.first
+      c2 = @task.company.customers.last
       assert_not_equal c1, c2
 
       assert_equal 0, @task.customers.length

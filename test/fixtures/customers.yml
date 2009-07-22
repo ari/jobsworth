@@ -11,7 +11,7 @@ external_customer:
   contact_name: Erlend Simonsen
   css: #menu {color: red;}
 fudge_internal_customer:
-  company: cit
+  company: fudge
   name: Internal
   contact_email: mr@fudgie.org
   contact_name: Erlend Simonsen

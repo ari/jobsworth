@@ -1,16 +1,17 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class WorkLogTest < ActiveRecord::TestCase
-  fixtures :work_logs, :customers
+  fixtures :work_logs, :customers, :companies
 
   def setup
     @work_log = WorkLog.find(1)
-    @work_log.customer = Customer.first
-    @work_log.company = @work_log.customer.company
+    @work_log.company = companies(:cit)
+    @work_log.customer = @work_log.company.customers.first
   end
 
   should "set customer_id from customer_name=" do
-    c = Customer.all.last
+    c = @work_log.company.customers.last
+#    c = Customer.all.last
     assert_not_equal c, @work_log.customer
     
     @work_log.customer_name = c.name

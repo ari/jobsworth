@@ -55,7 +55,6 @@ Rails::Initializer.run do |config|
   
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
-        
   config.gem 'mysql'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine', :version => '0.12.8'
@@ -68,9 +67,12 @@ Rails::Initializer.run do |config|
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'rmagick', :lib => 'RMagick'
-  config.gem 'ZenTest', :version => '4.1.3', :lib => 'zentest'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
+
+  # Gems used for automated testing
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
+  config.gem "nokogiri"
+  config.gem "webrat"
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
 

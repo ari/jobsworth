@@ -120,7 +120,7 @@ class TasksControllerTest < ActionController::TestCase
 
   should "render create ok" do
     task = Task.first
-    customer = Customer.first
+    customer = task.company.customers.last
     project = customer.projects.first
     
     post(:create, :id => task.id, :task => { 
