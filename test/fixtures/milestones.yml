@@ -6,7 +6,7 @@ test_milestone:
   project: test_project
   user: admin
   description: Test Milestone due Tomorrow
-  due_at: <%= Time.now.utc + 1.day %>
+  due_at: <%= Date.today + 1.day %>
   position: 0
   completed_at: null
   total_tasks: 1
@@ -19,7 +19,7 @@ test_milestone_overdue:
   project: test_project
   user: admin
   description: Test Milestone Overdue
-  due_at: <%= Time.now.utc - 1.week %>
+  due_at: <%= Date.today - 1.week %>
   position: 0
   completed_at: null
   total_tasks: 1
