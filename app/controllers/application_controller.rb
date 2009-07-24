@@ -488,7 +488,9 @@ class ApplicationController < ActionController::Base
       subdomain = request.subdomains.first if request.subdomains
 
       @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
-      @company ||= Company.find(:first, :conditions => ["id = 1"])
+      if Company.count == 1
+        @company ||= Company.find(:first, :order => "id asc") 
+      end
     end
     
     return @company

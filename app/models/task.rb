@@ -62,6 +62,8 @@ class Task < ActiveRecord::Base
   validates_presence_of		:company
   validates_presence_of		:project
 
+  before_create :set_task_num
+
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
     project = r.project
@@ -271,8 +273,14 @@ class Task < ActiveRecord::Base
     self.sheets.size > 0
   end
 
-  def set_task_num(company_id)
-    @attributes['task_num'] = Task.maximum('task_num', :conditions => ["company_id = ?", company_id]) + 1 rescue 1
+  def set_task_num(company_id = nil)
+    company_id ||= company.id
+
+    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id]) 
+    num ||= 0
+    num += 1 
+
+    @attributes['task_num'] = num
   end
 
   def time_left
