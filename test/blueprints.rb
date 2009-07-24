@@ -37,3 +37,9 @@ Task.blueprint do
   name
   company
 end
+
+Milestone.blueprint do
+  name
+  company
+  project
+end
