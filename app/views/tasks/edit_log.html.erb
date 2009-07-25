@@ -1,5 +1,5 @@
 <fieldset class="basic">
-<legend><%=_ 'Edit Log Entry' %></legend>
+<legend><%=_ 'Edit Log Entry' %> - <%= @log.task.name %></legend>
 
 <% form_for(@log, :url => { :action => "save_log", :id => @log }) do |f| -%>
   <%= render(:partial => "form_edit_log", :locals => { :f => f }) %>
