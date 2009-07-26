@@ -16,9 +16,11 @@ class UsersControllerTest < ActionController::TestCase
   end
 
   test "/update should redirect to /clients/edit" do
+    customer = @user.company.customers.first
     post(:update, :id => @user.id, :user => { :name => "test", 
-           :customer_id => @user.company.customers.first.id })
+           :customer_id => customer.id })
 
-    assert_redirected_to :controller => "clients", :action => "edit"
+    assert_redirected_to(:id => customer.id, :anchor => "users",
+                         :controller => "clients", :action => "edit")
   end
 end
