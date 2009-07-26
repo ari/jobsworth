@@ -69,6 +69,8 @@ class ActionController::IntegrationTest
     fill_in "password", :with => user.password
     click_button "submit"
 
+    assert_equal user.id, @request.session[:user_id]
+
     return user
   end
 

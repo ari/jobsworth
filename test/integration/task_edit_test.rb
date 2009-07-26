@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TasksTest < ActionController::IntegrationTest
+class TaskEditTest < ActionController::IntegrationTest
   context "A logged in user" do
     setup do
       @user = login
@@ -56,8 +56,23 @@ class TasksTest < ActionController::IntegrationTest
           assert_equal @project.milestones.last, @task.milestone
         end
 
-        should "be able to set the status"
-        should "be able to add comments"
+        should "be able to set the status" do
+          select "Set in Progress", :from => "status"
+          click_button "save"
+
+          @task.reload
+          assert_equal "In Progress", @task.status_type
+        end
+
+        should "be able to add comments" do
+          assert @task.work_logs.empty?
+
+          fill_in "comment", :with => "a new comment"
+          click_button "save"
+
+          @task.reload
+          assert_not_nil @task.work_logs.first.body.index("a new comment")
+        end
       end
     end
   end
