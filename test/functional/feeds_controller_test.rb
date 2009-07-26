@@ -1,15 +1,21 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class FeedsControllerTest < ActionController::TestCase
-  fixtures :users
+  fixtures :all
   
   def setup 
     @request.host = 'cit.local.host'
   end
   
-  test "should not redirect to login" do
+  test "rss should render" do
     user = User.first
     get :rss, { :id => user.uuid }
+    assert_response :success
+  end 
+
+  test "ical should render" do
+    user = User.first
+    get :ical, { :id => user.uuid }
     assert_response :success
   end 
   
