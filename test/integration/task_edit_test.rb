@@ -74,7 +74,35 @@ class TaskEditTest < ActionController::IntegrationTest
           click_button "save"
           assert_equal "27/07/2009", @task.reload.due_date.strftime("%d/%m/%Y")
         end
+
+        should "be able to set type" do
+          prop = property_named("type")
+          select "Defect", :from => "type"
+          click_button "save"
+          assert_equal "Defect", @task.reload.property_value(prop).value
+        end
+
+        should "be able to set priority" do
+          prop = property_named("priority")
+          select "Critical", :from => "priority"
+          click_button "save"
+          assert_equal "Critical", @task.reload.property_value(prop).value
+        end
+
+        should "be able to set severity" do
+          prop = property_named("severity")
+          select "Trivial", :from => "severity"
+          click_button "save"
+          assert_equal "Trivial", @task.reload.property_value(prop).value
+        end
       end
     end
   end
+
+  def property_named(name)
+    name = name.downcase
+    @user.company.properties.detect { |p| p.name.downcase == name }
+  end
+
+
 end
