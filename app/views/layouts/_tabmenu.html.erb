@@ -12,7 +12,8 @@
     <% end %>
 </li>
 
-    <li<%= " class='active'" if active.starts_with?('tasks/') %><%= link_to(_("Browse"), :controller => "tasks", :action => "list" ) %>
+    <li<%= " class='active'" if active.starts_with?('tasks/') %>>
+	   <%= link_to(_("Browse"), :controller => "tasks", :action => "list" ) %>
 		<ul>
 			<li><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></li>
 			<li><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></li>

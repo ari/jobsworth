@@ -102,6 +102,8 @@ class Company < ActiveRecord::Base
   def rank_by_properties(task)
     rank_by_properties = sort_properties.inject(0) do |rank, property|
       pv = task.property_value(property)
+      rank ||= 0 # for some reason rank is nil occasionally in tests. 
+
       if pv
         rank += (pv.sort_rank || 0) 
       end

@@ -2,19 +2,16 @@
 <head>
 <title><%= $CONFIG[:productName] %></title>
 <%= stylesheet_link_merged :portal %>
-<%
-if !@company.nil?
-	@internal = @company.internal_customer
-	if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-<style type="text/css"><%= @internal.css%></style>
-<%
-	end
-end
-%>
+<% if !@company.nil?
+   @internal = @company.internal_customer
+   if @internal and !@internal.css.blank? %>
+     <style type="text/css"><%= @internal.css%></style>
+   <% end -%>
+<% end -%>
 </head>
 
 <body>
-<% unless @company.nil? %>
+<% if @company %>
 <!--[if IE 6]>
 	<div id="ie6_upgrade_message">
 		<h4>We've noticed you're using Internet Explorer 6...</h4>
@@ -26,17 +23,19 @@ end
 	</div>
 <![endif]-->
 	<div id="login">
-		<%= tag("img", {:src => "/clients/show_logo/#{@internal.id}" } ) %>
+	  <% if @internal -%>
+	    <%= tag("img", {:src => "/clients/show_logo/#{@internal.id}" } ) %>
+	  <% end -%>
 		<% form_tag( {:action => 'validate'}, {:id => 'loginform', :name => 'loginform'}) do %>
 			<div id="name"><%= $CONFIG[:productName] %></div>
-			<button type="submit" name="Submit" value="Login" tabindex="4"></button>
+			<button type="submit" name="Submit" id="submit" value="Login" tabindex="4"></button>
 			<p>
 				<label for="username">Username</label>
-				<input name="user[username]" type="text" class="inputbox username" alt="username" size="12" tabindex="1" />
+				<input name="user[username]" id="username" type="text" class="inputbox username" alt="username" size="12" tabindex="1" />
 			</p>
 			<p>
 				<label for="password">Password</label>
-				<input type="password" name="user[password]" class="inputbox" size="12" alt="password" tabindex="2"/>
+				<input type="password" name="user[password]" id="password" class="inputbox" size="12" alt="password" tabindex="2"/>
 				<input type="hidden" name="forgot" value=""/>
 				<small><a onclick="document.loginform.forgot='true';document.loginform.submit()" href="#" tabindex="3">Forgot password</a></small>
 			</p>
