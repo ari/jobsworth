@@ -38,40 +38,41 @@ class TaskEditTest < ActionController::IntegrationTest
 
         should "be able to set a project" do
           assert_equal @project, @task.project
-
           select @project2.name, :from => "project"
           click_button "save"
-          
-          @task.reload
-          assert_equal @project2, @task.project
+          assert_equal @project2, @task.reload.project
         end
 
         should "be able to set a milestone" do
           assert_nil @task.milestone
-
           select @project.milestones.last.name, :from => "milestone"
           click_button "save"
-          
-          @task.reload
-          assert_equal @project.milestones.last, @task.milestone
+          assert_equal @project.milestones.last, @task.reload.milestone
         end
 
         should "be able to set the status" do
           select "Set in Progress", :from => "status"
           click_button "save"
-
-          @task.reload
-          assert_equal "In Progress", @task.status_type
+          assert_equal "In Progress", @task.reload.status_type
         end
 
         should "be able to add comments" do
           assert @task.work_logs.empty?
-
           fill_in "comment", :with => "a new comment"
           click_button "save"
+          assert_not_nil @task.reload.work_logs.first.body.index("a new comment")
+        end
 
-          @task.reload
-          assert_not_nil @task.work_logs.first.body.index("a new comment")
+        should "be able to set the time estimate" do
+          fill_in "task_duration", :with => "4h"
+          click_button "save"
+          assert_equal 240, @task.reload.duration
+        end
+
+        should "be able to set the due date" do
+          fill_in "due_at", :with => "27/07/2009"
+          click_button "save"
+          assert_equal "27/07/2009", @task.reload.due_date.strftime("%d/%m/%Y")
         end
       end
     end
