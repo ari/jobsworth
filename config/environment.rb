@@ -73,6 +73,8 @@ Rails::Initializer.run do |config|
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
   config.gem "nokogiri"
   config.gem "webrat"
+  config.gem "faker"
+  config.gem "notahat-machinist", :lib => "machinist", :source => "http://gems.github.com"
   
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
 

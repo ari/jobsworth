@@ -69,7 +69,7 @@ class LoginController < ApplicationController
   		redirect_to :action => 'login'
   		return
   	end
-  	
+
     @user = User.new(params[:user])
     @company = company_from_subdomain
     unless logged_in = @user.login(@company)
