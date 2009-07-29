@@ -45,3 +45,15 @@ Milestone.blueprint do
   company
   project
 end
+
+ResourceType.blueprint do
+  name
+  company
+end
+
+Resource.blueprint do
+  name
+  company
+  customer
+  resource_type
+end
