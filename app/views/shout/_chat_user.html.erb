@@ -42,7 +42,7 @@ jQuery('#chat-<%= @user.dom_id %>').keypress(function() {
   switch( e.keyCode ) {
     case Event.KEY_RETURN:
       new Ajax.Request('/shout/chat_message/<%=@user.id%>', {asynchronous:true, evalScripts:true, parameters:Form.serialize( Event.element(e).up() ) });
-      $('chat-<%=@user.dom_id%>').clear();
+      jQuery('#chat-<%=@user.dom_id%>').val('');
       Event.stop(e);
   }
 });
