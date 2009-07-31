@@ -38,7 +38,7 @@ class TasksController < ApplicationController
     @notify_targets = @notify_targets.flatten.uniq
     @notify_targets ||= []
   end
-  
+
   def index
     redirect_to 'list'
   end
@@ -1635,13 +1635,16 @@ class TasksController < ApplicationController
   ###
   def notify(task, worklog, &block)
     ids = params[:notify] || []
+    emails = (task.notify_emails || "").strip.split(",")
     all_users = []
 
-    if ids.any?
+    if ids.any? or emails.any?
       all_users = ids.map { |id| current_user.company.users.find(id) }
       users = all_users.clone
       users.delete(current_user) if !current_user.receive_own_notifications?
-      emails = users.map { |u| u.email }.uniq.compact
+      emails += users.map { |u| u.email }
+      emails = emails.uniq.compact
+      emails = emails.select { |e| !e.blank? }
 
       worklog.users = users
       

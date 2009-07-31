@@ -33,11 +33,13 @@ end
 Project.blueprint do
   name
   customer
+  company
 end
 
 Task.blueprint do
   name
   company
+  project
 end
 
 Milestone.blueprint do

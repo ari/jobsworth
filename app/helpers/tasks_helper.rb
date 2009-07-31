@@ -334,4 +334,9 @@ module TasksHelper
     return text_field("task", "due_at", options)
   end
 
+  def notify_emails_on_newlines(task)
+    emails = (task.notify_emails || "").strip.split(",")
+    return emails.join("\n")
+  end
+
 end

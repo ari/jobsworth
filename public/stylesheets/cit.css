@@ -519,8 +519,8 @@ fieldset input {
   margin-bottom: 0.2em;
 }
 
-		fieldset#task_information input { float: none; }
-		fieldset#task_information input.button { float: right; }
+fieldset#task_information input { float: none; }
+fieldset#task_information input.button { float: right; }
 
 fieldset img {
   float: left;
@@ -2085,9 +2085,10 @@ h4 {
 	border-bottom: 1px solid #DDDDDD;
 	border-top: 1px solid #FAFAFA;
 }
-
-
-
+#task_notify_emails {
+    font-size: 12px;
+    width: 150px;
+}
 .informal {
   font-weight: normal;
   font-style: underline;
