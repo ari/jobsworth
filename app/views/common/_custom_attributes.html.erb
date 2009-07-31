@@ -4,22 +4,23 @@
   <div class="attribute">
     <% prefix = "#{ object.class.name.underscore }[set_custom_attribute_values]" %>
     <% ca = value.custom_attribute -%>
+    <% field_id = custom_attribute_field_id -%>
 
     <% fields_for(prefix, value) do |f| %>
       <%= f.hidden_field(:custom_attribute_id, :index => nil) %>
 
-      <label><%= value.custom_attribute.display_name %></label>
+      <%= label_tag field_id, value.custom_attribute.display_name %>
 
       <% if ca and ca.preset? %>
         <% options = objects_to_names_and_ids(ca.custom_attribute_choices, :name_method => :value) -%>
 	<% options.unshift("") if ca.mandatory? -%>
-        <%= f.select(:choice_id, options, {}, :index => nil) %>
+        <%= f.select(:choice_id, options, { }, :id => field_id, :index => nil) %>
 
       <% elsif value.custom_attribute.max_length.to_i >= 100 -%>
-        <%= f.text_area(:value, :index => nil) %>
+        <%= f.text_area(:value, :id => field_id, :index => nil) %>
 
       <% else -%>
-        <%= f.text_field(:value, :index => nil) %>
+        <%= f.text_field(:value, :id => field_id, :index => nil) %>
 
       <% end -%>
 

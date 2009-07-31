@@ -33,15 +33,29 @@ end
 Project.blueprint do
   name
   customer
+  company
 end
 
 Task.blueprint do
   name
   company
+  project
 end
 
 Milestone.blueprint do
   name
   company
   project
+end
+
+ResourceType.blueprint do
+  name
+  company
+end
+
+Resource.blueprint do
+  name
+  company
+  customer
+  resource_type
 end

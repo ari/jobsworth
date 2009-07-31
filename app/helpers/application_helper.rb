@@ -571,6 +571,18 @@ END_OF_HTML
     return res
   end
 
+
+  # Returns a string to use as the field id for the current
+  # custom attribute edit field
+  # A new id will be generated each call to this method, so store
+  # it if you need to use it in more than one place
+  def custom_attribute_field_id
+    @ca_field_id ||= 0
+    @ca_field_id += 1
+
+    return "custom_attribute_#{ @ca_field_id }"
+  end
+
 end
 
 

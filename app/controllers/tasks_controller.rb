@@ -38,7 +38,7 @@ class TasksController < ApplicationController
     @notify_targets = @notify_targets.flatten.uniq
     @notify_targets ||= []
   end
-  
+
   def index
     redirect_to 'list'
   end
@@ -828,10 +828,11 @@ class TasksController < ApplicationController
     @log.company = current_user.company
     @log.project = @task.project
     @log.task = @task
-    @log.customer = @task.project.customer
+    @log.customer = @task.customers.first || @task.project.customer
     @log.started_at = tz.utc_to_local(Time.now.utc)
     @log.duration = 0
     @log.log_type = EventLog::TASK_WORK_ADDED
+    @log.body = @task.description
     
     @log.save
     Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
@@ -841,16 +842,18 @@ class TasksController < ApplicationController
 
   def stop_work
     if @current_sheet
+      task = @current_sheet.task
+
       worklog = WorkLog.new
       worklog.user = current_user
       worklog.company = current_user.company
       worklog.project = @current_sheet.project
-      worklog.task = @current_sheet.task
-      worklog.customer = @current_sheet.project.customer
+      worklog.task = task
+      worklog.customer = task.customers.first || @current_sheet.project.customer
       worklog.started_at = @current_sheet.created_at
       worklog.duration = @current_sheet.duration
       worklog.paused_duration = @current_sheet.paused_duration
-      worklog.body = @current_sheet.body
+      worklog.body = task.description
       worklog.log_type = EventLog::TASK_WORK_ADDED
       worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
       
@@ -1635,13 +1638,16 @@ class TasksController < ApplicationController
   ###
   def notify(task, worklog, &block)
     ids = params[:notify] || []
+    emails = (task.notify_emails || "").strip.split(",")
     all_users = []
 
-    if ids.any?
+    if ids.any? or emails.any?
       all_users = ids.map { |id| current_user.company.users.find(id) }
       users = all_users.clone
       users.delete(current_user) if !current_user.receive_own_notifications?
-      emails = users.map { |u| u.email }.uniq.compact
+      emails += users.map { |u| u.email }
+      emails = emails.uniq.compact
+      emails = emails.select { |e| !e.blank? }
 
       worklog.users = users
       

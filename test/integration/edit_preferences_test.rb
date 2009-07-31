@@ -28,11 +28,10 @@ class EditPreferencesTest < ActionController::IntegrationTest
       end
 
       should "be able to edit their own custom attributes" do
-        fill_in "user_set_custom_attribute_values__value", :with => "attr1 value"
+        fill_in @attr.display_name, :with => "attr1 value"
         click_button "save"
         assert_equal @user.reload.values_for(@attr).first, "attr1 value"
       end
-
     end
   end
 end
