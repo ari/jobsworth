@@ -13,7 +13,7 @@ class WorkLog < ActiveRecord::Base
   belongs_to :company
   belongs_to :project
   belongs_to :customer
-  belongs_to :task
+  belongs_to :task, :touch => true
   belongs_to :scm_changeset
 
   has_one    :ical_entry, :dependent => :destroy
