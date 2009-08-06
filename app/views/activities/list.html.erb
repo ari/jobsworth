@@ -45,8 +45,11 @@ widget.setContent('<span class="optional"><br/><%= _'Loading...'%></span>');
 portal.add(widget, <%=@widget.column%>);
 <%= "jQuery('#content_#{@widget.dom_id}').hide();" if @widget.collapsed? %> 
 <% end %>
-<% (current_user.widgets.select{|w| !w.collapsed?} + current_user.widgets.select{|w| w.collapsed?} ).each do |@widget| %>
-jQuery.get('/widgets/show/<%=@widget.id%>', function(data) { portal.refreshHeights();} );
+
+<% widgets = (current_user.widgets.select{ |w| !w.collapsed? } +
+              current_user.widgets.select{ |w| w.collapsed? }) -%>
+<% widgets.each do |@widget| %>
+jQuery.getScript('/widgets/show/<%=@widget.id%>', function(data) { portal.refreshHeights();} );
 <% end %>
 // ]]>
 </script>

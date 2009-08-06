@@ -1,7 +1,7 @@
 # A user who is assigned to a task 
 class TaskOwner < ActiveRecord::Base
   belongs_to :user
-  belongs_to :task
+  belongs_to :task, :touch => true
 
   named_scope :unread, :conditions => { :unread => true }
 end
