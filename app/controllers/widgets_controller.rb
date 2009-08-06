@@ -1,5 +1,4 @@
 class WidgetsController < ApplicationController
-
   OVERDUE    = 0
   TODAY      = 1
   TOMORROW   = 2

@@ -1,6 +1,6 @@
 <% if session[:hide_deferred].to_i == 0 || task.active? -%>
 
-<%# cache [ task.cache_key, task.cache_expiry(current_user) ] do %>
+<% cache(task) do -%>
 
 <div id="task_<%=task.id%>"
 <%
@@ -78,7 +78,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
       <% if @current_sheet && @current_sheet.task_id == task.id -%>
         <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link work-icon" } )  -%>
       <% else -%>
-        <a href="#" onclick="jQuery.get('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>');"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
+        <a href="#" onclick="jQuery.getScript('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>'); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
       <% end -%>
    <% else -%>
      <img src="/images/spacer.gif" width="16" height="16" border="0"/>
@@ -133,6 +133,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
 <div style="clear:both;"></div>
 
-<%# end %>
+<% end %>
 
 <% end %>
