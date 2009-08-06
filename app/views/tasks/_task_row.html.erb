@@ -1,8 +1,8 @@
 <% if session[:hide_deferred].to_i == 0 || task.active? -%>
 
-<% cache(task) do -%>
+<% cache("#{ task.cache_key }-#{ current_user.id }-task_row") do -%>
 
-<div id="task_<%=task.id%>"
+<div id="task_<%=task.id %>"
 <%
  depth ||= 1
  depth = 1 if depth < 1
