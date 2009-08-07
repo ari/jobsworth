@@ -55,7 +55,6 @@
 
     <li<%= " class='active'" if active == "tasks/new" %>><%= link_to "#{_('New Task') + image_tag('tick.png',  :border => 0, :height => 16, :style => "margin-top:-2px;")}", {:controller => 'tasks', :action => 'new'}, :class => "active" %></li>
 
-    <li class="right"><a href="http://wiki.clockingit.com/help:%3C%=controller.controller_name%%3E:%3C%=controller.action_name%%3E" target="_blank"><img height="16" style="margin-top:-2px;" src="/images/help.png" border="0"></a></li>
     <li class="right"><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></li>
 
 	<li class="right<%= " active" if active == "users/edit_preferences" %>"><%= link_to "#{_('Preferences')}", :controller => 'users', :action => 'edit_preferences' %>
