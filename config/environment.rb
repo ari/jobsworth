@@ -50,8 +50,8 @@ Rails::Initializer.run do |config|
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
 
-  # Rotate logs when they reach 1Mb and keep 5 old logs
-  config.logger = Logger.new(config.log_path, 5, 1024*1024)
+  # Rotate logs when they reach 50Mb and keep 5 old logs
+  config.logger = Logger.new(config.log_path, 5, 50*1024*1024)
   
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
