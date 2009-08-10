@@ -19,6 +19,7 @@
     <%=h formatted_date_for_current_user(task.due_date) %>
   </td>
   <td>
+    <%= (task.minutes_left / 60.0).round(1) %>
   </td>
   <td>
     <%=h task.users.map{ |u| u.name }.join(", ") %>

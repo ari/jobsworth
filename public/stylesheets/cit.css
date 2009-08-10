@@ -2864,6 +2864,10 @@ div.search_filter {
 
 #task_list table {
     border-collapse: collapse;
+    width: 100%;
+}
+#task_list table th {
+    text-align: left;
 }
 #task_list table td, #task_list table th {
     margin: 0px;
