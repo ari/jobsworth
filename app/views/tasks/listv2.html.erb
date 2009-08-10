@@ -8,7 +8,18 @@
   
   <div id="task_list">
     <div id="print_title"><%= print_title %></div>
-    <%= render(:partial => "tag_row", :locals => {:groups => @groups, :parent => ""}) %>
+    <table>
+      <thead>
+	<th></th>
+	<th><%= _("Summary") %></th>
+	<th><%= _("Client") %></th>
+	<th><%= _("Project/Milestone") %></th>
+	<th><%= _("Due Date") %></th>
+	<th><%= _("Time Left") %></th>
+	<th><%= _("Assigned To") %></th>
+      </thead>
+      <%= render :partial => "task_row_v2", :collection => @tasks %>
+    </table>
   </div>
 </div>
 

@@ -1,0 +1,26 @@
+<%- task = task_row_v2 %>
+
+<tr class="<%= cycle("odd", "even") %>" onclick="document.location='/tasks/edit/<%= task.task_num %>'">
+  <td>
+    <%= task_icon(task) %>
+  </td>
+  <td>
+    <%=h task.name %>
+  </td>
+  <td>
+    <%=h (task.customers.first || task.project.customer).name %>
+  </td>
+  <td>
+    <% str = [ task.project.name ] -%>
+    <% str << task.milestone.name if task.milestone %>
+    <%=h "#{ str.join("/") }" %>
+  </td>
+  <td>
+    <%=h formatted_date_for_current_user(task.due_date) %>
+  </td>
+  <td>
+  </td>
+  <td>
+    <%=h task.users.map{ |u| u.name }.join(", ") %>
+  </td>
+</tr>

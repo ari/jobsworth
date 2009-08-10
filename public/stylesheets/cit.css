@@ -2861,3 +2861,18 @@ div.search_filter {
 #search_filter_form .links {
     padding-top: 5px;
 }
+
+#task_list table {
+    border-collapse: collapse;
+}
+#task_list table td, #task_list table th {
+    margin: 0px;
+    padding: 3px;
+}
+    
+#task_list tr {
+    cursor: pointer;
+}
+#task_list tr:hover {
+    background: #9f9;
+}

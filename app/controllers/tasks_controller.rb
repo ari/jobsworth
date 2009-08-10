@@ -67,7 +67,14 @@ class TasksController < ApplicationController
   end
 
   def listv2
-    list
+    @tags = {}
+    @tags.default = 0
+    @tags_total = 0
+
+    task_filter = TaskFilter.new(self, params)
+    @selected_tags = task_filter.selected_tags || []
+    @tasks = task_filter.tasks
+    @all_tags = task_filter.tag_counts
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
