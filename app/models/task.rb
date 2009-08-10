@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
   has_many      :users, :through => :task_owners, :source => :user
   has_many      :task_owners, :dependent => :destroy
 
-  has_many      :work_logs, :dependent => :destroy
+  has_many      :work_logs, :dependent => :destroy, :order => "started_at asc"
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy
 
   has_many      :notifications, :dependent => :destroy
@@ -1092,5 +1092,16 @@ class Task < ActiveRecord::Base
     end
 
     return res
+  end
+
+  # Creates a new work log for this task using the given params
+  def create_work_log(params, user)
+    if params and !params[:duration].blank? and !params[:body].blank?
+      params[:duration] = TimeParser.parse_time(user, params[:duration])
+      params.merge!(:company => self.company, 
+                    :project => self.project, 
+                    :customer => (self.customers.first || self.project.customer))
+      self.work_logs.build(params).save!
+    end
   end
 end
