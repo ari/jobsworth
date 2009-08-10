@@ -51,7 +51,7 @@ class FilterControllerTest < ActionController::TestCase
       get :index, :filter => value.value
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => property.filter_name,
+                   :name => "#{ property.filter_name }[]",
                    :value => value.id
                  })
     end

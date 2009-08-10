@@ -44,7 +44,7 @@
     <li>[<%= property.name  %>]</li>
     <% values.each do |v| -%>
       <li>
-	<%= hidden_field_tag property.filter_name, v.id, :class => "id" %>
+	<%= hidden_field_tag "#{ property.filter_name }[]", v.id, :class => "id" %>
 	<%=h v.value %>
       </li>
     <% end -%>
