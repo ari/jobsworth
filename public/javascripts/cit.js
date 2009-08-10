@@ -344,6 +344,10 @@ jQuery(document).ready(function() {
     var tagsHTML = jQuery('#tags').html();
     jQuery('#tag-block').html(tagsHTML);
 
+    jQuery("#search_filter").focus(function(elem) {
+	elem.target.select();
+    });
+
     fixNestedCheckboxes();
 });
 
