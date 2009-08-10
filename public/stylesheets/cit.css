@@ -2829,12 +2829,7 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
 }
 
 div.search_filter {
-    padding-bottom: 20px;
     text-align: center;
-}
-div.search_filter table {
-    margin-left: auto;
-    margin-right: auto;
 }
 #search_filter {
     font-size: 20px;

@@ -5,7 +5,7 @@
 
   <form id="search_filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
     <% 
-       redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
+       redir_action = (local_assigns[:redirect_action] ? redirect_action : "listv2")
        redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
        redir = url_for(redir_params.merge(:action => redir_action))
     -%>
@@ -17,3 +17,10 @@
   </form>
 </div>
 
+<div class="task_view_links" style="<%= @task_only_option_style %>">
+  <ul class="tabs">
+    <%= task_view_links %>
+  </ul>
+</div>
+
+<div id="quick_add_container" style="display:none;"></div>

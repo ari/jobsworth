@@ -4,7 +4,7 @@
     <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
     <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
   </div>
-  <%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+  <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
   
   <div id="task_list">
     <div id="print_title"><%= print_title %></div>
@@ -13,13 +13,14 @@
 </div>
 
 <div id="tags">
-  <div class="page_header""><%=_ 'Tags' %>
-			   <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
-</div>
+  <div class="page_header">
+    <%=_ 'Tags' %>
+    <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+  </div>
 
-<% unless @selected_tags.empty? %>
-<span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
-<% end %>
+  <% unless @selected_tags.empty? %>
+    <span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
+  <% end %>
 
-<%= tag_links(@all_tags) %>
+  <%= tag_links(@all_tags) %>
 </div>
