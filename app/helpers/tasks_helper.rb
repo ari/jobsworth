@@ -339,4 +339,63 @@ module TasksHelper
     return emails.join("\n")
   end
 
+  def task_info_tip(task)
+    values = []
+    values << [ _("Description"), task.description ]
+    comment = task.last_comment
+    if comment
+      values << [ _("Last Comment"), "#{ comment.user.shout_nick }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
+    end
+    
+    return task_tooltip(values)
+  end
+
+  def task_customer_tip(customer)
+    values = []
+    values << [ _("Contact Name"), customer.contact_name ]
+    values << [ _("Contact Email"), customer.contact_email ]
+    customer.custom_attribute_values.each do |cav|
+      values << [ cav.custom_attribute.display_name, cav.to_s ]
+    end
+    
+    return task_tooltip(values)
+  end
+
+  def task_milestone_tip(milestone)
+    return if !milestone
+
+    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(milestone.due_date) ])
+  end
+
+  def task_users_tip(task)
+    values = []
+    task.users.each do |user|
+      icons = image_tag("user.png")
+      if task.should_be_notified?(user)
+        icons += "&nbsp;" + image_tag("email.png") 
+      end
+      values << [ user.name, icons ]
+    end
+
+    task.watchers.each do |user|
+      icons = ""
+      if task.should_be_notified?(user)
+        icons = image_tag("email.png") 
+      end
+      values << [ user.name, icons ]
+    end
+
+    return task_tooltip(values)
+  end
+
+  def task_tooltip(names_and_values)
+    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
+    names_and_values.each do |name, value|
+      res += "<tr><th>#{ name }</th>"
+      res += "<td>#{ value }</td></tr>"
+    end
+    res += "</table>"
+    return escape_once(res)
+  end
+
 end

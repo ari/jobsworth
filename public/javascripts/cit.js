@@ -349,6 +349,7 @@ jQuery(document).ready(function() {
     });
 
     fixNestedCheckboxes();
+    updateTooltips();
 });
 
 /*

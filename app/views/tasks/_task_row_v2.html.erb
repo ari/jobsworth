@@ -1,16 +1,17 @@
 <%- task = task_row_v2 %>
+<%- customer = (task.customers.first || task.project.customer) %>
 
 <tr class="<%= cycle("odd", "even") %>" onclick="document.location='/tasks/edit/<%= task.task_num %>'">
   <td>
     <%= task_icon(task) %>
   </td>
-  <td>
-    <%=h task.name %>
+  <td class="tooltip" title="<%= task_info_tip(task) %>">
+    <%= link_to(task.name, "/tasks/edit/#{ task.task_num }") %>
   </td>
-  <td>
-    <%=h (task.customers.first || task.project.customer).name %>
+  <td class="tooltip" title="<%= task_customer_tip(customer) %>">
+    <%=h customer.name %>
   </td>
-  <td>
+  <td class="tooltip" title="<%= task_milestone_tip(task.milestone) %>">
     <% str = [ task.project.name ] -%>
     <% str << task.milestone.name if task.milestone %>
     <%=h "#{ str.join("/") }" %>
@@ -21,7 +22,7 @@
   <td>
     <%= (task.minutes_left / 60.0).round(1) %>
   </td>
-  <td>
+  <td class="tooltip" title="<%= task_users_tip(task) %>">
     <%=h task.users.map{ |u| u.name }.join(", ") %>
   </td>
 </tr>
