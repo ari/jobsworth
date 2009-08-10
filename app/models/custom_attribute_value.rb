@@ -22,4 +22,8 @@ class CustomAttributeValue < ActiveRecord::Base
 
     return valid
   end
+
+  def to_s
+    choice ? choice.value : value
+  end
 end

@@ -66,6 +66,17 @@ class TasksController < ApplicationController
     @group_ids, @groups = group_tasks(@tasks)
   end
 
+  def listv2
+    @tags = {}
+    @tags.default = 0
+    @tags_total = 0
+
+    task_filter = TaskFilter.new(self, params)
+    @selected_tags = task_filter.selected_tags || []
+    @tasks = task_filter.tasks
+    @all_tags = task_filter.tag_counts
+  end
+
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
     @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')

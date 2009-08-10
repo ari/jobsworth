@@ -1,0 +1,26 @@
+<div class="search_filter">
+  <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter" %>
+  <div id="search_filter_auto_complete" class="auto_complete"></div>
+  <%= auto_complete_field "search_filter", :url => "/filter", :after_update_element => "addSearchFilter" %>
+
+  <form id="search_filter_form" action="setup_task_filters" method="post" style="margin:0;padding:0;">
+    <% 
+       redir_action = (local_assigns[:redirect_action] ? redirect_action : "listv2")
+       redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
+       redir = url_for(redir_params.merge(:action => redir_action))
+    -%>
+    <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
+
+    <div class="links">
+      <%= all_current_filters.join(", ") -%>
+    </div>
+  </form>
+</div>
+
+<div class="task_view_links" style="<%= @task_only_option_style %>">
+  <ul class="tabs">
+    <%= task_view_links %>
+  </ul>
+</div>
+
+<div id="quick_add_container" style="display:none;"></div>

@@ -52,7 +52,7 @@
 
 	<li<%= " class='active'" if active.starts_with?('project_files/') %>><%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %></li>
 
-    <li<%= " class='active'" if active.starts_with?('projects/') %><%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %>
+    <li<%= " class='active'" if active.starts_with?('projects/') %>><%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %>
 	    <% if current_user.create_projects? %>
 			<ul>
 				<li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>

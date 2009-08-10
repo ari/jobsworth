@@ -1105,4 +1105,10 @@ class Task < ActiveRecord::Base
       self.work_logs.build(params).save!
     end
   end
+
+  def last_comment
+    @last_comment ||= self.work_logs.first(:order => "started_at desc, id desc", 
+                                           :conditions => { :comment => true },
+                                           :include => [:user, :task, :project])
+  end
 end

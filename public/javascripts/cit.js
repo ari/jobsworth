@@ -344,7 +344,12 @@ jQuery(document).ready(function() {
     var tagsHTML = jQuery('#tags').html();
     jQuery('#tag-block').html(tagsHTML);
 
+    jQuery("#search_filter").focus(function(elem) {
+	elem.target.select();
+    });
+
     fixNestedCheckboxes();
+    updateTooltips();
 });
 
 /*
@@ -379,6 +384,21 @@ function removeSearchFilter(link) {
     var form = link.parents("form");
     link.parent(".search_filter").remove();
     form.submit();
+}
+
+function addSearchFilter(textField, selected) {
+    selected = jQuery(selected);
+    var idField = selected.find(".id");
+    
+    if (idField && idField.length > 0) {
+	var filterForm = jQuery("#search_filter_form");
+	var clone = idField.clone();
+	filterForm.append(clone);
+	filterForm.submit();
+    }
+    else {
+	// probably selected a heading, just ignore
+    }
 }
 
 function addProjectToUser(input, li) {
@@ -649,9 +669,10 @@ function updatePositionFields(listSelector) {
 
 function removeTaskFilter(sender) {
     var li = jQuery(sender).parent();
+    var form = li.parents("form");
     li.remove();
 
-    jQuery("#filter_form").submit();
+    form.submit();
 }
 
 function addTaskFilter(sender, id, field_name) {
