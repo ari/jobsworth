@@ -245,46 +245,58 @@ module TaskFilterHelper
     return controller_name == "reports"
   end
 
-  # Returns input fields for all the currently set filters
-  def links_for_all_current_filters
-    filters = {}
-    company = current_user.company
-
-    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
-    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
-    project_ids = TaskFilter.filter_ids(session, :filter_project)
+  # Returns an array of all the currently set filters.
+  # Each element in the array is a 3 element array with: 
+  # [ filter_type, filter_value, filter_id ], for example:
+  # [ "project", "project 2", "p3" ]
+  def all_current_filters
+    res = []
 
     projects = current_user.projects
-    selected_projects = selected_filters_for(:project, projects)
-    filters[_("Project")] = selected_filter_values("filter", selected_projects)
+    selected_filters_for(:project, projects).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Project"), value, id)
+    end
 
     customers = projects.map { |p| p.customer }.uniq
     customers = customers.sort_by { |c| c.name.downcase }
-    customers = selected_filters_for(:customer, customers)
-    filters[_("Client")] = selected_filter_values("filter", customers)
+    selected_filters_for(:customer, customers).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Client"), value, id)
+    end
 
     milestones = projects.inject([]) { |array, project| array += project.milestones }
-    milestones = selected_filters_for(:milestone, milestones)
-    filters[_("Milestone")] = selected_filter_values("filter", milestones)
+    selected_filters_for(:milestone, milestones).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Milestone"), value, id)
+    end
 
-    filters[_("Status")] = selected_filter_values("filter_status", selected_status_names_and_ids)
-    filters[_("User")] = selected_filter_values("filter_user", selected_user_names_and_ids)
+    selected_status_names_and_ids.each do |value, id|
+      res << link_to_remove_filter(:filter_status, _("Status"), value, id)
+    end
+
+    selected_user_names_and_ids.each do |value, id|
+      res << link_to_remove_filter(:filter_user, _("User"), value, id)
+    end
 
     current_user.company.properties.each do |property|
       filter_name = property.filter_name
       filter_ids = TaskFilter.filter_ids(session, filter_name)
       values = property.property_values
       selected = values.select { |pv| filter_ids.include?(pv.id) }
-      filters[property.name] = selected_filter_values(filter_name, 
-                             objects_to_names_and_ids(selected, :name_method => :value),
-                             property.name)
+      objects_to_names_and_ids(selected, :name_method => :value).each do |value, id|
+        res << link_to_remove_filter(filter_name, property.name, value, id)
+      end
     end
 
-    filters = filters.delete_if do |name, values| 
-      values.nil? or values.empty? or values.to_s.index('class="all"')
+    return res
+  end
+
+  def link_to_remove_filter(filter_name, name, value, id)
+    res = content_tag :span, :class => "search_filter" do
+      hidden_field_tag("#{ filter_name }[]", id) +
+      link_to_function("#{ name }:#{ value }", "removeSearchFilter(this)") +
+        image_tag("cross_small.png")
     end
 
-    return filters
+    return res
   end
 
 end

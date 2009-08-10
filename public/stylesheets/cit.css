@@ -2863,3 +2863,6 @@ div.search_filter table {
 #search_filter_auto_complete ul li.selected {
     background-color: #ffb;
 }
+#search_filter_form .links {
+    padding-top: 5px;
+}

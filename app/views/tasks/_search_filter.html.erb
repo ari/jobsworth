@@ -11,19 +11,9 @@
     -%>
     <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
 
-    <% filters = links_for_all_current_filters -%>
-    <table>
-      <tr>
-	<% filters.keys.sort.each do |name| -%>
-  	  <th><%= name %></th>
-	<% end -%>
-      </tr>
-      <tr valign="top" align="left">
-	<% filters.keys.sort.each do |name| -%>
-	  <td><%= filters[name] %></td>
-	<% end -%>
-      </tr>
-    </table>
+    <div class="links">
+      <%= all_current_filters.join(", ") -%>
+    </div>
   </form>
 </div>
 
