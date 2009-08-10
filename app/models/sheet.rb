@@ -1,7 +1,7 @@
 # And active worksheet, linked to a task and a user
 
 class Sheet < ActiveRecord::Base
-  belongs_to :task, :touch => true
+  belongs_to :task
   belongs_to :project
   belongs_to :user
 

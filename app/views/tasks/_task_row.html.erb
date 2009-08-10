@@ -1,7 +1,5 @@
 <% if session[:hide_deferred].to_i == 0 || task.active? -%>
 
-<% cache("#{ task.cache_key }-#{ current_user.id }-task_row") do -%>
-
 <div id="task_<%=task.id %>"
 <%
  depth ||= 1
@@ -132,7 +130,5 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 <% end %>
 
 <div style="clear:both;"></div>
-
-<% end %>
 
 <% end %>

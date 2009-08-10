@@ -1,0 +1,16 @@
+<fieldset id="worklog" class="sidebar">
+  <legend><%=_ "Work log" %></legend>
+  <p>
+    <%=_ "Enter a duration and notes to create a work log." %>
+  </p>
+  <% fields_for "work_log" do |f| -%>
+    <%= f.label :started_at, _("Start") %>
+    <%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
+
+    <%= f.label :duration, _("Duration worked") %>
+    <%= f.text_field :duration, :class => "text" %>
+
+    <%= f.label :body, _("Notes") %>
+    <%= f.text_area :body %>
+  <% end -%>
+</fieldset>
