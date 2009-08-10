@@ -3,7 +3,7 @@
 <a href="#" onclick="jQuery('#tasks_filter').toggle('slow')" class="disclosure" style="<%= @task_only_option_style %>">
   <%= _'Filter'%>
 </a>
-<div nowrap id="tasks_filter">
+<div nowrap id="tasks_filter" style="display: none">
   <fieldset>
     <% if show_filter_legend? -%>
       <legend><%= _("Task Filter") %></legend>

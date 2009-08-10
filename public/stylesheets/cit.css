@@ -2828,3 +2828,38 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     float: right;
 }
 
+div.search_filter {
+    padding-bottom: 20px;
+    text-align: center;
+}
+div.search_filter table {
+    margin-left: auto;
+    margin-right: auto;
+}
+#search_filter {
+    font-size: 20px;
+    width: 50%;
+}
+#search_filter_auto_complete {
+    width: 50%;
+    background-color: #fff;
+}
+#search_filter_auto_complete ul {
+    background-color: #fff;
+    border:1px solid #888;
+    margin:0;
+    padding:0;
+    width:100%;
+    list-style-type:none;
+    z-index: 100;
+}
+#search_filter_auto_complete ul li {
+    background-color: #fff;
+    font-size: 20px;
+    margin:0;
+    padding:3px;
+    cursor:pointer;
+}
+#search_filter_auto_complete ul li.selected {
+    background-color: #ffb;
+}

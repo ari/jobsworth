@@ -4,6 +4,7 @@
     <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
     <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
   </div>
+  <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
   <%= render(:partial => "filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
   
   <div id="task_list">

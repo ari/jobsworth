@@ -245,4 +245,46 @@ module TaskFilterHelper
     return controller_name == "reports"
   end
 
+  # Returns input fields for all the currently set filters
+  def links_for_all_current_filters
+    filters = {}
+    company = current_user.company
+
+    customer_ids = TaskFilter.filter_ids(session, :filter_customer)
+    milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
+    project_ids = TaskFilter.filter_ids(session, :filter_project)
+
+    projects = current_user.projects
+    selected_projects = selected_filters_for(:project, projects)
+    filters[_("Project")] = selected_filter_values("filter", selected_projects)
+
+    customers = projects.map { |p| p.customer }.uniq
+    customers = customers.sort_by { |c| c.name.downcase }
+    customers = selected_filters_for(:customer, customers)
+    filters[_("Client")] = selected_filter_values("filter", customers)
+
+    milestones = projects.inject([]) { |array, project| array += project.milestones }
+    milestones = selected_filters_for(:milestone, milestones)
+    filters[_("Milestone")] = selected_filter_values("filter", milestones)
+
+    filters[_("Status")] = selected_filter_values("filter_status", selected_status_names_and_ids)
+    filters[_("User")] = selected_filter_values("filter_user", selected_user_names_and_ids)
+
+    current_user.company.properties.each do |property|
+      filter_name = property.filter_name
+      filter_ids = TaskFilter.filter_ids(session, filter_name)
+      values = property.property_values
+      selected = values.select { |pv| filter_ids.include?(pv.id) }
+      filters[property.name] = selected_filter_values(filter_name, 
+                             objects_to_names_and_ids(selected, :name_method => :value),
+                             property.name)
+    end
+
+    filters = filters.delete_if do |name, values| 
+      values.nil? or values.empty? or values.to_s.index('class="all"')
+    end
+
+    return filters
+  end
+
 end

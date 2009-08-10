@@ -381,6 +381,21 @@ function removeSearchFilter(link) {
     form.submit();
 }
 
+function addSearchFilter(textField, selected) {
+    selected = jQuery(selected);
+    var idField = selected.find(".id");
+    
+    if (idField && idField.length > 0) {
+	var filterForm = jQuery("#search_filter_form");
+	var clone = idField.clone();
+	filterForm.append(clone);
+	filterForm.submit();
+    }
+    else {
+	// probably selected a heading, just ignore
+    }
+}
+
 function addProjectToUser(input, li) {
     li = jQuery(li);
     var value = li.find(".complete_value").text();
@@ -649,9 +664,10 @@ function updatePositionFields(listSelector) {
 
 function removeTaskFilter(sender) {
     var li = jQuery(sender).parent();
+    var form = li.parents("form");
     li.remove();
 
-    jQuery("#filter_form").submit();
+    form.submit();
 }
 
 function addTaskFilter(sender, id, field_name) {

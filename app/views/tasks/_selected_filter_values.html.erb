@@ -1,7 +1,9 @@
 <ul class="menu">
-  <li class="all" style="display: <%= display_all_label %>">
-    <%= all_label -%>
-  </li>
+  <% if display_all_label != "none" -%>
+    <li class="all">
+      <%= all_label -%>
+    </li>
+  <% end -%>
   <% selected_names_and_ids.each do |name, id| -%>
     <li class="cut">
       <%= link_to_function(name, "removeTaskFilter(this)") -%>
