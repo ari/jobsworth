@@ -11,9 +11,9 @@
   <td class="tooltip" title="<%= task_customer_tip(customer) %>">
     <%=h customer.name %>
   </td>
-  <td class="tooltip" title="<%= task_milestone_tip(task.milestone) %>">
+  <td class="tooltip" title="<%= task_milestone_tip(task) %>">
     <% str = [ task.project.name ] -%>
-    <% str << task.milestone.name if task.milestone %>
+    <% str << task.milestone.name if task.milestone_id > 0 %>
     <%=h "#{ str.join("/") }" %>
   </td>
   <td>

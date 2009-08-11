@@ -252,7 +252,9 @@ module TaskFilterHelper
   def all_current_filters
     res = []
 
-    projects = current_user.projects
+    # need to eager load customers and milestones, so using custom finder here 
+    proj_permissions = current_user.project_permissions.all(:include => { :project => [ :customer, :milestones ] })
+    projects = proj_permissions.map { |pp| pp.project }.uniq
     selected_filters_for(:project, projects).each do |value, id|
       res << link_to_remove_filter(:filter, _("Project"), value, id)
     end

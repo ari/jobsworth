@@ -361,10 +361,10 @@ module TasksHelper
     return task_tooltip(values)
   end
 
-  def task_milestone_tip(milestone)
-    return if !milestone
+  def task_milestone_tip(task)
+    return if task.milestone_id.to_i <= 0
 
-    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(milestone.due_date) ])
+    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ])
   end
 
   def task_users_tip(task)
