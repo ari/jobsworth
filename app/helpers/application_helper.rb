@@ -361,7 +361,7 @@ END_OF_HTML
     
     property = current_user.company.type_property
     if icon_property != 0 and !property
-      property = current_user.company.properties.find(icon_property)
+      property = current_user.company.properties.detect { |p| p.id == icon_property }
     end
 
     pv = task.property_value(property)
