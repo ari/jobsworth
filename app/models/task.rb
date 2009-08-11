@@ -1098,6 +1098,7 @@ class Task < ActiveRecord::Base
   def create_work_log(params, user)
     if params and !params[:duration].blank? and !params[:body].blank?
       params[:duration] = TimeParser.parse_time(user, params[:duration])
+      params[:started_at] = TimeParser.date_from_params(user, params, :started_at)
       params.merge!(:user => user,
                     :company => self.company, 
                     :project => self.project, 
