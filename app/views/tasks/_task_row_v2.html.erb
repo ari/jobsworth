@@ -13,7 +13,7 @@
   </td>
   <td class="tooltip" title="<%= task_milestone_tip(task) %>">
     <% str = [ task.project.name ] -%>
-    <% str << task.milestone.name if task.milestone_id > 0 %>
+    <% str << task.milestone.name if task.milestone_id.to_i > 0 %>
     <%=h "#{ str.join("/") }" %>
   </td>
   <td>
