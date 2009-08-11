@@ -1,5 +1,27 @@
 class TimeParser
 
+
+  ###
+  # Parses the date string at params[key_name] according to the 
+  # current user's prefs. If no date is found, the current
+  # date is returned.
+  # The returned data will always be in UTC.
+  ###
+  def self.date_from_params(user, params, key_name)
+    res = Time.now.utc
+
+    begin
+      str = params[key_name]
+      format = "#{user.date_format} #{user.time_format}"
+      date = DateTime.strptime(str, format)
+      res = tz.local_to_utc(date) if date
+    rescue
+      # just fall back to default if error
+    end
+
+    return res
+  end
+
   # Parse <tt>1w 2d 3h 4m</tt> or <tt>1:2:3:4</tt> => minutes or seconds
   def self.parse_time(user, input, minutes = false)
     total = 0

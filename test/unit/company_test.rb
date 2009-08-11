@@ -4,6 +4,8 @@ class CompanyTest < ActiveRecord::TestCase
   fixtures :companies, :customers
 
   should_have_many :preferences
+  should_have_many :properties
+  should_have_many :property_values, :through => :properties
 
   def setup
     @company = companies(:cit)

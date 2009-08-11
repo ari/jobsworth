@@ -24,18 +24,7 @@ module DateAndTimeHelper
   # The returned data will always be in UTC.
   ###
   def date_from_params(params, key_name)
-    res = Time.now.utc
-
-    begin
-      str = params[key_name]
-      format = "#{current_user.date_format} #{current_user.time_format}"
-      date = DateTime.strptime(str, format)
-      res = tz.local_to_utc(date) if date
-    rescue
-      # just fall back to default if error
-    end
-
-    return res
+    TimeParser.date_from_params(current_user, params, key_name)
   end
 
 end

@@ -1,0 +1,37 @@
+<div id="content">
+  <div class="page_header">
+    <div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "showProgress();", :complete => "hideProgress();" %></div>
+    <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
+    <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
+  </div>
+  <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+  
+  <div id="task_list">
+    <div id="print_title"><%= print_title %></div>
+    <table>
+      <thead>
+	<th></th>
+	<th><%= _("Summary") %></th>
+	<th><%= _("Client") %></th>
+	<th><%= _("Project/Milestone") %></th>
+	<th><%= _("Due Date") %></th>
+	<th><%= _("Hours Left") %></th>
+	<th><%= _("Assigned To") %></th>
+      </thead>
+      <%= render :partial => "task_row_v2", :collection => @tasks %>
+    </table>
+  </div>
+</div>
+
+<div id="tags">
+  <div class="page_header">
+    <%=_ 'Tags' %>
+    <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+  </div>
+
+  <% unless @selected_tags.empty? %>
+    <span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
+  <% end %>
+
+  <%= tag_links(@all_tags) %>
+</div>

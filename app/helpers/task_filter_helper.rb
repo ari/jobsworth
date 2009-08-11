@@ -245,4 +245,58 @@ module TaskFilterHelper
     return controller_name == "reports"
   end
 
+  # Returns an array of all the currently set filters.
+  # Each element in the array is a 3 element array with: 
+  # [ filter_type, filter_value, filter_id ], for example:
+  # [ "project", "project 2", "p3" ]
+  def all_current_filters
+    res = []
+
+    projects = current_user.projects
+    selected_filters_for(:project, projects).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Project"), value, id)
+    end
+
+    customers = projects.map { |p| p.customer }.uniq
+    customers = customers.sort_by { |c| c.name.downcase }
+    selected_filters_for(:customer, customers).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Client"), value, id)
+    end
+
+    milestones = projects.inject([]) { |array, project| array += project.milestones }
+    selected_filters_for(:milestone, milestones).each do |value, id|
+      res << link_to_remove_filter(:filter, _("Milestone"), value, id)
+    end
+
+    selected_status_names_and_ids.each do |value, id|
+      res << link_to_remove_filter(:filter_status, _("Status"), value, id)
+    end
+
+    selected_user_names_and_ids.each do |value, id|
+      res << link_to_remove_filter(:filter_user, _("User"), value, id)
+    end
+
+    current_user.company.properties.each do |property|
+      filter_name = property.filter_name
+      filter_ids = TaskFilter.filter_ids(session, filter_name)
+      values = property.property_values
+      selected = values.select { |pv| filter_ids.include?(pv.id) }
+      objects_to_names_and_ids(selected, :name_method => :value).each do |value, id|
+        res << link_to_remove_filter(filter_name, property.name, value, id)
+      end
+    end
+
+    return res
+  end
+
+  def link_to_remove_filter(filter_name, name, value, id)
+    res = content_tag :span, :class => "search_filter" do
+      hidden_field_tag("#{ filter_name }[]", id) +
+      link_to_function("#{ name }:#{ value }", "removeSearchFilter(this)") +
+        image_tag("cross_small.png")
+    end
+
+    return res
+  end
+
 end

@@ -1,6 +1,6 @@
 <div id="content">
   <div class="page_header">
-		<div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "showProgress();", :complete => "hideProgress();" %></div>
+    <div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "showProgress();", :complete => "hideProgress();" %></div>
     <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
     <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
   </div>
