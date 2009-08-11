@@ -134,7 +134,9 @@ module TaskFilterHelper
     milestone_ids = TaskFilter.filter_ids(session, :filter_milestone)
     project_ids = TaskFilter.filter_ids(session, :filter_project)
 
-    projects = current_user.projects
+    # need to eager load customers and milestones, so using custom finder here 
+    proj_permissions = current_user.project_permissions.all(:include => { :project => [ :customer, :milestones ] })
+    projects = proj_permissions.map { |pp| pp.project }.uniq
     selected += selected_filters_for(:project, projects)
 
     customers = projects.map { |p| p.customer }.uniq
