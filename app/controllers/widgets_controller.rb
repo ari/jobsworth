@@ -458,7 +458,7 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"
         page.replace_html "name-#{@widget.dom_id}", @widget.name
-        page << "jQuery.get('/widgets/show/#{@widget.id}');"
+        page << "jQuery.getScript('/widgets/show/#{@widget.id}');"
       end
     end
   end
