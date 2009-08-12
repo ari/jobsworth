@@ -404,7 +404,7 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove 'add-widget'
         page << "var widget = new Xilinus.Widget('widget', '#{@widget.dom_id}');"
-        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"jQuery.get(\\\'/widgets/edit/#{@widget.id}\\\');\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.get(\\\'/widgets/destroy/#{@widget.id}\\\');\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
+        page << "var title = '<div style=\"float:right;display:none;\" class=\"widget-menu\"><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/edit/#{@widget.id}\\\'); return false;\"><img src=\"/images/configure.png\" border=\"0\"/></a><a href=\"#\" onclick=\"jQuery.getScript(\\\'/widgets/destroy/#{@widget.id}\\\'); return false;\"><img src=\"/images/delete.png\" border=\"0\"/></a></div>';"
 
         page << "title += '<div><a href=\"#\" id=\"indicator-#{@widget.dom_id}\" class=\"widget-open\" onclick=\"jQuery.get(\\\'/widgets/toggle_display/#{@widget.id}\\\',function(data) {portal.refreshHeights();} );\">&nbsp;</a>';"
         page << "title += '" + render_to_string(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join + "</div>';"
@@ -458,7 +458,7 @@ class WidgetsController < ApplicationController
       render :update do |page|
         page.remove "config-#{@widget.dom_id}"
         page.replace_html "name-#{@widget.dom_id}", @widget.name
-        page << "jQuery.get('/widgets/show/#{@widget.id}');"
+        page << "jQuery.getScript('/widgets/show/#{@widget.id}');"
       end
     end
   end
