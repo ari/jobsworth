@@ -19,6 +19,16 @@
   <% end -%>
 <% end -%>
 
+<% if @milestones and @milestones.any? -%>
+  <li>[<%=_ "Milestone" %>]</li>
+  <% @milestones.each do |m| -%>
+  <li>
+    <%= hidden_field_tag "filter[]", "m#{ m.id }", :class => "id" %>
+    <%= m.name %>
+  </li>
+  <% end -%>
+<% end -%>
+
 <% if @users and @users.any? -%>
   <li>[<%=_ "User" %>]</li>
   <% @users.each do |u| -%>

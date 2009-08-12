@@ -7,8 +7,10 @@ class FilterControllerTest < ActionController::TestCase
       @user = users(:admin)
       @request.session[:user_id] = @user.id
 
+      project = @user.company.projects.first
+      milestone = Milestone.make(:project => project, :company => @user.company)
       @task = Task.make(:users => [ @user ], :company => @user.company,
-                        :project => @user.company.projects.first)
+                        :project => project, :milestone => milestone)
       assert_not_nil @task
     end
 
@@ -31,6 +33,15 @@ class FilterControllerTest < ActionController::TestCase
                    :class => "id", 
                    :name => "filter[]",
                    :value => "c#{ @task.project.customer.id }" })
+    end
+
+
+    should "be able to search by task milestone" do
+      get :index, :filter => @task.milestone.name
+      assert_tag(:attributes => { 
+                   :class => "id", 
+                   :name => "filter[]",
+                   :value => "m#{ @task.milestone.id }" })
     end
 
     should "be able to search by task status" do
