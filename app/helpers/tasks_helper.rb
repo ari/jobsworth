@@ -334,11 +334,13 @@ module TasksHelper
     return text_field("task", "due_at", options)
   end
 
+  # Returns the notify emails for the given task, one per line
   def notify_emails_on_newlines(task)
     emails = (task.notify_emails || "").strip.split(",")
     return emails.join("\n")
   end
 
+  # Returns basic task info as a tooltip
   def task_info_tip(task)
     values = []
     values << [ _("Description"), task.description ]
@@ -350,6 +352,7 @@ module TasksHelper
     return task_tooltip(values)
   end
 
+  # Returns information about the customer as a tooltip
   def task_customer_tip(customer)
     values = []
     values << [ _("Contact Name"), customer.contact_name ]
@@ -361,33 +364,29 @@ module TasksHelper
     return task_tooltip(values)
   end
 
+  # Returns a tooltip showing milestone information for a task
   def task_milestone_tip(task)
     return if task.milestone_id.to_i <= 0
 
     return task_tooltip([ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ])
   end
 
+  # Returns a tooltip showing the users linked to a task
   def task_users_tip(task)
     values = []
     task.users.each do |user|
       icons = image_tag("user.png")
-      if task.should_be_notified?(user)
-        icons += "&nbsp;" + image_tag("email.png") 
-      end
       values << [ user.name, icons ]
     end
 
     task.watchers.each do |user|
-      icons = ""
-      if task.should_be_notified?(user)
-        icons = image_tag("email.png") 
-      end
-      values << [ user.name, icons ]
+      values << [ user.name ]
     end
 
     return task_tooltip(values)
   end
 
+  # Converts the given array into a table that looks good in a toolip
   def task_tooltip(names_and_values)
     res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
     names_and_values.each do |name, value|
