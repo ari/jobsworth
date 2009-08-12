@@ -30,15 +30,14 @@ class NewTaskTest < ActionController::IntegrationTest
         assert_equal milestone_count + 1, @milestone.tasks.count
       end
 
-      should "be able to create a worklog" do
+      should "be able to create a worklog using the task description" do
         fill_in "work_log_duration", :with => "5m"
-        fill_in "work_log_body", :with => "some work log notes"
         click_button "create"
         
         task = @user.company.tasks.last
         log = task.work_logs.last
         assert_equal 300, log.duration
-        assert_equal "some work log notes", log.body
+        assert_equal task.description, log.body
       end
     end
   end
