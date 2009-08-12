@@ -29,7 +29,7 @@ class Task < ActiveRecord::Base
   has_many      :users, :through => :task_owners, :source => :user
   has_many      :task_owners, :dependent => :destroy
 
-  has_many      :work_logs, :dependent => :destroy
+  has_many      :work_logs, :dependent => :destroy, :order => "started_at asc"
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy
 
   has_many      :notifications, :dependent => :destroy
@@ -1096,9 +1096,12 @@ class Task < ActiveRecord::Base
 
   # Creates a new work log for this task using the given params
   def create_work_log(params, user)
-    if params and !params[:duration].blank? and !params[:body].blank?
+    if params and !params[:duration].blank?
       params[:duration] = TimeParser.parse_time(user, params[:duration])
       params[:started_at] = TimeParser.date_from_params(user, params, :started_at)
+      if params[:body].blank?
+        params[:body] = self.description
+      end
       params.merge!(:user => user,
                     :company => self.company, 
                     :project => self.project, 
@@ -1107,7 +1110,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  # returns the last comment on this task or nil if none
   def last_comment
     @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
   end

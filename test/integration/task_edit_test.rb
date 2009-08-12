@@ -95,6 +95,17 @@ class TaskEditTest < ActionController::IntegrationTest
           click_button "save"
           assert_equal "Trivial", @task.reload.property_value(prop).value
         end
+
+        should "be able to create a worklog" do
+          fill_in "work_log_duration", :with => "5m"
+          fill_in "work_log_body", :with => "some work log notes"
+          click_button "save"
+          
+          log = @task.reload.work_logs.last
+          assert_equal 300, log.duration
+          assert_equal "some work log notes", log.body
+        end
+
       end
     end
   end

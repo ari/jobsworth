@@ -161,6 +161,8 @@ new Form.Element.EventObserver('task_project_id', function(element, value) {new 
 	    <%= render :partial => "resource", :collection => @task.resources %>
           </fieldset>
         <% end %>
+
+	<%= render :partial => "inline_worklog" %>
     </td>
 </tr>
 

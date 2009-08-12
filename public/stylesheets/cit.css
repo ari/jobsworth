@@ -510,6 +510,22 @@ fieldset label.ignore {
 	padding: 3px 0;
 }
 
+fieldset.sidebar label {
+    width: 95px;
+    padding: 3px 0;
+}
+
+fieldset.sidebar input.text {
+    float: right;
+    width: 150px;
+}
+fieldset.sidebar textarea {
+    height: 40px;
+    float: right;
+    margin-right: 0.1em;
+    width: 149px;
+}
+
 fieldset input {
   float: left;
   clear: right;
