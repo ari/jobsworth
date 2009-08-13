@@ -2888,6 +2888,7 @@ div.search_filter {
 #task_list table td, #task_list table th {
     margin: 0px;
     padding: 3px;
+    padding-right: 15px;
 }
     
 #task_list tr {
