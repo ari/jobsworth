@@ -40,8 +40,4 @@
   <%= tag_links(@all_tags) %>
 </div>
 
-<%= javascript_include_tag "jquery.tablesorter.min.js" %>
-<% javascript_tag(:defer => "defer") do -%>
-  makeSortable(jQuery("#list"));
-  jQuery("#list").bind("sortEnd", saveSortParams);
-<% end -%>
+<%= sortable_table("#list", session[:filter_sort]) -%>

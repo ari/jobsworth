@@ -787,15 +787,29 @@ function toggleWorkLogApproval(sender, workLogId) {
 	"work_log[approved]" : checked });
 }
 
+
 // Sortable table helpers
+
 /*
   Makes the given table sortable.
   If defaultSortColumn and defaultSortOrder are given, the table will
   initally be sorted according to those values
 */
 function makeSortable(table, defaultSortColumn, defaultSortOrder) {
+    var sort = [];
+
+    if (defaultSortColumn && defaultSortColumn != "") {
+	var selector = "th:contains('" + defaultSortColumn + "')";
+	var headers = table.find("th");
+	var column = table.find(selector);
+	var index = headers.index(column);
+
+	var dir = (defaultSortOrder == "up" ? 1 : 0);
+	sort = [ [ index, dir ] ];
+    }
+
     table.tablesorter({
-	sortList: [[1,0]],
+	sortList: sort,
 	widgets: ["zebra"],
 	textExtraction: tableSortText
     });
@@ -820,7 +834,7 @@ function tableSortText(node) {
   Saves the sort params to session for the given event
 */
 function saveSortParams(event) {
-    var table = jQuery(e.target);
+    var table = jQuery(event.target);
     var selected = table.find(".headerSortDown");
     var direction = "down";
     if (selected.length == 0) {
@@ -828,5 +842,9 @@ function saveSortParams(event) {
 	direction = "up";
     }
 
-    // TODO ajax request
+    selected = jQuery.trim(selected.text());
+    jQuery.post("/filter/set_single_task_filter", {
+    	name : "sort",
+    	value : (selected + "_" + direction)
+    });
 }
