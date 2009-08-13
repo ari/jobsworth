@@ -197,13 +197,9 @@ class TaskFilter
 
     res = []
     tasks.each do |task|
-      project = task.project
-      milestone = task.milestone
-      customer = project.customer
-
       if can_view_by_customer?(task)
         res << task
-      elsif can_view_by_project?(task.project.id)
+      elsif can_view_by_project?(task.project_id)
         res << task
       elsif can_view_by_milestone?(task)
         res << task
@@ -224,9 +220,8 @@ class TaskFilter
   def can_view_by_milestone?(task)
     return false if milestone_ids.empty?
 
-    milestone = task.milestone
-    if milestone
-      return milestone_ids.include?(milestone.id)
+    if task.milestone_id.to_i != 0
+      return milestone_ids.include?(task.milestone_id)
     else
       return milestone_ids.include?(-(task.project.id + 1))
     end
