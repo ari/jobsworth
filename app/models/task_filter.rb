@@ -74,7 +74,6 @@ class TaskFilter
   def tasks
     if @tasks.nil?
       @tasks = tasks_by_filters
-      @tasks = filter_by_customers_projects_and_milestones(@tasks)
       @tasks = filter_by_properties(@tasks)
       @tasks = filter_by_tags(@tasks)
       @tasks += unread_tasks if session[:show_all_unread].to_i > 0
@@ -153,7 +152,8 @@ class TaskFilter
     filter = ""
 
     filter = filter_by_user
-    filter << filter_by_status
+    filter += filter_by_status
+    filter += filter_by_milestones_projects_and_customers
 
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
@@ -188,45 +188,32 @@ class TaskFilter
   end
 
   ###
-  # Removes any tasks from the given list that filters rule out.
+  # Returns a string to use for filtering the task to display
+  # based on the filter_milestone, filter_customer and filter_project
+  # values in session.
   ###
-  def filter_by_customers_projects_and_milestones(tasks)
-    if milestone_ids.empty? and project_ids.empty? and customer_ids.empty?
-      return tasks
-    end
-
+  def filter_by_milestones_projects_and_customers
     res = []
-    tasks.each do |task|
-      if can_view_by_customer?(task)
-        res << task
-      elsif can_view_by_project?(task.project.id)
-        res << task
-      elsif can_view_by_milestone?(task)
-        res << task
-      end
+
+    if milestone_ids.any? and !milestone_ids.include?(ALL_MILESTONES)
+      res << "tasks.milestone_id IN (#{ milestone_ids.join(", ") })"
     end
 
-    return res
-  end
+    if customer_ids.any? and !customer_ids.include?(ALL_CUSTOMERS)
+      res << "projects.customer_id IN (#{ customer_ids.join(", ") })"
+    end
 
-  def can_view_by_customer?(task)
-    customer_ids.any? and customer_ids.include?(task.project.customer.id)
-  end
+    if project_ids.any? and !project_ids.include?(ALL_PROJECTS)
+      res << "tasks.project_id IN (#{ project_ids.join(", ") })"
+    end
 
-  def can_view_by_project?(project_id)
-    project_ids.any? and project_ids.include?(project_id)
-  end
-
-  def can_view_by_milestone?(task)
-    return false if milestone_ids.empty?
-
-    if task.milestone_id.to_i != 0
-      return milestone_ids.include?(task.milestone_id)
+    if res.any?
+      return "(#{ res.join(" OR ") }) AND "
     else
-      return milestone_ids.include?(-(task.project.id + 1))
+      return ""
     end
   end
-  
+
   def customer_ids
     @customer_ids ||= TaskFilter.filter_ids(session, :filter_customer, ALL_CUSTOMERS)
   end
