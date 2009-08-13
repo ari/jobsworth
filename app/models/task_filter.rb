@@ -74,7 +74,6 @@ class TaskFilter
   def tasks
     if @tasks.nil?
       @tasks = tasks_by_filters
-      @tasks = filter_by_properties(@tasks)
       @tasks = filter_by_tags(@tasks)
       @tasks += unread_tasks if session[:show_all_unread].to_i > 0
       @tasks = sort_tasks(@tasks)
@@ -154,6 +153,7 @@ class TaskFilter
     filter = filter_by_user
     filter += filter_by_status
     filter += filter_by_milestones_projects_and_customers
+    filter += filter_by_properties
 
     if session[:hide_deferred].to_i > 0
       filter << "(tasks.hide_until IS NULL OR tasks.hide_until < '#{@tz.now.utc.to_s(:db)}') AND "
@@ -167,24 +167,22 @@ class TaskFilter
   ###
   # Filter the given tasks by property values set in the session.
   ###
-  def filter_by_properties(tasks)
+  def filter_by_properties
+    res = []
+
     @company.properties.each do |prop|
       filter_value = session[prop.filter_name]
       filter_values = [ filter_value ].flatten.compact
       next if filter_values.empty?
 
-      to_keep = []
-      filter_values.each do |fv|
-        to_keep += tasks.select do |t|
-          val = t.property_value(prop)
-          val and val.id == fv.to_i
-        end
-      end
-
-      tasks = to_keep.uniq
+      res << "task_property_values.property_value_id in (#{ filter_values.join(", ") })"
     end
 
-    return tasks
+    if res.any?
+      return res.join(" AND ") + " AND "
+    else
+      return ""
+    end
   end
 
   ###

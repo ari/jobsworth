@@ -209,6 +209,27 @@ class TasksControllerTest < ActionController::TestCase
       bad_tasks = tasks.delete_if { |t| t.project == project }
       assert bad_tasks.empty?
     end
+
+    should "filter tasks on custom properties" do
+      property = @company.properties.first
+      value = property.property_values.last
+      assert_not_nil value
+
+      count = 5
+      count.times do |i|
+        t = @company.tasks[i]
+        t.task_property_values.build(:property => property, 
+                                     :property_value => value).save!
+      end
+
+      @request.session[property.filter_name] = value.id
+      get :listv2
+
+      tasks = assigns("tasks")
+      assert_equal count, tasks.length
+      bad_tasks = tasks.delete_if { |t| t.property_value(property) == value }
+      assert bad_tasks.empty?
+    end
   end
 
 end
