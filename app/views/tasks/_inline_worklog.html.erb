@@ -7,6 +7,8 @@
     <%= f.label :started_at, _("Start") %>
     <%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
 
+    <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
+
     <%= f.label :duration, _("Duration worked") %>
     <%= f.text_field :duration, :class => "text" %>
 
