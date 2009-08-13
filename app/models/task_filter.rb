@@ -102,7 +102,9 @@ class TaskFilter
 
     Task.find(:all, 
               :conditions => [ conditions ],
-              :include => to_include)
+              :include => to_include, 
+              :limit => 250,
+              :order => "id desc")
   end
 
   ###
