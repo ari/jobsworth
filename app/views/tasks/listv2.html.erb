@@ -8,15 +8,17 @@
   
   <div id="task_list">
     <div id="print_title"><%= print_title %></div>
-    <table>
+    <table id="list" class="tablesorter">
       <thead>
-	<th></th>
-	<th><%= _("Summary") %></th>
-	<th><%= _("Client") %></th>
-	<th><%= _("Project/Milestone") %></th>
-	<th><%= _("Due Date") %></th>
-	<th><%= _("Hours Left") %></th>
-	<th><%= _("Assigned To") %></th>
+	<tr>
+	  <th><%= _("Type") %></th>
+	  <th><%= _("Summary") %></th>
+	  <th><%= _("Client") %></th>
+	  <th><%= _("Project/Milestone") %></th>
+	  <th><%= _("Due Date") %></th>
+	  <th><%= _("Hours Left") %></th>
+	  <th><%= _("Assigned To") %></th>
+	</tr>
       </thead>
       <%= render :partial => "task_row_v2", :collection => @tasks %>
     </table>
@@ -29,9 +31,17 @@
     <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
   </div>
 
-  <% unless @selected_tags.empty? %>
-    <span class="tag_active"><a href="/tasks/list"><%= _('[All Tags]') %></a></span>
+  <% if @selected_tags.any? %>
+  <span class="tag_active">
+    <%= link_to _("[All Tags]") %>
+  </span>
   <% end %>
 
   <%= tag_links(@all_tags) %>
 </div>
+
+<%= javascript_include_tag "jquery.tablesorter.min.js" %>
+<% javascript_tag(:defer => "defer") do -%>
+  makeSortable(jQuery("#list"));
+  jQuery("#list").bind("sortEnd", saveSortParams);
+<% end -%>

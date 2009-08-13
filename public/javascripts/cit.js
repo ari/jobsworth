@@ -786,3 +786,47 @@ function toggleWorkLogApproval(sender, workLogId) {
 	id : workLogId,
 	"work_log[approved]" : checked });
 }
+
+// Sortable table helpers
+/*
+  Makes the given table sortable.
+  If defaultSortColumn and defaultSortOrder are given, the table will
+  initally be sorted according to those values
+*/
+function makeSortable(table, defaultSortColumn, defaultSortOrder) {
+    table.tablesorter({
+	sortList: [[1,0]],
+	widgets: ["zebra"],
+	textExtraction: tableSortText
+    });
+}
+
+/*
+  Returns the text to sort a table by from the given node
+*/
+function tableSortText(node) {
+    var res = node.innerHTML;
+	    
+    var link = jQuery(node).children("a");
+    if (link.length > 0) {
+	res = link.text();
+    }
+    
+    res = jQuery.trim(res).toLowerCase();
+    return res;
+}
+
+/*
+  Saves the sort params to session for the given event
+*/
+function saveSortParams(event) {
+    var table = jQuery(e.target);
+    var selected = table.find(".headerSortDown");
+    var direction = "down";
+    if (selected.length == 0) {
+	selected = table.find(".headerSortUp");
+	direction = "up";
+    }
+
+    // TODO ajax request
+}
