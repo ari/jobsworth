@@ -199,7 +199,7 @@ class TaskFilter
     tasks.each do |task|
       if can_view_by_customer?(task)
         res << task
-      elsif can_view_by_project?(task.project_id)
+      elsif can_view_by_project?(task.project.id)
         res << task
       elsif can_view_by_milestone?(task)
         res << task

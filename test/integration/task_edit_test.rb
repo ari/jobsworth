@@ -10,8 +10,8 @@ class TaskEditTest < ActionController::IntegrationTest
       setup do
         @project = project_with_some_tasks(@user)
         @project2 = project_with_some_tasks(@user)
-
-        2.times { Milestone.make(:project => @project, :user => @user,
+        
+        2.times { @project.milestones.make(:project => @project, :user => @user,
                                  :company => @project.company) }
       end
 

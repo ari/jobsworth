@@ -18,20 +18,30 @@ class ActiveSupport::TestCase
 
   setup { Sham.reset }
 
-  # Returns a project with a few tasks.
-  # The project will belong to user's company and
-  # user will have full access to the project.
-  # The user will also be on the assigned list for the task.
-  def project_with_some_tasks(user, task_count = 3)
+  # Returns a project with a few tasks. 
+  # Milestones will also be created if options[:make_milestones] is true
+  # The project will belong to user's company and user will have full 
+  # access to the project.
+  # The user will also be on the assigned list for the tasks.
+  def project_with_some_tasks(user, options = {})
+    task_count = options[:task_count] || 2
+    customer = options[:customer] || user.company.internal_customer
+    make_milestones = options[:make_milestones]
+
     project = Project.make(:company => user.company, 
-                           :customer => user.company.internal_customer)
+                           :customer => customer)
     perm = project.project_permissions.build(:user => user)
     perm.set("all")
     project.save!
 
+    if make_milestones
+      2.times { project.milestones.make }
+    end
+
     task_count.times do
       t = Task.make_unsaved(:project => project, :company => project.company)
       t.users << user
+      t.milestone = project.milestones.rand
       t.save!
     end
 

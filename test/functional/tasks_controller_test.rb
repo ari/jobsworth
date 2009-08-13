@@ -152,4 +152,63 @@ class TasksControllerTest < ActionController::TestCase
     assert log.comment?
   end
 
+  context "a few customers, projects,  milestones and tasks" do
+    setup do
+      @company = @user.company
+
+      3.times do |i|
+        customer = @company.customers.make(:name => "test customer #{ i }")
+        2.times do
+          project_with_some_tasks(@user, :customer => customer, 
+                                  :make_milestones => true)
+        end
+      end
+    end
+
+    should "filter tasks on customer" do
+      customer1 = @company.customers[-1]
+      customer2 = @company.customers[-2]
+      total_tasks = 0
+      customer1.projects.each { |p| total_tasks += p.tasks.count }
+      customer2.projects.each { |p| total_tasks += p.tasks.count }
+      assert total_tasks > 0
+
+      @request.session[:filter_customer] = [ customer1.id, customer2.id ]
+      get :listv2
+
+      tasks = assigns("tasks")
+      assert_equal total_tasks, tasks.length
+      bad_tasks = tasks.delete_if do |t| 
+        t.project.customer == customer1 or t.project.customer == customer2
+      end
+      assert bad_tasks.empty?
+    end
+
+    should "filter tasks on milestone" do
+      milestone = @company.milestones.detect { |m| m.tasks.count > 0 }
+      assert milestone.tasks.any?
+
+      @request.session[:filter_milestone] = milestone.id
+      get :listv2
+
+      tasks = assigns("tasks")
+      assert_equal milestone.tasks.length, tasks.length
+      bad_tasks = tasks.delete_if { |t| t.milestone == milestone }
+      assert bad_tasks.empty?
+    end
+
+    should "filter tasks on project" do
+      project = @company.projects.last
+      assert project.tasks.any?
+
+      @request.session[:filter_project] = project.id
+      get :listv2
+
+      tasks = assigns("tasks")
+      assert_equal project.tasks.length, tasks.length
+      bad_tasks = tasks.delete_if { |t| t.project == project }
+      assert bad_tasks.empty?
+    end
+  end
+
 end
