@@ -808,7 +808,10 @@ function makeSortable(table, defaultSortColumn, defaultSortOrder) {
     table.tablesorter({
 	sortList: sort,
 	widgets: ["zebra"],
-	textExtraction: tableSortText
+	textExtraction: "complex",
+	headers: {
+	    5: { sorter : "digit" }
+	}
     });
 }
 
