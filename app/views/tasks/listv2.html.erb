@@ -1,28 +1,5 @@
 <div id="content">
-  <div class="page_header">
-    <div class="right"><%= link_to_remote _('QuickAdd'), :url => { :action => 'quick_add' }, :loading => "showProgress();", :complete => "hideProgress();" %></div>
-    <div class="right"><%= link_to( _('CSV'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
-    <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
-  </div>
-  <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
-  
-  <div id="task_list">
-    <div id="print_title"><%= print_title %></div>
-    <table id="list" class="tablesorter">
-      <thead>
-	<tr>
-	  <th><%= _("Type") %></th>
-	  <th><%= _("Summary") %></th>
-	  <th><%= _("Client") %></th>
-	  <th><%= _("Project/Milestone") %></th>
-	  <th><%= _("Due Date") %></th>
-	  <th><%= _("Hours Left") %></th>
-	  <th><%= _("Assigned To") %></th>
-	</tr>
-      </thead>
-      <%= render :partial => "task_row_v2", :collection => @tasks %>
-    </table>
-  </div>
+  <%= render :partial => "task_list_v2" %>
 </div>
 
 <div id="tags">
@@ -40,4 +17,3 @@
   <%= tag_links(@all_tags) %>
 </div>
 
-<%= sortable_table("#list", session[:filter_sort]) -%>

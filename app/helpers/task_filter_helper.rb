@@ -303,6 +303,15 @@ module TaskFilterHelper
     return res
   end
 
+  # Return the html for a remote task filter form tag
+  def remote_filter_tag
+    form_remote_tag(:url => "setup_task_filters", 
+                    :html => { :method => "post", :id => "search_filter_form"},
+                    :loading => "showProgress()",
+                    :complete => "hideProgress()",
+                    :update => "#content")
+  end
+
   # Returns the html/js to make any tables matching selector sortable
   def sortable_table(selector, default_sort)
     column, direction = (default_sort || "").split("_")

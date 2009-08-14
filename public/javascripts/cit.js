@@ -344,10 +344,6 @@ jQuery(document).ready(function() {
     var tagsHTML = jQuery('#tags').html();
     jQuery('#tag-block').html(tagsHTML);
 
-    jQuery("#search_filter").focus(function(elem) {
-	elem.target.select();
-    });
-
     fixNestedCheckboxes();
     updateTooltips();
 });
@@ -383,7 +379,8 @@ function removeSearchFilter(link) {
     link = jQuery(link);
     var form = link.parents("form");
     link.parent(".search_filter").remove();
-    form.submit();
+
+    form[0].onsubmit();
 }
 
 function addSearchFilter(textField, selected) {
@@ -394,7 +391,7 @@ function addSearchFilter(textField, selected) {
 	var filterForm = jQuery("#search_filter_form");
 	var clone = idField.clone();
 	filterForm.append(clone);
-	filterForm.submit();
+	filterForm[0].onsubmit();
     }
     else {
 	// probably selected a heading, just ignore

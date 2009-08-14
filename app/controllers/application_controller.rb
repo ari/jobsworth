@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   helper :task_filter
   helper :users
   helper :date_and_time
+  helper :javascript
 
 #  helper :all
 
