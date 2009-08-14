@@ -104,7 +104,7 @@ class TaskFilter
               :conditions => [ conditions ],
               :include => to_include, 
               :limit => 250,
-              :order => "id desc")
+              :order => "tasks.id desc")
   end
 
   ###

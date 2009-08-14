@@ -75,6 +75,11 @@ class TasksController < ApplicationController
     @selected_tags = task_filter.selected_tags || []
     @tasks = task_filter.tasks
     @all_tags = task_filter.tag_counts
+
+    respond_to do |format|
+      format.html # listv2.html.erb
+      format.js { render :layout => false }
+    end
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown
