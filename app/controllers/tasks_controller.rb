@@ -43,7 +43,7 @@ class TasksController < ApplicationController
     redirect_to 'list'
   end
   
-  def list-old
+  def list_old
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
 
