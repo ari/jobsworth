@@ -67,6 +67,10 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
   git checkout db/schema.rb
   git pull
 
+Check that there aren't any updated gems or new gems to install. If there are, just follow the instructions you will be given on screen.
+
+  rake gems
+
 Next, make sure the database is updated and javascript/css rebuilt.
 
   rake db:migrate RAILS_ENV=production

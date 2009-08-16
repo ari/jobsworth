@@ -2,6 +2,9 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+7 August 2009
+	Some cosmetic changes to the menus. Translations will need to be updated at some point.
+
 6 August 2009
   	Use caching for task list. Cache should be cleared manually after server restart - run "rake tmp:cache:clear"
 

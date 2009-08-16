@@ -7,9 +7,8 @@ else
 end
 
 page << "if($('work-log')) {"
-page << "$('worklog_body').clear();"
+page << "jQuery('#worklog_body').val('');"
 page << "$('worklog-saved').innerHTML = '';"
-page << "jQuery('#work-log').show();"
-page << "jQuery('#worklog_body').focus();"
+page << "jQuery('#work-log').show().focus();"
 page << "}"
   

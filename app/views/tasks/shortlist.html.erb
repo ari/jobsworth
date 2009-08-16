@@ -46,7 +46,7 @@
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax' },
        :loading => "showProgress();",
        :complete => "hideProgress();",
-       :success => "$('task_name').clear();" do %>
+       :success => "jQuery('#task_name').val('');" do %>
     <input type="text" name="task[name]" id="task_name" value="<%= _ 'New Task' %>"/>
 <% end %>
 
@@ -56,7 +56,7 @@
 <% form_remote_tag :url => { :action => 'create_shortlist_ajax', :controller => 'projects' },
        :loading => "showProgress();",
        :complete => "hideProgress();",
-       :success => "$('project_name').clear();" do %>
+       :success => "jQuery('#project_name').val('');" do %>
     <input type="text" name="project[name]" id="project_name" value="<%= _ 'New Project' %>"/>
 <% end %>
 </div>

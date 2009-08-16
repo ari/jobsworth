@@ -10,24 +10,13 @@
             <li><%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %></li>
         </ul>
     <% end %>
-</li>
+	</li>
 
     <li<%= " class='active'" if active.starts_with?('tasks/') %>>
-	   <%= link_to(_("Browse"), :controller => "tasks", :action => "list" ) %>
-		<ul>
-			<li><%= link_to "#{_('Open Tasks')}", :controller => 'views', :action => 'all_tasks'%></li>
-			<li><%= link_to _('My Open Tasks'), :controller => 'views', :action => 'my_tasks'%></li>
-			<li><%= link_to _('My In Progress Tasks'), :controller => 'views', :action => 'my_in_progress_tasks'%></li>
-		    <li><%= link_to _('Unassigned Tasks'), :controller => 'views', :action => 'unassigned_tasks'%></li>
-		    
-		    <%	project_ids = current_project_ids
-				client_ids = current_projects.collect(&:customer_id).uniq.join(',')
-				client_ids = "0" if client_ids.nil? || client_ids.empty?
-				views = View.find(:all, :conditions => ["company_id = ? AND (user_id = ? or shared = 1) AND (filter_customer_id = 0 OR filter_customer_id IS NULL OR filter_customer_id IN (#{client_ids})) AND (filter_project_id = 0 OR filter_project_id IS NULL OR filter_project_id IN (#{project_ids}))", current_user.company_id, current_user.id], :order => "shared, name")
-				for view in views %>
-					<li><%= link_to(view.name, :controller => 'views', :action => 'select', :id => view ) %><%= "[#{_('Shared')}]" if view.user_id != current_user.id %></li>
-				<% end %>
-		</ul>
+	   <%= link_to(_("Tasks"), :controller => "tasks", :action => "list" ) %>
+	   <ul>
+	       <li><%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %></li>
+	   </ul>
 	</li>
 
 	<% if current_user.option_tracktime.to_i == 1%>
@@ -64,9 +53,6 @@
 		<li class="<%= resource_class %>"><%= link_to(_("Resources"), resources_path) %></li>
 	<% end %>
 
-    <li<%= " class='active'" if active == "tasks/new" %>><%= link_to "#{_('New Task') + image_tag('tick.png',  :border => 0, :height => 16, :style => "margin-top:-2px;")}", {:controller => 'tasks', :action => 'new'}, :class => "active" %></li>
-
-    <li class="right"><a href="http://wiki.clockingit.com/help:%3C%=controller.controller_name%%3E:%3C%=controller.action_name%%3E" target="_blank"><img height="16" style="margin-top:-2px;" src="/images/help.png" border="0"></a></li>
     <li class="right"><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></li>
 
 	<li class="right<%= " active" if active == "users/edit_preferences" %>"><%= link_to "#{_('Preferences')}", :controller => 'users', :action => 'edit_preferences' %>
