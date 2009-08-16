@@ -19,7 +19,7 @@ class TaskEditTest < ActionController::IntegrationTest
         setup do 
           @task = @project.tasks.first
           visit "/"
-          click_link "browse"
+          click_link "tasks"
           click_link @task.name
         end
 
@@ -101,7 +101,8 @@ class TaskEditTest < ActionController::IntegrationTest
           fill_in "work_log_body", :with => "some work log notes"
           click_button "save"
           
-          log = @task.reload.work_logs.last
+          log = @task.reload.work_logs.detect { |wl| wl.duration == 300 }
+          assert_not_nil log
           assert_equal 300, log.duration
           assert_equal "some work log notes", log.body
         end
