@@ -79,7 +79,6 @@ class CompanyTest < ActiveRecord::TestCase
     assert_nil @company.preference("p2")
   end
 
-
   private 
 
   def ensure_property_method_works_with_translation(method)
