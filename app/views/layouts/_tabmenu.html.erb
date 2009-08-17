@@ -13,7 +13,7 @@
 	</li>
 
     <li<%= " class='active'" if active.starts_with?('tasks/') %>>
-	   <%= link_to(_("Tasks"), :controller => "tasks", :action => "list" ) %>
+	   <%= link_to(_("Tasks"), :controller => "tasks", :action => "listv2" ) %>
 	   <ul>
 	       <li><%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %></li>
 	   </ul>
