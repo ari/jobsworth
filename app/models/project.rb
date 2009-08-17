@@ -87,17 +87,15 @@ class Project < ActiveRecord::Base
   # Also updates open and total tasks.
   ###
   def update_project_stats
-    # This method doesn't really make sense now we've removed default
-    # sorting, and requiring severity and priority. If I am going to leave
-    # it for now, but if this hasn't been uncommented by Oct 2009, feel
-    # free to remove this method, all calls to it, and the critical, normal
-    # and low columns in project. BW. 17/08/09
+    self.critical_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.critical_values },
+                                      :include => :task_property_values)
+    self.normal_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.normal_values },
+                                    :include => :task_property_values)
+    self.low_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.low_values },
+                                 :include => :task_property_values)
 
-    # self.critical_count = tasks.select { |t| t.critical? }.length
-    # self.normal_count = tasks.select { |t| t.normal? }.length
-    # self.low_count = tasks.select { |t| t.low? }.length
-    # self.open_tasks = nil
-    # self.total_tasks = nil
+    self.open_tasks = nil
+    self.total_tasks = nil
   end
   
 

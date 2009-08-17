@@ -79,6 +79,32 @@ class CompanyTest < ActiveRecord::TestCase
     assert_nil @company.preference("p2")
   end
 
+  context "a company with default properties" do
+    setup do
+      @company.create_default_properties
+    end
+
+    should "have severity and priority" do
+      assert_not_nil @company.priority_property
+      assert_not_nil @company.severity_property
+    end
+
+    should "have property values in the top 33% as critical" do
+      values = @company.critical_values.map { |v| v.value }
+      assert_equal [ "Critical", "Urgent", "Blocker", "Critical" ], values
+    end 
+
+    should "have property values in the middle 34% as normal" do
+      values = @company.normal_values.map { |v| v.value }
+      assert_equal [ "High", "Normal", "Major", "Normal" ], values
+    end
+
+    should "have property values in the bottom 33% as low" do
+      values = @company.low_values.map { |v| v.value }
+      assert_equal [ "Low", "Lowest", "Minor", "Trivial" ], values
+    end
+  end
+
   private 
 
   def ensure_property_method_works_with_translation(method)
