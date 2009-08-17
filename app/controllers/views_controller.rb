@@ -140,7 +140,7 @@ class ViewsController < ApplicationController
 
     session[:view] = @view
 
-    redirect_to :controller => 'tasks', :action => 'listv2', :tag => @view.filter_tags
+    redirect_to :controller => 'tasks', :action => 'list', :tag => @view.filter_tags
   end
 
   def select_milestone
@@ -155,7 +155,7 @@ class ViewsController < ApplicationController
     set_session_filters(:filter_milestone => @milestone.id,
                         :last_project_id => session[:filter_project])
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_project
@@ -170,7 +170,7 @@ class ViewsController < ApplicationController
     set_session_filters(:filter_project => @project.id, 
                         :last_project_id => session[:filter_project])
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_user
@@ -178,7 +178,7 @@ class ViewsController < ApplicationController
 
     set_session_filters(:filter_user => @user.id)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def select_client
@@ -186,7 +186,7 @@ class ViewsController < ApplicationController
     
     set_session_filters(:filter_customer => @client.id)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def all_tasks
@@ -195,7 +195,7 @@ class ViewsController < ApplicationController
 
     set_session_filters(:view => @view)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def my_tasks
@@ -205,7 +205,7 @@ class ViewsController < ApplicationController
     set_session_filters(:view => @view, :filter_user => current_user.id,
                         :filter_status => 0)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def my_in_progress_tasks
@@ -215,7 +215,7 @@ class ViewsController < ApplicationController
     set_session_filters(:filter_user => current_user.id,
                         :filter_status => 1)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def unassigned_tasks
@@ -224,7 +224,7 @@ class ViewsController < ApplicationController
 
     set_session_filters(:view => @view, :filter_user => -1)
 
-    redirect_to :controller => 'tasks', :action => 'listv2'
+    redirect_to :controller => 'tasks', :action => 'list'
   end
 
   def browse
@@ -233,7 +233,7 @@ class ViewsController < ApplicationController
                         :filter_user => current_user.id,
                         :hide_deferred => 1)
 
-    redirect_to(:controller => 'tasks', :action => 'listv2')
+    redirect_to(:controller => 'tasks', :action => 'list')
   end
 
   def get_projects

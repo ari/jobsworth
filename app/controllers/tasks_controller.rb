@@ -80,7 +80,7 @@ class TasksController < ApplicationController
     @all_tags = task_filter.tag_counts
 
     respond_to do |format|
-      format.html # listv2.html.erb
+      format.html # list.html.erb
       format.js { render :partial => "task_list_v2", :layout => false }
     end
   end

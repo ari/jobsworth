@@ -13,7 +13,7 @@
 
       <div class="builtin filters" style="<%= @builtin_style %>">
 	<% 
-	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
+	   redir_action = (local_assigns[:redirect_action] ? redirect_action : "list_old")
 	   redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
 	   redir = url_for(redir_params.merge(:action => redir_action))
 	-%>
