@@ -43,7 +43,7 @@ class TasksController < ApplicationController
     redirect_to 'list'
   end
   
-  def list
+  def list_old
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
 
@@ -66,7 +66,10 @@ class TasksController < ApplicationController
     @group_ids, @groups = group_tasks(@tasks)
   end
 
-  def listv2
+  def list
+    # Subscribe to the juggernaut channel for Task updates
+    session[:channels] += ["tasks_#{current_user.company_id}"]
+
     @tags = {}
     @tags.default = 0
     @tags_total = 0
