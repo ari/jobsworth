@@ -2,6 +2,12 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+18 August 2009
+	The QuickAdd feature for quickly adding tasks has been removed. The code has not been maintained for a long time and is now broken with regard to the new features added to tasks this year. Also, the QuickAdd takes much longer to open on the browser than the regular New Task, so there is nothing quick about it. For these reasons it was decided to remove the code and focus on improving speed and usability of the existing task edit view.
+
+17 August 2009
+	A new list view design and filter has now been implemented and switched to be the default. There is still a little more cleanup required but it is almost done. The new filter will be much faster to use for advanced users than the old clunky filter interface. Overall the html is drastically faster to draw in the browser and much faster to render server-side.
+
 7 August 2009
 	Some cosmetic changes to the menus. Translations will need to be updated at some point.
 
