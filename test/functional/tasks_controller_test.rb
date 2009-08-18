@@ -139,7 +139,7 @@ class TasksControllerTest < ActionController::TestCase
 
     new_time = Time.now.yesterday
     params = { 
-      :started_at => new_time, 
+      :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
       :duration => "120m",
       :body => "test body"
     }

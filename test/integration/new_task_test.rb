@@ -35,8 +35,8 @@ class NewTaskTest < ActionController::IntegrationTest
         click_button "create"
         
         task = @user.company.tasks.last
-        log = task.work_logs.last
-        assert_equal 300, log.duration
+        log = task.reload.work_logs.detect { |wl| wl.duration == 300 }
+        assert_not_nil log
         assert_equal task.description, log.body
       end
     end
