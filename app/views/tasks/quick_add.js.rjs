@@ -1,3 +1,0 @@
-page.replace_html 'quick_add_container', :partial => 'quick_add'
-page.show('quick_add_container')
-page.visual_effect(:highlight, "quick_add_container", :duration => 0.5)
