@@ -1,17 +1,11 @@
-<div class="page_header">
-  <div class="right"><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></div>
-  <div><%= _ 'Tasks' %> <%= " / #{session[:view].name}" unless session[:view].nil? %></div>
-</div>
-
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
 <div class="task_view_links" style="<%= @task_only_option_style %>">
+<div class="right"><small><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></small></div>
   <ul class="tabs">
     <%= task_view_links %>
   </ul>
 </div>
-
-<div id="quick_add_container" style="display:none;"></div>
 
 <div id="task_list">
   <div id="print_title"><%= print_title %></div>
