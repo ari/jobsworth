@@ -304,7 +304,7 @@ module TaskFilterHelper
   end
 
   # Return the html for a remote task filter form tag
-  def remote_filter_tag
+  def remote_filter_form_tag
     form_remote_tag(:url => "setup_task_filters", 
                     :html => { :method => "post", :id => "search_filter_form"},
                     :loading => "showProgress()",

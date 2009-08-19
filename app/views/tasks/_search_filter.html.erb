@@ -4,7 +4,7 @@
   <%= auto_complete_field "search_filter", :url => "/filter", :after_update_element => "addSearchFilter" %>
   <%= select_on_focus("#search_filter") %>
 
-  <%= remote_filter_tag %>
+  <%= remote_filter_form_tag %>
   <% 
      redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
      redir_params = (local_assigns[:redirect_params] ? redirect_params : {})

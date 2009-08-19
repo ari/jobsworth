@@ -339,11 +339,6 @@ function clearOtherDefaults(sender) {
 }
 
 jQuery(document).ready(function() {
-    // move the tags block to the right[#left_menu] menu
-    jQuery('#tags').hide();
-    var tagsHTML = jQuery('#tags').html();
-    jQuery('#tag-block').html(tagsHTML);
-
     fixNestedCheckboxes();
     updateTooltips();
 });
