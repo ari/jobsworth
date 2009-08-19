@@ -496,6 +496,9 @@ fieldset label.ignore {
   font-size: 11px;
 }
 
+#task_sidebar {
+    width: 23em;
+}
 
 #task_attr label,
 #task_notify label,
@@ -925,9 +928,17 @@ pre.auto_generated {
   font-size: 10px;
 }
 
-.todo-container {
-  padding: 0 0 0 2.3em;
+.todo-container, .todo-container li {
+  padding: 0;
   font-size: 10px;
+}
+
+.todo-container ul {
+    margin: 0;
+    padding: 0;
+}
+.todo-container li {
+    list-style:none;
 }
 
 .todo {
@@ -2101,7 +2112,7 @@ h4 {
 	border-bottom: 1px solid #DDDDDD;
 	border-top: 1px solid #FAFAFA;
 }
-#task_notify_emails {
+textarea.small {
     font-size: 12px;
     width: 150px;
 }

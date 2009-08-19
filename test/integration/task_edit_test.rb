@@ -24,14 +24,14 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to edit information" do
-          fill_in "summary", :with => "a new summary"
+          fill_in "title", :with => "a new title"
           fill_in "tags", :with => "t1, t2"
           fill_in "description", :with => "a new description"
           
           click_button "save"
           
           @task.reload
-          assert_equal "a new summary", @task.name
+          assert_equal "a new title", @task.name
           assert_equal "a new description", @task.description
           assert_equal "T1 / T2", @task.full_tags_without_links
         end

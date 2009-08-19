@@ -1,169 +1,35 @@
 <%= hidden_field("task", "id") %>
-
 <%= error_messages_for 'task' %>
-<!--[form:task]-->
-<%
-  perms = {}
 
-  ['comment', 'edit', 'reassign', 'prioritize', 'close', 'milestone'].each do |p|
-    if @task.project_id.to_i == 0 || current_user.can?( @task.project, p )
-      perms[p] = {}
-    else
-      perms[p] = { :disabled => 'disabled' }
-    end
-  end
-%>
 <tr>
+  <td valign="top" id="task_sidebar">
+    <%= render(:partial => "details") %>
+    <%= render(:partial => "attributes") %>
+    <%= render(:partial => "notifications") %>
+    <%= render(:partial => "dependencies") %>
+    <%= render(:partial => "attachments") %>
+    <%= render(:partial => "resources") %>
+    <%= render(:partial => "inline_worklog") %>
+  </td>
+
   <td valign="top">
-		<fieldset id="task_information" style="padding-right:0.5em;"><legend><%=_ 'Information' %></legend>
-			<label for="task_name"><%=_ 'Summary' %></label>
-			<%= text_field 'task', 'name', { :size => 47, :maxlength => 200, :style => "width:80%;"}.merge( perms['edit'] )  %><br />
-			<label for="task_set_tags"><%=_ 'Tags' %></label>
-			<%= text_field 'task', 'set_tags', { :size => 47, :value => @task.tags.collect{|t| t.name}.join(', '), :autocomplete => "off", :style => "width:80%;" }.merge( perms['edit'] ) %> <br />
-			<div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
-  			  <label for="task_description"><%=_ 'Description' %></label>
-			  <%= text_area 'task', 'description', { :rows => 15, :style => "width:80%;" }.merge( perms['edit'] )  %> <br />
-			  <label for="comment"><%=_ 'Comment' %></label>
-			  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:80%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
-                        </div>
-	
-			<span class="divider"></span>
-			<%= cit_submit_tag(@task) %>
-		</fieldset>
-   
-      
-<% unless @tags.nil? %>
-<script type="text/javascript">
-new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
-</script>
-<% end %>
-    </td>
-    <td valign="top" rowspan="2" style="width:23em;">
-      <fieldset id="task_project_selection" style="padding-right:0;">
-        <legend><%=_ 'Target' %></legend>
-          <label for="task_project_id"><%=_ 'Project' %></label>
+    <%= render(:partial => "new_comment") %>
 
-          <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>
-	    <%= options_for_user_projects(@task) %>
-           </select>
-           <br/>
+    <div id="task_history">
+      <%= render(:partial => "history") %>
+    </div>
+  </td>
 
-          <script type="text/javascript">
-//<![CDATA[
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
-new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
-//]]>
-</script>
-
-	  <div>
-          <label for="task_milestone_id"><%=_ 'Milestone' %></label>
-	  <%= milestone_select(perms) %>
-          <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-	  <% end %>
-	  <span id="add_milestone"><a href="/milestones/quick_new?project_id=<%=selected_project%>" rel="shadowbox;height=300;width=460;player=iframe"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
-  </div>
-	  <br/>
-      <% if current_user.option_tracktime.to_i == 1%>
-       <label for="task_duration"><%=_ 'Time Estimate' %></label>
-      <%= text_field 'task', 'duration', {:size => 12, :value => (@task.duration.to_i > 0 ? worked_nice(@task.duration) : ""), :class => 'tooltip', :title => _('2w 3d 1h')}.merge(perms['prioritize']) %><br/>
-<% else %>
-      <%= hidden_field_tag "task[duration]", "#{(@task.duration.to_i > 0 ? worked_nice(@task.duration) : "")}" %>
-<% end %>
-	<script type="text/javascript">
-		jQuery(function() {
-			jQuery("#due_at").datepicker({constrainInput: false, dateFormat: '<%= current_user.dateFormat %>'});
-		});
-	</script>
-      <label for="task_due_at"><%=_ 'Due Date' %></label>
-      <%= due_date_field(@task, perms) %>
-
-	<label for="task_status"><%= _("Status") %></label>
-	<%= status_field(@task) %>
-      </fieldset>
-
-      <%= render(:partial => "notifications", :locals => { :perms => perms }) %>
-
-      <fieldset id="task_attr" style="padding-right:0;">
-        <legend><%=_ 'Attributes' %></legend>
-	<% 
-	   current_user.company.properties.each do |p| 
-	     selected = @task.new_record? ? p.default_value : @task.property_value(p)
-	 -%>
-	  <% name = "property_#{ p.id }" -%>
-  	  <label for="<%= name %>"><%= h(p.name) %></label>
-	  <select name="task[properties][<%= p.id %>]" id="<%= name %>">
-	    <option></option>
-	    <% p.property_values.each do |pv| -%>
-	      <option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>><%= h(pv.value) %></option>
-	    <% end -%>
-	  </select>
-	<% end -%>
-      </fieldset>
-
-      <fieldset id="task_dependencies" style="padding-right:0;">
-        <legend><%=_ "Dependencies"%></legend>
-
-        <label for="dependencies_input"><%=_ 'Depends on'%></label>
-        <% if perms['prioritize'].empty? %>
-          <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
-          <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
-	  <%= auto_complete_for_dependencies %>
-        <% else %>
-          <input name="dependencies[]" size="12" type="text" disabled="disabled">
-        <% end %>
-
-	<span class="dependencies">
-	  <%= render :partial => "dependency", :collection => @task.dependencies, :locals => { :perms => perms } %>
-        </span>
-
-	 <% unless @task.dependants.empty? %>
-  	   <div style="clear:both">
-	     <label for="dependants"><%=_ "Depended on by"%></label>
-	     <% @task.dependants.each do |d| %>
-	     <%= link_to_task(d) %><br/>
-	     <% end %>
-	   </div>
-	 <% end %>
-	</fieldset>
-	
-	<fieldset id="task_attachments" style="padding-right:0;">
-		<legend><%=_ "Attachments" %></legend>
-		<% for file in @task.attachments %>
-			<% if file.thumbnail? %>
-				<div>
-					<%= link_to image_tag("/project_files/thumbnail/#{file.id}", {:border=>0, :style=>'float:none'}), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %>
-				</div>
-			<% end %>
-			<%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:rel=>'shadowbox'} %><em> (<%=number_to_human_size(file.file_size)%>)</em>
-			<%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name), :class => 'close-cross' %>
-			<span class="divider"></span>
-		<% end %>
-	        
-		<label for="task_tmp_file"><%=_ 'Attach file' %></label>
-		<div id="upload_container">
-			<%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
-		</div>
-		<% if perms['comment'].empty? %>
-			<span style="float:left"><%= link_to_function _("Upload more files") do |page|
-	              page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
-	              end %></span>
-		<% end %>
-	</fieldset>
-
-        <% if current_user.use_resources? %>
-          <fieldset id="task_resources">
-	    <legend><%=_ "Resources" %></legend>
-            <label for="resources_input"><%=_ "Linked resources" %></label>
-	    <% customer_id = @task.project.customer_id if @task.project %>
-	    <%= auto_complete_for_resources(customer_id) %>
-	    <br clear="both" />
-	    
-	    <%= render :partial => "resource", :collection => @task.resources %>
-          </fieldset>
-        <% end %>
-
-	<%= render :partial => "inline_worklog" %>
-    </td>
 </tr>
 
-<!--[eoform:task]-->
+<script type="text/javascript">
+jQuery('#task_status').change(function() {
+	if( jQuery('#task_status').val() == "6" ) {
+		jQuery('#defer_options').show();
+	} else {
+		jQuery('#defer_options').hide();
+	}
+	return false;
+});
+jQuery('#comment').focus();
+</script>

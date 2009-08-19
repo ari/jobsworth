@@ -1,4 +1,4 @@
-  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
+<table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
     <tr><td colspan="3">&nbsp;</td></tr>
     <tr>
       <td align="left" colspan="3" class="page_header"><div style="float:left;"><%= _ 'History' %></div><div style="float:right;font-size:9px;padding-top:0.2em;padding-right:1.5em;text-transform: none; font-weight: none; letter-spacing:0">
@@ -17,7 +17,8 @@
     </tr>
     <tr><td colspan="3">&nbsp;</td></tr>
     <%  day = 0
-        for log in @logs
+	@logs ||= []
+        @logs.each do |log|
           if day != (tz.utc_to_local(log.started_at)).yday
              day = (tz.utc_to_local(log.started_at)).yday
            %>
