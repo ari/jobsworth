@@ -2889,6 +2889,11 @@ div.search_filter {
     padding-top: 5px;
 }
 
+#task_list {
+    border-bottom: 5px solid #bbbbbb;
+    height: 250px;
+    overflow-y: auto;
+}
 #task_list table {
     border-collapse: collapse;
     width: 100%;

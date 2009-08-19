@@ -344,6 +344,14 @@ jQuery(document).ready(function() {
 });
 
 /*
+  Loads the task information for the task taskNum and displays 
+it in the current page.
+*/
+function showTaskInPage(taskNum) {
+    jQuery("#task").load("/tasks/edit/" + taskNum);
+}
+
+/*
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
  */

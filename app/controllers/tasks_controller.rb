@@ -286,8 +286,13 @@ class TasksController < ApplicationController
       redirect_from_last
       return
     end 
-    
+
     init_form_variables(@task)
+    
+    respond_to do |format|
+      format.html
+      format.js { render(:layout => false) }
+    end
   end
 
 #  def edit_ajax
