@@ -6,7 +6,10 @@
     <%= task_icon(task) %>
   </td>
   <td class="tooltip" title="<%= task_info_tip(task) %>">
+    <%=h task.name %>
+    <%- # this next link is useful for tests but is hidden from users %>
     <%= link_to(task.name, "/tasks/edit/#{ task.task_num }", 
+	:style => "display: none",
 	:onclick => "showTaskInPage(#{ task.task_num }); return false;") %>
   </td>
   <td class="tooltip" title="<%= task_customer_tip(customer) %>">

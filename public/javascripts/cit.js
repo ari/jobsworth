@@ -348,7 +348,10 @@ jQuery(document).ready(function() {
 it in the current page.
 */
 function showTaskInPage(taskNum) {
-    jQuery("#task").load("/tasks/edit/" + taskNum);
+    jQuery("#task").load("/tasks/edit/" + taskNum, {
+	beforeSend: showProgress,
+	complete: hideProgress
+    });
 }
 
 /*
