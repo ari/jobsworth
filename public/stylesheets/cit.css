@@ -2890,8 +2890,9 @@ div.search_filter {
 }
 
 #task_list {
-    border-bottom: 5px solid #bbbbbb;
-    height: 250px;
+    border-bottom: 2px solid #bbbbbb;
+    height: 200px;
+    overflow-x: hidden;
     overflow-y: auto;
 }
 #task_list table {

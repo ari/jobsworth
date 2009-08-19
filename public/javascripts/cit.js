@@ -341,6 +341,12 @@ function clearOtherDefaults(sender) {
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
     updateTooltips();
+
+    jQuery("#task_list").resizable({
+	resize: function(event, ui) {
+	    ui.element.css("width", "");
+	}
+    });
 });
 
 /*
@@ -349,8 +355,8 @@ it in the current page.
 */
 function showTaskInPage(taskNum) {
     jQuery("#task").load("/tasks/edit/" + taskNum, {
-	beforeSend: showProgress,
-	complete: hideProgress
+	beforeSend: function() { showProgress(); },
+	callback: function() { hideProgress(); }
     });
 }
 
@@ -854,3 +860,4 @@ function saveSortParams(event) {
     	value : (selected + "_" + direction)
     });
 }
+
