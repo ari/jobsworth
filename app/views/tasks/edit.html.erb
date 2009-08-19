@@ -15,4 +15,4 @@
   </div>
   <%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %>
 </div>
-
+<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>
