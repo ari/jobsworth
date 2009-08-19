@@ -2915,6 +2915,16 @@ div.search_filter {
     background: #9f9;
 }
 
+#task_list .due {
+    color: green;
+}
+#task_list .due_tomorrow {
+    color: black;
+}
+#task_list .due_overdue {
+    color: red;
+}
+
 /* sortable tables */
 table.tablesorter {
 	background-color: #CDCDCD;

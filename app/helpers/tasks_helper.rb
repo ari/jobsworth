@@ -386,7 +386,7 @@ module TasksHelper
   def task_milestone_tip(task)
     return if task.milestone_id.to_i <= 0
 
-    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ])
+    return task_tooltip([ [ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
   # Returns a tooltip showing the users linked to a task

@@ -20,11 +20,11 @@
     <% str << task.milestone.name if task.milestone_id.to_i > 0 %>
     <%=h "#{ str.join("/") }" %>
   </td>
-  <td>
-    <%=h formatted_date_for_current_user(task.due_date) %>
+  <td class="tooltip" title="<%= task_tooltip([ ["Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>">
+    <%= "#{ due_in_words(task) }".gsub("\[", "").gsub("\]", "") %>
   </td>
   <td>
-    <%= (task.minutes_left / 60.0).round(1) %>
+    <%= (task.minutes_left / 60.0).round(1) if task.minutes_left.to_i > 0 %>
   </td>
   <td class="tooltip" title="<%= task_users_tip(task) %>">
     <%=h task.users.map{ |u| u.name }.join(", ") %>
