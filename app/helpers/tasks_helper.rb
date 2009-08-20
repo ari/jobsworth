@@ -442,4 +442,13 @@ module TasksHelper
     end
   end
 
+  # Returns the open tr tag for the given task in a task list
+  def task_row_tr_tag(task)
+    class_name = cycle("odd", "even") 
+    class_name += " selected" if task.id == session[:last_task_id] 
+    return tag(:tr, :id => "task_row_#{ task.task_num }", 
+               :class => class_name, 
+               :onclick => "showTaskInPage(#{ task.task_num})")
+  end
+
 end

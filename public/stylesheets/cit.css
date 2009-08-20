@@ -2921,8 +2921,8 @@ div.search_filter {
 #task_list tr {
     cursor: pointer;
 }
-#task_list tr:hover {
-    background: #9f9;
+#task_list tr:hover, #task_list tr.selected td {
+    background-color: #9f9;
 }
 
 #task_list .due {

@@ -1,7 +1,7 @@
-<%- task = task_row_v2 %>
-<%- customer = (task.customers.first || task.project.customer) %>
+<% task = task_row_v2 -%>
+<% customer = (task.customers.first || task.project.customer) -%>
 
-<tr class="<%= cycle("odd", "even") %>" onclick="showTaskInPage(<%= task.task_num %>)">
+<%= task_row_tr_tag(task) %>
   <td>
     <%= task_icon(task) %>
   </td>

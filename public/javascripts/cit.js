@@ -355,8 +355,14 @@ it in the current page.
 */
 function showTaskInPage(taskNum) {
     jQuery("#task").load("/tasks/edit/" + taskNum, {
-	beforeSend: function() { showProgress(); },
-	callback: function() { hideProgress(); }
+	beforeSend: function() { 
+	    jQuery("tr.selected").removeClass("selected");
+	    showProgress(); 
+	},
+	complete: function() { 
+	    jQuery("#task_row_" + taskNum).addClass("selected");
+	    hideProgress();
+	}
     });
 }
 
