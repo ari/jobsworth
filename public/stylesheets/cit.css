@@ -2580,7 +2580,6 @@ input.scheduled {
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
-	margin:1em 0;
 	padding:4px 10px;
 	white-space:nowrap;
 }
@@ -2928,7 +2927,7 @@ div.search_filter {
 #task_list .due {
     color: green;
 }
-#task_list .due_tomorrow {
+#task_list .due_tomorrow, #task_list .due_distant {
     color: black;
 }
 #task_list .due_overdue {
@@ -2938,7 +2937,7 @@ div.search_filter {
 /* sortable tables */
 table.tablesorter {
 	background-color: #CDCDCD;
-	margin:10px 0pt 15px;
+	margin:0px 0pt 15px;
 	width: 100%;
 	text-align: left;
 }
