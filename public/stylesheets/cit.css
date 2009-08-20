@@ -1097,6 +1097,7 @@ div.auto_complete {
   border:1px solid #888;
   margin:0px;
   padding:0px;
+    z-index: 100;
 }
 
 #task_set_tags_auto_complete ul
