@@ -499,6 +499,16 @@ fieldset label.ignore {
 #task_sidebar {
     width: 23em;
 }
+#task_sidebar fieldset {
+    padding: 5px;
+    padding-right: 7px;
+}
+#task_sidebar .fill {
+    margin-bottom: 0.4em;
+    margin-right: 0;
+    margin-top: 0;
+    width: 100%;
+}
 
 #task_attr label,
 #task_notify label,
@@ -2114,7 +2124,7 @@ h4 {
 }
 textarea.small {
     font-size: 12px;
-    width: 150px;
+    width: 145px;
 }
 .informal {
   font-weight: normal;
