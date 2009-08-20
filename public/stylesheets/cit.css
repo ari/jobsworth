@@ -2900,10 +2900,13 @@ div.search_filter {
 
 #task_list {
     border-bottom: 2px solid #bbbbbb;
+    overflow: hidden;
+}
+#task_list tbody {
     height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
-}
+}    
 #task_list table {
     border-collapse: collapse;
     width: 100%;
