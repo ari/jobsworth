@@ -458,7 +458,7 @@ fieldset label {
   margin-top: 0.2em;
   font-weight: normal;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 11px;
   color: #999999;
 }
 
@@ -500,8 +500,8 @@ fieldset label.ignore {
     width: 23em;
 }
 #task_sidebar fieldset {
-    padding: 5px;
-    padding-right: 7px;
+    padding: 0px;
+    border: 0;
 }
 #task_sidebar .fill {
     margin-bottom: 0.4em;
