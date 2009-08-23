@@ -1,0 +1,7 @@
+<fieldset id="task_information" style="padding-right:0.5em;">
+  <label for="comment"><%=_ 'Comment' %></label>
+  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:80%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
+
+  <span class="divider"></span>
+  <%= cit_submit_tag(@task) %>
+</fieldset>

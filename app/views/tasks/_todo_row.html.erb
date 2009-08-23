@@ -1,5 +1,5 @@
 <li id="<%=@todo.dom_id%>" class="<%=@todo.css_classes%>"><%= check_box("todo", "done", { "title" => (@todo.done? ? _('Open <b>%s</b>', @todo.name) : _("Close <b>%s</b>", @todo.name)),  :class => "button tooltip checkbox", :id => "button_#{@todo.id}",
-									  :onclick => "jQuery.get('/tasks/todo_check_ajax/#{@todo.id}');"}) -%>
+									  :onclick => "jQuery.getScript('/tasks/todo_check_ajax/#{@todo.id}');"}) -%>
  <%=h @todo.name %>
 <% if @todo.done? %>
        <%= "[#{tz.utc_to_local(@todo.completed_at).strftime("#{current_user.time_format} #{current_user.date_format}")}]" %>

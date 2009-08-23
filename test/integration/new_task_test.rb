@@ -14,7 +14,7 @@ class NewTaskTest < ActionController::IntegrationTest
         visit "/"
         click_link "new task"
 
-        fill_in "summary", :with => "a brand new task"
+        fill_in "title", :with => "a brand new task"
         fill_in "description", :with => "a new desc"
         select @project.name, :from => "project"
         select @milestone.name, :from => "milestone"
@@ -35,8 +35,8 @@ class NewTaskTest < ActionController::IntegrationTest
         click_button "create"
         
         task = @user.company.tasks.last
-        log = task.work_logs.last
-        assert_equal 300, log.duration
+        log = task.reload.work_logs.detect { |wl| wl.duration == 300 }
+        assert_not_nil log
         assert_equal task.description, log.body
       end
     end

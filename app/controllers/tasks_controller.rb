@@ -43,7 +43,7 @@ class TasksController < ApplicationController
     redirect_to 'list'
   end
   
-  def list
+  def list_old
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
 
@@ -66,7 +66,10 @@ class TasksController < ApplicationController
     @group_ids, @groups = group_tasks(@tasks)
   end
 
-  def listv2
+  def list
+    # Subscribe to the juggernaut channel for Task updates
+    session[:channels] += ["tasks_#{current_user.company_id}"]
+
     @tags = {}
     @tags.default = 0
     @tags_total = 0
@@ -77,7 +80,7 @@ class TasksController < ApplicationController
     @all_tags = task_filter.tag_counts
 
     respond_to do |format|
-      format.html # listv2.html.erb
+      format.html # list.html.erb
       format.js { render :partial => "task_list_v2", :layout => false }
     end
   end
@@ -240,6 +243,7 @@ class TasksController < ApplicationController
     
     if @task.save
       session[:last_project_id] = @task.project_id
+      session[:last_task_id] = @task.id
 
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
@@ -283,8 +287,14 @@ class TasksController < ApplicationController
       redirect_from_last
       return
     end 
-    
+
     init_form_variables(@task)
+    session[:last_task_id] = @task.id
+    
+    respond_to do |format|
+      format.html
+      format.js { render(:layout => false) }
+    end
   end
 
 #  def edit_ajax

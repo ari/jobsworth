@@ -1,0 +1,28 @@
+<fieldset id="task_attr">
+  <legend><%=_ "Attributes" %></legend>
+  <label for="task_set_tags"><%=_ 'Tags' %></label>
+  <%= text_field("task", "set_tags", { 
+      :size => nil,
+      :value => @task.tags.map { |t| t.name }.join(', '), 
+      :autocomplete => "off" }.merge( perms['edit'])) %> 
+  <br />
+  <div class="auto_complete" id="task_set_tags_auto_complete" style="display:none;"></div>
+  <% if @tags %>
+    <script type="text/javascript">
+      new Autocompleter.Local('task_set_tags', 'task_set_tags_auto_complete', [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>], {tokens:[','], minChars:0, frequency: 0, choices: 15});
+    </script>
+  <% end %>
+
+
+  <% current_user.company.properties.each do |p| 
+       selected = @task.new_record? ? p.default_value : @task.property_value(p)
+       name = "property_#{ p.id }" -%>
+      <label for="<%= name %>"><%= h(p.name) %></label>
+      <select name="task[properties][<%= p.id %>]" id="<%= name %>">
+	<option></option>
+	<% p.property_values.each do |pv| -%>
+          <option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>><%= h(pv.value) %></option>
+	<% end -%>
+      </select>
+    <% end -%>
+</fieldset>

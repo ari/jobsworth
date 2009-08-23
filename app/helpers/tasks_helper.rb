@@ -273,6 +273,16 @@ module TasksHelper
     return grouped_options_for_select(options, task.project_id)
   end
 
+  # Returns the js to watch a task's project selector
+  def task_project_watchers_js
+    js = <<-EOS
+    new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
+    new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
+    EOS
+    
+    return javascript_tag(js)
+  end
+
   ###
   # Returns an array to use as the options for a select
   # to change a work log's status.
@@ -331,7 +341,15 @@ module TasksHelper
       options[:value] = @task.repeat_summary
     end
 
-    return text_field("task", "due_at", options)
+    js = <<-EOS
+    jQuery(function() {
+      jQuery("#due_at").datepicker({ constrainInput: false, 
+                                      dateFormat: '#{ current_user.dateFormat }'
+                                   });
+    });
+    EOS
+
+    return text_field("task", "due_at", options) + javascript_tag(js)
   end
 
   # Returns the notify emails for the given task, one per line
@@ -368,7 +386,7 @@ module TasksHelper
   def task_milestone_tip(task)
     return if task.milestone_id.to_i <= 0
 
-    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ])
+    return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
   # Returns a tooltip showing the users linked to a task
@@ -395,6 +413,44 @@ module TasksHelper
     end
     res += "</table>"
     return escape_once(res)
+  end
+
+  # Returns a hash of permissions for the current task and user
+  def perms
+    if @perms.nil?
+      @perms = {}
+      permissions = ['comment', 'edit', 'reassign', 'prioritize', 'close', 'milestone']
+      permissions.each do |p|
+        if @task.project_id.to_i == 0 || current_user.can?(@task.project, p)
+          @perms[p] = {}
+        else
+          @perms[p] = { :disabled => 'disabled' }
+        end
+      end
+
+    end
+
+    @perms
+  end
+
+  # Renders the last task the current user looked at
+  def render_last_task
+    @task = current_user.company.tasks.find_by_id(session[:last_task_id], 
+                                            :conditions => [ "project_id IN (#{ current_project_ids })" ])
+    if @task
+      return render_to_string(:action => "edit", :layout => false)
+    end
+  end
+
+  # Returns the open tr tag for the given task in a task list
+  def task_row_tr_tag(task)
+    class_name = cycle("odd", "even") 
+    class_name += " selected" if task.id == session[:last_task_id] 
+    return tag(:tr, {
+                 :id => "task_row_#{ task.task_num }", 
+                 :class => class_name, 
+                 :onclick => "showTaskInPage(#{ task.task_num}); return false;"
+               }, true)
   end
 
 end

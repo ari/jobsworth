@@ -24,14 +24,14 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to edit information" do
-          fill_in "summary", :with => "a new summary"
+          fill_in "title", :with => "a new title"
           fill_in "tags", :with => "t1, t2"
           fill_in "description", :with => "a new description"
           
           click_button "save"
           
           @task.reload
-          assert_equal "a new summary", @task.name
+          assert_equal "a new title", @task.name
           assert_equal "a new description", @task.description
           assert_equal "T1 / T2", @task.full_tags_without_links
         end
@@ -97,6 +97,12 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to create a worklog" do
+          date = "15/06/2009 13:15"
+          format = "#{ @user.date_format } #{ @user.time_format }"
+          expected_date = DateTime.strptime(date, format)
+          expected_date = @user.tz.local_to_utc(expected_date)
+
+          fill_in "work_log_started_at", :with => date
           fill_in "work_log_duration", :with => "5m"
           fill_in "work_log_body", :with => "some work log notes"
           click_button "save"
@@ -104,6 +110,7 @@ class TaskEditTest < ActionController::IntegrationTest
           log = @task.reload.work_logs.detect { |wl| wl.duration == 300 }
           assert_not_nil log
           assert_equal 300, log.duration
+          assert_equal expected_date, log.started_at
           assert_equal "some work log notes", log.body
         end
 

@@ -1,0 +1,26 @@
+<fieldset id="task_dependencies">
+  <legend><%=_ "Dependencies"%></legend>
+
+  <label for="dependencies_input"><%=_ 'Depends on'%></label>
+  <% if perms['prioritize'].empty? %>
+    <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
+    <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
+    <%= auto_complete_for_dependencies %>
+  <% else %>
+    <input name="dependencies[]" size="12" type="text" disabled="disabled">
+  <% end %>
+
+  <span class="dependencies">
+    <%= render :partial => "dependency", :collection => @task.dependencies, :locals => { :perms => perms } %>
+  </span>
+
+  <% if @task.dependants.any? %>
+    <div style="clear:both">
+      <label for="dependants"><%=_ "Depended on by"%></label>
+      <% @task.dependants.each do |d| %>
+        <%= link_to_task(d) %><br/>
+      <% end %>
+    </div>
+  <% end %>
+</fieldset>
+

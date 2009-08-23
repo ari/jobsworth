@@ -1,68 +1,18 @@
-<%
-form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
-  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
-    <tr>
-      <td align="left" colspan="3" class="page_header" id="task_page_header">
-          <%= render :partial => "task_edit_header", :locals => {:task => @task} %>
-      </td>
-    </tr>
-    <tr><td colspan="3" class="tasks_updated_by"><span class="optional">
-     <%
-        creator = nil
-        begin
-          creator = User.find(@task.creator_id) if @task.creator_id.to_i > 0
-        rescue
-        end
-        creator_name = (creator.nil? ? "Unknown" : creator.name)
-
-        updator = nil
-        begin
-          updator = User.find(@task.updated_by_id) if @task.updated_by_id.to_i > 0
-        rescue
-        end
-        updator_name = (updator.nil? ? "Unknown" : updator.name)
-
-     %>
-     <%=_ 'Created' %> <%= tz.utc_to_local(@task.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") if @task.created_at %> <%= "#{_('by')} #{creator_name}" unless (@task.creator_id.nil? || @task.creator_id == 0)%>
-     <% if @task.updated_at && @task.updated_at != @task.created_at %> - <%=_ 'Last Updated' %> <%= tz.utc_to_local(@task.updated_at).strftime("#{current_user.time_format} #{current_user.date_format}") if @task.updated_at %> <%= "#{_('by')} #{updator_name}" unless (@task.updated_by_id.nil? || @task.updated_by_id == 0)%>  <% end %></td></tr>
-</table>
-<table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0" id="content">
-<%= render :partial => "form" %>
-</table>
-<% end %>
-<script type="text/javascript">
-jQuery('#task_status').change(function() {
-	if( jQuery('#task_status').val() == "6" ) {
-		jQuery('#defer_options').show();
-	} else {
-		jQuery('#defer_options').hide();
-	}
-	return false;
-});
-jQuery('#comment').focus();
-</script>
-<style type="text/css">
-.todo-container {
-    padding-left: 0;
-}
-.page_header a {
-    padding-right: 0;
-}
-</style>
-
-<div id="content" style="width:79%;">
-  <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
-    <tr><td>&nbsp;</td></tr>
-    <tr><td align="left" class="page_header"><div style="float:left;"><%= _ 'To-do' %>
-	    <span id="todo-status-<%= @task.dom_id %>"><a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;"><%=@task.todo_status%></a></span>
-       </div></td></tr>
-    <tr><td style="padding-top:0.5em;"><%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %></td></tr>
+<% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
+  <table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0" id="content">
+    <%= render :partial => "form" %>
   </table>
+<% end %>
 
-<div id="task_history">
-   <%= render :partial => "history" %>
-</div>
-
-
+<div class="todos">
+  <div class="page_header">
+    <%= _("To-do") %>
+    <span id="todo-status-<%= @task.dom_id %>">
+      <a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;">
+	<%= @task.todo_status %>
+      </a>
+    </span>
+  </div>
+  <%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %>
 </div>
 <script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>

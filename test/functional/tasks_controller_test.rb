@@ -40,7 +40,7 @@ class TasksControllerTest < ActionController::TestCase
     task.company = company
     task.save!
 
-    get :list
+    get :list_old
     assert_response :success
 
     # ensure at least 1 task was rendered
@@ -60,7 +60,7 @@ class TasksControllerTest < ActionController::TestCase
     task.task_owners.build(:user => user)
     task.save!
 
-    get :list, :tag => "tag1"
+    get :list_old, :tag => "tag1"
     assert_response :success
 
     # ensure at least 1 task was rendered
@@ -139,7 +139,7 @@ class TasksControllerTest < ActionController::TestCase
 
     new_time = Time.now.yesterday
     params = { 
-      :started_at => new_time, 
+      :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
       :duration => "120m",
       :body => "test body"
     }
@@ -174,7 +174,7 @@ class TasksControllerTest < ActionController::TestCase
       assert total_tasks > 0
 
       @request.session[:filter_customer] = [ customer1.id, customer2.id ]
-      get :listv2
+      get :list
 
       tasks = assigns("tasks")
       assert_equal total_tasks, tasks.length
@@ -189,7 +189,7 @@ class TasksControllerTest < ActionController::TestCase
       assert milestone.tasks.any?
 
       @request.session[:filter_milestone] = milestone.id
-      get :listv2
+      get :list
 
       tasks = assigns("tasks")
       assert_equal milestone.tasks.length, tasks.length
@@ -202,7 +202,7 @@ class TasksControllerTest < ActionController::TestCase
       assert project.tasks.any?
 
       @request.session[:filter_project] = project.id
-      get :listv2
+      get :list
 
       tasks = assigns("tasks")
       assert_equal project.tasks.length, tasks.length
@@ -223,7 +223,7 @@ class TasksControllerTest < ActionController::TestCase
       end
 
       @request.session[property.filter_name] = value.id
-      get :listv2
+      get :list
 
       tasks = assigns("tasks")
       assert_equal count, tasks.length
