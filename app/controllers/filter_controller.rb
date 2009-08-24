@@ -12,19 +12,24 @@ class FilterController < ApplicationController
     @to_list = []
 
     @customers = current_user.company.customers.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ "Clients", @customers ]
+    @to_list << [ _("Clients"), @customers ]
 
     @projects = current_user.company.projects.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ "Projects", @projects ]
+    @to_list << [ _("Projects"), @projects ]
 
     @users = current_user.company.users.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ "Users", @users ]
+    @to_list << [ _("Users"), @users ]
 
     @milestones = current_user.company.milestones.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ "Milestones", @milestones ]
+    @to_list << [ _("Milestones"), @milestones ]
 
     @tags = current_user.company.tags.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ "Tags", @tags ]
+    @to_list << [ _("Tags"), @tags ]
+
+    current_user.company.properties.each do |property|
+      values = property.property_values.all(:conditions => [ "value like ?", "#{ filter }%" ])
+      @to_list << [ property, values ] if values.any?
+    end
 
     # TODO: need to handle these somehow
     @statuses = Task.status_types.select { |type| _(type).downcase.index(filter) == 0 }

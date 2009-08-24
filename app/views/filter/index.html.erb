@@ -1,12 +1,12 @@
 <ul>
-<% @to_list.each do |name, values| -%>
+
+<% (@to_list || []).each do |name, values| -%>
   <% if values and values.any? -%>
-    <li>[<%=_ name %>]</li>
+    <li>[<%= name %>]</li>
     <% values.each do |v| -%>
-      <li>
+      <li><%= v %>
 	<%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_id]", v.id, :class => "id" %>
 	<%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", v.class.name, :class => "type" %>
-	<%= v %>
       </li>
     <% end -%>
   <% end -%>

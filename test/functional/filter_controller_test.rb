@@ -23,16 +23,14 @@ class FilterControllerTest < ActionController::TestCase
       get :index, :filter => @task.project.name
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "filter[]", 
-                   :value => "p#{ @task.project.id }" })
+                   :value => @task.project.id })
     end
 
     should "be able to search by task customer" do
       get :index, :filter => @task.project.customer.name
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "filter[]",
-                   :value => "c#{ @task.project.customer.id }" })
+                   :value => @task.project.customer.id })
     end
 
 
@@ -40,8 +38,7 @@ class FilterControllerTest < ActionController::TestCase
       get :index, :filter => @task.milestone.name
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "filter[]",
-                   :value => "m#{ @task.milestone.id }" })
+                   :value => @task.milestone.id })
     end
 
     should "be able to search by task status" do
@@ -62,7 +59,6 @@ class FilterControllerTest < ActionController::TestCase
       get :index, :filter => value.value
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "#{ property.filter_name }[]",
                    :value => value.id
                  })
     end
@@ -71,7 +67,6 @@ class FilterControllerTest < ActionController::TestCase
       get :index, :filter => @user.name
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "filter_user[]",
                    :value => @user.id
                  })
     end
