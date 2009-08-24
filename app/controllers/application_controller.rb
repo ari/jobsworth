@@ -23,6 +23,7 @@ class ApplicationController < ActionController::Base
   helper_method :completed_milestone_ids
   helper_method :worked_nice
   helper_method :link_to_task
+  helper_method :task_filter
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
@@ -315,75 +316,6 @@ class ApplicationController < ActionController::Base
   end
 
   ###
-  # This method sets up the session with any posted filter params.
-  # The parameters expected are in the views/task/_filter.rhtml
-  # file.
-  ###
-  def setup_task_filters
-    f = params[:filter]
-
-    filter_ids = [ params[:filter] ].flatten.compact
-    if filter_ids.empty? or filter_ids.include?(TaskFilter::ALL_TASKS)
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "0"
-      session[:filter_project] = 0
-    else
-      customers = []
-      milestones = []
-      projects = []
-      
-      filter_ids.each do |id|
-        code = id[0, 1]
-        id = id[1, id.length]
-
-        customers << id if code == "c"
-        projects << id if code == "p"
-        milestones << id if code == "m"
-        # this is a bit of hack - we're using (- projectid - 1) to signify
-        # "milestones that are unassigned in the project with that id"
-        # We need to subtract 1 more as -1 is used by views to signify any unassigned
-        # milestone.
-        milestones << - (id.to_i + 1) if code == "u"
-      end
-        
-      session[:filter_customer] = customers
-      session[:filter_project] = projects
-      session[:filter_milestone] = milestones
-    end
-
-    # These filters use the query menu html, but can only have a single value.
-    # Just grab the first value to use that. 
-    single_filters = [ :sort, :group_by, :colors, :icons ]
-    single_filters.each do |filter|
-      values = params[filter] || []
-      session[filter] = values.first
-    end
-    
-    filter_names =  [:filter_user, :filter_hidden, :filter_status,
-                     :hide_deferred, :hide_dependencies, :filter_type, 
-                     :filter_severity, :filter_priority,
-                     :show_all_unread ]
-    filter_names.each do |filter|
-      session[filter] = params[filter]
-    end
-
-    # set any filters on custom properties
-    current_user.company.properties.each do |prop|
-      filter = prop.filter_name
-      session[filter] = params[filter]
-    end
-
-    current_user.last_filter = session[:filter_hidden]
-    current_user.last_milestone_id = session[:filter_milestone]
-    current_user.last_project_id = session[:filter_project]
-    session[:last_project_id] = session[:filter_project]
-    current_user.save
-
-    redirect_to(params[:redirect_action])
-  end
-
-  
-  ###
   # Returns the list to use for auto completes for user names.
   ###
   def auto_complete_for_user_name
@@ -462,5 +394,12 @@ class ApplicationController < ActionController::Base
     link += self.class.helpers.link_to(text, url, html)
     return link
   end
+
+  # returns the current task filter (or a new, blank one
+  # if none set)
+  def task_filter
+    session[:task_filter] ||= TaskFilter.new(:user => current_user)
+  end
+
 
 end

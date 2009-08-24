@@ -483,10 +483,6 @@ END_OF_HTML
   def selected_project
     if @task and @task.project_id > 0
       selected_project = @task.project_id
-    elsif last_project_id.to_i > 0 && Project.exists?(last_project_id)
-      selected_project = last_project_id
-    elsif project_id.to_i > 0 && Project.exists?(project_id)
-      selected_project = project_id
     else
       selected_project = current_user.projects.find(:first, :order => 'name').id
     end

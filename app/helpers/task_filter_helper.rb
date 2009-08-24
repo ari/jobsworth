@@ -1,9 +1,4 @@
 module TaskFilterHelper
-  # returns the current task filter (or a new, blank one
-  # if none set)
-  def task_filter
-    session[:task_filter] ||= TaskFilter.new(:user => current_user)
-  end
 
   ###
   # Returns an array of names and ids

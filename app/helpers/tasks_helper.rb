@@ -74,9 +74,8 @@ module TasksHelper
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
     else
-      milestone_id = TaskFilter.new(self, session).milestone_ids.first
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => milestone_id || 0 }, perms['milestone'])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0 }, perms['milestone'])
     end
   end
 
@@ -219,7 +218,6 @@ module TasksHelper
   # Returns links to filter the current task list by tags
   ###
   def tag_links(tags_to_counts_hash)
-    debugger
     links = []
     
     tags_to_counts_hash.each do |tag_name, count|

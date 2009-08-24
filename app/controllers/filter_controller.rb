@@ -38,7 +38,6 @@ class FilterController < ApplicationController
   def update
     # sets the current filter from the given params
     filter = TaskFilter.new(:user => current_user)
-    debugger
     filter.attributes = params[:task_filter]
 
     session[:task_filter] = filter

@@ -9,18 +9,7 @@ class TasksController < ApplicationController
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
- 
-    tf = TaskFilter.new(self, @session)
-    project_ids = @projects.map { |p| p[1] }
 
-    if !project_ids.include?(tf.project_ids.first)
-      session[:last_project_id] = nil
-    end
-
-    if !project_ids.include?(tf.project_ids.first)
-      session[:filter_project] = nil
-    end
-    
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
@@ -29,7 +18,7 @@ class TasksController < ApplicationController
       @task = Task.new
       @task.company = current_user.company
       @task.duration = 0
-      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
+      @tags = Tag.top_counts(current_user.company)
       @task.users << current_user
     end
 
