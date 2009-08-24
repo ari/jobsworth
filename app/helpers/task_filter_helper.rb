@@ -22,24 +22,6 @@ module TaskFilterHelper
   end
 
   ###
-  # Returns the html to display the selected values in the current filter.
-  ###
-  def selected_filter_values(name, selected_names_and_ids, label = nil, default_label_text = "Any", &block)
-    label ||= name.gsub(/^filter_/, "").titleize
-    selected_names_and_ids ||= []
-
-    locals = {
-      :selected_names_and_ids => selected_names_and_ids,
-      :filter_name => name,
-      :all_label => _("[#{ default_label_text } %s]", label),
-      :unassigned => TaskFilter::UNASSIGNED_TASKS
-    }
-    locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
-
-    return render(:partial => "/tasks/selected_filter_values", :locals => locals, &block)
-  end
-
-  ###
   # Returns an array containing the name and id of users currently
   # selected in the filter. Handles "unassigned" tasks too.
   ###
