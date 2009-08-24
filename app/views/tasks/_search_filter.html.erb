@@ -28,3 +28,8 @@
 </form>
 </div>
 
+<div class="right"><small><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></small></div>
+  <ul class="tabs">
+    <%= task_view_links %>
+  </ul>
+</div>

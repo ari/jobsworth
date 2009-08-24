@@ -1,12 +1,5 @@
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
-<div class="task_view_links" style="<%= @task_only_option_style %>">
-<div class="right"><small><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></small></div>
-  <ul class="tabs">
-    <%= task_view_links %>
-  </ul>
-</div>
-
 <div id="task_list">
   <div id="print_title"><%= print_title %></div>
   <table id="list" class="tablesorter">

@@ -12,8 +12,9 @@ class TaskFilter < ActiveRecord::Base
 
   before_create :set_company_from_user
 
-  # Returns an array of all tasks matching conditions
-  def tasks
+  # Returns an array of all tasks matching the conditions from this filter
+  # if extra_conditions is passed, that will be ANDed to the conditions
+  def tasks(extra_conditions = nil)
     to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
                    :milestone, :notifications, :watchers, 
                    :customers ]
@@ -24,15 +25,16 @@ class TaskFilter < ActiveRecord::Base
     to_include << { :dependants => [:users, :tags, :sheets, :todos, 
                                     { :project => :customer }, :milestone ] }
 
-    return user.company.tasks.all(:conditions => conditions, 
+    return user.company.tasks.all(:conditions => conditions(extra_conditions), 
                                   :order => "tasks.id desc",
                                   :include => to_include,
                                   :limit => 100)
   end
 
-  # Returns the count of tasks matching conditions
-  def count
-    user.company.tasks.count(:conditions => conditions)
+  # Returns the count of tasks matching the conditions of this filter.
+  # if extra_conditions is passed, that will be ANDed to the conditions
+  def count(extra_conditions = nil)
+    user.company.tasks.count(:conditions => conditions(extra_conditions))
   end
 
   # Returns a map of tags to their count in the current list. Only tags
@@ -52,12 +54,13 @@ class TaskFilter < ActiveRecord::Base
 
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
-  def conditions
+  def conditions(extra_conditions = nil)
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
     standard_qualifiers = qualifiers - property_qualifiers
     
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
+    res << extra_conditions if extra_conditions
 
     res = res.select { |c| !c.blank? }
     res = res.join(" AND ")
