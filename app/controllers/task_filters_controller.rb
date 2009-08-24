@@ -1,5 +1,6 @@
 class TaskFiltersController < ApplicationController
-  layout nil
+  layout nil, :except => "new"
+  layout "popup", :only => "new"
 
   def search
     filter = params[:filter]
@@ -49,8 +50,8 @@ class TaskFiltersController < ApplicationController
     else
       flash[:notice] = _"Filter couldn't be saved. A name is required"
     end
-
-    redirect_to "/tasks/list"
+    
+    redirect_using_js_if_needed("/tasks/list")
   end
 
   def select
@@ -65,7 +66,7 @@ class TaskFiltersController < ApplicationController
     redirect_to "/tasks/list"
   end
 
-  def update
+  def update_current_filter
     # sets the current filter from the given params
     filter = TaskFilter.new(:user => current_user)
     filter.attributes = params[:task_filter]

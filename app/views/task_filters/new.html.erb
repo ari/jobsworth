@@ -1,8 +1,8 @@
 <fieldset id="content" class="basic">
   <legend><%=_ "Save Filter" %></legend>
 
-  <% form_for(@filter) do |f| %>
-  
+  <% remote_form_for(@filter) do |f| %>
+
   <%= f.label :name %>
   <%= f.text_field :name %>
   <br />

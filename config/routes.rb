@@ -17,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :resource_types, :collection => { :attribute => :get }
   map.resources :organizational_units
   map.resources(:task_filters, 
-                :member => { :select => :any },
+                :member => { :select => :any, :update_current_filter => :any },
                 :collection => { :reset => :any, :search => :any,
                   :set_single_task_filter => :any })
 

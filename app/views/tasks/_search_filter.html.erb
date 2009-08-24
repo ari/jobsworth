@@ -29,7 +29,16 @@
 </div>
 
 <% if !local_assigns[:hide_tabs] %>
-  <div class="right"><small><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></small></div>
+  <div class="right">
+    <small>
+      <%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %>
+    </small>
+    <br />
+    <small>
+      <%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %>
+    </small>
+  </div>
+  
     <ul class="tabs">
       <%= task_view_links %>
     </ul>

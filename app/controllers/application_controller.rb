@@ -401,5 +401,16 @@ class ApplicationController < ActionController::Base
     session[:task_filter] ||= TaskFilter.new(:user => current_user)
   end
 
+  # Redirects to the given url. If the current request is using ajax,
+  # javascript will be used to do the redirect.
+  def redirect_using_js_if_needed(url)
+    url = url_for(url)
+
+    if !request.xhr?
+      redirect_to url
+    else
+      render(:update) { |page| page << "parent.document.location = '#{ url }'" }
+    end
+  end
 
 end
