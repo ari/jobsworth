@@ -77,7 +77,7 @@ class TasksController < ApplicationController
     task_filter = (session[:task_filter] ||= TaskFilter.new(:user => current_user))
     @tasks = task_filter.tasks
     @selected_tags = []
-    @all_tags = task_filter.tag_counts
+    @all_tags = Tag.top_counts(current_user.company)
 
     respond_to do |format|
       format.html # list.html.erb

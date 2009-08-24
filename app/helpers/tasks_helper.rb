@@ -219,11 +219,11 @@ module TasksHelper
   # Returns links to filter the current task list by tags
   ###
   def tag_links(tags_to_counts_hash)
+    debugger
     links = []
     
-    tags_to_counts_hash.each do |tag, count|
-      name = tag.name
-      links << link_to("#{ name } (#{ count })", params.merge(:tag => name))
+    tags_to_counts_hash.each do |tag_name, count|
+      links << link_to("#{ tag_name } (#{ count })", params.merge(:tag => tag_name))
     end
     
     links = links.sort.join(", ")
