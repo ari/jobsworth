@@ -1,7 +1,7 @@
-class FilterController < ApplicationController
+class TaskFiltersController < ApplicationController
   layout nil
 
-  def index
+  def search
     filter = params[:filter]
     return if filter.blank?
 
@@ -33,6 +33,36 @@ class FilterController < ApplicationController
 
     # TODO: need to handle these somehow
     @statuses = Task.status_types.select { |type| _(type).downcase.index(filter) == 0 }
+  end
+
+  def new
+    @filter = TaskFilter.new(:user => current_user)
+  end
+
+  def create
+    @filter = TaskFilter.new(params[:task_filter])
+    @filter.qualifiers = current_task_filter.qualifiers.clone
+    @filter.user = current_user
+
+    if @filter.save
+      session[:task_filter] = @filter
+    else
+      flash[:notice] = _"Filter couldn't be saved. A name is required"
+    end
+
+    redirect_to "/tasks/list"
+  end
+
+  def select
+    @filter = current_user.company.task_filters.find(params[:id])
+    
+    if @filter.user == current_user or @filter.shared?
+      session[:task_filter] = @filter
+    else
+      flash[:notice] = _"You don't have access to that task filter"
+    end
+
+    redirect_to "/tasks/list"
   end
 
   def update

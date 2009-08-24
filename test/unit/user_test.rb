@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
 
+  should_have_many :task_filters, :dependent => :destroy
+
   def setup
     @user = users(:admin)
   end

@@ -6,6 +6,7 @@ class CompanyTest < ActiveRecord::TestCase
   should_have_many :preferences
   should_have_many :properties
   should_have_many :property_values, :through => :properties
+  should_have_many :task_filters, :dependent => :destroy
 
   def setup
     @company = companies(:cit)

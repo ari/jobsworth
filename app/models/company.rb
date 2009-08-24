@@ -18,6 +18,7 @@ class Company < ActiveRecord::Base
   has_many      :resources, :dependent => :destroy, :order => "lower(name)"
   has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
   has_many      :custom_attributes, :dependent => :destroy
+  has_many      :task_filters, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods

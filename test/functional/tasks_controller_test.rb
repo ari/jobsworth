@@ -32,7 +32,7 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "/list should render :success" do
+  test "/list_old should render :success" do
     company = companies("cit")
 
     # need to create a task to ensure the task partials get rendered
@@ -48,7 +48,7 @@ class TasksControllerTest < ActionController::TestCase
     assert group.length > 0
   end
 
-  test "/list should works with tags" do
+  test "/list_old should works with tags" do
     company = companies("cit")
     user = company.users.first
     @request.session[:filter_user] = [ user.id.to_s ]
@@ -66,6 +66,20 @@ class TasksControllerTest < ActionController::TestCase
     # ensure at least 1 task was rendered
     group = assigns["groups"].first
     assert group.length > 0
+  end
+
+  test "/list should render :success" do
+    company = companies("cit")
+
+    # need to create a task to ensure the task partials get rendered
+    task = Task.new(:name => "Test", :project_id => company.projects.last.id)
+    task.company = company
+    task.save!
+
+    get :list
+    assert_response :success
+
+    assert assigns["tasks"].include?(task)
   end
 
   test "/update should render form ok when failing update" do

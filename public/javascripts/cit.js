@@ -875,7 +875,7 @@ function saveSortParams(event) {
     }
 
     selected = jQuery.trim(selected.text());
-    jQuery.post("/filter/set_single_task_filter", {
+    jQuery.post("/task_filters/set_single_task_filter", {
     	name : "sort",
     	value : (selected + "_" + direction)
     });

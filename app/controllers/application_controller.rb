@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   helper_method :completed_milestone_ids
   helper_method :worked_nice
   helper_method :link_to_task
-  helper_method :task_filter
+  helper_method :current_task_filter
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
@@ -397,7 +397,7 @@ class ApplicationController < ActionController::Base
 
   # returns the current task filter (or a new, blank one
   # if none set)
-  def task_filter
+  def current_task_filter
     session[:task_filter] ||= TaskFilter.new(:user => current_user)
   end
 

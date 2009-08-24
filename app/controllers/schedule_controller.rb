@@ -21,7 +21,7 @@ class ScheduleController < ApplicationController
 
     # Find all tasks for the current month, should probably be adjusted to use
     conditions = "tasks.project_id IN (#{current_project_ids}) AND tasks.company_id = '#{current_user.company_id}' AND ((tasks.due_at is NOT NULL AND tasks.due_at >= '#{start_date.to_s(:db)}' AND tasks.due_at <= '#{end_date.to_s(:db)}') OR (tasks.completed_at is NOT NULL AND tasks.completed_at >= '#{start_date.to_s(:db)}' AND tasks.completed_at <= '#{end_date.to_s(:db)}'))"
-    @tasks = task_filter.tasks(conditions)
+    @tasks = current_task_filter.tasks(conditions)
     # task_filter = TaskFilter.new(self, params, conditions)
     # @tasks = task_filter.tasks
 
@@ -526,7 +526,7 @@ class ScheduleController < ApplicationController
   end
   
   def gantt
-    @tasks = task_filter.tasks
+    @tasks = current_task_filter.tasks
     @displayed_tasks = @tasks
 
     

@@ -1700,8 +1700,7 @@ class TasksController < ApplicationController
     @tags.default = 0
     @tags_total = 0
 
-    task_filter = (session[:task_filter] ||= TaskFilter.new(:user => current_user))
-    @tasks = task_filter.tasks
+    @tasks = current_task_filter.tasks
     @selected_tags = []
     @all_tags = Tag.top_counts(current_user.company)
   end

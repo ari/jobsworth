@@ -9,6 +9,7 @@ class TaskFilter < ActiveRecord::Base
   accepts_nested_attributes_for :qualifiers
 
   validates_presence_of :user
+  validates_presence_of :name
 
   before_create :set_company_from_user
 

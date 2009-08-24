@@ -64,3 +64,8 @@ TaskFilter.blueprint do
   name
   user
 end
+
+Tag.blueprint do
+  company
+  name
+end

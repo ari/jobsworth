@@ -5,6 +5,7 @@ class TaskFilterTest < ActiveSupport::TestCase
   should_have_many :qualifiers
   should_belong_to :user
   should_validate_presence_of :user
+  should_validate_presence_of :name
 
   # Checks task filter includes the given class in conditions
   def self.should_filter_on(klass, column_name = nil)

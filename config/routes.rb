@@ -10,16 +10,16 @@ ActionController::Routing::Routes.draw do |map|
   
   map.home '/forums/index', :controller => 'forums', :action => 'index'
 
-#  map.resources :users, :member => { :admin => :post } do |user|
-#    user.resources :moderators
-#  end
-
   map.resources(:resources, :collection => { 
                   :attributes => :get, 
                   :auto_complete_for_resource_parent => :get },
                 :member => { :show_password => :get })
   map.resources :resource_types, :collection => { :attribute => :get }
   map.resources :organizational_units
+  map.resources(:task_filters, 
+                :member => { :select => :any },
+                :collection => { :reset => :any, :search => :any,
+                  :set_single_task_filter => :any })
 
   map.resources :forums do |forum|
     forum.resources :topics, :name_prefix => nil do |topic|

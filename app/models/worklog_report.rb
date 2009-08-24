@@ -46,7 +46,7 @@ class WorklogReport
   # Creates a report for the given tasks and params
   ###
   def initialize(controller, params)
-    tasks = controller.send(:task_filter).tasks
+    tasks = controller.send(:current_task_filter).tasks
 
     @tz = controller.tz
     @type = params[:type].to_i
