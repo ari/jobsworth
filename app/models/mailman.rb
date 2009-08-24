@@ -125,11 +125,8 @@ class Mailman < ActionMailer::Base
       user = e.user
     end
     
-    recipients = (task.users - [ e.user ]).compact.uniq.flatten
-    if recipients.any?
-      Notifications::deliver_changed(:comment, task, e.user, recipients,
-                                     e.body.gsub(/<[^>]*>/,''))
-    end
+
+    send_changed_emails_for_task(e, task, user)
   end
 
   # Returns true if the email should be accepted
@@ -201,6 +198,33 @@ class Mailman < ActionMailer::Base
     task.save(false)
 
     return task
+  end
+
+  def send_changed_emails_for_task(e, task, user)
+    email_body = e.body.gsub(/<[^>]*>/,'')
+
+    sent = []
+    task.task_owners.each do |n|
+      if n.notified_last_change? and n.user != user
+        Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
+        sent << n.user
+      end
+    end
+    task.notifications.each do |n|
+      if n.notified_last_change? and n.user != user
+        Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
+        sent << n.user
+      end
+    end
+    
+    (task.notify_emails || "").split(",").each do |email|
+      if email != user.email
+        Notifications::deliver_changed(:comment, task, e.user, email.strip, email_body)
+      end
+    end
+
+    task.mark_as_notified_last_change(sent)
+    task.mark_as_unread(user)
   end
 
 end

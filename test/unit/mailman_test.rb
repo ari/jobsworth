@@ -10,11 +10,13 @@ class MailmanTest < ActiveSupport::TestCase
 
     @user = @company.users.first
     @task.users << @user
+    @task.watchers << @company.users[1]
     @task.save!
 
     @tmail = TMail::Mail.parse(test_mail)
 
-    WorkLog.delete_all
+    WorkLog.delete_all 
+    ActionMailer::Base.deliveries.clear
   end
 
   def test_receive_sets_basic_email_properties
@@ -112,6 +114,24 @@ class MailmanTest < ActiveSupport::TestCase
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
+    should "deliver changed emails to users, watcher and email watchers" do
+      assert_emails 0
+
+      @task.notify_emails = "test1@example.com,test2@example.com"
+      @task.save!
+
+      @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
+      @task.notifications.each { |n| n.update_attribute(:notified_last_change, true) }
+
+      Mailman.receive(@tmail.to_s)
+      emails_to_send = @task.users.count + @task.watchers.count
+      emails_to_send += @task.notify_emails.split(",").length
+      if @task.users.include?(@user) or @task.watchers.include?(@user)
+        emails_to_send -= 1 # because sender should be excluded
+      end
+
+      assert_emails emails_to_send
+    end
   end
 
   context "a single company install" do

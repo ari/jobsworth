@@ -87,9 +87,13 @@ class Project < ActiveRecord::Base
   # Also updates open and total tasks.
   ###
   def update_project_stats
-    self.critical_count = tasks.select { |t| t.critical? }.length
-    self.normal_count = tasks.select { |t| t.normal? }.length
-    self.low_count = tasks.select { |t| t.low? }.length
+    self.critical_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.critical_values },
+                                      :include => :task_property_values)
+    self.normal_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.normal_values },
+                                    :include => :task_property_values)
+    self.low_count = tasks.count(:conditions => { "task_property_values.property_value_id" => company.low_values },
+                                 :include => :task_property_values)
+
     self.open_tasks = nil
     self.total_tasks = nil
   end
