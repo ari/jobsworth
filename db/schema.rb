@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090630082324) do
+ActiveRecord::Schema.define(:version => 20090824011923) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -605,6 +605,28 @@ ActiveRecord::Schema.define(:version => 20090630082324) do
 
   add_index "task_customers", ["customer_id"], :name => "fk_task_customers_customer_id"
   add_index "task_customers", ["task_id"], :name => "fk_task_customers_task_id"
+
+  create_table "task_filter_qualifiers", :force => true do |t|
+    t.integer  "task_filter_id"
+    t.string   "qualifiable_type"
+    t.integer  "qualifiable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_filter_qualifiers", ["task_filter_id"], :name => "index_task_filter_qualifiers_on_task_filter_id"
+
+  create_table "task_filters", :force => true do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.boolean  "shared"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_filters", ["company_id"], :name => "index_task_filters_on_company_id"
+  add_index "task_filters", ["user_id"], :name => "index_task_filters_on_user_id"
 
   create_table "task_owners", :force => true do |t|
     t.integer "user_id"

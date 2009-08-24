@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  task_filter_id: 1
+  qualifiable_type: MyString
+  qualifiable_id: 1
+
+two:
+  task_filter_id: 1
+  qualifiable_type: MyString
+  qualifiable_id: 1

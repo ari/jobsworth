@@ -59,3 +59,8 @@ Resource.blueprint do
   customer
   resource_type
 end
+
+TaskFilter.blueprint do
+  name
+  user
+end
