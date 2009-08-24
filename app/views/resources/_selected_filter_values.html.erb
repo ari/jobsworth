@@ -1,0 +1,13 @@
+<ul class="menu">
+  <% if display_all_label != "none" -%>
+    <li class="all">
+      <%= all_label -%>
+    </li>
+  <% end -%>
+  <% selected_names_and_ids.each do |name, id| -%>
+    <li class="cut">
+      <%= link_to_function(name, "removeTaskFilter(this)") -%>
+      <%= hidden_field_tag("#{ filter_name }[]", id) %>
+    </li>
+  <% end -%>
+</ul>
