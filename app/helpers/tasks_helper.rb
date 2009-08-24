@@ -3,28 +3,6 @@ module TasksHelper
   def print_title
     filters = []
     title = "<div style=\"float:left\">"
-    status_ids = TaskFilter.filter_status_ids(session)
-    if status_ids.any?
-      statuses = status_ids.map { |id| Task.status_types[id] }
-      title << " #{ _('%s tasks', statuses.join(", ")) } ["
-    else
-      title << "#{_'Tasks'} ["
-    end
-
-    TaskFilter.filter_ids(session, :filter_customer).each do |id|
-      filters << Customer.find(id).name unless id == TaskFilter::ALL_CUSTOMERS
-    end
-
-    
-    TaskFilter.filter_ids(session, :filter_project).each do |id|
-      filters << Project.find(id).name unless id == TaskFilter::ALL_PROJECTS
-    end
-
-    TaskFilter.filter_user_ids(session, false).each do |id|
-      filters << User.find(id).name if id != TaskFilter::ALL_USERS and id > 0
-    end
-
-    filters << current_user.company.name if filters.empty?
 
     title << filters.join(' / ')
 

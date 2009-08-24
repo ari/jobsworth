@@ -74,9 +74,9 @@ class TasksController < ApplicationController
     @tags.default = 0
     @tags_total = 0
 
-    task_filter = TaskFilter.new(self, params)
-    @selected_tags = task_filter.selected_tags || []
+    task_filter = (session[:task_filter] ||= TaskFilter.new(:user => current_user))
     @tasks = task_filter.tasks
+    @selected_tags = []
     @all_tags = task_filter.tag_counts
 
     respond_to do |format|
@@ -1648,7 +1648,7 @@ class TasksController < ApplicationController
   ###
   def init_form_variables(task)
     task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
+    @tags = {}
 
     @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", task.id], :include => [:user, :task, :project])
     @logs ||= []

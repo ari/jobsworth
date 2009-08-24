@@ -402,11 +402,12 @@ function removeSearchFilter(link) {
 function addSearchFilter(textField, selected) {
     selected = jQuery(selected);
     var idField = selected.find(".id");
+    var typeField = selected.find(".type");
     
     if (idField && idField.length > 0) {
 	var filterForm = jQuery("#search_filter_form");
-	var clone = idField.clone();
-	filterForm.append(clone);
+	filterForm.append(idField.clone());
+	filterForm.append(typeField.clone());
 	filterForm[0].onsubmit();
     }
     else {

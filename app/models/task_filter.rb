@@ -6,6 +6,7 @@ class TaskFilter < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
   has_many(:qualifiers, :dependent => :destroy, :class_name => "TaskFilterQualifier")
+  accepts_nested_attributes_for :qualifiers
 
   validates_presence_of :user
 
@@ -13,12 +14,40 @@ class TaskFilter < ActiveRecord::Base
 
   # Returns an array of all tasks matching conditions
   def tasks
-    user.company.tasks(:conditions => conditions)
+    to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
+                   :milestone, :notifications, :watchers, 
+                   :customers ]
+    to_include << { :work_logs => :user }
+    to_include << { :company => :properties }
+    to_include << { :project => :customer }
+    to_include << { :task_property_values => { :property_value => :property } }
+    to_include << { :dependants => [:users, :tags, :sheets, :todos, 
+                                    { :project => :customer }, :milestone ] }
+
+    return user.company.tasks.all(:conditions => conditions, 
+                                  :order => "tasks.id desc",
+                                  :include => to_include,
+                                  :limit => 100)
   end
 
   # Returns the count of tasks matching conditions
   def count
     user.company.tasks.count(:conditions => conditions)
+  end
+
+  # Returns a map of tags to their count in the current list. Only tags
+  # with count > 0 will be included.
+  def tag_counts
+    if @tag_counts.nil?
+      @tag_counts = {}
+      tasks.each do |task|
+        task.tags.each do |tag|
+          @tag_counts[tag] = (@tag_counts[tag] || 0) + 1
+        end
+      end
+    end
+
+    return @tag_counts
   end
 
   # Returns an array of the conditions to use for a sql lookup
@@ -78,7 +107,11 @@ class TaskFilter < ActiveRecord::Base
   # class_type
   def column_name_for(class_type)
     if class_type == "User"
-      return "task_owner.user_id"
+      return "task_owners.user_id"
+    elsif class_type == "Customer"
+      return "projects.customer_id"
+    elsif class_type == "Milestone"
+      return "tasks.milestone_id"
     else
       return "#{ class_type.downcase }_id"
     end
