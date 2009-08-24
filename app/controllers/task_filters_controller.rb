@@ -42,7 +42,9 @@ class TaskFiltersController < ApplicationController
 
   def create
     @filter = TaskFilter.new(params[:task_filter])
-    @filter.qualifiers = current_task_filter.qualifiers.clone
+    current_task_filter.qualifiers.each do |q|
+      @filter.qualifiers << q.clone
+    end
     @filter.user = current_user
 
     if @filter.save
