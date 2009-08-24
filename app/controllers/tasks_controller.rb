@@ -33,40 +33,12 @@ class TasksController < ApplicationController
   end
   
   def list_old
-    # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{current_user.company_id}"]
-
-    @tags = {}
-    @tags.default = 0
-    @tags_total = 0
-    project_ids = TaskFilter.filter_ids(session, :filter_project)
-
-    if project_ids.include?(0) or project_ids.empty?
-      project_ids = current_project_ids
-    else
-      project_ids = session[:filter_project]
-    end
-
-    task_filter = TaskFilter.new(self, params)
-    @selected_tags = task_filter.selected_tags || []
-    @tasks = task_filter.tasks
-    @all_tags = task_filter.tag_counts
-
+    list_init
     @group_ids, @groups = group_tasks(@tasks)
   end
 
   def list
-    # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{current_user.company_id}"]
-
-    @tags = {}
-    @tags.default = 0
-    @tags_total = 0
-
-    task_filter = (session[:task_filter] ||= TaskFilter.new(:user => current_user))
-    @tasks = task_filter.tasks
-    @selected_tags = []
-    @all_tags = Tag.top_counts(current_user.company)
+    list_init
 
     respond_to do |format|
       format.html # list.html.erb
@@ -1717,6 +1689,21 @@ class TasksController < ApplicationController
     end
     
     log.task.save
+  end
+
+  # setup some instance variables for task list views
+  def list_init
+    # Subscribe to the juggernaut channel for Task updates
+    session[:channels] += ["tasks_#{current_user.company_id}"]
+
+    @tags = {}
+    @tags.default = 0
+    @tags_total = 0
+
+    task_filter = (session[:task_filter] ||= TaskFilter.new(:user => current_user))
+    @tasks = task_filter.tasks
+    @selected_tags = []
+    @all_tags = Tag.top_counts(current_user.company)
   end
 
 end

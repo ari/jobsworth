@@ -396,7 +396,7 @@ function removeSearchFilter(link) {
     var form = link.parents("form");
     link.parent(".search_filter").remove();
 
-    form[0].onsubmit();
+    submitSearchFilterForm();
 }
 
 function addSearchFilter(textField, selected) {
@@ -408,10 +408,25 @@ function addSearchFilter(textField, selected) {
 	var filterForm = jQuery("#search_filter_form");
 	filterForm.append(idField.clone());
 	filterForm.append(typeField.clone());
-	filterForm[0].onsubmit();
+	submitSearchFilterForm();
     }
     else {
 	// probably selected a heading, just ignore
+    }
+}
+
+/* 
+Submits the search filter form. If we are looking at the task list, 
+does that via ajax. Otherwise does a normal html post
+*/
+function submitSearchFilterForm() {
+    var form = jQuery("#search_filter_form")[0];
+    var redirect = jQuery(form.redirect_action).val();
+    if (redirect.indexOf("/tasks/list?") >= 0) {
+	form.onsubmit();
+    }
+    else {
+	form.submit();
     }
 }
 
