@@ -1,0 +1,23 @@
+<% date_format = current_user.time_format %>
+
+<h4>
+<%= log.user.name if log.user %>
+<%= log.event_log.user if log.user.nil? && log.event_log.user %>
+<%= log.scm_changeset.author if log.scm_changeset && !log.user %>
+<small><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></small></h4>
+
+<% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
+	<%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %>
+<% else %>
+	<%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><% end %>
+<% end %>
+
+<%= link_to "#{worked_nice(log.duration/60)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
+
+<% if log.scm_changeset_id.to_i > 0 %>
+	<%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%><br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>
+<% end %>
+
+<% if log.body && log.body.length > 0 %>
+   <%= x = wrap_text( log.body.gsub(/- <strong>([^<]+)<\/strong>/) {|m| "- <strong>#{_($1)}</strong>"}, 100).gsub(/\n/, "<br>") if log.body %>
+<% end %>
