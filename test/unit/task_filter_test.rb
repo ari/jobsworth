@@ -24,7 +24,8 @@ class TaskFilterTest < ActiveSupport::TestCase
   should_filter_on Project
   should_filter_on Milestone
   should_filter_on Customer
-  should_filter_on User, "task_owner.user_id"
+  should_filter_on User, "task_owners.user_id"
+  should_filter_on Tag, "task_tags.tag_id"
 
   context "a normal company" do
     setup do

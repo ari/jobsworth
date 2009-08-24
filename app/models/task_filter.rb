@@ -112,6 +112,8 @@ class TaskFilter < ActiveRecord::Base
       return "projects.customer_id"
     elsif class_type == "Milestone"
       return "tasks.milestone_id"
+    elsif class_type == "Tag"
+      return "task_tags.tag_id"
     else
       return "#{ class_type.downcase }_id"
     end

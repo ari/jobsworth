@@ -13,13 +13,20 @@ class FilterController < ApplicationController
 
     @customers = current_user.company.customers.all(:conditions => name_conds, :limit => limit)
     @to_list << [ "Clients", @customers ]
+
     @projects = current_user.company.projects.all(:conditions => name_conds, :limit => limit)
     @to_list << [ "Projects", @projects ]
+
     @users = current_user.company.users.all(:conditions => name_conds, :limit => limit)
     @to_list << [ "Users", @users ]
+
     @milestones = current_user.company.milestones.all(:conditions => name_conds, :limit => limit)
     @to_list << [ "Milestones", @milestones ]
 
+    @tags = current_user.company.tags.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ "Tags", @tags ]
+
+    # TODO: need to handle these somehow
     @statuses = Task.status_types.select { |type| _(type).downcase.index(filter) == 0 }
   end
 
