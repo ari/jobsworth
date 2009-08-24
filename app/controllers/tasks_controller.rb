@@ -243,6 +243,7 @@ class TasksController < ApplicationController
     
     if @task.save
       session[:last_project_id] = @task.project_id
+      session[:last_task_id] = @task.id
 
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
@@ -286,8 +287,14 @@ class TasksController < ApplicationController
       redirect_from_last
       return
     end 
-    
+
     init_form_variables(@task)
+    session[:last_task_id] = @task.id
+    
+    respond_to do |format|
+      format.html
+      format.js { render(:layout => false) }
+    end
   end
 
 #  def edit_ajax

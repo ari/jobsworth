@@ -341,7 +341,28 @@ function clearOtherDefaults(sender) {
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
     updateTooltips();
+
+    jQuery("#task_list").resizable({
+	resize: function(event, ui) {
+	    ui.element.css("width", "");
+	}
+    });
 });
+
+/*
+  Loads the task information for the task taskNum and displays 
+it in the current page.
+*/
+function showTaskInPage(taskNum) {
+    jQuery("tr.selected").removeClass("selected");
+    showProgress(); 
+
+    jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
+	jQuery("#task").html(data);
+	jQuery("#task_row_" + taskNum).addClass("selected");
+	hideProgress();
+    });
+}
 
 /*
  Marks the task sender belongs to as unread.
@@ -843,3 +864,4 @@ function saveSortParams(event) {
     	value : (selected + "_" + direction)
     });
 }
+

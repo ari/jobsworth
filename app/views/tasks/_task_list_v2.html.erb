@@ -21,7 +21,9 @@
 	<th><%= _("Assigned To") %></th>
       </tr>
     </thead>
-    <%= render :partial => "task_row_v2", :collection => @tasks %>
+    <tbody>
+      <%= render :partial => "task_row_v2", :collection => @tasks %>
+    </tbody>
   </table>
 </div>
 

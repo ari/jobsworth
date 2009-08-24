@@ -386,7 +386,7 @@ module TasksHelper
   def task_milestone_tip(task)
     return if task.milestone_id.to_i <= 0
 
-    return task_tooltip([ _("Due Date"), formatted_date_for_current_user(task.milestone.due_date) ])
+    return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
   # Returns a tooltip showing the users linked to a task
@@ -431,6 +431,26 @@ module TasksHelper
     end
 
     @perms
+  end
+
+  # Renders the last task the current user looked at
+  def render_last_task
+    @task = current_user.company.tasks.find_by_id(session[:last_task_id], 
+                                            :conditions => [ "project_id IN (#{ current_project_ids })" ])
+    if @task
+      return render_to_string(:action => "edit", :layout => false)
+    end
+  end
+
+  # Returns the open tr tag for the given task in a task list
+  def task_row_tr_tag(task)
+    class_name = cycle("odd", "even") 
+    class_name += " selected" if task.id == session[:last_task_id] 
+    return tag(:tr, {
+                 :id => "task_row_#{ task.task_num }", 
+                 :class => class_name, 
+                 :onclick => "showTaskInPage(#{ task.task_num}); return false;"
+               }, true)
   end
 
 end

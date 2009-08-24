@@ -499,6 +499,16 @@ fieldset label.ignore {
 #task_sidebar {
     width: 23em;
 }
+#task_sidebar fieldset {
+    padding: 5px;
+    padding-right: 7px;
+}
+#task_sidebar .fill {
+    margin-bottom: 0.4em;
+    margin-right: 0;
+    margin-top: 0;
+    width: 100%;
+}
 
 #task_attr label,
 #task_notify label,
@@ -1087,6 +1097,7 @@ div.auto_complete {
   border:1px solid #888;
   margin:0px;
   padding:0px;
+    z-index: 100;
 }
 
 #task_set_tags_auto_complete ul
@@ -2114,7 +2125,7 @@ h4 {
 }
 textarea.small {
     font-size: 12px;
-    width: 150px;
+    width: 145px;
 }
 .informal {
   font-weight: normal;
@@ -2570,7 +2581,6 @@ input.scheduled {
 	list-style-image:none;
 	list-style-position:outside;
 	list-style-type:none;
-	margin:1em 0;
 	padding:4px 10px;
 	white-space:nowrap;
 }
@@ -2889,6 +2899,15 @@ div.search_filter {
     padding-top: 5px;
 }
 
+#task_list {
+    border-bottom: 2px solid #bbbbbb;
+    overflow: hidden;
+}
+#task_list tbody {
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}    
 #task_list table {
     border-collapse: collapse;
     width: 100%;
@@ -2905,14 +2924,24 @@ div.search_filter {
 #task_list tr {
     cursor: pointer;
 }
-#task_list tr:hover {
-    background: #9f9;
+#task_list tr:hover, #task_list tr.selected td {
+    background-color: #9f9;
+}
+
+#task_list .due {
+    color: green;
+}
+#task_list .due_tomorrow, #task_list .due_distant {
+    color: black;
+}
+#task_list .due_overdue {
+    color: red;
 }
 
 /* sortable tables */
 table.tablesorter {
 	background-color: #CDCDCD;
-	margin:10px 0pt 15px;
+	margin:0px 0pt 15px;
 	width: 100%;
 	text-align: left;
 }

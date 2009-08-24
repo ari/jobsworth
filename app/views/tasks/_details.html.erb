@@ -1,12 +1,11 @@
-<fieldset id="task_project_selection" style="padding-right:0;">
+<fieldset id="task_project_selection">
   <label for="task_name"><%=_ "Title" %></label>
-  <%= text_field("task", "name", { :size => nil, :maxlength => 200 }.merge( perms['edit'] ))  %>
   <br />
+  <%= text_field("task", "name", { :size => nil, :class => "fill", :maxlength => 200 }.merge( perms['edit'] ))  %>
 
   <label for="task_description"><%=_ 'Description' %></label>
-  <%= text_area "task", "description", { :rows => 4, :class => "small" }.merge( perms['edit'] )  %>
   <br />
-
+  <%= text_area "task", "description", { :rows => 4, :class => "fill" }.merge( perms['edit'] )  %>
 
   <label for="task_project_id"><%=_ 'Project' %></label>
   <select name="task[project_id]" id="task_project_id" <%= "disabled=\"disabled\"" unless perms['reassign'].empty? %>>

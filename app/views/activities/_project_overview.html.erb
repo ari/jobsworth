@@ -1,6 +1,6 @@
 <table cellpadding="0" cellspacing="0" class="content" width="100%" style="padding-left: 1em; padding-right: 1em;">
-	<%
-	last_customer = 0
+  <%
+     last_customer = 0
 	for project in @projects
 		if last_customer != project.customer_id && current_user.option_externalclients.to_i > 0
 			if last_customer != 0

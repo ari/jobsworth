@@ -12,7 +12,7 @@ class Company < ActiveRecord::Base
   has_many      :project_files, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
   has_many      :tags, :dependent => :destroy, :order => 'name'
-  has_many      :properties, :dependent => :destroy
+  has_many      :properties, :dependent => :destroy, :include => :property_values
   has_many      :property_values, :through => :properties
   has_many      :views, :dependent => :destroy
   has_many      :resources, :dependent => :destroy, :order => "lower(name)"
@@ -151,5 +151,34 @@ class Company < ActiveRecord::Base
 		url = "http://"
 	end
 	url += subdomain + "." + $CONFIG[:domain]
+  end
+
+  # Returns a list of property values which should be considered
+  # as marking tasks as critical priority
+  def critical_values
+    @critical_values ||= sort_properties.inject([]) do |res, prop|
+      range = (prop.property_values.count / 3).to_i
+      res += prop.property_values[0, range]
+    end
+  end
+
+  # Returns a list of property values which should be considered
+  # as marking tasks as normal priority
+  def normal_values
+    @normal_values ||= sort_properties.inject([]) do |res, prop|
+      res += prop.property_values.select do |pv|
+        !critical_values.index(pv) and !low_values.index(pv)
+      end
+    end
+  end
+
+  # Returns a list of property values which should be considered
+  # as marking tasks as low priority
+  def low_values
+    @low_values ||= sort_properties.inject([]) do |res, prop|
+      length = prop.property_values.count
+      range = length - (length / 3).to_i
+      res += prop.property_values[range, length]
+    end
   end
 end
