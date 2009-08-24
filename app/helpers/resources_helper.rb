@@ -120,7 +120,7 @@ module ResourcesHelper
     options[:names_and_ids] = names_and_ids
     options[:callback] = block
 
-    return render(:partial => "/tasks/querymenu", :locals => options)
+    return render(:partial => "/resources/querymenu", :locals => options)
   end
 
   # Returns the html to list the links to add filters to the current filter.
@@ -153,7 +153,7 @@ module ResourcesHelper
     }
     locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
 
-    return render(:partial => "/tasks/selected_filter_values", :locals => locals, &block)
+    return render(:partial => "/resources/selected_filter_values", :locals => locals, &block)
   end
 
 

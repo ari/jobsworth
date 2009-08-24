@@ -7,7 +7,7 @@ class ReportsController < ApplicationController
     sql_filter = ""
     date_filter = ""
 
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids})
+    @tags = Tag.top_counts(current_user.company)
     @users = User.find(:all, :order => 'name', :conditions => ['users.company_id = ?', current_user.company_id], :joins => "INNER JOIN project_permissions ON project_permissions.user_id = users.id")
     
     if options = params[:report]

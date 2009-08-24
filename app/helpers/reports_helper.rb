@@ -162,10 +162,10 @@ module ReportsHelper
   ###
   def report_task_filter
     locals =  {
-      :hide_display_options => true,
       :redirect_action => "list", 
-      :redirect_params => params
+      :redirect_params => params,
+      :hide_tabs => true
     }
-    return render(:partial => "/tasks/filter", :locals => locals)
+    return render(:partial => "/tasks/search_filter", :locals => locals)
   end
 end
