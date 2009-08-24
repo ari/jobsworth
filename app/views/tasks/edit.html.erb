@@ -1,52 +1,44 @@
 <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
+	<%= hidden_field("task", "id") %>
+	<%= error_messages_for 'task' %>
+	<div id="task_sidebar" class="left">
+	    <%= render(:partial => "details") %>
+	    <%= render(:partial => "attributes") %>
+	    <%= render(:partial => "notifications") %>
+	    <%= render(:partial => "dependencies") %>
+	    <%= render(:partial => "attachments") %>
+	    <%= render(:partial => "resources") %>
+	    <%= render(:partial => "inline_worklog") %>
+	</div>
+	<div class="right">
+	    <%= render(:partial => "new_comment") %>
+	    
+		<div class="page_header">
+			<%= _("To-do") %>
+			<span id="todo-status-<%= @task.dom_id %>">
+				<a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;">
+				<%= @task.todo_status %>
+				</a>
+			</span>
+		</div>
+		<%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %>
+		<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>
 
-	<table width="100%" class="content" style="padding-left: 1em; padding-right: 1em;" border="0" cellpadding="0" cellspacing="0" id="content">
-		<%= hidden_field("task", "id") %>
-		<%= error_messages_for 'task' %>
-	
-		<tr>
-		  <td valign="top" id="task_sidebar">
-		    <%= render(:partial => "details") %>
-		    <%= render(:partial => "attributes") %>
-		    <%= render(:partial => "notifications") %>
-		    <%= render(:partial => "dependencies") %>
-		    <%= render(:partial => "attachments") %>
-		    <%= render(:partial => "resources") %>
-		    <%= render(:partial => "inline_worklog") %>
-		  </td>
+	    <div id="task_history">
+	      <%= render(:partial => "history") %>
+	    </div>
+	</div>
 		
-		  <td valign="top">
-		    <%= render(:partial => "new_comment") %>
-		
-		    <div id="task_history">
-		      <%= render(:partial => "history") %>
-		    </div>
-		  </td>
-		</tr>
-		
-		<script type="text/javascript">
-		jQuery('#task_status').change(function() {
-			if( jQuery('#task_status').val() == "6" ) {
-				jQuery('#defer_options').show();
-			} else {
-				jQuery('#defer_options').hide();
-			}
-			return false;
-		});
-		jQuery('#comment').focus();
-		</script>
-	</table>
+	<script type="text/javascript">
+	jQuery('#task_status').change(function() {
+		if( jQuery('#task_status').val() == "6" ) {
+			jQuery('#defer_options').show();
+		} else {
+			jQuery('#defer_options').hide();
+		}
+		return false;
+	});
+	jQuery('#comment').focus();
+	</script>
 <% end %>
 
-<div class="todos">
-  <div class="page_header">
-    <%= _("To-do") %>
-    <span id="todo-status-<%= @task.dom_id %>">
-      <a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;">
-	<%= @task.todo_status %>
-      </a>
-    </span>
-  </div>
-  <%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %>
-</div>
-<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>

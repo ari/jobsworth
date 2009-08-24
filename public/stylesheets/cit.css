@@ -307,7 +307,7 @@ fieldset {
 }
 
 legend {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   color: #423f54;
 }
@@ -497,11 +497,7 @@ fieldset label.ignore {
 }
 
 #task_sidebar {
-    width: 23em;
-}
-#task_sidebar fieldset {
-    padding: 0px;
-    border: 0;
+    width: 26em;
 }
 #task_sidebar .fill {
     margin-bottom: 0.4em;
@@ -1491,6 +1487,15 @@ a.description {
 #taskform .user .icon.should_notify {
     background-image: url(/images/email.png);    
 }
+#taskform fieldset {
+    padding: 0px;
+    border: 0;
+}
+#taskform #task_sidebar {
+	width: 26em;
+	margin-right: 25px;
+}
+
 .prog-border {
   width: 115px;
   background: #fff;
