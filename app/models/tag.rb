@@ -21,23 +21,17 @@ class Tag < ActiveRecord::Base
   # All tags are retured by default - include task_conditions if you 
   # need to restrict those counts
   def self.top_counts(company, task_conditions = {})
-    company.tags.count(:group => "tags.name",
-                       :include => [ :tasks ],
-                       :conditions => task_conditions, 
-                       :order => "lower(tags.name) asc")
+    top_counts_as_tags(company).map { |tag, count| [ tag.name, count ] }
   end
 
   # Returns an array of tag counts grouped by tag.
   # Uses Tag.top_counts.
   def self.top_counts_as_tags(company, task_conditions = {})
-    names_and_counts = top_counts(company, task_conditions)
+    sql = "select tag_id, count(task_id) from task_tags group by tag_id"
+    ids_and_counts = connection.select_rows(sql)
 
-    res = []
-    names_and_counts.each do |name, count|
-      res << [ company.tags.find_by_name(name), count ]
-    end
-
-    return res
+    res = ids_and_counts.map { |id, count| [ Tag.find(id), count.to_i ] }
+    return res.sort_by { |tag, count| tag.name.downcase }
   end
 
 end

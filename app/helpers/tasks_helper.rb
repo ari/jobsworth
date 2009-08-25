@@ -217,8 +217,9 @@ module TasksHelper
   # Returns links to filter the current task list by tags
   def tag_links
     links = []
-
     tags = Tag.top_counts_as_tags(current_user.company)
+    ranges = cloud_ranges(tags.map { |tag, count| count })
+
     tags.each do |tag, count|
       str = "#{ tag.name } (#{ count })"
       link_params = {
@@ -226,12 +227,34 @@ module TasksHelper
         :qualifiable_type => tag.class.name
       }
 
+      range = ranges.index { |r| r > count }
+      range ||= ranges.length
+      class_name = "size#{ range - 1 }"
+
       link_params = { :qualifiers_attributes => [ link_params ] }
       path = update_current_filter_task_filters_path(:task_filter => link_params)
-      links << link_to(str, path)
+      links << link_to(str, path, :class => class_name)
     end
 
     return links.join(", ")
+  end
+
+  # Returns an array that show the start of ranges to be used
+  # for a tag cloud
+  def cloud_ranges(counts)
+    # there are going to be 5 ranges defined in css:
+    class_count = 5
+
+    max = counts.max
+    min = counts.min
+    divisor = ((max - min) / class_count) + 1
+
+    res = []
+    class_count.times do |i|
+      res << (i * divisor)
+    end
+
+    return res
   end
 
   ###
