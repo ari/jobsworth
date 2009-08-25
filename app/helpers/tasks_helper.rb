@@ -245,8 +245,8 @@ module TasksHelper
     # there are going to be 5 ranges defined in css:
     class_count = 5
 
-    max = counts.max
-    min = counts.min
+    max = counts.max || 0
+    min = counts.min || 0
     divisor = ((max - min) / class_count) + 1
 
     res = []

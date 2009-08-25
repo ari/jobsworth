@@ -34,6 +34,8 @@ class TasksController < ApplicationController
   
   def list_old
     list_init
+    @tags = {}
+    @tags_total = 0
     @group_ids, @groups = group_tasks(@tasks)
   end
 
