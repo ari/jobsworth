@@ -52,7 +52,7 @@ class TaskFiltersController < ApplicationController
                              :word => kw.word)
     end
 
-    if @filter.save!
+    if @filter.save
       session[:task_filter] = @filter
     else
       flash[:notice] = _"Filter couldn't be saved. A name is required"

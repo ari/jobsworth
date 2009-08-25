@@ -10,7 +10,7 @@ class CreateTaskFilterQualifiers < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :task_filter_qualifiers, :task_filter_id
+    foreign_key(:task_filter_qualifiers, :task_filter_id, :task_filters)
   end
 
   def self.down

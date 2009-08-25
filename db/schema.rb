@@ -624,7 +624,7 @@ ActiveRecord::Schema.define(:version => 20090825212110) do
     t.datetime "updated_at"
   end
 
-  add_index "task_filter_qualifiers", ["task_filter_id"], :name => "index_task_filter_qualifiers_on_task_filter_id"
+  add_index "task_filter_qualifiers", ["task_filter_id"], :name => "fk_task_filter_qualifiers_task_filter_id"
 
   create_table "task_filters", :force => true do |t|
     t.string   "name"
@@ -635,8 +635,8 @@ ActiveRecord::Schema.define(:version => 20090825212110) do
     t.datetime "updated_at"
   end
 
-  add_index "task_filters", ["company_id"], :name => "index_task_filters_on_company_id"
-  add_index "task_filters", ["user_id"], :name => "index_task_filters_on_user_id"
+  add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
+  add_index "task_filters", ["user_id"], :name => "fk_task_filters_user_id"
 
   create_table "task_owners", :force => true do |t|
     t.integer "user_id"

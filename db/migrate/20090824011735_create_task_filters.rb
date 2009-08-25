@@ -1,4 +1,6 @@
 class CreateTaskFilters < ActiveRecord::Migration
+  extend MigrationHelpers
+
   def self.up
     create_table :task_filters do |t|
       t.string :name
@@ -9,8 +11,8 @@ class CreateTaskFilters < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :task_filters, :user_id
-    add_index :task_filters, :company_id
+    foreign_key(:task_filters, :user_id, :users)
+    foreign_key(:task_filters, :company_id, :companies)
   end
 
   def self.down
