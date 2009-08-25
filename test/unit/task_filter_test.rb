@@ -30,7 +30,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
   context "a normal company" do
     setup do
-      @company = Company.first
+      @company = Company.last
       @company.create_default_properties
     end
 
@@ -54,5 +54,38 @@ class TaskFilterTest < ActiveSupport::TestCase
     end
 
     should "filter on status"
+   end
+
+  context "a company with projects, tasks, etc" do
+    setup do
+      @company = Company.make
+      customer = Customer.make(:company => @company)
+      @user = User.make(:customer => customer, :company => @company)
+      @project =  project_with_some_tasks(@user)
+
+      @task = @project.tasks.first
+      assert @task.users.include?(@user)
+
+      @filter = TaskFilter.new(:user => @user)
+      @filter.qualifiers.build(:qualifiable => @project)
+    end
+
+    should "count unassigned tasks in display_count" do
+      initial_count = @filter.display_count(@user)
+      @task.task_owners.clear
+      @task.save!
+
+      assert_equal initial_count + 1, @filter.display_count(@user, true)
+    end
+
+    should "count unread tasks in display_count" do
+      initial_count = @filter.display_count(@user)
+      task_owner = @task.task_owners.detect { |to| to.user == @user }
+      assert_not_nil task_owner
+      task_owner.update_attribute(:unread, true)
+
+      assert_equal initial_count + 1, @filter.display_count(@user, true)
+    end
+
   end
 end

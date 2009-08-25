@@ -18,16 +18,6 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of all tasks matching the conditions from this filter
   # if extra_conditions is passed, that will be ANDed to the conditions
   def tasks(extra_conditions = nil)
-    to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
-                   :milestone, :notifications, :watchers, 
-                   :customers ]
-    to_include << { :work_logs => :user }
-    to_include << { :company => :properties }
-    to_include << { :project => :customer }
-    to_include << { :task_property_values => { :property_value => :property } }
-    to_include << { :dependants => [:users, :tags, :sheets, :todos, 
-                                    { :project => :customer }, :milestone ] }
-
     return user.company.tasks.all(:conditions => conditions(extra_conditions), 
                                   :order => "tasks.id desc",
                                   :include => to_include,
@@ -37,7 +27,24 @@ class TaskFilter < ActiveRecord::Base
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    user.company.tasks.count(:conditions => conditions(extra_conditions))
+    user.company.tasks.count(:conditions => conditions(extra_conditions),
+                             :include => to_include)
+  end
+
+  # Returns a count to display for this filter. The count represents the
+  # number of tasks that look they need attention for the given user - 
+  # unassigned tasks and unread tasks are counted.
+  # The value will be cached and re-used unless force_recount is passed.
+  def display_count(user, force_recount = false)
+    @display_count = nil if force_recount
+
+    count_conditions = []
+    count_conditions << "(task_owners.unread = 1 and task_owners.user_id = #{ user.id })" 
+    count_conditions << "(task_owners.id is null)"
+
+    sql = count_conditions.join(" or ")
+    sql = "(#{ sql })"
+    @display_count ||= count(sql)
   end
 
   # Returns a map of tags to their count in the current list. Only tags
@@ -72,6 +79,18 @@ class TaskFilter < ActiveRecord::Base
   end
 
   private
+
+  def to_include
+    to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
+                   :milestone, :notifications, :watchers, 
+                   :customers, :task_property_values ]
+    to_include << { :work_logs => :user }
+    to_include << { :company => :properties }
+    to_include << { :project => :customer }
+    to_include << { :task_property_values => { :property_value => :property } }
+    to_include << { :dependants => [:users, :tags, :sheets, :todos, 
+                                    { :project => :customer }, :milestone ] }
+  end
 
   def set_company_from_user
     self.company = user.company
@@ -118,6 +137,8 @@ class TaskFilter < ActiveRecord::Base
       return "tasks.project_id"
     elsif class_type == "Customer"
       return "projects.customer_id"
+    elsif class_type == "Company"
+      return "tasks.company_id"
     elsif class_type == "Milestone"
       return "tasks.milestone_id"
     elsif class_type == "Tag"

@@ -5,9 +5,9 @@
 
   TODO: fix up these presets once status is working
   <ul>
-    <li><%= link_to(_("Open Tasks")) %><li>
-    <li><%= link_to(_("My Open Tasks")) %><li>
-    <li><%= link_to(_("My In Progress Tasks")) %><li>
+    <li><%= link_to(_("Open Tasks")) %></li>
+    <li><%= link_to(_("My Open Tasks")) %></li>
+    <li><%= link_to(_("My In Progress Tasks")) %></li>
 
       <% current_user.visible_task_filters.each do |tf| -%>
     <li>
@@ -20,7 +20,7 @@
         <% end -%>
       </span>
 
-      <%= link_to(tf.name, select_task_filter_path(tf)) %>
+      <%= link_to("#{ tf.name } (#{ tf.display_count(current_user) })", select_task_filter_path(tf)) %>
     </li>
     <% end -%>
   </ul>
