@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090824011923) do
+ActiveRecord::Schema.define(:version => 20090825212110) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -195,6 +195,16 @@ ActiveRecord::Schema.define(:version => 20090824011923) do
 
   add_index "ical_entries", ["task_id"], :name => "index_ical_entries_on_task_id"
   add_index "ical_entries", ["work_log_id"], :name => "index_ical_entries_on_work_log_id"
+
+  create_table "keywords", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "task_filter_id"
+    t.string   "word"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "keywords", ["task_filter_id"], :name => "fk_keywords_task_filter_id"
 
   create_table "locales", :force => true do |t|
     t.string   "locale"

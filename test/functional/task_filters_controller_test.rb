@@ -66,6 +66,14 @@ class TaskFiltersControllerTest < ActionController::TestCase
                  })
     end
 
+    should "be able to search by keyword" do
+      get :search, :filter => "A keyword"
+      assert_tag(:attributes => { 
+                   :class => "id", 
+                   :value => "a keyword"
+                 })
+    end
+
     should "be able to search by task attributes" do
       property = @user.company.properties.first
       value = property.property_values.first
@@ -84,22 +92,39 @@ class TaskFiltersControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "be able to save the current filter" do
-      filter = TaskFilter.new(:user => @user)
-      filter.qualifiers.build(:qualifiable => @task.project)
-      @request.session[:task_filter] = filter
+    context "when saving their current filter" do
+      setup do
+        filter = TaskFilter.new(:user => @user)
+        filter.qualifiers.build(:qualifiable => @task.project)
+        filter.keywords.build(:word => "keyword")
+        @request.session[:task_filter] = filter
+        
+        post(:create, :task_filter => { :name => "a new filter" })
+        @filter = session[:task_filter]
+      end
 
-      post(:create, :task_filter => { :name => "a new filter" })
-      assert_redirected_to "/tasks/list"
+      should "redirect to task list" do
+        assert_redirected_to "/tasks/list"
+      end
 
-      filter = session[:task_filter]
-      assert !filter.new_record?
-      assert_equal "a new filter", filter.name
-      assert_equal @user, filter.user
-      assert_equal @user.company, filter.user.company
-      assert_equal 1, filter.qualifiers.length
-      assert_equal @task.project, filter.qualifiers[0].qualifiable
+      should "save to the db" do
+        assert !@filter.new_record?
+        assert_equal "a new filter", @filter.name
+        assert_equal @user, @filter.user
+        assert_equal @user.company, @filter.user.company
+      end
+
+      should "save qualifiers" do
+        assert_equal 1, @filter.qualifiers.length
+        assert_equal @task.project, @filter.qualifiers[0].qualifiable
+      end
+
+      should "save keywords" do
+        assert_equal 1, @filter.keywords.length
+        assert_equal "keyword", @filter.keywords[0].word
+      end
     end
+
 
     context "with an existing saved filter" do
       setup do

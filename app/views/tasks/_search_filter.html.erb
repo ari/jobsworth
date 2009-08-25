@@ -13,17 +13,8 @@
   <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
 
   <div class="links">
-    <% current_task_filter.qualifiers.each do |q| -%>
-      <span class="search_filter">
-	<%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_id]", q.qualifiable_id, :class => "id" %>
-	<%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", q.qualifiable_type, :class => "type" %>
-	
-	<%= q.qualifiable_type == "PropertyValue" ? q.qualifiable.property.name : q.qualifiable_type %>:
-	<%= q.qualifiable %>
-	<%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
-	&nbsp;
-      </span>
-    <% end %>
+    <%= render :partial => "/task_filters/qualifier", :collection => current_task_filter.qualifiers %>
+    <%= render :partial => "/task_filters/keyword", :collection => current_task_filter.keywords %>
   </div>
 </form>
 </div>

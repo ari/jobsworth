@@ -8,6 +8,8 @@ class TaskFilter < ActiveRecord::Base
   has_many(:qualifiers, :dependent => :destroy, :class_name => "TaskFilterQualifier")
   accepts_nested_attributes_for :qualifiers
 
+  has_many :keywords, :dependent => :destroy
+
   validates_presence_of :user
   validates_presence_of :name
 
@@ -70,12 +72,22 @@ class TaskFilter < ActiveRecord::Base
     
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
+    res << conditions_for_keywords
     res << extra_conditions if extra_conditions
 
     res = res.select { |c| !c.blank? }
     res = res.join(" AND ")
 
     return res
+  end
+
+  # Sets the keywords for this filter using the given array
+  def keywords_attributes=(new_keywords)
+    keywords.clear
+
+    (new_keywords || []).each do |word|
+      keywords.build(:word => word)
+    end
   end
 
   private
@@ -126,6 +138,21 @@ class TaskFilter < ActiveRecord::Base
     end
 
     return res
+  end
+
+  # Returns a string sql fragment that will limit tasks to 
+  # those that match the set keywords
+  def conditions_for_keywords
+    res = []
+
+    keywords.each do |kw|
+      str = "lower(tasks.name) like '%#{ kw.word.downcase }%'"
+      str += " or lower(tasks.description) like '%#{ kw.word.downcase }%'"
+      res << str
+    end
+
+    res = res.join(" or ")
+    return "(#{ res })" if !res.blank?
   end
 
   # Returns the column name to use for lookup for the given

@@ -3,11 +3,11 @@ class TaskFiltersController < ApplicationController
   layout "popup", :only => "new"
 
   def search
-    filter = params[:filter]
-    return if filter.blank?
+    @filter = params[:filter]
+    return if @filter.blank?
 
-    filter = filter.downcase
-    name_conds = [ "lower(name) like ?", "#{ filter }%" ]
+    @filter = @filter.downcase
+    name_conds = [ "lower(name) like ?", "#{ @filter }%" ]
     limit = 10
 
     @to_list = []
@@ -28,12 +28,12 @@ class TaskFiltersController < ApplicationController
     @to_list << [ _("Tags"), @tags ]
 
     current_user.company.properties.each do |property|
-      values = property.property_values.all(:conditions => [ "value like ?", "#{ filter }%" ])
+      values = property.property_values.all(:conditions => [ "value like ?", "#{ @filter }%" ])
       @to_list << [ property, values ] if values.any?
     end
 
     # TODO: need to handle these somehow
-    @statuses = Task.status_types.select { |type| _(type).downcase.index(filter) == 0 }
+    @statuses = Task.status_types.select { |type| _(type).downcase.index(@filter) == 0 }
   end
 
   def new
@@ -42,12 +42,17 @@ class TaskFiltersController < ApplicationController
 
   def create
     @filter = TaskFilter.new(params[:task_filter])
-    current_task_filter.qualifiers.each do |q|
-      @filter.qualifiers << q.clone
-    end
     @filter.user = current_user
+    current_task_filter.qualifiers.each { |q| @filter.qualifiers << q.clone }
+    current_task_filter.keywords.each do |kw| 
+      # N.B Shouldn't have to pass in all these values, but it 
+      # doesn't work when we don't, so...
+      @filter.keywords.build(:task_filter => @filter,
+                             :company => current_user.company, 
+                             :word => kw.word)
+    end
 
-    if @filter.save
+    if @filter.save!
       session[:task_filter] = @filter
     else
       flash[:notice] = _"Filter couldn't be saved. A name is required"

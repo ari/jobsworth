@@ -6,6 +6,16 @@ class TaskFilterTest < ActiveSupport::TestCase
   should_belong_to :user
   should_validate_presence_of :user
   should_validate_presence_of :name
+  should_have_many :keywords, :dependent => :destroy
+
+  should "set keywords using keywords_attributes=" do
+    filter = TaskFilter.make_unsaved
+    assert filter.keywords.empty?
+    
+    filter.keywords_attributes = [ "keyword1", "keyword2" ]
+    assert_equal "keyword1", filter.keywords[0].word
+    assert_equal "keyword2", filter.keywords[1].word
+  end
 
   # Checks task filter includes the given class in conditions
   def self.should_filter_on(klass, column_name = nil)
@@ -54,6 +64,18 @@ class TaskFilterTest < ActiveSupport::TestCase
     end
 
     should "filter on status"
+
+    should "filter on keywords" do
+      filter = TaskFilter.make_unsaved
+      filter.keywords.build(:word => "keyword1")
+      filter.keywords.build(:word => "keyword2")
+      
+      conditions = filter.conditions
+      expected = "(lower(tasks.name) like '%keyword1%' or lower(tasks.description) like '%keyword1%'"
+      expected += " or lower(tasks.name) like '%keyword2%' or lower(tasks.description) like '%keyword2%')"
+
+      assert_not_nil conditions.index(expected)
+    end
    end
 
   context "a company with projects, tasks, etc" do

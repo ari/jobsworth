@@ -22,4 +22,12 @@
   <% end -%>
 <% end -%>
 
+<% if !@filter.blank? -%>
+  <li>[<%=_ "Keyword" %>]</li>
+  <li>
+    <%= hidden_field_tag "task_filter[keywords_attributes][]", @filter, :class => "id" %>
+    <%= @filter %>
+  </li>
+<% end -%>
+
 </ul>
