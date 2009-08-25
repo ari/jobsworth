@@ -20,7 +20,9 @@
         <% end -%>
       </span>
 
-      <%= link_to("#{ tf.name } (#{ tf.display_count(current_user) })", select_task_filter_path(tf)) %>
+      <% count = tf.display_count(current_user) -%>
+      <%= link_to("#{ tf.name } (#{ count })", 
+	  select_task_filter_path(tf), :class => (count > 0 ? "unread" : "")) %>
     </li>
     <% end -%>
   </ul>
