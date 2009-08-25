@@ -1,2 +1,0 @@
-module FilterHelper
-end

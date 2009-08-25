@@ -14,11 +14,15 @@ ActionController::Routing::Routes.draw do |map|
                   :attributes => :get, 
                   :auto_complete_for_resource_parent => :get },
                 :member => { :show_password => :get })
+
   map.resources :resource_types, :collection => { :attribute => :get }
   map.resources :organizational_units
+
   map.resources(:task_filters, 
-                :member => { :select => :any, :update_current_filter => :any },
-                :collection => { :reset => :any, :search => :any,
+                :member => { :select => :any },
+                :collection => { 
+                  :reset => :any, :search => :any, 
+                  :update_current_filter => :any, 
                   :set_single_task_filter => :any })
 
   map.resources :forums do |forum|

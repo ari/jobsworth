@@ -214,18 +214,24 @@ module TasksHelper
                                   :after_update_element => "addUserToTask")
   end
 
-  ###
   # Returns links to filter the current task list by tags
-  ###
-  def tag_links(tags_to_counts_hash)
+  def tag_links
     links = []
-    
-    tags_to_counts_hash.each do |tag_name, count|
-      links << link_to("#{ tag_name } (#{ count })", params.merge(:tag => tag_name))
+
+    tags = Tag.top_counts_as_tags(current_user.company)
+    tags.each do |tag, count|
+      str = "#{ tag.name } (#{ count })"
+      link_params = {
+        :qualifiable_id => tag.id,
+        :qualifiable_type => tag.class.name
+      }
+
+      link_params = { :qualifiers_attributes => [ link_params ] }
+      path = update_current_filter_task_filters_path(:task_filter => link_params)
+      links << link_to(str, path)
     end
-    
-    links = links.sort.join(", ")
-    return links
+
+    return links.join(", ")
   end
 
   ###

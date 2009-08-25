@@ -22,9 +22,22 @@ class Tag < ActiveRecord::Base
   # need to restrict those counts
   def self.top_counts(company, task_conditions = {})
     company.tags.count(:group => "tags.name",
-                       :include => :tasks,
+                       :include => [ :tasks ],
                        :conditions => task_conditions, 
-                       :order => "tags.name asc")
+                       :order => "lower(tags.name) asc")
+  end
+
+  # Returns an array of tag counts grouped by tag.
+  # Uses Tag.top_counts.
+  def self.top_counts_as_tags(company, task_conditions = {})
+    names_and_counts = top_counts(company, task_conditions)
+
+    res = []
+    names_and_counts.each do |name, count|
+      res << [ company.tags.find_by_name(name), count ]
+    end
+
+    return res
   end
 
 end

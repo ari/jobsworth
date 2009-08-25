@@ -74,7 +74,7 @@ class TaskFiltersController < ApplicationController
     filter.attributes = params[:task_filter]
 
     session[:task_filter] = filter
-    redirect_to(params[:redirect_action])
+    redirect_to(params[:redirect_action] || "/tasks/list")
   end
 
   def set_single_task_filter
