@@ -114,6 +114,12 @@ class TaskFiltersControllerTest < ActionController::TestCase
         assert_equal @filter, session[:task_filter]
       end
 
+      should "be able to delete their own filter" do
+        delete :destroy, :id => @filter.id
+        assert_redirected_to "/tasks/list"
+        assert_nil TaskFilter.find_by_id(@filter.id)
+      end
+
       context "which belongs to another user" do
         setup do
           user = (@user.company.users - [ @user ]).rand
@@ -133,6 +139,25 @@ class TaskFiltersControllerTest < ActionController::TestCase
           get :select, :id => @filter.id
           assert_redirected_to "/tasks/list"
           assert_equal @filter, session[:task_filter]
+        end
+
+        should "be able to delete another user's shared filter if they are admin" do
+          @filter.update_attribute(:shared, true)
+
+          assert @user.admin?
+          delete :destroy, :id => @filter.id
+          assert_redirected_to "/tasks/list"
+          assert_nil TaskFilter.find_by_id(@filter.id)
+        end
+
+        should "not be able to delete another user's shared filter if they are not an admin" do
+          @filter.update_attribute(:shared, true)
+
+          @user.update_attribute(:admin, false)
+          assert !@user.admin?
+          delete :destroy, :id => @filter.id
+          assert_redirected_to "/tasks/list"
+          assert_not_nil TaskFilter.find_by_id(@filter.id)
         end
       end
     end

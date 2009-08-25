@@ -88,4 +88,18 @@ class TaskFiltersController < ApplicationController
 
     render :text => ""
   end
+
+  def destroy
+    filter = current_user.company.task_filters.find(params[:id])
+
+    if (filter.user == current_user) or 
+        (filter.shared? and current_user.admin?)
+      filter.destroy
+      flash[:notice] = _("Task filter deleted")
+    else
+      flash[:notice] = _("You don't have access to delete that task filter")
+    end
+
+    redirect_to "/tasks/list"
+  end
 end
