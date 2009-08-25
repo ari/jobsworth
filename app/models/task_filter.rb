@@ -11,6 +11,8 @@ class TaskFilter < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :name
 
+  named_scope :shared, :conditions => { :shared => true }
+
   before_create :set_company_from_user
 
   # Returns an array of all tasks matching the conditions from this filter
