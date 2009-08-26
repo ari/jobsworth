@@ -1,3 +1,5 @@
+# just an error to ensure this doesn't get used while it's crashing the systme
+#1/0
 # Be sure to restart your web server when you modify this file.
 
 # Uncomment below to force Rails into production mode when
@@ -6,6 +8,7 @@
 
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.3' unless defined? RAILS_GEM_VERSION
+
 
 
 # Bootstrap the Rails environment, frameworks, and default configuration
