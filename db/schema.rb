@@ -644,6 +644,7 @@ ActiveRecord::Schema.define(:version => 20099517215106) do
     t.boolean  "shared"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "system",     :default => false
   end
 
   add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"

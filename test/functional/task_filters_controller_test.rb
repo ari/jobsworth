@@ -95,13 +95,15 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     context "when saving their current filter" do
       setup do
-        filter = TaskFilter.new(:user => @user)
+        filter = TaskFilter.system_filter(@user)
         filter.qualifiers.build(:qualifiable => @task.project)
-        filter.keywords.build(:word => "keyword")
-        @request.session[:task_filter] = filter
+        filter.keywords.build(:task_filter => filter, :company => @user.company, 
+                              :word => "keyword")
+        filter.save!
         
         post(:create, :task_filter => { :name => "a new filter" })
-        @filter = session[:task_filter]
+        @filter = TaskFilter.first(:conditions => { :user_id => @user.id, 
+                                     :name => "a new filter" })
       end
 
       should "redirect to task list" do
@@ -137,7 +139,10 @@ class TaskFiltersControllerTest < ActionController::TestCase
       should "be able to select their own filter" do
         get :select, :id => @filter.id
         assert_redirected_to "/tasks/list"
-        assert_equal @filter, session[:task_filter]
+        system_filter = TaskFilter.system_filter(@user)
+
+        assert_equal @filter.qualifiers.length, system_filter.qualifiers.length
+        assert_equal @filter.keywords.length, system_filter.keywords.length
       end
 
       should "be able to delete their own filter" do
@@ -163,8 +168,10 @@ class TaskFiltersControllerTest < ActionController::TestCase
         should "be able to select another user's shared filter" do
           @filter.update_attribute(:shared, true)
           get :select, :id => @filter.id
-          assert_redirected_to "/tasks/list"
-          assert_equal @filter, session[:task_filter]
+          assert_redirected_to "/tasks/list" 
+          system_filter = TaskFilter.system_filter(@user)
+          assert_equal @filter.qualifiers.length, system_filter.qualifiers.length
+          assert_equal @filter.keywords.length, system_filter.keywords.length
         end
 
         should "be able to delete another user's shared filter if they are admin" do

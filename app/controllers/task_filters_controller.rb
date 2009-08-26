@@ -53,9 +53,7 @@ class TaskFiltersController < ApplicationController
                              :word => kw.word)
     end
 
-    if @filter.save
-      session[:task_filter] = @filter
-    else
+    if !@filter.save
       flash[:notice] = _"Filter couldn't be saved. A name is required"
     end
     
@@ -64,9 +62,17 @@ class TaskFiltersController < ApplicationController
 
   def select
     @filter = current_user.company.task_filters.find(params[:id])
-    
+
     if @filter.user == current_user or @filter.shared?
-      session[:task_filter] = @filter
+      target_filter = current_task_filter
+      @filter.qualifiers.each { |q| target_filter.qualifiers << q.clone }
+      @filter.keywords.each do |kw| 
+        # N.B Shouldn't have to pass in all these values, but it 
+        # doesn't work when we don't, so...
+        target_filter.keywords.build(:task_filter => target_filter,
+                                     :company => current_user.company, 
+                                     :word => kw.word)
+      end
     else
       flash[:notice] = _"You don't have access to that task filter"
     end
@@ -76,10 +82,12 @@ class TaskFiltersController < ApplicationController
 
   def update_current_filter
     # sets the current filter from the given params
-    filter = TaskFilter.new(:user => current_user)
+    filter = current_task_filter
+    filter.keywords.clear
+    filter.qualifiers.clear
     filter.attributes = params[:task_filter]
+    filter.save
 
-    session[:task_filter] = filter
     redirect_to(params[:redirect_action] || "/tasks/list")
   end
 

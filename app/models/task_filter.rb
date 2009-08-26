@@ -14,8 +14,22 @@ class TaskFilter < ActiveRecord::Base
   validates_presence_of :name
 
   named_scope :shared, :conditions => { :shared => true }
+  named_scope :visible, :conditions => { :system => false }
 
   before_create :set_company_from_user
+
+  # Returns the system filter for the given user. If none is found, 
+  # create and saves a new one and returns that.
+  def self.system_filter(user)
+    filter = user.task_filters.first(:conditions => { :system => true })
+    if filter.nil?
+      filter = user.task_filters.build(:name => "System filter for #{ user }", 
+                                       :user_id => user.id, :system => true)
+      filter.save!
+    end
+
+    return filter
+  end
 
   # Returns an array of all tasks matching the conditions from this filter
   # if extra_conditions is passed, that will be ANDed to the conditions

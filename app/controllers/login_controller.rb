@@ -122,11 +122,6 @@ class LoginController < ApplicationController
 
     response.headers["Content-Type"] = 'text/html'
 
-    # default filter is own tasks 
-    filter = TaskFilter.new(:user => current_user)
-    filter.qualifiers.build(:qualifiable => current_user)
-    session[:task_filter] = filter
-
     redirect_from_last
   end
 

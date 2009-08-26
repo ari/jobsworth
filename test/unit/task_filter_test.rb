@@ -8,6 +8,29 @@ class TaskFilterTest < ActiveSupport::TestCase
   should_validate_presence_of :name
   should_have_many :keywords, :dependent => :destroy
 
+  context "TaskFilter.system_filter" do
+    setup do
+      @user = User.make
+    end
+
+    should "create and save a filter in system filter if none exists" do
+      assert_nil TaskFilter.find(:first, :conditions => { :user_id => @user.id, :system => true })
+
+      filter = TaskFilter.system_filter(@user)
+      found = TaskFilter.find(:first, :conditions => { :user_id => @user.id, :system => true })
+      assert_not_nil found
+      assert_equal filter, found
+    end
+    
+    should "return existing filter from system filter if one does exist" do
+      filter = TaskFilter.make_unsaved(:user_id => @user.id, :system => true)
+      filter.save!
+      found = TaskFilter.system_filter(@user)
+      assert_equal filter, found
+    end
+  end
+
+
   should "set keywords using keywords_attributes=" do
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
@@ -90,7 +113,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       assert_not_nil conditions.index(expected)
     end
-   end
+  end
 
   context "a company with projects, tasks, etc" do
     setup do
