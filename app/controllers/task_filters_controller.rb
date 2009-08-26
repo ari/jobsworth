@@ -12,28 +12,29 @@ class TaskFiltersController < ApplicationController
 
     @to_list = []
 
-    @customers = current_user.company.customers.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Clients"), @customers ]
+    c = current_user.company
 
-    @projects = current_user.company.projects.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Projects"), @projects ]
+    customers = c.customers.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ _("Clients"), customers ]
 
-    @users = current_user.company.users.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Users"), @users ]
+    projects = c.projects.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ _("Projects"), projects ]
 
-    @milestones = current_user.company.milestones.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Milestones"), @milestones ]
+    users = c.users.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ _("Users"), users ]
 
-    @tags = current_user.company.tags.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Tags"), @tags ]
+    milestones = c.milestones.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ _("Milestones"), milestones ]
+
+    tags = c.tags.all(:conditions => name_conds, :limit => limit)
+    @to_list << [ _("Tags"), tags ]
+
+    @to_list << [ _("Status"), c.statuses.all(:conditions => name_conds, :limit => limit) ]
 
     current_user.company.properties.each do |property|
       values = property.property_values.all(:conditions => [ "value like ?", "#{ @filter }%" ])
       @to_list << [ property, values ] if values.any?
     end
-
-    # TODO: need to handle these somehow
-    @statuses = Task.status_types.select { |type| _(type).downcase.index(@filter) == 0 }
   end
 
   def new

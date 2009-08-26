@@ -63,6 +63,7 @@ end
 TaskFilter.blueprint do
   name
   user
+  company { user.company }
 end
 
 Tag.blueprint do

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090825212110) do
+ActiveRecord::Schema.define(:version => 20090825235523) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -598,6 +598,13 @@ ActiveRecord::Schema.define(:version => 20090825212110) do
   add_index "shouts", ["created_at"], :name => "shouts_created_at_index"
   add_index "shouts", ["shout_channel_id"], :name => "index_shouts_on_shout_channel_id"
   add_index "shouts", ["user_id"], :name => "fk_shouts_user_id"
+
+  create_table "statuses", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "tags", :force => true do |t|
     t.integer "company_id"

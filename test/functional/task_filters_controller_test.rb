@@ -50,11 +50,12 @@ class TaskFiltersControllerTest < ActionController::TestCase
     end
 
     should "be able to search by task status" do
-      get :search, :filter => "Closed"
+      Status.create_default_statuses(@user.company)
+      status = @user.company.statuses.rand
+      get :search, :filter => status.name
       assert_tag(:attributes => { 
                    :class => "id", 
-                   :name => "filter_status[]",
-                   :value => "2"
+                   :value => status.id
                  })
     end
 

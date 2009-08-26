@@ -67,11 +67,13 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
   def conditions(extra_conditions = nil)
+    status_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Status" }
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
-    standard_qualifiers = qualifiers - property_qualifiers
+    standard_qualifiers = qualifiers - property_qualifiers - status_qualifiers
     
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
+    res << conditions_for_status_qualifiers(status_qualifiers)
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
 
@@ -153,6 +155,24 @@ class TaskFilter < ActiveRecord::Base
 
     res = res.join(" or ")
     return "(#{ res })" if !res.blank?
+  end
+
+  # Returns a sql string fragment that will limit tasks to only
+  # status set by the status qualifiers.
+  # Status qualifiers have to be handled especially until the
+  # migration from an array in code to db backed statuses is complete
+  def conditions_for_status_qualifiers(status_qualifiers)
+    old_status_ids = []
+    c = company || user.company
+    
+    status_qualifiers.each do |q|
+      status = q.qualifiable
+      old_status = c.statuses.index(status)
+      old_status_ids << old_status
+    end
+    
+    old_status_ids = old_status_ids.join(",")
+    return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
   end
 
   # Returns the column name to use for lookup for the given

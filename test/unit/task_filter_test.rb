@@ -42,6 +42,7 @@ class TaskFilterTest < ActiveSupport::TestCase
     setup do
       @company = Company.last
       @company.create_default_properties
+      Status.create_default_statuses(@company)
     end
 
     should "filter on custom attributes separately" do
@@ -63,7 +64,20 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil actual.index(expected)
     end
 
-    should "filter on status"
+    should "filter on status" do
+      s1 = @company.statuses[0]
+      s2 = @company.statuses[3]
+
+      filter = TaskFilter.make_unsaved(:company => @company)
+      filter.qualifiers.build(:qualifiable => s1)
+      filter.qualifiers.build(:qualifiable => s2)
+      actual = filter.conditions
+
+      # using position of status in list as a way to link to old
+      # status for now
+      expected = "tasks.status in (0,3)"
+      assert_not_nil actual.index(expected)
+    end
 
     should "filter on keywords" do
       filter = TaskFilter.make_unsaved
