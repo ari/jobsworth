@@ -78,9 +78,11 @@ class TaskFilter < ActiveRecord::Base
 
     if user.projects.any?
       project_ids = user.projects.map { |p| p.id }.join(",")
-      res << "tasks.project_id in (#{ project_ids })"
+      sql = "tasks.project_id in (#{ project_ids })"
+      sql += " or task_owners.user_id = #{ user.id }"
+      res << "(#{ sql })"
     else
-      res << "task.task_owners = #{ user.id }"
+      res << "(task_owners.user_id = #{ user.id })"
     end
 
     res = res.select { |c| !c.blank? }
