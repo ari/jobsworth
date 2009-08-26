@@ -6,6 +6,7 @@ class PropertiesControllerTest < ActionController::TestCase
   def setup
     @request.with_subdomain('cit')
     @request.session[:user_id] = users(:admin).id
+    users(:admin).company.create_default_statuses
   end
   
   test "/index should render :success" do

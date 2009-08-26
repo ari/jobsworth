@@ -33,6 +33,7 @@ class Company < ActiveRecord::Base
   validates_uniqueness_of       :subdomain
 
   after_create :create_default_properties
+  after_create :create_default_statuses
 
   # Find the Internal client of this company.
   # A small kludge is needed,as it was previously called Internal, now it has the same
@@ -64,6 +65,11 @@ class Company < ActiveRecord::Base
 
     self.properties.reload
     return new_props
+  end
+
+  # Creates the default statuses for this company
+  def create_default_statuses
+    Status.create_default_statuses(self)
   end
 
   ###

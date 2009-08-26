@@ -7,6 +7,7 @@ class ReportsControllerTest < ActionController::TestCase
     @request.with_subdomain('cit')
     @user = users(:admin)
     @request.session[:user_id] = @user.id
+    @user.company.create_default_statuses
   end
 
   test "list should render" do

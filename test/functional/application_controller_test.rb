@@ -1,12 +1,12 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class ApplicationControllerTest < ActionController::TestCase
+  tests ActivitiesController
+
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs
   
   def setup
-    @controller = ActivitiesController.new
-     @request.with_subdomain('cit')
-     @request.session[:user_id] = users(:admin).id
+    login
   end
 
   test "should get current_user" do
@@ -20,9 +20,12 @@ class ApplicationControllerTest < ActionController::TestCase
   end
 
   test "user 2 should NOT be admin" do
-     @request.session[:user_id] = users(:fudge).id
-     get :index
-     assert !assigns(:current_user).admin?
+    user = users(:fudge)
+    user.company.create_default_statuses
+
+    @request.session[:user_id] = user.id
+    get :index
+    assert !assigns(:current_user).admin?
   end
 
   test "should get all online users" do

@@ -3,13 +3,12 @@
     <div><%=_ "Filters" %></div>
   </div>
 
-  TODO: fix up these presets once status is working
   <ul>
-    <li><%= link_to(_("Open Tasks")) %></li>
-    <li><%= link_to(_("My Open Tasks")) %></li>
-    <li><%= link_to(_("My In Progress Tasks")) %></li>
+    <li><%= link_to_open_tasks %></li>
+    <li><%= link_to_open_tasks(current_user) %></li>
+    <li><%= link_to_in_progress_tasks(current_user) %></li>
 
-      <% current_user.visible_task_filters.each do |tf| -%>
+    <% current_user.visible_task_filters.each do |tf| -%>
     <li>
       <span class="right small">
         <% if tf.user == current_user or current_user.admin? -%>

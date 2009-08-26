@@ -33,33 +33,6 @@ module TaskFilterHelper
     return res.compact
   end
 
-  ###
-  # Returns an array containing the name and id of statuses currently
-  # selected in the filter. 
-  ###
-  def selected_status_names_and_ids
-    selected = TaskFilter.filter_status_ids(session)
-    return available_statuses.select do |name, id|
-      selected.include?(id.to_i)
-    end
-  end
-  
-  ###
-  # Returns an array of statuses that can be used to filter.
-  ###
-  def available_statuses
-    statuses = []
-    statuses << [_("Open"), "0"]
-    statuses << [_("In Progress"), "1"]
-    statuses << [_("Closed"), "2"]
-    statuses << [_("Won't Fix"), "3"]
-    statuses << [_("Invalid"), "4"]
-    statuses << [_("Duplicate"), "5"]
-    statuses << [_("Archived"), "-2"]
-
-    return statuses
-  end
-
   def link_to_remove_filter(filter_name, name, value, id)
     res = content_tag :span, :class => "search_filter" do
       hidden_field_tag("#{ filter_name }[]", id) +
@@ -91,5 +64,37 @@ EOS
     res += javascript_tag(js, :defer => "defer")
     return res
   end
+
+  # Returns a link to set the task filter to show only open tasks.
+  # If user is passed, only open tasks belonging to that user will 
+  # be shown
+  def link_to_open_tasks(user = nil)
+    str = user ? _("My Open Tasks") : _("Open Tasks")
+    open = current_user.company.statuses.first
+
+    link_params = []
+    link_params << { :qualifiable_type => "Status", :qualifiable_id => open.id }
+    if user
+      link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
+    end
+    link_params = { :task_filter => { :qualifiers_attributes => link_params } } 
+
+    return link_to(str, update_current_filter_task_filters_path(link_params))
+  end
+
+  # Returns a link to set the task filter to show only in progress
+  # tasks. Only tasks belonging to the given user will be shown.
+  def link_to_in_progress_tasks(user)
+    in_progress = current_user.company.statuses[1]
+
+    link_params = []
+    link_params << { :qualifiable_type => "Status", :qualifiable_id => in_progress.id }
+    link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
+    link_params = { :task_filter => { :qualifiers_attributes => link_params } } 
+
+    return link_to(_("My In Progress Tasks"), 
+                   update_current_filter_task_filters_path(link_params))
+  end
+
 
 end

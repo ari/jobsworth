@@ -4,9 +4,7 @@ class OrganizationalUnitsControllerTest < ActionController::TestCase
   fixtures :users, :companies, :customers
   
   def setup
-    @request.with_subdomain('cit')
-    @user = users(:admin)
-    @request.session[:user_id] = @user.id
+    login
   end
   
   test "/new should render :success" do
