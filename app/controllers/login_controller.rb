@@ -121,7 +121,12 @@ class LoginController < ApplicationController
     Juggernaut.send("do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');", ["info_#{logged_in.company_id}"])
 
     response.headers["Content-Type"] = 'text/html'
-    
+
+    # default filter is own tasks 
+    filter = TaskFilter.new(:user => current_user)
+    filter.qualifiers.build(:qualifiable => current_user)
+    session[:task_filter] = filter
+
     redirect_from_last
   end
 
