@@ -398,7 +398,7 @@ class ApplicationController < ActionController::Base
   # returns the current task filter (or a new, blank one
   # if none set)
   def current_task_filter
-    session[:task_filter] ||= TaskFilter.new(:user => current_user)
+    @current_task_filter ||= TaskFilter.system_filter(current_user)
   end
 
   # Redirects to the given url. If the current request is using ajax,
