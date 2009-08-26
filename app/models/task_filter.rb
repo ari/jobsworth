@@ -48,22 +48,7 @@ class TaskFilter < ActiveRecord::Base
     sql = "(#{ sql })"
     @display_count ||= count(sql)
   end
-
-  # Returns a map of tags to their count in the current list. Only tags
-  # with count > 0 will be included.
-  def tag_counts
-    if @tag_counts.nil?
-      @tag_counts = {}
-      tasks.each do |task|
-        task.tags.each do |tag|
-          @tag_counts[tag] = (@tag_counts[tag] || 0) + 1
-        end
-      end
-    end
-
-    return @tag_counts
-  end
-
+  
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
   def conditions(extra_conditions = nil)
@@ -98,12 +83,8 @@ class TaskFilter < ActiveRecord::Base
     to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
                    :milestone, :notifications, :watchers, 
                    :customers, :task_property_values ]
-    to_include << { :work_logs => :user }
     to_include << { :company => :properties }
     to_include << { :project => :customer }
-    to_include << { :task_property_values => { :property_value => :property } }
-    to_include << { :dependants => [:users, :tags, :sheets, :todos, 
-                                    { :project => :customer }, :milestone ] }
   end
 
   def set_company_from_user
