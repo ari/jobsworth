@@ -65,6 +65,9 @@ class TaskFiltersController < ApplicationController
 
     if @filter.user == current_user or @filter.shared?
       target_filter = current_task_filter
+      target_filter.qualifiers.clear
+      target_filter.keywords.clear
+
       @filter.qualifiers.each { |q| target_filter.qualifiers << q.clone }
       @filter.keywords.each do |kw| 
         # N.B Shouldn't have to pass in all these values, but it 
