@@ -355,11 +355,12 @@ it in the current page.
 */
 function showTaskInPage(taskNum) {
     jQuery("tr.selected").removeClass("selected");
+	jQuery("#task_row_" + taskNum).addClass("selected");
     showProgress(); 
 
     jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
 	jQuery("#task").html(data);
-	jQuery("#task_row_" + taskNum).addClass("selected");
+	//jQuery("#task_row_" + taskNum).addClass("selected");
 	hideProgress();
     });
 }
