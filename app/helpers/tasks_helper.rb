@@ -217,7 +217,7 @@ module TasksHelper
   # Returns links to filter the current task list by tags
   def tag_links
     links = []
-    tags = Tag.top_counts_as_tags(current_user.company)
+    tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql)
     ranges = cloud_ranges(tags.map { |tag, count| count })
 
     tags.each do |tag, count|

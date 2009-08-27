@@ -75,15 +75,7 @@ class TaskFilter < ActiveRecord::Base
     res << conditions_for_status_qualifiers(status_qualifiers)
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
-
-    if user.projects.any?
-      project_ids = user.projects.map { |p| p.id }.join(",")
-      sql = "tasks.project_id in (#{ project_ids })"
-      sql += " or task_owners.user_id = #{ user.id }"
-      res << "(#{ sql })"
-    else
-      res << "(task_owners.user_id = #{ user.id })"
-    end
+    res << user.user_tasks_sql
 
     res = res.select { |c| !c.blank? }
     res = res.join(" AND ")

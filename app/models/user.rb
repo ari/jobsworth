@@ -244,7 +244,22 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project)
+    projects.include?(task.project) || task.users.include?(self)
+  end
+
+  # Returns a fragment of sql to restrict tasks to only the ones this 
+  # user can see
+  def user_tasks_sql
+    res = []
+    if self.projects.any?
+      project_ids = self.projects.map { |p| p.id }.join(",")
+      res << "tasks.project_id in (#{ project_ids })"
+    end
+
+    res << "task_owners.user_id = #{ self.id }"
+    
+    res = res.join(" or ")
+    return "(#{ res })"
   end
 
   def currently_online

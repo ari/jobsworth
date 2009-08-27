@@ -124,6 +124,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       @task = @project.tasks.first
       assert @task.users.include?(@user)
+      assert @project.users.include?(@user)
 
       @filter = TaskFilter.new(:user => @user)
       @filter.qualifiers.build(:qualifiable => @project)
