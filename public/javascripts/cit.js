@@ -401,6 +401,9 @@ function removeSearchFilter(link) {
 }
 
 function addSearchFilter(textField, selected) {
+    var filter = jQuery("#search_filter");
+    filter.val(jQuery.trim(filter.val()));
+
     selected = jQuery(selected);
     var idField = selected.find(".id");
     var typeField = selected.find(".type");
