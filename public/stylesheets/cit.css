@@ -1,10 +1,10 @@
-
 body {
   background-color: #FFFFFF;
   color: #333333;
   background-image: url(/images/bg_grad.jpg);
   background-repeat: repeat-x;
   border: none;
+  margin-top: 0;
 }
 
 div.content_body {  
