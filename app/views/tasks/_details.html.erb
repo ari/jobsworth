@@ -1,12 +1,7 @@
 
-<p class="task_description">Cras lacinia mauris ac risus consectetur sit amet congue elit dapibus. Ut metus.</p>
 <fieldset id="task_project_selection">
-  <label for="task_name"><%=_ "Title" %></label>
-  <br />
   <%= text_field("task", "name", { :size => nil, :class => "fill", :maxlength => 200 }.merge( perms['edit'] ))  %>
 
-  <label for="task_description"><%=_ 'Description' %></label>
-  <br />
   <%= text_area "task", "description", { :rows => 4, :class => "fill" }.merge( perms['edit'] )  %>
 
   <label for="task_project_id"><%=_ 'Project' %></label>

@@ -1,7 +1,18 @@
 <fieldset id="task_information">
   <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:100%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
   
-  <%= render(:partial => "attachments") %>
+  <div id="upload_container">
+   <label for="task_tmp_file"><%=_ 'Attach a file to this task' %></label> 
+    <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
+  
+  <% if perms['comment'].empty? %>
+    <span style="float:left">
+      <%= link_to_function _("Upload more files") do |page|
+	  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
+	  end %>
+    </span>
+  <% end %>
+  </div>
   
   <%= cit_submit_tag(@task) %>
 </fieldset>

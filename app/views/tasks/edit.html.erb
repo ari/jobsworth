@@ -1,19 +1,13 @@
 <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
 	<%= hidden_field("task", "id") %>
 	<%= error_messages_for 'task' %>
-	<h1 id="task_name">Extra long Task name #1 - Change controls class expand double arrow and Class Info button</h1>
-	<div id="new_task_info">
-		<div>Project Name</div>
-		<div>Due: 3 days</div>
-	</div>
 	<div id="task_sidebar">
 	    <%= render(:partial => "details") %>
 	    <%= render(:partial => "attributes") %>
 	    <%= render(:partial => "notifications") %>
 	    <%= render(:partial => "dependencies") %>
-	    
+	    <%= render(:partial => "attachments") %>
 	    <%= render(:partial => "resources") %>
-	    <%= render(:partial => "inline_worklog") %>
 	</div>
 	<div id="task_addcomment">
 		
