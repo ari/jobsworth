@@ -1,5 +1,6 @@
 <fieldset id="task_attachments">
-  <legend><%=_ "Attachments" %></legend>
+  <legend>Files attached to this task</legend>
+  <div id="task_attached_files">
   <% for file in @task.attachments %>
     <% if file.thumbnail? %>
       <div>
@@ -10,17 +11,6 @@
     <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name), :class => 'close-cross' %>
     <span class="divider"></span>
   <% end %>
-  
-  <label for="task_tmp_file"><%=_ 'Attach file' %></label>
-  <div id="upload_container">
-    <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
-  </div>
-  <% if perms['comment'].empty? %>
-    <span style="float:left">
-      <%= link_to_function _("Upload more files") do |page|
-	  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
-	  end %>
-    </span>
-  <% end %>
+  </div>    
 </fieldset>
 

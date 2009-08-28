@@ -1,17 +1,18 @@
 <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
 	<%= hidden_field("task", "id") %>
 	<%= error_messages_for 'task' %>
-	<div id="task_sidebar" class="left">
+	<div id="task_sidebar">
 	    <%= render(:partial => "details") %>
 	    <%= render(:partial => "attributes") %>
 	    <%= render(:partial => "notifications") %>
 	    <%= render(:partial => "dependencies") %>
 	    <%= render(:partial => "attachments") %>
 	    <%= render(:partial => "resources") %>
-	    <%= render(:partial => "inline_worklog") %>
 	</div>
-	<div class="right">
+	<div id="task_addcomment">
+		<div>
 	    <%= render(:partial => "new_comment") %>
+	    </div>
 	    
 		<div class="page_header">
 			<%= _("To-do") %>

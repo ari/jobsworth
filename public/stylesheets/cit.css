@@ -229,7 +229,7 @@ div.page_header a {
 
 
 body, p, ol, ul, td, tr {
-  font-family: arial, verdana, helvetica, sans-serif;
+  font-family: Lucida Grande, Tahoma, Helvetica, sans-serif;
   font-size: 12px;
 }
 
@@ -515,13 +515,24 @@ fieldset label.ignore {
 
 #task_sidebar {
     width: 26em;
+	background-color: transparent;
 }
+
+/* Task Sidebar styling -cll 27/8 */
+#task_sidebar h1 { margin: 0; }
+#task_sidebar .task_description { padding: 0.5em; margin:0; }
+
 #task_sidebar .fill {
     margin-bottom: 0.4em;
     margin-right: 0;
     margin-top: 0;
-    width: 100%;
+    width: 99%;
 }
+
+#task_sidebar label { margin-left: 0px; }
+
+textarea#task_description.fill { margin-bottom: 0.8em; height: 150px;}
+#task_sidebar textarea#task_notify_emails, #task_sidebar select { margin-left: 0px; } 
 
 #task_attr label,
 #task_notify label,
@@ -532,8 +543,9 @@ fieldset label.ignore {
 #task_information label, 
 #reports_filter label, 
 #reports_config label{
-	width: 95px;
+	width: 105px;
 	padding: 3px 0;
+	text-align: right;
 }
 
 fieldset.sidebar label {
@@ -559,6 +571,7 @@ fieldset input {
   margin-top: 0.5em;
   margin-right: 0.1em;
   margin-bottom: 0.2em;
+  font-size: 13px;
 }
 
 fieldset#task_information input { float: none; }
@@ -930,6 +943,8 @@ pre.auto_generated {
 #main-table { 
   margin-bottom: 30px;
 }
+
+#main_col { width: 85%; }
 
 #content ul
 {
@@ -1456,6 +1471,8 @@ a.description {
     font-size: 10px;
 }
 
+#task { position: relative; width: 100%; }
+
 #task_description {
   font-size: 11px;
 }
@@ -1474,6 +1491,7 @@ a.description {
 #taskform .user label {
     margin-top: 0px;
     padding: 0px;
+    margin-right: 7px;
 }
 #taskform #task_customers {
     clear: both;
@@ -1509,9 +1527,63 @@ a.description {
     border: 0;
 }
 #taskform #task_sidebar {
-	width: 26em;
-	margin-right: 25px;
+	position: absolute;
+	width: 312px;
+	margin-right: 0px;
 }
+
+/*#taskform #task_history, */#taskform #task_addcomment { 
+	margin-left: 332px;
+	width: auto;
+	border: 0px solid red;
+	position: relative;
+	clear:both;
+}
+
+/* Task Attributes/History styling -cll 27/08 */
+
+#task_sidebar { border: 1px solid #eee; padding: 5px; background-color: #FAFAFA; }
+#task_sidebar fieldset { margin-bottom: 20px; border-top: 1px solid #eee; }
+#task_sidebar fieldset legend { padding-left: 0px; }
+
+input#task_name { font-size: 20px; }
+
+fieldset#task_attachments { clear: both; padding: 0px; }
+
+#taskform #task_history #log_history { margin-left: 0; padding-left: 0; }
+
+#taskform #task_history .log_entry { margin: 0; display: block; width: 100%;  position: relative; }
+#taskform #task_history .log_date { color: #525656; font-size: 18px; font-weight: normal; padding-left: 8px; font-family: inherit; }
+#taskform #task_history .log_time { display: block; width: 75px; position: absolute; top: 0px; text-align: center; color: #999999; padding: 4px 0 0  8px; font-size: 10px; }
+	#taskform #task_history .log_time .log_worktime { display: block; font-size: 10px; }
+	
+#taskform #task_history .log_name, #taskform #task_history .log_comment { margin-left: 100px; }
+
+#taskform #task_history .log_name { margin-bottom: 0; font-size: 16px; font-family: "Trebuchet MS", Helvetica, sans-serif; font-weight: 100; }
+#taskform #task_history .log_comment { color: #444; padding-left: 0px; line-height: 1.6em; }
+
+
+/* END Task History styling -cll 27/08 */
+
+/* Task Attachments styling -cll 27/08 */
+
+fieldset#task_attachments { margin-bottom: 10px; }
+#upload_container { width: 50%; padding: 0px; float: left; }
+#upload_container label { margin-top: 7px; width: 150px; text-align: left; }
+#task_attached_files { width: 100%; padding: 10px 0 0 0; }
+
+fieldset#task_information { margin-bottom: 20px; padding: 10px; }
+fieldset#task_information input[type="submit"] { border: 1px solid red; float: left; margin: 20px 0 0 5px; clear:both; }
+
+fieldset#task_attachments label[for="task_tmp_file"] { font-size: 12px; color: #444; font-weight: bold; margin: 4px 0; width: auto; position: absolute; }
+input#tmp_files_ { border: 0px; margin: 0 0 8px 0; }
+
+div#worktime_container { float: right; width: 45%; text-align: right;}
+div#worktime_container label { display:inline-block; width: 100px; text-align: right; clear:both; float: none; }
+input#work_log_duration, input#work_log_started_at { width: 110px; }
+select#custom_attribute_1 { margin: 6px 0 0 0; }
+
+/**/
 
 .prog-border {
   width: 115px;
@@ -2595,7 +2667,7 @@ input.scheduled {
     display: none;
 }
 
-#content ul.tabs {
+#content ul.tabs, #task_addcomment ul.tabs {
 	border-bottom:1px solid #BBBBBB;
 	font-family:"Lucida Grande",Verdana,sans-serif;
 	font-size:80%;
@@ -2607,7 +2679,9 @@ input.scheduled {
 	white-space:nowrap;
 }
 
-#content ul.tabs li {
+#task_addcomment ul.tabs { margin-bottom: 0; }
+
+#content ul.tabs li, #task_addcomment ul.tabs li {
 	background:transparent url(/images/tabs.gif) no-repeat scroll 100% 0;
 	display:inline;
 	list-style-image:none;
@@ -2617,7 +2691,7 @@ input.scheduled {
 	padding:4px 6px 4px 0;
 }
 
-#content ul.tabs li a {
+#content ul.tabs li a, #task_addcomment ul.tabs li a {
 	margin: 0;
 	padding: 4px 0 4px 6px;
 	color: #423f54;
@@ -2988,9 +3062,11 @@ table.tablesorter tbody tr.odd td {
 }
 table.tablesorter thead tr .headerSortUp {
 	background-image: url(/images/asc.gif);
+	background-color: #BCC3C3;
 }
 table.tablesorter thead tr .headerSortDown {
 	background-image: url(/images/desc.gif);
+	background-color: #BCC3C3;
 }
 
 /* tag cloud */
@@ -3008,4 +3084,14 @@ table.tablesorter thead tr .headerSortDown {
 }
 .cloud .size5 {
     font-size: 140%;
+}
+
+/* Clearfix */
+
+.log_entry:after, #taskform:after, .clearfix:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
 }

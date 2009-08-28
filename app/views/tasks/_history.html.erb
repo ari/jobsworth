@@ -1,4 +1,6 @@
-<div class="page_header"><%= _ 'History' %></div><span style="float:right">
+<!--<div class="page_header"><%= _ 'History' %></div>-->
+
+<span style="float:right">
 <% if session[:only_comments].to_i == 0 %>
            <%= link_to_remote _('Showing Full History'), :url => {:action => 'toggle_history', :id => @task.id },
                                    :loading => "showProgress();",
@@ -11,15 +13,15 @@
            %>
 <% end %>
 </span>
-<ul>
+<div class="log_history clearfix">
 <%  day = 0
 @logs ||= []
 @logs.each do |log|
 	if day != (tz.utc_to_local(log.started_at)).yday
 		day = (tz.utc_to_local(log.started_at)).yday
 %>
-	<h4><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></h4>
+	<h4 class="log_date"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></h4>
 	<% end %>
 	<%= render :partial => 'activities/log_row2', :locals => {:log => log} %>
 <% end %>
-</ul>
+</div>
