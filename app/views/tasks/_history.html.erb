@@ -14,14 +14,10 @@
 <% end %>
 </span>
 <div class="log_history clearfix">
-<%  day = 0
+<%
 @logs ||= []
 @logs.each do |log|
-	if day != (tz.utc_to_local(log.started_at)).yday
-		day = (tz.utc_to_local(log.started_at)).yday
 %>
-	<h4 class="log_date"><%= tz.utc_to_local(log.started_at).strftime("%A, %d %B %Y") %></h4>
-	<% end %>
 	<%= render :partial => 'activities/log_row2', :locals => {:log => log} %>
 <% end %>
 </div>

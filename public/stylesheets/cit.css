@@ -1532,13 +1532,20 @@ a.description {
 	margin-right: 0px;
 }
 
-/*#taskform #task_history, */#taskform #task_addcomment { 
-	margin-left: 332px;
+#taskform #task_history, #taskform #task_addcomment { 
+	margin-left: 328px;
 	width: auto;
 	border: 0px solid red;
 	position: relative;
 	clear:both;
 }
+
+
+/* The following is an ugly hack to get Safari to behave -cll 28/08 */
+@media screen and (-webkit-min-device-pixel-ratio:0){
+	#taskform #task_history {margin-left: 2px;}
+}
+/* end hack*/
 
 /* Task Attributes/History styling -cll 27/08 */
 
@@ -1552,14 +1559,15 @@ fieldset#task_attachments { clear: both; padding: 0px; }
 
 #taskform #task_history #log_history { margin-left: 0; padding-left: 0; }
 
-#taskform #task_history .log_entry { margin: 0; display: block; width: 100%;  position: relative; }
-#taskform #task_history .log_date { color: #525656; font-size: 18px; font-weight: normal; padding-left: 8px; font-family: inherit; }
-#taskform #task_history .log_time { display: block; width: 75px; position: absolute; top: 0px; text-align: center; color: #999999; padding: 4px 0 0  8px; font-size: 10px; }
-	#taskform #task_history .log_time .log_worktime { display: block; font-size: 10px; }
+#taskform #task_history .log_entry { margin: 0;  display: block; width: 100%;  position: relative; clear:both; }
+#taskform #task_history .log_entry:nth-child(even) { background-color: #F5F7EF; }
+#taskform #task_history .log_date { font-weight: normal; padding-left: 0px; font-family: inherit; clear:both; display:block; color: #666; }
+#taskform #task_history .log_timestamp { display: block; width: 95px; position: absolute; top: 0px; text-align: center; color: #999999; padding: 6px 0 0  0px; font-size: 10px; }
+	#taskform #task_history .log_time, #taskform #task_history .log_worktime { display: block; font-size: 10px; }
 	
 #taskform #task_history .log_name, #taskform #task_history .log_comment { margin-left: 100px; }
 
-#taskform #task_history .log_name { margin-bottom: 0; font-size: 16px; font-family: "Trebuchet MS", Helvetica, sans-serif; font-weight: 100; }
+#taskform #task_history .log_name { margin-bottom: 0; padding-top: 4px; font-size: 16px; font-family: "Trebuchet MS", Helvetica, sans-serif; font-weight: 100; }
 #taskform #task_history .log_comment { color: #444; padding-left: 0px; line-height: 1.6em; }
 
 
