@@ -27,7 +27,7 @@
     <%= hidden_field_tag "task[duration]", "#{(@task.duration.to_i > 0 ? worked_nice(@task.duration) : "")}" %>
   <% end %>
 
-  <label for="task_due_at"><%=_ 'Due Date' %></label>
+  <label for="task[due_at]"><%=_ 'Due Date' %></label>
   <%= due_date_field(@task, perms) %>
 
   <label for="task_status"><%= _("Status") %></label>

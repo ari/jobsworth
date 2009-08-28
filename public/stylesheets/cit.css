@@ -1,10 +1,10 @@
-
 body {
   background-color: #FFFFFF;
   color: #333333;
   background-image: url(/images/bg_grad.jpg);
   background-repeat: repeat-x;
   border: none;
+  margin-top: 0;
 }
 
 div.content_body {  
@@ -1331,7 +1331,6 @@ a.description {
   color: #cccccc;
   padding: 0px;
   border-bottom: 3px solid white;
-  margin-bottom: 8px;
   background-image: url(/images/menuback.gif) ; 
   background-repeat: repeat-x;
   z-index: 2;
@@ -1576,21 +1575,22 @@ fieldset#task_attachments { clear: both; padding: 0px; }
 /* Task Attachments styling -cll 27/08 */
 
 fieldset#task_attachments { margin-bottom: 10px; }
-#upload_container { width: 50%; padding: 0px; float: left; }
+#upload_container { width: auto; padding-left: 40px; float: left; }
 #upload_container label { margin-top: 7px; width: 150px; text-align: left; }
 #task_attached_files { width: 100%; padding: 10px 0 0 0; }
 
 fieldset#task_information { margin-bottom: 20px; padding: 10px; }
-fieldset#task_information input[type="submit"] { float: left; margin: 20px 0 0 5px; clear:both; }
+fieldset#task_information input[type="submit"] { float: left; clear:both; }
 
 fieldset#task_attachments label[for="task_tmp_file"] { font-size: 12px; color: #444; font-weight: bold; margin: 4px 0; width: auto; position: absolute; }
-input#tmp_files_ { border: 0px; margin: 0 0 8px 0; }
+input#tmp_files_ { margin: 0; }
 
-div#worktime_container { float: right; width: 45%; text-align: right;}
-div#worktime_container label { display:inline-block; width: 100px; text-align: right; clear:both; float: none; }
+div#worktime_container { float: right; width: auto; text-align: right;}
+div#worktime_container label { width: 100px; text-align: right; clear:both; float: none; }
+div#upload_container label { text-align: left; float: none; }
 input#work_log_duration, input#work_log_started_at { width: 110px; }
 select#custom_attribute_1 { margin: 6px 0 0 0; }
-
+#worklog_extra {display: none};
 /**/
 
 .prog-border {
