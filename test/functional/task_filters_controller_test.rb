@@ -7,7 +7,11 @@ class TaskFiltersControllerTest < ActionController::TestCase
       @user = users(:admin)
       @request.session[:user_id] = @user.id
 
+
       project = @user.company.projects.first
+      @user.projects << project
+      @user.save!
+
       milestone = Milestone.make(:project => project, :company => @user.company)
       @task = Task.make(:users => [ @user ], :company => @user.company,
                         :project => project, :milestone => milestone)

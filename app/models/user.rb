@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name"
   has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project
   has_many      :project_permissions, :dependent => :destroy
+
   has_many      :pages, :dependent => :nullify
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
@@ -252,14 +253,33 @@ class User < ActiveRecord::Base
   def user_tasks_sql
     res = []
     if self.projects.any?
-      project_ids = self.projects.map { |p| p.id }.join(",")
-      res << "tasks.project_id in (#{ project_ids })"
+      res << "tasks.project_id in (#{ all_project_ids })"
     end
 
     res << "task_owners.user_id = #{ self.id }"
     
     res = res.join(" or ")
     return "(#{ res })"
+  end
+  
+  # Returns an array of all project ids that this user has
+  # access to. Even completed projects will be included.
+  def all_project_ids
+    @all_project_ids ||= all_projects.map { |p| p.id }
+  end
+
+  # Returns an array of all customers this user has access to 
+  # (through projects). 
+  # If options is passed, those options will be passed to the find.
+  def customers(options = {})
+    company.customers.all(search_options_through_projects("customers", options))
+  end
+
+ # Returns an array of all milestone this user has access to 
+  # (through projects). 
+  # If options is passed, those options will be passed to the find.
+  def milestones(options = {})
+    company.milestones.all(search_options_through_projects("milestones", options))
   end
 
   def currently_online
@@ -344,5 +364,26 @@ class User < ActiveRecord::Base
 
     return @visible_task_filters
   end
+
+  private
+
+  # Sets up search options to use in a find for things linked to 
+  # through projects.
+  # See methods customers and milestones.
+  def search_options_through_projects(lookup, options = {})
+    conditions = []
+    conditions << User.send(:sanitize_sql_for_conditions, options[:conditions])
+    conditions << User.send(:sanitize_sql_for_conditions, [ "projects.id in (?)", all_project_ids ])
+    conditions = conditions.compact.map { |c| "(#{ c })" }
+    options[:conditions] = conditions.join(" and ")
+
+    options[:include] ||= []
+    options[:include] << (lookup == "milestones" ? :project : :projects)
+
+    options = options.merge(:order => "lower(#{ lookup }.name)")    
+
+    return options
+  end
+
 
 end

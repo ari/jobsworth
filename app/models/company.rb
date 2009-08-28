@@ -2,9 +2,9 @@
 #
 
 class Company < ActiveRecord::Base
-  has_many      :customers, :dependent => :destroy, :order => "lower(name)"
+  has_many      :customers, :dependent => :destroy, :order => "lower(customers.name)"
   has_many      :users, :dependent => :destroy
-  has_many      :projects, :dependent => :destroy, :order => 'name'
+  has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
   has_many      :milestones
   has_many      :tasks
   has_many      :pages, :dependent => :destroy
