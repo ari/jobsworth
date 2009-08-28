@@ -1,0 +1,19 @@
+<fieldset id="content" class="basic">
+  <legend><%=_ "Save Filter" %></legend>
+
+  <% remote_form_for(@filter) do |f| %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <br />
+
+  <%= f.label :shared %>
+  <%= f.check_box :shared %>
+  <br />
+  
+  <div class="buttons">
+    <%= submit_tag _("Save"), :class => 'nolabel' %>
+  </div>
+
+  <% end -%>
+</fieldset>

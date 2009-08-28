@@ -1,0 +1,28 @@
+<div class="task_filters section">
+  <div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
+    <div><%=_ "Filters" %></div>
+  </div>
+
+  <ul>
+    <li><%= link_to_open_tasks %></li>
+    <li><%= link_to_open_tasks(current_user) %></li>
+    <li><%= link_to_in_progress_tasks(current_user) %></li>
+
+    <% current_user.visible_task_filters.each do |tf| -%>
+    <li>
+      <span class="right small">
+        <% if tf.user == current_user or current_user.admin? -%>
+          <%= link_to(_("Delete"), task_filter_path(tf), 
+	      :method => :delete, :confirm => _("Are you sure?")) %>
+        <% else -%>
+          <%= "[#{ _("Shared") }]" %>
+        <% end -%>
+      </span>
+
+      <% count = tf.display_count(current_user) -%>
+      <%= link_to("#{ tf.name } (#{ count })", 
+	  select_task_filter_path(tf), :class => (count > 0 ? "unread" : "")) %>
+    </li>
+    <% end -%>
+  </ul>
+</div>

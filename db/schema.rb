@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090630082324) do
+ActiveRecord::Schema.define(:version => 20090826193412) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -195,6 +195,16 @@ ActiveRecord::Schema.define(:version => 20090630082324) do
 
   add_index "ical_entries", ["task_id"], :name => "index_ical_entries_on_task_id"
   add_index "ical_entries", ["work_log_id"], :name => "index_ical_entries_on_work_log_id"
+
+  create_table "keywords", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "task_filter_id"
+    t.string   "word"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "keywords", ["task_filter_id"], :name => "fk_keywords_task_filter_id"
 
   create_table "locales", :force => true do |t|
     t.string   "locale"
@@ -589,6 +599,13 @@ ActiveRecord::Schema.define(:version => 20090630082324) do
   add_index "shouts", ["shout_channel_id"], :name => "index_shouts_on_shout_channel_id"
   add_index "shouts", ["user_id"], :name => "fk_shouts_user_id"
 
+  create_table "statuses", :force => true do |t|
+    t.integer  "company_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "tags", :force => true do |t|
     t.integer "company_id"
     t.string  "name"
@@ -605,6 +622,29 @@ ActiveRecord::Schema.define(:version => 20090630082324) do
 
   add_index "task_customers", ["customer_id"], :name => "fk_task_customers_customer_id"
   add_index "task_customers", ["task_id"], :name => "fk_task_customers_task_id"
+
+  create_table "task_filter_qualifiers", :force => true do |t|
+    t.integer  "task_filter_id"
+    t.string   "qualifiable_type"
+    t.integer  "qualifiable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "task_filter_qualifiers", ["task_filter_id"], :name => "fk_task_filter_qualifiers_task_filter_id"
+
+  create_table "task_filters", :force => true do |t|
+    t.string   "name"
+    t.integer  "company_id"
+    t.integer  "user_id"
+    t.boolean  "shared"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "system",     :default => false
+  end
+
+  add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
+  add_index "task_filters", ["user_id"], :name => "fk_task_filters_user_id"
 
   create_table "task_owners", :force => true do |t|
     t.integer "user_id"

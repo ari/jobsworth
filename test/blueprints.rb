@@ -59,3 +59,14 @@ Resource.blueprint do
   customer
   resource_type
 end
+
+TaskFilter.blueprint do
+  name
+  user
+  company { user.company }
+end
+
+Tag.blueprint do
+  company
+  name
+end

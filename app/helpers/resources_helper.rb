@@ -106,4 +106,55 @@ module ResourcesHelper
 
     return res
   end
+
+  ###
+  # Returns the html to display a query menu for the items in names_and_ids.
+  # Query menu elements can be clicked to add them to the task filter.
+  # If label is passed, that will be used as the label for the menu. If that is
+  # not passed, a pretty version of name will be used instead.
+  ###
+  def query_menu(name, names_and_ids, label = nil, &block)
+    options = {}
+    options[:label] = label || name.gsub(/filter_/, "").pluralize.titleize
+    options[:filter_name] = name
+    options[:names_and_ids] = names_and_ids
+    options[:callback] = block
+
+    return render(:partial => "/resources/querymenu", :locals => options)
+  end
+
+  # Returns the html to list the links to add filters to the current filter.
+  def add_filter_html(names_and_ids, filter_name, callback = nil, &block)
+    res = []
+    callback ||= block
+
+    names_and_ids.each do |name, id|
+      content = link_to_function(name, "addTaskFilter(this, '#{ id }', '#{ filter_name }[]')")
+      content += callback.call(id) if callback
+      classname = "add"
+      classname += " first" if res.empty?
+      res << content_tag(:li, content, :class => classname)
+    end
+
+    content = res.join(" ")
+    return content_tag(:ul, content, :class => "menu")
+  end
+
+  # Returns the html to display the selected values in the current filter.
+  def selected_filter_values(name, selected_names_and_ids, label = nil, default_label_text = "Any", &block)
+    label ||= name.gsub(/^filter_/, "").titleize
+    selected_names_and_ids ||= []
+
+    locals = {
+      :selected_names_and_ids => selected_names_and_ids,
+      :filter_name => name,
+      :all_label => _("[#{ default_label_text } %s]", label),
+      :unassigned => 0
+    }
+    locals[:display_all_label] = (selected_names_and_ids.any? ? "none" : "")
+
+    return render(:partial => "/resources/selected_filter_values", :locals => locals, &block)
+  end
+
+
 end

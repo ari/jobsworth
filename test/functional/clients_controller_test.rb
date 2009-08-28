@@ -4,8 +4,7 @@ class ClientsControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers
 
   def setup
-    @request.with_subdomain('cit')
-
+    login
     @user = users(:tester)
     @user.update_attributes(:read_clients => false, :edit_clients => false,
                            :create_clients => false, :admin => false, 

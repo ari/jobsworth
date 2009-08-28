@@ -144,6 +144,23 @@ h4 {
   padding-left: 10px;
   text-align: left;
 }
+#left_menu .section {
+    padding-bottom: 15px;
+}
+#left_menu .section ul {
+    margin: 0;
+    padding: 0;
+}
+#left_menu .section ul li {
+    list-style-type: none;
+    padding-bottom: 1px;
+}
+#left_menu .section ul li .small {
+    font-size: 75%;
+}
+#left_menu .task_filters .unread {
+    font-weight: bold;
+}
 
 .shout_body {
 }
@@ -2974,4 +2991,21 @@ table.tablesorter thead tr .headerSortUp {
 }
 table.tablesorter thead tr .headerSortDown {
 	background-image: url(/images/desc.gif);
+}
+
+/* tag cloud */
+.cloud .size1 {
+    font-size: 100%;
+}
+.cloud .size2 {
+    font-size: 110%;
+}
+.cloud .size3 {
+    font-size: 120%;
+}
+.cloud .size4 {
+    font-size: 130%;
+}
+.cloud .size5 {
+    font-size: 140%;
 }

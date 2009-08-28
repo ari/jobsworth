@@ -34,6 +34,10 @@ class Project < ActiveRecord::Base
     "#{customer.name} / #{name}"
   end
 
+  def to_s
+    name
+  end
+
   def to_css_name
     "#{self.name.underscore.dasherize.gsub(/[ \."',]/,'-')} #{self.customer.name.underscore.dasherize.gsub(/[ \.'",]/,'-')}"
   end

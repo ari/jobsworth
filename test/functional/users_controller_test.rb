@@ -5,9 +5,7 @@ class UsersControllerTest < ActionController::TestCase
   
   context "a logged in admin user" do
     setup do
-      @request.with_subdomain('cit')
-      @user = users(:admin)
-      @request.session[:user_id] = @user.id
+      login
     end
     
     should "should render edit" do
@@ -28,10 +26,8 @@ class UsersControllerTest < ActionController::TestCase
 
   context "a logged in non-admin user" do
     setup do
-      @request.with_subdomain("cit")
-      @user = users(:admin)
+      login
       @user.update_attribute(:admin, false)
-      @request.session[:user_id] = @user.id
     end
 
     should "restrict edit page to admin user" do

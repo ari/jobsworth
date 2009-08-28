@@ -65,6 +65,18 @@ module ActionController
   end
 end
 
+class ActionController::TestCase 
+
+  # Just set the session id to login
+  def login
+    @request.with_subdomain('cit')
+    @user = users(:admin)
+    @request.session[:user_id] = @user.id
+    @user.company.create_default_statuses
+  end
+
+end
+
 class ActionController::IntegrationTest 
   # Uses webrat to login to the system
   def login

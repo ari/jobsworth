@@ -11,13 +11,15 @@ class Company < ActiveRecord::Base
   has_many      :work_logs
   has_many      :project_files, :dependent => :destroy
   has_many      :shout_channels, :dependent => :destroy
-  has_many      :tags, :dependent => :destroy, :order => 'name'
+  has_many      :tags, :dependent => :destroy, :order => 'tags.name'
   has_many      :properties, :dependent => :destroy, :include => :property_values
   has_many      :property_values, :through => :properties
   has_many      :views, :dependent => :destroy
   has_many      :resources, :dependent => :destroy, :order => "lower(name)"
   has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
   has_many      :custom_attributes, :dependent => :destroy
+  has_many      :task_filters, :dependent => :destroy
+  has_many      :statuses, :dependent => :destroy, :order => "id asc"
 
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods
@@ -31,6 +33,7 @@ class Company < ActiveRecord::Base
   validates_uniqueness_of       :subdomain
 
   after_create :create_default_properties
+  after_create :create_default_statuses
 
   # Find the Internal client of this company.
   # A small kludge is needed,as it was previously called Internal, now it has the same
@@ -62,6 +65,11 @@ class Company < ActiveRecord::Base
 
     self.properties.reload
     return new_props
+  end
+
+  # Creates the default statuses for this company
+  def create_default_statuses
+    Status.create_default_statuses(self)
   end
 
   ###

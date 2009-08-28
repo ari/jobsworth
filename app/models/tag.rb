@@ -13,46 +13,36 @@ class Tag < ActiveRecord::Base
     tasks.count
   end
 
-  def Tag.top_counts(options = {})
-
-    task_ids = ''
-    if options[:filter_user].to_i > 0
-      task_ids = User.find(options[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
-    end
-
-    if options[:filter_user].to_i < 0
-      task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", options[:company_id]]).collect { |t| t.id }.join(',')
-    end
-
-    task_ids_str = "tasks.id IN (#{task_ids})" if task_ids != ''
-    task_ids_str = "tasks.id = 0" if task_ids == ''
-
-    @completed_milestone_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", options[:company_id]]).collect{ |m| m.id }.join(',')
-    @completed_milestone_ids = "-1" if @completed_milestone_ids == ''
-
-
-    customer_ids = TaskFilter.filter_ids(options, :filter_customer)
-    conditions = []
-    conditions << "tags.company_id = #{options[:company_id]}" if options[:company_id]
-    conditions << "tasks.project_id IN (#{options[:project_ids]})" if !options[:project_ids].to_s.blank?
-    conditions << "#{task_ids_str}" unless options[:filter_user].to_i == 0
-    conditions << "tasks.milestone_id = #{options[:filter_milestone]}" if options[:filter_milestone].to_i > 0
-    conditions << "tasks.milestone_id IS NULL" if options[:filter_milestone].to_i < 0
-    conditions << "(tasks.milestone_id NOT IN (#{@completed_milestone_ids}) OR tasks.milestone_id IS NULL)"
-    conditions << "tasks.hidden = 0" if options[:filter_status].to_i != -2
-    conditions << "tasks.hidden = 1" if options[:filter_status].to_i == -2
-    if customer_ids.any?
-      conditions << "projects.customer_id = #{options[:filter_customer]}"
-      conditions << "tasks.project_id = projects.id"
-    end 
-    conditions << "tags.name LIKE '#{options[:like]}%'" if options[:like]
-    conditions << "tags.id = task_tags.tag_id"
-    conditions << "tasks.id = task_tags.task_id"
-    Tag.count("tags.name", :conditions => conditions.join(' AND '), :joins => (customer_ids.any? ? ", task_tags, tasks, projects" : ", task_tags, tasks"), :group => "tags.name", :order => "count_tags_name desc,tags.name")
-  end
-
   def to_s
     self.name
+  end
+
+  # Returns an array of tag counts grouped by name for the given company
+  # All tags are retured by default - include task_conditions if you 
+  # need to restrict those counts
+  def self.top_counts(company, task_conditions = nil)
+    top_counts_as_tags(company).map { |tag, count| [ tag.name, count ] }
+  end
+
+  # Returns an array of tag counts grouped by tag.
+  # Uses Tag.top_counts.
+  def self.top_counts_as_tags(company, task_conditions = nil)
+    sql = <<-EOS
+          select tag_id, count(task_tags.task_id)
+          from task_tags
+          left join
+          tasks on task_tags.task_id = tasks.id
+          left join
+          task_owners on task_tags.task_id = task_owners.task_id
+          #{ task_conditions ? "where #{ task_conditions }" : "" }
+          group by tag_id
+    EOS
+    ids_and_counts = connection.select_rows(sql)
+
+    res = ids_and_counts.map do |id, count| 
+      [ company.tags.detect { |t| t.id == id.to_i }, count.to_i ] 
+      end
+    return res.sort_by { |tag, count| tag.name.downcase }
   end
 
 end

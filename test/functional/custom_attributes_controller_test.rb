@@ -4,8 +4,7 @@ class CustomAttributesControllerTest < ActionController::TestCase
   fixtures :users, :companies
   
   def setup
-    @request.with_subdomain('cit')
-    @request.session[:user_id] = users(:admin).id
+    login
   end
   
   test "/index should render :success" do

@@ -3,28 +3,6 @@ module TasksHelper
   def print_title
     filters = []
     title = "<div style=\"float:left\">"
-    status_ids = TaskFilter.filter_status_ids(session)
-    if status_ids.any?
-      statuses = status_ids.map { |id| Task.status_types[id] }
-      title << " #{ _('%s tasks', statuses.join(", ")) } ["
-    else
-      title << "#{_'Tasks'} ["
-    end
-
-    TaskFilter.filter_ids(session, :filter_customer).each do |id|
-      filters << Customer.find(id).name unless id == TaskFilter::ALL_CUSTOMERS
-    end
-
-    
-    TaskFilter.filter_ids(session, :filter_project).each do |id|
-      filters << Project.find(id).name unless id == TaskFilter::ALL_PROJECTS
-    end
-
-    TaskFilter.filter_user_ids(session, false).each do |id|
-      filters << User.find(id).name if id != TaskFilter::ALL_USERS and id > 0
-    end
-
-    filters << current_user.company.name if filters.empty?
 
     title << filters.join(' / ')
 
@@ -38,10 +16,10 @@ module TasksHelper
   # Returns true if the given tasks should be shown in the list.
   # The only time it won't return true is if the task is closed and the
   # filter isn't set to show the closed tasks.
+  # N.B This is unused and can be removed once list_old is
   ###
   def task_shown?(task)
-    status_ids = TaskFilter.filter_status_ids(session)
-    return (status_ids.empty? or status_ids.include?(task.status))
+    true
   end
 
   def render_task_dependants(t, depth, root_present)
@@ -96,9 +74,8 @@ module TasksHelper
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
     else
-      milestone_id = TaskFilter.new(self, session).milestone_ids.first
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => milestone_id || 0 }, perms['milestone'])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0 }, perms['milestone'])
     end
   end
 
@@ -237,19 +214,47 @@ module TasksHelper
                                   :after_update_element => "addUserToTask")
   end
 
-  ###
   # Returns links to filter the current task list by tags
-  ###
-  def tag_links(tags_to_counts_hash)
+  def tag_links
     links = []
-    
-    tags_to_counts_hash.each do |tag, count|
-      name = tag.name
-      links << link_to("#{ name } (#{ count })", params.merge(:tag => name))
+    tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql)
+    ranges = cloud_ranges(tags.map { |tag, count| count })
+
+    tags.each do |tag, count|
+      str = "#{ tag.name } (#{ count })"
+      link_params = {
+        :qualifiable_id => tag.id,
+        :qualifiable_type => tag.class.name
+      }
+
+      range = ranges.index { |r| r > count }
+      range ||= ranges.length
+      class_name = "size#{ range - 1 }"
+
+      link_params = { :qualifiers_attributes => [ link_params ] }
+      path = update_current_filter_task_filters_path(:task_filter => link_params)
+      links << link_to(str, path, :class => class_name)
     end
-    
-    links = links.sort.join(", ")
-    return links
+
+    return links.join(", ")
+  end
+
+  # Returns an array that show the start of ranges to be used
+  # for a tag cloud
+  def cloud_ranges(counts)
+    # there are going to be 5 ranges defined in css:
+    class_count = 5
+
+    max = counts.max || 0
+    min = counts.min || 0
+    divisor = ((max - min) / class_count) + 1
+
+    res = []
+    class_count.times do |i|
+      res << (i * divisor)
+    end
+
+    return res
   end
 
   ###

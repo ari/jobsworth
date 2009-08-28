@@ -1,20 +1,36 @@
 <div class="search_filter">
   <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter" %>
   <div id="search_filter_auto_complete" class="auto_complete"></div>
-  <%= auto_complete_field "search_filter", :url => "/filter", :after_update_element => "addSearchFilter" %>
+  <%= auto_complete_field "search_filter", :url => search_task_filters_path, :after_update_element => "addSearchFilter" %>
   <%= select_on_focus("#search_filter") %>
 
   <%= remote_filter_form_tag %>
   <% 
      redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
      redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
-     redir = url_for(redir_params.merge(:action => redir_action, :format => "js"))
+     redir = url_for({ :action => redir_action, :format => "js" }.merge(redir_params))
   -%>
   <input type="hidden" name="redirect_action" value="<%= redir %>" /> 
 
   <div class="links">
-    <%= all_current_filters.join(", ") -%>
+    <%= render :partial => "/task_filters/qualifier", :collection => current_task_filter.qualifiers %>
+    <%= render :partial => "/task_filters/keyword", :collection => current_task_filter.keywords %>
   </div>
 </form>
 </div>
 
+<% if !local_assigns[:hide_tabs] %>
+  <div class="right">
+    <small>
+      <%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %>
+    </small>
+    <br />
+    <small>
+      <%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %>
+    </small>
+  </div>
+  
+  <ul class="tabs">
+    <%= task_view_links %>
+  </ul>
+<% end %>

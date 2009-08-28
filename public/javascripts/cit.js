@@ -396,21 +396,40 @@ function removeSearchFilter(link) {
     var form = link.parents("form");
     link.parent(".search_filter").remove();
 
-    form[0].onsubmit();
+    submitSearchFilterForm();
 }
 
 function addSearchFilter(textField, selected) {
+    var filter = jQuery("#search_filter");
+    filter.val(jQuery.trim(filter.val()));
+
     selected = jQuery(selected);
     var idField = selected.find(".id");
+    var typeField = selected.find(".type");
     
     if (idField && idField.length > 0) {
 	var filterForm = jQuery("#search_filter_form");
-	var clone = idField.clone();
-	filterForm.append(clone);
-	filterForm[0].onsubmit();
+	filterForm.append(idField.clone());
+	filterForm.append(typeField.clone());
+	submitSearchFilterForm();
     }
     else {
 	// probably selected a heading, just ignore
+    }
+}
+
+/* 
+Submits the search filter form. If we are looking at the task list, 
+does that via ajax. Otherwise does a normal html post
+*/
+function submitSearchFilterForm() {
+    var form = jQuery("#search_filter_form")[0];
+    var redirect = jQuery(form.redirect_action).val();
+    if (redirect.indexOf("/tasks/list?") >= 0) {
+	form.onsubmit();
+    }
+    else {
+	form.submit();
     }
 }
 
@@ -859,7 +878,7 @@ function saveSortParams(event) {
     }
 
     selected = jQuery.trim(selected.text());
-    jQuery.post("/filter/set_single_task_filter", {
+    jQuery.post("/task_filters/set_single_task_filter", {
     	name : "sort",
     	value : (selected + "_" + direction)
     });

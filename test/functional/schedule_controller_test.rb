@@ -5,8 +5,7 @@ class ScheduleControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks
   
   def setup
-    @request.with_subdomain("cit")
-    @request.session[:user_id] = users(:admin).id
+    login
   end
 
   test "/gantt should display and assign some tasks" do

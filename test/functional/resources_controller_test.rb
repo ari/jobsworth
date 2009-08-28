@@ -4,11 +4,10 @@ class ResourcesControllerTest < ActionController::TestCase
   fixtures :companies, :users
 
   def setup
-    @request.with_subdomain("cit")
-    user = users(:admin)
+    login
+    user = @user
     user.use_resources = true
     user.save!
-    @request.session[:user_id] = user.id
 
     company = user.company
     @type = company.resource_types.build(:name => "test")

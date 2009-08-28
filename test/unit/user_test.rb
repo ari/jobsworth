@@ -3,6 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
 
+  should_have_many :task_filters, :dependent => :destroy
+
   def setup
     @user = users(:admin)
   end
@@ -223,6 +225,31 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil task
     @user.projects.clear
     assert !@user.can_view_task?(task)
+  end
+
+  context "a user belonging to a company with a few filters" do
+    setup do
+      another_user = (@user.company.users - [ @user ]).rand
+      assert_not_nil another_user
+
+      @filter = TaskFilter.make(:user => @user)
+      @filter1 = TaskFilter.make(:user => another_user, :shared => false)
+      @filter2 = TaskFilter.make(:user => another_user, :shared => true)
+      @filter3 = TaskFilter.make(:user => @user, :system => true)
+    end
+
+    should "return own filters from task_filters" do
+      assert @user.visible_task_filters.include?(@filter)
+    end
+    should "return shared filters from task_filters" do
+      assert @user.visible_task_filters.include?(@filter2)
+    end
+    should "not return others user's filters from task_filters" do
+      assert !@user.visible_task_filters.include?(@filter1)
+    end
+    should "not return system filters" do
+      assert !@user.visible_task_filters.include?(@filter3)
+    end
   end
 
 end

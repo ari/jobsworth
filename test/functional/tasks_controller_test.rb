@@ -7,6 +7,7 @@ class TasksControllerTest < ActionController::TestCase
     @request.with_subdomain('cit')
     @user = users(:admin)
     @request.session[:user_id] = @user.id
+    @user.company.create_default_statuses
   end
   
   test "/edit should render :success" do
@@ -32,7 +33,7 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "/list should render :success" do
+  test "/list_old should render :success" do
     company = companies("cit")
 
     # need to create a task to ensure the task partials get rendered
@@ -48,7 +49,7 @@ class TasksControllerTest < ActionController::TestCase
     assert group.length > 0
   end
 
-  test "/list should works with tags" do
+  test "/list_old should works with tags" do
     company = companies("cit")
     user = company.users.first
     @request.session[:filter_user] = [ user.id.to_s ]
@@ -66,6 +67,20 @@ class TasksControllerTest < ActionController::TestCase
     # ensure at least 1 task was rendered
     group = assigns["groups"].first
     assert group.length > 0
+  end
+
+  test "/list should render :success" do
+    company = companies("cit")
+
+    # need to create a task to ensure the task partials get rendered
+    task = Task.new(:name => "Test", :project_id => company.projects.last.id)
+    task.company = company
+    task.save!
+
+    get :list
+    assert_response :success
+
+    assert assigns["tasks"].include?(task)
   end
 
   test "/update should render form ok when failing update" do
@@ -150,86 +165,6 @@ class TasksControllerTest < ActionController::TestCase
     assert_equal 7200, log.duration
     assert_equal "test body", log.body
     assert log.comment?
-  end
-
-  context "a few customers, projects,  milestones and tasks" do
-    setup do
-      @company = @user.company
-
-      3.times do |i|
-        customer = @company.customers.make(:name => "test customer #{ i }")
-        2.times do
-          project_with_some_tasks(@user, :customer => customer, 
-                                  :make_milestones => true)
-        end
-      end
-    end
-
-    should "filter tasks on customer" do
-      customer1 = @company.customers[-1]
-      customer2 = @company.customers[-2]
-      total_tasks = 0
-      customer1.projects.each { |p| total_tasks += p.tasks.count }
-      customer2.projects.each { |p| total_tasks += p.tasks.count }
-      assert total_tasks > 0
-
-      @request.session[:filter_customer] = [ customer1.id, customer2.id ]
-      get :list
-
-      tasks = assigns("tasks")
-      assert_equal total_tasks, tasks.length
-      bad_tasks = tasks.delete_if do |t| 
-        t.project.customer == customer1 or t.project.customer == customer2
-      end
-      assert bad_tasks.empty?
-    end
-
-    should "filter tasks on milestone" do
-      milestone = @company.milestones.detect { |m| m.tasks.count > 0 }
-      assert milestone.tasks.any?
-
-      @request.session[:filter_milestone] = milestone.id
-      get :list
-
-      tasks = assigns("tasks")
-      assert_equal milestone.tasks.length, tasks.length
-      bad_tasks = tasks.delete_if { |t| t.milestone == milestone }
-      assert bad_tasks.empty?
-    end
-
-    should "filter tasks on project" do
-      project = @company.projects.last
-      assert project.tasks.any?
-
-      @request.session[:filter_project] = project.id
-      get :list
-
-      tasks = assigns("tasks")
-      assert_equal project.tasks.length, tasks.length
-      bad_tasks = tasks.delete_if { |t| t.project == project }
-      assert bad_tasks.empty?
-    end
-
-    should "filter tasks on custom properties" do
-      property = @company.properties.first
-      value = property.property_values.last
-      assert_not_nil value
-
-      count = 5
-      count.times do |i|
-        t = @company.tasks[i]
-        t.task_property_values.build(:property => property, 
-                                     :property_value => value).save!
-      end
-
-      @request.session[property.filter_name] = value.id
-      get :list
-
-      tasks = assigns("tasks")
-      assert_equal count, tasks.length
-      bad_tasks = tasks.delete_if { |t| t.property_value(property) == value }
-      assert bad_tasks.empty?
-    end
   end
 
 end

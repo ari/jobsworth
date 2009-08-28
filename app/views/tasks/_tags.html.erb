@@ -5,12 +5,8 @@
       <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
     </div>
 
-    <% if @selected_tags.any? %>
-      <span class="tag_active">
-	<%= link_to _("[All Tags]") %>
-      </span>
-    <% end %>
-
-    <%= tag_links(@all_tags) %>
+    <div class="cloud">
+      <%= tag_links %>
+    </div>
   </div>
 <% end %>

@@ -43,6 +43,8 @@ class User < ActiveRecord::Base
 
   has_many      :chats, :conditions => ["active = 0 OR active = 1"], :dependent => :destroy
   has_many      :chat_requests, :foreign_key => 'target_id', :class_name => 'Chat', :dependent => :destroy
+
+  has_many      :task_filters, :dependent => :destroy
   
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
@@ -242,7 +244,22 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project)
+    projects.include?(task.project) || task.users.include?(self)
+  end
+
+  # Returns a fragment of sql to restrict tasks to only the ones this 
+  # user can see
+  def user_tasks_sql
+    res = []
+    if self.projects.any?
+      project_ids = self.projects.map { |p| p.id }.join(",")
+      res << "tasks.project_id in (#{ project_ids })"
+    end
+
+    res << "task_owners.user_id = #{ self.id }"
+    
+    res = res.join(" or ")
+    return "(#{ res })"
   end
 
   def currently_online
@@ -317,6 +334,15 @@ class User < ActiveRecord::Base
 
     str.join(" ")
   end
-  
+
+  # Returns an array of all task filters this user can see
+  def visible_task_filters
+    if @visible_task_filters.nil?
+      @visible_task_filters = (task_filters.visible + company.task_filters.shared.visible)
+      @visible_task_filters = @visible_task_filters.sort_by { |tf| tf.name.downcase.strip }
+    end
+
+    return @visible_task_filters
+  end
 
 end

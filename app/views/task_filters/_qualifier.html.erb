@@ -1,0 +1,9 @@
+<span class="search_filter">
+  <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_id]", qualifier.qualifiable_id, :class => "id" %>
+  <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", qualifier.qualifiable_type, :class => "type" %>
+  
+  <%= qualifier.qualifiable_type == "PropertyValue" ? qualifier.qualifiable.property.name : qualifier.qualifiable_type %>:
+  <%= qualifier.qualifiable %>
+  <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
+  &nbsp;
+</span>

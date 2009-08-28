@@ -5,7 +5,9 @@ class ActivitiesControllerTest < ActionController::TestCase
   
   def setup
     @request.with_subdomain('cit')
-    @request.session[:user_id] = users(:admin).id
+    @user = users(:admin)
+    @request.session[:user_id] = @user.id
+    @user.company.create_default_statuses
   end
   
   test "/index should render :success" do

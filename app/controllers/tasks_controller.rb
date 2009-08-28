@@ -9,18 +9,7 @@ class TasksController < ApplicationController
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
- 
-    tf = TaskFilter.new(self, @session)
-    project_ids = @projects.map { |p| p[1] }
 
-    if !project_ids.include?(tf.project_ids.first)
-      session[:last_project_id] = nil
-    end
-
-    if !project_ids.include?(tf.project_ids.first)
-      session[:filter_project] = nil
-    end
-    
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
@@ -29,7 +18,7 @@ class TasksController < ApplicationController
       @task = Task.new
       @task.company = current_user.company
       @task.duration = 0
-      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
+      @tags = Tag.top_counts(current_user.company)
       @task.users << current_user
     end
 
@@ -44,40 +33,14 @@ class TasksController < ApplicationController
   end
   
   def list_old
-    # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{current_user.company_id}"]
-
+    list_init
     @tags = {}
-    @tags.default = 0
     @tags_total = 0
-    project_ids = TaskFilter.filter_ids(session, :filter_project)
-
-    if project_ids.include?(0) or project_ids.empty?
-      project_ids = current_project_ids
-    else
-      project_ids = session[:filter_project]
-    end
-
-    task_filter = TaskFilter.new(self, params)
-    @selected_tags = task_filter.selected_tags || []
-    @tasks = task_filter.tasks
-    @all_tags = task_filter.tag_counts
-
     @group_ids, @groups = group_tasks(@tasks)
   end
 
   def list
-    # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{current_user.company_id}"]
-
-    @tags = {}
-    @tags.default = 0
-    @tags_total = 0
-
-    task_filter = TaskFilter.new(self, params)
-    @selected_tags = task_filter.selected_tags || []
-    @tasks = task_filter.tasks
-    @all_tags = task_filter.tag_counts
+    list_init
 
     respond_to do |format|
       format.html # list.html.erb
@@ -231,7 +194,7 @@ class TasksController < ApplicationController
       return if request.xhr?
 
       @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
-      @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
+      @tags = Tag.top_counts(current_user.company)
       @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
       @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
       @notify_targets = @notify_targets.flatten.uniq
@@ -1648,7 +1611,7 @@ class TasksController < ApplicationController
   ###
   def init_form_variables(task)
     task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
-    @tags = Tag.top_counts({ :company_id => current_user.company_id, :project_ids => current_project_ids, :filter_hidden => session[:filter_hidden]})
+    @tags = {}
 
     @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", task.id], :include => [:user, :task, :project])
     @logs ||= []
@@ -1728,6 +1691,13 @@ class TasksController < ApplicationController
     end
     
     log.task.save
+  end
+
+  # setup some instance variables for task list views
+  def list_init
+    # Subscribe to the juggernaut channel for Task updates
+    session[:channels] += ["tasks_#{current_user.company_id}"]
+    @tasks = current_task_filter.tasks
   end
 
 end
