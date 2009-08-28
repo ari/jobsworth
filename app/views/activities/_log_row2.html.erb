@@ -1,4 +1,6 @@
-<% date_format = current_user.time_format %>
+<%= log.user.name if log.user %>
+<%= log.event_log.user if log.user.nil? && log.event_log.user %>
+<%= log.scm_changeset.author if log.scm_changeset && !log.user %>
 
 <div class="log_entry">
 <span class="log_time">
@@ -18,9 +20,7 @@
 
 
 <h4 class="log_name">
-<%= log.user.name if log.user %>
-<%= log.event_log.user if log.user.nil? && log.event_log.user %>
-<%= log.scm_changeset.author if log.scm_changeset && !log.user %>
+<% date_format = current_user.time_format %>
 </h4>
 
 <p class="log_comment">

@@ -1,8 +1,8 @@
 <fieldset id="task_information">
-  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:100%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %> <br />
+  <%= text_area_tag 'comment', params[:comment], { :rows => 8, :style => "width:100%;", :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %>
   
   <div id="upload_container">
-   <label for="task_tmp_file"><%=_ 'Attach a file to this task' %></label> 
+   <label for="task_tmp_file"><%=_ 'Attach a file' %></label> 
     <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
   
   <% if perms['comment'].empty? %>
@@ -14,5 +14,19 @@
   <% end %>
   </div>
   
+  <div id="worktime_container">
+
+  <% fields_for "work_log" do |f| -%>
+  	<label>Time spent</label>
+	    <%= f.text_field :duration, :class => "text" %><br>
+    <%= f.label :started_at, _("Start") %>
+    <%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
+
+    <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
+  <% end -%>
+  </div>
+  
+  <br style="clear: both;">
   <%= cit_submit_tag(@task) %>
+
 </fieldset>
