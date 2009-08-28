@@ -7,31 +7,18 @@ class TaskFiltersController < ApplicationController
     return if @filter.blank?
 
     @filter = @filter.downcase
-    name_conds = [ "lower(name) like ?", "#{ @filter }%" ]
     limit = 10
+    company = current_user.company
 
     @to_list = []
+    @to_list << [ _("Clients"), current_user.customers(:conditions => name_conds("customers."), :limit => limit) ]
+    @to_list << [ _("Projects"), current_user.all_projects.all(:conditions => name_conds, :limit => limit) ]
+    @to_list << [ _("Users"), company.users.all(:conditions => name_conds, :limit => limit) ]
+    @to_list << [ _("Milestones"), current_user.milestones(:conditions => name_conds("milestones."), :limit => limit) ]
+    @to_list << [ _("Tags"), company.tags.all(:conditions => name_conds, :limit => limit) ]
+    @to_list << [ _("Status"), company.statuses.all(:conditions => name_conds, :limit => limit) ]
 
-    c = current_user.company
-
-    customers = c.customers.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Clients"), customers ]
-
-    projects = c.projects.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Projects"), projects ]
-
-    users = c.users.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Users"), users ]
-
-    milestones = c.milestones.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Milestones"), milestones ]
-
-    tags = c.tags.all(:conditions => name_conds, :limit => limit)
-    @to_list << [ _("Tags"), tags ]
-
-    @to_list << [ _("Status"), c.statuses.all(:conditions => name_conds, :limit => limit) ]
-
-    current_user.company.properties.each do |property|
+    company.properties.each do |property|
       values = property.property_values.all(:conditions => [ "value like ?", "#{ @filter }%" ])
       @to_list << [ property, values ] if values.any?
     end
@@ -118,5 +105,11 @@ class TaskFiltersController < ApplicationController
     end
 
     redirect_to "/tasks/list"
+  end
+
+  private
+
+  def name_conds(prefix = nil)
+    name_conds = [ "lower(#{ prefix }name) like ?", "#{ @filter }%" ]
   end
 end
