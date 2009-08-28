@@ -2,6 +2,11 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+28 August 2009
+	The task edit view is now an integral part of the task list view. This is a major change to the user interface, but will make it much faster to move through tasks and make changes.
+	
+	A completely rewritten task filter system is now in place. This means that all existing filters will be lost and you will need to recreate them all from scratch. However the new system is much faster and more extendable and gives us opportunities to do things like display unread counts against each filter. Already keywords and tags have been added to the filter system.
+
 18 August 2009
 	The QuickAdd feature for quickly adding tasks has been removed. The code has not been maintained for a long time and is now broken with regard to the new features added to tasks this year. Also, the QuickAdd takes much longer to open on the browser than the regular New Task, so there is nothing quick about it. For these reasons it was decided to remove the code and focus on improving speed and usability of the existing task edit view.
 
