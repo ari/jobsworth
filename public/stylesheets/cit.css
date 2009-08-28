@@ -1553,7 +1553,7 @@ a.description {
 #task_sidebar fieldset { margin-bottom: 20px; border-top: 1px solid #eee; }
 #task_sidebar fieldset legend { padding-left: 0px; }
 
-input#task_name { font-size: 20px; }
+input#task_name { font-size: 16px; }
 
 fieldset#task_attachments { clear: both; padding: 0px; }
 
