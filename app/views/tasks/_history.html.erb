@@ -1,6 +1,4 @@
-<!--<div class="page_header"><%= _ 'History' %></div>-->
-
-<span style="float:right">
+<span class="right">
 <% if session[:only_comments].to_i == 0 %>
            <%= link_to_remote _('Showing Full History'), :url => {:action => 'toggle_history', :id => @task.id },
                                    :loading => "showProgress();",
@@ -14,9 +12,8 @@
 <% end %>
 </span>
 <div class="log_history clearfix">
-<%
-@logs ||= []
-@logs.each do |log|
+<% @logs ||= []
+   @logs.each do |log|
 %>
 	<%= render :partial => 'activities/log_row2', :locals => {:log => log} %>
 <% end %>

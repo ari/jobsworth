@@ -11,7 +11,7 @@
 	</div>
 	<div id="task_addcomment">
 		<div>
-	    <%= render(:partial => "new_comment") %>
+	    	<%= render(:partial => "new_comment") %>
 	    </div>
 	    
 		<div class="page_header">
@@ -22,7 +22,7 @@
 				</a>
 			</span>
 		</div>
-		<%= render :partial => "tasks/todo_container", :locals => {:task => @task, :depth => 0} %>
+		<%= render :partial => "todo_container", :locals => {:task => @task, :depth => 0} %>
 		<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>
 
 	    <div id="task_history">
