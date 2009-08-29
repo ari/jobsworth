@@ -1,5 +1,5 @@
 <div class="search_filter">
-  <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter" %>
+  <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :autocomplete =>"off" %>
   <div id="search_filter_auto_complete" class="auto_complete"></div>
   <%= auto_complete_field "search_filter", :url => search_task_filters_path, :after_update_element => "addSearchFilter" %>
   <%= select_on_focus("#search_filter") %>

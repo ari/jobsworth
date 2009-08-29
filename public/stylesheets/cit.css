@@ -2975,13 +2975,10 @@ div.search_filter {
     font-size: 20px;
     width: 50%;
 }
-#search_filter_auto_complete {
-    width: 50%;
-    background-color: #fff;
-}
 #search_filter_auto_complete ul {
-    background-color: #fff;
-    border:1px solid #888;
+    background-color: black;
+    opacity: 0.8;
+    border:0;
     margin:0;
     padding:0;
     width:100%;
@@ -2989,14 +2986,22 @@ div.search_filter {
     z-index: 100;
 }
 #search_filter_auto_complete ul li {
-    background-color: #fff;
-    font-size: 20px;
+    color: white;
+    font-size: 12px;
     margin:0;
     padding:3px;
+    padding-left:10px;
     cursor:pointer;
+    text-align: left;
+}
+#search_filter_auto_complete ul li.heading {
+    cursor: default;
+    font-weight: bold;
+    padding-top: 15px;
+    font-size: 14px;
 }
 #search_filter_auto_complete ul li.selected {
-    background-color: #ffb;
+    background-color: #444400;
 }
 #search_filter_form .links {
     padding-top: 5px;
