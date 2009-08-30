@@ -36,6 +36,22 @@ span.divider {
 	text-align: right;
 }
 
+dl {
+}
+
+dt {
+  font-size: 11px;
+  color: #999999;
+  display: inline;
+  clear: both;
+  float: left;
+  width: 100px;
+}
+
+dd {
+	display: inline;
+	float: left;
+}
 /*-----------*/
 
 a {
@@ -2401,11 +2417,9 @@ a.widget-collapsed {
 
 .user-heading { 
   clear: both;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-top: 1em;
   border-bottom: 1px solid #ccc;
   position: relative;
-  height: 32px;
 }
 
 .user-avatar { 
