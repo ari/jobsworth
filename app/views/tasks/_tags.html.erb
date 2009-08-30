@@ -1,12 +1,12 @@
 <% content_for(:side_panel) do %>
-  <div id="tags">
-    <div class="page_header">
-      <%=_ 'Tags' %>
-      <% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
-    </div>
-
-    <div class="cloud">
-      <%= tag_links %>
-    </div>
-  </div>
+	<div id="tags">
+		<div class="page_header">
+			<%=_ 'Tags' %>
+			<% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+		</div>
+	
+		<div class="cloud">
+			<%= tag_links %>
+		</div>
+	</div>
 <% end %>

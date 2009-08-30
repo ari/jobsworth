@@ -219,9 +219,9 @@ module TasksHelper
     links = []
     tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql)
     ranges = cloud_ranges(tags.map { |tag, count| count })
-
+	
     tags.each do |tag, count|
-      str = "#{ tag.name } (#{ count })"
+      str = "#{ tag.name }"
       link_params = {
         :qualifiable_id => tag.id,
         :qualifiable_type => tag.class.name
@@ -229,7 +229,7 @@ module TasksHelper
 
       range = ranges.index { |r| r > count }
       range ||= ranges.length
-      class_name = "size#{ range - 1 }"
+      class_name = "size#{ range }"
 
       link_params = { :qualifiers_attributes => [ link_params ] }
       path = update_current_filter_task_filters_path(:task_filter => link_params)
