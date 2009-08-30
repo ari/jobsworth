@@ -566,7 +566,6 @@ fieldset input {
   margin-top: 0.5em;
   margin-right: 0.1em;
   margin-bottom: 0.2em;
-  font-size: 13px;
 }
 
 fieldset#task_information input { float: none; }
