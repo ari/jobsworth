@@ -19,7 +19,7 @@
 
   <label for="resource_type"><%= _("Type") %></label>
   <%= f.select(:resource_type_id, resource_types_options_array, { :include_blank => true }, :onChange => "updateResourceAttributes(this)") %>
-  <br clear="both" />
+  <br clear="all" />
 
   <fieldset>
     <legend><%= _("Attributes") %></legend>
