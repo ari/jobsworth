@@ -1,45 +1,4 @@
 <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
-	<%= hidden_field("task", "id") %>
-	<%= error_messages_for 'task' %>
-	<div id="task_sidebar">
-	    <%= render(:partial => "details") %>
-	    <%= render(:partial => "attributes") %>
-	    <%= render(:partial => "notifications") %>
-	    <%= render(:partial => "dependencies") %>
-	    <%= render(:partial => "attachments") %>
-	    <%= render(:partial => "resources") %>
-	</div>
-	<div id="task_addcomment">
-		<div>
-	    	<%= render(:partial => "new_comment") %>
-	    </div>
-	    
-		<div class="page_header">
-			<%= _("To-do") %>
-			<span id="todo-status-<%= @task.dom_id %>">
-				<a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;">
-				<%= @task.todo_status %>
-				</a>
-			</span>
-		</div>
-		<%= render :partial => "todo_container", :locals => {:task => @task, :depth => 0} %>
-		<script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>
-
-	    <div id="task_history">
-	      <%= render(:partial => "history") %>
-	    </div>
-	</div>
-		
-	<script type="text/javascript">
-	jQuery('#task_status').change(function() {
-		if( jQuery('#task_status').val() == "6" ) {
-			jQuery('#defer_options').show();
-		} else {
-			jQuery('#defer_options').hide();
-		}
-		return false;
-	});
-	jQuery('#comment').focus();
-	</script>
+  <%= render :partial => "form" %>
 <% end %>
 
