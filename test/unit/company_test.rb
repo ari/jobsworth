@@ -12,6 +12,7 @@ class CompanyTest < ActiveRecord::TestCase
   def setup
     @company = companies(:cit)
   end
+  subject { @company }
 
   def test_truth
     assert_kind_of Company,  @company
