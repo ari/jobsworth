@@ -94,9 +94,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    <% else %>
      <%= link_to_task(task, false, @keys)  -%>
    <% end %>
-     <span id="todo-status-<%= task.dom_id %>">
-       <a class="<%=(task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" href="#" onclick="jQuery('#todo-container-<%=task.dom_id%>').toggle(); Sortable.create('todo-<%=task.dom_id%>', {containment:'todo-<%=task.dom_id%>', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/<%=task.id%>', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize('todo-<%=task.dom_id%>')})}, only:'todo-active'}); return false;"><%=task.todo_status%></a>
-     </span>
      <%  if current_user.option_tracktime.to_i == 1 -%>
      <% if task.duration.to_i > 0 -%>
        <span class="<%=task.worked_and_duration_class%>"><%="(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})"%></span>
@@ -122,7 +119,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
    </div>
 
    </div>
-   <%= render :partial => 'tasks/todo_container', :locals => { :task => task, :depth => depth } %>
 </div>
 
 <% if can_organize? -%>

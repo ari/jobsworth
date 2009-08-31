@@ -1,5 +1,0 @@
-page.visual_effect :fade, @todo.dom_id
-page.replace_html "todo-status-#{@task.dom_id}", link_to_function( "#{@task.todo_status}", "jQuery('#todo-container-#{@task.dom_id}').toggle();", :class => (@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link"))
-page.delay(1.0) do
-  page.remove @todo.dom_id
-end
