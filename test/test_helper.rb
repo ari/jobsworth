@@ -73,6 +73,8 @@ class ActionController::TestCase
     @user = users(:admin)
     @request.session[:user_id] = @user.id
     @user.company.create_default_statuses
+    
+    return @user
   end
 
 end

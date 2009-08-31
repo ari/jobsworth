@@ -14,16 +14,17 @@
   </div>
   
   <% if !@task.new_record? -%>
-  <div class="page_header">
-    <%= _("To-do") %>
-    <span id="todo-status-<%= @task.dom_id %>">
-      <a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container-<%=@task.dom_id%>').toggle(); return false;">
-	<%= @task.todo_status %>
-      </a>
-    </span>
-  </div>
-  <%= render :partial => "todo_container", :locals => {:task => @task, :depth => 0} %>
-  <script type="text/javascript">jQuery('#todo-container-<%=@task.dom_id%>').show();</script>
+    <div class="page_header">
+      <%= _("To-do") %>
+      <span id="todo-status-<%= @task.dom_id %>">
+	<a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container').toggle(); return false;">
+	  <%= @task.todo_status %>
+	</a>
+      </span>
+    </div>
+    <div id="todo-container" class="todo-container">
+      <%= render :partial => "/todos/todos" %>
+    </div>
   <% end -%>
 
   <div id="task_history">

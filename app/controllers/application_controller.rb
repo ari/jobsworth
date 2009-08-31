@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   helper :users
   helper :date_and_time
   helper :javascript
+  helper :todos
 
 #  helper :all
 
@@ -399,6 +400,17 @@ class ApplicationController < ActionController::Base
   # if none set)
   def current_task_filter
     @current_task_filter ||= TaskFilter.system_filter(current_user)
+  end
+
+  # Redirects to the last page this user was on. If the current
+  # request is using ajax, uses js to do the redirect.
+  def redirect_back_using_js_if_needed
+    url = "/tasks/list" # default
+    if session[:history] && session[:history].any?
+      url = session[:history][0]
+    end
+
+    redirect_using_js_if_needed(url)
   end
 
   # Redirects to the given url. If the current request is using ajax,

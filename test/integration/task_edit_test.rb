@@ -104,7 +104,7 @@ class TaskEditTest < ActionController::IntegrationTest
 
           fill_in "work_log_started_at", :with => date
           fill_in "work_log_duration", :with => "5m"
-          fill_in "work_log_body", :with => "some work log notes"
+          fill_in "comment", :with => "some work log notes"
           click_button "save"
           
           log = @task.reload.work_logs.detect { |wl| wl.duration == 300 }

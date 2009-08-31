@@ -253,7 +253,7 @@ class User < ActiveRecord::Base
   def user_tasks_sql
     res = []
     if self.projects.any?
-      res << "tasks.project_id in (#{ all_project_ids })"
+      res << "tasks.project_id in (#{ all_project_ids.join(",") })"
     end
 
     res << "task_owners.user_id = #{ self.id }"
