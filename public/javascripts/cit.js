@@ -42,80 +42,6 @@ jQuery("#loading").bind("ajaxSend", function(){
 
 // -------------------------
 
-
-function tip(myEvent,tip){
-  var scrollposY=0;
-  if (window.pageYOffset){
-    scrollposY = window.pageYOffset;
-  }
-  else if (document.documentElement && document.documentElement.scrollTop){
-    scrollposY = document.documentElement.scrollTop;
-  }
-  else if (document.getElementById("body").scrollTop){
-    scrollposY = document.getElementById("body").scrollTop;
-  }
-
-
-  var el = Event.element(myEvent);
-  var taskId = null;
-  if( el.toString().include("tasks/edit/") ) {
-    var elements = el.toString().split("/");
-    taskId = elements[elements.size()-1];
-  }
-
-  if(taskId != null) {
-    var comment = comments.get(taskId);
-    if( comment != null && comment != "" ) {
-      var elements = comment.split("<br/>");
-      var author = elements.shift();
-
-      tip = tip.replace("</table>", "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr></table>");
-    }
-  }
-
-  document.getElementById("message").innerHTML= tip;
-
-  var height = $("message").offsetHeight;
-  var width = $("message").offsetWidth;
-  var winwidth = (typeof(window.innerWidth) != 'undefined') ? window.innerWidth + self.pageXOffset - 20 : document.documentElement.clientWidth + document.documentElement.scrollLeft;
-  var winBottom = (typeof(window.innerHeight) != 'undefined') ? window.innerHeight + self.pageYOffset - 20 : document.documentElement.clientHeight + document.documentElement.scrollTop;
-
-  var top = scrollposY + myEvent.clientY + 15;
-
-  if((top + height) > winBottom ) {
-    top = top - height - 25;
-  }
-
-  document.getElementById("tip").style.top = top + "px";
-
-  var left = myEvent.clientX - 25;
-  if( left < 0 ) {
-    left = 0;
-  }
-
-  if( (left + width) > winwidth ) {
-    left = winwidth - width - 5;
-  }
-
-  document.getElementById("tip").style.left = left +"px";
-  document.getElementById("tip").style.zIndex=99;
-  document.getElementById("tip").style.visibility="visible";
-
-  if( el.toString().include("tasks/edit/") && comments.get( taskId ) == null && fetchTimeout == null ) {
-    fetchElement = el;
-    fetchTimeout = setTimeout('fetchComment(fetchElement)', 1000);
-  }
-}
-
-function hide(e){
-  document.getElementById("tip").style.visibility="hidden";
-  if(fetchTimeout != null) {
-    clearTimeout(fetchTimeout);
-    fetchTimeout = null;
-    fetchElement = null;
-  }
-}
-
 function fetchComment(e) {
   var elements = e.toString().split("/");
   var taskId = elements[elements.size()-1];
@@ -131,25 +57,6 @@ function updateComment(taskId) {
       Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
     }
   }
-}
-
-function makeTooltips(show) {
-  $$('.tooltip').each( function(el) {
-      if( show == 1 ) {
-        var tooltip = el.title.replace(/&quot;/, "\"").replace(/&gt;/,"<").replace(/&lt;/,">");
-        Event.observe(el, "mousemove", function(e) { tip(e, tooltip ); });
-        Event.observe(el, "mouseout", function(e) { hide(e); });
-      }
-      el.title = '';
-      Element.removeClassName(el, 'tooltip');
-    } );
-
-  Event.observe(document, "mousedown", function(e) {hide(e);} );
-  show_tooltips = show;
-}
-
-function updateTooltips() {
-  makeTooltips(show_tooltips);
 }
 
 function init_shout() {
@@ -340,7 +247,6 @@ function clearOtherDefaults(sender) {
 
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
-    updateTooltips();
 
     jQuery("#task_list").resizable({
 	resize: function(event, ui) {

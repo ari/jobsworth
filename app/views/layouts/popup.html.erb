@@ -26,17 +26,13 @@
         </td>
       </tr>
     </table>
-
-<script type="text/javascript" language="javascript" charset="utf-8">
-var userId=<%=current_user.id%>;
-jQuery(document).ready(function () {
 <% if current_user.option_tooltips.to_i == 1 %>
-  makeTooltips(1);
-<% else %>
-  makeTooltips(0);
-<% end %>
+<script type="text/javascript" language="javascript" charset="utf-8">
+jQuery(document).ready(function () {
+	  jQuery('.tooltip').tooltip({showURL: false });
 });
 </script>
+<% end %>
 
 </body>
 </html>
