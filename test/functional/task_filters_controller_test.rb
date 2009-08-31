@@ -20,7 +20,8 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     should "return nothing with an empty search" do
       get :search
-      assert_equal "<ul></ul>", @response.body.gsub("\n", "")
+      body = @response.body.gsub(/\s/, "")
+      assert_equal "<ul></ul>", body
     end
 
     should "be able to search by task project" do

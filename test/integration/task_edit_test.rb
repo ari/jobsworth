@@ -24,9 +24,9 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to edit information" do
-          fill_in "title", :with => "a new title"
+          fill_in "task_name", :with => "a new title"
           fill_in "tags", :with => "t1, t2"
-          fill_in "description", :with => "a new description"
+          fill_in "task_description", :with => "a new description"
           
           click_button "save"
           
