@@ -1098,19 +1098,24 @@ class Task < ActiveRecord::Base
 
   # Creates a new work log for this task using the given params
   def create_work_log(params, user)
-    if params and !params[:duration].blank?
-      params[:duration] = TimeParser.parse_time(user, params[:duration])
-      params[:started_at] = TimeParser.date_from_params(user, params, :started_at)
-      if params[:body].blank?
-        params[:body] = self.description
+    work_log_params = params[:work_log]
+
+    if work_log_params and !work_log_params[:duration].blank?
+      work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
+      work_log_params[:started_at] = TimeParser.date_from_params(user, work_log_params, :started_at)
+      if work_log_params[:body].blank?
+        body = params.delete(:comment)
+        body = self.description if body.blank?
+        work_log_params[:body] = body
       end
-      params.merge!(:user => user,
+      work_log_params.merge!(:user => user,
                     :company => self.company, 
                     :project => self.project, 
                     :customer => (self.customers.first || self.project.customer))
-      self.work_logs.build(params).save!
+      self.work_logs.build(work_log_params).save!
     end
   end
+
 
   def last_comment
     @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
