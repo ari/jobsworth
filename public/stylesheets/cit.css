@@ -139,6 +139,26 @@ h4 {
   text-align: left;
 }
 
+/* Top menu bar */
+#menu_container {
+	width: 100%;
+	background-color: white;
+	min-height: 50px;
+}
+#menu_logo {
+	display: inline-block;
+}
+#menu_info {
+	width: auto;
+	display: inline-block;
+}
+#menu_login {
+	float: right;
+	display: inline-block;
+	text-align: right;
+}
+
+
 #left_menu {
   padding-left: 10px;
   text-align: left;

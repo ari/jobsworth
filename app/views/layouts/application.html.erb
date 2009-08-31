@@ -38,7 +38,7 @@
 	<div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
 	<div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
 
-	<div id="menu"><%= render(:partial => "layouts/menu") %></div>
+	<%= render(:partial => "layouts/menu") %>
 	<div id="globalMenu"><div id="tabmenu"><%= render(:partial => "layouts/tabmenu")%></div></div>
 
 	<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
