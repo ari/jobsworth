@@ -12,6 +12,8 @@ javascripts:
   - jrails
   - cit
   - juggernaut_javascript
+  - jquery.dimensions
+  - jquery.tooltip
 - portal:
   - prototype
   - tz
@@ -20,5 +22,6 @@ stylesheets:
 - base:
   - ui-lightness/jquery-ui
   - cit
+  - jquery.tooltip
 - portal:
   - portal

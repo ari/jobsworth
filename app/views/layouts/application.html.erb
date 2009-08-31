@@ -36,7 +36,6 @@
 </head>
 <body id="body">
 	<div id="loading" style="z-index: 1000; position:absolute; right: 10px; top: 10px; width:70px; height:20px; color: white; padding:6px; display: none; "><%= image_tag('spinner.gif', :border => 0) %></div>
-	<div id="tip" style="position:absolute;top:250px;left:250px;visibility:hidden;max-width:600px;"><table border="0"><tr><td style="" id="message"><br/></td></tr></table></div>
 	<div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
 
 	<div id="menu"><%= render(:partial => "layouts/menu") %></div>
@@ -118,9 +117,7 @@
 var userId=<%=current_user.id%>;
 jQuery(document).ready(function () {
 	<% if current_user.option_tooltips.to_i == 1 %>
-	  makeTooltips(1);
-	<% else %>
-	  makeTooltips(0);
+	  jQuery('.tooltip').tooltip({showURL: false });
 	<% end %>
 	
 	<% if controller.controller_name == 'shout' && controller.action_name == 'room' %>

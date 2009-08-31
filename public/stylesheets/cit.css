@@ -312,9 +312,6 @@ a.invalid:hover {
   text-decoration: line-through underline;
 }
 
-.tip_description {
-}
-
 fieldset {
   border: 1px solid #dcdcdc;
   background-color: #fafafa;
@@ -1175,22 +1172,11 @@ a.description {
   font-weight: normal;
 }
 
-#tip { 
-  color:#666666;
-  z-index:100;
-  overflow:hidden;
-}
-
 #message { 
   background-color:#ffffff;
   color:#666666;
   border:1px solid #CCCCCC;
   padding:0.1em;
-}
-
-#tip a {
-  color: #5e6b71;
-  font-weight: normal;
 }
 
 #shouts {
@@ -2229,20 +2215,6 @@ textarea.small {
 .informal {
   font-weight: normal;
   font-style: underline;
-}
-
-#tip td {
-  vertical-align: top;
-  padding-left: 0.1em;
-}
-
-#tip th {
-  vertical-align: top;
-  text-align: right;
-  background-color: #efefef;
-  font-weight: bold;
-  padding-right: 0.1em;
-  color: #333333;
 }
 
 .pagination {
