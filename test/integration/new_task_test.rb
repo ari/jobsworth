@@ -14,8 +14,8 @@ class NewTaskTest < ActionController::IntegrationTest
         visit "/"
         click_link "new task"
 
-        fill_in "title", :with => "a brand new task"
-        fill_in "description", :with => "a new desc"
+        fill_in "task_name", :with => "a brand new task"
+        fill_in "task_description", :with => "a new desc"
         select @project.name, :from => "project"
         select @milestone.name, :from => "milestone"
       end
