@@ -13,14 +13,14 @@
 	      <%= _("Search users") %>
 	    </label>
 	    <%= check_box_tag(:search_users, 1, !session[:client_search_ignore_users], 
-		:class => "checkbox", :onChange => "jQuery(this).parents('form').submit()") %>
+		:class => "checkbox", :onchange => "jQuery(this).parents('form').submit()") %>
 	    <br />
 
 	    <label for="search_clients">
 	      <%= _("Search clients") %>
 	    </label>
 	    <%= check_box_tag(:search_clients, 1, !session[:client_search_ignore_clients], 
-		:class => "checkbox", :onChange => "jQuery(this).parents('form').submit()") %>
+		:class => "checkbox", :onchange => "jQuery(this).parents('form').submit()") %>
 	    <br />
 	  </div>
 	  

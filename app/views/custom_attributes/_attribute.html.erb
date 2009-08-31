@@ -15,7 +15,7 @@
     <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
 
     <label><%=_ "Use only preset choices" %></label>
-    <%= check_box_tag(:preset, 1, preset, :onChange => "updateAttributeFields(this)") %>
+    <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
 
     <label><%=_ "Mandatory" %></label>
     <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
