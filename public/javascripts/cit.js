@@ -885,3 +885,60 @@ function saveSortParams(event) {
     });
 }
 
+// TODOS
+
+/*
+Toggles the todo display or edit fields
+*/
+function toggleTodoEdit(sender) {
+    var todo = jQuery(sender).parents(".todo");
+    var display = todo.find(".display");
+    var edit = todo.find(".edit");
+
+    display.toggle();
+    edit.toggle();
+}
+
+/*
+Adds listeners to handle users pressing enter in the todo
+edit field
+*/
+function addTodoKeyListener(todoId, taskId) {
+    var todo = jQuery("#todos-" + todoId);
+    var input = todo.find(".edit input");
+    
+    input.keypress(function(key) {
+	if (key.keyCode == 13) {
+	    jQuery(".todo-container").load("/todos/update/" + todoId,  {
+		"_method": "PUT",
+		task_id: taskId,
+		"todo[name]": input.val()
+	    });
+
+	    key.stopPropagation();
+	    return false;
+	}
+    });
+}
+
+/*
+Adds listeners to handle users pressing enter in the todo
+create field
+*/
+function addNewTodoKeyListener(taskId) {
+    var todo = jQuery("#new-todos");
+    var input = todo.find(".edit input");
+    
+    input.keypress(function(key) {
+	if (key.keyCode == 13) {
+	    jQuery(".todo-container").load("/todos/create", {
+		"_method": "POST",
+		task_id: taskId,
+		"todo[name]": input.val()
+	    });
+
+	    key.stopPropagation();
+	    return false;
+	}
+    });
+}

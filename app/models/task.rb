@@ -53,6 +53,8 @@ class Task < ActiveRecord::Base
   has_one       :ical_entry
 
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
+  accepts_nested_attributes_for :todos
+
   has_many      :sheets
   has_and_belongs_to_many :resources
 

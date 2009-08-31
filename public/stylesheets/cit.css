@@ -993,6 +993,11 @@ pre.auto_generated {
 
  }
 
+#new-todos {
+    padding-left: 1em;
+    padding-top: 0.5em;
+}
+
 .todo-active {
   cursor: move;
 }

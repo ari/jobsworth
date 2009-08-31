@@ -331,6 +331,10 @@ class TaskTest < ActiveRecord::TestCase
       @task = Task.first
     end
 
+    should "accept nested attributes for todos" do
+      assert @task.methods.include?("todos_attributes=")
+    end
+
     should "add and remove task customers using customer_attributes=" do
       c1 = @task.company.customers.first
       c2 = @task.company.customers.last
