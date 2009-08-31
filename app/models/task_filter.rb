@@ -178,6 +178,8 @@ class TaskFilter < ActiveRecord::Base
       return "task_owners.user_id"
     elsif class_type == "Project"
       return "tasks.project_id"
+    elsif class_type == "Task"
+      return "tasks.id"
     elsif class_type == "Customer"
       return "projects.customer_id"
     elsif class_type == "Company"

@@ -1,0 +1,14 @@
+<ul class="task-todo" id="todo-tasks-<%= @task.id %>">
+  <%= render :partial => "/todos/todo", :collection => @task.todos %>
+</ul>
+
+<div id="new-todos" class="todo">
+  <div class="display">
+    <%= link_to_function(_("New To-do Item"), "toggleTodoEdit(this)") %>
+  </div>
+  <div class="edit" style="display: none">
+    <%= text_field_tag("todo[name]", "") %>
+    <%= javascript_tag("addNewTodoKeyListener(#{ @task.id })", :defer => "defer") %>
+    <%= link_to_function(_("Cancel"), "toggleTodoEdit(this)") %>
+  </div>
+</div>

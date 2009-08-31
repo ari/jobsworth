@@ -1,2 +1,0 @@
-page.replace @todo.dom_id, :partial => "todo_row"
-page << "Sortable.create(\"todo-#{@todo.task.dom_id}\", {containment:'todo-#{@todo.task.dom_id}', format:/^[^-]*-(.*)$/, onUpdate:function(){new Ajax.Request('/tasks/order_todos/#{@todo.task.id}', {asynchronous:true, evalScripts:true, parameters:Sortable.serialize(\"todo-#{@todo.task.dom_id}\")})}, only:'todo-active'})"

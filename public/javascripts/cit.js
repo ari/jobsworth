@@ -340,6 +340,27 @@ function submitSearchFilterForm() {
     }
 }
 
+/* 
+Sets up the search filter input field to add a task automatically
+if a number is entered and then the user hits enter
+*/
+function addSearchFilterTaskIdListener(filter) {
+    var filter = jQuery("#search_filter");
+
+    filter.keypress(function(key) {
+	// if key was enter
+	var id = filter.val();
+	if (key.keyCode == 13 && id.match(/^\d+$/)) {
+	    var form = jQuery("#search_filter_form");
+
+	    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
+
+	    form.find(".links").html(new_fields);
+	    submitSearchFilterForm();
+	}
+    });
+}
+
 function addProjectToUser(input, li) {
     li = jQuery(li);
     var value = li.find(".complete_value").text();
@@ -791,3 +812,60 @@ function saveSortParams(event) {
     });
 }
 
+// TODOS
+
+/*
+Toggles the todo display or edit fields
+*/
+function toggleTodoEdit(sender) {
+    var todo = jQuery(sender).parents(".todo");
+    var display = todo.find(".display");
+    var edit = todo.find(".edit");
+
+    display.toggle();
+    edit.toggle();
+}
+
+/*
+Adds listeners to handle users pressing enter in the todo
+edit field
+*/
+function addTodoKeyListener(todoId, taskId) {
+    var todo = jQuery("#todos-" + todoId);
+    var input = todo.find(".edit input");
+    
+    input.keypress(function(key) {
+	if (key.keyCode == 13) {
+	    jQuery(".todo-container").load("/todos/update/" + todoId,  {
+		"_method": "PUT",
+		task_id: taskId,
+		"todo[name]": input.val()
+	    });
+
+	    key.stopPropagation();
+	    return false;
+	}
+    });
+}
+
+/*
+Adds listeners to handle users pressing enter in the todo
+create field
+*/
+function addNewTodoKeyListener(taskId) {
+    var todo = jQuery("#new-todos");
+    var input = todo.find(".edit input");
+    
+    input.keypress(function(key) {
+	if (key.keyCode == 13) {
+	    jQuery(".todo-container").load("/todos/create", {
+		"_method": "POST",
+		task_id: taskId,
+		"todo[name]": input.val()
+	    });
+
+	    key.stopPropagation();
+	    return false;
+	}
+    });
+}

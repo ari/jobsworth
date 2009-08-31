@@ -1,0 +1,23 @@
+<li id="<%=todo.dom_id%>" class="<%=todo.css_classes%>">
+  <%= todo_open_close_check_box(todo) %>
+  <span class="display">
+    <%=h todo.name %>
+  </span>
+  <span class="edit" style="display: none;">
+    <%= text_field_tag("todo[name]", todo.name) %>
+    <%= javascript_tag("addTodoKeyListener(#{ todo.id }, #{ todo.task.id })") %>
+    <%= link_to_function("Cancel", "toggleTodoEdit(this)") %>
+  </span>
+
+  <% if todo.done? %>
+    <%=h "[#{ formatted_datetime_for_current_user(todo.completed_at) }]" %>
+    <%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %>
+  <% else %>
+    &nbsp;
+    <%= link_to_function(image_tag("application_form_edit.png"), "toggleTodoEdit(this)") %>
+  <% end %>
+
+  &nbsp;
+  <%= delete_todo_link(todo) %>
+</li>
+
