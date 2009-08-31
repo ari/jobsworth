@@ -435,12 +435,12 @@ input.checkbox {
   background-color: #B0D295;
 }
 
-.inlineMessage .date {
-  font-weight: bold;
+.inlineMessage .hide {
+  float: right;
 }
 
-.inlineMessage a{
-  float: right;
+.inlineMessage .date {
+  font-weight: bold;
 }
 
 /* --- */

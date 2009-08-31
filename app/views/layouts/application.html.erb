@@ -52,7 +52,7 @@
 
 	<div class="inlineMessage" id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
 		<span id="flash_message"><%= flash['notice'] %></span>
-		<a onclick="jQuery('#flash').fadeOut(500); return false;" href="#">[<%=_ 'Hide'%>]</a>
+		<a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
 	</div>
 
 	<table width="100%" id="main-table" class="content_body">
