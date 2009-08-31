@@ -295,7 +295,7 @@ puts
 puts "Please start the required services by entering the following in a console:"
 puts "  ./script/ferret_server -e production start"
 puts "  nohup ./script/push_server &"
-puts "  ./script/server production"
+puts "Make sure passenger and apache httpd are properly set up and a virtual host defined."
 puts
 puts "Access your installation from http://#{subdomain}.#{domain}:3000"
 

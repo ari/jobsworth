@@ -11,7 +11,7 @@
 	<%= render(:partial => "attribute", :collection => @attributes) %>
       </ul>
       
-      <br clear="both" />
+      <br clear="all" />
       <%= link_to_add_attribute %>
       <%= sortable_element("attributes", :handle => ".handle.custom_attribute", 
       :onUpdate => "function() { updatePositionFields('#attributes') }") %>

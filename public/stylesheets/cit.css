@@ -83,23 +83,6 @@ h4 {
   font-size: 14px;
 }
 
-#menu {
-  color: black;
-  font-size: 14px;
-  background-color: white;
-  padding: 0.5em;
-}
-
-#menu a {
-  color: #566ca5;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-#menu a:hover {
-  text-decoration: underline;
-}
-
 .amenu {
   background-color: #fcfcfc;
 }

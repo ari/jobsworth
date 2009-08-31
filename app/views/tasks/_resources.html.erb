@@ -4,7 +4,7 @@
   <label for="resources_input"><%=_ "Linked resources" %></label>
   <% customer_id = @task.project.customer_id if @task.project %>
   <%= auto_complete_for_resources(customer_id) %>
-  <br clear="both" />
+  <br clear="all" />
   
   <%= render :partial => "resource", :collection => @task.resources %>
 </fieldset>
