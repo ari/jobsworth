@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><%= $CONFIG[:productName] %></title>
 <%= stylesheet_link_merged :portal %>
@@ -24,7 +25,7 @@
 <![endif]-->
 	<div id="login">
 	  <% if @internal -%>
-	    <%= tag("img", {:src => "/clients/show_logo/#{@internal.id}" } ) %>
+	    <%= tag("img", {:src => "/clients/show_logo/#{@internal.id}", :alt => "logo" } ) %>
 	  <% end -%>
 		<% form_tag( {:action => 'validate'}, {:id => 'loginform', :name => 'loginform'}) do %>
 			<div id="name"><%= $CONFIG[:productName] %></div>
@@ -40,7 +41,7 @@
 				<small><a onclick="document.loginform.forgot='true';document.loginform.submit()" href="#" tabindex="3">Forgot password</a></small>
 			</p>
 			<p>
-				<input type="checkbox" name="remember" id="remember" value="1" tabindex="5"/>
+				<input type="checkbox" name="remember" value="1" tabindex="5"/>
 				<label id="remember" for="remember">Remember me</label>
 			</p>
 			<% if flash[:notice] %>
