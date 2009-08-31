@@ -34,7 +34,7 @@
 	<%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%><br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>
 <% end %>
 
-<%= log.body.gsub(/\n/, "<br>") %>
+<%= log.body.gsub(/\n/, "<br>") if log.body %>
 
 </p>
 </div>
