@@ -10,4 +10,5 @@ module JavascriptHelper
 
     return javascript_tag(js, :defer => "defer")
   end
+
 end
