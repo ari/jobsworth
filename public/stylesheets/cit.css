@@ -282,16 +282,13 @@ body, p, ol, ul, td, tr {
   font-style: italic;
 }
 
-.task.unread .task-name a {
+.task.unread .task-name a, .task.unread, .task.unassigned {
   font-weight: bold;
 }
 
 
 .unread_icon {
   cursor: pointer;
-  float: left;
-  margin-left: -75px;
-  margin-top: 4px;
 }
   
 .unread_icon a {

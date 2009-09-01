@@ -450,7 +450,11 @@ module TasksHelper
   # Returns the open tr tag for the given task in a task list
   def task_row_tr_tag(task)
     class_name = cycle("odd", "even") 
+    class_name += " task"
     class_name += " selected" if task.id == session[:last_task_id] 
+    class_name += " unread" if task.unread?(current_user)
+    class_name += " unassigned" if task.users.count == 0
+
     return tag(:tr, {
                  :id => "task_row_#{ task.task_num }", 
                  :class => class_name, 

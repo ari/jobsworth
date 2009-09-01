@@ -8,6 +8,7 @@ class UserTest < ActiveRecord::TestCase
   def setup
     @user = users(:admin)
   end
+  subject { @user }
 
   # Replace this with your real tests.
   def test_truth
