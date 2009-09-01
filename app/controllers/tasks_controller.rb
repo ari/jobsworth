@@ -243,9 +243,9 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = Task.find(:first, :conditions => ["project_id IN (#{current_project_ids}) AND task_num = ?", params[:id]])
+    @task = current_user.company.tasks.find_by_task_num(params[:id])
 
-    if @task.nil?
+    if @task.nil? or !current_user.can_view_task?(@task)
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
       return
@@ -253,6 +253,7 @@ class TasksController < ApplicationController
 
     init_form_variables(@task)
     session[:last_task_id] = @task.id
+    @task.set_task_read(current_user)
     
     respond_to do |format|
       format.html
@@ -1343,11 +1344,11 @@ class TasksController < ApplicationController
   # This action just sets the unread status for a task.
   ###
   def set_unread
-    task = Task.find(params[:id], 
-                     :conditions => "project_id IN (#{current_project_ids})")
-
-    read = params[:read] != "false"
-    task.set_task_read(current_user, read)
+    task = current_user.company.tasks.find_by_task_num(params[:id])
+    if task and current_user.can_view_task?(task)
+      read = params[:read] != "false"
+      task.set_task_read(current_user, read)
+    end
 
     render :text => "", :layout => false
   end

@@ -9,6 +9,7 @@ class TaskTest < ActiveRecord::TestCase
   def setup
     @task = tasks(:normal_task)
   end
+  subject { @task }
 
   # Replace this with your real tests.
   def test_truth

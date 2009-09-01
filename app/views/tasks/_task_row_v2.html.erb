@@ -2,6 +2,13 @@
 <% customer = (task.customers.first || task.project.customer) -%>
 
 <%= task_row_tr_tag(task) %>
+  <td class="unread_icon">
+    <%- # only users assigned to or watching a task can mark unread %>
+    <% if (task.users + task.watchers).include?(current_user) -%>
+      <a href="#" onclick="toggleTaskUnread(event);"><span>*</span></a>
+    <% end -%>
+  </td>
+  <td><%= task.task_num %></td>
   <td>
     <%= task_icon(task) %>
   </td>
