@@ -1532,10 +1532,9 @@ a.description {
 	margin-right: 0px;
 }
 
-#taskform #task_history, #taskform #task_addcomment { 
+#taskform #task_addcomment { 
 	margin-left: 328px;
 	width: auto;
-	border: 0px solid red;
 	position: relative;
 	clear:both;
 }
