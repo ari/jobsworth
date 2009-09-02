@@ -21,6 +21,8 @@ class WorkLog < ActiveRecord::Base
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
 
+  named_scope :comments, :conditions => [ "work_logs.comment = 1 or work_logs.log_type = 6" ]
+
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
     l = r.event_log

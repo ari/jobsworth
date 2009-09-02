@@ -12,9 +12,8 @@
 <% end %>
 </span>
 <div class="log_history clearfix">
-<% @logs ||= []
-   @logs.each do |log|
-%>
-	<%= render :partial => 'activities/log_row2', :locals => {:log => log} %>
-<% end %>
+  <% logs = (session[:only_comments] ? @task.work_logs.comments : @task.work_logs) -%>
+  <% logs.each do |log| -%>
+    <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
+  <% end -%>
 </div>
