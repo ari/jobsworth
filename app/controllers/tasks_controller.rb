@@ -513,7 +513,7 @@ class TasksController < ApplicationController
       return if request.xhr?
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
-      redirect_from_last
+      redirect_to "/tasks/list"
     else
       init_form_variables(@task)
       render :action => 'edit'
