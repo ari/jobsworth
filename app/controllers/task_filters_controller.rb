@@ -63,6 +63,7 @@ class TaskFiltersController < ApplicationController
                                      :company => current_user.company, 
                                      :word => kw.word)
       end
+      target_filter.save!
     else
       flash[:notice] = _"You don't have access to that task filter"
     end
