@@ -107,7 +107,7 @@ class TasksControllerTest < ActionController::TestCase
            :notify => @notify, 
            :comment => "a test comment")
       assert_emails @task.users.length
-      assert_redirected_to "/activities/list"
+      assert_redirected_to "/tasks/list"
     end
   end
 

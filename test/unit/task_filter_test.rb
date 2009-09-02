@@ -42,8 +42,9 @@ class TaskFilterTest < ActiveSupport::TestCase
 
   # Checks task filter includes the given class in conditions
   def self.should_filter_on(klass, column_name = nil)
-    should "setup filter ids for #{ klass.name }" do
-      column_name ||= "#{ klass.name.downcase }_id"
+    column_name ||= "#{ klass.name.downcase }_id"
+
+    should "setup filter ids for #{ klass.name } on #{ column_name }" do
       qualifiers = klass.all
       assert qualifiers.any?
       ids = qualifiers.map { |o| o.id }
@@ -57,7 +58,8 @@ class TaskFilterTest < ActiveSupport::TestCase
 
   should_filter_on Project
   should_filter_on Milestone
-  should_filter_on Customer
+  should_filter_on Customer, "projects.customer_id"
+  should_filter_on Customer, "task_customers.customer_id"
   should_filter_on User, "task_owners.user_id"
   should_filter_on Tag, "task_tags.tag_id"
 
@@ -113,6 +115,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       assert_not_nil conditions.index(expected)
     end
+
   end
 
   context "a company with projects, tasks, etc" do
@@ -147,5 +150,16 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_equal initial_count + 1, @filter.display_count(@user, true)
     end
 
+    should "include tasks linked to a customer when filtering on customer" do
+      @filter.qualifiers.clear
+      other_customer = Customer.make(:company => @company, :name => "Test name")
+      @filter.qualifiers.build(:qualifiable => other_customer)
+      debugger
+
+      conditions = @filter.conditions
+      expected = "task_customers.customer_id in (#{ other_customer.id })"
+
+      assert conditions.index(expected)
+    end
   end
 end

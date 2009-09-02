@@ -475,4 +475,18 @@ module TasksHelper
     end
   end
 
+  # Returns a sort hint for sorting the given task. 
+  # Uses unread status and whether a user is a task owner or watcher
+  def default_sort_hint_for_task(task)
+    if task.unread?(current_user)
+      return 10
+    elsif task.linked_users.empty?
+      return 9
+    elsif task.linked_users.include?(current_user)
+      return 8
+    else
+      return 1
+    end
+  end
+
 end
