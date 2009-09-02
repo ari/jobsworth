@@ -260,14 +260,13 @@ jQuery(document).ready(function() {
 it in the current page.
 */
 function showTaskInPage(taskNum) {
-    jQuery("tr.selected").removeClass("selected");
-	jQuery("#task_row_" + taskNum).addClass("selected");
-    showProgress(); 
+    jQuery("#task_list tr.selected").removeClass("selected");
+	jQuery("#task_list #task_row_" + taskNum).addClass("selected");
 
+	jQuery("#task").fadeOut();
     jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
-	jQuery("#task").html(data);
-	//jQuery("#task_row_" + taskNum).addClass("selected");
-	hideProgress();
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
     });
 }
 
