@@ -11,7 +11,7 @@
     <%= link_to_remove_parent %>
 
     <label><%=_ "Default" %></label>
-    <%= nested_boolean_choice_field(f, :default, pv, :class => 'default', :onchange => "clearOtherDefaults(this)") %>
+    <%= nested_boolean_choice_field(f, :default, pv, :class => 'default', :onChange => "jQuery('.default').attr('checked', false);jQuery(this).attr('checked', true);") %>
 
     <label><%=_ "Color" %></label>
     <%= f.text_field :color, :index => pv.id, :class => 'colour' %>
@@ -21,4 +21,3 @@
     <br />
   <% end %>
 </li>
-

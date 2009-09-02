@@ -228,16 +228,6 @@ function rebuildSelect(select, data) {
    }
 }
 
-function clearOtherDefaults(sender) {
-    var list = $(sender).up("ul").select(".default");
-
-    list.each(function(e) {
-	if (e != sender) {
-	    e.checked = false;
-	}
-    });
-}
-
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
 
