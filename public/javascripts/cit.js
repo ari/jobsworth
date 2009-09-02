@@ -141,13 +141,6 @@ function do_execute(user, code) {
   }
 }
 
-function enableControl(id, enabled) {
-  if (typeof(enabled) == "undefined") enabled = true;
-  var control = $(id);
-  if (!control) return;
-  control.disabled = !enabled;
-}
-
 function json_decode(txt) {
   try {
     return eval( '(' + txt + ')' );
