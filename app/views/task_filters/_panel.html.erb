@@ -12,16 +12,14 @@
     <li>
       <span class="right small">
         <% if tf.user == current_user or current_user.admin? -%>
-          <%= link_to(_("Delete"), task_filter_path(tf), 
+          <%= link_to(image_tag("cross_small.png"), task_filter_path(tf), 
 	      :method => :delete, :confirm => _("Are you sure?")) %>
         <% else -%>
           <%= "[#{ _("Shared") }]" %>
         <% end -%>
       </span>
 
-      <% count = tf.display_count(current_user) -%>
-      <%= link_to("#{ tf.name } (#{ count })", 
-	  select_task_filter_path(tf), :class => (count > 0 ? "unread" : "")) %>
+      <%= select_task_filter_link(tf) -%>
     </li>
     <% end -%>
   </ul>

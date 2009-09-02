@@ -96,5 +96,16 @@ EOS
                    update_current_filter_task_filters_path(link_params))
   end
 
+  # Returns a link to allow the user to select the given
+  # task filter
+  def select_task_filter_link(filter)
+    count = filter.display_count(current_user)
+
+    str = h(filter.name)
+    str += " (#{ count })" if count > 0
+    class_name = (count > 0 ? "unread" : "")
+
+    return link_to(str, select_task_filter_path(filter), :class => class_name)
+  end
 
 end

@@ -180,6 +180,9 @@ h4 {
 #left_menu .task_filters .unread {
     font-weight: bold;
 }
+#left_menu .task_filters a {
+    color: black;
+}
 
 .shout_body {
 }
