@@ -1345,9 +1345,12 @@ class TasksController < ApplicationController
   ###
   def set_unread
     task = current_user.company.tasks.find_by_task_num(params[:id])
-    if task and current_user.can_view_task?(task)
+    user = current_user
+    user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
+
+    if task and user.can_view_task?(task)
       read = params[:read] != "false"
-      task.set_task_read(current_user, read)
+      task.set_task_read(user, read)
     end
 
     render :text => "", :layout => false

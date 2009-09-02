@@ -307,6 +307,9 @@ body, p, ol, ul, td, tr {
   display: none;
 }
 
+label .unread_icon {
+    float: right;
+}
 
 .closed {
 

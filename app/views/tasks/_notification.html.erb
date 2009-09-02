@@ -15,6 +15,7 @@
   :disabled => !@task.should_be_notified?(user)) %>
 
   <label>
+    <%= unread_toggle_for_task_and_user(@task, user) %>
     <%= assigned_icon(@task, user) %>
     <%= notify_icon(@task, user) %>
   </label>

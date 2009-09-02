@@ -462,4 +462,17 @@ module TasksHelper
                }, true)
   end
 
+  # Returns the html for a completely self contained unread toggle
+  # for the given task and user
+  def unread_toggle_for_task_and_user(task, user)
+    classname = "task"
+    classname += " unread" if task.unread?(user)
+
+    content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
+      content_tag(:span, :class => "unread_icon") do
+        link_to_function("<span>*</span>", "toggleTaskUnread(event, #{ user.id })")
+      end
+    end
+  end
+
 end

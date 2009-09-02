@@ -274,8 +274,9 @@ function showTaskInPage(taskNum) {
 /*
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
+ If userId is given, that will be sent too.
  */
-function toggleTaskUnread(event) {
+function toggleTaskUnread(event, userId) {
     var task = jQuery(event.target).parents(".task");
     
     var unread = task.hasClass("unread");
@@ -284,6 +285,9 @@ function toggleTaskUnread(event) {
     var taskId = task.attr("id").replace("task_row_", "");
     var taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
+    if (userId) {
+	parameters["user_id"] = userId;
+    }
 
     jQuery.post("/tasks/set_unread",  parameters);
     
