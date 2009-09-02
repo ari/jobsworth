@@ -764,13 +764,14 @@ function toggleWorkLogApproval(sender, workLogId) {
   initally be sorted according to those values
 */
 function makeSortable(table, defaultSortColumn, defaultSortOrder) {
-    var sort = [];
+    var sort = [ [ 0, 1 ] ];
 
     if (defaultSortColumn && defaultSortColumn != "") {
 	var selector = "th:contains('" + defaultSortColumn + "')";
 	var headers = table.find("th");
 	var column = table.find(selector);
 	var index = headers.index(column);
+	if (index < 0) { index = 0; }
 
 	var dir = (defaultSortOrder == "up" ? 1 : 0);
 	sort = [ [ index, dir ] ];
@@ -815,6 +816,7 @@ function saveSortParams(event) {
     }
 
     selected = jQuery.trim(selected.text());
+
     jQuery.post("/task_filters/set_single_task_filter", {
     	name : "sort",
     	value : (selected + "_" + direction)

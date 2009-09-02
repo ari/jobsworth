@@ -447,6 +447,11 @@ class Task < ActiveRecord::Base
     o
   end
 
+  # Returns all users linked to this task
+  def linked_users
+    @linked_users ||= (self.users + self.watchers)
+  end
+
   def set_tags( tagstring )
     return false unless tagstring
     self.tags.clear
