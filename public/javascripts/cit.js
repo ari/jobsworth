@@ -274,8 +274,9 @@ function showTaskInPage(taskNum) {
 /*
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
+ If userId is given, that will be sent too.
  */
-function toggleTaskUnread(event) {
+function toggleTaskUnread(event, userId) {
     var task = jQuery(event.target).parents(".task");
     
     var unread = task.hasClass("unread");
@@ -284,6 +285,9 @@ function toggleTaskUnread(event) {
     var taskId = task.attr("id").replace("task_row_", "");
     var taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
+    if (userId) {
+	parameters["user_id"] = userId;
+    }
 
     jQuery.post("/tasks/set_unread",  parameters);
     
@@ -775,7 +779,7 @@ function makeSortable(table, defaultSortColumn, defaultSortOrder) {
     table.tablesorter({
 	sortList: sort,
 	widgets: ["zebra"],
-	textExtraction: "complex",
+	textExtraction: tableSortText, //"complex",
 	headers: {
 	    5: { sorter : "digit" }
 	}
@@ -787,12 +791,13 @@ function makeSortable(table, defaultSortColumn, defaultSortOrder) {
 */
 function tableSortText(node) {
     var res = node.innerHTML;
-	    
-    var link = jQuery(node).children("a");
-    if (link.length > 0) {
-	res = link.text();
+    var node = jQuery(node);
+
+    var hint = node.children(".sort_hint");
+    if (hint.length > 0) {
+	res = hint.text();
     }
-    
+
     res = jQuery.trim(res).toLowerCase();
     return res;
 }

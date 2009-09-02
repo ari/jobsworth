@@ -441,7 +441,7 @@ module TasksHelper
   # Renders the last task the current user looked at
   def render_last_task
     @task = current_user.company.tasks.find_by_id(session[:last_task_id], 
-                                            :conditions => [ "project_id IN (#{ current_project_ids })" ])
+                                                  :conditions => [ "project_id IN (#{ current_project_ids })" ])
     if @task
       return render_to_string(:action => "edit", :layout => false)
     end
@@ -460,6 +460,19 @@ module TasksHelper
                  :class => class_name, 
                  :onclick => "showTaskInPage(#{ task.task_num}); return false;"
                }, true)
+  end
+
+  # Returns the html for a completely self contained unread toggle
+  # for the given task and user
+  def unread_toggle_for_task_and_user(task, user)
+    classname = "task"
+    classname += " unread" if task.unread?(user)
+
+    content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
+      content_tag(:span, :class => "unread_icon") do
+        link_to_function("<span>*</span>", "toggleTaskUnread(event, #{ user.id })")
+      end
+    end
   end
 
 end

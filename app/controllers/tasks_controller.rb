@@ -1197,9 +1197,6 @@ class TasksController < ApplicationController
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-    unless @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", @task.id], :include => [:user, :task, :project])
-      @logs = []
-    end
   end
 
   def quick_add
@@ -1345,9 +1342,12 @@ class TasksController < ApplicationController
   ###
   def set_unread
     task = current_user.company.tasks.find_by_task_num(params[:id])
-    if task and current_user.can_view_task?(task)
+    user = current_user
+    user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
+
+    if task and user.can_view_task?(task)
       read = params[:read] != "false"
-      task.set_task_read(current_user, read)
+      task.set_task_read(user, read)
     end
 
     render :text => "", :layout => false
