@@ -68,11 +68,13 @@ class TaskFilter < ActiveRecord::Base
   def conditions(extra_conditions = nil)
     status_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Status" }
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
-    standard_qualifiers = qualifiers - property_qualifiers - status_qualifiers
+    customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Customer" }
+    standard_qualifiers = qualifiers - property_qualifiers - status_qualifiers - customer_qualifiers
     
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
     res << conditions_for_status_qualifiers(status_qualifiers)
+    res << conditions_for_customer_qualifiers(customer_qualifiers)
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
     res << user.user_tasks_sql
@@ -169,6 +171,20 @@ class TaskFilter < ActiveRecord::Base
     
     old_status_ids = old_status_ids.join(",")
     return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
+  end
+
+  # Returns a sql string fragment that will limit tasks to only
+  # those in a project belonging to customers, or linked directly 
+  # to the customer
+  def conditions_for_customer_qualifiers(customer_qualifiers)
+    ids = customer_qualifiers.map { |q| q.qualifiable.id }
+    ids = ids.join(",")
+
+    if !ids.blank?
+      res = "projects.customer_id in (#{ ids })"
+      res += " or task_customers.customer_id in (#{ ids })"
+      return "(#{ res })"
+    end
   end
 
   # Returns the column name to use for lookup for the given
