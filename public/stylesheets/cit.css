@@ -3037,6 +3037,9 @@ div.search_filter {
 }
 
 /* sortable tables */
+.sort_hint {
+    display: none;
+}
 table.tablesorter {
 	background-color: #CDCDCD;
 	margin:0px 0pt 15px;

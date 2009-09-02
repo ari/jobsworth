@@ -775,7 +775,7 @@ function makeSortable(table, defaultSortColumn, defaultSortOrder) {
     table.tablesorter({
 	sortList: sort,
 	widgets: ["zebra"],
-	textExtraction: "complex",
+	textExtraction: tableSortText, //"complex",
 	headers: {
 	    5: { sorter : "digit" }
 	}
@@ -787,12 +787,13 @@ function makeSortable(table, defaultSortColumn, defaultSortOrder) {
 */
 function tableSortText(node) {
     var res = node.innerHTML;
-	    
-    var link = jQuery(node).children("a");
-    if (link.length > 0) {
-	res = link.text();
+    var node = jQuery(node);
+
+    var hint = node.children(".sort_hint");
+    if (hint.length > 0) {
+	res = hint.text();
     }
-    
+
     res = jQuery.trim(res).toLowerCase();
     return res;
 }
