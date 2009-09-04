@@ -7,12 +7,6 @@ var show_tooltips = 1;
 var fetchTimeout = null;
 var fetchElement = null;
 
-function Hover(prefix, element) {
-}
-
-function ClearHover() {
-}
-
 
 // -------------------------
 // show progress spinner
@@ -91,18 +85,6 @@ function inline_image(el) {
   el.style.visibility = 'visible';
 }
 
-function HideAjax() {
-  jQuery('div.ajax').hide();
-}
-
-function HideMenus() {
-  jQuery('div.amenu').hide();
-}
-
-function ShowMenus() {
-  jQuery('div.amenu').show();
-}
-
 function UpdateDnD() {
   updateTooltips();
 }
@@ -113,6 +95,7 @@ function do_update(user, url) {
   }
 }
 
+// used by Juggernaut
 function do_execute(user, code) {
   if( user != userId ) {
     eval(code);
@@ -126,7 +109,6 @@ function json_decode(txt) {
 }
 
 function updateSelect(sel, response) {
-
    response.evalScripts();
 
    var lines = response.split('\n');
@@ -154,7 +136,6 @@ function fixShortLinks() {
       }
 
     });
-
 }
 
 function toggleChatPopupEvent(e) {
@@ -180,7 +161,7 @@ function toggleChatPopup(el) {
     jQuery("#" + el.up().id + " .presence-shadow").show();
     jQuery("#" + el.up().id + " input").focus();
 
-      jQuery.get('/shout/chat_show/' + el.up().id);
+	jQuery.get('/shout/chat_show/' + el.up().id);
   }
 }
 
