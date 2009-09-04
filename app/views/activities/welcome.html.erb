@@ -8,7 +8,7 @@
           </tr>
           <tr>
             <td colspan=2>
-            <div class="welcome"><%= _'Welcome to ClockingIT. To get started, follow the steps below.'%><br><%= link_to _("Don't show this splash page"), :controller => 'activities', :action => 'hide_welcome' %></div>
+            <div class="welcome"><%= _'Welcome to ClockingIT. To get started, follow the steps below.'%><br/><%= link_to _("Don't show this splash page"), :controller => 'activities', :action => 'hide_welcome' %></div>
 
             <div class="tutorial<%= " complete" if @projects_count > 0%>">
               <%= _"The first step is to %s. Don't worry about entering real data, you can always delete the project you create and start over, once you get the hang of things.", link_to(_('create a project'), :controller => 'projects', :action => 'new') %> <br /><br />

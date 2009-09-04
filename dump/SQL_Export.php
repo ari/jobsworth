@@ -87,7 +87,7 @@ class SQL_Export
 		$h = substr($h, 0, strlen($d) - 1);
 		$h .= "$pkey) TYPE=InnoDB;\n\n";
 		
-		// echo "<p>--- Table data<br>$h</p>";
+		// echo "<p>--- Table data<br/>$h</p>";
 		return($h);
 	}
 

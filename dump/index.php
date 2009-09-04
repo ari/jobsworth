@@ -38,7 +38,7 @@
 	$table_list = array();
 	while($t = mysql_fetch_array($tables))
 	{
-		// echo "case '{$t[0]}' : break; ".'<br>';
+		// echo "case '{$t[0]}' : break; ".'<br/>';
 		array_push($table_list, $t[0]);
 	}
 
