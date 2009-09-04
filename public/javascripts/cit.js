@@ -104,29 +104,7 @@ function ShowMenus() {
 }
 
 function UpdateDnD() {
-  //Sortable.destroy('tasks_sortable');
-  //Sortable.destroy('components_sortable');
-  //Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("components_sortable")})}, only:'component', tree:true});
-  //Sortable.create('tasks_sortable', {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){Element.show('loading');}, parameters:Sortable.serialize("tasks_sortable")})}, only:'task', tree:true});
   updateTooltips();
-}
-
-function EnableDND() {
-  jQuery('#enable_dnd').hide();
-  HideMenus();
-  Sortable.create("components_sortable", {dropOnEmpty:true, handle:'handle_comp', onUpdate:function(){new Ajax.Request('/components/ajax_order_comp', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('#loading').show();}, parameters:Sortable.serialize("components_sortable")});}, only:'component', tree:true});
-  Sortable.create("tasks_sortable", {dropOnEmpty:true, handle:'handle', onUpdate:function(){new Ajax.Request('/components/ajax_order', {asynchronous:true, evalScripts:true, onComplete:function(request){Element.hide('loading');}, onLoading:function(request){jQuery('#loading').show();}, parameters:Sortable.serialize("tasks_sortable")});}, only:'task', tree:true});
-  jQuery('img.handle').show();
-  jQuery('img.handle_comp').show();
-  jQuery('#disable_dnd').show();
-}
-
-function DisableDND() {
-  jQuery('#disable_dnd').hide();
-  ShowMenus();
-  jQuery('img.handle').hide();
-  jQuery('img.handle_comp').hide();
-  jQuery('#enable_dnd').show();
 }
 
 function do_update(user, url) {
