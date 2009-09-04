@@ -56,6 +56,21 @@ class MailmanTest < ActiveSupport::TestCase
     assert_equal "Comment", log.body
   end
 
+  def test_body_gets_html_escaped
+    assert_equal 0, WorkLog.count
+
+    mail = TMail::Mail.new
+    mail.to = @tmail.to
+    mail.from = @tmail.from
+    mail.body = "<b>test</b>"
+    email = Mailman.receive(mail.to_s)
+
+    log = WorkLog.first
+    assert_not_nil log
+
+    assert_equal "&lt;b&gt;test&lt;/b&gt;", log.body
+  end
+
   def test_body_with_no_trim_works
     assert_equal 0, WorkLog.count
 

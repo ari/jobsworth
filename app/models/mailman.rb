@@ -21,7 +21,9 @@ class Mailman < ActionMailer::Base
     
     body ||= email.body
     new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
-    return body[0, new_body_end].strip
+    body =  body[0, new_body_end].strip
+    body = CGI::escapeHTML(body)
+    return body
   end
 
   def receive(email)
