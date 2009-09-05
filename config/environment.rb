@@ -61,8 +61,8 @@ Rails::Initializer.run do |config|
   config.gem 'mysql'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine', :version => '0.12.8'
-  config.gem 'json', :version => '1.1.7'
-  config.gem 'mislav-will_paginate', :version => '2.3.8', :lib => 'will_paginate', :source => 'http://gems.github.com'
+  config.gem 'json', :version => '1.1.9'
+  config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'ferret', :version => '0.11.6'
 #  config.gem 'acts_as_ferret', :version => '0.4.3'  #installed as a plugin since the gem version breaks
   config.gem 'fastercsv', :version => '1.5.0'
