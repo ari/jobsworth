@@ -162,6 +162,7 @@ class TasksController < ApplicationController
 
     @task = current_user.company.tasks.new
     @task.attributes = params[:task]
+    @task.build_work_log(params, current_user)
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
@@ -211,7 +212,6 @@ class TasksController < ApplicationController
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
-      @task.create_work_log(params, current_user)
 
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
@@ -325,9 +325,11 @@ class TasksController < ApplicationController
     else
       params[:task][:hide_until] = @task.hide_until
     end
+ 
+    @task.attributes = params[:task]
+    @task.build_work_log(params, current_user)
 
-    if @task.update_attributes(params[:task])
-
+    if @task.save
       @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -351,7 +353,6 @@ class TasksController < ApplicationController
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
-      @task.create_work_log(params, current_user)
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id
