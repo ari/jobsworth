@@ -856,11 +856,7 @@ class TasksController < ApplicationController
 
         @current_sheet.destroy
         flash['notice'] = _("Log entry saved...")
-        @log = worklog
-        @log.started_at = tz.utc_to_local(@log.started_at)
-        @task = @log.task
-        render :action => 'edit_log'
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
+        redirect_to edit_work_log_path(worklog)
       else
         flash['notice'] = _("Unable to save log entry...")
         redirect_from_last
