@@ -144,27 +144,4 @@ class TasksControllerTest < ActionController::TestCase
 
     assert_response :success
   end
-
-  test "/save_log should update work log" do
-    task = Task.first
-    log = WorkLog.new(:started_at => Time.now.utc, :task => task,
-                      :duration => 60, :company => @user.company)
-    log.save!
-
-
-    new_time = Time.now.yesterday
-    params = { 
-      :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
-      :duration => "120m",
-      :body => "test body"
-    }
-    post(:save_log, :id => log.id, :work_log => params)
-    
-    log = WorkLog.find(log.id)
-#    assert_equal new_time.utc, log.started_at
-    assert_equal 7200, log.duration
-    assert_equal "test body", log.body
-    assert log.comment?
-  end
-
 end

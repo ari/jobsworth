@@ -927,47 +927,6 @@ class TasksController < ApplicationController
     redirect_to :controller => 'tasks', :action => 'shortlist'
   end
 
-  def edit_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    @log.started_at = tz.utc_to_local(@log.started_at)
-    @task = @log.task
-  end
-
-  def destroy_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    @log.destroy
-    flash['notice'] = _("Log entry deleted...")
-    redirect_from_last
-  end
-
-  def add_log
-    @log = Worklog.new
-    @log.started_at = tz.utc_to_local(Time.now.utc)
-    @log.task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    render :action => 'edit_log'
-  end
-
-  def save_log
-    @log = current_user.company.work_logs.find(params[:id])
-    @task = @log.task
-
-    # parse some params
-    params[:work_log][:started_at] = date_from_params(params[:work_log], :started_at)
-    params[:work_log][:duration] = parse_time(params[:work_log][:duration])
-    params[:work_log][:comment] = !params[:work_log][:body].blank?
-
-    if @log.update_attributes(params[:work_log])
-      update_task_for_log(@log, params[:task])
-      flash['notice'] = _("Log entry saved...")
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-      redirect_from_last
-    else
-      flash["notice"] = _("Error saving log entry")
-      render :edit_log
-    end
-  end
-
   def get_csv
     list
 
@@ -1550,39 +1509,6 @@ class TasksController < ApplicationController
 
     task.mark_as_notified_last_change(all_users)
     task.mark_as_unread(current_user)
-  end
-
-  ###
-  # Updates the task linked to log.
-  ###
-  def update_task_for_log(log, task_params)
-    return if task_params.nil?
-    new_status = task_params[:status].to_i
-
-    if new_status != log.task.status
-      status_type = :completed
-
-      if new_status < 2
-        log.log_type = EventLog::TASK_WORK_ADDED 
-        status_type = :updated
-      end 
-      
-      if new_status > 1 && log.task.status < 2
-        log.log_type = EventLog::TASK_COMPLETED 
-        status_type = :completed
-      end 
-      
-      if new_status < 2 && log.task.status > 1
-        log.log_type = EventLog::TASK_REVERTED 
-        status_type= :reverted
-      end 
-      
-      log.task.status = new_status
-      log.task.updated_by_id = current_user.id
-      log.task.completed_at = Time.now.utc
-    end
-    
-    log.task.save
   end
 
   # setup some instance variables for task list views

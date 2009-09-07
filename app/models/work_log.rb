@@ -23,6 +23,8 @@ class WorkLog < ActiveRecord::Base
 
   named_scope :comments, :conditions => [ "work_logs.comment = 1 or work_logs.log_type = 6" ]
 
+  validates_presence_of :started_at
+
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
     l = r.event_log

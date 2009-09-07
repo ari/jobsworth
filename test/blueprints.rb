@@ -70,3 +70,8 @@ Tag.blueprint do
   company
   name
 end
+
+WorkLog.blueprint do
+  company
+  started_at { Time.now }
+end

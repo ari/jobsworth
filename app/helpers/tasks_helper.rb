@@ -331,6 +331,7 @@ module TasksHelper
     return objects_to_names_and_ids(res)
   end
 
+
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
