@@ -40,7 +40,7 @@ puts
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
   puts
-  print "Enter domain ClockingIT will be accessed from (for example projects.mycompany.com): "
+  print "Enter hostname for the ClockingIT service (for example projects.mycompany.com): "
   domain = gets
 end
 
