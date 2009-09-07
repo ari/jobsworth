@@ -193,6 +193,10 @@ puts "  store/avatars..."
 Dir.mkdir("store/avatars") rescue nil
 puts "  store/logos..."
 Dir.mkdir("store/logos") rescue nil
+puts "  tmp..."
+Dir.mkdir("tmp") rescue nil
+puts "  tmp/cache..."
+Dir.mkdir("tmp/cache") rescue nil
 
 puts
 print "Initialize database schema [n]: "
