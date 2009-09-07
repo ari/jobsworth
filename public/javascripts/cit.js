@@ -89,6 +89,15 @@ function UpdateDnD() {
   updateTooltips();
 }
 
+/*
+ Tooltips are setup on page load, but sometimes the page is updated
+ using ajax, and the tooltips need to be setup again, so this method
+ sets up tooltips in page.
+*/
+function updateTooltips() {
+    jQuery('.tooltip').tooltip({showURL: false });    
+}
+
 function do_update(user, url) {
   if( user != userId ) {
       jQuery.get(url);

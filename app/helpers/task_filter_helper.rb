@@ -48,7 +48,7 @@ module TaskFilterHelper
     form_remote_tag(:url => "/task_filters/update_current_filter", 
                     :html => { :method => "post", :id => "search_filter_form"},
                     :loading => "showProgress()",
-                    :complete => "hideProgress(); Shadowbox.setup();",
+                    :complete => "hideProgress(); Shadowbox.setup(); updateTooltips(); ",
                     :update => "#content")
   end
 
