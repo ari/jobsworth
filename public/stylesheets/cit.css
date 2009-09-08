@@ -3108,3 +3108,8 @@ table.tablesorter thead tr .headerSortDown {
     clear: both;
     visibility: hidden;
 }
+
+#task_time_links {
+    float:right;
+    padding-top: 0.6em;
+}
