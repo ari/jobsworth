@@ -20,11 +20,9 @@
     </td>
   </tr>
   <tr><td><ul style="padding-left: 0; margin-left:0;" id="search_tasks">
-
-
-<% for task in @tasks %>
-<%= render :partial => 'tasks/task_row', :locals => {:task => task } %>
-<% end %>
+	<% @tasks.each do |task| -%>
+	  <%= render :partial => '/tasks/task_row', :locals => {:task => task } %>
+	<% end %>
       </ul></td></tr>
 
   <tr><td>&nbsp;</td></tr>
