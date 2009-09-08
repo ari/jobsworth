@@ -807,22 +807,51 @@ class TasksController < ApplicationController
     end
   end
 
+  # Builds a work log from the given task 
+  def worklog_from_task(task)
+    worklog = WorkLog.new
+    worklog.user = current_user
+    worklog.company = current_user.company
+    worklog.project = @current_sheet.project
+    worklog.task = task
+    worklog.customer = task.customers.first || @current_sheet.project.customer
+    worklog.started_at = @current_sheet.created_at
+    worklog.duration = @current_sheet.duration
+    worklog.paused_duration = @current_sheet.paused_duration
+    worklog.body = task.description
+    worklog.log_type = EventLog::TASK_WORK_ADDED
+    worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
+    
+    log = WorkLog.new
+    @log.user = current_user
+    
+  end
+
+  def add_work
+    task = current_user.company.tasks.find_by_task_num(params[:id])
+    if !current_user.can_view_task?(task)
+      flash['notice'] = _('Unable to find task belonging to you with that ID.')
+      redirect_from_last and return
+    end
+
+    log = WorkLog.create_for_task(task, current_user, task.description)
+    log.customer = task.customers.first || task.project.customer
+    log.log_type = EventLog::TASK_WORK_ADDED
+    log.save
+
+    redirect_to edit_work_log_path(log)
+  end
+
   def stop_work
     if @current_sheet
       task = @current_sheet.task
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = current_user.company
-      worklog.project = @current_sheet.project
-      worklog.task = task
+      worklog = WorkLog.create_for_task(task, current_user, task.description)
       worklog.customer = task.customers.first || @current_sheet.project.customer
       worklog.started_at = @current_sheet.created_at
       worklog.duration = @current_sheet.duration
       worklog.paused_duration = @current_sheet.paused_duration
-      worklog.body = task.description
       worklog.log_type = EventLog::TASK_WORK_ADDED
-      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
+      worklog.comment = true if @current_sheet.body.blank?
       
       if worklog.save
         worklog.task.updated_by_id = current_user.id
@@ -840,7 +869,22 @@ class TasksController < ApplicationController
       flash['notice'] = _("Log entry already saved from another browser instance.")
       redirect_from_last
     end
+  end
 
+  def pause_work
+    if @current_sheet
+      if @current_sheet.paused?
+        @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
+        @current_sheet.paused_at = nil
+      else
+        @current_sheet.paused_at = Time.now.utc
+      end
+      @current_sheet.save
+    end
+
+    respond_to do |format|
+      format.html { redirect_from_last }
+    end
   end
 
   def stop_work_shortlist
