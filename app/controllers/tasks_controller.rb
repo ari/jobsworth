@@ -807,32 +807,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def add_work
-    begin
-      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
-    rescue
-      flash['notice'] = _('Unable to find task belonging to you with that ID.')
-      redirect_from_last
-      return
-    end
-
-    @log = WorkLog.new
-    @log.user = current_user
-    @log.company = current_user.company
-    @log.project = @task.project
-    @log.task = @task
-    @log.customer = @task.customers.first || @task.project.customer
-    @log.started_at = tz.utc_to_local(Time.now.utc)
-    @log.duration = 0
-    @log.log_type = EventLog::TASK_WORK_ADDED
-    @log.body = @task.description
-    
-    @log.save
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-
-    render :action => 'edit_log'
-  end
-
   def stop_work
     if @current_sheet
       task = @current_sheet.task
