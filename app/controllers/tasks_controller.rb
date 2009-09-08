@@ -755,17 +755,6 @@ class TasksController < ApplicationController
     self.start_work
   end
 
-  def cancel_work_ajax
-    if @current_sheet 
-      @task = @current_sheet.task
-      @current_sheet.destroy
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
-      @current_sheet = nil
-    end
-    return if request.xhr?
-    redirect_from_last
-  end
-
 
   def swap_work_ajax
     if @current_sheet
@@ -886,6 +875,20 @@ class TasksController < ApplicationController
       format.html { redirect_from_last }
     end
   end
+
+  def cancel_work
+    if @current_sheet 
+      @task = @current_sheet.task
+      @current_sheet.destroy
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
+      @current_sheet = nil
+    end
+
+    respond_to do |format|
+      format.html { redirect_from_last }
+    end
+  end
+
 
   def stop_work_shortlist
     unless @current_sheet

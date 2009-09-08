@@ -9,25 +9,11 @@
    info_string ||= ""
 
 -%>
-  <%= link_to( image_tag("time_add.png", :border => 0, :class => "tooltip", :title => _("Done working on <b>%s</b> for now.", task.name) ), {:controller => 'tasks', :action => 'stop_work'} )  -%>
+  <%= start_stop_work_link(task) %>
   <%= link_to( task.issue_name + " - " + task.project.name + " / " + task.full_tags, :controller => 'tasks', :action => 'edit', :id => task ) %> <br />
-  <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
-          :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task },
-          :loading => "showProgress();",
-          :complete => "hideProgress();",
-          :confirm => _("Really abort work?")
-            -%>
-  <% if @current_sheet.paused? %>
-    <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
-        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task },
-        :loading => "showProgress();",
-        :complete => "hideProgress();" -%> [<%= _('Paused') %>]
-  <% else %>
-    <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
-        :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task },
-        :loading => "showProgress();",
-        :complete => "hideProgress();" -%>
-  <% end %>
+
+  <%= cancel_work_link(task) %>
+  <%= pause_task_link(task) %>
   <%= worked_nice(@current_sheet.duration/60) -%><%= info_string -%><%= " - " if total_today > 0 %>
 <% end %>
 <% if total_today > 0 %>

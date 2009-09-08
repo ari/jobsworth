@@ -516,4 +516,15 @@ module TasksHelper
     return link_to(image, :controller => 'tasks', :action => 'add_work', :id => task)
   end
 
+  # Returns a link to cancel the work on the given task
+  def cancel_work_link(task)
+    if @current_sheet and @current_sheet.task == task
+      image = image_tag("time_delete.png", :class => "tooltip work_icon", 
+                        :title => _("Cancel working on <b>%s</b>.", task.name))
+
+      return link_to(image, { :controller => 'tasks', :action => "cancel_work", :id => task }, 
+                     :confirm => "Really abort work?")
+    end
+  end
+
 end
