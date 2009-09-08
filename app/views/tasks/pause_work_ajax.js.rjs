@@ -1,8 +1,0 @@
-page.replace ".#{@current_sheet.task.dom_id}", :partial => "task_row", :locals => {:task => @current_sheet.task, :depth => params[:depth].to_i || 0 }
-
-page.replace_html "menu_info", :partial => "layouts/sheet_info"
-page.replace_html "shortlist-legend", :partial => "tasks/short_legend"
-page.call "fixShortLinks"
-
-page.call "UpdateDnD"
-

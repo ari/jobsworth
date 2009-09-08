@@ -2,10 +2,6 @@ require "fastercsv"
 # Handle tasks for a Company / User
 #
 class TasksController < ApplicationController
-#  cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
-#    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
-#    :cancel_work_ajax, :destroy_log ]
-
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -747,15 +743,6 @@ class TasksController < ApplicationController
     redirect_from_last
   end
 
-  def start_work_ajax
-    self.start_work
-  end
-
-  def start_work_edit_ajax
-    self.start_work
-  end
-
-
   def swap_work_ajax
     if @current_sheet
 
@@ -1174,10 +1161,6 @@ class TasksController < ApplicationController
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-  end
-
-  def create_ajax
-    self.create
   end
 
   def create_shortlist_ajax
