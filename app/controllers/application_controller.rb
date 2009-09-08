@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   helper :date_and_time
   helper :javascript
   helper :todos
+  helper :tags
 
 #  helper :all
 

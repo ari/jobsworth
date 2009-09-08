@@ -1129,10 +1129,6 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
   end
 
-  def quick_add
-    self.new
-  end
-
   def create_ajax
     self.create
   end
@@ -1233,30 +1229,6 @@ class TasksController < ApplicationController
       render :nothing => true
       Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
       return
-    end
-  end
-
-  def tags
-    @tags = current_user.company.tags
-  end 
-
-  def delete_tag
-    @tag = current_user.company.tags.find(params[:id]) rescue nil
-    @tag.destroy if @tag
-  end 
-
-  def save_tag
-    @tag = current_user.company.tags.find(params[:id]) rescue nil
-    if @tag && !params['tag-name'].blank?
-      @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
-      if @existing and @existing != @tag
-        @tag.tasks.each { |t| @existing.tasks << t }
-        @existing.save
-        @tag.destroy
-      else 
-        @tag.name = params['tag-name']
-        @tag.save
-      end 
     end
   end
 

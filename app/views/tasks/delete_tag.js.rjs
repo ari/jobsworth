@@ -1,3 +1,0 @@
-if @tag
-  page.remove(@tag.dom_id) 
-end

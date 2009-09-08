@@ -1034,16 +1034,19 @@ pre.auto_generated {
         border-left: none;
 }
 
-.tag
-{
-  font-size: 11px;
-  padding-right: 0.3em;
+.tag {
+    padding-bottom: 0.5em;
 }
-
 .tag a {
   font-weight: normal;
 }
-
+.tag .counts {
+    font-size: 75%;
+}
+.tag .links {
+    float: right;
+    font-size: 75%;
+}
 
 
 .tag_active

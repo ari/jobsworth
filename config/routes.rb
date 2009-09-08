@@ -36,6 +36,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :posts, :name_prefix => 'all_', :collection => { :search => :get }
   map.resources :todos, :member => { :toggle_done => :post }
   map.resources :work_logs
+  map.resources :tags
 
   %w(user forum).each do |attr|
     map.resources :posts, :name_prefix => "#{attr}_", :path_prefix => "/#{attr.pluralize}/:#{attr}_id"
