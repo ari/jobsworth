@@ -59,6 +59,7 @@ class TaskFilter < ActiveRecord::Base
 
     count_conditions = []
     count_conditions << "(task_owners.unread = 1 and task_owners.user_id = #{ user.id })" 
+    count_conditions << "(notifications.unread = 1 and notifications.user_id = #{ user.id })" 
     count_conditions << "(task_owners.id is null)"
 
     sql = count_conditions.join(" or ")
