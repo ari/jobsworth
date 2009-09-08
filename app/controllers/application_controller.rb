@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   helper :javascript
   helper :todos
   helper :tags
+  helper :time_tracking
 
 #  helper :all
 
