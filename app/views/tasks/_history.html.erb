@@ -1,16 +1,7 @@
 <span class="right">
-<% if session[:only_comments].to_i == 0 %>
-           <%= link_to_remote _('Showing Full History'), :url => {:action => 'toggle_history', :id => @task.id },
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();"
-           %>
-<% else %>
-           <%= link_to_remote _('Showing Only Comments'), :url => {:action => 'toggle_history', :id => @task.id},
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();"
-           %>
-<% end %>
+  <%= toggle_history_view_link %>
 </span>
+
 <div class="log_history clearfix">
   <% logs = (session[:only_comments] ? @task.work_logs.comments : @task.work_logs) -%>
   <% logs = logs.all(:order => "started_at desc") -%>

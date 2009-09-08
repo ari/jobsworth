@@ -465,4 +465,14 @@ module TasksHelper
     end
   end
 
+  # Returns a link that allows the user to toggle whether the
+  # full task history or only comments are shown
+  def toggle_history_view_link
+    only_comments = (session[:only_comments].to_i == 0)
+    str = only_comments ? _("Showing Full History") : _("Showing Only Comments")
+
+    return link_to_remote(str, :loading => "showProgress();", :complete => "hideProgress();",
+                          :url => { :action => 'toggle_history', :id => @task.id })
+  end
+
 end
