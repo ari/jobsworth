@@ -31,13 +31,16 @@ class TaskFilter < ActiveRecord::Base
     return filter
   end
 
-  # Returns an array of all tasks matching the conditions from this filter
-  # if extra_conditions is passed, that will be ANDed to the conditions
-  def tasks(extra_conditions = nil)
+  # Returns an array of all tasks matching the conditions from this filter.
+  # If extra_conditions is passed, that will be ANDed to the conditions
+  # If limit is false, no limit will be set on the tasks returned (otherwise
+  # a default limit will be applied)
+  def tasks(extra_conditions = nil, limit_tasks = true)
+    limit = (limit_tasks ? 500 : nil)
     return user.company.tasks.all(:conditions => conditions(extra_conditions), 
                                   :order => "tasks.id desc",
                                   :include => to_include,
-                                  :limit => 100)
+                                  :limit => limit)
   end
 
   # Returns the count of tasks matching the conditions of this filter.
@@ -56,6 +59,7 @@ class TaskFilter < ActiveRecord::Base
 
     count_conditions = []
     count_conditions << "(task_owners.unread = 1 and task_owners.user_id = #{ user.id })" 
+    count_conditions << "(notifications.unread = 1 and notifications.user_id = #{ user.id })" 
     count_conditions << "(task_owners.id is null)"
 
     sql = count_conditions.join(" or ")

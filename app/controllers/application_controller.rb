@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   helper :date_and_time
   helper :javascript
   helper :todos
+  helper :tags
+  helper :time_tracking
 
 #  helper :all
 
@@ -28,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
-                                         :company_check, :subdomain_check, :unsubscribe, :shortlist_auth,
+                                         :company_check, :subdomain_check, :unsubscribe,
                                          :igoogle_setup, :igoogle
                                        ]
                                        
@@ -228,20 +230,6 @@ class ApplicationController < ActionController::Base
 
   end
 
-
-  # Redirect back to the last important page, forcing the tutorial unless that's completed.
-  def redirect_from_last
-    if session[:history] && session[:history].size > 0
-      redirect_to(session[:history][0])
-    else
-      if current_user.seen_welcome.to_i == 0
-        redirect_to('/activities/welcome')
-      else
-        redirect_to('/activities/list')
-      end
-    end
-  end
-
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
     current_user.projects
@@ -372,6 +360,22 @@ class ApplicationController < ActionController::Base
     return @company
   end
 
+  # Redirects to the last page this user was on. 
+  # If the current request is using ajax, uses js to do the redirect.
+  # If the tutorial hasn't been completed, sends them back to that page
+  def redirect_from_last
+    url = "/activities/list" # default
+
+    if session[:history] && session[:history].any?
+      url = session[:history].first
+    elsif !current_user.seen_welcome?
+      url = "/activities/welcome"
+    end
+
+    url = url.gsub("format=js", "")
+    redirect_using_js_if_needed(url)
+  end
+
   private
 
   # Returns a link to the given task. 
@@ -400,17 +404,6 @@ class ApplicationController < ActionController::Base
   # if none set)
   def current_task_filter
     @current_task_filter ||= TaskFilter.system_filter(current_user)
-  end
-
-  # Redirects to the last page this user was on. If the current
-  # request is using ajax, uses js to do the redirect.
-  def redirect_back_using_js_if_needed
-    url = "/tasks/list" # default
-    if session[:history] && session[:history].any?
-      url = session[:history][0]
-    end
-
-    redirect_using_js_if_needed(url)
   end
 
   # Redirects to the given url. If the current request is using ajax,

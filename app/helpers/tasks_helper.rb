@@ -214,31 +214,6 @@ module TasksHelper
                                   :after_update_element => "addUserToTask")
   end
 
-  # Returns links to filter the current task list by tags
-  def tag_links
-    links = []
-    tags = Tag.top_counts_as_tags(current_user.company, current_user.user_tasks_sql)
-    ranges = cloud_ranges(tags.map { |tag, count| count })
-	
-    tags.each do |tag, count|
-      str = "#{ tag.name }"
-      link_params = {
-        :qualifiable_id => tag.id,
-        :qualifiable_type => tag.class.name
-      }
-
-      range = ranges.index { |r| r > count }
-      range ||= ranges.length
-      class_name = "size#{ range }"
-
-      link_params = { :qualifiers_attributes => [ link_params ] }
-      path = update_current_filter_task_filters_path(:task_filter => link_params)
-      links << link_to(str, path, :class => class_name)
-    end
-
-    return links.join(", ")
-  end
-
   # Returns an array that show the start of ranges to be used
   # for a tag cloud
   def cloud_ranges(counts)
@@ -330,6 +305,7 @@ module TasksHelper
     res = res.uniq.compact
     return objects_to_names_and_ids(res)
   end
+
 
   # Returns html to display the due date selector for task
   def due_date_field(task, permissions)
@@ -487,6 +463,16 @@ module TasksHelper
     else
       return 1
     end
+  end
+
+  # Returns a link that allows the user to toggle whether the
+  # full task history or only comments are shown
+  def toggle_history_view_link
+    only_comments = (session[:only_comments].to_i == 0)
+    str = only_comments ? _("Showing Full History") : _("Showing Only Comments")
+
+    return link_to_remote(str, :loading => "showProgress();", :complete => "hideProgress();",
+                          :url => { :action => 'toggle_history', :id => @task.id })
   end
 
 end

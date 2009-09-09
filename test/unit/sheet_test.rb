@@ -1,14 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class SheetTest < ActiveRecord::TestCase
-  fixtures :sheets
-
-  def setup
-    @sheet = Sheet.find(1)
-  end
-
-  # Replace this with your real tests.
-  def test_truth
-    assert_kind_of Sheet,  @sheet
-  end
+  should_validate_presence_of :task
+  should_validate_presence_of :project
+  should_validate_presence_of :user
 end

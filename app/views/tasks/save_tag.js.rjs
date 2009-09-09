@@ -1,6 +1,0 @@
-if @existing and @existing != @tag
-  page[@tag.dom_id].remove
-  @tag = @existing
-end
-
-page[@tag.dom_id].replace :partial => 'edit_tag_row'

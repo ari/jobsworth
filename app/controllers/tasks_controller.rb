@@ -2,10 +2,6 @@ require "fastercsv"
 # Handle tasks for a Company / User
 #
 class TasksController < ApplicationController
-#  cache_sweeper :cache_sweeper, :only => [:create, :update, :destroy, :ajax_hide, :ajax_restore,
-#    :ajax_check, :ajax_uncheck, :start_work_ajax, :stop_work, :swap_work_ajax, :save_log, :update_log,
-#    :cancel_work_ajax, :destroy_log ]
-
 
   def new
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
@@ -162,6 +158,7 @@ class TasksController < ApplicationController
 
     @task = current_user.company.tasks.new
     @task.attributes = params[:task]
+    @task.build_work_log(params, current_user)
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
@@ -211,7 +208,6 @@ class TasksController < ApplicationController
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
-      @task.create_work_log(params, current_user)
 
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
@@ -325,9 +321,11 @@ class TasksController < ApplicationController
     else
       params[:task][:hide_until] = @task.hide_until
     end
+ 
+    @task.attributes = params[:task]
+    @task.build_work_log(params, current_user)
 
-    if @task.update_attributes(params[:task])
-
+    if @task.save
       @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -351,7 +349,6 @@ class TasksController < ApplicationController
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
       @task.set_resource_attributes(params[:resource])
-      @task.create_work_log(params, current_user)
 
       @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
       @task.updated_by_id = current_user.id
@@ -721,169 +718,6 @@ class TasksController < ApplicationController
 
   end
 
-
-  def start_work
-    if @current_sheet
-      self.swap_work_ajax
-    end
-    
-    task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    sheet = Sheet.new
-
-    sheet.task = task
-    sheet.user = current_user
-    sheet.project = task.project
-    sheet.save
-
-    task.status = 1 if task.status == 0
-    task.save
-
-    @current_sheet = sheet
-
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
-
-    return if request.xhr?
-    redirect_from_last
-  end
-
-  def start_work_ajax
-    self.start_work
-  end
-
-  def start_work_edit_ajax
-    self.start_work
-  end
-
-  def cancel_work_ajax
-    if @current_sheet 
-      @task = @current_sheet.task
-      @current_sheet.destroy
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
-      @current_sheet = nil
-    end
-    return if request.xhr?
-    redirect_from_last
-  end
-
-
-  def swap_work_ajax
-    if @current_sheet
-
-      @old_task = @current_sheet.task
-
-      if @old_task.nil?
-        @current_sheet.destroy
-        @current_sheet = nil
-        redirect_from_last
-      end
-
-#      @old_task.updated_by_id = current_user.id
-#      @old_task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = current_user.company
-      worklog.project = @current_sheet.project
-      worklog.task = @current_sheet.task
-      worklog.customer = @current_sheet.project.customer
-      worklog.started_at = @current_sheet.created_at
-      worklog.duration = @current_sheet.duration
-      worklog.paused_duration = @current_sheet.paused_duration
-      worklog.body = @current_sheet.body
-      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0
-      worklog.log_type = EventLog::TASK_WORK_ADDED
-      if worklog.save
-        @current_sheet.destroy
-        flash['notice'] = _("Log entry saved...")
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{current_user.company_id}"])
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-        @current_sheet = nil
-      else
-        flash['notice'] = _("Unable to save log entry...")
-        redirect_from_last
-      end
-
-    end
-  end
-
-  def add_work
-    begin
-      @task = Task.find( params['id'], :conditions => ["tasks.project_id IN (#{current_project_ids})"] )
-    rescue
-      flash['notice'] = _('Unable to find task belonging to you with that ID.')
-      redirect_from_last
-      return
-    end
-
-    @log = WorkLog.new
-    @log.user = current_user
-    @log.company = current_user.company
-    @log.project = @task.project
-    @log.task = @task
-    @log.customer = @task.customers.first || @task.project.customer
-    @log.started_at = tz.utc_to_local(Time.now.utc)
-    @log.duration = 0
-    @log.log_type = EventLog::TASK_WORK_ADDED
-    @log.body = @task.description
-    
-    @log.save
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-
-    render :action => 'edit_log'
-  end
-
-  def stop_work
-    if @current_sheet
-      task = @current_sheet.task
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = current_user.company
-      worklog.project = @current_sheet.project
-      worklog.task = task
-      worklog.customer = task.customers.first || @current_sheet.project.customer
-      worklog.started_at = @current_sheet.created_at
-      worklog.duration = @current_sheet.duration
-      worklog.paused_duration = @current_sheet.paused_duration
-      worklog.body = task.description
-      worklog.log_type = EventLog::TASK_WORK_ADDED
-      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
-      
-      if worklog.save
-        worklog.task.updated_by_id = current_user.id
-        worklog.task.save
-
-        @current_sheet.destroy
-        flash['notice'] = _("Log entry saved...")
-        @log = worklog
-        @log.started_at = tz.utc_to_local(@log.started_at)
-        @task = @log.task
-        render :action => 'edit_log'
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      else
-        flash['notice'] = _("Unable to save log entry...")
-        redirect_from_last
-      end
-    else
-      @current_sheet = nil
-      flash['notice'] = _("Log entry already saved from another browser instance.")
-      redirect_from_last
-    end
-
-  end
-
-  def stop_work_shortlist
-    unless @current_sheet
-      render :nothing => true
-      return
-    end
-
-    @task = @current_sheet.task
-    swap_work_ajax
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-#    redirect_to :action => 'shortlist'
-  end
-
   def updatelog
     unless @current_sheet
       render :text => "#{_("Task not worked on")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
@@ -904,67 +738,6 @@ class TasksController < ApplicationController
 
   def update_tasks
     @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-  end
-
-  def filter_shortlist
-
-    tmp = { }
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
-      tmp[v] = session[v]
-    end
-
-    do_filter
-
-    session[:filter_project_short] = session[:filter_project]
-    session[:filter_customer_short] = session[:filter_customer]
-    session[:filter_milestone_short] = session[:filter_milestone]
-
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
-      session[v] = tmp[v]
-    end
-
-    redirect_to :controller => 'tasks', :action => 'shortlist'
-  end
-
-  def edit_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    @log.started_at = tz.utc_to_local(@log.started_at)
-    @task = @log.task
-  end
-
-  def destroy_log
-    @log = WorkLog.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    @log.destroy
-    flash['notice'] = _("Log entry deleted...")
-    redirect_from_last
-  end
-
-  def add_log
-    @log = Worklog.new
-    @log.started_at = tz.utc_to_local(Time.now.utc)
-    @log.task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    render :action => 'edit_log'
-  end
-
-  def save_log
-    @log = current_user.company.work_logs.find(params[:id])
-    @task = @log.task
-
-    # parse some params
-    params[:work_log][:started_at] = date_from_params(params[:work_log], :started_at)
-    params[:work_log][:duration] = parse_time(params[:work_log][:duration])
-    params[:work_log][:comment] = !params[:work_log][:body].blank?
-
-    if @log.update_attributes(params[:work_log])
-      update_task_for_log(@log, params[:task])
-      flash['notice'] = _("Log entry saved...")
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-      redirect_from_last
-    else
-      flash["notice"] = _("Error saving log entry")
-      render :edit_log
-    end
   end
 
   def get_csv
@@ -1199,137 +972,6 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
   end
 
-  def quick_add
-    self.new
-  end
-
-  def create_ajax
-    self.create
-  end
-
-  def create_shortlist_ajax
-    @highlight_target = "shortlist"
-    if !params[:task][:name] || params[:task][:name].empty?
-      render(:highlight) and return
-    end
-
-    @task = Task.new
-    @task.name = params[:task][:name]
-    @task.company_id = current_user.company_id
-    @task.updated_by_id = current_user.id
-    @task.creator_id = current_user.id
-    @task.duration = 0
-    @task.set_task_num(current_user.company_id)
-    @task.description = ""
-
-    if session[:filter_milestone_short].to_i > 0
-      @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_milestone_short]]).project
-      @task.milestone_id = session[:filter_milestone_short].to_i
-    elsif session[:filter_project_short].to_i > 0
-      @task.project_id = session[:filter_project_short].to_i
-      @task.milestone_id = nil
-    else
-      render(:highlight) and return
-    end
-
-    @task.save
-    @task.reload
-
-    if @task.id.nil?
-      @highlight_target = "quick_add_container"
-      render(:highlight) and return
-    else
-      to = TaskOwner.new(:user => current_user, :task => @task)
-      to.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_CREATED
-      worklog.body = ""
-      worklog.save
-      if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
-      end
-
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-    end
-  end
-
-  def shortlist
-    tmp = { }
-    # Save filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
-      tmp[v] = session[v]
-    end
-
-    session[:filter_project] = session[:filter_project_short] if session[:filter_project_short]
-    session[:filter_customer] = session[:filter_customer_short] if session[:filter_project_short]
-    session[:filter_milestone] = session[:filter_milestone_short] if session[:filter_project_short]
-    session[:filter_user] = current_user.id.to_s
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:group_by] = "0"
-    session[:hide_deferred] = "1"
-    session[:hide_dependencies] = "1"
-    session[:sort] = "0"
-
-    self.list
-
-    # Restore filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
-      session[v] = tmp[v]
-    end
-
-    render :layout => 'shortlist'
-  end
-
-  def pause_work_ajax
-    if @current_sheet 
-      if @current_sheet.paused_at
-        @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
-        @current_sheet.paused_at = nil
-      else
-        @current_sheet.paused_at = Time.now.utc
-      end
-      @current_sheet.save
-    else 
-      render :nothing => true
-      Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
-      return
-    end
-  end
-
-  def tags
-    @tags = current_user.company.tags
-  end 
-
-  def delete_tag
-    @tag = current_user.company.tags.find(params[:id]) rescue nil
-    @tag.destroy if @tag
-  end 
-
-  def save_tag
-    @tag = current_user.company.tags.find(params[:id]) rescue nil
-    if @tag && !params['tag-name'].blank?
-      @existing = current_user.company.tags.find(:first, :conditions => ["name = ?", params['tag-name']] )
-      if @existing and @existing != @tag
-        @tag.tasks.each { |t| @existing.tasks << t }
-        @existing.save
-        @tag.destroy
-      else 
-        @tag.name = params['tag-name']
-        @tag.save
-      end 
-    end
-  end
-
   def get_comment
     @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
     if @task
@@ -1549,39 +1191,6 @@ class TasksController < ApplicationController
 
     task.mark_as_notified_last_change(all_users)
     task.mark_as_unread(current_user)
-  end
-
-  ###
-  # Updates the task linked to log.
-  ###
-  def update_task_for_log(log, task_params)
-    return if task_params.nil?
-    new_status = task_params[:status].to_i
-
-    if new_status != log.task.status
-      status_type = :completed
-
-      if new_status < 2
-        log.log_type = EventLog::TASK_WORK_ADDED 
-        status_type = :updated
-      end 
-      
-      if new_status > 1 && log.task.status < 2
-        log.log_type = EventLog::TASK_COMPLETED 
-        status_type = :completed
-      end 
-      
-      if new_status < 2 && log.task.status > 1
-        log.log_type = EventLog::TASK_REVERTED 
-        status_type= :reverted
-      end 
-      
-      log.task.status = new_status
-      log.task.updated_by_id = current_user.id
-      log.task.completed_at = Time.now.utc
-    end
-    
-    log.task.save
   end
 
   # setup some instance variables for task list views

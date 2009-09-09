@@ -1034,16 +1034,19 @@ pre.auto_generated {
         border-left: none;
 }
 
-.tag
-{
-  font-size: 11px;
-  padding-right: 0.3em;
+.tag {
+    padding-bottom: 0.5em;
 }
-
 .tag a {
   font-weight: normal;
 }
-
+.tag .counts {
+    font-size: 75%;
+}
+.tag .links {
+    float: right;
+    font-size: 75%;
+}
 
 
 .tag_active
@@ -3104,4 +3107,9 @@ table.tablesorter thead tr .headerSortDown {
     height: 0;
     clear: both;
     visibility: hidden;
+}
+
+#task_time_links {
+    float:right;
+    padding-top: 0.6em;
 }

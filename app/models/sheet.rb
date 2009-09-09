@@ -5,6 +5,10 @@ class Sheet < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
 
+  validates_presence_of :task
+  validates_presence_of :project
+  validates_presence_of :user
+
   def paused?
     self.paused_at != nil
   end

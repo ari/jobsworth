@@ -1,11 +1,15 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class OrganizationalUnitTest < ActiveRecord::TestCase
-  def test_requires_name
-    ou = OrganizationalUnit.new
+  context "a normal org unit" do
+    setup do
+      @org_unit = OrganizationalUnit.make
+      @org_unit.save!
+    end
+    subject { @org_unit }
 
-    assert !ou.valid?
-    ou.name = "AA"
-    assert ou.valid?
+    should_validate_presence_of :name
+    should_belong_to :customer
+    should_have_many :custom_attribute_values
   end
 end

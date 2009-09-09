@@ -60,4 +60,10 @@ class ApplicationControllerTest < ActionController::TestCase
     assert_no_tag(:a, :attributes => { :href => "/clients/list" })
   end
 
+  test "should never redirect back to url with ?format=js" do
+    session[:history] = [ "/tasks/list?format=js" ]
+    get :redirect_from_last
+    assert_redirected_to "/tasks/list?"
+  end
+
 end

@@ -3,11 +3,14 @@ require File.dirname(__FILE__) + '/../test_helper'
 class WorkLogTest < ActiveRecord::TestCase
   fixtures :work_logs, :customers, :companies
 
+  should_validate_presence_of :started_at
+
   def setup
     @work_log = WorkLog.find(1)
     @work_log.company = companies(:cit)
     @work_log.customer = @work_log.company.customers.first
   end
+  subject { @work_log }
 
   should "set customer_id from customer_name=" do
     c = @work_log.company.customers.last

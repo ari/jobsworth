@@ -2,7 +2,9 @@
 	<div id="tags">
 		<div class="page_header">
 			<%=_ 'Tags' %>
-			<% if current_user.admin? %><a href="/tasks/tags" class="right">Edit</a><% end %>
+			<% if current_user.admin? -%>
+			  <%= link_to _("Edit"), tags_path %>
+			<% end -%>
 		</div>
 	
 		<div class="cloud">

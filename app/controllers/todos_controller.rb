@@ -45,7 +45,7 @@ class TodosController < ApplicationController
 
     if @task.nil? or !current_user.can_view_task?(@task)
       flash[:notice] = _("You don't have access to that task")
-      redirect_back_using_js_if_needed
+      redirect_from_last
     end
   end
 

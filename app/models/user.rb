@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
   has_many      :chat_requests, :foreign_key => 'target_id', :class_name => 'Chat', :dependent => :destroy
 
   has_many      :task_filters, :dependent => :destroy
+  has_many      :sheets, :dependent => :destroy
   
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name

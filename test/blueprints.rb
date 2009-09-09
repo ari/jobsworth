@@ -19,6 +19,11 @@ Customer.blueprint do
   name { company.name }
 end
 
+OrganizationalUnit.blueprint do
+  customer
+  name
+end
+
 User.blueprint do
   company
   customer
@@ -69,4 +74,15 @@ end
 Tag.blueprint do
   company
   name
+end
+
+WorkLog.blueprint do
+  company
+  started_at { Time.now }
+end
+
+Sheet.blueprint do
+  task
+  project
+  user
 end

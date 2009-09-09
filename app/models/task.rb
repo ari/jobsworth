@@ -64,6 +64,8 @@ class Task < ActiveRecord::Base
   validates_presence_of		:company
   validates_presence_of		:project
 
+  after_validation :fix_work_log_error
+
   before_create :set_task_num
 
   after_save { |r|
@@ -1101,28 +1103,44 @@ class Task < ActiveRecord::Base
     return res
   end
 
-  # Creates a new work log for this task using the given params
-  def create_work_log(params, user)
+  # Builds a new (unsaved) work log for this task using the given params
+  def build_work_log(params, user)
     work_log_params = params[:work_log]
 
     if work_log_params and !work_log_params[:duration].blank?
       work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
       work_log_params[:started_at] = TimeParser.date_from_params(user, work_log_params, :started_at)
+
       if work_log_params[:body].blank?
         body = params.delete(:comment)
         body = self.description if body.blank?
         work_log_params[:body] = body
       end
-      work_log_params.merge!(:user => user,
-                    :company => self.company, 
-                    :project => self.project, 
-                    :customer => (self.customers.first || self.project.customer))
-      self.work_logs.build(work_log_params).save!
+
+      work_log_params.merge!(:user => user, :company => self.company, 
+                             :project => self.project, 
+                             :customer => (self.customers.first || self.project.customer))
+      self.work_logs.build(work_log_params)
     end
   end
 
 
   def last_comment
     @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
+  end
+
+  private
+
+  # If creating a new work log with a duration, fails because it work log
+  # has a mandatory attribute missing, the error message it the unhelpful
+  # "Work logs in invalid". Fix that here
+  def fix_work_log_error
+    errors = self.errors.instance_variable_get("@errors")
+    if errors.key?("work_logs")
+      errors.delete("work_logs")
+      self.work_logs.last.errors.each_full do |msg|
+        self.errors.add_to_base(msg)
+      end
+    end
   end
 end

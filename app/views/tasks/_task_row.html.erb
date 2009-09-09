@@ -32,25 +32,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
   <% if(@current_sheet && @current_sheet.task_id == task.id) || task.done? -%>
     <div class="popout" id="edit_task_<%=task.id%>" style="position:absolute; width:55px; left: -59px; top: 0px; z-index:10; padding-right:2px;" align="right">
-    <% if(@current_sheet && @current_sheet.task_id == task.id) -%>
-        <%= link_to_remote image_tag("time_delete.png", :border => 0, :title => _("Cancel working on <b>%s</b>.", task.name), :class => "tooltip"),
-          :url => { :controller => 'tasks', :action => 'cancel_work_ajax', :id => task, :depth => depth },
-          :loading => "showProgress();",
-          :complete => "hideProgress();",
-          :confirm => _("Really abort work?")
-            -%>
-        <% if @current_sheet.paused? %>
-          <%= link_to_remote image_tag("time_resume.png", :border => 0, :title => _("Resume working on <b>%s</b>.", task.name), :class => "tooltip"),
-            :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
-            :loading => "showProgress();",
-            :complete => "hideProgress();" -%>
-        <% else %>
-          <%= link_to_remote image_tag("time_pause.png", :border => 0, :title => _("Pause working on <b>%s</b>.", task.name), :class => "tooltip"),
-            :url => { :controller => 'tasks', :action => 'pause_work_ajax', :id => task, :depth => depth },
-            :loading => "showProgress();",
-            :complete => "hideProgress();" -%>
-        <% end %>
-    <% else -%>
+    <% if !(@current_sheet && @current_sheet.task_id == task.id) -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
             <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
@@ -72,16 +54,8 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
   <div style="float:left; padding-left:0.3em;">
-    <% if current_user.option_tracktime.to_i == 1 && can_work.size == 0 -%>
-      <% if @current_sheet && @current_sheet.task_id == task.id -%>
-        <%= link_to(image_tag("time_add.png", :border => 0, :class => "tooltip work_icon", :title => _("Stop working on <b>%s</b>.", task.name)), {:controller => 'tasks', :action => 'stop_work'}, { :class => "stop-work-link work-icon" } )  -%>
-      <% else -%>
-        <a href="#" onclick="jQuery.getScript('/tasks/start_work_ajax/<%=task.id%>?depth=<%=depth%>'); return false;"><%= image_tag("time.png", :border => 0, :class => "tooltip work_icon", :title => _("Start working on <b>%s</b>. Click again when done.", task.name))%></a>
-      <% end -%>
-   <% else -%>
-     <img src="/images/spacer.gif" width="16" height="16" border="0"/>
-   <% end -%>
-   </div>
+    <img src="/images/spacer.gif" width="16" height="16" border="0"/>
+  </div>
   <div class="unread_icon">
   	<a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
   </div>

@@ -1,0 +1,17 @@
+<div class="hoverrow tag" id="<%= tag.dom_id %>">
+
+  <div id="link-<%= tag.dom_id %>">
+    <%= link_to_filter_on_tag(tag) %>
+  </div>
+
+  <div class="links">
+    <%= link_to(_("Edit"), edit_tag_path(tag)) %>
+    |
+    <%= link_to(_("Delete"), tag_path(tag), :class => "delete", :method => :delete, :confirm => _("Are you sure?")) %>
+  </div>
+
+  <div class="counts">
+    (<%= _("%d open / %d tasks", tag.count, tag.total_count) %>)
+  </div>
+
+</div>

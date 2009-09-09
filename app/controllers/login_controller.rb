@@ -264,24 +264,6 @@ class LoginController < ApplicationController
     end
   end
 
-  def shortlist_auth
-    return if params[:id].nil? || params[:id].empty?
-    user = User.find(:first, :conditions => ["autologin = ?", params[:id]])
-
-    if user.nil?
-      render :nothing => true, :layout => false
-      return
-    end
-
-    session[:user_id] = user.id
-    session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
-    session[:redirect] = nil
-    authorize
-
-    redirect_to :controller => 'tasks', :action => 'shortlist'
-
-  end
-
   private
 
   # Mail the User his/her credentials for all Users on the requested

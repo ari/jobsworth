@@ -89,6 +89,15 @@ function UpdateDnD() {
   updateTooltips();
 }
 
+/*
+ Tooltips are setup on page load, but sometimes the page is updated
+ using ajax, and the tooltips need to be setup again, so this method
+ sets up tooltips in page.
+*/
+function updateTooltips() {
+    jQuery('.tooltip').tooltip({showURL: false });    
+}
+
 function do_update(user, url) {
   if( user != userId ) {
       jQuery.get(url);
@@ -119,23 +128,6 @@ function updateSelect(sel, response) {
    for( var i=0; i<opts.length; i++ ) {
      sel.options[i] = new Option(opts[i].text,opts[i].value,null,false);
    }
-}
-
-function fixShortLinks() {
-  $$('.task-name a').each( function(e) {
-      e.target = '_blank';
-    });
-
-  $$('a.stop-work-link').each(function(e) {
-      if( e.href != '#' ) {
-        Event.observe(e, "click", function(e) {
-              jQuery.get('/tasks/stop_work_shortlist');
-            return false;
-          });
-        e.href = '#';
-      }
-
-    });
 }
 
 function toggleChatPopupEvent(e) {
