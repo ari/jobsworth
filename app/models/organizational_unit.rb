@@ -8,6 +8,7 @@ class OrganizationalUnit < ActiveRecord::Base
   named_scope :active, :conditions => { :active => true }
 
   validates_presence_of :name
+  validates_presence_of :customer
 
   def company
     customer.company

@@ -5,6 +5,8 @@ module CustomAttributeMethods
   # the current objects class.
   ###
   def available_custom_attributes
+    return [] if company.nil?
+
     company.custom_attributes.find(:all, 
                                    :conditions => { :attributable_type => self.class.name },
                                    :order => "position")
@@ -91,7 +93,7 @@ module CustomAttributeMethods
   def validate
     valid = true
 
-    invalid = custom_attribute_values.select { |cav| !cav.valid? }
+    invalid = all_custom_attribute_values.flatten.select { |cav| !cav.valid? }
 
     if invalid.any?
       valid = false

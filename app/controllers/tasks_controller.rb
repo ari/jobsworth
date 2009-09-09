@@ -720,126 +720,42 @@ class TasksController < ApplicationController
 
 
   def start_work
-    if @current_sheet
-      self.swap_work_ajax
+    task = current_user.company.tasks.find(params[:id])
+
+    if current_user.can_view_task?(task)
+      sheet = Sheet.new
+
+      sheet.task = task
+      sheet.user = current_user
+      sheet.project = task.project
+      sheet.save
+
+      task.status = 1 if task.status == 0
+      task.save
+
+      @current_sheet = sheet
+
+      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
     end
-    
-    task = Task.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    sheet = Sheet.new
-
-    sheet.task = task
-    sheet.user = current_user
-    sheet.project = task.project
-    sheet.save
-
-    task.status = 1 if task.status == 0
-    task.save
-
-    @current_sheet = sheet
-
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
 
     return if request.xhr?
     redirect_from_last
   end
 
-  def swap_work_ajax
-    if @current_sheet
-
-      @old_task = @current_sheet.task
-
-      if @old_task.nil?
-        @current_sheet.destroy
-        @current_sheet = nil
-        redirect_from_last
-      end
-
-#      @old_task.updated_by_id = current_user.id
-#      @old_task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = current_user.company
-      worklog.project = @current_sheet.project
-      worklog.task = @current_sheet.task
-      worklog.customer = @current_sheet.project.customer
-      worklog.started_at = @current_sheet.created_at
-      worklog.duration = @current_sheet.duration
-      worklog.paused_duration = @current_sheet.paused_duration
-      worklog.body = @current_sheet.body
-      worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0
-      worklog.log_type = EventLog::TASK_WORK_ADDED
-      if worklog.save
-        @current_sheet.destroy
-        flash['notice'] = _("Log entry saved...")
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @old_task.id)}');", ["tasks_#{current_user.company_id}"])
-        Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-        @current_sheet = nil
-      else
-        flash['notice'] = _("Unable to save log entry...")
-        redirect_from_last
-      end
-
-    end
-  end
-
-  # Builds a work log from the given task 
-  def worklog_from_task(task)
-    worklog = WorkLog.new
-    worklog.user = current_user
-    worklog.company = current_user.company
-    worklog.project = @current_sheet.project
-    worklog.task = task
-    worklog.customer = task.customers.first || @current_sheet.project.customer
-    worklog.started_at = @current_sheet.created_at
-    worklog.duration = @current_sheet.duration
-    worklog.paused_duration = @current_sheet.paused_duration
-    worklog.body = task.description
-    worklog.log_type = EventLog::TASK_WORK_ADDED
-    worklog.comment = true if @current_sheet.body && @current_sheet.body.length > 0 
-    
-    log = WorkLog.new
-    @log.user = current_user
-    
-  end
-
-  def add_work
-    task = current_user.company.tasks.find_by_task_num(params[:id])
-    if !current_user.can_view_task?(task)
-      flash['notice'] = _('Unable to find task belonging to you with that ID.')
-      redirect_from_last and return
-    end
-
-    log = WorkLog.create_for_task(task, current_user, task.description)
-    log.customer = task.customers.first || task.project.customer
-    log.log_type = EventLog::TASK_WORK_ADDED
-    log.save
-
-    redirect_to edit_work_log_path(log)
-  end
-
   def stop_work
     if @current_sheet
       task = @current_sheet.task
-      worklog = WorkLog.create_for_task(task, current_user, task.description)
-      worklog.customer = task.customers.first || @current_sheet.project.customer
-      worklog.started_at = @current_sheet.created_at
-      worklog.duration = @current_sheet.duration
-      worklog.paused_duration = @current_sheet.paused_duration
-      worklog.log_type = EventLog::TASK_WORK_ADDED
-      worklog.comment = true if @current_sheet.body.blank?
       
-      if worklog.save
-        worklog.task.updated_by_id = current_user.id
-        worklog.task.save
-
-        @current_sheet.destroy
-        flash['notice'] = _("Log entry saved...")
-        redirect_to edit_work_log_path(worklog)
-      else
-        flash['notice'] = _("Unable to save log entry...")
-        redirect_from_last
-      end
+      link_params = { 
+        :duration => @current_sheet.duration,
+        :customer_id => task.customers.first || @current_sheet.project.customer,
+        :body => task.description,
+        :paused_duration => @current_sheet.paused_duration,
+        :log_type => EventLog::TASK_WORK_ADDED,
+        :comment => @current_sheet.body.blank?
+      }
+      @current_sheet.destroy
+      redirect_to new_work_log_path(:task_id => task.task_num, :work_log => link_params)
     else
       @current_sheet = nil
       flash['notice'] = _("Log entry already saved from another browser instance.")

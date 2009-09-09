@@ -10,10 +10,11 @@ class UserTest < ActiveRecord::TestCase
   end
   subject { @user }
 
-  # Replace this with your real tests.
-  def test_truth
-    assert_kind_of User,  @user
-  end
+
+  should_validate_presence_of :company
+  should_validate_presence_of :password
+  should_validate_presence_of :username
+  should_validate_presence_of :name
 
   def test_create
     u = User.new
@@ -63,32 +64,6 @@ class UserTest < ActiveRecord::TestCase
     assert_equal "has already been taken", u.errors['username'] 
     
   end
-
-  def test_validate_password
-    u = User.new
-    u.name = "a"
-    u.username = "a"
-    u.email = "a@a.com"
-    u.company = companies(:cit)
-
-    assert !u.save
-    assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['password'] 
-    
-  end
-
-  def test_validate_company_id
-    u = User.new
-    u.name = "a"
-    u.username = "a"
-    u.password = "a"
-    u.email = "a@a.com"
-
-    assert !u.save
-    assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['company'] 
-  end
-
 
   def test_path
     assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}"), @user.path

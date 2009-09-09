@@ -20,6 +20,9 @@ module TimeTrackingHelper
 
   # Returns a link to start or stop work on the given task.
   def start_stop_work_link(task)
+    # don't show link if working on another task already
+    return if (@current_sheet and @current_sheet.task != task)
+
     if @current_sheet and @current_sheet.task == task
       image = image_tag("time_add.png", :class => "tooltip work_icon", 
                         :title => _("Stop working on <b>%s</b>.", task.name))
@@ -38,7 +41,9 @@ module TimeTrackingHelper
     image = image_tag("add.png", :class => "tooltip work_icon", 
                       :title => _("Add earlier work to <b>%s</b>.", task.name))
 
-    return link_to(image, :controller => 'tasks', :action => 'add_work', :id => task)
+    url = new_work_log_path(:task_id => task.task_num, 
+                            :work_log => { :log_type => EventLog::TASK_WORK_ADDED })
+    return link_to(image, url)
   end
 
   # Returns a link to cancel the work on the given task

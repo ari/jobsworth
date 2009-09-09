@@ -19,6 +19,11 @@ Customer.blueprint do
   name { company.name }
 end
 
+OrganizationalUnit.blueprint do
+  customer
+  name
+end
+
 User.blueprint do
   company
   customer

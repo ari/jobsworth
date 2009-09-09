@@ -3,12 +3,14 @@
   <% if @log.new_record? -%>
     <%=_ "New Log Entry" %>
   <% else -%>
-    <%=_ 'Edit Log Entry' %> - <%= @log.task.name %>
+    <%=_ 'Edit Log Entry' %>
   <% end -%>
+  - <%= @log.task %>
 </legend>
 
 <% form_for(@log) do |f| -%>
   <%= hidden_field_tag :task_id, @log.task.task_num %>
+  <%= f.hidden_field :log_type %>
 
   <%= error_messages_for "log" %>
 
