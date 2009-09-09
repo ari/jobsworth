@@ -50,10 +50,12 @@
 	</div>
 	<% end %>
 
-	<div class="inlineMessage" id="flash" <%="style=\"display:none\"" unless flash['notice']%>>
-		<span id="flash_message"><%= flash['notice'] %></span>
-		<a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
+	<% if flash["notice"].present? -%>
+	<div class="inlineMessage" id="flash">
+	  <span id="flash_message"><%= flash["notice"] %></span>
+	  <a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
 	</div>
+	<% end -%>
 
 	<table width="100%" id="main-table" class="content_body">
 	  <tr>
