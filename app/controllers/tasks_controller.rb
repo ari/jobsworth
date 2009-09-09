@@ -718,18 +718,6 @@ class TasksController < ApplicationController
 
   end
 
-  def stop_work_shortlist
-    unless @current_sheet
-      render :nothing => true
-      return
-    end
-
-    @task = @current_sheet.task
-    swap_work_ajax
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-#    redirect_to :action => 'shortlist'
-  end
-
   def updatelog
     unless @current_sheet
       render :text => "#{_("Task not worked on")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
@@ -750,26 +738,6 @@ class TasksController < ApplicationController
 
   def update_tasks
     @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-  end
-
-  def filter_shortlist
-
-    tmp = { }
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
-      tmp[v] = session[v]
-    end
-
-    do_filter
-
-    session[:filter_project_short] = session[:filter_project]
-    session[:filter_customer_short] = session[:filter_customer]
-    session[:filter_milestone_short] = session[:filter_milestone]
-
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort, :filter_type, :filter_severity, :filter_priority].each do |v|
-      session[v] = tmp[v]
-    end
-
-    redirect_to :controller => 'tasks', :action => 'shortlist'
   end
 
   def get_csv
@@ -1002,105 +970,6 @@ class TasksController < ApplicationController
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-  end
-
-  def create_shortlist_ajax
-    @highlight_target = "shortlist"
-    if !params[:task][:name] || params[:task][:name].empty?
-      render(:highlight) and return
-    end
-
-    @task = Task.new
-    @task.name = params[:task][:name]
-    @task.company_id = current_user.company_id
-    @task.updated_by_id = current_user.id
-    @task.creator_id = current_user.id
-    @task.duration = 0
-    @task.set_task_num(current_user.company_id)
-    @task.description = ""
-
-    if session[:filter_milestone_short].to_i > 0
-      @task.project = Milestone.find(:first, :conditions => ["company_id = ? AND id = ?", current_user.company_id, session[:filter_milestone_short]]).project
-      @task.milestone_id = session[:filter_milestone_short].to_i
-    elsif session[:filter_project_short].to_i > 0
-      @task.project_id = session[:filter_project_short].to_i
-      @task.milestone_id = nil
-    else
-      render(:highlight) and return
-    end
-
-    @task.save
-    @task.reload
-
-    if @task.id.nil?
-      @highlight_target = "quick_add_container"
-      render(:highlight) and return
-    else
-      to = TaskOwner.new(:user => current_user, :task => @task)
-      to.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_CREATED
-      worklog.body = ""
-      worklog.save
-      if params['notify'].to_i == 1
-        Notifications::deliver_created( @task, current_user, params[:comment]) rescue begin end
-      end
-
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-    end
-  end
-
-  def shortlist
-    tmp = { }
-    # Save filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
-      tmp[v] = session[v]
-    end
-
-    session[:filter_project] = session[:filter_project_short] if session[:filter_project_short]
-    session[:filter_customer] = session[:filter_customer_short] if session[:filter_project_short]
-    session[:filter_milestone] = session[:filter_milestone_short] if session[:filter_project_short]
-    session[:filter_user] = current_user.id.to_s
-    session[:filter_hidden] = "0"
-    session[:filter_status] = "0"
-    session[:group_by] = "0"
-    session[:hide_deferred] = "1"
-    session[:hide_dependencies] = "1"
-    session[:sort] = "0"
-
-    self.list
-
-    # Restore filtering
-    [:filter_customer, :filter_milestone, :filter_project, :filter_user, :filter_hidden, :filter_status, :group_by, :hide_deferred, :hide_dependencies, :sort].each do |v|
-      session[v] = tmp[v]
-    end
-
-    render :layout => 'shortlist'
-  end
-
-  def pause_work_ajax
-    if @current_sheet 
-      if @current_sheet.paused_at
-        @current_sheet.paused_duration += (Time.now.utc - @current_sheet.paused_at).to_i
-        @current_sheet.paused_at = nil
-      else
-        @current_sheet.paused_at = Time.now.utc
-      end
-      @current_sheet.save
-    else 
-      render :nothing => true
-      Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => params[:id])}');", ["tasks_#{current_user.company_id}"])
-      return
-    end
   end
 
   def get_comment

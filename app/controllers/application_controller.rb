@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
 
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
-                                         :company_check, :subdomain_check, :unsubscribe, :shortlist_auth,
+                                         :company_check, :subdomain_check, :unsubscribe,
                                          :igoogle_setup, :igoogle
                                        ]
                                        

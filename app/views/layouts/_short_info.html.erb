@@ -1,6 +1,0 @@
-<% internal = current_user.company.internal_customer %>
-<% if !internal.nil? && internal.logo? %>
-<%= tag("img", {:src => "/clients/show_logo/#{internal.id}", :border => 0 } ) %>
-<% else %>
-<%= image_tag("logo.gif", :border => 0, :title => "Clocking IT Beta") %>
-<% end %>

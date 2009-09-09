@@ -130,23 +130,6 @@ function updateSelect(sel, response) {
    }
 }
 
-function fixShortLinks() {
-  $$('.task-name a').each( function(e) {
-      e.target = '_blank';
-    });
-
-  $$('a.stop-work-link').each(function(e) {
-      if( e.href != '#' ) {
-        Event.observe(e, "click", function(e) {
-              jQuery.get('/tasks/stop_work_shortlist');
-            return false;
-          });
-        e.href = '#';
-      }
-
-    });
-}
-
 function toggleChatPopupEvent(e) {
   var el = Event.element(e);
   toggleChatPopup(el);
