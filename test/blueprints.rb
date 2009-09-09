@@ -80,3 +80,9 @@ WorkLog.blueprint do
   company
   started_at { Time.now }
 end
+
+Sheet.blueprint do
+  task
+  project
+  user
+end

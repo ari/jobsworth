@@ -3,8 +3,6 @@ require File.dirname(__FILE__) + '/../test_helper'
 class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
 
-  should_have_many :task_filters, :dependent => :destroy
-
   def setup
     @user = users(:admin)
   end
@@ -15,6 +13,9 @@ class UserTest < ActiveRecord::TestCase
   should_validate_presence_of :password
   should_validate_presence_of :username
   should_validate_presence_of :name
+
+  should_have_many :task_filters, :dependent => :destroy
+  should_have_many :sheets, :dependent => :destroy
 
   def test_create
     u = User.new
