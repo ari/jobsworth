@@ -16,4 +16,4 @@ ActionMailer::Base.smtp_settings = {
 
 # Setup email notification of errors
 ExceptionNotifier.exception_recipients = [ "email@example.com" ]
-ExceptionNotifier.sender_address = %("Application Error" <email@server.com>)
+ExceptionNotifier.sender_address = [ "email@example.com" ]
