@@ -20,7 +20,7 @@ javascripts:
   - frontpage
 stylesheets:
 - base:
-  - ui-lightness/jquery-ui
+  - jquery-ui
   - cit
   - jquery.tooltip
 - portal:
