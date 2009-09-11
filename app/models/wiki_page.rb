@@ -8,8 +8,6 @@ class WikiPage < ActiveRecord::Base
 
   has_many   :event_logs, :as => :target, :dependent => :destroy, :order => 'id DESC'
 
-  acts_as_ferret :fields => ['company_id', 'project_id', 'name', 'body']
-
   LOCKING_PERIOD = 30.minutes
 
   def lock(time, locked_by)

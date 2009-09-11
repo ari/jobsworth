@@ -6,8 +6,6 @@ class Post < ActiveRecord::Base
   belongs_to :topic, :counter_cache => true
   has_one    :event_log, :as => :target, :dependent => :destroy
 
-  acts_as_ferret :fields => ['company_id', 'project_id', 'body', 'forum_id']
-
   format_attribute :body
 
   before_create { |r| r.forum_id = r.topic.forum_id }

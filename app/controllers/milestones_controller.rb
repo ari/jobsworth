@@ -1,8 +1,6 @@
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
 
-  cache_sweeper :cache_sweeper, :only => [:update, :destroy]
-
   def index
     list
     render :action => 'list'

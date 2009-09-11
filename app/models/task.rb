@@ -12,17 +12,6 @@ class Task < ActiveRecord::Base
 
   include Misc
 
-  acts_as_ferret( { :fields => { 'company_id' => {},
-                      'project_id' => {},
-                      'full_name' => { :boost => 1.5 },
-                      'name' => { :boost => 2.0 },
-                      'issue_name' => { :boost => 0.8 },
-                      'description' => { :boost => 1.7},
-                      'requested_by' => { :boost => 0.7 }
-                    },
-                    :remote => true
-                  } )
-
   belongs_to    :company
   belongs_to    :project
   belongs_to    :milestone

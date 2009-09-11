@@ -1,7 +1,5 @@
 class ShoutController < ApplicationController
 
-#  cache_sweeper :shout_sweeper, :only => :add_ajax
-
   def list
     @rooms = ShoutChannel.find(:all, :conditions => ["(company_id IS NULL OR company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
                                :order => "company_id, project_id, name")
