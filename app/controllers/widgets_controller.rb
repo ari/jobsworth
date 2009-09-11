@@ -22,7 +22,7 @@ class WidgetsController < ApplicationController
     end
     
     case @widget.widget_type
-    when 0
+    when 0 then
       # Tasks
       filter = filter_from_filter_by
 
@@ -33,37 +33,37 @@ class WidgetsController < ApplicationController
       end
 
       @items = case @widget.order_by
-               when 'priority':
+               when 'priority' then
                    current_user.company.sort(@items)[0, @widget.number]
-               when 'date':
+               when 'date' then
                    @items.sort_by {|t| t.created_at.to_i }[0, @widget.number]
                end
 
-    when 1
+    when 1 then
       # Project List
       @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name, milestones.due_at IS NULL, milestones.due_at, milestones.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])
       @completed_projects = current_user.completed_projects.size
-    when 2
+    when 2 then
       # Activities
       @activities = EventLog.find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number, 
           :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)", current_user.company_id]
         )
-    when 3
+    when 3 then
       # Tasks Graph
       case @widget.number
-      when 7
+      when 7 then
         start = tz.local_to_utc(6.days.ago.midnight)
         step = 1
         interval = 1.day / step
         range = 7
         tick = "%a"
-      when 30 
+      when 30 then
         start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
         step = 2
         interval = 1.week / step
         range = 6
         tick = _("Week") + " %W"
-      when 180
+      when 180 then
         start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
         step = 4
         interval = 1.month / step
@@ -90,22 +90,22 @@ class WidgetsController < ApplicationController
         @range[0] = @items[d] if @range[0] > @items[d]
         @range[1] = @items[d] if @range[1] < @items[d]
       end
-    when 4
+    when 4 then
       # Burndown
       case @widget.number
-      when 7
+      when 7 then
         start = tz.local_to_utc(6.days.ago.midnight)
         step = 1
         interval = 1.day / step
         range = 7
         tick = "%a"
-      when 30 
+      when 30 then
         start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
         step = 2
         interval = 1.week / step
         range = 6
         tick = _("Week") + " %W"
-      when 180
+      when 180 then
         start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
         step = 4
         interval = 1.month / step
@@ -161,22 +161,22 @@ class WidgetsController < ApplicationController
         @velocity[d] = start - velocity * d
       end 
       
-    when 5
+    when 5 then
       # Burnup
       case @widget.number
-      when 7
+      when 7 then
         start = tz.local_to_utc(6.days.ago.midnight)
         step = 1
         interval = 1.day / step
         range = 7
         tick = "%a"
-      when 30 
+      when 30 then
         start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
         step = 2
         interval = 1.week / step
         range = 6
         tick = _("Week") + " %W"
-      when 180
+      when 180 then
         start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
         step = 4
         interval = 1.month / step
@@ -237,14 +237,14 @@ class WidgetsController < ApplicationController
       0.upto(range * step) do |d|
         @velocity[d] = start - velocity * d
       end 
-    when 6
+    when 6 then
       # Comments
       if @widget.mine?
         @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_owners ON work_logs.task_id = task_owners.task_id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND (work_logs.log_type = ? OR work_logs.comment = 1) AND task_owners.user_id = ?", EventLog::TASK_COMMENT, current_user.id], :order => "started_at desc", :limit => @widget.number)
       else 
         @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND (work_logs.log_type = ? OR work_logs.comment = 1)", EventLog::TASK_COMMENT], :order => "started_at desc", :limit => @widget.number)
       end
-    when 7
+    when 7 then
       # Schedule
 
       filter = filter_from_filter_by
@@ -276,9 +276,9 @@ class WidgetsController < ApplicationController
         end
       end
       
-    when 8 
+    when 8 then
       # Google Gadget
-    when 9 
+    when 9 then
       # Work Status
       filter = filter_from_filter_by
 
@@ -324,7 +324,7 @@ class WidgetsController < ApplicationController
         @counts[:created][3] = current_user.company.tasks.count(:conditions => ["tasks.project_id IN (#{current_project_ids}) AND created_at >= ? AND created_at < ? #{filter}", start - 29.days, start + 1.day])
         
       end 
-    when 10: 
+    when 10 then
       filter = filter_from_filter_by
 
       @sheets = Sheet.find(:all, :order => 'users.name', :include => [ :user, :task, :project ], :conditions => ["tasks.project_id IN (#{current_project_ids})#{filter}"]) 
@@ -332,15 +332,15 @@ class WidgetsController < ApplicationController
 
     render :update do |page|
       case @widget.widget_type
-      when 0
+      when 0 then
         page.replace_html "content_#{@widget.dom_id}", :partial => 'tasks/task_list', :locals => { :tasks => @items }
-      when 1
+      when 1 then
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
-      when 2
+      when 2 then
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
-      when 3..7
+      when 3..7 then
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
-      when 8 
+      when 8 then
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
         page << "document.write = function(s) {"
         page << "$('gadget-wrapper-#{@widget.dom_id}').innerHTML += s;"
@@ -348,7 +348,7 @@ class WidgetsController < ApplicationController
         page << "var e = new Element('script', {id:'gadget-#{@widget.dom_id}'});"
         page << "$('gadget-wrapper-#{@widget.dom_id}').insert({top: e});"
         page << "$('gadget-#{@widget.dom_id}').src=#{@widget.gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,'')};"
-      when 9..10
+      when 9..10 then
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       end
 
@@ -511,13 +511,13 @@ class WidgetsController < ApplicationController
   def filter_from_filter_by
     return nil unless @widget.filter_by
     case @widget.filter_by[0..0]
-    when 'c'
+    when 'c' then
       "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-    when 'p'
+    when 'p' then
       "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-    when 'm'
+    when 'm' then
       "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-    when 'u'
+    when 'u' then
       "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
     else
       ""

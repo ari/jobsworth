@@ -1,4 +1,8 @@
-require "fastercsv"
+if RUBY_VERSION < "1.9" 
+  require "fastercsv" 
+else
+  require "csv"
+end
 
 # Save a set of filters for access later on, with some predefined Views
 #

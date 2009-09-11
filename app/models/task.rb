@@ -91,27 +91,27 @@ class Task < ActiveRecord::Base
     @start ||= Time.now.utc
 
     case code
-    when ''  :
-    when 'w' :
+    when ''  then
+    when 'w' then
         @date = @start + (7 - @start.wday + args[1].to_i).days
-    when 'm' :
+    when 'm' then
         @date = @start.beginning_of_month.next_month.change(:day => (args[1].to_i))
-    when 'n' :
+    when 'n' then
         @date = @start.beginning_of_month.next_month.change(:day => 1)
       if args[2].to_i < @date.day
         args[2] = args[2].to_i + 7
       end
       @date = @date + (@date.day + args[2].to_i - @date.wday - 1).days
       @date = @date + (7 * (args[1].to_i - 1)).days
-    when 'l' :
+    when 'l' then
         @date = @start.next_month.end_of_month
       if args[1].to_i > @date.wday
         @date = @date.change(:day => @date.day - 7)
       end
       @date = @date.change(:day => @date.day - @date.wday + args[1].to_i)
-    when 'y' :
+    when 'y' then
         @date = @start.beginning_of_year.change(:year => @start.year + 1, :month => args[1].to_i, :day => args[2].to_i)
-    when 'a' :
+    when 'a' then
         @date = @start + args[1].to_i.days
     end
     @date.change(:hour => 23, :min => 59)

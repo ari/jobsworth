@@ -8,12 +8,11 @@ class WikiRevision < ActiveRecord::Base
   CamelCase = /\b(:?[A-Z][a-z0-9]+[A-Z][a-z0-9]+([A-Z][a-z0-9]+)*)/
   WIKI_LINK = /\[\[\s*([^\]\s][^\]]+?)\s*\]\]/
   PRE = /<pre>(.*?)<\/pre>/m
-#  LINK_TYPE_SEPARATION = Regexp.new('^(.+):((file)|(pic))$', 0, 'utf-8')
 
   TaskNumbers = /[^&]#([0-9]+)[^;"]/
   TaskNumber = /([^&])#([0-9]+)([^;"])/
 
-  ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, 'utf-8')
+  ALIAS_SEPARATION = Regexp.new('^(.+)\|(.+)$', 0, "utf-8")
 
   after_save :update_references
 
