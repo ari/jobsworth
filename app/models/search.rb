@@ -27,7 +27,9 @@ class Search
     end
 
     if conds.any?
-      return [ conds.join(" or ") ] + cond_params
+      full_conditions = [ conds.join(" or ") ] + cond_params
+      sanitized = ActiveRecord::Base.send(:sanitize_sql_array, full_conditions)
+      return "(#{ sanitized })"
     end
   end
 end

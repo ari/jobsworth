@@ -43,6 +43,7 @@ class User < ActiveRecord::Base
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
   has_many      :chats, :conditions => ["active = 0 OR active = 1"], :dependent => :destroy
+  has_many      :chat_messages, :through => :chats
   has_many      :chat_requests, :foreign_key => 'target_id', :class_name => 'Chat', :dependent => :destroy
 
   has_many      :task_filters, :dependent => :destroy
@@ -246,7 +247,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project) || task.users.include?(self)
+    projects.include?(task.project) || task.linked_users.include?(self)
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this 
@@ -258,6 +259,7 @@ class User < ActiveRecord::Base
     end
 
     res << "task_owners.user_id = #{ self.id }"
+    res << "notifications.user_id = #{ self.id }"
     
     res = res.join(" or ")
     return "(#{ res })"
