@@ -2489,7 +2489,7 @@ a.widget-collapsed {
   width: 100%;
   bottom: 0;
   left: 0;
-  z-index: 9;
+  z-index: 10;
   height: 26px;
 }
 
