@@ -63,8 +63,6 @@ Rails::Initializer.run do |config|
   config.gem 'eventmachine', :version => '0.12.8'
   config.gem 'json', :version => '1.1.9'
   config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
-  config.gem 'ferret', :version => '0.11.6'
-#  config.gem 'acts_as_ferret', :version => '0.4.3'  #installed as a plugin since the gem version breaks
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.2'
