@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('en_US') do |l|
   l.store "File", ["File", "Files"]
   l.store "%d day", ["one day", "%d days"]

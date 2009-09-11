@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('zh_ZH') do |l|
   l.store "d", "天" # HaHaGood
   l.store "h", "小时" # HaHaGood

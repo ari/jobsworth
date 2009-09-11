@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('eu_ES') do |l|
   l.store "d", "e"
   l.store "h", "o"

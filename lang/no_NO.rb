@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('no_NO') do |l|
   l.store "d", "d" # Erlend Simonsen
   l.store "h", "t"

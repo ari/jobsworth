@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('de_DE') do |l|
   l.store "d", "t" # andy
   l.store "h", "s" # andy

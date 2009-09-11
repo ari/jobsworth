@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('hu_HU') do |l|
   l.store "d", "n" # Jozsef
   l.store "h", "ó" # Jozsef

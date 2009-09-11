@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('pl_PL') do |l|
   l.store "d", "d" # chester
   l.store "h", "g"
