@@ -499,7 +499,7 @@ class TasksController < ApplicationController
         worklog.started_at = Time.now.utc
         worklog.duration = 0
         worklog.body = body
-        worklog.save
+        worklog.save!
 
         if params[:comment] and !params[:comment].blank?
           notify(@task, worklog) do |recipients|
@@ -746,42 +746,8 @@ class TasksController < ApplicationController
   end
 
   def get_csv
-    list
-
-    filename = "clockingit_tasks"
-    filename_extras = []
-
-    tf = TaskFilter.new(self, session)
-    tf.customer_ids.each do |id|
-      next if id < 0
-      filename_extras << current_user.company.customers.find(id).name
-    end
-    tf.project_ids.each do |id|
-      next if id < 0
-      p = current_user.projects.find(id)
-      filename_extras << "#{p.customer.name}_#{p.name}"
-    end
-    tf.milestone_ids.each do |id|
-      next if id < 0
-      m = current_user.company.milestones.find(id)
-
-      filename_extras << "#{m.project.customer.name}_#{m.project.name}_#{m.name}"
-    end
-    TaskFilter.filter_user_ids(session, TaskFilter::ALL_USERS).each do |id|
-      next if id < 0
-      filename_extras << current_user.company.users.find(id).name
-    end
-    TaskFilter.filter_status_ids(session).each do |id|
-      value = Task.status_type(id)
-      filename_extras << value if !value.blank?
-    end
-
-    filename_extras = filename_extras.join("_")
-    filename += "_#{ filename_extras }" if !filename_extras.blank?
-
-    filename = filename.gsub(/ /, "_").gsub(/["']/, '').downcase
-    filename << ".csv"
-
+    list_init
+    filename = "clockingit_tasks.csv"
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
       header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']

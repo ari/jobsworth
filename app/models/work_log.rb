@@ -108,4 +108,12 @@ class WorkLog < ActiveRecord::Base
     customer.name if customer
   end
 
+  alias :validate_custom_attributes :validate
+
+  def validate
+    if log_type == EventLog::TASK_WORK_ADDED
+      validate_custom_attributes
+    end 
+  end
+
 end
