@@ -1108,6 +1108,7 @@ class Task < ActiveRecord::Base
 
       work_log_params.merge!(:user => user, :company => self.company, 
                              :project => self.project, 
+                             :log_type => EventLog::TASK_WORK_ADDED,
                              :customer => (self.customers.first || self.project.customer))
       self.work_logs.build(work_log_params)
     end

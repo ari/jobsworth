@@ -3,11 +3,11 @@
 <tr class="hoverrow">
   <td align="right" valign="top" style="width:80px;" nowrap>
     <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
-    <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %><br/>
+    <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log)) %><br/>
     <% else %>
     <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><br/><% end %>
     <% end %>
-  <%= link_to "#{worked_nice(log.duration/60)}", { :controller => 'tasks', :action => 'edit_log', :id => log } if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
+  <%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) )%>
   </td>
   <td align="center" valign="top" style="padding-left:0.4em;padding-right:0.4em;">
   <% if log.task_id.to_i > 0 %>
