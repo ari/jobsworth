@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('jp_JP') do |l|
   l.store "d", "日" # Julien Cayzac
   l.store "h", "時間" # 宇井　登

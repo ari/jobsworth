@@ -20,6 +20,8 @@ class Company < ActiveRecord::Base
   has_many      :custom_attributes, :dependent => :destroy
   has_many      :task_filters, :dependent => :destroy
   has_many      :statuses, :dependent => :destroy, :order => "id asc"
+  has_many      :wiki_pages, :dependent => :destroy
+  has_many      :forums, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods

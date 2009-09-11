@@ -78,7 +78,7 @@ class NotificationsTest < ActiveRecord::TestCase
 
   private
   def read_fixture(action)
-    IO.readlines("#{FIXTURES_PATH}/notifications/#{action}")
+    File.open("#{FIXTURES_PATH}/notifications/#{action}").read
   end
 
   def encode(subject)

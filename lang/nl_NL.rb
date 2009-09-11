@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('nl_NL') do |l|
   l.store "d", "d" # Tom Niessink
   l.store "h", "u"

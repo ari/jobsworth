@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('cz_CZ') do |l|
   l.store "d", "d" # Ladislav Nešněra
   l.store "h", "h" # Ladislav Nešněra

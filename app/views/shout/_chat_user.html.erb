@@ -12,10 +12,12 @@
     </div>
     <div id="presence-chat-<%= @user.dom_id %>" class="presence-chat-area">
       <% @last_message = nil
-         @chat.chat_messages.reverse.each do |@message| %>
-      <%= render :partial => "shout/chat_info", :locals => {:user => current_user} if(@last_message.nil? || @last_message.user_id != @message.user_id || @message.created_at - @last_message.created_at > 10.minutes) %>
-      <%= render :partial => "shout/chat_message" %>
-      <% @last_message = @message
+         @chat.chat_messages.reverse.each do |message|  
+	   @message = message
+	 %>
+          <%= render :partial => "shout/chat_info", :locals => {:user => current_user} if(@last_message.nil? || @last_message.user_id != @message.user_id || @message.created_at - @last_message.created_at > 10.minutes) %>
+	  <%= render :partial => "shout/chat_message" %>
+	  <% @last_message = @message
          end 
       %>
     </div>

@@ -1,4 +1,9 @@
-require "fastercsv"
+if RUBY_VERSION < "1.9" 
+  require "fastercsv" 
+else
+  require "csv"
+end
+
 # Handle tasks for a Company / User
 #
 class TasksController < ApplicationController

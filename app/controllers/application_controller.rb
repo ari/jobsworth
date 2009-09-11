@@ -393,7 +393,7 @@ class ApplicationController < ActionController::Base
     title = highlight_all(title, highlight_keys)
 
     html = { :class => "tooltip#{task.css_classes}", :title => title }
-    text = truncate ? task.name : self.class.helpers.truncate(task.name, 80)
+    text = truncate ? task.name : self.class.helpers.truncate(task.name, :length => 80)
     text = highlight_all(text, highlight_keys)
     
     link += self.class.helpers.link_to(text, url, html)

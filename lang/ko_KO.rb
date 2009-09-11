@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('ko_KO') do |l|
   l.store "d", "일" # 심마로
   l.store "h", "시간" # 심마로

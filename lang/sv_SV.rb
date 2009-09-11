@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('sv_SV') do |l|
   l.store "d", "d" # Johan Helin
   l.store "h", "t"

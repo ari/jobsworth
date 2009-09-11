@@ -63,14 +63,25 @@ Rails::Initializer.run do |config|
   config.gem 'eventmachine', :version => '0.12.8'
   config.gem 'json', :version => '1.1.9'
   config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
-  config.gem 'ferret', :version => '0.11.6'
-#  config.gem 'acts_as_ferret', :version => '0.4.3'  #installed as a plugin since the gem version breaks
-  config.gem 'fastercsv', :version => '1.5.0'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'rmagick', :lib => 'RMagick'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
+
+  if RUBY_VERSION < "1.9"
+    # fastercsv has been moved in as default csv engine in 1.9
+    config.gem 'fastercsv', :version => '1.5.0'
+  else
+    require "csv"
+    if !defined?(FasterCSV)
+      class Object
+        FasterCSV = CSV
+        alias_method :FasterCSV, :CSV
+      end
+    end
+  end
+
 
   # Gems used for automated testing
   config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"

@@ -7,8 +7,6 @@ class WorkLog < ActiveRecord::Base
            :validate => false)
   include CustomAttributeMethods
 
-  acts_as_ferret({ :fields => ['body', 'company_id', 'project_id'], :remote => true })
-
   belongs_to :user
   belongs_to :company
   belongs_to :project

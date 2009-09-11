@@ -8,6 +8,8 @@ class CompanyTest < ActiveRecord::TestCase
   should_have_many :property_values, :through => :properties
   should_have_many :task_filters, :dependent => :destroy
   should_have_many :statuses, :dependent => :destroy
+  should_have_many :wiki_pages, :dependent => :destroy
+  should_have_many :forums, :dependent => :destroy
 
   def setup
     @company = companies(:cit)
@@ -28,7 +30,7 @@ class CompanyTest < ActiveRecord::TestCase
     company.subdomain = 'cit'
     
     assert !company.valid?
-    assert company.errors.on(:subdomain).any?
+    assert_not_nil company.errors.on(:subdomain)
     
     company.subdomain = 'unique-name'
     assert company.valid?

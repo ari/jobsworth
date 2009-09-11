@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('ru_RU') do |l|
   l.store "d", "д" # Dmitry Yakovlev
   l.store "h", "ч" # Dmitry Yakovlev

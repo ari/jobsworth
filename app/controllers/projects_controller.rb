@@ -1,8 +1,6 @@
 # Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
 
-  cache_sweeper :project_sweeper, :only => [ :create, :edit, :update, :destroy, :ajax_remove_permission, :ajax_add_permission ]
-
   def new
     unless current_user.create_projects?
       flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."

@@ -1,3 +1,4 @@
+# coding: utf-8
 Localization.define('es_ES') do |l|
   l.store "d", "d" # darkpollo
   l.store "h", "h" # darkpollo

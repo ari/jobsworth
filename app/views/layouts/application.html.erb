@@ -85,8 +85,10 @@
 		<div id="presence-ui" class="clearfix">
 			<div id="presence-bar">
 				<div id="presence-buttons">
-					<% current_user.chats.each do |@chat| 
-						@user = @chat.target %>
+					<% current_user.chats.each do |chat| 
+					   @chat = chat
+					   @user = @chat.target 
+					   %>
 						<%= render :partial => 'shout/chat_user' if @chat.active >= 0%>
 						<% if @chat.active == 1 %>
 							<script type="text/javascript" language="javascript" charset="utf-8">

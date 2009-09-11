@@ -2,91 +2,55 @@
 class SearchController < ApplicationController
 
   def search
-
     @tasks = []
     @logs = []
     @shouts = []
 
-    return if params[:query].nil? || params[:query].length == 0
+    return if params[:query].blank?
+    @keys = params[:query].split.map { |s| s.strip.downcase }
 
-    @keys = params[:query].split(' ')
-    @keys ||= []
-    
-    # Looking up a task by number?
-    task_num = params[:query][/#[0-9]+/]
-    unless task_num.nil?
-      @tasks = Task.find(:all, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_num = ?", current_user.company_id, task_num[1..-1]])
-      redirect_to :controller => 'tasks', :action => 'edit', :id => @tasks.first
-    end
+    company = current_user.company
+    project_ids = "(#{ current_user.all_project_ids.join(", ") })"
 
-    query = ""
-    @keys.each do |k|
-      query << "+*:#{k}* "
-    end
+    tf = TaskFilter.new(:user => current_user)
+    @tasks = tf.tasks(Search.search_conditions_for(@keys, [ "tasks.name" ]))
 
-    # Append project id's the user has access to
-    projects = ""
-
-    session[:completed_projects] = params[:completed_projects] if request.post?
-    
-    if session[:completed_projects].to_i == 1 
-      target_projects = all_projects
-    end
-    target_projects ||= current_projects
-
-    target_projects.each do |p|
-      projects << "|" unless projects == ""
-      projects << "#{p.id}"
-    end
-    projects = "+project_id:\"#{projects}\"" unless projects == ""
-
-    # Find the tasks
-    @tasks = Task.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
-
-    # Find the worklogs
-    @logs = WorkLog.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 1000})
-
-    # Find chat messages
-    rooms = ""
-    ShoutChannel.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
-                      :order => "company_id, project_id, name").each do |r|
-      rooms << "|" unless rooms == ""
-      rooms << "#{r.id}"
-    end
-    rooms = "0" if rooms == ""
-    rooms = "+shout_channel_id:\"#{rooms}\" +message_type:0"
-    @shouts = Shout.find_with_ferret("+company_id:#{current_user.company_id} #{rooms} #{query}", {:limit => 100})
-
-
-    # Find Wikis
-    @wiki_pages = WikiPage.find_with_ferret("+company_id:#{current_user.company_id} #{query}", {:limit => 100})
-
-
-    # Find posts
-    forums = ""
-    Forum.find(:all, :conditions => ["(company_id = ?) AND (project_id IS NULL OR project_id IN (#{current_project_ids}))", current_user.company_id],
-                      :order => "company_id, project_id, name").each do |f|
-      forums << "|" unless forums == ""
-      forums << "#{f.id}"
-    end
-    forums = "+forum_id:\"#{forums}\""
-    @posts = Post.find_with_ferret("+company_id:#{current_user.company_id} #{forums} #{query}", 
-                                   {:limit => 100})
-
-    # Find instant messages
-    chats = ""
-    Chat.find(:all, :conditions => ["user_id = ?", current_user.id]).each do |c|
-      chats << "|" unless chats == ""
-      chats << "#{c.id}"
-    end
-    chats = "0" if chats == ""
-    chats = "+chat_id:\"#{chats}\""
-    @chat_messages = ChatMessage.find_with_ferret("#{chats} #{query}", {:limit => 100})
-    
-    # Find customers
     @customers = Customer.search(current_user.company, @keys)
 
-    # Find users
     @users = User.search(current_user.company, @keys)
+
+    # work logs
+    conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ])
+    conditions += " AND project_id in #{ project_ids }"
+    @logs = company.work_logs.all(:conditions => conditions)
+    
+    # shouts
+    conditions = "project_id is null or project_id in #{ project_ids }"
+    channels = company.shout_channels.all(:conditions => conditions)
+    channel_ids = channels.map { |c| c.id }.join(", ")
+    if channel_ids.present?
+      conditions = Search.search_conditions_for(@keys, [ "shouts.body" ])
+      conditions += " AND shout_channel_id in (#{ channel_ids })"
+      @shouts = Shout.all(:conditions => conditions)
+    end
+
+    @wiki_pages = company.wiki_pages.select do |p| 
+      match = @keys.detect { |k| p.body and p.body.index(k) }
+    end
+
+    # posts
+    conditions = "project_id is null or project_id in #{ project_ids }"
+    forums = company.forums.all(:conditions => conditions)
+    forum_ids = forums.map { |c| c.id }.join(", ")
+    if forum_ids.present?
+      conditions = Search.search_conditions_for(@keys, [ "posts.body" ])
+      conditions += " AND forum_id in (#{ forum_ids })"
+      @posts = Post.all(:conditions => conditions)
+    end
+
+    # chats
+    conditions = Search.search_conditions_for(@keys, [ "chat_messages.body" ])
+    @chat_messages = current_user.chat_messages.all(:conditions => conditions)
   end
+
 end

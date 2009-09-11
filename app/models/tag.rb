@@ -34,6 +34,8 @@ class Tag < ActiveRecord::Base
           tasks on task_tags.task_id = tasks.id
           left join
           task_owners on task_tags.task_id = task_owners.task_id
+          left join
+          notifications on task_tags.task_id = notifications.task_id
           #{ task_conditions ? "where #{ task_conditions }" : "" }
           group by tag_id
     EOS

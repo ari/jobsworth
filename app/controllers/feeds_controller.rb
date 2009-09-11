@@ -125,9 +125,9 @@ class FeedsController < ApplicationController
         end
 
         tasks = case widget.order_by
-               when 'priority':
+               when 'priority' then
                     user.company.sort(tasks)[0, widget.number]
-               when 'date':
+               when 'date' then
                    tasks.sort_by {|t| t.created_at.to_i }[0, widget.number]
               end
 
