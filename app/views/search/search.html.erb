@@ -134,7 +134,9 @@
   <tr>
     <td>
       <ul style="padding-left: 0; margin-left:0;" id="search_customers">
-	<% @users.each do |@user| %>
+	<% @users.each do |user| 
+	   @user = user
+	   %>
 	  <li>
 	    <%= render :partial => "/users/user" %>
 	  </li>

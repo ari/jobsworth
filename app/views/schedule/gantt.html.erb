@@ -33,7 +33,8 @@
 	<% i = 1
 	  date_tooltip = _("Enter task due date, or click calendar button.")
           last_milestone = nil
-          @displayed_tasks.each do |@t| 
+          @displayed_tasks.each do |t| 
+	   @t = t
           if @t.milestone_id.to_i > 0 && @t.milestone_id != last_milestone
 	    last_milestone = @t.milestone_id
 	    %>
