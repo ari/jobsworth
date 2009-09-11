@@ -30,7 +30,7 @@ class CompanyTest < ActiveRecord::TestCase
     company.subdomain = 'cit'
     
     assert !company.valid?
-    assert company.errors.on(:subdomain).any?
+    assert_not_nil company.errors.on(:subdomain)
     
     company.subdomain = 'unique-name'
     assert company.valid?
