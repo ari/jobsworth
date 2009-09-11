@@ -7,9 +7,7 @@
 */
 
 (function($) {
-	$().ajaxSend(function(a, xhr, s){ //Set request headers globally
-		xhr.setRequestHeader("Accept", "text/javascript, text/html, application/xml, text/xml, */*");
-	});
+	$.ajaxSettings.accepts._default = "text/javascript, text/html, application/xml, text/xml, */*";
 })(jQuery);
 
 
@@ -59,7 +57,7 @@
 		fieldEvent: function(el, obs) {
 			var field = el[0] || el, e = 'change';
 			if (field.type == 'radio' || field.type == 'checkbox') e = 'click';
-			else if (obs && field.type == 'text' || field.type == 'textarea') e = 'keyup';
+			else if (obs && (field.type == 'text' || field.type == 'textarea' || field.type == 'password')) e = 'keyup';
 			return e;
 		}
 	});
@@ -119,9 +117,14 @@
 
 (function($) {
 	$.fn.extend({
-		visualEffect : function(o) {
+		visualEffect : function(o, options) {
+			if (options) {
+        speed = options.duration * 1000;
+      } else {
+        speed = null;
+      }
 			e = o.replace(/\_(.)/g, function(m, l){return l.toUpperCase()});
-			return eval('$(this).'+e+'()');
+			return eval('$(this).'+e+'('+ speed + ')');
 		},
 		appear : function(speed, callback) {
 			return this.fadeIn(speed, callback);
