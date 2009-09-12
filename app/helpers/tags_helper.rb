@@ -7,7 +7,8 @@ module TagsHelper
     ranges = cloud_ranges(tags.map { |tag, count| count })
 	
     tags.each do |tag, count|
-      range = ranges.index { |r| r > count }
+      value = ranges.detect { |r| r > count }
+      range = ranges.index(value)
       range ||= ranges.length
       class_name = "size#{ range }"
 

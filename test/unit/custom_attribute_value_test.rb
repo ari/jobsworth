@@ -26,7 +26,6 @@ class CustomAttributeValueTest < ActiveRecord::TestCase
 
     cav.value = "123456"
     assert !cav.valid?
-    assert_equal "#{ @attr.display_name} is too long", cav.errors.first.last
   end
 
   def test_validate_checks_mandatory
