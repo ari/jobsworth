@@ -8,14 +8,16 @@ class Search
   # If a number is given, any objects with that id will be 
   # returned, but so will any objects with that number in fields.
   ###
-  def self.search_conditions_for(strings, fields = [ :name ])
+  def self.search_conditions_for(strings, fields = [ :name ], search_by_id = true)
     conds = []
     cond_params = []
     
-    strings.each do |s|
-      next if s.to_i <= 0
-      conds << "id = ?"
-      cond_params << s
+    if search_by_id
+      strings.each do |s|
+        next if s.to_i <= 0
+        conds << "id = ?"
+        cond_params << s
+      end
     end
     
     fields.each do |field|

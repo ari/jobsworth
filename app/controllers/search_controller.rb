@@ -13,7 +13,7 @@ class SearchController < ApplicationController
     project_ids = "(#{ current_user.all_project_ids.join(", ") })"
 
     tf = TaskFilter.new(:user => current_user)
-    @tasks = tf.tasks(Search.search_conditions_for(@keys, [ "tasks.name" ]))
+    @tasks = tf.tasks(Search.search_conditions_for(@keys, [ "tasks.task_num", "tasks.name" ], false))
 
     @customers = Customer.search(current_user.company, @keys)
 
@@ -49,7 +49,7 @@ class SearchController < ApplicationController
     end
 
     # chats
-    conditions = Search.search_conditions_for(@keys, [ "chat_messages.body" ])
+    conditions = Search.search_conditions_for(@keys, [ "chat_messages.id", "chat_messages.body" ], false)
     @chat_messages = current_user.chat_messages.all(:conditions => conditions)
   end
 

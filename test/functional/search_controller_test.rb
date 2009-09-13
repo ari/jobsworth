@@ -32,6 +32,12 @@ class SearchControllerTest < ActionController::TestCase
       assert_response :success
     end
 
+    should "search tasks by id" do
+      get :search, :query => @task.task_num
+      assert_equal [ @task ], assigns("tasks")
+      assert_response :success
+    end
+
     should "include worklogs in search" do
       log = @task.work_logs.build(:company => @user.company,
                                   :body => "Test worklog", 
