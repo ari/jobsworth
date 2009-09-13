@@ -17,6 +17,14 @@ require File.join(File.dirname(__FILE__), 'boot')
 require File.join(File.dirname(__FILE__), '../lib/localization.rb')
 Localization.load
 
+JAVA = RUBY_PLATFORM =~ /java/
+
+if JAVA
+  require 'rubygems'
+  gem 'activerecord-jdbc-adapter'
+  require 'jdbc_adapter'
+end
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
@@ -58,16 +66,19 @@ Rails::Initializer.run do |config|
   
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
-  config.gem 'mysql'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine', :version => '0.12.8'
-  config.gem 'json', :version => '1.1.9'
   config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.2'
-  config.gem 'rmagick', :lib => 'RMagick'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
+
+  if !JAVA
+    config.gem 'mysql'
+    config.gem 'rmagick', :lib => 'RMagick'
+    config.gem 'json', :version => '1.1.9'
+  end
 
   if RUBY_VERSION < "1.9"
     # fastercsv has been moved in as default csv engine in 1.9
