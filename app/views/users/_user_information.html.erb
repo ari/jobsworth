@@ -1,8 +1,8 @@
 <fieldset class="basic">
 	<legend><%=_ 'User Information' %></legend>
 	<label for="user_name"><%=_ 'Name' %></label><%= text_field 'user', 'name'  %><br/>
-	<label for="user_username"><%=_ 'Username' %></label><%= text_field 'user', 'username'  %><br/>
-	<label for="user_password"><%=_ 'Password' %></label><%= password_field 'user', 'password'  %><br/>
+	<label for="user_username"><%=_ 'Username' %></label><%= text_field 'user', 'username', :autocomplete => "off" %><br/>
+	<label for="user_password"><%=_ 'Password' %></label><%= password_field 'user', 'password', :autocomplete => "off"  %><br/>
 	<label for="user_email"><%=_ 'Email' %></label><%= text_field 'user', 'email'  %><br/>
 	
 	<label for="user_customer_id"><%=_ "Client" %></label>
