@@ -78,17 +78,16 @@ Next, make sure the database is updated and javascript/css rebuilt.
 
 Depending on which environment you are updating, you can change the RAIL_ENV value to "test" or "development" and the appropriate database will be updated.
 
-Find the daemons running with
+Find the daemon running with
 
-  ps ax | grep ruby
+  ps ax | grep push_server
 
-then kill each of the three running daemons.
+then kill the push server daemon.
 
-Restart daemons
+Restart daemon
 
   cd /usr/local/www/clockingit
   nohup ./script/push_server &
-  ./script/ferret_server -e production start
   apachectl restart
 
 == Setting up Email Integration
