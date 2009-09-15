@@ -313,7 +313,7 @@ class ApplicationController < ActionController::Base
 
     @users = []
     if !text.blank?
-      conds = Search.search_conditions_for(text)
+      conds = Search.search_conditions_for([ text ])
       @users = current_user.company.users.find(:all, :conditions => conds)
     end
 
@@ -329,7 +329,7 @@ class ApplicationController < ActionController::Base
 
     @customers = []
     if !text.blank?
-      conds = Search.search_conditions_for(text)
+      conds = Search.search_conditions_for([ text ])
       @customers = current_user.company.customers.find(:all, :conditions => conds)
     end
 
