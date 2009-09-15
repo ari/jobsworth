@@ -154,7 +154,6 @@ class TaskFilterTest < ActiveSupport::TestCase
       @filter.qualifiers.clear
       other_customer = Customer.make(:company => @company, :name => "Test name")
       @filter.qualifiers.build(:qualifiable => other_customer)
-      debugger
 
       conditions = @filter.conditions
       expected = "task_customers.customer_id in (#{ other_customer.id })"
