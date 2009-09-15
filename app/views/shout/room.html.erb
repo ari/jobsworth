@@ -11,7 +11,8 @@
        <table width="100%" cellspacing="0">
          <tbody id="shout-list">
 <% last = nil %>
-<% @room.shouts.find(:all, :conditions => ["created_at > ?", tz.now.utc.midnight], :order => "created_at desc", :limit => ((@room.company_id.to_i > 0) ? 50 : 20)).reverse.each do |@shout| %>
+<% @room.shouts.find(:all, :conditions => ["created_at > ?", tz.now.utc.midnight], :order => "created_at desc", :limit => ((@room.company_id.to_i > 0) ? 50 : 20)).reverse.each do |shout| %>
+<% @shout = shout %>
   <%= render :partial => 'shout', :locals => {:last => last} %>
   <% last = @shout %>
 <% end %>

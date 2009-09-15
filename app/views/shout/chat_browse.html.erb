@@ -9,7 +9,8 @@
   <tr>
     <td style="padding:0.5em 1em 0 1em;">
     <% @last_message = nil
-      @chat.all_messages.find(:all, :include => [:user]).reverse.each do |@message| %>
+      @chat.all_messages.find(:all, :include => [:user]).reverse.each do |message| %>
+      <% @message = message %>
       <%= render :partial => "shout/chat_info", :locals => {:user => current_user} if(@last_message.nil? || @last_message.user_id != @message.user_id || @message.created_at - @last_message.created_at > 10.minutes) %>
       <%= render :partial => "shout/chat_message" %>
       <% @last_message = @message %>
