@@ -15,7 +15,8 @@
       <th><%=_ 'All' %></th>
     </tr>
 
-    <% @project.users.each do |@user| %>
+    <% @project.users.each do |user| %>
+      <% @user = user %>
       <%= render(:partial => "/users/project", :locals => { 
       :name => @user.name, :project => @project, :user_edit => false }) %>
     <% end %>
