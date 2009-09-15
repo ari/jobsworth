@@ -92,6 +92,12 @@ class TasksControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  test "/update_sheet_info should render ok" do
+    @user.chats.build(:active => 1, :target => @user).save!
+    get :update_sheet_info, :format => "js"
+    assert_response :success
+  end
+
   context "a task with a few users attached" do
     setup do
       ActionMailer::Base.deliveries = []
