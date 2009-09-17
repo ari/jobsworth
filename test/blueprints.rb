@@ -29,6 +29,7 @@ User.blueprint do
   customer
   name
   password 
+  email
   time_zone "Australia/Sydney"
   date_format { "%d/%m/%Y" }
   time_format { "%H:%M" }

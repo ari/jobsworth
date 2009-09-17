@@ -51,9 +51,11 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
-    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]]).collect{|m| "{\"text\":\"#{m.name.gsub(/"/,'\"')}\", \"value\":\"#{m.id}\"}" }.join(',')
+    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]])
+    @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  } }
+    @milestones = @milestones.map { |m| m.to_json }
+    @milestones = @milestones.join(", ")
 
-    # {"options":[{"value":"1","text":"Test Page"}]}
     res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
     res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
     res << ']}'
@@ -72,22 +74,13 @@ class TasksController < ApplicationController
     value = params[:dependencies][0]
     value.gsub!(/#/, '')
 
-    query = ""
-    @keys = value.split(' ')
-    @keys.each do |k|
-      query << "+issue_name:#{k}* "
-    end
-
-    # Append project id's the user has access to
-    projects = "0"
-    current_projects.each do |p|
-      projects << "|#{p.id}"
-    end
-    projects = "+project_id:\"#{projects}\"" 
-
-    # Find the tasks
-    @tasks = Task.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
-    render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
+    @keys = [ value ]
+    tf = TaskFilter.new(:user => current_user)
+    conditions = Search.search_conditions_for(@keys,
+                                              [ "tasks.task_num", "tasks.name" ], 
+                                              false)
+    @tasks = tf.tasks(conditions)
+    render :layout => false
   end
 
   def auto_complete_for_resource_name

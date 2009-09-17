@@ -150,4 +150,18 @@ class TasksControllerTest < ActionController::TestCase
 
     assert_response :success
   end
+
+  should "render dependency_targets" do
+    task = Task.first
+    get :dependency_targets, :dependencies => [ task.name ]
+    
+    assert_response :success
+    assert_equal [ task ], assigns("tasks")
+  end
+
+  should "render get_milestones" do
+    task = Task.first
+    get :get_milestones, :project_id => task.project.id
+    assert_response :success
+  end
 end
