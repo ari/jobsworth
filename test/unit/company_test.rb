@@ -97,17 +97,17 @@ class CompanyTest < ActiveRecord::TestCase
 
     should "have property values in the top 33% as critical" do
       values = @company.critical_values.map { |v| v.value }
-      assert_equal [ "Critical", "Urgent", "Blocker", "Critical" ], values
+      assert_equal [ "Critical", "Urgent", "Blocker", "Critical" ].sort, values.sort
     end 
 
     should "have property values in the middle 34% as normal" do
       values = @company.normal_values.map { |v| v.value }
-      assert_equal [ "High", "Normal", "Major", "Normal" ], values
+      assert_equal [ "High", "Normal", "Major", "Normal" ].sort, values.sort
     end
 
     should "have property values in the bottom 33% as low" do
       values = @company.low_values.map { |v| v.value }
-      assert_equal [ "Low", "Lowest", "Minor", "Trivial" ], values
+      assert_equal [ "Low", "Lowest", "Minor", "Trivial" ].sort, values.sort
     end
   end
 
