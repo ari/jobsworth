@@ -127,7 +127,8 @@ class Mailman < ActionMailer::Base
     # worklogs need a user, so just use the first admin user if the
     # email didn't give us one
     if e.user.nil?
-      e.user = task.company.users.first(:conditions => { :admin => true })
+      # TOFIX migrate admin column to boolean
+      e.user = task.company.users.first(:conditions => { :admin => 1 })
       e.body += "\nEmail from: #{ e.from }"
     end
 
