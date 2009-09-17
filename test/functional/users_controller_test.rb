@@ -40,7 +40,7 @@ class UsersControllerTest < ActionController::TestCase
       end
       
       should "send a welcome email if :send_welcome_mail is checked" do
-        post(:create, :user => @user_params, :send_welcome_mail => "1")
+        post(:create, :user => @user_params, :send_welcome_email => "1")
         assert_sent_email
       end
 
