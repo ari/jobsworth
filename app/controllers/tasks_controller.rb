@@ -72,22 +72,13 @@ class TasksController < ApplicationController
     value = params[:dependencies][0]
     value.gsub!(/#/, '')
 
-    query = ""
-    @keys = value.split(' ')
-    @keys.each do |k|
-      query << "+issue_name:#{k}* "
-    end
-
-    # Append project id's the user has access to
-    projects = "0"
-    current_projects.each do |p|
-      projects << "|#{p.id}"
-    end
-    projects = "+project_id:\"#{projects}\"" 
-
-    # Find the tasks
-    @tasks = Task.find_with_ferret("+company_id:#{current_user.company_id} #{projects} #{query}", {:limit => 13})
-    render :text => "<ul>#{@tasks.collect{ |t| "<li>[#{ "<strike>" if t.done? }#<span class=\"complete_value\">#{ t.task_num}</span>#{ "</strike>" if t.done? }] #{@keys.nil? ? t.name : highlight_all(t.name, @keys)}</li>"}.join("") }</ul>"
+    @keys = [ value ]
+    tf = TaskFilter.new(:user => current_user)
+    conditions = Search.search_conditions_for(@keys,
+                                              [ "tasks.task_num", "tasks.name" ], 
+                                              false)
+    @tasks = tf.tasks(conditions)
+    render :layout => false
   end
 
   def auto_complete_for_resource_name

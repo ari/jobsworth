@@ -1,0 +1,11 @@
+<ul>
+  <% @tasks.each do |t| -%>
+  <li>
+    <%= "<strike>" if t.done? %>
+    [#<span class="complete_value"><%= t.task_num %></span>]
+    <%= "</strike>" if t.done? %>
+
+    <%= highlight_all(t.name, @keys) %>
+  </li>
+  <% end -%>
+</ul>
