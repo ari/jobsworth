@@ -22,6 +22,33 @@ class UsersControllerTest < ActionController::TestCase
       assert_redirected_to(:id => customer.id, :anchor => "users",
                            :controller => "clients", :action => "edit")
     end
+
+    context "creating a user" do
+      setup do
+        customer = @user.company.customers.first
+        new_user = User.make_unsaved(:customer_id => customer.id, :company => @user.company)
+        @user_params = new_user.attributes
+
+        ActionMailer::Base.deliveries.clear
+      end
+
+      should "be able to create a user" do
+        post(:create, :user => @user_params)
+        created = assigns(:user)
+        assert !created.new_record?
+        assert_redirected_to :action => "edit", :id => created.id
+      end
+      
+      should "send a welcome email if :send_welcome_mail is checked" do
+        post(:create, :user => @user_params, :send_welcome_mail => "1")
+        assert_sent_email
+      end
+
+      should "not send an email if :send_welcome_mail is not checked" do
+        post(:create, :user => @user_params)
+        assert_did_not_send_email
+      end
+    end
   end
 
   context "a logged in non-admin user" do
