@@ -3,6 +3,25 @@
 class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
+  
+  # helper method to remove email reply noise from the body
+  def self.clean_body(body)
+    new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
+    body = body[0, new_body_end].strip
+
+    lines = body.split("\n")
+    while lines.any?
+      line = lines.last.strip
+
+      if line.blank? or line.match(/^[<>]+$/) or line.match(/.* wrote:/)
+        lines.pop
+      else
+        break
+      end
+    end
+
+    return lines.join("\n")
+  end
 
   def get_body(email)
     body = nil
@@ -20,8 +39,7 @@ class Mailman < ActionMailer::Base
     end
     
     body ||= email.body
-    new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
-    body =  body[0, new_body_end].strip
+    body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
     return body
   end

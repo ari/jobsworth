@@ -85,6 +85,21 @@ class MailmanTest < ActiveSupport::TestCase
     assert_equal "AAAA", log.body
   end
 
+  def test_clean_body_removes_comment_junk
+    str = "a comment
+< old comment...
+
+  <
+On 15/09/2009, at 12:39 PM, support@ish.com.au wrote:
+>
+>
+
+o------ please reply above this line ------o
+"
+
+    assert_equal "a comment\n< old comment...", Mailman.clean_body(str)
+  end
+
   def test_attachments_get_added_to_tasks
     assert_equal 0, @task.attachments.count
     email = Mailman.receive(@tmail.to_s)
