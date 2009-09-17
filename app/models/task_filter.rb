@@ -57,14 +57,17 @@ class TaskFilter < ActiveRecord::Base
   def display_count(user, force_recount = false)
     @display_count = nil if force_recount
 
-    count_conditions = []
-    count_conditions << "(task_owners.unread = 1 and task_owners.user_id = #{ user.id })" 
-    count_conditions << "(notifications.unread = 1 and notifications.user_id = #{ user.id })" 
-    count_conditions << "(task_owners.id is null)"
+    count_conditions = ""; conditions_args = []
 
-    sql = count_conditions.join(" or ")
-    sql = "(#{ sql })"
-    @display_count ||= count(sql)
+    count_conditions += "(task_owners.unread = ? and task_owners.user_id = ?)"
+    conditions_args += [ true, user.id ]
+    count_conditions += " OR (notifications.unread = ? and notifications.user_id = ?)"
+    conditions_args += [ true, user.id ]
+    count_conditions +=  " OR (task_owners.id is null)"
+
+    # ActiveRecord::Base should make this public
+    conditions = self.class.send :sanitize_sql_array, [ count_conditions ] + conditions_args
+    @display_count ||= count(conditions)
   end
   
   # Returns an array of the conditions to use for a sql lookup
