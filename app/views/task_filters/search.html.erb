@@ -20,6 +20,22 @@
 	  </li>
 	  <% end -%>
 	<% end -%>
+
+	<% (@date_columns || []).each do |column, matches| -%>
+	  <% next if matches.empty? -%>
+
+	  <li class="heading">
+	    <%=_ column.to_s.gsub("_at", "").humanize %>
+	  </li>
+	  <% matches.each do |m| -%>
+  	    <li>
+	      <%=_ m.name %>
+	      <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_id]", m.id, :class => "id" %>
+	      <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", m.class.name, :class => "type" %>
+	      <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_column]", column.to_s, :class => "column" %>
+	    </li>
+	  <% end -%>
+	<% end -%>
 	
 	<% if !@filter.blank? -%>
 	  <li class="heading"><%=_ "Keyword" %></li>

@@ -254,11 +254,15 @@ function addSearchFilter(textField, selected) {
     selected = jQuery(selected);
     var idField = selected.find(".id");
     var typeField = selected.find(".type");
+    var columnField = selected.find(".column");
     
     if (idField && idField.length > 0) {
 	var filterForm = jQuery("#search_filter_form");
 	filterForm.append(idField.clone());
 	filterForm.append(typeField.clone());
+	if (columnField) {
+	    filterForm.append(columnField.clone());
+	}
 	submitSearchFilterForm();
     }
     else {

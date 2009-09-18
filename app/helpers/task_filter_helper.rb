@@ -108,4 +108,16 @@ EOS
     return link_to(str, select_task_filter_path(filter), :class => class_name)
   end
 
+  # Returns the name to print out to describe the type of the
+  # given qualifier
+  def qualifier_name(qualifier)
+    if qualifier.qualifiable_type == "PropertyValue" 
+      return qualifier.qualifiable.property.name
+    elsif qualifier.qualifiable_type == "TimeRange"
+      return qualifier.qualifiable_column.gsub("_at", "").humanize
+    else 
+      qualifier.qualifiable_type
+    end
+  end
+
 end

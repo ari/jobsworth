@@ -87,3 +87,7 @@ Sheet.blueprint do
   project
   user
 end
+
+TimeRange.blueprint do
+  name
+end

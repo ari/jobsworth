@@ -80,6 +80,41 @@ class TaskFiltersControllerTest < ActionController::TestCase
                  })
     end
 
+    context "searching on time ranges" do
+      setup do
+        @time_range = TimeRange.make(:name => "today")
+        get :search, :filter => @time_range.name
+      end
+
+      should "should find time range by name" do
+        assert_tag(:attributes => { 
+                     :class => "id", 
+                     :value => @time_range.id
+                 })
+      end
+      
+      should "have due_at qualifiable_name" do
+        assert_tag(:attributes => { 
+                     :class => "column", 
+                     :value => "due_at"
+                 })
+      end
+
+      should "have create_at qualifiable_name" do
+        assert_tag(:attributes => { 
+                     :class => "column", 
+                     :value => "created_at"
+                 })
+      end
+
+      should "have updated_at qualifiable_name" do
+        assert_tag(:attributes => { 
+                     :class => "column", 
+                     :value => "updated_at"
+                 })
+      end
+    end
+
     should "be able to search by task attributes" do
       property = @user.company.properties.first
       value = property.property_values.first

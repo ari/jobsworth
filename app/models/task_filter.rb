@@ -70,15 +70,18 @@ class TaskFilter < ActiveRecord::Base
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
   def conditions(extra_conditions = nil)
+    time_qualifiers = qualifiers.select { |q| q.qualifiable_type == "TimeRange" }
     status_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Status" }
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
     customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Customer" }
-    standard_qualifiers = qualifiers - property_qualifiers - status_qualifiers - customer_qualifiers
+    standard_qualifiers = (qualifiers - property_qualifiers - status_qualifiers - 
+                           customer_qualifiers - time_qualifiers)
     
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
     res << conditions_for_status_qualifiers(status_qualifiers)
     res << conditions_for_customer_qualifiers(customer_qualifiers)
+    res << conditions_for_time_qualifiers(time_qualifiers)
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
     res << user.user_tasks_sql
@@ -189,6 +192,27 @@ class TaskFilter < ActiveRecord::Base
       res += " or task_customers.customer_id in (#{ ids })"
       return "(#{ res })"
     end
+  end
+
+  # Returns a sql string fragment that will limit tasks to only those
+  # which match the given time qualifiers
+  def conditions_for_time_qualifiers(time_qualifiers)
+    return if time_qualifiers.empty?
+    
+    res = []
+    time_qualifiers.each do |tq|
+      start_time = tq.qualifiable.start_time
+      end_time = tq.qualifiable.end_time
+      column = tq.qualifiable_column
+      column = Task.connection.quote_column_name(column)
+
+      sql = "tasks.#{ column } >= '#{ start_time.to_formatted_s(:db) }'"
+      sql += " and tasks.#{ column } < '#{ end_time.to_formatted_s(:db) }'"
+      res << sql
+    end
+
+    res = res.join(" or ")
+    return "(#{ res })"
   end
 
   # Returns the column name to use for lookup for the given
