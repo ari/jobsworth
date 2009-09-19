@@ -33,15 +33,6 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  # Only load the plugins named here, in the order given (default is alphabetical).
-  # :all can be used as a placeholder for all plugins not explicitly named
-  # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
-
-  # Skip frameworks you're not going to use. To use Rails without a database,
-  # you must remove the Active Record framework.
-  # config.frameworks -= [ :active_record, :active_resource, :action_mailer ]
-
-
   # Use the database for sessions instead of the file system
   # (create the session table with 'rake create_sessions_table')
   config.action_controller.session_store = :active_record_store
@@ -77,7 +68,7 @@ Rails::Initializer.run do |config|
   if !JAVA
     config.gem 'mysql'
     config.gem 'rmagick', :lib => 'RMagick'
-    config.gem 'json', :version => '1.1.9'
+    config.gem 'json'
   end
 
   if RUBY_VERSION < "1.9"
