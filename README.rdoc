@@ -38,9 +38,26 @@ Under other operating systems use your favourite package manager to ensure you h
 
 === Step 3: Phusion Passenger
 
-Install Phusion Passenger from http://www.modrails.com/install.html You can also run CIT with Mongrel, but it tends to be a little easier with Phusion to set up.
+Install Phusion Passenger. You can instead use Mongrel, but it tends to be a little easier to set up with Phusion.
 
-Naturally you'll want to be running Apache httpd and have an appropriate virtual host set up. There are lots of great resources out there to help with that. The virtual host should point to the top of the CIT installation directory.
+  gem install passenger
+  passenger-install-apache2-module
+
+And follow the instructions you'll be given about how to install the relevant config for Apache httpd.
+
+Your Apache httpd virtual host should point to the public directory in the installation directory.
+
+  <VirtualHost *:80>
+    ServerName myserver.example.com.au
+    RailsEnv production
+    PassengerHighPerformance on
+
+    DocumentRoot /usr/local/www/clockingit/public
+    CustomLog /var/log/www/myserver.example.com.au-access_log combined
+    ErrorLog /var/log/www/myserver.example.com.au-access_log
+  </VirtualHost>
+
+Naturally adjust the paths to suit your own environment.
 
 
 === Step 4: Setup configuration and database
@@ -56,7 +73,7 @@ There are a few Ruby gems which are needed for running CIT. Change directory int
 
 That will install the gems you need.
 
-If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5 and 10.6), then try this
+If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
