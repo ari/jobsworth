@@ -130,3 +130,7 @@ require File.join(File.dirname(__FILE__), '../lib/misc.rb')
 require_dependency 'tzinfo'
 include TZInfo
 
+
+# Trying out seeding the db here, rather than in migrations or seeds.rb
+# to try to help out with easier deployment
+TimeRange.create_defaults if TimeRange.count != TimeRange::DEFAULTS.length

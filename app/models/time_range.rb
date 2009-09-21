@@ -17,4 +17,25 @@ class TimeRange < ActiveRecord::Base
   def to_s
     name
   end
+
+  DEFAULTS = [
+              [ "Today", { :start => "Date.today", :end => "Date.tomorrow" } ],
+              [ "Tomorrow", { :start => "Date.tomorrow", :end => "Date.tomorrow + 1.day" } ],
+              [ "Yesterday", { :start => "Date.yesterday", :end => "Date.today" } ],
+              [ "This week", { :start => "Date.today.at_beginning_of_week", :end => "Date.today.at_end_of_week" } ],
+              [ "In the past", { :start => "Time.utc(1000)", :end => "Date.today" } ],
+              [ "Last week", { :start => "Date.today.at_beginning_of_week - 7", :end => "Date.today.at_beginning_of_week" } ],
+              [ "This month", { :start => "Date.today.at_beginning_of_month", :end => "Date.today.at_end_of_month" } ],
+              [ "Last month", { :start => "(Date.today.at_beginning_of_month - 10.days).at_beginning_of_month", :end => "Date.today.at_beginning_of_month" } ],
+              [ "This year", { :start => "Date.today.at_beginning_of_year", :end => "Date.today.at_end_of_year" } ],
+              [ "Last year", { :start => "(Date.today.at_beginning_of_year - 10.days).at_beginning_of_year", :end => "(Date.today.at_beginning_of_year - 10.days).at_end_of_year" } ]
+             ]
+
+  # Updates or creates the default time ranges
+  def self.create_defaults
+    DEFAULTS.each do |name, attrs|
+      TimeRange.find_or_create_by_name(name).update_attributes(attrs)
+    end
+  end
+
 end
