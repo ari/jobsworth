@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090918041833) do
+ActiveRecord::Schema.define(:version => 20090921225112) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20090918041833) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
+    t.string   "color"
   end
 
   add_index "custom_attribute_choices", ["custom_attribute_id"], :name => "index_custom_attribute_choices_on_custom_attribute_id"

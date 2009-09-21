@@ -47,7 +47,7 @@
   </td>
 
   <td class="tooltip" title="<%= task_users_tip(task) %>">
-    <%=h task.users.map{ |u| u.name }.join(", ") %>
+    <%= task.users.map{ |u| u.name }.join(", ") %>
   </td>
 
 </tr>

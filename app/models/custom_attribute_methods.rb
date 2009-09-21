@@ -86,6 +86,19 @@ module CustomAttributeMethods
     end
   end
 
+  # Returns an html representation of the given object. If any of
+  # the attributes on user have a color, that color will be used
+  # as the background color for the user html.
+  # If you don't want to print name, send a method to call
+  def to_html(method = :name)
+    choices = custom_attribute_values.map { |v| v.choice }
+    colored = choices.detect { |c| c.color.present? }
+
+    style = "background-color: #{ colored.color }" if colored
+    content = h(self.send(method))
+    return content_tag(:span, content, :style => style)
+  end
+
   ###
   # Checks if this object, and all associated values are valid. Adds errors
   # to base if not.
