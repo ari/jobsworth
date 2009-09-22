@@ -1,4 +1,6 @@
 class TriggersController < ApplicationController
+  before_filter :check_admin
+
   # GET /triggers
   # GET /triggers.xml
   def index
@@ -24,7 +26,7 @@ class TriggersController < ApplicationController
   # GET /triggers/new
   # GET /triggers/new.xml
   def new
-    @trigger = Trigger.new
+    @trigger = Trigger.new(:trigger_type => "due_at")
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,11 +43,12 @@ class TriggersController < ApplicationController
   # POST /triggers.xml
   def create
     @trigger = Trigger.new(params[:trigger])
+    @trigger.company = current_user.company
 
     respond_to do |format|
       if @trigger.save
-        flash[:notice] = 'Trigger was successfully created.'
-        format.html { redirect_to(@trigger) }
+        flash[:notice] = _("Trigger was successfully created.")
+        format.html { redirect_to(triggers_path) }
         format.xml  { render :xml => @trigger, :status => :created, :location => @trigger }
       else
         format.html { render :action => "new" }
@@ -58,11 +61,12 @@ class TriggersController < ApplicationController
   # PUT /triggers/1.xml
   def update
     @trigger = Trigger.find(params[:id])
+    @trigger.company = current_user.company
 
     respond_to do |format|
       if @trigger.update_attributes(params[:trigger])
         flash[:notice] = 'Trigger was successfully updated.'
-        format.html { redirect_to(@trigger) }
+        format.html { redirect_to(triggers_path) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,4 +86,16 @@ class TriggersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private
+
+  def check_admin
+    if current_user.admin?
+      return true
+    else
+      flash[:notice] = _("You don't have permission to access triggers")
+      redirect_to(:controller => "tasks", :action => "list")
+    end
+  end
+
 end

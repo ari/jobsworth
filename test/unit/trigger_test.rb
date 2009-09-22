@@ -19,7 +19,7 @@ class TriggerTest < ActiveSupport::TestCase
       @trigger = company.triggers.make(:fire_on => "create",
                                        :task_filter => @filter,
                                        :action => "task.update_attributes(:name => 'name from trigger')")
-      @task = company.tasks.make_unsaved(:project => project)
+      @task = company.tasks.make_unsaved(:project => project, :creator => user)
       @task.save!
     end
     
@@ -32,6 +32,21 @@ class TriggerTest < ActiveSupport::TestCase
       @task.save!
       assert_equal "other name", @task.reload.name
     end
+  end
 
+  context "a unsaved trigger" do
+    setup do
+      @trigger = Trigger.make
+    end
+
+    should "setup action from params for when trigger_type == 'due_at'" do
+      @trigger.trigger_type = "due_at"
+      @trigger.count = 3
+      @trigger.period = "weeks"
+      assert @trigger.action.blank? 
+
+      @trigger.save!
+      assert_equal "task.update_attributes(:due_at => Time.now + 3.weeks)", @trigger.action
+    end
   end
 end

@@ -2792,6 +2792,14 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     padding: 10px 0px;
 }
 
+fieldset.basic ul.actions li {
+    list-style-type: none;
+    margin: 10px 0px;
+    padding: 0px;
+}
+fieldset.basic .actions label {
+    clear: none;
+}
 
 .history .hoverrow {
     clear: both;

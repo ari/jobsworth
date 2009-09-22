@@ -3,17 +3,16 @@
 <table>
   <tr>
     <th>Task filter</th>
-    <th>When</th>
+    <th>Fire on</th>
     <th>Action</th>
+    <th colspan="3"></th>
   </tr>
 
 <% @triggers.each do |trigger| %>
   <tr>
-    <td><%=h trigger.task_filter_id %></td>
-    <td><%=h trigger.when %></td>
+    <td><%=h trigger.task_filter.name %></td>
+    <td><%=h trigger.fire_on %></td>
     <td><%=h trigger.action %></td>
-    <td><%= link_to 'Show', trigger %></td>
-    <td><%= link_to 'Edit', edit_trigger_path(trigger) %></td>
     <td><%= link_to 'Destroy', trigger, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
