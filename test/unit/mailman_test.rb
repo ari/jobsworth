@@ -106,6 +106,22 @@ o------ please reply above this line ------o
     assert_equal 1, @task.attachments.count
   end
 
+  def test_closed_tasks_get_reopened
+    @task.update_attributes(:status => Task.status_types.index("Closed"),
+                            :completed_at => Time.now)
+    assert @task.done?
+
+    Mailman.receive(@tmail.to_s)
+    assert !@task.reload.done?
+  end
+
+  def test_in_progress_tasks_dont_get_reopened
+    status = Task.status_types.index("In Progress")
+    @task.update_attributes(:status => status)
+    Mailman.receive(@tmail.to_s)
+    assert_equal status, @task.reload.status
+  end
+
   context "an email with no task information" do
     setup do
       @to = "anything@#{ $CONFIG[:domain] }"
@@ -113,6 +129,9 @@ o------ please reply above this line ------o
 
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
+
+      # need an admin user 
+      @company.users.first.update_attribute(:admin, true)
     end
 
     should "be added to incoming_email_project preference for company" do
@@ -129,7 +148,7 @@ o------ please reply above this line ------o
     end
 
     should "have the original senders email in comment if no user with that email" do
-      # need an admin user for this
+      # need an admin user 
       @company.users.first.update_attribute(:admin, true)
       # need only one company  
       Company.all.each { |c| c.destroy if c != @company }
@@ -162,6 +181,7 @@ o------ please reply above this line ------o
 
       assert_emails emails_to_send
     end
+
   end
 
   context "a single company install" do
@@ -193,6 +213,14 @@ o------ please reply above this line ------o
 
       task = Task.first(:order => "id desc")
       assert task.watchers.include?(User.first)
+    end
+
+    should "deliver created email to creator" do
+      assert_emails 0
+      Mailman.receive(@tmail.to_s)
+      assert_sent_email do |email|
+        email.to == @tmail.from
+      end
     end
   end
 

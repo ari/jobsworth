@@ -117,6 +117,12 @@ class Mailman < ActionMailer::Base
         add_attachment(e, task, attachment)
       end
     end
+
+    if task.done?
+      # need to reopen task so incoming comment doens't get closed
+      task.update_attributes(:completed_at => nil, 
+                             :status => Task.status_types.index("Open"))
+    end
     
     # worklogs need a user, so just use the first admin user if the
     # email didn't give us one
@@ -144,7 +150,6 @@ class Mailman < ActionMailer::Base
     else
       user = e.user
     end
-    
 
     send_changed_emails_for_task(e, task, user)
   end
@@ -211,14 +216,20 @@ class Mailman < ActionMailer::Base
       user = project.company.users.find_by_email(email_addr.strip)
       task.watchers << user if user
     end
-#    task.watchers << email.user if email.user
 
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(false)
 
+    # Send email to creator
+    email_body = email.body.gsub(/<[^>]*>/,'')
+    # need a user, so just use the first admin
+    user = task.company.users.first(:conditions => { :admin => true })
+    Notifications::deliver_created(task, user, email.from.first.strip, email_body)
+
     return task
   end
+
 
   def send_changed_emails_for_task(e, task, user)
     email_body = e.body.gsub(/<[^>]*>/,'')
