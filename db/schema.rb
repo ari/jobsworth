@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090921225112) do
+ActiveRecord::Schema.define(:version => 20090922012651) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -755,20 +755,20 @@ ActiveRecord::Schema.define(:version => 20090921225112) do
   add_index "topics", ["user_id"], :name => "fk_topics_user_id"
 
   create_table "users", :force => true do |t|
-    t.string   "name",                      :limit => 200, :default => "",      :null => false
-    t.string   "username",                  :limit => 200, :default => "",      :null => false
-    t.string   "password",                  :limit => 200, :default => "",      :null => false
-    t.integer  "company_id",                               :default => 0,       :null => false
+    t.string   "name",                       :limit => 200, :default => "",      :null => false
+    t.string   "username",                   :limit => 200, :default => "",      :null => false
+    t.string   "password",                   :limit => 200, :default => "",      :null => false
+    t.integer  "company_id",                                :default => 0,       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email",                     :limit => 200
+    t.string   "email",                      :limit => 200
     t.datetime "last_login_at"
-    t.integer  "admin",                                    :default => 0
+    t.integer  "admin",                                     :default => 0
     t.string   "time_zone"
     t.integer  "option_tracktime"
     t.integer  "option_externalclients"
     t.integer  "option_tooltips"
-    t.integer  "seen_news_id",                             :default => 0
+    t.integer  "seen_news_id",                              :default => 0
     t.integer  "last_project_id"
     t.datetime "last_seen_at"
     t.datetime "last_ping_at"
@@ -776,31 +776,32 @@ ActiveRecord::Schema.define(:version => 20090921225112) do
     t.integer  "last_filter"
     t.string   "date_format"
     t.string   "time_format"
-    t.integer  "send_notifications",                       :default => 1
-    t.integer  "receive_notifications",                    :default => 1
-    t.string   "uuid",                                                          :null => false
-    t.integer  "seen_welcome",                             :default => 0
-    t.string   "locale",                                   :default => "en_US"
-    t.integer  "duration_format",                          :default => 0
-    t.integer  "workday_duration",                         :default => 480
-    t.integer  "posts_count",                              :default => 0
-    t.integer  "newsletter",                               :default => 1
-    t.integer  "option_avatars",                           :default => 1
-    t.string   "autologin",                                                     :null => false
+    t.integer  "send_notifications",                        :default => 1
+    t.integer  "receive_notifications",                     :default => 1
+    t.string   "uuid",                                                           :null => false
+    t.integer  "seen_welcome",                              :default => 0
+    t.string   "locale",                                    :default => "en_US"
+    t.integer  "duration_format",                           :default => 0
+    t.integer  "workday_duration",                          :default => 480
+    t.integer  "posts_count",                               :default => 0
+    t.integer  "newsletter",                                :default => 1
+    t.integer  "option_avatars",                            :default => 1
+    t.string   "autologin",                                                      :null => false
     t.datetime "remember_until"
-    t.boolean  "option_floating_chat",                     :default => true
-    t.integer  "days_per_week",                            :default => 5
-    t.boolean  "enable_sounds",                            :default => true
-    t.boolean  "create_projects",                          :default => true
-    t.boolean  "show_type_icons",                          :default => true
-    t.boolean  "receive_own_notifications",                :default => true
+    t.boolean  "option_floating_chat",                      :default => true
+    t.integer  "days_per_week",                             :default => 5
+    t.boolean  "enable_sounds",                             :default => true
+    t.boolean  "create_projects",                           :default => true
+    t.boolean  "show_type_icons",                           :default => true
+    t.boolean  "receive_own_notifications",                 :default => true
     t.boolean  "use_resources"
     t.integer  "customer_id"
-    t.boolean  "active",                                   :default => true
-    t.boolean  "read_clients",                             :default => false
-    t.boolean  "create_clients",                           :default => false
-    t.boolean  "edit_clients",                             :default => false
+    t.boolean  "active",                                    :default => true
+    t.boolean  "read_clients",                              :default => false
+    t.boolean  "create_clients",                            :default => false
+    t.boolean  "edit_clients",                              :default => false
     t.boolean  "can_approve_work_logs"
+    t.boolean  "auto_add_to_customer_tasks"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
