@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090922012651) do
+ActiveRecord::Schema.define(:version => 20090922035730) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -753,6 +753,15 @@ ActiveRecord::Schema.define(:version => 20090922012651) do
   add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
   add_index "topics", ["user_id"], :name => "fk_topics_user_id"
+
+  create_table "triggers", :force => true do |t|
+    t.integer  "company_id"
+    t.integer  "task_filter_id"
+    t.text     "fire_on"
+    t.string   "action"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "name",                       :limit => 200, :default => "",      :null => false

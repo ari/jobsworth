@@ -56,6 +56,7 @@ class Task < ActiveRecord::Base
   after_validation :fix_work_log_error
 
   before_create :set_task_num
+  after_create { |t| Trigger.fire(t, "create") }
 
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
@@ -1133,4 +1134,5 @@ class Task < ActiveRecord::Base
       end
     end
   end
+
 end

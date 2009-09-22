@@ -1,0 +1,24 @@
+<h1>Listing triggers</h1>
+
+<table>
+  <tr>
+    <th>Task filter</th>
+    <th>When</th>
+    <th>Action</th>
+  </tr>
+
+<% @triggers.each do |trigger| %>
+  <tr>
+    <td><%=h trigger.task_filter_id %></td>
+    <td><%=h trigger.when %></td>
+    <td><%=h trigger.action %></td>
+    <td><%= link_to 'Show', trigger %></td>
+    <td><%= link_to 'Edit', edit_trigger_path(trigger) %></td>
+    <td><%= link_to 'Destroy', trigger, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New trigger', new_trigger_path %>

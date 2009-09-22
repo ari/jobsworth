@@ -91,3 +91,8 @@ end
 TimeRange.blueprint do
   name
 end
+
+Trigger.blueprint do
+  company
+  fire_on { "create" }
+end
