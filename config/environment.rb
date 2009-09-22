@@ -133,4 +133,8 @@ include TZInfo
 
 # Trying out seeding the db here, rather than in migrations or seeds.rb
 # to try to help out with easier deployment
-TimeRange.create_defaults if TimeRange.count != TimeRange::DEFAULTS.length
+begin
+  TimeRange.create_defaults if TimeRange.count != TimeRange::DEFAULTS.length
+rescue
+  puts $!
+end

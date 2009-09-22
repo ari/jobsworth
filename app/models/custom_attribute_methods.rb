@@ -92,7 +92,7 @@ module CustomAttributeMethods
   # If you don't want to print name, send a method to call
   def to_html(method = :name)
     choices = custom_attribute_values.map { |v| v.choice }
-    colored = choices.detect { |c| c.color.present? }
+    colored = choices.detect { |c| c and c.color.present? }
 
     style = "background-color: #{ colored.color }" if colored
     content = h(self.send(method))
