@@ -254,11 +254,15 @@ function addSearchFilter(textField, selected) {
     selected = jQuery(selected);
     var idField = selected.find(".id");
     var typeField = selected.find(".type");
+    var columnField = selected.find(".column");
     
     if (idField && idField.length > 0) {
 	var filterForm = jQuery("#search_filter_form");
 	filterForm.append(idField.clone());
 	filterForm.append(typeField.clone());
+	if (columnField) {
+	    filterForm.append(columnField.clone());
+	}
 	submitSearchFilterForm();
     }
     else {
@@ -635,6 +639,19 @@ function addCustomerToTask(input, li) {
     var params = { client_id : clientId, id : taskId }
     jQuery.get(url, params, function(data) {
 	jQuery("#task_customers").append(data);
+    });
+
+    addAutoAddUsersToTask(clientId, taskId);
+}
+
+/*
+  Adds any users setup as auto add to the current task.
+*/
+function addAutoAddUsersToTask(clientId, taskId, projectId) {
+    var url = "/tasks/add_users_for_client";
+    var params = { client_id : clientId, id : taskId, project_id : projectId }
+    jQuery.get(url, params, function(data) {
+	jQuery("#task_notify").append(data);
     });
 }
 

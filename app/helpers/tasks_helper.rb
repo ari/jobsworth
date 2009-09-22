@@ -250,16 +250,16 @@ module TasksHelper
       options.last[1] << [ project.name, project.id ]
     end
 
-    return grouped_options_for_select(options, task.project_id)
+    return grouped_options_for_select(options, task.project_id, "Please select")
   end
 
   # Returns the js to watch a task's project selector
   def task_project_watchers_js
-    js = <<-EOS
+    js = "
     new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
-    new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_users', '/tasks/get_owners', {asynchronous:true, evalScripts:true, onComplete:function(request){reset_owners();}, parameters:'project_id=' + value, insertion: updateSelect, onLoading:function(request){ remember_user(); } })});
-    EOS
-    
+    new Form.Element.EventObserver('task_project_id', function(element, value) { addAutoAddUsersToTask('', '', value); });
+    "
+
     return javascript_tag(js)
   end
 

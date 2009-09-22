@@ -22,6 +22,12 @@ class TaskFiltersController < ApplicationController
       values = property.property_values.all(:conditions => [ "value like ?", "#{ @filter }%" ])
       @to_list << [ property, values ] if values.any?
     end
+
+    @date_columns = []
+    [ :due_at, :created_at, :updated_at ].each do |column|
+      matches = TimeRange.all(:conditions => name_conds, :limit => limit)
+      @date_columns << [ column, matches ]
+    end
   end
 
   def new

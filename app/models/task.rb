@@ -57,6 +57,8 @@ class Task < ActiveRecord::Base
 
   before_create :set_task_num
 
+  after_create { |t| Trigger.fire(t, "create") }
+
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
     project = r.project
@@ -1133,4 +1135,5 @@ class Task < ActiveRecord::Base
       end
     end
   end
+
 end

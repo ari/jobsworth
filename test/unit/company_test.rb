@@ -10,6 +10,7 @@ class CompanyTest < ActiveRecord::TestCase
   should_have_many :statuses, :dependent => :destroy
   should_have_many :wiki_pages, :dependent => :destroy
   should_have_many :forums, :dependent => :destroy
+  should_have_many :triggers, :dependent => :destroy
 
   def setup
     @company = companies(:cit)

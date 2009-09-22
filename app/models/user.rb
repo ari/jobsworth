@@ -78,6 +78,8 @@ class User < ActiveRecord::Base
   
   attr_protected :uuid, :autologin
 
+  named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => 1 })
+
   ###
   # Searches the users for company and returns 
   # any that have names or ids that match at least one of
@@ -204,6 +206,8 @@ class User < ActiveRecord::Base
   end
 
   def can?(project, perm)
+    return true if project.nil?
+
     @perm_cache ||= {}
     unless @perm_cache[project.id]
       @perm_cache[project.id] ||= {}

@@ -2776,7 +2776,7 @@ fieldset.basic .right_link {
 
 /* #property_values li.property_value, #resource_type_attributes li { */
 fieldset.basic li.attribute, fieldset.basic li.property_value {
-    padding: 15px 0px 15px 0px !important;
+    padding: 40px 0px !important;
 }
 
 .attribute .add_attribute, .remove_attribute {
@@ -2788,7 +2788,18 @@ fieldset.basic li.attribute, fieldset.basic li.property_value {
     display: block;
     padding: 20px 0px 10px 0px;
 }
+#content .attribute li.choice {
+    padding: 10px 0px;
+}
 
+fieldset.basic ul.actions li {
+    list-style-type: none;
+    margin: 10px 0px;
+    padding: 0px;
+}
+fieldset.basic .actions label {
+    clear: none;
+}
 
 .history .hoverrow {
     clear: both;

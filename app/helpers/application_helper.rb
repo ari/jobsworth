@@ -481,7 +481,7 @@ END_OF_HTML
   # session and filters.
   ### 
   def selected_project
-    if @task and @task.project_id > 0
+    if @task and @task.project_id.to_i > 0
       selected_project = @task.project_id
     else
       selected_project = current_user.projects.find(:first, :order => 'name').id

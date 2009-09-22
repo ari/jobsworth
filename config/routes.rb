@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :triggers
+
 
   map.connect '', :controller => 'login', :action => 'login'
 

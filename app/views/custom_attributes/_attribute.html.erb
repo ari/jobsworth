@@ -14,9 +14,6 @@
     <label><%=_ "LDAP Name" %></label>
     <%= f.text_field :ldap_attribute_type, :index => attribute.id %>
 
-    <label><%=_ "Use only preset choices" %></label>
-    <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
-
     <label><%=_ "Mandatory" %></label>
     <%= nested_boolean_choice_field(f, :mandatory, attribute) %>
 
@@ -29,6 +26,9 @@
       <label><%=_ "Maximum field length " %></label>
       <%= f.text_field :max_length, :index => attribute.id %>
     </span>
+
+    <label><%=_ "Use only preset choices" %></label>
+    <%= check_box_tag(:preset, 1, preset, :onchange => "updateAttributeFields(this)") %>
 
     <ul class="choices" style="display: <%= preset ? "" : "none" %>">
       <%= render(:partial => "choice", :collection => attribute.custom_attribute_choices,

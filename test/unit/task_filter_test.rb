@@ -116,6 +116,27 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil conditions.index(expected)
     end
 
+    should "filter on time ranges" do
+      range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
+      filter = TaskFilter.make_unsaved
+      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => "due_date")
+      
+      conditions = filter.conditions
+      expected = "(tasks.`due_date` >= '#{ Date.today.to_formatted_s(:db) }'"
+      expected += " and tasks.`due_date` < '#{ Date.tomorrow.to_formatted_s(:db) }')"
+      
+      assert_not_nil conditions.index(expected)
+    end
+
+    should "escape qualifiable names for time ranges" do
+      range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
+      filter = TaskFilter.make_unsaved
+      filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ";delete * from users;")
+      
+      conditions = filter.conditions
+      assert_not_nil conditions.index("tasks.`;delete * from users;`")
+    end
+
   end
 
   context "a company with projects, tasks, etc" do
