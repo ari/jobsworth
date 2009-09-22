@@ -28,5 +28,5 @@ class CustomerTest < ActiveRecord::TestCase
     assert_equal "ClockingIT", @internal.full_name
     assert_not_equal "ClockingIT", @external.full_name
   end
-  
+
 end

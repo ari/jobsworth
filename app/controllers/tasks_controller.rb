@@ -119,36 +119,6 @@ class TasksController < ApplicationController
            :locals => { :dependency => dependency, :perms => {} })
   end
 
-  # Return a json formatted list of users to refresh the User dropdown
-  # This a bit tricky, as it also updates a JavaScript variable with the current drop-down box.
-  def get_owners
-
-    @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
-
-    @resource_string = "<option value=\"\">[#{_('No one')}]</option>" + @users.collect{|us| "<option value=\"#{us.id}\">#{us.name}</option>"}.join('')
-    @resource_string = @resource_string.split(/\n/).join('').gsub(/'/, "\\\\\'")
-
-    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
-    res = '{"options":[{"value":"0", "text":"[None]"}'
-    res << ", #{@options}" unless @options.nil? || @options.empty?
-    res << ']}'
-
-    render :text => "#{res}\n<script type=\"text/javascript\">resource = '<select name=\"users[]\" id=\"task_users\">#{@resource_string}</select>';</script>"
-  end
-
-#  def get_watchers
-#
-#    @users = Project.find(params[:project_id]).users.find(:all, :order => 'name' )
-#
-#    @options = @users.collect{ |u| (' {"text":"' + u.name.gsub(/"/,'\"') + '", "value":"' + u.id.to_s + '"}') }.join( ',' )
-#    res = '{"options":['
-#    res << "#{@options}" unless @options.nil? || @options.empty?
-#    res << ']}'
-#
-#    render :text => "#{res}"
-#  end
-
-
   def create
 
     tags = params[:task][:set_tags]
@@ -982,6 +952,28 @@ class TasksController < ApplicationController
     
     render(:partial => "task_customer", :locals => { :task_customer => customer })
   end
+
+  def add_users_for_client
+   @task = current_user.company.tasks.new
+    if params[:id].present?
+      @task = current_user.company.tasks.find(params[:id])
+    end
+
+    if params[:client_id].present?
+      customer = current_user.company.customers.find(params[:client_id])
+    else
+      customer = current_user.projects.find(params[:project_id]).customer
+    end
+
+    users = customer.users.auto_add.all
+
+    res = ""
+    users.each do |user|
+      res += render_to_string(:partial => "notification", :object => user)
+    end
+
+    render :text => res
+  end    
 
   def update_work_log
     log = current_user.company.work_logs.find(params[:id])

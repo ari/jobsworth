@@ -640,6 +640,19 @@ function addCustomerToTask(input, li) {
     jQuery.get(url, params, function(data) {
 	jQuery("#task_customers").append(data);
     });
+
+    addAutoAddUsersToTask(clientId, taskId);
+}
+
+/*
+  Adds any users setup as auto add to the current task.
+*/
+function addAutoAddUsersToTask(clientId, taskId, projectId) {
+    var url = "/tasks/add_users_for_client";
+    var params = { client_id : clientId, id : taskId, project_id : projectId }
+    jQuery.get(url, params, function(data) {
+	jQuery("#task_notify").append(data);
+    });
 }
 
 /*

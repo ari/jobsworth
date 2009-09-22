@@ -139,29 +139,59 @@ class TasksControllerTest < ActionController::TestCase
     end
   end
 
-  should "render create ok" do
-    task = Task.first
-    customer = task.company.customers.last
-    project = customer.projects.first
-    
-    post(:create, :id => task.id, :task => { 
-           :project_id => project.id,
-           :customer_attributes => { customer.id => "1" } })
+  context "a normal task" do
+    setup do
+      @task = Task.first
+    end
 
-    assert_response :success
-  end
+    should "render create ok" do
+      customer = @task.company.customers.last
+      project = customer.projects.first
+      
+      post(:create, :id => @task.id, :task => { 
+             :project_id => project.id,
+             :customer_attributes => { customer.id => "1" } })
 
-  should "render dependency_targets" do
-    task = Task.first
-    get :dependency_targets, :dependencies => [ task.name ]
-    
-    assert_response :success
-    assert_equal [ task ], assigns("tasks")
-  end
+      assert_response :success
+    end
 
-  should "render get_milestones" do
-    task = Task.first
-    get :get_milestones, :project_id => task.project.id
-    assert_response :success
+    should "render dependency_targets" do
+      get :dependency_targets, :dependencies => [ @task.name ]
+      
+      assert_response :success
+      assert_equal [ @task ], assigns("tasks")
+    end
+
+    should "render get_milestones" do
+      get :get_milestones, :project_id => @task.project.id
+      assert_response :success
+    end
+
+    should "render add_client" do
+      get :add_client, :id => @task.id, :client_id => @task.company.customers.first.id
+      assert_response :success
+    end
+
+    context "with an auto add user" do
+      setup do
+        @customer = @task.company.customers.first
+        project = @customer.projects.make(:company => @task.company,
+                                          :users => [ @user ])
+        @user = @customer.users.make(:company => @task.company, 
+                                 :auto_add_to_customer_tasks => 1)
+      end
+
+      should "return auto add users for add_users_for_client" do
+        get :add_users_for_client, :id => @task.id, :client_id => @customer.id
+        assert_response :success
+        assert @response.body.index(@user.name)
+      end
+      
+      should "return auto add users for add_users_for_client with project_id" do
+        get :add_users_for_client, :project_id => @customer.projects.first.id
+        assert_response :success
+        assert @response.body.index(@user.name)
+      end
+    end
   end
 end
