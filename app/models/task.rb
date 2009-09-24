@@ -601,6 +601,20 @@ class Task < ActiveRecord::Base
     return [results.total_hits, results]
   end
 
+  def self.search(user, keys)
+    tf = TaskFilter.new(:user => user)
+
+    conditions = []
+    keys.each do |k|
+      conditions << "tasks.task_num = #{ k.to_i }"
+    end
+    name_conds = Search.search_conditions_for(keys, [ "tasks.name" ], false)
+    conditions << name_conds[1...-1] # strip off surounding parentheses
+    
+    conditions = "(#{ conditions.join(" or ") })"
+    return tf.tasks(conditions)
+  end
+
   def due
     due = self.due_at
     due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)

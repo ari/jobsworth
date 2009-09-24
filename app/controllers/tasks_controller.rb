@@ -75,11 +75,7 @@ class TasksController < ApplicationController
     value.gsub!(/#/, '')
 
     @keys = [ value ]
-    tf = TaskFilter.new(:user => current_user)
-    conditions = Search.search_conditions_for(@keys,
-                                              [ "tasks.task_num", "tasks.name" ], 
-                                              false)
-    @tasks = tf.tasks(conditions)
+    @tasks = Task.search(current_user, @keys)
     render :layout => false
   end
 

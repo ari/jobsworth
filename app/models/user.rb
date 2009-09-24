@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   
   attr_protected :uuid, :autologin
 
-  named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => 1 })
+  named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
 
   ###
   # Searches the users for company and returns 

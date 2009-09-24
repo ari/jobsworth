@@ -32,7 +32,7 @@ class SearchControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "search tasks by id" do
+    should "search tasks by task nun" do
       get :search, :query => @task.task_num
       assert_equal [ @task ], assigns("tasks")
       assert_response :success
