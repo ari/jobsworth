@@ -4,73 +4,73 @@ admin:
   company: cit
   project: test_project
   user: admin
-  can_comment: 1
-  can_work: 1
-  can_report: 1
-  can_create: 1
-  can_edit: 1
-  can_reassign: 1
-  can_prioritize: 1
-  can_close: 1
-  can_grant: 1
-  can_milestone: 1
+  can_comment: true
+  can_work: true
+  can_report: true
+  can_create: true
+  can_edit: true
+  can_reassign: true
+  can_prioritize: true
+  can_close: true
+  can_grant: true
+  can_milestone: true
 fudge:
   id: 2
   company: fudge
   project: fudge_project
   user: fudge
-  can_comment: 1
-  can_work: 1
-  can_report: 1
-  can_create: 1
-  can_edit: 1
-  can_reassign: 1
-  can_prioritize: 1
-  can_close: 1
-  can_grant: 1
-  can_milestone: 1
+  can_comment: true
+  can_work: true
+  can_report: true
+  can_create: true
+  can_edit: true
+  can_reassign: true
+  can_prioritize: true
+  can_close: true
+  can_grant: true
+  can_milestone: true
 user:
   id: 3
   company: cit
   project: test_project
   user: tester
-  can_comment: 1
-  can_work: 1
-  can_report: 1
-  can_create: 1
-  can_edit: 1
-  can_reassign: 1
-  can_prioritize: 1
-  can_close: 1
-  can_grant: 1
-  can_milestone: 1
+  can_comment: true
+  can_work: true
+  can_report: true
+  can_create: true
+  can_edit: true
+  can_reassign: true
+  can_prioritize: true
+  can_close: true
+  can_grant: true
+  can_milestone: true
 user_limited:
   id: 4
   company: cit
   project: test_project
   user: tester_limited
-  can_comment: 1
-  can_work: 1
-  can_report: 0
-  can_create: 0
-  can_edit: 0
-  can_reassign: 0
-  can_prioritize: 0
-  can_close: 0
-  can_grant: 0
-  can_milestone: 0
+  can_comment: true
+  can_work: true
+  can_report: false
+  can_create: false
+  can_edit: false
+  can_reassign: false
+  can_prioritize: false
+  can_close: false
+  can_grant: false
+  can_milestone: false
 user_2nd_project:
   id: 5
   company: cit
   project: completed_project
   user: tester
-  can_comment: 1
-  can_work: 1
-  can_report: 1
-  can_create: 1
-  can_edit: 1
-  can_reassign: 1
-  can_prioritize: 1
-  can_close: 1
-  can_grant: 1
-  can_milestone: 1
+  can_comment: true
+  can_work: true
+  can_report: true
+  can_create: true
+  can_edit: true
+  can_reassign: true
+  can_prioritize: true
+  can_close: true
+  can_grant: true
+  can_milestone: true

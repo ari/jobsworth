@@ -127,7 +127,7 @@ class Mailman < ActionMailer::Base
     # worklogs need a user, so just use the first admin user if the
     # email didn't give us one
     if e.user.nil?
-      e.user = task.company.users.first(:conditions => { :admin => true })
+      e.user = task.company.users.first(:conditions => { :admin => 1 })
       e.body += "\nEmail from: #{ e.from }"
     end
 
@@ -224,7 +224,7 @@ class Mailman < ActionMailer::Base
     # Send email to creator
     email_body = email.body.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
-    user = task.company.users.first(:conditions => { :admin => true })
+    user = task.company.users.first(:conditions => { :admin => 1 })
     Notifications::deliver_created(task, user, email.from.first.strip, email_body)
 
     return task

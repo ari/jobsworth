@@ -122,9 +122,10 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => "due_date")
       
       conditions = filter.conditions
-      expected = "(tasks.`due_date` >= '#{ Date.today.to_formatted_s(:db) }'"
-      expected += " and tasks.`due_date` < '#{ Date.tomorrow.to_formatted_s(:db) }')"
-      
+      escaped = Task.connection.quote_column_name("due_date")
+      expected = "(tasks.#{ escaped } >= '#{ Date.today.to_formatted_s(:db) }'"
+      expected += " and tasks.#{ escaped} < '#{ Date.tomorrow.to_formatted_s(:db) }')"
+
       assert_not_nil conditions.index(expected)
     end
 
@@ -134,7 +135,8 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ";delete * from users;")
       
       conditions = filter.conditions
-      assert_not_nil conditions.index("tasks.`;delete * from users;`")
+      escaped = Task.connection.quote_column_name(";delete * from users;")
+      assert_not_nil conditions.index(escaped)
     end
 
   end

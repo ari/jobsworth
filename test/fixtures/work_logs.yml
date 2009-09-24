@@ -1,5 +1,7 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 first_work_log:
   id: 1
+  started_at: <%= Time.now %>
 another_work_log:
   id: 2
+  started_at: <%= Time.now %>

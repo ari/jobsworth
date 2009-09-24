@@ -58,11 +58,13 @@ class TaskFilter < ActiveRecord::Base
     @display_count = nil if force_recount
 
     count_conditions = []
-    count_conditions << "(task_owners.unread = 1 and task_owners.user_id = #{ user.id })" 
-    count_conditions << "(notifications.unread = 1 and notifications.user_id = #{ user.id })" 
+    params = [ true, true ]
+    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })" 
+    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })" 
     count_conditions << "(task_owners.id is null)"
-
     sql = count_conditions.join(" or ")
+
+    sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     sql = "(#{ sql })"
     @display_count ||= count(sql)
   end
