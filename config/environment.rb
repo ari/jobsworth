@@ -136,5 +136,5 @@ include TZInfo
 begin
   TimeRange.create_defaults if TimeRange.count != TimeRange::DEFAULTS.length
 rescue
-  puts $!
+#  puts $!
 end
