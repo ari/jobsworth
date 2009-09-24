@@ -19,9 +19,6 @@ class UserTest < ActiveRecord::TestCase
   should_have_many :chats, :dependent => :destroy
   should_have_many :chat_messages, :through => :chats
 
-  should_have_named_scope(:auto_add, 
-                          :conditions => { :auto_add_to_customer_tasks => 1 })
-
   def test_create
     u = User.new
     u.name = "a"
