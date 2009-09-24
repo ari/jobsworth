@@ -103,15 +103,6 @@ if( jQuery('#report_range').val() == "7" ) {
   return false;
 });
 
-jQuery('#report_range').blur(function() {
-if( jQuery('#report_type').val() == "7" ) {
-     jQuery('#date_range').show();
-  } else {
-     jQuery('#date_range').hide();
-  }
-  return false;
-});
-
 jQuery('#report_type').change(function() {
 	var reportType = jQuery('#report_type').val();
 	if( reportType == "1" || reportType == "4" ) {

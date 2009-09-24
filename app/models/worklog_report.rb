@@ -46,6 +46,7 @@ class WorklogReport
   # Creates a report for the given tasks and params
   ###
   def initialize(controller, params)
+    @controller = controller
     tasks = controller.send(:current_task_filter).tasks(nil, false)
 
     @tz = controller.tz
@@ -134,7 +135,7 @@ class WorklogReport
     when 7
       if params[:start_date] && params[:start_date].length > 1
         begin
-          start_date = DateTime.strptime( filter[:start_date], current_user.date_format ).to_time 
+          start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time 
         rescue
           flash['notice'] ||= _("Invalid start date")
           start_date = tz.now
@@ -143,9 +144,9 @@ class WorklogReport
         @start_date = tz.local_to_utc(start_date.midnight)
       end
 
-      if filter[:stop_date] && filter[:stop_date].length > 1
+      if params[:stop_date] && params[:stop_date].length > 1
         begin
-          end_date = DateTime.strptime( filter[:stop_date], current_user.date_format ).to_time 
+          end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time 
         rescue 
           flash['notice'] ||= _("Invalid end date")
           end_date = tz.now
@@ -601,6 +602,11 @@ class WorklogReport
     end
 
     return res
+  end
+
+  # Returns the controller's flash hash
+  def flash
+    @controller.send(:flash)
   end
 
 end

@@ -31,9 +31,19 @@ class ReportsControllerTest < ActionController::TestCase
     assert_report_works(WorklogReport::WORKLOAD)
   end
 
+  test "pivot with custom dates should render" do
+    start_date = Date.yesterday.strftime(@user.date_format)
+    end_date = Date.tomorrow.strftime(@user.date_format)
+
+    assert_report_works(WorklogReport::PIVOT,
+                        :range => 7,
+                        :start_date => start_date, 
+                        :end_date => end_date)
+  end
+
   private
 
-  def assert_report_works(type)
+  def assert_report_works(type, params = {})
     t1 = Task.first
     t1.update_attributes(:duration => 1000)
     log = t1.work_logs.build(:started_at => Time.now, :duration => 60,
@@ -43,10 +53,9 @@ class ReportsControllerTest < ActionController::TestCase
     log.save!
 
 
-    post :list, :report => {
-      :type => type,
-      :range => 0
-    }
+    params[:range] ||= 0
+    params[:type] = type
+    post :list, :report => params
     assert_response :success
     assert_not_nil assigns["generated_report"]
 
