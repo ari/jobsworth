@@ -3124,3 +3124,15 @@ table.tablesorter thead tr .headerSortDown {
     float:right;
     padding-top: 0.6em;
 }
+
+#install {
+    margin: 0 auto;
+    text-align: center;
+    width: 640px;
+}
+#install .nolabel {
+    margin-top: 30px;
+}
+#install select {
+    width: auto;
+}

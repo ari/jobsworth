@@ -16,7 +16,7 @@ class TasksController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
       return
     else
-      @task = Task.new
+      @task = Task.new(params[:task])
       @task.company = current_user.company
       @task.duration = 0
       @tags = Tag.top_counts(current_user.company)

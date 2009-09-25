@@ -60,6 +60,8 @@ class User < ActiveRecord::Base
   validates_presence_of         :password
 
   validates_presence_of         :company
+  validates_presence_of :time_format
+  validates_presence_of :date_format
 
   after_destroy { |r|
     begin
@@ -67,14 +69,11 @@ class User < ActiveRecord::Base
       File.delete(r.avatar_large_path)
     rescue
     end
-
-
-    
   }
 
   before_create                 :generate_uuid
-
   after_create			:generate_widgets
+  before_validation_on_create :set_date_time_formats
   
   attr_protected :uuid, :autologin
 
@@ -392,5 +391,18 @@ class User < ActiveRecord::Base
     return options
   end
 
+  # Sets the date time format for this user to a sensible default
+  # if it hasn't already been set
+  def set_date_time_formats
+    first_user = company.users.detect { |u| u != self }
+
+    if first_user and first_user.time_format and first_user.date_format
+      self.time_format = first_user.time_format
+      self.date_format = first_user.date_format
+    else
+      self.time_format = "%d/%m/%Y"
+      self.date_format = "%H:%M"
+    end
+  end
 
 end

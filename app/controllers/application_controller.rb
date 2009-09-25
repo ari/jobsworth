@@ -28,6 +28,7 @@ class ApplicationController < ActionController::Base
   helper_method :link_to_task
   helper_method :current_task_filter
 
+  before_filter :install
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
                                          :take_forgotten, :show_logo, :about, :screenshots, :terms, :policy,
                                          :company_check, :subdomain_check, :unsubscribe,
@@ -99,6 +100,13 @@ class ApplicationController < ActionController::Base
       headers["Content-Type"] = "#{content_type}; charset=utf-8"
     end
 
+  end
+
+  # Send the current user to the install page
+  def install
+    if Company.count == 0
+      redirect_to "/install" and return false
+    end
   end
 
   # Make sure the session is logged in

@@ -76,4 +76,14 @@ class ApplicationControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  context "an install with no companies" do
+    setup do
+      Company.destroy_all
+    end
+
+    should "redirect to install path" do
+      get :index
+      assert_redirected_to "/install"
+    end
+  end
 end
