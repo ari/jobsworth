@@ -400,8 +400,8 @@ class User < ActiveRecord::Base
       self.time_format = first_user.time_format
       self.date_format = first_user.date_format
     else
-      self.time_format = "%d/%m/%Y"
-      self.date_format = "%H:%M"
+      self.date_format = "%d/%m/%Y"
+      self.time_format = "%H:%M"
     end
   end
 
