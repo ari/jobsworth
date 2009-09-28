@@ -1,14 +1,10 @@
-Welcome to Clocking IT!
+Welcome to <%= $CONFIG[:productName] %>
 
-<%= @created_by.name %> has created an account for you in Clocking IT.
+<%= @created_by.name %> has created an account for you in our task and project management system.
 
 Log in at http://<%= @created_by.company.subdomain %>.<%= $CONFIG[:domain] %>
 <% if @welcome_message && @welcome_message.length > 0 %>
-
-Message from <%= @created_by.name %>:
-<%= '-' * "Message from #{@created_by.name}:".length %>
 <%= @welcome_message %>
-<%= '-' * "Message from #{@created_by.name}:".length %>
 <% end -%>
 
 Your login information
@@ -16,7 +12,5 @@ Your login information
 Username: <%= @user.username %>
 Password: <%= @user.password %>
 
-Log in, and start tracking your projects.
-
-Regards,
-Erlend Simonsen
+-------------------->
+<%= $CONFIG[:productName] %>

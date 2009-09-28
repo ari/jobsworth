@@ -1,0 +1,26 @@
+#-------------------- Push Server Configuration ---------------------------#
+
+
+#This is the port that the push server will be on.
+PUSH_PORT: "443"
+
+
+#This is the host that the push server will be on.
+#Usually it would be 0.0.0.0
+PUSH_HOST: "0.0.0.0"
+
+
+#This should be the url as seen from the browser.
+#Flash's xmlsocket can only connect to addresses in the same domain
+#or subdomain. For example, if people access your app from www.test.com than this
+#should be "test". Omit the port number and the 'http://'.
+PUSH_HELPER_HOST: "www.clockingit.com"
+
+#This is a 'secret' send by the broadcaster to validate identity.
+PUSH_SECRET: "cit575a7sdAS"
+
+#This must be the host that your crossdomain policy is located at
+CROSSDOMAIN: "xmlsocket://www.clockingit.com:443"
+
+#Allow crossdomain requests from where?
+ALLOW_CROSSDOMAIN: "*.clockingit.com"

@@ -3,7 +3,7 @@ require "yaml"
 require "socket"
 
 module Juggernaut
-FS_APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/juggernaut_config.yml"))
+FS_APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/juggernaut_config.yml")) rescue nil
 
 def self.config
         return FS_APP_CONFIG
