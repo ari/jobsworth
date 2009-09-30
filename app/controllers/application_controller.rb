@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
   helper :todos
   helper :tags
   helper :time_tracking
+  helper :resources
 
 #  helper :all
 

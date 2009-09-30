@@ -257,7 +257,8 @@ module TasksHelper
   def task_project_watchers_js
     js = "
     new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
-    new Form.Element.EventObserver('task_project_id', function(element, value) { addAutoAddUsersToTask('', '', value); });
+    new Form.Element.EventObserver('task_project_id', function(element, projectId) { addAutoAddUsersToTask('', '', projectId); });
+    new Form.Element.EventObserver('task_project_id', function(element, projectId) { addClientLinkForTask(projectId); });
     "
 
     return javascript_tag(js)

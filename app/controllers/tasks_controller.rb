@@ -51,6 +51,10 @@ class TasksController < ApplicationController
 
   # Return a json formatted list of options to refresh the Milestone dropdown
   def get_milestones
+    if params[:project_id].blank?
+      render :text => "" and return
+    end
+
     @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]])
     @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  } }
     @milestones = @milestones.map { |m| m.to_json }
@@ -957,11 +961,12 @@ class TasksController < ApplicationController
 
     if params[:client_id].present?
       customer = current_user.company.customers.find(params[:client_id])
-    else
-      customer = current_user.projects.find(params[:project_id]).customer
+    elsif params[:project_id].present?
+      project = current_user.projects.find_by_id(params[:project_id])
+      customer = project.customer if project
     end
 
-    users = customer.users.auto_add.all
+    users = customer ? customer.users.auto_add.all : []
 
     res = ""
     users.each do |user|
@@ -970,6 +975,18 @@ class TasksController < ApplicationController
 
     render :text => res
   end    
+
+  def add_client_for_project
+    project = current_user.projects.find(params[:project_id])
+    res = ""
+
+    if project
+      res = render_to_string(:partial => "task_customer", 
+                             :object => project.customer)
+    end
+
+    render :text => res
+  end
 
   def update_work_log
     log = current_user.company.work_logs.find(params[:id])

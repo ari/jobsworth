@@ -115,6 +115,34 @@ class ClientsControllerTest < ActionController::TestCase
     assert_filter_failed
   end
 
+  context "A logged in admin user" do
+    setup do
+      @user = login
+    end
+
+    context "with resources access" do
+      setup do
+        @user.update_attributes(:use_resources => true)
+        get :edit, :id => @client.id
+      end
+
+      should "see resources on edit page" do
+        assert_tag :tag => "legend", :content => "Resources"
+      end
+    end 
+
+    context "without resources access" do
+      setup do
+        @user.update_attributes(:use_resources => false)
+        get :edit, :id => @client.id
+      end
+      
+      should "see not resources on edit page" do
+        assert_no_tag :tag => "legend", :content => "Resources"
+      end
+    end 
+  end
+
   private
 
   def assert_filter_failed
