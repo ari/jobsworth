@@ -2,6 +2,7 @@
 # Likewise will all the methods added be available for all controllers.
 class ApplicationController < ActionController::Base
   include Misc
+  include ExceptionNotifiable
   include DateAndTimeHelper
 
   helper :task_filter
