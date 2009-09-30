@@ -7,7 +7,9 @@
       <tr>
 	<th></th>
 	<th><%= _("ID") %></th>
-	<th><%= _("Type") %></th>
+	<% current_user.company.properties.each do |prop| -%>
+	  <th><%= prop.name %></th>
+	<% end -%>
 	<th><%= _("Summary") %></th>
 	<th><%= _("Client") %></th>
 	<th><%= _("Project/Milestone") %></th>

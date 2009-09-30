@@ -65,7 +65,7 @@ class Property < ActiveRecord::Base
   ###
   def self.all_with_icons(company)
     props = company.properties.select do |p|
-      p.property_values.detect { |pv| !pv.icon_url.blank? }
+      p.has_icons?
     end
 
     return props
@@ -86,6 +86,12 @@ class Property < ActiveRecord::Base
 
     match = filter_name.match(/property_(\d+)/)
     return company.properties.find(match[1]) if match
+  end
+
+  # Returns true if the values for this property have icons
+  # set up
+  def has_icons?
+    property_values.detect { |pv| pv.icon_url.present? }
   end
 
   ###

@@ -15,9 +15,15 @@
 
   <td><%= task.task_num %></td>
 
-  <td>
-    <%= task_icon(task) %>
-  </td>
+  <% current_user.company.properties.each do |prop| -%>
+    <td>
+      <% pv = task.property_value(prop) -%>
+      <span class="sort_hint">
+	<%= prop.property_values.index(pv) %>
+      </span>
+      <%= pv.to_html if pv %>
+    </td>
+  <% end -%>
 
   <td>
     <%=h task.name %>
