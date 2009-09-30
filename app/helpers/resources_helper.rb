@@ -24,7 +24,7 @@ module ResourcesHelper
                          :size => type.default_field_length)
 
     if type.is_password?
-      res += password_field(attribute, type, name_prefix, field_id)
+      res += resource_password_field(attribute, type, name_prefix, field_id)
     end
 
     if type.allows_multiple?
@@ -42,7 +42,7 @@ module ResourcesHelper
     return res
   end
 
-  def password_field(attribute, type, name_prefix, field_id)
+  def resource_password_field(attribute, type, name_prefix, field_id)
     res = ""
     if attribute.new_record? or attribute.password.blank?
       res = text_field_tag("#{ name_prefix }[password]", "Password",
