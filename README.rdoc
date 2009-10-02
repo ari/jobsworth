@@ -1,4 +1,4 @@
-== Installing CIT on your server
+== Installing jobsworth on your server
 === Step 1: Getting the source
 
 The source is released under the MIT/X Consortium License.
@@ -7,6 +7,7 @@ The easiest way to get the source and easily update it from time to time is with
 
   git clone git://github.com/ari/clockingit.git
 
+You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
 
 === Step 2: Prerequsites
 
@@ -45,14 +46,14 @@ Install Phusion Passenger. You can instead use Mongrel, but it tends to be a lit
 
 And follow the instructions you'll be given about how to install the relevant config for Apache httpd.
 
-Your Apache httpd virtual host should point to the public directory in the installation directory.
+Your Apache httpd virtual host DocumentRoot should point to the public directory in the installation directory.
 
   <VirtualHost *:80>
-    ServerName myserver.example.com.au
+    ServerName jobsworth.example.com.au
     RailsEnv production
     PassengerHighPerformance on
 
-    DocumentRoot /usr/local/www/clockingit/public
+    DocumentRoot /usr/local/www/jobsworth/public
     CustomLog /var/log/www/myserver.example.com.au-access_log combined
     ErrorLog /var/log/www/myserver.example.com.au-access_log
   </VirtualHost>
@@ -62,6 +63,7 @@ Naturally adjust the paths to suit your own environment.
 
 === Step 4: Setup configuration and database
 
+  cd /usr/local/www/jobsworth
   ruby setup.rb
   
   
@@ -103,7 +105,7 @@ then kill the push server daemon.
 
 Restart daemon
 
-  cd /usr/local/www/clockingit
+  cd /usr/local/www/jobsworth
   nohup ./script/push_server &
   apachectl restart
 
@@ -111,7 +113,7 @@ Restart daemon
 
 You need to set up your email software so that it sends all emails for a subdomain to your rails user, and set up the alias so that it runs the mailman script.
 
-For example to configure sendmail to pass to ClockingIT all emails sent to domain.com. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
+For example to configure sendmail to pass to jobsworth all emails sent to domain.com. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
 
 Add an entry to /etc/mail/local-host-names to contain your domain
 
@@ -119,10 +121,10 @@ Add an entry to /etc/mail/local-host-names to contain your domain
 
 Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
 
-  cit: "|/path/to/cit/script/runner -e production 'Mailman.receive(STDIN.read)'"
+  jobsworth: "|/path/to/cit/script/runner -e production 'Mailman.receive(STDIN.read)'"
 
 Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to the above alias
 
-  @domain.com        cit
+  @domain.com        jobsworth
 
 run "make; make restart" in /etc/mail
