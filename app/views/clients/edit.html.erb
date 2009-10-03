@@ -46,4 +46,18 @@
 		<%= render(:partial => "/organizational_units/list_item") %>
 	<% end %>
 </fieldset>
+
+<% if current_user.use_resources? -%>
+  <fieldset id="resources">
+    <legend>Resources</legend>
+
+    <ul>
+      <% resources_without_parents(@customer.resources).each do |r| %>
+        <%= render(:partial => "/resources/resource", :locals => { :resource => r, :depth => 0 }) %>
+      <% end %> 
+    </ul>
+  </fieldset>
+<% end -%>
+
 </div>
+

@@ -656,6 +656,22 @@ function addAutoAddUsersToTask(clientId, taskId, projectId) {
 }
 
 /*
+  If this task has no linked clients yet, link the one that
+  project belongs to and update the display.
+*/
+function addClientLinkForTask(projectId) {
+    var customers = jQuery("#task_customers").text();
+    
+    if (jQuery.trim(customers) == "") {
+	var url = "/tasks/add_client_for_project";
+	var params = { project_id : projectId }
+	jQuery.get(url, params, function(data) {
+	    jQuery("#task_customers").html(data);
+	});
+    }
+}
+
+/*
   Highlights any notification users who will be receiving an email
   about this task.
 */
