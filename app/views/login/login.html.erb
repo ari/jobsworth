@@ -29,7 +29,7 @@
 	  <% end -%>
 		<% form_tag( {:action => 'validate'}, {:id => 'loginform', :name => 'loginform'}) do %>
 			<div id="name"><%= $CONFIG[:productName] %></div>
-			<button type="submit" name="Submit" value="Login" tabindex="4"></button>
+			<button type="submit" name="Submit" id="submit_button" value="Login" tabindex="4"></button>
 			<p>
 				<label for="username">Username</label>
 				<input name="user[username]" id="username" type="text" class="inputbox username" alt="username" size="12" tabindex="1" />
