@@ -81,7 +81,7 @@ class WorkLog < ActiveRecord::Base
     worklog.customer = task.project.customer
     worklog.project = task.project
     worklog.task = task
-    worklog.started_at = user.tz.utc_to_local(Time.now.utc)
+    worklog.started_at = Time.now.utc
     worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
 
