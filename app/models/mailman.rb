@@ -209,6 +209,10 @@ class Mailman < ActionMailer::Base
                     :duration => 0) 
     task.set_task_num(project.company.id)
 
+    (email.from || []).each do |email_addr|
+      user = project.company.users.find_by_email(email_addr.strip)
+      task.watchers << user if user
+    end
     (email.to || []).each do |email_addr|
       user = project.company.users.find_by_email(email_addr.strip)
       task.users << user if user

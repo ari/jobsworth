@@ -64,11 +64,11 @@ class LoginController < ApplicationController
   end
 
   def validate
-  	if params[:forgot] == 'true'
-  		mail_password
-  		redirect_to :action => 'login'
-  		return
-  	end
+    if params[:forgot] == 'true'
+      mail_password
+      redirect_to :action => 'login'
+      return
+    end
 
     @user = User.new(params[:user])
     @company = company_from_subdomain
@@ -269,19 +269,17 @@ class LoginController < ApplicationController
   # Mail the User his/her credentials for all Users on the requested
   # email address
   def mail_password
-    if params[:email].nil? || params[:email].length == 0
-      flash[:notice] = "Enter your email address."
+    email = (params[:user] || {})[:username]
+    if email.blank?
+      flash[:notice] = "Enter your email address in the username field."
       return
-	end
-
-    if User.count( :conditions => ["email = ?", params[:email]]) > 0
-      @users = User.find(:all, :conditions => ["email = ?", params[:email]])
-      @users.each do |u|
-         Signup::deliver_forgot_password(u)
-      end
     end
 
-	# tell user it was successful even if we didn't find the user, for security.
+    User.find(:all, :conditions => { :email => email }).each do |u|
+      Signup::deliver_forgot_password(u)
+    end
+
+    # tell user it was successful even if we didn't find the user, for security.
     flash[:notice] = "Mail sent"
   end
 

@@ -91,7 +91,7 @@ class ActionController::IntegrationTest
     visit "/login/login"
     fill_in "username", :with => user.username
     fill_in "password", :with => user.password
-    click_button "submit"
+    click_button "submit_button"
 
     assert_equal user.id, @request.session[:user_id]
 

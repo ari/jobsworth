@@ -11,7 +11,7 @@ class TaskFiltersController < ApplicationController
     company = current_user.company
 
     @to_list = []
-    @to_list << [ _("Clients"), current_user.customers(:conditions => name_conds("customers."), :limit => limit) ]
+    @to_list << [ _("Clients"), Customer.all(:conditions => name_conds("customers."), :limit => limit) ]
     @to_list << [ _("Projects"), current_user.all_projects.all(:conditions => name_conds, :limit => limit) ]
     @to_list << [ _("Users"), company.users.all(:conditions => name_conds, :limit => limit) ]
     @to_list << [ _("Milestones"), current_user.milestones(:conditions => name_conds("milestones."), :limit => limit) ]

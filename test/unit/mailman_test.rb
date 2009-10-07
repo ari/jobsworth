@@ -215,6 +215,15 @@ o------ please reply above this line ------o
       assert task.watchers.include?(User.first)
     end
 
+    should "add sender to task" do
+      @tmail.from = User.first.email
+
+      Mailman.receive(@tmail.to_s)
+
+      task = Task.first(:order => "id desc")
+      assert task.linked_users.include?(User.first)
+    end
+
     should "deliver created email to creator" do
       assert_emails 0
       Mailman.receive(@tmail.to_s)
