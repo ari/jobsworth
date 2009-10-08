@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   end
 
   def new
-    @page = Page.new
+    @page = Page.new(params[:page])
   end
 
   def create
@@ -13,12 +13,12 @@ class PagesController < ApplicationController
 
     @page.user = current_user
     @page.company = current_user.company
-    if((@page.project_id.to_i > 0) && @page.save )
+    if @page.save
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.project = @page.project
-      worklog.company = @page.project.company
-      worklog.customer = @page.project.customer
+      worklog.project = @page.project if @page.project
+      worklog.company = @page.company 
+      worklog.customer = @page.project.customer if @page.project
       worklog.body = "#{@page.name}"
       worklog.task_id = 0
       worklog.started_at = Time.now.utc
@@ -50,9 +50,9 @@ class PagesController < ApplicationController
 
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.project = @page.project
-      worklog.company = @page.project.company
-      worklog.customer = @page.project.customer
+      worklog.project = @page.project if @page.project
+      worklog.company = @page.company 
+      worklog.customer = @page.project.customer if @page.project
       worklog.body = "#{@page.name}"
       worklog.task_id = 0
       worklog.started_at = Time.now.utc
