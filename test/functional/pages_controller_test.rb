@@ -1,0 +1,48 @@
+require File.dirname(__FILE__) + '/../test_helper'
+
+class PagesControllerTest < ActionController::TestCase
+
+  context "a normal logged in user" do
+    setup do
+      @user = login
+    end
+
+    should "be able to get new" do
+      get :new
+      assert_response :success
+    end
+
+    should "be able to post create" do
+      put :create, :page => Page.make.attributes
+      assert_redirected_to assigns("page")
+    end
+
+    should "be able to post target_list" do
+      post :target_list, :target => @user.name
+      assert_response :success
+    end
+
+    context "with an existing page" do
+      setup do
+        @page = Page.make(:user => @user, :company => @user.company)
+      end
+
+      should "be able to get edit" do
+        get :edit, :id => @page.id
+        assert_response :success
+      end
+
+      should "be able to put update" do
+        put :update, :id => @page.id, :page => { :name => "new name" }
+        assert_redirected_to @page
+        assert_equal "new name", @page.reload.name
+      end
+
+      should "be able to delete a page" do
+        delete :destroy, :id => @page.id
+        assert_redirected_to "/tasks/list"
+        assert_nil Page.find_by_id(@page.id)
+      end
+    end
+  end
+end

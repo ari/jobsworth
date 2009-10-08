@@ -1,14 +1,33 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class PageTest < ActiveRecord::TestCase
-  fixtures :pages
 
-  def setup
-    @page = Page.find(1)
+  should_belong_to :company
+  should_belong_to :user
+  should_belong_to :project
+  should_belong_to :notable
+
+  should_validate_presence_of :name
+
+  context "A normal page" do
+    setup do
+      @page = Page.make
+    end
+    subject { @page }
+    
+
+    should "require a project or a notable" do
+      @page.project = nil
+      @page.notable = nil
+      assert !@page.valid?
+
+      @page.notable = User.make
+      assert @page.valid?
+
+      @page.notable = nil
+      @page.project = Project.make
+      assert @page.valid?
+    end
   end
 
-  # Replace this with your real tests.
-  def test_truth
-    assert_kind_of Page,  @page
-  end
 end

@@ -1,6 +1,5 @@
 # Simple Page/Notes system, will grow into a full Wiki once I get the time..
 class PagesController < ApplicationController
-
   def show
     @page = Page.find(params[:id], :conditions => ["company_id = ?", current_user.company.id] )
   end
@@ -31,6 +30,7 @@ class PagesController < ApplicationController
       flash['notice'] = _('Note was successfully created.')
       redirect_to :action => 'show', :id => @page.id
     else
+      @page.valid?
       render :action => 'new'
     end
   end
@@ -66,6 +66,7 @@ class PagesController < ApplicationController
       flash['notice'] = _('Note was successfully updated.')
       redirect_to :action => 'show', :id => @page
     else
+      @page.valid?
       render :action => 'edit'
     end
   end
@@ -90,5 +91,17 @@ class PagesController < ApplicationController
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
+  # Renders a list of possible notable targets for a page
+  def target_list
+    @matches = []
+    str = [ params[:target] ]
+    
+    @matches += User.search(current_user.company, str)
+    @matches += Customer.search(current_user.company, str)
+    @matches += current_user.all_projects.find(:all,
+                              :conditions => Search.search_conditions_for(str))
+
+    render :layout => false
+  end
 
 end
