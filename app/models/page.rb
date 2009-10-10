@@ -3,18 +3,17 @@
 
 class Page < ActiveRecord::Base
   belongs_to :company
-  belongs_to :project
   belongs_to :user
   belongs_to :notable, :polymorphic => true
 
-  acts_as_list  :scope => :project
-
   validates_presence_of :name
+
+  named_scope :projects, :conditions => [ "notable_type = 'Project'" ]
 
   protected
 
   def validate
-    if project.nil? and notable.nil?
+    if notable.nil?
       errors.add_to_base("Target required")
     end
   end

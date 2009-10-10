@@ -7,7 +7,7 @@ class ChatMessage < ActiveRecord::Base
   def self.search(user, keys)
     conditions = []
     keys.each { |k| conditions << "chat_messages.id = #{ k.to_i }" }
-    conditions << Search.search_conditions_for(keys, [ "chat_messages.body" ], false)
+    conditions << Search.search_conditions_for(keys, [ "chat_messages.body" ], :search_by_id => false)
     conditions = "(#{ conditions.join(" or ") })"
     return user.chat_messages.all(:conditions => conditions)
   end

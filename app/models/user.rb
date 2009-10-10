@@ -86,8 +86,8 @@ class User < ActiveRecord::Base
   # the given strings
   ###
   def self.search(company, strings)
-    return company.users.find(:all, 
-                              :conditions => Search.search_conditions_for(strings))
+    conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
+    return company.users.find(:all, :conditions => conds)
   end
 
   def path

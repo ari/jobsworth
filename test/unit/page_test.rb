@@ -4,7 +4,6 @@ class PageTest < ActiveRecord::TestCase
 
   should_belong_to :company
   should_belong_to :user
-  should_belong_to :project
   should_belong_to :notable
 
   should_validate_presence_of :name
@@ -16,16 +15,11 @@ class PageTest < ActiveRecord::TestCase
     subject { @page }
     
 
-    should "require a project or a notable" do
-      @page.project = nil
+    should "require a notable" do
       @page.notable = nil
       assert !@page.valid?
 
       @page.notable = User.make
-      assert @page.valid?
-
-      @page.notable = nil
-      @page.project = Project.make
       assert @page.valid?
     end
   end

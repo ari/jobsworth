@@ -100,5 +100,5 @@ end
 Page.blueprint do
   name
   company
-  project
+  notable { Project.make }
 end
