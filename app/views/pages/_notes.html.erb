@@ -1,0 +1,9 @@
+<% if notes and notes.any? -%>
+  <fieldset id="notes">
+    <legend><%= "Notes" %></legend>
+    <% notes.each do |note| -%>
+      <%= link_to note.name, note %>
+      <br />
+    <% end -%>
+  </fieldset>
+<% end -%>

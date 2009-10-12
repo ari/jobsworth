@@ -19,7 +19,7 @@ module ApplicationHelper
   end
 
   def current_pages
-    pages = Page.find(:all, :order => 'updated_at, name', :conditions => [ "company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ] )
+    @pages ||= current_user.company.pages.projects.all(:conditions => [ "notable_id in (#{ current_project_ids })" ])
   end
 
   def urlize(name)

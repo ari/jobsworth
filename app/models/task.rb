@@ -608,7 +608,7 @@ class Task < ActiveRecord::Base
     keys.each do |k|
       conditions << "tasks.task_num = #{ k.to_i }"
     end
-    name_conds = Search.search_conditions_for(keys, [ "tasks.name" ], false)
+    name_conds = Search.search_conditions_for(keys, [ "tasks.name" ], :search_by_id => false)
     conditions << name_conds[1...-1] # strip off surounding parentheses
     
     conditions = "(#{ conditions.join(" or ") })"

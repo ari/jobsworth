@@ -96,3 +96,9 @@ Trigger.blueprint do
   company
   fire_on { "create" }
 end
+
+Page.blueprint do
+  name
+  company
+  notable { Project.make }
+end

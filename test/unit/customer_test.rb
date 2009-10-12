@@ -5,6 +5,7 @@ class CustomerTest < ActiveRecord::TestCase
 
   should_have_many :task_customers, :dependent => :destroy
   should_have_many :tasks, :through => :task_customers
+  should_have_many :notes
 
   def setup
     @internal = customers(:internal_customer)

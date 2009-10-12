@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   has_many      :project_permissions, :dependent => :destroy
 
   has_many      :pages, :dependent => :nullify
+  has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
@@ -85,8 +86,8 @@ class User < ActiveRecord::Base
   # the given strings
   ###
   def self.search(company, strings)
-    return company.users.find(:all, 
-                              :conditions => Search.search_conditions_for(strings))
+    conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
+    return company.users.find(:all, :conditions => conds)
   end
 
   def path

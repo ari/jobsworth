@@ -13,6 +13,7 @@ class Customer < ActiveRecord::Base
   has_many      :project_files
   has_many      :users, :order => "lower(name)"
   has_many      :resources
+  has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
 
   has_many :task_customers, :dependent => :destroy
   has_many :tasks, :through => :task_customers
@@ -36,8 +37,8 @@ class Customer < ActiveRecord::Base
   # the given strings
   ###
   def self.search(company, strings)
-    return company.customers.find(:all, 
-                                  :conditions => Search.search_conditions_for(strings))
+    conds = Search.search_conditions_for(strings, [ :name ], :start_search_only => true)
+    return company.customers.find(:all, :conditions => conds)
   end
 
   ###

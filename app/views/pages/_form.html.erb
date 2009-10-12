@@ -1,35 +1,30 @@
-<%= use_tinymce %>
+<% form_for(@page) do |f| %>
+  <%= f.error_messages %>
 
-<%= error_messages_for 'page' %>
+  <%= use_tinymce %>
 
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr><td valign="top">
-
-<!--[form:page]-->
-<label for="page_project_id"><%=_ 'Project' %></label>
-<select name="page[project_id]" id="page_project_id">
-<% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
-<% @clients.each do |c| %>
-  <% @client_projects = current_user.projects.find(:all, :conditions => ["customer_id = #{c.id} AND completed_at IS NULL"], :order => "name" ) %>
-  <% if @client_projects.size > 0 %>
-    <optgroup class="select_heading" label="<%= h(c.name) %>">
-    <% @client_projects.each do |p| %>
-      <option value="<%=p.id%>" class="select_item"<%= " selected" if @page.project_id == p.id%>><%= p.name %></option>
-    <% end %>
-    </optgroup>
-  <% end %>
-<% end %>
-</select><br/>
-
-<label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
-
-<label for="page_body"><%=_ 'Body' %></label><textarea name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
-<!--[eoform:page]-->
-<label>&nbsp;</label>
-<%= submit_tag _("Save"), :class => 'nolabel' %><br/>
-
-</td></tr>
-</table>
-<script type="text/javascript" language="javascript" charset="utf-8">
-tinyMCE.execCommand("mceAddControl", true, "page_body");
-</script>
+  <table width="100%" cellspacing="0" cellpadding="0">
+  <tr><td valign="top">
+  
+  <!--[form:page]-->
+  <label for="page_notable_id"><%= "Target (Client/User/Project)" %></label>
+  <%= text_field_tag "target", @page.notable, :autocomplete => "off" %>
+  <%= hidden_field "page", "notable_id" %>
+  <%= hidden_field "page", "notable_type" %>
+  <div id="target_auto_complete" class="auto_complete"></div>
+  <%= auto_complete_field "target", :url => target_list_pages_path, :after_update_element => "setPageTarget" %>
+  <br />
+  
+  <label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
+  
+  <label for="page_body"><%=_ 'Body' %></label><textarea name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
+  <!--[eoform:page]-->
+  <label>&nbsp;</label>
+  <%= submit_tag _("Save"), :class => 'nolabel' %><br/>
+  
+  </td></tr>
+  </table>
+  <script type="text/javascript" language="javascript" charset="utf-8">
+  tinyMCE.execCommand("mceAddControl", true, "page_body");
+  </script>
+<% end -%>

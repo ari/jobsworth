@@ -19,6 +19,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :resource_types, :collection => { :attribute => :get }
   map.resources :organizational_units
+  map.resources :pages, :collection => { :target_list => :any }
 
   map.resources(:task_filters, 
                 :member => { :select => :any },

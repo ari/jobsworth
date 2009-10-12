@@ -846,3 +846,11 @@ function addNewTodoKeyListener(taskId) {
 	}
     });
 }
+
+function setPageTarget(evt, selected) {
+    var id = jQuery(selected).find(".id").val();
+    var type = jQuery(selected).find(".type").val();
+
+    jQuery("#page_notable_id").val(id);
+    jQuery("#page_notable_type").val(type);
+}
