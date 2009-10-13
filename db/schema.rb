@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091010063549) do
+ActiveRecord::Schema.define(:version => 20091013080727) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -784,8 +784,8 @@ ActiveRecord::Schema.define(:version => 20091010063549) do
     t.datetime "last_ping_at"
     t.integer  "last_milestone_id"
     t.integer  "last_filter"
-    t.string   "date_format"
-    t.string   "time_format"
+    t.string   "date_format",                                                    :null => false
+    t.string   "time_format",                                                    :null => false
     t.integer  "send_notifications",                        :default => 1
     t.integer  "receive_notifications",                     :default => 1
     t.string   "uuid",                                                           :null => false
