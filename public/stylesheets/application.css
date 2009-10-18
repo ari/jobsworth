@@ -472,8 +472,15 @@ input.checkbox {
 }
 
 #loading {
-  position: absolute;
-  z-index: 9;
+  z-index: 1000;
+  position:absolute;
+  right: 10px;
+  top: 10px;
+  width:70px;
+  height:20px;
+  color: white;
+  padding:6px;
+  display: none;
 }
 
 input:focus, textarea:focus { border: 1px solid #FC0; }
