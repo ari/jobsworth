@@ -592,15 +592,6 @@ class Task < ActiveRecord::Base
     find_by_sql(sql)
   end
 
-  def self.full_text_search(q, options = {})
-    return nil if q.nil? or q==""
-    default_options = {:limit => 20, :page => 1}
-    options = default_options.merge options
-    options[:offset] = options[:limit] * (options.delete(:page).to_i-1)
-    results = Task.find_with_ferret(q, options)
-    return [results.total_hits, results]
-  end
-
   def self.search(user, keys)
     tf = TaskFilter.new(:user => user)
 

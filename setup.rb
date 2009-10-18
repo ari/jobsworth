@@ -177,10 +177,6 @@ File.open("config/juggernaut_config.yml", "w") do |file|
   file.puts jug
 end
 
-puts "  Creating config/ferret_server.yml"
-system("cp config/ferret_server.yml-example config/ferret_server.yml")
-puts
-
 puts "Creating directories..."
 
 puts "  log..."
@@ -297,7 +293,6 @@ puts "---------"
 
 puts
 puts "Please start the required services by entering the following in a console:"
-puts "  ./script/ferret_server -e production start"
 puts "  nohup ./script/push_server &"
 puts "Make sure passenger and apache httpd are properly set up and a virtual host defined."
 puts
