@@ -19,7 +19,7 @@ class TaskFiltersController < ApplicationController
     @to_list << [ _("Status"), company.statuses.all(:conditions => name_conds, :limit => limit) ]
 
     company.properties.each do |property|
-      values = property.property_values.all(:conditions => [ "value like ?", "#{ @filter }%" ])
+      values = property.property_values.all(:conditions => [ "lower(value) like ?", "#{ @filter }%" ])
       @to_list << [ property, values ] if values.any?
     end
 
