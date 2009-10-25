@@ -115,7 +115,9 @@ ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 
 require File.join(File.dirname(__FILE__), '../lib/rails_extensions')
 
-load File.join(File.dirname(__FILE__), 'environment.local.rb')
+local_env = File.join(File.dirname(__FILE__), 'environment.local.rb')
+# load(local_env) if File.exists?(local_env)
+
 require File.join(File.dirname(__FILE__), '../lib/misc.rb')
 
 require_dependency 'tzinfo'

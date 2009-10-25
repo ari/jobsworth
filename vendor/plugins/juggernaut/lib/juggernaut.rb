@@ -3,16 +3,35 @@ require "yaml"
 require "socket"
 
 module Juggernaut
-FS_APP_CONFIG = YAML::load(File.open("#{RAILS_ROOT}/config/juggernaut_config.yml")) rescue nil
 
 def self.config
-        return FS_APP_CONFIG
+  if @config.nil?
+    file = "#{RAILS_ROOT}/config/juggernaut_config.yml"
+    if File.exists?(file)
+      @config = YAML::load_file(file)
+    else
+      port = ENV["PUSH_PORT"]
+      domain = ENV["PUSH_DOMAIN"]
+      secret = ENV["PUSH_SECRET"]
+
+      @config = {
+        "PUSH_PORT" => port,
+        "PUSH_HOST" => "0.0.0.0",
+        "PUSH_HELPER_HOST" => "www.#{ domain }",
+        "PUSH_SECRET" => secret,
+        "CROSSDOMAIN" => "xmlsocket://www.#{ domain }:#{ port }",
+        "ALLOW_CROSSDOMAIN" => "*.#{ domain }"
+      }
+    end
+  end
+
+  return @config
 end
 
 def self.send(data,chan = ["default"])
   begin
-    @socket = TCPSocket.new(FS_APP_CONFIG["PUSH_HOST"], FS_APP_CONFIG["PUSH_PORT"])
-    fc = { :message => data, :secret => FS_APP_CONFIG["PUSH_SECRET"], :broadcast => 1, :channels => chan}
+    @socket = TCPSocket.new(config["PUSH_HOST"], config["PUSH_PORT"])
+    fc = { :message => data, :secret => config["PUSH_SECRET"], :broadcast => 1, :channels => chan}
     @socket.print fc.to_json + "\0"
     @socket.flush
   rescue
