@@ -35,6 +35,7 @@
 	</style>
 </head>
 <body id="body">
+  <div class="content_header">
 	<div id="loading"><%= image_tag('spinner.gif', :border => 0) %></div>
 	<div id="passive-chat-container" style="display:none;"><table width="100%" cellspacing="0"><tbody id="passive-chat"></tbody></table></div>
 
@@ -50,12 +51,9 @@
 	</div>
 	<% end %>
 
-	<% if flash["notice"].present? -%>
-	<div class="inlineMessage" id="flash">
-	  <span id="flash_message"><%= flash["notice"] %></span>
-	  <a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
-	</div>
-	<% end -%>
+	<%= render :partial => "/layouts/notice" -%>
+  </div>
+
 
 	<table width="100%" id="main-table" class="content_body">
 	  <tr>

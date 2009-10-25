@@ -13,9 +13,11 @@ require 'eventmachine'
 require "json"
 require 'json/add/rails'
 
+require "vendor/plugins/juggernaut/lib/juggernaut"
+
 module Juggernaut
   RAILS_ROOT = File.join(File.dirname(__FILE__), '..')
-  CONFIG = YAML::load_file(RAILS_ROOT + "/config/juggernaut_config.yml").freeze
+  CONFIG = Juggernaut.config.freeze
 
   class Channels < Monitor
 
@@ -204,6 +206,8 @@ module Juggernaut
 
 end
 
+require "ruby-debug"
+debugger
 $LOG = Logger.new("log/push_server.log", 2, 10*1024)
 @hostname = Juggernaut::CONFIG["PUSH_HOST"]
 @port = Juggernaut::CONFIG["PUSH_PORT"]

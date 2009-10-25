@@ -23,3 +23,4 @@ tmp
 .project
 .idea
 lib/scripts/*.rb
+config/juggernaut_config.yml
