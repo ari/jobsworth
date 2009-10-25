@@ -1,0 +1,6 @@
+<% if flash["notice"].present? -%>
+  <div class="inlineMessage" id="flash">
+    <span id="flash_message"><%= flash["notice"] %></span>
+    <a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
+  </div>
+<% end -%>
