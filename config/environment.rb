@@ -116,7 +116,7 @@ ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 require File.join(File.dirname(__FILE__), '../lib/rails_extensions')
 
 local_env = File.join(File.dirname(__FILE__), 'environment.local.rb')
-# load(local_env) if File.exists?(local_env)
+load(local_env) if File.exists?(local_env)
 
 require File.join(File.dirname(__FILE__), '../lib/misc.rb')
 
@@ -131,3 +131,48 @@ begin
 rescue
 #  puts $!
 end
+
+# If a value is set for ENV[env_name], sets hash[name]
+# to that value. If not, leaves hash[name] untouched
+def load_from_env(env_name, name, hash, &block)
+  if ENV[env_name].present?
+    if block_given?
+      hash[name] = yield(ENV[env_name])
+    else
+      hash[name] = ENV[env_name] 
+    end
+  end
+end
+
+
+
+require "pp"
+
+# Load any action mailer settings from ENV
+ActionMailer::Base.smtp_settings ||= {}
+load_from_env("SMTP_HOSTNAME", :address, ActionMailer::Base.smtp_settings)
+load_from_env("SMTP_PORT", :port, ActionMailer::Base.smtp_settings) { |p| p.to_i }
+load_from_env("SMTP_DOMAIN", :domain, ActionMailer::Base.smtp_settings)
+load_from_env("SMTP_USER", :user_name, ActionMailer::Base.smtp_settings)
+load_from_env("SMTP_PASSWORD", :password, ActionMailer::Base.smtp_settings)
+load_from_env("SMTP_AUTHENTICATION", :authentication, ActionMailer::Base.smtp_settings)
+
+# Just for debugging while we get this working:
+puts "ActionMailer Settings:"
+pp ActionMailer::Base.smtp_settings
+puts "\n"
+
+# Load any $CONFIG settings from ENV
+$CONFIG ||= {}
+load_from_env("DOMAIN", :domain, $CONFIG)
+load_from_env("REPLYTO", :replyto, $CONFIG)
+load_from_env("FROM", :from, $CONFIG)
+load_from_env("PREFIX", :prefix, $CONFIG)
+load_from_env("PRODUCT_NAME", :productName, $CONFIG)
+load_from_env("USE_SSL", :SSL, $CONFIG) { |s| s == "true" }
+
+# Just for debugging while we get this working:
+puts "$CONFIG:"
+pp $CONFIG
+puts "\n"
+

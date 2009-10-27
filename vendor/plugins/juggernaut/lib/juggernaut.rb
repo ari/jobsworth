@@ -10,9 +10,9 @@ def self.config
     if File.exists?(file)
       @config = YAML::load_file(file)
     else
-      port = ENV["PUSH_PORT"]
-      domain = ENV["PUSH_DOMAIN"]
-      secret = ENV["PUSH_SECRET"]
+      port = ENV["PUSH_PORT"] || 443
+      domain = ENV["PUSH_DOMAIN"] || "localhost" 
+      secret = ENV["PUSH_SECRET"] || "not_very_secret"
 
       @config = {
         "PUSH_PORT" => port,
