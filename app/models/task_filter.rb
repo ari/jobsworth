@@ -38,7 +38,6 @@ class TaskFilter < ActiveRecord::Base
   def tasks(extra_conditions = nil, limit_tasks = true)
     limit = (limit_tasks ? 500 : nil)
     return user.company.tasks.all(:conditions => conditions(extra_conditions), 
-                                  :order => "tasks.id desc",
                                   :include => to_include,
                                   :limit => limit)
   end
