@@ -12,6 +12,7 @@ class NotificationsTest < ActiveRecord::TestCase
       # need to hard code these configs because the fixtured have hard coded values
       $CONFIG[:domain] = "clockingit.com"
       $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
+      $CONFIG[:productName] = "ClockingIT"
 
       @expected = TMail::Mail.new
       @expected.set_content_type "text", "plain", { "charset" => CHARSET }
