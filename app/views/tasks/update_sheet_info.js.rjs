@@ -1,18 +1,10 @@
-page << "if($('menu_info')) {"
 page.replace_html 'menu_info', :partial => 'layouts/sheet_info'
 page.replace_html 'menu_login', :partial => 'layouts/login_info'
-page << "}"
-
-page << "if($('presence-online')) {"
 page.replace_html 'presence-online', (online_users).to_s
 
 current_user.chats.each do |chat|
   @chat = chat
-  page << "if($('presence-toggle-#{@chat.target.dom_id}')) {"
   page.replace_html "presence-toggle-#{@chat.target.dom_id}", :partial => "shout/chat_tab_status", :locals => { :user => @chat.target }
-  page << "}"
 end
-
-page << "}"
 
 page.call "UpdateDnD"
