@@ -13,10 +13,6 @@ config/environment.local.rb
 config/juggernaut_config.yml
 config/custom.gems.rb
 semantic.cache
-public/javascripts/base_*.js
-public/javascripts/portal_*.js
-public/stylesheets/base_*.css
-public/stylesheets/portal_*.css
 tmp
 .DS_Store
 .buildpath
