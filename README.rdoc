@@ -30,12 +30,13 @@ How to install these will differ on each platform. Some possibilities:
 
 First install the Macports system from http://www.macports.org. Then:
 
-  sudo port install rb-rubygems rb-mysql rb-rake ImageMagick
+  sudo port install rb-rubygems rb-mysql rb-rake ImageMagick libxml2 libxslt
 
-==== Other
+==== Linux, etc
 
-Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed.
+Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed. Something like:
 
+  yum install libxml2 libxslt ImageMagick ruby
 
 === Step 3: Phusion Passenger
 
