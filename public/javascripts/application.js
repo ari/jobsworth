@@ -202,12 +202,12 @@ it in the current page.
 */
 function showTaskInPage(taskNum) {
     jQuery("#task_list tr.selected").removeClass("selected");
-	jQuery("#task_list #task_row_" + taskNum).addClass("selected");
+    jQuery("#task_list #task_row_" + taskNum).addClass("selected");
 
-	jQuery("#task").fadeOut();
+    jQuery("#task").fadeOut();
     jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
-		jQuery("#task").html(data);
-		jQuery("#task").fadeIn('slow');
+	jQuery("#task").html(data);
+	jQuery("#task").fadeIn('slow');
     });
 }
 

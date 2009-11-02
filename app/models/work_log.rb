@@ -19,7 +19,7 @@ class WorkLog < ActiveRecord::Base
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
 
-  named_scope :comments, :conditions => [ "work_logs.comment = 1 or work_logs.log_type = 6" ]
+  named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, 6 ]
 
   validates_presence_of :started_at
 
