@@ -1,7 +1,7 @@
 class TaskFilterQualifier < ActiveRecord::Base
   attr_accessor :task_num
 
-  belongs_to :task_filter
+  belongs_to :task_filter, :touch => true
   belongs_to :qualifiable, :polymorphic => true
   validates_presence_of :qualifiable
 

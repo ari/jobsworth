@@ -1166,7 +1166,7 @@ class TasksController < ApplicationController
   def list_init
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
-    @tasks = current_task_filter.tasks
+    # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
 

@@ -102,6 +102,14 @@ class TaskFilter < ActiveRecord::Base
     end
   end
 
+  def cache_key
+    key = super
+    last_task_update = user.company.tasks.maximum(:updated_at,
+                                                  :conditions => conditions,
+                                                  :include => to_include)
+    "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
+  end
+
   private
 
   def to_include

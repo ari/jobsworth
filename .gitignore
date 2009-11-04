@@ -24,3 +24,8 @@ tmp
 .idea
 lib/scripts/*.rb
 config/juggernaut_config.yml
+public/javascripts/main.js
+public/javascripts/popup.js
+public/javascripts/prototype-all.js
+public/stylesheets/all.css
+public/stylesheets/popup.css

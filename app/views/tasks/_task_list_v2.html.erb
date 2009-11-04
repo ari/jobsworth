@@ -1,3 +1,5 @@
+<% cache(current_task_filter) do -%>
+
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
 <div id="task_list">
@@ -19,9 +21,11 @@
       </tr>
     </thead>
     <tbody>
-      <%= render :partial => "task_row_v2", :collection => @tasks %>
+      <%= render :partial => "task_row_v2", :collection => current_task_filter.tasks %>
     </tbody>
   </table>
 </div>
 
 <%= sortable_table("#list", session[:filter_sort]) -%>
+
+<% end -%>
