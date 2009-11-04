@@ -7,6 +7,9 @@ class TaskFilterQualifier < ActiveRecord::Base
 
   before_validation :set_qualifiable_from_task_num
 
+  named_scope :for, lambda { |type|
+    { :conditions => { :qualifiable_type => type } } }
+
   private
 
   def set_qualifiable_from_task_num
