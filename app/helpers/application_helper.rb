@@ -213,10 +213,6 @@ module ApplicationHelper
     text
   end
 
-#   def link_to_task(task)
-#     "<strong>#{task.issue_num}</strong> <a href=\"/tasks/edit/#{task.task_num}\" class=\"tooltip#{task.css_classes}\" title=\"#{task.to_tip({ :duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user })}\">#{h(truncate(task.name, :length => 80))}</a>"
-#   end
-
   def milestone_classes(m)
     return " complete_milestone" unless m.completed_at.nil?
 

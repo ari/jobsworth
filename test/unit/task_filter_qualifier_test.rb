@@ -25,7 +25,8 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
 
     should "set task from task_num if use can view task" do
       @qualifier.task_num = @task.task_num
-      @qualifier.save!
+#      @qualifier.save!
+      @qualifier.valid?
       assert_equal @task, @qualifier.qualifiable
     end
 

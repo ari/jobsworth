@@ -4,7 +4,9 @@
   <% end %>
   
   <% if dependency.done? %>
-    <img src="/images/tick.png" border=0><% else %> <% end %><%= link_to_task(dependency) %>
-    <input name="dependencies[]" type="hidden" value="<%=dependency.task_num%>">
-    <span class="divider"></span>
+    <img src="/images/tick.png" border=0>
+  <% end %>
+  <%= link_to_task(dependency) %>
+  <%= hidden_field_tag :dependencies, dependency.task_num, :index => nil %>
+  <span class="divider"></span>
 </div>

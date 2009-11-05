@@ -401,7 +401,15 @@ class ApplicationController < ActionController::Base
                         :user => current_user)
     title = highlight_all(title, highlight_keys)
 
-    html = { :class => "tooltip#{task.css_classes}", :title => title }
+    html = { 
+      :class => "tooltip tasklink #{task.css_classes}", 
+      :title => title
+    }
+
+    if @ajax_task_links
+      html[:onclick] = "showTaskInPage(#{ task.task_num }); return false;"
+    end
+
     text = truncate ? task.name : self.class.helpers.truncate(task.name, :length => 80)
     text = highlight_all(text, highlight_keys)
     

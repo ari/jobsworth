@@ -1,11 +1,14 @@
 class TaskFilterQualifier < ActiveRecord::Base
   attr_accessor :task_num
 
-  belongs_to :task_filter
+  belongs_to :task_filter, :touch => true
   belongs_to :qualifiable, :polymorphic => true
   validates_presence_of :qualifiable
 
   before_validation :set_qualifiable_from_task_num
+
+  named_scope :for, lambda { |type|
+    { :conditions => { :qualifiable_type => type } } }
 
   private
 

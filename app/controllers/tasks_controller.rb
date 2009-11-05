@@ -209,6 +209,9 @@ class TasksController < ApplicationController
   def edit
     @task = current_user.company.tasks.find_by_task_num(params[:id])
 
+    @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
+      
+
     if @task.nil? or !current_user.can_view_task?(@task)
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
@@ -1115,9 +1118,6 @@ class TasksController < ApplicationController
     task.due_at = tz.utc_to_local(@task.due_at) unless task.due_at.nil?
     @tags = {}
 
-    @logs = WorkLog.find(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? #{"AND (work_logs.comment = 1 OR work_logs.log_type=6)" if session[:only_comments].to_i == 1}", task.id], :include => [:user, :task, :project])
-    @logs ||= []
-
     @projects = User.find(current_user.id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
@@ -1166,7 +1166,8 @@ class TasksController < ApplicationController
   def list_init
     # Subscribe to the juggernaut channel for Task updates
     session[:channels] += ["tasks_#{current_user.company_id}"]
-    @tasks = current_task_filter.tasks
+    # @tasks = current_task_filter.tasks
+    @ajax_task_links = true
   end
 
 end

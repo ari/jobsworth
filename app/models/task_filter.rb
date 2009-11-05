@@ -102,14 +102,24 @@ class TaskFilter < ActiveRecord::Base
     end
   end
 
+  def cache_key
+    key = super
+    last_task_update = user.company.tasks.maximum(:updated_at,
+                                                  :conditions => conditions,
+                                                  :include => to_include)
+    "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
+  end
+
   private
 
   def to_include
-    to_include = [ :users, :tags, :sheets, :todos, :dependencies, 
-                   :milestone, :notifications, :watchers, 
-                   :customers, :task_property_values ]
-    to_include << { :company => :properties }
-    to_include << { :project => :customer }
+    to_include = [ :project, :users, :notifications, :watchers ]
+
+    to_include << :tags if qualifiers.for("Tag").any?
+    to_include << :task_property_values if qualifiers.for("PropertyValue").any?
+    to_include << :customers if qualifiers.for("Customer").any?
+
+    return to_include
   end
 
   def set_company_from_user

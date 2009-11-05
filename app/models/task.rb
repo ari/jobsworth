@@ -1043,7 +1043,7 @@ class Task < ActiveRecord::Base
     
     user_notifications = notifications.select { |n| n.user == user }
     user_notifications.each do |n|
-      n.update_attribute(:unread, !read)
+      n.update_attributes(:unread => !read)
     end
   end
 

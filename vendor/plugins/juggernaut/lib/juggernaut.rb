@@ -29,6 +29,8 @@ def self.config
 end
 
 def self.send(data,chan = ["default"])
+  return if RAILS_ENV=="test"
+
   begin
     @socket = TCPSocket.new(config["PUSH_HOST"], config["PUSH_PORT"])
     fc = { :message => data, :secret => config["PUSH_SECRET"], :broadcast => 1, :channels => chan}

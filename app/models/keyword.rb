@@ -1,5 +1,5 @@
 class Keyword < ActiveRecord::Base
-  belongs_to :task_filter
+  belongs_to :task_filter, :touch => true
   belongs_to :company
   
   validates_presence_of :company
