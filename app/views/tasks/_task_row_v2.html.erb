@@ -47,7 +47,7 @@
 
   <td class="tooltip" title="<%= task_tooltip([ [ "Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>">
     <span class="sort_hint"><%= task.due_date %></span>
-    <%= "#{ due_in_words(task) }".gsub("\[", "").gsub("\]", "") %>
+    <span class="date_to_words"><%= task.due_at.to_date if task.due_at %></span>
   </td>
 
   <td>

@@ -27,5 +27,6 @@
 </div>
 
 <%= sortable_table("#list", session[:filter_sort]) -%>
+<%= javascript_tag "jQuery('.date_to_words').dateToWords()" %>
 
 <% end -%>

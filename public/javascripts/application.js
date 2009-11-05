@@ -194,7 +194,57 @@ jQuery(document).ready(function() {
 	    ui.element.css("width", "");
 	}
     });
+
+
 });
+
+jQuery.fn.dateToWords = function() {
+    return this.each(function() {
+	dateToWords(jQuery(this))
+    });
+}
+
+function dateToWords(elem) {
+    var date = elem.text();
+    var text = date;
+    var class_name = null;
+
+    date = jQuery.datepicker.parseDate("yy-mm-dd", date)
+
+    if (date != null) {
+	var diff = (((new Date()).getTime() - date.getTime()) / 1000);
+	var dayDiff = Math.floor(diff / 86400);
+
+	if (isNaN(dayDiff)) {
+	    text = date;
+	}
+	else if (dayDiff == -1) {
+	    text = "Tomorrow";
+	    className = "due_tomorrow";
+	}
+	else if (dayDiff == 0) {
+	    text = "Today";
+	    className = "due";
+	}
+	else if (dayDiff == 1) {
+	    text = "Yesterday"
+	    className = "due_overdue";
+	}
+	else if (dayDiff < 0) {
+	    dayDiff = Math.abs(dayDiff);
+	    text = dayDiff + " days"
+	    className = dayDiff >= 7 ? "due_distant" : "due_soon";
+	}
+	else if (dayDiff > 0) {
+	    text = dayDiff + " days ago"
+	    className = "due_overdue";
+	}
+    }
+
+    elem.addClass(className);
+    elem.text(text);
+}
+
 
 /*
   Loads the task information for the task taskNum and displays 
@@ -861,3 +911,4 @@ function setPageTarget(evt, selected) {
     jQuery("#page_notable_id").val(id);
     jQuery("#page_notable_type").val(type);
 }
+
