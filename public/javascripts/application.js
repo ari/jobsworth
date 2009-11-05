@@ -207,7 +207,7 @@ jQuery.fn.dateToWords = function() {
 function dateToWords(elem) {
     var date = elem.text();
     var text = date;
-    var class_name = null;
+    var className = null;
 
     date = jQuery.datepicker.parseDate("yy-mm-dd", date)
 
