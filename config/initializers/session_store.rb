@@ -1,5 +1,5 @@
 # Use the database for sessions instead of the file system
-config.action_controller.session_store = :active_record_store
+ActionController::Base.session_store = :active_record_store
   
 # Your secret key for verifying cookie session data integrity.
 # If you change this key, all old sessions will become invalid!
