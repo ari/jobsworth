@@ -33,10 +33,6 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
 
-  # Use the database for sessions instead of the file system
-  # (create the session table with 'rake create_sessions_table')
-  config.action_controller.session_store = :active_record_store
-
   # Enable page/fragment caching by setting a file-based store
   # (remember to create the caching directory and make it readable to the application)
   config.action_controller.cache_store = :file_store, "#{RAILS_ROOT}/tmp/cache"
@@ -64,6 +60,7 @@ Rails::Initializer.run do |config|
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
+  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
 
   if !JAVA
     config.gem 'mysql'
@@ -102,7 +99,6 @@ Rails::Initializer.run do |config|
   load_custom_gems(config) if respond_to?(:load_custom_gems)
 end
 
-ActionController::Base.session_options[:session_expires]= Time.local(2015,"jan")
 #
 # Add new inflection rules using the following format
 # (all these examples are active by default):
