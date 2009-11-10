@@ -188,14 +188,17 @@ function rebuildSelect(select, data) {
 
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
+    
+    var taskList = jQuery("#task_list");
+    if (taskList) {
+	taskListLoaded();
 
-    jQuery("#task_list").resizable({
-	resize: function(event, ui) {
-	    ui.element.css("width", "");
-	}
-    });
-
-
+	taskList.resizable({
+	    resize: function(event, ui) {
+		ui.element.css("width", "");
+	    }
+	});
+    }
 });
 
 jQuery.fn.dateToWords = function() {
@@ -245,6 +248,46 @@ function dateToWords(elem) {
     elem.text(text);
 }
 
+/*
+ Callback for when the task list has finished loading.
+*/
+function taskListLoaded() {
+    hideProgress(); 
+    Shadowbox.setup(); 
+    updateTooltips();
+    jQuery('.date_to_words').dateToWords();
+    showTaskListColumns();
+}
+
+/*
+  Shows or hides any columns in the task list according to 
+  the current user's preferences
+*/
+function showTaskListColumns() {
+    var list = jQuery("#task_list #list");
+    var hidden = window.hiddenColumns || [];
+
+    var opts = { 
+	listTargetID: "column_picker",
+	onClass: 'shown', offClass: 'hidden',
+	hideInList: [ 1 ],
+	colsHidden: hidden,
+
+	onToggle: function(index, state) {
+	    var columns = jQuery("#column_picker li");
+	    var hidden = []
+	    for (var i = 0; i < columns.length; i++) {
+		var column = jQuery(columns[i]);
+		if (column.hasClass("hidden")) {
+		    hidden.push(i + 2);
+		}
+	    }
+	    saveUserPreference("hidden_task_list_columns", hidden);
+	}
+    };
+
+    list.columnManager(opts);
+}
 
 /*
   Loads the task information for the task taskNum and displays 
@@ -912,3 +955,11 @@ function setPageTarget(evt, selected) {
     jQuery("#page_notable_type").val(type);
 }
 
+
+/*
+  Sends an ajax request to save the given user preference to the db
+*/
+function saveUserPreference(name, value) {
+    var params = { "name": name, "value": value.toSource() }
+    jQuery.post("/users/set_preference",  params);
+}

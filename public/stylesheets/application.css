@@ -2993,6 +2993,12 @@ fieldset.basic .actions label {
     clear: both;
 }
 
+#content ul.filter_links li {
+    clear: none;
+    float: left;
+    padding-left: 10px;
+}
+
 #customer_search_filters {
     float: left;
 }
@@ -3081,6 +3087,34 @@ div.search_filter {
 }
 #task_list .due_overdue {
     color: red;
+}
+
+/* column hiding */
+.column_picker:hover #column_picker {
+    display: block;
+}
+#column_picker {
+    background-color: white;
+    border: 1px solid gray;
+    cursor: pointer;
+    display: none;
+    left: -5px;
+    position: absolute;
+    top: 11px;
+    z-index: 1000;
+}
+#content .filter_links #column_picker ul li {
+    clear: both;
+    float: none;
+    padding: 5px;
+}
+#content .filter_links #column_picker ul li:hover {
+    background-color: lightGray;
+}
+#column_picker .shown {
+}
+#column_picker .hidden {
+    text-decoration: line-through;
 }
 
 /* sortable tables */

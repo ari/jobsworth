@@ -1,6 +1,6 @@
-<% cache(current_task_filter) do -%>
-
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+
+<% cache(current_task_filter) do -%>
 
 <div id="task_list">
   <div id="print_title"><%= print_title %></div>
@@ -26,7 +26,8 @@
   </table>
 </div>
 
-<%= sortable_table("#list", session[:filter_sort]) -%>
-<%= javascript_tag "jQuery('.date_to_words').dateToWords()" %>
-
 <% end -%>
+
+<%= sortable_table("#list", session[:filter_sort]) -%>
+<%= task_list_columns_js -%>
+
