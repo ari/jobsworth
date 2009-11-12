@@ -123,7 +123,7 @@ EOS
   def task_list_columns_js
     hidden_columns = current_user.preference("hidden_task_list_columns")
     if hidden_columns
-      return javascript_tag "window.hiddenColumns = #{ hidden_columns }; console.log(window.hiddenColumns);"
+      return javascript_tag "window.hiddenColumns = #{ hidden_columns };"
     end
   end
 
