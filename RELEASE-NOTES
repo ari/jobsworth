@@ -2,6 +2,12 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+12 November 2009
+	You can now hide columns in the list view. Your choices will be remembered for your user login.
+
+2 Novemeber 2009
+	The performance of the task list view with over 100 tasks is now drastically improved.
+
 28 August 2009
 	The task edit view is now an integral part of the task list view. This is a major change to the user interface, but will make it much faster to move through tasks and make changes.
 	
