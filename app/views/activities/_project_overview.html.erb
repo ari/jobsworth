@@ -57,7 +57,7 @@
     <tr class="milestone" id="project_<%=project.id%>"><td colspan="2"><div style="position:relative;height:16px;">
         <div id="edit_project_<%= project.id%>" class="popout" style="position: absolute; z-index:10; left:0; top:0; width: 16px; display:none; ">
           <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-            <%= link_to image_tag("application_form_edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
+            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
           <% end %>
         </div>
