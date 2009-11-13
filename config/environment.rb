@@ -54,7 +54,7 @@ Rails::Initializer.run do |config|
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
   config.gem 'daemons', :version => '1.0.10'
-  config.gem 'eventmachine', :version => '0.12.8'
+  config.gem 'eventmachine'
   config.gem 'mislav-will_paginate', :version => '2.3.11', :lib => 'will_paginate', :source => 'http://gems.github.com'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
