@@ -294,4 +294,9 @@ class UsersController < ApplicationController
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
   end
+
+  def set_preference
+    current_user.preference_attributes = [ [ params[:name], params[:value] ] ]
+    render :nothing => true
+  end
 end

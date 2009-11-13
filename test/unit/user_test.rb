@@ -19,6 +19,7 @@ class UserTest < ActiveRecord::TestCase
   should_have_many :chats, :dependent => :destroy
   should_have_many :chat_messages, :through => :chats
   should_have_many :notes
+  should_have_many :preferences
 
   def test_create
     u = User.new

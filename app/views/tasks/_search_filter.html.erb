@@ -1,3 +1,5 @@
+<% cache([ "search_filter", current_task_filter ]) do -%>
+
 <div class="search_filter">
   <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :autocomplete =>"off" %>
   <div id="search_filter_auto_complete" class="auto_complete"></div>
@@ -21,15 +23,19 @@
 </form>
 </div>
 
+<% end -%>
+
 <% if !local_assigns[:hide_tabs] %>
   <div class="right">
-    <small>
-      <%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %>
-    </small>
-    <br />
-    <small>
-      <%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %>
-    </small>
+    <ul class="filter_links">
+      <li><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></li>
+      <li><%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %></li>
+      <li class="column_picker">
+	<%= link_to(_("Columns"), "#") %>
+	<span id="column_picker">
+	</span>
+      </li>
+    </ul>
   </div>
   
   <ul class="tabs">

@@ -50,6 +50,9 @@ class User < ActiveRecord::Base
   has_many      :task_filters, :dependent => :destroy
   has_many      :sheets, :dependent => :destroy
   
+  has_many      :preferences, :as => :preferencable
+  include PreferenceMethods
+
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
 
