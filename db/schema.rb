@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091013080727) do
+ActiveRecord::Schema.define(:version => 20091022005808) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -208,14 +208,14 @@ ActiveRecord::Schema.define(:version => 20091013080727) do
   add_index "keywords", ["task_filter_id"], :name => "fk_keywords_task_filter_id"
 
   create_table "locales", :force => true do |t|
-    t.string   "locale"
+    t.string   "locale",     :limit => 6
     t.string   "key"
     t.text     "singular"
     t.text     "plural"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "same",       :default => false
+    t.boolean  "same",                    :default => false
   end
 
   add_index "locales", ["locale", "key"], :name => "index_locales_on_locale_and_key", :unique => true
@@ -296,6 +296,7 @@ ActiveRecord::Schema.define(:version => 20091013080727) do
     t.string   "notable_type"
   end
 
+  add_index "pages", ["company_id", "name"], :name => "pages_company_id_project_id_name"
   add_index "pages", ["company_id", "updated_at", "name"], :name => "pages_company_id_updated_at_name_index"
   add_index "pages", ["notable_id", "notable_type"], :name => "index_pages_on_notable_id_and_notable_type"
   add_index "pages", ["user_id"], :name => "fk_pages_user_id"
@@ -549,7 +550,7 @@ ActiveRecord::Schema.define(:version => 20091013080727) do
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :limit => 32
-    t.text     "data"
+    t.text     "data",       :limit => 2147483647
     t.datetime "updated_at"
   end
 
@@ -784,8 +785,8 @@ ActiveRecord::Schema.define(:version => 20091013080727) do
     t.datetime "last_ping_at"
     t.integer  "last_milestone_id"
     t.integer  "last_filter"
-    t.string   "date_format",                                                    :null => false
-    t.string   "time_format",                                                    :null => false
+    t.string   "date_format"
+    t.string   "time_format"
     t.integer  "send_notifications",                        :default => 1
     t.integer  "receive_notifications",                     :default => 1
     t.string   "uuid",                                                           :null => false
