@@ -17,7 +17,7 @@ class Trigger < ActiveRecord::Base
     match = "tasks.id = #{ task.id }"
 
     triggers.each do |trigger|
-      trigger.task_filter.user = task.creator
+      trigger.task_filter.user = task.creator if task.creator
       apply = (trigger.task_filter.count(match) > 0)
       eval(trigger.action) if apply
     end
