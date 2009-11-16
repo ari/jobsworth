@@ -161,15 +161,18 @@ class TaskFilter < ActiveRecord::Base
   # Returns a string sql fragment that will limit tasks to 
   # those that match the set keywords
   def conditions_for_keywords
-    res = []
+    sql = []
+    params = []
 
     keywords.each do |kw|
-      str = "lower(tasks.name) like '%#{ kw.word.downcase }%'"
-      str += " or lower(tasks.description) like '%#{ kw.word.downcase }%'"
-      res << str
+      str = "lower(tasks.name) like ?"
+      str += " or lower(tasks.description) like ?"
+      sql << str
+      2.times { params << "%#{ kw.word.downcase }%" }
     end
 
-    res = res.join(" or ")
+    sql = sql.join(" or ")
+    res = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     return "(#{ res })" if !res.blank?
   end
 
