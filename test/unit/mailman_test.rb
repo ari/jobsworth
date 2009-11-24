@@ -48,6 +48,8 @@ class MailmanTest < ActiveSupport::TestCase
   
   def test_body_gets_trimmed_properly
     assert_equal 0, WorkLog.count
+
+    clear_users(@task)
     email = Mailman.receive(@tmail.to_s)
 
     log = WorkLog.first
@@ -68,11 +70,12 @@ class MailmanTest < ActiveSupport::TestCase
     log = WorkLog.first
     assert_not_nil log
 
-    assert_equal "&lt;b&gt;test&lt;/b&gt;", log.body
+    assert_not_nil log.body.index("&lt;b&gt;test&lt;/b&gt;")
   end
 
   def test_body_with_no_trim_works
     assert_equal 0, WorkLog.count
+    clear_users(@task)
 
     mail = TMail::Mail.new
     mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
@@ -121,6 +124,43 @@ o------ please reply above this line ------o
     Mailman.receive(@tmail.to_s)
     assert_equal status, @task.reload.status
   end
+  
+  context "A normal email" do
+
+    context "to a task with watchers" do
+      setup do
+        assert_emails 0
+        
+        @task.notify_emails = "test1@example.com,test2@example.com"
+        @task.save!
+        
+        @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
+        @task.notifications.each { |n| n.update_attribute(:notified_last_change, true) }
+      end
+      
+      should "deliver changed emails to users, watcher and email watchers" do
+        Mailman.receive(@tmail.to_s)
+        emails_to_send = @task.users.count + @task.watchers.count
+        emails_to_send += @task.notify_emails.split(",").length
+        if @task.users.include?(@user) or @task.watchers.include?(@user)
+          emails_to_send -= 1 # because sender should be excluded
+        end
+        
+        assert_emails emails_to_send
+      end
+
+      should "list people who received notification emails" do
+        no_mail = @task.notifications.last
+        no_mail.update_attributes(:notified_last_change => false)
+        
+        Mailman.receive(@tmail.to_s)
+        comment = @task.work_logs.reload.comments.last.body
+
+        assert_not_nil comment.index("test1@example.com")
+        assert_not_nil comment.index("test2@example.com")
+      end
+    end
+  end
 
   context "an email with no task information" do
     setup do
@@ -148,8 +188,6 @@ o------ please reply above this line ------o
     end
 
     should "have the original senders email in comment if no user with that email" do
-      # need an admin user 
-      @company.users.first.update_attribute(:admin, true)
       # need only one company  
       Company.all.each { |c| c.destroy if c != @company }
 
@@ -163,24 +201,6 @@ o------ please reply above this line ------o
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
-    should "deliver changed emails to users, watcher and email watchers" do
-      assert_emails 0
-
-      @task.notify_emails = "test1@example.com,test2@example.com"
-      @task.save!
-
-      @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
-      @task.notifications.each { |n| n.update_attribute(:notified_last_change, true) }
-
-      Mailman.receive(@tmail.to_s)
-      emails_to_send = @task.users.count + @task.watchers.count
-      emails_to_send += @task.notify_emails.split(",").length
-      if @task.users.include?(@user) or @task.watchers.include?(@user)
-        emails_to_send -= 1 # because sender should be excluded
-      end
-
-      assert_emails emails_to_send
-    end
 
   end
 
@@ -344,5 +364,12 @@ Content-Transfer-Encoding: 7bit
 --Apple-Mail-6-776876370--
 
 EOS
+  end
+
+  def clear_users(task)
+    # clear users so we don't get "Notification emails sent to..." message
+    task.users.clear
+    task.notifications.clear
+    task.save!
   end
 end
