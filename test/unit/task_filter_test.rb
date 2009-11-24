@@ -110,10 +110,25 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter.keywords.build(:word => "keyword2")
       
       conditions = filter.conditions
-      expected = "(lower(tasks.name) like '%keyword1%' or lower(tasks.description) like '%keyword1%'"
-      expected += " or lower(tasks.name) like '%keyword2%' or lower(tasks.description) like '%keyword2%')"
+
+      kw1 = Task.connection.quote_string("%keyword1%")
+      kw2 = Task.connection.quote_string("%keyword2%")
+      sql = (0...2).map { "lower(tasks.name) like ? or lower(tasks.description) like ?" }.join(" or ")
+      params = [ kw1, kw1, kw2, kw2 ]
+      expected = Task.send(:sanitize_sql_array, [ sql ] + params)
 
       assert_not_nil conditions.index(expected)
+    end
+
+    should "escape keywords" do
+      filter = TaskFilter.make_unsaved
+      filter.keywords.build(:word => "brad's")
+
+      conditions = filter.conditions
+      escaped = Task.connection.quote_string("%brad's%")
+      # postgres quote || mysql quote
+      match = conditions.index("''") || conditions.index("\'")
+      assert_not_nil match
     end
 
     should "filter on time ranges" do
