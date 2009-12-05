@@ -89,11 +89,23 @@ EOS
 
     link_params = []
     link_params << { :qualifiable_type => "Status", :qualifiable_id => in_progress.id }
-    link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
     link_params = { :task_filter => { :qualifiers_attributes => link_params } } 
 
     return link_to(_("My In Progress Tasks"), 
                    update_current_filter_task_filters_path(link_params))
+  end
+
+  def link_to_unread_tasks(user)
+    link_params = [ { :qualifiable_type => "User", :qualifiable_id => user.id } ]
+    link_params = { :task_filter => { 
+        :unread_only => true, 
+        :qualifiers_attributes => link_params } } 
+
+    count = TaskFilter.new(:user => current_user, :unread_only => true).count
+    class_name = (count > 0 ? "unread" : "")
+    return link_to(_("My Unread Tasks (#{ count })"), 
+                   update_current_filter_task_filters_path(link_params),
+                   :class => class_name)
   end
 
   # Returns a link to allow the user to select the given

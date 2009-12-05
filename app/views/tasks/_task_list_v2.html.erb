@@ -1,7 +1,6 @@
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
 <% cache(current_task_filter) do -%>
-
 <div id="task_list">
   <div id="print_title"><%= print_title %></div>
   <table id="list" class="tablesorter">

@@ -28,6 +28,8 @@ class TaskFiltersController < ApplicationController
       matches = TimeRange.all(:conditions => name_conds, :limit => limit)
       @date_columns << [ column, matches ]
     end
+
+    @unread_only = @filter.index("unread")
   end
 
   def new
@@ -37,6 +39,7 @@ class TaskFiltersController < ApplicationController
   def create
     @filter = TaskFilter.new(params[:task_filter])
     @filter.user = current_user
+    @filter.unread_only = current_task_filter.unread_only
     current_task_filter.qualifiers.each { |q| @filter.qualifiers << q.clone }
     current_task_filter.keywords.each do |kw| 
       # N.B Shouldn't have to pass in all these values, but it 
@@ -60,6 +63,7 @@ class TaskFiltersController < ApplicationController
       target_filter = current_task_filter
       target_filter.qualifiers.clear
       target_filter.keywords.clear
+      target_filter.unread_only = @filter.unread_only
 
       @filter.qualifiers.each { |q| target_filter.qualifiers << q.clone }
       @filter.keywords.each do |kw| 
@@ -82,6 +86,8 @@ class TaskFiltersController < ApplicationController
     filter = current_task_filter
     filter.keywords.clear
     filter.qualifiers.clear
+    filter.unread_only = false
+
     filter.attributes = params[:task_filter]
     filter.save
 

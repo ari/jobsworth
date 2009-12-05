@@ -55,17 +55,7 @@ class TaskFilter < ActiveRecord::Base
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
     @display_count = nil if force_recount
-
-    count_conditions = []
-    params = [ true, true ]
-    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })" 
-    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })" 
-    count_conditions << "(task_owners.id is null)"
-    sql = count_conditions.join(" or ")
-
-    sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
-    sql = "(#{ sql })"
-    @display_count ||= count(sql)
+    @display_count ||= count(unread_conditions(user, true))
   end
   
   # Returns an array of the conditions to use for a sql lookup
@@ -86,6 +76,7 @@ class TaskFilter < ActiveRecord::Base
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
     res << user.user_tasks_sql
+    res << unread_conditions(user) if unread_only?
 
     res = res.select { |c| !c.blank? }
     res = res.join(" AND ")
@@ -104,10 +95,16 @@ class TaskFilter < ActiveRecord::Base
 
   def cache_key
     key = super
-    last_task_update = user.company.tasks.maximum(:updated_at,
-                                                  :conditions => conditions,
-                                                  :include => to_include)
-    "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
+
+    if unread_only?
+      # we can't cache the whole filter when unread_only set
+      "#{ key }/Time.now.to_i/#{ user.id }/#{ rand }/"
+    else
+      last_task_update = user.company.tasks.maximum(:updated_at,
+                                                    :conditions => conditions,
+                                                    :include => to_include)
+      "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
+    end
   end
 
   private
@@ -249,6 +246,18 @@ class TaskFilter < ActiveRecord::Base
     else
       return "#{ class_type.downcase }_id"
     end
+  end
+
+  def unread_conditions(user, include_orphaned = false)
+    count_conditions = []
+    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })" 
+    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })" 
+    count_conditions << "(task_owners.id is null)" if include_orphaned
+    sql = count_conditions.join(" or ")
+
+    params = [ true, true ]
+    sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
+    "(#{ sql })"
   end
   
 end

@@ -1,0 +1,11 @@
+<% # defaults for when span.search_filter is removed -%>
+<%= hidden_field_tag "task_filter[unread_only]", false %>
+
+<% if task_filter.unread_only? %>
+  <span class="search_filter">
+    <%= hidden_field_tag "task_filter[unread_only]", true %>
+    My unread tasks only
+    <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
+    &nbsp;
+  </span>
+<% end -%>
