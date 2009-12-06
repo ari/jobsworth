@@ -153,10 +153,9 @@ load_from_env("SMTP_USER", :user_name, ActionMailer::Base.smtp_settings)
 load_from_env("SMTP_PASSWORD", :password, ActionMailer::Base.smtp_settings)
 load_from_env("SMTP_AUTHENTICATION", :authentication, ActionMailer::Base.smtp_settings)
 
-# Just for debugging while we get this working:
-puts "ActionMailer Settings:"
-pp ActionMailer::Base.smtp_settings
-puts "\n"
+# puts "ActionMailer Settings:"
+# pp ActionMailer::Base.smtp_settings
+# puts "\n"
 
 # Load any $CONFIG settings from ENV
 $CONFIG ||= {}
@@ -167,8 +166,7 @@ load_from_env("PREFIX", :prefix, $CONFIG)
 load_from_env("PRODUCT_NAME", :productName, $CONFIG)
 load_from_env("USE_SSL", :SSL, $CONFIG) { |s| s == "true" }
 
-# Just for debugging while we get this working:
-puts "$CONFIG:"
-pp $CONFIG
-puts "\n"
+# puts "$CONFIG:"
+# pp $CONFIG
+# puts "\n"
 

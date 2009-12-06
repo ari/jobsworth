@@ -154,6 +154,27 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil conditions.index(escaped)
     end
 
+    should "filter on read/unread tasks" do
+      filter = TaskFilter.make(:unread_only => true)
+      user = filter.user
+      conditions = filter.conditions
+      expected = "((task_owners.unread = ? and task_owners.user_id = #{ user.id })"
+      expected += " or (notifications.unread = ? and notifications.user_id = #{ user.id }))"
+      expected = TaskFilter.send(:sanitize_sql_array, [ expected, true, true ])
+
+      assert_not_nil conditions.index(expected)
+    end
+
+    should "change cache key every request when unread_only true" do
+      filter = TaskFilter.make(:unread_only => true)
+      assert_not_equal filter.cache_key, filter.cache_key
+    end
+
+    should "not change cache key every request when unread_only false" do
+      filter = TaskFilter.make(:unread_only => false)
+      assert_equal filter.cache_key, filter.cache_key
+    end
+
   end
 
   context "a company with projects, tasks, etc" do

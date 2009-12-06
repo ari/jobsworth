@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class TaskFiltersControllerTest < ActionController::TestCase
   context "a logged in user" do
@@ -77,6 +77,15 @@ class TaskFiltersControllerTest < ActionController::TestCase
       assert_tag(:attributes => { 
                    :class => "id", 
                    :value => "a keyword"
+                 })
+    end
+
+    should "be able to search by read status" do
+      get :search, :filter => "unread"
+      assert_tag(:attributes => { 
+                   :class => "id", 
+                   :name => "task_filter[unread_only]",
+                   :value => "true"
                  })
     end
 

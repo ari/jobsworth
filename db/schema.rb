@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091022005808) do
+ActiveRecord::Schema.define(:version => 20091205034938) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -644,7 +644,8 @@ ActiveRecord::Schema.define(:version => 20091022005808) do
     t.boolean  "shared"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "system",     :default => false
+    t.boolean  "system",      :default => false
+    t.boolean  "unread_only", :default => false
   end
 
   add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
