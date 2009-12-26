@@ -255,9 +255,7 @@ class WidgetsController < ApplicationController
         tasks = Task.find(:all, :include => [:users, :tags, :sheets, :todos, :dependencies, :dependants, { :project => :customer}, :milestone ], :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.completed_at IS NULL AND projects.completed_at IS NULL #{filter} AND (tasks.due_at IS NOT NULL OR tasks.milestone_id IS NOT NULL)"])
       end
       # first use default sorting
-      tasks = tasks.sort_by do |t| 
-        [ t.due_date.to_i, t.milestone_id, - current_user.company.rank_by_properties(t) ]
-      end
+      tasks = tasks.sort_by { |t| t.due_date.to_i }
       @tasks = []
       
       tasks.each do |t|
