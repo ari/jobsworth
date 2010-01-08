@@ -2968,7 +2968,10 @@ fieldset.basic .actions label {
 }
 
 
-/* FILTERS */
+/* ----------------------------- */
+/* Search filter */
+/* ----------------------------- */
+
 #tasks_filter fieldset {
     margin-bottom: 1em;
     padding-bottom: 0.5em;
@@ -3006,16 +3009,11 @@ fieldset.basic .actions label {
     float: right;
 }
 
-#reorganize_tasks {
-    font-size: 10px;
-    float: right;
+#search_filter_form {
+    width: 100%;
 }
-
-div.search_filter {
-    text-align: center;
-}
-#search_filter {
-    font-size: 20px;
+#search_filter_form input {
+    font-size: 16px;
     width: 50%;
 }
 #search_filter_auto_complete ul {
@@ -3046,9 +3044,17 @@ div.search_filter {
 #search_filter_auto_complete ul li.selected {
     background-color: #444400;
 }
-#search_filter_form .links {
+#search_filter_form ul.search_keys {
     padding-top: 5px;
+    padding-bottom: 10px;
 }
+#search_filter_form ul.search_keys li {
+    display: inline;
+    font-size: 12px;
+}
+
+
+/* ----------------------------- */
 
 #task_list {
     border-bottom: 2px solid #bbbbbb;

@@ -340,33 +340,51 @@ Removes the search filter the link belongs to and submits
 the containing form.
 */
 function removeSearchFilter(link) {
-    link = jQuery(link);
-    var form = link.parents("form");
-    link.parent(".search_filter").remove();
-
+    jQuery(link).parent("li").remove();
     submitSearchFilterForm();
 }
 
-function addSearchFilter(textField, selected) {
-    var filter = jQuery("#search_filter");
-    filter.val(jQuery.trim(filter.val()));
+jQuery(document).ready(function() {
+	// make search box contents selected when the user clicks in it
+	jQuery("#search_filter").click( function(){
+		if (jQuery(this).val() == "Type to filter tasks") {
+			jQuery(this).val('');
+		} else {
+			jQuery(this).select();
+		}
+	});
+	
+	// Sets up the search filter input field to add a task automatically
+	// if a number is entered and then the user hits enter
+    jQuery("#search_filter").keypress(function(key) {
+		// if key was enter
+		var id = jQuery(this).val();
+		if (key.keyCode == 13 && id.match(/^\d+$/)) {
+		    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
+		    jQuery("#search_filter_form").find(".links").html(new_fields);
+		    submitSearchFilterForm();
+		}
+	});
+});
 
+function addSearchFilter(textField, selected) {
     selected = jQuery(selected);
-    var idField = selected.find(".id");
+    var id = selected.attr("data-id");
     var typeField = selected.find(".type");
     var columnField = selected.find(".column");
     
-    if (idField && idField.length > 0) {
-	var filterForm = jQuery("#search_filter_form");
-	filterForm.append(idField.clone());
-	filterForm.append(typeField.clone());
-	if (columnField) {
-	    filterForm.append(columnField.clone());
-	}
-	submitSearchFilterForm();
-    }
-    else {
-	// probably selected a heading, just ignore
+    if (selected.attr("data-id")) {
+		var filterForm = jQuery("#search_filter_form");
+		filterForm.append("<input type="hidden" value="3372" name="task_filter[qualifiers_attributes][][qualifiable_id]"/>
+<input type="hidden" value="Customer" name="task_filter[qualifiers_attributes][][qualifiable_type]"/>
+<input id="task_filter_qualifiers_attributes__qualifiable_column" class="column" type="hidden" value="" name="task_filter[qualifiers_attributes][][qualifiable_column]"/>");
+		filterForm.append(typeField.clone());
+		if (columnField) {
+		    filterForm.append(columnField.clone());
+		}
+		submitSearchFilterForm();
+    } else {
+		// probably selected a heading, just ignore
     }
 }
 
@@ -378,33 +396,12 @@ function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
     if (redirect.indexOf("/tasks/list?") >= 0) {
-	form.onsubmit();
-    }
-    else {
-	form.submit();
+		form.onsubmit();
+    } else {
+		form.submit();
     }
 }
 
-/* 
-Sets up the search filter input field to add a task automatically
-if a number is entered and then the user hits enter
-*/
-function addSearchFilterTaskIdListener(filter) {
-    var filter = jQuery("#search_filter");
-
-    filter.keypress(function(key) {
-	// if key was enter
-	var id = filter.val();
-	if (key.keyCode == 13 && id.match(/^\d+$/)) {
-	    var form = jQuery("#search_filter_form");
-
-	    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
-
-	    form.find(".links").html(new_fields);
-	    submitSearchFilterForm();
-	}
-    });
-}
 
 function addProjectToUser(input, li) {
     li = jQuery(li);
@@ -620,7 +617,7 @@ function nestedCheckboxChanged(checkbox) {
     
     var hiddenField = checkbox.prev();
     if (hiddenField.attr("name") == checkbox.attr("name")) {
-	hiddenField.attr("disabled", checked);
+		hiddenField.attr("disabled", checked);
     }
 }
 

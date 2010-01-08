@@ -1,4 +1,4 @@
-<span class="search_filter">
+<li>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_id]", qualifier.qualifiable_id, :class => "id" %>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_type]", qualifier.qualifiable_type, :class => "type" %>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_column]", qualifier.qualifiable_column, :class => "column" %>
@@ -7,4 +7,4 @@
   <%= qualifier.qualifiable %>
   <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
   &nbsp;
-</span>
+</li>
