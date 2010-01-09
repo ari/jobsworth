@@ -3050,34 +3050,7 @@ div.search_filter {
     padding-top: 5px;
 }
 
-#task_list {
-    border-bottom: 2px solid #bbbbbb;
-    overflow: hidden;
-}
-#task_list tbody {
-    height: 200px;
-    overflow-x: hidden;
-    overflow-y: auto;
-}    
-#task_list table {
-    border-collapse: collapse;
-    width: 100%;
-}
-#task_list table th {
-    text-align: left;
-}
-#task_list table td, #task_list table th {
-    margin: 0px;
-    padding: 3px;
-    padding-right: 15px;
-}
-    
-#task_list tr {
-    cursor: pointer;
-}
-#task_list tr:hover, #task_list tr.selected td {
-    background-color: #9f9;
-}
+
 
 #task_list .due {
     color: green;
@@ -3117,43 +3090,6 @@ div.search_filter {
     text-decoration: line-through;
 }
 
-/* sortable tables */
-.sort_hint {
-    display: none;
-}
-table.tablesorter {
-	background-color: #CDCDCD;
-	margin:0px 0pt 15px;
-	width: 100%;
-	text-align: left;
-}
-table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-	background-color: #e6EEEE;
-	border: 1px solid #FFF;
-	padding: 4px;
-}
-table.tablesorter thead tr .header {
-	background-repeat: no-repeat;
-	background-position: center right;
-	cursor: pointer;
-}
-table.tablesorter tbody td {
-	color: #3D3D3D;
-	padding: 4px;
-	background-color: #FFF;
-	vertical-align: top;
-}
-table.tablesorter tbody tr.odd td {
-	background-color:#F0F0F6;
-}
-table.tablesorter thead tr .headerSortUp {
-	background-image: url(/images/asc.gif);
-	background-color: #BCC3C3;
-}
-table.tablesorter thead tr .headerSortDown {
-	background-image: url(/images/desc.gif);
-	background-color: #BCC3C3;
-}
 
 /* tag cloud */
 .cloud .size1 {

@@ -3,7 +3,7 @@
 <% cache(current_task_filter) do -%>
 <div id="task_list">
   <div id="print_title"><%= print_title %></div>
-  <table id="list" class="tablesorter">
+  <table id="list">
     <thead>
       <tr>
 	<th></th>
@@ -27,6 +27,5 @@
 
 <% end -%>
 
-<%= sortable_table("#list", session[:filter_sort]) -%>
-<%= task_list_columns_js -%>
+<% #task_list_columns_js -%>
 

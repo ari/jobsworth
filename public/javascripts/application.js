@@ -41,13 +41,12 @@ jQuery("#loading").bind("ajaxSend", function(){
    jQuery(this).hide('fast');
 });
 
-// -------------------------
+// initialise the task list table
+jQuery(document).ready(function() {
+	tableToGrid('#list');
+});
 
-function fetchComment(e) {
-  var elements = e.toString().split("/");
-  var taskId = elements[elements.size()-1];
-  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
-}
+// -------------------------
 
 function updateComment(taskId) {
   if(taskId != null) {
@@ -58,6 +57,12 @@ function updateComment(taskId) {
       Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
     }
   }
+}
+
+function fetchComment(e) {
+  var elements = e.toString().split("/");
+  var taskId = elements[elements.size()-1];
+  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
 }
 
 function init_shout() {
@@ -819,74 +824,6 @@ function toggleWorkLogApproval(sender, workLogId) {
     jQuery.post("/tasks/update_work_log", {
 	id : workLogId,
 	"work_log[approved]" : checked });
-}
-
-
-// Sortable table helpers
-
-/*
-  Makes the given table sortable.
-  If defaultSortColumn and defaultSortOrder are given, the table will
-  initally be sorted according to those values
-*/
-function makeSortable(table, defaultSortColumn, defaultSortOrder) {
-    var sort = [ [ 0, 1 ] ];
-
-    if (defaultSortColumn && defaultSortColumn != "") {
-	var selector = "th:contains('" + defaultSortColumn + "')";
-	var headers = table.find("th");
-	var column = table.find(selector);
-	var index = headers.index(column);
-	if (index < 0) { index = 0; }
-
-	var dir = (defaultSortOrder == "up" ? 1 : 0);
-	sort = [ [ index, dir ] ];
-    }
-
-    table.tablesorter({
-	sortList: sort,
-	widgets: ["zebra"],
-	textExtraction: tableSortText, //"complex",
-	headers: {
-	    5: { sorter : "digit" }
-	}
-    });
-}
-
-/*
-  Returns the text to sort a table by from the given node
-*/
-function tableSortText(node) {
-    var res = node.innerHTML;
-    var node = jQuery(node);
-
-    var hint = node.children(".sort_hint");
-    if (hint.length > 0) {
-	res = hint.text();
-    }
-
-    res = jQuery.trim(res).toLowerCase();
-    return res;
-}
-
-/*
-  Saves the sort params to session for the given event
-*/
-function saveSortParams(event) {
-    var table = jQuery(event.target);
-    var selected = table.find(".headerSortDown");
-    var direction = "down";
-    if (selected.length == 0) {
-	selected = table.find(".headerSortUp");
-	direction = "up";
-    }
-
-    selected = jQuery.trim(selected.text());
-
-    jQuery.post("/task_filters/set_single_task_filter", {
-    	name : "sort",
-    	value : (selected + "_" + direction)
-    });
 }
 
 // TODOS

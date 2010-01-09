@@ -52,19 +52,6 @@ module TaskFilterHelper
                     :update => "#content")
   end
 
-  # Returns the html/js to make any tables matching selector sortable
-  def sortable_table(selector, default_sort)
-    column, direction = (default_sort || "").split("_")
-
-    res = javascript_include_tag "jquery.tablesorter.min.js"
-    js = <<-EOS
-           makeSortable(jQuery("#{ selector }"), "#{ column }", "#{ direction }");
-           jQuery("#{ selector }").bind("sortEnd", saveSortParams);
-EOS
-    res += javascript_tag(js, :defer => "defer")
-    return res
-  end
-
   # Returns a link to set the task filter to show only open tasks.
   # If user is passed, only open tasks belonging to that user will 
   # be shown
