@@ -49,9 +49,9 @@ jQuery(document).ready(function() {
 // -------------------------
 
 function updateComment(taskId) {
-  if(taskId != null) {
+  if(taskId !== null) {
     var comment = comments.get(taskId);
-    if( comment != null && comment != "" ) {
+    if( comment !== null && comment != "" ) {
       var elements = comment.split("<br/>");
       var author = elements.shift();
       Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
@@ -68,8 +68,7 @@ function fetchComment(e) {
 function init_shout() {
   if($('shout_body')) {
     Event.observe($('shout_body'), "keypress", function(e) {
-        switch( e.keyCode ) {
-        case Event.KEY_RETURN:
+        if ( e.keyCode == Event.KEY_RETURN) {
           if (e.shiftKey) {
             return;
           } else {
@@ -97,10 +96,6 @@ function inline_image(el) {
   el.style.visibility = 'visible';
 }
 
-function UpdateDnD() {
-  updateTooltips();
-}
-
 /*
  Tooltips are setup on page load, but sometimes the page is updated
  using ajax, and the tooltips need to be setup again, so this method
@@ -108,6 +103,10 @@ function UpdateDnD() {
 */
 function updateTooltips() {
     jQuery('.tooltip').tooltip({showURL: false });    
+}
+
+function UpdateDnD() {
+  updateTooltips();
 }
 
 function do_update(user, url) {
@@ -142,11 +141,6 @@ function updateSelect(sel, response) {
    }
 }
 
-function toggleChatPopupEvent(e) {
-  var el = Event.element(e);
-  toggleChatPopup(el);
-}
-
 function toggleChatPopup(el) {
   if( Element.hasClassName(el.up(), 'presence-section-active') ) {
     Element.removeClassName(el.up(), 'presence-section-active');
@@ -169,9 +163,21 @@ function toggleChatPopup(el) {
   }
 }
 
+function toggleChatPopupEvent(e) {
+  var el = Event.element(e);
+  toggleChatPopup(el);
+}
+
 function closeChat(el) {
   jQuery.get('/shout/chat_close/' + el.up().id);
   jQuery(el).remove();
+}
+
+function rebuildSelect(select, data) {
+   select.options.length = 0;
+   for( var i=0; i<data.length; i++ ) {
+     select.options[i] = new Option(data[i].text,data[i].value,null,false);
+   }
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
@@ -184,42 +190,14 @@ function refreshMilestones(pid, mid) {
   });
 }
 
-function rebuildSelect(select, data) {
-   select.options.length = 0;
-   for( var i=0; i<data.length; i++ ) {
-     select.options[i] = new Option(data[i].text,data[i].value,null,false);
-   }
-}
-
-jQuery(document).ready(function() {
-    fixNestedCheckboxes();
-    
-    var taskList = jQuery("#task_list");
-    if (taskList) {
-	taskListLoaded();
-
-	taskList.resizable({
-	    resize: function(event, ui) {
-		ui.element.css("width", "");
-	    }
-	});
-    }
-});
-
-jQuery.fn.dateToWords = function() {
-    return this.each(function() {
-	dateToWords(jQuery(this))
-    });
-}
-
 function dateToWords(elem) {
     var date = elem.text();
     var text = date;
     var className = null;
 
-    date = jQuery.datepicker.parseDate("yy-mm-dd", date)
+    date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
-    if (date != null) {
+    if (date !== null) {
 	var diff = (((new Date()).getTime() - date.getTime()) / 1000);
 	var dayDiff = Math.floor(diff / 86400);
 
@@ -230,21 +208,21 @@ function dateToWords(elem) {
 	    text = "Tomorrow";
 	    className = "due_tomorrow";
 	}
-	else if (dayDiff == 0) {
+	else if (dayDiff === 0) {
 	    text = "Today";
 	    className = "due";
 	}
 	else if (dayDiff == 1) {
-	    text = "Yesterday"
+	    text = "Yesterday";
 	    className = "due_overdue";
 	}
 	else if (dayDiff < 0) {
 	    dayDiff = Math.abs(dayDiff);
-	    text = dayDiff + " days"
+	    text = dayDiff + " days";
 	    className = dayDiff >= 7 ? "due_distant" : "due_soon";
 	}
 	else if (dayDiff > 0) {
-	    text = dayDiff + " days ago"
+	    text = dayDiff + " days ago";
 	    className = "due_overdue";
 	}
     }
@@ -253,46 +231,12 @@ function dateToWords(elem) {
     elem.text(text);
 }
 
-/*
- Callback for when the task list has finished loading.
-*/
-function taskListLoaded() {
-    hideProgress(); 
-    Shadowbox.setup(); 
-    updateTooltips();
-    jQuery('.date_to_words').dateToWords();
-    showTaskListColumns();
-}
+jQuery.fn.dateToWords = function() {
+    return this.each(function() {
+		dateToWords(jQuery(this));
+    });
+};
 
-/*
-  Shows or hides any columns in the task list according to 
-  the current user's preferences
-*/
-function showTaskListColumns() {
-    var list = jQuery("#task_list #list");
-    var hidden = window.hiddenColumns || [];
-
-    var opts = { 
-	listTargetID: "column_picker",
-	onClass: 'shown', offClass: 'hidden',
-	hideInList: [ 1 ],
-	colsHidden: hidden,
-
-	onToggle: function(index, state) {
-	    var columns = jQuery("#column_picker li");
-	    var hidden = []
-	    for (var i = 0; i < columns.length; i++) {
-		var column = jQuery(columns[i]);
-		if (column.hasClass("hidden")) {
-		    hidden.push(i + 2);
-		}
-	    }
-	    saveUserPreference("hidden_task_list_columns", hidden);
-	}
-    };
-
-    list.columnManager(opts);
-}
 
 /*
   Loads the task information for the task taskNum and displays 
@@ -321,7 +265,7 @@ function toggleTaskUnread(event, userId) {
     task.toggleClass("unread");
 
     var taskId = task.attr("id").replace("task_row_", "");
-    var taskId = taskId.replace("task_", "");
+    taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
     if (userId) {
 	parameters["user_id"] = userId;
@@ -340,15 +284,29 @@ function clearPrompt(field) {
     field.value = "";
 }
 
+
+/* 
+Submits the search filter form. If we are looking at the task list, 
+does that via ajax. Otherwise does a normal html post
+*/
+function submitSearchFilterForm() {
+    var form = jQuery("#search_filter_form")[0];
+    var redirect = jQuery(form.redirect_action).val();
+    if (redirect.indexOf("/tasks/list?") >= 0) {
+		form.onsubmit();
+    }
+    else {
+		form.submit();
+    }
+}
+
 /*
 Removes the search filter the link belongs to and submits
 the containing form.
 */
 function removeSearchFilter(link) {
     link = jQuery(link);
-    var form = link.parents("form");
     link.parent(".search_filter").remove();
-
     submitSearchFilterForm();
 }
 
@@ -375,26 +333,12 @@ function addSearchFilter(textField, selected) {
     }
 }
 
-/* 
-Submits the search filter form. If we are looking at the task list, 
-does that via ajax. Otherwise does a normal html post
-*/
-function submitSearchFilterForm() {
-    var form = jQuery("#search_filter_form")[0];
-    var redirect = jQuery(form.redirect_action).val();
-    if (redirect.indexOf("/tasks/list?") >= 0) {
-	form.onsubmit();
-    }
-    else {
-	form.submit();
-    }
-}
 
 /* 
 Sets up the search filter input field to add a task automatically
 if a number is entered and then the user hits enter
 */
-function addSearchFilterTaskIdListener(filter) {
+function addSearchFilterTaskIdListener() {
     var filter = jQuery("#search_filter");
 
     filter.keypress(function(key) {
@@ -458,7 +402,7 @@ function updateAutoCompleteField(input, li) {
   and updates the page with the returned values.
 */
 function updateResourceAttributes(select) {
-    select = jQuery(select)
+    select = jQuery(select);
     var typeId = select.val();
     var target = jQuery("#attributes");
 
@@ -474,6 +418,14 @@ function updateResourceAttributes(select) {
 }
 
 /*
+  Removes the resource attribute to the link
+*/
+function removeAttribute(link) {
+    link = jQuery(link);
+    link.parent(".attribute").remove();
+}
+
+/*
   Adds a new field to allow people to have multiple values
   for resource attributes.
 */
@@ -486,21 +438,15 @@ function addAttribute(link) {
     newAttribute.find("a.add_attribute").remove();
     newAttribute.find(".attr_id").remove();
 
-    var removeLink = newAttribute.find("a.remove_attribute")
+    var removeLink = newAttribute.find("a.remove_attribute");
     // for some reason this onclick needs to be manually set after cloning
-    removeLink.click(function() { removeAttribute(removeLink); })
+    removeLink.click(function() { removeAttribute(removeLink); });
     removeLink.show();
 
     origAttribute.after(newAttribute);
 }
 
-/*
-  Removes the resource attribute to the link
-*/
-function removeAttribute(link) {
-    link = jQuery(link);
-    link.parent(".attribute").remove();
-}
+
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.
 jQuery(document).ready(function() {
@@ -538,24 +484,6 @@ function updateAttributeFields(checkbox) {
 }
 
 /*
- Adds fields to setup a new custom attribute choice.
-*/
-function addAttributeChoices(sender) {
-    var choices = jQuery(sender).parent().find('.choices');
-    var callback = function() { updatePositionFields(choices); }
-
-    var attribute = jQuery(sender).parents(".attribute");
-    var attrId = attribute.attr("id").split("_").pop();
-
-    if (attrId == "attribute") {
-	// new attribute, so just ignore
-	attrId = "";
-    }
-    var url = "/custom_attributes/choice/" + attrId;
-    appendPartial(url, choices, callback);
-}
-
-/*
   Does a get request to the given url. The response is appended
   to any element matching selector.
   If a callback function is given, that will be called after the partial
@@ -567,6 +495,34 @@ function appendPartial(url, selector, callback) {
 
 	if (callback) { callback.call(); }
     });
+}
+
+function updatePositionFields(listSelector) {
+    var list = jQuery(listSelector);
+    var children = list.children();
+
+    for (var i = 0; i < children.length; i++) {
+	var positionField = jQuery(children[i]).find(".position");
+	positionField.val(i + 1);
+    }
+}
+
+/*
+ Adds fields to setup a new custom attribute choice.
+*/
+function addAttributeChoices(sender) {
+    var choices = jQuery(sender).parent().find('.choices');
+    var callback = function() { updatePositionFields(choices); };
+
+    var attribute = jQuery(sender).parents(".attribute");
+    var attrId = attribute.attr("id").split("_").pop();
+
+    if (attrId == "attribute") {
+	// new attribute, so just ignore
+	attrId = "";
+    }
+    var url = "/custom_attributes/choice/" + attrId;
+    appendPartial(url, choices, callback);
 }
 
 /*
@@ -639,7 +595,7 @@ function fixNestedCheckboxes() {
     var checkboxes = jQuery(".nested_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
 	var cb = checkboxes[i];
-	nestedCheckboxChanged(cb) 
+	nestedCheckboxChanged(cb);
     }
 }
 
@@ -663,16 +619,6 @@ function togglePreviousElement(sender, selector) {
     }
 
     toggle.toggle();
-}
-
-function updatePositionFields(listSelector) {
-    var list = jQuery(listSelector);
-    var children = list.children();
-
-    for (var i = 0; i < children.length; i++) {
-	var positionField = jQuery(children[i]).find(".position");
-	positionField.val(i + 1);
-    }
 }
 
 /* FILTER METHODS */
@@ -705,12 +651,35 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
     var icon = div.find(".icon." + baseClassName);
 
     if (input.attr("disabled")) {
-	icon.addClass(enabledClassName)
+	icon.addClass(enabledClassName);
 	input.attr("disabled", false);
     }
     else {
 	input.attr("disabled", true);
 	icon.removeClass(enabledClassName);
+    }
+}
+
+
+/*
+  Highlights any notification users who will be receiving an email
+  about this task.
+*/
+function highlightActiveNotifications() {
+    var users = jQuery("#taskform .user");
+    var hasComment = jQuery("#comment").val() != "";
+    var isNew = (document.location.toString().indexOf("/new") > 0);
+
+    for (var i = 0; i < users.length; i++) {
+		var div = jQuery(users[i]);
+		var willNeverReceive = div.hasClass("will_never_receive");
+		var notify = div.find(".icon.should_notify");
+		if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
+		    div.addClass("will_notify");
+		}
+		else {
+		    div.removeClass("will_notify");
+		}
     }
 }
 
@@ -724,10 +693,22 @@ function addUserToTask(input, li) {
     var taskId = jQuery("#task_id").val();
 
     var url = "/tasks/add_notification";
-    var params = { user_id : userId, id : taskId }
+    var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
 	jQuery("#task_notify").append(data);
 	highlightActiveNotifications();
+    });
+}
+
+
+/*
+  Adds any users setup as auto add to the current task.
+*/
+function addAutoAddUsersToTask(clientId, taskId, projectId) {
+    var url = "/tasks/add_users_for_client";
+    var params = { client_id : clientId, id : taskId, project_id : projectId };
+    jQuery.get(url, params, function(data) {
+	jQuery("#task_notify").append(data);
     });
 }
 
@@ -741,23 +722,12 @@ function addCustomerToTask(input, li) {
     var taskId = jQuery("#task_id").val();
 
     var url = "/tasks/add_client";
-    var params = { client_id : clientId, id : taskId }
+    var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
-	jQuery("#task_customers").append(data);
+		jQuery("#task_customers").append(data);
     });
 
     addAutoAddUsersToTask(clientId, taskId);
-}
-
-/*
-  Adds any users setup as auto add to the current task.
-*/
-function addAutoAddUsersToTask(clientId, taskId, projectId) {
-    var url = "/tasks/add_users_for_client";
-    var params = { client_id : clientId, id : taskId, project_id : projectId }
-    jQuery.get(url, params, function(data) {
-	jQuery("#task_notify").append(data);
-    });
 }
 
 /*
@@ -769,34 +739,10 @@ function addClientLinkForTask(projectId) {
     
     if (jQuery.trim(customers) == "") {
 	var url = "/tasks/add_client_for_project";
-	var params = { project_id : projectId }
+	var params = { project_id : projectId };
 	jQuery.get(url, params, function(data) {
 	    jQuery("#task_customers").html(data);
 	});
-    }
-}
-
-/*
-  Highlights any notification users who will be receiving an email
-  about this task.
-*/
-function highlightActiveNotifications() {
-    var users = jQuery("#taskform .user");
-    var hasComment = jQuery("#comment").val() != "";
-    var isNew = (document.location.toString().indexOf("/new") > 0);
-
-    for (var i = 0; i < users.length; i++) {
-	var div = jQuery(users[i]);
-	var willNeverReceive = div.hasClass("will_never_receive");
-	var notify = div.find(".icon.should_notify");
-	if (!willNeverReceive &&
-	    (hasComment || isNew)
-	    && notify.length > 0) {
-	    div.addClass("will_notify");
-	}
-	else {
-	    div.removeClass("will_notify");
-	}
     }
 }
 
@@ -806,13 +752,8 @@ function highlightActiveNotifications() {
 function moveTask(event, ui) {
     var element = ui.draggable[0];
     var dropTarget = event.target;
-
     jQuery(element).remove(); 
-
-    jQuery.get("/tasks/move", 
-	       { id : element.id + " " + dropTarget.id }, 
-	       null,
-	      "script")
+    jQuery.get("/tasks/move", { id : element.id + " " + dropTarget.id }, null, "script");
 }
 
 /*
@@ -897,6 +838,62 @@ function setPageTarget(evt, selected) {
   Sends an ajax request to save the given user preference to the db
 */
 function saveUserPreference(name, value) {
-    var params = { "name": name, "value": value.toSource() }
+    var params = { "name": name, "value": value.toSource() };
     jQuery.post("/users/set_preference",  params);
 }
+
+/*
+  Shows or hides any columns in the task list according to 
+  the current user's preferences
+*/
+function showTaskListColumns() {
+    var list = jQuery("#task_list #list");
+    var hidden = window.hiddenColumns || [];
+
+    var opts = { 
+	listTargetID: "column_picker",
+	onClass: 'shown', offClass: 'hidden',
+	hideInList: [ 1 ],
+	colsHidden: hidden,
+
+	onToggle: function(index, state) {
+	    var columns = jQuery("#column_picker li");
+	    var hidden = [];
+	    for (var i = 0; i < columns.length; i++) {
+			var column = jQuery(columns[i]);
+			if (column.hasClass("hidden")) {
+			    hidden.push(i + 2);
+			}
+	    }
+	    saveUserPreference("hidden_task_list_columns", hidden);
+	}
+    };
+
+    list.columnManager(opts);
+}
+
+/*
+ Callback for when the task list has finished loading.
+*/
+function taskListLoaded() {
+    hideProgress(); 
+    Shadowbox.setup(); 
+    updateTooltips();
+    jQuery('.date_to_words').dateToWords();
+    showTaskListColumns();
+}
+
+jQuery(document).ready(function() {
+    fixNestedCheckboxes();
+    
+    var taskList = jQuery("#task_list");
+    if (taskList) {
+	taskListLoaded();
+
+	taskList.resizable({
+	    resize: function(event, ui) {
+		ui.element.css("width", "");
+	    }
+	});
+    }
+});
