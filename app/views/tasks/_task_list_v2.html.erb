@@ -1,11 +1,9 @@
 <%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
 <% cache(current_task_filter) do -%>
-<div id="task_list">
-  <div id="print_title"><%= print_title %></div>
-  <table id="list">
-    <thead>
-      <tr>
+<div id="print_title"><%= print_title %></div>
+<table id="list">
+<thead><tr>
 	<th></th>
 	<th><%= _("ID") %></th>
 	<% current_user.company.properties.each do |prop| -%>
@@ -17,14 +15,12 @@
 	<th><%= _("Due Date") %></th>
 	<th><%= _("Hours") %></th>
 	<th><%= _("Assigned") %></th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= render :partial => "task_row_v2", :collection => current_task_filter.tasks %>
-    </tbody>
-  </table>
-</div>
-
+</tr></thead>
+	<tbody>
+		<%= render :partial => "task_row_v2", :collection => current_task_filter.tasks %>
+	</tbody>
+</table>
+<div id="pager"></div>
 <% end -%>
 
 <% #task_list_columns_js -%>

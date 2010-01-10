@@ -43,7 +43,11 @@ jQuery("#loading").bind("ajaxSend", function(){
 
 // initialise the task list table
 jQuery(document).ready(function() {
-	tableToGrid('#list');
+	tableToGrid('#list', {
+		sortname: 'id',
+		forceFit: true,
+		caption: "Tasks", 
+	});
 });
 
 // -------------------------
@@ -268,7 +272,7 @@ function toggleTaskUnread(event, userId) {
     taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
     if (userId) {
-	parameters["user_id"] = userId;
+	parameters.user_id = userId;
     }
 
     jQuery.post("/tasks/set_unread",  parameters);
