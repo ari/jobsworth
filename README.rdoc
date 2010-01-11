@@ -22,9 +22,21 @@ Install the following packages:
 
 How to install these will differ on each platform. Some possibilities:
 
-==== FreeBSD
 
-  portinstall ruby-iconv ruby18-gems ruby18-mysql rubygem-rake ImageMagick
+==== FreeBSD with Ruby 1.9
+
+Ruby 1.9 is much faster than 1.8.
+
+  echo "RUBY_DEFAULT_VER=1.9" >> /etc/make.conf
+  portmaster converters/ruby-iconv databases/ruby-mysql graphics/ImageMagick
+
+
+==== FreeBSD with Ruby 1.8
+
+Sometimes you just need to use 1.8 if you have other tools which rely on 1.8, such as portinstall.
+
+  portmaster converters/ruby-iconv devel/ruby18-gems databases/ruby-mysql devel/rubygem-rake graphics/ImageMagick
+
 
 ==== OSX
 
@@ -34,7 +46,7 @@ First install the Macports system from http://www.macports.org. Then:
 
 ==== Linux, etc
 
-Under other operating systems use your favourite package manager to ensure you have Ruby 1.8.x, rubygems, Imagemagick, Rake and the Ruby mysql driver installed. Something like:
+Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Imagemagick, Rake and the Ruby mysql driver installed. Something like:
 
   yum install libxml2 libxslt ImageMagick ruby
 
