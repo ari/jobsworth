@@ -46,6 +46,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html # list.html.erb
       format.js { render :partial => "task_list_v2", :layout => false }
+      format.xml  # list.xml.erb
     end
   end
 

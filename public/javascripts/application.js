@@ -43,27 +43,41 @@ jQuery("#loading").bind("ajaxSend", function(){
 
 // initialise the task list table
 jQuery(document).ready(function() {
-	tableToGrid('#task_list', {
-		colNames:['','ID', 'Type','Priority','State','SLA', 'Summary', 'Client', 'Milestone', 'Due', 'Hours', 'Assigned'],
-		colModel :[
-			{name:'read', index:'invid', resizable: false, width:20}, 
-			{name:'id', key:true, index:'id', sortype:'int', width:40}, 
-			{name:'Type', index:'Type'}, 
-			{name:'Priority', index:'Priority'}, 
-			{name:'State', index:'State'}, 
-			{name:'SLA', index:'SLA'},
-			{name:'Summary', index:'Summary'},
-			{name:'Client', index:'Client'},
-			{name:'Milestone', index:'Milestone'},
-			{name:'Due', index:'Due', sortype:'date', formatter:'daysFromNow'},
-			{name:'Hours', index:'Hours', sortype:'float'},
-			{name:'Assigned', index:'Assigned'}
-		],
-		sortname: 'id',
-		autowidth: true,
-		caption: "Tasks",
-		altRows: true
-	});
+jQuery('#task_list').jqGrid({
+	url:'/tasks/list?format=xml',
+	datatype: 'xml',
+	xmlReader: {
+		row:"task",
+		repeatitems:false
+	},
+	colNames:['','ID', 'Type','Priority','State','SLA', 'Summary', 'Client', 'Milestone', 'Due', 'Hours', 'Assigned'],
+	colModel :[
+		{name:'read', index:'read', resizable: false, width:20}, 
+		{name:'id', key:true, index:'id', sortype:'int', width:40}, 
+		{name:'type', index:'Type'}, 
+		{name:'priority', index:'Priority'}, 
+		{name:'state', index:'State'}, 
+		{name:'sla', index:'SLA'},
+		{name:'summary', index:'Summary'},
+		{name:'client', index:'Client'},
+		{name:'milestone', index:'Milestone'},
+		{name:'due', index:'Due', sortype:'date', formatter:'daysFromNow'},
+		{name:'hours', index:'Hours', sortype:'float'},
+		{name:'assigned', index:'Assigned'}
+	],
+	sortname: 'id',
+	autowidth: true,
+	caption: "Tasks",
+	altRows: true,
+	onSelectRow: function(id) { 
+		if(id && id!==lastSelectedTask) { 
+			showTaskInPage(id);
+			lastSelectedTask=id;
+		}
+		jQuery('#gridid').editRow(id, true); 
+	}
+
+});
 });
 
 jQuery.extend(jQuery.fn.fmatter , {
@@ -282,8 +296,8 @@ function showTaskInPage(taskNum) {
 
     jQuery("#task").fadeOut();
     jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
-	jQuery("#task").html(data);
-	jQuery("#task").fadeIn('slow');
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
     });
 }
 
