@@ -401,7 +401,6 @@ END_OF_HTML
     links << [ "List", { :controller => "tasks", :action => "list" } ]
     links << [ "Schedule", { :controller => "schedule", :action => "list" } ]
     links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
-    links << [ "List (old)", { :controller => "tasks", :action => "list_old" } ]
 
     res = ""
     links.each_with_index do |opts, i|
