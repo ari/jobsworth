@@ -44,11 +44,41 @@ jQuery("#loading").bind("ajaxSend", function(){
 // initialise the task list table
 jQuery(document).ready(function() {
 	tableToGrid('#task_list', {
+		colNames:['','ID', 'Type','Priority','State','SLA', 'Summary', 'Client', 'Milestone', 'Due', 'Hours', 'Assigned'],
+		colModel :[
+			{name:'read', index:'invid', resizable: false, width:20}, 
+			{name:'id', key:true, index:'id', sortype:'int', width:40}, 
+			{name:'Type', index:'Type'}, 
+			{name:'Priority', index:'Priority'}, 
+			{name:'State', index:'State'}, 
+			{name:'SLA', index:'SLA'},
+			{name:'Summary', index:'Summary'},
+			{name:'Client', index:'Client'},
+			{name:'Milestone', index:'Milestone'},
+			{name:'Due', index:'Due', sortype:'date', formatter:'daysFromNow'},
+			{name:'Hours', index:'Hours', sortype:'float'},
+			{name:'Assigned', index:'Assigned'}
+		],
 		sortname: 'id',
-		forceFit: true,
-		caption: "Tasks", 
+		autowidth: true,
+		caption: "Tasks",
+		altRows: true
 	});
 });
+
+jQuery.extend(jQuery.fn.fmatter , {
+	daysFromNow : function(cellvalue, options, rowdata) {
+		var one_day=1000*60*60*24;
+		return Math.ceil( (new Date().getTime()-new Date(cellvalue))/one_day) + "days";
+	}
+});
+jQuery.extend(jQuery.fn.fmatter.daysFromNow , {
+    unformat : function(cellvalue, options) {
+    	var one_day=1000*60*60*24;
+    	return new Date().getTime() + (cellvalue.substring(0,cellvalue.indexOf(' ')) * one_day);
+	}
+});
+
 
 // -------------------------
 

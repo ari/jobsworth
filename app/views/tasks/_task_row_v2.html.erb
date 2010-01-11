@@ -18,45 +18,22 @@
   <td><%= task.task_num %></td>
 
   <% current_user.company.properties.each do |prop| -%>
-    <td>
-      <% pv = task.property_value(prop) -%>
-      <span class="sort_hint">
-	<%= prop.property_values.index(pv) %>
-      </span>
-      <%= pv.to_html if pv %>
-    </td>
+    <td><% pv = task.property_value(prop) -%><span class="sort_hint"><%= prop.property_values.index(pv) %></span><%= pv.to_html if pv %></td>
   <% end -%>
 
-  <td>
-    <%=h task.name %>
-    <%- # this next link is useful for tests but is hidden from users %>
-    <%= link_to(task.name, "/tasks/edit/#{ task.task_num }", 
+  <td><%=h task.name %><%= link_to(task.name, "/tasks/edit/#{ task.task_num }", 
 	:style => "display: none",
-	:onclick => "showTaskInPage(#{ task.task_num }); return false;") %>
-  </td>
+	:onclick => "showTaskInPage(#{ task.task_num }); return false;") %></td>
 
-  <td class="tooltip" title="<%= task_customer_tip(customer) %>">
-    <%=h customer.name %>
-  </td>
+  <td class="tooltip" title="<%= task_customer_tip(customer) %>"><%=h customer.name %></td>
 
-  <td class="tooltip" title="<%= task_milestone_tip(task) %>">
-    <% str = [ task.project.name ] -%>
-    <% str << task.milestone.name if task.milestone_id.to_i > 0 %>
-    <%=h "#{ str.join("/") }" %>
-  </td>
+  <td class="tooltip" title="<%= task_milestone_tip(task) %>"><% str = [ task.project.name ] -%><% str << task.milestone.name if task.milestone_id.to_i > 0 %><%=h "#{ str.join("/") }" %></td>
 
-  <td class="tooltip" title="<%= task_tooltip([ [ "Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>">
-    <span class="sort_hint"><%= task.due_date %></span>
-    <span class="date_to_words"><%= task.due_at.to_date if task.due_at %></span>
-  </td>
+  <td class="tooltip" title="<%= task_tooltip([ [ "Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>"><%= task.due_date %></td>
 
-  <td>
-    <%= (task.minutes_left / 60.0).round(1) if task.minutes_left.to_i > 0 %>
-  </td>
+  <td><%= (task.minutes_left / 60.0).round(1) if task.minutes_left.to_i > 0 %></td>
 
-  <td class="tooltip" title="<%= task_users_tip(task) %>">
-    <%= task.users.map{ |u| u.name }.join(", ") %>
-  </td>
+  <td class="tooltip" title="<%= task_users_tip(task) %>"><%= task.users.map{ |u| u.name }.join(", ") %></td>
 
 </tr>
 
