@@ -69,6 +69,7 @@ jQuery('#task_list').jqGrid({
 	autowidth: true,
 	caption: "Tasks",
 	altRows: true,
+	viewrecords: true,
 	onSelectRow: function(id) { 
 		if(id && id!==lastSelectedTask) { 
 			showTaskInPage(id);
