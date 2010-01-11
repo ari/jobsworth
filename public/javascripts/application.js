@@ -71,11 +71,7 @@ jQuery('#task_list').jqGrid({
 	altRows: true,
 	viewrecords: true,
 	onSelectRow: function(id) { 
-		if(id && id!==lastSelectedTask) { 
-			showTaskInPage(id);
-			lastSelectedTask=id;
-		}
-		jQuery('#gridid').editRow(id, true); 
+		showTaskInPage(id);
 	}
 
 });
