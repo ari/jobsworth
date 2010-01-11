@@ -43,7 +43,7 @@ jQuery("#loading").bind("ajaxSend", function(){
 
 // initialise the task list table
 jQuery(document).ready(function() {
-	tableToGrid('#list', {
+	tableToGrid('#task_list', {
 		sortname: 'id',
 		forceFit: true,
 		caption: "Tasks", 
@@ -598,8 +598,7 @@ function nestedCheckboxChanged(checkbox) {
 function fixNestedCheckboxes() {
     var checkboxes = jQuery(".nested_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
-	var cb = checkboxes[i];
-	nestedCheckboxChanged(cb);
+		nestedCheckboxChanged(checkboxes[i]);
     }
 }
 
@@ -851,7 +850,7 @@ function saveUserPreference(name, value) {
   the current user's preferences
 */
 function showTaskListColumns() {
-    var list = jQuery("#task_list #list");
+    var list = jQuery("#task_list");
     var hidden = window.hiddenColumns || [];
 
     var opts = { 
@@ -892,12 +891,6 @@ jQuery(document).ready(function() {
     
     var taskList = jQuery("#task_list");
     if (taskList) {
-	taskListLoaded();
-
-	taskList.resizable({
-	    resize: function(event, ui) {
-		ui.element.css("width", "");
-	    }
-	});
+		taskListLoaded();
     }
 });

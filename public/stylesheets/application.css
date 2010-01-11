@@ -3050,18 +3050,6 @@ div.search_filter {
     padding-top: 5px;
 }
 
-
-
-#task_list .due {
-    color: green;
-}
-#task_list .due_tomorrow, #task_list .due_distant {
-    color: black;
-}
-#task_list .due_overdue {
-    color: red;
-}
-
 /* column hiding */
 .column_picker:hover #column_picker {
     display: block;
