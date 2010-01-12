@@ -4,8 +4,7 @@
   <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :autocomplete =>"off" %>
   <div id="search_filter_auto_complete" class="auto_complete"></div>
   <%= auto_complete_field("search_filter", :url => search_task_filters_path, 
-  :frequency => 1, :after_update_element => "addSearchFilter") %>
-  <%= select_on_focus("#search_filter") %>
+  :frequency => 1, :after_update_element => 'addSearchFilter') %>
   <%= javascript_tag("addSearchFilterTaskIdListener()", :defer => "defer") %>
 
   <%= remote_filter_form_tag %>
@@ -31,11 +30,7 @@
     <ul class="filter_links">
       <li><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></li>
       <li><%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %></li>
-      <li class="column_picker">
-	<%= link_to(_("Columns"), "#") %>
-	<span id="column_picker">
-	</span>
-      </li>
+      <li class="column_picker">Columns</li>
     </ul>
   </div>
   

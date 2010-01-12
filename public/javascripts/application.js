@@ -41,8 +41,24 @@ jQuery("#loading").bind("ajaxSend", function(){
    jQuery(this).hide('fast');
 });
 
+/*
+  Loads the task information for the task taskNum and displays 
+it in the current page.
+*/
+function showTaskInPage(taskNum) {
+    jQuery("#task_list tr.selected").removeClass("selected");
+    jQuery("#task_list #task_row_" + taskNum).addClass("selected");
+
+    jQuery("#task").fadeOut();
+    jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
+    });
+}
+
 // initialise the task list table
 jQuery(document).ready(function() {
+
 jQuery('#task_list').jqGrid({
 	url:'/tasks/list?format=xml',
 	datatype: 'xml',
@@ -50,19 +66,18 @@ jQuery('#task_list').jqGrid({
 		row:"task",
 		repeatitems:false
 	},
-	colNames:['','ID', 'Type','Priority','State','SLA', 'Summary', 'Client', 'Milestone', 'Due', 'Hours', 'Assigned'],
 	colModel :[
-		{name:'read', index:'read', resizable: false, width:20}, 
+		{name:'read', label:'', index:'read', resizable: false, width:20}, 
 		{name:'id', key:true, index:'id', sortype:'int', width:40}, 
+		{name:'summary', index:'Summary', width:200},
 		{name:'type', index:'Type'}, 
 		{name:'priority', index:'Priority'}, 
 		{name:'state', index:'State'}, 
 		{name:'sla', index:'SLA'},
-		{name:'summary', index:'Summary'},
 		{name:'client', index:'Client'},
 		{name:'milestone', index:'Milestone'},
-		{name:'due', index:'Due', sortype:'date', formatter:'daysFromNow'},
-		{name:'hours', index:'Hours', sortype:'float'},
+		{name:'due', index:'Due', sortype:'date', formatter:'daysFromNow', width:60},
+		{name:'hours', index:'Hours', sortype:'float', width:50},
 		{name:'assigned', index:'Assigned'}
 	],
 	sortname: 'id',
@@ -70,6 +85,9 @@ jQuery('#task_list').jqGrid({
 	caption: "Tasks",
 	altRows: true,
 	viewrecords: true,
+	pager: '#task_pager',
+	multiselect: false,
+	height: "300px",
 	onSelectRow: function(id) { 
 		showTaskInPage(id);
 	}
@@ -77,18 +95,28 @@ jQuery('#task_list').jqGrid({
 });
 });
 
+jQuery("#column_picker").click(function() {
+   jQuery("#task_list").setColumns([ 'type', 'type' ]);
+   return false;
+});
+
+
 jQuery.extend(jQuery.fn.fmatter , {
 	daysFromNow : function(cellvalue, options, rowdata) {
+		if (cellvalue == "") {
+			return "";
+		}
 		var one_day=1000*60*60*24;
-		return Math.ceil( (new Date().getTime()-new Date(cellvalue))/one_day) + "days";
+		return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + "days";
 	}
 });
 jQuery.extend(jQuery.fn.fmatter.daysFromNow , {
     unformat : function(cellvalue, options) {
-    	var one_day=1000*60*60*24;
-    	return new Date().getTime() + (cellvalue.substring(0,cellvalue.indexOf(' ')) * one_day);
+		var one_day=1000*60*60*24;
+		return new Date().getTime() + (cellvalue.substring(0,cellvalue.indexOf(' ')) * one_day);
 	}
 });
+
 
 
 // -------------------------
@@ -284,21 +312,6 @@ jQuery.fn.dateToWords = function() {
 
 
 /*
-  Loads the task information for the task taskNum and displays 
-it in the current page.
-*/
-function showTaskInPage(taskNum) {
-    jQuery("#task_list tr.selected").removeClass("selected");
-    jQuery("#task_list #task_row_" + taskNum).addClass("selected");
-
-    jQuery("#task").fadeOut();
-    jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
-		jQuery("#task").html(data);
-		jQuery("#task").fadeIn('slow');
-    });
-}
-
-/*
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
  If userId is given, that will be sent too.
@@ -365,16 +378,15 @@ function addSearchFilter(textField, selected) {
     var columnField = selected.find(".column");
     
     if (idField && idField.length > 0) {
-	var filterForm = jQuery("#search_filter_form");
-	filterForm.append(idField.clone());
-	filterForm.append(typeField.clone());
-	if (columnField) {
-	    filterForm.append(columnField.clone());
-	}
-	submitSearchFilterForm();
-    }
-    else {
-	// probably selected a heading, just ignore
+		var filterForm = jQuery("#search_filter_form");
+		filterForm.append(idField.clone());
+		filterForm.append(typeField.clone());
+		if (columnField) {
+		    filterForm.append(columnField.clone());
+		}
+		submitSearchFilterForm();
+    } else {
+		// probably selected a heading, just ignore
     }
 }
 

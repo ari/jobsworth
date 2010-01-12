@@ -12,7 +12,7 @@
 	<summary><%=h task.name %></summary>
 	<client tooltip="<%= task_customer_tip(customer) %>"><%=h customer.name %></client>
 	<milestone tooltip="<%= task_milestone_tip(task) %>"><% str = [ task.project.name ] -%><% str << task.milestone.name if task.milestone_id.to_i > 0 %><%=h "#{ str.join("/") }" %></milestone>
-	<due tooltip="<%= task_tooltip([ [ "Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>"><%= task.due_date %></due>
+	<due tooltip="<%= task_tooltip([ [ "Due Date", formatted_date_for_current_user(task.due_date) ] ]) %>"><%= task.due_date.to_time.to_i unless task.due_date.nil? %></due>
 	<hours><%= (task.minutes_left / 60.0).round(1) if task.minutes_left.to_i > 0 %></hours>
 	<assigned tooltip="<%= task_users_tip(task) %>"><%= task.users.map{ |u| u.name }.join(", ") %></assigned>
 </task>
