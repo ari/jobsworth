@@ -85,7 +85,6 @@ jQuery('#task_list').jqGrid({
 	sortname: 'id',
 	autowidth: true,
 	caption: "Tasks",
-	altRows: true,
 	viewrecords: true,
 	multiselect: false,
 	
