@@ -68,7 +68,7 @@ jQuery('#task_list').jqGrid({
 	},
 	colModel :[
 		{name:'read', label:'', resizable: false, width:20}, 
-		{name:'id', key:true, sortype:'int', width:40}, 
+		{name:'id', key:true, sortype:'int', width:30}, 
 		{name:'summary', width:200},
 		{name:'type', width:60}, 
 		{name:'priority', width:60}, 
@@ -110,6 +110,10 @@ jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:fal
 	{}, // use default settings for search
 	{} // use default settings for view
 );
+
+jQuery("#task_list").jqGrid('sortableRows'); 
+
+jQuery("#task_list").jqGrid('gridResize',{minHeight:150, maxHeight:1000});
 
 jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
 	caption: "Columns",
