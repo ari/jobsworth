@@ -67,19 +67,21 @@ jQuery('#task_list').jqGrid({
 		repeatitems:false
 	},
 	colModel :[
-		{name:'read', label:'', index:'read', resizable: false, width:20}, 
-		{name:'id', key:true, index:'id', sortype:'int', width:40}, 
-		{name:'summary', index:'Summary', width:200},
-		{name:'type', index:'Type', width:60}, 
-		{name:'priority', index:'Priority', width:60}, 
-		{name:'state', index:'State', width:60}, 
-		{name:'sla', index:'SLA', width:60},
-		{name:'client', index:'Client', width:60},
-		{name:'milestone', index:'Milestone', width:60},
-		{name:'due', index:'Due', sortype:'date', formatter:'daysFromNow', width:60},
-		{name:'hours', index:'Hours', sortype:'float', width:50},
-		{name:'assigned', index:'Assigned', width:60}
+		{name:'read', label:'', resizable: false, width:20}, 
+		{name:'id', key:true, sortype:'int', width:40}, 
+		{name:'summary', width:200},
+		{name:'type', width:60}, 
+		{name:'priority', width:60}, 
+		{name:'state', width:60}, 
+		{name:'sla', width:60},
+		{name:'client', width:60},
+		{name:'milestone',  width:60},
+		{name:'due', sortype:'date', formatter:'daysFromNow', width:60},
+		{name:'hours', sortype:'float', width:50},
+		{name:'assigned', width:60}
 	],
+	loadonce: true, // force sorting to happen in the browser
+	sortable: true, // re-order columns
 	sortname: 'id',
 	autowidth: true,
 	caption: "Tasks",
