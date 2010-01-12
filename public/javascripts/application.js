@@ -103,7 +103,7 @@ jQuery('#task_list').jqGrid({
 
 });
 
-jQuery('#task_list').jqGrid('navGrid', '#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
+jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
 	{}, // use default settings for edit
 	{}, // use default settings for add
 	{}, // use default settings for delete
@@ -111,9 +111,33 @@ jQuery('#task_list').jqGrid('navGrid', '#task_pager', {refresh:true, search:fals
 	{} // use default settings for view
 );
 
-jQuery("#column_picker").click(function() {
-   jQuery("#task_list").setColumns([ 'type', 'type' ]);
-   return false;
+jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+	caption: "Columns",
+	title: "Reorder Columns",
+	onClickButton : function () {
+		jQuery("#task_list").jqGrid('columnChooser');
+	}
+});
+
+jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+	caption: "Export",
+	title: "Export data to CSV",
+	onClickButton : function () {
+		window.location.href="/tasks/get_csv";
+	}
+});
+
+jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+	caption: "Save filter",
+	title: "Save filter",
+	onClickButton : function () {
+		Shadowbox.open({
+        content:    '/task_filters/new',
+        player:     "iframe",
+        height:     300,
+        width:      460
+    	});
+	}
 });
 
 

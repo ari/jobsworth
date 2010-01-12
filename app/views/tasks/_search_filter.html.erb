@@ -26,14 +26,6 @@
 <% end -%>
 
 <% if !local_assigns[:hide_tabs] %>
-  <div class="right">
-    <ul class="filter_links">
-      <li><%= link_to( _('Export'), {:controller => 'tasks', :action => 'get_csv'}) %></li>
-      <li><%= link_to(_("Save Filter"), new_task_filter_path, :rel => "shadowbox;height=300;width=460;player=iframe") %></li>
-      <li class="column_picker">Columns</li>
-    </ul>
-  </div>
-  
   <ul class="tabs">
     <%= task_view_links %>
   </ul>
