@@ -70,30 +70,44 @@ jQuery('#task_list').jqGrid({
 		{name:'read', label:'', index:'read', resizable: false, width:20}, 
 		{name:'id', key:true, index:'id', sortype:'int', width:40}, 
 		{name:'summary', index:'Summary', width:200},
-		{name:'type', index:'Type'}, 
-		{name:'priority', index:'Priority'}, 
-		{name:'state', index:'State'}, 
-		{name:'sla', index:'SLA'},
-		{name:'client', index:'Client'},
-		{name:'milestone', index:'Milestone'},
+		{name:'type', index:'Type', width:60}, 
+		{name:'priority', index:'Priority', width:60}, 
+		{name:'state', index:'State', width:60}, 
+		{name:'sla', index:'SLA', width:60},
+		{name:'client', index:'Client', width:60},
+		{name:'milestone', index:'Milestone', width:60},
 		{name:'due', index:'Due', sortype:'date', formatter:'daysFromNow', width:60},
 		{name:'hours', index:'Hours', sortype:'float', width:50},
-		{name:'assigned', index:'Assigned'}
+		{name:'assigned', index:'Assigned', width:60}
 	],
 	sortname: 'id',
 	autowidth: true,
 	caption: "Tasks",
 	altRows: true,
 	viewrecords: true,
-	pager: '#task_pager',
 	multiselect: false,
+	
+	pager: '#task_pager',
+	emptyrecords: 'No tasks found.',
+	pgbuttons:false,
+	pginput:false,
+	rowNum:200,
+	recordtext: '{2} tasks found.',
+	
 	height: "300px",
 	onSelectRow: function(id) { 
 		showTaskInPage(id);
 	}
 
 });
-});
+
+jQuery('#task_list').jqGrid('navGrid', '#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
+	{}, // use default settings for edit
+	{}, // use default settings for add
+	{}, // use default settings for delete
+	{}, // use default settings for search
+	{} // use default settings for view
+);
 
 jQuery("#column_picker").click(function() {
    jQuery("#task_list").setColumns([ 'type', 'type' ]);
@@ -107,7 +121,7 @@ jQuery.extend(jQuery.fn.fmatter , {
 			return "";
 		}
 		var one_day=1000*60*60*24;
-		return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + "days";
+		return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
 	}
 });
 jQuery.extend(jQuery.fn.fmatter.daysFromNow , {
@@ -117,7 +131,7 @@ jQuery.extend(jQuery.fn.fmatter.daysFromNow , {
 	}
 });
 
-
+});
 
 // -------------------------
 
