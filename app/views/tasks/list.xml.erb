@@ -4,7 +4,7 @@
 	cache([ task, current_user.id ]) do
 	customer = (task.customers.first || task.project.customer) -%>
 <task>
-	<read sort="<%= default_sort_hint_for_task(task) -%>">*</read>
+	<read sort="<%= default_sort_hint_for_task(task) -%>"><%= !task.unread?(current_user)%></read>
 	<id><%= task.task_num %></id>
 <% current_user.company.properties.each do |prop| -%>
     <% pv = task.property_value(prop) -%><<%= prop.name.downcase %> sort="<%= prop.property_values.index(pv) %>"><%= pv.to_html if pv %></<%= prop.name.downcase %>>

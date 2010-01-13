@@ -41,19 +41,29 @@ jQuery("#loading").bind("ajaxSend", function(){
    jQuery(this).hide('fast');
 });
 
+// -------------------------
+//  Task list grid
+// -------------------------
+
 /*
-  Loads the task information for the task taskNum and displays 
+  Loads the task information for the task and displays 
 it in the current page.
 */
-function showTaskInPage(taskNum) {
-    jQuery("#task_list tr.selected").removeClass("selected");
-    jQuery("#task_list #task_row_" + taskNum).addClass("selected");
-
+function showTaskInPage(rowid) {
+	jQuery('#task_list').setCell(rowid, 'read', true);
+	jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
+	
     jQuery("#task").fadeOut();
-    jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
+    jQuery.get("/tasks/edit/" + rowid, {}, function(data) {
 		jQuery("#task").html(data);
 		jQuery("#task").fadeIn('slow');
     });
+}
+
+function setRowReadStatus(rowid, rowdata) {
+	if (rowdata.read === 'false') {
+		jQuery('#task_list>tbody>tr#' + rowid).addClass('unread');
+	}
 }
 
 // initialise the task list table
@@ -67,9 +77,9 @@ jQuery('#task_list').jqGrid({
 		repeatitems:false
 	},
 	colModel :[
-		{name:'read', label:'', resizable: false, width:20}, 
+		{name:'read', label:'', formatter:'read', resizable: false, sortype:'boolean', width:20}, 
 		{name:'id', key:true, sortype:'int', width:30}, 
-		{name:'summary', width:200},
+		{name:'summary', width:300},
 		{name:'type', width:60}, 
 		{name:'priority', width:60}, 
 		{name:'state', width:60}, 
@@ -88,6 +98,9 @@ jQuery('#task_list').jqGrid({
 	viewrecords: true,
 	multiselect: false,
 	
+	afterInsertRow : setRowReadStatus,
+	onSelectRow: showTaskInPage,
+		
 	pager: '#task_pager',
 	emptyrecords: 'No tasks found.',
 	pgbuttons:false,
@@ -95,11 +108,7 @@ jQuery('#task_list').jqGrid({
 	rowNum:200,
 	recordtext: '{2} tasks found.',
 	
-	height: "300px",
-	onSelectRow: function(id) { 
-		showTaskInPage(id);
-	}
-
+	height: "300px"
 });
 
 jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
@@ -153,10 +162,10 @@ jQuery.extend(jQuery.fn.fmatter , {
 		return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
 	}
 });
-jQuery.extend(jQuery.fn.fmatter.daysFromNow , {
-    unformat : function(cellvalue, options) {
-		var one_day=1000*60*60*24;
-		return new Date().getTime() + (cellvalue.substring(0,cellvalue.indexOf(' ')) * one_day);
+
+jQuery.extend(jQuery.fn.fmatter , {
+	read : function(cellvalue, options, rowdata) {
+		return "<div class='unread_icon'><a href='#' onclick='toggleTaskUnread(this);'><span>*</span></a></div>";
 	}
 });
 
