@@ -288,13 +288,8 @@ body, p, ol, ul, td, tr {
 .task.unread .task-name a, .task.unread, .task.unassigned {
   font-weight: bold;
 }
-
-
-.unread_icon {
-  cursor: pointer;
-}
   
-.unread_icon a {
+.unread_icon {
   display: block;
   width: 12px;
   height: 12px;
@@ -304,7 +299,7 @@ body, p, ol, ul, td, tr {
   background-repeat: no-repeat;
 }
 
-.unread .unread_icon a	{ background-position: top left; }
+.unread .unread_icon { background-position: top left; }
 
 .unread_icon span {
   display: none;

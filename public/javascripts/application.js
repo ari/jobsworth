@@ -77,7 +77,7 @@ jQuery('#task_list').jqGrid({
 		repeatitems:false
 	},
 	colModel :[
-		{name:'read', label:'', formatter:'read', resizable: false, sortype:'boolean', width:20}, 
+		{name:'read', label:'', formatter:'read', resizable: false, sortype:'boolean', width:16}, 
 		{name:'id', key:true, sortype:'int', width:30}, 
 		{name:'summary', width:300},
 		{name:'type', width:60}, 
@@ -165,7 +165,7 @@ jQuery.extend(jQuery.fn.fmatter , {
 
 jQuery.extend(jQuery.fn.fmatter , {
 	read : function(cellvalue, options, rowdata) {
-		return "<div class='unread_icon'><a href='#' onclick='toggleTaskUnread(this);'><span>*</span></a></div>";
+		return "<span class='unread_icon'></span>";
 	}
 });
 
