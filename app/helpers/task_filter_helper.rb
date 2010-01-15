@@ -48,7 +48,6 @@ module TaskFilterHelper
     form_remote_tag(:url => "/task_filters/update_current_filter", 
                     :html => { :method => "post", :id => "search_filter_form"},
                     :loading => "showProgress()",
-                    :complete => "taskListLoaded()",
                     :update => "#content")
   end
 
@@ -120,13 +119,6 @@ module TaskFilterHelper
       return qualifier.qualifiable_column.gsub("_at", "").humanize
     else 
       qualifier.qualifiable_type
-    end
-  end
-
-  def task_list_columns_js
-    hidden_columns = current_user.preference("hidden_task_list_columns")
-    if hidden_columns
-      return javascript_tag "window.hiddenColumns = #{ hidden_columns };"
     end
   end
 
