@@ -445,6 +445,10 @@ class Task < ActiveRecord::Base
     @linked_users ||= (self.users + self.watchers)
   end
 
+  def linked_user_notifications
+    self.notifications + self.task_owners
+  end
+
   def set_tags( tagstring )
     return false unless tagstring
     self.tags.clear
@@ -989,8 +993,7 @@ class Task < ActiveRecord::Base
   # If not, that column will be set to false.
   ###
   def mark_as_notified_last_change(users)
-    notifications = self.notifications + self.task_owners
-    notifications.each do |n|
+    linked_user_notifications.each do |n|
       notified = users.include?(n.user)
       n.update_attribute(:notified_last_change, notified)
     end
@@ -1005,7 +1008,7 @@ class Task < ActiveRecord::Base
     if self.new_record?
       res = user.receive_notifications?
     else
-      join = (task_owners + notifications).detect { |j| j.user == user }
+      join = linked_user_notifications.detect { |j| j.user == user }
       res = (join and join.notified_last_change?)
     end
 
@@ -1022,11 +1025,7 @@ class Task < ActiveRecord::Base
   def mark_as_unread(exclude = [])
     exclude = [ exclude ].flatten # make sure it's an array.
 
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
-    
-    notifications.each do |n|
+    linked_user_notifications.each do |n|
       n.update_attribute(:unread, true) if !exclude.include?(n.user)
     end
   end
@@ -1037,11 +1036,7 @@ class Task < ActiveRecord::Base
   # as unread for user.
   ###
   def set_task_read(user, read = true)
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
-    
-    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications = linked_user_notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       n.update_attributes(:unread => !read)
     end
@@ -1051,12 +1046,9 @@ class Task < ActiveRecord::Base
   # Returns true if this task is marked as unread for user.
   ###
   def unread?(user)
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
     unread = false
 
-    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications = linked_user_notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end
