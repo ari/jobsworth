@@ -1126,6 +1126,20 @@ class Task < ActiveRecord::Base
     @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
   end
 
+  # return a users mapped to the duration of time they have worked on this task
+  def user_work
+    if @user_work.nil?
+      @user_work = {}
+      logs = work_logs.all(:select => "user_id, sum(duration) as duration", :group => "user_id")
+      logs.each do |l|
+        user = User.find(l.user_id)
+        @user_work[user] = l.duration if l.duration.to_i > 0
+      end
+    end
+
+    return @user_work
+  end
+
   private
 
   # If creating a new work log with a duration, fails because it work log

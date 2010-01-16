@@ -209,6 +209,20 @@ class Mailman < ActionMailer::Base
                     :duration => 0) 
     task.set_task_num(project.company.id)
 
+    attach_users_to_task(task, email)
+    attach_customers_to_task(task)
+    # need to do without_validations to get around validation
+    # errors on custom attributes
+    task.save(false)
+
+    send_email_to_creator(task, email)
+
+    return task
+  end
+
+  def attach_users_to_task(task, email)
+    project = task.project
+
     (email.from || []).each do |email_addr|
       user = project.company.users.find_by_email(email_addr.strip)
       task.watchers << user if user
@@ -221,20 +235,22 @@ class Mailman < ActionMailer::Base
       user = project.company.users.find_by_email(email_addr.strip)
       task.watchers << user if user
     end
+  end
 
-    # need to do without_validations to get around validation
-    # errors on custom attributes
-    task.save(false)
+  def attach_customers_to_task(task)
+    task.linked_users.each do |user|
+      if user.customer and !task.customers.include?(user.customer)
+        task.customers << user.customer
+      end
+    end
+  end
 
-    # Send email to creator
+  def send_email_to_creator(task, email)
     email_body = email.body.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
     user = task.company.users.first(:conditions => { :admin => 1 })
     Notifications::deliver_created(task, user, email.from.first.strip, email_body)
-
-    return task
   end
-
 
   def send_changed_emails_for_task(e, task, user)
     email_body = e.body.gsub(/<[^>]*>/,'')
