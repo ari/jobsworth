@@ -74,7 +74,7 @@ class Mailman < ActionMailer::Base
     elsif target and target.is_a?(Project)
       task = create_task_from_email(email, target)
       add_email_to_task(e, email, task)
-
+      
     else
       Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
     end
@@ -211,6 +211,7 @@ class Mailman < ActionMailer::Base
 
     attach_users_to_task(task, email)
     attach_customers_to_task(task)
+
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(false)
@@ -255,16 +256,10 @@ class Mailman < ActionMailer::Base
   def send_changed_emails_for_task(e, task, user)
     email_body = e.body.gsub(/<[^>]*>/,'')
 
-    sent = []
+    sent = [ ]
     emails = []
 
-    task.task_owners.each do |n|
-      if n.notified_last_change? and n.user != user
-        Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
-        sent << n.user
-      end
-    end
-    task.notifications.each do |n|
+    task.linked_user_notifications.each do |n|
       if n.notified_last_change? and n.user != user
         Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
         sent << n.user
@@ -280,12 +275,13 @@ class Mailman < ActionMailer::Base
     
     emails += sent.map { |u| u.email }
     if emails.any?
-      emails = _("Notifications emails sent to %s", emails.join(", "))
+      emails = _("Notification emails sent to %s", emails.join(", "))
       comment = task.work_logs.comments.last
       comment.update_attributes(:body => "#{ comment.body }\n\n#{ emails }")
     end
 
-    task.mark_as_notified_last_change(sent)
+    sent << user # user already got a created email, so include them as notified
+    task.mark_as_notified_last_change(sent + [ user ])
     task.mark_as_unread(user)
   end
 

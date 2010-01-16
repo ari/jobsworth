@@ -201,6 +201,14 @@ o------ please reply above this line ------o
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
+    should "have the sender marked as last_notified so they get future notifications" do
+      user = @project.company.users.make
+      mail = test_mail(@to, user.email)
+      Mailman.receive(TMail::Mail.parse(mail).to_s)
+      task = @project.tasks.first(:order => "id desc")
+      notification = task.linked_user_notifications.detect { |n| n.user == user }
+      assert notification.notified_last_change?
+    end
 
   end
 
