@@ -1133,7 +1133,7 @@ class Task < ActiveRecord::Base
       logs = work_logs.all(:select => "user_id, sum(duration) as duration", :group => "user_id")
       logs.each do |l|
         user = User.find(l.user_id)
-        @user_work[user] = l.duration
+        @user_work[user] = l.duration if l.duration.to_i > 0
       end
     end
 
