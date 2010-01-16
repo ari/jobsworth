@@ -563,7 +563,8 @@ textarea#task_description.fill { margin-bottom: 0.8em; height: 150px;}
 #task_resources label,
 #task_information label, 
 #reports_filter label, 
-#reports_config label{
+#reports_config label,
+#taskform label {
 	width: 105px;
 	padding: 3px 0;
 	text-align: right;

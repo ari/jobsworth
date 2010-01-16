@@ -37,13 +37,13 @@ module TimeTrackingHelper
   end
 
   # Returns a link to add work to the given task
-  def add_work_link(task)
-    image = image_tag("add.png", :class => "tooltip work_icon", 
-                      :title => _("Add earlier work to <b>%s</b>.", task.name))
+  def add_work_link(task, text = nil)
+    text ||= image_tag("add.png", :class => "tooltip work_icon", 
+                       :title => _("Add earlier work to <b>%s</b>.", task.name))
 
     url = new_work_log_path(:task_id => task.task_num, 
                             :work_log => { :log_type => EventLog::TASK_WORK_ADDED })
-    return link_to(image, url)
+    return link_to(text, url)
   end
 
   # Returns a link to cancel the work on the given task

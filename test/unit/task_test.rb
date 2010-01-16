@@ -355,4 +355,28 @@ class TaskTest < ActiveRecord::TestCase
       assert_equal c1, @task.task_customers.first.customer
     end
   end
+
+  context "a task with some work logs with times" do
+    setup do
+      @task = Task.first
+      @user1 = User.make
+      @user2 = User.make
+      @user3 = User.make
+
+      @task.work_logs.make(:user => @user1, :duration => 50)
+      @task.work_logs.make(:user => @user1, :duration => 100)
+      @task.work_logs.make(:user => @user2, :duration => 77)
+      @task.work_logs.make(:user => @user3, :duration => 0)
+    end
+
+    should "return duration work grouped by users" do
+      work = @task.user_work
+      assert_equal 150, work[@user1] 
+      assert_equal 77, work[@user2] 
+      assert_nil work[@user3]
+    end
+  end
 end
+
+
+
