@@ -1,9 +1,11 @@
 <div id="content">
-  <%= render :partial => "task_list_v2" %>
-</div>
+	<%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
-<div id="task">
-  <%= render_last_task %>
-</div>
+	<table id="task_list"></table> 
+	<div id="task_pager"></div>
 
+	<div id="task">
+	  <%= render_last_task %>
+	</div>
+</div>
 <%= render :partial => "/tags/panel" %>

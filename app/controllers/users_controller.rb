@@ -299,4 +299,9 @@ class UsersController < ApplicationController
     current_user.preference_attributes = [ [ params[:name], params[:value] ] ]
     render :nothing => true
   end
+
+  def get_preference
+    render :inline
+     => current_user.preference(params[:name])
+  end
 end

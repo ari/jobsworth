@@ -45,6 +45,20 @@ jQuery("#loading").bind("ajaxSend", function(){
 //  Task list grid
 // -------------------------
 
+
+/*
+  Sends an ajax request to save the given user preference to the db
+*/
+function saveUserPreference(name, value) {
+    var params = { "name": name, "value": value };
+    jQuery.post("/users/set_preference",  params);
+}
+function getUserPreference(name) {
+    var url = "/users/get_preference?name=" + name;
+    jQuery.post("/users/set_preference",  params);
+}
+
+
 /*
   Loads the task information for the task and displays 
 it in the current page.
@@ -61,13 +75,26 @@ function showTaskInPage(rowid) {
 }
 
 function setRowReadStatus(rowid, rowdata) {
-	if (rowdata.read === 'false') {
+	if (rowdata.read == 'f') {
 		jQuery('#task_list>tbody>tr#' + rowid).addClass('unread');
 	}
 }
 
+function taskListConfigSerialise() {
+	var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
+	var len = model.length;
+	var cols = new Array();
+	for (i=0; i<len; i++) {
+		if (model[i].hidden == false) {
+			cols.push({name: model[i].name, width: model[i].width});
+		}
+	}
+	saveUserPreference('tasklistcols',JSON.stringify(cols));
+}
+
 // initialise the task list table
 jQuery(document).ready(function() {
+
 
 jQuery('#task_list').jqGrid({
 	url:'/tasks/list?format=xml',
@@ -77,17 +104,17 @@ jQuery('#task_list').jqGrid({
 		repeatitems:false
 	},
 	colModel :[
-		{name:'read', label:'', formatter:'read', resizable: false, sortype:'boolean', width:16}, 
+		{name:'read', label:' ', formatter:'read', resizable: false, sortype:'boolean', width:16}, 
 		{name:'id', key:true, sortype:'int', width:30}, 
 		{name:'summary', width:300},
 		{name:'type', width:60}, 
 		{name:'priority', width:60}, 
-		{name:'state', width:60}, 
+		{name:'state', width:60},
 		{name:'sla', width:60},
 		{name:'client', width:60},
 		{name:'milestone',  width:60},
 		{name:'due', sortype:'date', formatter:'daysFromNow', width:60},
-		{name:'hours', sortype:'float', width:50},
+		{name:'time', sortype:'int', formatter:'tasktime', width:50},
 		{name:'assigned', width:60}
 	],
 	loadonce: true, // force sorting to happen in the browser
@@ -110,6 +137,7 @@ jQuery('#task_list').jqGrid({
 	
 	height: "300px"
 });
+
 
 jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
 	{}, // use default settings for edit
@@ -140,6 +168,14 @@ jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
 });
 
 jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+	caption: "Save prefs",
+	title: "Save prefs",
+	onClickButton : function () {
+		taskListConfigSerialise();
+	}
+});
+
+jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
 	caption: "Save filter",
 	title: "Save filter",
 	onClickButton : function () {
@@ -164,8 +200,22 @@ jQuery.extend(jQuery.fn.fmatter , {
 });
 
 jQuery.extend(jQuery.fn.fmatter , {
+	tasktime : function(cellvalue, options, rowdata) {
+		if (cellvalue == 0) {
+			return "";
+		}
+		return Math.round(cellvalue/6)/10 + "hr";
+	}
+});
+
+jQuery.extend(jQuery.fn.fmatter , {
 	read : function(cellvalue, options, rowdata) {
-		return "<span class='unread_icon'></span>";
+		if (cellvalue == 't') {
+			// TODO
+			// the next javascript in the next line doesn't work because the selecting the row marks the task as read
+			return "<a href='#' onclick='toggleTaskUnread();'><span class='unread_icon'/></a>";
+		}
+		return "<span class='unread_icon'/>";
 	}
 });
 
@@ -941,61 +991,6 @@ function setPageTarget(evt, selected) {
     jQuery("#page_notable_type").val(type);
 }
 
-
-/*
-  Sends an ajax request to save the given user preference to the db
-*/
-function saveUserPreference(name, value) {
-    var params = { "name": name, "value": value.toSource() };
-    jQuery.post("/users/set_preference",  params);
-}
-
-/*
-  Shows or hides any columns in the task list according to 
-  the current user's preferences
-*/
-function showTaskListColumns() {
-    var list = jQuery("#task_list");
-    var hidden = window.hiddenColumns || [];
-
-    var opts = { 
-	listTargetID: "column_picker",
-	onClass: 'shown', offClass: 'hidden',
-	hideInList: [ 1 ],
-	colsHidden: hidden,
-
-	onToggle: function(index, state) {
-	    var columns = jQuery("#column_picker li");
-	    var hidden = [];
-	    for (var i = 0; i < columns.length; i++) {
-			var column = jQuery(columns[i]);
-			if (column.hasClass("hidden")) {
-			    hidden.push(i + 2);
-			}
-	    }
-	    saveUserPreference("hidden_task_list_columns", hidden);
-	}
-    };
-
-    list.columnManager(opts);
-}
-
-/*
- Callback for when the task list has finished loading.
-*/
-function taskListLoaded() {
-    hideProgress(); 
-    Shadowbox.setup(); 
-    updateTooltips();
-    jQuery('.date_to_words').dateToWords();
-    showTaskListColumns();
-}
-
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
-    
-    var taskList = jQuery("#task_list");
-    if (taskList) {
-		taskListLoaded();
-    }
 });
