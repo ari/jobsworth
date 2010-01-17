@@ -10,7 +10,7 @@
 
 -%>
   <%= start_stop_work_link(task) %>
-  <%= link_to( task.issue_name + " - " + task.project.name + " / " + task.full_tags, :controller => 'tasks', :action => 'edit', :id => task ) %> <br />
+  <%= link_to( task.issue_name + " - " + task.project.name + " / " + task.full_tags, :controller => 'tasks', :action => 'edit', :id => task.task_num ) %> <br />
 
   <%= cancel_work_link(task) %>
   <%= pause_task_link(task) %>
