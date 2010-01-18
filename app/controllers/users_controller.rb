@@ -287,7 +287,7 @@ class UsersController < ApplicationController
 
   def project
     @user = current_user.company.users.find(params[:id])
-    project = current_user.company.projects.find(params[:project_id])
+    project = current_user.company.projects.find'width'
 
     ProjectPermission.new(:user => @user, :company => @user.company, 
                           :project => project).save
@@ -301,7 +301,49 @@ class UsersController < ApplicationController
   end
 
   def get_preference
-    render :inline
-     => current_user.preference(params[:name])
+    render :text => current_user.preference(params[:name])
   end
+  
+  def set_tasklistcols
+    colModel = JSON.parse(params) rescue nil
+    logger.warn params.inspect
+    logger.warn "++++++++++++"
+    logger.warn colModel.inspect
+    current_user.preference_attributes = [ [ 'tasklistcols', colModel ] ]
+    render :nothing => true
+  end
+  
+  def get_tasklistcols
+  	defaultCol = Array.new
+    defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sortype' => 'boolean', 'width' => 16}
+	defaultCol << {'name' => 'id', 'key' => true, 'sortype' => 'int', 'width' => 30}
+	defaultCol << {'name' => 'summary', 'width' => 300}
+	defaultCol << {'name' => 'client', 'width' => 60}
+	defaultCol << {'name' => 'milestone',  'width' => 60}
+	defaultCol << {'name' => 'due', 'sortype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
+	defaultCol << {'name' => 'time', 'sortype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
+	defaultCol << {'name' => 'assigned', 'width' => 60}
+		
+    colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
+    logger.warn "**********"
+    logger.warn colModel
+    colModel = Array.new if (! colModel.kind_of? Array)
+    
+    #ensure all default columns are in the model
+    defaultCol.each do |attr|
+      next if colModel.detect { |c| c['name'] == attr['name'] }
+      colModel << attr
+      logger.info "Property '#{attr['name']}' missing, adding to task list model."
+    end
+    
+    #ensure all custom properties are in the model
+    current_user.company.properties.each do |attr|
+      next if colModel.detect { |c| c['name'] == attr.name }
+      colModel << {'name' => attr.name.downcase }
+      logger.info "Property '#{attr.name}' missing, adding to task list model."
+    end
+
+    render :json => colModel
+  end
+  
 end

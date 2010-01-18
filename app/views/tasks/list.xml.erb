@@ -17,7 +17,7 @@
 	<read><%= readFlag %></read>
 	<id><%= task.task_num %></id>
 <% current_user.company.properties.each do |prop| -%>
-    <% pv = task.property_value(prop) -%><<%= prop.name.downcase %> sort="<%= prop.property_values.index(pv) %>"><%= pv.to_html if pv %></<%= prop.name.downcase %>>
+    <% pv = task.property_value(prop) -%><<%= prop.name.downcase %>><%= pv.to_html if pv %></<%= prop.name.downcase %>>
 <% end -%>
 	<summary><%=h task.name %></summary>
 	<client><%=h customer.name %></client>

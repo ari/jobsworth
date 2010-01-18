@@ -82,144 +82,131 @@ function setRowReadStatus(rowid, rowdata) {
 
 function taskListConfigSerialise() {
 	var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
-	var len = model.length;
-	var cols = new Array();
-	for (i=0; i<len; i++) {
-		if (model[i].hidden == false) {
-			cols.push({name: model[i].name, width: model[i].width});
-		}
-	}
-	saveUserPreference('tasklistcols',JSON.stringify(cols));
+	var s = JSON.stringify(model);
+	var o = JSON.parse(s);
+	var a = ['frog', 'rabbit'];
+	var s1 = JSON.stringify(a);
+
+	jQuery.ajax({
+          type: "POST",
+          url: '/users/set_tasklistcols',
+          data: JSON.stringify(model),
+          dataType: 'json'
+});
+
 }
 
 // initialise the task list table
 jQuery(document).ready(function() {
+	jQuery.getJSON('/users/get_tasklistcols', {}, initTaskList);
+});
 
+function initTaskList(colModel, textStatus) {
 
-jQuery('#task_list').jqGrid({
-	url:'/tasks/list?format=xml',
-	datatype: 'xml',
-	xmlReader: {
-		row:"task",
-		repeatitems:false
-	},
-	colModel :[
-		{name:'read', label:' ', formatter:'read', resizable: false, sortype:'boolean', width:16}, 
-		{name:'id', key:true, sortype:'int', width:30}, 
-		{name:'summary', width:300},
-		{name:'type', width:60}, 
-		{name:'priority', width:60}, 
-		{name:'state', width:60},
-		{name:'sla', width:60},
-		{name:'client', width:60},
-		{name:'milestone',  width:60},
-		{name:'due', sortype:'date', formatter:'daysFromNow', width:60},
-		{name:'time', sortype:'int', formatter:'tasktime', width:50},
-		{name:'assigned', width:60}
-	],
-	loadonce: true, // force sorting to happen in the browser
-	sortable: true, // re-order columns
-	sortname: 'id',
-	autowidth: true,
-	caption: "Tasks",
-	viewrecords: true,
-	multiselect: false,
-	
-	afterInsertRow : setRowReadStatus,
-	onSelectRow: showTaskInPage,
+	jQuery('#task_list').jqGrid({
+		url:'/tasks/list?format=xml',
+		datatype: 'xml',
+		xmlReader: {
+			row:"task",
+			repeatitems:false
+		},
+		colModel : colModel,
+		loadonce: true, // force sorting to happen in the browser
+		sortable: true, // re-order columns
+		sortname: 'id',
+		autowidth: true,
+		caption: "Tasks",
+		viewrecords: true,
+		multiselect: false,
 		
-	pager: '#task_pager',
-	emptyrecords: 'No tasks found.',
-	pgbuttons:false,
-	pginput:false,
-	rowNum:200,
-	recordtext: '{2} tasks found.',
+		afterInsertRow : setRowReadStatus,
+		onSelectRow: showTaskInPage,
+		resizeStop: taskListConfigSerialise,
+			
+		pager: '#task_pager',
+		emptyrecords: 'No tasks found.',
+		pgbuttons:false,
+		pginput:false,
+		rowNum:200,
+		recordtext: '{2} tasks found.',
+		
+		height: "300px"
+	});
 	
-	height: "300px"
-});
-
-
-jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
-	{}, // use default settings for edit
-	{}, // use default settings for add
-	{}, // use default settings for delete
-	{}, // use default settings for search
-	{} // use default settings for view
-);
-
-jQuery("#task_list").jqGrid('sortableRows'); 
-
-jQuery("#task_list").jqGrid('gridResize',{minHeight:150, maxHeight:1000});
-
-jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-	caption: "Columns",
-	title: "Reorder Columns",
-	onClickButton : function () {
-		jQuery("#task_list").jqGrid('columnChooser');
-	}
-});
-
-jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-	caption: "Export",
-	title: "Export data to CSV",
-	onClickButton : function () {
-		window.location.href="/tasks/get_csv";
-	}
-});
-
-jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-	caption: "Save prefs",
-	title: "Save prefs",
-	onClickButton : function () {
-		taskListConfigSerialise();
-	}
-});
-
-jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-	caption: "Save filter",
-	title: "Save filter",
-	onClickButton : function () {
-		Shadowbox.open({
-        content:    '/task_filters/new',
-        player:     "iframe",
-        height:     300,
-        width:      460
-    	});
-	}
-});
-
-
-jQuery.extend(jQuery.fn.fmatter , {
-	daysFromNow : function(cellvalue, options, rowdata) {
-		if (cellvalue == "") {
-			return "";
+	
+	jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
+		{}, // use default settings for edit
+		{}, // use default settings for add
+		{}, // use default settings for delete
+		{}, // use default settings for search
+		{} // use default settings for view
+	);
+	
+	jQuery("#task_list").jqGrid('sortableRows'); 
+	
+	jQuery("#task_list").jqGrid('gridResize',{minHeight:150, maxHeight:1000});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Columns",
+		title: "Reorder Columns",
+		onClickButton : function () {
+			jQuery("#task_list").jqGrid('columnChooser');
 		}
-		var one_day=1000*60*60*24;
-		return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
-	}
-});
-
-jQuery.extend(jQuery.fn.fmatter , {
-	tasktime : function(cellvalue, options, rowdata) {
-		if (cellvalue == 0) {
-			return "";
+	});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Export",
+		title: "Export data to CSV",
+		onClickButton : function () {
+			window.location.href="/tasks/get_csv";
 		}
-		return Math.round(cellvalue/6)/10 + "hr";
-	}
-});
-
-jQuery.extend(jQuery.fn.fmatter , {
-	read : function(cellvalue, options, rowdata) {
-		if (cellvalue == 't') {
-			// TODO
-			// the next javascript in the next line doesn't work because the selecting the row marks the task as read
-			return "<a href='#' onclick='toggleTaskUnread();'><span class='unread_icon'/></a>";
+	});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Save filter",
+		title: "Save filter",
+		onClickButton : function () {
+			Shadowbox.open({
+	        content:    '/task_filters/new',
+	        player:     "iframe",
+	        height:     300,
+	        width:      460
+	    	});
 		}
-		return "<span class='unread_icon'/>";
-	}
-});
+	});
+	
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		daysFromNow : function(cellvalue, options, rowdata) {
+			if (cellvalue == "") {
+				return "";
+			}
+			var one_day=1000*60*60*24;
+			return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
+		}
+	});
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		tasktime : function(cellvalue, options, rowdata) {
+			if (cellvalue == 0) {
+				return "";
+			}
+			return Math.round(cellvalue/6)/10 + "hr";
+		}
+	});
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		read : function(cellvalue, options, rowdata) {
+			if (cellvalue == 't') {
+				// TODO
+				// the next javascript in the next line doesn't work because the selecting the row marks the task as read
+				return "<a href='#' onclick='toggleTaskUnread();'><span class='unread_icon'/></a>";
+			}
+			return "<span class='unread_icon'/>";
+		}
+	});
 
-});
+}
 
 // -------------------------
 
@@ -295,12 +282,6 @@ function do_execute(user, code) {
   if( user != userId ) {
     eval(code);
   }
-}
-
-function json_decode(txt) {
-  try {
-    return eval( '(' + txt + ')' );
-  } catch(ex) {}
 }
 
 function updateSelect(sel, response) {
