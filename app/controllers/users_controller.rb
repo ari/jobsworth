@@ -312,13 +312,13 @@ class UsersController < ApplicationController
   
   def get_tasklistcols
   	defaultCol = Array.new
-    defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sortype' => 'boolean', 'width' => 16}
-	defaultCol << {'name' => 'id', 'key' => true, 'sortype' => 'int', 'width' => 30}
+    defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
+	defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
 	defaultCol << {'name' => 'summary', 'width' => 300}
 	defaultCol << {'name' => 'client', 'width' => 60}
 	defaultCol << {'name' => 'milestone',  'width' => 60}
-	defaultCol << {'name' => 'due', 'sortype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
-	defaultCol << {'name' => 'time', 'sortype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
+	defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
+	defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
 	defaultCol << {'name' => 'assigned', 'width' => 60}
 		
     colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
