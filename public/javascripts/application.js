@@ -111,7 +111,7 @@ function initTaskList(colModel, textStatus) {
 		},
 		colModel : colModel,
 		loadonce: true, // force sorting to happen in the browser
-		sortable: true, // re-order columns
+		sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
 		sortname: 'id',
 		autowidth: true,
 		caption: "Tasks",
