@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100119110826) do
+ActiveRecord::Schema.define(:version => 20100119114043) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -64,6 +64,8 @@ ActiveRecord::Schema.define(:version => 20100119110826) do
     t.boolean  "restricted_userlist",                :default => false
   end
 
+  add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
+
   create_table "custom_attribute_choices", :force => true do |t|
     t.integer  "custom_attribute_id"
     t.string   "value"
@@ -85,6 +87,7 @@ ActiveRecord::Schema.define(:version => 20100119110826) do
     t.integer  "choice_id"
   end
 
+  add_index "custom_attribute_values", ["attributable_id", "attributable_type"], :name => "by_attributables"
   add_index "custom_attribute_values", ["custom_attribute_id"], :name => "index_custom_attribute_values_on_custom_attribute_id"
 
   create_table "custom_attributes", :force => true do |t|
