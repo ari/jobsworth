@@ -82,17 +82,16 @@ function setRowReadStatus(rowid, rowdata) {
 
 function taskListConfigSerialise() {
 	var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
-	var s = JSON.stringify(model);
-	var o = JSON.parse(s);
-	var a = ['frog', 'rabbit'];
-	var s1 = JSON.stringify(a);
 
 	jQuery.ajax({
-          type: "POST",
-          url: '/users/set_tasklistcols',
-          data: JSON.stringify(model),
-          dataType: 'json'
-});
+		type: "POST",
+		url: '/users/set_tasklistcols',
+		data: { model : JSON.parse(JSON.stringify(model))}, // this code is mad, but it makes it work on Chrome/Firefox
+		dataType: 'json',
+		success: function(msg) {
+			alert( "Data Saved: " + msg );
+		}
+	});
 
 }
 

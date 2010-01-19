@@ -305,11 +305,8 @@ class UsersController < ApplicationController
   end
   
   def set_tasklistcols
-    colModel = JSON.parse(params) rescue nil
-    logger.warn params.inspect
-    logger.warn "++++++++++++"
-    logger.warn colModel.inspect
-    current_user.preference_attributes = [ [ 'tasklistcols', colModel ] ]
+    colModel = JSON.parse(params[:model]) rescue nil
+    current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
     render :nothing => true
   end
   
@@ -325,8 +322,6 @@ class UsersController < ApplicationController
 	defaultCol << {'name' => 'assigned', 'width' => 60}
 		
     colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
-    logger.warn "**********"
-    logger.warn colModel
     colModel = Array.new if (! colModel.kind_of? Array)
     
     #ensure all default columns are in the model
@@ -338,11 +333,11 @@ class UsersController < ApplicationController
     
     #ensure all custom properties are in the model
     current_user.company.properties.each do |attr|
-      next if colModel.detect { |c| c['name'] == attr.name }
+      next if colModel.detect { |c| c['name'] == attr.name.downcase }
       colModel << {'name' => attr.name.downcase }
       logger.info "Property '#{attr.name}' missing, adding to task list model."
     end
-
+	
     render :json => colModel
   end
   
