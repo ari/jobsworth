@@ -147,9 +147,10 @@ function initTaskList(colModel, textStatus) {
 	
 	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
 		caption: "Columns",
-		title: "Reorder Columns",
+		title: "Show/hide columns",
 		onClickButton : function () {
 			jQuery("#task_list").jqGrid('columnChooser');
+			taskListConfigSerialise();
 		}
 	});
 	
