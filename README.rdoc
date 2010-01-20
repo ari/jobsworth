@@ -123,13 +123,20 @@ Restart daemon
 
 == Setting up Email Integration
 
-You need to set up your email software so that it sends all emails for a subdomain to your rails user, and set up the alias so that it runs the mailman script.
+When jobsworth sends outgoing emails for task updates, they will have a reply address which looks like this:
 
-For example to configure sendmail to pass to jobsworth all emails sent to domain.com. See http://www.freebsd.org/doc/en/books/handbook/sendmail.html for more help on configuring sendmail on FreeBSD systems.
+  task-1234@acme.domain.com.au
+  
+If a user hits reply to that email, you want it to go back and be appended to the task comments. It isn't hard, but you'll need a mail server you have some control over in order to get the magic to work. Firstly, let's look at that email address. To the left of the @ we have a designator showing which task this email is relevant to. On the right 'acme' represents the name of the company you set up when you ran the setup.rb script and first installed jobsworth. And the final 'domain.com.au' part is defined in the environment.local.rb file in your config folder.
 
-Add an entry to /etc/mail/local-host-names to contain your domain
+You need to set up your email software to pass all incoming emails for *@acme.domain.com.au to a special script. That '*' means a wildcard: that is, any username at that hostname will be forwarded.
 
-  domain.com
+
+=== Sendmail
+
+For example to configure sendmail, add an entry to /etc/mail/local-host-names for your hostname:
+
+  acme.domain.com.au
 
 Add an entry to /etc/mail/aliases to create an alias that will hand off emails to the mailman script
 
@@ -140,3 +147,19 @@ Add an entry to /etc/mail/virtusertable to redirect all emails to your domain to
   @domain.com        jobsworth
 
 run "make; make restart" in /etc/mail
+
+=== Communigate Pro
+
+Communigate Pro puts it own headers on the top of each email which need to be stripped. A little script like this is dropped into /var/Communigate/Scripts and then added to the 'helpers' configuration with in the GUI. You'll need a rule inside Communigate to pass all email to the appropriate hostname to this script.
+
+  #!/bin/sh
+
+  RUBY=/usr/local/bin/ruby
+
+  # Make sure Ruby is on the path
+  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+
+  # Strip the first 6 lines which are specific to Communigate
+  /usr/bin/tail -n +7 $2 | ${RUBY} -W0 /usr/squish/script/runner -e production 'Mailman.receive(STDIN.read)' > /dev/null
+
+  exit 0;
