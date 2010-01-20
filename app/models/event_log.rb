@@ -50,3 +50,22 @@ class EventLog < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: event_logs
+#
+#  id          :integer(4)      not null, primary key
+#  company_id  :integer(4)
+#  project_id  :integer(4)
+#  user_id     :integer(4)
+#  event_type  :integer(4)
+#  target_type :string(255)
+#  target_id   :integer(4)
+#  title       :string(255)
+#  body        :text
+#  created_at  :datetime
+#  updated_at  :datetime
+#  user        :string(255)
+#
+

@@ -118,3 +118,17 @@ class WikiRevision < ActiveRecord::Base
   end 			
 
 end
+
+# == Schema Information
+#
+# Table name: wiki_revisions
+#
+#  id           :integer(4)      not null, primary key
+#  wiki_page_id :integer(4)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  body         :text
+#  user_id      :integer(4)
+#  change       :string(255)
+#
+

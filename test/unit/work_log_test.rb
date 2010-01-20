@@ -42,3 +42,25 @@ class WorkLogTest < ActiveRecord::TestCase
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: work_logs
+#
+#  id               :integer(4)      not null, primary key
+#  user_id          :integer(4)      default(0), not null
+#  task_id          :integer(4)
+#  project_id       :integer(4)      default(0), not null
+#  company_id       :integer(4)      default(0), not null
+#  customer_id      :integer(4)      default(0), not null
+#  started_at       :datetime        not null
+#  duration         :integer(4)      default(0), not null
+#  body             :text
+#  log_type         :integer(4)      default(0)
+#  scm_changeset_id :integer(4)
+#  paused_duration  :integer(4)      default(0)
+#  comment          :boolean(1)      default(FALSE)
+#  exported         :datetime
+#  approved         :boolean(1)
+#
+

@@ -16,3 +16,15 @@ class TaskOwner < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: task_owners
+#
+#  id                   :integer(4)      not null, primary key
+#  user_id              :integer(4)
+#  task_id              :integer(4)
+#  unread               :boolean(1)      default(FALSE)
+#  notified_last_change :boolean(1)      default(TRUE)
+#
+

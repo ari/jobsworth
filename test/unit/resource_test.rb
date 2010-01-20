@@ -83,3 +83,20 @@ class ResourceTest < ActiveRecord::TestCase
     assert @resource.valid?
   end
 end
+
+# == Schema Information
+#
+# Table name: resources
+#
+#  id               :integer(4)      not null, primary key
+#  company_id       :integer(4)
+#  resource_type_id :integer(4)
+#  parent_id        :integer(4)
+#  name             :string(255)
+#  customer_id      :integer(4)
+#  notes            :text
+#  created_at       :datetime
+#  updated_at       :datetime
+#  active           :boolean(1)      default(TRUE)
+#
+

@@ -5,3 +5,17 @@
 #
 # two:
 #   column: value
+
+# == Schema Information
+#
+# Table name: chat_messages
+#
+#  id         :integer(4)      not null, primary key
+#  chat_id    :integer(4)
+#  user_id    :integer(4)
+#  body       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#  archived   :boolean(1)      default(FALSE)
+#
+

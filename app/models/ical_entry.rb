@@ -4,3 +4,14 @@ class IcalEntry < ActiveRecord::Base
   belongs_to :task
   belongs_to :work_log
 end
+
+# == Schema Information
+#
+# Table name: ical_entries
+#
+#  id          :integer(4)      not null, primary key
+#  task_id     :integer(4)
+#  work_log_id :integer(4)
+#  body        :text
+#
+

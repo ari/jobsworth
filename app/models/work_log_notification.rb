@@ -4,3 +4,13 @@ class WorkLogNotification < ActiveRecord::Base
   belongs_to :user
   belongs_to :work_log
 end
+
+# == Schema Information
+#
+# Table name: work_logs_notifications
+#
+#  work_log_id :integer(4)
+#  user_id     :integer(4)
+#  id          :integer(4)      not null, primary key
+#
+

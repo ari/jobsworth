@@ -87,3 +87,31 @@ class View < ActiveRecord::Base
     save
   end
 end
+
+# == Schema Information
+#
+# Table name: views
+#
+#  id                  :integer(4)      not null, primary key
+#  name                :string(255)
+#  company_id          :integer(4)
+#  user_id             :integer(4)
+#  shared              :integer(4)      default(0)
+#  auto_group          :string(255)     default("0")
+#  filter_customer_id  :string(255)     default("0")
+#  filter_project_id   :string(255)     default("0")
+#  filter_milestone_id :string(255)     default("0")
+#  filter_user_id      :string(255)     default("0")
+#  filter_tags         :string(255)     default("")
+#  filter_status       :string(255)     default("0")
+#  filter_type_id      :integer(4)      default(0)
+#  hide_deferred       :integer(4)
+#  sort                :integer(4)      default(0)
+#  filter_severity     :integer(4)      default(-10)
+#  filter_priority     :integer(4)      default(-10)
+#  hide_dependencies   :integer(4)
+#  colors              :integer(4)
+#  icons               :integer(4)
+#  show_all_unread     :boolean(1)      default(FALSE)
+#
+

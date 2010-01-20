@@ -221,3 +221,19 @@ class TaskFilterTest < ActiveSupport::TestCase
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: task_filters
+#
+#  id          :integer(4)      not null, primary key
+#  name        :string(255)
+#  company_id  :integer(4)
+#  user_id     :integer(4)
+#  shared      :boolean(1)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  system      :boolean(1)      default(FALSE)
+#  unread_only :boolean(1)      default(FALSE)
+#
+

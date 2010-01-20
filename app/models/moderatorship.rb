@@ -5,3 +5,13 @@ class Moderatorship < ActiveRecord::Base
   belongs_to :user
   before_create { |r| count(:all, :conditions => ['forum_id = ? and user_id = ?', r.forum_id, r.user_id]).zero? }
 end
+
+# == Schema Information
+#
+# Table name: moderatorships
+#
+#  id       :integer(4)      not null, primary key
+#  forum_id :integer(4)
+#  user_id  :integer(4)
+#
+

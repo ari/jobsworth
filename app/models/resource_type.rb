@@ -35,3 +35,15 @@ class ResourceType < ActiveRecord::Base
     resource_type_attributes.delete(missing)
   end
 end
+
+# == Schema Information
+#
+# Table name: resource_types
+#
+#  id         :integer(4)      not null, primary key
+#  company_id :integer(4)
+#  name       :string(255)
+#  created_at :datetime
+#  updated_at :datetime
+#
+

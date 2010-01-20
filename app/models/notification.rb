@@ -17,3 +17,15 @@ class Notification < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: notifications
+#
+#  id                   :integer(4)      not null, primary key
+#  task_id              :integer(4)
+#  user_id              :integer(4)
+#  unread               :boolean(1)      default(FALSE)
+#  notified_last_change :boolean(1)      default(TRUE)
+#
+

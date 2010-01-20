@@ -69,3 +69,23 @@ class Topic < ActiveRecord::Base
       Post.update_all ['forum_id = ?', forum_id], ['topic_id = ?', id]
     end
 end
+
+# == Schema Information
+#
+# Table name: topics
+#
+#  id           :integer(4)      not null, primary key
+#  forum_id     :integer(4)
+#  user_id      :integer(4)
+#  title        :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  hits         :integer(4)      default(0)
+#  sticky       :integer(4)      default(0)
+#  posts_count  :integer(4)      default(0)
+#  replied_at   :datetime
+#  locked       :boolean(1)      default(FALSE)
+#  replied_by   :integer(4)
+#  last_post_id :integer(4)
+#
+

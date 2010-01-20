@@ -8,3 +8,27 @@ top:
   collapsed: false
   column: 0
   position: 0
+
+# == Schema Information
+#
+# Table name: widgets
+#
+#  id          :integer(4)      not null, primary key
+#  company_id  :integer(4)
+#  user_id     :integer(4)
+#  name        :string(255)
+#  widget_type :integer(4)      default(0)
+#  number      :integer(4)      default(5)
+#  mine        :boolean(1)
+#  order_by    :string(255)
+#  group_by    :string(255)
+#  filter_by   :string(255)
+#  collapsed   :boolean(1)      default(FALSE)
+#  column      :integer(4)      default(0)
+#  position    :integer(4)      default(0)
+#  configured  :boolean(1)      default(FALSE)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  gadget_url  :text
+#
+

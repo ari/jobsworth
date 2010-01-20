@@ -7,3 +7,15 @@ one:
 two:
   customer_id: 1
   task_id: 1
+
+# == Schema Information
+#
+# Table name: task_customers
+#
+#  id          :integer(4)      not null, primary key
+#  customer_id :integer(4)
+#  task_id     :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#
+

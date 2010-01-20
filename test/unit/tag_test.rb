@@ -8,3 +8,13 @@ class TagTest < ActiveRecord::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: tags
+#
+#  id         :integer(4)      not null, primary key
+#  company_id :integer(4)
+#  name       :string(255)
+#
+

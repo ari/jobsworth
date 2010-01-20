@@ -77,3 +77,20 @@ class Customer < ActiveRecord::Base
     full_name
   end
 end
+
+# == Schema Information
+#
+# Table name: customers
+#
+#  id            :integer(4)      not null, primary key
+#  company_id    :integer(4)      default(0), not null
+#  name          :string(200)     default(""), not null
+#  contact_email :string(200)
+#  contact_name  :string(200)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  css           :text
+#  binary_id     :integer(4)
+#  active        :boolean(1)      default(TRUE)
+#
+

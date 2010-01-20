@@ -21,3 +21,16 @@ class TimeRangeTest < ActiveSupport::TestCase
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: time_ranges
+#
+#  id         :integer(4)      not null, primary key
+#  name       :string(255)
+#  start      :text
+#  end        :text
+#  created_at :datetime
+#  updated_at :datetime
+#
+

@@ -150,3 +150,18 @@ class Property < ActiveRecord::Base
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: properties
+#
+#  id            :integer(4)      not null, primary key
+#  company_id    :integer(4)
+#  name          :string(255)
+#  created_at    :datetime
+#  updated_at    :datetime
+#  default_sort  :boolean(1)
+#  default_color :boolean(1)
+#  mandatory     :boolean(1)      default(FALSE)
+#
+
