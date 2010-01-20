@@ -40,3 +40,19 @@ class Forum < ActiveRecord::Base
 
   format_attribute :description
 end
+
+# == Schema Information
+#
+# Table name: forums
+#
+#  id               :integer(4)      not null, primary key
+#  company_id       :integer(4)
+#  project_id       :integer(4)
+#  name             :string(255)
+#  description      :string(255)
+#  topics_count     :integer(4)      default(0)
+#  posts_count      :integer(4)      default(0)
+#  position         :integer(4)
+#  description_html :text
+#
+

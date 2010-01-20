@@ -22,3 +22,16 @@ class OrganizationalUnit < ActiveRecord::Base
     return res
   end
 end
+
+# == Schema Information
+#
+# Table name: organizational_units
+#
+#  id          :integer(4)      not null, primary key
+#  customer_id :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  name        :string(255)
+#  active      :boolean(1)      default(TRUE)
+#
+

@@ -52,3 +52,17 @@ class ResourceAttribute < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: resource_attributes
+#
+#  id                         :integer(4)      not null, primary key
+#  resource_id                :integer(4)
+#  resource_type_attribute_id :integer(4)
+#  value                      :string(255)
+#  password                   :string(255)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+

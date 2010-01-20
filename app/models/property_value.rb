@@ -32,3 +32,19 @@ class PropertyValue < ActiveRecord::Base
   include ActionView::Helpers::AssetTagHelper
 
 end
+
+# == Schema Information
+#
+# Table name: property_values
+#
+#  id          :integer(4)      not null, primary key
+#  property_id :integer(4)
+#  value       :string(255)
+#  color       :string(255)
+#  default     :boolean(1)
+#  position    :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  icon_url    :string(1000)
+#
+

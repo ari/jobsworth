@@ -279,10 +279,6 @@ else
   end
 end
 
-puts "Creating merged CSS and JavaScript files..."
-system("rake asset:packager:build_all")
-puts "Done"
-
 puts "Running any pending migrations..."
 system("rake db:migrate RAILS_ENV=production")
 puts "Done"

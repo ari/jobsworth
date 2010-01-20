@@ -104,3 +104,27 @@ class Project < ActiveRecord::Base
   
 
 end
+
+# == Schema Information
+#
+# Table name: projects
+#
+#  id               :integer(4)      not null, primary key
+#  name             :string(200)     default(""), not null
+#  user_id          :integer(4)      default(0), not null
+#  company_id       :integer(4)      default(0), not null
+#  customer_id      :integer(4)      default(0), not null
+#  created_at       :datetime
+#  updated_at       :datetime
+#  completed_at     :datetime
+#  critical_count   :integer(4)      default(0)
+#  normal_count     :integer(4)      default(0)
+#  low_count        :integer(4)      default(0)
+#  description      :text
+#  create_forum     :boolean(1)      default(TRUE)
+#  open_tasks       :integer(4)
+#  total_tasks      :integer(4)
+#  total_milestones :integer(4)
+#  open_milestones  :integer(4)
+#
+

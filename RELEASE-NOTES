@@ -2,6 +2,12 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+16 January 2010
+	Switch to using jqGrid for task list. Very sexy and supports column reordering and resizing, plus much more.
+
+26 December 2009
+	Some remaining Ruby 1.9 problems fixed. There are no issues currently known of with 1.9 and it runs much faster.
+
 12 November 2009
 	You can now hide columns in the list view. Your choices will be remembered for your user login.
 

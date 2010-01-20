@@ -147,3 +147,26 @@ class ProjectFile < ActiveRecord::Base
   end 
   
 end
+
+# == Schema Information
+#
+# Table name: project_files
+#
+#  id                :integer(4)      not null, primary key
+#  company_id        :integer(4)      default(0), not null
+#  project_id        :integer(4)      default(0), not null
+#  customer_id       :integer(4)      default(0), not null
+#  name              :string(200)     default(""), not null
+#  binary_id         :integer(4)      default(0), not null
+#  file_type         :integer(4)      default(0), not null
+#  created_at        :datetime        not null
+#  updated_at        :datetime        not null
+#  filename          :string(200)     default(""), not null
+#  thumbnail_id      :integer(4)
+#  file_size         :integer(4)
+#  task_id           :integer(4)
+#  mime_type         :string(255)     default("application/octet-stream")
+#  project_folder_id :integer(4)
+#  user_id           :integer(4)
+#
+

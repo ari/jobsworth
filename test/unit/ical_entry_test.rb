@@ -8,3 +8,14 @@ class IcalEntryTest < ActiveRecord::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: ical_entries
+#
+#  id          :integer(4)      not null, primary key
+#  task_id     :integer(4)
+#  work_log_id :integer(4)
+#  body        :text
+#
+

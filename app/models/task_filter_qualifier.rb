@@ -22,3 +22,17 @@ class TaskFilterQualifier < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: task_filter_qualifiers
+#
+#  id                 :integer(4)      not null, primary key
+#  task_filter_id     :integer(4)
+#  qualifiable_type   :string(255)
+#  qualifiable_id     :integer(4)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  qualifiable_column :string(255)
+#
+

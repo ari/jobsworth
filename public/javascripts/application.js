@@ -42,17 +42,178 @@ jQuery("#loading").bind("ajaxSend", function(){
 });
 
 // -------------------------
+//  Task list grid
+// -------------------------
 
-function fetchComment(e) {
-  var elements = e.toString().split("/");
-  var taskId = elements[elements.size()-1];
-  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
+
+/*
+  Sends an ajax request to save the given user preference to the db
+*/
+function saveUserPreference(name, value) {
+    var params = { "name": name, "value": value };
+    jQuery.post("/users/set_preference",  params);
+}
+function getUserPreference(name) {
+    var url = "/users/get_preference?name=" + name;
+    jQuery.post("/users/set_preference",  params);
 }
 
+
+/*
+  Loads the task information for the task and displays 
+it in the current page.
+*/
+function showTaskInPage(rowid) {
+	jQuery('#task_list').setCell(rowid, 'read', true);
+	jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
+	
+    jQuery("#task").fadeOut();
+    jQuery.get("/tasks/edit/" + rowid, {}, function(data) {
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
+    });
+}
+
+function setRowReadStatus(rowid, rowdata) {
+	if (rowdata.read == 'f') {
+		jQuery('#task_list>tbody>tr#' + rowid).addClass('unread');
+	}
+}
+
+function taskListConfigSerialise() {
+	var model = jQuery("#task_list").jqGrid('getGridParam', 'colModel');
+
+	jQuery.ajax({
+		type: "POST",
+		url: '/users/set_tasklistcols',
+		data: { model : JSON.parse(JSON.stringify(model))}, // this code is mad, but it makes it work on Chrome/Firefox
+		dataType: 'json',
+		success: function(msg) {
+			alert( "Data Saved: " + msg );
+		}
+	});
+
+}
+
+// initialise the task list table
+jQuery(document).ready(function() {
+	jQuery.getJSON('/users/get_tasklistcols', {}, initTaskList);
+});
+
+function initTaskList(colModel, textStatus) {
+
+	jQuery('#task_list').jqGrid({
+		url:'/tasks/list?format=xml',
+		datatype: 'xml',
+		xmlReader: {
+			row:"task",
+			repeatitems:false
+		},
+		colModel : colModel,
+		loadonce: true, // force sorting to happen in the browser
+		sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
+		sortname: 'id',
+		autowidth: true,
+		caption: "Tasks",
+		viewrecords: true,
+		multiselect: false,
+		
+		afterInsertRow : setRowReadStatus,
+		onSelectRow: showTaskInPage,
+		resizeStop: taskListConfigSerialise,
+			
+		pager: '#task_pager',
+		emptyrecords: 'No tasks found.',
+		pgbuttons:false,
+		pginput:false,
+		rowNum:200,
+		recordtext: '{2} tasks found.',
+		
+		height: "300px"
+	});
+	
+	
+	jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false}, 
+		{}, // use default settings for edit
+		{}, // use default settings for add
+		{}, // use default settings for delete
+		{}, // use default settings for search
+		{} // use default settings for view
+	);
+	
+	jQuery("#task_list").jqGrid('sortableRows'); 
+	
+	jQuery("#task_list").jqGrid('gridResize',{minHeight:150, maxHeight:1000});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Columns",
+		title: "Show/hide columns",
+		onClickButton : function () {
+			jQuery("#task_list").jqGrid('columnChooser');
+			taskListConfigSerialise();
+		}
+	});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Export",
+		title: "Export data to CSV",
+		onClickButton : function () {
+			window.location.href="/tasks/get_csv";
+		}
+	});
+	
+	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+		caption: "Save filter",
+		title: "Save filter",
+		onClickButton : function () {
+			Shadowbox.open({
+	        content:    '/task_filters/new',
+	        player:     "iframe",
+	        height:     300,
+	        width:      460
+	    	});
+		}
+	});
+	
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		daysFromNow : function(cellvalue, options, rowdata) {
+			if (cellvalue == "") {
+				return "";
+			}
+			var one_day=1000*60*60*24;
+			return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
+		}
+	});
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		tasktime : function(cellvalue, options, rowdata) {
+			if (cellvalue == 0) {
+				return "";
+			}
+			return Math.round(cellvalue/6)/10 + "hr";
+		}
+	});
+	
+	jQuery.extend(jQuery.fn.fmatter , {
+		read : function(cellvalue, options, rowdata) {
+			if (cellvalue == 't') {
+				// TODO
+				// the next javascript in the next line doesn't work because the selecting the row marks the task as read
+				return "<a href='#' onclick='toggleTaskUnread();'><span class='unread_icon'/></a>";
+			}
+			return "<span class='unread_icon'/>";
+		}
+	});
+
+}
+
+// -------------------------
+
 function updateComment(taskId) {
-  if(taskId != null) {
+  if(taskId !== null) {
     var comment = comments.get(taskId);
-    if( comment != null && comment != "" ) {
+    if( comment !== null && comment != "" ) {
       var elements = comment.split("<br/>");
       var author = elements.shift();
       Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
@@ -60,11 +221,16 @@ function updateComment(taskId) {
   }
 }
 
+function fetchComment(e) {
+  var elements = e.toString().split("/");
+  var taskId = elements[elements.size()-1];
+  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
+}
+
 function init_shout() {
   if($('shout_body')) {
     Event.observe($('shout_body'), "keypress", function(e) {
-        switch( e.keyCode ) {
-        case Event.KEY_RETURN:
+        if ( e.keyCode == Event.KEY_RETURN) {
           if (e.shiftKey) {
             return;
           } else {
@@ -92,10 +258,6 @@ function inline_image(el) {
   el.style.visibility = 'visible';
 }
 
-function UpdateDnD() {
-  updateTooltips();
-}
-
 /*
  Tooltips are setup on page load, but sometimes the page is updated
  using ajax, and the tooltips need to be setup again, so this method
@@ -103,6 +265,10 @@ function UpdateDnD() {
 */
 function updateTooltips() {
     jQuery('.tooltip').tooltip({showURL: false });    
+}
+
+function UpdateDnD() {
+  updateTooltips();
 }
 
 function do_update(user, url) {
@@ -118,12 +284,6 @@ function do_execute(user, code) {
   }
 }
 
-function json_decode(txt) {
-  try {
-    return eval( '(' + txt + ')' );
-  } catch(ex) {}
-}
-
 function updateSelect(sel, response) {
    response.evalScripts();
 
@@ -135,11 +295,6 @@ function updateSelect(sel, response) {
    for( var i=0; i<opts.length; i++ ) {
      sel.options[i] = new Option(opts[i].text,opts[i].value,null,false);
    }
-}
-
-function toggleChatPopupEvent(e) {
-  var el = Event.element(e);
-  toggleChatPopup(el);
 }
 
 function toggleChatPopup(el) {
@@ -164,9 +319,21 @@ function toggleChatPopup(el) {
   }
 }
 
+function toggleChatPopupEvent(e) {
+  var el = Event.element(e);
+  toggleChatPopup(el);
+}
+
 function closeChat(el) {
   jQuery.get('/shout/chat_close/' + el.up().id);
   jQuery(el).remove();
+}
+
+function rebuildSelect(select, data) {
+   select.options.length = 0;
+   for( var i=0; i<data.length; i++ ) {
+     select.options[i] = new Option(data[i].text,data[i].value,null,false);
+   }
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
@@ -179,42 +346,14 @@ function refreshMilestones(pid, mid) {
   });
 }
 
-function rebuildSelect(select, data) {
-   select.options.length = 0;
-   for( var i=0; i<data.length; i++ ) {
-     select.options[i] = new Option(data[i].text,data[i].value,null,false);
-   }
-}
-
-jQuery(document).ready(function() {
-    fixNestedCheckboxes();
-    
-    var taskList = jQuery("#task_list");
-    if (taskList) {
-	taskListLoaded();
-
-	taskList.resizable({
-	    resize: function(event, ui) {
-		ui.element.css("width", "");
-	    }
-	});
-    }
-});
-
-jQuery.fn.dateToWords = function() {
-    return this.each(function() {
-	dateToWords(jQuery(this))
-    });
-}
-
 function dateToWords(elem) {
     var date = elem.text();
     var text = date;
     var className = null;
 
-    date = jQuery.datepicker.parseDate("yy-mm-dd", date)
+    date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
-    if (date != null) {
+    if (date !== null) {
 	var diff = (((new Date()).getTime() - date.getTime()) / 1000);
 	var dayDiff = Math.floor(diff / 86400);
 
@@ -225,21 +364,21 @@ function dateToWords(elem) {
 	    text = "Tomorrow";
 	    className = "due_tomorrow";
 	}
-	else if (dayDiff == 0) {
+	else if (dayDiff === 0) {
 	    text = "Today";
 	    className = "due";
 	}
 	else if (dayDiff == 1) {
-	    text = "Yesterday"
+	    text = "Yesterday";
 	    className = "due_overdue";
 	}
 	else if (dayDiff < 0) {
 	    dayDiff = Math.abs(dayDiff);
-	    text = dayDiff + " days"
+	    text = dayDiff + " days";
 	    className = dayDiff >= 7 ? "due_distant" : "due_soon";
 	}
 	else if (dayDiff > 0) {
-	    text = dayDiff + " days ago"
+	    text = dayDiff + " days ago";
 	    className = "due_overdue";
 	}
     }
@@ -248,61 +387,12 @@ function dateToWords(elem) {
     elem.text(text);
 }
 
-/*
- Callback for when the task list has finished loading.
-*/
-function taskListLoaded() {
-    hideProgress(); 
-    Shadowbox.setup(); 
-    updateTooltips();
-    jQuery('.date_to_words').dateToWords();
-    showTaskListColumns();
-}
-
-/*
-  Shows or hides any columns in the task list according to 
-  the current user's preferences
-*/
-function showTaskListColumns() {
-    var list = jQuery("#task_list #list");
-    var hidden = window.hiddenColumns || [];
-
-    var opts = { 
-	listTargetID: "column_picker",
-	onClass: 'shown', offClass: 'hidden',
-	hideInList: [ 1 ],
-	colsHidden: hidden,
-
-	onToggle: function(index, state) {
-	    var columns = jQuery("#column_picker li");
-	    var hidden = []
-	    for (var i = 0; i < columns.length; i++) {
-		var column = jQuery(columns[i]);
-		if (column.hasClass("hidden")) {
-		    hidden.push(i + 2);
-		}
-	    }
-	    saveUserPreference("hidden_task_list_columns", hidden);
-	}
-    };
-
-    list.columnManager(opts);
-}
-
-/*
-  Loads the task information for the task taskNum and displays 
-it in the current page.
-*/
-function showTaskInPage(taskNum) {
-    jQuery("#task_list tr.selected").removeClass("selected");
-    jQuery("#task_list #task_row_" + taskNum).addClass("selected");
-
-    jQuery("#task").fadeOut();
-    jQuery.get("/tasks/edit/" + taskNum, {}, function(data) {
-	jQuery("#task").html(data);
-	jQuery("#task").fadeIn('slow');
+jQuery.fn.dateToWords = function() {
+    return this.each(function() {
+		dateToWords(jQuery(this));
     });
-}
+};
+
 
 /*
  Marks the task sender belongs to as unread.
@@ -316,10 +406,10 @@ function toggleTaskUnread(event, userId) {
     task.toggleClass("unread");
 
     var taskId = task.attr("id").replace("task_row_", "");
-    var taskId = taskId.replace("task_", "");
+    taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
     if (userId) {
-	parameters["user_id"] = userId;
+	parameters.user_id = userId;
     }
 
     jQuery.post("/tasks/set_unread",  parameters);
@@ -335,12 +425,29 @@ function clearPrompt(field) {
     field.value = "";
 }
 
+
+/* 
+Submits the search filter form. If we are looking at the task list, 
+does that via ajax. Otherwise does a normal html post
+*/
+function submitSearchFilterForm() {
+    var form = jQuery("#search_filter_form")[0];
+    var redirect = jQuery(form.redirect_action).val();
+    if (redirect.indexOf("/tasks/list?") >= 0) {
+		form.onsubmit();
+    }
+    else {
+		form.submit();
+    }
+}
+
 /*
 Removes the search filter the link belongs to and submits
 the containing form.
 */
 function removeSearchFilter(link) {
-    jQuery(link).parent("li").remove();
+    link = jQuery(link);
+    link.parent(".search_filter").remove();
     submitSearchFilterForm();
 }
 
@@ -373,11 +480,9 @@ function addSearchFilter(textField, selected) {
     var typeField = selected.find(".type");
     var columnField = selected.find(".column");
     
-    if (selected.attr("data-id")) {
+    if (idField && idField.length > 0) {
 		var filterForm = jQuery("#search_filter_form");
-		filterForm.append("<input type="hidden" value="3372" name="task_filter[qualifiers_attributes][][qualifiable_id]"/>
-<input type="hidden" value="Customer" name="task_filter[qualifiers_attributes][][qualifiable_type]"/>
-<input id="task_filter_qualifiers_attributes__qualifiable_column" class="column" type="hidden" value="" name="task_filter[qualifiers_attributes][][qualifiable_column]"/>");
+		filterForm.append(idField.clone());
 		filterForm.append(typeField.clone());
 		if (columnField) {
 		    filterForm.append(columnField.clone());
@@ -388,20 +493,13 @@ function addSearchFilter(textField, selected) {
     }
 }
 
-/* 
-Submits the search filter form. If we are looking at the task list, 
-does that via ajax. Otherwise does a normal html post
-*/
-function submitSearchFilterForm() {
-    var form = jQuery("#search_filter_form")[0];
-    var redirect = jQuery(form.redirect_action).val();
-    if (redirect.indexOf("/tasks/list?") >= 0) {
-		form.onsubmit();
-    } else {
-		form.submit();
-    }
-}
 
+/* 
+Sets up the search filter input field to add a task automatically
+if a number is entered and then the user hits enter
+*/
+function addSearchFilterTaskIdListener() {
+    var filter = jQuery("#search_filter");
 
 function addProjectToUser(input, li) {
     li = jQuery(li);
@@ -450,7 +548,7 @@ function updateAutoCompleteField(input, li) {
   and updates the page with the returned values.
 */
 function updateResourceAttributes(select) {
-    select = jQuery(select)
+    select = jQuery(select);
     var typeId = select.val();
     var target = jQuery("#attributes");
 
@@ -466,6 +564,14 @@ function updateResourceAttributes(select) {
 }
 
 /*
+  Removes the resource attribute to the link
+*/
+function removeAttribute(link) {
+    link = jQuery(link);
+    link.parent(".attribute").remove();
+}
+
+/*
   Adds a new field to allow people to have multiple values
   for resource attributes.
 */
@@ -478,21 +584,15 @@ function addAttribute(link) {
     newAttribute.find("a.add_attribute").remove();
     newAttribute.find(".attr_id").remove();
 
-    var removeLink = newAttribute.find("a.remove_attribute")
+    var removeLink = newAttribute.find("a.remove_attribute");
     // for some reason this onclick needs to be manually set after cloning
-    removeLink.click(function() { removeAttribute(removeLink); })
+    removeLink.click(function() { removeAttribute(removeLink); });
     removeLink.show();
 
     origAttribute.after(newAttribute);
 }
 
-/*
-  Removes the resource attribute to the link
-*/
-function removeAttribute(link) {
-    link = jQuery(link);
-    link.parent(".attribute").remove();
-}
+
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.
 jQuery(document).ready(function() {
@@ -530,24 +630,6 @@ function updateAttributeFields(checkbox) {
 }
 
 /*
- Adds fields to setup a new custom attribute choice.
-*/
-function addAttributeChoices(sender) {
-    var choices = jQuery(sender).parent().find('.choices');
-    var callback = function() { updatePositionFields(choices); }
-
-    var attribute = jQuery(sender).parents(".attribute");
-    var attrId = attribute.attr("id").split("_").pop();
-
-    if (attrId == "attribute") {
-	// new attribute, so just ignore
-	attrId = "";
-    }
-    var url = "/custom_attributes/choice/" + attrId;
-    appendPartial(url, choices, callback);
-}
-
-/*
   Does a get request to the given url. The response is appended
   to any element matching selector.
   If a callback function is given, that will be called after the partial
@@ -559,6 +641,34 @@ function appendPartial(url, selector, callback) {
 
 	if (callback) { callback.call(); }
     });
+}
+
+function updatePositionFields(listSelector) {
+    var list = jQuery(listSelector);
+    var children = list.children();
+
+    for (var i = 0; i < children.length; i++) {
+	var positionField = jQuery(children[i]).find(".position");
+	positionField.val(i + 1);
+    }
+}
+
+/*
+ Adds fields to setup a new custom attribute choice.
+*/
+function addAttributeChoices(sender) {
+    var choices = jQuery(sender).parent().find('.choices');
+    var callback = function() { updatePositionFields(choices); };
+
+    var attribute = jQuery(sender).parents(".attribute");
+    var attrId = attribute.attr("id").split("_").pop();
+
+    if (attrId == "attribute") {
+	// new attribute, so just ignore
+	attrId = "";
+    }
+    var url = "/custom_attributes/choice/" + attrId;
+    appendPartial(url, choices, callback);
 }
 
 /*
@@ -630,8 +740,7 @@ function nestedCheckboxChanged(checkbox) {
 function fixNestedCheckboxes() {
     var checkboxes = jQuery(".nested_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
-	var cb = checkboxes[i];
-	nestedCheckboxChanged(cb) 
+		nestedCheckboxChanged(checkboxes[i]);
     }
 }
 
@@ -655,16 +764,6 @@ function togglePreviousElement(sender, selector) {
     }
 
     toggle.toggle();
-}
-
-function updatePositionFields(listSelector) {
-    var list = jQuery(listSelector);
-    var children = list.children();
-
-    for (var i = 0; i < children.length; i++) {
-	var positionField = jQuery(children[i]).find(".position");
-	positionField.val(i + 1);
-    }
 }
 
 /* FILTER METHODS */
@@ -697,12 +796,35 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
     var icon = div.find(".icon." + baseClassName);
 
     if (input.attr("disabled")) {
-	icon.addClass(enabledClassName)
+	icon.addClass(enabledClassName);
 	input.attr("disabled", false);
     }
     else {
 	input.attr("disabled", true);
 	icon.removeClass(enabledClassName);
+    }
+}
+
+
+/*
+  Highlights any notification users who will be receiving an email
+  about this task.
+*/
+function highlightActiveNotifications() {
+    var users = jQuery("#taskform .user");
+    var hasComment = jQuery("#comment").val() != "";
+    var isNew = (document.location.toString().indexOf("/new") > 0);
+
+    for (var i = 0; i < users.length; i++) {
+		var div = jQuery(users[i]);
+		var willNeverReceive = div.hasClass("will_never_receive");
+		var notify = div.find(".icon.should_notify");
+		if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
+		    div.addClass("will_notify");
+		}
+		else {
+		    div.removeClass("will_notify");
+		}
     }
 }
 
@@ -716,10 +838,22 @@ function addUserToTask(input, li) {
     var taskId = jQuery("#task_id").val();
 
     var url = "/tasks/add_notification";
-    var params = { user_id : userId, id : taskId }
+    var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
 	jQuery("#task_notify").append(data);
 	highlightActiveNotifications();
+    });
+}
+
+
+/*
+  Adds any users setup as auto add to the current task.
+*/
+function addAutoAddUsersToTask(clientId, taskId, projectId) {
+    var url = "/tasks/add_users_for_client";
+    var params = { client_id : clientId, id : taskId, project_id : projectId };
+    jQuery.get(url, params, function(data) {
+	jQuery("#task_notify").append(data);
     });
 }
 
@@ -733,23 +867,12 @@ function addCustomerToTask(input, li) {
     var taskId = jQuery("#task_id").val();
 
     var url = "/tasks/add_client";
-    var params = { client_id : clientId, id : taskId }
+    var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
-	jQuery("#task_customers").append(data);
+		jQuery("#task_customers").append(data);
     });
 
     addAutoAddUsersToTask(clientId, taskId);
-}
-
-/*
-  Adds any users setup as auto add to the current task.
-*/
-function addAutoAddUsersToTask(clientId, taskId, projectId) {
-    var url = "/tasks/add_users_for_client";
-    var params = { client_id : clientId, id : taskId, project_id : projectId }
-    jQuery.get(url, params, function(data) {
-	jQuery("#task_notify").append(data);
-    });
 }
 
 /*
@@ -761,34 +884,10 @@ function addClientLinkForTask(projectId) {
     
     if (jQuery.trim(customers) == "") {
 	var url = "/tasks/add_client_for_project";
-	var params = { project_id : projectId }
+	var params = { project_id : projectId };
 	jQuery.get(url, params, function(data) {
 	    jQuery("#task_customers").html(data);
 	});
-    }
-}
-
-/*
-  Highlights any notification users who will be receiving an email
-  about this task.
-*/
-function highlightActiveNotifications() {
-    var users = jQuery("#taskform .user");
-    var hasComment = jQuery("#comment").val() != "";
-    var isNew = (document.location.toString().indexOf("/new") > 0);
-
-    for (var i = 0; i < users.length; i++) {
-	var div = jQuery(users[i]);
-	var willNeverReceive = div.hasClass("will_never_receive");
-	var notify = div.find(".icon.should_notify");
-	if (!willNeverReceive &&
-	    (hasComment || isNew)
-	    && notify.length > 0) {
-	    div.addClass("will_notify");
-	}
-	else {
-	    div.removeClass("will_notify");
-	}
     }
 }
 
@@ -798,13 +897,8 @@ function highlightActiveNotifications() {
 function moveTask(event, ui) {
     var element = ui.draggable[0];
     var dropTarget = event.target;
-
     jQuery(element).remove(); 
-
-    jQuery.get("/tasks/move", 
-	       { id : element.id + " " + dropTarget.id }, 
-	       null,
-	      "script")
+    jQuery.get("/tasks/move", { id : element.id + " " + dropTarget.id }, null, "script");
 }
 
 /*
@@ -816,74 +910,6 @@ function toggleWorkLogApproval(sender, workLogId) {
     jQuery.post("/tasks/update_work_log", {
 	id : workLogId,
 	"work_log[approved]" : checked });
-}
-
-
-// Sortable table helpers
-
-/*
-  Makes the given table sortable.
-  If defaultSortColumn and defaultSortOrder are given, the table will
-  initally be sorted according to those values
-*/
-function makeSortable(table, defaultSortColumn, defaultSortOrder) {
-    var sort = [ [ 0, 1 ] ];
-
-    if (defaultSortColumn && defaultSortColumn != "") {
-	var selector = "th:contains('" + defaultSortColumn + "')";
-	var headers = table.find("th");
-	var column = table.find(selector);
-	var index = headers.index(column);
-	if (index < 0) { index = 0; }
-
-	var dir = (defaultSortOrder == "up" ? 1 : 0);
-	sort = [ [ index, dir ] ];
-    }
-
-    table.tablesorter({
-	sortList: sort,
-	widgets: ["zebra"],
-	textExtraction: tableSortText, //"complex",
-	headers: {
-	    5: { sorter : "digit" }
-	}
-    });
-}
-
-/*
-  Returns the text to sort a table by from the given node
-*/
-function tableSortText(node) {
-    var res = node.innerHTML;
-    var node = jQuery(node);
-
-    var hint = node.children(".sort_hint");
-    if (hint.length > 0) {
-	res = hint.text();
-    }
-
-    res = jQuery.trim(res).toLowerCase();
-    return res;
-}
-
-/*
-  Saves the sort params to session for the given event
-*/
-function saveSortParams(event) {
-    var table = jQuery(event.target);
-    var selected = table.find(".headerSortDown");
-    var direction = "down";
-    if (selected.length == 0) {
-	selected = table.find(".headerSortUp");
-	direction = "up";
-    }
-
-    selected = jQuery.trim(selected.text());
-
-    jQuery.post("/task_filters/set_single_task_filter", {
-    	name : "sort",
-    	value : (selected + "_" + direction)
-    });
 }
 
 // TODOS
@@ -952,11 +978,6 @@ function setPageTarget(evt, selected) {
     jQuery("#page_notable_type").val(type);
 }
 
-
-/*
-  Sends an ajax request to save the given user preference to the db
-*/
-function saveUserPreference(name, value) {
-    var params = { "name": name, "value": value.toSource() }
-    jQuery.post("/users/set_preference",  params);
-}
+jQuery(document).ready(function() {
+    fixNestedCheckboxes();
+});

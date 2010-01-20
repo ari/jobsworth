@@ -445,6 +445,10 @@ class Task < ActiveRecord::Base
     @linked_users ||= (self.users + self.watchers)
   end
 
+  def linked_user_notifications
+    self.notifications + self.task_owners
+  end
+
   def set_tags( tagstring )
     return false unless tagstring
     self.tags.clear
@@ -989,8 +993,7 @@ class Task < ActiveRecord::Base
   # If not, that column will be set to false.
   ###
   def mark_as_notified_last_change(users)
-    notifications = self.notifications + self.task_owners
-    notifications.each do |n|
+    linked_user_notifications.each do |n|
       notified = users.include?(n.user)
       n.update_attribute(:notified_last_change, notified)
     end
@@ -1005,7 +1008,7 @@ class Task < ActiveRecord::Base
     if self.new_record?
       res = user.receive_notifications?
     else
-      join = (task_owners + notifications).detect { |j| j.user == user }
+      join = linked_user_notifications.detect { |j| j.user == user }
       res = (join and join.notified_last_change?)
     end
 
@@ -1022,11 +1025,7 @@ class Task < ActiveRecord::Base
   def mark_as_unread(exclude = [])
     exclude = [ exclude ].flatten # make sure it's an array.
 
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
-    
-    notifications.each do |n|
+    linked_user_notifications.each do |n|
       n.update_attribute(:unread, true) if !exclude.include?(n.user)
     end
   end
@@ -1037,11 +1036,7 @@ class Task < ActiveRecord::Base
   # as unread for user.
   ###
   def set_task_read(user, read = true)
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
-    
-    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications = linked_user_notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       n.update_attributes(:unread => !read)
     end
@@ -1051,12 +1046,9 @@ class Task < ActiveRecord::Base
   # Returns true if this task is marked as unread for user.
   ###
   def unread?(user)
-    # TODO: if we merge owners and notifications into one table, should
-    # clean this up.
-    notifications = self.notifications + self.task_owners
     unread = false
 
-    user_notifications = notifications.select { |n| n.user == user }
+    user_notifications = linked_user_notifications.select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end
@@ -1126,6 +1118,20 @@ class Task < ActiveRecord::Base
     @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
   end
 
+  # return a users mapped to the duration of time they have worked on this task
+  def user_work
+    if @user_work.nil?
+      @user_work = {}
+      logs = work_logs.all(:select => "user_id, sum(duration) as duration", :group => "user_id")
+      logs.each do |l|
+        user = User.find(l.user_id)
+        @user_work[user] = l.duration if l.duration.to_i > 0
+      end
+    end
+
+    return @user_work
+  end
+
   private
 
   # If creating a new work log with a duration, fails because it work log
@@ -1142,3 +1148,38 @@ class Task < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: tasks
+#
+#  id                 :integer(4)      not null, primary key
+#  name               :string(200)     default(""), not null
+#  project_id         :integer(4)      default(0), not null
+#  position           :integer(4)      default(0), not null
+#  created_at         :datetime        not null
+#  due_at             :datetime
+#  updated_at         :datetime        not null
+#  completed_at       :datetime
+#  duration           :integer(4)      default(1)
+#  hidden             :integer(4)      default(0)
+#  milestone_id       :integer(4)
+#  description        :text
+#  company_id         :integer(4)
+#  priority           :integer(4)      default(0)
+#  updated_by_id      :integer(4)
+#  severity_id        :integer(4)      default(0)
+#  type_id            :integer(4)      default(0)
+#  task_num           :integer(4)      default(0)
+#  status             :integer(4)      default(0)
+#  requested_by       :string(255)
+#  creator_id         :integer(4)
+#  notify_emails      :string(255)
+#  repeat             :string(255)
+#  hide_until         :datetime
+#  scheduled_at       :datetime
+#  scheduled_duration :integer(4)
+#  scheduled          :boolean(1)      default(FALSE)
+#  worked_minutes     :integer(4)      default(0)
+#
+

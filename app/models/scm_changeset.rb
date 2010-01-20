@@ -30,3 +30,20 @@ class ScmChangeset < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: scm_changesets
+#
+#  id             :integer(4)      not null, primary key
+#  company_id     :integer(4)
+#  project_id     :integer(4)
+#  user_id        :integer(4)
+#  scm_project_id :integer(4)
+#  author         :string(255)
+#  changeset_num  :integer(4)
+#  commit_date    :datetime
+#  changeset_rev  :string(255)
+#  message        :text
+#
+

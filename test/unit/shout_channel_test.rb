@@ -8,3 +8,16 @@ class ShoutChannelTest < ActiveRecord::TestCase
     assert true
   end
 end
+
+# == Schema Information
+#
+# Table name: shout_channels
+#
+#  id          :integer(4)      not null, primary key
+#  company_id  :integer(4)
+#  project_id  :integer(4)
+#  name        :string(255)
+#  description :text
+#  public      :integer(4)
+#
+

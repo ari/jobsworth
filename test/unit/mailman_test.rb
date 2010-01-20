@@ -201,6 +201,14 @@ o------ please reply above this line ------o
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
     end
 
+    should "have the sender marked as last_notified so they get future notifications" do
+      user = @project.company.users.make
+      mail = test_mail(@to, user.email)
+      Mailman.receive(TMail::Mail.parse(mail).to_s)
+      task = @project.tasks.first(:order => "id desc")
+      notification = task.linked_user_notifications.detect { |n| n.user == user }
+      assert notification.notified_last_change?
+    end
 
   end
 
@@ -251,6 +259,24 @@ o------ please reply above this line ------o
         email.to == @tmail.from
       end
     end
+
+    should "add all customes that email users belong to to task" do
+      user1 = User.first
+      user1.customer = Customer.make(:company => @company, :name => "A")
+      user1.save!
+      user2 = User.make(:company => @company, 
+                        :customer => Customer.make(:company => @company, :name => "B"))
+      
+      @tmail.from = user1.email
+      @tmail.cc = user2.email
+      
+      Mailman.receive(@tmail.to_s)
+      task = Task.first(:order => "id desc")
+      assert_equal 2, task.task_customers.length
+      assert task.customers.include?(user1.customer)
+      assert task.customers.include?(user2.customer)
+    end
+
   end
 
 

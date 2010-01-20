@@ -18,3 +18,18 @@ class ChatTest < ActiveSupport::TestCase
     assert_equal 2, @chat.unread
   end
 end
+
+# == Schema Information
+#
+# Table name: chats
+#
+#  id         :integer(4)      not null, primary key
+#  user_id    :integer(4)
+#  target_id  :integer(4)
+#  active     :integer(4)      default(1)
+#  position   :integer(4)      default(0)
+#  last_seen  :integer(4)      default(0)
+#  created_at :datetime
+#  updated_at :datetime
+#
+

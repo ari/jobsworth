@@ -55,3 +55,18 @@ class CustomAttributeValueTest < ActiveRecord::TestCase
   end
 
 end
+
+# == Schema Information
+#
+# Table name: custom_attribute_values
+#
+#  id                  :integer(4)      not null, primary key
+#  custom_attribute_id :integer(4)
+#  attributable_id     :integer(4)
+#  attributable_type   :string(255)
+#  value               :text
+#  created_at          :datetime
+#  updated_at          :datetime
+#  choice_id           :integer(4)
+#
+

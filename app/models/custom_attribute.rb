@@ -82,3 +82,21 @@ class CustomAttribute < ActiveRecord::Base
     end
   end
 end
+
+# == Schema Information
+#
+# Table name: custom_attributes
+#
+#  id                  :integer(4)      not null, primary key
+#  company_id          :integer(4)
+#  attributable_type   :string(255)
+#  display_name        :string(255)
+#  ldap_attribute_type :string(255)
+#  mandatory           :boolean(1)
+#  multiple            :boolean(1)
+#  max_length          :integer(4)
+#  position            :integer(4)
+#  created_at          :datetime
+#  updated_at          :datetime
+#
+

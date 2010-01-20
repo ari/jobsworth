@@ -31,11 +31,26 @@
 
 <% end -%>
 
-<% if !local_assigns[:hide_tabs] %>	
-	<ul class="tabs">
-<% # TODO: add 'active' class to current page %>
-		<%= content_tag(:li, link_to("List", { :controller => "tasks", :action => "list" }), :class => "first") %>
-		<%= content_tag(:li, link_to("Schedule", { :controller => "schedule", :action => "list" }), :class => "") %>
-		<%= content_tag(:li, link_to("Gantt", { :controller => "schedule", :action => "gantt" }), :class => "last") %>
-	</ul>
+<% if !local_assigns[:hide_tabs] %>
+  <ul class="tabs">
+  <%
+    links = []
+    links << [ "List", { :controller => "tasks", :action => "list" } ]
+    links << [ "Schedule", { :controller => "schedule", :action => "list" } ]
+    links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
+
+    link_list = ""
+    links.each_with_index do |opts, i|
+      name, url_opts = opts
+      link = link_to(name, url_opts)
+      class_names = []
+      class_names << "first" if i == 0
+      class_names << "last" if i == links.length - 1
+      class_names << "active" if params.merge(url_opts) == params
+
+      link_list += content_tag(:li, link, :class => class_names.join(" "))
+    end
+   -%>
+   <%= link_list %>
+  </ul>
 <% end %>

@@ -7,3 +7,16 @@ class GeneratedReport < ActiveRecord::Base
   belongs_to :user
 
 end
+
+# == Schema Information
+#
+# Table name: generated_reports
+#
+#  id         :integer(4)      not null, primary key
+#  company_id :integer(4)
+#  user_id    :integer(4)
+#  filename   :string(255)
+#  report     :text
+#  created_at :datetime
+#
+

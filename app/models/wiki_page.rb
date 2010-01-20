@@ -73,3 +73,18 @@ class WikiPage < ActiveRecord::Base
   end
   
 end
+
+# == Schema Information
+#
+# Table name: wiki_pages
+#
+#  id         :integer(4)      not null, primary key
+#  company_id :integer(4)
+#  project_id :integer(4)
+#  created_at :datetime
+#  updated_at :datetime
+#  name       :string(255)
+#  locked_at  :datetime
+#  locked_by  :integer(4)
+#
+

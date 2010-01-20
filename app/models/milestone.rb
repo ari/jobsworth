@@ -93,3 +93,23 @@ class Milestone < ActiveRecord::Base
   end
 
 end
+
+# == Schema Information
+#
+# Table name: milestones
+#
+#  id              :integer(4)      not null, primary key
+#  company_id      :integer(4)
+#  project_id      :integer(4)
+#  user_id         :integer(4)
+#  name            :string(255)
+#  description     :text
+#  due_at          :datetime
+#  position        :integer(4)
+#  completed_at    :datetime
+#  total_tasks     :integer(4)      default(0)
+#  completed_tasks :integer(4)      default(0)
+#  scheduled_at    :datetime
+#  scheduled       :boolean(1)      default(FALSE)
+#
+
