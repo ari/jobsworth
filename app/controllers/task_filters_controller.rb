@@ -56,6 +56,7 @@ class TaskFiltersController < ApplicationController
     redirect_using_js_if_needed("/tasks/list")
   end
 
+  # Select a search filter which causes the search filter partial to be reloaded
   def select
     @filter = current_user.company.task_filters.find(params[:id])
 
@@ -78,7 +79,7 @@ class TaskFiltersController < ApplicationController
       flash[:notice] = _"You don't have access to that task filter"
     end
 
-    redirect_to "/tasks/list"
+    render :partial => "search_filter"
   end
 
   def update_current_filter

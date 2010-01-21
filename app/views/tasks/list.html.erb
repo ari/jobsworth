@@ -1,6 +1,28 @@
 <div id="content">
-	<%= render(:partial => "search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
+	<%= render(:partial => "task_filters/search_filter", :locals => { :redirect_params => { :tag => params[:tag] }}) %>
 
+	<ul class="tabs">
+	<%
+	links = []
+	links << [ "List", { :controller => "tasks", :action => "list" } ]
+	links << [ "Schedule", { :controller => "schedule", :action => "list" } ]
+	links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
+	
+	link_list = ""
+	links.each_with_index do |opts, i|
+	name, url_opts = opts
+	link = link_to(name, url_opts)
+	class_names = []
+	class_names << "first" if i == 0
+	class_names << "last" if i == links.length - 1
+	class_names << "active" if params.merge(url_opts) == params
+	
+	link_list += content_tag(:li, link, :class => class_names.join(" "))
+	end
+	-%>
+	<%= link_list %>
+	</ul>
+	
 	<table id="task_list"></table> 
 	<div id="task_pager"></div>
 

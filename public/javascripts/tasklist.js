@@ -15,6 +15,9 @@ function getUserPreference(name) {
     jQuery.post("/users/set_preference",  params);
 }
 
+function tasklistReload() {
+	jQuery("#task_list").trigger("reloadGrid");
+}
 
 /*
   Loads the task information for the task and displays 
@@ -67,7 +70,7 @@ function initTaskList(colModel, textStatus) {
 			repeatitems:false
 		},
 		colModel : colModel,
-		loadonce: true, // force sorting to happen in the browser
+		loadonce: false, // force sorting to happen in the browser
 		sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
 		sortname: 'id',
 		autowidth: true,

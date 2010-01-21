@@ -278,7 +278,7 @@ the containing form.
 */
 function removeSearchFilter(link) {
     link = jQuery(link);
-    link.parent(".search_filter").remove();
+    link.parent("#search_filter").remove();
     submitSearchFilterForm();
 }
 
