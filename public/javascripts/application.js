@@ -44,7 +44,7 @@ jQuery("#loading").bind("ajaxSend", function(){
 function updateComment(taskId) {
   if(taskId !== null) {
     var comment = comments.get(taskId);
-    if( comment !== null && comment != "" ) {
+    if( comment !== null && comment !== "" ) {
       var elements = comment.split("<br/>");
       var author = elements.shift();
       Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
@@ -331,6 +331,7 @@ if a number is entered and then the user hits enter
 */
 function addSearchFilterTaskIdListener() {
     var filter = jQuery("#search_filter");
+}
 
 function addProjectToUser(input, li) {
     li = jQuery(li);
