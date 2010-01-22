@@ -16,7 +16,7 @@
 
 	<% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
 		<span class="log_worktime">
-		(<%= link_to "#{worked_nice(log.duration/60)}", { :controller => 'tasks', :action => 'edit_log', :id => log } %> worked)
+		(<%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) %> worked)
 		</span>
 	<% end %>
 
