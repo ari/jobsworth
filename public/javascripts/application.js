@@ -115,19 +115,6 @@ function do_execute(user, code) {
   }
 }
 
-function updateSelect(sel, response) {
-   response.evalScripts();
-
-   var lines = response.split('\n');
-
-   var obj = json_decode(lines[0]);
-   sel.options.length = 0;
-   var opts = obj.options;
-   for( var i=0; i<opts.length; i++ ) {
-     sel.options[i] = new Option(opts[i].text,opts[i].value,null,false);
-   }
-}
-
 function toggleChatPopup(el) {
   if( Element.hasClassName(el.up(), 'presence-section-active') ) {
     Element.removeClassName(el.up(), 'presence-section-active');
@@ -168,12 +155,19 @@ function rebuildSelect(select, data) {
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
+// also old /tasks/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
+// new /tasks/get_milestones returns flag add_milestone_visible
 function refreshMilestones(pid, mid) {
   jQuery.getJSON("/tasks/get_milestones", {project_id: pid},
 	function(data) {
 		var milestoneSelect = jQuery('#task_milestone_id').get(0);
 		rebuildSelect(milestoneSelect, data.options);
 		milestoneSelect.options[mid].selected = true;
+                if(data.add_milestone_visible){
+                  jQuery('#add_milestone').show();
+                }else{
+                  jQuery('#add_milestone').hide();
+                }
   });
 }
 
@@ -812,4 +806,22 @@ function setPageTarget(evt, selected) {
 
 jQuery(document).ready(function() {
     fixNestedCheckboxes();
+});
+
+/*TODO: Move following code to another file, use sprockets plugin
+*/
+/*
+  Attach behavior to views/tasks/_details.html.erb,
+  instead of removed helper method task_project_watchers_js
+*/
+jQuery(document).ready(function(){
+  var projectSelect = jQuery('#task_project_id');
+  if(projectSelect.size()){
+    projectSelect.change(function(){
+      projectId=jQuery('#task_project_id option:selected').val();
+      refreshMilestones(projectId,0);
+      addAutoAddUsersToTask('', '', projectId);
+      addClientLinkForTask(projectId);
+    });
+  }
 });

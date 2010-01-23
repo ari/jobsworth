@@ -253,17 +253,6 @@ module TasksHelper
     return grouped_options_for_select(options, task.project_id, "Please select")
   end
 
-  # Returns the js to watch a task's project selector
-  def task_project_watchers_js
-    js = "
-    new Form.Element.EventObserver('task_project_id', function(element, value) {new Ajax.Updater('task_milestone_id', '/tasks/get_milestones', {asynchronous:true, evalScripts:true, onComplete:function(request){hideProgress();}, onLoading:function(request){showProgress();}, parameters:'project_id=' + value, insertion: updateSelect })});
-    new Form.Element.EventObserver('task_project_id', function(element, projectId) { addAutoAddUsersToTask('', '', projectId); });
-    new Form.Element.EventObserver('task_project_id', function(element, projectId) { addClientLinkForTask(projectId); });
-    "
-
-    return javascript_tag(js)
-  end
-
   ###
   # Returns an array to use as the options for a select
   # to change a work log's status.
