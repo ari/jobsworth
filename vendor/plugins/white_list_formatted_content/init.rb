@@ -1,7 +1,7 @@
 ActiveRecord::Base.class_eval do
-  include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper, WhiteListHelper
+  include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper
   def self.format_attribute(attr_name)
-    class << self; include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper, WhiteListHelper; end
+    class << self; include ActionView::Helpers::TagHelper, ActionView::Helpers::TextHelper; end
     define_method(:body)       { read_attribute attr_name }
     define_method(:body_html)  { read_attribute "#{attr_name}_html" }
     define_method(:body_html=) { |value| write_attribute "#{attr_name}_html", value }
