@@ -309,6 +309,16 @@ label .unread_icon {
     float: right;
 }
 
+.due_today {
+	color: blue;
+}
+.due_future {
+	color: black;
+}
+.due_past {
+	color: red;
+}
+
 .closed {
 
 }

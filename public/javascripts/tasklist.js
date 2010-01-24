@@ -142,7 +142,38 @@ function initTaskList(colModel, textStatus) {
 				return "";
 			}
 			var one_day=1000*60*60*24;
-			return Math.ceil( (new Date().getTime()-new Date(cellvalue * 1000)) /one_day) + " days";
+			var days = Math.round( (new Date(cellvalue * 1000) - new Date().getTime()) /one_day);
+			if (days == 0) {
+				return "<span class='due_today'>today</span>";
+			}
+			if (days == 1) {
+				return "<span class='due_future'>tomorrow</span>";
+			}
+			if (days == -1) {
+				return "<span class='due_past'>" + "yesterday</span>";
+			}
+			if (days > 548) {
+				return "<span class='due_future'>" + Math.round(days/365) + " years</span>";
+			}
+			if (days < -548) {
+				return "<span class='due_past'>" + Math.round(-days/365) + " years ago</span>";
+			}
+			if (days > 50) {
+				return "<span class='due_future'>" + Math.round(days/30.4) + " months</span>"; // average number of days in a month
+			}
+			if (days < -50) {
+				return "<span class='due_past'>" + Math.round(-days/30.4) + " months ago</span>";
+			}
+			if (days > 14) {
+				return "<span class='due_future'>" + Math.round(days/7) + " weeks</span>";
+			}
+			if (days < -14) {
+				return "<span class='due_past'>" + Math.round(-days/7) + " weeks ago</span>";
+			}
+			if (days > 0) {
+				return "<span class='due_future'>" + days + " days</span>";
+			}
+			return "<span class='due_past'>" + -days + " days ago</span>";
 		}
 	});
 	
