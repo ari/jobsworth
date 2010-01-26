@@ -7,7 +7,7 @@ module TaskFilterHelper
     defaults = { :name_method => :name }
     options = defaults.merge(options)
 
-    return collection.map do |o| 
+    return collection.map do |o|
       name = o.send(options[:name_method])
       id = o.id
       id = "#{ options[:prefix] }#{ id }" if options[:prefix]
@@ -36,7 +36,7 @@ module TaskFilterHelper
   def link_to_remove_filter(filter_name, name, value, id)
     res = content_tag :span, :class => "search_filter" do
       hidden_field_tag("#{ filter_name }[]", id) +
-        "#{ name }:#{ value }" + 
+        "#{ name }:#{ value }" +
         link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)")
     end
 
@@ -44,15 +44,21 @@ module TaskFilterHelper
   end
 
   # Return the html for a remote task filter form tag
-  def remote_filter_form_tag
-    form_remote_tag(:url => "/task_filters/update_current_filter", 
+  def remote_filter_form_tag(&block)
+    args={ :url => "/task_filters/update_current_filter",
                     :html => { :method => "post", :id => "search_filter_form"},
                     :loading => "showProgress()",
-                    :update => "#content")
+                    :update => "search_filter_keys",
+                    :loaded => "tasklistReload(); hideProgress() "}
+    if block_given?
+      return form_remote_tag(args, &block)
+    else
+      return form_remote_tag(args)
+    end
   end
 
   # Returns a link to set the task filter to show only open tasks.
-  # If user is passed, only open tasks belonging to that user will 
+  # If user is passed, only open tasks belonging to that user will
   # be shown
   def link_to_open_tasks(user = nil)
     str = user ? _("My Open Tasks") : _("Open Tasks")
@@ -63,7 +69,7 @@ module TaskFilterHelper
     if user
       link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
     end
-    link_params = { :task_filter => { :qualifiers_attributes => link_params } } 
+    link_params = { :task_filter => { :qualifiers_attributes => link_params } }
 
     return link_to(str, update_current_filter_task_filters_path(link_params))
   end
@@ -76,15 +82,15 @@ module TaskFilterHelper
     link_params = []
     link_params << { :qualifiable_type => "Status", :qualifiable_id => in_progress.id }
     link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
-    link_params = { :task_filter => { :qualifiers_attributes => link_params } } 
+    link_params = { :task_filter => { :qualifiers_attributes => link_params } }
 
-    return link_to(_("My In Progress Tasks"), 
+    return link_to(_("My In Progress Tasks"),
                    update_current_filter_task_filters_path(link_params))
   end
 
   def link_to_unread_tasks(user)
     label = _("My Unread Tasks")
-    link_params = { :task_filter => { 
+    link_params = { :task_filter => {
         :unread_only => true } }
 
     count = TaskFilter.new(:user => current_user, :unread_only => true).count
@@ -107,17 +113,17 @@ module TaskFilterHelper
     str += " (#{ count })" if count > 0
     class_name = (count > 0 ? "unread" : "")
 
-    return link_to_remote(str, :update => "search_filter", :class => class_name, :loaded => 'tasklistReload()', :url => { :controller => 'task_filters', :action => 'select', :id => filter.id})
+    return link_to_remote(str, :update => "search_filter_keys", :class => class_name, :loaded => 'tasklistReload()', :url => { :controller => 'task_filters', :action => 'select', :id => filter.id})
   end
 
   # Returns the name to print out to describe the type of the
   # given qualifier
   def qualifier_name(qualifier)
-    if qualifier.qualifiable_type == "PropertyValue" 
+    if qualifier.qualifiable_type == "PropertyValue"
       return qualifier.qualifiable.property.name
     elsif qualifier.qualifiable_type == "TimeRange"
       return qualifier.qualifiable_column.gsub("_at", "").humanize
-    else 
+    else
       qualifier.qualifiable_type
     end
   end

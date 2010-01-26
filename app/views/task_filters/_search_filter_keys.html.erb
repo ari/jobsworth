@@ -1,0 +1,5 @@
+
+<%= render :partial => "/task_filters/qualifier", :collection => current_task_filter.qualifiers %>
+<%= render :partial => "/task_filters/keyword", :collection => current_task_filter.keywords %>
+<%= render :partial => "/task_filters/booleans", :locals => { :task_filter => current_task_filter } %>
+
