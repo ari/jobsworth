@@ -113,7 +113,7 @@ module TaskFilterHelper
     str += " (#{ count })" if count > 0
     class_name = (count > 0 ? "unread" : "")
 
-    return link_to_remote(str, :update => "search_filter_keys", :class => class_name, :loaded => 'tasklistReload()', :url => { :controller => 'task_filters', :action => 'select', :id => filter.id})
+    return link_to(str, { :controller => 'task_filters', :action => 'select', :id => filter.id})
   end
 
   # Returns the name to print out to describe the type of the

@@ -837,3 +837,27 @@ jQuery(document).ready(function(){
     });
   }
 });
+
+/*Attach behavior to filtes panel,
+  change filter via ajax only on task/list page.
+  On all other pages, when user click on filter link change filer
+*/
+function initFilterPanel()
+{
+    jQuery('div.task_filters ul li a').click(function(){
+        jQuery.ajax({
+            complete: function(request){tasklistReload();} ,
+            data:'',
+            success:  function(request){jQuery('#search_filter_keys').html(request);},
+            type:'post',
+            url: this.href
+        });
+        return false;
+    });
+}
+jQuery(document).ready(function(){
+    //only if we on task list page
+    if( /tasks\/list$/.test(document.location.href) ){
+        initFilterPanel();
+    }
+});
