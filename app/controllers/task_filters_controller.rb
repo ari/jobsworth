@@ -78,8 +78,11 @@ class TaskFiltersController < ApplicationController
     else
       flash[:notice] = _"You don't have access to that task filter"
     end
-
-    render :partial => "search_filter_keys"
+    if request.xhr?
+      render :partial => "search_filter_keys"
+    else
+      redirect_to '/tasks/list'
+    end
   end
 
   def update_current_filter
