@@ -312,8 +312,8 @@ function addSearchFilter(textField, selected) {
     */
     var typeName = selected.attr("data-type");
     var typeValue = selected.attr("data-typeval");
-    var columnName = selected.find("data-col");
-    var columnValue = selected.find("data-colval");
+    var columnName = selected.attr("data-col");
+    var columnValue = selected.attr("data-colval");
 
     if (idName && idName.length > 0) {
         var filterKeys = jQuery("#search_filter_form ul#search_filter_keys");
