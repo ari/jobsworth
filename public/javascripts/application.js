@@ -842,11 +842,12 @@ jQuery(document).ready(function(){
   change filter via ajax only on task/list page.
   On all other pages, when user click on filter link change filer
 */
-function initFilterPanel()
+function initFiltersPanel()
 {
     jQuery('div.task_filters ul li a').click(function(){
         jQuery.ajax({
-            complete: function(request){tasklistReload();} ,
+            beforeSend: function(){ showProgress(); },
+            complete: function(request){ tasklistReload(); hideProgress(); } ,
             data:'',
             success:  function(request){jQuery('#search_filter_keys').html(request);},
             type:'post',
@@ -855,9 +856,27 @@ function initFilterPanel()
         return false;
     });
 }
+
+function initTagsPanel()
+{
+    //NOTE: copy-and-paste from initFiltersPanel, must be refactored
+     jQuery('#tags a').click(function(){
+        jQuery.ajax({
+            beforeSend: function(){ showProgress(); },
+            complete: function(request){ tasklistReload(); hideProgress(); } ,
+            data:'',
+            success:  function(request){jQuery('#search_filter_keys').html(request);},
+            type:'post',
+            url: this.href
+        });
+        return false;
+    });
+}
+
 jQuery(document).ready(function(){
     //only if we on task list page
     if( /tasks\/list$/.test(document.location.href) ){
-        initFilterPanel();
+        initFiltersPanel();
+        initTagsPanel();
     }
 });
