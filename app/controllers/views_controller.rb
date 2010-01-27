@@ -1,5 +1,5 @@
-if RUBY_VERSION < "1.9" 
-  require "fastercsv" 
+if RUBY_VERSION < "1.9"
+  require "fastercsv"
 else
   require "csv"
 end
@@ -46,9 +46,9 @@ class ViewsController < ApplicationController
   def destroy
     if current_user.admin?
       @view = View.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    else 
+    else
       @view = View.find(params[:id], :conditions => ["company_id = ? AND user_id = ?", current_user.company_id, current_user.id])
-    end 
+    end
     flash['notice'] = _("View '%s' was deleted.", @view.name)
     @view.destroy
     redirect_from_last
@@ -78,13 +78,13 @@ class ViewsController < ApplicationController
   def select_project
     begin
     @project = Project.find(params[:id], :conditions => ["company_id = ? AND id IN (#{current_project_ids})", current_user.company_id])
-    rescue 
+    rescue
       flash['notice'] = _('Either the project doesn\'t exist, or you don\'t have access to it.')
       redirect_from_last
       return
     end
 
-    set_session_filters(:filter_project => @project.id, 
+    set_session_filters(:filter_project => @project.id,
                         :last_project_id => session[:filter_project])
 
     redirect_to :controller => 'tasks', :action => 'list'
@@ -100,7 +100,7 @@ class ViewsController < ApplicationController
 
   def select_client
     @client = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    
+
     set_session_filters(:filter_customer => @client.id)
 
     redirect_to :controller => 'tasks', :action => 'list'
@@ -118,7 +118,7 @@ class ViewsController < ApplicationController
   def my_tasks
     @view = View.new
     @view.name = _('My Open Tasks')
-    
+
     set_session_filters(:view => @view, :filter_user => current_user.id,
                         :filter_status => 0)
 
@@ -145,8 +145,8 @@ class ViewsController < ApplicationController
   end
 
   def browse
-    set_session_filters(:filter_status => [ 0, 1 ], 
-                        :show_all_unread => 1, 
+    set_session_filters(:filter_status => [ 0, 1 ],
+                        :show_all_unread => 1,
                         :filter_user => current_user.id,
                         :hide_deferred => 1)
 
@@ -154,6 +154,7 @@ class ViewsController < ApplicationController
   end
 
   def get_projects
+    #TODO: current_user.projects.each{|p| p.to_json }
     if params[:customer_id].to_i == 0
       @projects = current_user.projects.collect {|p| "{\"text\":\"#{p.name} / #{p.customer.name}\", \"value\":#{p.id}}" }.join(',')
     else

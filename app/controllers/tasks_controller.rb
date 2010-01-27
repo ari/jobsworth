@@ -274,7 +274,7 @@ class TasksController < ApplicationController
   end
 
   def update
-    projects = current_user.projects.collect{|p|p.id}
+    projects = current_user.project_ids
 
     update_type = :updated
 
@@ -597,7 +597,7 @@ class TasksController < ApplicationController
 
   def ajax_check
     begin
-      @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
+      @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.project_ids], :include => :project)
     rescue
       render :nothing => true
       return
@@ -658,7 +658,7 @@ class TasksController < ApplicationController
   end
 
   def ajax_uncheck
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.projects.collect{|p|p.id}], :include => :project)
+    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.project_ids ], :include => :project)
 
     unless @task.completed_at.nil?
 
