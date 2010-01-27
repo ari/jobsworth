@@ -39,7 +39,7 @@ class InstallController < ApplicationController
 	ActiveRecord::Base.connection.execute("GRANT ALL ON #{db[:name]}.* TO '#{db[:username]}'@'localhost' IDENTIFIED BY '#{db[:password]}';")
 	ActiveRecord::Base.connection.execute("FLUSH PRIVILEGES;\" | mysql -u root -p '#{db[:password]}'")
 
-	db_config = YAML.load_file(File.join(RAILS_ROOT, ÒconfigÓ, Òdatabase.ymlÓ))
+	db_config = YAML.load_file(File.join(RAILS_ROOT, "config", "database.yml"))
 	ActiveRecord::Base.establish_connection(db_config[RAILS_ENV])
 
 
