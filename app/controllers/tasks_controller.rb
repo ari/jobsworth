@@ -1,5 +1,5 @@
-if RUBY_VERSION < "1.9" 
-  require "fastercsv" 
+if RUBY_VERSION < "1.9"
+  require "fastercsv"
 else
   require "csv"
 end
@@ -32,7 +32,7 @@ class TasksController < ApplicationController
   def index
     redirect_to 'list'
   end
-  
+
   def list_old
     list_init
     @tags = {}
@@ -45,7 +45,6 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html # list.html.erb
-      format.js { render :partial => "task_list_v2", :layout => false }
       format.xml  # list.xml.erb
     end
   end
@@ -67,9 +66,9 @@ class TasksController < ApplicationController
     p = current_user.projects.find(params[:project_id]) rescue nil
     if p && current_user.can?(p, 'milestone')
       res << '"add_milestone_visible":"true"'
-    else 
+    else
       res << '"add_milestone_visible":"false"'
-    end 
+    end
     res << '}'
 
     render :text => "#{res}"
@@ -101,7 +100,7 @@ class TasksController < ApplicationController
       end
 
       conds = [ conds ] + cond_params
-      @resources = current_user.company.resources.find(:all, 
+      @resources = current_user.company.resources.find(:all,
                                                        :conditions => conds)
     end
   end
@@ -116,7 +115,7 @@ class TasksController < ApplicationController
     conditions = { :task_num => task_num, :project_id => current_projects }
     dependency = current_user.company.tasks.find(:first, :conditions => conditions)
 
-    render(:partial => "dependency", 
+    render(:partial => "dependency",
            :locals => { :dependency => dependency, :perms => {} })
   end
 
@@ -150,8 +149,8 @@ class TasksController < ApplicationController
     @task.company_id = current_user.company_id
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
-    @task.duration = parse_time(params[:task][:duration], true) 
-    @task.set_tags(tags) 
+    @task.duration = parse_time(params[:task][:duration], true)
+    @task.set_tags(tags)
     @task.set_task_num(current_user.company_id)
     @task.duration = 0 if @task.duration.nil?
 
@@ -169,7 +168,7 @@ class TasksController < ApplicationController
       render :action => 'new'
       return
     end
-    
+
     if @task.save
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
@@ -211,18 +210,18 @@ class TasksController < ApplicationController
     @task = current_user.company.tasks.find_by_task_num(params[:id])
 
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
-      
+
 
     if @task.nil? or !current_user.can_view_task?(@task)
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
       return
-    end 
+    end
 
     init_form_variables(@task)
     session[:last_task_id] = @task.id
     @task.set_task_read(current_user)
-    
+
     respond_to do |format|
       format.html
       format.js { render(:layout => false) }
@@ -293,7 +292,7 @@ class TasksController < ApplicationController
     else
       params[:task][:hide_until] = @task.hide_until
     end
- 
+
     @task.attributes = params[:task]
     @task.build_work_log(params, current_user)
 
@@ -434,7 +433,7 @@ class TasksController < ApplicationController
 
         if( @old_task.status == 6 )
           @task.hide_until = nil
-        end 
+        end
 
       end
 
@@ -449,7 +448,7 @@ class TasksController < ApplicationController
         update_type = :comment if body.length == 0
         worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
         worklog.comment = true
-        
+
         body << "\n" if body.length > 0
         email_body = body + current_user.name + ":\n"
 
@@ -526,7 +525,7 @@ class TasksController < ApplicationController
              filename = filename.split("/").last
              filename = filename.split("\\").last
              filename = filename.gsub(/[^\w.]/, '_')
-  
+
              task_file = ProjectFile.new()
              task_file.company = current_user.company
              task_file.customer = task.project.customer
@@ -537,15 +536,15 @@ class TasksController < ApplicationController
              task_file.name = filename
              task_file.save
              task_file.file_size = tmp_file.size
-  
+
              task_file.save
              task_file.reload
-  
+
              File.umask(0)
              if !File.directory?(task_file.path)
               Dir.mkdir(task_file.path, 0777) rescue nil
              end
-  
+
              File.open(task_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
                                                     flash['notice'] = _("Permission denied while saving file to #{task_file.file_path}.")
                                                     task_file.destroy
@@ -602,10 +601,10 @@ class TasksController < ApplicationController
     rescue
       render :nothing => true
       return
-    end 
+    end
 
     old_status = @task.status_type
-    
+
     unless @task.completed_at
 
       worklog = WorkLog.new
@@ -624,13 +623,13 @@ class TasksController < ApplicationController
         worklog.log_type = EventLog::TASK_COMPLETED
         unless @current_sheet.body.blank?
           body = "\n#{@current_sheet.body}"
-          worklog.comment = true 
-        end 
-      else 
+          worklog.comment = true
+        end
+      else
         worklog.started_at = Time.now.utc
         worklog.duration = 0
         worklog.log_type = EventLog::TASK_COMPLETED
-      end 
+      end
 
       @task.completed_at = Time.now.utc
       @task.updated_by_id = current_user.id
@@ -641,7 +640,7 @@ class TasksController < ApplicationController
       worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
       if worklog.save
         @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
-      end 
+      end
 
 
       if @task.next_repeat_date != nil
@@ -694,17 +693,17 @@ class TasksController < ApplicationController
     unless @current_sheet
       render :text => "#{_("Task not worked on")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
       return
-    end 
-    if params[:worklog] && params[:worklog][:body] 
-      @current_sheet.body = params[:worklog][:body] 
+    end
+    if params[:worklog] && params[:worklog][:body]
+      @current_sheet.body = params[:worklog][:body]
       @current_sheet.save
       render :text => "#{_("Saved")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
-    else 
+    else
       render :text => "#{_("Error saving")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
-    end 
+    end
   end
-  
-  
+
+
   def update_sheet_info
   end
 
@@ -850,7 +849,7 @@ class TasksController < ApplicationController
         if elems[1].split('_').size > 2
           milestone = Milestone.find(elems[1].split('_')[2], :conditions => ["project_id IN (#{current_project_ids})"])
 
-          
+
           if @task.milestone_id != milestone.id
             old_milestone = @task.milestone.nil? ? "None" : @task.milestone.name
             new_milestone = milestone.nil? ? "None" : milestone.name
@@ -914,8 +913,8 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
     if @task
       @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
-    end 
-  end 
+    end
+  end
 
   ###
   # This action just sets the unread status for a task.
@@ -941,7 +940,7 @@ class TasksController < ApplicationController
 
     user = current_user.company.users.find(params[:user_id])
     @task.notifications.build(:user => user)
-    
+
     render(:partial => "notification", :locals => { :notification => user })
   end
 
@@ -953,7 +952,7 @@ class TasksController < ApplicationController
 
     customer = current_user.company.customers.find(params[:client_id])
     @task.task_customers.build(:customer => customer)
-    
+
     render(:partial => "task_customer", :locals => { :task_customer => customer })
   end
 
@@ -978,14 +977,14 @@ class TasksController < ApplicationController
     end
 
     render :text => res
-  end    
+  end
 
   def add_client_for_project
     project = current_user.projects.find(params[:project_id])
     res = ""
 
     if project
-      res = render_to_string(:partial => "task_customer", 
+      res = render_to_string(:partial => "task_customer",
                              :object => project.customer)
     end
 
@@ -1009,7 +1008,7 @@ class TasksController < ApplicationController
   def group_tasks(tasks)
     group_ids = {}
     groups = []
-        
+
     if session[:group_by].to_i == 1 # tags
       @tag_names = @all_tags.collect{|i,j| i}
       groups = Task.tag_groups(current_user.company_id, @tag_names, tasks)
@@ -1026,7 +1025,7 @@ class TasksController < ApplicationController
 
     elsif session[:group_by].to_i == 4 # Milestones
       tf = TaskFilter.new(self, session)
-      
+
       if tf.milestone_ids.any?
         filter = " AND id in (#{ tf.milestone_ids.join(",") })"
       elsif tf.project_ids.any?
@@ -1042,7 +1041,7 @@ class TasksController < ApplicationController
       conditions += " AND project_id IN (#{current_project_ids})#{filter} "
       conditions += " AND completed_at IS NULL"
 
-      milestones = Milestone.find(:all, :conditions => conditions, 
+      milestones = Milestone.find(:all, :conditions => conditions,
                                   :order => "due_at, name")
       milestones.each { |m| group_ids[m.name + " / " + m.project.name] = m.id }
       group_ids['Unassigned'] = 0
@@ -1144,7 +1143,7 @@ class TasksController < ApplicationController
       emails = emails.select { |e| !e.blank? }
 
       worklog.users = users
-      
+
       if users.any?
         comments = users.map { |u| "#{ u.name } (#{ u.email })" }
         comment = _("Notification emails sent to %s", comments.join(", "))
@@ -1153,9 +1152,9 @@ class TasksController < ApplicationController
         worklog.body += comment
         worklog.save
       end
-      
+
       emails.each do |email|
-        yield(email) 
+        yield(email)
       end
     end
 

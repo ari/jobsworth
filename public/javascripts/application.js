@@ -258,7 +258,7 @@ does that via ajax. Otherwise does a normal html post
 function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
-    if (redirect.indexOf("/tasks/list?") >= 0) {
+    if (redirect.indexOf("/tasks/list") >= 0) {
                 form.onsubmit();
     }
     else {

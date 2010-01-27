@@ -9,7 +9,11 @@
                         <%
                         redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
                         redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
-                        redir = url_for({ :action => redir_action, :format => "js" }.merge(redir_params))
+                        # tasks.list?format=js is deprecated since searchForm branch
+                        unless redir_action == "list"
+                          redir_params[:format=>"js"]
+                        end
+                        redir = url_for({ :action => redir_action}.merge(redir_params))
                         -%>
                         <input type="hidden" name="redirect_action" value="<%= redir %>" />
 
