@@ -5,9 +5,85 @@ class InstallController < ApplicationController
   before_filter :check_can_install
 
   def index
+    render :action => "one"
   end
 
-  def create
+  # Step one: create the database
+  def one
+	db = params[:db]
+	
+	db_config = []
+	    
+	db_config << "production:"
+	db_config << "adapter: #{db[:type]}"
+	db_config << "database: #{db[:name]}"
+	db_config << "host: #{db[:host]}"
+	db_config << "username: #{db[:username]}"
+	db_config << "password: #{db[:password]}"
+	db_config << "encoding: utf8"
+	db_config << "SOCKET"
+	  
+	File.open("config/database.yml", "w") do |file|
+		file.puts db_config
+	end
+	
+	ActiveRecord::Base.establish_connection(
+		:adapter  => db[:type],
+		:host     => db[:host],
+		:username => db[:rootuser],
+		:password => db[:rootpass]
+	)
+	
+	ActiveRecord::Base.connection.create_database(db[:name])
+	ActiveRecord::Base.connection.execute("CREATE DATABASE #{db[:name]} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;")
+	ActiveRecord::Base.connection.execute("GRANT ALL ON #{db[:name]}.* TO '#{db[:username]}'@'localhost' IDENTIFIED BY '#{db[:password]}';")
+	ActiveRecord::Base.connection.execute("FLUSH PRIVILEGES;\" | mysql -u root -p '#{db[:password]}'")
+
+	db_config = YAML.load_file(File.join(RAILS_ROOT, ÒconfigÓ, Òdatabase.ymlÓ))
+	ActiveRecord::Base.establish_connection(db_config[RAILS_ENV])
+
+
+	# Creating directories...
+	Dir.mkdir("log") rescue nil
+	Dir.mkdir("index") rescue nil
+	Dir.mkdir("store") rescue nil
+	Dir.mkdir("store/avatars") rescue nil
+	Dir.mkdir("store/logos") rescue nil
+	Dir.mkdir("tmp") rescue nil
+	Dir.mkdir("tmp/cache") rescue nil
+	
+	
+	# Initialize database schema
+	system("rake db:schema:load RAILS_ENV=production")
+	system("rake db:migrate RAILS_ENV=production")
+
+
+	# Loading Rails to create account
+	begin
+	require "config/environment"
+	rescue
+	  puts "** Unable to load Rails, please try:"
+	  puts "  ./script/console"
+	  puts "and look at the error reported."
+	  exit
+	end
+
+	# Running all migrations
+	system("rake db:migrate RAILS_ENV=production")
+	
+	render :action => "two"
+  end
+  
+  def two
+    prefs = params[:pref]
+    # prefs.domain
+    # subdomain = domain.split('.').first
+    # prefs.email_domain = prefs.replyto.split('.')[1..-1].join('.')
+    # prefs.replyto = prefs.replyto.split('@').first
+    # prefs.from = prefs.from.split('@').first
+    
+    
+    
     @company = Company.new(params[:company])
     @company.subdomain = @company.name.to_s.parameterize("_")
 

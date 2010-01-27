@@ -1,0 +1,46 @@
+<h1>Step one: configure the database</h1>
+
+<% form_tag({ :action => "one" }, :id => "install") do -%>
+
+  <fieldset class="basic">
+    <legend>MySQL or Postgresq database</legend>
+    <%= error_messages_for "database" %>
+
+    <%= label_tag :type, "Database type:" %>
+    <%= select_tag :type, "<option>mysql</option><option>postgres</option>" %>
+	The type of database you wish to use.
+
+    <%= label_tag :host, "Database host:" %>
+    <%= text_field_tag :host, "localhost" %>
+    The hostname for the database server. Use 'localhost' if the database is on the same server as Jobsworth.
+    
+    <%= label_tag :port, "Database port:" %>
+    <%= text_field_tag :port, "3306" %>
+    
+    <%= label_tag :name, "Database name:" %>
+    <%= text_field_tag :username, "jobsworth" %>
+    This is the name of the database you would like to create.
+        
+    <%= label_tag :username, "Database username:" %>
+    <%= text_field_tag :username, "jobsworth" %>
+    This is the username of a user with read and write privileges to the database. For better security, don't make this the root user.
+
+    <%= label_tag :password, "Database password:" %>
+    <%= text_field_tag :password, "" %>
+	The password for the user you specified in the previous question.
+
+
+    <%= label_tag :rootuser, "Database root user:" %>
+    <%= text_field_tag :rootuser, "root" %>
+	The password the root user in your database. This value will not be saved anywhere but is used to create the jobsworth database.
+	
+	<%= label_tag :rootpass, "Database root user password:" %>
+    <%= text_field_tag :rootpass, "" %>
+	The password for the root user you specified in the previous question. This value will not be saved anywhere.
+	
+    <br />
+  </fieldset>
+
+  <%= submit_tag("Continue", :class => "nolabel") %>
+
+<% end -%>
