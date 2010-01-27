@@ -1,23 +1,22 @@
 <% cache([ "search_filter", current_task_filter ]) do -%>
 
-	<div id="search_filter">
-		<%= remote_filter_form_tag %>
-			<%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :autocomplete =>"off" %></form>
-			<div id="search_filter_auto_complete" class="auto_complete"></div>
-			<%= auto_complete_field("search_filter", :url => search_task_filters_path, :frequency => 1, :after_update_element => "addSearchFilter") %>
-			
-			<% 
-			redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
-			redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
-			redir = url_for({ :action => redir_action, :format => "js" }.merge(redir_params))
-			-%>
-			<input type="hidden" name="redirect_action" value="<%= redir %>" /> 
-	
-			<ul class="search_keys">
-				<%= render :partial => "/task_filters/qualifier", :collection => current_task_filter.qualifiers %>
-				<%= render :partial => "/task_filters/keyword", :collection => current_task_filter.keywords %>
-				<%= render :partial => "/task_filters/booleans", :locals => { :task_filter => current_task_filter } %>
-			</ul>
-	</div>
+<div id="search_filter_div">
+                <% remote_filter_form_tag do  %>
+                        <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :autocomplete =>"off" %>
+                        <div id="search_filter_auto_complete" class="auto_complete"></div>
+                        <%= auto_complete_field("search_filter", :url => search_task_filters_path, :frequency => 1, :after_update_element => "addSearchFilter") %>
+
+                        <%
+                        redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
+                        redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
+                        redir = url_for({ :action => redir_action, :format => "js" }.merge(redir_params))
+                        -%>
+                        <input type="hidden" name="redirect_action" value="<%= redir %>" />
+
+                        <ul id="search_filter_keys" class="search_keys">
+                                <%= render :partial => "/task_filters/search_filter_keys" %>
+                        </ul>
+                <% end -%>
+</div>
 
 <% end -%>

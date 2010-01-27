@@ -20,19 +20,19 @@ var fetchElement = null;
 //
 
 function showProgress() {
-	jQuery('#loading').show('fast');
+        jQuery('#loading').show('fast');
 }
 function hideProgress() {
-	jQuery('#loading').hide('fast');
+        jQuery('#loading').hide('fast');
 }
 
 jQuery(document).mousemove(function(e) {
-	if(jQuery('#loading').is(':visible')) {
-		jQuery("#loading").css({
+        if(jQuery('#loading').is(':visible')) {
+                jQuery("#loading").css({
             top: (e.pageY  - 8) + "px",
             left: (e.pageX + 10) + "px"
         });
-	}
+        }
 });
 
 jQuery("#loading").bind("ajaxSend", function(){
@@ -95,7 +95,7 @@ function inline_image(el) {
  sets up tooltips in page.
 */
 function updateTooltips() {
-    jQuery('.tooltip').tooltip({showURL: false });    
+    jQuery('.tooltip').tooltip({showURL: false });
 }
 
 function UpdateDnD() {
@@ -119,12 +119,12 @@ function toggleChatPopup(el) {
   if( Element.hasClassName(el.up(), 'presence-section-active') ) {
     Element.removeClassName(el.up(), 'presence-section-active');
     $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.hide(e); });
-	jQuery.get('/shout/chat_hide/' + el.up().id);
+        jQuery.get('/shout/chat_hide/' + el.up().id);
   } else if(Element.hasClassName(el.up(), 'presence-section')) {
     $$('.presence-section-active').each(function(el) {
-					  Element.removeClassName(el, 'presence-section-active');
-					  $$(".presence-shadow").each(function(el) { Element.hide(el); });
-					});
+                                          Element.removeClassName(el, 'presence-section-active');
+                                          $$(".presence-shadow").each(function(el) { Element.hide(el); });
+                                        });
     Element.addClassName(el.up(), 'presence-section-active');
 
     if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
@@ -133,7 +133,7 @@ function toggleChatPopup(el) {
     jQuery("#" + el.up().id + " .presence-shadow").show();
     jQuery("#" + el.up().id + " input").focus();
 
-	jQuery.get('/shout/chat_show/' + el.up().id);
+        jQuery.get('/shout/chat_show/' + el.up().id);
   }
 }
 
@@ -159,10 +159,10 @@ function rebuildSelect(select, data) {
 // new /tasks/get_milestones returns flag add_milestone_visible
 function refreshMilestones(pid, mid) {
   jQuery.getJSON("/tasks/get_milestones", {project_id: pid},
-	function(data) {
-		var milestoneSelect = jQuery('#task_milestone_id').get(0);
-		rebuildSelect(milestoneSelect, data.options);
-		milestoneSelect.options[mid].selected = true;
+        function(data) {
+                var milestoneSelect = jQuery('#task_milestone_id').get(0);
+                rebuildSelect(milestoneSelect, data.options);
+                milestoneSelect.options[mid].selected = true;
                 if(data.add_milestone_visible){
                   jQuery('#add_milestone').show();
                 }else{
@@ -179,33 +179,33 @@ function dateToWords(elem) {
     date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
     if (date !== null) {
-	var diff = (((new Date()).getTime() - date.getTime()) / 1000);
-	var dayDiff = Math.floor(diff / 86400);
+        var diff = (((new Date()).getTime() - date.getTime()) / 1000);
+        var dayDiff = Math.floor(diff / 86400);
 
-	if (isNaN(dayDiff)) {
-	    text = date;
-	}
-	else if (dayDiff == -1) {
-	    text = "Tomorrow";
-	    className = "due_tomorrow";
-	}
-	else if (dayDiff === 0) {
-	    text = "Today";
-	    className = "due";
-	}
-	else if (dayDiff == 1) {
-	    text = "Yesterday";
-	    className = "due_overdue";
-	}
-	else if (dayDiff < 0) {
-	    dayDiff = Math.abs(dayDiff);
-	    text = dayDiff + " days";
-	    className = dayDiff >= 7 ? "due_distant" : "due_soon";
-	}
-	else if (dayDiff > 0) {
-	    text = dayDiff + " days ago";
-	    className = "due_overdue";
-	}
+        if (isNaN(dayDiff)) {
+            text = date;
+        }
+        else if (dayDiff == -1) {
+            text = "Tomorrow";
+            className = "due_tomorrow";
+        }
+        else if (dayDiff === 0) {
+            text = "Today";
+            className = "due";
+        }
+        else if (dayDiff == 1) {
+            text = "Yesterday";
+            className = "due_overdue";
+        }
+        else if (dayDiff < 0) {
+            dayDiff = Math.abs(dayDiff);
+            text = dayDiff + " days";
+            className = dayDiff >= 7 ? "due_distant" : "due_soon";
+        }
+        else if (dayDiff > 0) {
+            text = dayDiff + " days ago";
+            className = "due_overdue";
+        }
     }
 
     elem.addClass(className);
@@ -214,7 +214,7 @@ function dateToWords(elem) {
 
 jQuery.fn.dateToWords = function() {
     return this.each(function() {
-		dateToWords(jQuery(this));
+                dateToWords(jQuery(this));
     });
 };
 
@@ -226,7 +226,7 @@ jQuery.fn.dateToWords = function() {
  */
 function toggleTaskUnread(event, userId) {
     var task = jQuery(event.target).parents(".task");
-    
+
     var unread = task.hasClass("unread");
     task.toggleClass("unread");
 
@@ -234,11 +234,11 @@ function toggleTaskUnread(event, userId) {
     taskId = taskId.replace("task_", "");
     var parameters = { "id" : taskId, "read" : unread };
     if (userId) {
-	parameters.user_id = userId;
+        parameters.user_id = userId;
     }
 
     jQuery.post("/tasks/set_unread",  parameters);
-    
+
     event.stopPropagation();
     return false;
 }
@@ -251,18 +251,18 @@ function clearPrompt(field) {
 }
 
 
-/* 
-Submits the search filter form. If we are looking at the task list, 
+/*
+Submits the search filter form. If we are looking at the task list,
 does that via ajax. Otherwise does a normal html post
 */
 function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
     if (redirect.indexOf("/tasks/list?") >= 0) {
-		form.onsubmit();
+                form.onsubmit();
     }
     else {
-		form.submit();
+                form.submit();
     }
 }
 
@@ -272,54 +272,66 @@ the containing form.
 */
 function removeSearchFilter(link) {
     link = jQuery(link);
-    link.parent("#search_filter").remove();
+    link.parent("li").remove();
     submitSearchFilterForm();
 }
 
 jQuery(document).ready(function() {
-	// make search box contents selected when the user clicks in it
-	jQuery("#search_filter").click( function(){
-		if (jQuery(this).val() == "Type to filter tasks") {
-			jQuery(this).val('');
-		} else {
-			jQuery(this).select();
-		}
-	});
-	
-	// Sets up the search filter input field to add a task automatically
-	// if a number is entered and then the user hits enter
+        // make search box contents selected when the user clicks in it
+        jQuery("#search_filter").click( function(){
+                if (jQuery(this).val() == "Type to filter tasks") {
+                        jQuery(this).val('');
+                } else {
+                        jQuery(this).select();
+                }
+        });
+
+        // Sets up the search filter input field to add a task automatically
+        // if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
-		// if key was enter
-		var id = jQuery(this).val();
-		if (key.keyCode == 13 && id.match(/^\d+$/)) {
-		    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
-		    jQuery("#search_filter_form").find(".links").html(new_fields);
-		    submitSearchFilterForm();
-		}
-	});
+                // if key was enter
+                var id = jQuery(this).val();
+                if (key.keyCode == 13 && id.match(/^\d+$/)) {
+                    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
+                    jQuery("#search_filter_form").find(".links").html(new_fields);
+                    submitSearchFilterForm();
+                }
+        });
 });
 
+/* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
+*/
 function addSearchFilter(textField, selected) {
     selected = jQuery(selected);
-    var id = selected.attr("data-id");
-    var typeField = selected.find(".type");
-    var columnField = selected.find(".column");
-    
-    if (idField && idField.length > 0) {
-		var filterForm = jQuery("#search_filter_form");
-		filterForm.append(idField.clone());
-		filterForm.append(typeField.clone());
-		if (columnField) {
-		    filterForm.append(columnField.clone());
-		}
-		submitSearchFilterForm();
+    var idName = selected.attr("data-id");
+    var idValue = selected.attr("data-idval");
+    /*NOTE: if user select qulifier, than idName -> name of param qualifier_id
+      idValue -> value of this param, etc.
+      else if user select keyword, then idName -> name of keyword_id or unread_only  param, idValue-> value of  param,
+      but type&column name/value not exist
+    */
+    var typeName = selected.attr("data-type");
+    var typeValue = selected.attr("data-typeval");
+    var columnName = selected.attr("data-col");
+    var columnValue = selected.attr("data-colval");
+
+    if (idName && idName.length > 0) {
+        var filterKeys = jQuery("#search_filter_form ul#search_filter_keys");
+        filterKeys.append('<input type="hidden" name="'+idName+'" value="'+idValue+'"/>');
+        if (typeName && typeName.length>0){
+            filterKeys.append('<input type="hidden" name="'+typeName+'" value="'+typeValue+'"/>');
+        }
+        if (columnName && columnName.length>0) {
+            filterKeys.append('<input type="hidden" name="'+columnName+'" value="'+columnValue+'"/>');
+        }
+        submitSearchFilterForm();
     } else {
-		// probably selected a heading, just ignore
+                // probably selected a heading, just ignore
     }
 }
 
 
-/* 
+/*
 Sets up the search filter input field to add a task automatically
 if a number is entered and then the user hits enter
 */
@@ -330,11 +342,11 @@ function addSearchFilterTaskIdListener() {
 function addProjectToUser(input, li) {
     li = jQuery(li);
     var value = li.find(".complete_value").text();
-    
+
     var url = document.location.toString();
     url = url.replace("/edit/", "/project/");
     jQuery.get(url, { project_id: value }, function(data) {
-	jQuery("#add_user").before(data);
+        jQuery("#add_user").before(data);
     });
 
     input.value = "";
@@ -343,11 +355,11 @@ function addProjectToUser(input, li) {
 function addUserToProject(input, li) {
     li = jQuery(li);
     var value = li.find(".complete_value").text();
-    
+
     var url = document.location.toString();
     url = url.replace("/edit/", "/ajax_add_permission/");
     jQuery.get(url, { user_id : value }, function(data) {
-	jQuery("#user_table").html(data);
+        jQuery("#user_table").html(data);
     });
 
     input.value = "";
@@ -379,13 +391,13 @@ function updateResourceAttributes(select) {
     var target = jQuery("#attributes");
 
     if (typeId == "") {
-	target.html("");
+        target.html("");
     }
     else {
-	var url = "/resources/attributes/?type_id=" + typeId;
-	jQuery.get(url, function(data) {
-	    target.html(data);
-	});
+        var url = "/resources/attributes/?type_id=" + typeId;
+        jQuery.get(url, function(data) {
+            target.html(data);
+        });
     }
 }
 
@@ -422,8 +434,8 @@ function addAttribute(link) {
 // I'm not sure why, but we seem to need to add these for the event
 // to fire - onclick doesn't seem to work.
 jQuery(document).ready(function() {
-    jQuery(".remove_attribute").click(function(evt) { 
-	removeAttribute(evt.target); 
+    jQuery(".remove_attribute").click(function(evt) {
+        removeAttribute(evt.target);
     });
 });
 
@@ -442,16 +454,16 @@ function updateAttributeFields(checkbox) {
     var multiple = parent.find(".multiple");
 
     if (preset) {
-	multiple.hide().find("input").attr("checked", false);
-	maxLength.hide().find("input").val("");
-	choices.show();
-	choiceLink.show();
+        multiple.hide().find("input").attr("checked", false);
+        maxLength.hide().find("input").val("");
+        choices.show();
+        choiceLink.show();
     }
     else {
-	multiple.show();
-	maxLength.show();
-	choices.hide().html("");
-	choiceLink.hide();
+        multiple.show();
+        maxLength.show();
+        choices.hide().html("");
+        choiceLink.hide();
     }
 }
 
@@ -463,9 +475,9 @@ function updateAttributeFields(checkbox) {
 */
 function appendPartial(url, selector, callback) {
     jQuery.get(url, { }, function(data) {
-	jQuery(selector).append(data);
+        jQuery(selector).append(data);
 
-	if (callback) { callback.call(); }
+        if (callback) { callback.call(); }
     });
 }
 
@@ -474,8 +486,8 @@ function updatePositionFields(listSelector) {
     var children = list.children();
 
     for (var i = 0; i < children.length; i++) {
-	var positionField = jQuery(children[i]).find(".position");
-	positionField.val(i + 1);
+        var positionField = jQuery(children[i]).find(".position");
+        positionField.val(i + 1);
     }
 }
 
@@ -490,8 +502,8 @@ function addAttributeChoices(sender) {
     var attrId = attribute.attr("id").split("_").pop();
 
     if (attrId == "attribute") {
-	// new attribute, so just ignore
-	attrId = "";
+        // new attribute, so just ignore
+        attrId = "";
     }
     var url = "/custom_attributes/choice/" + attrId;
     appendPartial(url, choices, callback);
@@ -506,7 +518,7 @@ function addDependencyToTask(input, li) {
     jQuery(input).val("");
 
     jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
-	jQuery("#task_dependencies .dependencies").append(data);
+        jQuery("#task_dependencies .dependencies").append(data);
     });
 }
 /*
@@ -518,7 +530,7 @@ function addResourceToTask(input, li) {
     jQuery(input).val("");
 
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
-	jQuery("#task_resources").append(data);
+        jQuery("#task_resources").append(data);
     });
 }
 /*
@@ -543,30 +555,30 @@ function showPassword(link, url) {
 }
 
 /*
-  Checkboxes for nested forms cause trouble in params parsing 
+  Checkboxes for nested forms cause trouble in params parsing
   when index => nil. This function fixes the problem by disabling the
   form element that is not in use.
 */
 function nestedCheckboxChanged(checkbox) {
     checkbox = jQuery(checkbox);
     var checked = checkbox.attr("checked");
-    
+
     var hiddenField = checkbox.prev();
     if (hiddenField.attr("name") == checkbox.attr("name")) {
-		hiddenField.attr("disabled", checked);
+                hiddenField.attr("disabled", checked);
     }
 }
 
 /*
-    The function nestedCheckboxChanged will fix any 
-    checkboxes that are changed, but this function should be called 
+    The function nestedCheckboxChanged will fix any
+    checkboxes that are changed, but this function should be called
     on page load to fix any already in the page (generally because they
     failed a validation.
 */
 function fixNestedCheckboxes() {
     var checkboxes = jQuery(".nested_checkbox");
     for (var i = 0; i < checkboxes.length; i++) {
-		nestedCheckboxChanged(checkboxes[i]);
+                nestedCheckboxChanged(checkboxes[i]);
     }
 }
 
@@ -579,14 +591,14 @@ function togglePreviousElement(sender, selector) {
     sender = jQuery(sender);
     var toggle = sender.prev();
     if (selector) {
-	toggle = jQuery(selector);
+        toggle = jQuery(selector);
     }
 
     if (toggle.is(':visible')) {
-	sender.text("Show");
+        sender.text("Show");
     }
     else {
-	sender.text("Hide");
+        sender.text("Hide");
     }
 
     toggle.toggle();
@@ -622,12 +634,12 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
     var icon = div.find(".icon." + baseClassName);
 
     if (input.attr("disabled")) {
-	icon.addClass(enabledClassName);
-	input.attr("disabled", false);
+        icon.addClass(enabledClassName);
+        input.attr("disabled", false);
     }
     else {
-	input.attr("disabled", true);
-	icon.removeClass(enabledClassName);
+        input.attr("disabled", true);
+        icon.removeClass(enabledClassName);
     }
 }
 
@@ -642,15 +654,15 @@ function highlightActiveNotifications() {
     var isNew = (document.location.toString().indexOf("/new") > 0);
 
     for (var i = 0; i < users.length; i++) {
-		var div = jQuery(users[i]);
-		var willNeverReceive = div.hasClass("will_never_receive");
-		var notify = div.find(".icon.should_notify");
-		if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
-		    div.addClass("will_notify");
-		}
-		else {
-		    div.removeClass("will_notify");
-		}
+                var div = jQuery(users[i]);
+                var willNeverReceive = div.hasClass("will_never_receive");
+                var notify = div.find(".icon.should_notify");
+                if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
+                    div.addClass("will_notify");
+                }
+                else {
+                    div.removeClass("will_notify");
+                }
     }
 }
 
@@ -666,8 +678,8 @@ function addUserToTask(input, li) {
     var url = "/tasks/add_notification";
     var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
-	jQuery("#task_notify").append(data);
-	highlightActiveNotifications();
+        jQuery("#task_notify").append(data);
+        highlightActiveNotifications();
     });
 }
 
@@ -679,7 +691,7 @@ function addAutoAddUsersToTask(clientId, taskId, projectId) {
     var url = "/tasks/add_users_for_client";
     var params = { client_id : clientId, id : taskId, project_id : projectId };
     jQuery.get(url, params, function(data) {
-	jQuery("#task_notify").append(data);
+        jQuery("#task_notify").append(data);
     });
 }
 
@@ -695,7 +707,7 @@ function addCustomerToTask(input, li) {
     var url = "/tasks/add_client";
     var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
-		jQuery("#task_customers").append(data);
+                jQuery("#task_customers").append(data);
     });
 
     addAutoAddUsersToTask(clientId, taskId);
@@ -707,23 +719,23 @@ function addCustomerToTask(input, li) {
 */
 function addClientLinkForTask(projectId) {
     var customers = jQuery("#task_customers").text();
-    
+
     if (jQuery.trim(customers) == "") {
-	var url = "/tasks/add_client_for_project";
-	var params = { project_id : projectId };
-	jQuery.get(url, params, function(data) {
-	    jQuery("#task_customers").html(data);
-	});
+        var url = "/tasks/add_client_for_project";
+        var params = { project_id : projectId };
+        jQuery.get(url, params, function(data) {
+            jQuery("#task_customers").html(data);
+        });
     }
 }
 
 /*
-  Called when a task is moved in the task list. 
+  Called when a task is moved in the task list.
 */
 function moveTask(event, ui) {
     var element = ui.draggable[0];
     var dropTarget = event.target;
-    jQuery(element).remove(); 
+    jQuery(element).remove();
     jQuery.get("/tasks/move", { id : element.id + " " + dropTarget.id }, null, "script");
 }
 
@@ -734,8 +746,8 @@ function toggleWorkLogApproval(sender, workLogId) {
     var checked = jQuery(sender).attr("checked");
 
     jQuery.post("/tasks/update_work_log", {
-	id : workLogId,
-	"work_log[approved]" : checked });
+        id : workLogId,
+        "work_log[approved]" : checked });
 }
 
 // TODOS
@@ -759,18 +771,18 @@ edit field
 function addTodoKeyListener(todoId, taskId) {
     var todo = jQuery("#todos-" + todoId);
     var input = todo.find(".edit input");
-    
-    input.keypress(function(key) {
-	if (key.keyCode == 13) {
-	    jQuery(".todo-container").load("/todos/update/" + todoId,  {
-		"_method": "PUT",
-		task_id: taskId,
-		"todo[name]": input.val()
-	    });
 
-	    key.stopPropagation();
-	    return false;
-	}
+    input.keypress(function(key) {
+        if (key.keyCode == 13) {
+            jQuery(".todo-container").load("/todos/update/" + todoId,  {
+                "_method": "PUT",
+                task_id: taskId,
+                "todo[name]": input.val()
+            });
+
+            key.stopPropagation();
+            return false;
+        }
     });
 }
 
@@ -781,18 +793,18 @@ create field
 function addNewTodoKeyListener(taskId) {
     var todo = jQuery("#new-todos");
     var input = todo.find(".edit input");
-    
-    input.keypress(function(key) {
-	if (key.keyCode == 13) {
-	    jQuery(".todo-container").load("/todos/create", {
-		"_method": "POST",
-		task_id: taskId,
-		"todo[name]": input.val()
-	    });
 
-	    key.stopPropagation();
-	    return false;
-	}
+    input.keypress(function(key) {
+        if (key.keyCode == 13) {
+            jQuery(".todo-container").load("/todos/create", {
+                "_method": "POST",
+                task_id: taskId,
+                "todo[name]": input.val()
+            });
+
+            key.stopPropagation();
+            return false;
+        }
     });
 }
 
@@ -808,7 +820,7 @@ jQuery(document).ready(function() {
     fixNestedCheckboxes();
 });
 
-/*TODO: Move following code to another file, use sprockets plugin
+/*TODO: Move following code to another file
 */
 /*
   Attach behavior to views/tasks/_details.html.erb,

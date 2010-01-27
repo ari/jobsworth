@@ -41,18 +41,18 @@ class TaskFiltersController < ApplicationController
     @filter.user = current_user
     @filter.unread_only = current_task_filter.unread_only
     current_task_filter.qualifiers.each { |q| @filter.qualifiers << q.clone }
-    current_task_filter.keywords.each do |kw| 
-      # N.B Shouldn't have to pass in all these values, but it 
+    current_task_filter.keywords.each do |kw|
+      # N.B Shouldn't have to pass in all these values, but it
       # doesn't work when we don't, so...
       @filter.keywords.build(:task_filter => @filter,
-                             :company => current_user.company, 
+                             :company => current_user.company,
                              :word => kw.word)
     end
 
     if !@filter.save
       flash[:notice] = _"Filter couldn't be saved. A name is required"
     end
-    
+
     redirect_using_js_if_needed("/tasks/list")
   end
 
@@ -67,11 +67,11 @@ class TaskFiltersController < ApplicationController
       target_filter.unread_only = @filter.unread_only
 
       @filter.qualifiers.each { |q| target_filter.qualifiers << q.clone }
-      @filter.keywords.each do |kw| 
-        # N.B Shouldn't have to pass in all these values, but it 
+      @filter.keywords.each do |kw|
+        # N.B Shouldn't have to pass in all these values, but it
         # doesn't work when we don't, so...
         target_filter.keywords.build(:task_filter => target_filter,
-                                     :company => current_user.company, 
+                                     :company => current_user.company,
                                      :word => kw.word)
       end
       target_filter.save!
@@ -79,7 +79,7 @@ class TaskFiltersController < ApplicationController
       flash[:notice] = _"You don't have access to that task filter"
     end
 
-    render :partial => "search_filter"
+    render :partial => "search_filter_keys"
   end
 
   def update_current_filter
@@ -92,7 +92,11 @@ class TaskFiltersController < ApplicationController
     filter.attributes = params[:task_filter]
     filter.save
 
-    redirect_to(params[:redirect_action] || "/tasks/list")
+    if request.xhr?
+      render :partial => 'search_filter_keys'
+    else
+      redirect_to(params[:redirect_action] || "/tasks/list")
+    end
   end
 
   def set_single_task_filter
@@ -110,7 +114,7 @@ class TaskFiltersController < ApplicationController
   def destroy
     filter = current_user.company.task_filters.find(params[:id])
 
-    if (filter.user == current_user) or 
+    if (filter.user == current_user) or
         (filter.shared? and current_user.admin?)
       filter.destroy
       flash[:notice] = _("Task filter deleted")
