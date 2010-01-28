@@ -44,9 +44,17 @@ class TasksController < ApplicationController
     list_init
 
     respond_to do |format|
-      format.html # list.html.erb
-      format.xml  # list.xml.erb
+      format.html { render :action => "tasks/grid" }
+      format.xml  { render :action => "tasks/list.xml" }
     end
+  end
+  
+  def calendar
+    list_init
+  end
+  
+  def gantt
+    list_init
   end
 
   # Return a json formatted list of options to refresh the Milestone dropdown

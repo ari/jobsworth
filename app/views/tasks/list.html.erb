@@ -5,8 +5,8 @@
 	<%
 	links = []
 	links << [ "List", { :controller => "tasks", :action => "list" } ]
-	links << [ "Schedule", { :controller => "schedule", :action => "list" } ]
-	links << [ "Gantt", { :controller => "schedule", :action => "gantt" } ]
+	links << [ "Schedule", { :controller => "tasks", :action => "calendar" } ]
+	links << [ "Gantt", { :controller => "tasks", :action => "gantt" } ]
 	
 	link_list = ""
 	links.each_with_index do |opts, i|
@@ -23,8 +23,12 @@
 	<%= link_list %>
 	</ul>
 	
-	<table id="task_list"></table> 
-	<div id="task_pager"></div>
+	<%= yield(:task_list) %>
+	
+	<%
+#	<table id="task_list"></table> 
+#	<div id="task_pager"></div>
+	%>
 
 	<div id="task">
 	  <%= render_last_task %>
