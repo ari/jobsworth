@@ -210,7 +210,23 @@ function initTaskList(colModel, textStatus) {
 jQuery(document).ready(function() {
 
     jQuery('#calendar').fullCalendar({
-        events: "/tasks/calendar"
+        events: "/tasks/calendar",
+		theme: true,
+		height: 350,
+		
+		eventClick: function(calEvent, jsEvent, view) {
+			jQuery("#task").fadeOut();
+			jQuery.get("/tasks/edit/" + calEvent.id, {}, function(data) {
+				jQuery("#task").html(data);
+				jQuery("#task").fadeIn('slow');
+			});
+		},
+		
+		editable: true,
+		disableResizing: true,
+		eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc) {
+			// FIXME: needs ajax callback to update task date
+		}
 
     });
 
