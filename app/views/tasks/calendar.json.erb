@@ -1,0 +1,9 @@
+[
+<%	current_task_filter.tasks.each do |task| -%>
+{
+"id": <%= task.task_num %>,
+"title": "<%= escape_javascript(task.name) %>",
+"start": "<%= escape_javascript(task.due_date.strftime('%Y-%m-%d')) unless task.due_date.nil? %>"
+},
+<% end -%>
+]

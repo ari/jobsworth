@@ -51,6 +51,10 @@ class TasksController < ApplicationController
   
   def calendar
     list_init
+    respond_to do |format|
+      format.html
+      format.json
+    end
   end
   
   def gantt

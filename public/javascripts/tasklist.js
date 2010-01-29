@@ -200,3 +200,18 @@ function initTaskList(colModel, textStatus) {
 }
 
 // -------------------------
+
+
+// -------------------------
+//  Task list grid
+// -------------------------
+
+
+jQuery(document).ready(function() {
+
+    jQuery('#calendar').fullCalendar({
+        events: "/tasks/calendar"
+
+    });
+
+});
