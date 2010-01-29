@@ -26,66 +26,68 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     should "be able to search by task project" do
       get :search, :filter => @task.project.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => @task.project.id })
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' => @task.project.id
+                 })
     end
 
     should "be able to search by task customer" do
       get :search, :filter => @task.project.customer.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => @task.project.customer.id })
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' => @task.project.customer.id
+                 })
     end
 
 
     should "be able to search by task milestone" do
       get :search, :filter => @task.milestone.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => @task.milestone.id })
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' => @task.milestone.id })
     end
 
     should "be able to search by tags" do
       tag = Tag.make(:company => @user.company)
       get :search, :filter => tag.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => tag.id })
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' => tag.id
+                 })
     end
 
     should "be able to search by task status" do
       Status.create_default_statuses(@user.company)
       status = @user.company.statuses.rand
       get :search, :filter => status.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => status.id
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' =>  status.id
                  })
     end
 
     should "be able to search by task user" do
       get :search, :filter => @user.name
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => @user.id
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' => @user.id
                  })
     end
 
     should "be able to search by keyword" do
       get :search, :filter => "A keyword"
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => "a keyword"
+      assert_tag(:attributes => {
+                   'data-id'=>"task_filter[keywords_attributes][]",
+                   'data-idval'=>"a keyword"
                  })
     end
 
     should "be able to search by read status" do
       get :search, :filter => "unread"
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :name => "task_filter[unread_only]",
-                   :value => "true"
+      assert_tag(:attributes => {
+                   'data-id'=> "task_filter[unread_only]",
+                   'data-idval' => "true"
                  })
     end
 
@@ -96,30 +98,30 @@ class TaskFiltersControllerTest < ActionController::TestCase
       end
 
       should "should find time range by name" do
-        assert_tag(:attributes => { 
-                     :class => "id", 
-                     :value => @time_range.id
+        assert_tag(:attributes => {
+                     'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                     'data-idval' => @time_range.id
                  })
       end
-      
+
       should "have due_at qualifiable_name" do
-        assert_tag(:attributes => { 
-                     :class => "column", 
-                     :value => "due_at"
+        assert_tag(:attributes => {
+                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+                     'data-colval' => "due_at"
                  })
       end
 
       should "have create_at qualifiable_name" do
-        assert_tag(:attributes => { 
-                     :class => "column", 
-                     :value => "created_at"
+        assert_tag(:attributes => {
+                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+                     'data-colval' => "created_at"
                  })
       end
 
       should "have updated_at qualifiable_name" do
-        assert_tag(:attributes => { 
-                     :class => "column", 
-                     :value => "updated_at"
+        assert_tag(:attributes => {
+                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+                     'data-colval' => "updated_at"
                  })
       end
     end
@@ -131,9 +133,9 @@ class TaskFiltersControllerTest < ActionController::TestCase
       assert_not_nil value
 
       get :search, :filter => value.value
-      assert_tag(:attributes => { 
-                   :class => "id", 
-                   :value => value.id
+      assert_tag(:attributes => {
+                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   'data-idval' =>  value.id
                  })
     end
 
@@ -146,12 +148,12 @@ class TaskFiltersControllerTest < ActionController::TestCase
       setup do
         filter = TaskFilter.system_filter(@user)
         filter.qualifiers.build(:qualifiable => @task.project)
-        filter.keywords.build(:task_filter => filter, :company => @user.company, 
+        filter.keywords.build(:task_filter => filter, :company => @user.company,
                               :word => "keyword")
         filter.save!
-        
+
         post(:create, :task_filter => { :name => "a new filter" })
-        @filter = TaskFilter.first(:conditions => { :user_id => @user.id, 
+        @filter = TaskFilter.first(:conditions => { :user_id => @user.id,
                                      :name => "a new filter" })
       end
 
@@ -217,7 +219,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
         should "be able to select another user's shared filter" do
           @filter.update_attribute(:shared, true)
           get :select, :id => @filter.id
-          assert_redirected_to "/tasks/list" 
+          assert_redirected_to "/tasks/list"
           system_filter = TaskFilter.system_filter(@user)
           assert_equal @filter.qualifiers.length, system_filter.qualifiers.length
           assert_equal @filter.keywords.length, system_filter.keywords.length
@@ -248,5 +250,5 @@ class TaskFiltersControllerTest < ActionController::TestCase
       post :set_single_task_filter, :name => "sort", :value => "client down"
       assert_equal "client down", @response.session[:filter_sort]
     end
-  end 
+  end
 end
