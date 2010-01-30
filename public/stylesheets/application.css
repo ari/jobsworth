@@ -36,6 +36,10 @@ span.divider {
 	text-align: right;
 }
 
+small {
+	color: gray;
+}
+
 dl {
 }
 
