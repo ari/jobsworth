@@ -33,13 +33,6 @@ class TasksController < ApplicationController
     redirect_to 'list'
   end
 
-  def list_old
-    list_init
-    @tags = {}
-    @tags_total = 0
-    @group_ids, @groups = group_tasks(@tasks)
-  end
-
   def list
     list_init
 

@@ -12,16 +12,6 @@ module TasksHelper
 
   end
 
-  ###
-  # Returns true if the given tasks should be shown in the list.
-  # The only time it won't return true is if the task is closed and the
-  # filter isn't set to show the closed tasks.
-  # N.B This is unused and can be removed once list_old is
-  ###
-  def task_shown?(task)
-    true
-  end
-
   def render_task_dependants(t, depth, root_present)
     res = ""
     @printed_ids ||= []
