@@ -5,7 +5,7 @@
   <li>
     <%= hidden_field_tag "task_filter[unread_only]", true %>
     My unread tasks only
-    <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
+   <span class="right small"> <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
     &nbsp;
   </li>
 <% end -%>

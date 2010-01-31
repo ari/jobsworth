@@ -163,28 +163,26 @@ h4 {
 }
 
 
-#left_menu {
+#side_panel {
   padding-left: 10px;
   text-align: left;
 }
-#left_menu .section {
+#side_panel .section {
     padding-bottom: 15px;
 }
-#left_menu .section ul {
+#side_panel ul {
+    list-style-type: none;
+    padding-bottom: 1px;
     margin: 0;
     padding: 0;
 }
-#left_menu .section ul li {
-    list-style-type: none;
-    padding-bottom: 1px;
-}
-#left_menu .section ul li .small {
+#side_panel .section ul li .small {
     font-size: 75%;
 }
-#left_menu .task_filters .unread {
+#side_panel .task_filters .unread {
     font-weight: bold;
 }
-#left_menu .task_filters a {
+#side_panel a {
     color: black;
 }
 
@@ -218,7 +216,7 @@ h4 {
 }
 
 div.page_header {
-    margin-bottom: 15px;
+    margin-bottom: 5px;
     width:auto;
 }
 div.page_header a {
@@ -3024,7 +3022,7 @@ fieldset.basic .actions label {
 }
 #search_filter_form input {
     font-size: 16px;
-    width: 50%;
+    width: 100%;
 }
 #search_filter_auto_complete ul {
     background-color: black;
@@ -3054,14 +3052,7 @@ fieldset.basic .actions label {
 #search_filter_auto_complete ul li.selected {
     background-color: #444400;
 }
-#search_filter_form ul.search_keys {
-    padding-top: 5px;
-    padding-bottom: 10px;
-}
-#search_filter_form ul.search_keys li {
-    display: inline;
-    font-size: 12px;
-}
+
 
 /* column hiding */
 .column_picker:hover #column_picker {

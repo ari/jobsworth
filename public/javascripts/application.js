@@ -272,7 +272,7 @@ the containing form.
 */
 function removeSearchFilter(link) {
     link = jQuery(link);
-    link.parent("li").remove();
+    link.parent().parent("li").remove();
     submitSearchFilterForm();
 }
 

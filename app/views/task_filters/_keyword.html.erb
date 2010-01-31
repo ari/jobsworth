@@ -2,6 +2,6 @@
   <%= hidden_field_tag "task_filter[keywords_attributes][]", keyword.word %>
   <%=_ "Keyword:" %>
   <%= keyword.word %>
-  <%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %>
+  <span class="right small"><%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
   &nbsp;
 </li>
