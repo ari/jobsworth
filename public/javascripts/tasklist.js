@@ -1,4 +1,17 @@
 // -------------------------
+//  Task edit
+// -------------------------
+
+function loadTask(id) {
+    jQuery("#task").fadeOut();
+    jQuery.get("/tasks/edit/" + id, {}, function(data) {
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
+    });
+}
+
+
+// -------------------------
 //  Task list grid
 // -------------------------
 
@@ -19,19 +32,11 @@ function tasklistReload() {
 	jQuery("#task_list").trigger("reloadGrid");
 }
 
-/*
-  Loads the task information for the task and displays 
-it in the current page.
-*/
-function showTaskInPage(rowid) {
+
+function selectRow(rowid) {
 	jQuery('#task_list').setCell(rowid, 'read', true);
 	jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
-	
-    jQuery("#task").fadeOut();
-    jQuery.get("/tasks/edit/" + rowid, {}, function(data) {
-		jQuery("#task").html(data);
-		jQuery("#task").fadeIn('slow');
-    });
+    loadTask(rowid);
 }
 
 function setRowReadStatus(rowid, rowdata) {
@@ -79,7 +84,7 @@ function initTaskList(colModel, textStatus) {
 		multiselect: false,
 		
 		afterInsertRow : setRowReadStatus,
-		onSelectRow: showTaskInPage,
+		onSelectRow: selectRow,
 		resizeStop: taskListConfigSerialise,
 			
 		pager: '#task_pager',
@@ -199,11 +204,9 @@ function initTaskList(colModel, textStatus) {
 
 }
 
-// -------------------------
-
 
 // -------------------------
-//  Task list grid
+//  Calendar
 // -------------------------
 
 
@@ -215,11 +218,7 @@ jQuery(document).ready(function() {
 		height: 350,
 		
 		eventClick: function(calEvent, jsEvent, view) {
-			jQuery("#task").fadeOut();
-			jQuery.get("/tasks/edit/" + calEvent.id, {}, function(data) {
-				jQuery("#task").html(data);
-				jQuery("#task").fadeIn('slow');
-			});
+			loadTask(calEvent.id);
 		},
 		
 		editable: true,

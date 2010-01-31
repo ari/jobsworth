@@ -294,15 +294,13 @@ jQuery(document).ready(function() {
     
     jQuery("#comment").resizable();
     
-    // Sets up the search filter input field to add a task automatically
-    // if a number is entered and then the user hits enter
+    // Go to a task immediately if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
-        // if key was enter
-        var id = jQuery(this).val();
-        if (key.keyCode == 13 && id.match(/^\d+$/)) {
-            var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
-            jQuery("#search_filter_form").find(".links").html(new_fields);
-            submitSearchFilterForm();
+		if (key.keyCode == 13) { // if key was enter
+			var id = jQuery(this).val();
+			if (id.match(/^\d+$/)) {
+				loadTask(id);
+	        }
         }
     });
 });

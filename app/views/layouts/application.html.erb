@@ -69,14 +69,13 @@
 	      
 	      <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
 		<div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>"><%= _'Work Log' %></div>
-		<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" style="padding:0;margin-top:0.5em;margin-bottom:0.3em;width:100%;" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
+		<form method="post" onsubmit="return false;" id="worklog_form"><textarea name="worklog[body]" id="worklog_body" rows="4"><%= @current_sheet.body if @current_sheet%></textarea></form>
 		<div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
 		<br/>
 	      </div>
 
 	      <%= render(:partial => "pages/panel") %>
 
-	      
 	    </td>
 	  </tr>
 	</table>
@@ -107,7 +106,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="contact" style="padding-left:0.3em;border-top:1px solid #ccc;"><small><em>Clocking IT<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><a href="mailto:feedback@clockingit.com"><%=_ 'Feedback? Suggestions? Ideas? Bugs?'%></a><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
+			<div id="contact" style="padding-left:0.3em;border-top:1px solid #ccc;"><small><em>Jobsworth<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate'%></a><% end %><br /><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %></em></small></div>
 		</div>
 	</div>
 	<% else %>
