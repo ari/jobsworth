@@ -3,7 +3,7 @@
 
 <div id="search_filter_div" class="section">
 	<% remote_filter_form_tag do  %>
-	    <%= text_field_tag "filter", "Type to filter tasks", :id => "search_filter", :class => "grey", :autocomplete =>"off" %>
+	    <%= text_field_tag "filter", "Task search...", :id => "search_filter", :class => "grey", :autocomplete =>"off" %>
 	    <div id="search_filter_auto_complete" class="auto_complete"></div>
 	    <%= auto_complete_field("search_filter", :url => search_task_filters_path, :frequency => 1, :after_update_element => "addSearchFilter") %>
 	

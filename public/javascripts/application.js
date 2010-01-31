@@ -279,7 +279,7 @@ function removeSearchFilter(link) {
 jQuery(document).ready(function() {
 	// make search box contents selected when the user clicks in it
 	jQuery("#search_filter").focus( function() {
-        if (jQuery(this).val() == "Type to filter tasks") {
+        if (jQuery(this).val() == "Task search...") {
             jQuery(this).val('').removeClass('grey');
         } else {
             jQuery(this).select();
@@ -288,7 +288,7 @@ jQuery(document).ready(function() {
 
 	jQuery("#search_filter").blur( function() {
         if (jQuery(this).val() == '') {
-            jQuery(this).val("Type to filter tasks").addClass('grey');
+            jQuery(this).val("Task search...").addClass('grey');
         }
     });
     
