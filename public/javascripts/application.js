@@ -292,6 +292,8 @@ jQuery(document).ready(function() {
         }
     });
     
+    jQuery("#comment").resizable();
+    
     // Sets up the search filter input field to add a task automatically
     // if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
