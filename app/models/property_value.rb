@@ -15,12 +15,12 @@ class PropertyValue < ActiveRecord::Base
   end
 
   def to_s
-    "#{ value }"
+     HTML::FullSanitizer.new.sanitize "#{ value }"
   end
 
   def to_html
     if icon_url.present?
-      return image_tag(icon_url, :class => "tooltip", 
+      return image_tag(icon_url, :class => "tooltip",
                        :alt => self.to_s, :title => self.to_s)
     else
       return self.to_s
