@@ -259,10 +259,10 @@ function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
     if (redirect.indexOf("/tasks/list") >= 0) {
-                form.onsubmit();
+		form.onsubmit();
     }
     else {
-                form.submit();
+		form.submit();
     }
 }
 
@@ -277,26 +277,32 @@ function removeSearchFilter(link) {
 }
 
 jQuery(document).ready(function() {
-        // make search box contents selected when the user clicks in it
-        jQuery("#search_filter").click( function(){
-                if (jQuery(this).val() == "Type to filter tasks") {
-                        jQuery(this).val('');
-                } else {
-                        jQuery(this).select();
-                }
-        });
+	// make search box contents selected when the user clicks in it
+	jQuery("#search_filter").focus( function() {
+        if (jQuery(this).val() == "Type to filter tasks") {
+            jQuery(this).val('').removeClass('grey');
+        } else {
+            jQuery(this).select();
+        }
+    });
 
-        // Sets up the search filter input field to add a task automatically
-        // if a number is entered and then the user hits enter
+	jQuery("#search_filter").blur( function() {
+        if (jQuery(this).val() == '') {
+            jQuery(this).val("Type to filter tasks").addClass('grey');
+        }
+    });
+    
+    // Sets up the search filter input field to add a task automatically
+    // if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
-                // if key was enter
-                var id = jQuery(this).val();
-                if (key.keyCode == 13 && id.match(/^\d+$/)) {
-                    var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
-                    jQuery("#search_filter_form").find(".links").html(new_fields);
-                    submitSearchFilterForm();
-                }
-        });
+        // if key was enter
+        var id = jQuery(this).val();
+        if (key.keyCode == 13 && id.match(/^\d+$/)) {
+            var new_fields = '<input type="hidden" name="task_filter[qualifiers_attributes][][task_num]" value="' + id  + '" />';
+            jQuery("#search_filter_form").find(".links").html(new_fields);
+            submitSearchFilterForm();
+        }
+    });
 });
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
