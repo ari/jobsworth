@@ -7,10 +7,6 @@ body {
   margin-top: 0;
 }
 
-div.content_body {  
-  background-color: #fff;
-}
-
 
 /* Global */
 
@@ -971,12 +967,16 @@ pre.auto_generated {
 
 #main-table { 
   margin-bottom: 30px;
+  background-color: white;
 }
 
 #main_col { width: 85%; }
 
-#content ul
-{
+#content {
+	margin-top: 10px;
+}
+
+#content ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1327,10 +1327,6 @@ a.description {
 
 .handle, .widget_draggable {
           cursor: move;
-}
-
-.content_body {
-           background-color: #FFFFFF;
 }
 
 .log_header
