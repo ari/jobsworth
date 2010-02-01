@@ -127,7 +127,6 @@ class TasksController < ApplicationController
 
     @task = current_user.company.tasks.new
     @task.attributes = params[:task]
-    @task.build_work_log(params, current_user)
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
@@ -162,8 +161,9 @@ class TasksController < ApplicationController
       render :action => 'new'
       return
     end
+    #TODO: clean up this code, maybe task should accept attributes for work_log
+    if @task.save && ( @task.build_work_log(params, current_user) ? @task.save : true )
 
-    if @task.save
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
 
