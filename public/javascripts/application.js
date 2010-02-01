@@ -16,6 +16,17 @@ var fetchElement = null;
 
 
 // -------------------------
+// theming
+//
+
+jQuery(function() {
+	jQuery("input:submit").button();
+	//jQuery("#tabmenu").tabs();
+});
+
+
+
+// -------------------------
 // show progress spinner
 //
 
