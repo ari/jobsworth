@@ -60,7 +60,7 @@ function taskListConfigSerialise() {
 
 }
 
-var colModel; // we need a global variable to put the model in
+var colModel; // we need a global variable to put the model into
 
 // get the column definition as early as possible
 jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
