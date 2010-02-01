@@ -9,24 +9,20 @@ end
 class TasksController < ApplicationController
 
   def new
-    @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
+    init_attributes_for_new_template
 
     if @projects.nil? || @projects.empty?
       flash['notice'] = _("You need to create a project to hold your tasks, or get access to create tasks in an existing project...")
       redirect_to :controller => 'projects', :action => 'new'
       return
-    else
-      @task = Task.new(params[:task])
-      @task.company = current_user.company
-      @task.duration = 0
-      @tags = Tag.top_counts(current_user.company)
-      @task.users << current_user
     end
-
-    @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
-    @notify_targets = @notify_targets.flatten.uniq
-    @notify_targets ||= []
+    #FIXME: Task.new instead of Task.new(params[:task])
+    # action new must be accepted only via get, so params[:task] not exist
+    # params[:task] exist in create and update actions
+    @task = Task.new(params[:task])
+    @task.company = current_user.company
+    @task.duration = 0
+    @task.users << current_user
   end
 
   def index
@@ -41,7 +37,7 @@ class TasksController < ApplicationController
       format.xml  { render :action => "tasks/list.xml" }
     end
   end
-  
+
   def calendar
     list_init
     respond_to do |format|
@@ -49,7 +45,7 @@ class TasksController < ApplicationController
       format.json
     end
   end
-  
+
   def gantt
     list_init
   end
@@ -162,14 +158,7 @@ class TasksController < ApplicationController
     unless current_user.can?(@task.project, 'create')
       flash['notice'] = _("You don't have access to create tasks on this project.")
       return if request.xhr?
-
-      @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
-      @tags = Tag.top_counts(current_user.company)
-      @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-      @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
-      @notify_targets = @notify_targets.flatten.uniq
-      @notify_targets ||= []
-
+      init_attributes_for_new_template
       render :action => 'new'
       return
     end
@@ -196,12 +185,7 @@ class TasksController < ApplicationController
       return if request.xhr?
       redirect_from_last
     else
-      @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
-      @tags = Tag.top_counts(current_user.company)
-      @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-      @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
-      @notify_targets = @notify_targets.flatten.uniq
-      @notify_targets ||= []
+      init_attributes_for_new_template
       return if request.xhr?
       render :action => 'new'
     end
@@ -1115,6 +1099,19 @@ class TasksController < ApplicationController
 
     return [ group_ids, groups ]
     end
+  ###
+  # Sets up the attributes needed to display new action
+  ###
+  def init_attributes_for_new_template
+    @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
+      [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
+    }.compact unless current_user.projects.nil?
+      @tags = Tag.top_counts(current_user.company)
+      @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
+      @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
+      @notify_targets = @notify_targets.flatten.uniq
+      @notify_targets ||= []
+  end
 
   ###
   # Sets up the global variables needed to display the _form partial.
