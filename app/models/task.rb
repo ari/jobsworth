@@ -4,7 +4,7 @@ require "active_record_extensions"
 #
 # Belongs to a project, milestone, creator
 # Has many tags, users (through task_owners), tags (through task_tags),
-#   dependencies (tasks which should be done before this one) and 
+#   dependencies (tasks which should be done before this one) and
 #   dependants (tasks which should be done after this one),
 #   todos, and sheets
 #
@@ -49,9 +49,9 @@ class Task < ActiveRecord::Base
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
-  
-  validates_presence_of		:company
-  validates_presence_of		:project
+
+  validates_presence_of   :company
+  validates_presence_of   :project_id
 
   after_validation :fix_work_log_error
 
@@ -71,7 +71,7 @@ class Task < ActiveRecord::Base
       p.update_project_stats
       p.save
     end
-    
+
     r.milestone.update_counts if r.milestone
   }
 
@@ -271,9 +271,9 @@ class Task < ActiveRecord::Base
   def set_task_num(company_id = nil)
     company_id ||= company.id
 
-    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id]) 
+    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id])
     num ||= 0
-    num += 1 
+    num += 1
 
     @attributes['task_num'] = num
   end
@@ -297,15 +297,15 @@ class Task < ActiveRecord::Base
   def started?
     worked_minutes > 0 || self.worked_on?
   end
-  
+
   def due_date
     if self.due_at?
       self.due_at
     elsif self.milestone_id.to_i > 0 && milestone && milestone.due_at?
       milestone.due_at
-    else 
+    else
       nil
-    end 
+    end
   end
 
   def scheduled_date
@@ -314,60 +314,60 @@ class Task < ActiveRecord::Base
         self.scheduled_at
       elsif self.milestone
         self.milestone.scheduled_date
-      end 
-    else 
+      end
+    else
       if self.due_at?
         self.due_at
       elsif self.milestone
         self.milestone.scheduled_date
       end
-    end 
-  end 
+    end
+  end
 
   def scheduled_due_at
     if self.scheduled?
       self.scheduled_at
-    else 
+    else
       self.due_at
-    end 
-  end 
+    end
+  end
 
   def scheduled_duration
     if self.scheduled?
       @attributes['scheduled_duration'].to_i
-    else 
+    else
       self.duration.to_i
-    end 
+    end
   end
 
   def recalculate_worked_minutes
     self.worked_minutes = WorkLog.sum(:duration, :conditions => ["task_id = ?", self.id]).to_i / 60
   end
-  
+
   def minutes_left
-    d = self.duration.to_i - self.worked_minutes 
+    d = self.duration.to_i - self.worked_minutes
     d = 240 if d < 0 && self.duration.to_i > 0
     d = 0 if d < 0
     d
   end
 
   def scheduled_minutes_left
-    d = self.scheduled_duration.to_i - self.worked_minutes 
+    d = self.scheduled_duration.to_i - self.worked_minutes
     d = 240 if d < 0 && self.scheduled_duration.to_i > 0
     d = 0 if d < 0
     d
-  end 
+  end
 
   def overworked?
     ((self.duration.to_i - self.worked_minutes) < 0 && (self.duration.to_i) > 0)
   end
-  
+
   def full_name
     if self.project
       [self.project.full_name, self.full_tags].join(' / ')
-    else 
+    else
       ""
-    end 
+    end
   end
 
   def full_tags
@@ -605,7 +605,7 @@ class Task < ActiveRecord::Base
     end
     name_conds = Search.search_conditions_for(keys, [ "tasks.name" ], :search_by_id => false)
     conditions << name_conds[1...-1] # strip off surounding parentheses
-    
+
     conditions = "(#{ conditions.join(" or ") })"
     return tf.tasks(conditions)
   end
@@ -641,7 +641,7 @@ class Task < ActiveRecord::Base
       res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description_wrapped.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;').gsub(/</,'&lt;').gsub(/>/,'&gt;')}</td></tr>" unless self.description.blank?
       res << "</table>"
       @tip = res.gsub(/\"/,'&quot;')
-    end 
+    end
     @tip
   end
 
@@ -651,7 +651,7 @@ class Task < ActiveRecord::Base
     else
       nil
     end
-  end 
+  end
 
   def css_classes
     unless @css
@@ -659,10 +659,10 @@ class Task < ActiveRecord::Base
       when 0 then ""
       when 1 then " in_progress"
       when 2 then " closed"
-      else 
+      else
         " invalid"
       end
-    end   
+    end
     @css
   end
 
@@ -676,15 +676,15 @@ class Task < ActiveRecord::Base
 
   def order_date
     [self.created_at.to_i]
-  end 
+  end
 
   def worked_and_duration_class
     if worked_minutes > duration
       "overtime"
-    else 
+    else
       ""
-    end 
-  end 
+    end
+  end
 
   # Sets up custom properties using the given form params
   def properties=(params)
@@ -747,7 +747,7 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # This method will help in the rollback of type, priority and severity 
+  # This method will help in the rollback of type, priority and severity
   # from properties.
   # It can be removed after.
   ###
@@ -763,12 +763,12 @@ class Task < ActiveRecord::Base
 
   ###
   # These methods replace the columns for these values. If people go ahead
-  # and change the default priority, etc values then they will return a 
+  # and change the default priority, etc values then they will return a
   # default value that shouldn't affect sorting.
   ###
   def priority
     property_value_as_integer(company.priority_property, Task.priority_types.invert) || 0
-  end  
+  end
   def severity_id
     property_value_as_integer(company.severity_property, Task.severity_types.invert) || 0
   end
@@ -839,7 +839,7 @@ class Task < ActiveRecord::Base
       from_time = Time.now.utc
       to_time = due_date
       distance_in_minutes = (((to_time - from_time).abs)/60).round
-    end 
+    end
 
     if distance_in_minutes > 0
       due_part = case distance_in_minutes
@@ -851,15 +851,15 @@ class Task < ActiveRecord::Base
                  when 43201..86400 then "50"
                  else "6#{(distance_in_minutes / 1440 / 30).round.to_s}"
                  end
-    end 
+    end
 
     worked_part = worked_on? ? "1#{worked_minutes}" : "0#{worked_minutes}"
-    config_part = current_user.show_type_icons? ? "1" : "0" 
+    config_part = current_user.show_type_icons? ? "1" : "0"
     config_part << current_user.option_tracktime.to_s
     locale_part = current_user.locale.to_s
 
     "#{locale_part}#{due_part}#{worked_part}#{config_part}"
-  end 
+  end
 
   ###
   # Returns an array of all users setup as owners or
@@ -875,7 +875,7 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # Returns an array of email addresses of people who should be 
+  # Returns an array of email addresses of people who should be
   # notified about changes to this task.
   ###
   def notification_email_addresses(user_who_made_change = nil)
@@ -885,15 +885,15 @@ class Task < ActiveRecord::Base
         user_who_made_change.receive_notifications?
       recipients << user_who_made_change
     end
-    
+
     recipients += all_related_users.select { |u| u.receive_notifications? }
 
-    # remove them if they don't want their own notifications. 
-    # do it here rather than at start of method in case they're 
+    # remove them if they don't want their own notifications.
+    # do it here rather than at start of method in case they're
     # on the watchers list, etc
-    if user_who_made_change and 
+    if user_who_made_change and
         !user_who_made_change.receive_own_notifications?
-      recipients.delete(user_who_made_change) 
+      recipients.delete(user_who_made_change)
     end
 
     emails = recipients.map { |u| u.email }
@@ -904,13 +904,13 @@ class Task < ActiveRecord::Base
     end
     emails = emails.compact.map { |e| e.strip }
 
-    # and finally remove dupes 
+    # and finally remove dupes
     emails = emails.uniq
 
     return emails
   end
 
-  
+
   ###
   # Sets the task watchers for this task.
   # Existing watchers WILL be cleared by this method.
@@ -983,7 +983,7 @@ class Task < ActiveRecord::Base
       existing = self.dependencies.detect { |d| d.id == t.id }
       self.dependencies << t if !existing
     end
-    
+
     self.save
   end
 
@@ -1058,7 +1058,7 @@ class Task < ActiveRecord::Base
 
   ###
   # Sets up any links to resources that should be attached to this
-  # task. 
+  # task.
   # Clears any existings links to resources.
   ###
   def set_resource_attributes(params)
@@ -1105,8 +1105,8 @@ class Task < ActiveRecord::Base
         work_log_params[:body] = body
       end
 
-      work_log_params.merge!(:user => user, :company => self.company, 
-                             :project => self.project, 
+      work_log_params.merge!(:user => user, :company => self.company,
+                             :project => self.project,
                              :log_type => EventLog::TASK_WORK_ADDED,
                              :customer => (self.customers.first || self.project.customer))
       self.work_logs.build(work_log_params)
