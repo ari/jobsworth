@@ -42,16 +42,6 @@
 
 	<%= render(:partial => "layouts/menu") %>
 	<%= render(:partial => "layouts/tabmenu")%>
-
-	<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
-	unless news.nil? %>
-	<div class="inlineMessage" id="news">
-		<span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span>
-		<%= news.body %>
-		<%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id },:success => visual_effect(:fade, "news", :duration => 0.5) %>
-	</div>
-	<% end %>
-
 	<%= render :partial => "/layouts/notice" -%>
   </div>
 

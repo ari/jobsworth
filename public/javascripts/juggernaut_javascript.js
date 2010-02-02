@@ -58,13 +58,11 @@ var Juggernaut = Class.create({
   },
 
   errorConnecting: function() {
-    jQuery('#flash_message').val('flash_message', 'Unable to connect to push server...');
-    jQuery('#flash').show();
+    flash_message('Unable to connect to push server...');
   },
 
   disconnected: function () {
-    jQuery('#flash_message').val('flash_message', 'Connection to push server lost. Please reload the page...');
-    jQuery('#flash').show();
+    flash_message('Connection to push server lost. Please reload the page...');
   },
 
   receiveData: function (data) {
@@ -96,9 +94,15 @@ var Juggernaut = Class.create({
 
 function checkConnection() {
   if( !juggernaut.isConnected ) {
-    jQuery('#flash_message').val('Unable to connect to push server, make sure flash is enabled for this site and SSL traffic is allowed...<br />You won\'t be able to see what others are saying.');
-    jQuery('#flash').show();
+    flash_message('Unable to connect to push server, make sure Flash is enabled for this site and SSL traffic is allowed...<br />You won\'t be able to see what others are saying.');
   }
 }
 
+function flash_message(msg) {
+	jQuery('#flash_message').html(msg);
+	jQuery('#flash').slideDown();
+}
 
+jQuery('#flash_hide').click(function() {
+    jQuery('#flash').slideUp();
+});

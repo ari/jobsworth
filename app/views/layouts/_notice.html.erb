@@ -1,6 +1,18 @@
 <% if flash["notice"].present? -%>
-  <div class="inlineMessage" id="flash">
-    <span id="flash_message"><%= flash["notice"] %></span>
-    <a class="hide" onclick="jQuery('#flash').fadeOut(500);" href="#">[<%=_ 'Hide'%>]</a>
+  <div class="ui-widget" id="flash">
+    <div class="ui-state-highlight ui-corner-all" 
+      <p><span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span><span id="flash_message"><%= flash["notice"] %></span><span id="flash_hide">[<%=_ 'Hide'%>]</span></p>
+    </div>
   </div>
+<% end -%>
+
+<% news = NewsItem.find(:first, :order => "id desc", :conditions => ["id > ?", current_user.seen_news_id ])
+unless news.nil? %>
+<div class="ui-widget" id="news">
+  <div class="ui-state-highlight ui-corner-all"
+  	<span class="date">[<%= tz.utc_to_local(news.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %>]</span>
+  	<%= news.body %>
+  	<%= link_to_remote "[#{_('Hide')}]", :url => { :controller => 'users', :action => 'update_seen_news', :id => news.id, :class => "right" },:success => visual_effect(:fade, "news", :duration => 0.5) %>
+  </div>
+</div>
 <% end -%>
