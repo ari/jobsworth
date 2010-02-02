@@ -2,7 +2,7 @@
 # Has a duration in seconds for work entries
 
 class WorkLog < ActiveRecord::Base
-  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy, 
+  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
   include CustomAttributeMethods
@@ -19,7 +19,7 @@ class WorkLog < ActiveRecord::Base
   has_many    :work_log_notifications, :dependent => :destroy
   has_many    :users, :through => :work_log_notifications
 
-  named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, 6 ]
+  named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
 
   validates_presence_of :started_at
 
@@ -33,7 +33,7 @@ class WorkLog < ActiveRecord::Base
       r.task.recalculate_worked_minutes
       r.task.save
     end
-  
+
   }
 
   after_create { |r|
@@ -44,12 +44,12 @@ class WorkLog < ActiveRecord::Base
     l.event_type = r.log_type
     l.created_at = r.started_at
     l.save
-    
+
     if r.task && r.duration.to_i > 0
       r.task.recalculate_worked_minutes
       r.task.save
     end
-    
+
   }
 
   after_destroy { |r|
@@ -57,13 +57,13 @@ class WorkLog < ActiveRecord::Base
       r.task.recalculate_worked_minutes
       r.task.save
     end
-  
+
   }
 
   ###
   # Creates and saves a worklog for the given task.
   # If comment is given, it will be escaped before saving.
-  # The newly created worklog is returned. 
+  # The newly created worklog is returned.
   ###
   def self.create_for_task(task, user, comment)
     worklog = WorkLog.new
@@ -79,8 +79,8 @@ class WorkLog < ActiveRecord::Base
     if !comment.blank?
       worklog.body =  CGI::escapeHTML(comment)
       worklog.comment = true
-    end 
-    
+    end
+
     worklog.save
 
     return worklog
@@ -104,7 +104,7 @@ class WorkLog < ActiveRecord::Base
   def validate
     if log_type == EventLog::TASK_WORK_ADDED
       validate_custom_attributes
-    end 
+    end
   end
 
 end

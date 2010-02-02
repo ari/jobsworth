@@ -423,7 +423,6 @@ class TasksController < ApplicationController
         if( @old_task.status == 6 )
           @task.hide_until = nil
         end
-
       end
 
       files = create_attachments(@task)
@@ -575,7 +574,6 @@ class TasksController < ApplicationController
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
-      worklog.log_type = 1
       worklog.log_type = EventLog::TASK_RESTORED
       worklog.body = ""
       worklog.save
