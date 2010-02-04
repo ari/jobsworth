@@ -107,6 +107,52 @@ class WorkLog < ActiveRecord::Base
     end
   end
 
+  ###
+  # This method will set up notifications. A block should be passed that will
+  # send the actual emails, but this method will update the owners, worklog, etc
+  # as required.
+  ###
+  ###
+  # This method moved from TasksController#notify(task,worklog,&block)
+  # here in WorkLog we alredy have task and worklog, code more incapsulated
+  # we don't have current_user, but current_user == worklog.user
+  # we don't have params, this is a problem
+  ###
+  def setup_notifications(notify_ids,&block)
+    worklog=self
+    task=self.task
+    current_user=self.user
+    ids = notify_ids || []
+    emails = (task.notify_emails || "").strip.split(",")
+    all_users = []
+
+    if ids.any? or emails.any?
+      all_users = ids.map { |id| current_user.company.users.find(id) }
+      users = all_users.clone
+      users.delete(current_user) if !current_user.receive_own_notifications?
+      emails += users.map { |u| u.email }
+      emails = emails.uniq.compact
+      emails = emails.select { |e| !e.blank? }
+
+      worklog.users = users
+
+      if users.any?
+        comments = users.map { |u| "#{ u.name } (#{ u.email })" }
+        comment = _("Notification emails sent to %s", comments.join(", "))
+        worklog.body ||= ""
+        worklog.body += "\n\n" if !worklog.body.blank?
+        worklog.body += comment
+        worklog.save
+      end
+
+      emails.each do |email|
+        yield(email)
+      end
+    end
+
+    task.mark_as_notified_last_change(all_users)
+    task.mark_as_unread(current_user)
+  end
 end
 
 # == Schema Information

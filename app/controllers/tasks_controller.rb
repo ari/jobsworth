@@ -174,7 +174,7 @@ class TasksController < ApplicationController
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      notify(@task, worklog) do |recipients|
+      worklog.setup_notifications(params[:notify]) do |recipients|
         Notifications::deliver_created(@task, current_user, recipients, params[:comment])
       end
 
@@ -456,7 +456,7 @@ class TasksController < ApplicationController
         worklog.save!
 
         if params[:comment] and !params[:comment].blank?
-          notify(@task, worklog) do |recipients|
+          worklog.setup_notifications(params[:notify]) do |recipients|
             Notifications::deliver_changed(update_type, @task, current_user, recipients,
                                            email_body.gsub(/<[^>]*>/,''))
           end
@@ -1122,44 +1122,6 @@ class TasksController < ApplicationController
 
     @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
     @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
-  end
-
-  ###
-  # This method will set up notifications. A block should be passed that will
-  # send the actual emails, but this method will update the owners, worklog, etc
-  # as required.
-  ###
-  def notify(task, worklog, &block)
-    ids = params[:notify] || []
-    emails = (task.notify_emails || "").strip.split(",")
-    all_users = []
-
-    if ids.any? or emails.any?
-      all_users = ids.map { |id| current_user.company.users.find(id) }
-      users = all_users.clone
-      users.delete(current_user) if !current_user.receive_own_notifications?
-      emails += users.map { |u| u.email }
-      emails = emails.uniq.compact
-      emails = emails.select { |e| !e.blank? }
-
-      worklog.users = users
-
-      if users.any?
-        comments = users.map { |u| "#{ u.name } (#{ u.email })" }
-        comment = _("Notification emails sent to %s", comments.join(", "))
-        worklog.body ||= ""
-        worklog.body += "\n\n" if !worklog.body.blank?
-        worklog.body += comment
-        worklog.save
-      end
-
-      emails.each do |email|
-        yield(email)
-      end
-    end
-
-    task.mark_as_notified_last_change(all_users)
-    task.mark_as_unread(current_user)
   end
 
   # setup some instance variables for task list views
