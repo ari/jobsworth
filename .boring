@@ -41,3 +41,5 @@
 (^|/)database\.yml$
 (^|/)juggernaut_config\.yml$
 (^|/)environment\.rb$
+\.loadpath$
+\.settings$
