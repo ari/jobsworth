@@ -1,78 +1,101 @@
-<div id="globalMenu"><div id="tabmenu">
-<% active = controller.controller_name + "/" + controller.action_name %>
-<ul id="primary">
-<% if current_user.seen_welcome.to_i == 0 %>
-		<li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'activities', :action => 'welcome' %></li>
+<div id="tabmenu">
+  <% active = controller.controller_name + "/" + controller.action_name %>
+  <ul id="primary">
+    <% if current_user.seen_welcome.to_i == 0 %>
+    <li<% if active == "activities/welcome" %> class="active"<% end %>><%= link_to "#{_('Tutorial')}", :controller => 'activities', :action => 'welcome' %>
+    </li>
     <% end %>
-
-	<li<%= " class='active'" if active == "activities/list" %>><%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'list' %>
-	<% if active == "activities/list" %>
-        <ul>
-            <li><%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %></li>
-        </ul>
-    <% end %>
-	</li>
-
+    <li<%= " class='active'" if active == "activities/list" %>>
+      <%= link_to "#{_('Overview') }", :controller => 'activities', :action => 'list' %>
+      <% if active == "activities/list" %>
+      <ul>
+        <li>
+          <%= link_to_remote _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'} %>
+        </li>
+      </ul>
+      <% end %>
+    </li>
     <li<%= " class='active'" if active.starts_with?('tasks/') %>>
-	   <%= link_to(_("Tasks"), :controller => "tasks", :action => "list" ) %>
-	   <ul>
-	       <li><%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %></li>
-	   </ul>
-	</li>
-
-	<% if current_user.option_tracktime.to_i == 1%>
-		<li<% if active == "timeline/list" %> class="active"<% end %>><%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'list' %></li>
-	<% end %>
-
-	<% if current_user.option_tracktime.to_i == 1 && current_user.can_any?(current_user.projects, 'report') %>
-		<li<%= " class='active'" if active == "reports/list" %>><%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'list' %></li>
-	<% end %>
-
-	<% if current_user.company.show_wiki? %>
-		<li<%= " class='active'" if active == "wiki/list" %>><%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %></li>
-    <% end %>
-
-	<% if current_user.company.show_chat? %>
-		<li<%= " class='active'" if active == "shout/list" %>><%= link_to "#{_('Chat')}", :controller => 'shout', :action => 'list' %></li>
-    <% end %>
-
-	<% if current_user.company.show_forum? %>
-		<li<%= " class='active'" if (active.starts_with?('forums/') || active.starts_with?('posts/') || active.starts_with?('topics/') ) %>><%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %></li>
-    <% end %>
-
-	<li<%= " class='active'" if active.starts_with?('project_files/') %>><%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %></li>
-
-    <li<%= " class='active'" if active.starts_with?('projects/') %>><%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %>
-	    <% if current_user.create_projects? %>
-			<ul>
-				<li><%= link_to _("New Project"), :controller => 'projects', :action => 'new' %></li>
-			</ul>
-		<% end %>
+      <%= link_to(_("Tasks"), :controller => "tasks", :action => "list" ) %>
+      <ul>
+        <li>
+          <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
+        </li>
+      </ul>
     </li>
-    
+    <% if current_user.option_tracktime.to_i == 1 %>
+    <li<% if active == "timeline/list" %> class="active"<% end %>><%= link_to "#{_('Timeline')}", :controller => 'timeline', :action => 'list' %>
+    </li>
+    <% end %>
+    <% if current_user.option_tracktime.to_i == 1 && current_user.can_any?(current_user.projects, 'report') %>
+    <li<%= " class='active'" if active == "reports/list" %>>
+      <%= link_to "#{_('Reports')}", :controller => 'reports', :action => 'list' %>
+    </li>
+    <% end %>
+    <% if current_user.company.show_wiki? %>
+    <li<%= " class='active'" if active == "wiki/list" %>>
+      <%= link_to "#{_('Wiki')}", :controller => 'wiki', :action => 'show', :id => nil %>
+    </li>
+    <% end %>
+    <% if current_user.company.show_chat? %>
+    <li<%= " class='active'" if active == "shout/list" %>>
+      <%= link_to "#{_('Chat')}", :controller => 'shout', :action => 'list' %>
+    </li>
+    <% end %>
+    <% if current_user.company.show_forum? %>
+    <li<%= " class='active'" if (active.starts_with?('forums/') || active.starts_with?('posts/') || active.starts_with?('topics/') ) %>>
+      <%= link_to "#{_('Forums')}", :controller => 'forums', :action => 'index' %>
+    </li>
+    <% end %>
+    <li<%= " class='active'" if active.starts_with?('project_files/') %>>
+      <%= link_to "#{_('Files')}", :controller => 'project_files', :action => 'list' %>
+    </li>
+    <li<%= " class='active'" if active.starts_with?('projects/') %>>
+      <%= link_to "#{_('Projects')}", :controller => 'projects', :action => 'list' %>
+      <% if current_user.create_projects? %>
+      <ul>
+        <li>
+          <%= link_to _("New Project"), :controller => 'projects', :action => 'new' %>
+        </li>
+      </ul>
+      <% end %>
+    </li>
     <% if current_user.use_resources? %>
-		<li class="<%= resource_class %>"><%= link_to(_("Resources"), resources_path) %></li>
-	<% end %>
-
-    <li class="right"><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></li>
-
-	<li class="right<%= " active" if active == "users/edit_preferences" %>"><%= link_to "#{_('Preferences')}", :controller => 'users', :action => 'edit_preferences' %>
-		<% if current_user.admin > 0 %>
-			<ul>
-				<li><%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %></li>
-				<li><%= link_to _('Custom Properties'), :controller => "custom_attributes", :action => "index" %></li>
-				<li><%= link_to(_("Resource Types"), resource_types_path) %></li>
-			</ul>
-		<% end %>
-	</li>
-	<% if current_user.can_view_clients? %>
-           <li class="right<%= " active" if active.starts_with?('clients/') %>">
-	     <%= link_to "#{_('Clients')}", :controller => "clients", :action => 'list' %>
-	   </li>
-	<% end %>
-
-	<li class="right" id="search_menu"><% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if(jQuery('#query').val() == '#{_('Search')}') {jQuery('#query').val(''); jQuery('#query').removeClass('optional');};"    }%>
-    <% end %>
+    <li class="<%= resource_class %>">
+      <%= link_to(_("Resources"), resources_path) %>
     </li>
-</ul>
-</div></div>
+    <% end %>
+    <li class="right">
+      <%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %>
+    </li>
+    <li class="right<%= " active" if active == "users/edit_preferences"  %>"><%= link_to "#{_('Preferences')}",  :controller =>
+ 'users'
+      ,
+
+ :action =>
+ 'edit_preferences' %>
+      <% if current_user.admin > 0 %>
+      <ul>
+        <li>
+          <%= link_to _('Company Settings'), :controller => 'companies', :action => 'edit', :id => current_user.company_id %>
+        </li>
+        <li>
+          <%= link_to _('Custom Properties'), :controller => "custom_attributes", :action => "index" %>
+        </li>
+        <li>
+          <%= link_to(_("Resource Types"), resource_types_path) %>
+        </li>
+      </ul>
+      <% end %>
+    </li>
+    <% if current_user.can_view_clients? %>
+    <li class="right<%= ' active' if active.starts_with?('clients/') %>">
+      <%= link_to "#{_('Clients')}", :controller => "clients", :action => 'list' %>
+    </li>
+    <% end %>
+    <li class="right" id="search_menu">
+      <% form_tag( {:controller => 'search', :action => 'search'}, {:method => 'get'}) do %><%= text_field_tag 'query', _('Search'), {:size => 10, :style => "font-size:9px;", :class => 'optional', :onfocus => "if(jQuery('#query').val() == '#{_('Search')}') {jQuery('#query').val(''); jQuery('#query').removeClass('optional');};"    } %>
+      <% end %>
+    </li>
+  </ul>
+</div>

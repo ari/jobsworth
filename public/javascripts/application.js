@@ -16,6 +16,17 @@ var fetchElement = null;
 
 
 // -------------------------
+// theming
+//
+
+jQuery(function() {
+	jQuery("input:submit").button();
+	//jQuery("#tabmenu").tabs();
+});
+
+
+
+// -------------------------
 // show progress spinner
 //
 
@@ -844,13 +855,14 @@ jQuery(document).ready(function(){
   }
 });
 
-/*Attach behavior to filtes panel,
+/*Attach behavior to filters panel,
   change filter via ajax only on task/list page.
-  On all other pages, when user click on filter link change filer
+  On all other pages, when user click on filter link change filter
 */
 function initFiltersPanel()
 {
     jQuery('div.task_filters ul li a').click(function(){
+    	jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
         jQuery.ajax({
             beforeSend: function(){ showProgress(); },
             complete: function(request){ tasklistReload(); hideProgress(); } ,

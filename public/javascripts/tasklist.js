@@ -60,12 +60,18 @@ function taskListConfigSerialise() {
 
 }
 
-// initialise the task list table
-jQuery(document).ready(function() {
-	jQuery.getJSON('/users/get_tasklistcols', {}, initTaskList);
+var colModel; // we need a global variable to put the model into
+
+// get the column definition as early as possible
+jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
+	colModel = data;
+	// but don't try to build the grid until the DOM has loaded
+	jQuery(document).ready(function() {
+		initTaskList()
+	});
 });
 
-function initTaskList(colModel, textStatus) {
+function initTaskList() {
 
 	jQuery('#task_list').jqGrid({
 		url:'/tasks/list?format=xml',
