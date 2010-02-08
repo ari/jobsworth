@@ -62,11 +62,10 @@ class WorkLog < ActiveRecord::Base
 
   ###
   # Creates and saves a worklog for the given task.
-  # If comment is given, it will be escaped before saving.
   # The newly created worklog is returned.
   # If anything goes worng, raise an exception
   ###
-  def self.create_for_task!(task, user, comment)
+  def self.create_task_created!(task, user)
     worklog = WorkLog.new
     worklog.user = user
     worklog.company = task.project.company
@@ -76,15 +75,37 @@ class WorkLog < ActiveRecord::Base
     worklog.started_at = Time.now.utc
     worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
+    worklog.body =  CGI::escapeHTML(task.description)
 
-    if !comment.blank?
-      worklog.body =  CGI::escapeHTML(comment)
-      worklog.comment = true
-    end
-
+    #worklog.comment = ??????
     worklog.save!
 
     return worklog
+  end
+
+  # Builds a new (unsaved) work log for task using the given params
+  # params must look like {:duration=>"", :started_at=>"",:comment=>""}
+  def self.build_task_work_added(task, user, work_log_params=nil)
+    if work_log_params and !work_log_params[:duration].blank?
+      work_log = WorkLog.new
+      work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
+      work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
+
+      unless work_log_params[:comment].blank?
+        work_log.body = CGI::escapeHTML(work_log_params[:comment])
+        work_log.comment =true
+      end
+
+      work_log.user=user
+      work_log.company= task.company
+      work_log.project = task.project
+      work_log.log_type = EventLog::TASK_WORK_ADDED
+      work_log.customer = (task.customers.first || task.project.customer)
+      task.work_logs << work_log
+      return worl_log
+    else
+      return false
+    end
   end
 
   def ended_at
