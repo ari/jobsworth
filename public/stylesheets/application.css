@@ -1,72 +1,79 @@
 body {
-  background-color: #FFFFFF;
-  color: #333333;
-  background-image: url(/images/bg_grad.jpg);
-  background-repeat: repeat-x;
-  border: none;
-  margin-top: 0;
-  font-family: Lucida Grande, Verdana, Arial, sans-serif;
-  font-size: 12px;
+    background-color: #FFFFFF;
+    color: #333333;
+    background-image: url(/images/bg_grad.jpg);
+    background-repeat: repeat-x;
+    border: none;
+    margin-top: 0;
+    font-family: Lucida Grande, Verdana, Arial, sans-serif;
+    font-size: 12px;
 }
 
-
 /* Global */
+.left {
+    float: left;
+}
 
-.left 	{ float: left; }
-.right  { float: right;	}
+.right {
+    float: right;
+}
 
-span.clear-both { display: block; clear: both; }
+span.clear-both {
+    display: block;
+    clear: both;
+}
 
 span.divider {
-	display: block;
-	margin: 6px 0;
-	width: auto;
-	clear: both;
-	/**/
-	border-bottom: 1px solid #DDDDDD;
+    display: block;
+    margin: 6px 0;
+    width: auto;
+    clear: both;
+    /**/
+    border-bottom: 1px solid #DDDDDD;
 }
 
 .close-cross {
-	width: auto;
-	float: right;
-	margin: 0 0 0 0;
-	background-position: top right;
-	text-align: right;
+    width: auto;
+    float: right;
+    margin: 0 0 0 0;
+    background-position: top right;
+    text-align: right;
 }
 
 small {
-	color: gray;
+    color: gray;
 }
 
 dl {
 }
 
 dt {
-  font-size: 11px;
-  color: #999999;
-  display: inline;
-  clear: both;
-  float: left;
-  width: 100px;
+    font-size: 11px;
+    color: #999999;
+    display: inline;
+    clear: both;
+    float: left;
+    width: 100px;
 }
 
 dd {
-	display: inline;
-	float: left;
+    display: inline;
+    float: left;
 }
-/*-----------*/
 
+/*-----------*/
 a {
-  color: #566ca5;
-  text-decoration: none;
-  font-weight: normal;
+    color: #566ca5;
+    text-decoration: none;
+    font-weight: normal;
 }
+
 a:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .task-row:hover, .milestone:hover, .hoverrow:hover, .scheduleDay:hover, .scheduleToday:hover, .scheduleDue:hover {
-  background-color: #e0e0ff !IMPORTANT;
+    background-color: #e0e0ff !IMPORTANT;
 }
 
 
