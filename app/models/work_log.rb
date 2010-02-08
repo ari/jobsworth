@@ -89,14 +89,14 @@ class WorkLog < ActiveRecord::Base
   def self.build_work_added_or_comment(task, user, work_log_params=nil)
     if work_log_params and (!work_log_params[:duration].blank? or !work_log_params[:comment].blank?)
       work_log = WorkLog.new
-
-      work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
-      work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
-
       unless work_log_params[:comment].blank?
         work_log.body = CGI::escapeHTML(work_log_params[:comment])
         work_log.log_type=EventLog::TASK_COMMENT
         work_log.comment =true
+        #following two lines added just to pass validation
+        #TODO: move this code to pre validation hook
+        work_log.duration=0
+        work_log.started_at= Time.now.utc
       end
       unless work_log_params[:duration].blank?
         work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])

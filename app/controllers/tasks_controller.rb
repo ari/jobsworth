@@ -161,8 +161,13 @@ class TasksController < ApplicationController
       render :action => 'new'
       return
     end
-    #TODO: clean up this code, maybe task should accept attributes for work_log
-    if @task.save && ( @task.build_work_log(params, current_user) ? @task.save : true )
+    #One task can have two  worklogs, so following code can raise three exceptions
+    #ActiveRecard::RecordInvalid or ActiveRecord::RecordNotSaved
+    begin
+      @task.save!
+      WorkLog.build_work_added_or_comment(@task, current_user, params[:work_log].merge(:comment=>params[:comment]))
+      @task.save! #FIXME: it saves worklog from line above
+      WorkLog.create_task_created!(@task, current_user)
 
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
@@ -172,9 +177,9 @@ class TasksController < ApplicationController
       @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
-      worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      worklog.send_notifications(params[:notify])
+
+      @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
 
 
@@ -184,7 +189,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
       redirect_from_last
-    else
+    rescue ActiveRecord::RecordInvalid
       init_attributes_for_new_template
       return if request.xhr?
       render :action => 'new'

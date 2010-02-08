@@ -116,7 +116,6 @@ class TasksControllerTest < ActionController::TestCase
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
-          assert work_log.comment?
           assert work_log.body =~ /#{@new_task.description}/
         end
 
@@ -147,7 +146,6 @@ class TasksControllerTest < ActionController::TestCase
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
-          assert work_log.comment?
           assert work_log.body =~ /#{@new_task.description}/
         end
 
@@ -157,7 +155,7 @@ class TasksControllerTest < ActionController::TestCase
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_WORK_ADDED )
           assert_equal work_log.duration,  60*10  # 10 minutes
           assert ! work_log.comment?
-          assert work_log.body.empty?
+          assert work_log.body.blank?
         end
 
         should "send only one email to each user, with task description" do
@@ -168,7 +166,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "without time spend" do
       setup do
-         @parameters.merge!( { :work_log=>{:duration=>''} })
+         @parameters.merge!( { :work_log=>{} })
       end
 
       context "with comment" do
@@ -184,7 +182,6 @@ class TasksControllerTest < ActionController::TestCase
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
-          assert work_log.comment?
           assert work_log.body =~ /#{@new_task.description}/
         end
 
@@ -216,7 +213,6 @@ class TasksControllerTest < ActionController::TestCase
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
-          assert work_log.comment?
           assert work_log.body =~ /#{@new_task.description}/
         end
 
