@@ -64,8 +64,9 @@ class WorkLog < ActiveRecord::Base
   # Creates and saves a worklog for the given task.
   # If comment is given, it will be escaped before saving.
   # The newly created worklog is returned.
+  # If anything goes worng, raise an exception
   ###
-  def self.create_for_task(task, user, comment)
+  def self.create_for_task!(task, user, comment)
     worklog = WorkLog.new
     worklog.user = user
     worklog.company = task.project.company
@@ -81,7 +82,7 @@ class WorkLog < ActiveRecord::Base
       worklog.comment = true
     end
 
-    worklog.save
+    worklog.save!
 
     return worklog
   end
