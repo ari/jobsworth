@@ -85,24 +85,30 @@ class WorkLog < ActiveRecord::Base
 
   # Builds a new (unsaved) work log for task using the given params
   # params must look like {:duration=>"", :started_at=>"",:comment=>""}
-  def self.build_task_work_added(task, user, work_log_params=nil)
-    if work_log_params and !work_log_params[:duration].blank?
+  # build only if we have :duration or :comment else retur false
+  def self.build_work_added_or_comment(task, user, work_log_params=nil)
+    if work_log_params and (!work_log_params[:duration].blank? or !work_log_params[:comment].blank?)
       work_log = WorkLog.new
+
       work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
       work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
 
       unless work_log_params[:comment].blank?
         work_log.body = CGI::escapeHTML(work_log_params[:comment])
+        work_log.log_type=EventLog::TASK_COMMENT
         work_log.comment =true
       end
-
+      unless work_log_params[:duration].blank?
+        work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
+        work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
+        work_log.log_type = EventLog::TASK_WORK_ADDED
+      end
       work_log.user=user
       work_log.company= task.company
       work_log.project = task.project
-      work_log.log_type = EventLog::TASK_WORK_ADDED
       work_log.customer = (task.customers.first || task.project.customer)
       task.work_logs << work_log
-      return worl_log
+      return work_log
     else
       return false
     end
