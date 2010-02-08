@@ -30,7 +30,6 @@
         margin-top:1em;
         float:left;
         width:19%;
-        font-family:'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
         margin-left:1.25em;
         margin-left:3%;
         margin-right:0;
@@ -53,7 +52,6 @@
 {
         margin:0 auto;
         margin-bottom:1em;
-        font-family:'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
         font-size:0.75em;
         color:#333;
         min-width:545px;
@@ -139,11 +137,6 @@ p.sections a.action { color:#c00; }
         margin-left:10em;
 }
 
-#main_col h1, #main_col h2,#main_col h3,#main_col h4,#main_col h5,#main_col h6
-{
-font-family:'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
-}
-
 #main_col h1 {
         font-size:1.3em;
 }
@@ -152,7 +145,6 @@ font-family:'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
 
 p.subtitle
 {
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
         font-size:0.75em;
         color:#888;
         font-weight:bold;
@@ -179,7 +171,6 @@ p.subtitle img { vertical-align: bottom; }
   color:white;
         font-size:0.70em;
   border-bottom:1px solid #999;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 
 #main_col h6 { margin-bottom:0; }
@@ -273,7 +264,6 @@ ul.quotes span
 
 ul.why
 {
-        font-family:'Lucida Grande', Arial, Helvetica, sans-serif;
         font-size:1em;
         line-height:1.25em;
         margin-top:2em;
@@ -306,7 +296,6 @@ div.asset
         background:#e7e7e7;
         padding:7px 15px;
         border-bottom:1px solid #ccc;
-        font-family:'Lucida Grande',Tahoma, Arial, Helvetica, sans-serif;
         font-size:0.8em;
         margin-bottom:1em;
         text-align:center;
@@ -386,12 +375,6 @@ div.upload a
 .pastePreview .when {   float:right; }
 .pastePreview .when strong {    color:black; }
 
-#main_col p
-{
-        font-family:'Lucida Grande', 'Trebuchet MS', Arial, Helvetica, sans-serif;
-}
-
-
 #news
 {
         background:#248;
@@ -449,7 +432,6 @@ div.upload a
 #main_col #header ul#nav li
 {
         color:gold;
-        font-family:'Lucida Grande', Verdana, Arial, Helvetica, sans-serif;
         font-size:0.7em;
         float:left;
         margin-left:2em;
@@ -503,7 +485,6 @@ td.code,
 
 #main_col label
 {
-        font-family:'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
         color:#666;
         font-size:0.75em;
         font-weight:normal;
@@ -546,7 +527,6 @@ td.code,
 #main_col table
 {
         border-collapse:collapse;
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 #main_col table.wide {    width:100%; }
 #main_col table tr th
@@ -599,7 +579,6 @@ table.forums a.tiny
 
 table.forums .posts
 {
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
         color:#666;
         font-size:0.8em;
 }
@@ -657,7 +636,6 @@ table.topics tr td .flag {
   color:#666;
   padding-left:0.5em;
   font-size:0.75em;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 .button_or a { color:#c00; }
 
@@ -690,7 +668,6 @@ div.stats
 {
         margin-top:2em;
         background:#ded;
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
         font-size:0.8em;
         padding:15px 15px;
         border:2px solid #393;
@@ -703,7 +680,6 @@ div.stats .posts { float:right; text-align:right; }
 .crumbs
 {
         font-size:0.75em;
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 .crumbs a { color:#468; }
 .crumbs a:hover { color:#00c; text-decoration:underline; }
@@ -891,7 +867,6 @@ div.editbox textarea
         background:white;
         opacity:1;
         font-size:0.8em;
-        font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 div.editbox .button_or a
 {
@@ -904,7 +879,6 @@ div.editbox a.utility
   font-size: 0.65em;
   padding: 2px 5px 4px;
   display: block;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
   float: right;
   text-align: right;
   margin-top: 0.2em;
@@ -927,7 +901,6 @@ div.editbox ul.help
   padding:3px 10px;
   font-size:0.75em;
   color:#666;
-  font-family: 'Lucida Grande', Tahoma, Arial, Helvetica, sans-serif;
 }
 div.editbox ul.help { margin:0; }
 

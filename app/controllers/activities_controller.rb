@@ -1,7 +1,6 @@
 # Show recent activities, and handle the simple tutorial
 #
 class ActivitiesController < ApplicationController
-
   # Redirect to list
   def index
     list
