@@ -174,9 +174,9 @@ class TasksController < ApplicationController
       create_attachments(@task)
       worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      worklog.setup_notifications(params[:notify]) do |recipients|
-        Notifications::deliver_created(@task, current_user, recipients, params[:comment])
-      end
+      worklog.send_notifications(params[:notify])
+
+
 
       Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
@@ -430,7 +430,6 @@ class TasksController < ApplicationController
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
-      email_body = body
 
       if params[:comment] && params[:comment].length > 0
         update_type = :comment if body.length == 0
@@ -438,10 +437,8 @@ class TasksController < ApplicationController
         worklog.comment = true
 
         body << "\n" if body.length > 0
-        email_body = body + current_user.name + ":\n"
 
         body << CGI::escapeHTML(params[:comment])
-        email_body << params[:comment]
       end
 
       if body.length > 0
@@ -455,12 +452,8 @@ class TasksController < ApplicationController
         worklog.body = body
         worklog.save!
 
-        if params[:comment] and !params[:comment].blank?
-          worklog.setup_notifications(params[:notify]) do |recipients|
-            Notifications::deliver_changed(update_type, @task, current_user, recipients,
-                                           email_body.gsub(/<[^>]*>/,''))
-          end
-        end
+
+        worklog.send_notifications(params[:notify], update_type)
       end
 
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
