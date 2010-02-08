@@ -79,6 +79,35 @@ class TasksControllerTest < ActionController::TestCase
       assert_emails @task.users.length
       assert_redirected_to "/tasks/list"
     end
+
+    context "with task changed," do
+      context "with comment added," do
+        context "with time spend" do
+        end
+        context "without time spend" do
+        end
+      end
+      context "without comment," do
+        context "with time spend" do
+        end
+        context "without time spend" do
+        end
+      end
+    end
+    context "without changes to task" do
+      context "with comment added," do
+        context "with time spend" do
+        end
+        context "without time spend" do
+        end
+      end
+      context "without comment," do
+        context "with time spend" do
+        end
+        context "without time spend" do
+        end
+      end
+    end
   end
 
   context "a new task with a few users attached when creating" do
