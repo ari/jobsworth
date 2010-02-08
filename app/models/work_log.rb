@@ -112,12 +112,6 @@ class WorkLog < ActiveRecord::Base
   # send the actual emails, but this method will update the owners, worklog, etc
   # as required.
   ###
-  ###
-  # This method moved from TasksController#notify(task,worklog,&block)
-  # here in WorkLog we alredy have task and worklog, code more incapsulated
-  # we don't have current_user, but current_user == worklog.user
-  # we don't have params, this is a problem
-  ###
   def setup_notifications(notify_ids,&block)
     worklog=self
     task=self.task
@@ -136,6 +130,10 @@ class WorkLog < ActiveRecord::Base
 
       worklog.users = users
 
+      emails.each do |email|
+        yield(email)
+      end
+
       if users.any?
         comments = users.map { |u| "#{ u.name } (#{ u.email })" }
         comment = _("Notification emails sent to %s", comments.join(", "))
@@ -145,13 +143,34 @@ class WorkLog < ActiveRecord::Base
         worklog.save
       end
 
-      emails.each do |email|
-        yield(email)
-      end
     end
 
     task.mark_as_notified_last_change(all_users)
     task.mark_as_unread(current_user)
+  end
+  ###
+  # this function will send notifications
+  # only if work log have comment or log type TASK_CREATED
+  ###
+  def send_notifications(notify_ids, update_type= :comment)
+    if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
+        self.setup_notifications(notify_ids) do |recipients|
+            email_body= self.user.name + ":\n"
+            email_body<< CGI::unescapeHTML(self.body)
+            Notifications::deliver_changed(update_type, self.task, self.user, recipients,
+                                           email_body.gsub(/<[^>]*>/,''))
+          end
+    else
+      if self.log_type == EventLog::TASK_CREATED
+        self.setup_notifications(notify_ids) do |recipients|
+          #note send without comment, user add comment will be sended another mail
+          Notifications::deliver_created(self.task, self.user, recipients)
+        end
+      else
+        #we don't have comment
+        #don't bother our users
+      end
+    end
   end
 end
 
