@@ -48,8 +48,8 @@
 
         <% if @unread_only -%>
           <li class="heading"><%=_ "Read status" %></li>
-          <li>
-                  <li data-id="task_filter[unread_only]" data-idval="true">
+
+          <li data-id="task_filter[unread_only]" data-idval="true">
             <%hidden_field_tag "task_filter[unread_only]", true, :class => "id" %>
             <%=_ "My unread tasks only" %>
           </li>
