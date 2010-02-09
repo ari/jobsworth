@@ -68,12 +68,7 @@
     <li class="right">
       <%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %>
     </li>
-    <li class="right<%= " active" if active == "users/edit_preferences"  %>"><%= link_to "#{_('Preferences')}",  :controller =>
- 'users'
-      ,
-
- :action =>
- 'edit_preferences' %>
+    <li class="right<%= " active" if active == "users/edit_preferences"  %>"><%= link_to "#{_('Preferences')}",  :controller => 'users', :action => 'edit_preferences' %>
       <% if current_user.admin > 0 %>
       <ul>
         <li>
