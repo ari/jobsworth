@@ -288,9 +288,10 @@ class TasksController < ApplicationController
     end
 
     @task.attributes = params[:task]
-    @task.build_work_log(params, current_user)
 
-    if @task.save
+    begin
+      @task.save!
+      @task.build_work_log(params, current_user)
       @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -324,7 +325,7 @@ class TasksController < ApplicationController
         # Repeat this task every X...
         if @task.next_repeat_date != nil
 
-          @task.save
+          @task.save!
           @task.reload
 
           repeat_task(@task)
@@ -338,7 +339,7 @@ class TasksController < ApplicationController
       @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
       @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
 
-      @task.save
+      @task.save!
 
       @task.reload
 
@@ -468,7 +469,7 @@ class TasksController < ApplicationController
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
       redirect_to "/tasks/list"
-    else
+    rescue ActiveRecord::RecordInvalid
       init_form_variables(@task)
       render :action => 'edit'
     end
