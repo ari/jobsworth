@@ -192,7 +192,7 @@ class TasksControllerTest < ActionController::TestCase
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
-            assert_emails @task.users.lenght
+            assert_emails @task.users.length
             assert_equal @task.work_logs.count, 1
           end
         end
@@ -204,7 +204,7 @@ class TasksControllerTest < ActionController::TestCase
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
-            assert_emails @task.users.lenght
+            assert_emails @task.users.length
             assert_equal @task.work_logs.count, 1
           end
         end
