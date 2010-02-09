@@ -436,18 +436,18 @@ class TasksController < ApplicationController
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
-
+      worklog.body=body
       if params[:comment] && params[:comment].length > 0
-        update_type = :comment if body.length == 0
-        worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
+        update_type = :comment if worklog.body.length == 0
+        worklog.log_type = EventLog::TASK_COMMENT if worklog.body.length == 0
         worklog.comment = true
 
-        body << "\n" if body.length > 0
+        worklog.body << "\n" if worklog.body.length > 0
 
-        body << CGI::escapeHTML(params[:comment])
+        worklog.user_input_add params[:comment]
       end
 
-      if body.length > 0
+      if worklog.body.length > 0
         worklog.user = current_user
         worklog.company = @task.project.company
         worklog.customer = @task.project.customer
@@ -455,7 +455,6 @@ class TasksController < ApplicationController
         worklog.task = @task
         worklog.started_at = Time.now.utc
         worklog.duration = 0
-        worklog.body = body
         worklog.save!
 
 

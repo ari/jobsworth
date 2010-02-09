@@ -59,6 +59,15 @@ class WorkLog < ActiveRecord::Base
     end
 
   }
+  #You must use two following methods to add unescaped user input!!!
+  def user_input=(user_comment)
+    self.body=CGI::escapeHTML(user_comment)
+  end
+  # this method must be named user_input<<
+  # but I can't redefine <<
+  def user_input_add(user_comment)
+    self.body<< CGI::escapeHTML(user_comment)
+  end
 
   ###
   # Creates and saves a worklog for the given task.
@@ -75,7 +84,7 @@ class WorkLog < ActiveRecord::Base
     worklog.started_at = Time.now.utc
     worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
-    worklog.body =  CGI::escapeHTML(task.description)
+    worklog.user_input =  task.description
 
     #worklog.comment = ??????
     worklog.save!
@@ -90,7 +99,7 @@ class WorkLog < ActiveRecord::Base
     if work_log_params and (!work_log_params[:duration].blank? or !work_log_params[:comment].blank?)
       work_log = WorkLog.new
       unless work_log_params[:comment].blank?
-        work_log.body = CGI::escapeHTML(work_log_params[:comment])
+        work_log.user_input = work_log_params[:comment]
         work_log.log_type=EventLog::TASK_COMMENT
         work_log.comment =true
         #following two lines added just to pass validation
