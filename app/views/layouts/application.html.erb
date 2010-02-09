@@ -25,11 +25,8 @@
       	<%= @internal.css %>
       	<% end %>
       	<% unless current_user.option_floating_chat %>
-      	#presence {
-      		  position:relative;
-      	}
+      	#presence {position:relative;}
       	<% end %>
-      	
     </style>
   </head>
   <body id="body">
@@ -52,12 +49,7 @@
           <%= @content_for_layout %>
         </td>
         <td id="right-menu-collapse" onclick="jQuery('#side_panel').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
-        <td align="right" valign="top" style="width:15%;<%= "display:none;"  if session[:collapse_menu].to_i >
- 
-          0 
- %>" id="side_panel
-          ">
-
+        <td align="right" valign="top" style="width:15%;<%= "display:none;"  if session[:collapse_menu].to_i > 0 %>" id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
           <div<%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
