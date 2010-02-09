@@ -684,6 +684,10 @@ input.button {
   font-size: 9px;
 }
 
+#calendar {
+  margin-top: 12px;
+}
+
 .day {
   font-size: 9px;
 }
