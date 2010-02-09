@@ -79,37 +79,72 @@ class TasksControllerTest < ActionController::TestCase
       assert_emails @task.users.length
       assert_redirected_to "/tasks/list"
     end
-
-    context "with task changed," do
+    context "one of task's watched attributes changed," do
       context "with comment added," do
         context "with time spend" do
+          should "create work log with type according to changes, with changes as a body, without time and not send it" do
+          end
+          should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend, and send it" do
+          end
+          should "send one email to each user" do
+          end
         end
         context "without time spend" do
+          should "create work log with type according to changes, with (changes + comment) as a body, without time and send it" do
+          end
+          should "send one email to each user" do
+          end
         end
       end
       context "without comment," do
         context "with time spend" do
+          should "create work log with type according to changes, with changes as a body, without time and not send it" do
+          end
+          should "create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it" do
+          end
+          should "not send any emails" do
+          end
         end
         context "without time spend" do
+          should "create work log with type according to changes, with changes as a body, without time and not send it" do
+          end
+          should "not send any emails" do
+          end
         end
       end
     end
-    context "without changes to task" do
+    context "without changes to task's watched attributes" do
       context "with comment added," do
         context "with time spend" do
+          should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it" do
+          end
+          should "send one email to each user" do
+          end
         end
         context "without time spend" do
+          should "create work log with type TASK_COMMENT, with comment as a body and send it" do
+          end
+          should "send one email to each user" do
+          end
         end
       end
       context "without comment," do
         context "with time spend" do
+          should "create work log with type TASK_WORK_ADDED, without body, and not send it" do
+          end
+          should "not send any emails" do
+          end
         end
         context "without time spend" do
+          should "not create any worklogs" do
+          end
+          should "not send any emails" do
+          end
         end
       end
     end
   end
-
+################################################3
   context "a new task with a few users attached when creating" do
     setup do
       ActionMailer::Base.deliveries = []
