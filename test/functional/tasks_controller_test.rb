@@ -80,71 +80,171 @@ class TasksControllerTest < ActionController::TestCase
       assert_redirected_to "/tasks/list"
     end
     context "one of task's watched attributes changed," do
+      setup do
+        @parameters={:id=>@task.id, :task=>{ :status=>1 }, :notify=> @notify}
+      end
       context "with comment added," do
+        setup do
+          @parameters.merge!(:comment=>'Just a comment')
+        end
         context "with time spend" do
-          should "create work log with type according to changes, with changes as a body, without time and not send it" do
+          setup do
+            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc})
+            post(:update,@parameters)
+            assert_redirected_to 'tasks/list'
           end
-          should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend, and send it" do
+          should "create work log with type according to changes, with (changes+comment) as a body, without time and send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 0
+            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
+          end
+          should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend, and not  send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 10*60
+            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
+            assert_emails  @task.users.length
+            assert_equal @task.work_logs.count, 2
           end
         end
         context "without time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{ :duration=>'',:started_at=>''})
+            post(:update,@parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type according to changes, with (changes + comment) as a body, without time and send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 0
+            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
+            assert_emails  @task.users.length
+            assert_equal @task.work_logs.count, 1
           end
         end
       end
       context "without comment," do
+        setup do
+          @parameters.merge!(:comment=>'')
+        end
         context "with time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc})
+            post(:update,@parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 0
+            assert worklog.body =~ /status/i, "work log body must include changes "
           end
           should "create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 10*60
+            assert !(worklog.body =~ /status/i), "work log body must not include changes"
           end
           should "not send any emails" do
+            assert_emails 0
+            assert_equal @task.work_logs.count, 2
           end
         end
         context "without time spend" do
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 0
+            assert worklog.body =~ /status/i, "work log body must include changes "
           end
           should "not send any emails" do
+            assert_emails 0
+            assert_equal @task.work_logs.count, 1
           end
         end
       end
     end
     context "without changes to task's watched attributes" do
+      setup do
+        @parameters={:id=>@task.id, :task=>{}, :notify=> @notify}
+      end
       context "with comment added," do
+        setup do
+          @parameters.merge!(:comment=>'Just a comment')
+        end
         context "with time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc })
+            post(:update, @parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 10*60
+            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
+            assert_emails @task.users.lenght
+            assert_equal @task.work_logs.count, 1
           end
         end
         context "without time spend" do
           should "create work log with type TASK_COMMENT, with comment as a body and send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_COMMENT)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 0
+            assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
+            assert_emails @task.users.lenght
+            assert_equal @task.work_logs.count, 1
           end
         end
       end
       context "without comment," do
+        setup do
+          @parameters.merge!( :comment => '')
+        end
         context "with time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc })
+            post(:update, @parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type TASK_WORK_ADDED, without body, and not send it" do
+            worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
+            assert_not_nil worklog
+            assert_equal worklog.duration, 10*60
+            assert worklog.body.blank?
           end
           should "not send any emails" do
+            assert_emails 0
+            assert_equal @task.work_logs.count, 1
           end
         end
         context "without time spend" do
-          should "not create any worklogs" do
+          setup do
+            @parameters.merge!(:work_log=>{ })
+            post(:update, @parameters)
+            assert_redirected_to 'tasks/list'
           end
-          should "not send any emails" do
+          should "not create any worklogs and not send any emails" do
+            assert_emails 0
+            assert_equal @task.work_logs.count, 0
           end
         end
       end
     end
   end
-################################################3
+################################################
   context "a new task with a few users attached when creating" do
     setup do
       ActionMailer::Base.deliveries = []
