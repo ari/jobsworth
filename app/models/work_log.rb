@@ -59,13 +59,22 @@ class WorkLog < ActiveRecord::Base
     end
 
   }
+  #You must use two following methods to add unescaped user input!!!
+  def user_input=(user_comment)
+    self.body=CGI::escapeHTML(user_comment)
+  end
+  # this method must be named user_input<<
+  # but I can't redefine <<
+  def user_input_add(user_comment)
+    self.body<< CGI::escapeHTML(user_comment)
+  end
 
   ###
   # Creates and saves a worklog for the given task.
-  # If comment is given, it will be escaped before saving.
   # The newly created worklog is returned.
+  # If anything goes worng, raise an exception
   ###
-  def self.create_for_task(task, user, comment)
+  def self.create_task_created!(task, user)
     worklog = WorkLog.new
     worklog.user = user
     worklog.company = task.project.company
@@ -75,15 +84,43 @@ class WorkLog < ActiveRecord::Base
     worklog.started_at = Time.now.utc
     worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
+    worklog.user_input =  task.description
 
-    if !comment.blank?
-      worklog.body =  CGI::escapeHTML(comment)
-      worklog.comment = true
-    end
-
-    worklog.save
+    #worklog.comment = ??????
+    worklog.save!
 
     return worklog
+  end
+
+  # Builds a new (unsaved) work log for task using the given params
+  # params must look like {:duration=>"", :started_at=>"",:comment=>""}
+  # build only if we have :duration or :comment else retur false
+  def self.build_work_added_or_comment(task, user, work_log_params=nil)
+    if work_log_params and (!work_log_params[:duration].blank? or !work_log_params[:comment].blank?)
+      work_log = WorkLog.new
+      unless work_log_params[:comment].blank?
+        work_log.user_input = work_log_params[:comment]
+        work_log.log_type=EventLog::TASK_COMMENT
+        work_log.comment =true
+        #following two lines added just to pass validation
+        #TODO: move this code to pre validation hook
+        work_log.duration=0
+        work_log.started_at= Time.now.utc
+      end
+      unless work_log_params[:duration].blank?
+        work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
+        work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
+        work_log.log_type = EventLog::TASK_WORK_ADDED
+      end
+      work_log.user=user
+      work_log.company= task.company
+      work_log.project = task.project
+      work_log.customer = (task.customers.first || task.project.customer)
+      task.work_logs << work_log
+      return work_log
+    else
+      return false
+    end
   end
 
   def ended_at

@@ -161,8 +161,13 @@ class TasksController < ApplicationController
       render :action => 'new'
       return
     end
-    #TODO: clean up this code, maybe task should accept attributes for work_log
-    if @task.save && ( @task.build_work_log(params, current_user) ? @task.save : true )
+    #One task can have two  worklogs, so following code can raise three exceptions
+    #ActiveRecard::RecordInvalid or ActiveRecord::RecordNotSaved
+    begin
+      @task.save!
+      WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+      @task.save! #FIXME: it saves worklog from line above
+      WorkLog.create_task_created!(@task, current_user)
 
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
@@ -172,9 +177,9 @@ class TasksController < ApplicationController
       @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
-      worklog = WorkLog.create_for_task(@task, current_user, params[:comment])
 
-      worklog.send_notifications(params[:notify])
+
+      @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
 
 
@@ -184,7 +189,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
       redirect_from_last
-    else
+    rescue ActiveRecord::RecordInvalid
       init_attributes_for_new_template
       return if request.xhr?
       render :action => 'new'
@@ -283,9 +288,10 @@ class TasksController < ApplicationController
     end
 
     @task.attributes = params[:task]
-    @task.build_work_log(params, current_user)
 
-    if @task.save
+    begin
+      @task.save!
+
       @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -319,7 +325,7 @@ class TasksController < ApplicationController
         # Repeat this task every X...
         if @task.next_repeat_date != nil
 
-          @task.save
+          @task.save!
           @task.reload
 
           repeat_task(@task)
@@ -333,7 +339,7 @@ class TasksController < ApplicationController
       @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
       @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
 
-      @task.save
+      @task.save!
 
       @task.reload
 
@@ -431,17 +437,21 @@ class TasksController < ApplicationController
       end
 
 
-      if params[:comment] && params[:comment].length > 0
-        update_type = :comment if body.length == 0
-        worklog.log_type = EventLog::TASK_COMMENT if body.length == 0
-        worklog.comment = true
-
-        body << "\n" if body.length > 0
-
-        body << CGI::escapeHTML(params[:comment])
-      end
-
-      if body.length > 0
+      if body.length == 0
+        #task not changed
+        second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+        if second_worklog
+          @task.save!
+          second_worklog.save!
+          second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
+        end
+      else
+        worklog.body=body
+        if params[:comment] && params[:comment].length > 0
+          worklog.comment = true
+          worklog.body << "\n"
+          worklog.user_input_add params[:comment]
+        end
         worklog.user = current_user
         worklog.company = @task.project.company
         worklog.customer = @task.project.customer
@@ -449,13 +459,14 @@ class TasksController < ApplicationController
         worklog.task = @task
         worklog.started_at = Time.now.utc
         worklog.duration = 0
-        worklog.body = body
         worklog.save!
-
-
-        worklog.send_notifications(params[:notify], update_type)
+        worklog.send_notifications(params[:notify], update_type) if worklog.comment?
+        if params[:work_log] && !params[:work_log][:duration].blank?
+          WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+          @task.save!
+          #not send any emails
+        end
       end
-
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
@@ -463,7 +474,7 @@ class TasksController < ApplicationController
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
       redirect_to "/tasks/list"
-    else
+    rescue ActiveRecord::RecordInvalid
       init_form_variables(@task)
       render :action => 'edit'
     end

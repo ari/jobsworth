@@ -39,7 +39,6 @@
 
         <% if !@filter.blank? -%>
           <li class="heading"><%=_ "Keyword" %></li>
-          <li>
                 <li data-id="task_filter[keywords_attributes][]" data-idval="<%= @filter %>">
             <% hidden_field_tag "task_filter[keywords_attributes][]", @filter, :class => "id" %>
             <%= @filter %>
@@ -48,8 +47,8 @@
 
         <% if @unread_only -%>
           <li class="heading"><%=_ "Read status" %></li>
-          <li>
-                  <li data-id="task_filter[unread_only]" data-idval="true">
+
+          <li data-id="task_filter[unread_only]" data-idval="true">
             <%hidden_field_tag "task_filter[unread_only]", true, :class => "id" %>
             <%=_ "My unread tasks only" %>
           </li>
