@@ -165,7 +165,7 @@ class TasksController < ApplicationController
     #ActiveRecard::RecordInvalid or ActiveRecord::RecordNotSaved
     begin
       @task.save!
-      WorkLog.build_work_added_or_comment(@task, current_user, params[:work_log].merge(:comment=>params[:comment]))
+      WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
       @task.save! #FIXME: it saves worklog from line above
       WorkLog.create_task_created!(@task, current_user)
 
@@ -291,7 +291,7 @@ class TasksController < ApplicationController
 
     begin
       @task.save!
-      @task.build_work_log(params, current_user)
+
       @task.hide_until = nil if params[:task][:hide_until].nil?
 
       if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -436,18 +436,22 @@ class TasksController < ApplicationController
         body << "- <strong>Attached</strong>: #{filename}\n"
       end
 
-      worklog.body=body
-      if params[:comment] && params[:comment].length > 0
-        update_type = :comment if worklog.body.length == 0
-        worklog.log_type = EventLog::TASK_COMMENT if worklog.body.length == 0
-        worklog.comment = true
 
-        worklog.body << "\n" if worklog.body.length > 0
-
-        worklog.user_input_add params[:comment]
-      end
-
-      if worklog.body.length > 0
+      if body.length == 0
+        #task not changed
+        second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+        if second_worklog
+          @task.save!
+          second_worklog.save!
+          second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
+        end
+      else
+        worklog.body=body
+        if params[:comment] && params[:comment].length > 0
+          worklog.comment = true
+          worklog.body << "\n"
+          worklog.user_input_add params[:comment]
+        end
         worklog.user = current_user
         worklog.company = @task.project.company
         worklog.customer = @task.project.customer
@@ -456,11 +460,13 @@ class TasksController < ApplicationController
         worklog.started_at = Time.now.utc
         worklog.duration = 0
         worklog.save!
-
-
-        worklog.send_notifications(params[:notify], update_type)
+        worklog.send_notifications(params[:notify], update_type) if worklog.comment?
+        if params[:work_log] && !params[:work_log][:duration].blank?
+          WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+          @task.save!
+          #not send any emails
+        end
       end
-
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 

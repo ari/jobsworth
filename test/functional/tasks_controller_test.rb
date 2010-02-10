@@ -182,7 +182,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "without changes to task's watched attributes" do
       setup do
-        @parameters={:id=>@task.id, :task=>{}, :notify=> @notify}
+        @parameters={:id=>@task.id, :assigned=>@task.user_ids, :task=>{}, :notify=> @notify}
       end
       context "with comment added," do
         setup do
@@ -191,7 +191,7 @@ class TasksControllerTest < ActionController::TestCase
         context "with time spend" do
           setup do
             @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
-            @task.work_logs.destroy_all
+            assert_equal 0, @task.work_logs.count, 'before call update task don\'t have worklogs'
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -203,19 +203,24 @@ class TasksControllerTest < ActionController::TestCase
           end
           should "send only one email to each user and create only one work log" do
             assert_emails @task.users.length
-            assert_equal @task.work_logs.count, 1, 'number of work logs'
+            assert_equal 1, @task.work_logs.count,  'number of work logs'
           end
         end
         context "without time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{ })
+            post(:update, @parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type TASK_COMMENT, with comment as a body and send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_COMMENT)
-            assert_not_nil worklog
+            assert_not_nil worklog, "#{@parameters} #{}"
             assert_equal worklog.duration, 0
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
-          should "send one email to each user" do
+          should "send one email to each user and create only one worklog" do
             assert_emails @task.users.length
-            assert_equal @task.work_logs.count, 1
+            assert_equal 1, @task.work_logs.count
           end
         end
       end
@@ -237,18 +242,19 @@ class TasksControllerTest < ActionController::TestCase
           end
           should "not send any emails" do
             assert_emails 0
-            assert_equal 1, @task.work_logs.count,'task must have only one work log'
+            assert_equal 1, @task.work_logs.size, 'task must have only one work log'
           end
         end
         context "without time spend" do
           setup do
             @parameters.merge!(:work_log=>{ })
+            assert_equal 0, @task.work_logs.size, 'must not have worklogs before update'
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
           should "not create any worklogs and not send any emails" do
             assert_emails 0
-            assert_equal @task.work_logs.count, 0, 'must not have worklog'
+            assert_equal 0, @task.work_logs.size, 'must not have worklog'
           end
         end
       end
