@@ -74,8 +74,6 @@ class TasksControllerTest < ActionController::TestCase
     end
     teardown do
       @task.work_logs.destroy_all
-      @task.status=0
-      @task.save!
     end
 
     should "send emails to each user when adding a comment" do
@@ -164,6 +162,11 @@ class TasksControllerTest < ActionController::TestCase
           end
         end
         context "without time spend" do
+          setup do
+            @parameters.merge!(:work_log=>{ })
+            post(:update,@parameters)
+            assert_redirected_to 'tasks/list'
+          end
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
             assert_not_nil worklog
@@ -188,6 +191,7 @@ class TasksControllerTest < ActionController::TestCase
         context "with time spend" do
           setup do
             @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
+            @task.work_logs.destroy_all
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -197,9 +201,9 @@ class TasksControllerTest < ActionController::TestCase
             assert_equal worklog.duration, 10*60
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
-          should "send one email to each user" do
+          should "send only one email to each user and create only one work log" do
             assert_emails @task.users.length
-            assert_equal @task.work_logs.count, 1
+            assert_equal @task.work_logs.count, 1, 'number of work logs'
           end
         end
         context "without time spend" do
@@ -222,7 +226,6 @@ class TasksControllerTest < ActionController::TestCase
         context "with time spend" do
           setup do
             @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
-            @task.work_logs.destroy_all
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
