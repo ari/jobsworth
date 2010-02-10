@@ -67,9 +67,15 @@ class TasksControllerTest < ActionController::TestCase
       ActionMailer::Base.deliveries = []
       @task = Task.first
       @task.users << @task.company.users
+      @task.status=0
       @task.save!
       assert_emails 0
       @notify = @task.users.map { |u| u.id }
+    end
+    teardown do
+      @task.work_logs.destroy_all
+      @task.status=0
+      @task.save!
     end
 
     should "send emails to each user when adding a comment" do
@@ -81,7 +87,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "one of task's watched attributes changed," do
       setup do
-        @parameters={:id=>@task.id, :task=>{ :status=>1 }, :notify=> @notify}
+        @parameters={:id=>@task.id, :task=>{ :status=>1}, :notify=> @notify}
       end
       context "with comment added," do
         setup do
@@ -89,7 +95,7 @@ class TasksControllerTest < ActionController::TestCase
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc})
+            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
             post(:update,@parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -113,7 +119,7 @@ class TasksControllerTest < ActionController::TestCase
         end
         context "without time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ :duration=>'',:started_at=>''})
+            @parameters.merge!(:work_log=>{ })
             post(:update,@parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -136,7 +142,7 @@ class TasksControllerTest < ActionController::TestCase
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc})
+            @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
             post(:update,@parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -181,7 +187,7 @@ class TasksControllerTest < ActionController::TestCase
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc })
+            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -211,11 +217,12 @@ class TasksControllerTest < ActionController::TestCase
       end
       context "without comment," do
         setup do
-          @parameters.merge!( :comment => '')
+          @parameters.merge!( :comment => nil)
         end
         context "with time spend" do
           setup do
-            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc })
+            @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
+            @task.work_logs.destroy_all
             post(:update, @parameters)
             assert_redirected_to 'tasks/list'
           end
@@ -227,7 +234,7 @@ class TasksControllerTest < ActionController::TestCase
           end
           should "not send any emails" do
             assert_emails 0
-            assert_equal @task.work_logs.count, 1
+            assert_equal 1, @task.work_logs.count,'task must have only one work log'
           end
         end
         context "without time spend" do
@@ -238,7 +245,7 @@ class TasksControllerTest < ActionController::TestCase
           end
           should "not create any worklogs and not send any emails" do
             assert_emails 0
-            assert_equal @task.work_logs.count, 0
+            assert_equal @task.work_logs.count, 0, 'must not have worklog'
           end
         end
       end
