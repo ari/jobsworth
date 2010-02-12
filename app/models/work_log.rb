@@ -107,6 +107,9 @@ class WorkLog < ActiveRecord::Base
         work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
         work_log_params[:started_at] = TimeParser.date_from_params(user, work_log_params, :started_at)
         work_log_params[:log_type] = EventLog::TASK_WORK_ADDED
+      else
+        work_log_params[:duration]=0
+        work_log_params[:started_at]=Time.now.utc
       end
       work_log_params[:user]=user
       work_log_params[:company]= task.company
