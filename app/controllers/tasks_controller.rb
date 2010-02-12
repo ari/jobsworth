@@ -165,7 +165,7 @@ class TasksController < ApplicationController
     #ActiveRecard::RecordInvalid or ActiveRecord::RecordNotSaved
     begin
       @task.save!
-      WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+      WorkLog.build_work_added_or_comment(@task, current_user, params)
       @task.save! #FIXME: it saves worklog from line above
       WorkLog.create_task_created!(@task, current_user)
 
@@ -439,7 +439,7 @@ class TasksController < ApplicationController
 
       if body.length == 0
         #task not changed
-        second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+        second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, params)
         if second_worklog
           @task.save!
           second_worklog.save!
@@ -462,7 +462,7 @@ class TasksController < ApplicationController
         worklog.save!
         worklog.send_notifications(params[:notify], update_type) if worklog.comment?
         if params[:work_log] && !params[:work_log][:duration].blank?
-          WorkLog.build_work_added_or_comment(@task, current_user, (params[:work_log]||{ }).merge(:comment=>params[:comment]))
+          WorkLog.build_work_added_or_comment(@task, current_user, params)
           @task.save!
           #not send any emails
         end

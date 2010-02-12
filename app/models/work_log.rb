@@ -93,31 +93,26 @@ class WorkLog < ActiveRecord::Base
   end
 
   # Builds a new (unsaved) work log for task using the given params
-  # params must look like {:duration=>"", :started_at=>"",:comment=>""}
+  # params must look like {:work_log=>{...},:comment=>""}
   # build only if we have :duration or :comment else retur false
-  def self.build_work_added_or_comment(task, user, work_log_params=nil)
-    if work_log_params and (!work_log_params[:duration].blank? or !work_log_params[:comment].blank?)
-      work_log = WorkLog.new
-      unless work_log_params[:comment].blank?
-        work_log.user_input = work_log_params[:comment]
-        work_log.log_type=EventLog::TASK_COMMENT
-        work_log.comment =true
-        #following two lines added just to pass validation
-        #TODO: move this code to pre validation hook
-        work_log.duration=0
-        work_log.started_at= Time.now.utc
+  def self.build_work_added_or_comment(task, user, params=nil)
+    work_log_params=params[:work_log].clone
+    if (work_log_params and !work_log_params[:duration].blank?) or (params and !params[:comment].blank?)
+      unless params[:comment].blank?
+        work_log_params[:body] = CGI::escapeHTML(params[:comment])
+        work_log_params[:log_type]=EventLog::TASK_COMMENT
+        work_log_params[:comment] =true
       end
       unless work_log_params[:duration].blank?
-        work_log.duration = TimeParser.parse_time(user, work_log_params[:duration])
-        work_log.started_at = TimeParser.date_from_params(user, work_log_params, :started_at)
-        work_log.log_type = EventLog::TASK_WORK_ADDED
+        work_log_params[:duration] = TimeParser.parse_time(user, work_log_params[:duration])
+        work_log_params[:started_at] = TimeParser.date_from_params(user, work_log_params, :started_at)
+        work_log_params[:log_type] = EventLog::TASK_WORK_ADDED
       end
-      work_log.user=user
-      work_log.company= task.company
-      work_log.project = task.project
-      work_log.customer = (task.customers.first || task.project.customer)
-      task.work_logs << work_log
-      return work_log
+      work_log_params[:user]=user
+      work_log_params[:company]= task.company
+      work_log_params[:project] = task.project
+      work_log_params[:customer] = (task.customers.first || task.project.customer)
+      task.work_logs.build( work_log_params)
     else
       return false
     end
