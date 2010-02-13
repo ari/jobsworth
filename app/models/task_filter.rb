@@ -18,12 +18,12 @@ class TaskFilter < ActiveRecord::Base
 
   before_create :set_company_from_user
 
-  # Returns the system filter for the given user. If none is found, 
+  # Returns the system filter for the given user. If none is found,
   # create and saves a new one and returns that.
   def self.system_filter(user)
     filter = user.task_filters.first(:conditions => { :system => true })
     if filter.nil?
-      filter = user.task_filters.build(:name => "System filter for #{ user }", 
+      filter = user.task_filters.build(:name => "System filter for #{ user }",
                                        :user_id => user.id, :system => true)
       filter.save!
     end
@@ -37,9 +37,19 @@ class TaskFilter < ActiveRecord::Base
   # a default limit will be applied)
   def tasks(extra_conditions = nil, limit_tasks = true)
     limit = (limit_tasks ? 500 : nil)
-    return user.company.tasks.all(:conditions => conditions(extra_conditions), 
+    return user.company.tasks.all(:conditions => conditions(extra_conditions),
                                   :include => to_include,
                                   :limit => limit)
+  end
+
+  # Returns an array of all tasks matching the conditions from this filter.
+  # If :conditions is passed, that will be ANDed to the conditions
+  # if :include is passed, that will be ANDed to the to_include
+  # also support :order, :limit
+  def tasks_all(parameters={ })
+    parameters[:conditions]=conditions(parameters[:conditions])
+    parameters[:include]= to_include + (parameters[:include]||[])
+    return user.company.tasks.all(parameters)
   end
 
   # Returns the count of tasks matching the conditions of this filter.
@@ -50,14 +60,14 @@ class TaskFilter < ActiveRecord::Base
   end
 
   # Returns a count to display for this filter. The count represents the
-  # number of tasks that look they need attention for the given user - 
+  # number of tasks that look they need attention for the given user -
   # unassigned tasks and unread tasks are counted.
   # The value will be cached and re-used unless force_recount is passed.
   def display_count(user, force_recount = false)
     @display_count = nil if force_recount
     @display_count ||= count(unread_conditions(user, true))
   end
-  
+
   # Returns an array of the conditions to use for a sql lookup
   # of tasks for this filter
   def conditions(extra_conditions = nil)
@@ -65,9 +75,9 @@ class TaskFilter < ActiveRecord::Base
     status_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Status" }
     property_qualifiers = qualifiers.select { |q| q.qualifiable_type == "PropertyValue" }
     customer_qualifiers = qualifiers.select { |q| q.qualifiable_type == "Customer" }
-    standard_qualifiers = (qualifiers - property_qualifiers - status_qualifiers - 
+    standard_qualifiers = (qualifiers - property_qualifiers - status_qualifiers -
                            customer_qualifiers - time_qualifiers)
-    
+
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
     res << conditions_for_status_qualifiers(status_qualifiers)
@@ -128,7 +138,7 @@ class TaskFilter < ActiveRecord::Base
   def conditions_for_property_qualifiers(property_qualifiers)
     name = "task_property_values.property_value_id"
     grouped = property_qualifiers.group_by { |q| q.qualifiable.property }
-    
+
     res = []
     grouped.each do |property, qualifiers|
       ids = qualifiers.map { |q| q.qualifiable.id }
@@ -155,7 +165,7 @@ class TaskFilter < ActiveRecord::Base
     return res
   end
 
-  # Returns a string sql fragment that will limit tasks to 
+  # Returns a string sql fragment that will limit tasks to
   # those that match the set keywords
   def conditions_for_keywords
     sql = []
@@ -180,19 +190,19 @@ class TaskFilter < ActiveRecord::Base
   def conditions_for_status_qualifiers(status_qualifiers)
     old_status_ids = []
     c = company || user.company
-    
+
     status_qualifiers.each do |q|
       status = q.qualifiable
       old_status = c.statuses.index(status)
       old_status_ids << old_status
     end
-    
+
     old_status_ids = old_status_ids.join(",")
     return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
   end
 
   # Returns a sql string fragment that will limit tasks to only
-  # those in a project belonging to customers, or linked directly 
+  # those in a project belonging to customers, or linked directly
   # to the customer
   def conditions_for_customer_qualifiers(customer_qualifiers)
     ids = customer_qualifiers.map { |q| q.qualifiable.id }
@@ -209,7 +219,7 @@ class TaskFilter < ActiveRecord::Base
   # which match the given time qualifiers
   def conditions_for_time_qualifiers(time_qualifiers)
     return if time_qualifiers.empty?
-    
+
     res = []
     time_qualifiers.each do |tq|
       start_time = tq.qualifiable.start_time
@@ -250,8 +260,8 @@ class TaskFilter < ActiveRecord::Base
 
   def unread_conditions(user, include_orphaned = false)
     count_conditions = []
-    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })" 
-    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })" 
+    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })"
+    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })"
     count_conditions << "(task_owners.id is null)" if include_orphaned
     sql = count_conditions.join(" or ")
 
@@ -259,7 +269,7 @@ class TaskFilter < ActiveRecord::Base
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     "(#{ sql })"
   end
-  
+
 end
 
 # == Schema Information
