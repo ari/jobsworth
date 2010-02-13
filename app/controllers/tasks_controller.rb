@@ -1135,4 +1135,33 @@ class TasksController < ApplicationController
     # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
+
+  #Parse parameters from jqGrid for Task.all method
+  def parse_jqgrid_params(jqgrid_params)
+    tasks_params={ }
+    if !jqgrid_params[:rows].blank? and !jqgrid_params[:page].blank?
+      tasks_params[:limit]=jqgrid_params[:rows].to_i
+      tasks_params[:offset]=jqgrid_params[:page].to_i*tasks_params[:limit]
+    end
+
+    case jqgrid_params[:sidx]
+      when 'summary'
+        tasks_params[:order]='tasks.name'
+      when 'id'
+        tasks_params[:order]='tasks.id'
+      when 'due'
+        tasks_params[:order]='tasks.due_at'
+      else
+        tasks_params[:order]=nil
+    end
+
+    unless tasks_params[:order].nil?
+      if jqgrid_params[:sord] == 'desc'
+        tasks_params[:order]+= ' desc'
+      else
+        tasks_params[:order]+= ' asc'
+      end
+    end
+    return tasks_params
+  end
 end
