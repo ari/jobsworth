@@ -1161,16 +1161,14 @@ class TasksController < ApplicationController
       when 'due'
         tasks_params[:include]=[:milestone]
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
+      when 'assigned'
+        tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_owners  left outer join users on users.id = task_owners.user_id where task_owners.task_id=tasks.id  group by tasks.id)'
       else
         tasks_params[:order]=nil
     end
 
-    unless tasks_params[:order].nil?
-      if jqgrid_params[:sord] == 'desc'
-        tasks_params[:order]+= ' desc'
-      else
-        tasks_params[:order]+= ' asc'
-      end
+    if !tasks_params[:order].nil? and (jqgrid_params[:sord] == 'desc')
+      tasks_params[:order]+= ' desc'
     end
     return tasks_params
   end
