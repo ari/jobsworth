@@ -31,7 +31,8 @@ class TasksController < ApplicationController
 
   def list
     list_init
-    @tasks= current_task_filter.tasks
+
+    @tasks= current_task_filter.tasks_all(parse_jqgrid_params(params))
     respond_to do |format|
       format.html { render :action => "tasks/grid" }
       format.xml  { render :action => "tasks/list.xml" }
@@ -1140,10 +1141,14 @@ class TasksController < ApplicationController
   def parse_jqgrid_params(jqgrid_params)
     tasks_params={ }
     if !jqgrid_params[:rows].blank? and !jqgrid_params[:page].blank?
-      tasks_params[:limit]=jqgrid_params[:rows].to_i
-      tasks_params[:offset]=jqgrid_params[:page].to_i*tasks_params[:limit]
+      tasks_params[:limit]=jqgrid_params[:rows].to_i > 0 ? jqgrid_params[:rows].to_i : 0
+      tasks_params[:offset]=jqgrid_params[:page].to_i-1
+      if tasks_params[:offset] >0
+        tasks_params[:offset] *= tasks_params[:limit]
+      else
+        tasks_params[:offset]=nil
+      end
     end
-
     case jqgrid_params[:sidx]
       when 'summary'
         tasks_params[:order]='tasks.name'
