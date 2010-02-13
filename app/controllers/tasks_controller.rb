@@ -1159,7 +1159,7 @@ class TasksController < ApplicationController
       when 'id'
         tasks_params[:order]='tasks.id'
       when 'due'
-        tasks_params[:include]=[:milestoney]
+        tasks_params[:include]=[:milestone]
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       else
         tasks_params[:order]=nil
