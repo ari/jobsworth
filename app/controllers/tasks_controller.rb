@@ -1137,7 +1137,11 @@ class TasksController < ApplicationController
     @ajax_task_links = true
   end
 
-  #Parse parameters from jqGrid for Task.all method
+  # Parse parameters from jqGrid for Task.all method
+  # This function used to sort jqGrid created from tasks/list.xml.erb
+  # many columns in jqGrid calculated in Task model or in tasks/list.xml.erb
+  # following sort code duplicate logic from Task  and list.xml.erb in sql `order by`
+  # TODO: Store all logic in sql view or create client side sorting.
   def parse_jqgrid_params(jqgrid_params)
     tasks_params={ }
     if !jqgrid_params[:rows].blank? and !jqgrid_params[:page].blank?
@@ -1155,7 +1159,8 @@ class TasksController < ApplicationController
       when 'id'
         tasks_params[:order]='tasks.id'
       when 'due'
-        tasks_params[:order]='tasks.due_at'
+        tasks_params[:include]=[:milestoney]
+        tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       else
         tasks_params[:order]=nil
     end
