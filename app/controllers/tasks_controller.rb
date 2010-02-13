@@ -1163,6 +1163,8 @@ class TasksController < ApplicationController
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       when 'assigned'
         tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_owners  left outer join users on users.id = task_owners.user_id where task_owners.task_id=tasks.id  group by tasks.id)'
+      when 'client'
+        tasks_params[:order]='if( exists(select  customers.name as client   from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select  customers.name as client  from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select customers.name from projects left outer join customers on projects.customer_id= customers.id where projects.id=tasks.project_id limit 1))'
       else
         tasks_params[:order]=nil
     end
