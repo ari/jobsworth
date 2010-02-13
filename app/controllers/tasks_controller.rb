@@ -31,7 +31,7 @@ class TasksController < ApplicationController
 
   def list
     list_init
-
+    @tasks= current_task_filter.tasks
     respond_to do |format|
       format.html { render :action => "tasks/grid" }
       format.xml  { render :action => "tasks/list.xml" }
@@ -1135,5 +1135,4 @@ class TasksController < ApplicationController
     # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
-
 end
