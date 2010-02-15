@@ -1,6 +1,6 @@
 <tasks>
     <rows>
-<%      current_task_filter.tasks.each do |task|
+<%      @tasks.each do |task|
         cache([ task, current_user.id ]) do
         customer = (task.customers.first || task.project.customer) -%>
 <task>
