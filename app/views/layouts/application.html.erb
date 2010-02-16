@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", :cache => "prototype-all" %>
-    <%= javascript_include_tag :defaults, "shadowbox", "juggernaut_javascript", "jquery.dimensions", "jquery.tooltip", "jquery.columnmanager.pack", "jquery-ui", "grid.locale-en.js", "jquery.jqGrid.min", "json2", "tasklist", :cache => "main" %>
+    <%= javascript_include_tag :defaults, "shadowbox", "juggernaut_javascript", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "grid.locale-en.js", "jquery.jqGrid.min", "json2", "tasklist", :cache => "main" %>
     <%= javascript_include_tag "fullcalendar" %>
     <%= yield :tinymce %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
