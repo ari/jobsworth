@@ -9,7 +9,7 @@ class AddCompanySubdomain < ActiveRecord::Migration
       c.subdomain = subdomain
       c.save
     end
-    add_index  :companies, :subdomain, "UNIQUE"
+    add_index :companies, :subdomain, :unique => true
   end
 
   def self.down
