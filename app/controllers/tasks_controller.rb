@@ -163,13 +163,14 @@ class TasksController < ApplicationController
       return
     end
     #One task can have two  worklogs, so following code can raise three exceptions
-    #ActiveRecard::RecordInvalid or ActiveRecord::RecordNotSaved
+    #ActiveRecord::RecordInvalid or ActiveRecord::RecordNotSaved
     begin
-      @task.save!
-      WorkLog.build_work_added_or_comment(@task, current_user, params)
-      @task.save! #FIXME: it saves worklog from line above
-      WorkLog.create_task_created!(@task, current_user)
-
+      ActiveRecord::Base.transaction do
+        @task.save!
+        WorkLog.build_work_added_or_comment(@task, current_user, params)
+        @task.save! #FIXME: it saves worklog from line above
+        WorkLog.create_task_created!(@task, current_user)
+      end
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
 
@@ -190,7 +191,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
       redirect_from_last
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
       render :action => 'new'
@@ -291,6 +292,7 @@ class TasksController < ApplicationController
     @task.attributes = params[:task]
 
     begin
+      ActiveRecord::Base.transaction do
       @task.save!
 
       @task.hide_until = nil if params[:task][:hide_until].nil?
@@ -339,7 +341,6 @@ class TasksController < ApplicationController
 
       @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
       @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
-
       @task.save!
 
       @task.reload
@@ -468,6 +469,7 @@ class TasksController < ApplicationController
           #not send any emails
         end
       end
+      end
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
@@ -475,7 +477,7 @@ class TasksController < ApplicationController
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
       redirect_to "/tasks/list"
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
       render :action => 'edit'
     end
