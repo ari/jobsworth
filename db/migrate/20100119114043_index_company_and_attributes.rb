@@ -1,6 +1,5 @@
 class IndexCompanyAndAttributes < ActiveRecord::Migration
   def self.up
-	add_index :companies, :subdomain, :unique => true
 	add_index :custom_attribute_values, ["attributable_id", "attributable_type"], :name => "by_attributables"
   end
 
