@@ -191,7 +191,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
       redirect_from_last
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
       render :action => 'new'
@@ -477,7 +477,7 @@ class TasksController < ApplicationController
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
       redirect_to "/tasks/list"
-    rescue ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
       render :action => 'edit'
     end
