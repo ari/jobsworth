@@ -7,7 +7,8 @@
     <%= yield :tinymce %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= javascript_include_tag "swfobject" %>
-    <%= stylesheet_link_tag "jquery-ui", "application", "jquery.tooltip", "ui.jqgrid", "fullcalendar", "shadowbox/shadowbox", :cache => true %>
+    <%= stylesheet_link_tag "jquery-ui", "application", "jquery.tooltip", "ui.jqgrid", "fullcalendar", :cache => true %>
+    <%= stylesheet_link_tag "shadowbox/shadowbox" %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= javascript_include_tag "builder" if ['activities'].include? controller.controller_name %>
     <% if ['activities'].include? controller.controller_name %>
