@@ -1,8 +1,7 @@
 jQuery.noConflict();
 
-Shadowbox.loadSkin('classic', '/javascripts/shadowbox');
 jQuery(document).ready(function(){
-    Shadowbox.init();
+    jQuery('a.lightbox').nyroModal();
 });
 
 var lastElement = null;
