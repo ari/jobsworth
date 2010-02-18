@@ -137,11 +137,8 @@ function initTaskList() {
 		caption: "Save filter",
 		title: "Save filter",
 		onClickButton : function () {
-			Shadowbox.open({
-	        content:    '/task_filters/new',
-	        player:     "iframe",
-	        height:     300,
-	        width:      460
+			jQuery.nyroModalManual({
+		        url: '/task_filters/new'
 	    	});
 		}
 	});

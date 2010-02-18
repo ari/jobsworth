@@ -2,7 +2,7 @@
 <legend><%=_ 'New Milestone' %></legend>
 
 <% unless @popup.nil? %>
-<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "self.parent.Shadowbox.close();" do %>
+<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "parent.jQuery.nyroModalRemove();" do %>
   <%= render :partial => 'form' %>
   <%= submit_tag _("Create"), :class => 'nolabel'%>
 <% end %>

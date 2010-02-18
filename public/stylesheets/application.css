@@ -582,6 +582,9 @@ fieldset input.checkbox {
 	widows: 1;
 }
 
+#task_attachments img {
+	float: none;
+}
 
 fieldset textarea {
   float: left;

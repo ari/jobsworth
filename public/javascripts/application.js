@@ -1,7 +1,7 @@
 jQuery.noConflict();
 
 jQuery(document).ready(function(){
-    Shadowbox.init();
+    jQuery('a.lightbox').nyroModal();
 });
 
 var lastElement = null;
