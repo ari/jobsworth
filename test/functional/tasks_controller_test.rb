@@ -461,4 +461,54 @@ class TasksControllerTest < ActionController::TestCase
       end
     end
   end
+
+#This function just reuse test for user from Chicago and user from Kiev
+  def self.make_test_for_due_date
+    context "when save task without changed due date" do
+      setup do
+        @task = Task.first
+        @old_due=Time.now+1.day
+        @task.due_at=@old_due
+        @task.save!
+        post(:update, :id => @task.id, :task => { :description=>"New description"},
+          :comment => "a test comment")
+        @task= Task.find(@task.id)
+      assert_redirected_to 'tasks/list'
+      end
+      should "not change due date" do
+        assert_equal @old_due.to_i, @task.due_at.to_time.to_i
+        assert_equal 'New description', @task.description
+      end
+    end
+    context "when save task with presented due_at param" do
+      setup do
+        @task = Task.first
+        @old_due=Time.now+1.day
+        @task.due_at=@old_due
+        @task.save!
+        post(:update, :id => @task.id, :task => {:due_at=>"22/3/2010", :description=>"New description"},
+          :comment => "a test comment")
+        @task= Task.find(@task.id)
+        assert_redirected_to 'tasks/list'
+      end
+      should "change due_at by the post params value" do
+        assert_equal Date.strptime('22/3/2010','%d/%m/%Y'), @task.due_at.to_date
+        assert_equal 'New description', @task.description
+      end
+    end
+  end
+  context "a logged in user from GMT -8 time zone" do
+    setup do
+       @user.time_zone='America/Chicago'
+       @user.save!
+    end
+    make_test_for_due_date
+  end
+  context "a logged in user from GMT +2 time zone" do
+    setup do
+       @user.time_zone="Europe/Kiev"
+       @user.save!
+    end
+    make_test_for_due_date
+  end
 end
