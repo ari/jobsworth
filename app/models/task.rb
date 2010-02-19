@@ -76,7 +76,9 @@ class Task < ActiveRecord::Base
   }
 
   default_scope :conditions=> { :template=>false}
-  named_scope :templates, :conditions=>{:template=>true }
+  def self.templates
+    with_exclusive_scope(:find=>{ :conditions=>{:template=>true }}){ find(:all)}
+  end
 
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
