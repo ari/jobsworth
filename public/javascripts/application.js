@@ -19,8 +19,8 @@ var fetchElement = null;
 //
 
 jQuery(function() {
-	jQuery("input:submit").button();
-	//jQuery("#tabmenu").tabs();
+        jQuery("input:submit").button();
+        //jQuery("#tabmenu").tabs();
 });
 
 
@@ -165,10 +165,10 @@ function rebuildSelect(select, data) {
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
-// also old /tasks/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
-// new /tasks/get_milestones returns flag add_milestone_visible
+// also old /milestones/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
+// new /milestones/get_milestones returns flag add_milestone_visible
 function refreshMilestones(pid, mid) {
-  jQuery.getJSON("/tasks/get_milestones", {project_id: pid},
+  jQuery.getJSON("/milestones/get_milestones", {project_id: pid},
         function(data) {
                 var milestoneSelect = jQuery('#task_milestone_id').get(0);
                 rebuildSelect(milestoneSelect, data.options);
@@ -269,10 +269,10 @@ function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
     if (redirect.indexOf("/tasks/list") >= 0) {
-		form.onsubmit();
+                form.onsubmit();
     }
     else {
-		form.submit();
+                form.submit();
     }
 }
 
@@ -287,8 +287,8 @@ function removeSearchFilter(link) {
 }
 
 jQuery(document).ready(function() {
-	// make search box contents selected when the user clicks in it
-	jQuery("#search_filter").focus( function() {
+        // make search box contents selected when the user clicks in it
+        jQuery("#search_filter").focus( function() {
         if (jQuery(this).val() == "Task search...") {
             jQuery(this).val('').removeClass('grey');
         } else {
@@ -296,21 +296,21 @@ jQuery(document).ready(function() {
         }
     });
 
-	jQuery("#search_filter").blur( function() {
+        jQuery("#search_filter").blur( function() {
         if (jQuery(this).val() == '') {
             jQuery(this).val("Task search...").addClass('grey');
         }
     });
-    
+
     jQuery("#comment").resizable();
-    
+
     // Go to a task immediately if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
-		if (key.keyCode == 13) { // if key was enter
-			var id = jQuery(this).val();
-			if (id.match(/^\d+$/)) {
-				loadTask(id);
-	        }
+                if (key.keyCode == 13) { // if key was enter
+                        var id = jQuery(this).val();
+                        if (id.match(/^\d+$/)) {
+                                loadTask(id);
+                }
         }
     });
 });
@@ -866,7 +866,7 @@ jQuery(document).ready(function(){
 function initFiltersPanel()
 {
     jQuery('div.task_filters ul li a').click(function(){
-    	jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
+        jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
         jQuery.ajax({
             beforeSend: function(){ showProgress(); },
             complete: function(request){ tasklistReload(); hideProgress(); } ,
