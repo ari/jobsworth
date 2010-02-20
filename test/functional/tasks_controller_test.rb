@@ -429,11 +429,6 @@ class TasksControllerTest < ActionController::TestCase
       assert_equal [ @task ], assigns("tasks")
     end
 
-    should "render get_milestones" do
-      get :get_milestones, :project_id => @task.project.id
-      assert_response :success
-    end
-
     should "render add_client" do
       get :add_client, :id => @task.id, :client_id => @task.company.customers.first.id
       assert_response :success
