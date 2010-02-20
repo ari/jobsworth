@@ -20,7 +20,7 @@ class MilestonesController < ApplicationController
     self.new
     @popup = true
     render :action => 'new', :layout => 'popup'
-  end 
+  end
 
   # Ajax callback from milestone popup window to create a new milestone on submitting the form
   def create
@@ -44,14 +44,14 @@ class MilestonesController < ApplicationController
       unless request.xhr?
         flash[:notice] = _('Milestone was successfully created.')
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
-      else 
+      else
         render :update do |page|
         logger.debug "Milestone saved, reloading popup with 'parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});'"
         # TODO: this could be replaced with "page[task_milestone_id].replace :partial => get_milestones
         # except that get_milestone currently returns json, not html
         page << "parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
-        end 
-      end 
+        end
+      end
       Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date) rescue nil
     else
       render :action => 'new'
@@ -67,7 +67,7 @@ class MilestonesController < ApplicationController
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
     @old = @milestone.clone
-    
+
     @milestone.attributes = params[:milestone]
     due_date = nil
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
@@ -75,15 +75,15 @@ class MilestonesController < ApplicationController
       @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
     end
     if @milestone.save
-      
+
       if(@old.due_at != @milestone.due_at || @old.name != @milestone.name || @old.description != @milestone.description )
         if( @old.name != @milestone.name)
           Notifications::deliver_milestone_changed(current_user, @milestone, 'renamed', @milestone.due_at, @old.name) rescue nil
-        else 
+        else
           Notifications::deliver_milestone_changed(current_user, @milestone, 'updated', @milestone.due_at) rescue nil
-        end 
-      end 
-      
+        end
+      end
+
       flash[:notice] = _('Milestone was successfully updated.')
       redirect_from_last
     else
@@ -136,4 +136,29 @@ class MilestonesController < ApplicationController
     @completed_milestones = Milestone.find(:all, :conditions => ["project_id = ? AND completed_at IS NOT NULL", params[:id]])
   end
 
+  # Return a json formatted list of options to refresh the Milestone dropdown in tasks create/update page
+  # TODO: use MilestonesController#list with json format instead of MilestonesController#get_milestone
+  def get_milestones
+    if params[:project_id].blank?
+      render :text => "" and return
+    end
+
+    @milestones = Milestone.find(:all, :order => 'milestones.due_at, milestones.name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company_id, params[:project_id]])
+    @milestones = @milestones.map { |m| { :text => m.name.gsub(/"/,'\"'), :value => m.id.to_s  } }
+    @milestones = @milestones.map { |m| m.to_json }
+    @milestones = @milestones.join(", ")
+
+    res = '{"options":[{"value":"0", "text":"' + _('[None]') + '"}'
+    res << ", #{@milestones}" unless @milestones.nil? || @milestones.empty?
+    res << '],'
+    p = current_user.projects.find(params[:project_id]) rescue nil
+    if p && current_user.can?(p, 'milestone')
+      res << '"add_milestone_visible":"true"'
+    else
+      res << '"add_milestone_visible":"false"'
+    end
+    res << '}'
+
+    render :text => "#{res}"
+  end
 end
