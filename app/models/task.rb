@@ -76,7 +76,7 @@ class Task < ActiveRecord::Base
   }
 
   default_scope :conditions=>"type != 'Template'"
-
+ 
 
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month

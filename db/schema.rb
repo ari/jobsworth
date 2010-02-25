@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100217125410) do
+ActiveRecord::Schema.define(:version => 20100222141031) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -683,12 +683,12 @@ ActiveRecord::Schema.define(:version => 20100217125410) do
   add_index "task_tags", ["task_id"], :name => "task_tags_task_id_index"
 
   create_table "tasks", :force => true do |t|
-    t.string   "name",               :limit => 200, :default => "",    :null => false
-    t.integer  "project_id",                        :default => 0,     :null => false
-    t.integer  "position",                          :default => 0,     :null => false
-    t.datetime "created_at",                                           :null => false
+    t.string   "name",               :limit => 200, :default => "",     :null => false
+    t.integer  "project_id",                        :default => 0,      :null => false
+    t.integer  "position",                          :default => 0,      :null => false
+    t.datetime "created_at",                                            :null => false
     t.datetime "due_at"
-    t.datetime "updated_at",                                           :null => false
+    t.datetime "updated_at",                                            :null => false
     t.datetime "completed_at"
     t.integer  "duration",                          :default => 1
     t.integer  "hidden",                            :default => 0
@@ -710,7 +710,7 @@ ActiveRecord::Schema.define(:version => 20100217125410) do
     t.integer  "scheduled_duration"
     t.boolean  "scheduled",                         :default => false
     t.integer  "worked_minutes",                    :default => 0
-    t.boolean  "template",                          :default => false
+    t.string   "type",                              :default => "Task"
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"
