@@ -38,6 +38,12 @@ class PagesControllerTest < ActionController::TestCase
         assert_equal "new name", @page.reload.name
       end
 
+      should "be able to update only page body, without changing page name" do
+        put :update, :id=> @page.id, :page=>{ :body=>"new body"}
+        assert_redirected_to @page
+        assert_equal "new body", @page.reload.body
+      end
+
       should "be able to delete a page" do
         delete :destroy, :id => @page.id
         assert_redirected_to "/tasks/list"
