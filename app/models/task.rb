@@ -75,10 +75,8 @@ class Task < ActiveRecord::Base
     r.milestone.update_counts if r.milestone
   }
 
-  default_scope :conditions=> { :template=>false}
-  def self.templates
-    with_exclusive_scope(:find=>{ :conditions=>{:template=>true }}){ find(:all)}
-  end
+  default_scope :conditions =>  "type != 'Template' "
+
 
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
