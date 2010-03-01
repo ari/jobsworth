@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100119114043) do
+ActiveRecord::Schema.define(:version => 20100217125410) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -710,6 +710,7 @@ ActiveRecord::Schema.define(:version => 20100119114043) do
     t.integer  "scheduled_duration"
     t.boolean  "scheduled",                         :default => false
     t.integer  "worked_minutes",                    :default => 0
+    t.boolean  "template",                          :default => false
   end
 
   add_index "tasks", ["company_id"], :name => "tasks_company_id_index"

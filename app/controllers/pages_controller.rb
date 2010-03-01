@@ -34,7 +34,7 @@ class PagesController < ApplicationController
     old_body = @page.body
 
     if @page.update_attributes(params[:page])
-      body = "- #{old_name} -> #{@page.name}\n" if old_name != @page.name
+      body = old_name != @page.name ? "- #{old_name} -> #{@page.name}\n" : ""
       body += "- #{@page.name} Modified\n" if old_body != @page.body
       create_work_log(EventLog::PAGE_MODIFIED, body)
 
@@ -57,7 +57,7 @@ class PagesController < ApplicationController
   def target_list
     @matches = []
     str = [ params[:target] ]
-    
+
     @matches += User.search(current_user.company, str)
     @matches += Customer.search(current_user.company, str)
     @matches += current_user.all_projects.find(:all,
@@ -72,7 +72,7 @@ class PagesController < ApplicationController
     worklog = WorkLog.new
     worklog.user = current_user
     worklog.project = @page.notable if @page.notable_type == "Project"
-    worklog.company = @page.company 
+    worklog.company = @page.company
     worklog.customer = @page.notable if @page.notable_type == "Customer"
     worklog.body = "#{@page.name}"
     worklog.task_id = 0
