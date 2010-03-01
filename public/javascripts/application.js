@@ -710,7 +710,6 @@ function addAutoAddUsersToTask(clientId, taskId, projectId) {
         jQuery("#task_notify").append(data);
     });
 }
-
 /*
   Adds the selected customer to the current task list of clients
 */
@@ -728,7 +727,14 @@ function addCustomerToTask(input, li) {
 
     addAutoAddUsersToTask(clientId, taskId);
 }
-
+/*Adds the selected customer to the new project*/
+function addCustomerToProject(input, li){
+    var clientId = jQuery(li).find(".complete_value").text();
+    jQuery(li).find("span").remove();//Can't get text after span, so I delete span.
+    var clientName = jQuery(li).text();
+    jQuery('#project_customer_id').val(clientId);
+    jQuery(input).val(clientName);
+}
 /*
   If this task has no linked clients yet, link the one that
   project belongs to and update the display.
@@ -744,7 +750,6 @@ function addClientLinkForTask(projectId) {
         });
     }
 }
-
 /*
   Called when a task is moved in the task list.
 */
