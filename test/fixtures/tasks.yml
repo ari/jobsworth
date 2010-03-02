@@ -17,6 +17,7 @@ normal_task:
   notify_emails: null
   repeat: null
   hide_until: null
+  type: Task
 milestone_task:
   name: Test Milestone Task
   project: test_project
@@ -36,6 +37,7 @@ milestone_task:
   notify_emails: null
   repeat: null
   hide_until: null
+  type: Task
 completed_task:
   name: Test Completed
   project: test_project
@@ -55,6 +57,27 @@ completed_task:
   notify_emails: null
   repeat: null
   hide_until: null
+  type: Task
+template_task:
+  name: Test Completed
+  project: test_project
+  position: 0
+  due_at: null
+  completed_at: <%= Time.now.utc.to_s(:db) %>
+  duration: 60
+  hidden: 0
+  milestone_id: null
+  description: Just a normal Template for Task
+  company: cit
+  updated_by_id: 1
+  task_num: 5
+  status: 1
+  requested_by: null
+  creator_id: 1
+  notify_emails: null
+  repeat: null
+  hide_until: null
+  type: Template
 
 # == Schema Information
 #
