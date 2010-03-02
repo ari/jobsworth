@@ -103,7 +103,7 @@ class TasksController < ApplicationController
 
     @task = current_user.company.tasks.new
     @task.attributes = params[:task]
-    s;
+
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
 
       repeat = @task.parse_repeat(params[:task][:due_at])

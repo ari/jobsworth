@@ -274,7 +274,7 @@ class Task < ActiveRecord::Base
   def set_task_num(company_id = nil)
     company_id ||= company.id
 
-    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
     num ||= 0
     num += 1
 

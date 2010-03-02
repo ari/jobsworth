@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100222141031) do
+ActiveRecord::Schema.define(:version => 20100302103302) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -718,7 +718,7 @@ ActiveRecord::Schema.define(:version => 20100222141031) do
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
-  add_index "tasks", ["task_num", "company_id"], :name => "index_tasks_on_task_num_and_company_id", :unique => true
+  add_index "tasks", ["task_num", "company_id", "type"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
 
   create_table "time_ranges", :force => true do |t|
     t.string   "name"
