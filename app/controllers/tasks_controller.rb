@@ -411,7 +411,7 @@ class TasksController < ApplicationController
 
 
       if @old_task.status != @task.status
-        body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
+        body << "- <strong>Resolution</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
         worklog.log_type = EventLog::TASK_COMPLETED if @task.status > 1
         worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
@@ -631,7 +631,7 @@ class TasksController < ApplicationController
       @task.save
       @task.reload
 
-      worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
+      worklog.body = "- <strong>Resolution</strong>: #{old_status} -> #{@task.status_type}\n" + body
       if worklog.save
         @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
       end
@@ -710,7 +710,7 @@ class TasksController < ApplicationController
     filename = "clockingit_tasks.csv"
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
-      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Status', 'Priority', 'Severity']
+      header = ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution', 'Priority', 'Severity']
       csv << header
 
       for t in @tasks
@@ -824,7 +824,7 @@ class TasksController < ApplicationController
               update_type = :completed
             end
           end
-          body << "- <strong>Status</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
+          body << "- <strong>Resolution</strong>: #{@task.status_type} -> #{Task.status_types[@group]}\n"
           @task.status = @group
           @task.save
         end

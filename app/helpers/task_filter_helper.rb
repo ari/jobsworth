@@ -123,6 +123,8 @@ module TaskFilterHelper
       return qualifier.qualifiable.property.name
     elsif qualifier.qualifiable_type == "TimeRange"
       return qualifier.qualifiable_column.gsub("_at", "").humanize
+    elsif qualifier.qualifiable_type == "Status"
+      return "Resolution" #FIXME: would be better use Status.to_s or something like this
     else
       qualifier.qualifiable_type
     end

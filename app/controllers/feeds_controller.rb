@@ -423,7 +423,7 @@ class FeedsController < ApplicationController
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       end
       @tasks = user.company.sort(@tasks)[0, limit.to_i]
-    elsif params[:up_show_order] && params[:up_show_order] == "Status Pie-Chart"
+    elsif params[:up_show_order] && params[:up_show_order] == "Resolution Pie-Chart"
       completed = 0
       open = 0
       in_progress = 0
@@ -434,7 +434,7 @@ class FeedsController < ApplicationController
           completed += p.tasks.count(:conditions => ["completed_at IS NOT NULL"])
           in_progress += p.tasks.count(:conditions => ["completed_at IS NULL AND status = 1"])
         end
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Status", false) do |pc|
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Resolution", false) do |pc|
           pc.data "Open", open
           pc.data "Closed", completed
           pc.data "In Progress", in_progress
@@ -444,7 +444,7 @@ class FeedsController < ApplicationController
         open = user.tasks.count(:conditions => ["completed_at IS NULL AND project_id IN (#{pids})"])
         completed = user.tasks.count(:conditions => ["completed_at IS NOT NULL AND project_id IN (#{pids})"])
         in_progress = user.tasks.count(:conditions => ["completed_at IS NULL AND status = 1 AND project_id IN (#{pids})"])
-        GoogleChart::PieChart.new('280x200', "#{user.company.name} Status", false) do |pc|
+        GoogleChart::PieChart.new('280x200', "#{user.company.name} Resolution", false) do |pc|
           pc.data "Open", open
           pc.data "Closed", completed
           pc.data "In Progress", in_progress

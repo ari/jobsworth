@@ -415,7 +415,7 @@ class Task < ActiveRecord::Base
   end
 
   def Task.status_types
-    ["Open", "In Progress", "Closed", "Won't fix", "Invalid", "Duplicate"]
+    ["Open", "Closed", "Won't fix", "Invalid", "Duplicate"]
   end
 
   def priority_type
@@ -627,7 +627,7 @@ class Task < ActiveRecord::Base
       res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
       res << "<tr><th>#{_('Requested By')}</td><td>#{self.requested_by}</td></tr>" unless self.requested_by.blank?
-      res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
+      res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
       res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
       res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime_localized(options[:user].date_format)}</td></tr>" if self.due
