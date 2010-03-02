@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class TaskTemplatesControllerTest < ActionController::TestCase
-  fixtures :users, :companies, :task_templates, :customers, :projects
+  fixtures :users, :companies, :tasks, :customers, :projects
   context 'a logged in user' do
     def setup
       @request.with_subdomain('cit')
