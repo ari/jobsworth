@@ -11,18 +11,18 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     end
     context 'when create new task template' do
       setup do
-        @parameters={ :task=>{ :name=>'Task template', :description=>'Just a test task template', :due_at=>'2/2/2010', :project_id=>1, :customer_attributes=>{:1=>"1"}, :users=>["1"], :assigned=>["1"], :notify=>["1"], :notify_emails=>'some@email.com', :set_custom_attribute_values=>[{ :custom_attribute_id=>'1', :choice_id=>'1'}] }}
+        @parameters= { :task=>{ :name=>'Task template', :description=>'Just a test task template', :due_at=>'2/2/2010', :project_id=>1, :customer_attributes=>{:"1"=>"1"}, :users=>["1"], :assigned=>["1"], :notify=>["1"], :notify_emails=>'some@email.com', :set_custom_attribute_values=>[{ :custom_attribute_id=>'1', :choice_id=>'1'}] }}
         post(:create, @parameters)
-        @tamplate=Templates.find_by_name(@parameters[:task][:name])
+        @template=Templates.find_by_name(@parameters[:task][:name])
       end
       should 'create task template with given parameters' do
-        assert_not_nil @tamplate
-        assert_equal @paremeters[:task][:description], @tamplate.description
+        assert_not_nil @template
+        assert_equal @paremeters[:task][:description], @template.description
         assert_equal @parameters[:task][:project_id], @template.project.id
         assert_equal @parameters[:task][:users], @template.users.first.id
       end
       should 'not create any worklogs' do
-        assert_not_nil @tamplate
+        assert_not_nil @template
         assert_zero @template.work_logs.size
       end
     end
@@ -43,10 +43,6 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       end
       should 'remove client' do
       end
-      should 'add attachment' do
-      end
-      should 'remove attachment' do
-      end
       should 'can not add any dependecies' do
       end
       should 'can not add any worklogs' do
@@ -61,8 +57,6 @@ class TaskTemplatesControllerTest < ActionController::TestCase
         should 'assing all users from template' do
         end
         should 'assing all clients from template' do
-        end
-        should 'copy all attachments from template' do
         end
         should 'assing all custom property values' do
         end
