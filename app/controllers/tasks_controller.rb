@@ -870,12 +870,4 @@ class TasksController < ApplicationController
     end
     return tasks_params
   end
-
-  def my_render(options = nil, extra_options = {}, &block)
-    begin
-      render(options, extra_options, &block)
-    rescue ActionView::MissingTemplate
-      render
-    end
-  end
 end
