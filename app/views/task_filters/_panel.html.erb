@@ -7,9 +7,7 @@
   <ul>
     <li><%= link_to_open_tasks %></li>
     <li><%= link_to_open_tasks(current_user) %></li>
-    <li><%= link_to_in_progress_tasks(current_user) %></li>
     <li><%= link_to_unread_tasks(current_user) %></li>
-
     <% current_user.visible_task_filters.each do |tf| -%>
     <li>
       <span class="right small">
