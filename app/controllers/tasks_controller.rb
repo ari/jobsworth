@@ -320,15 +320,10 @@ class TasksController < ApplicationController
       @task.save!
 
       @task.reload
-
+####################### Start log changes #################################
       body = ""
-      if @old_task[:name] != @task[:name]
-        body << "- <strong>Name</strong>: #{@old_task[:name]} -> #{@task[:name]}\n"
-      end
-
-      if(@old_task.description != @task.description)
-        body << "- <strong>Description</strong> changed\n"
-      end
+      body << task_name_changed(@old_task, @task)
+      body << task_description_changed(@old_task, @task)
 
       assigned_ids = (params[:assigned] || [])
       assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
@@ -345,9 +340,7 @@ class TasksController < ApplicationController
         ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       end
 
-      if @old_task.duration != @task.duration
-        body << "- <strong>Estimate</strong>: #{worked_nice(@old_task.duration).strip} -> #{worked_nice(@task.duration)}\n"
-      end
+      body<< task_duration_changed(@old_task, @task)
 
       if @old_task.milestone != @task.milestone
         old_name = "None"
@@ -362,15 +355,7 @@ class TasksController < ApplicationController
         body << "- <strong>Milestone</strong>: #{old_name} -> #{new_name}\n"
       end
 
-      if @old_task.due_at != @task.due_at
-        old_name = "None"
-        old_name = current_user.tz.utc_to_local(@old_task.due_at).strftime_localized("%A, %d %B %Y") unless @old_task.due_at.nil?
-
-        new_name = "None"
-        new_name = current_user.tz.utc_to_local(@task.due_at).strftime_localized("%A, %d %B %Y") unless @task.due_at.nil?
-
-        body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
-      end
+      body << task_due_changed(@old_task, @task)
 
       new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
       if old_tags != new_tags
@@ -870,4 +855,27 @@ class TasksController < ApplicationController
     end
     return tasks_params
   end
+################################################
+  def task_due_changed(old_task, task)
+    if old_task.due_at != task.due_at
+      old_name = "None"
+      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = "None"
+      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+
+      return  "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+    else
+      return ""
+    end
+  end
+  def task_name_changed(old_task, task)
+    (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n" : ""
+  end
+  def task_description_changed(old_task, task)
+    (@old_task.description != @task.description) ? "- <strong>Description</strong> changed\n" : ""
+  end
+  def task_duration_changed(old_task, task)
+     (@old_task.duration != @task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
+  end
 end
+
