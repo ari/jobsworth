@@ -2,9 +2,9 @@
 <%= error_messages_for 'task' %>
 <div id="task_sidebar">
   <small><%= link_to(@task.issue_num, :controller => "tasks", :action => "edit", :id => @task.task_num) %><span class="right"><%= "created " + time_ago_in_words(@task.created_at) + " ago" unless @task.created_at.nil?%></span></small>
-  <%= render(:partial => "details") %>
-  <%= render(:partial => "attributes") %>
-  <%= render(:partial => "notifications") %>
+  <%= render(:partial => "tasks/details") %>
+  <%= render(:partial => "tasks/attributes") %>
+  <%= render(:partial => "tasks/notifications") %>
   <% if !@task.new_record? -%>
     <%= render(:partial => "work_times") %>
   <% end -%>
@@ -14,7 +14,7 @@
 </div>
 <div id="task_addcomment">
   <div>
-    <%= render(:partial => "new_comment") %>
+    <%= render(:partial => "tasks/new_comment") %>
   </div>
   
   <% if !@task.new_record? -%>
@@ -32,7 +32,7 @@
   <% end -%>
 
   <div id="task_history">
-    <%= render(:partial => "history") %>
+    <%= render(:partial => "tasks/history") %>
   </div>
 </div>
 

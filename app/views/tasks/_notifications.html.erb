@@ -7,7 +7,7 @@
   <%= text_field_with_auto_complete(:customer, :name, 
       { :size => 12, :value => "" }, :after_update_element => "addCustomerToTask") %>
   <div id="task_customers">
-    <%= render :partial => "task_customer", :collection => @task.customers %>
+    <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
   </div>
 
   <label for="task_requested_by"><%=_ 'Requested By' %></label>
@@ -31,5 +31,5 @@
 
   <%= add_notifier_field %>
   <br clear="all" />
-  <%= render(:partial => "notification", :collection => users) %>
+  <%= render(:partial => "tasks/notification", :collection => users) %>
 </fieldset>
