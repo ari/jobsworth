@@ -4,17 +4,8 @@
 
   <%= render(:partial => "time_links", :locals => { :task => @task }) %>
 
-  <div id="upload_container">
-   <label for="tmp_files[]"><%=_ 'Attach a file' %>
-     <% if perms['comment'].empty? %>( 
-      <%= link_to_function _("Upload more files") do |page|
-	  page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
-	  end %>
-   )<% end %>
-  </label> 
-    <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
-  </div>
-  
+  <%= render(:partial=>'upload_container') %>
+
   <div id="worktime_container">
     <% fields_for "work_log" do |f| -%>
       <label>Time spent</label>
@@ -22,10 +13,10 @@
       <br/>
 
       <div id="worklog_extra">
-	<%= f.label :started_at, _("Start") %>
-	<%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
+        <%= f.label :started_at, _("Start") %>
+        <%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
 
-	<%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
+        <%= render(:partial => "/common/custom_attributes", :locals => { :object => current_user.company.work_logs.build }) %>
       </div>
     <% end -%>
   </div>
