@@ -125,16 +125,6 @@ class ViewsController < ApplicationController
     redirect_to :controller => 'tasks', :action => 'list'
   end
 
-  def my_in_progress_tasks
-    @view = View.new
-    @view.name = _('My In Progress Tasks')
-
-    set_session_filters(:filter_user => current_user.id,
-                        :filter_status => 1)
-
-    redirect_to :controller => 'tasks', :action => 'list'
-  end
-
   def unassigned_tasks
     @view = View.new
     @view.name = _('Unassigned Tasks')
