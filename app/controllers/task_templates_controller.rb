@@ -1,2 +1,2 @@
-class TaskTemplatesController < ApplicationController
+class TaskTemplatesController < TasksController
 end

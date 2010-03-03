@@ -23,6 +23,7 @@ class TasksController < ApplicationController
     @task.company = current_user.company
     @task.duration = 0
     @task.users << current_user
+    render :template=>'tasks/new'
   end
 
   def index
@@ -868,5 +869,13 @@ class TasksController < ApplicationController
       tasks_params[:order]+= ' desc'
     end
     return tasks_params
+  end
+
+  def my_render(options = nil, extra_options = {}, &block)
+    begin
+      render(options, extra_options, &block)
+    rescue ActionView::MissingTemplate
+      render
+    end
   end
 end

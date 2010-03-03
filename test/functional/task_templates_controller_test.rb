@@ -11,7 +11,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
     end
     context 'when create new task template' do
       setup do
-        @parameters= { :task=>{ :name=>'Task template', :description=>'Just a test task template', :due_at=>'2/2/2010', :project_id=>1, :customer_attributes=>{:"1"=>"1"}, :users=>["1"], :assigned=>["1"], :notify=>["1"], :notify_emails=>'some@email.com', :set_custom_attribute_values=>[{ :custom_attribute_id=>'1', :choice_id=>'1'}] }}
+        @parameters= { :task=>{ :name=>'Task template', :description=>'Just a test task template', :due_at=>'2/2/2010', :project_id=>1, :customer_attributes=>{:"1"=>customers(:internal_customer).id}, :users=>["1"], :assigned=>["1"], :notify=>["1"], :notify_emails=>'some@email.com', :set_custom_attribute_values=>[{ :custom_attribute_id=>'1', :choice_id=>'1'}] }}
         post(:create, @parameters)
         @template=Templates.find_by_name(@parameters[:task][:name])
       end
