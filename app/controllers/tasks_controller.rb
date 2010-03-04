@@ -139,9 +139,7 @@ class TasksController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @task.save!
-        WorkLog.build_work_added_or_comment(@task, current_user, params)
-        @task.save! #FIXME: it saves worklog from line above
-        WorkLog.create_task_created!(@task, current_user)
+        create_worklogs_for_tasks_create
       end
       session[:last_project_id] = @task.project_id
       session[:last_task_id] = @task.id
@@ -882,6 +880,11 @@ protected
         #not send any emails
       end
     end
+  end
+  def create_worklogs_for_tasks_create
+        WorkLog.build_work_added_or_comment(@task, current_user, params)
+        @task.save! #FIXME: it saves worklog from line above
+        WorkLog.create_task_created!(@task, current_user)
   end
 end
 
