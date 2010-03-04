@@ -778,7 +778,7 @@ class TasksController < ApplicationController
     render :text => updated.to_s
   end
 
-  private
+protected
   ###
   # Sets up the attributes needed to display new action
   ###
