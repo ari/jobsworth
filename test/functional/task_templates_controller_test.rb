@@ -26,7 +26,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
           :notify=>@user.company.user_ids
         }
         post(:create, @parameters)
-        @template=Templates.find_by_name(@parameters[:task][:name])
+        @template=Template.find_by_name(@parameters[:task][:name])
       end
       should 'create task template with given parameters' do
         assert_not_nil @template
