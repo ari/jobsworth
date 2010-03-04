@@ -24,7 +24,7 @@ module TasksHelper
 
     if session[:hide_dependencies].to_i == 1
       res << render(:partial => "task_row", :locals => { :task => t, :depth => depth})
-    else 
+    else
       unless root_present
         root = nil
         parents = []
@@ -50,13 +50,13 @@ module TasksHelper
             res << render_task_dependants(child, (((!t.done?) && t.dependants.size > 0) || shown) ? (depth == 0 ? depth + 2 : depth + 1) : depth, true )
           end
         end
-      end 
+      end
     end
     res
   end
 
   ###
-  # Returns the html to display a select field to set the tasks 
+  # Returns the html to display a select field to set the tasks
   # milestone. The current milestone (if set) will be selected.
   ###
   def milestone_select(perms)
@@ -76,9 +76,9 @@ module TasksHelper
   ###
   def auto_complete_for_resources(customer_id)
     options = {
-      :select => 'complete_value', 
+      :select => 'complete_value',
       :tokens => ',',
-      :url => { :action => "auto_complete_for_resource_name", 
+      :url => { :action => "auto_complete_for_resource_name",
         :customer_id => customer_id },
       :after_update_element => "addResourceToTask"
     }
@@ -92,11 +92,11 @@ module TasksHelper
   # to the db until the task is saved)
   ###
   def auto_complete_for_dependencies
-    auto_complete_field('dependencies_input', 
-                        { :url => { :action => 'dependency_targets' }, 
-                          :min_chars => 1, 
-                          :frequency => 0.5, 
-                          :indicator => 'loading', 
+    auto_complete_field('dependencies_input',
+                        { :url => { :action => 'dependency_targets' },
+                          :min_chars => 1,
+                          :frequency => 0.5,
+                          :indicator => 'loading',
                           :after_update_element => "addDependencyToTask"
                         })
   end
@@ -113,20 +113,20 @@ module TasksHelper
     options << [_("Invalid"), 4]
     options << [_("Duplicate"), 5]
     options << [_("Wait Until"), 6]
-    
+
     can_close = {}
     if task.project and !current_user.can?(task.project, 'close')
       can_close[:disabled] = "disabled"
     end
-					
+
     defer_options = [ "" ]
     defer_options << [_("Tomorrow"), tz.local_to_utc(tz.now.at_midnight + 1.days).to_s(:db)  ]
     defer_options << [_("End of week"), tz.local_to_utc(tz.now.beginning_of_week + 4.days).to_s(:db)  ]
     defer_options << [_("Next week"), tz.local_to_utc(tz.now.beginning_of_week + 7.days).to_s(:db) ]
     defer_options << [_("One week"), tz.local_to_utc(tz.now.at_midnight + 7.days).to_s(:db) ]
     defer_options << [_("Next month"), tz.local_to_utc(tz.now.next_month.beginning_of_month).to_s(:db)]
-    defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]				
-    
+    defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
+
     res = select('task', 'status', options, {:selected => @task.status}, can_close)
     res += '<div id="defer_options" style="display:none;">'
     res += select('task', 'hide_until', defer_options, { :selected => "" })
@@ -143,7 +143,7 @@ module TasksHelper
   def assigned_icon(task, user)
     classname = "icon tooltip assigned"
     classname += " is_assigned" if task.users.include?(user)
-    content = content_tag(:span, "*", :class => classname, 
+    content = content_tag(:span, "*", :class => classname,
                           :title => _("Click to toggle whether this task is assigned to this user"))
 
     if task.project.nil? or current_user.can?(task.project, "reassign")
@@ -162,10 +162,10 @@ module TasksHelper
     classname = "icon tooltip notify"
 
     if task.should_be_notified?(user)
-      classname += " should_notify" 
+      classname += " should_notify"
     end
 
-    content = content_tag(:span, "*", :class => classname, 
+    content = content_tag(:span, "*", :class => classname,
                           :title => _("Click to toggle whether this user will receive a notification when task is saved"))
     content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify'); highlightActiveNotifications()")
 
@@ -178,8 +178,8 @@ module TasksHelper
   ###
   def add_me_link
     link_to_function(_("add me")) do |page|
-      page.insert_html(:bottom, "task_notify", 
-                       :partial => "notification", 
+      page.insert_html(:bottom, "task_notify",
+                       :partial => "tasks/notification",
                        :locals => { :notification => current_user })
     end
   end
@@ -190,8 +190,8 @@ module TasksHelper
   ###
   def add_notifier_field
     html_options = {
-      :size => "12", 
-      :title => _("Add users by name or email"), 
+      :size => "12",
+      :title => _("Add users by name or email"),
       :class => "tooltip"
     }
     text_field_with_auto_complete(:user, :name, html_options,
@@ -285,7 +285,7 @@ module TasksHelper
   def due_date_field(task, permissions)
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
 
-    options = { 
+    options = {
       :id => "due_at", :class => "tooltip", :title => date_tooltip,
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
@@ -298,7 +298,7 @@ module TasksHelper
 
     js = <<-EOS
     jQuery(function() {
-      jQuery("#due_at").datepicker({ constrainInput: false, 
+      jQuery("#due_at").datepicker({ constrainInput: false,
                                       dateFormat: '#{ current_user.dateFormat }'
                                    });
     });
@@ -321,7 +321,7 @@ module TasksHelper
     if comment
       values << [ _("Last Comment"), "#{ comment.user.shout_nick }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
     end
-    
+
     return task_tooltip(values)
   end
 
@@ -333,7 +333,7 @@ module TasksHelper
     customer.custom_attribute_values.each do |cav|
       values << [ cav.custom_attribute.display_name, cav.to_s ]
     end
-    
+
     return task_tooltip(values)
   end
 
@@ -390,7 +390,7 @@ module TasksHelper
 
   # Renders the last task the current user looked at
   def render_last_task
-    @task = current_user.company.tasks.find_by_id(session[:last_task_id], 
+    @task = current_user.company.tasks.find_by_id(session[:last_task_id],
                                                   :conditions => [ "project_id IN (#{ current_project_ids })" ])
     if @task
       return render_to_string(:action => "edit", :layout => false)
@@ -399,13 +399,13 @@ module TasksHelper
 
   # Returns the open tr tag for the given task in a task list
   def task_row_tr_tag(task)
-    class_name += "selected" if task.id == session[:last_task_id] 
+    class_name += "selected" if task.id == session[:last_task_id]
     class_name += " unread" if task.unread?(current_user)
     class_name += " unassigned" if task.users.count == 0
 
     return tag(:tr, {
-                 :id => "task_row_#{ task.task_num }", 
-                 :class => class_name, 
+                 :id => "task_row_#{ task.task_num }",
+                 :class => class_name,
                  :onclick => "showTaskInPage(#{ task.task_num}); return false;"
                }, true)
   end
@@ -423,7 +423,7 @@ module TasksHelper
     end
   end
 
-  # Returns a sort hint for sorting the given task. 
+  # Returns a sort hint for sorting the given task.
   # Uses unread status and whether a user is a task owner or watcher
   def default_sort_hint_for_task(task)
     if task.unread?(current_user)
