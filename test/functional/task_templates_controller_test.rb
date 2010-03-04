@@ -17,13 +17,13 @@ class TaskTemplatesControllerTest < ActionController::TestCase
             :name=>'Task template',
             :description=>'Just a test task template',
             :due_at=>'2/2/2010',
-            :project_id=>1,
+            :project_id=>@user.company.projects.first.id,
             :customer_attributes=>{@customer.id=>"1"},
-            :users=> @user.company.user_ids,
-            :assigned=>@user.company.user_ids,
-            :notify=>@user.company.user_ids,
             :notify_emails=>'some@email.com'
-          }
+          },
+          :users=> @user.company.user_ids,
+          :assigned=>@user.company.user_ids,
+          :notify=>@user.company.user_ids
         }
         post(:create, @parameters)
         @template=Templates.find_by_name(@parameters[:task][:name])
