@@ -247,12 +247,12 @@ class TasksController < ApplicationController
     update_type = :updated
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
-    old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
-    old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
-    old_users = @task.users.collect{ |u| u.id}.sort.join(',')
-    old_users ||= "0"
-    old_project_id = @task.project_id
-    old_project_name = @task.project.name
+    @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
+    @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
+    @old_users = @task.users.collect{ |u| u.id}.sort.join(',')
+    @old_users ||= "0"
+    @old_project_id = @task.project_id
+    @old_project_name = @task.project.name
     @old_task = @task.clone
 
     if params[:task][:status].to_i == 6
@@ -265,167 +265,58 @@ class TasksController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
-      @task.save!
+        @task.save!
 
-      @task.hide_until = nil if params[:task][:hide_until].nil?
+        @task.hide_until = nil if params[:task][:hide_until].nil?
 
-      if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-
-        repeat = @task.parse_repeat(params[:task][:due_at])
-        if repeat && repeat != ""
-          @task.repeat = repeat
-          @task.due_at = tz.local_to_utc(@task.next_repeat_date)
+        if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
+          repeat = @task.parse_repeat(params[:task][:due_at])
+          if repeat && repeat != ""
+            @task.repeat = repeat
+            @task.due_at = tz.local_to_utc(@task.next_repeat_date)
+          else
+            @task.repeat = nil
+            due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
+                                                                                        flash['notice'] = _('Invalid due date ignored.')
+                                                                                        due_date = nil
+                                                                                                    end
+            @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+          end
         else
           @task.repeat = nil
-          due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                                      flash['notice'] = _('Invalid due date ignored.')
-                                                                                                      due_date = nil
-                                                                                                    end
-          @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
-        end
-      else
-        @task.repeat = nil
-      end
-
-      @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
-      @task.set_resource_attributes(params[:resource])
-
-      @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
-      @task.updated_by_id = current_user.id
-
-      if @task.status > 1 && @task.completed_at.nil?
-        @task.completed_at = Time.now.utc
-
-        # Repeat this task every X...
-        if @task.next_repeat_date != nil
-
-          @task.save!
-          @task.reload
-
-          repeat_task(@task)
-        end
-      end
-
-      if @task.status < 2 && !@task.completed_at.nil?
-        @task.completed_at = nil
-      end
-
-      @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
-      @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
-      @task.save!
-
-      @task.reload
-####################### Start log changes #################################
-      body = ""
-      body << task_name_changed(@old_task, @task)
-      body << task_description_changed(@old_task, @task)
-
-      assigned_ids = (params[:assigned] || [])
-      assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
-      if old_users != assigned_ids
-        @task.users.reload
-        new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
-        body << "- <strong>Assignment</strong>: #{new_name}\n"
-        update_type = :reassigned
-      end
-
-      if old_project_id != @task.project_id
-        body << "- <strong>Project</strong>: #{old_project_name} -> #{@task.project.name}\n"
-        WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
-        ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
-      end
-
-      body<< task_duration_changed(@old_task, @task)
-
-      if @old_task.milestone != @task.milestone
-        old_name = "None"
-        unless @old_task.milestone.nil?
-           old_name = @old_task.milestone.name
-           @old_task.milestone.update_counts
         end
 
-        new_name = "None"
-        new_name = @task.milestone.name unless @task.milestone.nil?
+        @task.set_users(params)
+        @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+        @task.set_resource_attributes(params[:resource])
 
-        body << "- <strong>Milestone</strong>: #{old_name} -> #{new_name}\n"
-      end
+        @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
+        @task.updated_by_id = current_user.id
 
-      body << task_due_changed(@old_task, @task)
+        if @task.status > 1 && @task.completed_at.nil?
+          @task.completed_at = Time.now.utc
 
-      new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
-      if old_tags != new_tags
-        body << "- <strong>Tags</strong>: #{new_tags}\n"
-      end
+          # Repeat this task every X...
+          if @task.next_repeat_date != nil
 
-      new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
-      if old_deps != new_deps
-        body << "- <strong>Dependencies</strong>: #{(new_deps.length > 0) ? new_deps : _("None")}"
-      end
+            @task.save!
+            @task.reload
 
-      worklog = WorkLog.new
-      worklog.log_type = EventLog::TASK_MODIFIED
-
-
-      if @old_task.status != @task.status
-        body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
-
-        worklog.log_type = EventLog::TASK_COMPLETED if @task.status > 1
-        worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
-
-        if( @task.status > 1 && @old_task.status != @task.status )
-          update_type = :status
+            repeat_task(@task)
+          end
         end
 
-        if( @task.completed_at && @old_task.completed_at.nil?)
-          update_type = :completed
+        if @task.status < 2 && !@task.completed_at.nil?
+          @task.completed_at = nil
         end
 
-        if( @task.status < 2 && @old_task.status > 1 )
-          update_type = :reverted
-        end
+        @task.scheduled_duration = @task.duration if @task.scheduled? && @task.duration != @old_task.duration
+        @task.scheduled_at = @task.due_at if @task.scheduled? && @task.due_at != @old_task.due_at
+        @task.save!
 
-        if( @old_task.status == 6 )
-          @task.hide_until = nil
-        end
-      end
+        @task.reload
 
-      files = create_attachments(@task)
-      files.each do |filename|
-        body << "- <strong>Attached</strong>: #{filename}\n"
-      end
-
-
-      if body.length == 0
-        #task not changed
-        second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, params)
-        if second_worklog
-          @task.save!
-          second_worklog.save!
-          second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
-        end
-      else
-        worklog.body=body
-        if params[:comment] && params[:comment].length > 0
-          worklog.comment = true
-          worklog.body << "\n"
-          worklog.user_input_add params[:comment]
-        end
-        worklog.user = current_user
-        worklog.company = @task.project.company
-        worklog.customer = @task.project.customer
-        worklog.project = @task.project
-        worklog.task = @task
-        worklog.started_at = Time.now.utc
-        worklog.duration = 0
-        worklog.save!
-        worklog.send_notifications(params[:notify], update_type) if worklog.comment?
-        if params[:work_log] && !params[:work_log][:duration].blank?
-          WorkLog.build_work_added_or_comment(@task, current_user, params)
-          @task.save!
-          #not send any emails
-        end
-      end
+        big_fat_controller_method
       end
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
       Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
@@ -873,11 +764,124 @@ protected
   def task_duration_changed(old_task, task)
      (@old_task.duration != @task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
   end
-############################################################3
+############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
     task=Task.new
     task.company=current_user.company
     return task
+  end
+  #this method so big and complicated, so I can't find proper name for it
+  #TODO: split this method into logical parts
+  #NOTE: controller must not  have big fat methods
+  def big_fat_controller_method
+    body = ""
+    body << task_name_changed(@old_task, @task)
+    body << task_description_changed(@old_task, @task)
+
+    assigned_ids = (params[:assigned] || [])
+    assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
+    if @old_users != assigned_ids
+      @task.users.reload
+      new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
+      body << "- <strong>Assignment</strong>: #{new_name}\n"
+      update_type = :reassigned
+    end
+
+    if @old_project_id != @task.project_id
+      body << "- <strong>Project</strong>: #{@old_project_name} -> #{@task.project.name}\n"
+      WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+      ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
+    end
+
+    body<< task_duration_changed(@old_task, @task)
+
+    if @old_task.milestone != @task.milestone
+      old_name = "None"
+      unless @old_task.milestone.nil?
+        old_name = @old_task.milestone.name
+        old_task.milestone.update_counts
+      end
+
+      new_name = "None"
+      new_name = @task.milestone.name unless @task.milestone.nil?
+      body << "- <strong>Milestone</strong>: #{old_name} -> #{new_name}\n"
+    end
+
+    body << task_due_changed(@old_task, @task)
+
+    new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
+    if @old_tags != new_tags
+      body << "- <strong>Tags</strong>: #{new_tags}\n"
+    end
+
+    new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
+    if @old_deps != new_deps
+       body << "- <strong>Dependencies</strong>: #{(new_deps.length > 0) ? new_deps : _("None")}"
+    end
+
+    worklog = WorkLog.new
+    worklog.log_type = EventLog::TASK_MODIFIED
+
+
+    if @old_task.status != @task.status
+      body << "- <strong>Status</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
+
+      worklog.log_type = EventLog::TASK_COMPLETED if @task.status > 1
+      worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
+
+      if( @task.status > 1 && @old_task.status != @task.status )
+        update_type = :status
+      end
+
+      if( @task.completed_at && @old_task.completed_at.nil?)
+        update_type = :completed
+      end
+
+      if( @task.status < 2 && @old_task.status > 1 )
+        update_type = :reverted
+      end
+
+      if( @old_task.status == 6 )
+        @task.hide_until = nil
+      end
+    end
+
+    files = create_attachments(@task)
+    files.each do |filename|
+      body << "- <strong>Attached</strong>: #{filename}\n"
+    end
+
+
+    if body.length == 0
+      #task not changed
+      second_worklog=WorkLog.build_work_added_or_comment(@task, current_user, params)
+      if second_worklog
+        @task.save!
+        second_worklog.save!
+        second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
+      end
+    else
+      worklog.body=body
+      if params[:comment] && params[:comment].length > 0
+        worklog.comment = true
+        worklog.body << "\n"
+        worklog.user_input_add params[:comment]
+      end
+      worklog.user = current_user
+      worklog.company = @task.project.company
+      worklog.customer = @task.project.customer
+      worklog.project = @task.project
+      worklog.task = @task
+      worklog.started_at = Time.now.utc
+      worklog.duration = 0
+      worklog.save!
+      worklog.send_notifications(params[:notify], update_type) if worklog.comment?
+      if params[:work_log] && !params[:work_log][:duration].blank?
+        WorkLog.build_work_added_or_comment(@task, current_user, params)
+        @task.save!
+        #not send any emails
+      end
+    end
   end
 end
 
