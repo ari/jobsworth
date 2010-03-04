@@ -31,9 +31,18 @@ class TaskTemplatesController < TasksController
     raise Exception, CUSTOM_ERROR_MESSAGE
   end
 protected
+####  This methods inherited from TasksController.
+####  They modifies behavior of TasksController actions: new, create, edit, update etc.
+####  Please see design pattern Template Method.
   def current_company_task_new
     task=Template.new
     task.company=current_user.company
     return task
+  end
+  def big_fat_controller_mehtod
+    #must be empty templates don't use all this stuff
+  end
+  def create_worklogs_for_tasks_create
+    #must be empty templates not have worklogs
   end
 end
