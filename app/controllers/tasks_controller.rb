@@ -16,10 +16,7 @@ class TasksController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
       return
     end
-    #FIXME: Task.new instead of Task.new(params[:task])
-    # action new must be accepted only via get, so params[:task] not exist
-    # params[:task] exist in create and update actions
-    @task = Task.new(params[:task])
+    @task = Task.new
     @task.company = current_user.company
     @task.duration = 0
     @task.users << current_user
