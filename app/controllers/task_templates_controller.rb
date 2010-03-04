@@ -30,4 +30,10 @@ class TaskTemplatesController < TasksController
   def update_work_log
     raise Exception, CUSTOM_ERROR_MESSAGE
   end
+protected
+  def current_company_task_new
+    task=Template.new
+    task.company=current_user.company
+    return task
+  end
 end
