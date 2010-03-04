@@ -16,8 +16,7 @@ class TasksController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
       return
     end
-    @task = Task.new
-    @task.company = current_user.company
+    @task = current_company_task_new
     @task.duration = 0
     @task.users << current_user
     render :template=>'tasks/new'
@@ -99,7 +98,7 @@ class TasksController < ApplicationController
     tags = params[:task][:set_tags]
     params[:task][:set_tags] = nil
 
-    @task = current_user.company.tasks.new
+    @task = current_company_task_new
     @task.attributes = params[:task]
 
     if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
@@ -120,7 +119,7 @@ class TasksController < ApplicationController
       @task.repeat = nil
     end
 
-    @task.company_id = current_user.company_id
+    @task.company_id = current_user.company_id  #TODO: remove this line, company attached to task in line#101
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
@@ -873,6 +872,12 @@ class TasksController < ApplicationController
   end
   def task_duration_changed(old_task, task)
      (@old_task.duration != @task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
+  end
+############################################################3
+  def current_company_task_new
+    task=Task.new
+    task.company=current_user.company
+    return task
   end
 end
 
