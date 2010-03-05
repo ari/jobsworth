@@ -173,7 +173,7 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_user.company.tasks.find_by_task_num(params[:id])
+    @task = current_company_task_find_by_task_num(params[:id])
 
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
@@ -767,6 +767,9 @@ protected
     task=Task.new
     task.company=current_user.company
     return task
+  end
+  def current_company_task_find_by_task_num(id)
+    current_user.company.tasks.find_by_task_num(id)
   end
   #this method so big and complicated, so I can't find proper name for it
   #TODO: split this method into logical parts
