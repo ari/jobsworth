@@ -8,7 +8,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       @user = users(:admin)
       @request.session[:user_id] = @user.id
       @user.company.create_default_statuses
-      @customer= @user.company.customers.last
+      @customer= customers(:internal_customer)
     end
     context 'when create new task template' do
       setup do
@@ -17,7 +17,8 @@ class TaskTemplatesControllerTest < ActionController::TestCase
             :name=>'Task template',
             :description=>'Just a test task template',
             :due_at=>'2/2/2010',
-            :project_id=>@user.company.projects.first.id,
+            :status => 0,
+            :project_id=>projects(:test_project).id,
             :customer_attributes=>{@customer.id=>"1"},
             :notify_emails=>'some@email.com'
           },
@@ -30,13 +31,13 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       end
       should 'create task template with given parameters' do
         assert_not_nil @template
-        assert_equal @paremeters[:task][:description], @template.description
+        assert_equal @parameters[:task][:description], @template.description
         assert_equal @parameters[:task][:project_id], @template.project.id
-        assert_equal @parameters[:task][:users], @template.users.first.id
+        assert_equal @parameters[:users].first, @template.users.first.id
       end
       should 'not create any worklogs' do
         assert_not_nil @template
-        assert_zero @template.work_logs.size
+        assert_equal 0, @template.work_logs.size
       end
     end
     context 'when update task tamplate' do

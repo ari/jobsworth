@@ -131,7 +131,7 @@ class TasksController < ApplicationController
       flash['notice'] = _("You don't have access to create tasks on this project.")
       return if request.xhr?
       init_attributes_for_new_template
-      render :action => 'new'
+      render :template => 'tasks/new'
       return
     end
     #One task can have two  worklogs, so following code can raise three exceptions
@@ -164,7 +164,7 @@ class TasksController < ApplicationController
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
-      render :action => 'new'
+      render :template => 'tasks/new'
     end
   end
 
