@@ -244,7 +244,7 @@ class TasksController < ApplicationController
 
     update_type = :updated
 
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags])
+    @task = controlled_model.find( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     @old_users = @task.users.collect{ |u| u.id}.sort.join(',')
@@ -770,6 +770,10 @@ protected
   end
   def current_company_task_find_by_task_num(id)
     current_user.company.tasks.find_by_task_num(id)
+  end
+  #this function abstract calls to model from  controller
+  def controlled_model
+    Task
   end
   #this method so big and complicated, so I can't find proper name for it
   #TODO: split this method into logical parts
