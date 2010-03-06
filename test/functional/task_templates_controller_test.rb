@@ -41,25 +41,32 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       end
     end
     context 'when update task tamplate' do
+      setup do
+        @template = Template.first
+        @template.work_logs.clear
+        @parameters={ :id=>@template.id,
+          :task=>{ :id=>@template.id, :name=>@template.name + '!!update!!', :description=> @template.description+'!!update!!'}
+        }
+        post(:update, @parameters)
+        @template.reload
+      end
       should 'change attributes' do
+        assert_equal @parameters[:task][:name], @template.name
+        assert_equal @parameters[:task][:description], @template.description
       end
       should 'change custom property values' do
       end
-      should 'add todo' do
+      should 'change todos' do
       end
-      should 'remove todo' do
+      should 'change users' do
       end
-      should 'add users' do
+      should 'change clients' do
       end
-      should 'remove users' do
+      should 'not add any dependecies' do
+        assert_equal 0, @template.dependencies.size
       end
-      should 'add client' do
-      end
-      should 'remove client' do
-      end
-      should 'can not add any dependecies' do
-      end
-      should 'can not add any worklogs' do
+      should 'not add any worklogs' do
+        assert_equal 0, @template.work_logs.size
       end
     end
     context 'when create task from given template' do
