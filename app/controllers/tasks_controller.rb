@@ -189,7 +189,7 @@ class TasksController < ApplicationController
     @task.set_task_read(current_user)
 
     respond_to do |format|
-      format.html
+      format.html { render :template=> 'tasks/edit'}
       format.js { render(:layout => false) }
     end
   end
