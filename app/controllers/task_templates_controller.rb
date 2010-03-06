@@ -39,10 +39,13 @@ protected
     task.company=current_user.company
     return task
   end
-  def current_comany_task_find_by_task_num(id)
+  def current_company_task_find_by_task_num(id)
     Template.find(:first, :conditions=>{ :task_num=>id,:company_id=>current_user.company_id})
   end
-  def big_fat_controller_mehtod
+  def controlled_model
+    Template
+  end
+  def big_fat_controller_method
     #must be empty templates don't use all this stuff
   end
   def create_worklogs_for_tasks_create
