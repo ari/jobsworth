@@ -897,3 +897,16 @@ jQuery(document).ready(function(){
         initTagsPanel();
     }
 });
+//return path to tasks or task_templates controller
+//based on current page path
+//so we can reuse tasks code, views and javasript in taks_templates
+function tasks_path(action_name)
+{
+    if(/tasks\//.test(document.location.pathname)){
+        return "/tasks/" + action_name ;
+    }
+        else if ( /task_templates\//.test(document.location.pathname)){
+            return "/task_templates/" + action_name ;
+        }
+    return action_name;
+}
