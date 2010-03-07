@@ -393,7 +393,7 @@ module TasksHelper
     @task = current_user.company.tasks.find_by_id(session[:last_task_id],
                                                   :conditions => [ "project_id IN (#{ current_project_ids })" ])
     if @task
-      return render_to_string(:action => "edit", :layout => false)
+      return render_to_string(:template => "tasks/edit", :layout => false)
     end
   end
 
