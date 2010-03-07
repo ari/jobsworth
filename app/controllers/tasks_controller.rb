@@ -31,8 +31,8 @@ class TasksController < ApplicationController
 
     @tasks= current_task_filter.tasks_all(parse_jqgrid_params(params))
     respond_to do |format|
-      format.html { render :action => "tasks/grid" }
-      format.xml  { render :action => "tasks/list.xml" }
+      format.html { render :template => "tasks/grid" }
+      format.xml  { render :template => "tasks/list.xml" }
     end
   end
 
