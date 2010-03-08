@@ -247,7 +247,7 @@ function toggleTaskUnread(event, userId) {
         parameters.user_id = userId;
     }
 
-    jQuery.post("/tasks/set_unread",  parameters);
+    jQuery.post(tasks_path("set_unread"),  parameters);
 
     event.stopPropagation();
     return false;
@@ -691,7 +691,7 @@ function addUserToTask(input, li) {
     var userId = jQuery(li).find(".complete_value").text();
     var taskId = jQuery("#task_id").val();
 
-    var url = "/tasks/add_notification";
+    var url = tasks_path("add_notification");
     var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
@@ -704,7 +704,7 @@ function addUserToTask(input, li) {
   Adds any users setup as auto add to the current task.
 */
 function addAutoAddUsersToTask(clientId, taskId, projectId) {
-    var url = "/tasks/add_users_for_client";
+    var url = tasks_path("add_users_for_client");
     var params = { client_id : clientId, id : taskId, project_id : projectId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
@@ -719,7 +719,7 @@ function addCustomerToTask(input, li) {
     var clientId = jQuery(li).find(".complete_value").text();
     var taskId = jQuery("#task_id").val();
 
-    var url = "/tasks/add_client";
+    var url = tasks_path("add_client");
     var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
                 jQuery("#task_customers").append(data);
@@ -743,7 +743,7 @@ function addClientLinkForTask(projectId) {
     var customers = jQuery("#task_customers").text();
 
     if (jQuery.trim(customers) == "") {
-        var url = "/tasks/add_client_for_project";
+        var url = tasks_path("add_client_for_project");
         var params = { project_id : projectId };
         jQuery.get(url, params, function(data) {
             jQuery("#task_customers").html(data);
@@ -902,3 +902,18 @@ jQuery(document).ready(function(){
         initTagsPanel();
     }
 });
+
+
+//return path to tasks or task_templates controller
+//based on current page path
+//so we can reuse tasks code, views and javasript in taks_templates
+function tasks_path(action_name)
+{
+    if(/tasks\//.test(document.location.pathname)){
+        return "/tasks/" + action_name ;
+    }
+        else if ( /task_templates\//.test(document.location.pathname)){
+            return "/task_templates/" + action_name ;
+        }
+    return action_name;
+}

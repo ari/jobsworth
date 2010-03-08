@@ -29,7 +29,7 @@ class TasksController < ApplicationController
   def list
     list_init
 
-    @tasks= current_task_filter.tasks_all(parse_jqgrid_params(params))
+    @tasks= tasks_for_list
     respond_to do |format|
       format.html { render :template => "tasks/grid" }
       format.xml  { render :template => "tasks/list.xml" }
@@ -602,7 +602,7 @@ class TasksController < ApplicationController
   end
 
   def add_notification
-    @task = current_user_company_task_new
+    @task = current_company_task_new
     if !params[:id].blank?
       @task = current_company_task_find(params[:id])
     end
@@ -777,6 +777,9 @@ protected
   #this function abstract calls to model from  controller
   def controlled_model
     Task
+  end
+  def tasks_for_list
+    current_task_filter.tasks_all(parse_jqgrid_params(params))
   end
   #this method so big and complicated, so I can't find proper name for it
   #TODO: split this method into logical parts
