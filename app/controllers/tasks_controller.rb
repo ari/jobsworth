@@ -322,7 +322,7 @@ class TasksController < ApplicationController
       return if request.xhr?
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
-      redirect_to "/tasks/list"
+      redirect_to "/#{tasks_or_templates}/list"
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
       render :template => 'tasks/edit'
@@ -895,6 +895,9 @@ protected
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save! #FIXME: it saves worklog from line above
         WorkLog.create_task_created!(@task, current_user)
+  end
+  def tasks_or_templates
+    "tasks"
   end
 end
 
