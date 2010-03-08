@@ -42,6 +42,9 @@ protected
   def current_company_task_find_by_task_num(id)
     Template.find(:first, :conditions=>{ :task_num=>id,:company_id=>current_user.company_id})
   end
+  def current_company_task_find(id)
+    Template.find(:first, :conditions=>{ :company_id=>current_user.company_id})
+  end
   def controlled_model
     Template
   end

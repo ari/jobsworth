@@ -190,7 +190,7 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.html { render :template=> 'tasks/edit'}
-      format.js { render(:layout => false) }
+      format.js { render(:template=>'tasks/edit', :layout => false) }
     end
   end
 
@@ -325,7 +325,7 @@ class TasksController < ApplicationController
       redirect_to "/tasks/list"
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
-      render :action => 'edit'
+      render :template => 'tasks/edit'
     end
   end
 
@@ -602,33 +602,33 @@ class TasksController < ApplicationController
   end
 
   def add_notification
-    @task = current_user.company.tasks.new
+    @task = current_user_company_tasks_new
     if !params[:id].blank?
-      @task = current_user.company.tasks.find(params[:id])
+      @task = current_company_tasks_find(params[:id])
     end
 
     user = current_user.company.users.find(params[:user_id])
     @task.notifications.build(:user => user)
 
-    render(:partial => "notification", :locals => { :notification => user })
+    render(:partial => "tasks/notification", :locals => { :notification => user })
   end
 
   def add_client
-    @task = current_user.company.tasks.new
+    @task = current_user_company_tasks_new
     if !params[:id].blank?
-      @task = current_user.company.tasks.find(params[:id])
+      @task = current_company_task_find(params[:id])
     end
 
     customer = current_user.company.customers.find(params[:client_id])
     @task.task_customers.build(:customer => customer)
 
-    render(:partial => "task_customer", :locals => { :task_customer => customer })
+    render(:partial => "tasks/task_customer", :locals => { :task_customer => customer })
   end
 
   def add_users_for_client
-   @task = current_user.company.tasks.new
+   @task = current_company_task_new
     if params[:id].present?
-      @task = current_user.company.tasks.find(params[:id])
+      @task = current_company_tasks_find(params[:id])
     end
 
     if params[:client_id].present?
@@ -642,7 +642,7 @@ class TasksController < ApplicationController
 
     res = ""
     users.each do |user|
-      res += render_to_string(:partial => "notification", :object => user)
+      res += render_to_string(:partial => "tasks/notification", :object => user)
     end
 
     render :text => res
@@ -770,6 +770,9 @@ protected
   end
   def current_company_task_find_by_task_num(id)
     current_user.company.tasks.find_by_task_num(id)
+  end
+  def current_company_task_find(id)
+    current_user.company.tasks.find(id)
   end
   #this function abstract calls to model from  controller
   def controlled_model
