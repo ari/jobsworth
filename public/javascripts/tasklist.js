@@ -129,7 +129,7 @@ function initTaskList() {
                 caption: "Export",
                 title: "Export data to CSV",
                 onClickButton : function () {
-                        window.location.href="/tasks/get_csv";
+                    window.location.href=tasks_path("get_csv");
                 }
         });
 
