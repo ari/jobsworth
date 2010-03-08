@@ -602,7 +602,7 @@ class TasksController < ApplicationController
   end
 
   def add_notification
-    @task = current_user_company_task_new
+    @task = current_company_task_new
     if !params[:id].blank?
       @task = current_company_task_find(params[:id])
     end
