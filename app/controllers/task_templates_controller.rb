@@ -30,6 +30,10 @@ class TaskTemplatesController < TasksController
   def update_work_log
     raise Exception, CUSTOM_ERROR_MESSAGE
   end
+  # don't track unread status for templates
+  def set_unread
+    render :text => "", :layout => false
+  end
 protected
 ####  This methods inherited from TasksController.
 ####  They modifies behavior of TasksController actions: new, create, edit, update etc.
