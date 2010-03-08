@@ -102,9 +102,11 @@ class TasksController < ApplicationController
       end
 
       conds = [ conds ] + cond_params
+      
       @resources = current_user.company.resources.find(:all,
                                                        :conditions => conds)
     end
+    render :layout=> false
   end
 
   def resource
