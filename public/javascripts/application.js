@@ -926,3 +926,15 @@ function task_caption()
             return "Tasks templates";
         }
 }
+//only for task templates
+//when click on button "Create task from this template", send form(with template data) to tasks/create action
+function change_create_task_from_template()
+{
+    jQuery('#create_task_from_template').click( function(){
+        jQuery('form#taskform').attr('action','/tasks/create');
+    });
+}
+
+jQuery(document).ready(function(){
+    change_create_task_from_template();
+});

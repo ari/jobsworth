@@ -7,6 +7,7 @@ function loadTask(id) {
     jQuery.get(tasks_path("edit/") + id, {}, function(data) {
                 jQuery("#task").html(data);
                 jQuery("#task").fadeIn('slow');
+                change_create_task_from_template();
     });
 }
 
