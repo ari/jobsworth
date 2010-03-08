@@ -2,8 +2,17 @@
 
 <!--[form:project]-->
 <label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %><br/>
-<label for="project_customer_id"><%=_ 'Client' %></label><%= select 'project', 'customer_id', Customer.find(:all, :order => 'name', :conditions => ["company_id = ?", current_user.company.id ]).collect {|c| [ c.name, c.id ] }  %><br/>
-<label for="project_name"><%=_ 'Description' %></label><%= text_area 'project', 'description', :rows => 5  %><br/>
+<label for="project_customer_id"><%=_ 'Client' %></label>
+
+
+<%= text_field_with_auto_complete(:customer, :name, 
+      { :size => 12, :value => "" }, :after_update_element => "addCustomerToProject") %>
+
+<input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="">
+
+
+<label for="project_name"><%=_ 'Description' %></label>
+<%= text_area 'project', 'description', :rows => 5  %><br/>
 <% if @project.new_record? && current_user.company.show_forum %>
 <label for="project_create_forum" class="tooltip" title="<%=_'Create a private forum for people with access to this project?'%>"><%=_ 'Create Forum' %></label><%= check_box 'project', 'create_forum', {:class => 'checkbox tooltip', :title => _('Create a private forum for people with access to this project?')} %><br/>
 <% end %>
