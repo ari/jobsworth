@@ -2,9 +2,9 @@
 <%= error_messages_for 'task' %>
 <div id="task_sidebar">
   <small><%= link_to(@task.issue_num, :controller => "tasks", :action => "edit", :id => @task.task_num) %><span class="right"><%= "created " + time_ago_in_words(@task.created_at) + " ago" unless @task.created_at.nil?%></span></small>
-  <%= render(:partial => "details") %>
-  <%= render(:partial => "attributes") %>
-  <%= render(:partial => "notifications") %>
+  <%= render(:partial => "tasks/details") %>
+  <%= render(:partial => "tasks/attributes") %>
+  <%= render(:partial => "tasks/notifications") %>
   <% if !@task.new_record? -%>
     <%= render(:partial => "work_times") %>
   <% end -%>
@@ -16,14 +16,14 @@
   <div>
     <%= render(:partial => "new_comment") %>
   </div>
-  
+
   <% if !@task.new_record? -%>
     <div class="page_header">
       <%= _("To-do") %>
       <span id="todo-status-<%= @task.dom_id %>">
-	<a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container').toggle(); return false;">
-	  <%= @task.todo_status %>
-	</a>
+        <a class="<%=(@task.todos.empty? ? "todo-status-link-empty" :"todo-status-link")%>" style="padding-right:0" href="#" onclick="jQuery('#todo-container').toggle(); return false;">
+          <%= @task.todo_status %>
+        </a>
       </span>
     </div>
     <div id="todo-container" class="todo-container">
@@ -32,7 +32,7 @@
   <% end -%>
 
   <div id="task_history">
-    <%= render(:partial => "history") %>
+    <%= render(:partial => "tasks/history") %>
   </div>
 </div>
 
