@@ -65,4 +65,7 @@ protected
   def tasks_or_templates
     "task_templates"
   end
+  def set_last_task(task)
+    session[:last_template_id]=task.id
+  end
 end

@@ -142,7 +142,7 @@ class TasksController < ApplicationController
         create_worklogs_for_tasks_create
       end
       session[:last_project_id] = @task.project_id
-      session[:last_task_id] = @task.id
+      set_last_task(@task)
 
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
@@ -185,7 +185,7 @@ class TasksController < ApplicationController
     end
 
     init_form_variables(@task)
-    session[:last_task_id] = @task.id
+    set_last_task(@task)
     @task.set_task_read(current_user)
 
     respond_to do |format|
@@ -901,6 +901,9 @@ protected
   end
   def tasks_or_templates
     "tasks"
+  end
+  def set_last_task(task)
+    session[:last_task_id] = task.id
   end
 end
 
