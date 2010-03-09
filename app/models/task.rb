@@ -696,6 +696,14 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def Task.csv_header
+    ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution', 'Priority', 'Severity']
+  end
+
+  def to_csv
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type, priority_type, severity_type]
+  end
+
   def set_property_value(property, property_value)
     # remove the current one if it exists
     existing = task_property_values.detect { |tpv| tpv.property == property }
@@ -707,7 +715,7 @@ class Task < ActiveRecord::Base
       # only create a new one if property_value is set
       task_property_values.create(:property_id => property.id, :property_value_id => property_value.id)
     end
-  end
+  end  
 
   # Returns the value of the given property for this task
   def property_value(property)
