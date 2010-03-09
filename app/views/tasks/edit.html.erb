@@ -1,7 +1,7 @@
 <% cache([ "edit_form", @task, current_user.id ]) do -%>
 
   <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
-    <%= render :partial => "form" %>
+    <%= render :partial => "tasks/form" %>
   <% end %>
 
 <% end -%>

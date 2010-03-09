@@ -96,7 +96,7 @@ class WorkLog < ActiveRecord::Base
   # params must look like {:work_log=>{...},:comment=>""}
   # build only if we have :duration or :comment else retur false
   def self.build_work_added_or_comment(task, user, params=nil)
-    work_log_params=params[:work_log].clone
+    work_log_params=params[:work_log].clone unless params[:work_log].nil?
     if (work_log_params and !work_log_params[:duration].blank?) or (params and !params[:comment].blank?)
       unless params[:comment].blank?
         work_log_params[:body] = CGI::escapeHTML(params[:comment])

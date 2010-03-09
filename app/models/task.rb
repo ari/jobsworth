@@ -76,8 +76,7 @@ class Task < ActiveRecord::Base
   }
 
   default_scope :conditions=>"type != 'Template'"
-
-
+ 
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
   # n: 2, nth day-of-week: On the _1st_ _Sunday_ of each month
@@ -274,7 +273,7 @@ class Task < ActiveRecord::Base
   def set_task_num(company_id = nil)
     company_id ||= company.id
 
-    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
     num ||= 0
     num += 1
 
