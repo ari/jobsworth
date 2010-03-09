@@ -150,6 +150,11 @@ class TasksController < ApplicationController
 
       create_attachments(@task)
 
+      ############ code smell begin ####################
+      # this code used to create tasks from task template
+      # must exist more elegancy solution
+      copy_todos_from_template(params[:task][:id], @task)
+      ############ code smell end #######################
 
       @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
@@ -904,6 +909,17 @@ protected
   end
   def set_last_task(task)
     session[:last_task_id] = task.id
+  end
+  #this function copy todos from task template to task
+  #NOTE: this code is very fragile
+  #TODO: find sophisticated solution
+  def copy_todos_from_template(id, task)
+    template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
+    if template.nil?
+      #this is not template, just regular task
+      return
+    end
+    template.todos.each{|todo| task.todos<< todo.clone }
   end
 end
 
