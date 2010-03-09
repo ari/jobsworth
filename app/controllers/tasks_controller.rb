@@ -158,9 +158,7 @@ class TasksController < ApplicationController
 
       @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
-
-
-      Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_activities
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
@@ -321,8 +319,8 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
 
       return if request.xhr?
 
@@ -496,8 +494,8 @@ class TasksController < ApplicationController
         Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
     end
 
   end
@@ -527,9 +525,8 @@ class TasksController < ApplicationController
       if current_user.send_notifications?
         Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
       end
-
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
     end
 
   end
@@ -920,6 +917,12 @@ protected
       return
     end
     template.todos.each{|todo| task.todos<< todo.clone }
+  end
+  def juggernaut_update_activities
+    Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+  end
+  def juggernaut_update_tasks
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
   end
 end
 

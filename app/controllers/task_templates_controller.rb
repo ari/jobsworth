@@ -68,4 +68,10 @@ protected
   def set_last_task(task)
     session[:last_template_id]=task.id
   end
+  def juggernaut_update_tasks
+    #empty method
+  end
+  def juggernaut_update_activities
+    #empty method
+  end
 end
