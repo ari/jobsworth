@@ -5,7 +5,7 @@
   </span>
   <span class="edit" style="display: none;">
     <%= text_field_tag("todo[name]", todo.name) %>
-    <%= javascript_tag("addTodoKeyListener(#{ todo.id }, #{ todo.task.id })") %>
+    <%= javascript_tag("addTodoKeyListener(#{ todo.id }, #{ @task.id })") %>
     <%= link_to_function("Cancel", "toggleTodoEdit(this)") %>
   </span>
 

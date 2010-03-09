@@ -397,19 +397,6 @@ module TasksHelper
     end
   end
 
-  # Returns the open tr tag for the given task in a task list
-  def task_row_tr_tag(task)
-    class_name += "selected" if task.id == session[:last_task_id]
-    class_name += " unread" if task.unread?(current_user)
-    class_name += " unassigned" if task.users.count == 0
-
-    return tag(:tr, {
-                 :id => "task_row_#{ task.task_num }",
-                 :class => class_name,
-                 :onclick => "showTaskInPage(#{ task.task_num}); return false;"
-               }, true)
-  end
-
   # Returns the html for a completely self contained unread toggle
   # for the given task and user
   def unread_toggle_for_task_and_user(task, user)
@@ -420,20 +407,6 @@ module TasksHelper
       content_tag(:span, :class => "unread_icon") do
         link_to_function("<span>*</span>", "toggleTaskUnread(event, #{ user.id })")
       end
-    end
-  end
-
-  # Returns a sort hint for sorting the given task.
-  # Uses unread status and whether a user is a task owner or watcher
-  def default_sort_hint_for_task(task)
-    if task.unread?(current_user)
-      return 10
-    elsif task.linked_users.empty?
-      return 9
-    elsif task.linked_users.include?(current_user)
-      return 8
-    else
-      return 1
     end
   end
 
