@@ -142,7 +142,7 @@ class TasksController < ApplicationController
         create_worklogs_for_tasks_create
       end
       session[:last_project_id] = @task.project_id
-      session[:last_task_id] = @task.id
+      set_last_task(@task)
 
       @task.set_users(params)
       @task.set_dependency_attributes(params[:dependencies], current_project_ids)
@@ -150,12 +150,15 @@ class TasksController < ApplicationController
 
       create_attachments(@task)
 
+      ############ code smell begin ####################
+      # this code used to create tasks from task template
+      # must exist more elegancy solution
+      copy_todos_from_template(params[:task][:id], @task)
+      ############ code smell end #######################
 
       @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
-
-
-      Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_activities
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
@@ -185,7 +188,7 @@ class TasksController < ApplicationController
     end
 
     init_form_variables(@task)
-    session[:last_task_id] = @task.id
+    set_last_task(@task)
     @task.set_task_read(current_user)
 
     respond_to do |format|
@@ -316,8 +319,8 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
 
       return if request.xhr?
 
@@ -491,8 +494,8 @@ class TasksController < ApplicationController
         Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
       end
 
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
     end
 
   end
@@ -522,9 +525,8 @@ class TasksController < ApplicationController
       if current_user.send_notifications?
         Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
       end
-
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+      juggernaut_update_tasks
+      juggernaut_update_activities
     end
 
   end
@@ -901,6 +903,26 @@ protected
   end
   def tasks_or_templates
     "tasks"
+  end
+  def set_last_task(task)
+    session[:last_task_id] = task.id
+  end
+  #this function copy todos from task template to task
+  #NOTE: this code is very fragile
+  #TODO: find sophisticated solution
+  def copy_todos_from_template(id, task)
+    template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
+    if template.nil?
+      #this is not template, just regular task
+      return
+    end
+    template.todos.each{|todo| task.todos<< todo.clone }
+  end
+  def juggernaut_update_activities
+    Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
+  end
+  def juggernaut_update_tasks
+    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
   end
 end
 

@@ -56,13 +56,22 @@ protected
     Template.find(:all, :conditions=>{ :company_id=>current_user.company_id})
   end
   def big_fat_controller_method
-    #must be empty templates don't use all this stuff
+    #must be empty, templates don't use all this stuff
   end
   def create_worklogs_for_tasks_create
-    #must be empty templates not have worklogs
+    #must be empty, templates not have worklogs
   end
   #used for redirects in TasksController
   def tasks_or_templates
     "task_templates"
+  end
+  def set_last_task(task)
+    session[:last_template_id]=task.id
+  end
+  def juggernaut_update_tasks
+    #empty method
+  end
+  def juggernaut_update_activities
+    #empty method
   end
 end
