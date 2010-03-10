@@ -245,7 +245,7 @@ class TasksController < ApplicationController
   def update
     projects = current_user.project_ids
 
-    update_type = :updated
+    @update_type = :updated
 
     @task = controlled_model.find( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
@@ -797,7 +797,7 @@ protected
       @task.users.reload
       new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
       body << "- <strong>Assignment</strong>: #{new_name}\n"
-      update_type = :reassigned
+      @update_type = :reassigned
     end
 
     if @old_project_id != @task.project_id
@@ -843,15 +843,15 @@ protected
       worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
 
       if( @task.status > 1 && @old_task.status != @task.status )
-        update_type = :status
+        @update_type = :status
       end
 
       if( @task.completed_at && @old_task.completed_at.nil?)
-        update_type = :completed
+        @update_type = :completed
       end
 
       if( @task.status < 2 && @old_task.status > 1 )
-        update_type = :reverted
+        @update_type = :reverted
       end
 
       if( @old_task.status == 6 )
@@ -888,7 +888,7 @@ protected
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.save!
-      worklog.send_notifications(params[:notify], update_type) if worklog.comment?
+      worklog.send_notifications(params[:notify], @update_type) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!
