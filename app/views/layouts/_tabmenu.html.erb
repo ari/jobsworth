@@ -21,11 +21,13 @@
         <li>
           <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
         </li>
-        <% template_links.each do |l| %>
+        <div id='create_task_from_template_links'>
+        <% current_templates.each do |t| %>
         <li>
-          <%= l %>
+          <%= link_to t, '#', :task_num=>t.task_num %>
         </li>
         <% end %>
+        </div>
       </ul>
     </li>
     <% if current_user.option_tracktime.to_i == 1 %>
