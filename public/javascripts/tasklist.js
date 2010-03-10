@@ -85,7 +85,7 @@ function initTaskList() {
                 sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
                 sortname: 'id',
                 autowidth: true,
-                caption: task_caption(),
+                caption: "Tasks",
                 viewrecords: true,
                 multiselect: false,
 

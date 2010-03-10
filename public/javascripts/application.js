@@ -908,12 +908,3 @@ function tasks_path(action_name)
         }
     return action_name;
 }
-function task_caption()
-{
-    if(/tasks\//.test(document.location.pathname)){
-        return "Tasks" ;
-    }
-        else if ( /task_templates\//.test(document.location.pathname)){
-            return "Tasks templates";
-        }
-}
