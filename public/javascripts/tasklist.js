@@ -4,7 +4,7 @@
 
 function loadTask(id) {
     jQuery("#task").fadeOut();
-    jQuery.get(tasks_path("edit/") + id, {}, function(data) {
+    jQuery.get("/tasks/edit/" + id, {}, function(data) {
                 jQuery("#task").html(data);
                 jQuery("#task").fadeIn('slow');
     });
@@ -74,7 +74,7 @@ jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
 function initTaskList() {
 
         jQuery('#task_list').jqGrid({
-            url:tasks_path('list?format=xml'),
+            url:'/tasks/list?format=xml',
                 datatype: 'xml',
                 xmlReader: {
                         row:"task",
@@ -129,7 +129,7 @@ function initTaskList() {
                 caption: "Export",
                 title: "Export data to CSV",
                 onClickButton : function () {
-                    window.location.href=tasks_path("get_csv");
+                    window.location.href="/tasks/get_csv";
                 }
         });
 
