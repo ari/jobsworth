@@ -31,7 +31,7 @@ module ApplicationHelper
     @total_today = 0
     start = tz.local_to_utc(tz.now.at_midnight)
     @total_today = WorkLog.sum(:duration, :conditions => ["user_id = ? AND started_at > ? AND started_at < ?", current_user.id, start, start + 1.day]).to_i / 60
-    
+
     @total_today += @current_sheet.duration / 60 if @current_sheet
     @total_today
   end
@@ -62,7 +62,7 @@ module ApplicationHelper
     css = ""
 
     due_date = task.due_date
-    
+
     if due_date
       utc_due = tz.utc_to_local(due_date)
       tz_now = tz.now
@@ -319,11 +319,11 @@ END_OF_HTML
 
 
   def use_tinymce
-    @content_for_tinymce = "" 
+    @content_for_tinymce = ""
     content_for :tinymce do
       javascript_include_tag "tiny_mce/tiny_mce"
     end
-    @content_for_tinymce_init = "" 
+    @content_for_tinymce_init = ""
     content_for :tinymce_init do
       javascript_include_tag "tiny_mce"
     end
@@ -338,7 +338,7 @@ END_OF_HTML
 
     if color_property > 0
       property = current_user.company.properties.detect { |p| p.id == color_property }
-    else 
+    else
       property = current_user.company.properties.detect { |p| p.default_color }
     end
 
@@ -354,7 +354,7 @@ END_OF_HTML
   ###
   def task_icon(task)
     icon_property = session[:icons].to_i
-    
+
     property = current_user.company.type_property
     if icon_property != 0 and !property
       property = current_user.company.properties.detect { |p| p.id == icon_property }
@@ -388,7 +388,7 @@ END_OF_HTML
             end
     elsif Property.find_by_group_by(current_user.company, group_by)
       can = true
-    end        
+    end
 
     return can
   end
@@ -414,7 +414,7 @@ END_OF_HTML
   end
 
   ###
-  # Returns an element that can be used to remove the parent element from the page. 
+  # Returns an element that can be used to remove the parent element from the page.
   ###
   def link_to_remove_parent
     image = image_tag("cross_small.png", :border => 0, :alt => "#{ _("Remove") }")
@@ -430,7 +430,7 @@ END_OF_HTML
   end
 
   ###
-  # Returns the html to use to display a filter for the given 
+  # Returns the html to use to display a filter for the given
   # method, etc
   ###
   def filter_for(meth, names_and_ids, session_filters, label = nil)
@@ -448,16 +448,16 @@ END_OF_HTML
   end
 
   ###
-  # Returns the project id that should be selected based on the current 
+  # Returns the project id that should be selected based on the current
   # session and filters.
-  ### 
+  ###
   def selected_project
     if @task and @task.project_id.to_i > 0
       selected_project = @task.project_id
     else
       selected_project = current_user.projects.find(:first, :order => 'name').id
     end
-  
+
 
     return selected_project
   end
@@ -469,7 +469,7 @@ END_OF_HTML
   def pagination_links(objects, count = 100)
     will_paginate(objects, {
                     :per_page => count,
-                    :next_label => _('Next') + ' &raquo;', 
+                    :next_label => _('Next') + ' &raquo;',
                     :prev_label => '&laquo; ' + _('Previous')
                   })
   end
@@ -492,7 +492,7 @@ END_OF_HTML
 
   ###
   # Returns the html to show a choice field for field called name.
-  # Ideally, this would use a checkbox, but checkboxes seem to be 
+  # Ideally, this would use a checkbox, but checkboxes seem to be
   # confusing the arrays in the params that rails gets, so using
   # a select for now.
   ###
@@ -525,12 +525,12 @@ END_OF_HTML
 
       add_style = same_type ? "display: none" : ""
       remove_style = same_type ? "" : "display: none;"
-      
-      res += link_to_function(_("Add another"), "addAttribute(this)", 
-                                :class => "add_attribute", 
-                                :style => add_style) 
-      res += link_to_function(_("Remove"), "removeAttribute(this)", 
-                              :class => "remove_attribute", 
+
+      res += link_to_function(_("Add another"), "addAttribute(this)",
+                                :class => "add_attribute",
+                                :style => add_style)
+      res += link_to_function(_("Remove"), "removeAttribute(this)",
+                              :class => "remove_attribute",
                               :style => remove_style)
     end
 
@@ -549,6 +549,12 @@ END_OF_HTML
     return "custom_attribute_#{ @ca_field_id }"
   end
 
+  # return links to edit current task  templates
+  def template_links
+    current_templates.collect do |t|
+      link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
+    end
+  end
 end
 
 

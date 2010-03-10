@@ -21,12 +21,11 @@
         <li>
           <%= link_to _("New Task"), :controller => 'tasks', :action => 'new' %>
         </li>
+        <% template_links.each do |l| %>
         <li>
-          <%= link_to _("Templates"), :controller => 'task_templates', :action=>'list' %>
+          <%= l %>
         </li>
-        <li>
-          <%= link_to _("New Template"), :controller=>'task_templates', :action=> 'new' %>
-        </li>
+        <% end %>
       </ul>
     </li>
     <% if current_user.option_tracktime.to_i == 1 %>
@@ -85,6 +84,9 @@
         </li>
         <li>
           <%= link_to(_("Resource Types"), resource_types_path) %>
+        </li>
+        <li>
+          <%= link_to _("Templates"), :controller => 'task_templates', :action=>'list' %>
         </li>
       </ul>
       <% end %>

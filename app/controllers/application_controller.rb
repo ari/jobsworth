@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   helper_method :worked_nice
   helper_method :link_to_task
   helper_method :current_task_filter
+  helper_method :current_templates
 
   before_filter :install
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
@@ -435,5 +436,7 @@ class ApplicationController < ActionController::Base
       render(:update) { |page| page << "parent.document.location = '#{ url }'" }
     end
   end
-
+  def current_templates
+    Template.find(:all, :conditions=>[ "project_id IN (#{ current_project_ids }) AND company_id = ?", current_user.company_id ])
+  end
 end
