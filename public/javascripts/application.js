@@ -750,15 +750,6 @@ function addClientLinkForTask(projectId) {
         });
     }
 }
-/*
-  Called when a task is moved in the task list.
-*/
-function moveTask(event, ui) {
-    var element = ui.draggable[0];
-    var dropTarget = event.target;
-    jQuery(element).remove();
-    jQuery.get("/tasks/move", { id : element.id + " " + dropTarget.id }, null, "script");
-}
 
 /*
   Toggles the approval status of the given work log
