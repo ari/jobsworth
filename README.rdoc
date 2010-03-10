@@ -71,6 +71,16 @@ Your Apache httpd virtual host DocumentRoot should point to the public directory
     ErrorLog /var/log/www/myserver.example.com.au-access_log
   </VirtualHost>
 
+You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for Rails application.
+
+  <Directory /usr/squish/public>
+    AllowOverride All
+    Options -MultiViews
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+
 Naturally adjust the paths to suit your own environment.
 
 
