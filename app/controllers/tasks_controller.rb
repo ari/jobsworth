@@ -197,51 +197,6 @@ class TasksController < ApplicationController
     end
   end
 
-#  def edit_ajax
-#    self.edit
-#    render :action => 'edit', :layout => false
-#  end
-
-  def repeat_task(task)
-    @repeat = Task.new
-    @repeat.status = 0
-    @repeat.project_id = task.project_id
-    @repeat.company_id = task.company_id
-    @repeat.name = task.name
-    @repeat.repeat = task.repeat
-    @repeat.requested_by = task.requested_by
-    @repeat.creator_id = task.creator_id
-    @repeat.set_tags(task.tags.collect{|t| t.name}.join(', '))
-    @repeat.set_task_num(current_user.company_id)
-    @repeat.duration = task.duration
-    @repeat.notify_emails = task.notify_emails
-    @repeat.milestone_id = task.milestone_id
-    @repeat.hidden = task.hidden
-    @repeat.due_at = @task.due_at
-    @repeat.due_at = @repeat.next_repeat_date
-    @repeat.description = task.description
-
-    @repeat.save
-    @repeat.reload
-
-    task.notifications.each do |w|
-      n = Notification.new(:user => w.user, :task => @repeat)
-      n.save
-    end
-
-    task.task_owners.each do |o|
-      to = TaskOwner.new(:user => o.user, :task => @repeat)
-      to.save
-    end
-
-    task.dependencies.each do |d|
-        @repeat.dependencies << d
-    end
-
-    @repeat.save
-
-  end
-
   def update
     projects = current_user.project_ids
 
@@ -303,7 +258,7 @@ class TasksController < ApplicationController
             @task.save!
             @task.reload
 
-            repeat_task(@task)
+            @task.repeat_task
           end
         end
 
@@ -487,7 +442,7 @@ class TasksController < ApplicationController
 
 
       if @task.next_repeat_date != nil
-          repeat_task(@task)
+          @task.repeat_task
       end
 
       if current_user.send_notifications?
