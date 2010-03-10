@@ -31,7 +31,7 @@ class TasksController < ApplicationController
 
     @tasks= tasks_for_list
     respond_to do |format|
-      format.html { render :template => "tasks/grid" }
+      format.html { render :action => "grid" }
       format.xml  { render :template => "tasks/list.xml" }
     end
   end
