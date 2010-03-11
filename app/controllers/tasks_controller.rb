@@ -394,100 +394,6 @@ class TasksController < ApplicationController
     render :nothing => true
   end
 
-
-  def ajax_check
-    begin
-      @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.project_ids], :include => :project)
-    rescue
-      render :nothing => true
-      return
-    end
-
-    old_status = @task.status_type
-
-    unless @task.completed_at
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-
-      body = ""
-
-      if @current_sheet && @current_sheet.task_id == @task.id
-        worklog.started_at = @current_sheet.created_at
-        worklog.duration = @current_sheet.duration
-        worklog.paused_duration = @current_sheet.paused_duration
-        worklog.log_type = EventLog::TASK_COMPLETED
-        unless @current_sheet.body.blank?
-          body = "\n#{@current_sheet.body}"
-          worklog.comment = true
-        end
-      else
-        worklog.started_at = Time.now.utc
-        worklog.duration = 0
-        worklog.log_type = EventLog::TASK_COMPLETED
-      end
-
-      @task.completed_at = Time.now.utc
-      @task.updated_by_id = current_user.id
-      @task.status = 2
-      @task.save
-      @task.reload
-
-      worklog.body = "- <strong>Status</strong>: #{old_status} -> #{@task.status_type}\n" + body
-      if worklog.save
-        @current_sheet.destroy if @current_sheet && @current_sheet.task_id == @task.id
-      end
-
-
-      if @task.next_repeat_date != nil
-          @task.repeat_task
-      end
-
-      if current_user.send_notifications?
-        Notifications::deliver_changed(:completed, @task, current_user, worklog.body.gsub(/<[^>]*>/,'') ) rescue nil
-      end
-
-      juggernaut_update_tasks
-      juggernaut_update_activities
-    end
-
-  end
-
-  def ajax_uncheck
-    @task = Task.find(params[:id], :conditions => ["project_id IN (?)", current_user.project_ids ], :include => :project)
-
-    unless @task.completed_at.nil?
-
-      @task.completed_at = nil
-      @task.status = 0
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
-      worklog.log_type = EventLog::TASK_REVERTED
-      worklog.body = ""
-      worklog.save
-
-      if current_user.send_notifications?
-        Notifications::deliver_changed(:reverted, @task, current_user, "" ) rescue begin end
-      end
-      juggernaut_update_tasks
-      juggernaut_update_activities
-    end
-
-  end
-
   def updatelog
     unless @current_sheet
       render :text => "#{_("Task not worked on")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
@@ -501,7 +407,6 @@ class TasksController < ApplicationController
       render :text => "#{_("Error saving")} #{current_user.tz.utc_to_local(Time.now.utc).strftime_localized("%H:%M:%S")}"
     end
   end
-
 
   def update_sheet_info
   end
