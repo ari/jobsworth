@@ -21,7 +21,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       assert_not_nil found
       assert_equal filter, found
     end
-    
+
     should "return existing filter from system filter if one does exist" do
       filter = TaskFilter.make_unsaved(:user_id => @user.id, :system => true)
       filter.save!
@@ -34,7 +34,7 @@ class TaskFilterTest < ActiveSupport::TestCase
   should "set keywords using keywords_attributes=" do
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
-    
+
     filter.keywords_attributes = [ "keyword1", "keyword2" ]
     assert_equal "keyword1", filter.keywords[0].word
     assert_equal "keyword2", filter.keywords[1].word
@@ -48,7 +48,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       qualifiers = klass.all
       assert qualifiers.any?
       ids = qualifiers.map { |o| o.id }
-      
+
       filter = TaskFilter.make_unsaved
       qualifiers.each { |q| filter.qualifiers.build(:qualifiable => q) }
       conditions = filter.conditions
@@ -108,7 +108,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter = TaskFilter.make_unsaved
       filter.keywords.build(:word => "keyword1")
       filter.keywords.build(:word => "keyword2")
-      
+
       conditions = filter.conditions
 
       kw1 = Task.connection.quote_string("%keyword1%")
@@ -135,7 +135,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
       filter = TaskFilter.make_unsaved
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => "due_date")
-      
+
       conditions = filter.conditions
       escaped = Task.connection.quote_column_name("due_date")
       expected = "(tasks.#{ escaped } >= '#{ Date.today.to_formatted_s(:db) }'"
@@ -148,7 +148,7 @@ class TaskFilterTest < ActiveSupport::TestCase
       range = TimeRange.make(:start => "Date.today", :end => "Date.tomorrow")
       filter = TaskFilter.make_unsaved
       filter.qualifiers.build(:qualifiable => range, :qualifiable_column => ";delete * from users;")
-      
+
       conditions = filter.conditions
       escaped = Task.connection.quote_column_name(";delete * from users;")
       assert_not_nil conditions.index(escaped)
@@ -218,6 +218,34 @@ class TaskFilterTest < ActiveSupport::TestCase
       expected = "task_customers.customer_id in (#{ other_customer.id })"
 
       assert conditions.index(expected)
+    end
+    context ",  filter for jqGrid" do
+      should "sort tasks by id asc" do
+        params={ :sord=>'asc',:sidx=>'id'}
+        assert_equal @filter.tasks_for_jqgrid(params), @filter.tasks
+      end
+      should "sort tasks by id desc" do
+        params={ :sord=>'desc',:sidx=>'id'}
+        assert_equal @filter.tasks_for_jqgrid(params), @filter.tasks.reverse
+      end
+    end
+    context ", filter for Full Calendar" do
+      setup do
+        @t1=@filter.tasks[0]
+        @t2=@filter.tasks[1]
+        @t1.due_at=Time.now+1.day
+        @t2.due_at=Time.now+5.day
+        @t1.save!
+        @t2.save!
+      end
+      should "return tasks by date" do
+        params= {:start=>(Time.now - 2.day).to_i, :end=> (Time.now + 2.day).to_i}
+        assert_equal @filter.tasks_for_fullcalendar(params), [@t1]
+      end
+      should "return tasks by another date" do
+        params= {:start=>(Time.now + 2.day).to_i, :end=> (Time.now + 7.day).to_i}
+        assert_equal @filter.tasks_for_fullcalendar(params), [@t2]
+      end
     end
   end
 end

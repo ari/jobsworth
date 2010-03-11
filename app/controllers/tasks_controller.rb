@@ -41,7 +41,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html
       format.json{
-        @tasks=current_task_filter.tasks(parse_fullcalendar_params(params))
+        @tasks=current_task_filter.tasks_for_fullcalendar(params)
       }
     end
   end
@@ -662,52 +662,6 @@ protected
     @ajax_task_links = true
   end
 
-  # Parse parameters from jqGrid for Task.all method
-  # This function used to sort jqGrid created from tasks/list.xml.erb
-  # many columns in jqGrid calculated in Task model or in tasks/list.xml.erb
-  # following sort code duplicate logic from Task  and list.xml.erb in sql `order by`
-  # TODO: Store all logic in sql view or create client side sorting.
-  def parse_jqgrid_params(jqgrid_params)
-    tasks_params={ }
-    if !jqgrid_params[:rows].blank? and !jqgrid_params[:page].blank?
-      tasks_params[:limit]=jqgrid_params[:rows].to_i > 0 ? jqgrid_params[:rows].to_i : 0
-      tasks_params[:offset]=jqgrid_params[:page].to_i-1
-      if tasks_params[:offset] >0
-        tasks_params[:offset] *= tasks_params[:limit]
-      else
-        tasks_params[:offset]=nil
-      end
-    end
-    case jqgrid_params[:sidx]
-      when 'summary'
-        tasks_params[:order]='tasks.name'
-      when 'id'
-        tasks_params[:order]='tasks.id'
-      when 'due'
-        tasks_params[:include]=[:milestone]
-        tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
-      when 'assigned'
-        tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_owners  left outer join users on users.id = task_owners.user_id where task_owners.task_id=tasks.id  group by tasks.id)'
-      when 'client'
-        tasks_params[:order]='if( exists(select  customers.name as client   from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select  customers.name as client  from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select customers.name from projects left outer join customers on projects.customer_id= customers.id where projects.id=tasks.project_id limit 1))'
-      else
-        tasks_params[:order]=nil
-    end
-
-    if !tasks_params[:order].nil? and (jqgrid_params[:sord] == 'desc')
-      tasks_params[:order]+= ' desc'
-    end
-    return tasks_params
-  end
-  #This function parse fullCalendar `start` and `end` date(in Unix format) from  params
-  #return conditions for TaskFilter#tasks, unfortunately TaskFilter#task does not support active record :conditions, only plain sql:(
-  def parse_fullcalendar_params(calendar_params)
-    if !calendar_params[:end].blank? and !calendar_params[:start].blank?
-      return  "due_at< '#{Time.at(calendar_params[:end].to_i)}' and due_at > '#{Time.at(calendar_params[:start].to_i)}'"
-    else
-      return nil
-    end
-  end
 ################################################
   def task_due_changed(old_task, task)
     if old_task.due_at != task.due_at
@@ -747,7 +701,7 @@ protected
     Task
   end
   def tasks_for_list
-    current_task_filter.tasks_all(parse_jqgrid_params(params))
+    current_task_filter.tasks_for_jqgrid(params)
   end
   #this method so big and complicated, so I can't find proper name for it
   #TODO: split this method into logical parts
