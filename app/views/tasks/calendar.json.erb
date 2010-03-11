@@ -1,5 +1,5 @@
 [
-<%	current_task_filter.tasks.each do |task| -%>
+<%      @tasks.each do |task| -%>
 {
 "id": <%= task.task_num %>,
 "title": "<%= escape_javascript(task.name) %>",
