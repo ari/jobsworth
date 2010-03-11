@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100302103302) do
+ActiveRecord::Schema.define(:version => 20100311174232) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -113,7 +113,6 @@ ActiveRecord::Schema.define(:version => 20100302103302) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "css"
-    t.integer  "binary_id"
     t.boolean  "active",                       :default => true
   end
 
@@ -335,7 +334,6 @@ ActiveRecord::Schema.define(:version => 20100302103302) do
     t.integer  "project_id",                       :default => 0,                          :null => false
     t.integer  "customer_id",                      :default => 0,                          :null => false
     t.string   "name",              :limit => 200, :default => "",                         :null => false
-    t.integer  "binary_id",                        :default => 0,                          :null => false
     t.integer  "file_type",                        :default => 0,                          :null => false
     t.datetime "created_at",                                                               :null => false
     t.datetime "updated_at",                                                               :null => false
