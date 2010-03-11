@@ -426,7 +426,7 @@ class TasksControllerTest < ActionController::TestCase
       get :dependency_targets, :dependencies => [ @task.name ]
 
       assert_response :success
-      assert_equal [ @task ], assigns("tasks")
+      assert_equal Task.search(@user,[@task.name]), assigns("tasks")
     end
 
     should "render add_client" do
