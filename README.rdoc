@@ -129,7 +129,16 @@ Restart daemon
 
   cd /usr/local/www/jobsworth
   nohup ./script/push_server &
-  apachectl restart
+  apachectl graceful
+  
+Clear out cached asset files
+
+  rm public/javascripts/main.js
+  rm public/javascripts/popup.js
+  rm public/javascripts/prototype-all.js
+  rm public/stylesheets/all.css
+  rm public/stylesheets/popup.css
+
 
 == Setting up Email Integration
 
