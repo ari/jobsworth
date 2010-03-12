@@ -75,7 +75,7 @@ class Task < ActiveRecord::Base
     r.milestone.update_counts if r.milestone
   }
 
-  default_scope :conditions=>"type != 'Template'"
+  default_scope :conditions=>"tasks.type != 'Template'"
 
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
