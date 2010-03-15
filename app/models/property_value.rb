@@ -5,7 +5,7 @@
 ###
 class PropertyValue < ActiveRecord::Base
   belongs_to :property
-
+  before_save :set_position
   ###
   # Returns an int to use for sorting tasks with
   # this property value.
@@ -31,6 +31,10 @@ class PropertyValue < ActiveRecord::Base
 
   include ActionView::Helpers::AssetTagHelper
 
+  def set_position
+    return true unless self.position.nil?
+    self.position = property.property_values.length
+  end
 end
 
 # == Schema Information
