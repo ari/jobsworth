@@ -309,7 +309,16 @@ private
       when 'client'
         tasks_params[:order]='if( exists(select  customers.name as client   from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select  customers.name as client  from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select customers.name from projects left outer join customers on projects.customer_id= customers.id where projects.id=tasks.project_id limit 1))'
       else
+      if self.company.properties.collect{|p| p.name.downcase }.include?(jqgrid_params[:sidx])
+        self.company.properties.each do|p|
+          if p.name.downcase == jqgrid_params[:sidx]
+            @property_id = p.id
+            tasks_params[:order]= "(select property_values.position from  task_property_values, property_values where tasks.id=task_property_values.task_id and task_property_values.property_id=#{@property_id} and task_property_values.property_value_id = property_values.id)"
+          end
+        end
+      else
         tasks_params[:order]=nil
+      end
     end
 
     if !tasks_params[:order].nil? and (jqgrid_params[:sord] == 'desc')
