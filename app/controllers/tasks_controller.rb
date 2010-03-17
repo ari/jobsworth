@@ -584,10 +584,10 @@ protected
     (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n" : ""
   end
   def task_description_changed(old_task, task)
-    (@old_task.description != @task.description) ? "- <strong>Description</strong> changed\n" : ""
+    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n" : ""
   end
   def task_duration_changed(old_task, task)
-     (@old_task.duration != @task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
+     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
@@ -637,7 +637,7 @@ protected
       old_name = "None"
       unless @old_task.milestone.nil?
         old_name = @old_task.milestone.name
-        old_task.milestone.update_counts
+        @old_task.milestone.update_counts
       end
 
       new_name = "None"
