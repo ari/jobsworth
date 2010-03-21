@@ -71,6 +71,16 @@ Your Apache httpd virtual host DocumentRoot should point to the public directory
     ErrorLog /var/log/www/myserver.example.com.au-access_log
   </VirtualHost>
 
+You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for Rails application.
+
+  <Directory /usr/squish/public>
+    AllowOverride All
+    Options -MultiViews
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+
 Naturally adjust the paths to suit your own environment.
 
 
@@ -119,7 +129,16 @@ Restart daemon
 
   cd /usr/local/www/jobsworth
   nohup ./script/push_server &
-  apachectl restart
+  apachectl graceful
+  
+Clear out cached asset files
+
+  rm public/javascripts/main.js
+  rm public/javascripts/popup.js
+  rm public/javascripts/prototype-all.js
+  rm public/stylesheets/all.css
+  rm public/stylesheets/popup.css
+
 
 == Setting up Email Integration
 

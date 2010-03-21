@@ -42,7 +42,7 @@ class UsersController < ApplicationController
     @user.time_format = "%H:%M"
 
     if @user.save
-      
+
       if params[:copy_user].to_i > 0
         u = current_user.company.users.find(params[:copy_user])
         u.project_permissions.each do |perm|
@@ -51,13 +51,13 @@ class UsersController < ApplicationController
           p.save
         end
       end
-      
+
       flash['notice'] = _('User was successfully created. Remember to give this user access to needed projects.')
 
       if params[:send_welcome_email]
         begin
-          Signup::deliver_account_created(@user, current_user, params['welcome_message']) 
-        rescue 
+          Signup::deliver_account_created(@user, current_user, params['welcome_message'])
+        rescue
           flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
         end
       end
@@ -89,11 +89,11 @@ class UsersController < ApplicationController
     if params[:user][:admin].to_i > current_user.admin
       params[:user][:admin] = current_user.admin
     end
-    
+
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
       if @user.customer
-        redirect_to(:controller => "clients", :action => 'edit', 
+        redirect_to(:controller => "clients", :action => 'edit',
                     :id => @user.customer, :anchor => "users")
       else
         redirect_to(:controller => "clients", :action => "list")
@@ -290,7 +290,7 @@ class UsersController < ApplicationController
    
     project = current_user.company.projects.find(params[:project_id])
 
-    ProjectPermission.new(:user => @user, :company => @user.company, 
+    ProjectPermission.new(:user => @user, :company => @user.company,
                           :project => project).save
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
@@ -304,42 +304,42 @@ class UsersController < ApplicationController
   def get_preference
     render :text => current_user.preference(params[:name])
   end
-  
+
   def set_tasklistcols
     colModel = JSON.parse(params[:model]) rescue nil
     current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
     render :nothing => true
   end
-  
+
   def get_tasklistcols
-  	defaultCol = Array.new
+    defaultCol = Array.new
     defaultCol << {'name' => 'read', 'label' => ' ', 'formatter' => 'read', 'resizable' => false, 'sorttype' => 'boolean', 'width' => 16}
-	defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
-	defaultCol << {'name' => 'summary', 'width' => 300}
-	defaultCol << {'name' => 'client', 'width' => 60}
-	defaultCol << {'name' => 'milestone',  'width' => 60}
-	defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
-	defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
-	defaultCol << {'name' => 'assigned', 'width' => 60}
-		
+    defaultCol << {'name' => 'id', 'key' => true, 'sorttype' => 'int', 'width' => 30}
+    defaultCol << {'name' => 'summary', 'width' => 300}
+    defaultCol << {'name' => 'client', 'width' => 60}
+    defaultCol << {'name' => 'milestone',  'width' => 60}
+    defaultCol << {'name' => 'due', 'sorttype' => 'date', 'formatter' => 'daysFromNow', 'width' => 60}
+    defaultCol << {'name' => 'time', 'sorttype' => 'int', 'formatter' => 'tasktime', 'width' => 50}
+    defaultCol << {'name' => 'assigned', 'width' => 60}
+    defaultCol << {'name' => 'resolution', 'width' => 60}
     colModel = JSON.parse(current_user.preference('tasklistcols')) rescue nil
     colModel = Array.new if (! colModel.kind_of? Array)
-    
+
     #ensure all default columns are in the model
     defaultCol.each do |attr|
       next if colModel.detect { |c| c['name'] == attr['name'] }
       colModel << attr
       logger.info "Property '#{attr['name']}' missing, adding to task list model."
     end
-    
+
     #ensure all custom properties are in the model
     current_user.company.properties.each do |attr|
       next if colModel.detect { |c| c['name'] == attr.name.downcase }
       colModel << {'name' => attr.name.downcase }
       logger.info "Property '#{attr.name}' missing, adding to task list model."
     end
-	
+
     render :json => colModel
   end
-  
+
 end

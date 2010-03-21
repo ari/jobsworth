@@ -80,6 +80,8 @@ class Task < ActiveRecord::Base
     r.milestone.update_counts if r.milestone
   }
 
+  default_scope :conditions=>"tasks.type != 'Template'"
+
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
   # n: 2, nth day-of-week: On the _1st_ _Sunday_ of each month
@@ -295,7 +297,7 @@ class Task < ActiveRecord::Base
   def set_task_num(company_id = nil)
     company_id ||= company.id
 
-    num = Task.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
     num ||= 0
     num += 1
 
@@ -499,125 +501,6 @@ class Task < ActiveRecord::Base
 
   def to_s
     self.name
-  end
-
-  # { :clockingit => [ {:tasks => []} ] }
-
-  def Task.filter_by_tag(tag, tasks)
-    matching = []
-    tasks.each do | t |
-      if t.has_tag? tag
-        matching += [t]
-      end
-    end
-    matching
-  end
-
-
-  def Task.group_by_tags(tasks, tags, done_tags, depth)
-    groups = { }
-
-    tags -= done_tags
-    tags.each do |tag|
-
-      done_tags += [tag]
-
-
-      unless tasks.nil?  || tasks.size == 0
-
-        matching_tasks = Task.filter_by_tag(tag,tasks)
-        unless matching_tasks.nil? || matching_tasks.size == 0
-          tasks -= matching_tasks
-          groups[tag] = Task.group_by_tags(matching_tasks, tags, done_tags, depth+1)
-        end
-
-
-      end
-
-      done_tags -= [tag]
-
-    end
-    if groups.keys.size > 0 && !tasks.nil? && tasks.size > 0
-      [tasks, groups]
-    elsif groups.keys.size > 0
-      [groups]
-    else
-      [tasks]
-    end
-  end
-
-  def Task.tag_groups(company_id, tags, tasks)
-    Task.group_by_tags(tasks,tags,[], 0)
-  end
-
-  def Task.group_by(tasks, items, done_items = [], depth = 0)
-    groups = OrderedHash.new
-
-    items -= done_items
-    items.each do |item|
-      unless tasks.nil?
-        matching_tasks = tasks.select do |t|
-          yield(t,item)
-        end
-      end
-      tasks -= matching_tasks
-      unless matching_tasks.empty?
-        groups[item] = matching_tasks
-      else
-        groups[item] = []
-      end
-    end
-
-    if groups.keys.size > 0
-      [tasks, groups]
-    else
-      [tasks]
-    end
-  end
-
-  def Task.tagged_with(tag, options = {})
-    tags = []
-    if tag.is_a? Tag
-      tags = [tag.name]
-    elsif tag.is_a? String
-      tags = tag.include?(",") ? tag.split(',') : [tag]
-    elsif tag.is_a? Array
-      tags = tag
-    end
-
-    task_ids = ''
-    if options[:filter_user].to_i > 0
-      task_ids = User.find(options[:filter_user].to_i).tasks.collect { |t| t.id }.join(',')
-    end
-
-    if options[:filter_user].to_i < 0
-      task_ids = Task.find(:all, :select => "tasks.*", :joins => "LEFT OUTER JOIN task_owners t_o ON tasks.id = t_o.task_id", :conditions => ["tasks.company_id = ? AND t_o.id IS NULL", options[:company_id]]).collect { |t| t.id }.join(',')
-    end
-
-    completed_milestones_ids = Milestone.find(:all, :conditions => ["company_id = ? AND completed_at IS NOT NULL", options[:company_id]]).collect{ |m| m.id}.join(',')
-
-    task_ids_str = "tasks.id IN (#{task_ids})" if task_ids != ''
-    task_ids_str = "tasks.id = 0" if task_ids == ''
-
-    sql = "SELECT tasks.* FROM (tasks, task_tags, tags) LEFT OUTER JOIN milestones ON milestones.id = tasks.milestone_id  LEFT OUTER JOIN projects ON projects.id = tasks.project_id WHERE task_tags.tag_id=tags.id AND tasks.id = task_tags.task_id"
-    sql << " AND (" + tags.collect { |t| sanitize_sql(["tags.name='%s'",t.downcase.strip]) }.join(" OR ") + ")"
-    sql << " AND tasks.company_id=#{options[:company_id]}" if options[:company_id]
-    sql << " AND tasks.project_id IN (#{options[:project_ids]})" if options[:project_ids]
-    sql << " AND tasks.hidden = 1" if options[:filter_status].to_i == -2
-    sql << " AND tasks.hidden = 0" if options[:filter_status].to_i != -2
-    sql << " AND tasks.status = #{options[:filter_status]}" unless (options[:filter_status].to_i == -1 || options[:filter_status].to_i == 0 || options[:filter_status].to_i == -2)
-    sql << " AND (tasks.status = 0 OR tasks.status = 1)" if options[:filter_status].to_i == 0
-    sql << " AND #{task_ids_str}" unless options[:filter_user].to_i == 0
-    sql << " AND tasks.milestone_id = #{options[:filter_milestone]}" if options[:filter_milestone].to_i > 0
-    sql << " AND (tasks.milestone_id IS NULL OR tasks.milestone_id = 0)" if options[:filter_milestone].to_i < 0
-    sql << " AND (tasks.milestone_id NOT IN (#{completed_milestones_ids}) OR tasks.milestone_id IS NULL)" if completed_milestones_ids != ''
-    sql << " AND projects.customer_id = #{options[:filter_customer]}" if options[:filter_customer].to_i > 0
-    sql << " GROUP BY tasks.id"
-    sql << " HAVING COUNT(tasks.id) = #{tags.size}"
-    sql << " ORDER BY tasks.completed_at is NOT NULL, tasks.completed_at DESC"
-    sql << ", #{options[:sort]}" if options[:sort] && options[:sort].length > 0
-
-    find_by_sql(sql)
   end
 
   def self.search(user, keys)
@@ -1160,8 +1043,46 @@ class Task < ActiveRecord::Base
     end
   end
 
-end
+  def repeat_task
+    repeat = Task.new
+    repeat.status = 0
+    repeat.project_id = self.project_id
+    repeat.company_id = self.company_id
+    repeat.name = self.name
+    repeat.repeat = self.repeat
+    repeat.requested_by = self.requested_by
+    repeat.creator_id = self.creator_id
+    repeat.set_tags(self.tags.collect{|t| t.name}.join(', '))
+    repeat.set_task_num(self.company_id)
+    repeat.duration = self.duration
+    repeat.notify_emails = self.notify_emails
+    repeat.milestone_id = self.milestone_id
+    repeat.hidden = self.hidden
+    repeat.due_at = self.due_at
+    repeat.due_at = repeat.next_repeat_date
+    repeat.description = self.description
 
+    repeat.save!
+    repeat.reload
+
+    self.notifications.each do |w|
+      n = Notification.new(:user => w.user, :task => repeat)
+      n.save!
+    end
+
+    self.task_owners.each do |o|
+      to = TaskOwner.new(:user => o.user, :task => repeat)
+      to.save!
+    end
+
+    self.dependencies.each do |d|
+       repeat.dependencies << d
+    end
+
+    repeat.save!
+  end
+
+end
 # == Schema Information
 #
 # Table name: tasks

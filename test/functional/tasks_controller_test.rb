@@ -426,12 +426,7 @@ class TasksControllerTest < ActionController::TestCase
       get :dependency_targets, :dependencies => [ @task.name ]
 
       assert_response :success
-      assert_equal [ @task ], assigns("tasks")
-    end
-
-    should "render get_milestones" do
-      get :get_milestones, :project_id => @task.project.id
-      assert_response :success
+      assert_equal Task.search(@user,[@task.name]), assigns("tasks")
     end
 
     should "render add_client" do

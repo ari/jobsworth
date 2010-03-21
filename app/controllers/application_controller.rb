@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
   helper_method :worked_nice
   helper_method :link_to_task
   helper_method :current_task_filter
+  helper_method :current_templates
 
   before_filter :install
   before_filter :authorize, :except => [ :login, :validate, :signup, :take_signup, :forgotten_password,
@@ -34,17 +35,17 @@ class ApplicationController < ActionController::Base
                                          :company_check, :subdomain_check, :unsubscribe,
                                          :igoogle_setup, :igoogle
                                        ]
-                                       
+
 #  before_filter :clear_cache
-                                       
+
   after_filter :set_charset
 
 #  protect_from_forgery :secret => '112141be0ba20082c17b05c78c63f357'
 
   def current_user
     unless @current_user
-      @current_user = User.find(session[:user_id], 
-                                :include => [ :projects, { :company => :properties } ], 
+      @current_user = User.find(session[:user_id],
+                                :include => [ :projects, { :company => :properties } ],
                                 :conditions => ["projects.completed_at IS NULL"])
     end
     @current_user
@@ -53,7 +54,7 @@ class ApplicationController < ActionController::Base
   def current_users
     unless @current_users
       @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.to_s(:db)}' OR last_seen_at > '#{3.minutes.ago.utc.to_s(:db)}')", :order => "name" )
-    end 
+    end
     @current_users
   end
 
@@ -66,13 +67,13 @@ class ApplicationController < ActionController::Base
         end
 
         @all_users = User.find(:all, :conditions => ["company_id = ? AND id IN (#{user_ids.uniq.join(',')})", current_user.company_id], :order => "name")
-      else 
+      else
         @all_users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
-      end 
+      end
     end
     @all_users
   end
-  
+
   def current_sheet
     unless @current_sheet
       @current_sheet = Sheet.find(:first, :conditions => ["user_id = ?", session[:user_id]], :order => 'sheets.id', :include => :task)
@@ -85,7 +86,7 @@ class ApplicationController < ActionController::Base
     end
     @current_sheet
   end
-  
+
   def tz
     unless @tz
       @tz = Timezone.get(current_user.time_zone)
@@ -114,9 +115,9 @@ class ApplicationController < ActionController::Base
     session[:history] ||= []
 
     # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') || 
-        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') || request.request_uri.include?('/shout') || 
-        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) && 
+    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
+        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') || request.request_uri.include?('/shout') ||
+        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) &&
         !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
@@ -125,20 +126,20 @@ class ApplicationController < ActionController::Base
 #    session[:user_id] = 1
 
     logger.info("remember[#{session[:remember_until]}]")
-    
+
     # We need to re-authenticate
     if session[:user_id] && session[:remember_until] && session[:remember_until] < Time.now.utc
       session[:user_id] = nil
       session[:remember_until] = nil
     end
-    
+
     if session[:user_id].to_i == 0
       if !(request.request_uri.include?('/login/login') || request.xhr?)
-        session[:redirect] = request.request_uri 
+        session[:redirect] = request.request_uri
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
-      end 
-      
+      end
+
       # Generate a javascript redirect if user timed out without requesting a new page
       if request.xhr?
         render :update do |page|
@@ -157,8 +158,8 @@ class ApplicationController < ActionController::Base
         session[:user_id] = nil
         redirect_to "/login/login"
         return true
-      end 
-        
+      end
+
       current_user.shout_channels.each do |ch|
         session[:channels] << "channel_passive_#{ch.id}"
       end
@@ -166,20 +167,20 @@ class ApplicationController < ActionController::Base
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
         current_user.last_ping_at = Time.now.utc
-      else 
+      else
         current_user.last_seen_at = Time.now.utc
         current_user.last_ping_at = Time.now.utc
-      end 
-      
+      end
+
       session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
-      
+
       current_user.save
 
       current_sheet
-      
+
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
-      
+
       # Update session with new filters, if they don't already exist
       session[:filter_severity] ||= "-10"
       session[:filter_priority] ||= "-10"
@@ -257,8 +258,8 @@ class ApplicationController < ActionController::Base
     current_user.all_projects
   end
 
-  
-  
+
+
   # List of completed milestone ids, joined with ,
   def completed_milestone_ids
     unless @milestone_ids
@@ -361,14 +362,14 @@ class ApplicationController < ActionController::Base
 
       @company = Company.find(:first, :conditions => ["subdomain = ?", subdomain])
       if Company.count == 1
-        @company ||= Company.find(:first, :order => "id asc") 
+        @company ||= Company.find(:first, :order => "id asc")
       end
     end
-    
+
     return @company
   end
 
-  # Redirects to the last page this user was on. 
+  # Redirects to the last page this user was on.
   # If the current request is using ajax, uses js to do the redirect.
   # If the tutorial hasn't been completed, sends them back to that page
   def redirect_from_last
@@ -386,22 +387,24 @@ class ApplicationController < ActionController::Base
 
   private
 
-  # Returns a link to the given task. 
-  # If highlight keys is given, that text will be highlighted in 
+  # Returns a link to the given task.
+  # If highlight keys is given, that text will be highlighted in
   # the link.
   def link_to_task(task, truncate = true, highlight_keys = [])
     link = "<strong>#{task.issue_num}</strong> "
-
-    url = url_for(:id => task.task_num, :controller => 'tasks', :action => 'edit')
-
-    title = task.to_tip(:duration_format => current_user.duration_format, 
-                        :workday_duration => current_user.workday_duration, 
-                        :days_per_week => current_user.days_per_week, 
+    if task.is_a? Template
+      url = url_for(:id => task.task_num, :controller => 'task_templates', :action => 'edit')
+    else
+      url = url_for(:id => task.task_num, :controller => 'tasks', :action => 'edit')
+    end
+    title = task.to_tip(:duration_format => current_user.duration_format,
+                        :workday_duration => current_user.workday_duration,
+                        :days_per_week => current_user.days_per_week,
                         :user => current_user)
     title = highlight_all(title, highlight_keys)
 
-    html = { 
-      :class => "tooltip tasklink #{task.css_classes}", 
+    html = {
+      :class => "tooltip tasklink #{task.css_classes}",
       :title => title
     }
 
@@ -411,7 +414,7 @@ class ApplicationController < ActionController::Base
 
     text = truncate ? task.name : self.class.helpers.truncate(task.name, :length => 80)
     text = highlight_all(text, highlight_keys)
-    
+
     link += self.class.helpers.link_to(text, url, html)
     return link
   end
@@ -433,5 +436,7 @@ class ApplicationController < ActionController::Base
       render(:update) { |page| page << "parent.document.location = '#{ url }'" }
     end
   end
-
+  def current_templates
+    Template.find(:all, :conditions=>[ "project_id IN (#{ current_project_ids }) AND company_id = ?", current_user.company_id ])
+  end
 end

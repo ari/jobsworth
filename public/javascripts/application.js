@@ -19,8 +19,8 @@ var fetchElement = null;
 //
 
 jQuery(function() {
-	jQuery("input:submit").button();
-	//jQuery("#tabmenu").tabs();
+        jQuery("input:submit").button();
+        //jQuery("#tabmenu").tabs();
 });
 
 
@@ -165,10 +165,10 @@ function rebuildSelect(select, data) {
 }
 
 // refresh the milestones select menu for all milestones from project pid, setting the selected milestone to mid
-// also old /tasks/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
-// new /tasks/get_milestones returns flag add_milestone_visible
+// also old /milestones/get_milestones returns line of javasript code `jQuery('#add_milestone').[show()|hide]`
+// new /milestones/get_milestones returns flag add_milestone_visible
 function refreshMilestones(pid, mid) {
-  jQuery.getJSON("/tasks/get_milestones", {project_id: pid},
+  jQuery.getJSON("/milestones/get_milestones", {project_id: pid},
         function(data) {
                 var milestoneSelect = jQuery('#task_milestone_id').get(0);
                 rebuildSelect(milestoneSelect, data.options);
@@ -247,7 +247,7 @@ function toggleTaskUnread(event, userId) {
         parameters.user_id = userId;
     }
 
-    jQuery.post("/tasks/set_unread",  parameters);
+    jQuery.post(tasks_path("set_unread"),  parameters);
 
     event.stopPropagation();
     return false;
@@ -269,10 +269,10 @@ function submitSearchFilterForm() {
     var form = jQuery("#search_filter_form")[0];
     var redirect = jQuery(form.redirect_action).val();
     if (redirect.indexOf("/tasks/list") >= 0) {
-		form.onsubmit();
+                form.onsubmit();
     }
     else {
-		form.submit();
+                form.submit();
     }
 }
 
@@ -287,8 +287,8 @@ function removeSearchFilter(link) {
 }
 
 jQuery(document).ready(function() {
-	// make search box contents selected when the user clicks in it
-	jQuery("#search_filter").focus( function() {
+        // make search box contents selected when the user clicks in it
+        jQuery("#search_filter").focus( function() {
         if (jQuery(this).val() == "Task search...") {
             jQuery(this).val('').removeClass('grey');
         } else {
@@ -296,21 +296,21 @@ jQuery(document).ready(function() {
         }
     });
 
-	jQuery("#search_filter").blur( function() {
+        jQuery("#search_filter").blur( function() {
         if (jQuery(this).val() == '') {
             jQuery(this).val("Task search...").addClass('grey');
         }
     });
-    
+
     jQuery("#comment").resizable();
-    
+
     // Go to a task immediately if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
-		if (key.keyCode == 13) { // if key was enter
-			var id = jQuery(this).val();
-			if (id.match(/^\d+$/)) {
-				loadTask(id);
-	        }
+                if (key.keyCode == 13) { // if key was enter
+                        var id = jQuery(this).val();
+                        if (id.match(/^\d+$/)) {
+                                loadTask(id);
+                }
         }
     });
 });
@@ -691,7 +691,7 @@ function addUserToTask(input, li) {
     var userId = jQuery(li).find(".complete_value").text();
     var taskId = jQuery("#task_id").val();
 
-    var url = "/tasks/add_notification";
+    var url = tasks_path("add_notification");
     var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
@@ -704,7 +704,7 @@ function addUserToTask(input, li) {
   Adds any users setup as auto add to the current task.
 */
 function addAutoAddUsersToTask(clientId, taskId, projectId) {
-    var url = "/tasks/add_users_for_client";
+    var url = tasks_path("add_users_for_client");
     var params = { client_id : clientId, id : taskId, project_id : projectId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
@@ -719,7 +719,7 @@ function addCustomerToTask(input, li) {
     var clientId = jQuery(li).find(".complete_value").text();
     var taskId = jQuery("#task_id").val();
 
-    var url = "/tasks/add_client";
+    var url = tasks_path("add_client");
     var params = { client_id : clientId, id : taskId };
     jQuery.get(url, params, function(data) {
                 jQuery("#task_customers").append(data);
@@ -743,21 +743,12 @@ function addClientLinkForTask(projectId) {
     var customers = jQuery("#task_customers").text();
 
     if (jQuery.trim(customers) == "") {
-        var url = "/tasks/add_client_for_project";
+        var url = tasks_path("add_client_for_project");
         var params = { project_id : projectId };
         jQuery.get(url, params, function(data) {
             jQuery("#task_customers").html(data);
         });
     }
-}
-/*
-  Called when a task is moved in the task list.
-*/
-function moveTask(event, ui) {
-    var element = ui.draggable[0];
-    var dropTarget = event.target;
-    jQuery(element).remove();
-    jQuery.get("/tasks/move", { id : element.id + " " + dropTarget.id }, null, "script");
 }
 
 /*
@@ -866,7 +857,7 @@ jQuery(document).ready(function(){
 function initFiltersPanel()
 {
     jQuery('div.task_filters ul li a').click(function(){
-    	jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
+        jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
         jQuery.ajax({
             beforeSend: function(){ showProgress(); },
             complete: function(request){ tasklistReload(); hideProgress(); } ,
@@ -901,4 +892,40 @@ jQuery(document).ready(function(){
         initFiltersPanel();
         initTagsPanel();
     }
+});
+
+
+//return path to tasks or task_templates controller
+//based on current page path
+//so we can reuse tasks code, views and javasript in taks_templates
+function tasks_path(action_name)
+{
+    if(/tasks\//.test(document.location.pathname)){
+        return "/tasks/" + action_name ;
+    }
+        else if ( /task_templates\//.test(document.location.pathname)){
+            return "/task_templates/" + action_name ;
+        }
+    return action_name;
+}
+
+/*
+This function simulate two step user behavior in one click
+First goto template edit page, see template in form
+Second send this form to tasks/create.
+So create task from template == send form with template to tasks/create action
+*/
+function create_task_from_template(event)
+{
+    jQuery.get('/task_templates/edit/'+jQuery(this).attr('task_num')+'.js', function(data){
+        var form=jQuery(data).first();
+        form.attr('action','/tasks/create');
+        form.attr('id','taskform_ctft');
+        form.hide();
+        jQuery('body').append(form);
+        jQuery("form#taskform_ctft").submit();
+    });
+}
+jQuery(document).ready(function(){
+    jQuery('#create_task_from_template_links a').click(create_task_from_template);
 });

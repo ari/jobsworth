@@ -3,7 +3,7 @@ module TodosHelper
   def delete_todo_link(todo)
     image = image_tag("cross_small.png", :class => "tooltip",
                       :title => _("Delete <b>%s</b>.", h(todo.name)))
-    path = todo_path(todo, :task_id => todo.task.id)
+    path = todo_path(todo, :task_id => @task.id)
 
     link_to_remote(image, :url => path, :method => :delete,
                    :update => "todo-container")
@@ -15,12 +15,12 @@ module TodosHelper
       title = _("Close <b>%s</b", todo.name)
     end
 
-    url = "/todos/toggle_done/#{ todo.id }?task_id=#{ todo.task.id }"
+    url = "/todos/toggle_done/#{ todo.id }?task_id=#{ @task.id }"
 
-    check_box("todo", "done", { :title => title, 
+    check_box("todo", "done", { :title => title,
                 :checked => todo.done?,
-                :class => "button tooltip checkbox", 
-                :id => "button_#{ todo.id }", 
+                :class => "button tooltip checkbox",
+                :id => "button_#{ todo.id }",
                 :onclick => "jQuery('.todo-container').load('#{ url }')"
               })
   end

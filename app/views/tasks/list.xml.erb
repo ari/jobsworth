@@ -25,6 +25,7 @@
         <due><%= task.due_date.to_time.to_i unless task.due_date.nil? %></due>
         <time><%= task.minutes_left.to_i %></time>
         <assigned><%= task.users.map{ |u| u.name }.join(", ") %></assigned>
+        <resolution><%= task.status_type%></resolution>
 </task>
 <% end -%>
 <% end -%>

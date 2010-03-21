@@ -41,8 +41,14 @@ class TodosController < ApplicationController
   private
 
   def load_task
-    @task = current_user.company.tasks.find(params[:task_id])
-
+    @task = current_user.company.tasks.find_by_id(params[:task_id])
+    ###################### code smell begin ################################################################
+    # this code allow usage  TodosController in TaskTemplatesController#edit
+    #NOTE: Template is a Task, using single table inheritance
+    if @task.nil?
+      @task= Template.find_by_id(params[:task_id], :conditions=>["company_id = ?", current_user.company_id])
+    end
+    ###################### code smell end ##################################################################
     if @task.nil? or !current_user.can_view_task?(@task)
       flash[:notice] = _("You don't have access to that task")
       redirect_from_last
