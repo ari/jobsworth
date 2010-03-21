@@ -247,13 +247,32 @@ class Task < ActiveRecord::Base
       ""
     end
   end
+  
+  def resolved?
+    status != 0   
+  end
+  def open?
+    status == 0
+  end
+  def closed?
+    status == 1
+  end
 
+  def will_not_fix?
+    status == 2
+  end
+  def invalid?
+    status == 3
+  end
+  def duplicate?
+    status == 4
+  end
   def done?
-    self.status > 1 && self.completed_at != nil
+    self.resolved? && self.completed_at != nil
   end
 
   def done
-    self.status > 1
+    self.resolved?
   end
 
   def ready?
@@ -407,7 +426,7 @@ class Task < ActiveRecord::Base
   end
 
   def status_type
-    Task.status_types[self.status]
+    self.company.statuses[self.status].name
   end
 
   def Task.status_type(type)
@@ -415,7 +434,7 @@ class Task < ActiveRecord::Base
   end
 
   def Task.status_types
-    ["Open", "Closed", "Won't fix", "Invalid", "Duplicate"]
+    Company.first.statuses.all.collect {|a| a.name }
   end
 
   def priority_type
