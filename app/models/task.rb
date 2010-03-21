@@ -9,7 +9,12 @@ require "active_record_extensions"
 #   todos, and sheets
 #
 class Task < ActiveRecord::Base
-
+  OPEN=0
+  CLOSED=1
+  WILL_NOT_FIX=2
+  INVALID=3
+  DUPLICATE=4
+  MAX_STATUS=4
   include Misc
 
   belongs_to    :company
@@ -1135,6 +1140,9 @@ class Task < ActiveRecord::Base
     end
 
     return @user_work
+  end
+  def statuses_for_select_list
+    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<<i}
   end
 
   private
