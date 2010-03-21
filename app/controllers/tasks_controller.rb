@@ -215,7 +215,7 @@ class TasksController < ApplicationController
     @old_project_name = @task.project.name
     @old_task = @task.clone
 
-    if params[:task][:status].to_i == 6
+    if params[:task][:status].to_i == (Task::MAX_STATUS+1)
       params[:task][:status] = @task.status  # We're hiding the task, set the status to what is was.
     else
       params[:task][:hide_until] = @task.hide_until
@@ -253,7 +253,7 @@ class TasksController < ApplicationController
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
 
-        if @task.status > 1 && @task.completed_at.nil?
+        if @task.resolved? && @task.completed_at.nil?
           @task.completed_at = Time.now.utc
 
           # Repeat this task every X...
@@ -264,7 +264,7 @@ class TasksController < ApplicationController
           end
         end
 
-        if @task.status < 2 && !@task.completed_at.nil?
+        if !@task.resolved? && !@task.completed_at.nil?
           @task.completed_at = nil
         end
 
@@ -662,10 +662,10 @@ protected
     if @old_task.status != @task.status
       body << "- <strong>Resolution</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
 
-      worklog.log_type = EventLog::TASK_COMPLETED if @task.status > 1
-      worklog.log_type = EventLog::TASK_REVERTED if (@task.status == 0 || (@task.status < 2 && @old_task.status > 1))
+      worklog.log_type = EventLog::TASK_COMPLETED if @task.resolved?
+      worklog.log_type = EventLog::TASK_REVERTED if (@task.open? || (!@task.resolved? && @old_task.resolved?))
 
-      if( @task.status > 1 && @old_task.status != @task.status )
+      if( @task.resolved? && @old_task.status != @task.status )
         @update_type = :status
       end
 
@@ -673,11 +673,11 @@ protected
         @update_type = :completed
       end
 
-      if( @task.status < 2 && @old_task.status > 1 )
+      if( !@task.resolved? && @old_task.resolved? )
         @update_type = :reverted
       end
 
-      if( @old_task.status == 6 )
+      if( @old_task.status == (Task::MAX_STATUS+1) )
         @task.hide_until = nil
       end
     end
