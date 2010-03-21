@@ -1,0 +1,46 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+a:
+  id: 1000
+  name: Open
+  company: cit
+b:
+  id: 1001
+  name: Closed
+  company: cit
+c:
+  id: 1002
+  name: Won't fix
+  company: cit
+d:
+  id: 1003
+  name: Invalid
+  company: cit
+e:
+  id: 1004
+  name: Duplicate
+  company: cit
+aa:
+  id: 1005
+  name: Open
+  company: fudge
+ab:
+  id: 1006
+  name: Closed
+  company: fudge
+ac:
+  id: 1007
+  name: Won't fix
+  company: fudge
+ad:
+  id: 1008
+  name: Invalid
+  company: fudge
+ae:
+  id: 1009
+  name: Duplicate
+  company: fudge
+# one:
+#   column: value
+#
+# two:
+#   column: value
