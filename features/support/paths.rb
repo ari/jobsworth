@@ -10,6 +10,9 @@ module NavigationHelpers
     
     when /the home\s?page/
       '/'
+    when /the new access_control page/
+      new_access_control_path
+
     
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

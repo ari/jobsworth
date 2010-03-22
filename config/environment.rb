@@ -90,7 +90,6 @@ Rails::Initializer.run do |config|
   config.gem "faker"
   config.gem "notahat-machinist", :lib => "machinist", :source => "http://gems.github.com"
   config.gem 'cucumber'
-  config.gem 'cucumber-rails'
   # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
 
   # CUSTOM GEMS
