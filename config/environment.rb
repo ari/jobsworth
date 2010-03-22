@@ -50,7 +50,7 @@ Rails::Initializer.run do |config|
 
   # Rotate logs when they reach 50Mb and keep 5 old logs
   config.logger = Logger.new(config.log_path, 5, 50*1024*1024)
-  
+
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
   config.gem 'daemons', :version => '1.0.10'
@@ -89,7 +89,10 @@ Rails::Initializer.run do |config|
   config.gem "webrat"
   config.gem "faker"
   config.gem "notahat-machinist", :lib => "machinist", :source => "http://gems.github.com"
-  
+  config.gem 'cucumber'
+  config.gem 'cucumber-rails'
+  # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
+
   # CUSTOM GEMS
   # Any gem files which aren't needed for the system to work, but may
   # be required for your own development should be in this file:
@@ -134,7 +137,7 @@ def load_from_env(env_name, name, hash, &block)
     if block_given?
       hash[name] = yield(ENV[env_name])
     else
-      hash[name] = ENV[env_name] 
+      hash[name] = ENV[env_name]
     end
   end
 end
