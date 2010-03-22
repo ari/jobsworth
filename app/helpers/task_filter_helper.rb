@@ -74,20 +74,6 @@ module TaskFilterHelper
     return link_to(str, update_current_filter_task_filters_path(link_params))
   end
 
-  # Returns a link to set the task filter to show only in progress
-  # tasks. Only tasks belonging to the given user will be shown.
-  def link_to_in_progress_tasks(user)
-    in_progress = current_user.company.statuses[1]
-
-    link_params = []
-    link_params << { :qualifiable_type => "Status", :qualifiable_id => in_progress.id }
-    link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
-    link_params = { :task_filter => { :qualifiers_attributes => link_params } }
-
-    return link_to(_("My In Progress Tasks"),
-                   update_current_filter_task_filters_path(link_params))
-  end
-
   def link_to_unread_tasks(user)
     label = _("My Unread Tasks")
     link_params = { :task_filter => {
@@ -123,6 +109,8 @@ module TaskFilterHelper
       return qualifier.qualifiable.property.name
     elsif qualifier.qualifiable_type == "TimeRange"
       return qualifier.qualifiable_column.gsub("_at", "").humanize
+    elsif qualifier.qualifiable_type == "Status"
+      return "Resolution" #FIXME: would be better use Status.to_s or something like this
     else
       qualifier.qualifiable_type
     end

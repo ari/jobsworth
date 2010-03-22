@@ -354,6 +354,82 @@ class TaskTest < ActiveRecord::TestCase
       assert_equal 1, @task.customers.length
       assert_equal c1, @task.task_customers.first.customer
     end
+    context "with status 0" do
+      setup do
+        @task.status=0
+        @task.save!
+      end
+      should "have status type 'Open'" do
+        assert_equal "Open", @task.status_type
+      end
+      should "not be resolved" do
+        assert !@task.resolved?
+      end
+      should "be open" do
+        assert @task.open?
+      end
+    end
+    context "with status 1" do
+      setup do
+        @task.status=1
+        @task.save!
+      end
+      should "have status type 'Closed'" do
+        assert_equal "Closed", @task.status_type
+      end
+      should "be resolved" do
+        assert @task.resolved?
+      end
+      should "be closed" do
+        assert @task.closed?
+      end
+    end
+    context "with status 2" do
+      setup do
+        @task.status=2
+        @task.save!
+      end
+      should "have status type 'Won't fix'" do
+        assert_equal "Won't fix", @task.status_type
+      end
+      should "be resolved" do
+        assert @task.resolved?
+      end
+      should "be will not fix" do
+        assert @task.will_not_fix?
+      end
+    end
+    context "with status 3" do
+      setup do
+        @task.status=3
+        @task.save!
+      end
+      should "have status type 'Invalid'" do
+        assert_equal "Invalid", @task.status_type
+      end
+      should "be resolved" do
+        assert @task.resolved?
+      end
+      should "be invalid" do
+        assert @task.invalid?
+      end
+    end
+    context "with status 4" do
+      setup do
+        @task.status=4
+        @task.save!
+      end
+      should "have status type 'Duplicate'" do
+        assert_equal "Duplicate", @task.status_type
+      end
+      should "be resolved" do
+        assert @task.resolved?
+      end
+      should "be duplicate" do
+        assert @task.duplicate?
+      end
+    end
+
   end
 
   context "a task with some work logs with times" do

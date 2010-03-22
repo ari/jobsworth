@@ -31,7 +31,7 @@ module ReportsHelper
                [_("Projects"), "5"],
                [_("Milestones"), "6"],
                [_("Date"), "7"],
-               [_("Task Status"), "8"],
+               [_("Task Resolution"), "8"],
                [_("Requested By"), "20"]
               ]
     current_user.company.properties.each do |p|

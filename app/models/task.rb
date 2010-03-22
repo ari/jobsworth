@@ -9,7 +9,12 @@ require "active_record_extensions"
 #   todos, and sheets
 #
 class Task < ActiveRecord::Base
-
+  OPEN=0
+  CLOSED=1
+  WILL_NOT_FIX=2
+  INVALID=3
+  DUPLICATE=4
+  MAX_STATUS=4
   include Misc
 
   belongs_to    :company
@@ -249,13 +254,32 @@ class Task < ActiveRecord::Base
       ""
     end
   end
+  
+  def resolved?
+    status != 0   
+  end
+  def open?
+    status == 0
+  end
+  def closed?
+    status == 1
+  end
 
+  def will_not_fix?
+    status == 2
+  end
+  def invalid?
+    status == 3
+  end
+  def duplicate?
+    status == 4
+  end
   def done?
-    self.status > 1 && self.completed_at != nil
+    self.resolved? && self.completed_at != nil
   end
 
   def done
-    self.status > 1
+    self.resolved?
   end
 
   def ready?
@@ -409,7 +433,7 @@ class Task < ActiveRecord::Base
   end
 
   def status_type
-    Task.status_types[self.status]
+    self.company.statuses[self.status].name
   end
 
   def Task.status_type(type)
@@ -417,7 +441,7 @@ class Task < ActiveRecord::Base
   end
 
   def Task.status_types
-    ["Open", "In Progress", "Closed", "Won't fix", "Invalid", "Duplicate"]
+    Company.first.statuses.all.collect {|a| a.name }
   end
 
   def priority_type
@@ -510,7 +534,7 @@ class Task < ActiveRecord::Base
       res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
       res << "<tr><th>#{_('Requested By')}</td><td>#{self.requested_by}</td></tr>" unless self.requested_by.blank?
-      res << "<tr><th>#{_('Status')}</td><td>#{_(self.status_type)}</td></tr>"
+      res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
       res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
       res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime_localized(options[:user].date_format)}</td></tr>" if self.due
@@ -579,6 +603,14 @@ class Task < ActiveRecord::Base
     end
   end
 
+  def Task.csv_header
+    ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution', 'Priority', 'Severity']
+  end
+
+  def to_csv
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type, priority_type, severity_type]
+  end
+
   def set_property_value(property, property_value)
     # remove the current one if it exists
     existing = task_property_values.detect { |tpv| tpv.property == property }
@@ -590,7 +622,7 @@ class Task < ActiveRecord::Base
       # only create a new one if property_value is set
       task_property_values.create(:property_id => property.id, :property_value_id => property_value.id)
     end
-  end
+  end  
 
   # Returns the value of the given property for this task
   def property_value(property)
@@ -991,6 +1023,9 @@ class Task < ActiveRecord::Base
     end
 
     return @user_work
+  end
+  def statuses_for_select_list
+    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<<i}
   end
 
   private

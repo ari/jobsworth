@@ -85,7 +85,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "one of task's watched attributes changed," do
       setup do
-        @parameters={:id=>@task.id, :task=>{ :status=>1}, :notify=> @notify}
+        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :notify=> @notify}
       end
       context "with comment added," do
         setup do
@@ -101,7 +101,7 @@ class TasksControllerTest < ActionController::TestCase
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
             assert_not_nil worklog
             assert_equal worklog.duration, 0
-            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /name/i, "work log body must include changes "
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend, and not  send it" do
@@ -125,7 +125,7 @@ class TasksControllerTest < ActionController::TestCase
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
             assert_not_nil worklog
             assert_equal worklog.duration, 0
-            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /name/i, "work log body must include changes "
             assert worklog.body =~ /#{@parameters[:comment]}/, "work log body must include comment"
           end
           should "send one email to each user" do
@@ -148,13 +148,13 @@ class TasksControllerTest < ActionController::TestCase
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
             assert_not_nil worklog
             assert_equal worklog.duration, 0
-            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /name/i, "work log body must include changes "
           end
           should "create work log with type TASK_WORK_ADDED, without any comment, with time spend and not send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
             assert_not_nil worklog
             assert_equal worklog.duration, 10*60
-            assert !(worklog.body =~ /status/i), "work log body must not include changes"
+            assert !(worklog.body =~ /name/i), "work log body must not include changes"
           end
           should "not send any emails" do
             assert_emails 0
@@ -171,7 +171,7 @@ class TasksControllerTest < ActionController::TestCase
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
             assert_not_nil worklog
             assert_equal worklog.duration, 0
-            assert worklog.body =~ /status/i, "work log body must include changes "
+            assert worklog.body =~ /name/i, "work log body must include changes "
           end
           should "not send any emails" do
             assert_emails 0

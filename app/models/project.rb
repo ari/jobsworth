@@ -19,7 +19,7 @@ class Project < ActiveRecord::Base
 
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
-
+  validates_presence_of         :customer
   after_create { |r|
     if r.create_forum && r.company.show_forum
       f = Forum.new
@@ -44,11 +44,11 @@ class Project < ActiveRecord::Base
 
   def total_estimate
     tasks.sum(:duration).to_i
-  end 
+  end
 
   def work_done
     tasks.sum(:worked_minutes).to_i
-  end 
+  end
 
   def overtime
     tasks.sum('worked_minutes - duration', :conditions => "worked_minutes > duration").to_i
@@ -101,7 +101,7 @@ class Project < ActiveRecord::Base
     self.open_tasks = nil
     self.total_tasks = nil
   end
-  
+
 
 end
 

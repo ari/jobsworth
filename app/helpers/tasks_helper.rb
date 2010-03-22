@@ -105,14 +105,8 @@ module TasksHelper
   # Returns the html for the field to select status for a task.
   ###
   def status_field(task)
-    options = []
-    options << [_("Open"), 0]
-    options << [_("In Progress"), 1]
-    options << [_("Close"), 2]
-    options << [_("Won't Fix"), 3]
-    options << [_("Invalid"), 4]
-    options << [_("Duplicate"), 5]
-    options << [_("Wait Until"), 6]
+    options = task.statuses_for_select_list
+    options << [_("Wait Until"), Task::MAX_STATUS+1]
 
     can_close = {}
     if task.project and !current_user.can?(task.project, 'close')
@@ -236,6 +230,7 @@ module TasksHelper
 
     return grouped_options_for_select(options, task.project_id, "Please select")
   end
+  
 
   ###
   # Returns an array to use as the options for a select
@@ -243,18 +238,18 @@ module TasksHelper
   ###
   def work_log_status_options
     options = []
-    options << [_("Leave Open"), 0] if @task.status == 0
-    options << [_("Revert to Open"), 0] if @task.status != 0
-    options << [_("Set in Progress"), 1] if @task.status == 0
-    options << [_("Leave as in Progress"), 1] if @task.status == 1
-    options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
-    options << [_("Leave Closed"), 2] if @task.status == 2
-    options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Won't Fix"), 3] if @task.status == 3
-    options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Invalid"), 4] if @task.status == 4
-    options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Duplicate"), 5] if @task.status == 5
+#this code make assumtion about internal task structure
+#TODO: move it to Task model
+    options << [_("Leave Open"), Task::OPEN] if !@task.resolved?
+    options << [_("Revert to Open"), Task::OPEN] if @task.resolved?
+    options << [_("Close"), Task::CLOSED] if !@task.resolved?
+    options << [_("Leave Closed"),Task::CLOSED] if @task.closed?
+    options << [_("Set as Won't Fix"), Task::WILL_NOT_FIX] if !@task.resolved?
+    options << [_("Leave as Won't Fix"),Task::WILL_NOT_FIX ] if @task.will_not_fix?
+    options << [_("Set as Invalid"), Task::INVALID] if !@task.resolved?
+    options << [_("Leave as Invalid"), Task::INVALID] if @task.invalid?
+    options << [_("Set as Duplicate"), Task::DUPLICATE] if !@task.resolved?
+    options << [_("Leave as Duplicate"), Task::DUPLICATE] if @task.duplicate?
 
     return options
   end

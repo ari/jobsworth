@@ -16,7 +16,7 @@ class TaskFiltersController < ApplicationController
     @to_list << [ _("Users"), company.users.all(:conditions => name_conds, :limit => limit) ]
     @to_list << [ _("Milestones"), current_user.milestones(:conditions => name_conds("milestones."), :limit => limit) ]
     @to_list << [ _("Tags"), company.tags.all(:conditions => name_conds, :limit => limit) ]
-    @to_list << [ _("Status"), company.statuses.all(:conditions => name_conds, :limit => limit) ]
+    @to_list << [ _("Resolution"), company.statuses.all(:conditions => name_conds, :limit => limit) ]
 
     company.properties.each do |property|
       values = property.property_values.all(:conditions => [ "lower(value) like ?", "#{ @filter }%" ])

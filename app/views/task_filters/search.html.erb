@@ -12,7 +12,7 @@
         <% end -%>
 
         <% if @statuses and @statuses.any? -%>
-          <li class="heading"><%=_ "Status" %></li>
+          <li class="heading"><%=_ "Resolution" %></li>
           <% @statuses.each do |s| -%>
           <li data-id="filter_status[]" data-idval="<%= Task.status_types.index(s) %>">
             <%= hidden_field_tag "filter_status[]", Task.status_types.index(s), :class => "id" %>
@@ -46,7 +46,7 @@
         <% end -%>
 
         <% if @unread_only -%>
-          <li class="heading"><%=_ "Read status" %></li>
+          <li class="heading"><%= _"Read Status" %></li>
 
           <li data-id="task_filter[unread_only]" data-idval="true">
             <%hidden_field_tag "task_filter[unread_only]", true, :class => "id" %>
