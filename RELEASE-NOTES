@@ -2,6 +2,12 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+22 March 2010
+	The status "in progress" has now been removed. Before upgrading your database, you should ensure that if you are using this status, that you create a new custom property for tasks and copy across all your relevant in progress task statuses.
+
+15 March 2010
+	Task templates are now implemented
+
 16 January 2010
 	Switch to using jqGrid for task list. Very sexy and supports column reordering and resizing, plus much more.
 
