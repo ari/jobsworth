@@ -321,8 +321,12 @@ private
       end
     end
 
-    if !tasks_params[:order].nil? and (jqgrid_params[:sord] == 'desc')
-      tasks_params[:order]+= ' desc'
+    if !tasks_params[:order].nil?
+      if (jqgrid_params[:sord] == 'desc')
+        tasks_params[:order]+= ' desc'
+      else
+        tasks_params[:order] = '-' + tasks_params[:order] + ' desc'
+      end
     end
     return tasks_params
   end
