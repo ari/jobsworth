@@ -90,7 +90,7 @@ class TaskFilter < ActiveRecord::Base
 
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
-    res << conditions_for_status_qualifiers(status_qualifiers)
+    #res << conditions_for_status_qualifiers(status_qualifiers)
     res << conditions_for_customer_qualifiers(customer_qualifiers)
     res << conditions_for_time_qualifiers(time_qualifiers)
     res << conditions_for_keywords
