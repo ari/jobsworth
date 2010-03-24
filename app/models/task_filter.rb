@@ -90,7 +90,7 @@ class TaskFilter < ActiveRecord::Base
 
     res = conditions_for_standard_qualifiers(standard_qualifiers)
     res += conditions_for_property_qualifiers(property_qualifiers)
-    #res << conditions_for_status_qualifiers(status_qualifiers)
+    res << conditions_for_status_qualifiers(status_qualifiers)
     res << conditions_for_customer_qualifiers(customer_qualifiers)
     res << conditions_for_time_qualifiers(time_qualifiers)
     res << conditions_for_keywords
@@ -207,7 +207,7 @@ private
       old_status_ids << old_status
     end
 
-    old_status_ids = old_status_ids.join(",")
+    old_status_ids = old_status_ids.compact.join(",")
     return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
   end
 
