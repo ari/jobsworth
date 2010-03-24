@@ -22,6 +22,7 @@ class UsersController < ApplicationController
     end
 
     @user = User.new(params[:user])
+    @user.customer = current_user.company.customers.first
     @user.company_id = current_user.company_id
     @user.time_zone = current_user.time_zone
     @user.option_externalclients = 1;
