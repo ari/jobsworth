@@ -59,6 +59,9 @@
   <label for="user_auto_add"><%= _("Automatically add this user to tasks for %s", @user.customer.name) %></label>
   <%= check_box "user", "auto_add_to_customer_tasks" %>
   <br/>
-  
-
+ 
+  <label for="user_active"><%= ("Active") %></label>
+  <%= check_box(:user, :active) %>
+  <br/>
+ 
 </fieldset>
