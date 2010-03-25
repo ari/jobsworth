@@ -324,8 +324,10 @@ private
     if !tasks_params[:order].nil?
       if (jqgrid_params[:sord] == 'desc')
         tasks_params[:order]+= ' desc'
-      else
-        tasks_params[:order] = '-' + tasks_params[:order] + ' desc'
+      end
+      if (jqgrid_params[:sord] == 'asc')
+        #make sort null to bottom
+        tasks_params[:order] = "#{tasks_params[:order]} is null, #{tasks_params[:order]}"
       end
     end
     return tasks_params
