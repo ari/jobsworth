@@ -2,8 +2,7 @@ class UsersController < ApplicationController
   layout :decide_layout
 
   def index
-    list
-    render :action => 'list'
+    redirect_to :action=>'list'
   end
 
   def list
@@ -288,7 +287,7 @@ class UsersController < ApplicationController
 
   def project
     @user = current_user.company.users.find(params[:id])
-   
+
     project = current_user.company.projects.find(params[:project_id])
 
     ProjectPermission.new(:user => @user, :company => @user.company,
