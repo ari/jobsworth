@@ -1,25 +1,16 @@
 class UsersController < ApplicationController
   layout :decide_layout
-
+  before_filter :protect_admin_area, :only=>[:index, :list, :new, :create, :edit, :update, :destroy]
+#TODO: use index or list, they identical!
   def index
     redirect_to :action=>'list'
   end
 
   def list
-    if current_user.admin > 0
       @users = User.paginate(:order => "users.name", :conditions => ["users.company_id = ?", current_user.company_id], :page => params[:page], :include => { :projects => :customer } )
-    else
-      redirect_to :action => 'edit_preferences'
-    end
   end
 
   def new
-    if current_user.admin == 0
-      flash['notice'] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-
     @user = User.new(params[:user])
     @user.customer = current_user.company.customers.first
     @user.company_id = current_user.company_id
@@ -30,12 +21,6 @@ class UsersController < ApplicationController
   end
 
   def create
-    if current_user.admin == 0
-      flash['notice'] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-
     @user = User.new(params[:user])
     @user.company_id = current_user.company_id
     @user.date_format = "%d/%m/%Y"
@@ -69,21 +54,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-    if current_user.admin == 0
-      flash['notice'] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
   end
 
   def update
-    if current_user.admin == 0
-      flash['notice'] = _("Only admins can edit users.")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
     if params[:user][:admin].to_i > current_user.admin
@@ -118,12 +92,6 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    if current_user.admin == 0
-      flash['notice'] = _("Only admins can delete users")
-      redirect_to :action => 'edit_preferences'
-      return
-    end
-
     if current_user.id == params[:id].to_i
       flash['notice'] = _("You can't delete yourself.")
       redirect_to(:controller => "clients", :action => 'list')
@@ -341,5 +309,13 @@ class UsersController < ApplicationController
 
     render :json => colModel
   end
-
+private
+  def protect_admin_area
+    if current_user.admin == 0
+      flash['notice'] = _("Only admins can edit users.")
+      redirect_to :action => 'edit_preferences'
+      return false
+    end
+    true
+  end
 end
