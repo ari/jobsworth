@@ -207,7 +207,7 @@ private
       old_status_ids << old_status
     end
 
-    old_status_ids = old_status_ids.join(",")
+    old_status_ids = old_status_ids.compact.join(",")
     return "tasks.status in (#{ old_status_ids })" if !old_status_ids.blank?
   end
 
@@ -321,8 +321,14 @@ private
       end
     end
 
-    if !tasks_params[:order].nil? and (jqgrid_params[:sord] == 'desc')
-      tasks_params[:order]+= ' desc'
+    if !tasks_params[:order].nil?
+      if (jqgrid_params[:sord] == 'desc')
+        tasks_params[:order]+= ' desc'
+      end
+      if (jqgrid_params[:sord] == 'asc')
+        #make sort null to bottom
+        tasks_params[:order] = "#{tasks_params[:order]} is null, #{tasks_params[:order]}"
+      end
     end
     return tasks_params
   end
