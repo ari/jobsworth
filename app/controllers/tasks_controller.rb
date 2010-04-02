@@ -76,7 +76,7 @@ class TasksController < ApplicationController
       end
 
       conds = [ conds ] + cond_params
-      
+
       @resources = current_user.company.resources.find(:all,
                                                        :conditions => conds)
     end
@@ -515,7 +515,7 @@ class TasksController < ApplicationController
     res = ""
 
     if project
-      res = render_to_string(:partial => "task_customer",
+      res = render_to_string(:partial => "tasks/task_customer",
                              :object => project.customer)
     end
 
