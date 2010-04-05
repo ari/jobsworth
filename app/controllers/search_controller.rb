@@ -34,7 +34,6 @@ class SearchController < ApplicationController
       @posts = Post.all(:conditions => conditions)
     end
 
-    @chat_messages = ChatMessage.search(current_user, @keys)
   end
 
 end

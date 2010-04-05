@@ -24,20 +24,12 @@
        <% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
       	<%= @internal.css %>
       	<% end %>
-      	<% unless current_user.option_floating_chat %>
-      	#presence {position:relative;}
-      	<% end %>
     </style>
   </head>
   <body id="body">
     <div id="page_header">
       <div id="loading">
         <%= image_tag('spinner.gif', :border => 0) %>
-      </div>
-      <div id="passive-chat-container" style="display:none;">
-        <table width="100%" cellspacing="0">
-          <tbody id="passive-chat"></tbody>
-        </table>
       </div>
       <%= render(:partial => "layouts/menu") %>
       <%= render(:partial => "layouts/tabmenu") %>
@@ -68,42 +60,12 @@
         </td>
       </tr>
     </table>
-    <% if current_user.company.show_messaging %>
-    <div id="presence" class="full">
-      <div id="presence-ui" class="clearfix">
-        <div id="presence-bar">
-          <div id="presence-buttons">
-            <div class="presence-section" id="presence-users">
-              <div class="presence-popup" style="display:none;" id="presence-users-popup">
-                <div class="optional">
-                  <%= _'Loading' %>...
-                </div>
-              </div>
-              <div class="presence-bar-text" style="float:left;padding-right:2px;">
-                <img src="/images/user_comment.png" border="0" class="presence-img"/>
-              </div>
-              <div class="presence-bar-text presence-toggle" id="presence-toggle-users">
-                <%= _('Online') %>(<span id="presence-online"><%= online_users %></span>)
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="contact" style="padding-left:0.3em;border-top:1px solid #ccc;">
-          <small>
-            <em>Jobsworth<% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate' %></a><% end %>
-              <br/>
-              <%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
-            </em>
-          </small>
-        </div>
-      </div>
-    </div>
-    <% else %>
+
     <div id="contact">
       <% if current_user.locale != 'en_US' %> - <a href="/locales/list"><%= _'Help Translate' %></a>
       <% end %><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
     </div>
-    <% end %>
+
     <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info', :format => "js" }, :frequency => 90 ) -%>
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[
@@ -112,10 +74,6 @@
       	<% if current_user.option_tooltips.to_i == 1 %>
       	  jQuery('.tooltip').tooltip({showURL: false });
       	<% end %>
-      	
-      	jQuery('#presence-toggle-users').click(function () {
-      		toggleChatPopupEvent(ev); 
-      	});
       });
       
       new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});

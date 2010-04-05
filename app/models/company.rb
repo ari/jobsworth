@@ -206,8 +206,6 @@ end
 #  subdomain           :string(255)     default(""), not null
 #  show_wiki           :boolean(1)      default(TRUE)
 #  show_forum          :boolean(1)      default(TRUE)
-#  show_chat           :boolean(1)      default(TRUE)
-#  show_messaging      :boolean(1)      default(TRUE)
 #  restricted_userlist :boolean(1)      default(FALSE)
 #
 

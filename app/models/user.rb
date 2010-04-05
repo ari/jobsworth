@@ -39,10 +39,6 @@ class User < ActiveRecord::Base
 
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
-  has_many      :chats, :conditions => ["active = 0 OR active = 1"], :dependent => :destroy
-  has_many      :chat_messages, :through => :chats
-  has_many      :chat_requests, :foreign_key => 'target_id', :class_name => 'Chat', :dependent => :destroy
-
   has_many      :task_filters, :dependent => :destroy
   has_many      :sheets, :dependent => :destroy
 
@@ -432,7 +428,6 @@ end
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
-#  option_floating_chat       :boolean(1)      default(TRUE)
 #  days_per_week              :integer(4)      default(5)
 #  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)

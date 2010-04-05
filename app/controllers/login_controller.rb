@@ -28,19 +28,6 @@ class LoginController < ApplicationController
 
     current_user.last_seen_at = nil
     current_user.last_ping_at = nil
-    
-    # Let other logged in Users in same Company know that User logged out.
-    Juggernaut.send("do_execute(#{current_user.id}, \"flash_message('#{current_user.username} logged out..');", ["info_#{current_user.company_id}"])
-
-    chat_update = render_to_string :update do |page|
-      page << "if(jQuery('#presence-online')) {"
-      page.replace_html 'presence-online', (online_users).to_s
-      page << "if(jQuery('#presence-toggle-#{current_user.dom_id}')) {"
-      page << "jQuery('#presence-img-#{current_user.dom_id}').attr('src','#{current_user.online_status_icon}');"
-      page << "}"
-      page << "}"
-    end
-    Juggernaut.send("do_execute(#{current_user.id}, '#{double_escape(chat_update)}');", ["info_#{current_user.company_id}"])
 
     response.headers["Content-Type"] = 'text/html'
 
@@ -105,20 +92,6 @@ class LoginController < ApplicationController
     session[:hide_dependencies] ||= "1"
     session[:filter_customer] ||= "0"
     
-    # Let others know User logged in
-    Juggernaut.send("do_execute(#{logged_in.id}, \"flash_message('#{logged_in.username} logged in..');", ["info_#{logged_in.company_id}"])
-
-    chat_update = render_to_string :update do |page|
-      page << "if(jQuery('#presence-online')) {"
-      page.replace_html 'presence-online', (online_users).to_s
-      page << "if(jQuery('#presence-toggle-#{logged_in.dom_id}')) {"
-      page << "jQuery('#presence-img-#{logged_in.dom_id}').attr('src','#{logged_in.online_status_icon}');"
-      page << "}"
-      page << "}"
-    end
-    
-    Juggernaut.send("do_execute(#{logged_in.id}, '#{double_escape(chat_update)}');", ["info_#{logged_in.company_id}"])
-
     response.headers["Content-Type"] = 'text/html'
 
     redirect_from_last

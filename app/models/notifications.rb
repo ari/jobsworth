@@ -75,18 +75,6 @@ class Notifications < ActionMailer::Base
     @reply_to   = user.email
   end
 
-  def chat_invitation(user, target, room)
-    @body       = {:user => user, :room => room }
-    @subject    = "#{$CONFIG[:prefix]} Invitation to chat: #{room.name} (#{user.name})"
-
-    @recipients = target.email
-
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
-    @sent_on    = Time.now
-    @reply_to   = user.email
-
-  end
-
   def unknown_from_address(from, subdomain)
     @body       = {:from => from, :subdomain => subdomain }
     @subject    = "#{$CONFIG[:prefix]} Unknown email address: #{from}"
