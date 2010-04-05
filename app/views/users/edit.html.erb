@@ -1,20 +1,34 @@
-<fieldset class="basic">
-<legend><%=_ 'Edit User' %></legend>
+<%= error_messages_for 'user' %>
 
 <% form_tag :action => 'update', :id => @user do %>
-  <%= render :partial => "form" %>
 
-  <%= submit_tag _("Save"), :class => 'nolabel' %>
-    <br/>
+	<%= render :partial => "user_information" %>
+
+	<%= render :partial => "form" %>
+
+	<% if current_user.admin? %>
+		<fieldset class="basic">
+			<legend><%=_ 'Access control' %></legend>
+			
+			<label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %><br/>
+			<label for="user_create_projects"><%=_ 'Can Create Projects' %></label><%= check_box 'user', 'create_projects' %><br/>
+			<label for="user_read_clients"><%=_ "Read client details" %></label><%= check_box(:user, :read_clients) %><br/>
+			<label for="user_create_clients"><%=_ "Create clients" %></label><%= check_box(:user, :create_clients) %><br/>
+			<label for="user_edit_clients"><%=_ "Edit client details" %></label><%= check_box(:user, :edit_clients) %><br/>
+			<label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label><%= check_box(:user, :can_approve_work_logs) %><br/>
+			<label for="user_use_resources"><%=_ "Access Resources" %></label><%= check_box 'user', 'use_resources' %><br/>
+
+		</fieldset>
+	<% end %>
+	
+	<%= submit_tag _("Save"), :class => 'nolabel' %>
 <% end %>
-
+		
 <% if current_user.admin? %>
-      <fieldset class="basic">
-        <legend><%=_ 'Access to Projects' %></legend>
-	<div id="permission_list"><%= render :partial => "project_permissions" %></div>
-      </fieldset>
+	<fieldset class="basic">
+		<legend><%=_ 'Project access control' %></legend>
+		<div id="permission_list"><%= render :partial => "project_permissions" %></div>
+	</fieldset>
 <% end %>
-
-</fieldset>
 
 <%= render :partial => "/pages/notes", :object => @user.notes %>

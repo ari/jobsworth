@@ -1,16 +1,7 @@
-<%= error_messages_for 'user' %>
-
-<%= render :partial => "user_information" %>
-
 <fieldset class="basic">
   <legend><%=_ 'Options' %></legend>
   <label for="user_locale"><%=_ 'Language' %></label><%= select 'user', 'locale', Localization.locales %><br/>
   <label for="user_time_zone"><%=_ 'Location' %></label><%= time_zone_select 'user', 'time_zone', TZInfo::Timezone.all.sort, :model => TZInfo::Timezone %><br/>
-  <% if current_user.admin? %>
-  <label for="user_admin"><%=_ 'Administrator' %></label><%= check_box 'user', 'admin' %><br/>
-  <label for="user_create_projects"><%=_ 'Can Create Projects' %></label><%= check_box 'user', 'create_projects' %><br/>
-  <br/>
-  <% end %>
   
   <label for="user_option_tracktime"><%=_ 'Track Time' %></label>
   <%= check_box 'user', 'option_tracktime' %>
@@ -32,28 +23,8 @@
   <%= check_box 'user', 'receive_own_notifications' %>
   <br/>
 
-  <label for="user_use_resources"><%=_ 'Use Resources' %></label>
-  <%= check_box 'user', 'use_resources' %>
-  <br/>
-
   <label for="user_option_externalclients"><%=_ 'Use External Clients' %></label>
   <%= check_box 'user', 'option_externalclients' %>
-  <br/>
-
-  <label for="user_read_clients"><%=_ "Read client details" %></label>
-  <%= check_box(:user, :read_clients) %>
-  <br/>
-
-  <label for="user_create_clients"><%=_ "Create clients" %></label>
-  <%= check_box(:user, :create_clients) %>
-  <br/>
-
-  <label for="user_edit_clients"><%=_ "Edit client details" %></label>
-  <%= check_box(:user, :edit_clients) %>
-  <br/>
-  
-  <label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label>
-  <%= check_box(:user, :can_approve_work_logs) %>
   <br/>
 
   <label for="user_auto_add"><%= _("Automatically add this user to tasks for %s", @user.customer.name) %></label>
