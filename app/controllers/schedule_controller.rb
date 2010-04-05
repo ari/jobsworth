@@ -537,7 +537,6 @@ class ScheduleController < ApplicationController
           Notifications::deliver_changed( :updated, t, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
         end 
 
-        Juggernaut.send( "do_update(0, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => t.id)}');", ["tasks_#{current_user.company_id}"])
       end 
 
       t.scheduled_at = nil
@@ -561,8 +560,6 @@ class ScheduleController < ApplicationController
       m.scheduled = false
       m.save
     end 
-
-    Juggernaut.send( "do_update(0, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
 
     flash['notice'] = _('Schedule saved')
     render :update do |page|

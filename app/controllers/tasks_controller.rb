@@ -162,8 +162,6 @@ class TasksController < ApplicationController
 
       @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
 
-      juggernaut_update_activities
-
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
       return if request.xhr?
@@ -276,8 +274,6 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-      juggernaut_update_tasks
-      juggernaut_update_activities
 
       return if request.xhr?
 
@@ -559,8 +555,6 @@ protected
 
   # setup some instance variables for task list views
   def list_init
-    # Subscribe to the juggernaut channel for Task updates
-    session[:channels] += ["tasks_#{current_user.company_id}"]
     # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
@@ -741,11 +735,7 @@ protected
     end
     template.todos.each{|todo| task.todos<< todo.clone }
   end
-  def juggernaut_update_activities
-    Juggernaut.send("do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
-  end
-  def juggernaut_update_tasks
-    Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @task.id)}');", ["tasks_#{current_user.company_id}"])
-  end
+
+
 end
 

@@ -301,23 +301,6 @@ module ApplicationHelper
     end
   end
 
-
-
-  def flash_plugin(channels = ["default"])
-    config = Juggernaut.config
-    host = request.server_name
-    port = config["PUSH_PORT"]
-#  crossdomain = config["CROSSDOMAIN"]
-#  juggernaut_data =  CGI.escape('"' + channels.join('","') + '"')
-
-<<-"END_OF_HTML"
-<script type="text/javascript">
-new Juggernaut({ host:'#{host}', port: #{port}, channels:["#{channels.join('","')}"], sounds: #{current_user.enable_sounds?} });
-</script>
-END_OF_HTML
-  end
-
-
   def use_tinymce
     @content_for_tinymce = ""
     content_for :tinymce do

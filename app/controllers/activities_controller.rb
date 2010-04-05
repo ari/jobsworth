@@ -9,11 +9,7 @@ class ActivitiesController < ApplicationController
 
   # Show the overview page including whatever widgets the user has added.
   def list
-    session[:channels] += ["activity_#{current_user.company_id}", "tasks_#{current_user.company_id}"]
-  end
-
-  # Update the page, due to a Juggernaut push message
-  def refresh
+ 
   end
 
   # Simple tutorial, guiding the user through

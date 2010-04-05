@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", :cache => "prototype-all" %>
-    <%= javascript_include_tag :defaults, "jquery.nyroModal", "juggernaut_javascript", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "grid.locale-en.js", "jquery.jqGrid.min", "json2", "tasklist", :cache => "main" %>
+    <%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "grid.locale-en.js", "jquery.jqGrid.min", "json2", "tasklist", :cache => "main" %>
     <%= javascript_include_tag "fullcalendar" %>
     <%= yield :tinymce %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
@@ -73,16 +73,6 @@
       <div id="presence-ui" class="clearfix">
         <div id="presence-bar">
           <div id="presence-buttons">
-            <% current_user.chats.each do |chat|
-            @chat = chat
-            @user = @chat.target %>
-            <%= render :partial => 'shout/chat_user' if @chat.active >= 0 %>
-            <% if @chat.active == 1 %>
-            <script type="text/javascript" language="javascript" charset="utf-8">
-              toggleChatPopup($('presence-toggle-<%=@chat.target.dom_id%>'));
-            </script>
-            <% end %>
-            <% end %>
             <div class="presence-section" id="presence-users">
               <div class="presence-popup" style="display:none;" id="presence-users-popup">
                 <div class="optional">
@@ -115,19 +105,12 @@
     </div>
     <% end %>
     <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info', :format => "js" }, :frequency => 90 ) -%>
-    <%= flash_plugin(session[:channels]) %>
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[
       var userId=<%= current_user.id %>;
       jQuery(document).ready(function () {
       	<% if current_user.option_tooltips.to_i == 1 %>
       	  jQuery('.tooltip').tooltip({showURL: false });
-      	<% end %>
-      	
-      	<% if controller.controller_name == 'shout' && controller.action_name == 'room' %>
-      	  init_shout();
-      	  $('contact').scrollTo();
-      	  window.scrollBy(0,200);
       	<% end %>
       	
       	jQuery('#presence-toggle-users').click(function () {

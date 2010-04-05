@@ -49,30 +49,12 @@ class SearchControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "include shouts in search" do
-      channel = @user.company.shout_channels.build(:name => "test chan")
-      shout = channel.shouts.build(:body => "shout")
-      channel.save!
-      get :search, :query => "shout"
-      assert_equal [ shout ], assigns("shouts")
-      assert_response :success
-    end
-
     should "include wiki pages in search" do
       page = @user.company.wiki_pages.build(:name => "wiki page")
       page.revisions.build(:user => @user, :body => "wiki")
       page.save!
       get :search, :query => "wiki"
       assert_equal [ page ], assigns("wiki_pages")
-      assert_response :success
-    end
-
-    should "include chats in search" do
-      chat = @user.chats.build(:target => @user)
-      msg = chat.chat_messages.build(:user => @user, :body => "chat msg")
-      chat.save!
-      get :search, :query => "msg"
-      assert_equal [ msg ], assigns("chat_messages")
       assert_response :success
     end
 

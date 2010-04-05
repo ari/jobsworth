@@ -4,7 +4,6 @@ class SearchController < ApplicationController
   def search
     @tasks = []
     @logs = []
-    @shouts = []
 
     return if params[:query].blank?
     @keys = params[:query].split.map { |s| s.strip.downcase }
@@ -20,16 +19,6 @@ class SearchController < ApplicationController
     conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ])
     conditions += " AND project_id in #{ project_ids }"
     @logs = company.work_logs.all(:conditions => conditions)
-    
-    # shouts
-    conditions = "project_id is null or project_id in #{ project_ids }"
-    channels = company.shout_channels.all(:conditions => conditions)
-    channel_ids = channels.map { |c| c.id }.join(", ")
-    if channel_ids.present?
-      conditions = Search.search_conditions_for(@keys, [ "shouts.body" ])
-      conditions += " AND shout_channel_id in (#{ channel_ids })"
-      @shouts = Shout.all(:conditions => conditions)
-    end
 
     @wiki_pages = company.wiki_pages.select do |p| 
       match = @keys.detect { |k| p.body and p.body.index(k) }

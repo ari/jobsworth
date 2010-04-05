@@ -90,8 +90,6 @@ Rails::Initializer.run do |config|
   config.gem "faker"
   config.gem "notahat-machinist", :lib => "machinist", :source => "http://gems.github.com"
   
-  # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
-
   # CUSTOM GEMS
   # Any gem files which aren't needed for the system to work, but may
   # be required for your own development should be in this file:

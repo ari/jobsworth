@@ -159,24 +159,6 @@ File.open("config/environment.local.rb", "w") do |file|
   file.puts env
 end
 
-puts "  Creating config/juggernaut_config.yml"
-
-jug = []
-File.open("config/juggernaut_config.yml-example") do |file|
-  while line = file.gets
-    jug << line
-  end
-end
-jug = jug.join
-
-jug.gsub!(/clockingit\.com/, domain)
-jug.gsub!(/www\./, subdomain + ".")
-jug.gsub!(/443/, jug_port)
-
-File.open("config/juggernaut_config.yml", "w") do |file|
-  file.puts jug
-end
-
 puts "Creating directories..."
 
 puts "  log..."

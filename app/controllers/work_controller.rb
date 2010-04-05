@@ -11,7 +11,6 @@ class WorkController < ApplicationController
       task.save
 
       @current_sheet = sheet
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => task.id)}');", ["tasks_#{current_user.company_id}"])
     end
 
     respond_to do |format|
@@ -62,7 +61,6 @@ class WorkController < ApplicationController
     if @current_sheet 
       @task = @current_sheet.task
       @current_sheet.destroy
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @current_sheet.task_id)}');", ["tasks_#{current_user.company_id}"])
       @current_sheet = nil
     end
 

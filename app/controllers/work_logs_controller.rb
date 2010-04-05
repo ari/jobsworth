@@ -31,8 +31,6 @@ class WorkLogsController < ApplicationController
       update_task_for_log(@log, params[:task])
 
       flash['notice'] = _("Log entry saved...")
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'tasks', :action => 'update_tasks', :id => @log.task.id)}');", ["tasks_#{current_user.company_id}"])
-      Juggernaut.send( "do_update(#{current_user.id}, '#{url_for(:controller => 'activities', :action => 'refresh')}');", ["activity_#{current_user.company_id}"])
       redirect_from_last
     else
       flash["notice"] = _("Error saving log entry")

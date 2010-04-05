@@ -1,1 +1,0 @@
-<div id="<%=@message.dom_id%>" class="channel-body<%= " channel-message-mine" if @message.user_id == current_user.id %>"><%=wrap_text(h(@message.body)) %></div>

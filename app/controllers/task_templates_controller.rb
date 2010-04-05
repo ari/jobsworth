@@ -68,10 +68,5 @@ protected
   def set_last_task(task)
     #empty method
   end
-  def juggernaut_update_tasks
-    #empty method
-  end
-  def juggernaut_update_activities
-    #empty method
-  end
+
 end

@@ -72,37 +72,6 @@
 <tr><td>&nbsp;</td></tr>
 <% end %>
 
-<% if @shouts and @shouts.any? %>
-  <tr>
-    <td class="log_header">
-    <%=_ 'Chat' %>
-    </td>
-  </tr>
-  <tr>
-    <td id="search_shouts"><table width="100%" cellpadding="0" cellspacing="0">
-<% for @shout in @shouts %>
-<%= render :partial => 'search_shout', :locals => {:last => nil } %>
-<% end %>
-</table></td></tr>
-
-<tr><td>&nbsp;</td></tr>
-<% end %>
-
-<% if @chat_messages and @chat_messages.any? %>
-<tr>
-  <td class="log_header">
-    <%=_ 'Instant Messages' %>
-  </td>
-</tr>
-<tr>
-  <td id="search_messages"><table width="100%" cellpadding="0" cellspacing="0">
-<% for @message in @chat_messages %>
-<tr><td class="channel-user" nowrap><a href="/shout/chat_browse/<%= @message.chat.target_id %>"><%= render :partial => 'shout/chat_info', :locals => {:user => current_user}  %></a></td><td class="channel-message"><%= render :partial => 'search_chat' %></td></tr>
-<% end %>
-</table></td></tr>
-<tr><td>&nbsp;</td></tr>
-<% end %>
-
 <% if @customers and @customers.any? %>
   <tr>
     <td>

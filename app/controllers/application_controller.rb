@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
 
     # Remember the previous _important_ page for returning to after an edit / update.
     if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
-        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') || request.request_uri.include?('/shout') ||
+        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ||
         request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) &&
         !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
@@ -150,19 +150,6 @@ class ApplicationController < ActionController::Base
       end
     else
       # Refresh the User object
-      # Subscribe general info channel
-      begin
-        session[:channels] = ["info_#{current_user.company_id}", "user_#{current_user.id}"]
-      rescue
-        flash['notice'] = 'Unable to find user'
-        session[:user_id] = nil
-        redirect_to "/login/login"
-        return true
-      end
-
-      current_user.shout_channels.each do |ch|
-        session[:channels] << "channel_passive_#{ch.id}"
-      end
 
       # Update last seen, to track online users
       if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])

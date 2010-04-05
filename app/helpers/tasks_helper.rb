@@ -314,7 +314,7 @@ module TasksHelper
     values << [ _("Description"), task.description ]
     comment = task.last_comment
     if comment
-      values << [ _("Last Comment"), "#{ comment.user.shout_nick }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
+      values << [ _("Last Comment"), "#{ comment.user.name }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
     end
 
     return task_tooltip(values)

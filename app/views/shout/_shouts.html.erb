@@ -1,5 +1,0 @@
-<% for s in @shouts.reverse %>
-<li id="shout_<%=s.id%>"><%="<span class=\"shout_time\">[#{tz.utc_to_local(s.created_at).strftime(current_user.time_format)}]</span> <span class=\"shout_name\">#{s.user.username}</span>"%>:&nbsp;<%="<span class=\"shout_body\">#{h(s.body)}</span><br/>" %></li>
-<% end %>
-
-

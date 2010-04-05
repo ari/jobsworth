@@ -20,7 +20,6 @@ class User < ActiveRecord::Base
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :work_log_notifications, :dependent => :destroy
-  has_many      :shouts, :dependent => :nullify
 
   has_many      :notifications, :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
@@ -37,9 +36,6 @@ class User < ActiveRecord::Base
 
   has_many      :moderatorships, :dependent => :destroy
   has_many      :forums, :through => :moderatorships, :order => 'forums.name'
-
-  has_many      :shout_channel_subscriptions, :dependent => :destroy
-  has_many      :shout_channels, :through => :shout_channel_subscriptions, :source => :shout_channel
 
   has_many      :widgets, :order => "widgets.column, widgets.position", :dependent => :destroy
 
@@ -333,19 +329,6 @@ class User < ActiveRecord::Base
     return 'mm/dd/yy' if self.date_format == '%m/%d/%Y'
     return 'dd/mm/yy' if self.date_format == '%d/%m/%Y'
     return 'yy/mm/dd' if self.date_format == '%Y-%m-%d'
-  end
-
-  def shout_nick
-    n = nil
-    # Upcase first character of all words in a string, and truncate all middle words with first character + ".".
-  # eg. "elvis aaron presley" => "Elvis A. Presley"
-    # n = name.gsub(/[^\s\w]+/, '').split(" ") if name
-    # n = ["Anonymous"] if(n.nil? || n.empty?)
-
-    # "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
-
-    # disabled since it seems superfluous and doesn't work in Rails 2.3
-    n= name
   end
 
   def online_status_icon

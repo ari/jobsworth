@@ -183,19 +183,6 @@ a:hover {
     color: black;
 }
 
-.shout_body {
-}
-
-.shout_name {
-  color: #666666;
-  font-weight: bold;
-}
-
-.shout_time {
-  color: #666666;
-  font-weight: bold;
-}
-
 .page_header {
   font-size: 14px;
   text-transform: uppercase;
@@ -1177,23 +1164,6 @@ a.description {
     color: #666666;
     border: 1px solid #CCCCCC;
     padding: 0.1em;
-}
-
-#shouts {
-    font-size: 10px;
-    font-weight: normal;
-    border-left: none;
-    list-style: none;
-    padding-left: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
-}
-
-#shouts li {
-    border-left: none;
-    padding-left: 0px;
-    margin-left: 0px;
-    text-align: left;
 }
 
 #content div.task {
@@ -2234,14 +2204,6 @@ li.help {
     left: 0;
     z-index: 5;
     padding-bottom: 30px;
-}
-
-#shout-list {
-    height: 100%;
-    padding-bottom: 5em;
-    border-right: 1px solid #ececec;
-    margin-left: 1em;
-    padding-right: 1em;
 }
 
 .status-offline {

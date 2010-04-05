@@ -8,7 +8,6 @@ var lastElement = null;
 var lastPrefix = null;
 var lastColor = null;
 var comments = new Hash();
-var last_shout = null;
 var show_tooltips = 1;
 var fetchTimeout = null;
 var fetchElement = null;
@@ -68,29 +67,6 @@ function fetchComment(e) {
   jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
 }
 
-function init_shout() {
-  if($('shout_body')) {
-    Event.observe($('shout_body'), "keypress", function(e) {
-        if ( e.keyCode == Event.KEY_RETURN) {
-          if (e.shiftKey) {
-            return;
-          } else {
-            if($('shout_body').value.length > 0) {
-              if(e.ctrlKey || e.metaKey) {
-                $('shout-input').onsubmit();
-                $('shout_body').value = '';
-              } else {
-                $('shout-input').onsubmit();
-                $('shout_body').value = '';
-              }
-            }
-            Event.stop(e);
-          }
-        }
-      });
-  }
-}
-
 function inline_image(el) {
   $(el).setStyle({width:'auto', visibility:'hidden'});
   if (el.width > 500) {
@@ -116,45 +92,6 @@ function do_update(user, url) {
   if( user != userId ) {
       jQuery.get(url);
   }
-}
-
-// used by Juggernaut
-function do_execute(user, code) {
-  if( user != userId ) {
-    eval(code);
-  }
-}
-
-function toggleChatPopup(el) {
-  if( Element.hasClassName(el.up(), 'presence-section-active') ) {
-    Element.removeClassName(el.up(), 'presence-section-active');
-    $$("#" + el.up().id + " .presence-shadow").each(function(e) { Element.hide(e); });
-        jQuery.get('/shout/chat_hide/' + el.up().id);
-  } else if(Element.hasClassName(el.up(), 'presence-section')) {
-    $$('.presence-section-active').each(function(el) {
-                                          Element.removeClassName(el, 'presence-section-active');
-                                          $$(".presence-shadow").each(function(el) { Element.hide(el); });
-                                        });
-    Element.addClassName(el.up(), 'presence-section-active');
-
-    if( Element.hasClassName(el.up(), 'presence-section-pending') ) {
-      Element.removeClassName(el.up(), 'presence-section-pending');
-    }
-    jQuery("#" + el.up().id + " .presence-shadow").show();
-    jQuery("#" + el.up().id + " input").focus();
-
-        jQuery.get('/shout/chat_show/' + el.up().id);
-  }
-}
-
-function toggleChatPopupEvent(e) {
-  var el = Event.element(e);
-  toggleChatPopup(el);
-}
-
-function closeChat(el) {
-  jQuery.get('/shout/chat_close/' + el.up().id);
-  jQuery(el).remove();
 }
 
 function rebuildSelect(select, data) {
