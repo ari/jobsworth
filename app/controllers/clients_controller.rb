@@ -9,33 +9,27 @@ class ClientsController < ApplicationController
   end
 
   def list
-    if request.post?
-      setup_filters_in_session
-      redirect_to :action => "list"
+	if request.post?
+	    session[:client_name_filter] = params[:search_text].strip
     end
     
-    filters = session[:client_name_filters]
-    if filters and filters.any?
-      @customers = []
+    if !session[:client_name_filter].blank?
+        filter = []
+	    filter << session[:client_name_filter]
+	    @customers = Customer.search(current_user.company, filter)
+	    @users = User.search(current_user.company, filter)
+	    # add any missing customers to the list
+	    @users.each { |u| @customers << u.customer }
 
-      if !session[:client_search_ignore_clients]
-        @customers = Customer.search(current_user.company, filters)
-      end
-      if !session[:client_search_ignore_users]
-        @users = User.search(current_user.company, filters)
-        # add any missing customers to the list
-        @users.each { |u| @customers << u.customer }
-      end
-
-      @customers = @customers.flatten.uniq.compact
-      @customers = @customers.sort_by { |c| c.name.downcase }
-      @paginate = false
-    else
-      @customers = Customer.paginate(:order => "customers.name", 
-                                     :conditions => ["customers.company_id = ?", current_user.company_id], 
-                                     :page => params[:page],
-                                     :per_page => 100)
-      @paginate = true
+		@customers = @customers.flatten.uniq.compact
+		@customers = @customers.sort_by { |c| c.name.downcase }
+		@paginate = false
+	else
+		@customers = Customer.paginate(:order => "customers.name", 
+		                             :conditions => ["customers.company_id = ?", current_user.company_id], 
+		                             :page => params[:page],
+		                             :per_page => 100)
+		@paginate = true
     end
   end
 
@@ -190,17 +184,6 @@ class ClientsController < ApplicationController
     else
       render :nothing => true
     end
-  end
-
-  def setup_filters_in_session
-    filters = params[:search_text]
-    # need to get rid of any blanks because we don't want to search for them 
-    # or have them show up in the list.
-    filters.delete_if { |s| s.strip.blank? } if filters
-    session[:client_name_filters] = filters
-    
-    session[:client_search_ignore_users] = !params[:search_users]
-    session[:client_search_ignore_clients] = !params[:search_clients]
   end
 
   private
