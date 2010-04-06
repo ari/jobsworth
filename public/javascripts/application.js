@@ -287,21 +287,26 @@ function removeSearchFilter(link) {
 }
 
 jQuery(document).ready(function() {
-        // make search box contents selected when the user clicks in it
-        jQuery("#search_filter").focus( function() {
+	// make search box contents selected when the user clicks in it
+	jQuery("#search_filter").focus( function() {
         if (jQuery(this).val() == "Task search...") {
             jQuery(this).val('').removeClass('grey');
         } else {
             jQuery(this).select();
         }
     });
-
-        jQuery("#search_filter").blur( function() {
+    
+	jQuery("#search_filter").blur( function() {
         if (jQuery(this).val() == '') {
             jQuery(this).val("Task search...").addClass('grey');
         }
     });
 
+	// the user/client search box
+	jQuery(".search_filter").focus( function() {
+		jQuery(this).select();
+	});
+	
     jQuery("#comment").resizable();
 
     // Go to a task immediately if a number is entered and then the user hits enter

@@ -4,10 +4,19 @@ first:
 second:
   value: value 2
   property: first
+  default: true
 
 third:
   value: value 3
   property: second
+fourth:
+  value: value 4
+  property: second
+  default: true
+fifth:
+  value: value 5
+  property: third
+  default: true
 
 # == Schema Information
 #

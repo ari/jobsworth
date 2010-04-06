@@ -1,37 +1,31 @@
-<table class="content" width="100%" style="padding-left:1em; padding-right:1em;" cellpadding="0" cellspacing="0">
-  <tr>
-    <td colspan="4" class="page_header">
-      <div style="float:left;"><%=_ 'Clients' %></div>
-      <div style="float:right;padding-top:0.15em;"><%= link_to _('New Client'), :action => 'new' %></div>
-    </td>
-  </tr>
+<div class="page_header"><%=_ 'Clients' %>
+	<div class="right"><%= link_to _('New Client'), :action => 'new' %></div>
+</div>
 
-  <%= render :partial => "filter" %>
-
-  <tr colspan="4">
-    <td>
-      <ul>
-	<% @customers.each do |customer| %>
-  	  <li>
-	    <% if !customer %>
-	      <%=_ "No Client" %>
-	    <% else %>
-	    <%= link_to(h(customer.name), :action => "edit", :id => customer) %>
-	    <% end %>
-	  </li>
-	  <%= users_for_customer(@users, customer) %>
-        <% end %>
-      </ul>
-    </td>
-  </tr>
-
-  <tr>
-    <td colspan="4">
-      <%= pagination_links(@customers) if @paginate %>
-    </td>
-  </tr>
-</table>
-
-<br />
-
-
+<%= render :partial => "filter" %>
+ 
+<ul class="clients">
+<% @customers.each do |customer| %>
+	<li>
+		<% if !customer %>
+			<%=_ "No Client" %>
+		<% else %>
+			<%= link_to(h(customer.name), :action => "edit", :id => customer) %>
+		<% end %>
+		<ul>
+		<%
+		(@users || []).each  do |u|
+			if u.customer == customer
+		%>
+				<li>
+					<img width="16" height="16" src="/images/user_large.png"/>
+					<%= link_to(h(u.name), :controller => "users", :action => "edit", :id => u) %>
+					<small><%= u.email %></small>
+				</li>
+			<% end %>
+		<% end %>
+		</ul>
+	</li>
+<% end %>
+</ul>
+<%= pagination_links(@customers) if @paginate %>

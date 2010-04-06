@@ -3,7 +3,7 @@
 class Mailman < ActionMailer::Base
   # The marker in the email body that shows where the new content ends
   BODY_SPLIT = "o------ please reply above this line ------o"
-  
+
   # helper method to remove email reply noise from the body
   def self.clean_body(body)
     new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
@@ -25,7 +25,7 @@ class Mailman < ActionMailer::Base
 
   def get_body(email)
     body = nil
-    
+
     if email.multipart? then
       email.parts.each do |m|
         next if body
@@ -37,7 +37,7 @@ class Mailman < ActionMailer::Base
         end
       end
     end
-    
+
     body ||= email.body
     body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
@@ -60,7 +60,6 @@ class Mailman < ActionMailer::Base
     # if company not found but we're using a single company install, just
     # use that one
     company ||= Company.first if Company.count == 1
-    
     if company
       e.company = company
       e.user = User.find_by_email(e.from, :conditions => ["company_id = ?", company.id])
@@ -74,11 +73,11 @@ class Mailman < ActionMailer::Base
     elsif target and target.is_a?(Project)
       task = create_task_from_email(email, target)
       add_email_to_task(e, email, task)
-      
+
     else
       Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
     end
-    
+
     return e
   end
 
@@ -92,7 +91,7 @@ class Mailman < ActionMailer::Base
       if to.include?("task-")
         _, task_num = /task-(\d+).*@.*/.match(to).to_a
         if task_num.to_i > 0
-          target = Task.find(:first, :conditions => 
+          target = Task.find(:first, :conditions =>
                              ["company_id = ? AND task_num = ?", company.id, task_num])
         end
       end
@@ -120,10 +119,10 @@ class Mailman < ActionMailer::Base
 
     if task.done?
       # need to reopen task so incoming comment doens't get closed
-      task.update_attributes(:completed_at => nil, 
+      task.update_attributes(:completed_at => nil,
                              :status => Task.status_types.index("Open"))
     end
-    
+
     # worklogs need a user, so just use the first admin user if the
     # email didn't give us one
     if e.user.nil?
@@ -138,10 +137,10 @@ class Mailman < ActionMailer::Base
                     :duration => 0, :log_type => EventLog::TASK_COMMENT,
                     :body => e.body)
     w.save
-    
+
     w.event_log.user = e.user
     w.event_log.save
-    
+
     user = nil
     if e.user.nil?
       user = User.new
@@ -179,22 +178,22 @@ class Mailman < ActionMailer::Base
     task_file.name = attachment.original_filename
     task_file.file_size = 0
     task_file.save
-    
+
     task_file.reload
-    
+
     if !File.directory?(task_file.path)
       File.umask(0)
       Dir.mkdir(task_file.path, 0777) rescue nil
     end
-    
+
     File.umask(0)
     begin
-      File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) } 
-    rescue 
+      File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) }
+    rescue
       task_file.destroy
       task_file = nil
     end
-    
+
     if task_file
       task_file.file_size = File.size(task_file.file_path)
       task_file.save
@@ -202,13 +201,13 @@ class Mailman < ActionMailer::Base
   end
 
   def create_task_from_email(email, project)
-    task = Task.new(:name => email.subject, 
+    task = Task.new(:name => email.subject,
                     :project => project,
                     :company => project.company,
                     :description => "",
-                    :duration => 0) 
+                    :duration => 0)
     task.set_task_num(project.company.id)
-
+    task.set_default_properties
     attach_users_to_task(task, email)
     attach_customers_to_task(task)
 
@@ -265,14 +264,14 @@ class Mailman < ActionMailer::Base
         sent << n.user
       end
     end
-    
+
     (task.notify_emails || "").split(",").each do |email|
       if email != user.email
         Notifications::deliver_changed(:comment, task, e.user, email.strip, email_body)
         emails << email
       end
     end
-    
+
     emails += sent.map { |u| u.email }
     if emails.any?
       emails = _("Notification emails sent to %s", emails.join(", "))

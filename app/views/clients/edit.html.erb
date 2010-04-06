@@ -1,6 +1,6 @@
 <div id="content">
 <fieldset class="basic">
-	<legend><%=_ 'Edit Client' %></legend>
+	<legend><%= @customer.name %></legend>
 	<% form_tag :action => 'update', :id => @customer do %>
    	  <%= render :partial => "form" %>
 	  <%= submit_tag _("Save"), :class => "nolabel" %>

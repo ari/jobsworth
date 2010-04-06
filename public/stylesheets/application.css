@@ -2478,6 +2478,36 @@ a.widget-collapsed {
     font-weight: bold;
 }
 
+/*  User list */
+ul.clients, ul.clients ul {
+	-moz-padding-start: 0;
+}
+
+ul.clients ul {
+	margin-left: 10px;
+}
+
+ul.clients a {
+	color: black;
+}
+
+ul.clients li {
+	list-style-type: none;
+	font-size: 1.2em;
+	margin-top: 10px;
+}
+
+ul.clients li li {
+	font-size: 0.8em;
+	margin-top: 0px;
+	line-height: 24px;
+}
+
+ul.clients img {
+	vertical-align: text-bottom;
+}
+/* ------------------- */
+
 .project-block {
     margin: 1em;;
     padding-bottom: 1em;
@@ -2982,12 +3012,13 @@ fieldset.basic .actions label {
     padding-left: 10px;
 }
 
-#customer_search_filters {
-    float: left;
-}
-
 .filter_options {
     float: right;
+}
+
+/* This class is used for the client/user search for now */
+.search_filter {
+    font-size: 16px;
 }
 
 #search_filter_form {
