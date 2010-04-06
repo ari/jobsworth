@@ -14,7 +14,7 @@
 		<% end %>
 		<ul>
 		<%
-		@users.each do |u|
+		(@users || []).each  do |u|
 			if u.customer == customer
 		%>
 				<li>
