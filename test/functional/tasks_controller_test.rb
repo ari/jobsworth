@@ -69,7 +69,6 @@ class TasksControllerTest < ActionController::TestCase
   end
 
   test "/update_sheet_info should render ok" do
-    @user.chats.build(:active => 1, :target => @user).save!
     get :update_sheet_info, :format => "js"
     assert_response :success
   end

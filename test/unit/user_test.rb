@@ -16,8 +16,6 @@ class UserTest < ActiveRecord::TestCase
 
   should_have_many :task_filters, :dependent => :destroy
   should_have_many :sheets, :dependent => :destroy
-  should_have_many :chats, :dependent => :destroy
-  should_have_many :chat_messages, :through => :chats
   should_have_many :notes
   should_have_many :preferences
 
@@ -273,7 +271,6 @@ end
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
-#  option_floating_chat       :boolean(1)      default(TRUE)
 #  days_per_week              :integer(4)      default(5)
 #  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
