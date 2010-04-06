@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100325072050) do
+ActiveRecord::Schema.define(:version => 20100403235106) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -24,31 +24,6 @@ ActiveRecord::Schema.define(:version => 20100325072050) do
   add_index "activities", ["company_id"], :name => "fk_activities_company_id"
   add_index "activities", ["customer_id"], :name => "fk_activities_customer_id"
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
-
-  create_table "chat_messages", :force => true do |t|
-    t.integer  "chat_id"
-    t.integer  "user_id"
-    t.string   "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "archived",   :default => false
-  end
-
-  add_index "chat_messages", ["chat_id", "created_at"], :name => "index_chat_messages_on_chat_id_and_created_at"
-  add_index "chat_messages", ["user_id"], :name => "fk_chat_messages_user_id"
-
-  create_table "chats", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "target_id"
-    t.integer  "active",     :default => 1
-    t.integer  "position",   :default => 0
-    t.integer  "last_seen",  :default => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "chats", ["user_id", "position"], :name => "index_chats_on_user_id_and_position"
-  add_index "chats", ["user_id", "target_id"], :name => "index_chats_on_user_id_and_target_id"
 
   create_table "companies", :force => true do |t|
     t.string   "name",                :limit => 200, :default => "",    :null => false
@@ -571,39 +546,6 @@ ActiveRecord::Schema.define(:version => 20100325072050) do
   add_index "sheets", ["task_id"], :name => "index_sheets_on_task_id"
   add_index "sheets", ["user_id"], :name => "index_sheets_on_user_id"
 
-  create_table "shout_channel_subscriptions", :force => true do |t|
-    t.integer "shout_channel_id"
-    t.integer "user_id"
-  end
-
-  add_index "shout_channel_subscriptions", ["shout_channel_id"], :name => "index_shout_channel_subscriptions_on_shout_channel_id"
-  add_index "shout_channel_subscriptions", ["user_id"], :name => "index_shout_channel_subscriptions_on_user_id"
-
-  create_table "shout_channels", :force => true do |t|
-    t.integer "company_id"
-    t.integer "project_id"
-    t.string  "name"
-    t.text    "description"
-    t.integer "public"
-  end
-
-  add_index "shout_channels", ["company_id"], :name => "index_shout_channels_on_company_id"
-
-  create_table "shouts", :force => true do |t|
-    t.integer  "company_id"
-    t.integer  "user_id"
-    t.datetime "created_at"
-    t.text     "body"
-    t.integer  "shout_channel_id"
-    t.integer  "message_type",     :default => 0
-    t.string   "nick"
-  end
-
-  add_index "shouts", ["company_id"], :name => "shouts_company_id_index"
-  add_index "shouts", ["created_at"], :name => "shouts_created_at_index"
-  add_index "shouts", ["shout_channel_id"], :name => "index_shouts_on_shout_channel_id"
-  add_index "shouts", ["user_id"], :name => "fk_shouts_user_id"
-
   create_table "statuses", :force => true do |t|
     t.integer  "company_id"
     t.string   "name"
@@ -716,7 +658,7 @@ ActiveRecord::Schema.define(:version => 20100325072050) do
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
-  add_index "tasks", ["task_num", "company_id", "type"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
+  add_index "tasks", ["type", "task_num", "company_id"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
 
   create_table "time_ranges", :force => true do |t|
     t.string   "name"
