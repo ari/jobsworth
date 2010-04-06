@@ -254,9 +254,9 @@ class Task < ActiveRecord::Base
       ""
     end
   end
-  
+
   def resolved?
-    status != 0   
+    status != 0
   end
   def open?
     status == 0
@@ -603,6 +603,14 @@ class Task < ActiveRecord::Base
     end
   end
 
+  #set default properties for new task
+  def set_default_properties
+    task_property_values.clear
+    self.company.properties.each do |property|
+      task_property_values.build(:property_id=>property.id, :property_value_id=> property.default_value.id)
+    end
+  end
+
   def Task.csv_header
     ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution', 'Priority', 'Severity']
   end
@@ -622,7 +630,7 @@ class Task < ActiveRecord::Base
       # only create a new one if property_value is set
       task_property_values.create(:property_id => property.id, :property_value_id => property_value.id)
     end
-  end  
+  end
 
   # Returns the value of the given property for this task
   def property_value(property)

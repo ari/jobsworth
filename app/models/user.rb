@@ -2,7 +2,7 @@
 require 'digest/md5'
 
 class User < ActiveRecord::Base
-  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy, 
+  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
   include CustomAttributeMethods
@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
 
   has_many      :task_filters, :dependent => :destroy
   has_many      :sheets, :dependent => :destroy
-  
+
   has_many      :preferences, :as => :preferencable
   include PreferenceMethods
 
@@ -76,15 +76,15 @@ class User < ActiveRecord::Base
   }
 
   before_create                 :generate_uuid
-  after_create			:generate_widgets
+  after_create      :generate_widgets
   before_validation_on_create :set_date_time_formats
-  
+
   attr_protected :uuid, :autologin
 
   named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
 
   ###
-  # Searches the users for company and returns 
+  # Searches the users for company and returns
   # any that have names or ids that match at least one of
   # the given strings
   ###
@@ -121,7 +121,7 @@ class User < ActiveRecord::Base
   def new_widget
     Widget.new(:user => self, :company_id => self.company_id, :collapsed => 0, :configured => true)
   end
-  
+
   def generate_widgets
 
     old_lang = Localization.lang
@@ -137,7 +137,7 @@ class User < ActiveRecord::Base
     w.column = 0
     w.position = 0
     w.save
-    
+
     w = new_widget
     w.name = _("Newest Tasks")
     w.widget_type = 0
@@ -147,7 +147,7 @@ class User < ActiveRecord::Base
     w.column = 0
     w.position = 1
     w.save
-    
+
     w = new_widget
     w.name = _("Recent Activities")
     w.widget_type = 2
@@ -155,7 +155,7 @@ class User < ActiveRecord::Base
     w.column = 2
     w.position = 0
     w.save
-    
+
     w = new_widget
     w.name = _("Open Tasks")
     w.widget_type = 3
@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
     w.column = 1
     w.position = 0
     w.save
-    
+
     w = new_widget
     w.name = _("Projects")
     w.widget_type = 1
@@ -172,11 +172,11 @@ class User < ActiveRecord::Base
     w.column = 1
     w.position = 1
     w.save
-    
+
     Localization.lang(old_lang)
 
   end
-  
+
   def avatar_url(size=32, secure = false)
     if avatar?
       if size > 25 && File.exist?(avatar_large_path)
@@ -186,9 +186,9 @@ class User < ActiveRecord::Base
       end
     elsif email
       if secure
-	"https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+  "https://secure.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
       else
-	"http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
+  "http://www.gravatar.com/avatar.php?gravatar_id=#{Digest::MD5.hexdigest(self.email.downcase)}&rating=PG&size=#{size}"
       end
     end
   end
@@ -198,11 +198,11 @@ class User < ActiveRecord::Base
   end
 
 #  def login(subdomain = nil)
-#	  company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
-#	  companyId = company.nil ? 1 : company.id
-#	  User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
+#   company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
+#   companyId = company.nil ? 1 : company.id
+#   User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
 #  end
-  
+
   def login(company = nil)
     return if !company or !company.respond_to?(:users)
     return company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
@@ -219,8 +219,8 @@ class User < ActiveRecord::Base
         ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all'].each do |p_perm|
           @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
         end
-      end 
-    end 
+      end
+    end
 
     (@perm_cache[project.id][perm] || false)
   end
@@ -238,7 +238,7 @@ class User < ActiveRecord::Base
     end
     false
   end
-  
+
   def admin?
     self.admin > 0
   end
@@ -248,7 +248,7 @@ class User < ActiveRecord::Base
   # of the website.
   ###
   def can_view_clients?
-    self.admin? or 
+    self.admin? or
       (self.read_clients? and self.option_externalclients?)
   end
 
@@ -257,7 +257,7 @@ class User < ActiveRecord::Base
     projects.include?(task.project) || task.linked_users.include?(self)
   end
 
-  # Returns a fragment of sql to restrict tasks to only the ones this 
+  # Returns a fragment of sql to restrict tasks to only the ones this
   # user can see
   def user_tasks_sql
     res = []
@@ -267,26 +267,26 @@ class User < ActiveRecord::Base
 
     res << "task_owners.user_id = #{ self.id }"
     res << "notifications.user_id = #{ self.id }"
-    
+
     res = res.join(" or ")
     return "(#{ res })"
   end
-  
+
   # Returns an array of all project ids that this user has
   # access to. Even completed projects will be included.
   def all_project_ids
     @all_project_ids ||= all_projects.map { |p| p.id }
   end
 
-  # Returns an array of all customers this user has access to 
-  # (through projects). 
+  # Returns an array of all customers this user has access to
+  # (through projects).
   # If options is passed, those options will be passed to the find.
   def customers(options = {})
     company.customers.all(search_options_through_projects("customers", options))
   end
 
- # Returns an array of all milestone this user has access to 
-  # (through projects). 
+ # Returns an array of all milestone this user has access to
+  # (through projects).
   # If options is passed, those options will be passed to the find.
   def milestones(options = {})
     company.milestones.all(search_options_through_projects("milestones", options))
@@ -307,11 +307,11 @@ class User < ActiveRecord::Base
   def offline?
     !self.online?
   end
-  
+
   def idle?
     ( (!self.last_ping_at.nil?) && (self.last_ping_at > 3.minutes.ago.utc) && (self.last_seen_at.nil? || self.last_seen_at < 10.minutes.ago.utc))
   end
-  
+
   def online_status_name
     if self.last_ping_at.nil? || self.last_ping_at < 3.minutes.ago.utc
       return "<span class=\"status-offline\">#{self.name} (offline)</span>"
@@ -330,20 +330,20 @@ class User < ActiveRecord::Base
 
   # Get date formatter in a form suitable for jQuery-UI
   def dateFormat
-  	return 'mm/dd/yy' if self.date_format == '%m/%d/%Y'
-  	return 'dd/mm/yy' if self.date_format == '%d/%m/%Y' 
-  	return 'yy/mm/dd' if self.date_format == '%Y-%m-%d'
+    return 'mm/dd/yy' if self.date_format == '%m/%d/%Y'
+    return 'dd/mm/yy' if self.date_format == '%d/%m/%Y'
+    return 'yy/mm/dd' if self.date_format == '%Y-%m-%d'
   end
-  
+
   def shout_nick
     n = nil
     # Upcase first character of all words in a string, and truncate all middle words with first character + ".".
-	# eg. "elvis aaron presley" => "Elvis A. Presley"
+  # eg. "elvis aaron presley" => "Elvis A. Presley"
     # n = name.gsub(/[^\s\w]+/, '').split(" ") if name
     # n = ["Anonymous"] if(n.nil? || n.empty?)
 
     # "#{n[0].chars.capitalize} #{n[1..-1].collect{|e| e.chars[0..0].upcase + "."}.join(' ')}".strip
-    
+
     # disabled since it seems superfluous and doesn't work in Rails 2.3
     n= name
   end
@@ -353,7 +353,7 @@ class User < ActiveRecord::Base
       "/images/presence-idle.png"
     elsif self.online?
       "/images/presence-online.png"
-    else 
+    else
       "/images/presence-offline.png"
     end
   end
@@ -377,7 +377,7 @@ class User < ActiveRecord::Base
 
   private
 
-  # Sets up search options to use in a find for things linked to 
+  # Sets up search options to use in a find for things linked to
   # through projects.
   # See methods customers and milestones.
   def search_options_through_projects(lookup, options = {})
@@ -390,7 +390,7 @@ class User < ActiveRecord::Base
     options[:include] ||= []
     options[:include] << (lookup == "milestones" ? :project : :projects)
 
-    options = options.merge(:order => "lower(#{ lookup }.name)")    
+    options = options.merge(:order => "lower(#{ lookup }.name)")
 
     return options
   end
