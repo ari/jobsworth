@@ -55,33 +55,18 @@ class TasksControllerTest < ActionController::TestCase
     assert_template "tasks/edit"
     assert_response :success
   end
-# this test(2 following) have some duplicate 
-# test_validate_checks_mandatory_properties, 
-# which checks TaskModel. But TasksController do more whith task,
-# then TaskModel. So must test TasksController. Later must be refactoring
-# TasksController and TaskModel.
+
   test "/update should render error message on name when name not presented" do
     task = Task.first
     post(:update, :id => task.id, :task => { :name => "" })
-    assert assigned[:task].errors.invalid?(:name)
+    assert assigns['task'].errors.invalid?(:name)
   end
 
   test "/update should render error message on project when project not presented" do
     task = Task.first
     post(:update, :id => task.id, :task => { :project_id =>""})
-    assert assigned[:task].errors.invalid?(:project_id)
+    assert assigns['task'].errors.invalid?(:project_id)
   end
-  
-  #test "/update should render error message on mandatory propertyies if not presented " do
-  #  task = Task.first
-  #  post(:update, :id => task.id, :task => {:proprties =>{id => ""}})
-  #  assert assigned[:task].errors.invalide?(:properties)
-  #end
-
-  test do
-  end
-  
-  
 
   test "/update_sheet_info should render ok" do
     @user.chats.build(:active => 1, :target => @user).save!
