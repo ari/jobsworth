@@ -16,12 +16,13 @@ class User < ActiveRecord::Base
 
   has_many      :pages, :dependent => :nullify
   has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
+
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :work_log_notifications, :dependent => :destroy
 
-  has_many      :notifications, :dependent => :destroy
+  has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
 
   has_many      :forums, :through => :moderatorships, :order => 'forums.name'
@@ -246,7 +247,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project) || task.linked_users.include?(self)
+    projects.include?(task.project) || task.users.include?(self)
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this
@@ -257,8 +258,7 @@ class User < ActiveRecord::Base
       res << "tasks.project_id in (#{ all_project_ids.join(",") })"
     end
 
-    res << "task_owners.user_id = #{ self.id }"
-    res << "notifications.user_id = #{ self.id }"
+    res << "task_users.user_id = #{ self.id }"
 
     res = res.join(" or ")
     return "(#{ res })"
