@@ -1,0 +1,2 @@
+class TaskWatcher < TaskUser
+end
