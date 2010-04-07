@@ -621,11 +621,11 @@ ActiveRecord::Schema.define(:version => 20100410224800) do
   create_table "task_users", :force => true do |t|
     t.integer  "user_id"
     t.integer  "task_id"
-    t.boolean  "owner"
     t.boolean  "unread"
     t.boolean  "notified_last_change"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type",                 :default => "TaskOwner"
   end
 
   create_table "tasks", :force => true do |t|
