@@ -151,7 +151,7 @@ class TaskTest < ActiveRecord::TestCase
     v1 = property_values(:first)
     v2 = property_values(:third)
 
-    @task.properties = { 
+    @task.properties = {
       properties(:first).id => v1.id,
       properties(:second).id => v2.id
     }
@@ -169,7 +169,7 @@ class TaskTest < ActiveRecord::TestCase
     v1 = property_values(:first)
     v2 = property_values(:third)
 
-    @task.properties = { 
+    @task.properties = {
       properties(:first).id => v1.id,
       properties(:second).id => v2.id
     }
@@ -231,8 +231,8 @@ class TaskTest < ActiveRecord::TestCase
     u2 = users(:fudge)
 
     @task.watchers << u1
-    @task.users << u2
-    
+    @task.owners << u2
+
     emails = @task.notification_email_addresses
     assert emails.include?(u1.email)
     assert emails.include?(u2.email)
@@ -245,8 +245,8 @@ class TaskTest < ActiveRecord::TestCase
     u2 = users(:fudge)
 
     @task.watchers << u1
-    @task.users << u2
-    
+    @task.owners << u2
+
     emails = @task.notification_email_addresses
     assert !emails.include?(u1.email)
     assert emails.include?(u2.email)
@@ -258,8 +258,8 @@ class TaskTest < ActiveRecord::TestCase
     u2 = users(:fudge)
 
     @task.watchers << u1
-    @task.users << u2
-    
+    @task.owners << u2
+
     emails = @task.notification_email_addresses(u1)
     assert !emails.include?(u1.email)
     assert emails.include?(u2.email)
@@ -275,19 +275,15 @@ class TaskTest < ActiveRecord::TestCase
     u2 = users(:fudge)
 
     @task.watchers << u1
-    @task.users << u2
+    @task.owners << u2
 
     @task.mark_as_unread
 
-    n = Notification.find(:first, :conditions => { 
-                            :user_id => u1.id, 
-                            :task_id => @task.id })
+    n = @task.task_watchers.find(:first, :conditions => { :user_id => u1.id })
     assert_not_nil n
     assert n.unread?
 
-    o = TaskOwner.find(:first, :conditions => {
-                         :user_id => u2.id,
-                         :task_id => @task.id })
+    o = @task.task_owners.find(:first, :conditions => {:user_id => u2.id})
     assert_not_nil n
     assert o.unread?
   end
@@ -298,11 +294,9 @@ class TaskTest < ActiveRecord::TestCase
     u2 = users(:fudge)
 
     @task.watchers << u1
-    @task.users << u2
+    @task.owners << u2
 
-    n = Notification.find(:first, :conditions => { 
-                            :user_id => u1.id, 
-                            :task_id => @task.id })
+    n = @task.task_watchers.find(:first, :conditions => { :user_id => u1.id })
     n.unread = true
     n.save
 
@@ -342,13 +336,13 @@ class TaskTest < ActiveRecord::TestCase
       assert_not_equal c1, c2
 
       assert_equal 0, @task.customers.length
-      @task.customer_attributes = { 
+      @task.customer_attributes = {
         c1.id => { "member" => "1" },
-        c2.id => { "member" => "1" } 
+        c2.id => { "member" => "1" }
       }
       assert_equal 2, @task.customers.length
 
-      @task.customer_attributes = { 
+      @task.customer_attributes = {
         c1.id => { "add" => "1" }
       }
       assert_equal 1, @task.customers.length
@@ -447,8 +441,8 @@ class TaskTest < ActiveRecord::TestCase
 
     should "return duration work grouped by users" do
       work = @task.user_work
-      assert_equal 150, work[@user1] 
-      assert_equal 77, work[@user2] 
+      assert_equal 150, work[@user1]
+      assert_equal 77, work[@user2]
       assert_nil work[@user3]
     end
   end
