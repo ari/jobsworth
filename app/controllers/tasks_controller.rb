@@ -466,7 +466,7 @@ class TasksController < ApplicationController
     end
 
     user = current_user.company.users.find(params[:user_id])
-    @task.notifications.build(:user => user)
+    @task.task_watchers.build(:user => user)
 
     render(:partial => "tasks/notification", :locals => { :notification => user })
   end
@@ -735,7 +735,5 @@ protected
     end
     template.todos.each{|todo| task.todos<< todo.clone }
   end
-
-
 end
 
