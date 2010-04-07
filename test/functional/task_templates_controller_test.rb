@@ -75,8 +75,8 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       should 'change todos' do
       end
       should 'change users' do
-        assert_same_elements @parameters[:users], @template.user_ids+@template.watcher_ids
-        assert_equal @parameters[:assigned], @template.user_ids
+        assert_same_elements @parameters[:users], @template.user_ids
+        assert_equal @parameters[:assigned], @template.owner_ids
       end
       should 'change clients' do
         assert_equal @parameters[:task][:customer_attributes].keys, @template.customer_ids
