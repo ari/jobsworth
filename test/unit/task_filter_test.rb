@@ -60,7 +60,7 @@ class TaskFilterTest < ActiveSupport::TestCase
   should_filter_on Milestone
   should_filter_on Customer, "projects.customer_id"
   should_filter_on Customer, "task_customers.customer_id"
-  should_filter_on User, "task_owners.user_id"
+  should_filter_on User, "task_users.user_id"
   should_filter_on Tag, "task_tags.tag_id"
 
   context "a normal company" do
@@ -158,9 +158,8 @@ class TaskFilterTest < ActiveSupport::TestCase
       filter = TaskFilter.make(:unread_only => true)
       user = filter.user
       conditions = filter.conditions
-      expected = "((task_owners.unread = ? and task_owners.user_id = #{ user.id })"
-      expected += " or (notifications.unread = ? and notifications.user_id = #{ user.id }))"
-      expected = TaskFilter.send(:sanitize_sql_array, [ expected, true, true ])
+      expected = "((task_users.unread = ? and task_users.user_id = #{ user.id })"
+      expected = TaskFilter.send(:sanitize_sql_array, [ expected, true ])
 
       assert_not_nil conditions.index(expected)
     end
