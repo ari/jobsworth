@@ -78,6 +78,8 @@ class Customer < ActiveRecord::Base
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: customers
@@ -90,7 +92,10 @@ end
 #  created_at    :datetime
 #  updated_at    :datetime
 #  css           :text
-#  binary_id     :integer(4)
 #  active        :boolean(1)      default(TRUE)
+#
+# Indexes
+#
+#  customers_company_id_index  (company_id,name)
 #
 

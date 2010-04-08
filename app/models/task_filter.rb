@@ -343,6 +343,7 @@ private
   end
 end
 
+
 # == Schema Information
 #
 # Table name: task_filters
@@ -356,5 +357,10 @@ end
 #  updated_at  :datetime
 #  system      :boolean(1)      default(FALSE)
 #  unread_only :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  fk_task_filters_user_id     (user_id)
+#  fk_task_filters_company_id  (company_id)
 #
 

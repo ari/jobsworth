@@ -4,6 +4,7 @@ class PreferenceTest < ActiveSupport::TestCase
   should_belong_to :preferencable
 end
 
+
 # == Schema Information
 #
 # Table name: preferences
@@ -15,5 +16,9 @@ end
 #  value              :text
 #  created_at         :datetime
 #  updated_at         :datetime
+#
+# Indexes
+#
+#  index_preferences_on_preferencable_id_and_preferencable_type  (preferencable_id,preferencable_type)
 #
 

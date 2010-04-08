@@ -9,6 +9,7 @@ class ScmProjectTest < ActiveRecord::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: scm_projects
@@ -22,5 +23,9 @@ end
 #  last_checkout    :datetime
 #  module           :text
 #  location         :text
+#
+# Indexes
+#
+#  fk_scm_projects_company_id  (company_id)
 #
 

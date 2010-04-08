@@ -6,6 +6,7 @@ class SheetTest < ActiveRecord::TestCase
   should_validate_presence_of :user
 end
 
+
 # == Schema Information
 #
 # Table name: sheets
@@ -18,5 +19,10 @@ end
 #  body            :text
 #  paused_at       :datetime
 #  paused_duration :integer(4)      default(0)
+#
+# Indexes
+#
+#  index_sheets_on_task_id  (task_id)
+#  index_sheets_on_user_id  (user_id)
 #
 

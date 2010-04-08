@@ -4,6 +4,7 @@ class Locale < ActiveRecord::Base
   belongs_to :user
 end
 
+
 # == Schema Information
 #
 # Table name: locales
@@ -17,5 +18,9 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #  same       :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  index_locales_on_locale_and_key  (locale,key) UNIQUE
 #
 

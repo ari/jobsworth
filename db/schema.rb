@@ -26,17 +26,15 @@ ActiveRecord::Schema.define(:version => 20100403235106) do
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "companies", :force => true do |t|
-    t.string   "name",                :limit => 200, :default => "",    :null => false
-    t.string   "contact_email",       :limit => 200
-    t.string   "contact_name",        :limit => 200
+    t.string   "name",          :limit => 200, :default => "",   :null => false
+    t.string   "contact_email", :limit => 200
+    t.string   "contact_name",  :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                          :default => "",    :null => false
-    t.boolean  "show_wiki",                          :default => true
-    t.boolean  "show_forum",                         :default => true
-    t.boolean  "show_chat",                          :default => true
-    t.boolean  "show_messaging",                     :default => true
-    t.boolean  "restricted_userlist",                :default => false
+    t.string   "subdomain",                    :default => "",   :null => false
+    t.boolean  "show_wiki",                    :default => true
+    t.boolean  "show_forum",                   :default => true
+    t.boolean  "show_chat",                    :default => true
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
@@ -658,7 +656,7 @@ ActiveRecord::Schema.define(:version => 20100403235106) do
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
-  add_index "tasks", ["task_num", "company_id", "type"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
+  add_index "tasks", ["type", "task_num", "company_id"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
 
   create_table "time_ranges", :force => true do |t|
     t.string   "name"

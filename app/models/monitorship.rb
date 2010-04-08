@@ -6,6 +6,7 @@ class Monitorship < ActiveRecord::Base
   belongs_to :forum, :foreign_key => :monitorship_id
 end
 
+
 # == Schema Information
 #
 # Table name: monitorships
@@ -15,5 +16,9 @@ end
 #  user_id          :integer(4)
 #  active           :boolean(1)      default(TRUE)
 #  monitorship_type :string(255)
+#
+# Indexes
+#
+#  index_monitorships_on_user_id  (user_id)
 #
 

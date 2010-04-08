@@ -28,6 +28,7 @@ class CustomAttributeValue < ActiveRecord::Base
   end
 end
 
+
 # == Schema Information
 #
 # Table name: custom_attribute_values
@@ -40,5 +41,10 @@ end
 #  created_at          :datetime
 #  updated_at          :datetime
 #  choice_id           :integer(4)
+#
+# Indexes
+#
+#  index_custom_attribute_values_on_custom_attribute_id  (custom_attribute_id)
+#  by_attributables                                      (attributable_id,attributable_type)
 #
 

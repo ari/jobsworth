@@ -7,6 +7,7 @@ class Email < ActiveRecord::Base
   belongs_to :user
 end
 
+
 # == Schema Information
 #
 # Table name: emails
@@ -20,5 +21,10 @@ end
 #  user_id    :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#
+# Indexes
+#
+#  fk_emails_user_id     (user_id)
+#  fk_emails_company_id  (company_id)
 #
 
