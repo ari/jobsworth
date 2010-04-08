@@ -16,7 +16,7 @@ class WidgetsController < ApplicationController
     unless @widget.configured?
       render :update do |page|
         page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
-        page.show "config-#{@widget.dom_id}"
+        page << "jQuery('#config-#{@widget.dom_id}').show('slow')" 
       end
       return
     end
@@ -429,11 +429,11 @@ class WidgetsController < ApplicationController
     end
 
     render :update do |page|
-      page << "if(!$('config-#{@widget.dom_id}' ) ) {"
+      page << "if(!jQuery('#config-#{@widget.dom_id}' ).size() ) {"
       page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
-      page.visual_effect :slide_down, "config-#{@widget.dom_id}"
+      page << "jQuery('#config-#{@widget.dom_id}' ).fadeIn('slow')"
       page << "} else {"
-      page.visual_effect :slide_up, "config-#{@widget.dom_id}"
+      page << "jQuery('#config-#{@widget.dom_id}' ).fadeOut('slow')" 
       page.delay(1) do 
         page.remove "config-#{@widget.dom_id}"
       end
