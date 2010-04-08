@@ -34,7 +34,6 @@ ActiveRecord::Schema.define(:version => 20100403235106) do
     t.string   "subdomain",                    :default => "",   :null => false
     t.boolean  "show_wiki",                    :default => true
     t.boolean  "show_forum",                   :default => true
-    t.boolean  "show_chat",                    :default => true
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
