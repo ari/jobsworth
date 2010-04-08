@@ -2,15 +2,12 @@
 *#
 \.#*
 *.bak
-_darcs
 \.svn
 /index
 /store
 /nbproject
 config/database.yml
-config/ferret_server.yml
 config/environment.local.rb
-config/juggernaut_config.yml
 config/custom.gems.rb
 semantic.cache
 tmp
@@ -19,7 +16,6 @@ tmp
 .project
 .idea
 lib/scripts/*.rb
-config/juggernaut_config.yml
 public/javascripts/main.js
 public/javascripts/popup.js
 public/javascripts/prototype-all.js
