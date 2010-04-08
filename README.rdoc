@@ -119,16 +119,8 @@ Next, make sure the database is updated:
 
 Depending on which environment you are updating, you can change the RAIL_ENV value to "test" or "development" and the appropriate database will be updated.
 
-Find the daemon running with
+Restart the web server just to ensure anything cached is cleared
 
-  ps ax | grep push_server
-
-then kill the push server daemon.
-
-Restart daemon
-
-  cd /usr/local/www/jobsworth
-  nohup ./script/push_server &
   apachectl graceful
   
 Clear out cached asset files
