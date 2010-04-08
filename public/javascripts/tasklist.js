@@ -7,6 +7,7 @@ function loadTask(id) {
     jQuery.get("/tasks/edit/" + id, {}, function(data) {
                 jQuery("#task").html(data);
                 jQuery("#task").fadeIn('slow');
+                attach_behaviour_to_project_select();
     });
 }
 

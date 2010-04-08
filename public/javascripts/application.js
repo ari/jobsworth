@@ -780,7 +780,9 @@ jQuery(document).ready(function() {
   Attach behavior to views/tasks/_details.html.erb,
   instead of removed helper method task_project_watchers_js
 */
-jQuery(document).ready(function(){
+jQuery(document).ready(attach_behaviour_to_project_select);
+function attach_behaviour_to_project_select()
+{
   var projectSelect = jQuery('#task_project_id');
   if(projectSelect.size()){
     projectSelect.change(function(){
@@ -790,8 +792,7 @@ jQuery(document).ready(function(){
       addClientLinkForTask(projectId);
     });
   }
-});
-
+}
 /*Attach behavior to filters panel,
   change filter via ajax only on task/list page.
   On all other pages, when user click on filter link change filter
