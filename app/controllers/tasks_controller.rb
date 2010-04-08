@@ -414,7 +414,7 @@ class TasksController < ApplicationController
   def get_csv
     list_init
     filename = "clockingit_tasks.csv"
-    @tasks= current_filter.tasks
+    @tasks= current_task_filter.tasks
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
       csv << Task.csv_header
       @tasks.each do |t|
