@@ -607,7 +607,7 @@ class Task < ActiveRecord::Base
   def set_default_properties
     task_property_values.clear
     self.company.properties.each do |property|
-      task_property_values.build(:property_id=>property.id, :property_value_id=> property.default_value.id)
+      task_property_values.build(:property_id=>property.id, :property_value_id=> property.default_value.id) unless property.default_value.nil?
     end
   end
 

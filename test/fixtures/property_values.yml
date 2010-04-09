@@ -15,8 +15,8 @@ fourth:
   default: true
 fifth:
   value: value 5
-  property: third
-  default: true
+  property: fourth
+  default: false
 
 
 

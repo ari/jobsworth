@@ -1,8 +1,8 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class MailmanTest < ActiveSupport::TestCase
-  fixtures :tasks, :users, :companies, :projects
-  
+  fixtures :tasks, :users, :companies, :projects, :properties
+
   def setup
     @task = Task.first
     @company = @task.company
@@ -15,7 +15,7 @@ class MailmanTest < ActiveSupport::TestCase
 
     @tmail = TMail::Mail.parse(test_mail)
 
-    WorkLog.delete_all 
+    WorkLog.delete_all
     ActionMailer::Base.deliveries.clear
   end
 
@@ -45,7 +45,7 @@ class MailmanTest < ActiveSupport::TestCase
     assert_equal @user, log.user
     assert_equal EventLog::TASK_COMMENT, log.log_type
   end
-  
+
   def test_body_gets_trimmed_properly
     assert_equal 0, WorkLog.count
 
@@ -124,20 +124,20 @@ o------ please reply above this line ------o
     Mailman.receive(@tmail.to_s)
     assert_equal status, @task.reload.status
   end
-  
+
   context "A normal email" do
 
     context "to a task with watchers" do
       setup do
         assert_emails 0
-        
+
         @task.notify_emails = "test1@example.com,test2@example.com"
         @task.save!
-        
+
         @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
         @task.notifications.each { |n| n.update_attribute(:notified_last_change, true) }
       end
-      
+
       should "deliver changed emails to users, watcher and email watchers" do
         Mailman.receive(@tmail.to_s)
         emails_to_send = @task.users.count + @task.watchers.count
@@ -145,14 +145,14 @@ o------ please reply above this line ------o
         if @task.users.include?(@user) or @task.watchers.include?(@user)
           emails_to_send -= 1 # because sender should be excluded
         end
-        
+
         assert_emails emails_to_send
       end
 
       should "list people who received notification emails" do
         no_mail = @task.notifications.last
         no_mail.update_attributes(:notified_last_change => false)
-        
+
         Mailman.receive(@tmail.to_s)
         comment = @task.work_logs.reload.comments.last.body
 
@@ -170,7 +170,7 @@ o------ please reply above this line ------o
       @project = @company.projects.last
       @company.preference_attributes = { "incoming_email_project" => @project.id }
 
-      # need an admin user 
+      # need an admin user
       @company.users.first.update_attribute(:admin, true)
     end
 
@@ -188,7 +188,7 @@ o------ please reply above this line ------o
     end
 
     should "have the original senders email in comment if no user with that email" do
-      # need only one company  
+      # need only one company
       Company.all.each { |c| c.destroy if c != @company }
 
       count = @project.tasks.count
@@ -210,13 +210,22 @@ o------ please reply above this line ------o
       assert notification.notified_last_change?
     end
 
+    should "set task properties default values" do
+      mail = test_mail(@to, @from)
+      @tmail = TMail::Mail.parse(mail)
+      Mailman.receive(@tmail.to_s)
+      task = Task.find(:first, :order => "id desc")
+      assert_equal @tmail.subject, task.name
+      assert_equal task.property_value(properties(:first)), properties(:first).default_value
+      assert_equal task.property_value(properties(:second)), properties(:second).default_value
+    end
   end
 
   context "a single company install" do
     setup do
       # need an admin user for this
       @company.users.first.update_attribute(:admin, true)
-      # need only one company  
+      # need only one company
       Company.all.each { |c| c.destroy if c != @company }
 
       @project = @company.projects.last
@@ -264,12 +273,12 @@ o------ please reply above this line ------o
       user1 = User.first
       user1.customer = Customer.make(:company => @company, :name => "A")
       user1.save!
-      user2 = User.make(:company => @company, 
+      user2 = User.make(:company => @company,
                         :customer => Customer.make(:company => @company, :name => "B"))
-      
+
       @tmail.from = user1.email
       @tmail.cc = user2.email
-      
+
       Mailman.receive(@tmail.to_s)
       task = Task.first(:order => "id desc")
       assert_equal 2, task.task_customers.length
@@ -281,7 +290,7 @@ o------ please reply above this line ------o
 
 
   private
-  
+
   def test_mail(to = nil, from = nil)
     from ||= @user.email
     to ||= "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
@@ -291,14 +300,14 @@ Return-Path: <brad@lucky-dip.net>
 X-Original-To: brad@lucky-dip.net
 Delivered-To: brad@lucky-dip.net
 Received: by clamps.lucky-dip.net (Postfix, from userid 65534)
-	id 75B711BAB20; Fri, 19 Jun 2009 10:40:51 +1000 (EST)
+  id 75B711BAB20; Fri, 19 Jun 2009 10:40:51 +1000 (EST)
 X-Spam-Checker-Version: SpamAssassin 3.2.4 (2008-01-01) on clamps
-X-Spam-Level: 
+X-Spam-Level:
 X-Spam-Status: No, score=0.2 required=5.0 tests=ALL_TRUSTED,TVD_RCVD_IP
-	autolearn=no version=3.2.4
+  autolearn=no version=3.2.4
 Received: from 192-168-1-106.tpgi.com.au (60-242-202-41.static.tpgi.com.au [60.242.202.41])
-	by clamps.lucky-dip.net (Postfix) with ESMTPA id 19A1F1BAB20
-	for <brad@lucky-dip.net>; Fri, 19 Jun 2009 10:40:49 +1000 (EST)
+  by clamps.lucky-dip.net (Postfix) with ESMTPA id 19A1F1BAB20
+  for <brad@lucky-dip.net>; Fri, 19 Jun 2009 10:40:49 +1000 (EST)
 Message-Id: <291D51CB-24F1-431E-91A4-C099A8E60222@lucky-dip.net>
 From: <#{ from }>
 To: <#{ to }>
@@ -311,8 +320,8 @@ X-Mailer: Apple Mail (2.935.3)
 
 --Apple-Mail-6-776876370
 Content-Type: text/plain;
-	charset=US-ASCII;
-	format=flowed
+  charset=US-ASCII;
+  format=flowed
 Content-Transfer-Encoding: 7bit
 
 Comment
@@ -320,12 +329,12 @@ Comment
 
 --Apple-Mail-6-776876370
 Content-Disposition: inline;
-	filename=blank.png
+  filename=blank.png
 Content-Type: image/png;
-	x-mac-creator=3842494D;
-	x-unix-mode=0644;
-	x-mac-type=504E4766;
-	name="blank.png"
+  x-mac-creator=3842494D;
+  x-unix-mode=0644;
+  x-mac-type=504E4766;
+  name="blank.png"
 Content-Transfer-Encoding: base64
 
 iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAAsTAAALEwEAmpwYAAAK
@@ -381,8 +390,8 @@ ZwAAAABJRU5ErkJggg==
 
 --Apple-Mail-6-776876370
 Content-Type: text/plain;
-	charset=US-ASCII;
-	format=flowed
+  charset=US-ASCII;
+  format=flowed
 Content-Transfer-Encoding: 7bit
 
 

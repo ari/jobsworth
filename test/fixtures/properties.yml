@@ -7,6 +7,9 @@ second:
 third:
   name: Test property 3
   company: fudge
+fourth:
+  name: Test property without default value
+  company: cit
 
 
 # == Schema Information
