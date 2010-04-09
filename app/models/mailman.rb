@@ -207,14 +207,12 @@ class Mailman < ActionMailer::Base
                     :description => "",
                     :duration => 0)
     task.set_task_num(project.company.id)
-    task.set_default_properties
     attach_users_to_task(task, email)
     attach_customers_to_task(task)
 
     # need to do without_validations to get around validation
     # errors on custom attributes
     task.save(false)
-
     send_email_to_creator(task, email)
 
     return task
