@@ -99,7 +99,7 @@ function initTaskList() {
                 pgbuttons:false,
                 pginput:false,
                 rowNum:200,
-                recordtext: '{2} tasks found.',
+                recordtext: '{1} tasks found.',
 
                 height: "300px"
         });
