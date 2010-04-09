@@ -1,41 +1,92 @@
 Feature: Manage access_controls
   In order to use access control across the entire company
-  Company admin
-  wants set access level for tasks, milestones, projects, work logs
+  users with can_only_see_watched permission on project must see only own tasks in this project
 
-  Scenario: Register new access_control
-    Given I am on the new access_control page
-    And I press "Create"
+  Scenario: User with can only see watched permission on all project
+    Given I logged in as user
+    And I have permission can only see watched on all projects
+    When I click on Overview menu
+    Then I go to activities/list
+    And I see only my tasks
 
-  Scenario: Delete access_control
-    Given the following access_controls:
-      ||
-      ||
-      ||
-      ||
-      ||
-    When I delete the 3rd access_control
-    Then I should see the following access_controls:
-      ||
-      ||
-      ||
-      ||
+    When I click on Task menu
+    Then I go to tasks/list
+    When I remove all filters
+    Then I see only my tasks
 
-  Scenario: Set access level for project
-    Given I logged in as "admin"
-    And I am on the projects page
-    Given the following projects
-      | name   | customer |
-      | first  | internal |
-      | second | external |
-    Given the following access levels
-      | name   | color | icon    | accesible object |
-      | low    | white | low.jpg | project          |
-      | secure | black | sec.jpg | project          |
-    When I click on "first project"  link
-    Then I receive  "project edit" page for "first"
-    When I select "low" from "access levels" list
-    And I click "Save" button
-    Then I receive "projects" page
-    And I see "first" project with "white" background
+    When I click on Timeline menu
+    Then I go to timeline/list
+    And I see only my tasks
 
+    When I click on Reports menu
+    And I select Custom in Time Range
+    And I type 1/1/2000 in From
+    And I type 1/1/2011 in To
+    And I push Run Report button
+    Then I see only my tasks
+
+    When type "e" in query
+    And I press Enter key
+    Then I go to sesearch/search
+    And I see only my tasks
+
+  Scenario: User with can only see watched permission on first project
+    Given I logged in as user
+    And I have permission can only see watched on first project
+    When I click on Overview menu
+    Then I go to activities/list
+    And I see only my tasks in first project
+    And I see all tasks in all projects except first
+
+    When I click on Task menu
+    Then I go to tasks/list
+    When I remove all filters
+    Then I see only my tasks in first project
+    And I see all tasks in all projects except first
+
+    When I click on Timeline menu
+    Then I go to timeline/list
+    And I see only my tasks in first project
+    And I see all tasks in all projects except first
+
+    When I click on Reports menu
+    And I select Custom in Time Range
+    And I type 1/1/2000 in From
+    And I type 1/1/2011 in To
+    And I push Run Report button
+    Then I see only my tasks in first project
+    And I see all tasks in all projects except first
+
+    When type "e" in query
+    And I press Enter key
+    Then I go to sesearch/search
+    And I see only my tasks in first project
+    And I see all tasks in all projects exept first
+
+  Scenario: User without  can only see watched permission on all project
+    Given I logged in as user
+    And I not have permission can only see wathced on all projects
+    When I click on Overview menu
+    Then I go to activities/list
+    And I see all tasks
+
+    When I click on Task menu
+    Then I go to tasks/list
+    When I remove all filters
+    Then I see all tasks
+
+    When I click on Timeline menu
+    Then I go to timeline/list
+    And I see all tasks
+
+    When I click on Reports menu
+    And I select Custom in Time Range
+    And I type 1/1/2000 in From
+    And I type 1/1/2011 in To
+    And I push Run Report button
+    Then I see all tasks
+
+    When type "e" in query
+    And I press Enter key
+    Then I go to sesearch/search
+    And I see all tasks
