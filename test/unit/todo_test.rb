@@ -7,6 +7,7 @@ class TodoTest < ActiveSupport::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: todos
@@ -20,5 +21,9 @@ end
 #  created_at           :datetime
 #  updated_at           :datetime
 #  completed_by_user_id :integer(4)
+#
+# Indexes
+#
+#  index_todos_on_task_id  (task_id)
 #
 

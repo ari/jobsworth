@@ -66,6 +66,7 @@ class ViewTest < ActiveRecord::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: views
@@ -91,5 +92,10 @@ end
 #  colors              :integer(4)
 #  icons               :integer(4)
 #  show_all_unread     :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  views_company_id_index  (company_id)
+#  fk_views_user_id        (user_id)
 #
 

@@ -4,6 +4,7 @@ class ScmFile < ActiveRecord::Base
   belongs_to :company
 end
 
+
 # == Schema Information
 #
 # Table name: scm_files
@@ -15,5 +16,10 @@ end
 #  path        :text
 #  state       :string(255)
 #  commit_date :datetime
+#
+# Indexes
+#
+#  scm_files_project_id_index  (project_id)
+#  fk_scm_files_company_id     (company_id)
 #
 

@@ -16,6 +16,7 @@ two:
   multiple: false
   max_length: 1
 
+
 # == Schema Information
 #
 # Table name: custom_attributes
@@ -31,5 +32,9 @@ two:
 #  position            :integer(4)
 #  created_at          :datetime
 #  updated_at          :datetime
+#
+# Indexes
+#
+#  index_custom_attributes_on_company_id_and_attributable_type  (company_id,attributable_type)
 #
 

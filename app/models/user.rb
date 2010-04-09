@@ -390,6 +390,8 @@ class User < ActiveRecord::Base
 
 end
 
+
+
 # == Schema Information
 #
 # Table name: users
@@ -428,6 +430,7 @@ end
 #  option_avatars             :integer(4)      default(1)
 #  autologin                  :string(255)     not null
 #  remember_until             :datetime
+#  option_floating_chat       :boolean(1)      default(TRUE)
 #  days_per_week              :integer(4)      default(5)
 #  enable_sounds              :boolean(1)      default(TRUE)
 #  create_projects            :boolean(1)      default(TRUE)
@@ -441,5 +444,14 @@ end
 #  edit_clients               :boolean(1)      default(FALSE)
 #  can_approve_work_logs      :boolean(1)
 #  auto_add_to_customer_tasks :boolean(1)
+#
+# Indexes
+#
+#  index_users_on_username_and_company_id  (username,company_id) UNIQUE
+#  users_uuid_index                        (uuid)
+#  users_company_id_index                  (company_id)
+#  index_users_on_last_seen_at             (last_seen_at)
+#  index_users_on_autologin                (autologin)
+#  index_users_on_customer_id              (customer_id)
 #
 

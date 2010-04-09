@@ -37,6 +37,8 @@ class PropertyValue < ActiveRecord::Base
   end
 end
 
+
+
 # == Schema Information
 #
 # Table name: property_values
@@ -46,9 +48,13 @@ end
 #  value       :string(255)
 #  color       :string(255)
 #  default     :boolean(1)
-#  position    :integer(4)
+#  position    :integer(4)      not null
 #  created_at  :datetime
 #  updated_at  :datetime
 #  icon_url    :string(1000)
+#
+# Indexes
+#
+#  index_property_values_on_property_id  (property_id)
 #
 

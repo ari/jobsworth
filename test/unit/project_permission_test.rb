@@ -9,6 +9,7 @@ class ProjectPermissionTest < ActiveRecord::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: project_permissions
@@ -28,5 +29,11 @@ end
 #  can_close      :boolean(1)      default(FALSE)
 #  can_grant      :boolean(1)      default(FALSE)
 #  can_milestone  :boolean(1)      default(FALSE)
+#
+# Indexes
+#
+#  project_permissions_project_id_index  (project_id)
+#  project_permissions_user_id_index     (user_id)
+#  fk_project_permissions_company_id     (company_id)
 #
 

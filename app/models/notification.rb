@@ -18,6 +18,7 @@ class Notification < ActiveRecord::Base
 
 end
 
+
 # == Schema Information
 #
 # Table name: notifications
@@ -27,5 +28,10 @@ end
 #  user_id              :integer(4)
 #  unread               :boolean(1)      default(FALSE)
 #  notified_last_change :boolean(1)      default(TRUE)
+#
+# Indexes
+#
+#  index_notifications_on_user_id  (user_id)
+#  index_notifications_on_task_id  (task_id)
 #
 

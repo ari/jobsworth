@@ -70,6 +70,7 @@ class Topic < ActiveRecord::Base
     end
 end
 
+
 # == Schema Information
 #
 # Table name: topics
@@ -87,5 +88,12 @@ end
 #  locked       :boolean(1)      default(FALSE)
 #  replied_by   :integer(4)
 #  last_post_id :integer(4)
+#
+# Indexes
+#
+#  index_topics_on_forum_id                 (forum_id)
+#  index_topics_on_sticky_and_replied_at    (forum_id,sticky,replied_at)
+#  index_topics_on_forum_id_and_replied_at  (forum_id,replied_at)
+#  fk_topics_user_id                        (user_id)
 #
 

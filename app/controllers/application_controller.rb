@@ -19,7 +19,6 @@ class ApplicationController < ActionController::Base
   helper_method :render_to_string
   helper_method :current_user
   helper_method :current_users
-  helper_method :all_users
   helper_method :tz
   helper_method :current_projects
   helper_method :current_project_ids
@@ -56,22 +55,6 @@ class ApplicationController < ActionController::Base
       @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.to_s(:db)}' OR last_seen_at > '#{3.minutes.ago.utc.to_s(:db)}')", :order => "name" )
     end
     @current_users
-  end
-
-  def all_users
-    unless @all_users
-      if current_user.company.restricted_userlist
-        user_ids = [current_user.id]
-        current_user.all_projects.each do |p|
-          user_ids << p.users.collect{ |u| u.id }
-        end
-
-        @all_users = User.find(:all, :conditions => ["company_id = ? AND id IN (#{user_ids.uniq.join(',')})", current_user.company_id], :order => "name")
-      else
-        @all_users = User.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name")
-      end
-    end
-    @all_users
   end
 
   def current_sheet

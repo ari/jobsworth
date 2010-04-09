@@ -9,6 +9,7 @@ class IcalEntryTest < ActiveRecord::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: ical_entries
@@ -17,5 +18,10 @@ end
 #  task_id     :integer(4)
 #  work_log_id :integer(4)
 #  body        :text
+#
+# Indexes
+#
+#  index_ical_entries_on_task_id      (task_id)
+#  index_ical_entries_on_work_log_id  (work_log_id)
 #
 

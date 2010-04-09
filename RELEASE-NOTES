@@ -2,6 +2,9 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+8 April 2010
+	The push server (comet) has been removed along with all the things which depended on it: chat, shout and push notifications. The code is simpler and easier to install, and hopefully a little faster.
+
 22 March 2010
 	The status "in progress" has now been removed. Before upgrading your database, you should ensure that if you are using this status, that you create a new custom property for tasks and copy across all your relevant in progress task statuses.
 

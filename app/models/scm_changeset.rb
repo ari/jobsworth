@@ -31,6 +31,7 @@ class ScmChangeset < ActiveRecord::Base
 
 end
 
+
 # == Schema Information
 #
 # Table name: scm_changesets
@@ -45,5 +46,12 @@ end
 #  commit_date    :datetime
 #  changeset_rev  :string(255)
 #  message        :text
+#
+# Indexes
+#
+#  scm_changesets_commit_date_index  (commit_date)
+#  scm_changesets_author_index       (author)
+#  fk_scm_changesets_user_id         (user_id)
+#  fk_scm_changesets_company_id      (company_id)
 #
 

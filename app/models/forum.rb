@@ -41,6 +41,7 @@ class Forum < ActiveRecord::Base
   format_attribute :description
 end
 
+
 # == Schema Information
 #
 # Table name: forums
@@ -54,5 +55,9 @@ end
 #  posts_count      :integer(4)      default(0)
 #  position         :integer(4)
 #  description_html :text
+#
+# Indexes
+#
+#  index_forums_on_company_id  (company_id)
 #
 

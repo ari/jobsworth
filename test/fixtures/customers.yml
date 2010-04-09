@@ -17,6 +17,8 @@ fudge_internal_customer:
   contact_name: Erlend Simonsen
   css: #menu {color: blue;}
 
+
+
 # == Schema Information
 #
 # Table name: customers
@@ -29,7 +31,10 @@ fudge_internal_customer:
 #  created_at    :datetime
 #  updated_at    :datetime
 #  css           :text
-#  binary_id     :integer(4)
 #  active        :boolean(1)      default(TRUE)
+#
+# Indexes
+#
+#  customers_company_id_index  (company_id,name)
 #
 

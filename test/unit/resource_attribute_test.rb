@@ -30,6 +30,7 @@ class ResourceAttributeTest < ActiveRecord::TestCase
   end
 end
 
+
 # == Schema Information
 #
 # Table name: resource_attributes
@@ -41,5 +42,10 @@ end
 #  password                   :string(255)
 #  created_at                 :datetime
 #  updated_at                 :datetime
+#
+# Indexes
+#
+#  fk_resource_attributes_resource_id                 (resource_id)
+#  fk_resource_attributes_resource_type_attribute_id  (resource_type_attribute_id)
 #
 

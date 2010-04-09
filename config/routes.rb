@@ -65,170 +65,170 @@ ActionController::Routing::Routes.draw do |map|
 
 end
 #== Route Map
-# Generated on 20 Jan 2010 11:12
+# Generated on 08 Apr 2010 19:22
 #
-#                                    triggers GET    /triggers(.:format)                                                 {:action=>"index", :controller=>"triggers"}
-#                                             POST   /triggers(.:format)                                                 {:action=>"create", :controller=>"triggers"}
-#                                 new_trigger GET    /triggers/new(.:format)                                             {:action=>"new", :controller=>"triggers"}
-#                                edit_trigger GET    /triggers/:id/edit(.:format)                                        {:action=>"edit", :controller=>"triggers"}
-#                                     trigger GET    /triggers/:id(.:format)                                             {:action=>"show", :controller=>"triggers"}
-#                                             PUT    /triggers/:id(.:format)                                             {:action=>"update", :controller=>"triggers"}
-#                                             DELETE /triggers/:id(.:format)                                             {:action=>"destroy", :controller=>"triggers"}
-#                                                    /                                                                   {:action=>"login", :controller=>"login"}
-#                                                    /signup                                                             {:action=>"signup", :controller=>"login"}
-#                                                    /screenshots                                                        {:action=>"screenshots", :controller=>"login"}
-#                                                    /policy                                                             {:action=>"policy", :controller=>"login"}
-#                                                    /terms                                                              {:action=>"terms", :controller=>"login"}
-#                                                    /about                                                              {:action=>"about", :controller=>"login"}
-#                                        home        /forums/index                                                       {:action=>"index", :controller=>"forums"}
-#                        attributes_resources GET    /resources/attributes(.:format)                                     {:action=>"attributes", :controller=>"resources"}
-# auto_complete_for_resource_parent_resources GET    /resources/auto_complete_for_resource_parent(.:format)              {:action=>"auto_complete_for_resource_parent", :controller=>"resources"}
-#                                   resources GET    /resources(.:format)                                                {:action=>"index", :controller=>"resources"}
-#                                             POST   /resources(.:format)                                                {:action=>"create", :controller=>"resources"}
-#                                new_resource GET    /resources/new(.:format)                                            {:action=>"new", :controller=>"resources"}
-#                               edit_resource GET    /resources/:id/edit(.:format)                                       {:action=>"edit", :controller=>"resources"}
-#                      show_password_resource GET    /resources/:id/show_password(.:format)                              {:action=>"show_password", :controller=>"resources"}
-#                                    resource GET    /resources/:id(.:format)                                            {:action=>"show", :controller=>"resources"}
-#                                             PUT    /resources/:id(.:format)                                            {:action=>"update", :controller=>"resources"}
-#                                             DELETE /resources/:id(.:format)                                            {:action=>"destroy", :controller=>"resources"}
-#                    attribute_resource_types GET    /resource_types/attribute(.:format)                                 {:action=>"attribute", :controller=>"resource_types"}
-#                              resource_types GET    /resource_types(.:format)                                           {:action=>"index", :controller=>"resource_types"}
-#                                             POST   /resource_types(.:format)                                           {:action=>"create", :controller=>"resource_types"}
-#                           new_resource_type GET    /resource_types/new(.:format)                                       {:action=>"new", :controller=>"resource_types"}
-#                          edit_resource_type GET    /resource_types/:id/edit(.:format)                                  {:action=>"edit", :controller=>"resource_types"}
-#                               resource_type GET    /resource_types/:id(.:format)                                       {:action=>"show", :controller=>"resource_types"}
-#                                             PUT    /resource_types/:id(.:format)                                       {:action=>"update", :controller=>"resource_types"}
-#                                             DELETE /resource_types/:id(.:format)                                       {:action=>"destroy", :controller=>"resource_types"}
-#                        organizational_units GET    /organizational_units(.:format)                                     {:action=>"index", :controller=>"organizational_units"}
-#                                             POST   /organizational_units(.:format)                                     {:action=>"create", :controller=>"organizational_units"}
-#                     new_organizational_unit GET    /organizational_units/new(.:format)                                 {:action=>"new", :controller=>"organizational_units"}
-#                    edit_organizational_unit GET    /organizational_units/:id/edit(.:format)                            {:action=>"edit", :controller=>"organizational_units"}
-#                         organizational_unit GET    /organizational_units/:id(.:format)                                 {:action=>"show", :controller=>"organizational_units"}
-#                                             PUT    /organizational_units/:id(.:format)                                 {:action=>"update", :controller=>"organizational_units"}
-#                                             DELETE /organizational_units/:id(.:format)                                 {:action=>"destroy", :controller=>"organizational_units"}
-#                           target_list_pages        /pages/target_list(.:format)                                        {:action=>"target_list", :controller=>"pages"}
-#                                       pages GET    /pages(.:format)                                                    {:action=>"index", :controller=>"pages"}
-#                                             POST   /pages(.:format)                                                    {:action=>"create", :controller=>"pages"}
-#                                    new_page GET    /pages/new(.:format)                                                {:action=>"new", :controller=>"pages"}
-#                                   edit_page GET    /pages/:id/edit(.:format)                                           {:action=>"edit", :controller=>"pages"}
-#                                        page GET    /pages/:id(.:format)                                                {:action=>"show", :controller=>"pages"}
-#                                             PUT    /pages/:id(.:format)                                                {:action=>"update", :controller=>"pages"}
-#                                             DELETE /pages/:id(.:format)                                                {:action=>"destroy", :controller=>"pages"}
-#         set_single_task_filter_task_filters        /task_filters/set_single_task_filter(.:format)                      {:action=>"set_single_task_filter", :controller=>"task_filters"}
-#          update_current_filter_task_filters        /task_filters/update_current_filter(.:format)                       {:action=>"update_current_filter", :controller=>"task_filters"}
-#                         search_task_filters        /task_filters/search(.:format)                                      {:action=>"search", :controller=>"task_filters"}
-#                          reset_task_filters        /task_filters/reset(.:format)                                       {:action=>"reset", :controller=>"task_filters"}
-#                                task_filters GET    /task_filters(.:format)                                             {:action=>"index", :controller=>"task_filters"}
-#                                             POST   /task_filters(.:format)                                             {:action=>"create", :controller=>"task_filters"}
-#                             new_task_filter GET    /task_filters/new(.:format)                                         {:action=>"new", :controller=>"task_filters"}
-#                          select_task_filter        /task_filters/:id/select(.:format)                                  {:action=>"select", :controller=>"task_filters"}
-#                            edit_task_filter GET    /task_filters/:id/edit(.:format)                                    {:action=>"edit", :controller=>"task_filters"}
-#                                 task_filter GET    /task_filters/:id(.:format)                                         {:action=>"show", :controller=>"task_filters"}
-#                                             PUT    /task_filters/:id(.:format)                                         {:action=>"update", :controller=>"task_filters"}
-#                                             DELETE /task_filters/:id(.:format)                                         {:action=>"destroy", :controller=>"task_filters"}
-#                                       posts GET    /forums/:forum_id/topics/:topic_id/posts(.:format)                  {:action=>"index", :controller=>"posts"}
-#                                             POST   /forums/:forum_id/topics/:topic_id/posts(.:format)                  {:action=>"create", :controller=>"posts"}
-#                                    new_post GET    /forums/:forum_id/topics/:topic_id/posts/new(.:format)              {:action=>"new", :controller=>"posts"}
-#                                   edit_post GET    /forums/:forum_id/topics/:topic_id/posts/:id/edit(.:format)         {:action=>"edit", :controller=>"posts"}
-#                                        post GET    /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:action=>"show", :controller=>"posts"}
-#                                             PUT    /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:action=>"update", :controller=>"posts"}
-#                                             DELETE /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:action=>"destroy", :controller=>"posts"}
-#                       new_topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship/new(.:format)  {:action=>"new", :controller=>"monitorships"}
-#                      edit_topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship/edit(.:format) {:action=>"edit", :controller=>"monitorships"}
-#                           topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:action=>"show", :controller=>"monitorships"}
-#                                             PUT    /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:action=>"update", :controller=>"monitorships"}
-#                                             DELETE /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:action=>"destroy", :controller=>"monitorships"}
-#                                             POST   /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:action=>"create", :controller=>"monitorships"}
-#                                      topics GET    /forums/:forum_id/topics(.:format)                                  {:action=>"index", :controller=>"topics"}
-#                                             POST   /forums/:forum_id/topics(.:format)                                  {:action=>"create", :controller=>"topics"}
-#                                   new_topic GET    /forums/:forum_id/topics/new(.:format)                              {:action=>"new", :controller=>"topics"}
-#                                  edit_topic GET    /forums/:forum_id/topics/:id/edit(.:format)                         {:action=>"edit", :controller=>"topics"}
-#                                       topic GET    /forums/:forum_id/topics/:id(.:format)                              {:action=>"show", :controller=>"topics"}
-#                                             PUT    /forums/:forum_id/topics/:id(.:format)                              {:action=>"update", :controller=>"topics"}
-#                                             DELETE /forums/:forum_id/topics/:id(.:format)                              {:action=>"destroy", :controller=>"topics"}
-#                             new_monitorship GET    /forums/:forum_id/monitorship/new(.:format)                         {:action=>"new", :controller=>"monitorships"}
-#                            edit_monitorship GET    /forums/:forum_id/monitorship/edit(.:format)                        {:action=>"edit", :controller=>"monitorships"}
-#                                 monitorship GET    /forums/:forum_id/monitorship(.:format)                             {:action=>"show", :controller=>"monitorships"}
-#                                             PUT    /forums/:forum_id/monitorship(.:format)                             {:action=>"update", :controller=>"monitorships"}
-#                                             DELETE /forums/:forum_id/monitorship(.:format)                             {:action=>"destroy", :controller=>"monitorships"}
-#                                             POST   /forums/:forum_id/monitorship(.:format)                             {:action=>"create", :controller=>"monitorships"}
-#                                      forums GET    /forums(.:format)                                                   {:action=>"index", :controller=>"forums"}
-#                                             POST   /forums(.:format)                                                   {:action=>"create", :controller=>"forums"}
-#                                   new_forum GET    /forums/new(.:format)                                               {:action=>"new", :controller=>"forums"}
-#                                  edit_forum GET    /forums/:id/edit(.:format)                                          {:action=>"edit", :controller=>"forums"}
-#                                       forum GET    /forums/:id(.:format)                                               {:action=>"show", :controller=>"forums"}
-#                                             PUT    /forums/:id(.:format)                                               {:action=>"update", :controller=>"forums"}
-#                                             DELETE /forums/:id(.:format)                                               {:action=>"destroy", :controller=>"forums"}
-#                            search_all_posts GET    /posts/search(.:format)                                             {:action=>"search", :controller=>"posts"}
-#                                   all_posts GET    /posts(.:format)                                                    {:action=>"index", :controller=>"posts"}
-#                                             POST   /posts(.:format)                                                    {:action=>"create", :controller=>"posts"}
-#                                new_all_post GET    /posts/new(.:format)                                                {:action=>"new", :controller=>"posts"}
-#                               edit_all_post GET    /posts/:id/edit(.:format)                                           {:action=>"edit", :controller=>"posts"}
-#                                    all_post GET    /posts/:id(.:format)                                                {:action=>"show", :controller=>"posts"}
-#                                             PUT    /posts/:id(.:format)                                                {:action=>"update", :controller=>"posts"}
-#                                             DELETE /posts/:id(.:format)                                                {:action=>"destroy", :controller=>"posts"}
-#                                       todos GET    /todos(.:format)                                                    {:action=>"index", :controller=>"todos"}
-#                                             POST   /todos(.:format)                                                    {:action=>"create", :controller=>"todos"}
-#                                    new_todo GET    /todos/new(.:format)                                                {:action=>"new", :controller=>"todos"}
-#                                   edit_todo GET    /todos/:id/edit(.:format)                                           {:action=>"edit", :controller=>"todos"}
-#                            toggle_done_todo POST   /todos/:id/toggle_done(.:format)                                    {:action=>"toggle_done", :controller=>"todos"}
-#                                        todo GET    /todos/:id(.:format)                                                {:action=>"show", :controller=>"todos"}
-#                                             PUT    /todos/:id(.:format)                                                {:action=>"update", :controller=>"todos"}
-#                                             DELETE /todos/:id(.:format)                                                {:action=>"destroy", :controller=>"todos"}
-#                                   work_logs GET    /work_logs(.:format)                                                {:action=>"index", :controller=>"work_logs"}
-#                                             POST   /work_logs(.:format)                                                {:action=>"create", :controller=>"work_logs"}
-#                                new_work_log GET    /work_logs/new(.:format)                                            {:action=>"new", :controller=>"work_logs"}
-#                               edit_work_log GET    /work_logs/:id/edit(.:format)                                       {:action=>"edit", :controller=>"work_logs"}
-#                                    work_log GET    /work_logs/:id(.:format)                                            {:action=>"show", :controller=>"work_logs"}
-#                                             PUT    /work_logs/:id(.:format)                                            {:action=>"update", :controller=>"work_logs"}
-#                                             DELETE /work_logs/:id(.:format)                                            {:action=>"destroy", :controller=>"work_logs"}
-#                                        tags GET    /tags(.:format)                                                     {:action=>"index", :controller=>"tags"}
-#                                             POST   /tags(.:format)                                                     {:action=>"create", :controller=>"tags"}
-#                                     new_tag GET    /tags/new(.:format)                                                 {:action=>"new", :controller=>"tags"}
-#                                    edit_tag GET    /tags/:id/edit(.:format)                                            {:action=>"edit", :controller=>"tags"}
-#                                         tag GET    /tags/:id(.:format)                                                 {:action=>"show", :controller=>"tags"}
-#                                             PUT    /tags/:id(.:format)                                                 {:action=>"update", :controller=>"tags"}
-#                                             DELETE /tags/:id(.:format)                                                 {:action=>"destroy", :controller=>"tags"}
-#                                  start_work        /work/start(.:format)                                               {:action=>"start", :controller=>"work"}
-#                                  pause_work        /work/pause(.:format)                                               {:action=>"pause", :controller=>"work"}
-#                                   stop_work        /work/stop(.:format)                                                {:action=>"stop", :controller=>"work"}
-#                                 cancel_work        /work/cancel(.:format)                                              {:action=>"cancel", :controller=>"work"}
-#                                  work_index GET    /work(.:format)                                                     {:action=>"index", :controller=>"work"}
-#                                             POST   /work(.:format)                                                     {:action=>"create", :controller=>"work"}
-#                                    new_work GET    /work/new(.:format)                                                 {:action=>"new", :controller=>"work"}
-#                                   edit_work GET    /work/:id/edit(.:format)                                            {:action=>"edit", :controller=>"work"}
-#                                        work GET    /work/:id(.:format)                                                 {:action=>"show", :controller=>"work"}
-#                                             PUT    /work/:id(.:format)                                                 {:action=>"update", :controller=>"work"}
-#                                             DELETE /work/:id(.:format)                                                 {:action=>"destroy", :controller=>"work"}
-#                                  user_posts GET    /users/:user_id/posts(.:format)                                     {:action=>"index", :controller=>"posts"}
-#                                             POST   /users/:user_id/posts(.:format)                                     {:action=>"create", :controller=>"posts"}
-#                               new_user_post GET    /users/:user_id/posts/new(.:format)                                 {:action=>"new", :controller=>"posts"}
-#                              edit_user_post GET    /users/:user_id/posts/:id/edit(.:format)                            {:action=>"edit", :controller=>"posts"}
-#                                   user_post GET    /users/:user_id/posts/:id(.:format)                                 {:action=>"show", :controller=>"posts"}
-#                                             PUT    /users/:user_id/posts/:id(.:format)                                 {:action=>"update", :controller=>"posts"}
-#                                             DELETE /users/:user_id/posts/:id(.:format)                                 {:action=>"destroy", :controller=>"posts"}
-#                                 forum_posts GET    /forums/:forum_id/posts(.:format)                                   {:action=>"index", :controller=>"posts"}
-#                                             POST   /forums/:forum_id/posts(.:format)                                   {:action=>"create", :controller=>"posts"}
-#                              new_forum_post GET    /forums/:forum_id/posts/new(.:format)                               {:action=>"new", :controller=>"posts"}
-#                             edit_forum_post GET    /forums/:forum_id/posts/:id/edit(.:format)                          {:action=>"edit", :controller=>"posts"}
-#                                  forum_post GET    /forums/:forum_id/posts/:id(.:format)                               {:action=>"show", :controller=>"posts"}
-#                                             PUT    /forums/:forum_id/posts/:id(.:format)                               {:action=>"update", :controller=>"posts"}
-#                                             DELETE /forums/:forum_id/posts/:id(.:format)                               {:action=>"destroy", :controller=>"posts"}
-#                   formatted_monitored_posts        /users/:user_id/monitored(.:format)                                 {:action=>"monitored", :controller=>"posts"}
-#                             monitored_posts        /users/:user_id/monitored                                           {:action=>"monitored", :controller=>"posts"}
-#                                  properties GET    /properties(.:format)                                               {:action=>"index", :controller=>"properties"}
-#                                             POST   /properties(.:format)                                               {:action=>"create", :controller=>"properties"}
-#                                new_property GET    /properties/new(.:format)                                           {:action=>"new", :controller=>"properties"}
-#                               edit_property GET    /properties/:id/edit(.:format)                                      {:action=>"edit", :controller=>"properties"}
-#                                    property GET    /properties/:id(.:format)                                           {:action=>"show", :controller=>"properties"}
-#                                             PUT    /properties/:id(.:format)                                           {:action=>"update", :controller=>"properties"}
-#                                             DELETE /properties/:id(.:format)                                           {:action=>"destroy", :controller=>"properties"}
+#                                    triggers GET    /triggers(.:format)                                                 {:controller=>"triggers", :action=>"index"}
+#                                             POST   /triggers(.:format)                                                 {:controller=>"triggers", :action=>"create"}
+#                                 new_trigger GET    /triggers/new(.:format)                                             {:controller=>"triggers", :action=>"new"}
+#                                edit_trigger GET    /triggers/:id/edit(.:format)                                        {:controller=>"triggers", :action=>"edit"}
+#                                     trigger GET    /triggers/:id(.:format)                                             {:controller=>"triggers", :action=>"show"}
+#                                             PUT    /triggers/:id(.:format)                                             {:controller=>"triggers", :action=>"update"}
+#                                             DELETE /triggers/:id(.:format)                                             {:controller=>"triggers", :action=>"destroy"}
+#                                                    /                                                                   {:controller=>"login", :action=>"login"}
+#                                                    /signup                                                             {:controller=>"login", :action=>"signup"}
+#                                                    /screenshots                                                        {:controller=>"login", :action=>"screenshots"}
+#                                                    /policy                                                             {:controller=>"login", :action=>"policy"}
+#                                                    /terms                                                              {:controller=>"login", :action=>"terms"}
+#                                                    /about                                                              {:controller=>"login", :action=>"about"}
+#                                        home        /forums/index                                                       {:controller=>"forums", :action=>"index"}
+# auto_complete_for_resource_parent_resources GET    /resources/auto_complete_for_resource_parent(.:format)              {:controller=>"resources", :action=>"auto_complete_for_resource_parent"}
+#                        attributes_resources GET    /resources/attributes(.:format)                                     {:controller=>"resources", :action=>"attributes"}
+#                                   resources GET    /resources(.:format)                                                {:controller=>"resources", :action=>"index"}
+#                                             POST   /resources(.:format)                                                {:controller=>"resources", :action=>"create"}
+#                                new_resource GET    /resources/new(.:format)                                            {:controller=>"resources", :action=>"new"}
+#                               edit_resource GET    /resources/:id/edit(.:format)                                       {:controller=>"resources", :action=>"edit"}
+#                      show_password_resource GET    /resources/:id/show_password(.:format)                              {:controller=>"resources", :action=>"show_password"}
+#                                    resource GET    /resources/:id(.:format)                                            {:controller=>"resources", :action=>"show"}
+#                                             PUT    /resources/:id(.:format)                                            {:controller=>"resources", :action=>"update"}
+#                                             DELETE /resources/:id(.:format)                                            {:controller=>"resources", :action=>"destroy"}
+#                    attribute_resource_types GET    /resource_types/attribute(.:format)                                 {:controller=>"resource_types", :action=>"attribute"}
+#                              resource_types GET    /resource_types(.:format)                                           {:controller=>"resource_types", :action=>"index"}
+#                                             POST   /resource_types(.:format)                                           {:controller=>"resource_types", :action=>"create"}
+#                           new_resource_type GET    /resource_types/new(.:format)                                       {:controller=>"resource_types", :action=>"new"}
+#                          edit_resource_type GET    /resource_types/:id/edit(.:format)                                  {:controller=>"resource_types", :action=>"edit"}
+#                               resource_type GET    /resource_types/:id(.:format)                                       {:controller=>"resource_types", :action=>"show"}
+#                                             PUT    /resource_types/:id(.:format)                                       {:controller=>"resource_types", :action=>"update"}
+#                                             DELETE /resource_types/:id(.:format)                                       {:controller=>"resource_types", :action=>"destroy"}
+#                        organizational_units GET    /organizational_units(.:format)                                     {:controller=>"organizational_units", :action=>"index"}
+#                                             POST   /organizational_units(.:format)                                     {:controller=>"organizational_units", :action=>"create"}
+#                     new_organizational_unit GET    /organizational_units/new(.:format)                                 {:controller=>"organizational_units", :action=>"new"}
+#                    edit_organizational_unit GET    /organizational_units/:id/edit(.:format)                            {:controller=>"organizational_units", :action=>"edit"}
+#                         organizational_unit GET    /organizational_units/:id(.:format)                                 {:controller=>"organizational_units", :action=>"show"}
+#                                             PUT    /organizational_units/:id(.:format)                                 {:controller=>"organizational_units", :action=>"update"}
+#                                             DELETE /organizational_units/:id(.:format)                                 {:controller=>"organizational_units", :action=>"destroy"}
+#                           target_list_pages        /pages/target_list(.:format)                                        {:controller=>"pages", :action=>"target_list"}
+#                                       pages GET    /pages(.:format)                                                    {:controller=>"pages", :action=>"index"}
+#                                             POST   /pages(.:format)                                                    {:controller=>"pages", :action=>"create"}
+#                                    new_page GET    /pages/new(.:format)                                                {:controller=>"pages", :action=>"new"}
+#                                   edit_page GET    /pages/:id/edit(.:format)                                           {:controller=>"pages", :action=>"edit"}
+#                                        page GET    /pages/:id(.:format)                                                {:controller=>"pages", :action=>"show"}
+#                                             PUT    /pages/:id(.:format)                                                {:controller=>"pages", :action=>"update"}
+#                                             DELETE /pages/:id(.:format)                                                {:controller=>"pages", :action=>"destroy"}
+#          update_current_filter_task_filters        /task_filters/update_current_filter(.:format)                       {:controller=>"task_filters", :action=>"update_current_filter"}
+#         set_single_task_filter_task_filters        /task_filters/set_single_task_filter(.:format)                      {:controller=>"task_filters", :action=>"set_single_task_filter"}
+#                         search_task_filters        /task_filters/search(.:format)                                      {:controller=>"task_filters", :action=>"search"}
+#                          reset_task_filters        /task_filters/reset(.:format)                                       {:controller=>"task_filters", :action=>"reset"}
+#                                task_filters GET    /task_filters(.:format)                                             {:controller=>"task_filters", :action=>"index"}
+#                                             POST   /task_filters(.:format)                                             {:controller=>"task_filters", :action=>"create"}
+#                             new_task_filter GET    /task_filters/new(.:format)                                         {:controller=>"task_filters", :action=>"new"}
+#                          select_task_filter        /task_filters/:id/select(.:format)                                  {:controller=>"task_filters", :action=>"select"}
+#                            edit_task_filter GET    /task_filters/:id/edit(.:format)                                    {:controller=>"task_filters", :action=>"edit"}
+#                                 task_filter GET    /task_filters/:id(.:format)                                         {:controller=>"task_filters", :action=>"show"}
+#                                             PUT    /task_filters/:id(.:format)                                         {:controller=>"task_filters", :action=>"update"}
+#                                             DELETE /task_filters/:id(.:format)                                         {:controller=>"task_filters", :action=>"destroy"}
+#                                       posts GET    /forums/:forum_id/topics/:topic_id/posts(.:format)                  {:controller=>"posts", :action=>"index"}
+#                                             POST   /forums/:forum_id/topics/:topic_id/posts(.:format)                  {:controller=>"posts", :action=>"create"}
+#                                    new_post GET    /forums/:forum_id/topics/:topic_id/posts/new(.:format)              {:controller=>"posts", :action=>"new"}
+#                                   edit_post GET    /forums/:forum_id/topics/:topic_id/posts/:id/edit(.:format)         {:controller=>"posts", :action=>"edit"}
+#                                        post GET    /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:controller=>"posts", :action=>"show"}
+#                                             PUT    /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:controller=>"posts", :action=>"update"}
+#                                             DELETE /forums/:forum_id/topics/:topic_id/posts/:id(.:format)              {:controller=>"posts", :action=>"destroy"}
+#                       new_topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship/new(.:format)  {:controller=>"monitorships", :action=>"new"}
+#                      edit_topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship/edit(.:format) {:controller=>"monitorships", :action=>"edit"}
+#                           topic_monitorship GET    /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:controller=>"monitorships", :action=>"show"}
+#                                             PUT    /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:controller=>"monitorships", :action=>"update"}
+#                                             DELETE /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:controller=>"monitorships", :action=>"destroy"}
+#                                             POST   /forums/:forum_id/topics/:topic_id/topic_monitorship(.:format)      {:controller=>"monitorships", :action=>"create"}
+#                                      topics GET    /forums/:forum_id/topics(.:format)                                  {:controller=>"topics", :action=>"index"}
+#                                             POST   /forums/:forum_id/topics(.:format)                                  {:controller=>"topics", :action=>"create"}
+#                                   new_topic GET    /forums/:forum_id/topics/new(.:format)                              {:controller=>"topics", :action=>"new"}
+#                                  edit_topic GET    /forums/:forum_id/topics/:id/edit(.:format)                         {:controller=>"topics", :action=>"edit"}
+#                                       topic GET    /forums/:forum_id/topics/:id(.:format)                              {:controller=>"topics", :action=>"show"}
+#                                             PUT    /forums/:forum_id/topics/:id(.:format)                              {:controller=>"topics", :action=>"update"}
+#                                             DELETE /forums/:forum_id/topics/:id(.:format)                              {:controller=>"topics", :action=>"destroy"}
+#                             new_monitorship GET    /forums/:forum_id/monitorship/new(.:format)                         {:controller=>"monitorships", :action=>"new"}
+#                            edit_monitorship GET    /forums/:forum_id/monitorship/edit(.:format)                        {:controller=>"monitorships", :action=>"edit"}
+#                                 monitorship GET    /forums/:forum_id/monitorship(.:format)                             {:controller=>"monitorships", :action=>"show"}
+#                                             PUT    /forums/:forum_id/monitorship(.:format)                             {:controller=>"monitorships", :action=>"update"}
+#                                             DELETE /forums/:forum_id/monitorship(.:format)                             {:controller=>"monitorships", :action=>"destroy"}
+#                                             POST   /forums/:forum_id/monitorship(.:format)                             {:controller=>"monitorships", :action=>"create"}
+#                                      forums GET    /forums(.:format)                                                   {:controller=>"forums", :action=>"index"}
+#                                             POST   /forums(.:format)                                                   {:controller=>"forums", :action=>"create"}
+#                                   new_forum GET    /forums/new(.:format)                                               {:controller=>"forums", :action=>"new"}
+#                                  edit_forum GET    /forums/:id/edit(.:format)                                          {:controller=>"forums", :action=>"edit"}
+#                                       forum GET    /forums/:id(.:format)                                               {:controller=>"forums", :action=>"show"}
+#                                             PUT    /forums/:id(.:format)                                               {:controller=>"forums", :action=>"update"}
+#                                             DELETE /forums/:id(.:format)                                               {:controller=>"forums", :action=>"destroy"}
+#                            search_all_posts GET    /posts/search(.:format)                                             {:controller=>"posts", :action=>"search"}
+#                                   all_posts GET    /posts(.:format)                                                    {:controller=>"posts", :action=>"index"}
+#                                             POST   /posts(.:format)                                                    {:controller=>"posts", :action=>"create"}
+#                                new_all_post GET    /posts/new(.:format)                                                {:controller=>"posts", :action=>"new"}
+#                               edit_all_post GET    /posts/:id/edit(.:format)                                           {:controller=>"posts", :action=>"edit"}
+#                                    all_post GET    /posts/:id(.:format)                                                {:controller=>"posts", :action=>"show"}
+#                                             PUT    /posts/:id(.:format)                                                {:controller=>"posts", :action=>"update"}
+#                                             DELETE /posts/:id(.:format)                                                {:controller=>"posts", :action=>"destroy"}
+#                                       todos GET    /todos(.:format)                                                    {:controller=>"todos", :action=>"index"}
+#                                             POST   /todos(.:format)                                                    {:controller=>"todos", :action=>"create"}
+#                                    new_todo GET    /todos/new(.:format)                                                {:controller=>"todos", :action=>"new"}
+#                                   edit_todo GET    /todos/:id/edit(.:format)                                           {:controller=>"todos", :action=>"edit"}
+#                            toggle_done_todo POST   /todos/:id/toggle_done(.:format)                                    {:controller=>"todos", :action=>"toggle_done"}
+#                                        todo GET    /todos/:id(.:format)                                                {:controller=>"todos", :action=>"show"}
+#                                             PUT    /todos/:id(.:format)                                                {:controller=>"todos", :action=>"update"}
+#                                             DELETE /todos/:id(.:format)                                                {:controller=>"todos", :action=>"destroy"}
+#                                   work_logs GET    /work_logs(.:format)                                                {:controller=>"work_logs", :action=>"index"}
+#                                             POST   /work_logs(.:format)                                                {:controller=>"work_logs", :action=>"create"}
+#                                new_work_log GET    /work_logs/new(.:format)                                            {:controller=>"work_logs", :action=>"new"}
+#                               edit_work_log GET    /work_logs/:id/edit(.:format)                                       {:controller=>"work_logs", :action=>"edit"}
+#                                    work_log GET    /work_logs/:id(.:format)                                            {:controller=>"work_logs", :action=>"show"}
+#                                             PUT    /work_logs/:id(.:format)                                            {:controller=>"work_logs", :action=>"update"}
+#                                             DELETE /work_logs/:id(.:format)                                            {:controller=>"work_logs", :action=>"destroy"}
+#                                        tags GET    /tags(.:format)                                                     {:controller=>"tags", :action=>"index"}
+#                                             POST   /tags(.:format)                                                     {:controller=>"tags", :action=>"create"}
+#                                     new_tag GET    /tags/new(.:format)                                                 {:controller=>"tags", :action=>"new"}
+#                                    edit_tag GET    /tags/:id/edit(.:format)                                            {:controller=>"tags", :action=>"edit"}
+#                                         tag GET    /tags/:id(.:format)                                                 {:controller=>"tags", :action=>"show"}
+#                                             PUT    /tags/:id(.:format)                                                 {:controller=>"tags", :action=>"update"}
+#                                             DELETE /tags/:id(.:format)                                                 {:controller=>"tags", :action=>"destroy"}
+#                                  start_work        /work/start(.:format)                                               {:controller=>"work", :action=>"start"}
+#                                  pause_work        /work/pause(.:format)                                               {:controller=>"work", :action=>"pause"}
+#                                 cancel_work        /work/cancel(.:format)                                              {:controller=>"work", :action=>"cancel"}
+#                                   stop_work        /work/stop(.:format)                                                {:controller=>"work", :action=>"stop"}
+#                                  work_index GET    /work(.:format)                                                     {:controller=>"work", :action=>"index"}
+#                                             POST   /work(.:format)                                                     {:controller=>"work", :action=>"create"}
+#                                    new_work GET    /work/new(.:format)                                                 {:controller=>"work", :action=>"new"}
+#                                   edit_work GET    /work/:id/edit(.:format)                                            {:controller=>"work", :action=>"edit"}
+#                                        work GET    /work/:id(.:format)                                                 {:controller=>"work", :action=>"show"}
+#                                             PUT    /work/:id(.:format)                                                 {:controller=>"work", :action=>"update"}
+#                                             DELETE /work/:id(.:format)                                                 {:controller=>"work", :action=>"destroy"}
+#                                  user_posts GET    /users/:user_id/posts(.:format)                                     {:controller=>"posts", :action=>"index"}
+#                                             POST   /users/:user_id/posts(.:format)                                     {:controller=>"posts", :action=>"create"}
+#                               new_user_post GET    /users/:user_id/posts/new(.:format)                                 {:controller=>"posts", :action=>"new"}
+#                              edit_user_post GET    /users/:user_id/posts/:id/edit(.:format)                            {:controller=>"posts", :action=>"edit"}
+#                                   user_post GET    /users/:user_id/posts/:id(.:format)                                 {:controller=>"posts", :action=>"show"}
+#                                             PUT    /users/:user_id/posts/:id(.:format)                                 {:controller=>"posts", :action=>"update"}
+#                                             DELETE /users/:user_id/posts/:id(.:format)                                 {:controller=>"posts", :action=>"destroy"}
+#                                 forum_posts GET    /forums/:forum_id/posts(.:format)                                   {:controller=>"posts", :action=>"index"}
+#                                             POST   /forums/:forum_id/posts(.:format)                                   {:controller=>"posts", :action=>"create"}
+#                              new_forum_post GET    /forums/:forum_id/posts/new(.:format)                               {:controller=>"posts", :action=>"new"}
+#                             edit_forum_post GET    /forums/:forum_id/posts/:id/edit(.:format)                          {:controller=>"posts", :action=>"edit"}
+#                                  forum_post GET    /forums/:forum_id/posts/:id(.:format)                               {:controller=>"posts", :action=>"show"}
+#                                             PUT    /forums/:forum_id/posts/:id(.:format)                               {:controller=>"posts", :action=>"update"}
+#                                             DELETE /forums/:forum_id/posts/:id(.:format)                               {:controller=>"posts", :action=>"destroy"}
+#                   formatted_monitored_posts        /users/:user_id/monitored(.:format)                                 {:controller=>"posts", :action=>"monitored"}
+#                             monitored_posts        /users/:user_id/monitored                                           {:controller=>"posts", :action=>"monitored"}
+#                                  properties GET    /properties(.:format)                                               {:controller=>"properties", :action=>"index"}
+#                                             POST   /properties(.:format)                                               {:controller=>"properties", :action=>"create"}
+#                                new_property GET    /properties/new(.:format)                                           {:controller=>"properties", :action=>"new"}
+#                               edit_property GET    /properties/:id/edit(.:format)                                      {:controller=>"properties", :action=>"edit"}
+#                                    property GET    /properties/:id(.:format)                                           {:controller=>"properties", :action=>"show"}
+#                                             PUT    /properties/:id(.:format)                                           {:controller=>"properties", :action=>"update"}
+#                                             DELETE /properties/:id(.:format)                                           {:controller=>"properties", :action=>"destroy"}
 #                                                    /:controller/service.wsdl                                           {:action=>"wsdl"}
 #                                                    /:controller/:action/:id(.:format)                                  
 #                                                    /:controller/:action/:id                                            
 # Loaded suite /opt/local/bin/rake
 # Started
 # 
-# Finished in 0.000237 seconds.
+# Finished in 0.000233 seconds.
 # 
 # 0 tests, 0 assertions, 0 failures, 0 errors

@@ -26,6 +26,7 @@ class PageTest < ActiveRecord::TestCase
 
 end
 
+
 # == Schema Information
 #
 # Table name: pages
@@ -40,5 +41,11 @@ end
 #  position     :integer(4)
 #  notable_id   :integer(4)
 #  notable_type :string(255)
+#
+# Indexes
+#
+#  pages_company_id_index                      (company_id)
+#  fk_pages_user_id                            (user_id)
+#  index_pages_on_notable_id_and_notable_type  (notable_id,notable_type)
 #
 
