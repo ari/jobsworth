@@ -8,10 +8,11 @@
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "jquery-ui", "application", "jquery.tooltip", "ui.jqgrid", "fullcalendar", "nyroModal", :cache => true %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
-    <%= javascript_include_tag "builder" if ['activities'].include? controller.controller_name %>
     <% if ['activities'].include? controller.controller_name %>
-    <%= javascript_include_tag "portal" %>
-    <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]--><%= javascript_include_tag "flotr" %>
+    	<%= javascript_include_tag "builder" %>
+        <%= javascript_include_tag "portal" %>
+	    <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
+	    <%= javascript_include_tag "flotr" %>
     <% end %>
     <%= yield :tinymce_init %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
@@ -25,14 +26,14 @@
       	<% end %>
     </style>
   </head>
-  <body id="body">
+  <body>
     <div id="page_header">
       <div id="loading">
         <%= image_tag('spinner.gif', :border => 0) %>
       </div>
       <%= render(:partial => "layouts/menu") %>
       <%= render(:partial => "layouts/tabmenu") %>
-      <%= render :partial => "/layouts/notice" -%>
+      <%= render(:partial => "layouts/notice") %>
     </div>
     <table width="100%" id="main-table">
       <tr>
@@ -79,6 +80,5 @@
       
       // ]]>
     </script>
-    <%#= query_review_output %>
   </body>
 </html>
