@@ -870,5 +870,5 @@ function create_task_from_template(event)
     });
 }
 jQuery(document).ready(function(){
-    jQuery('#create_task_from_template_links a').click(create_task_from_template);
+    jQuery('li.task_template a').click(create_task_from_template);
 });
