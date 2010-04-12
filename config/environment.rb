@@ -82,16 +82,6 @@ Rails::Initializer.run do |config|
     end
   end
 
-
-  # Gems used for automated testing
-  config.gem "thoughtbot-shoulda", :lib => "shoulda", :source => "http://gems.github.com"
-  config.gem "nokogiri"
-  config.gem "webrat"
-  config.gem "faker"
-  config.gem "notahat-machinist", :lib => "machinist", :source => "http://gems.github.com"
-  config.gem 'cucumber'
-  # Juggernaut is installed as a plugin and heavily customised, therefore it cannot be listed here.
-
   # CUSTOM GEMS
   # Any gem files which aren't needed for the system to work, but may
   # be required for your own development should be in this file:
