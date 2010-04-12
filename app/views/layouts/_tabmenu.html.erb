@@ -23,7 +23,7 @@
         </li>
         <% current_templates.each do |t| %>
         <li class="task_template">
-          <%= link_to t, '#', :data-tasknum => t.task_num %>
+          <%= link_to t, '#', :'data-tasknum' => t.task_num %>
         </li>
         <% end %>
       </ul>
