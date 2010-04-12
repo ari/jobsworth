@@ -860,7 +860,7 @@ So create task from template == send form with template to tasks/create action
 */
 function create_task_from_template(event)
 {
-    jQuery.get('/task_templates/edit/'+jQuery(this).attr('task_num')+'.js', function(data){
+    jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data){
         var form=jQuery(data).first();
         form.attr('action','/tasks/create');
         form.attr('id','taskform_ctft');
@@ -870,5 +870,5 @@ function create_task_from_template(event)
     });
 }
 jQuery(document).ready(function(){
-    jQuery('#create_task_from_template_links a').click(create_task_from_template);
+    jQuery('li.task_template a').click(create_task_from_template);
 });

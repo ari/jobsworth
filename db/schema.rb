@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100403235106) do
+ActiveRecord::Schema.define(:version => 20100410224800) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -608,8 +608,7 @@ ActiveRecord::Schema.define(:version => 20100403235106) do
     t.integer "property_value_id"
   end
 
-  add_index "task_property_values", ["property_id"], :name => "index_task_property_values_on_property_id"
-  add_index "task_property_values", ["task_id"], :name => "index_task_property_values_on_task_id"
+  add_index "task_property_values", ["task_id", "property_id"], :name => "task_property", :unique => true
 
   create_table "task_tags", :id => false, :force => true do |t|
     t.integer "tag_id"

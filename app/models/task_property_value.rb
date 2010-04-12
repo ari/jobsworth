@@ -10,6 +10,7 @@ class TaskPropertyValue < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: task_property_values
@@ -21,7 +22,6 @@ end
 #
 # Indexes
 #
-#  index_task_property_values_on_task_id      (task_id)
-#  index_task_property_values_on_property_id  (property_id)
+#  task_property  (task_id,property_id) UNIQUE
 #
 

@@ -12,5 +12,6 @@ class RemoveChat < ActiveRecord::Migration
   end
 
   def self.down
+    raise ActiveRecord::IrreversibleMigration, "Can't restore deleted chat tables."
   end
 end
