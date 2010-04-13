@@ -5,88 +5,88 @@ Feature: Manage access_controls
   Scenario: User with can only see watched permission on all project
     Given I logged in as user
     And I have permission can only see watched on all projects
-    When I click on Overview menu
-    Then I go to activities/list
+    When I follow "Overview" within "tabmenu"
+    Then I should be on activities/list
     And I see only my tasks
 
-    When I click on Task menu
-    Then I go to tasks/list
+    When I follow "Task" within "tabmenu"
+    Then I should be on tasks/list
     When I remove all filters
     Then I see only my tasks
 
-    When I click on Timeline menu
-    Then I go to timeline/list
+    When I follow "Timeline" within "tabmenu"
+    Then I should be on timeline/list
     And I see only my tasks
 
-    When I click on Reports menu
-    And I select Custom in Time Range
-    And I type 1/1/2000 in From
-    And I type 1/1/2011 in To
-    And I push Run Report button
+    When I follow "Reports" within "tabmenu"
+    And I select "Custom" from "Time Range"
+    And I fill in "From" with "1/1/2000"
+    And I fill in "To" with "1/1/2011"
+    And I push "Run Report" button
     Then I see only my tasks
 
-    When type "e" in query
+    When fill in "query" with "e"
     And I press Enter key
-    Then I go to sesearch/search
+    Then I should be on sesearch/search
     And I see only my tasks
 
   Scenario: User with can only see watched permission on first project
     Given I logged in as user
     And I have permission can only see watched on first project
-    When I click on Overview menu
-    Then I go to activities/list
+    When I follow "Overview" within "tabmenu"
+    Then I should be on activities/list
     And I see only my tasks in first project
     And I see all tasks in all projects except first
 
-    When I click on Task menu
-    Then I go to tasks/list
+    When I follow "Task" within "tabmenu"
+    Then I should be on tasks/list
     When I remove all filters
     Then I see only my tasks in first project
     And I see all tasks in all projects except first
 
-    When I click on Timeline menu
-    Then I go to timeline/list
+    When I follow "Timeline" within "tabmenu"
+    Then I should be on timeline/list
     And I see only my tasks in first project
     And I see all tasks in all projects except first
 
-    When I click on Reports menu
-    And I select Custom in Time Range
-    And I type 1/1/2000 in From
-    And I type 1/1/2011 in To
-    And I push Run Report button
+    When I follow "Reports" within "tabmenu"
+    And I select "Custom" from "Time Range"
+    And I fill in "From" with "1/1/2000"
+    And I fill in "To" with "1/1/2011"
+    And I push "Run Report" button
     Then I see only my tasks in first project
     And I see all tasks in all projects except first
 
-    When type "e" in query
+    When fill in "query" with "e"
     And I press Enter key
-    Then I go to sesearch/search
+    Then I should be on sesearch/search
     And I see only my tasks in first project
     And I see all tasks in all projects exept first
 
   Scenario: User without  can only see watched permission on all project
     Given I logged in as user
     And I not have permission can only see wathced on all projects
-    When I click on Overview menu
-    Then I go to activities/list
+    When I follow "Overview" within "tabmenu"
+    Then I should be on activities/list
     And I see all tasks
 
-    When I click on Task menu
+    When I follow "Task" within "tabmenu"
     Then I go to tasks/list
     When I remove all filters
     Then I see all tasks
 
-    When I click on Timeline menu
-    Then I go to timeline/list
+    When I follow "Timeline" within "tabmenu"
+    Then I should be on timeline/list
     And I see all tasks
 
-    When I click on Reports menu
-    And I select Custom in Time Range
-    And I type 1/1/2000 in From
-    And I type 1/1/2011 in To
-    And I push Run Report button
+    When I follow "Reports" within "tabmenu"
+    And I select "Custom" from "Time Range"
+    And I fill in "From" with "1/1/2000"
+    And I fill in "To" with "1/1/2011"
+    And I push "Run Report" button
     Then I see all tasks
 
-    When type "e" in query
+    When fill in "query" with "e"
     And I press Enter key
-    Then I go to sesearch/search
+    Then I should be on sesearch/search
     And I see all tasks

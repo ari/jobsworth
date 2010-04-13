@@ -1,41 +1,22 @@
-Given /^I logged in as "([^\"]*)"$/ do |user|
-  current_user=User.find_by_name(user)
+Given /^I logged in as user$/ do
+  #Fixtures.reset_cache
+  #fixtures_folder = File.join(RAILS_ROOT, 'test', 'fixtures')
+  #fixtures = Dir[File.join(fixtures_folder, '*.yml')].map {|f| File.basename(f, '.yml') }
+  #Fixtures.create_fixtures(fixtures_folder, fixtures)
+
+  @user= Company.find_by_subdomain('cit').users.first
+  visit 'activities/list'  # 'login/login'
+
+  fill_in "username", :with => @user.username
+  fill_in "password", :with => @user.password
+  click_button "submit_button"
 end
 
-When /^I click on "([^\"]*)"  link$/ do |link|
-  click_link link
+Given /^I have permission can only see watched on all projects$/ do
+  @user.project_permissions.each do |p|
+    p.can_only_see_watched=true
+    p.save!
+  end
 end
 
-Then /^I receive  "([^\"]*)" page for "([^\"]*)"$/ do |page, project|
-  response.should be_success
-  current_link.should == path_to(page, Project.find_by_name(project))
-end
-
-When /^I select "([^\"]*)" from "([^\"]*)" list$/ do |value, list|
-  select value, :from => list
-end
-
-
-When /^I click "([^\"]*)" button$/ do |button|
-  click_button button
-end
-
-Then /^I receive "([^\"]*)" page$/ do |arg1|
-  response.should be_success
-  current_link.should == path_to(page)
-end
-
-Then /^I see "([^\"]*)" project with "([^\"]*)" background$/ do |name, color|
-  response.should have_selector('a', :title=>name, :class=>color)
-end
-
-Given /^the following projects$/ do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
-end
-
-Given /^the following access levels$/ do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
-end
 
