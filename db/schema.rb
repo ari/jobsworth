@@ -9,7 +9,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100413120604) do
+ActiveRecord::Schema.define(:version => 20100414111220) do
+
+  create_table "access_levels", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",       :default => 0,  :null => false
@@ -765,6 +771,7 @@ ActiveRecord::Schema.define(:version => 20100413120604) do
     t.boolean  "edit_clients",                              :default => false
     t.boolean  "can_approve_work_logs"
     t.boolean  "auto_add_to_customer_tasks"
+    t.integer  "access_level_id",                           :default => 1
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
@@ -878,6 +885,7 @@ ActiveRecord::Schema.define(:version => 20100413120604) do
     t.boolean  "comment",          :default => false
     t.datetime "exported"
     t.boolean  "approved"
+    t.integer  "access_level_id",  :default => 1
   end
 
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"

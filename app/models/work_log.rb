@@ -13,6 +13,7 @@ class WorkLog < ActiveRecord::Base
   belongs_to :customer
   belongs_to :task
   belongs_to :scm_changeset
+  belongs_to :access_level
 
   has_one    :ical_entry, :dependent => :destroy
   has_one    :event_log, :as => :target, :dependent => :destroy
@@ -20,6 +21,10 @@ class WorkLog < ActiveRecord::Base
   has_many    :users, :through => :work_log_notifications
 
   named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
+  #this scope check ONLY access level, not project
+  named_scope :accessed_by, lambda { |user|
+    {:conditions=>{ :access_level_id=> user.access_level_id}}
+  }
 
   validates_presence_of :started_at
 
