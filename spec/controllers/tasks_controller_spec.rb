@@ -3,8 +3,6 @@ require 'spec_helper'
 describe TasksController do
   describe "logged in user with can_only_see_watched permission" do
     before(:each) do
-      session[:user_id]=Factory(:user)
-      cu
     end
     describe "GET list.xml" do
       before(:each) do
