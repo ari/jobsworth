@@ -209,7 +209,7 @@ class User < ActiveRecord::Base
       @perm_cache[project.id] ||= {}
       self.project_permissions.each do | p |
         @perm_cache[p.project_id] ||= {}
-        ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all'].each do |p_perm|
+        ProjectPermission.permissions.each do |p_perm|
           @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
         end
       end
