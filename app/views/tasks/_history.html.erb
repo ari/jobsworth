@@ -4,7 +4,7 @@
 
 <div class="log_history clearfix">
   <% logs = (session[:only_comments] ? @task.work_logs.comments : @task.work_logs) -%>
-  <% logs = logs.all(:order => "started_at desc") -%>
+  <% logs = logs.accessed_by(current_user).all(:order => "started_at desc") -%>
   <% logs.each do |log| -%>
     <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
   <% end -%>
