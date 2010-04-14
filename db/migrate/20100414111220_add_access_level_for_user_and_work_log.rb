@@ -3,6 +3,7 @@ class AddAccessLevelForUserAndWorkLog < ActiveRecord::Migration
     add_column :users, :access_level_id, :integer, :default=>1
     add_column :work_logs, :access_level_id, :integer, :default=>1
     AccessLevel.create!(:name=>'customer')
+    AccessLevel.create!(:name=>'internal')
   end
 
   def self.down
