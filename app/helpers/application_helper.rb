@@ -6,10 +6,6 @@ module ApplicationHelper
 
   include Misc
 
-  def online_users
-    current_users.size
-  end
-
   def user_name
     current_user.name
   end
