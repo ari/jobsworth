@@ -285,10 +285,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def update_ajax
-    self.update
-  end
-
   def ajax_hide
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
 
@@ -430,13 +426,6 @@ class TasksController < ApplicationController
     session[:only_comments] = 1 - session[:only_comments]
 
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-  end
-
-  def get_comment
-    @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
-    if @task
-      @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
-    end
   end
 
   ###
@@ -732,4 +721,3 @@ protected
     template.todos.each{|todo| task.todos<< todo.clone }
   end
 end
-
