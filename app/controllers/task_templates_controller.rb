@@ -15,7 +15,7 @@ class TaskTemplatesController < TasksController
   def ajax_restore
     raise Exception, CUSTOM_ERROR_MESSAGE
   end
-  def ajax_check
+  def ajax_hide
     raise Exception, CUSTOM_ERROR_MESSAGE
   end
   def updatelog
@@ -23,9 +23,6 @@ class TaskTemplatesController < TasksController
   end
   def update_sheet_info
      raise Exception, CUSTOM_ERROR_MESSAGE
-  end
-  def update_tasks
-    raise Exception, CUSTOM_ERROR_MESSAGE
   end
   def update_work_log
     raise Exception, CUSTOM_ERROR_MESSAGE

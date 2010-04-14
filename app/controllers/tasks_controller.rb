@@ -407,10 +407,6 @@ class TasksController < ApplicationController
   def update_sheet_info
   end
 
-  def update_tasks
-    @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-  end
-
   def get_csv
     list_init
     filename = "clockingit_tasks.csv"
