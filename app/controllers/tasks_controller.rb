@@ -504,7 +504,7 @@ class TasksController < ApplicationController
   end
 
   def update_work_log
-    log = current_user.company.work_logs.find(params[:id])
+    log = current_user.company.work_logs.accessed_by(current_user).find(params[:id])
     updated = log.update_attributes(params[:work_log])
 
     render :text => updated.to_s
