@@ -17,11 +17,29 @@ describe WorkLog do
   end
   describe "level_accessed_by(user) scope" do
     it "should return work logs with access level lower or equal to  user's access level" do
-      3.times{ WorkLog.make}
-      3.times{ WorkLog.make(:access_level_id=>2)}
+      3.times{ WorkLog.make }
+      3.times{ WorkLog.make(:access_level_id=>2) }
       WorkLog.all.should have(6).work_logs
       WorkLog.level_accessed_by(User.make(:access_level_id=>1)).should have(3).work_logs
       WorkLog.level_accessed_by(User.make(:access_level_id=>2)).should have(6).work_logs
+    end
+  end
+  describe "accessed_by(user) scope" do
+    before(:each) do
+      company=Company.make
+      @user=User.make(:company=>company)
+      3.times{ WorkLog.make(:company=>company, :customer=>Customer.make) }
+      @user.projects<< company.projects
+      3.times{ WorkLog.make }
+    end
+    it "should scope work logs by user's company" do
+      WorkLog.accessed_by(@user).each{ |work_log| work_log.company_id.should == @user.company_id}
+    end
+    it "should scope work logs by user's projects" do
+      WorkLog.accessed_by(@user).each{|work_log| @user.project_ids.should include(work_log.project_id) }
+    end
+    it "should return work logs with access level lower or equal to  user's access level" do
+      WorkLog.accessed_by(@user).should have(3).work_logs
     end
   end
 end

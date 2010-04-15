@@ -21,6 +21,11 @@ class WorkLog < ActiveRecord::Base
   has_many    :users, :through => :work_log_notifications
 
   named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
+  #check all access rights for user
+  named_scope :accessed_by, lambda { |user|
+    {:conditions=>["work_logs.company_id = ? AND work_logs.project_id IN (?) AND work_logs.access_level_id <= ? ",
+                   user.company_id, user.project_ids_for_sql.split(','), user.access_level_id] }
+  }
   #this scope check ONLY access level, not project
   named_scope :level_accessed_by, lambda { |user|
     {:conditions=>[ "work_logs.access_level_id <= ?", user.access_level_id]}
