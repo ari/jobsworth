@@ -218,8 +218,7 @@ class ApplicationController < ActionController::Base
   # List of current Project ids, joined with ,
   def current_project_ids
     unless @current_project_ids
-      @current_project_ids = current_projects.collect{ |p| p.id }.join(',')
-      @current_project_ids = "0" if @current_project_ids == ''
+      @current_project_ids = current_user.project_ids_for_sql
     end
     @current_project_ids
   end

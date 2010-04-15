@@ -354,7 +354,9 @@ class User < ActiveRecord::Base
 
     return @visible_task_filters
   end
-
+  def project_ids_for_sql
+    self.project_ids.empty? ? "0" : self.project_ids.join(",")
+  end
   private
 
   # Sets up search options to use in a find for things linked to
@@ -388,7 +390,6 @@ class User < ActiveRecord::Base
       self.time_format = "%H:%M"
     end
   end
-
 end
 
 
