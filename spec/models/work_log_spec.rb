@@ -15,13 +15,13 @@ describe WorkLog do
       work_log.access_level_id.should == 2
     end
   end
-  describe "accessed_by(user) scope" do
+  describe "level_accessed_by(user) scope" do
     it "should return work logs with access level lower or equal to  user's access level" do
       3.times{ WorkLog.make}
       3.times{ WorkLog.make(:access_level_id=>2)}
       WorkLog.all.should have(6).work_logs
-      WorkLog.accessed_by(User.make(:access_level_id=>1)).should have(3).work_logs
-      WorkLog.accessed_by(User.make(:access_level_id=>2)).should have(6).work_logs
+      WorkLog.level_accessed_by(User.make(:access_level_id=>1)).should have(3).work_logs
+      WorkLog.level_accessed_by(User.make(:access_level_id=>2)).should have(6).work_logs
     end
   end
 end
