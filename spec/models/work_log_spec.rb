@@ -42,4 +42,16 @@ describe WorkLog do
       WorkLog.accessed_by(@user).should have(3).work_logs
     end
   end
+  describe "on_tasks_owned_by(user) scope" do
+    before(:each) do
+      @user=User.make
+      3.times{ WorkLog.make(:task=>Task.make(:users=>[@user]))}
+      2.times{ WorkLog.make}
+    end
+    it "should scope work logs by user's tasks" do
+      WorkLog.all.count.should == 5
+      WorkLog.on_tasks_owned_by(@user).should have(3).work_logs
+      WorkLog.on_tasks_owned_by(@user).each{ |work_log| work_log.task.user_ids.should include(@user.id)}
+    end
+  end
 end

@@ -22,6 +22,12 @@ class WorkLog < ActiveRecord::Base
 
   named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
   #check all access rights for user
+  named_scope :on_tasks_owned_by, lambda { |user|
+    { :select => "work_logs.*",
+      :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id",
+      :conditions=> ["task_users.user_id = ?", user ]
+    }
+  }
   named_scope :accessed_by, lambda { |user|
     {:conditions=>["work_logs.company_id = ? AND work_logs.project_id IN (?) AND work_logs.access_level_id <= ? ",
                    user.company_id, user.project_ids_for_sql.split(','), user.access_level_id] }
