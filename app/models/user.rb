@@ -355,7 +355,11 @@ class User < ActiveRecord::Base
     return @visible_task_filters
   end
   def project_ids_for_sql
-    self.project_ids.empty? ? "0" : self.project_ids.join(",")
+    unless @current_project_ids
+      @current_project_ids=self.project_ids
+      @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
+    end
+    @current_project_ids
   end
   private
 
