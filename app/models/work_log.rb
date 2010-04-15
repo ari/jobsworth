@@ -23,7 +23,7 @@ class WorkLog < ActiveRecord::Base
   named_scope :comments, :conditions => [ "work_logs.comment = ? or work_logs.log_type = ?", true, EventLog::TASK_COMMENT ]
   #this scope check ONLY access level, not project
   named_scope :accessed_by, lambda { |user|
-    {:conditions=>{ :access_level_id=> user.access_level_id}}
+    {:conditions=>[ "work_logs.access_level_id <= ?", user.access_level_id]}
   }
 
   validates_presence_of :started_at
