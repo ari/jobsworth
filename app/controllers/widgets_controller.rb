@@ -240,9 +240,9 @@ class WidgetsController < ApplicationController
     when 6 then
       # Comments
       if @widget.mine?
-        @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id INNER JOIN task_users ON work_logs.task_id = task_users.task_id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND (work_logs.log_type = ? OR work_logs.comment = 1) AND task_users.user_id = ?", EventLog::TASK_COMMENT, current_user.id], :order => "started_at desc", :limit => @widget.number)
+        @items = WorkLog.comments.on_tasks_owned_by(current_user).accessed_by(current_user).all(:order => "started_at desc", :limit => @widget.number)
       else
-        @items = WorkLog.find(:all, :select => "work_logs.*", :joins => "INNER JOIN tasks ON work_logs.task_id = tasks.id", :conditions => ["work_logs.project_id IN (#{current_project_ids}) AND (work_logs.log_type = ? OR work_logs.comment = 1)", EventLog::TASK_COMMENT], :order => "started_at desc", :limit => @widget.number)
+        @items = WorkLog.comments.accessed_by(current_user).all(:order => "started_at desc", :limit => @widget.number)
       end
     when 7 then
       # Schedule
