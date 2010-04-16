@@ -3,7 +3,7 @@ class CreateTaskUsers < ActiveRecord::Migration
     create_table :task_users do |t|
       t.integer :user_id
       t.integer :task_id
-      t.boolean :owner
+      t.string  :type
       t.boolean :unread
       t.boolean :notified_last_change
 

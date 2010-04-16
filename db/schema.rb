@@ -618,7 +618,9 @@ ActiveRecord::Schema.define(:version => 20100414111220) do
     t.integer "property_value_id"
   end
 
+  add_index "task_property_values", ["property_id"], :name => "property_id"
   add_index "task_property_values", ["task_id", "property_id"], :name => "task_property", :unique => true
+  add_index "task_property_values", ["task_id"], :name => "task_id"
 
   create_table "task_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
