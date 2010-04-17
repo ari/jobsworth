@@ -104,5 +104,26 @@ end
 Page.blueprint do
   name
   company
-  notable { Project.make }
+  notable { Project.make(:company=>company) }
+end
+
+ProjectFile.blueprint do
+  company
+  project  { Project.make(:company=>company)}
+  customer { Customer.make(:company=>company)}
+  task     { Task.make(:project=>project)}
+  user     { User.make(:company=>company, :customer=>customer)}
+end
+
+Post.blueprint do
+  user
+  topic
+  forum { Forum.make(:company=>user.company, :project=>user.projects.empty? ? Project.make(:company=>company, :users=>[user]): user.projects.first)}
+  body { Sham.comment}
+end
+
+Forum.blueprint do
+  company
+  project { Project.make(:company=>company)}
+  name
 end
