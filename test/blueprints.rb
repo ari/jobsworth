@@ -110,7 +110,7 @@ end
 ProjectFile.blueprint do
   company
   project  { Project.make(:company=>company)}
-  customer { Customer.make(:company=>company)}
+  customer #{ Customer.make(:company=>company)}
   task     { Task.make(:project=>project)}
   user     { User.make(:company=>company, :customer=>customer)}
 end
@@ -118,7 +118,7 @@ end
 Post.blueprint do
   user
   topic
-  forum { Forum.make(:company=>user.company, :project=>user.projects.empty? ? Project.make(:company=>company, :users=>[user]): user.projects.first)}
+  forum { Forum.make(:company=>user.company, :project=>user.projects.empty? ? Project.make(:company=>user.company, :users=>[user]): user.projects.first)}
   body { Sham.comment}
 end
 
@@ -126,4 +126,15 @@ Forum.blueprint do
   company
   project { Project.make(:company=>company)}
   name
+end
+
+Topic.blueprint do
+  forum
+  title
+  user
+end
+
+WikiPage.blueprint do
+  name
+  company
 end
