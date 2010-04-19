@@ -1,7 +1,7 @@
-# Wrapper for worklog entries, containing 
+# Wrapper for worklog entries, containing
 # WorkLog, WikiPage, ProjectFile, and Post types linking to
 # the respective models of those types
-# 
+#
 
 class EventLog < ActiveRecord::Base
   belongs_to :target, :polymorphic => true
@@ -45,10 +45,15 @@ class EventLog < ActiveRecord::Base
   RESOURCE_PASSWORD_REQUESTED = 70
   RESOURCE_CHANGE = 71
 
+  named_scope :accessed_by, lambda { |user|
+    { :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{user.project_ids_for_sql} ) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select id from work_logs where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ?) , true) ",
+                      user.company_id, user.access_level_id]
+    }
+  }
   def started_at
     self.created_at
   end
-  
+
 end
 
 

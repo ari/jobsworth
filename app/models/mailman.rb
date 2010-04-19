@@ -208,7 +208,9 @@ class Mailman < ActionMailer::Base
                     :duration => 0)
     task.set_task_num(project.company.id)
     task.set_default_properties
+    task.save(false)
     attach_users_to_task(task, email)
+    task.save(false)
     attach_customers_to_task(task)
 
     # need to do without_validations to get around validation
@@ -228,7 +230,7 @@ class Mailman < ActionMailer::Base
     end
     (email.to || []).each do |email_addr|
       user = project.company.users.find_by_email(email_addr.strip)
-      task.users << user if user
+      task.owners << user if user
     end
     (email.cc || []).each do |email_addr|
       user = project.company.users.find_by_email(email_addr.strip)
@@ -237,7 +239,7 @@ class Mailman < ActionMailer::Base
   end
 
   def attach_customers_to_task(task)
-    task.linked_users.each do |user|
+    task.users.each do |user|
       if user.customer and !task.customers.include?(user.customer)
         task.customers << user.customer
       end
@@ -257,7 +259,7 @@ class Mailman < ActionMailer::Base
     sent = [ ]
     emails = []
 
-    task.linked_user_notifications.each do |n|
+    task.task_users.each do |n|
       if n.notified_last_change? and n.user != user
         Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
         sent << n.user

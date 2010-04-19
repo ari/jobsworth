@@ -50,23 +50,6 @@ jQuery("#loading").bind("ajaxSend", function(){
    jQuery(this).hide('fast');
 });
 
-function updateComment(taskId) {
-  if(taskId !== null) {
-    var comment = comments.get(taskId);
-    if( comment !== null && comment !== "" ) {
-      var elements = comment.split("<br/>");
-      var author = elements.shift();
-      Element.insert("task_tooltip", { bottom: "<tr><th>"+ author + "</th><td class=\"tip_description\">" + elements.join("<br/>") + "</td></tr>"  } );
-    }
-  }
-}
-
-function fetchComment(e) {
-  var elements = e.toString().split("/");
-  var taskId = elements[elements.size()-1];
-  jQuery.get('/tasks/get_comment/' + taskId + ".js", function(data) {updateComment(taskId);} );
-}
-
 function inline_image(el) {
   $(el).setStyle({width:'auto', visibility:'hidden'});
   if (el.width > 500) {
@@ -224,26 +207,26 @@ function removeSearchFilter(link) {
 }
 
 jQuery(document).ready(function() {
-	// make search box contents selected when the user clicks in it
-	jQuery("#search_filter").focus( function() {
+        // make search box contents selected when the user clicks in it
+        jQuery("#search_filter").focus( function() {
         if (jQuery(this).val() == "Task search...") {
             jQuery(this).val('').removeClass('grey');
         } else {
             jQuery(this).select();
         }
     });
-    
-	jQuery("#search_filter").blur( function() {
+
+        jQuery("#search_filter").blur( function() {
         if (jQuery(this).val() == '') {
             jQuery(this).val("Task search...").addClass('grey');
         }
     });
 
-	// the user/client search box
-	jQuery(".search_filter").focus( function() {
-		jQuery(this).select();
-	});
-	
+        // the user/client search box
+        jQuery(".search_filter").focus( function() {
+                jQuery(this).select();
+        });
+
     jQuery("#comment").resizable();
 
     // Go to a task immediately if a number is entered and then the user hits enter

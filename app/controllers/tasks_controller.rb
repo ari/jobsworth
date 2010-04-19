@@ -285,10 +285,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def update_ajax
-    self.update
-  end
-
   def ajax_hide
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
 
@@ -407,10 +403,6 @@ class TasksController < ApplicationController
   def update_sheet_info
   end
 
-  def update_tasks
-    @task = Task.find( params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-  end
-
   def get_csv
     list_init
     filename = "clockingit_tasks.csv"
@@ -436,13 +428,6 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
   end
 
-  def get_comment
-    @task = Task.find(params[:id], :conditions => "project_id IN (#{current_project_ids})") rescue nil
-    if @task
-      @comment = WorkLog.find(:first, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.task_id = ? AND work_logs.comment = 1", @task.id], :include => [:user, :task, :project])
-    end
-  end
-
   ###
   # This action just sets the unread status for a task.
   ###
@@ -466,7 +451,7 @@ class TasksController < ApplicationController
     end
 
     user = current_user.company.users.find(params[:user_id])
-    @task.notifications.build(:user => user)
+    @task.task_watchers.build(:user => user)
 
     render(:partial => "tasks/notification", :locals => { :notification => user })
   end
@@ -519,7 +504,7 @@ class TasksController < ApplicationController
   end
 
   def update_work_log
-    log = current_user.company.work_logs.find(params[:id])
+    log = current_user.company.work_logs.level_accessed_by(current_user).find(params[:id])
     updated = log.update_attributes(params[:work_log])
 
     render :text => updated.to_s
@@ -735,7 +720,4 @@ protected
     end
     template.todos.each{|todo| task.todos<< todo.clone }
   end
-
-
 end
-

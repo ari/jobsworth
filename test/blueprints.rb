@@ -28,7 +28,7 @@ User.blueprint do
   company
   customer
   name
-  password 
+  password
   email
   time_zone "Australia/Sydney"
   date_format { "%d/%m/%Y" }
@@ -79,6 +79,10 @@ end
 
 WorkLog.blueprint do
   company
+  customer { Customer.make(:company=>company)}
+  project { Project.make(:customer=>customer,:company=>company)}
+  user { User.make(:company=>company, :projects=>[project])}
+  task { Task.make(:project=>project, :company=>company, :users=> [user])}
   started_at { Time.now }
 end
 
@@ -100,5 +104,37 @@ end
 Page.blueprint do
   name
   company
-  notable { Project.make }
+  notable { Project.make(:company=>company) }
+end
+
+ProjectFile.blueprint do
+  company
+  project  { Project.make(:company=>company)}
+  customer #{ Customer.make(:company=>company)}
+  task     { Task.make(:project=>project)}
+  user     { User.make(:company=>company, :customer=>customer)}
+end
+
+Post.blueprint do
+  user
+  topic
+  forum
+  body { Sham.comment}
+end
+
+Forum.blueprint do
+  company
+  project { Project.make(:company=>company)}
+  name
+end
+
+Topic.blueprint do
+  forum
+  title
+  user
+end
+
+WikiPage.blueprint do
+  name
+  company
 end

@@ -18,7 +18,7 @@ class Tag < ActiveRecord::Base
   end
 
   # Returns an array of tag counts grouped by name for the given company
-  # All tags are retured by default - include task_conditions if you 
+  # All tags are retured by default - include task_conditions if you
   # need to restrict those counts
   def self.top_counts(company, task_conditions = nil)
     top_counts_as_tags(company).map { |tag, count| [ tag.name, count ] }
@@ -33,16 +33,14 @@ class Tag < ActiveRecord::Base
           left join
           tasks on task_tags.task_id = tasks.id
           left join
-          task_owners on task_tags.task_id = task_owners.task_id
-          left join
-          notifications on task_tags.task_id = notifications.task_id
+          task_users on task_tags.task_id = task_users.task_id
           #{ task_conditions ? "where #{ task_conditions }" : "" }
           group by tag_id
     EOS
     ids_and_counts = connection.select_rows(sql)
 
-    res = ids_and_counts.map do |id, count| 
-      [ company.tags.detect { |t| t.id == id.to_i }, count.to_i ] 
+    res = ids_and_counts.map do |id, count|
+      [ company.tags.detect { |t| t.id == id.to_i }, count.to_i ]
       end
     return res.sort_by { |tag, count| tag.name.downcase }
   end

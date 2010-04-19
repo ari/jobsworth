@@ -4,7 +4,9 @@ class ProjectPermission < ActiveRecord::Base
   belongs_to :company
   belongs_to :project
   belongs_to :user
-
+  def self.permissions
+     ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all', 'see_unwatched']
+  end
   def can? (perm)
     case perm
     when 'comment'    then self.can_comment?
@@ -17,8 +19,9 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize?
     when 'milestone'  then self.can_milestone?
     when 'grant'      then self.can_grant?
+    when 'see_unwatched' then self.can_see_unwatched?
     when 'all'        then (self.can_comment? && self.can_work? && self.can_close? && self.can_report? && self.can_create? && self.can_edit? &&
-            self.can_reassign? && self.can_prioritize? && self.can_milestone? && self.can_grant?)
+            self.can_reassign? && self.can_prioritize? && self.can_milestone? && self.can_grant? && self.can_see_unwatched?)
     end
   end
 
@@ -34,6 +37,7 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize = 1
     when 'milestone'  then self.can_milestone = 1
     when 'grant'      then self.can_grant = 1
+    when 'see_unwatched' then self.can_see_unwatched=true
     when 'all'        then
       self.can_comment = 1
       self.can_work = 1
@@ -45,6 +49,7 @@ class ProjectPermission < ActiveRecord::Base
       self.can_prioritize = 1
       self.can_milestone = 1
       self.can_grant = 1
+      self.can_see_unwatched=true
     end
   end
 
@@ -60,6 +65,7 @@ class ProjectPermission < ActiveRecord::Base
     when 'prioritize' then self.can_prioritize = 0
     when 'milestone'  then self.can_milestone = 0
     when 'grant'      then self.can_grant = 0
+    when 'see_unwatched' then self.can_see_unwatched=false
     when 'all'        then
       self.can_comment = 0
       self.can_work = 0
@@ -71,6 +77,7 @@ class ProjectPermission < ActiveRecord::Base
       self.can_prioritize = 0
       self.can_milestone = 0
       self.can_grant = 0
+      self.can_see_unwatched=false
     end
   end
 

@@ -130,7 +130,7 @@ class TaskFilter < ActiveRecord::Base
 private
 
   def to_include
-    to_include = [ :project, :users, :notifications, :watchers ]
+    to_include = [ :project, :task_users]
 
     to_include << :tags if qualifiers.for("Tag").any?
     to_include << :task_property_values if qualifiers.for("PropertyValue").any?
@@ -250,7 +250,7 @@ private
   # class_type
   def column_name_for(class_type)
     if class_type == "User"
-      return "task_owners.user_id"
+      return "task_users.user_id"
     elsif class_type == "Project"
       return "tasks.project_id"
     elsif class_type == "Task"
@@ -270,12 +270,11 @@ private
 
   def unread_conditions(user, include_orphaned = false)
     count_conditions = []
-    count_conditions << "(task_owners.unread = ? and task_owners.user_id = #{ user.id })"
-    count_conditions << "(notifications.unread = ? and notifications.user_id = #{ user.id })"
-    count_conditions << "(task_owners.id is null)" if include_orphaned
+    count_conditions << "(task_users.unread = ? and task_users.user_id = #{ user.id })"
+    count_conditions << "(task_users.id is null)" if include_orphaned
     sql = count_conditions.join(" or ")
 
-    params = [ true, true ]
+    params = [ true]
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     "(#{ sql })"
   end
@@ -305,7 +304,7 @@ private
         tasks_params[:include]=[:milestone]
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       when 'assigned'
-        tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_owners  left outer join users on users.id = task_owners.user_id where task_owners.task_id=tasks.id  group by tasks.id)'
+        tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_users  left outer join users on users.id = task_users.user_id where task_users.task_id=tasks.id  group by tasks.id)'
       when 'client'
         tasks_params[:order]='if( exists(select  customers.name as client   from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select  customers.name as client  from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select customers.name from projects left outer join customers on projects.customer_id= customers.id where projects.id=tasks.project_id limit 1))'
       else

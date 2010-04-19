@@ -13,7 +13,7 @@ class FeedsController < ApplicationController
     if params[:id].nil? || params[:id].empty?
       render :nothing => true, :layout => false
       return
-    end 
+    end
 
     user = User.find(:first, :conditions => ["uuid = ?", params[:id]])
 
@@ -82,10 +82,10 @@ class FeedsController < ApplicationController
         m.channel.link = "#{user.company.site_URL}/activities/list"
         m.channel.description = "Last changes for #{user.name}@#{user.company.name}."
         m.items.do_sort = true # sort items by date
-      
+
         @activities.each do |log|
           action = get_action(log)
-        
+
           i = m.items.new_item
           i.title = " #{action}: #{log.task.issue_name}" unless log.task.nil?
           i.title ||= "#{action}"
@@ -97,10 +97,10 @@ class FeedsController < ApplicationController
         end
       end
       @activities = nil
-    else 
+    else
       widget = user.widgets.find(params[:widget]) rescue nil
-      
-      if widget 
+
+      if widget
         filter = ''
         if widget.filter_by?
           filter = case widget.filter_by[0..0]
@@ -112,7 +112,7 @@ class FeedsController < ApplicationController
                      "AND tasks.milestone_id = #{widget.filter_by[1..-1]}"
                    when 'u'
                      "AND tasks.project_id = #{widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                   else 
+                   else
                      ""
                    end
         end
@@ -120,7 +120,7 @@ class FeedsController < ApplicationController
 
         unless widget.mine?
           tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
-        else 
+        else
           tasks = user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
         end
 
@@ -146,7 +146,7 @@ class FeedsController < ApplicationController
             i.author = task.creator.name unless task.creator.nil?
           end
         end
-      else  
+      else
         content = '<?xml version="1.0" encoding="UTF-8"?>
         <rss version="2.0"
           xmlns:content="http://purl.org/rss/1.0/modules/content/"
@@ -159,8 +159,8 @@ class FeedsController < ApplicationController
             <description>No such widget.</description>
           </channel>
         </rss>'
-      end 
-    end 
+      end
+    end
     # Render it inline
     render :text => content.to_s
     content = nil
@@ -184,7 +184,7 @@ class FeedsController < ApplicationController
     if params[:id].nil? || params[:id].empty?
       render :nothing => true
       return
-    end 
+    end
 
     Localization.lang('en_US')
 
@@ -223,7 +223,7 @@ class FeedsController < ApplicationController
           logger.info("selecting tasks")
           @tasks = Task.find(:all,
                              :conditions => ["tasks.project_id IN (#{pids})" ],
-                             :include => [:milestone, :tags, :task_owners, :users, :ical_entry ])
+                             :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
         end
 
       else
@@ -239,7 +239,7 @@ class FeedsController < ApplicationController
           logger.info("selecting personal tasks")
           @tasks = user.tasks.find(:all,
                                    :conditions => ["tasks.project_id IN (#{pids})" ],
-                                   :include => [:milestone, :tags, :task_owners, :users, :ical_entry ])
+                                   :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
         end
       end
 
@@ -414,13 +414,13 @@ class FeedsController < ApplicationController
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
       else
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i )
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i )
       end
     elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       else
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_owners.task_id AND task_owners.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
+        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       end
       @tasks = user.company.sort(@tasks)[0, limit.to_i]
     elsif params[:up_show_order] && params[:up_show_order] == "Resolution Pie-Chart"

@@ -9,7 +9,7 @@ class MailmanTest < ActiveSupport::TestCase
     $CONFIG[:domain] = @company.subdomain
 
     @user = @company.users.first
-    @task.users << @user
+    @task.owners << @user
     @task.watchers << @company.users[1]
     @task.save!
 
@@ -135,12 +135,13 @@ o------ please reply above this line ------o
         @task.save!
 
         @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
-        @task.notifications.each { |n| n.update_attribute(:notified_last_change, true) }
+        @task.task_watchers.each { |n| n.update_attribute(:notified_last_change, true) }
+        assert_equal 2, @task.users.count
       end
 
       should "deliver changed emails to users, watcher and email watchers" do
         Mailman.receive(@tmail.to_s)
-        emails_to_send = @task.users.count + @task.watchers.count
+        emails_to_send = @task.users.count
         emails_to_send += @task.notify_emails.split(",").length
         if @task.users.include?(@user) or @task.watchers.include?(@user)
           emails_to_send -= 1 # because sender should be excluded
@@ -150,7 +151,7 @@ o------ please reply above this line ------o
       end
 
       should "list people who received notification emails" do
-        no_mail = @task.notifications.last
+        no_mail = @task.task_watchers.last
         no_mail.update_attributes(:notified_last_change => false)
 
         Mailman.receive(@tmail.to_s)
@@ -206,7 +207,7 @@ o------ please reply above this line ------o
       mail = test_mail(@to, user.email)
       Mailman.receive(TMail::Mail.parse(mail).to_s)
       task = @project.tasks.first(:order => "id desc")
-      notification = task.linked_user_notifications.detect { |n| n.user == user }
+      notification = task.task_users.detect { |n| n.user == user }
       assert notification.notified_last_change?
     end
 
@@ -258,7 +259,7 @@ o------ please reply above this line ------o
       Mailman.receive(@tmail.to_s)
 
       task = Task.first(:order => "id desc")
-      assert task.linked_users.include?(User.first)
+      assert task.users.include?(User.first)
     end
 
     should "deliver created email to creator" do
@@ -404,7 +405,6 @@ EOS
   def clear_users(task)
     # clear users so we don't get "Notification emails sent to..." message
     task.users.clear
-    task.notifications.clear
     task.save!
   end
 end

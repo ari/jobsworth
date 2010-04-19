@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   belongs_to    :company
   belongs_to    :customer
+  belongs_to    :access_level
   has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name"
   has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name"
   has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project
@@ -16,12 +17,13 @@ class User < ActiveRecord::Base
 
   has_many      :pages, :dependent => :nullify
   has_many      :notes, :as => :notable, :class_name => "Page", :order => "id desc"
+
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
   has_many      :work_logs, :dependent => :destroy
   has_many      :work_log_notifications, :dependent => :destroy
 
-  has_many      :notifications, :dependent => :destroy
+  has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
   has_many      :notifies, :through => :notifications, :source => :task
 
   has_many      :forums, :through => :moderatorships, :order => 'forums.name'
@@ -208,7 +210,7 @@ class User < ActiveRecord::Base
       @perm_cache[project.id] ||= {}
       self.project_permissions.each do | p |
         @perm_cache[p.project_id] ||= {}
-        ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all'].each do |p_perm|
+        ProjectPermission.permissions.each do |p_perm|
           @perm_cache[p.project_id][p_perm] = p.can?(p_perm)
         end
       end
@@ -246,7 +248,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project) || task.linked_users.include?(self)
+    projects.include?(task.project) || task.users.include?(self)
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this
@@ -257,8 +259,7 @@ class User < ActiveRecord::Base
       res << "tasks.project_id in (#{ all_project_ids.join(",") })"
     end
 
-    res << "task_owners.user_id = #{ self.id }"
-    res << "notifications.user_id = #{ self.id }"
+    res << "task_users.user_id = #{ self.id }"
 
     res = res.join(" or ")
     return "(#{ res })"
@@ -353,7 +354,13 @@ class User < ActiveRecord::Base
 
     return @visible_task_filters
   end
-
+  def project_ids_for_sql
+    unless @current_project_ids
+      @current_project_ids=self.project_ids
+      @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
+    end
+    @current_project_ids
+  end
   private
 
   # Sets up search options to use in a find for things linked to
@@ -387,7 +394,6 @@ class User < ActiveRecord::Base
       self.time_format = "%H:%M"
     end
   end
-
 end
 
 

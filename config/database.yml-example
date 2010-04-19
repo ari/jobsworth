@@ -7,7 +7,7 @@ development:
   encoding: utf8
   SOCKET
 
-test:
+test: &TEST
   adapter: mysql
   database: DATABASE_test
   host: HOST
@@ -24,3 +24,7 @@ production:
   password: PASSWORD
   encoding: utf8
   SOCKET
+cucumber:
+  <<: *TEST
+selenium:
+  <<: *TEST

@@ -1,6 +1,6 @@
 <% date_format = current_user.time_format %>
 
-<tr class="hoverrow">
+<tr class="hoverrow access_level_<%= log.access_level_id%>">
   <td align="right" valign="top" style="width:80px;" nowrap>
     <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
     <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log)) %><br/>

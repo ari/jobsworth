@@ -20,14 +20,18 @@ class Task < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :project
   belongs_to    :milestone
-  has_many      :users, :through => :task_owners, :source => :user
+
+  has_many      :users, :through => :task_users, :source => :user
+  has_many      :owners, :through =>:task_owners, :source=>:user
+  has_many      :watchers, :through =>:task_watchers, :source=>:user
+
+  #task_watcher and task_owner is subclasses of task_user
+  has_many      :task_users, :dependent => :destroy
+  has_many      :task_watchers, :dependent => :destroy
   has_many      :task_owners, :dependent => :destroy
 
   has_many      :work_logs, :dependent => :destroy, :order => "started_at asc"
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy
-
-  has_many      :notifications, :dependent => :destroy
-  has_many      :watchers, :through => :notifications, :source => :user
 
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
 
@@ -460,19 +464,10 @@ class Task < ActiveRecord::Base
     { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
   end
 
-  def owners
-    o = self.users.collect{ |u| u.name}.join(', ')
+  def owners_to_display
+    o = self.owners.collect{ |u| u.name}.join(', ')
     o = "Unassigned" if o.nil? || o == ""
     o
-  end
-
-  # Returns all users linked to this task
-  def linked_users
-    @linked_users ||= (self.users + self.watchers)
-  end
-
-  def linked_user_notifications
-    self.notifications + self.task_owners
   end
 
   def set_tags( tagstring )
@@ -616,7 +611,7 @@ class Task < ActiveRecord::Base
   end
 
   def to_csv
-    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type, priority_type, severity_type]
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type, priority_type, severity_type]
   end
 
   def set_property_value(property, property_value)
@@ -785,19 +780,6 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # Returns an array of all users setup as owners or
-  # watchers of this task.
-  ###
-  def all_related_users
-    recipients = []
-    recipients += users
-    recipients += watchers
-    recipients = recipients.uniq.compact
-
-    return recipients
-  end
-
-  ###
   # Returns an array of email addresses of people who should be
   # notified about changes to this task.
   ###
@@ -809,7 +791,7 @@ class Task < ActiveRecord::Base
       recipients << user_who_made_change
     end
 
-    recipients += all_related_users.select { |u| u.receive_notifications? }
+    recipients += self.users.select { |u| u.receive_notifications? }
 
     # remove them if they don't want their own notifications.
     # do it here rather than at start of method in case they're
@@ -841,12 +823,12 @@ class Task < ActiveRecord::Base
   def set_watcher_ids(watcher_ids)
     return if watcher_ids.nil?
 
-    self.notifications.destroy_all
+    self.task_watchers.destroy_all
 
     watcher_ids.each do |id|
       next if id.to_i == 0
       user = company.users.find(id)
-      Notification.create(:user => user, :task => self)
+      self.task_watchers.create(:user => user, :task => self)
     end
   end
 
@@ -862,7 +844,7 @@ class Task < ActiveRecord::Base
     owner_ids.each do |o|
       next if o.to_i == 0
       u = company.users.find(o.to_i)
-      TaskOwner.create(:user => u, :task => self)
+      self.task_owners.create(:user => u, :task => self)
     end
   end
 
@@ -916,7 +898,7 @@ class Task < ActiveRecord::Base
   # If not, that column will be set to false.
   ###
   def mark_as_notified_last_change(users)
-    linked_user_notifications.each do |n|
+    task_users.each do |n|
       notified = users.include?(n.user)
       n.update_attribute(:notified_last_change, notified)
     end
@@ -931,7 +913,7 @@ class Task < ActiveRecord::Base
     if self.new_record?
       res = user.receive_notifications?
     else
-      join = linked_user_notifications.detect { |j| j.user == user }
+      join = self.task_users.detect { |j| j.user == user }
       res = (join and join.notified_last_change?)
     end
 
@@ -948,7 +930,7 @@ class Task < ActiveRecord::Base
   def mark_as_unread(exclude = [])
     exclude = [ exclude ].flatten # make sure it's an array.
 
-    linked_user_notifications.each do |n|
+    self.task_users.each do |n|
       n.update_attribute(:unread, true) if !exclude.include?(n.user)
     end
   end
@@ -959,7 +941,7 @@ class Task < ActiveRecord::Base
   # as unread for user.
   ###
   def set_task_read(user, read = true)
-    user_notifications = linked_user_notifications.select { |n| n.user == user }
+    user_notifications = self.task_users.select { |n| n.user == user }
     user_notifications.each do |n|
       n.update_attributes(:unread => !read)
     end
@@ -971,7 +953,7 @@ class Task < ActiveRecord::Base
   def unread?(user)
     unread = false
 
-    user_notifications = linked_user_notifications.select { |n| n.user == user }
+    user_notifications = self.task_users.select { |n| n.user == user }
     user_notifications.each do |n|
       unread ||= n.unread?
     end
@@ -1033,7 +1015,7 @@ class Task < ActiveRecord::Base
     return @user_work
   end
   def statuses_for_select_list
-    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<<i}
+    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
   end
 
   private
