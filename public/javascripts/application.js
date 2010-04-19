@@ -817,6 +817,7 @@ function initTagsPanel()
 {
     //NOTE: copy-and-paste from initFiltersPanel, must be refactored
      jQuery('#tags a').click(function(){
+        jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
         jQuery.ajax({
             beforeSend: function(){ showProgress(); },
             complete: function(request){ tasklistReload(); hideProgress(); } ,
