@@ -172,7 +172,9 @@ class WorkLog < ActiveRecord::Base
     all_users = []
 
     if ids.any? or emails.any?
-      all_users = ids.map { |id| current_user.company.users.find(id) }
+      all_users = ids.map { |id| current_user.company.users.find(:first, :conditions=>["users.id = ? and users.access_level_id >=?",
+                                                                                      id, self.access_level_id]) }
+      all_users.compact!
       users = all_users.clone
       users.delete(current_user) if !current_user.receive_own_notifications?
       emails += users.map { |u| u.email }

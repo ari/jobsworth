@@ -207,7 +207,7 @@ class TasksController < ApplicationController
     @task = controlled_model.find( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
-    @old_users = @task.users.collect{ |u| u.id}.sort.join(',')
+    @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
     @old_users ||= "0"
     @old_project_id = @task.project_id
     @old_project_name = @task.project.name

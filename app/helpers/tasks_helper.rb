@@ -136,7 +136,7 @@ module TasksHelper
   ###
   def assigned_icon(task, user)
     classname = "icon tooltip assigned"
-    classname += " is_assigned" if task.users.include?(user)
+    classname += " is_assigned" if task.owners.include?(user)
     content = content_tag(:span, "*", :class => classname,
                           :title => _("Click to toggle whether this task is assigned to this user"))
 
@@ -230,7 +230,7 @@ module TasksHelper
 
     return grouped_options_for_select(options, task.project_id, "Please select")
   end
-  
+
 
   ###
   # Returns an array to use as the options for a select
