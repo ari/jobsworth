@@ -9,12 +9,14 @@ describe WorkLog do
     work_log=WorkLog.new
     work_log.access_level_id.should == 1
   end
+
   describe "WorkLog.build_work_added_or_comment(task, user, params)" do
     it "should change access_level if presented in params[:work_log] " do
       work_log=WorkLog.build_work_added_or_comment(Task.make, User.make, { :work_log=>{ :body=>"abcd", :access_level_id=>2}, :comment=>'comment'})
       work_log.access_level_id.should == 2
     end
   end
+
   describe "level_accessed_by(user) scope" do
     it "should return work logs with access level lower or equal to  user's access level" do
       3.times{ WorkLog.make }
@@ -24,6 +26,7 @@ describe WorkLog do
       WorkLog.level_accessed_by(User.make(:access_level_id=>2)).should have(6).work_logs
     end
   end
+
   describe "accessed_by(user) scope" do
     before(:each) do
       company=Company.make
@@ -42,6 +45,7 @@ describe WorkLog do
       WorkLog.accessed_by(@user).should have(3).work_logs
     end
   end
+
   describe "on_tasks_owned_by(user) scope" do
     before(:each) do
       @user=User.make
@@ -52,6 +56,29 @@ describe WorkLog do
       WorkLog.all.count.should == 5
       WorkLog.on_tasks_owned_by(@user).should have(3).work_logs
       WorkLog.on_tasks_owned_by(@user).each{ |work_log| work_log.task.user_ids.should include(@user.id)}
+    end
+  end
+
+  describe "setup_notifications" do
+    before(:each) do
+      company=Company.make
+      @notify_ids=[]
+      2.times{ @notify_ids<< User.make(:access_level_id=>1, :company=> company).id }
+      2.times{ @notify_ids<< User.make(:access_level_id=>2, :company=> company).id }
+      @work_log=WorkLog.make(:comment=>true, :user=> User.first)
+    end
+    it "should yield only emails of users with access level great or equal to work log's access level" do
+      emails=[]
+      @work_log.setup_notifications(@notify_ids) do |email|
+        emails<< email
+      end
+      emails.should == User.all.collect{ |user| user.email }
+      @work_log.access_level_id=2
+      emails=[]
+      @work_log.setup_notifications(@notify_ids) do |email|
+        emails<< email
+      end
+      emails.should == User.find_all_by_access_level_id(2).collect{ |user| user.email }
     end
   end
 end

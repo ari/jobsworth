@@ -783,6 +783,7 @@ class Task < ActiveRecord::Base
   # Returns an array of email addresses of people who should be
   # notified about changes to this task.
   ###
+  #TODO: remove this method, looks like it called only in tests
   def notification_email_addresses(user_who_made_change = nil)
     recipients = [ ]
 
