@@ -45,9 +45,7 @@ class WidgetsController < ApplicationController
       @completed_projects = current_user.completed_projects.size
     when 2 then
       # Activities
-      @activities = EventLog.find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number,
-          :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{current_project_ids} ) OR event_logs.project_id IS NULL)", current_user.company_id]
-        )
+      @activities = EventLog.accessed_by(current_user).find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number)
     when 3 then
       # Tasks Graph
       case @widget.number
