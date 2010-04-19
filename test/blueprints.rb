@@ -118,7 +118,7 @@ end
 Post.blueprint do
   user
   topic
-  forum { Forum.make(:company=>user.company, :project=>user.projects.empty? ? Project.make(:company=>user.company, :users=>[user]): user.projects.first)}
+  forum
   body { Sham.comment}
 end
 
