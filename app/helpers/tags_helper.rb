@@ -20,15 +20,14 @@ module TagsHelper
 
   # Returns a link to view tasks with the given tag.
   # Anything passed in options will be passed to the link_to call. 
-  def link_to_filter_on_tag(tag, options = {})
+  def link_to_filter_on_tag(tag,  options = {}) 
+      open = current_user.company.statuses.first
       str = "#{ tag.name }"
-      link_params = {
-        :qualifiable_id => tag.id,
-        :qualifiable_type => tag.class.name
-      }
-
-      link_params = { :qualifiers_attributes => [ link_params ] }
-      path = update_current_filter_task_filters_path(:task_filter => link_params)
+      link_params = []
+      link_params << { :qualifiable_type => tag.class.name, :qualifiable_id => tag.id}
+      link_params << { :qualifiable_type => "Status", :qualifiable_id => open.id}
+      link_params = { :qualifiers_attributes => link_params }
+      path = update_current_filter_task_filters_path({:task_filter => link_params})
       return link_to(str, path, options)
   end
 end
