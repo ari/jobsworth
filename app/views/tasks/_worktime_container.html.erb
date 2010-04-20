@@ -1,7 +1,9 @@
  <div id="worktime_container">
     <% fields_for "work_log" do |f| -%>
-      <%= f.label :access_level_id, "Acess level" %>
-      <%= f.select :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]} %>
+      <% if current_user.access_level_id > 1 %>
+        <%= f.label :access_level_id, "Acess level" %>
+        <%= f.select :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]} %>
+      <% end %>
       <label>Time spent</label>
       <%= f.text_field :duration, :class => "text", :onclick => "jQuery('#worklog_extra').show();"%>
       <br/>
