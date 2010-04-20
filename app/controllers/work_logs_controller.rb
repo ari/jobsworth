@@ -53,7 +53,7 @@ class WorkLogsController < ApplicationController
 
   # Loads the log using the given params
   def load_log
-    @log = current_user.company.work_logs.find(params[:id])
+    @log = current_user.company.work_logs.level_accessed_by(current_user).find(params[:id])
     @task = @log.task
   end
 
@@ -67,7 +67,7 @@ class WorkLogsController < ApplicationController
 
   # Returns true if the current user can delete the given log
   def can_delete_log?(log)
-    return (!log.new_record? and 
+    return (!log.new_record? and
             (current_user.admin? || log.user == current_user))
   end
 
@@ -76,7 +76,7 @@ class WorkLogsController < ApplicationController
     params[:work_log][:started_at] = date_from_params(params[:work_log], :started_at)
     params[:work_log][:duration] = parse_time(params[:work_log][:duration])
     params[:work_log][:comment] = !params[:work_log][:body].blank?
-    
+
     @log.attributes = params[:work_log]
     @log.user = current_user
     @log.project = @task.project
@@ -93,25 +93,25 @@ class WorkLogsController < ApplicationController
       status_type = :completed
 
       if new_status < 2
-        log.log_type = EventLog::TASK_WORK_ADDED 
+        log.log_type = EventLog::TASK_WORK_ADDED
         status_type = :updated
-      end 
-      
+      end
+
       if new_status > 1 && log.task.status < 2
-        log.log_type = EventLog::TASK_COMPLETED 
+        log.log_type = EventLog::TASK_COMPLETED
         status_type = :completed
-      end 
-      
+      end
+
       if new_status < 2 && log.task.status > 1
-        log.log_type = EventLog::TASK_REVERTED 
+        log.log_type = EventLog::TASK_REVERTED
         status_type= :reverted
-      end 
-      
+      end
+
       log.task.status = new_status
       log.task.updated_by_id = current_user.id
       log.task.completed_at = Time.now.utc
     end
-    
+
     log.task.save
   end
 
