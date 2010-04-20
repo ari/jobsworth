@@ -9,7 +9,7 @@ class WorklogReport
   WORKLOAD = 4
 
   ###
-  # A sorted array of worklogs that match the setup 
+  # A sorted array of worklogs that match the setup
   # for this report.
   ###
   attr_reader :work_logs
@@ -33,7 +33,7 @@ class WorklogReport
   attr_reader :current_user
 
   ###
-  # Various variables used for display 
+  # Various variables used for display
   ###
   attr_reader :column_headers
   attr_reader :column_totals
@@ -135,7 +135,7 @@ class WorklogReport
     when 7
       if params[:start_date] && params[:start_date].length > 1
         begin
-          start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time 
+          start_date = DateTime.strptime( params[:start_date], current_user.date_format ).to_time
         rescue
           flash['notice'] ||= _("Invalid start date")
           start_date = tz.now
@@ -146,11 +146,11 @@ class WorklogReport
 
       if params[:stop_date] && params[:stop_date].length > 1
         begin
-          end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time 
-        rescue 
+          end_date = DateTime.strptime( params[:stop_date], current_user.date_format ).to_time
+        rescue
           flash['notice'] ||= _("Invalid end date")
           end_date = tz.now
-        end 
+        end
 
         @end_date = tz.local_to_utc((end_date + 1.day).midnight)
       end
@@ -158,7 +158,7 @@ class WorklogReport
   end
 
   ###
-  # Setup the @work_logs var with any work logs from 
+  # Setup the @work_logs var with any work logs from
   # tasks which should be shown for this report.
   ###
   def init_work_logs(tasks, params)
@@ -168,7 +168,7 @@ class WorklogReport
       if @type == WORKLOAD
         logs += work_logs_for_workload(t)
       else
-        logs += t.work_logs
+        logs += t.work_logs.level_accessed_by(current_user)
       end
     end
 
@@ -176,7 +176,7 @@ class WorklogReport
       (@start_date.nil? or log.started_at >= @start_date) and
         (@end_date.nil? or log.started_at <= @end_date)
     end
-    
+
     logs = filter_logs_by_params(logs, params)
     @work_logs = logs.sort_by { |log| log.started_at }
   end
@@ -217,7 +217,7 @@ class WorklogReport
   end
 
   ###
-  # Does any extra filtering of the logs depending on 
+  # Does any extra filtering of the logs depending on
   # params.
   ###
   def filter_logs_by_params(logs, params)
@@ -287,7 +287,7 @@ class WorklogReport
             @column_totals[ key ] ||= 0
           end
           do_column(w, key)
-        end 
+        end
       when WorklogReport::TIMESHEET
         # Time sheet
         columns = [ 16, 17, 18, 21, 19 ]
@@ -415,14 +415,14 @@ class WorklogReport
       @rows[ rkey ]['__'] = rname
     end
     if duration.is_a? Fixnum
-      @rows[rkey][vkey] ||= 0 
+      @rows[rkey][vkey] ||= 0
       @rows[rkey][vkey] += duration if duration
-    else 
+    else
       @rows[rkey][vkey] ||= ""
       @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration
       @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration && !(duration.include?('#') || duration.include?('small'))
       @rows[rkey][vkey] += duration if duration
-    end 
+    end
   end
 
 
@@ -539,7 +539,7 @@ class WorklogReport
         @generated_report.user = current_user
         @generated_report.filename = "clockingit_report.csv"
         @generated_report.report = csv
-        @generated_report.save    
+        @generated_report.save
       end
     end
   end
