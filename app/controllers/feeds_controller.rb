@@ -71,7 +71,7 @@ class FeedsController < ApplicationController
       # Find 50 last WorkLogs of the Projects
       unless pids.nil? || pids.empty?
         pids = pids.collect{|p|p.id}.join(',')
-        @activities = WorkLog.find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
+        @activities = WorkLog.level_accessed_by(user).find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
       else
         @activities = []
       end
@@ -214,7 +214,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting logs")
-          @activities = WorkLog.find(:all,
+          @activities = WorkLog.level_accessed_by(user).find(:all,
                                      :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", EventLog::TASK_WORK_ADDED],
                                      :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
         end
@@ -230,7 +230,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting personal logs")
-          @activities = WorkLog.find(:all,
+          @activities = WorkLog.level_accessed_by(user).find(:all,
                                      :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, EventLog::TASK_WORK_ADDED],
                                      :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
         end
