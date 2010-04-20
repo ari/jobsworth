@@ -3,6 +3,12 @@ class TimelineController < ApplicationController
 
   def list
 
+    if current_user.admin == 0
+      flash['notice'] = _("Sorry, only admins can use timeline in next few days.")
+      redirect_to '/'
+      return false
+    end
+
     filter = ""
     work_log = false
     @filter_params = {}
