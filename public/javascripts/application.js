@@ -847,3 +847,15 @@ jQuery(document).ready(function(){
     
     jQuery('.autogrow').autogrow();
 });
+
+
+function toggleAccess() {
+	if (jQuery('#accessLevel_container div').hasClass('private')) {
+		jQuery('#accessLevel_container div').removeClass('private');
+		jQuery('#work_log_access_level_id').val('1');
+	} else {
+		jQuery('#accessLevel_container div').addClass('private');	
+		jQuery('#work_log_access_level_id').val('2');
+	}
+
+}

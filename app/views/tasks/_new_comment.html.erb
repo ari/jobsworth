@@ -5,8 +5,8 @@
 	<% if current_user.access_level_id > 1 %>
 		<div id="accessLevel_container">
 			<%fields_for :work_log do |f| %>
-				<%= f.label :access_level_id, "Access level" %>
-				<%= f.select :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]} %>
+				<div onclick="toggleAccess();"></div>
+				<%= f.select :access_level_id, ['1', '2']%>
 			<% end %>
 		</div>
 	<% end %>
