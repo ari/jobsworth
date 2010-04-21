@@ -1,5 +1,11 @@
 <fieldset id="task_information">
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow', :onKeyUp => "highlightActiveNotifications()" }.merge( perms['comment'] )  %>
+  <% if current_user.access_level_id > 1 %>
+     <%fields_for :work_log do |f| %>
+        <%= f.label :access_level_id, "Acess level" %>
+        <%= f.select :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]} %>
+      <% end %>
+  <% end %>
   <%= cit_submit_tag(@task) %>
 
   <%= render(:partial => "time_links", :locals => { :task => @task }) %>
