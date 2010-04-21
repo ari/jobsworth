@@ -64,6 +64,6 @@
                 <label for="user_can_approve_work_logs"><%=_ "Approve work logs" %></label><%= check_box(:user, :can_approve_work_logs) %><br/>
                 <label for="user_use_resources"><%=_ "Access Resources" %></label><%= check_box 'user', 'use_resources' %><br/>
                 <label for="user_option_tracktime"><%=_ 'Track Time' %></label><%= check_box 'user', 'option_tracktime' %><br/>
-                <%=label(:user, :access_level_id, _('Access Level')) %><%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
+                <%=label(:user, :access_level_id, _('Comment access level')) %><%=select :user, :access_level_id, AccessLevel.all.collect{|al| [al.name, al.id]}%>
         </fieldset>
 <% end %>
