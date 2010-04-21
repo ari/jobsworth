@@ -220,6 +220,17 @@ o------ please reply above this line ------o
       assert_equal task.property_value(properties(:first)), properties(:first).default_value
       assert_equal task.property_value(properties(:second)), properties(:second).default_value
     end
+
+    should "add customer.auto_add users as watchers" do
+      user = @project.company.users.make(:customer=>Customer.make(:company=>@project.company))
+      user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
+      mail = test_mail(@to, user.email)
+      @tmail = TMail::Mail.parse(mail)
+      Mailman.receive(@tmail.to_s)
+      task = Task.find(:first, :order => "id desc")
+      assert task.watchers.include?(user1)
+    end
+
   end
 
   context "a single company install" do

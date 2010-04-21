@@ -242,6 +242,9 @@ class Mailman < ActionMailer::Base
     task.users.each do |user|
       if user.customer and !task.customers.include?(user.customer)
         task.customers << user.customer
+        user.customer.users.auto_add.each do |u|
+           task.watchers << u unless task.users.include?(u)
+        end
       end
     end
   end
