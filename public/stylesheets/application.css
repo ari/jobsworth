@@ -484,7 +484,6 @@ textarea#task_description {
 }
 
 textarea#comment {
-	margin-bottom: 0.8em;
 	min-height: 100px;
 	width: 100%;
 }
@@ -1581,22 +1580,10 @@ fieldset#task_attachments {
 
 /* END Task History styling -cll 27/08 */
 
-/* Task Attachments styling -cll 27/08 */
+/* Task edit add comment styling */
 
 fieldset#task_attachments {
     margin-bottom: 10px;
-}
-
-#upload_container {
-    width: auto;
-    padding-left: 40px;
-    float: left;
-}
-
-#upload_container label {
-    margin-top: 7px;
-    width: 150px;
-    text-align: left;
 }
 
 #task_attached_files {
@@ -1612,42 +1599,40 @@ fieldset#task_information {
 fieldset#task_information input[type = "submit"] {
     float: left;
     clear: both;
+    margin-top: 10px;
 }
 
-fieldset#task_attachments label[for = "task_tmp_file"] {
-    font-size: 12px;
-    color: #444;
-    font-weight: bold;
-    margin: 4px 0;
-    width: auto;
-    position: absolute;
+fieldset#task_information label {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    display: block;
+    text-align: left;
+    width: 100%;
 }
 
-input#tmp_files_ {
+fieldset#task_information input {
     margin: 0;
+    padding: 0;
+}
+
+div#accessLevel_container {
+	float: left;
+	margin-left: 40px;
+}
+
+div#upload_container {
+    width: 200px;
+    float: left;
 }
 
 div#worktime_container {
     float: right;
-    width: auto;
-    text-align: right;
 }
 
-div#worktime_container label {
-    width: 100px;
-    text-align: right;
-    clear: both;
-    float: none;
+div#worktime_container input {
+    max-width: 120px;
 }
 
-div#upload_container label {
-    text-align: left;
-    float: none;
-}
-
-input#work_log_duration, input#work_log_started_at {
-    width: 110px;
-}
 
 select#custom_attribute_1 {
     margin: 6px 0 0 0;
@@ -1656,6 +1641,14 @@ select#custom_attribute_1 {
 #worklog_extra {
     display: none;
 }
+
+#task_time_links {
+    float: right;
+    padding-top: 0.6em;
+}
+
+/* -------------------- */
+
 
 .prog-border {
     width: 115px;
@@ -2751,11 +2744,6 @@ fieldset.basic .actions label {
     height: 0;
     clear: both;
     visibility: hidden;
-}
-
-#task_time_links {
-    float: right;
-    padding-top: 0.6em;
 }
 
 #install {
