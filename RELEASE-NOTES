@@ -2,6 +2,10 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+21 April 2010
+	Some major changes under the hood in preparation for access control improvements. Tasks watchers and assignees are now merged into one table.
+	Comment level access control is now implemented. Look for the new role popup in the user view which lets you assign one of two access levels. Some more work on the UI is coming, so consider this just a preview of what is to come.
+
 8 April 2010
 	The push server (comet) has been removed along with all the things which depended on it: chat, shout and push notifications. The code is simpler and easier to install, and hopefully a little faster.
 
