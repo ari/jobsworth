@@ -227,8 +227,6 @@ jQuery(document).ready(function() {
                 jQuery(this).select();
         });
 
-    jQuery("#comment").resizable();
-
     // Go to a task immediately if a number is entered and then the user hits enter
     jQuery("#search_filter").keypress(function(key) {
                 if (key.keyCode == 13) { // if key was enter
@@ -846,4 +844,6 @@ function create_task_from_template(event)
 }
 jQuery(document).ready(function(){
     jQuery('li.task_template a').click(create_task_from_template);
+    
+    jQuery('.autogrow').autogrow();
 });
