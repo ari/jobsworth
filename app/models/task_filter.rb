@@ -305,6 +305,8 @@ private
         tasks_params[:order]='(case isnull(tasks.due_at)  when 1 then milestones.due_at when 0  then tasks.due_at end)'
       when 'assigned'
         tasks_params[:order]='(select  group_concat(distinct users.name)  from  task_users  left outer join users on users.id = task_users.user_id where task_users.task_id=tasks.id  group by tasks.id)'
+      when 'milestone'
+        tasks_params[:order]="(select  CONCAT(projects.name, '/', if(isnull(milestones.name), '', milestones.name)) from tasks as ts inner join  projects on ts.project_id = projects.id left join milestones on ts.milestone_id = milestones.id where ts.id = tasks.id)"
       when 'client'
         tasks_params[:order]='if( exists(select  customers.name as client   from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select  customers.name as client  from task_customers left outer join customers on task_customers.customer_id=customers.id where task_customers.task_id=tasks.id limit 1), (select customers.name from projects left outer join customers on projects.customer_id= customers.id where projects.id=tasks.project_id limit 1))'
       else
