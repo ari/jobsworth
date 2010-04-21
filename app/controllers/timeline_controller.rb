@@ -10,7 +10,6 @@ class TimelineController < ApplicationController
     end
 
     filter = ""
-    work_log = false
     @filter_params = {}
 
     [:filter_user, :filter_status, :filter_project, :filter_date].each do |fp|
@@ -19,7 +18,7 @@ class TimelineController < ApplicationController
 
     event_log_types = [ EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED,
                         EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
-    if(event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
+    if (event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
       filter << " AND event_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
       filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
       filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
@@ -35,29 +34,9 @@ class TimelineController < ApplicationController
       filter << " AND work_logs.duration > 0" if params[:filter_status].to_i == EventLog::TASK_WORK_ADDED
     end
 
-    if filter.length > 0
-      work_log = true
-    end
-
-    case params[:filter_date].to_i
-    when 1
-      # This Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_week.utc).to_s(:db)}'"
-    when 2
-      # Last Week
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(1.week.ago.beginning_of_week.utc).to_s(:db)}' AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_week.utc).to_s(:db)}'"
-    when 3
-      # This Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_month.utc).to_s(:db)}'"
-    when 4
-      # Last Month
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_month.beginning_of_month.utc).to_s(:db)}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_month.utc).to_s(:db)}'"
-    when 5
-      # This Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.beginning_of_year.utc).to_s(:db)}'"
-    when 6
-      # Last Year
-      filter << " AND work_logs.started_at > '#{tz.utc_to_local(Time.now.last_year.beginning_of_year.utc).to_s(:db)}'  AND work_logs.started_at < '#{tz.utc_to_local(Time.now.beginning_of_year.utc).to_s(:db)}'"
+    if  (params[:filter_date].to_i > 0) and (params[:filter_date].to_i < 7)
+      name= [:'This week', :'Last week', :'This month', :'Last month', :'This year', :'Last year'][params[:filter_date].to_i-1]
+      filter << " AND work_logs.started_at > '#{tz.utc_to_local(TimeRange.start_time(name)).to_s(:db)}' AND work_logs.started_at < '#{tz.utc_to_local(TimeRange.end_time(name)).to_s(:db)}'"
     end
 
     if params[:filter_project].to_i > 0
@@ -66,7 +45,7 @@ class TimelineController < ApplicationController
       filter = " AND (work_logs.project_id IN (#{current_project_ids}) OR work_logs.project_id IS NULL or work_logs.project_id = 0)" + filter
     end
 
-    if !work_log or event_log_types.include?(params[:filter_status].to_i)
+    if event_log_types.include?(params[:filter_status].to_i)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
 
@@ -85,7 +64,7 @@ class TimelineController < ApplicationController
       end
 
     else
-      @logs = WorkLog.level_accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter} AND (work_logs.project_id IN (#{current_project_ids}) or work_logs.project_id = 0)", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.level_accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter}", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
     end
   end
 
