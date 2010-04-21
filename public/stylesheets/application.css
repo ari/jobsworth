@@ -1522,63 +1522,7 @@ fieldset#task_attachments {
     padding: 0px;
 }
 
-#taskform #task_history #log_history {
-    margin-left: 0;
-    padding-left: 0;
-}
 
-#taskform #task_history .log_entry {
-    margin: 0;
-    display: block;
-    width: 100%;
-    position: relative;
-    clear: both;
-}
-
-#taskform #task_history .log_entry:nth-child(even) {
-	background-color: #F5F7EF;
-}
-#taskform #task_history .log_date {
-    font-weight: normal;
-    padding-left: 0px;
-    clear: both;
-    display: block;
-    color: #666;
-}
-#taskform #task_history .log_timestamp {
-    display: block;
-    width: 95px;
-    position: absolute;
-    top: 0px;
-    text-align: center;
-    color: #999999;
-    padding: 6px 0 0 0px;
-    font-size: 10px;
-}
-
-#taskform #task_history .log_time, #taskform #task_history .log_worktime {
-    display: block;
-    font-size: 10px;
-}
-#taskform #task_history .log_name, #taskform #task_history .log_comment {
-    margin-left: 100px;
-}
-
-#taskform #task_history .log_name {
-    margin-bottom: 0;
-    padding-top: 4px;
-    font-size: 16px;
-    font-family: "Trebuchet MS", Helvetica, sans-serif;
-    font-weight: 100;
-}
-
-#taskform #task_history .log_comment {
-    color: #444;
-    padding-left: 0px;
-    line-height: 1.6em;
-}
-
-/* END Task History styling -cll 27/08 */
 
 /* Task edit add comment styling */
 
@@ -1646,6 +1590,78 @@ select#custom_attribute_1 {
     float: right;
     padding-top: 0.6em;
 }
+
+/* -------------------- */
+
+
+.log_history {
+
+}
+
+
+#taskform #task_history .log_entry {
+    margin: 0;
+    display: block;
+    width: 100%;
+    position: relative;
+    clear: both;
+}
+
+
+.log_entry.access_level_1 {
+	background-color: white;
+}
+
+.log_entry.access_level_2 {
+	background-color: #f1eedf;
+}
+
+#task_history {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+#task_history .log_date {
+    font-weight: normal;
+    padding-left: 0px;
+    clear: both;
+    display: block;
+    color: #666;
+}
+
+#task_history .log_timestamp {
+    display: block;
+    width: 95px;
+    position: absolute;
+    top: 0px;
+    text-align: center;
+    color: #999999;
+    padding: 6px 0 0 0px;
+    font-size: 10px;
+}
+
+#task_history .log_time, #taskform #task_history .log_worktime {
+    display: block;
+    font-size: 10px;
+}
+#task_history .log_name, #taskform #task_history .log_comment {
+    margin-left: 100px;
+}
+
+#task_history .log_name {
+    margin-bottom: 0;
+    padding-top: 4px;
+    font-size: 16px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-weight: 100;
+}
+
+#task_history .log_comment {
+    color: #444;
+    padding-left: 0px;
+    line-height: 1.6em;
+}
+
 
 /* -------------------- */
 
