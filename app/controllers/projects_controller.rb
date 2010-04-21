@@ -7,7 +7,7 @@ class ProjectsController < ApplicationController
       redirect_from_last
       return
     end
-    
+
     @project = Project.new
   end
 
@@ -33,27 +33,18 @@ class ProjectsController < ApplicationController
           if p.user_id == current_user.id
             @project_permission = p
           end
-        
+
         end
-      end 
-        
+      end
+
       @project_permission ||= ProjectPermission.new
 
       @project_permission.user_id = current_user.id
       @project_permission.project_id = @project.id
       @project_permission.company_id = current_user.company_id
-      @project_permission.can_comment = 1
-      @project_permission.can_work = 1
-      @project_permission.can_close = 1
-      @project_permission.can_report = 1
-      @project_permission.can_create = 1
-      @project_permission.can_edit = 1
-      @project_permission.can_reassign = 1
-      @project_permission.can_prioritize = 1
-      @project_permission.can_milestone = 1
-      @project_permission.can_grant = 1
+      @project_permission.set('all')
       @project_permission.save
-      
+
       if @project.company.users.size == 1
         flash['notice'] = _('Project was successfully created.')
         redirect_from_last
@@ -88,11 +79,11 @@ class ProjectsController < ApplicationController
     if params[:user_edit]
       @user = current_user.company.users.find(params[:user_id])
       render :partial => "/users/project_permissions"
-    else 
+    else
       @project = current_user.projects.find(params[:id])
       @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
       render :partial => "permission_list"
-    end 
+    end
   end
 
   def ajax_add_permission
@@ -101,9 +92,9 @@ class ProjectsController < ApplicationController
     begin
       if current_user.admin?
         @project = current_user.company.projects.find(params[:id])
-      else 
+      else
         @project = current_user.projects.find(params[:id])
-      end 
+      end
     rescue
       render :update do |page|
         page.visual_effect(:highlight, "user-#{params[:user_id]}", :duration => 1.0, :startcolor => "'#ff9999'")
@@ -129,10 +120,10 @@ class ProjectsController < ApplicationController
     if params[:user_edit] && current_user.admin?
       @user = current_user.company.users.find(params[:user_id])
       render :partial => "users/project_permissions"
-    else 
+    else
       @users = Company.find(current_user.company_id).users.find(:all, :order => "users.name")
       render :partial => "permission_list"
-    end 
+    end
   end
 
   def update
@@ -217,7 +208,7 @@ class ProjectsController < ApplicationController
   end
 
   def list
-    @projects = current_user.projects.paginate(:all, 
+    @projects = current_user.projects.paginate(:all,
                                                :order => 'customer_id',
                                                :page => params[:page],
                                                :per_page => 100,
