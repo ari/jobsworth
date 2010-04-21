@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100414111220) do
+ActiveRecord::Schema.define(:version => 20100421075542) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -639,6 +639,9 @@ ActiveRecord::Schema.define(:version => 20100414111220) do
     t.datetime "updated_at"
     t.string   "type",                 :default => "TaskOwner"
   end
+
+  add_index "task_users", ["task_id"], :name => "index_task_users_on_task_id"
+  add_index "task_users", ["user_id"], :name => "index_task_users_on_user_id"
 
   create_table "tasks", :force => true do |t|
     t.string   "name",               :limit => 200, :default => "",     :null => false

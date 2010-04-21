@@ -2,13 +2,13 @@ class TimeRange < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  # Returns the current start time (based on the ruby in 
+  # Returns the current start time (based on the ruby in
   # the start column)
   def start_time
     eval(start) if start.present?
   end
 
-  # Returns the current end time (based on the ruby in 
+  # Returns the current end time (based on the ruby in
   # the end column)
   def end_time
     eval(self.end) if self.end.present?
@@ -38,6 +38,21 @@ class TimeRange < ActiveRecord::Base
     end
   end
 
+  def TimeRange.end_time(name)
+    eval(RANGES[name][1])
+  end
+  def TimeRange.start_time(name)
+    eval(RANGES[name][0])
+  end
+private
+  RANGES= {
+    :'This week'  => ['Time.now.beginning_of_week.utc', 'Time.now.end_of_week.utc'],
+    :'Last week'  => ['1.week.ago.beginning_of_week.utc', 'Time.now.beginning_of_week.utc'],
+    :'This month' => ['Time.now.beginning_of_month.utc', 'Time.now.end_of_month.utc'],
+    :'Last month' => ['Time.now.last_month.beginning_of_month.utc','Time.now.beginning_of_month.utc'],
+    :'This year'  => ['Time.now.beginning_of_year.utc', 'Time.now.end_of_year.utc'],
+    :'Last year'  => ['Time.now.last_year.beginning_of_year.utc', 'Time.now.beginning_of_year.utc']
+  }
 end
 
 # == Schema Information
