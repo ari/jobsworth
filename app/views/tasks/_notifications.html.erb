@@ -16,7 +16,7 @@
 
   <%= label_tag "task_notify_emails", _("Notify Emails"), :title => _("One per line") %>
   <%= text_area(:task, :notify_emails, :class => "small",
-      :value => notify_emails_on_newlines(@task), :rows => 2, :wrap => "off") %>
+      :value => notify_emails_on_newlines(@task), :rows => 2, :cols => nil) %>
   <br />
 
   <label for="notification-input">

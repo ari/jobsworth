@@ -326,15 +326,14 @@ a.invalid:hover {
 }
 
 fieldset {
-  border: 1px solid #dcdcdc;
-  background-color: #fafafa;
+  background: url("/images/comment_back_public.png") repeat-y;
   color: #000000;
-  margin-top: 0.5em;
+  padding: 3px;
+  margin-bottom:10px;
 }
 
 legend {
   font-size: 13px;
-  font-weight: bold;
   color: #423f54;
 }
 
@@ -471,15 +470,20 @@ fieldset label.ignore {
 }
 
 /* Task Sidebar styling -cll 27/8 */
-#task_sidebar h1 { margin: 0; }
-
-#task_sidebar .task_description { padding: 0.5em; margin:0; }
+#task_sidebar .task_description {
+	padding: 0.5em;
+	margin:0;
+}
 
 #task_sidebar .fill {
     margin-bottom: 0.4em;
     margin-right: 0;
     margin-top: 0;
     width: 99%;
+}
+
+#task_sidebar input {
+	width: 145px;
 }
 
 #task_sidebar label { margin-left: 0px; }
@@ -629,12 +633,6 @@ fieldset input.file {
 fieldset div.buttons { 
   padding-top: 0.5em;
 }
-
-
-
-fieldset { 
-  padding-bottom: 0.5em;
- }
 
 input.nolabel:hover {
   background-color: #ff9900;
@@ -1407,6 +1405,7 @@ a.description {
 #task {
     position: relative;
     width: 100%;
+    margin-top: 10px;
 }
 
 #task_description {
@@ -1468,17 +1467,6 @@ a.description {
     background-image: url(/images/email.png);
 }
 
-#taskform fieldset {
-    padding: 0px;
-    border: 0;
-}
-
-#taskform #task_sidebar {
-    position: absolute;
-    width: 312px;
-    margin-right: 0px;
-}
-
 #taskform #task_addcomment {
     margin-left: 328px;
     width: auto;
@@ -1487,17 +1475,8 @@ a.description {
 }
 
 #task_sidebar {
-    width: 26em;
-    background-color: #FAFAFA;
-}
-
-#task_sidebar fieldset {
-    margin-bottom: 20px;
-    border-top: 1px solid #eee;
-}
-
-#task_sidebar fieldset legend {
-    padding-left: 0px;
+    position: absolute;
+    width: 312px;
 }
 
 fieldset#task_attachments {
