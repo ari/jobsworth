@@ -19,16 +19,10 @@ class LoginController < ApplicationController
       @company = company_from_subdomain
       @news ||= NewsItem.find(:all, :conditions => [ "portal = ?", true ], :order => "id desc", :limit => 3)
       render :action => 'login', :layout => false
-    end   
+    end
   end
 
   def logout
-    # Mark user as logged out
-    ActiveRecord::Base.connection.execute("update users set last_ping_at = NULL, last_seen_at = NULL where id = #{current_user.id}")
-
-    current_user.last_seen_at = nil
-    current_user.last_ping_at = nil
-
     response.headers["Content-Type"] = 'text/html'
 
     session[:user_id] = nil
@@ -63,23 +57,18 @@ class LoginController < ApplicationController
       redirect_to :action => 'login'
       return
     end
-    
-    # User logged in with correct credentials
-    logged_in.last_login_at = Time.now.utc
-    
+
     if params[:remember].to_i == 1
       session[:remember_until] = Time.now.utc + 1.month
       session[:remember] = 1
-    else 
+    else
       session[:remember] = 0
       session[:remember_until] = Time.now.utc + 1.hour
     end
-    logged_in.last_seen_at = Time.now.utc
-    logged_in.last_ping_at = Time.now.utc
 
     logged_in.save
     session[:user_id] = logged_in.id
-    
+
     session[:sheet] = nil
     session[:filter_user] ||= current_user.id.to_s
     session[:filter_project] ||= "0"
@@ -91,7 +80,7 @@ class LoginController < ApplicationController
     session[:filter_priority] ||= "-10"
     session[:hide_dependencies] ||= "1"
     session[:filter_customer] ||= "0"
-    
+
     response.headers["Content-Type"] = 'text/html'
 
     redirect_from_last

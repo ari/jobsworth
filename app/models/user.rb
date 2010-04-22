@@ -199,7 +199,12 @@ class User < ActiveRecord::Base
 
   def login(company = nil)
     return if !company or !company.respond_to?(:users)
-    return company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
+    user = company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
+    unless user.nil?
+      user.last_login_at =Time.now.utc
+      user.save
+    end
+    return user
   end
 
   def can?(project, perm)
@@ -285,33 +290,8 @@ class User < ActiveRecord::Base
     company.milestones.all(search_options_through_projects("milestones", options))
   end
 
-  def currently_online
-    User.find(:all, :conditions => ["company_id = ? AND last_seen_at > ?", self.company, Time.now.utc-5.minutes])
-  end
-
   def moderator_of?(forum)
     moderatorships.count(:all, :conditions => ['forum_id = ?', (forum.is_a?(Forum) ? forum.id : forum)]) == 1
-  end
-
-  def online?
-    (!self.last_ping_at.nil? && self.last_ping_at > 3.minutes.ago.utc)
-  end
-
-  def offline?
-    !self.online?
-  end
-
-  def idle?
-    ( (!self.last_ping_at.nil?) && (self.last_ping_at > 3.minutes.ago.utc) && (self.last_seen_at.nil? || self.last_seen_at < 10.minutes.ago.utc))
-  end
-
-  def online_status_name
-    if self.last_ping_at.nil? || self.last_ping_at < 3.minutes.ago.utc
-      return "<span class=\"status-offline\">#{self.name} (offline)</span>"
-    elsif self.last_seen_at.nil? || self.last_seen_at < 10.minutes.ago.utc
-      return "<span class=\"status-idle\">#{self.name} (idle)</span>"
-    end
-    "<span class=\"status-online\">#{self.name}</span>"
   end
 
   def tz
@@ -326,16 +306,6 @@ class User < ActiveRecord::Base
     return 'mm/dd/yy' if self.date_format == '%m/%d/%Y'
     return 'dd/mm/yy' if self.date_format == '%d/%m/%Y'
     return 'yy/mm/dd' if self.date_format == '%Y-%m-%d'
-  end
-
-  def online_status_icon
-    if self.idle?
-      "/images/presence-idle.png"
-    elsif self.online?
-      "/images/presence-online.png"
-    else
-      "/images/presence-offline.png"
-    end
   end
 
   def to_s

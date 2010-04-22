@@ -27,13 +27,13 @@ class UserTest < ActiveRecord::TestCase
     u.email = "a@a.com"
     u.company = companies(:cit)
     u.save
-    
+
     assert_not_nil u.uuid
     assert_not_nil u.autologin
-    
+
     assert u.uuid.length == 32
     assert u.autologin.length == 32
-    
+
     assert u.widgets.size == 5
   end
 
@@ -46,10 +46,10 @@ class UserTest < ActiveRecord::TestCase
 
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['name'] 
-    
+    assert_equal "can't be blank", u.errors['name']
+
   end
-  
+
   def test_validate_username
     u = User.new
     u.name = "a"
@@ -59,34 +59,34 @@ class UserTest < ActiveRecord::TestCase
 
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['username'] 
+    assert_equal "can't be blank", u.errors['username']
 
     u.username = 'test'
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "has already been taken", u.errors['username'] 
-    
+    assert_equal "has already been taken", u.errors['username']
+
   end
 
   def test_path
     assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}"), @user.path
   end
-  
+
   def test_avatar_path
     assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}"), @user.avatar_path
   end
-  
+
   def test_avatar_large_path
     assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}_large"), @user.avatar_large_path
   end
-  
+
   def test_generate_uuid
     user = User.new
     user.generate_uuid
 
     assert_not_nil user.uuid
      assert_not_nil user.autologin
-    
+
     assert user.uuid.length == 32
     assert user.autologin.length == 32
   end
@@ -95,7 +95,7 @@ class UserTest < ActiveRecord::TestCase
     if @user.avatar?
       assert_equal "/users/avatar/1?large=1", @user.avatar_url
       assert_equal "/users/avatar/1", @user.avatar_url(25)
-    else 
+    else
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=32", @user.avatar_url
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=25", @user.avatar_url(25)
     end
@@ -112,13 +112,13 @@ class UserTest < ActiveRecord::TestCase
     assert_nil   User.new.login('cit')
     assert_nil   users(:fudge).login('cit')
   end
-  
+
   def test_can?
     project = projects(:test_project)
     normal = users(:tester)
     limited = users(:tester_limited)
     other = users(:fudge)
-    
+
     %w(comment work close report create edit reassign prioritize milestone grant all).each do |perm|
        assert normal.can?(project, perm)
        assert !other.can?(project, perm)
@@ -129,7 +129,7 @@ class UserTest < ActiveRecord::TestCase
       end
     end
   end
-  
+
   def test_can_all?
     projects = [projects(:test_project), projects(:completed_project)]
     normal = users(:tester)
@@ -140,48 +140,17 @@ class UserTest < ActiveRecord::TestCase
       assert normal.can_all?(projects, perm)
       assert !other.can_all?(projects, perm)
       assert !limited.can_all?(projects, perm)
-    end 
+    end
   end
-  
+
   def test_admin?
     assert @user.admin?
     assert !users(:fudge).admin?
     assert !User.new.admin?
   end
 
-  def test_currently_online
-    @user2 = users(:tester)
-    online = @user.currently_online
-    # sort by id to ensure order is always the same (otherwise the test fails occasionally)
-    online = online.sort_by { |u| u.name }
-    assert_equal [@user,@user2], online
-    assert_equal [], users(:fudge).currently_online
-  end
-
   def test_moderator_of?
     # TODO
-  end
-  
-  def test_online?
-    @user.last_ping_at = Time.now.utc
-    
-    assert @user.online?
-    assert !users(:fudge).online?
-    
-  end
-
-  def test_online_status_name
-    @user.last_ping_at = Time.now.utc 
-    @user.last_seen_at = Time.now.utc 
-    assert_match /status-online/, @user.online_status_name
-
-    @user.last_ping_at = Time.now.utc - 4.minutes
-    @user.last_seen_at = Time.now.utc 
-    assert_match /status-offline/, @user.online_status_name
-    
-    @user.last_ping_at = Time.now.utc - 1.minutes
-    @user.last_seen_at = Time.now.utc - 10.minutes
-    assert_match /status-idle/, @user.online_status_name
   end
 
   def test_avatar_url_without_email

@@ -10,7 +10,6 @@
   <tr>
     <th colspan="2" align="left">Active Users</th>
   </tr>
-  <tr><td>Now: <%= @logged_in_now %></td><td>&nbsp;</td></tr>
   <tr>
     <td>Today: <%= @logged_in_today %></td><td>This Week: <%= @logged_in_this_week %></td>
   </tr>
@@ -32,7 +31,7 @@
   <tr>
     <td>This Year: <%= @users_this_year %></td><td>Total: <%= @users_total %></td>
   </tr>
-  
+
   <tr>
     <th colspan="2" align="left">Projects</th>
   </tr>
@@ -64,7 +63,7 @@
   <tr>
     <td>This Year: <%= @tasks_this_year %></td><td>Total: <%= @tasks_total %></td>
   </tr>
-  
+
   </table>
   <br />
   <table class="content" width="100%" style="margin-left:1em; padding-left: 1em; padding-right: 1em;">
@@ -73,4 +72,4 @@
   <% for u in @last_50_users %>
   <tr><td><%= u.name %></td><td><%= u.company.name %></td><td><%= u.email %></td><td><%= tz.utc_to_local(u.created_at).strftime("%d/%m %Y %H:%M") %></td><td><%= u.time_zone %></td></tr>
   <% end %>
-  </table>  
+  </table>

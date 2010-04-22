@@ -90,7 +90,6 @@ class AdminController < ApplicationController
     @logged_in_this_month = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_month.at_midnight.to_s(:db)}'"] )
     @logged_in_this_year  = User.count( :conditions => ["last_login_at > '#{tz.now.beginning_of_year.at_midnight.to_s(:db)}'"] )
 
-    @logged_in_now = User.count( :conditions => ["last_ping_at > '#{2.minutes.ago.utc.to_s(:db)}'"] )
     @last_50_users = User.find(:all, :limit => 50, :order => "created_at desc")
   end
 

@@ -18,7 +18,6 @@ class ApplicationController < ActionController::Base
   helper_method :last_active
   helper_method :render_to_string
   helper_method :current_user
-  helper_method :current_users
   helper_method :tz
   helper_method :current_projects
   helper_method :current_project_ids
@@ -48,13 +47,6 @@ class ApplicationController < ActionController::Base
                                 :conditions => ["projects.completed_at IS NULL"])
     end
     @current_user
-  end
-
-  def current_users
-    unless @current_users
-      @current_users = User.find(:all, :conditions => " company_id=#{current_user.company_id} AND last_ping_at IS NOT NULL AND last_seen_at IS NOT NULL AND (last_ping_at > '#{3.minutes.ago.utc.to_s(:db)}' OR last_seen_at > '#{3.minutes.ago.utc.to_s(:db)}')", :order => "name" )
-    end
-    @current_users
   end
 
   def current_sheet
@@ -132,19 +124,7 @@ class ApplicationController < ActionController::Base
         redirect_to "/login/login"
       end
     else
-      # Refresh the User object
-
-      # Update last seen, to track online users
-      if ['update_sheet_info', 'refresh_channels'].include?(request.path_parameters['action'])
-        current_user.last_ping_at = Time.now.utc
-      else
-        current_user.last_seen_at = Time.now.utc
-        current_user.last_ping_at = Time.now.utc
-      end
-
       session[:remember_until] = Time.now.utc + ( session[:remember].to_i == 1 ? 1.month : 1.hour )
-
-      current_user.save
 
       current_sheet
 

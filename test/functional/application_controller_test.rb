@@ -4,7 +4,7 @@ class ApplicationControllerTest < ActionController::TestCase
   tests ActivitiesController
 
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs
-  
+
   def setup
     login
   end
@@ -26,11 +26,6 @@ class ApplicationControllerTest < ActionController::TestCase
     @request.session[:user_id] = user.id
     get :index
     assert !assigns(:current_user).admin?
-  end
-
-  test "should get all online users" do
-     get :index
-     assert_equal 2, @controller.current_users.size
   end
 
   test "parse_time should handle 1w2d3h4m" do
