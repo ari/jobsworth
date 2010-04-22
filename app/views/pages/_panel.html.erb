@@ -1,8 +1,11 @@
-<div class="page_header tooltip" title="<%= _'Easy access to commonly needed information.'%>">
-	<div class="right"><%= link_to _('New'), :controller => 'pages', :action => 'new' %></div>
-        <div><%=_ 'Notes'%></div>
+<div class="section">
+	<div class="page_header tooltip" title="<%= _'Easy access to commonly needed information.'%>">
+		<%= link_to _('New'), :controller => 'pages', :action => 'new' %>
+	    <%=_ 'Notes'%>
+	</div>
+	<ul>
+	<% for page in current_pages %>
+	<li><%= link_to "#{page.name} / #{page.notable.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></li>
+	<% end %>
+	</ul>
 </div>
-<% for page in current_pages %>
-<%= link_to "#{page.name} / #{page.notable.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small><br/>
-<% end %>
-<br/>

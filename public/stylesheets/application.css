@@ -175,20 +175,26 @@ a:hover {
 #side_panel .section ul li .small {
     font-size: 75%;
 }
-#side_panel .task_filters .unread {
+
+.section li a {
+	color: black;
+}
+
+.task_filters .unread {
     font-weight: bold;
 }
 
-#side_panel a {
+.task_filters a {
     color: black;
 }
 
+
 .page_header {
+  -moz-border-radius:6px;
   font-size: 14px;
   text-transform: uppercase;
   font-weight: bold;
   border: 1px solid #e8e8e8;
-  color: #423f54;
   padding: 8px;
   padding-right: 0px;
   padding-bottom: 0.15em;
@@ -196,16 +202,13 @@ a:hover {
   padding-top: 0.29em;
   background-image: url(/images/header_bkg.gif);
   background-repeat: repeat-x;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   text-align: left;
 }
 
-div.page_header {
-    margin-bottom: 5px;
-    width:auto;
-}
 div.page_header a {
-    float:right;
+  padding-top: 0.1em;
+  float:right;
 }
 
 .page_header a {
@@ -2676,17 +2679,12 @@ fieldset.basic .actions label {
 }
 
 /* This class is used for the client/user search for now */
-.search_filter {
-    font-size: 16px;
-}
-
-#search_filter_form {
-    width: 100%;
-}
 
 #search_filter_form input {
     font-size: 16px;
     width: 100%;
+    margin-bottom:5px;
+    margin-top:5px;
 }
 
 .grey {
@@ -2760,23 +2758,28 @@ fieldset.basic .actions label {
 
 /* tag cloud */
 .cloud .size1 {
-    font-size: 100%;
+    font-size: 90%;
+    color: #bbb;
 }
 
 .cloud .size2 {
-    font-size: 110%;
+    font-size: 100%;
+    color: #888;
 }
 
 .cloud .size3 {
-    font-size: 120%;
+    font-size: 115%;
+    color: #555;
 }
 
 .cloud .size4 {
-    font-size: 130%;
+    font-size: 125%;
+    color: #333;
 }
 
 .cloud .size5 {
-    font-size: 140%;
+    font-size: 150%;
+    color: black;
 }
 
 /* Clearfix */
