@@ -1284,17 +1284,16 @@ a.description {
     padding-top: 8px;
 }
 
+
+/* top menu */
 #tabmenu {
     position: relative;
     width: 100%;
     height: 23px;
-    color: #cccccc;
-    padding: 0px;
     border-bottom: 3px solid white;
     background-image: url(/images/menuback.gif);
     background-repeat: repeat-x;
     z-index: 2;
-    font-size: 93%;
 }
 
 #tabmenu a:hover {
@@ -1327,15 +1326,10 @@ a.description {
 
 #tabmenu li a, #tabmenu #search_menu {
   /*for all links in the list*/
-  color: #423f54;
-  font-weight: bold;
+  color: black;
   display: block;
   height: 16px;
-  border-top: 1px solid #d8d8d8;
-  border-right: 1px solid #ddd;
-  border-left: 1px solid #eee;
-  border-bottom: none;
-  padding: 4px 3px 3px 3px;
+  padding: 4px 6px 3px 6px;
   float: left;
 }
 
@@ -1348,7 +1342,6 @@ a.description {
 }
 
 #tabmenu li ul {
-    /*put the subnavs below and hide them all*/
     display: none;
     position: absolute;
     top: 15px;
@@ -1357,19 +1350,11 @@ a.description {
     width: auto;
     clear: left;
     background-color: #fcfcfc;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #d8d8d8;
-    border-right: 1px solid #d8d8d8;
 }
 
 #tabmenu li.active a {
-    color: #FF9900;
-    background-color: #ffffff;
+    color: #B86D32;
     background: url(/images/active_menu.png);
-    padding-left: 0.5em;
-    padding-right: 0.4em;
-    border-left: none;
-    border-top: 1px solid #929392;
 }
 
 #tabmenu li.active li a {
@@ -1384,38 +1369,32 @@ a.description {
 }
 
 #tabmenu li ul a {
+	background: #B86D32;
     font-size: 11px;
-    padding-top: 1px;
-    padding-bottom: 1px;
+    padding-top: 3px;
+    padding-bottom: 3px;
     margin: 0;
     border: 0;
-}
-
-#tabmenu li a:hover, #tabmenu li:hover a {
-    background: #fff;
-    color: #ff9900;
-}
-
-#tabmenu li ul a {
-    border: 0;
-    color: #423f54;
-    width: auto;
-    margin-right: 0;
-    display: block;
-}
-
-#tabmenu li:hover ul {
+    color: white;
+    width: 100%;
     display: block;
     z-index: 6000;
 }
 
-#tabmenu li:hover ul a {
-    color: #423f54;
+#tabmenu li a:hover, #tabmenu li:hover a {
+    background: #B86D32;
+    color: white;
+}
+
+#tabmenu li:hover ul {
+    display: block;
 }
 
 #tabmenu li ul li a:hover {
     text-decoration: underline;
 }
+
+/* ------------------- */
 
 #filter, #group_by, #filter_user, #filter_project, #filter_status, #filter_date, #sort, #filter_type, #filter_severity, #filter_priority, #colors, #icons {
     font-size: 10px;
