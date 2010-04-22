@@ -209,6 +209,11 @@ function initTaskList() {
 }
 
 
+jQuery(window).bind('resize', function() {
+	jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
+}).trigger('resize');
+
+
 // -------------------------
 //  Calendar
 // -------------------------

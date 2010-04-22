@@ -157,6 +157,10 @@ a:hover {
 #side_panel {
   padding-left: 10px;
   text-align: left;
+  max-width: 170px;
+  min-width: 170px;
+  width: 170px;
+  vertical-align: top;
 }
 #side_panel .section {
     padding-bottom: 15px;
@@ -914,6 +918,7 @@ pre.auto_generated {
 #main-table { 
   margin-bottom: 30px;
   background-color: white;
+  width: 100%;
 }
 
 #main_col { width: 85%; }
@@ -953,10 +958,6 @@ pre.auto_generated {
 .todo-container li {
     list-style:none;
 }
-
-.todo {
-
- }
 
 #new-todos {
     padding-left: 1em;
