@@ -250,7 +250,7 @@ private
   # class_type
   def column_name_for(class_type)
     if class_type == "User"
-      return "task_users.user_id"
+      return "task_users.type= 'TaskOwner' AND task_users.user_id"
     elsif class_type == "Project"
       return "tasks.project_id"
     elsif class_type == "Task"

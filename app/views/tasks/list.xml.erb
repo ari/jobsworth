@@ -24,7 +24,7 @@
         <milestone><% str = [ task.project.name ] -%><% str << task.milestone.name if task.milestone_id.to_i > 0 %><%=h "#{ str.join("/") }" %></milestone>
         <due><%= task.due_date.to_time.to_i unless task.due_date.nil? %></due>
         <time><%= task.minutes_left.to_i %></time>
-        <assigned><%= task.users.map{ |u| u.name }.join(", ") %></assigned>
+        <assigned><%= task.owners.map{ |u| u.name }.join(", ") %></assigned>
         <resolution><%= task.status_type%></resolution>
 </task>
 <% end -%>
