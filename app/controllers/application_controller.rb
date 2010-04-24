@@ -132,7 +132,6 @@ class ApplicationController < ActionController::Base
       Localization.lang(current_user.locale || 'en_US')
 
       # Update session with new filters, if they don't already exist
-      session[:filter_severity] ||= "-10"
       session[:filter_priority] ||= "-10"
 
       if session[:redirect]
