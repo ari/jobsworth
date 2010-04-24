@@ -131,9 +131,6 @@ class ApplicationController < ActionController::Base
       # Set current locale
       Localization.lang(current_user.locale || 'en_US')
 
-      # Update session with new filters, if they don't already exist
-      session[:filter_priority] ||= "-10"
-
       if session[:redirect]
         redirect_to session[:redirect]
         session[:redirect] = nil

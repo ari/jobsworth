@@ -33,7 +33,6 @@ class LoginController < ApplicationController
     session[:filter_hidden] = nil
     session[:filter_status] = nil
     session[:filter_type] = nil
-    session[:filter_priority] = nil
     session[:group_tags] = nil
     session[:hide_dependencies] = nil
     session[:remember_until] = nil
@@ -75,7 +74,6 @@ class LoginController < ApplicationController
     session[:filter_status] ||= "0"
     session[:filter_hidden] ||= "0"
     session[:filter_type] ||= "-1"
-    session[:filter_priority] ||= "-10"
     session[:hide_dependencies] ||= "1"
     session[:filter_customer] ||= "0"
 
