@@ -245,10 +245,5 @@ class TaskFiltersControllerTest < ActionController::TestCase
         end
       end
     end
-
-    should "be able to set a single session value" do
-      post :set_single_task_filter, :name => "sort", :value => "client down"
-      assert_equal "client down", @response.session[:filter_sort]
-    end
   end
 end

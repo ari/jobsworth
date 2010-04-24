@@ -102,18 +102,6 @@ class TaskFiltersController < ApplicationController
     end
   end
 
-  def set_single_task_filter
-    name = "filter_#{ params[:name] }".to_sym
-    value = params[:value]
-
-    session[name] = value
-    # if we are setting a new filter, we can't still be in a view
-    # so clear this
-    session[:view] = nil
-
-    render :text => ""
-  end
-
   def destroy
     filter = current_user.company.task_filters.find(params[:id])
 
