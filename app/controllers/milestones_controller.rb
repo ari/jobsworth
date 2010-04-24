@@ -99,10 +99,6 @@ class MilestonesController < ApplicationController
       t.save
     }
 
-    if session[:filter_milestone].to_i == @milestone.id
-      session[:filter_milestone] = "0"
-    end
-
     Notifications::deliver_milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at) rescue nil
     @milestone.destroy
 
