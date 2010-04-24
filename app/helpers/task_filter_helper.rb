@@ -16,23 +16,6 @@ module TaskFilterHelper
     end
   end
 
-  ###
-  # Returns an array containing the name and id of users currently
-  # selected in the filter. Handles "unassigned" tasks too.
-  ###
-  def selected_user_names_and_ids
-    res = TaskFilter.filter_user_ids(session).map do |id|
-      if id == TaskFilter::UNASSIGNED_TASKS
-        [ _("Unassigned"), id ]
-      elsif id > 0
-        user = current_user.company.users.find(id)
-        [ user.name, id ]
-      end
-    end
-
-    return res.compact
-  end
-
   def link_to_remove_filter(filter_name, name, value, id)
     res = content_tag :span, :class => "search_filter" do
       hidden_field_tag("#{ filter_name }[]", id) +
