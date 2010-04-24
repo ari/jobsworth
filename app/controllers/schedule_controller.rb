@@ -900,10 +900,8 @@ class ScheduleController < ApplicationController
       session[:filter_project] = f[1..-1]
     end
 
-    [:filter_user, :ignore_hidden].each do |filter|
-      session[filter] = params[filter]
-    end
-
+    session[:ignore_hidden] = params[:ignore_hidden]
+ 
     redirect_to :action => 'gantt'
     
   end
