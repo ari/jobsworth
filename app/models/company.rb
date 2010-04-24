@@ -13,7 +13,6 @@ class Company < ActiveRecord::Base
   has_many      :tags, :dependent => :destroy, :order => 'tags.name'
   has_many      :properties, :dependent => :destroy, :include => :property_values
   has_many      :property_values, :through => :properties
-  has_many      :views, :dependent => :destroy
   has_many      :resources, :dependent => :destroy, :order => "lower(name)"
   has_many      :resource_types, :dependent => :destroy, :order => "lower(name)"
   has_many      :custom_attributes, :dependent => :destroy
@@ -80,7 +79,7 @@ class Company < ActiveRecord::Base
   # custom properties with the default_sort parameter.
   ###
   def sort(tasks)
-    res = tasks.sort_by do |task| 
+    res = tasks.sort_by do |task|
       array = []
       array << -task.completed_at.to_i
       array << rank_by_properties(task)
@@ -88,7 +87,7 @@ class Company < ActiveRecord::Base
       array << - task.task_num
     end
     res = res.reverse
-    
+
     return res
   end
 
@@ -113,10 +112,10 @@ class Company < ActiveRecord::Base
   def rank_by_properties(task)
     rank_by_properties = sort_properties.inject(0) do |rank, property|
       pv = task.property_value(property)
-      rank ||= 0 # for some reason rank is nil occasionally in tests. 
+      rank ||= 0 # for some reason rank is nil occasionally in tests.
 
       if pv
-        rank += (pv.sort_rank || 0) 
+        rank += (pv.sort_rank || 0)
       end
     end
 
@@ -128,7 +127,7 @@ class Company < ActiveRecord::Base
   ###
   def default_sort_array(task)
     array = []
-    
+
     return array
   end
 
@@ -137,13 +136,13 @@ class Company < ActiveRecord::Base
   ###
   def type_property
     @type_property ||= properties.detect { |p| p.name == "Type" || p.name == _("Type") }
-  end  
+  end
   ###
   # Returns the property to use to represent a tasks severity.
   ###
   def severity_property
     @severity_property ||= properties.detect { |p| p.name == "Severity" || p.name == _("Severity") }
-  end  
+  end
   ###
   # Returns the property to use to represent a tasks priority.
   ###
@@ -152,15 +151,15 @@ class Company < ActiveRecord::Base
   end
 
   ###
-  #	Returns the URL to the installation
+  # Returns the URL to the installation
   ###
   def site_URL
-  	if $CONFIG[:SSL]
-		url = "https://"
-	else
-		url = "http://"
-	end
-	url += subdomain + "." + $CONFIG[:domain]
+    if $CONFIG[:SSL]
+    url = "https://"
+  else
+    url = "http://"
+  end
+  url += subdomain + "." + $CONFIG[:domain]
   end
 
   # Returns a list of property values which should be considered
