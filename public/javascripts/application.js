@@ -779,7 +779,7 @@ function attach_behaviour_to_project_select()
   On all other pages, when user click on filter link change filter
 */
 function initFiltersPanel()
-{ 
+{
   jQuery('div.task_filters ul li a').click(loadFilterPanel);
 }
 
@@ -789,7 +789,7 @@ function initTagsPanel()
 }
 
 function loadFilterPanel()
-{ 
+{
   jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
   jQuery.ajax({
             beforeSend: function(){ showProgress(); },
@@ -799,7 +799,7 @@ function loadFilterPanel()
             type:'post',
             url: this.href
         });
-        return false; 
+        return false;
 }
 
 jQuery(document).ready(function(){
@@ -844,18 +844,21 @@ function create_task_from_template(event)
 }
 jQuery(document).ready(function(){
     jQuery('li.task_template a').click(create_task_from_template);
-    
+
     jQuery('.autogrow').autogrow();
 });
 
 
 function toggleAccess() {
-	if (jQuery('#accessLevel_container div').hasClass('private')) {
-		jQuery('#accessLevel_container div').removeClass('private');
-		jQuery('#work_log_access_level_id').val('1');
-	} else {
-		jQuery('#accessLevel_container div').addClass('private');	
-		jQuery('#work_log_access_level_id').val('2');
-	}
+        if (jQuery('#accessLevel_container div').hasClass('private')) {
+                jQuery('#accessLevel_container div').removeClass('private');
+                jQuery('#work_log_access_level_id').val('1');
+                jQuery('.user.access_level_1').effect("highlight", {}, 5000);
+                jQuery('.user.access_level_2').effect("highlight", {}, 5000);
+        } else {
+                jQuery('#accessLevel_container div').addClass('private');
+                jQuery('#work_log_access_level_id').val('2');
+                jQuery('.user.access_level_2').effect("highlight", {}, 5000);
+        }
 
 }
