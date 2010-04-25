@@ -894,18 +894,6 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # This method will mark any task_owners or notifications linked to
-  # this task notified IF they are in the given array of users.
-  # If not, that column will be set to false.
-  ###
-  def mark_as_notified_last_change(users)
-    task_users.each do |n|
-      notified = users.include?(n.user)
-      n.update_attribute(:notified_last_change, notified)
-    end
-  end
-
-  ###
   # This method will mark this task as unread for any
   # setup watchers or task owners.
   # The exclude param should be a user or array of users whose unread

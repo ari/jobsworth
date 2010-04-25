@@ -284,7 +284,6 @@ class Mailman < ActionMailer::Base
     end
 
     sent << user # user already got a created email, so include them as notified
-    task.mark_as_notified_last_change(sent + [ user ])
     task.mark_as_unread(user)
   end
 

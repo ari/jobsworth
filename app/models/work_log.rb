@@ -197,8 +197,6 @@ class WorkLog < ActiveRecord::Base
       end
 
     end
-
-    task.mark_as_notified_last_change(all_users)
     task.mark_as_unread(current_user)
   end
   ###
