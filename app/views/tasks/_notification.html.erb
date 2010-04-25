@@ -1,7 +1,7 @@
 <%
    user = notification
    classname = "user access_level_#{user.access_level_id}"
-   if @task.new_record? and @task.should_be_notified?(user)
+   if @task.should_be_notified?(user)
      classname += " will_notify"
    elsif current_user == user and !user.receive_own_notifications?
      classname += " will_never_receive"
