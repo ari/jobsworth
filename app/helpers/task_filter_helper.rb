@@ -46,15 +46,7 @@ module TaskFilterHelper
   def link_to_open_tasks(user = nil)
     str = user ? _("My Open Tasks") : _("Open Tasks")
     open = current_user.company.statuses.first
-
-    link_params = []
-    link_params << { :qualifiable_type => "Status", :qualifiable_id => open.id }
-    if user
-      link_params << { :qualifiable_type => "User", :qualifiable_id => user.id }
-    end
-    link_params = { :task_filter => { :qualifiers_attributes => link_params } }
-
-    return link_to(str, update_current_filter_task_filters_path(link_params))
+    return link_to(str, path_to_tasks_filtered_by(open, user))
   end
 
   def link_to_unread_tasks(user)
@@ -106,8 +98,8 @@ module TaskFilterHelper
     return link_to(h(name), path_to_tasks_filtered_by(object), html_options)
   end
 
-  def path_to_tasks_filtered_by(object)
-    link_params = { :task_filter => { :qualifiers_attributes => { :qualifiable_type => object.class, :qualifiable_id => object.id } } }
+  def path_to_tasks_filtered_by(*objects)
+    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } } }
     update_current_filter_task_filters_path(link_params)
   end
 end
