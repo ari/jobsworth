@@ -7,7 +7,6 @@ jQuery(document).ready(function(){
 var lastElement = null;
 var lastPrefix = null;
 var lastColor = null;
-var comments = new Hash();
 var show_tooltips = 1;
 var fetchTimeout = null;
 var fetchElement = null;
@@ -105,7 +104,7 @@ function dateToWords(elem) {
     var date = elem.text();
     var text = date;
     var className = null;
-
+ 
     date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
     if (date !== null) {
