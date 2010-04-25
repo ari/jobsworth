@@ -148,25 +148,6 @@ module TasksHelper
   end
 
   ###
-  # Returns an icon to set whether a user should receive notifications
-  # for task.
-  # The icon will have a link to toggle this attribute.
-  ###
-  def notify_icon(task, user)
-    classname = "icon tooltip notify"
-
-    if task.should_be_notified?(user)
-      classname += " should_notify"
-    end
-
-    content = content_tag(:span, "*", :class => classname,
-                          :title => _("Click to toggle whether this user will receive a notification when task is saved"))
-    content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify'); highlightActiveNotifications()")
-
-    return content
-  end
-
-  ###
   # Returns a link that add the current user to the current tasks user list
   # when clicked.
   ###
