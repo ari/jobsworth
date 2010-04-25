@@ -779,30 +779,24 @@ class Task < ActiveRecord::Base
     "#{locale_part}#{due_part}#{worked_part}#{config_part}"
   end
 
-  ###
-  # Returns an array of email addresses of people who should be
-  # notified about changes to this task.
-  ###
-  #TODO: remove this method, looks like it called only in tests
-  def notification_email_addresses(user_who_made_change = nil)
+  def users_to_notify(user_who_made_change=nil)
     recipients = [ ]
 
     if user_who_made_change and
-        user_who_made_change.receive_notifications?
+        user_who_made_change.receive_notifications? and  user_who_made_change.receive_own_notifications?
       recipients << user_who_made_change
     end
 
     recipients += self.users.select { |u| u.receive_notifications? }
+  end
 
-    # remove them if they don't want their own notifications.
-    # do it here rather than at start of method in case they're
-    # on the watchers list, etc
-    if user_who_made_change and
-        !user_who_made_change.receive_own_notifications?
-      recipients.delete(user_who_made_change)
-    end
+  ###
+  # Returns an array of email addresses of people who should be
+  # notified about changes to this task.
+  ###
+  def notification_email_addresses(user_who_made_change = nil)
 
-    emails = recipients.map { |u| u.email }
+    emails = users_to_notify(user_who_made_change).map { |u| u.email }
 
     # add in notify emails
     if !notify_emails.blank?
