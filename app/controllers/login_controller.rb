@@ -28,10 +28,6 @@ class LoginController < ApplicationController
     session[:user_id] = nil
     session[:project] = nil
     session[:sheet] = nil
-    session[:filter_milestone] = nil
-    session[:filter_hidden] = nil
-    session[:filter_status] = nil
-    session[:filter_type] = nil
     session[:group_tags] = nil
     session[:hide_dependencies] = nil
     session[:remember_until] = nil
@@ -67,13 +63,7 @@ class LoginController < ApplicationController
     session[:user_id] = logged_in.id
 
     session[:sheet] = nil
-    session[:filter_project] ||= "0"
-    session[:filter_milestone] ||= "0"
-    session[:filter_status] ||= "0"
-    session[:filter_hidden] ||= "0"
-    session[:filter_type] ||= "-1"
     session[:hide_dependencies] ||= "1"
-    session[:filter_customer] ||= "0"
 
     response.headers["Content-Type"] = 'text/html'
 

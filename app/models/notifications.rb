@@ -8,7 +8,7 @@ class Notifications < ActionMailer::Base
   def created(task, user, recipients, note = "", sent_at = Time.now)
     task.mark_as_unread(user)
     @task = task
- 
+
     @body       = {:task => task, :user => user, :note => note}
     @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
@@ -29,7 +29,7 @@ class Notifications < ActionMailer::Base
                when :updated    then "#{$CONFIG[:prefix]} #{_'Updated'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                when :comment    then "#{$CONFIG[:prefix]} #{_'Comment'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
-               when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners})"
+               when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
                end
 
     @body       = {:task => task, :user => user, :change => change}
@@ -89,7 +89,7 @@ class Notifications < ActionMailer::Base
     @body       = { :user => user, :milestone => milestone, :action => action, :due_date => due_date, :old_name => old_name }
     if old_name.nil?
       @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]"
-    else 
+    else
       @subject    = "#{$CONFIG[:prefix]} #{_('Milestone')} #{action}: #{old_name} -> #{milestone.name} [#{milestone.project.customer.name} / #{milestone.project.name}]"
     end
     @recipients = (milestone.project.users.collect{ |u| u.email if u.receive_notifications > 0 } ).uniq

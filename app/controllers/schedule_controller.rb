@@ -873,38 +873,4 @@ class ScheduleController < ApplicationController
      end 
     end
   end
-
-  def filter
-
-    f = params[:filter]
-
-    if f.nil? || f.empty? || f == "0"
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "0"
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'c'
-      session[:filter_customer] = f[1..-1]
-      session[:filter_milestone] = "0"
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'p'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "0"
-      session[:filter_project] = f[1..-1]
-    elsif f[0..0] == 'm'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = f[1..-1]
-      session[:filter_project] = "0"
-    elsif f[0..0] == 'u'
-      session[:filter_customer] = "0"
-      session[:filter_milestone] = "-1"
-      session[:filter_project] = f[1..-1]
-    end
-
-    session[:ignore_hidden] = params[:ignore_hidden]
- 
-    redirect_to :action => 'gantt'
-    
-  end
-
-  
 end

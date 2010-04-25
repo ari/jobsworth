@@ -11,15 +11,15 @@
   <tr>
     <td>
       <% client = nil
-      for @project in @projects 
+      for @project in @projects
         if client != @project.customer_id
       %>
       <%= "</div>" unless client.nil? %>
       <% client = @project.customer_id %>
       <div id="<%=@project.customer.dom_id%>" class="client-block">
-	<div class="client-heading hoverrow">
-	  <div class="client-name"><%= "<a href=\"/views/select_client/#{@project.customer_id}\">#{h(@project.customer.name)}</a>" %></div>
-	</div>
+        <div class="client-heading hoverrow">
+          <div class="client-name"><%= link_to_tasks_filtered_by(@project.customer) %></div>
+        </div>
       <% end %>
 
       <%= render :partial => "project" %>

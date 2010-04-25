@@ -174,10 +174,6 @@ class ProjectsController < ApplicationController
       p.destroy
     }
 
-    if session[:filter_project].to_i == @project.id
-      session[:filter_project] = nil
-    end
-
     @project.destroy
     flash['notice'] = _('Project was deleted.')
     redirect_from_last
