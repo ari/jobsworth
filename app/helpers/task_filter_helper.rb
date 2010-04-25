@@ -99,4 +99,15 @@ module TaskFilterHelper
     end
   end
 
+  def link_to_tasks_filtered_by(*args)
+    name= args.first.is_a?(String) ? args.shift : args.first.name
+    object= args.first
+    html_options=args.second
+    return link_to(h(name), path_to_tasks_filtered_by(object), html_options)
+  end
+
+  def path_to_tasks_filtered_by(object)
+    link_params = { :task_filter => { :qualifiers_attributes => { :qualifiable_type => object.class, :qualifiable_id => object.id } } }
+    update_current_filter_task_filters_path(link_params)
+  end
 end

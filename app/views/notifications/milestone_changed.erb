@@ -7,7 +7,7 @@
 <%= "Description:\n#{@milestone.description}" unless @milestone.description.empty? %>
 
 <% unless @action == 'deleted' -%>
-<%= @user.company.site_URL%>/views/select_milestone/<%= @milestone.id %>
+<%= @user.company.site_URL + path_to_tasks_filtered_by(@milestone) %>
 <% end -%>
 
 -------------------->

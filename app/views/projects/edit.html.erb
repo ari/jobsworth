@@ -16,7 +16,7 @@
               <% if current_user.can?( @project, 'grant' ) || current_user.admin > 0 %>
                 <div style="float: left;"> <%= link_to( _("Complete Project"), {:controller => 'projects', :action => 'complete', :id => @project}, :confirm => "Really complete #{@project.name}?") %> <%= "&nbsp;" if @project.user_id == current_user.id %></div>
               <% end %>
-	      <div style="text-align:center;"><%= link_to( _("View Tasks"), {:controller => 'views', :action => 'select_project', :id => @project}) %>
+              <div style="text-align:center;"><%= link_to_tasks_filtered_by(_("View Tasks"), @project) %>
             </fieldset>
             </td>
           </tr>
@@ -29,8 +29,8 @@
           <% if current_user.can?( @project, 'milestone' ) %>
             <div style="float:right;padding-top:0.1em;"><%= link_to _('New'), :controller => "milestones", :action => 'new', :project_id => @project %></div>
           <% end %>
-	    <div><%=_ 'Milestones' %></div>
-	  </td>
+            <div><%=_ 'Milestones' %></div>
+          </td>
         </tr>
         <tr>
           <td>
@@ -40,13 +40,13 @@
               <% for milestone in @project.milestones.find(:all, :conditions => ["completed_at IS NULL"], :order => "due_at, milestones.name", :include => [:user]) %>
               <%= render :partial => "activities/milestone_row", :locals => { :milestone => milestone } %>
               <% end %>
-	      <% @completed_milestones = Milestone.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", @project.id])
-	         if @completed_milestones.to_i > 0
+              <% @completed_milestones = Milestone.count(:conditions => ["project_id = ? AND completed_at IS NOT NULL", @project.id])
+                 if @completed_milestones.to_i > 0
                %>
               <tr><td colspan=2 align=right class="milestone_completed"><%= link_to _('%d completed milestone', @completed_milestones), :controller => 'milestones', :action => 'list_completed', :id => @project %></td></tr>
-	      <% end %>
-	      <% else %>
-	      <tr><td>&nbsp;</td></tr>
+              <% end %>
+              <% else %>
+              <tr><td>&nbsp;</td></tr>
               <% end %>
             </table>
           </td>
