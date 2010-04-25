@@ -268,7 +268,7 @@ class FeedsController < ApplicationController
       event.duration = "PT#{user.workday_duration}M"
       event.uid =  "m#{m.id}_#{event.created}@#{user.company.subdomain}.#{$CONFIG[:domain]}"
       event.organizer = "MAILTO:#{m.user.nil? ? user.email : m.user.email}"
-      event.url = "#{user.company.site_URL}/views/select_milestone/#{m.id}"
+      event.url = user.company.site_URL + path_to_tasks_filtered_by(m)
       event.summary = "Milestone: #{m.name}"
 
       if m.description

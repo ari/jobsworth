@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100421132755) do
+ActiveRecord::Schema.define(:version => 20100424151504) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -788,40 +788,6 @@ ActiveRecord::Schema.define(:version => 20100421132755) do
   add_index "users", ["last_seen_at"], :name => "index_users_on_last_seen_at"
   add_index "users", ["username", "company_id"], :name => "index_users_on_username_and_company_id", :unique => true
   add_index "users", ["uuid"], :name => "users_uuid_index"
-
-  create_table "views", :force => true do |t|
-    t.string  "name"
-    t.integer "company_id"
-    t.integer "user_id"
-    t.integer "shared",              :default => 0
-    t.string  "auto_group",          :default => "0"
-    t.string  "filter_customer_id",  :default => "0"
-    t.string  "filter_project_id",   :default => "0"
-    t.string  "filter_milestone_id", :default => "0"
-    t.string  "filter_user_id",      :default => "0"
-    t.string  "filter_tags",         :default => ""
-    t.string  "filter_status",       :default => "0"
-    t.integer "filter_type_id",      :default => 0
-    t.integer "hide_deferred"
-    t.integer "sort",                :default => 0
-    t.integer "filter_severity",     :default => -10
-    t.integer "filter_priority",     :default => -10
-    t.integer "hide_dependencies"
-    t.integer "colors"
-    t.integer "icons"
-    t.boolean "show_all_unread",     :default => false
-  end
-
-  add_index "views", ["company_id"], :name => "views_company_id_index"
-  add_index "views", ["user_id"], :name => "fk_views_user_id"
-
-  create_table "views_property_values", :id => false, :force => true do |t|
-    t.integer "view_id"
-    t.integer "property_value_id"
-  end
-
-  add_index "views_property_values", ["property_value_id"], :name => "index_views_property_values_on_property_value_id"
-  add_index "views_property_values", ["view_id"], :name => "index_views_property_values_on_view_id"
 
   create_table "widgets", :force => true do |t|
     t.integer  "company_id"
