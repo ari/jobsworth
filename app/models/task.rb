@@ -906,22 +906,6 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # Returns true if user should be set to be notified about this task
-  # by default.
-  ###
-  def should_be_notified?(user)
-    res = true
-    if self.new_record?
-      res = user.receive_notifications?
-    else
-      join = self.task_users.detect { |j| j.user == user }
-      res = (join and join.notified_last_change?)
-    end
-
-    return res
-  end
-
-  ###
   # This method will mark this task as unread for any
   # setup watchers or task owners.
   # The exclude param should be a user or array of users whose unread
