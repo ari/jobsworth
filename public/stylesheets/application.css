@@ -44,6 +44,10 @@ small {
     color: gray;
 }
 
+textarea {
+	font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+}
+
 dl {
 }
 
