@@ -1022,8 +1022,8 @@ class Task < ActiveRecord::Base
     repeat.save!
     repeat.reload
 
-    self.notifications.each do |w|
-      n = Notification.new(:user => w.user, :task => repeat)
+    self.task_watchers.each do |w|
+      n = TaskWatcher.new(:user => w.user, :task => repeat)
       n.save!
     end
 
