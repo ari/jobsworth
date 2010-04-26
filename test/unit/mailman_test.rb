@@ -134,8 +134,6 @@ o------ please reply above this line ------o
         @task.notify_emails = "test1@example.com,test2@example.com"
         @task.save!
 
-        @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
-        @task.task_watchers.each { |n| n.update_attribute(:notified_last_change, true) }
         assert_equal 2, @task.users.count
       end
 
@@ -151,9 +149,6 @@ o------ please reply above this line ------o
       end
 
       should "list people who received notification emails" do
-        no_mail = @task.task_watchers.last
-        no_mail.update_attributes(:notified_last_change => false)
-
         Mailman.receive(@tmail.to_s)
         comment = @task.work_logs.reload.comments.last.body
 
