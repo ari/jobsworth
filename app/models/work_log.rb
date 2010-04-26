@@ -180,7 +180,7 @@ class WorkLog < ActiveRecord::Base
 
       if users.any? or emails.any?
         comments = users.map { |u| "#{ u.name } (#{ u.email })" }
-        comments = emails.select{ |email| !user_emails.include?(email) }
+        comments += emails.select{ |email| !user_emails.include?(email) }
         comment = _("Notification emails sent to %s", comments.join(", "))
         self.body ||= ""
         self.body += "\n\n" if !self.body.blank?
