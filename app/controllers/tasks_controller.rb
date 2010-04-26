@@ -160,7 +160,7 @@ class TasksController < ApplicationController
       copy_todos_from_template(params[:task][:id], @task)
       ############ code smell end #######################
 
-      @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
+      @task.work_logs.each{ |w| w.send_notifications }
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
@@ -673,7 +673,7 @@ protected
       if second_worklog
         @task.save!
         second_worklog.save!
-        second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
+        second_worklog.send_notifications if second_worklog.comment?
       end
     else
       worklog.body=body
@@ -690,7 +690,7 @@ protected
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.save!
-      worklog.send_notifications(params[:notify], @update_type) if worklog.comment?
+      worklog.send_notifications(@update_type) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!
