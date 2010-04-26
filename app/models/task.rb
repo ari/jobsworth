@@ -780,14 +780,13 @@ class Task < ActiveRecord::Base
   end
 
   def users_to_notify(user_who_made_change=nil)
-    recipients = [ ]
-
-    if user_who_made_change and
-        user_who_made_change.receive_notifications? and  user_who_made_change.receive_own_notifications?
-      recipients << user_who_made_change
+    if user_who_made_change and !user_who_made_change.receive_own_notifications?
+      recipients= self.users.find(:all, :conditions=>  ["users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true])
+    else
+      recipients= self.users.find(:all, :conditions=>  { :receive_notifications=>true})
+      recipients<< user_who_made_change unless  user_who_made_change.nil? or recipients.include?(user_who_made_change)
     end
-
-    recipients += self.users.select { |u| u.receive_notifications? }
+    recipients
   end
 
   ###
