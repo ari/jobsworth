@@ -164,12 +164,12 @@ class WorkLog < ActiveRecord::Base
   # as required.
   ###
   def setup_notifications(&block)
-    emails = (task.notify_emails || "").strip.split(",")
+    emails = (task.notify_emails || "").split(",").map{ |email| email.strip }
     all_users = task.users_to_notify(user)
 
     if all_users.any? or emails.any?
       users = all_users.select{ |user| user.access_level_id >= self.access_level_id }
-      emails += users.map { |u| u.email }
+      emails += user_emails = users.map { |u| u.email }
       emails = emails.uniq.compact
       emails = emails.select { |e| !e.blank? }
       self.users = users
@@ -178,8 +178,9 @@ class WorkLog < ActiveRecord::Base
         yield(email)
       end
 
-      if users.any?
+      if users.any? or emails.any?
         comments = users.map { |u| "#{ u.name } (#{ u.email })" }
+        comments = emails.select{ |email| !user_emails.include?(email) }
         comment = _("Notification emails sent to %s", comments.join(", "))
         self.body ||= ""
         self.body += "\n\n" if !self.body.blank?
