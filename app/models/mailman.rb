@@ -123,8 +123,7 @@ class Mailman < ActionMailer::Base
                              :status => Task.status_types.index("Open"))
     end
 
-    # worklogs need a user, so just use the first admin user if the
-    # email didn't give us one
+    # worklogs need a user, so just use the first admin user if the email didn't give us one
     if e.user.nil?
       # TOFIX migrate admin column to boolean
       e.user = task.company.users.first(:conditions => { :admin => 1 })
@@ -141,17 +140,7 @@ class Mailman < ActionMailer::Base
     w.event_log.user = e.user
     w.event_log.save
 
-    user = nil
-    if e.user.nil?
-      user = User.new
-      user.name = email.from.first
-      user.email = email.from.first
-      user.receive_notifications = 1
-    else
-      user = e.user
-    end
-
-    send_changed_emails_for_task(e, task, user)
+    send_changed_emails_for_task(e, task,  e.user)
   end
 
   # Returns true if the email should be accepted
