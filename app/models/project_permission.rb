@@ -5,7 +5,7 @@ class ProjectPermission < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   def self.permissions
-     ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all', 'see_unwatched']
+     ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
   end
   def can? (perm)
     case perm
