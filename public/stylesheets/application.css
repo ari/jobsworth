@@ -501,6 +501,7 @@ textarea#task_description {
 textarea#comment {
 	min-height: 100px;
 	width: 100%;
+	font-size: 12px;
 }
 
 textarea#task_name {
@@ -1413,7 +1414,7 @@ a.description {
 }
 
 #task_description {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 #task_comment {
