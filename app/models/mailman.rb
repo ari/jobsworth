@@ -243,6 +243,7 @@ class Mailman < ActionMailer::Base
     # need a user, so just use the first admin
     user = task.company.users.first(:conditions => { :admin => 1 })
     Notifications::deliver_created(task, user, email.from.first.strip, email_body)
+    task.mark_as_unread(user)
   end
 
   def send_changed_emails_for_task(work_log)

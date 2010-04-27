@@ -6,7 +6,6 @@ class Notifications < ActionMailer::Base
   require  File.join(File.dirname(__FILE__), '../../lib/misc')
 
   def created(task, user, recipients, note = "", sent_at = Time.now)
-    task.mark_as_unread(user)
     @task = task
 
     @body       = {:task => task, :user => user, :note => note}
@@ -20,7 +19,6 @@ class Notifications < ActionMailer::Base
   end
 
   def changed(update_type, task, user, recipients, change, sent_at = Time.now)
-    task.mark_as_unread(user)
     @task = task
 
     @subject = case update_type
