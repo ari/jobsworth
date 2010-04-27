@@ -5,6 +5,7 @@
       <th><%=_ 'Comment' %></th>
       <th><%=_ 'Work' %></th>
       <th><%=_ 'Close' %></th>
+      <th><%=_ 'See unwatched' %></th>
       <th><%=_ 'Create' %></th>
       <th><%=_ 'Edit' %></th>
       <th><%=_ 'Assign' %></th>
@@ -17,18 +18,18 @@
 
     <% @project.users.each do |user| %>
       <% @user = user %>
-      <%= render(:partial => "/users/project", :locals => { 
+      <%= render(:partial => "/users/project", :locals => {
       :name => @user.name, :project => @project, :user_edit => false }) %>
     <% end %>
 
     <tr id="add_user">
       <td>
-	<%= _("Add user to project") %>
+        <%= _("Add user to project") %>
       </td>
-      <td colspan="11">
-	<%= text_field_with_auto_complete(:user, :name, { :value => "" },
-	    :after_update_element => "addUserToProject",
-	:select => "complete_value",
+      <td colspan="12">
+        <%= text_field_with_auto_complete(:user, :name, { :value => "" },
+            :after_update_element => "addUserToProject",
+        :select => "complete_value",
         :url => "/projects/auto_complete_for_user_name") %>
       </td>
     </tr>

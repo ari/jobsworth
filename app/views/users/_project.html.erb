@@ -5,7 +5,7 @@
 <%
    user_granted = project.users.include? @user
    perm = @user.project_permissions.find(:first, :conditions => ["project_id=?", project.id])
-   perms = ['comment', 'work', 'close', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
+   perms = ProjectPermission.permissions
 %>
 
 <% if @user == project.owner %>
@@ -28,7 +28,7 @@
     :complete => "hideProgress();"
     %>
   </td>
-  
+
   <% for p in perms %>
     <td align="center">
       <%= link_to_remote image_tag("tick.png", :border => 0, :title => _("Remove %s access for <b>%s</b>?", p, @user.name), :class => "tooltip centered"),
@@ -53,6 +53,6 @@
     :complete => "hideProgress();updateDnD();"
     %>
   </td>
-  <td colspan="11"></td>
+  <td colspan="12"></td>
 <% end %>
 </tr>

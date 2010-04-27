@@ -1,10 +1,11 @@
-<table class="content" width="100%" 
+<table class="content" width="100%"
        id="permission permission_list" style="margin-left:0;margin-right:0;">
   <tr>
     <th><%=_ 'Project' %></th>
     <th><%=_ "Read" %></th>
     <th><%=_ 'Comment' %></th>
     <th><%=_ 'Work' %></th>
+    <th><%=_ 'See unwatched'%> </th>
     <th><%=_ 'Close' %></th>
     <th><%=_ 'Create' %></th>
     <th><%=_ 'Edit' %></th>
@@ -16,17 +17,17 @@
     <th><%=_ 'All' %></th>
     <th></th>
   </tr>
-  
+
   <%= render :partial => "/users/project", :collection => current_user.projects,
   :locals => { :name => nil, :user_edit => true } %>
   <tr id="add_user">
     <td>
       <%= _("Add user to project") %>
     </td>
-    <td colspan="11">
+    <td colspan="12">
       <%= text_field_with_auto_complete(:project, :name, { :value => "" },
-	  :after_update_element => "addProjectToUser",
-	  :select => "complete_value",
+          :after_update_element => "addProjectToUser",
+          :select => "complete_value",
           :url => "/users/auto_complete_for_project_name") %>
     </td>
   </tr>
