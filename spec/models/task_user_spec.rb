@@ -6,7 +6,6 @@ describe TaskUser do
       :user_id => 1,
       :task_id => 1,
       :unread => false,
-      :notified_last_change => false
     }
   end
 

@@ -62,23 +62,24 @@ describe WorkLog do
   describe "setup_notifications" do
     before(:each) do
       company=Company.make
-      @notify_ids=[]
-      2.times{ @notify_ids<< User.make(:access_level_id=>1, :company=> company).id }
-      2.times{ @notify_ids<< User.make(:access_level_id=>2, :company=> company).id }
-      @work_log=WorkLog.make(:comment=>true, :user=> User.first)
+      2.times{ User.make(:access_level_id=>1, :company=> company) }
+      2.times{ User.make(:access_level_id=>2, :company=> company) }
+      company.reload
+      @task= Task.make(:company=>company, :users=>company.users)
+      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task)
     end
     it "should yield only emails of users with access level great or equal to work log's access level" do
       emails=[]
-      @work_log.setup_notifications(@notify_ids) do |email|
+      @work_log.setup_notifications() do |email|
         emails<< email
       end
-      emails.should == User.all.collect{ |user| user.email }
+      emails.should == @task.users.collect{ |user| user.email }
       @work_log.access_level_id=2
       emails=[]
-      @work_log.setup_notifications(@notify_ids) do |email|
+      @work_log.setup_notifications() do |email|
         emails<< email
       end
-      emails.should == User.find_all_by_access_level_id(2).collect{ |user| user.email }
+      emails.should == @task.users.find_all_by_access_level_id(2).collect{ |user| user.email }
     end
   end
 end
