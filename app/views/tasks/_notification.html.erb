@@ -1,11 +1,6 @@
 <%
    user = notification
-   classname = "user access_level_#{user.access_level_id}"
-   if user.receive_notifications? and !(current_user == user and !user.receive_own_notifications?)
-     classname += " will_notify"
-   else
-     classname += " will_never_receive"
-   end
+   classname = "watcher access_level_#{user.access_level_id}"
 -%>
 <div class="<%= classname %>">
   <%= hidden_field_tag("users[]", user.id) %>
@@ -19,6 +14,5 @@
 
   <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
   <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user, :layout => "popup" },
-  :class => "lightbox", :target => "_blank" %>
-  <br />
+  :class => "username lightbox", :target => "_blank" %>
 </div>

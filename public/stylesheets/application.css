@@ -1420,16 +1420,16 @@ a.description {
     font-size: 11px;
 }
 
-#taskform .user {
+#taskform .watcher {
     padding-bottom: 3px;
     padding-top: 2px;
 }
 
-#taskform .user.active {
-    border: 2px solid yellow;
+.will_notify {
+	background-color: #fff5cc;
 }
 
-#taskform .user label {
+#taskform .watcher label {
     margin-top: 0px;
     padding: 0px;
     margin-right: 7px;
@@ -1443,15 +1443,11 @@ a.description {
     clear: both;
 }
 
-#taskform .user .removeLink, #taskform #task_customers .removeLink {
+#taskform .watcher .removeLink, #taskform #task_customers .removeLink {
     float: right
 }
 
-#taskform .user.will_notify {
-    background-color: #ffff99;
-}
-
-#taskform .user .icon {
+#taskform .watcher .icon {
     background-color: white;
     background-image: url(/images/unread.png);
     background-position: 0 150%;
@@ -1463,12 +1459,15 @@ a.description {
     width: 16px;
 }
 
-#taskform .user .icon.is_assigned {
+#taskform .watcher .icon.is_assigned {
     background-image: url(/images/user.png);
 }
 
-#taskform .user .icon.should_notify {
-    background-image: url(/images/email.png);
+#notify_users {
+	clear: both;
+	font-size: 0.9em;
+	color: #999999;
+	background-color: #fff5cc;
 }
 
 #taskform #task_addcomment {
@@ -1544,6 +1543,7 @@ div#accessLevel_container div.private {
 
 div#accessLevel_container select {
 	visibility: hidden;
+	display: none;
 }
 
 div#upload_container {
