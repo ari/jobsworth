@@ -188,7 +188,7 @@ class WorkLog < ActiveRecord::Base
         self.save
       end
     end
-    task.mark_as_unread(user)
+    mark_as_unread
   end
   ###
   # this function will send notifications
@@ -212,6 +212,12 @@ class WorkLog < ActiveRecord::Base
         #we don't have comment
         #don't bother our users
       end
+    end
+  end
+private
+  def mark_as_unread
+    task.users.find(:all, :conditions=> ["users.id != ? and users.access_level_id >=?", user_id, access_level_id]).each do |user|
+      task.set_task_read(user, false)
     end
   end
 end

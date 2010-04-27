@@ -81,5 +81,27 @@ describe WorkLog do
       end
       emails.should == @task.users.find_all_by_access_level_id(2).collect{ |user| user.email }
     end
+    it "should mark as unread task for users, except WorkLog#user" do
+      @task.task_users.find_by_unread(true).should be_nil
+      @work_log.setup_notifications do
+      end
+      @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all,:conditions=>["task_users.user_id != ?", @work_log.user_id])
+    end
+    it "should mark as uread task for users with access to work log" do
+      @task.task_users.find_by_unread(true).should be_nil
+      @work_log.access_level_id=2
+      @work_log.setup_notifications { }
+      @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all, :include => :user,
+                                                                                :conditions=> ["users.access_level_id =? and task_users.user_id != ? ", 2, @work_log.user_id ])
+    end
+    it "should mark as unread task for users with access to work log, no matter they receive email" do
+      @task.task_users.update_all("unread= 0")
+      @task.task_users.find_by_unread(true).should be_nil
+      User.update_all("receive_notifications= 0")
+      @work_log.access_level_id=1
+      @work_log.setup_notifications { }
+      @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all, :include => :user,
+                                                                                :conditions=> ["task_users.user_id != ? ", @work_log.user_id ])
+    end
   end
 end
