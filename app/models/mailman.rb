@@ -123,8 +123,7 @@ class Mailman < ActionMailer::Base
                              :status => Task.status_types.index("Open"))
     end
 
-    # worklogs need a user, so just use the first admin user if the
-    # email didn't give us one
+    # worklogs need a user, so just use the first admin user if the email didn't give us one
     if e.user.nil?
       # TOFIX migrate admin column to boolean
       e.user = task.company.users.first(:conditions => { :admin => 1 })
@@ -141,17 +140,7 @@ class Mailman < ActionMailer::Base
     w.event_log.user = e.user
     w.event_log.save
 
-    user = nil
-    if e.user.nil?
-      user = User.new
-      user.name = email.from.first
-      user.email = email.from.first
-      user.receive_notifications = 1
-    else
-      user = e.user
-    end
-
-    send_changed_emails_for_task(e, task, user)
+    send_changed_emails_for_task(w)
   end
 
   # Returns true if the email should be accepted
@@ -256,36 +245,15 @@ class Mailman < ActionMailer::Base
     Notifications::deliver_created(task, user, email.from.first.strip, email_body)
   end
 
-  def send_changed_emails_for_task(e, task, user)
-    email_body = e.body.gsub(/<[^>]*>/,'')
+  def send_changed_emails_for_task(work_log)
+    user = work_log.user
+    tmp=user.receive_own_notifications
+    user.receive_own_notifications=false
+    user.save!
 
-    sent = [ ]
-    emails = []
+    work_log.send_notifications
 
-    task.task_users.each do |n|
-      if n.notified_last_change? and n.user != user
-        Notifications::deliver_changed(:comment, task, e.user, n.user.email, email_body)
-        sent << n.user
-      end
-    end
-
-    (task.notify_emails || "").split(",").each do |email|
-      if email != user.email
-        Notifications::deliver_changed(:comment, task, e.user, email.strip, email_body)
-        emails << email
-      end
-    end
-
-    emails += sent.map { |u| u.email }
-    if emails.any?
-      emails = _("Notification emails sent to %s", emails.join(", "))
-      comment = task.work_logs.comments.last
-      comment.update_attributes(:body => "#{ comment.body }\n\n#{ emails }")
-    end
-
-    sent << user # user already got a created email, so include them as notified
-    task.mark_as_notified_last_change(sent + [ user ])
-    task.mark_as_unread(user)
+    user.receive_own_notifications=tmp
+    user.save!
   end
-
 end

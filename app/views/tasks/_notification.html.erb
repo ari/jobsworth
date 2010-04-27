@@ -1,9 +1,9 @@
 <%
    user = notification
    classname = "user access_level_#{user.access_level_id}"
-   if @task.new_record? and @task.should_be_notified?(user)
+   if user.receive_notifications? and !(current_user == user and !user.receive_own_notifications?)
      classname += " will_notify"
-   elsif current_user == user and !user.receive_own_notifications?
+   else
      classname += " will_never_receive"
    end
 -%>
@@ -11,13 +11,10 @@
   <%= hidden_field_tag("users[]", user.id) %>
   <%= hidden_field_tag("assigned[]", user.id, :class => "assigned",
       :disabled => !@task.owners.include?(user)) %>
-  <%= hidden_field_tag("notify[]", user.id, :class => "notify",
-  :disabled => !@task.should_be_notified?(user)) %>
 
   <label>
     <%= unread_toggle_for_task_and_user(@task, user) %>
     <%= assigned_icon(@task, user) %>
-    <%= notify_icon(@task, user) %>
   </label>
 
   <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>

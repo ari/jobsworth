@@ -779,30 +779,23 @@ class Task < ActiveRecord::Base
     "#{locale_part}#{due_part}#{worked_part}#{config_part}"
   end
 
+  def users_to_notify(user_who_made_change=nil)
+    if user_who_made_change and !user_who_made_change.receive_own_notifications?
+      recipients= self.users.find(:all, :conditions=>  ["users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true])
+    else
+      recipients= self.users.find(:all, :conditions=>  { :receive_notifications=>true})
+      recipients<< user_who_made_change unless  user_who_made_change.nil? or recipients.include?(user_who_made_change)
+    end
+    recipients
+  end
+
   ###
   # Returns an array of email addresses of people who should be
   # notified about changes to this task.
   ###
-  #TODO: remove this method, looks like it called only in tests
   def notification_email_addresses(user_who_made_change = nil)
-    recipients = [ ]
 
-    if user_who_made_change and
-        user_who_made_change.receive_notifications?
-      recipients << user_who_made_change
-    end
-
-    recipients += self.users.select { |u| u.receive_notifications? }
-
-    # remove them if they don't want their own notifications.
-    # do it here rather than at start of method in case they're
-    # on the watchers list, etc
-    if user_who_made_change and
-        !user_who_made_change.receive_own_notifications?
-      recipients.delete(user_who_made_change)
-    end
-
-    emails = recipients.map { |u| u.email }
+    emails = users_to_notify(user_who_made_change).map { |u| u.email }
 
     # add in notify emails
     if !notify_emails.blank?
@@ -891,34 +884,6 @@ class Task < ActiveRecord::Base
     end
 
     self.save
-  end
-
-  ###
-  # This method will mark any task_owners or notifications linked to
-  # this task notified IF they are in the given array of users.
-  # If not, that column will be set to false.
-  ###
-  def mark_as_notified_last_change(users)
-    task_users.each do |n|
-      notified = users.include?(n.user)
-      n.update_attribute(:notified_last_change, notified)
-    end
-  end
-
-  ###
-  # Returns true if user should be set to be notified about this task
-  # by default.
-  ###
-  def should_be_notified?(user)
-    res = true
-    if self.new_record?
-      res = user.receive_notifications?
-    else
-      join = self.task_users.detect { |j| j.user == user }
-      res = (join and join.notified_last_change?)
-    end
-
-    return res
   end
 
   ###
@@ -1056,8 +1021,8 @@ class Task < ActiveRecord::Base
     repeat.save!
     repeat.reload
 
-    self.notifications.each do |w|
-      n = Notification.new(:user => w.user, :task => repeat)
+    self.task_watchers.each do |w|
+      n = TaskWatcher.new(:user => w.user, :task => repeat)
       n.save!
     end
 

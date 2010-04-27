@@ -81,7 +81,6 @@ class TasksControllerTest < ActionController::TestCase
       @task.status=0
       @task.save!
       assert_emails 0
-      @notify = @task.users.map { |u| u.id }
     end
     teardown do
       @task.work_logs.destroy_all
@@ -89,14 +88,14 @@ class TasksControllerTest < ActionController::TestCase
 
     should "send emails to each user when adding a comment" do
       post(:update, :id => @task.id, :task => { },
-           :notify => @notify,
+           :users=> @task.user_ids,
            :comment => "a test comment")
       assert_emails @task.users.length
       assert_redirected_to "/tasks/list"
     end
     context "one of task's watched attributes changed," do
       setup do
-        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :notify=> @notify}
+        @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids}
       end
       context "with comment added," do
         setup do
@@ -193,7 +192,7 @@ class TasksControllerTest < ActionController::TestCase
     end
     context "without changes to task's watched attributes" do
       setup do
-        @parameters={:id=>@task.id, :assigned=>@task.user_ids, :task=>{}, :notify=> @notify}
+        @parameters={:id=>@task.id, :assigned=>@task.user_ids, :task=>{}, :users=> @task.user_ids}
       end
       context "with comment added," do
         setup do
@@ -276,11 +275,10 @@ class TasksControllerTest < ActionController::TestCase
     setup do
       ActionMailer::Base.deliveries = []
       assert_emails 0
-      @user_ids = @user.company.users.map { |u| u.id }
+      @user_ids = @user.company.user_ids
       @parameters={
         :users => @user_ids,
         :assigned => @user_ids,
-        :notify => @user_ids,
         :task => {
            :name => "test",
            :description => "Test description",

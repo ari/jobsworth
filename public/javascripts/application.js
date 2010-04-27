@@ -582,29 +582,6 @@ function toggleTaskIcon(sender, baseClassName, enabledClassName) {
     }
 }
 
-
-/*
-  Highlights any notification users who will be receiving an email
-  about this task.
-*/
-function highlightActiveNotifications() {
-    var users = jQuery("#taskform .user");
-    var hasComment = jQuery("#comment").val() != "";
-    var isNew = (document.location.toString().indexOf("/new") > 0);
-
-    for (var i = 0; i < users.length; i++) {
-                var div = jQuery(users[i]);
-                var willNeverReceive = div.hasClass("will_never_receive");
-                var notify = div.find(".icon.should_notify");
-                if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
-                    div.addClass("will_notify");
-                }
-                else {
-                    div.removeClass("will_notify");
-                }
-    }
-}
-
 /*
   Adds the selected user to the current tasks list of users
 */
@@ -618,7 +595,6 @@ function addUserToTask(input, li) {
     var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
-        highlightActiveNotifications();
     });
 }
 
