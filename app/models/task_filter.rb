@@ -37,7 +37,7 @@ class TaskFilter < ActiveRecord::Base
   # a default limit will be applied)
   def tasks(extra_conditions = nil, limit_tasks = true)
     limit = (limit_tasks ? 500 : nil)
-    return user.company.tasks.all(:conditions => conditions(extra_conditions),
+    return Task.all_accessed_by(user).all(:conditions => conditions(extra_conditions),
                                   :include => to_include,
                                   :limit => limit)
   end
@@ -59,13 +59,13 @@ class TaskFilter < ActiveRecord::Base
   def tasks_all(parameters={ })
     parameters[:conditions]=conditions(parameters[:conditions])
     parameters[:include]= to_include + (parameters[:include]||[])
-    return user.company.tasks.all(parameters)
+    return Task.all_accessed_by(user).all(parameters)
   end
 
   # Returns the count of tasks matching the conditions of this filter.
   # if extra_conditions is passed, that will be ANDed to the conditions
   def count(extra_conditions = nil)
-    user.company.tasks.count(:conditions => conditions(extra_conditions),
+    Task.all_accessed_by(user).count(:conditions => conditions(extra_conditions),
                              :include => to_include)
   end
 
@@ -95,7 +95,6 @@ class TaskFilter < ActiveRecord::Base
     res << conditions_for_time_qualifiers(time_qualifiers)
     res << conditions_for_keywords
     res << extra_conditions if extra_conditions
-    res << user.user_tasks_sql
     res << unread_conditions(user) if unread_only?
 
     res = res.select { |c| !c.blank? }

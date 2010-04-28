@@ -90,7 +90,7 @@ class Task < ActiveRecord::Base
     {:joins=>"join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id", :conditions => ["projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
   }
   named_scope :all_accessed_by, lambda {|user|
-    {:joins=>"join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id", :conditions => ["users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
+    {:readonly => false, :joins=>"join project_permissions on project_permissions.project_id = tasks.project_id join users on project_permissions.user_id = users.id", :conditions => ["users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
   }
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
