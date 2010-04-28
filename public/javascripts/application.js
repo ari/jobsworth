@@ -843,7 +843,7 @@ function highlightWatchers() {
 		} else {
 			jQuery('.watcher').addClass('will_notify');
 		}
-		var watcher = "Notify: "
+		var watcher = "Notify: ";
 		jQuery('div.watcher.will_notify a.username span').each(function() {
 			watcher = watcher + jQuery(this).html() + ", ";
 		});
