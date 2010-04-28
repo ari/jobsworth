@@ -179,6 +179,10 @@ module TasksHelper
   def options_for_user_projects(task)
     projects = current_user.projects.find(:all, :include => "customer", :order => "customers.name, projects.name")
 
+    unless  task.new_record? or projects.include?(task.project)
+      projects<< task.project
+      projects=projects.sort_by { |project| project.customer.name + project.name }
+    end
     last_customer = nil
     options = []
 
