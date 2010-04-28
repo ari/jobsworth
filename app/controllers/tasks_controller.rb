@@ -210,6 +210,13 @@ class TasksController < ApplicationController
       redirect_from_last
       return
     end
+
+    unless current_user.can?(@task.project,'edit')
+      flash['notice'] = ProjectPermission.message_for('edit')
+      redirect_from_last
+      return
+    end
+
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
