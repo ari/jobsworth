@@ -23,7 +23,39 @@ describe Task do
       it "should include owner's name in owners"
     end
   end
-  context "accessed_by(user)" do
+  shared_examples_for "accessed_by(user)" do
+    it "should return tasks only from user's company" do
+      Task.accessed_by(@user).each do |task|
+        @user.company.tasks.should include(task)
+      end
+    end
+    it "should return only watched tasks if user not have can_see_unwatched permission" do
+      permission=@user.project_permissions.first
+      permission.remove('see_unwatched')
+      permission.save!
+      @user.reload
+      Task.accessed_by(@user).each do |task|
+        @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+      end
+    end
+  end
+  context "access scopes" do
+    shared_examples_for "access scope" do
+      it "should return tasks only from user's company" do
+        Task.accessed_by(@user).each do |task|
+          @user.company.tasks.should include(task)
+        end
+      end
+      it "should return only watched tasks if user not have can_see_unwatched permission" do
+        permission=@user.project_permissions.first
+        permission.remove('see_unwatched')
+        permission.save!
+        @user.reload
+        Task.accessed_by(@user).each do |task|
+          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+        end
+      end
+    end
     before(:each) do
       company= Company.make
       3.times{ Project.make(:company=>company)}
@@ -36,26 +68,54 @@ describe Task do
       company.projects.last.tasks.make
       Project.make.tasks.make
     end
-    it "should return tasks only from user's company" do
-      Task.accessed_by(@user).each do |task|
-        @user.company.tasks.should include(task)
+    context "accessed_by(user)" do
+      it "should return tasks only from user's company" do
+        Task.accessed_by(@user).each do |task|
+          @user.company.tasks.should include(task)
+        end
+      end
+
+      it "should return only watched tasks if user not have can_see_unwatched permission" do
+        permission=@user.project_permissions.first
+        permission.remove('see_unwatched')
+        permission.save!
+        @user.reload
+        Task.accessed_by(@user).each do |task|
+          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+        end
+      end
+
+      it "should return tasks only from user's not completed projects" do
+        project= @user.projects.first
+        project.completed_at= Time.now.utc
+        project.save!
+        Task.accessed_by(@user).should == Task.all(:conditions=> ["tasks.project_id in(?)", @user.project_ids])
       end
     end
-    it "should return tasks only from user's not completed projects" do
-      project= @user.projects.first
-      project.completed_at= Time.now.utc
-      project.save!
-      Task.accessed_by(@user).should == Task.all(:conditions=> ["tasks.project_id in(?)", @user.project_ids])
-    end
-    it "should return only watched tasks if user not have can_see_unwatched permission" do
-      permission=@user.project_permissions.first
-      permission.remove('see_unwatched')
-      permission.save!
-      @user.reload
-      Task.accessed_by(@user).each do |task|
-        @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+
+    context "all_accessed_by(user)" do
+      it "should return tasks only from user's company" do
+        Task.all_accessed_by(@user).each do |task|
+          @user.company.tasks.should include(task)
+        end
+      end
+
+      it "should return only watched tasks if user not have can_see_unwatched permission" do
+        permission=@user.project_permissions.first
+        permission.remove('see_unwatched')
+        permission.save!
+        @user.reload
+        Task.all_accessed_by(@user).each do |task|
+          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
+        end
+      end
+
+      it "should return tasks from all users projects, even completed" do
+        project= @user.projects.first
+        project.completed_at= Time.now.utc
+        project.save!
+        Task.all_accessed_by(@user).should == Task.all(:conditions=> ["tasks.project_id in(?)", @user.all_project_ids])
       end
     end
   end
-
 end
