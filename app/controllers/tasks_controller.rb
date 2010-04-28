@@ -204,7 +204,12 @@ class TasksController < ApplicationController
 
     @update_type = :updated
 
-    @task = controlled_model.find( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
+    @task = controlled_model.find_by_id( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
+    if @task.nil? or !current_user.can_view_task?(@task)
+      flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+      redirect_from_last
+      return
+    end
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
