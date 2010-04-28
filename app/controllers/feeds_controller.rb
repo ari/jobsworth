@@ -66,7 +66,7 @@ class FeedsController < ApplicationController
     content = nil
     if params[:widget].blank?
       # Find all Project ids this user has access to
-      pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+      pids = user.projects
 
       # Find 50 last WorkLogs of the Projects
       unless pids.nil? || pids.empty?
@@ -116,7 +116,7 @@ class FeedsController < ApplicationController
                      ""
                    end
         end
-        pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ]).collect{|p| p.id}.join(",")
+        pids = user.projects.collect{|p| p.id}.join(",")
 
         unless widget.mine?
           tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
@@ -203,7 +203,7 @@ class FeedsController < ApplicationController
     cached = []
 
     # Find all Project ids this user has access to
-    pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+    pids = user.projects
 
 
 
@@ -403,7 +403,7 @@ class FeedsController < ApplicationController
 
     @current_user = user
 
-    @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+    @projects = user.projects.find(:all, :include => [ :customer, :milestones]);
     pids = @projects.collect{ |p| p.id }.join(',')
     if pids.nil? || pids.empty?
         pids = "0"
