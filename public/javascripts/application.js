@@ -562,22 +562,22 @@ function addTaskFilter(sender, id, field_name) {
 /* TASK OWNER METHODS */
 function removeTaskUser(sender) {
     sender = jQuery(sender);
-    sender.parent(".user").remove();
+    sender.parent(".watcher").remove();
 }
 
-function toggleTaskIcon(sender, baseClassName, enabledClassName) {
-    var div = jQuery(sender).parents(".user");
+function toggleTaskIcon(sender) {
+    var div = jQuery(sender).parents(".watcher");
 
-    var input = div.find("input." + baseClassName);
-    var icon = div.find(".icon." + baseClassName);
+    var input = div.find("input.assigned");
+    var icon = div.find(".icon.assigned");
 
     if (input.attr("disabled")) {
-        icon.addClass(enabledClassName);
+        div.addClass("is_assigned");
         input.attr("disabled", false);
     }
     else {
         input.attr("disabled", true);
-        icon.removeClass(enabledClassName);
+        div.removeClass("is_assigned");
     }
 }
 

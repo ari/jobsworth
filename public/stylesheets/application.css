@@ -1460,7 +1460,7 @@ a.description {
     width: 16px;
 }
 
-#taskform .watcher .icon.is_assigned {
+#taskform .watcher.is_assigned .icon {
     background-image: url(/images/user.png);
 }
 

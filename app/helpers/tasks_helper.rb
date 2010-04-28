@@ -130,24 +130,6 @@ module TasksHelper
   end
 
   ###
-  # Returns an icon to set whether user is assigned to task.
-  # The icon will have a link to toggle this attribute if the user
-  # is allowed to assign for the task project.
-  ###
-  def assigned_icon(task, user)
-    classname = "icon tooltip assigned"
-    classname += " is_assigned" if task.owners.include?(user)
-    content = content_tag(:span, "*", :class => classname,
-                          :title => _("Click to toggle whether this task is assigned to this user"))
-
-    if task.project.nil? or current_user.can?(task.project, "reassign")
-      content = link_to_function(content, "toggleTaskIcon(this, 'assigned', 'is_assigned')")
-    end
-
-    return content
-  end
-
-  ###
   # Returns a link that add the current user to the current tasks user list
   # when clicked.
   ###
