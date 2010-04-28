@@ -119,7 +119,7 @@ class FeedsController < ApplicationController
         pids = user.projects.collect{|p| p.id}.join(",")
 
         unless widget.mine?
-          tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
+          tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
         else
           tasks = user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
         end
@@ -221,9 +221,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting tasks")
-          @tasks = Task.find(:all,
-                             :conditions => ["tasks.project_id IN (#{pids})" ],
-                             :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
+          @tasks = Task.accessed_by(user).find(:all, :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
         end
 
       else
@@ -412,13 +410,13 @@ class FeedsController < ApplicationController
 
     if params[:up_show_order] && params[:up_show_order] == "Newest Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
+        @tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
       else
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i )
       end
     elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
+        @tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       else
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       end
