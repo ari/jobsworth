@@ -609,7 +609,7 @@ protected
     assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
     if @old_users != assigned_ids
       @task.users.reload
-      new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
+      new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
       body << "- <strong>Assignment</strong>: #{new_name}\n"
       @update_type = :reassigned
     end
