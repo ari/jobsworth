@@ -23,39 +23,7 @@ describe Task do
       it "should include owner's name in owners"
     end
   end
-  shared_examples_for "accessed_by(user)" do
-    it "should return tasks only from user's company" do
-      Task.accessed_by(@user).each do |task|
-        @user.company.tasks.should include(task)
-      end
-    end
-    it "should return only watched tasks if user not have can_see_unwatched permission" do
-      permission=@user.project_permissions.first
-      permission.remove('see_unwatched')
-      permission.save!
-      @user.reload
-      Task.accessed_by(@user).each do |task|
-        @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
-      end
-    end
-  end
   context "access scopes" do
-    shared_examples_for "access scope" do
-      it "should return tasks only from user's company" do
-        Task.accessed_by(@user).each do |task|
-          @user.company.tasks.should include(task)
-        end
-      end
-      it "should return only watched tasks if user not have can_see_unwatched permission" do
-        permission=@user.project_permissions.first
-        permission.remove('see_unwatched')
-        permission.save!
-        @user.reload
-        Task.accessed_by(@user).each do |task|
-          @user.should be_can(task.project, 'see_unwatched') unless task.users.include?(@user)
-        end
-      end
-    end
     before(:each) do
       company= Company.make
       3.times{ Project.make(:company=>company)}
