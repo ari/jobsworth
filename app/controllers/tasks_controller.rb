@@ -175,7 +175,7 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_company_task_find_by_task_num(params[:id])
+    @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
 
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
@@ -454,7 +454,7 @@ class TasksController < ApplicationController
   def add_notification
     @task = current_company_task_new
     if !params[:id].blank?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     user = current_user.company.users.find(params[:user_id])
@@ -466,7 +466,7 @@ class TasksController < ApplicationController
   def add_client
     @task = current_company_task_new
     if !params[:id].blank?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     customer = current_user.company.customers.find(params[:client_id])
@@ -478,7 +478,7 @@ class TasksController < ApplicationController
   def add_users_for_client
    @task = current_company_task_new
     if params[:id].present?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     if params[:client_id].present?
@@ -570,12 +570,6 @@ protected
     task=Task.new
     task.company=current_user.company
     return task
-  end
-  def current_company_task_find_by_task_num(id)
-    current_user.company.tasks.find_by_task_num(id)
-  end
-  def current_company_task_find(id)
-    current_user.company.tasks.find(id)
   end
   #this function abstract calls to model from  controller
   def controlled_model
