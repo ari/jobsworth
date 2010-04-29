@@ -805,7 +805,7 @@ class Task < ActiveRecord::Base
 
     # add in notify emails
     if !notify_emails.blank?
-      emails += notify_emails.split(",")
+      emails += notify_emails_array
     end
     emails = emails.compact.map { |e| e.strip }
 
@@ -988,6 +988,9 @@ class Task < ActiveRecord::Base
   end
   def statuses_for_select_list
     company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
+  end
+  def notify_emails_array
+    (notify_emails || "").split(',').map{ |email| email.strip }
   end
 
   private

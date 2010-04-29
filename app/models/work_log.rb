@@ -164,7 +164,7 @@ class WorkLog < ActiveRecord::Base
   # as required.
   ###
   def setup_notifications(&block)
-    emails = (task.notify_emails || "").split(",").map{ |email| email.strip }
+    emails = task.notify_emails_array
     all_users = task.users_to_notify(user)
 
     if all_users.any? or emails.any?

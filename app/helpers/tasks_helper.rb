@@ -271,7 +271,7 @@ module TasksHelper
 
   # Returns the notify emails for the given task, one per line
   def notify_emails_on_newlines(task)
-    emails = (task.notify_emails || "").strip.split(",")
+    emails = task.notify_emails_array
     return emails.join("\n")
   end
 
