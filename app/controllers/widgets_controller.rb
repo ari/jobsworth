@@ -444,26 +444,26 @@ class WidgetsController < ApplicationController
 
       if @widget.mine?
         @last_completed = current_user.tasks.find(:all, :conditions => "completed_at IS NOT NULL #{filter}", :order => "completed_at DESC", :limit => @widget.number)
-        @counts[:work][0] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start, start + 1.day]).to_i / 60
-        @counts[:work][1] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start - 1.day, start]).to_i / 60
-        @counts[:work][2]  = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start - 6.days, start + 1.day]).to_i / 60
-        @counts[:work][3] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter}", current_user.id, start - 29.days, start + 1.day]).to_i / 60
+        @counts[:work][0] = mine_work_logs_sum(start, start + 1.day)
+        @counts[:work][1] = mine_work_logs_sum(start - 1.day, start)
+        @counts[:work][2] = mine_work_logs_sum(start - 6.days, start + 1.day)
+        @counts[:work][3] = mine_work_logs_sum(start - 29.days, start + 1.day)
 
-        @counts[:completed][0] = current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter}", start, start + 1.day])
-        @counts[:completed][1] = current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter}", start - 1.day, start])
-        @counts[:completed][2] = current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter}", start - 6.days, start + 1.day])
-        @counts[:completed][3] = current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter}", start - 29.days, start + 1.day])
+        @counts[:completed][0] = mine_tasks_count_completed(start, start + 1.day)
+        @counts[:completed][1] = mine_tasks_count_completed(start - 1.day, start)
+        @counts[:completed][2] = mine_tasks_count_completed(start - 6.days, start + 1.day)
+        @counts[:completed][3] = mine_tasks_count_completed(start - 29.days, start + 1.day)
 
-        @counts[:created][0] = current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter}", start, start + 1.day])
-        @counts[:created][1] = current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter}", start - 1.day, start])
-        @counts[:created][2] = current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter}", start - 6.days, start + 1.day])
-        @counts[:created][3] = current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter}", start - 29.days, start + 1.day])
+        @counts[:created][0] = mine_tasks_count_created(start, start)
+        @counts[:created][1] = mine_tasks_count_created(start - 1.day, start)
+        @counts[:created][2] = mine_tasks_count_created(start - 6.days, start + 1.day)
+        @counts[:created][3] = mine_tasks_count_created(start - 29.days, start + 1.day)
       else
         @last_completed = Task.accessed_by(current_user).all(:conditions => "tasks.completed_at IS NOT NULL #{filter}", :order => "tasks.completed_at DESC", :limit => @widget.number)
-        @counts[:work][0] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start, start + 1.day]).to_i / 60
-        @counts[:work][1] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start - 1.day, start]).to_i / 60
-        @counts[:work][2] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start - 6.days, start + 1.day]).to_i / 60
-        @counts[:work][3] = WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter}", start - 29.days, start + 1.day]).to_i / 60
+        @counts[:work][0] = work_logs_sum(start, start + 1.day)
+        @counts[:work][1] = work_logs_sum(start - 1.day, start)
+        @counts[:work][2] = work_logs_sum(start - 6.days, start + 1.day)
+        @counts[:work][3] = work_logs_sum(start - 29.days, start + 1.day)
 
         @counts[:completed][0] =  tasks_count_completed(start, start + 1.day)
         @counts[:completed][1] =  tasks_count_completed(start - 1.day, start)
@@ -476,14 +476,30 @@ class WidgetsController < ApplicationController
         @counts[:created][3] =  tasks_count_created(start - 29.days, start + 1.day)
       end
   end
+
   def sheets_extracted_from_show
     filter = filter_from_filter_by
     @sheets = Sheet.find(:all, :order => 'users.name', :include => [ :user, :task, :project ], :conditions => ["tasks.project_id IN (#{current_project_ids})#{filter}"])
   end
+
   def tasks_count_created(start, stop)
     Task.accessed_by(current_user).count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
   end
+
   def tasks_count_completed(start, stop)
     Task.accessed_by(current_user).count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
+  end
+
+  def work_logs_sum(start, stop)
+    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", start, stop]).to_i / 60
+  end
+  def mine_tasks_count_created(start, stop)
+    current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
+  end
+  def mine_tasks_count_completed(start, stop)
+    current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
+  end
+  def mine_work_logs_sum(start, stop)
+    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", current_user.id, start, start + 1.day]).to_i / 60
   end
 end
