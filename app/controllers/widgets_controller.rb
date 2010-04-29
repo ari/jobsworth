@@ -432,49 +432,34 @@ class WidgetsController < ApplicationController
   end
 
   def work_status_extracted_from_show
-      filter = filter_from_filter_by
+    filter=filter_from_filter_by
+    start = tz.local_to_utc(tz.now.at_midnight)
 
-      start = tz.local_to_utc(tz.now.at_midnight)
+    @counts = { }
 
-      @counts = { }
+    [:work, :completed, :created].each do |t|
+      @counts[t] = []
+    end
+    intervals= [[start, start+1.day],
+                [start - 1.day, start],
+                [start - 6.days, start + 1.day],
+                [start - 29.days, start + 1.day]]
 
-      [:work, :completed, :created].each do |t|
-        @counts[t] = []
+    if @widget.mine?
+      @last_completed = current_user.tasks.find(:all, :conditions => "completed_at IS NOT NULL #{filter}", :order => "completed_at DESC", :limit => @widget.number)
+      intervals.each_with_index do |interval, index|
+        @counts[:work][index] = mine_work_logs_sum(interval.first, interval.second)
+        @counts[:completed][index] = mine_tasks_count_completed(interval.first, interval.second)
+        @counts[:created][index] = mine_tasks_count_created(interval.first, interval.second)
       end
-
-      if @widget.mine?
-        @last_completed = current_user.tasks.find(:all, :conditions => "completed_at IS NOT NULL #{filter}", :order => "completed_at DESC", :limit => @widget.number)
-        @counts[:work][0] = mine_work_logs_sum(start, start + 1.day)
-        @counts[:work][1] = mine_work_logs_sum(start - 1.day, start)
-        @counts[:work][2] = mine_work_logs_sum(start - 6.days, start + 1.day)
-        @counts[:work][3] = mine_work_logs_sum(start - 29.days, start + 1.day)
-
-        @counts[:completed][0] = mine_tasks_count_completed(start, start + 1.day)
-        @counts[:completed][1] = mine_tasks_count_completed(start - 1.day, start)
-        @counts[:completed][2] = mine_tasks_count_completed(start - 6.days, start + 1.day)
-        @counts[:completed][3] = mine_tasks_count_completed(start - 29.days, start + 1.day)
-
-        @counts[:created][0] = mine_tasks_count_created(start, start)
-        @counts[:created][1] = mine_tasks_count_created(start - 1.day, start)
-        @counts[:created][2] = mine_tasks_count_created(start - 6.days, start + 1.day)
-        @counts[:created][3] = mine_tasks_count_created(start - 29.days, start + 1.day)
-      else
-        @last_completed = Task.accessed_by(current_user).all(:conditions => "tasks.completed_at IS NOT NULL #{filter}", :order => "tasks.completed_at DESC", :limit => @widget.number)
-        @counts[:work][0] = work_logs_sum(start, start + 1.day)
-        @counts[:work][1] = work_logs_sum(start - 1.day, start)
-        @counts[:work][2] = work_logs_sum(start - 6.days, start + 1.day)
-        @counts[:work][3] = work_logs_sum(start - 29.days, start + 1.day)
-
-        @counts[:completed][0] =  tasks_count_completed(start, start + 1.day)
-        @counts[:completed][1] =  tasks_count_completed(start - 1.day, start)
-        @counts[:completed][2] =  tasks_count_completed(start - 6.days, start + 1.day)
-        @counts[:completed][3] =  tasks_count_completed(start - 29.days, start + 1.day)
-
-        @counts[:created][0] =  tasks_count_created(start, start + 1.day)
-        @counts[:created][1] =  tasks_count_created(start - 1.day, start)
-        @counts[:created][2] =  tasks_count_created(start - 6.days, start + 1.day)
-        @counts[:created][3] =  tasks_count_created(start - 29.days, start + 1.day)
+    else
+       @last_completed = Task.accessed_by(current_user).all(:conditions => "tasks.completed_at IS NOT NULL #{filter}", :order => "tasks.completed_at DESC", :limit => @widget.number)
+      intervals.each_with_index do |interval, index|
+        @counts[:work][index] = work_logs_sum(interval.first, interval.second)
+        @counts[:completed][index] = tasks_count_completed(interval.first, interval.second)
+        @counts[:created][index] = tasks_count_created(interval.first, interval.second)
       end
+    end
   end
 
   def sheets_extracted_from_show
