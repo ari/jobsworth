@@ -701,6 +701,7 @@ protected
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
+      worklog.access_level_id= params[:work_log][:access_level_id]
       worklog.save!
       worklog.send_notifications(@update_type) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
