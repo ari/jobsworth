@@ -221,19 +221,7 @@ class WidgetsController < ApplicationController
   private
 
   def filter_from_filter_by
-    return nil unless @widget.filter_by
-    case @widget.filter_by[0..0]
-    when 'c' then
-      "AND tasks.project_id IN (#{current_user.projects.find(:all, :conditions => ["customer_id = ?", @widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-    when 'p' then
-      "AND tasks.project_id = #{@widget.filter_by[1..-1]}"
-    when 'm' then
-      "AND tasks.milestone_id = #{@widget.filter_by[1..-1]}"
-    when 'u' then
-      "AND tasks.project_id = #{@widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-    else
-      ""
-    end
+    @widget.filter_from_filter_by
   end
 
   def tasks_extracted_from_show

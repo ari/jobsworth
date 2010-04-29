@@ -54,6 +54,21 @@ class Widget < ActiveRecord::Base
     end
     return start, step, interval, range, tick
   end
+  def filter_from_filter_by
+    return nil unless filter_by
+    case filter_by[0..0]
+    when 'c' then
+      "AND tasks.project_id IN (#{user.projects.all(:conditions => ["customer_id = ?", filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
+    when 'p' then
+      "AND tasks.project_id = #{@filter_by[1..-1]}"
+    when 'm' then
+      "AND tasks.milestone_id = #{filter_by[1..-1]}"
+    when 'u' then
+      "AND tasks.project_id = #{filter_by[1..-1]} AND tasks.milestone_id IS NULL"
+    else
+      ""
+    end
+  end
 end
 
 
