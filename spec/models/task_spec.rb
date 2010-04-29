@@ -86,4 +86,16 @@ describe Task do
       end
     end
   end
+
+  context "#notify_emails_array" do " should return array of stripped emails(from notify_emails field), splited by space, comma or new line"
+    before :each do
+      @task= Task.make( :notify_emails => "email.one@domain.com    email.two@domain.com.ua, anotheremail@mail.com\nanother@some.domain.com\r\nemail@gmasii@.cm")
+    end
+    it "should return array of emails(from notify_emails field), splited by space, comma or new line" do
+      @task.notify_emails_array.should have(5).emails
+    end
+    it "should strip each email" do
+      @task.notify_emails_array.each { |email| email.should == email.strip }
+    end
+  end
 end

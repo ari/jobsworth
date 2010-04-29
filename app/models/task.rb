@@ -990,7 +990,7 @@ class Task < ActiveRecord::Base
     company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
   end
   def notify_emails_array
-    (notify_emails || "").split(',').map{ |email| email.strip }
+    (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
   end
 
   private
