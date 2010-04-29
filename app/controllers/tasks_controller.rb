@@ -293,7 +293,7 @@ class TasksController < ApplicationController
   end
 
   def ajax_hide
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
 
     unless @task.hidden == 1
       @task.hidden = 1
@@ -372,7 +372,7 @@ class TasksController < ApplicationController
   end
 
   def ajax_restore
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
     unless @task.hidden == 0
       @task.hidden = 0
       @task.updated_by_id = current_user.id
@@ -432,14 +432,14 @@ class TasksController < ApplicationController
     session[:only_comments] ||= 0
     session[:only_comments] = 1 - session[:only_comments]
 
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
   end
 
   ###
   # This action just sets the unread status for a task.
   ###
   def set_unread
-    task = current_user.company.tasks.find_by_task_num(params[:id])
+    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     user = current_user
     user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
 
