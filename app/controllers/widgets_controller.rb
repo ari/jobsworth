@@ -267,28 +267,9 @@ class WidgetsController < ApplicationController
   end
 
   def task_graph_extracted_from_show
-     case @widget.number
-      when 7 then
-        start = tz.local_to_utc(6.days.ago.midnight)
-        step = 1
-        interval = 1.day / step
-        range = 7
-        tick = "%a"
-      when 30 then
-        start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
-        step = 2
-        interval = 1.week / step
-        range = 6
-        tick = _("Week") + " %W"
-      when 180 then
-        start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
-        step = 4
-        interval = 1.month / step
-        range = 6
-        tick = "%b"
-      end
+    start, step, interval, range, tick = @widget.calculate_start_step_interval_range_tick(tz)
 
-      filter = filter_from_filter_by
+    filter = filter_from_filter_by
 
       @items = []
       @dates = []
@@ -310,27 +291,7 @@ class WidgetsController < ApplicationController
   end
 
   def  burndown_extracted_from_show
-      case @widget.number
-      when 7 then
-        start = tz.local_to_utc(6.days.ago.midnight)
-        step = 1
-        interval = 1.day / step
-        range = 7
-        tick = "%a"
-      when 30 then
-        start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
-        step = 2
-        interval = 1.week / step
-        range = 6
-        tick = _("Week") + " %W"
-      when 180 then
-        start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
-        step = 4
-        interval = 1.month / step
-        range = 6
-        tick = "%b"
-      end
-
+    start, step, interval, range, tick = @widget.calculate_start_step_interval_range_tick(tz)
       filter = filter_from_filter_by
 
       @items = []
@@ -381,28 +342,8 @@ class WidgetsController < ApplicationController
   end
 
   def burnup_extracted_from_show
-      case @widget.number
-      when 7 then
-        start = tz.local_to_utc(6.days.ago.midnight)
-        step = 1
-        interval = 1.day / step
-        range = 7
-        tick = "%a"
-      when 30 then
-        start = tz.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
-        step = 2
-        interval = 1.week / step
-        range = 6
-        tick = _("Week") + " %W"
-      when 180 then
-        start = tz.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
-        step = 4
-        interval = 1.month / step
-        range = 6
-        tick = "%b"
-      end
-
-      filter = filter_from_filter_by
+    start, step, interval, range, tick = @widget.calculate_start_step_interval_range_tick(tz)
+    filter = filter_from_filter_by
 
       @items  = []
       @totals = []

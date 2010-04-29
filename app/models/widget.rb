@@ -21,22 +21,39 @@ class Widget < ActiveRecord::Base
                  "#{m.project.name} / #{m.name}"
                when 'u'
                  _('[Unassigned]')
-               else 
+               else
                  ""
-               end 
+               end
       rescue
         res << _("Invalid Filter")
-      end 
-    end 
+      end
+    end
     res << " [#{_'Mine'}]" if self.mine?
     "#{@attributes['name']}#{ res.empty? ? "" : " - #{res}"}"
   end
-  
-#  def name=(arg)
-#    self.attributes['name'] = arg
-#  end
-
-  
+  def calculate_start_step_interval_range_tick(time_zone)
+    case self.number
+      when 7 then
+        start = time_zone.local_to_utc(6.days.ago.midnight)
+        step = 1
+        interval = 1.day / step
+        range = 7
+        tick = "%a"
+      when 30 then
+        start = time_zone.local_to_utc(tz.now.beginning_of_week.midnight - 5.weeks)
+        step = 2
+        interval = 1.week / step
+        range = 6
+        tick = _("Week") + " %W"
+      when 180 then
+        start = time_zone.local_to_utc(tz.now.beginning_of_month.midnight - 5.months)
+        step = 4
+        interval = 1.month / step
+        range = 6
+        tick = "%b"
+    end
+    return start, step, interval, range, tick
+  end
 end
 
 
