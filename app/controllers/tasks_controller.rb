@@ -197,11 +197,9 @@ class TasksController < ApplicationController
   end
 
   def update
-    projects = current_user.project_ids
-
     @update_type = :updated
 
-    @task = controlled_model.find_by_id( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
+    @task = controlled_model.accessed_by(current_user).find_by_id( params[:id], :include => [:tags] )
     if @task.nil? or !current_user.can_view_task?(@task)
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
