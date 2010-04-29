@@ -531,12 +531,7 @@ protected
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
       @tags = Tag.top_counts(current_user.company)
-      @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-      @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
-      @notify_targets = @notify_targets.flatten.uniq
-      @notify_targets ||= []
   end
-
   ###
   # Sets up the global variables needed to display the _form partial.
   ###
@@ -545,9 +540,6 @@ protected
     @tags = {}
 
     @projects = User.find(current_user.id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
-
-    @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
   end
 
   # setup some instance variables for task list views
