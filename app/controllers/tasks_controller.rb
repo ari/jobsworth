@@ -89,10 +89,7 @@ class TasksController < ApplicationController
   end
 
   def dependency
-    task_num = params[:dependency_id]
-    conditions = { :task_num => task_num, :project_id => current_projects }
-    dependency = current_user.company.tasks.find(:first, :conditions => conditions)
-
+    dependency = Task.accessed_by(current_user).find_by_task_num(params[:dependency_id])
     render(:partial => "dependency",
            :locals => { :dependency => dependency, :perms => {} })
   end
