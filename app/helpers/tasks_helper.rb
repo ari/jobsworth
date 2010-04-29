@@ -352,8 +352,7 @@ module TasksHelper
 
   # Renders the last task the current user looked at
   def render_last_task
-    @task = current_user.company.tasks.find_by_id(session[:last_task_id],
-                                                  :conditions => [ "project_id IN (#{ current_project_ids })" ])
+    @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     if @task
       return render_to_string(:template => "tasks/edit", :layout => false)
     end
