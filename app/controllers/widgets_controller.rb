@@ -428,25 +428,4 @@ class WidgetsController < ApplicationController
     filter = filter_from_filter_by
     @sheets = Sheet.find(:all, :order => 'users.name', :include => [ :user, :task, :project ], :conditions => ["tasks.project_id IN (#{current_project_ids})#{filter}"])
   end
-
-  def tasks_count_created(start, stop)
-    Task.accessed_by(current_user).count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
-  end
-
-  def tasks_count_completed(start, stop)
-    Task.accessed_by(current_user).count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
-  end
-
-  def work_logs_sum(start, stop)
-    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["tasks.project_id IN (#{current_project_ids}) AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", start, stop]).to_i / 60
-  end
-  def mine_tasks_count_created(start, stop)
-    current_user.tasks.count(:conditions => ["tasks.created_at >= ? AND tasks.created_at < ? #{filter_from_filter_by}", start, stop])
-  end
-  def mine_tasks_count_completed(start, stop)
-    current_user.tasks.count(:conditions => ["tasks.completed_at IS NOT NULL AND tasks.completed_at >= ? AND tasks.completed_at < ? #{filter_from_filter_by}", start, stop])
-  end
-  def mine_work_logs_sum(start, stop)
-    WorkLog.sum('work_logs.duration', :joins => :task, :conditions => ["user_id = ? AND started_at >= ? AND started_at < ? #{filter_from_filter_by}", current_user.id, start, stop]).to_i / 60
-  end
 end
