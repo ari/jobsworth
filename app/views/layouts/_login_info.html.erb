@@ -1,2 +1,5 @@
 <%= h(current_user.name + " / " + current_user.company.name) %><br />
+<% if total_today > 0 %>
+	<small><%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%></small><br />
+<% end %>
 <small><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></small>
