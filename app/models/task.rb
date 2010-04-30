@@ -39,8 +39,8 @@ class Task < ActiveRecord::Base
 
   has_and_belongs_to_many  :tags, :join_table => 'task_tags'
 
-  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id'
-  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id'
+  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
+  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many :task_property_values, :dependent => :destroy, :include => [ :property ]
 
@@ -863,9 +863,10 @@ class Task < ActiveRecord::Base
 
   ###
   # Sets the dependencies of this this from dependency_params.
-  # Existing and unused dependencies WILL be cleared by this method.
+  # Existing and unused dependencies WILL be cleared by this method,
+  # only if user has access to this dependencies
   ###
-  def set_dependency_attributes(dependency_params, project_ids)
+  def set_dependency_attributes(dependency_params, user)
     return if dependency_params.nil?
 
     new_dependencies = []
@@ -873,15 +874,12 @@ class Task < ActiveRecord::Base
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-
-        conditions = [ "project_id IN (#{ project_ids }) " +
-                       " AND task_num = ?", dep ]
-        t = Task.find(:first, :conditions => conditions)
+        t = Task.accessed_by(user).find_by_task_num(dep)
         new_dependencies << t if t
       end
     end
 
-    removed = self.dependencies - new_dependencies
+    removed = self.dependencies.accessed_by(user) - new_dependencies
     self.dependencies.delete(removed)
 
     new_dependencies.each do |t|

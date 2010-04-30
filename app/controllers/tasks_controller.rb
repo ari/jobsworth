@@ -146,7 +146,7 @@ class TasksController < ApplicationController
       set_last_task(@task)
 
       @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_dependency_attributes(params[:dependencies], current_user)
       @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
@@ -252,7 +252,7 @@ class TasksController < ApplicationController
         end
 
         @task.set_users(params)
-        @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+        @task.set_dependency_attributes(params[:dependencies], current_user)
         @task.set_resource_attributes(params[:resource])
 
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])

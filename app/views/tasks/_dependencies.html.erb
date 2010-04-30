@@ -11,13 +11,13 @@
   <% end %>
 
   <span class="dependencies">
-    <%= render :partial => "dependency", :collection => @task.dependencies, :locals => { :perms => perms } %>
+    <%= render :partial => "dependency", :collection => @task.dependencies.accessed_by(current_user), :locals => { :perms => perms } %>
   </span>
 
   <% if @task.dependants.any? %>
     <div style="clear:both">
       <label for="dependants"><%=_ "Depended on by"%></label>
-      <% @task.dependants.each do |d| %>
+      <% @task.dependants.accessed_by(current_user).each do |d| %>
         <%= link_to_task(d) %><br/>
       <% end %>
     </div>
