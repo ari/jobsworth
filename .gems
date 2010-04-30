@@ -14,3 +14,4 @@ nokogiri
 webrat
 faker
 notahat-machinist --source gems.github.com
+smurf
