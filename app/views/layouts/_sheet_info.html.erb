@@ -1,14 +1,5 @@
-<% if @current_sheet && @current_sheet.task -%>
-<%
-   task = Task.find(@current_sheet.task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project] )
-   
-   info = []
-   info << "#{worked_nice(task.worked_minutes + @current_sheet.duration / 60)}" if task.worked_minutes > 0 || task.duration.to_i > 0
-   info << "#{worked_nice(task.duration)}" if task.duration.to_i > 0
-
-   info_string = " (total #{info.join(" / ")})" if info.size > 0
-   info_string ||= ""
-
+<% if @current_sheet && @current_sheet.task
+		task = @current_sheet.task
 -%>
   <%= start_stop_work_link(task) %>
   <%= cancel_work_link(task) %>
