@@ -19,12 +19,14 @@
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
     <title><%= $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <% @internal = current_user.company.internal_customer %>
-    <style type="text/css">	
-       <% if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0 %>
-      	<%= @internal.css %>
-      	<% end %>
-    </style>
+    <%
+     @internal = current_user.company.internal_customer
+	   if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0
+    %>
+	    <style type="text/css">	
+	      	<%= @internal.css %>
+	    </style>
+  	<% end %>
   </head>
   <body>
     <div id="page_header">

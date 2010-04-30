@@ -1,3 +1,2 @@
-<%= h(current_user.name + " / " + current_user.company.name) %>
-<br />
-
+<%= h(current_user.name + " / " + current_user.company.name) %><br />
+<small><%= link_to "#{_('Log Out')}", :controller => 'login', :action => 'logout' %></small>
