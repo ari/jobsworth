@@ -1,3 +1,5 @@
+rails --version 2.3.5
+pg
 splattael-activerecord_base_without_table --source gems.github.com
 daemons --version 1.0.10
 eventmachine
