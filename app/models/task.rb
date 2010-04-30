@@ -863,9 +863,10 @@ class Task < ActiveRecord::Base
 
   ###
   # Sets the dependencies of this this from dependency_params.
-  # Existing and unused dependencies WILL be cleared by this method.
+  # Existing and unused dependencies WILL be cleared by this method,
+  # only if user has access to this dependencies
   ###
-  def set_dependency_attributes(dependency_params, project_ids)
+  def set_dependency_attributes(dependency_params, user)
     return if dependency_params.nil?
 
     new_dependencies = []
@@ -873,15 +874,12 @@ class Task < ActiveRecord::Base
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-
-        conditions = [ "project_id IN (#{ project_ids }) " +
-                       " AND task_num = ?", dep ]
-        t = Task.find(:first, :conditions => conditions)
+        t = Task.accessed_by(user).find_by_task_num(dep)
         new_dependencies << t if t
       end
     end
 
-    removed = self.dependencies - new_dependencies
+    removed = self.dependencies.accessed_by(user) - new_dependencies
     self.dependencies.delete(removed)
 
     new_dependencies.each do |t|
