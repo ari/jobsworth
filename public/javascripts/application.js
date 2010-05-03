@@ -239,7 +239,7 @@ jQuery(document).ready(function() {
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
 */
-function addSearchFilter(textField, selected) {
+function addSearchFilter(selected) {
     selected = jQuery(selected);
     var idName = selected.attr("data-id");
     var idValue = selected.attr("data-idval");
