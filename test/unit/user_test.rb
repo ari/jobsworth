@@ -119,7 +119,7 @@ class UserTest < ActiveRecord::TestCase
     limited = users(:tester_limited)
     other = users(:fudge)
 
-    %w(comment work close report create edit reassign prioritize milestone grant all).each do |perm|
+    %w(comment work close report create edit reassign milestone grant all).each do |perm|
        assert normal.can?(project, perm)
        assert !other.can?(project, perm)
       if %w(comment work).include? perm
@@ -136,7 +136,7 @@ class UserTest < ActiveRecord::TestCase
     limited = users(:tester_limited)
     other = users(:fudge)
 
-    %w( comment work close report create edit reassign prioritize milestone grant all).each do |perm|
+    %w( comment work close report create edit reassign milestone grant all).each do |perm|
       assert normal.can_all?(projects, perm)
       assert !other.can_all?(projects, perm)
       assert !limited.can_all?(projects, perm)
