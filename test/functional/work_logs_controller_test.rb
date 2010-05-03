@@ -16,7 +16,7 @@ class WorkLogsControllerTest < ActionController::TestCase
     end
 
     should "be able to create a new work log" do
-      params = { 
+      params = {
         :started_at => Time.now.strftime("#{ @user.date_format } #{ @user.time_format }"),
         :duration => "120m",
         :body => "test body"
@@ -32,10 +32,10 @@ class WorkLogsControllerTest < ActionController::TestCase
 
       assert_redirected_to "/activities/list"
     end
-    
+
     context "with an existing work log" do
       setup do
-        @log = WorkLog.make(:task => @task, :company => @user.company)
+        @log = WorkLog.make(:task => @task, :company => @user.company, :project=>@user.projects.first)
       end
 
       should "render edit for the work log" do
@@ -51,7 +51,7 @@ class WorkLogsControllerTest < ActionController::TestCase
 
       should "be able to update the work log" do
         new_time = Time.now.yesterday
-        params = { 
+        params = {
           :started_at => new_time.strftime("#{ @user.date_format } #{ @user.time_format }"),
           :duration => "120m",
           :body => "test body"
