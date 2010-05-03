@@ -74,7 +74,7 @@
       var userId=<%= current_user.id %>;
       jQuery(document).ready(function () {
       	<% if current_user.option_tooltips.to_i == 1 %>
-      	  jQuery('.tooltip').tooltip({showURL: false });
+      	  updateTooltips();
       	<% end %>
       });
       

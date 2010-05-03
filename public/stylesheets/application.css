@@ -2271,6 +2271,14 @@ ul.clients li li {
 ul.clients img {
 	vertical-align: text-bottom;
 }
+
+#permission_list tbody tr td img {
+/* centre the image */
+	display: block;
+	margin: 0 auto;
+	float: none;
+}
+
 /* ------------------- */
 
 .project-block {
