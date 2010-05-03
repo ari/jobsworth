@@ -5,7 +5,7 @@ class ProjectPermission < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   def self.permissions
-     ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
+     ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
   end
   def self.message_for(permission)
     message = {'read'=> "You may not view this task.",

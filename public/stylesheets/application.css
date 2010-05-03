@@ -148,13 +148,15 @@ a:hover {
 #menu_info {
 	width: auto;
 	display: inline-block;
-	min-height: 50px;
+	text-align:right;
+	padding-left: 30px;
+	vertical-align: middle;
 }
 #menu_login {
 	float: right;
 	display: inline-block;
 	text-align: right;
-	padding: 10px;
+	padding: 5px;
 }
 
 
@@ -2269,6 +2271,14 @@ ul.clients li li {
 ul.clients img {
 	vertical-align: text-bottom;
 }
+
+#permission_list tbody tr td img {
+/* centre the image */
+	display: block;
+	margin: 0 auto;
+	float: none;
+}
+
 /* ------------------- */
 
 .project-block {
