@@ -29,12 +29,21 @@ class WorkLog < ActiveRecord::Base
     }
   }
   named_scope :accessed_by, lambda { |user|
-    {:conditions=>["work_logs.company_id = ? AND work_logs.project_id IN (?) AND work_logs.access_level_id <= ? ",
-                   user.company_id, user.project_ids_for_sql.split(','), user.access_level_id] }
+      { :readonly=> false,
+        :joins=>"join projects on work_logs.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id= users.id",
+        :include=>:task,
+        :conditions=>["projects.completed_at is NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.company_id = ? AND work_logs.access_level_id <= ? ",   user.id, user.company_id, user.access_level_id] }
   }
-  #this scope check ONLY access level, not project
+
   named_scope :level_accessed_by, lambda { |user|
     {:conditions=>[ "work_logs.access_level_id <= ?", user.access_level_id]}
+  }
+
+  named_scope :all_accessed_by, lambda { |user|
+    { :readonly=>false,
+      :include=>:task,
+      :joins=>"join project_permissions on work_logs.project_id = project_permissions.project_id join users on project_permissions.user_id= users.id",
+      :conditions=>[ "users.id = ? and (project_permissions.can_see_unwatched=1 or users.id in (select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.access_level_id <= ?", user.id, user.access_level_id]}
   }
 
   validates_presence_of :started_at
