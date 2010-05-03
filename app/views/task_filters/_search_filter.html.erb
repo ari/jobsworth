@@ -1,12 +1,34 @@
 <% content_for(:side_panel) do %>
 <% cache([ "search_filter", current_task_filter ]) do -%>
-
 <div id="search_filter_div" class="section">
 	<% remote_filter_form_tag do  %>
 	    <%= text_field_tag "filter", "Task search...", :id => "search_filter", :class => "grey", :autocomplete =>"off" %>
-	    <div id="search_filter_auto_complete" class="auto_complete"></div>
-	    <%= auto_complete_field("search_filter", :url => search_task_filters_path, :frequency => 1, :after_update_element => "addSearchFilter") %>
-	
+	    <div id="search_filter_auto_complete" class="auto_complete"></div>	
+            
+            <script type="text/javascript">
+              jQuery('#search_filter').keyup(function(){
+              jQuery.ajax({
+                'url': '<%= search_task_filters_path %>',
+                'data': {'filter': jQuery('#search_filter').val()},
+                'dataType': 'html',
+                'type': 'POST',
+                'success': function(data) {
+                    jQuery('#search_filter_auto_complete').empty().append(data).show();                   
+                    jQuery('div#search_filter_auto_complete li')
+                        .mouseover(function(){
+                          jQuery('div#search_filter_auto_complete li').removeClass('selected');
+                          jQuery(this).addClass('selected');
+                        })
+                        .click(function(){
+                          jQuery('#search_filter').val(jQuery(this).text()); 
+                          jQuery('#search_filter_auto_complete').hide();
+                          addSearchFilter(this);
+                    });                     
+                 }                     
+              });
+            });               
+            </script> 
+                  
 	    <%
 	    redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
 	    redir_params = (local_assigns[:redirect_params] ? redirect_params : {})
@@ -23,6 +45,5 @@
 	    </ul>
 	<% end -%>
 </div>
-
-<% end -%>
+<% end -%> 
 <% end -%>
