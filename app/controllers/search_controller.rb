@@ -17,8 +17,7 @@ class SearchController < ApplicationController
 
     # work logs
     conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ])
-    conditions += " AND project_id in #{ project_ids }"
-    @logs = company.work_logs.level_accessed_by(current_user).all(:conditions => conditions)
+    @logs = company.work_logs.all_accessed_by(current_user).all(:conditions => conditions)
 
     @wiki_pages = company.wiki_pages.select do |p|
       match = @keys.detect { |k| p.body and p.body.index(k) }

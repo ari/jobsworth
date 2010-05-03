@@ -53,7 +53,7 @@ class WorkLogsController < ApplicationController
 
   # Loads the log using the given params
   def load_log
-    @log = current_user.company.work_logs.level_accessed_by(current_user).find(params[:id])
+    @log = WorkLog.all_accessed_by(current_user).find(params[:id])
     @task = @log.task
   end
 
