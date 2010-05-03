@@ -89,10 +89,7 @@ class TasksController < ApplicationController
   end
 
   def dependency
-    task_num = params[:dependency_id]
-    conditions = { :task_num => task_num, :project_id => current_projects }
-    dependency = current_user.company.tasks.find(:first, :conditions => conditions)
-
+    dependency = Task.accessed_by(current_user).find_by_task_num(params[:dependency_id])
     render(:partial => "dependency",
            :locals => { :dependency => dependency, :perms => {} })
   end
@@ -149,7 +146,7 @@ class TasksController < ApplicationController
       set_last_task(@task)
 
       @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+      @task.set_dependency_attributes(params[:dependencies], current_user)
       @task.set_resource_attributes(params[:resource])
 
       create_attachments(@task)
@@ -160,7 +157,7 @@ class TasksController < ApplicationController
       copy_todos_from_template(params[:task][:id], @task)
       ############ code smell end #######################
 
-      @task.work_logs.each{ |w| w.send_notifications(params[:notify])}
+      @task.work_logs.each{ |w| w.send_notifications }
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
@@ -178,7 +175,7 @@ class TasksController < ApplicationController
   end
 
   def edit
-    @task = current_company_task_find_by_task_num(params[:id])
+    @task = controlled_model.accessed_by(current_user).find_by_task_num(params[:id])
 
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
@@ -200,11 +197,21 @@ class TasksController < ApplicationController
   end
 
   def update
-    projects = current_user.project_ids
-
     @update_type = :updated
 
-    @task = controlled_model.find( params[:id], :conditions => ["project_id IN (?)", projects], :include => [:tags] )
+    @task = controlled_model.accessed_by(current_user).find_by_id( params[:id], :include => [:tags] )
+    if @task.nil? or !current_user.can_view_task?(@task)
+      flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
+      redirect_from_last
+      return
+    end
+
+    unless current_user.can?(@task.project,'edit')
+      flash['notice'] = ProjectPermission.message_for('edit')
+      redirect_from_last
+      return
+    end
+
     @old_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     @old_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}" }.sort.join(', ')
     @old_users = @task.owners.collect{ |u| u.id}.sort.join(',')
@@ -245,7 +252,7 @@ class TasksController < ApplicationController
         end
 
         @task.set_users(params)
-        @task.set_dependency_attributes(params[:dependencies], current_project_ids)
+        @task.set_dependency_attributes(params[:dependencies], current_user)
         @task.set_resource_attributes(params[:resource])
 
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
@@ -286,7 +293,7 @@ class TasksController < ApplicationController
   end
 
   def ajax_hide
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
 
     unless @task.hidden == 1
       @task.hidden = 1
@@ -365,7 +372,7 @@ class TasksController < ApplicationController
   end
 
   def ajax_restore
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
     unless @task.hidden == 0
       @task.hidden = 0
       @task.updated_by_id = current_user.id
@@ -425,14 +432,14 @@ class TasksController < ApplicationController
     session[:only_comments] ||= 0
     session[:only_comments] = 1 - session[:only_comments]
 
-    @task = Task.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
+    @task = Task.accessed_by(current_user).find(params[:id])
   end
 
   ###
   # This action just sets the unread status for a task.
   ###
   def set_unread
-    task = current_user.company.tasks.find_by_task_num(params[:id])
+    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     user = current_user
     user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
 
@@ -447,7 +454,7 @@ class TasksController < ApplicationController
   def add_notification
     @task = current_company_task_new
     if !params[:id].blank?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     user = current_user.company.users.find(params[:user_id])
@@ -459,7 +466,7 @@ class TasksController < ApplicationController
   def add_client
     @task = current_company_task_new
     if !params[:id].blank?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     customer = current_user.company.customers.find(params[:client_id])
@@ -471,7 +478,7 @@ class TasksController < ApplicationController
   def add_users_for_client
    @task = current_company_task_new
     if params[:id].present?
-      @task = current_company_task_find(params[:id])
+      @task = controlled_model.accessed_by(current_user).find(params[:id])
     end
 
     if params[:client_id].present?
@@ -504,7 +511,7 @@ class TasksController < ApplicationController
   end
 
   def update_work_log
-    log = current_user.company.work_logs.level_accessed_by(current_user).find(params[:id])
+    log = WorkLog.accessed_by(current_user).find(params[:id])
     updated = log.update_attributes(params[:work_log])
 
     render :text => updated.to_s
@@ -519,12 +526,7 @@ protected
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
       @tags = Tag.top_counts(current_user.company)
-      @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-      @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }
-      @notify_targets = @notify_targets.flatten.uniq
-      @notify_targets ||= []
   end
-
   ###
   # Sets up the global variables needed to display the _form partial.
   ###
@@ -533,9 +535,6 @@ protected
     @tags = {}
 
     @projects = User.find(current_user.id).projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {|c| [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')  }.compact unless current_user.projects.nil?
-
-    @notify_targets = current_projects.collect{ |p| p.users.collect(&:name) }.flatten.uniq
-    @notify_targets += Task.find(:all, :conditions => ["project_id IN (#{current_project_ids}) AND notify_emails IS NOT NULL and notify_emails <> ''"]).collect{ |t| t.notify_emails.split(',').collect{ |i| i.strip } }.flatten.uniq
   end
 
   # setup some instance variables for task list views
@@ -572,12 +571,6 @@ protected
     task.company=current_user.company
     return task
   end
-  def current_company_task_find_by_task_num(id)
-    current_user.company.tasks.find_by_task_num(id)
-  end
-  def current_company_task_find(id)
-    current_user.company.tasks.find(id)
-  end
   #this function abstract calls to model from  controller
   def controlled_model
     Task
@@ -597,7 +590,7 @@ protected
     assigned_ids = assigned_ids.uniq.collect { |u| u.to_i }.sort.join(',')
     if @old_users != assigned_ids
       @task.users.reload
-      new_name = @task.users.empty? ? 'Unassigned' : @task.users.collect{ |u| u.name}.join(', ')
+      new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
       body << "- <strong>Assignment</strong>: #{new_name}\n"
       @update_type = :reassigned
     end
@@ -673,7 +666,7 @@ protected
       if second_worklog
         @task.save!
         second_worklog.save!
-        second_worklog.send_notifications(params[:notify]) if second_worklog.comment?
+        second_worklog.send_notifications if second_worklog.comment?
       end
     else
       worklog.body=body
@@ -689,8 +682,9 @@ protected
       worklog.task = @task
       worklog.started_at = Time.now.utc
       worklog.duration = 0
+      worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
-      worklog.send_notifications(params[:notify], @update_type) if worklog.comment?
+      worklog.send_notifications(@update_type) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!

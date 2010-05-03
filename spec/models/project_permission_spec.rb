@@ -6,7 +6,15 @@ describe ProjectPermission do
     @permission=ProjectPermission.create!
   end
   it "should return array of available permissions in ProjectPermission.permissions" do
-    ProjectPermission.permissions.should == ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all', 'see_unwatched']
+    ProjectPermission.permissions.should == ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
+  end
+  context ".message_for(permission)" do
+    it "should return access denied message for permission" do
+      ProjectPermission.message_for('comment').should_not be_empty
+    end
+    it "should raise exception if  message don't exist" do
+      lambda { ProjectPermission.message_for('this permmission not exist')}.should raise_error
+    end
   end
   it "should have can_see_unwatched permission set to true by default" do
     @permission.can_see_unwatched.should be_true

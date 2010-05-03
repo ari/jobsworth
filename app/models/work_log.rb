@@ -29,12 +29,21 @@ class WorkLog < ActiveRecord::Base
     }
   }
   named_scope :accessed_by, lambda { |user|
-    {:conditions=>["work_logs.company_id = ? AND work_logs.project_id IN (?) AND work_logs.access_level_id <= ? ",
-                   user.company_id, user.project_ids_for_sql.split(','), user.access_level_id] }
+      { :readonly=> false,
+        :joins=>"join projects on work_logs.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id= users.id",
+        :include=>:task,
+        :conditions=>["projects.completed_at is NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.company_id = ? AND work_logs.access_level_id <= ? ",   user.id, user.company_id, user.access_level_id] }
   }
-  #this scope check ONLY access level, not project
+
   named_scope :level_accessed_by, lambda { |user|
     {:conditions=>[ "work_logs.access_level_id <= ?", user.access_level_id]}
+  }
+
+  named_scope :all_accessed_by, lambda { |user|
+    { :readonly=>false,
+      :include=>:task,
+      :joins=>"join project_permissions on work_logs.project_id = project_permissions.project_id join users on project_permissions.user_id= users.id",
+      :conditions=>[ "users.id = ? and (project_permissions.can_see_unwatched=1 or users.id in (select task_users.user_id from task_users where task_users.task_id=tasks.id)) and work_logs.access_level_id <= ?", user.id, user.access_level_id]}
   }
 
   validates_presence_of :started_at
@@ -163,51 +172,40 @@ class WorkLog < ActiveRecord::Base
   # send the actual emails, but this method will update the owners, worklog, etc
   # as required.
   ###
-  def setup_notifications(notify_ids,&block)
-    worklog=self
-    task=self.task
-    current_user=self.user
-    ids = notify_ids || []
-    emails = (task.notify_emails || "").strip.split(",")
-    all_users = []
+  def setup_notifications(&block)
+    emails = task.notify_emails_array
+    all_users = task.users_to_notify(user)
 
-    if ids.any? or emails.any?
-      all_users = ids.map { |id| current_user.company.users.find(:first, :conditions=>["users.id = ? and users.access_level_id >=?",
-                                                                                      id, self.access_level_id]) }
-      all_users.compact!
-      users = all_users.clone
-      users.delete(current_user) if !current_user.receive_own_notifications?
-      emails += users.map { |u| u.email }
+    if all_users.any? or emails.any?
+      users = all_users.select{ |user| user.access_level_id >= self.access_level_id }
+      emails += user_emails = users.map { |u| u.email }
       emails = emails.uniq.compact
       emails = emails.select { |e| !e.blank? }
-
-      worklog.users = users
+      self.users = users
 
       emails.each do |email|
         yield(email)
       end
 
-      if users.any?
+      if users.any? or emails.any?
         comments = users.map { |u| "#{ u.name } (#{ u.email })" }
+        comments += emails.select{ |email| !user_emails.include?(email) }
         comment = _("Notification emails sent to %s", comments.join(", "))
-        worklog.body ||= ""
-        worklog.body += "\n\n" if !worklog.body.blank?
-        worklog.body += comment
-        worklog.save
+        self.body ||= ""
+        self.body += "\n\n" if !self.body.blank?
+        self.body += comment
+        self.save
       end
-
     end
-
-    task.mark_as_notified_last_change(all_users)
-    task.mark_as_unread(current_user)
+    mark_as_unread
   end
   ###
   # this function will send notifications
   # only if work log have comment or log type TASK_CREATED
   ###
-  def send_notifications(notify_ids, update_type= :comment)
+  def send_notifications(update_type= :comment)
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
-        self.setup_notifications(notify_ids) do |recipients|
+        self.setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< CGI::unescapeHTML(self.body)
             Notifications::deliver_changed(update_type, self.task, self.user, recipients,
@@ -215,7 +213,7 @@ class WorkLog < ActiveRecord::Base
           end
     else
       if self.log_type == EventLog::TASK_CREATED
-        self.setup_notifications(notify_ids) do |recipients|
+        self.setup_notifications do |recipients|
           #note send without comment, user add comment will be sended another mail
           Notifications::deliver_created(self.task, self.user, recipients)
         end
@@ -223,6 +221,12 @@ class WorkLog < ActiveRecord::Base
         #we don't have comment
         #don't bother our users
       end
+    end
+  end
+private
+  def mark_as_unread
+    task.users.find(:all, :conditions=> ["users.id != ? and users.access_level_id >=?", user_id, access_level_id]).each do |user|
+      task.set_task_read(user, false)
     end
   end
 end

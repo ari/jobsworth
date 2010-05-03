@@ -45,6 +45,7 @@ class User < ActiveRecord::Base
   has_many      :sheets, :dependent => :destroy
 
   has_many      :preferences, :as => :preferencable
+  has_many      :received_from_emails, :class_name=>"Email", :dependent=>:destroy
   include PreferenceMethods
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true

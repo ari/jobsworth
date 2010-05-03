@@ -39,8 +39,8 @@ class Task < ActiveRecord::Base
 
   has_and_belongs_to_many  :tags, :join_table => 'task_tags'
 
-  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id'
-  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id'
+  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
+  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many :task_property_values, :dependent => :destroy, :include => [ :property ]
 
@@ -86,6 +86,12 @@ class Task < ActiveRecord::Base
 
   default_scope :conditions=>"tasks.type != 'Template'"
 
+  named_scope :accessed_by, lambda { |user|
+    {:readonly=>false, :joins=>"join projects on tasks.project_id = projects.id join project_permissions on project_permissions.project_id = projects.id join users on project_permissions.user_id = users.id", :conditions => ["projects.completed_at IS NULL and users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
+  }
+  named_scope :all_accessed_by, lambda {|user|
+    {:readonly => false, :joins=>"join project_permissions on project_permissions.project_id = tasks.project_id join users on project_permissions.user_id = users.id", :conditions => ["users.id=? and (project_permissions.can_see_unwatched = 1 or users.id in(select task_users.user_id from task_users where task_users.task_id=tasks.id))", user.id]}
+  }
   # w: 1, next day-of-week: Every _Sunday_
   # m: 1, next day-of-month: On the _10th_ day of every month
   # n: 2, nth day-of-week: On the _1st_ _Sunday_ of each month
@@ -779,34 +785,27 @@ class Task < ActiveRecord::Base
     "#{locale_part}#{due_part}#{worked_part}#{config_part}"
   end
 
+  def users_to_notify(user_who_made_change=nil)
+    if user_who_made_change and !user_who_made_change.receive_own_notifications?
+      recipients= self.users.find(:all, :conditions=>  ["users.id != ? and users.receive_notifications = ?", user_who_made_change.id, true])
+    else
+      recipients= self.users.find(:all, :conditions=>  { :receive_notifications=>true})
+      recipients<< user_who_made_change unless  user_who_made_change.nil? or recipients.include?(user_who_made_change)
+    end
+    recipients
+  end
+
   ###
   # Returns an array of email addresses of people who should be
   # notified about changes to this task.
   ###
-  #TODO: remove this method, looks like it called only in tests
   def notification_email_addresses(user_who_made_change = nil)
-    recipients = [ ]
 
-    if user_who_made_change and
-        user_who_made_change.receive_notifications?
-      recipients << user_who_made_change
-    end
-
-    recipients += self.users.select { |u| u.receive_notifications? }
-
-    # remove them if they don't want their own notifications.
-    # do it here rather than at start of method in case they're
-    # on the watchers list, etc
-    if user_who_made_change and
-        !user_who_made_change.receive_own_notifications?
-      recipients.delete(user_who_made_change)
-    end
-
-    emails = recipients.map { |u| u.email }
+    emails = users_to_notify(user_who_made_change).map { |u| u.email }
 
     # add in notify emails
     if !notify_emails.blank?
-      emails += notify_emails.split(",")
+      emails += notify_emails_array
     end
     emails = emails.compact.map { |e| e.strip }
 
@@ -864,9 +863,10 @@ class Task < ActiveRecord::Base
 
   ###
   # Sets the dependencies of this this from dependency_params.
-  # Existing and unused dependencies WILL be cleared by this method.
+  # Existing and unused dependencies WILL be cleared by this method,
+  # only if user has access to this dependencies
   ###
-  def set_dependency_attributes(dependency_params, project_ids)
+  def set_dependency_attributes(dependency_params, user)
     return if dependency_params.nil?
 
     new_dependencies = []
@@ -874,15 +874,12 @@ class Task < ActiveRecord::Base
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-
-        conditions = [ "project_id IN (#{ project_ids }) " +
-                       " AND task_num = ?", dep ]
-        t = Task.find(:first, :conditions => conditions)
+        t = Task.accessed_by(user).find_by_task_num(dep)
         new_dependencies << t if t
       end
     end
 
-    removed = self.dependencies - new_dependencies
+    removed = self.dependencies.accessed_by(user) - new_dependencies
     self.dependencies.delete(removed)
 
     new_dependencies.each do |t|
@@ -891,34 +888,6 @@ class Task < ActiveRecord::Base
     end
 
     self.save
-  end
-
-  ###
-  # This method will mark any task_owners or notifications linked to
-  # this task notified IF they are in the given array of users.
-  # If not, that column will be set to false.
-  ###
-  def mark_as_notified_last_change(users)
-    task_users.each do |n|
-      notified = users.include?(n.user)
-      n.update_attribute(:notified_last_change, notified)
-    end
-  end
-
-  ###
-  # Returns true if user should be set to be notified about this task
-  # by default.
-  ###
-  def should_be_notified?(user)
-    res = true
-    if self.new_record?
-      res = user.receive_notifications?
-    else
-      join = self.task_users.detect { |j| j.user == user }
-      res = (join and join.notified_last_change?)
-    end
-
-    return res
   end
 
   ###
@@ -1018,6 +987,9 @@ class Task < ActiveRecord::Base
   def statuses_for_select_list
     company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
   end
+  def notify_emails_array
+    (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
+  end
 
   private
 
@@ -1056,8 +1028,8 @@ class Task < ActiveRecord::Base
     repeat.save!
     repeat.reload
 
-    self.notifications.each do |w|
-      n = Notification.new(:user => w.user, :task => repeat)
+    self.task_watchers.each do |w|
+      n = TaskWatcher.new(:user => w.user, :task => repeat)
       n.save!
     end
 

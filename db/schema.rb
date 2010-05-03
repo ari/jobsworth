@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100424151504) do
+ActiveRecord::Schema.define(:version => 20100426162324) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -634,10 +634,9 @@ ActiveRecord::Schema.define(:version => 20100424151504) do
     t.integer  "user_id"
     t.integer  "task_id"
     t.boolean  "unread"
-    t.boolean  "notified_last_change"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",                 :default => "TaskOwner"
+    t.string   "type",       :default => "TaskOwner"
   end
 
   add_index "task_users", ["task_id"], :name => "index_task_users_on_task_id"

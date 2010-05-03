@@ -6,7 +6,7 @@ require "google_chart"
 
 class FeedsController < ApplicationController
   include Icalendar
-
+  include TaskFilterHelper
   skip_before_filter :authorize
 
   def unsubscribe
@@ -66,12 +66,12 @@ class FeedsController < ApplicationController
     content = nil
     if params[:widget].blank?
       # Find all Project ids this user has access to
-      pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+      pids = user.projects
 
       # Find 50 last WorkLogs of the Projects
       unless pids.nil? || pids.empty?
         pids = pids.collect{|p|p.id}.join(',')
-        @activities = WorkLog.level_accessed_by(user).find(:all, :order => "work_logs.started_at DESC", :limit => 50, :conditions => ["work_logs.project_id IN ( #{pids} )"], :include => [:user, :project, :customer, :task])
+        @activities = WorkLog.accessed_by(user).find(:all, :order => "work_logs.started_at DESC", :limit => 50, :include => [:customer, :task])
       else
         @activities = []
       end
@@ -116,10 +116,10 @@ class FeedsController < ApplicationController
                      ""
                    end
         end
-        pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ]).collect{|p| p.id}.join(",")
+        pids = user.projects.collect{|p| p.id}.join(",")
 
         unless widget.mine?
-          tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
+          tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL #{filter} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
         else
           tasks = user.tasks.find(:all, :conditions => ["tasks.project_id IN (#{pids}) #{filter} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{user.tz.now.utc.to_s(:db)}')"])
         end
@@ -203,7 +203,7 @@ class FeedsController < ApplicationController
     cached = []
 
     # Find all Project ids this user has access to
-    pids = user.projects.find(:all, :order => "projects.customer_id, projects.name", :conditions => [ "projects.company_id = ? AND completed_at IS NULL", user.company_id ])
+    pids = user.projects
 
 
 
@@ -214,25 +214,22 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting logs")
-          @activities = WorkLog.level_accessed_by(user).find(:all,
-                                     :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", EventLog::TASK_WORK_ADDED],
-                                     :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
+          @activities = WorkLog.accessed_by(user).find(:all,
+                                     :conditions => ["work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", EventLog::TASK_WORK_ADDED], :include => [ { :task => :users, :task => :tags }, :ical_entry  ] )
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting tasks")
-          @tasks = Task.find(:all,
-                             :conditions => ["tasks.project_id IN (#{pids})" ],
-                             :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
+          @tasks = Task.accessed_by(user).find(:all, :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
         end
 
       else
 
         if params['mode'].nil? || params['mode'] == 'logs'
           logger.info("selecting personal logs")
-          @activities = WorkLog.level_accessed_by(user).find(:all,
-                                     :conditions => ["work_logs.project_id IN ( #{pids} ) AND work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, EventLog::TASK_WORK_ADDED],
-                                     :include => [ :user, { :task => :users, :task => :tags }, :ical_entry  ] )
+          @activities = WorkLog.accessed_by(user).find(:all,
+                                     :conditions => ["work_logs.user_id = ? AND work_logs.task_id > 0 AND (work_logs.log_type = ? OR work_logs.duration > 0)", user.id, EventLog::TASK_WORK_ADDED],
+                                     :include => [ {:task => :tags }, :ical_entry  ] )
         end
 
         if params['mode'].nil? || params['mode'] == 'tasks'
@@ -403,7 +400,7 @@ class FeedsController < ApplicationController
 
     @current_user = user
 
-    @projects = user.projects.find(:all, :order => 't1_r2, projects.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones]);
+    @projects = user.projects.find(:all, :include => [ :customer, :milestones]);
     pids = @projects.collect{ |p| p.id }.join(',')
     if pids.nil? || pids.empty?
         pids = "0"
@@ -412,13 +409,13 @@ class FeedsController < ApplicationController
 
     if params[:up_show_order] && params[:up_show_order] == "Newest Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
+        @tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i  )
       else
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.company_id = #{user.company_id} AND tasks.completed_at IS NULL AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"],  :order => "tasks.created_at desc", :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :work_logs, :todos], :limit => limit.to_i )
       end
     elsif params[:up_show_order] && params[:up_show_order] == "Top Tasks"
       if params[:up_show_mine] && params[:up_show_mine] == "All Tasks"
-        @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
+        @tasks = Task.accessed_by(user).find(:all, :conditions => ["tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}')"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       else
         @tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{pids}) AND tasks.completed_at IS NULL AND tasks.company_id = #{user.company_id} AND (tasks.hide_until IS NULL OR tasks.hide_until < '#{tz.now.utc.to_s(:db)}') AND tasks.id = task_users.task_id AND task_users.user_id = #{user.id}"], :include => [:tags, :work_logs, :milestone, { :project => :customer }, :dependencies, :dependants, :users, :todos ])
       end

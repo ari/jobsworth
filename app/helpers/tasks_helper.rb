@@ -130,43 +130,6 @@ module TasksHelper
   end
 
   ###
-  # Returns an icon to set whether user is assigned to task.
-  # The icon will have a link to toggle this attribute if the user
-  # is allowed to assign for the task project.
-  ###
-  def assigned_icon(task, user)
-    classname = "icon tooltip assigned"
-    classname += " is_assigned" if task.owners.include?(user)
-    content = content_tag(:span, "*", :class => classname,
-                          :title => _("Click to toggle whether this task is assigned to this user"))
-
-    if task.project.nil? or current_user.can?(task.project, "reassign")
-      content = link_to_function(content, "toggleTaskIcon(this, 'assigned', 'is_assigned')")
-    end
-
-    return content
-  end
-
-  ###
-  # Returns an icon to set whether a user should receive notifications
-  # for task.
-  # The icon will have a link to toggle this attribute.
-  ###
-  def notify_icon(task, user)
-    classname = "icon tooltip notify"
-
-    if task.should_be_notified?(user)
-      classname += " should_notify"
-    end
-
-    content = content_tag(:span, "*", :class => classname,
-                          :title => _("Click to toggle whether this user will receive a notification when task is saved"))
-    content = link_to_function(content, "toggleTaskIcon(this, 'notify', 'should_notify'); highlightActiveNotifications()")
-
-    return content
-  end
-
-  ###
   # Returns a link that add the current user to the current tasks user list
   # when clicked.
   ###
@@ -216,6 +179,10 @@ module TasksHelper
   def options_for_user_projects(task)
     projects = current_user.projects.find(:all, :include => "customer", :order => "customers.name, projects.name")
 
+    unless  task.new_record? or projects.include?(task.project)
+      projects<< task.project
+      projects=projects.sort_by { |project| project.customer.name + project.name }
+    end
     last_customer = nil
     options = []
 
@@ -304,7 +271,7 @@ module TasksHelper
 
   # Returns the notify emails for the given task, one per line
   def notify_emails_on_newlines(task)
-    emails = (task.notify_emails || "").strip.split(",")
+    emails = task.notify_emails_array
     return emails.join("\n")
   end
 
@@ -385,8 +352,7 @@ module TasksHelper
 
   # Renders the last task the current user looked at
   def render_last_task
-    @task = current_user.company.tasks.find_by_id(session[:last_task_id],
-                                                  :conditions => [ "project_id IN (#{ current_project_ids })" ])
+    @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     if @task
       return render_to_string(:template => "tasks/edit", :layout => false)
     end

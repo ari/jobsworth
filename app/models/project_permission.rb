@@ -5,7 +5,23 @@ class ProjectPermission < ActiveRecord::Base
   belongs_to :project
   belongs_to :user
   def self.permissions
-     ['comment', 'work', 'close', 'report', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'grant', 'all', 'see_unwatched']
+     ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
+  end
+  def self.message_for(permission)
+    message = {'read'=> "You may not view this task.",
+               'comment'=> "You may not add a comment to tasks in this project.",
+               'work'=> "You may not add worklogs to tasks in this project.",
+               'close'=> "You may not change the resolution of tasks in this project.",
+               'see_unwatched'=> "You may not view this task.",
+               'create'=> "You may not create tasks in this project.",
+               'edit' => "You may not edit tasks in this project.",
+               'reassign'=> "You may not assign users to tasks in this project.",
+               'milestone'=> "You may not change the milestone of tasks in this project.",
+               'report'=> "You may not see reports for this project.",
+               'grant' => "You may not assign access rights for users in this project."
+              }[permission]
+    raise "Can not find message for permission: #{permission}" if message.nil?
+    return message
   end
   def can? (perm)
     case perm

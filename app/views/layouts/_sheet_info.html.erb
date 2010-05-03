@@ -1,22 +1,11 @@
-<% if @current_sheet && @current_sheet.task -%>
-<%
-   task = Task.find(@current_sheet.task_id, :conditions => ["tasks.company_id = ?", current_user.company_id], :include => [:project] )
-   info = []
-   info << "#{worked_nice(task.worked_minutes + @current_sheet.duration / 60)}" if task.worked_minutes > 0 || task.duration.to_i > 0
-   info << "#{worked_nice(task.duration)}" if task.duration.to_i > 0
-
-   info_string = " (#{info.join(" / ")})" if info.size > 0
-   info_string ||= ""
-
+<% if @current_sheet && @current_sheet.task
+		task = @current_sheet.task
 -%>
   <%= start_stop_work_link(task) %>
-  <%= link_to( task.issue_name + " - " + task.project.name + " / " + task.full_tags, :controller => 'tasks', :action => 'edit', :id => task.task_num ) %> <br />
-
   <%= cancel_work_link(task) %>
   <%= pause_task_link(task) %>
-  <%= worked_nice(@current_sheet.duration/60) -%><%= info_string -%><%= " - " if total_today > 0 %>
+  <%= link_to( task.issue_name + " - " + task.project.name, :controller => 'tasks', :action => 'edit', :id => task.task_num ) %>
+  <br />
+  <% percent = ((task.worked_minutes + @current_sheet.duration / 60) / task.duration.to_f  * 100).round unless (task.duration.nil? or task.duration == 0) -%>
+  <%= worked_nice(@current_sheet.duration/60) %> in progress, <%= worked_nice(task.worked_minutes + @current_sheet.duration / 60) %> total, <%= percent.nil? ? 0 : percent %>% done
 <% end %>
-<% if total_today > 0 %>
- <%= distance_of_time_in_words(total_today.minutes) %> <%=_ 'worked today'%>
-<% end %>
-

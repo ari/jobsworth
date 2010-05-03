@@ -17,3 +17,16 @@ config.action_view.debug_rjs                         = false
 
 # Don't care if the mailer can't send
 config.action_mailer.raise_delivery_errors = false
+
+config.gem 'bullet'
+
+config.after_initialize do 
+  Bullet.enable = true
+  Bullet.alert = false
+  Bullet.bullet_logger= true
+  Bullet.console = true
+  Bullet.rails_logger = true
+  Bullet.growl = false
+  Bullet.disable_browser_cache= true
+end
+

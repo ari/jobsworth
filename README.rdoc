@@ -1,7 +1,5 @@
 == Installing jobsworth on your server
-=== Step 1: Getting the source
-
-The source is released under the MIT/X Consortium License.
+=== Step 1: Getting the source.
 
 The easiest way to get the source and easily update it from time to time is with git. You'll need to install that on your machine and then run:
 

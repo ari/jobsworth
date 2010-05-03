@@ -44,6 +44,10 @@ small {
     color: gray;
 }
 
+textarea {
+	font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+}
+
 dl {
 }
 
@@ -144,13 +148,15 @@ a:hover {
 #menu_info {
 	width: auto;
 	display: inline-block;
-	min-height: 50px;
+	text-align:right;
+	padding-left: 30px;
+	vertical-align: middle;
 }
 #menu_login {
 	float: right;
 	display: inline-block;
 	text-align: right;
-	padding: 10px;
+	padding: 5px;
 }
 
 
@@ -497,6 +503,7 @@ textarea#task_description {
 textarea#comment {
 	min-height: 100px;
 	width: 100%;
+	font-size: 12px;
 }
 
 textarea#task_name {
@@ -1409,23 +1416,23 @@ a.description {
 }
 
 #task_description {
-    font-size: 11px;
+    font-size: 12px;
 }
 
 #task_comment {
     font-size: 11px;
 }
 
-#taskform .user {
+#taskform .watcher {
     padding-bottom: 3px;
     padding-top: 2px;
 }
 
-#taskform .user.active {
-    border: 2px solid yellow;
+.will_notify {
+	background-color: #fff5cc;
 }
 
-#taskform .user label {
+#taskform .watcher label {
     margin-top: 0px;
     padding: 0px;
     margin-right: 7px;
@@ -1439,15 +1446,11 @@ a.description {
     clear: both;
 }
 
-#taskform .user .removeLink, #taskform #task_customers .removeLink {
+#taskform .watcher .removeLink, #taskform #task_customers .removeLink {
     float: right
 }
 
-#taskform .user.will_notify {
-    background-color: #ffff99;
-}
-
-#taskform .user .icon {
+#taskform .watcher .icon {
     background-color: white;
     background-image: url(/images/unread.png);
     background-position: 0 150%;
@@ -1459,12 +1462,15 @@ a.description {
     width: 16px;
 }
 
-#taskform .user .icon.is_assigned {
+#taskform .watcher.is_assigned .icon {
     background-image: url(/images/user.png);
 }
 
-#taskform .user .icon.should_notify {
-    background-image: url(/images/email.png);
+#notify_users {
+	clear: both;
+	font-size: 0.9em;
+	color: #999999;
+	background-color: #fff5cc;
 }
 
 #taskform #task_addcomment {
@@ -1540,6 +1546,7 @@ div#accessLevel_container div.private {
 
 div#accessLevel_container select {
 	visibility: hidden;
+	display: none;
 }
 
 div#upload_container {
@@ -2264,6 +2271,14 @@ ul.clients li li {
 ul.clients img {
 	vertical-align: text-bottom;
 }
+
+#permission_list tbody tr td img {
+/* centre the image */
+	display: block;
+	margin: 0 auto;
+	float: none;
+}
+
 /* ------------------- */
 
 .project-block {

@@ -134,8 +134,6 @@ o------ please reply above this line ------o
         @task.notify_emails = "test1@example.com,test2@example.com"
         @task.save!
 
-        @task.task_owners.each { |n| n.update_attribute(:notified_last_change, true) }
-        @task.task_watchers.each { |n| n.update_attribute(:notified_last_change, true) }
         assert_equal 2, @task.users.count
       end
 
@@ -151,9 +149,6 @@ o------ please reply above this line ------o
       end
 
       should "list people who received notification emails" do
-        no_mail = @task.task_watchers.last
-        no_mail.update_attributes(:notified_last_change => false)
-
         Mailman.receive(@tmail.to_s)
         comment = @task.work_logs.reload.comments.last.body
 
@@ -200,15 +195,6 @@ o------ please reply above this line ------o
       assert_equal count + 1, @project.tasks.count
       task = Task.find(:first, :order => "id desc")
       assert_not_nil task.work_logs.first.body.index("Email from: from@random")
-    end
-
-    should "have the sender marked as last_notified so they get future notifications" do
-      user = @project.company.users.make
-      mail = test_mail(@to, user.email)
-      Mailman.receive(TMail::Mail.parse(mail).to_s)
-      task = @project.tasks.first(:order => "id desc")
-      notification = task.task_users.detect { |n| n.user == user }
-      assert notification.notified_last_change?
     end
 
     should "set task properties default values" do

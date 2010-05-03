@@ -562,45 +562,22 @@ function addTaskFilter(sender, id, field_name) {
 /* TASK OWNER METHODS */
 function removeTaskUser(sender) {
     sender = jQuery(sender);
-    sender.parent(".user").remove();
+    sender.parent(".watcher").remove();
 }
 
-function toggleTaskIcon(sender, baseClassName, enabledClassName) {
-    var div = jQuery(sender).parents(".user");
+function toggleTaskIcon(sender) {
+    var div = jQuery(sender).parents(".watcher");
 
-    var input = div.find("input." + baseClassName);
-    var icon = div.find(".icon." + baseClassName);
+    var input = div.find("input.assigned");
+    var icon = div.find(".icon.assigned");
 
     if (input.attr("disabled")) {
-        icon.addClass(enabledClassName);
+        div.addClass("is_assigned");
         input.attr("disabled", false);
     }
     else {
         input.attr("disabled", true);
-        icon.removeClass(enabledClassName);
-    }
-}
-
-
-/*
-  Highlights any notification users who will be receiving an email
-  about this task.
-*/
-function highlightActiveNotifications() {
-    var users = jQuery("#taskform .user");
-    var hasComment = jQuery("#comment").val() != "";
-    var isNew = (document.location.toString().indexOf("/new") > 0);
-
-    for (var i = 0; i < users.length; i++) {
-                var div = jQuery(users[i]);
-                var willNeverReceive = div.hasClass("will_never_receive");
-                var notify = div.find(".icon.should_notify");
-                if (!willNeverReceive && (hasComment || isNew) && notify.length > 0) {
-                    div.addClass("will_notify");
-                }
-                else {
-                    div.removeClass("will_notify");
-                }
+        div.removeClass("is_assigned");
     }
 }
 
@@ -617,7 +594,6 @@ function addUserToTask(input, li) {
     var params = { user_id : userId, id : taskId };
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
-        highlightActiveNotifications();
     });
 }
 
@@ -761,8 +737,7 @@ jQuery(document).ready(function() {
   instead of removed helper method task_project_watchers_js
 */
 jQuery(document).ready(attach_behaviour_to_project_select);
-function attach_behaviour_to_project_select()
-{
+function attach_behaviour_to_project_select() {
   var projectSelect = jQuery('#task_project_id');
   if(projectSelect.size()){
     projectSelect.change(function(){
@@ -777,18 +752,15 @@ function attach_behaviour_to_project_select()
   change filter via ajax only on task/list page.
   On all other pages, when user click on filter link change filter
 */
-function initFiltersPanel()
-{
+function initFiltersPanel() {
   jQuery('div.task_filters ul li a').click(loadFilterPanel);
 }
 
-function initTagsPanel()
-{
+function initTagsPanel() {
   jQuery('#tags a').click(loadFilterPanel);
 }
 
-function loadFilterPanel()
-{
+function loadFilterPanel() {
   jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
   jQuery.ajax({
             beforeSend: function(){ showProgress(); },
@@ -801,7 +773,7 @@ function loadFilterPanel()
         return false;
 }
 
-jQuery(document).ready(function(){
+jQuery(document).ready(function() {
     //only if we on task list page
     if( /tasks\/list$/.test(document.location.href) ){
         initFiltersPanel();
@@ -813,12 +785,11 @@ jQuery(document).ready(function(){
 //return path to tasks or task_templates controller
 //based on current page path
 //so we can reuse tasks code, views and javasript in taks_templates
-function tasks_path(action_name)
-{
-    if(/tasks\//.test(document.location.pathname)){
+function tasks_path(action_name) {
+    if(/tasks\//.test(document.location.pathname)) {
         return "/tasks/" + action_name ;
     }
-        else if ( /task_templates\//.test(document.location.pathname)){
+        else if ( /task_templates\//.test(document.location.pathname)) {
             return "/task_templates/" + action_name ;
         }
     return action_name;
@@ -830,9 +801,8 @@ First goto template edit page, see template in form
 Second send this form to tasks/create.
 So create task from template == send form with template to tasks/create action
 */
-function create_task_from_template(event)
-{
-    jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data){
+function create_task_from_template(event) {
+    jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data) {
         var form=jQuery(data).first();
         form.attr('action','/tasks/create');
         form.attr('id','taskform_ctft');
@@ -841,23 +811,42 @@ function create_task_from_template(event)
         jQuery("form#taskform_ctft").submit();
     });
 }
-jQuery(document).ready(function(){
+jQuery(document).ready(function() {
     jQuery('li.task_template a').click(create_task_from_template);
-
     jQuery('.autogrow').autogrow();
+    
+	highlightWatchers();  /* run this once to initialise everything right */
+    jQuery('#comment').keyup(function() {
+		highlightWatchers();
+	});
 });
 
-
 function toggleAccess() {
-        if (jQuery('#accessLevel_container div').hasClass('private')) {
-                jQuery('#accessLevel_container div').removeClass('private');
-                jQuery('#work_log_access_level_id').val('1');
-                jQuery('.user.access_level_1').effect("highlight", {}, 5000);
-                jQuery('.user.access_level_2').effect("highlight", {}, 5000);
-        } else {
-                jQuery('#accessLevel_container div').addClass('private');
-                jQuery('#work_log_access_level_id').val('2');
-                jQuery('.user.access_level_2').effect("highlight", {}, 5000);
-        }
-
+	if (jQuery('#accessLevel_container div').hasClass('private')) {
+		jQuery('#accessLevel_container div').removeClass('private');
+		jQuery('#work_log_access_level_id').val('1');
+	} else {
+		jQuery('#accessLevel_container div').addClass('private');
+		jQuery('#work_log_access_level_id').val('2');
+    }
+	highlightWatchers();
+}
+	
+function highlightWatchers() {
+	if (jQuery('#comment').val() == '') {
+		jQuery('.watcher').removeClass('will_notify');
+		jQuery('#notify_users').html('');
+	} else {
+		if (jQuery('#accessLevel_container div').hasClass('private')) {
+			jQuery('.watcher').removeClass('will_notify');
+			jQuery('.watcher.access_level_2').addClass('will_notify');
+		} else {
+			jQuery('.watcher').addClass('will_notify');
+		}
+		var watcher = "Notify: ";
+		jQuery('div.watcher.will_notify a.username span').each(function() {
+			watcher = watcher + jQuery(this).html() + ", ";
+		});
+		jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
+	}
 }
