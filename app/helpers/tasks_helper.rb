@@ -252,7 +252,7 @@ module TasksHelper
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
     }
-    options = options.merge(permissions["prioritize"])
+    options = options.merge(permissions['edit'])
 
     if !task.repeat.blank?
       options[:value] = @task.repeat_summary
@@ -336,7 +336,7 @@ module TasksHelper
   def perms
     if @perms.nil?
       @perms = {}
-      permissions = ['comment', 'edit', 'reassign', 'prioritize', 'close', 'milestone']
+      permissions = ['comment', 'edit', 'reassign', 'close', 'milestone']
       permissions.each do |p|
         if @task.project_id.to_i == 0 || current_user.can?(@task.project, p)
           @perms[p] = {}
