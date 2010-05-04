@@ -2,7 +2,7 @@
   <legend><%=_ "Dependencies"%></legend>
 
   <label for="dependencies_input"><%=_ 'Depends on'%></label>
-  <% if perms['prioritize'].empty? %>
+  <% if perms['edit'].empty? %>
     <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
     <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
     <%= auto_complete_for_dependencies %>
