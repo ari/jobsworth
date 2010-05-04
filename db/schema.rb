@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100426162324) do
+ActiveRecord::Schema.define(:version => 20100504153034) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -355,7 +355,6 @@ ActiveRecord::Schema.define(:version => 20100426162324) do
     t.boolean  "can_create",        :default => false
     t.boolean  "can_edit",          :default => false
     t.boolean  "can_reassign",      :default => false
-    t.boolean  "can_prioritize",    :default => false
     t.boolean  "can_close",         :default => false
     t.boolean  "can_grant",         :default => false
     t.boolean  "can_milestone",     :default => false

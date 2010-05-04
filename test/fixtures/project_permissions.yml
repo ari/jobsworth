@@ -10,7 +10,6 @@ admin:
   can_create: true
   can_edit: true
   can_reassign: true
-  can_prioritize: true
   can_close: true
   can_grant: true
   can_milestone: true
@@ -25,7 +24,6 @@ fudge:
   can_create: true
   can_edit: true
   can_reassign: true
-  can_prioritize: true
   can_close: true
   can_grant: true
   can_milestone: true
@@ -40,7 +38,6 @@ user:
   can_create: true
   can_edit: true
   can_reassign: true
-  can_prioritize: true
   can_close: true
   can_grant: true
   can_milestone: true
@@ -55,7 +52,6 @@ user_limited:
   can_create: false
   can_edit: false
   can_reassign: false
-  can_prioritize: false
   can_close: false
   can_grant: false
   can_milestone: false
@@ -70,7 +66,6 @@ user_2nd_project:
   can_create: true
   can_edit: true
   can_reassign: true
-  can_prioritize: true
   can_close: true
   can_grant: true
   can_milestone: true
