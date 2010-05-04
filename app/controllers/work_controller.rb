@@ -2,10 +2,10 @@ class WorkController < ApplicationController
 
   # Starts tracking time on the given task
   def start
-    task = current_user.company.tasks.find_by_task_num(params[:task_num])
+    task = Task.accessed_by(current_user).find_by_task_num(params[:task_num])
 
-    if current_user.can_view_task?(task)
-      sheet = Sheet.create(:task => task, :user => current_user, 
+    if task
+      sheet = Sheet.create(:task => task, :user => current_user,
                            :project => task.project)
       task.status = 1 if task.status == 0
       task.save
@@ -23,8 +23,8 @@ class WorkController < ApplicationController
   def stop
     if @current_sheet and @current_sheet.task
       task = @current_sheet.task
-      
-      link_params = { 
+
+      link_params = {
         :duration => @current_sheet.duration,
         :customer_id => task.customers.first || @current_sheet.project.customer,
         :body => task.description,
@@ -58,7 +58,7 @@ class WorkController < ApplicationController
   end
 
   def cancel
-    if @current_sheet 
+    if @current_sheet
       @task = @current_sheet.task
       @current_sheet.destroy
       @current_sheet = nil
