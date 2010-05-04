@@ -850,3 +850,29 @@ function highlightWatchers() {
 		jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
 	}
 }
+
+function autocomplete(input_field, output_list, path, after_callback) {
+ 
+              jQuery(input_field).keyup(function(){
+              jQuery.ajax({
+                'url': path,
+                'data': {'filter': jQuery(input_field).val()},
+                'dataType': 'html',
+                'type': 'POST',
+                'success': function(data) {
+                    autocomplete_list= jQuery(output_list);
+                    autocomplete_list.empty().append(data).show();                   
+                    autocomplete_list.find('li')
+                        .mouseover(function(){
+                        autocomplete_list.find('li').removeClass('selected');
+                          jQuery(this).addClass('selected');
+                        })
+                        .click(function(){
+                          jQuery(input_field).val(jQuery(this).text()); 
+                          autocomplete_list.hide();
+                          after_callback(this);
+                    });                     
+                 }                     
+              });
+            });               
+}
