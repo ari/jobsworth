@@ -306,21 +306,6 @@ module TasksHelper
     return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
-  # Returns a tooltip showing the users linked to a task
-  def task_users_tip(task)
-    values = []
-    task.users.each do |user|
-      icons = image_tag("user.png")
-      values << [ user.name, icons ]
-    end
-
-    task.watchers.each do |user|
-      values << [ user.name ]
-    end
-
-    return task_tooltip(values)
-  end
-
   # Converts the given array into a table that looks good in a toolip
   def task_tooltip(names_and_values)
     res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
