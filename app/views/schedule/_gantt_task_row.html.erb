@@ -1,14 +1,14 @@
 <tr>
     <td style="height:20px;vertical-align:top;width:260px;padding-right:0.5em;" nowrap><div style="width:250px;overflow:hidden;height:16px;" nowrap><%= link_to_task(@t) %></div></td>
     <td width="1%" style="text-align:right;padding-right:0.5em;" nowrap><%= worked_nice(@t.worked_minutes)%></td>
-    <td width="1%" style="text-align:right;" nowrap><% if current_user.can?(@t.project,'prioritize')%><input tabindex="<%=tab%>" class="<%= "scheduled" if @t.scheduled? && @t.scheduled_duration != @t.duration%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.scheduled_duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
+    <td width="1%" style="text-align:right;" nowrap><% if current_user.can?(@t.project,'edit')%><input tabindex="<%=tab%>" class="<%= "scheduled" if @t.scheduled? && @t.scheduled_duration != @t.duration%>" type="text" size="5" style="font-size:11px;" id="duration-<%=@t.dom_id%>" name="duration" value="<%= worked_nice(@t.scheduled_duration)%>" /><%else%><%= worked_nice(@t.duration)%><%end%></td>
     <td style="padding-left:0.5em;text-align:right;" nowrap>
     <%= text_field 'task', 'due', {
-    	:id => 'due-' + @t.dom_id,
-    	:class => ("scheduled" if @t.scheduled? && @t.scheduled_at != @t.due_at),
-    	:size => 12,
-    	:disabled => current_user.can?(@t.project,'prioritize') ? false : true,
-    	:value => (tz.utc_to_local(@t.scheduled_due_at).strftime(current_user.date_format) if @t.scheduled_due_at)
+        :id => 'due-' + @t.dom_id,
+        :class => ("scheduled" if @t.scheduled? && @t.scheduled_at != @t.due_at),
+        :size => 12,
+        :disabled => current_user.can?(@t.project,'edit') ? false : true,
+        :value => (tz.utc_to_local(@t.scheduled_due_at).strftime(current_user.date_format) if @t.scheduled_due_at)
     } %>
     </td>
 </tr>
