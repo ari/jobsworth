@@ -123,50 +123,6 @@ module ApplicationHelper
     end
   end
 
-  def add_mandatories(options, mandatories)
-    options.merge!(mandatories)
-  end
-
-  def add_defaults(options, defaults)
-    options.merge!(defaults) { |key, old_val, new_val| old_val }
-  end
-
-  def remove_option(options, key)
-    options.delete(key)
-  end
-
-  def rename_option(options, old_key, new_key)
-    if options.has_key?(old_key)
-      options[new_key] = options.delete(old_key)
-    end
-    options
-  end
-
-  def format_js_hash(options)
-    options.collect { |key,value| key.to_s + ':' + value.inspect }.join(',')
-  end
-
-  def split_str(str=nil, len=10, char=" ")
-    len = 10 if len < 1
-    work_str = str.to_s.split(//) if str
-    return_str = ""
-    i = 0
-    if work_str
-      work_str.each do |s|
-        if (s == char || i == len)
-          return_str += char
-          return_str += s if s != char
-          i = 0
-        else
-          return_str += s
-          i += 1
-        end
-      end
-    end
-    return_str
-  end
-
-
   def wrap_text(txt, col = 80)
 
     txt.gsub!(/(.{1,#{col}})( +|$)\n?|(.{#{col}})/, "\\1\\3\n")
@@ -280,16 +236,6 @@ module ApplicationHelper
   def logged_in?
     true
   end
-
-
-# def time_ago_or_time_stamp(from_time, to_time = Time.now, include_seconds = true, detail = false)
-#   [from_time, to_time].each {|t| t = t.to_time if t.respond_to?(:to_time)}
-#   if (((to_time - from_time).abs)/60).round > 2880 && detail
-#     return timestamp(from_time)
-#   else
-#     return distance_of_time_in_words(from_time, to_time, include_seconds)
-#   end
-# end
 
   def has_popout?(t)
     if t.is_a? Task
