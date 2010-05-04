@@ -346,33 +346,6 @@ module ApplicationHelper
   end
 
   ###
-  # Returns true if the current user can organize tasks based
-  # on the their rights.
-  ###
-  def can_organize?
-    can = false
-    group_by = session[:group_by]
-    if group_by.to_i > 2 and @tasks
-      gb = group_by.to_i
-      affected_projects = @tasks.flatten.collect(&:project).uniq
-      can = case gb
-            when 3  then current_user.can_all?(affected_projects, 'reassign')
-            when 4  then current_user.can_all?(affected_projects, 'reassign')
-            when 5  then current_user.can_all?(affected_projects, 'reassign')
-            when 6  then current_user.can_all?(affected_projects, 'prioritize')
-            when 7  then current_user.can_all?(affected_projects, 'close')
-            when 8  then current_user.can_all?(affected_projects, 'prioritize')
-            when 9  then current_user.can_all?(affected_projects, 'prioritize')
-            when 10 then current_user.can_all?(affected_projects, 'reassign')
-            end
-    elsif Property.find_by_group_by(current_user.company, group_by)
-      can = true
-    end
-
-    return can
-  end
-
-  ###
   # Returns a submit tag suitable for the given object.
   # (Create or Update)"
   ###
