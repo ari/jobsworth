@@ -1,17 +1,5 @@
 module TasksHelper
 
-  def print_title
-    filters = []
-    title = "<div style=\"float:left\">"
-
-    title << filters.join(' / ')
-
-    title << "]</div><div style=\"float:right\">#{tz.now.strftime_localized("#{current_user.time_format} #{current_user.date_format}")}</div><div style=\"clear:both\"></div>"
-
-    "<h3>#{title}</h3>"
-
-  end
-
   def render_task_dependants(t, depth, root_present)
     res = ""
     @printed_ids ||= []
