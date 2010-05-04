@@ -254,7 +254,7 @@ class User < ActiveRecord::Base
 
   # Returns true if this user is allowed to view the given task.
   def can_view_task?(task)
-    projects.include?(task.project) || task.users.include?(self)
+    ! Task.accessed_by(self).find_by_id(task).nil?
   end
 
   # Returns a fragment of sql to restrict tasks to only the ones this

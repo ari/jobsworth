@@ -16,7 +16,7 @@ class SearchController < ApplicationController
     @users = User.search(current_user.company, @keys)
 
     # work logs
-    conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ])
+    conditions = Search.search_conditions_for(@keys, [ "work_logs.body" ], :table=>:work_logs)
     @logs = company.work_logs.all_accessed_by(current_user).all(:conditions => conditions)
 
     @wiki_pages = company.wiki_pages.select do |p|

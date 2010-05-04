@@ -14,7 +14,7 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
       @task.task_num = @task.id + 1
       @task.users << @user
       @task.save!
-
+      @user.projects<< @task.project
       assert @user.can_view_task?(@task)
       assert @task.reload.id != @task.task_num
 
@@ -23,7 +23,7 @@ class TaskFilterQualifierTest < ActiveSupport::TestCase
       assert_nil @qualifier.qualifiable
     end
 
-    should "set task from task_num if use can view task" do
+    should "set task from task_num if user can view task" do
       @qualifier.task_num = @task.task_num
 #      @qualifier.save!
       @qualifier.valid?

@@ -180,7 +180,7 @@ class TasksController < ApplicationController
     @ajax_task_links = request.xhr? # want to use ajax task loads if this page was loaded by ajax
 
 
-    if @task.nil? or !current_user.can_view_task?(@task)
+    if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
       return
@@ -200,7 +200,7 @@ class TasksController < ApplicationController
     @update_type = :updated
 
     @task = controlled_model.accessed_by(current_user).find_by_id( params[:id], :include => [:tags] )
-    if @task.nil? or !current_user.can_view_task?(@task)
+    if @task.nil?
       flash['notice'] = _("You don't have access to that task, or it doesn't exist.")
       redirect_from_last
       return
@@ -443,7 +443,7 @@ class TasksController < ApplicationController
     user = current_user
     user = current_user.company.users.find(params[:user_id]) if !params[:user_id].blank?
 
-    if task and user.can_view_task?(task)
+    if task
       read = params[:read] != "false"
       task.set_task_read(user, read)
     end

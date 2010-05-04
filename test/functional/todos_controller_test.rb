@@ -8,19 +8,20 @@ class TodosControllerTest < ActionController::TestCase
       @task = Task.make(:company => @user.company)
       @task.users << @user
       @task.save!
+      @user.projects<< @task.project
       assert @user.can_view_task?(@task)
 
       assert @task.todos.empty?
     end
 
     should "be able to create todos" do
-      post(:create, :task_id => @task.id, 
+      post(:create, :task_id => @task.id,
            :todo => { :name => "test todo" })
 
       @task = @task.reload
       assert_equal 1, @task.todos.length
       assert_equal "test todo", @task.todos[0].name
-      
+
       assert_response :success
     end
 
@@ -31,7 +32,7 @@ class TodosControllerTest < ActionController::TestCase
       end
 
       should "be able to edit todos" do
-        post(:update, :task_id => @task.id, :id => @todo.id, 
+        post(:update, :task_id => @task.id, :id => @todo.id,
              :todo => { :name => "new name" })
 
         assert_equal "new name", @todo.reload.name
@@ -51,7 +52,7 @@ class TodosControllerTest < ActionController::TestCase
 
       should "be able to delete todos" do
         delete(:destroy, :task_id => @task.id, :id => @todo.id)
-        
+
         assert_nil Todo.find_by_id(@todo.id)
         assert_response :success
       end
