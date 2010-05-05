@@ -333,7 +333,7 @@ a.invalid:hover {
 
 fieldset {
   background: url("/images/comment_back_public.png") repeat-y;
-  color: #000000;
+  border-color:#F3F3F3;
   padding: 3px;
   margin-bottom:10px;
 }
