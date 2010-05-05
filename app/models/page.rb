@@ -1,14 +1,36 @@
 # Stand-alone Page (called Note inside the application) with information a user frequently
-# needs. 
+# needs.
 
 class Page < ActiveRecord::Base
   belongs_to :company
   belongs_to :user
   belongs_to :notable, :polymorphic => true
+  has_one    :event_log, :as => :target
 
   validates_presence_of :name
 
   named_scope :projects, :conditions => [ "notable_type = 'Project'" ]
+
+  after_create { |page| page.setup_event_log( EventLog::PAGE_CREATED, "- #{page.name} Created") }
+
+  before_update do |page|
+    body= page.changes.has_key?('name') ? "- #{page.changes['name'][0]} -> #{page.changes['name'][1]}\n" : ""
+    body+= "- #{page.name} Modified\n" if page.changes.has_key?('body')
+    page.setup_event_log(EventLog::PAGE_MODIFIED, body)
+  end
+
+  before_destroy { |page| page.setup_event_log(EventLog::PAGE_DELETED,  "-#{page.name} Deleted") }
+
+  def setup_event_log(type, body)
+    log = create_event_log
+    log.user = user
+    log.title= "Page"
+    log.company = company
+    log.project_id = notable_id if notable_type == "Project"
+    log.event_type=type
+    log.body=body
+    log.save!
+  end
 
   protected
 
@@ -17,7 +39,6 @@ class Page < ActiveRecord::Base
       errors.add_to_base("Target required")
     end
   end
-
 end
 
 
