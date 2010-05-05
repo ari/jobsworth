@@ -1,6 +1,6 @@
 # Handle Projects for a company, including permissions
 class ProjectsController < ApplicationController
-
+  before_filter :protect_admin_area, :except=>[:new, :create, :list_completed, :list ]
   def new
     unless current_user.create_projects?
       flash['notice'] = _"You're not allowed to create new projects. Have your admin give you access."
@@ -210,5 +210,16 @@ class ProjectsController < ApplicationController
                                                :per_page => 100,
                                                :include => [ :customer, :milestones]);
     @completed_projects = current_user.completed_projects.find(:all)
+  end
+  private
+  def protect_admin_area
+    project = current_user.all_projects.find_by_id(params[:id])
+    if current_user.admin? or (project && project.owner == current_user)
+      return true
+    else
+      flash['notice'] = _"You haven't access to this area."
+      redirect_from_last
+      return false
+    end
   end
 end
