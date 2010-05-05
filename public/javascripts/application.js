@@ -852,11 +852,11 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, output_list, path, after_callback) {
- 
+              var namedd=jQuery(input_field).attr("name");
               jQuery(input_field).keyup(function(){
               jQuery.ajax({
                 'url': path,
-                'data': {'filter': jQuery(input_field).val()},
+                'data': jQuery(input_field).attr("name")+ '='+ jQuery(input_field).val(),
                 'dataType': 'html',
                 'type': 'POST',
                 'success': function(data) {
