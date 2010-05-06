@@ -718,7 +718,7 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function setPageTarget(evt, selected) {
+function setPageTarget(selected) {
     var id = jQuery(selected).find(".id").val();
     var type = jQuery(selected).find(".type").val();
 
@@ -852,7 +852,6 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, output_list, path, after_callback) {
-              var namedd=jQuery(input_field).attr("name");
               jQuery(input_field).keyup(function(){
               jQuery.ajax({
                 'url': path,
@@ -861,7 +860,17 @@ function autocomplete(input_field, output_list, path, after_callback) {
                 'type': 'POST',
                 'success': function(data) {
                     autocomplete_list= jQuery(output_list);
-                    autocomplete_list.empty().append(data).show();                   
+                    var pos= jQuery(input_field).offset();
+                    var left= pos.left+ "px";
+                    var top= 2+ pos.top+ jQuery(input_field).height()+ "px";
+                    autocomplete_list.empty().append(data)
+                    .css({
+                      'position': 'absolute',
+                      'left': left,
+                      'top': top,
+                      'width': jQuery(input_field).width(),
+                    })
+                    .show();                   
                     autocomplete_list.find('li')
                         .mouseover(function(){
                         autocomplete_list.find('li').removeClass('selected');
