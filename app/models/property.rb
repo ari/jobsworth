@@ -1,9 +1,9 @@
 ###
-# Properties are used to describe tasks. Each property has a number of 
+# Properties are used to describe tasks. Each property has a number of
 # PropertyValues which define the values available for the user to choose
 # from.
 #
-# Properties can be created and edited by users in the system and so can 
+# Properties can be created and edited by users in the system and so can
 # have any PropertyValues a user needs.
 
 # Examples of potential properties include Priority, Status, Sub-project
@@ -12,11 +12,11 @@
 class Property < ActiveRecord::Base
   belongs_to :company
   has_many :property_values, :order => "position asc, id asc", :dependent => :destroy
-  
+
   after_save :clear_other_default_colors
   after_save :update_project_counts
   before_destroy :remove_invalid_task_property_values
-  
+
   # Returns an array of the default values that should be
   # used when creating a new company.
   def self.defaults
@@ -72,13 +72,6 @@ class Property < ActiveRecord::Base
   end
 
   ###
-  # Finds the property matching the given group_by parameter.
-  ###
-  def self.find_by_group_by(company, group_by)
-    find_by_filter_name(company, group_by)
-  end
-
-  ###
   # Finds the property matching the given filter_name
   ###
   def self.find_by_filter_name(company, filter_name)
@@ -113,7 +106,7 @@ class Property < ActiveRecord::Base
   end
 
   ###
-  # Clears any tasks which have a value for this 
+  # Clears any tasks which have a value for this
   # property set.
   ###
   def remove_invalid_task_property_values
@@ -123,7 +116,7 @@ class Property < ActiveRecord::Base
 
   ###
   # Only one property can be used to color tasks, so this
-  # method will ensure only one property will have the 
+  # method will ensure only one property will have the
   # default_colors attribute set.
   ###
   def clear_other_default_colors
@@ -140,11 +133,11 @@ class Property < ActiveRecord::Base
 
   ###
   # Update critical, low and normal counts on this companys projects.
-  # If we've change the sort defaults, these counts may change, so 
+  # If we've change the sort defaults, these counts may change, so
   # we need to update them on save.
   ###
   def update_project_counts
-    company.projects.each do |p| 
+    company.projects.each do |p|
       p.update_project_stats
       p.save
     end

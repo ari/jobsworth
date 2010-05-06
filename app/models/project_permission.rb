@@ -32,12 +32,11 @@ class ProjectPermission < ActiveRecord::Base
     when 'create'     then self.can_create?
     when 'edit'       then self.can_edit?
     when 'reassign'   then self.can_reassign?
-    when 'prioritize' then self.can_prioritize?
     when 'milestone'  then self.can_milestone?
     when 'grant'      then self.can_grant?
     when 'see_unwatched' then self.can_see_unwatched?
     when 'all'        then (self.can_comment? && self.can_work? && self.can_close? && self.can_report? && self.can_create? && self.can_edit? &&
-            self.can_reassign? && self.can_prioritize? && self.can_milestone? && self.can_grant? && self.can_see_unwatched?)
+            self.can_reassign? && self.can_milestone? && self.can_grant? && self.can_see_unwatched?)
     end
   end
 
@@ -50,7 +49,6 @@ class ProjectPermission < ActiveRecord::Base
     when 'create'     then self.can_create = 1
     when 'edit'       then self.can_edit = 1
     when 'reassign'   then self.can_reassign = 1
-    when 'prioritize' then self.can_prioritize = 1
     when 'milestone'  then self.can_milestone = 1
     when 'grant'      then self.can_grant = 1
     when 'see_unwatched' then self.can_see_unwatched=true
@@ -62,7 +60,6 @@ class ProjectPermission < ActiveRecord::Base
       self.can_create = 1
       self.can_edit = 1
       self.can_reassign = 1
-      self.can_prioritize = 1
       self.can_milestone = 1
       self.can_grant = 1
       self.can_see_unwatched=true
@@ -78,7 +75,6 @@ class ProjectPermission < ActiveRecord::Base
     when 'create'     then self.can_create = 0
     when 'edit'       then self.can_edit = 0
     when 'reassign'   then self.can_reassign = 0
-    when 'prioritize' then self.can_prioritize = 0
     when 'milestone'  then self.can_milestone = 0
     when 'grant'      then self.can_grant = 0
     when 'see_unwatched' then self.can_see_unwatched=false
@@ -90,7 +86,6 @@ class ProjectPermission < ActiveRecord::Base
       self.can_create = 0
       self.can_edit = 0
       self.can_reassign = 0
-      self.can_prioritize = 0
       self.can_milestone = 0
       self.can_grant = 0
       self.can_see_unwatched=false
@@ -117,7 +112,6 @@ end
 #  can_create     :boolean(1)      default(FALSE)
 #  can_edit       :boolean(1)      default(FALSE)
 #  can_reassign   :boolean(1)      default(FALSE)
-#  can_prioritize :boolean(1)      default(FALSE)
 #  can_close      :boolean(1)      default(FALSE)
 #  can_grant      :boolean(1)      default(FALSE)
 #  can_milestone  :boolean(1)      default(FALSE)

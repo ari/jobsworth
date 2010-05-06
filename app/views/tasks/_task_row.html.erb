@@ -5,7 +5,7 @@
  depth ||= 1
  depth = 1 if depth < 1
  classes = ""
- 
+
  can_complete = { :disabled => "disabled" } unless current_user.can?(task.project, 'close')
  can_complete ||= {}
 
@@ -21,7 +21,7 @@
  classes << " task_done" if task.done?
  classes << " task_paused" if @current_sheet && @current_sheet.task_id == task.id && @current_sheet.paused?
  classes << " #{task.dom_id}"
- classes << " unread" if task.unread?(current_user)	   
+ classes << " unread" if task.unread?(current_user)
 -%>
 class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% if depth > 1 %>margin-left:<%= 8 + (depth - 1) * 16%>px<% end %>">
 <% @task = task %>
@@ -57,7 +57,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <img src="/images/spacer.gif" width="16" height="16" border="0"/>
   </div>
   <div class="unread_icon">
-  	<a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
+        <a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
   </div>
 
    <div style="float:right;" class="avatar"><%= avatar_for task.users.first, 25 unless task.users.empty? %></div>
@@ -71,7 +71,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <%  if current_user.option_tracktime.to_i == 1 -%>
      <% if task.duration.to_i > 0 -%>
        <span class="<%=task.worked_and_duration_class%>"><%="(#{worked_nice(task.worked_minutes)} / #{worked_nice( task.duration )})"%></span>
-     <% end %> 
+     <% end %>
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <% end -%>
      <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
@@ -94,10 +94,6 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
    </div>
 </div>
-
-<% if can_organize? -%>
-  <%= draggable_element "task_#{task.id}", { :revert => true, :ghosting => false, :handle => "'handle'", :constraint => "'vertical'" } %>
-<% end %>
 
 <div style="clear:both;"></div>
 

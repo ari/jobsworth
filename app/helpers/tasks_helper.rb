@@ -1,17 +1,5 @@
 module TasksHelper
 
-  def print_title
-    filters = []
-    title = "<div style=\"float:left\">"
-
-    title << filters.join(' / ')
-
-    title << "]</div><div style=\"float:right\">#{tz.now.strftime_localized("#{current_user.time_format} #{current_user.date_format}")}</div><div style=\"clear:both\"></div>"
-
-    "<h3>#{title}</h3>"
-
-  end
-
   def render_task_dependants(t, depth, root_present)
     res = ""
     @printed_ids ||= []
@@ -252,7 +240,7 @@ module TasksHelper
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
     }
-    options = options.merge(permissions["prioritize"])
+    options = options.merge(permissions['edit'])
 
     if !task.repeat.blank?
       options[:value] = @task.repeat_summary
@@ -306,21 +294,6 @@ module TasksHelper
     return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
-  # Returns a tooltip showing the users linked to a task
-  def task_users_tip(task)
-    values = []
-    task.users.each do |user|
-      icons = image_tag("user.png")
-      values << [ user.name, icons ]
-    end
-
-    task.watchers.each do |user|
-      values << [ user.name ]
-    end
-
-    return task_tooltip(values)
-  end
-
   # Converts the given array into a table that looks good in a toolip
   def task_tooltip(names_and_values)
     res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
@@ -336,7 +309,7 @@ module TasksHelper
   def perms
     if @perms.nil?
       @perms = {}
-      permissions = ['comment', 'edit', 'reassign', 'prioritize', 'close', 'milestone']
+      permissions = ['comment', 'edit', 'reassign', 'close', 'milestone']
       permissions.each do |p|
         if @task.project_id.to_i == 0 || current_user.can?(@task.project, p)
           @perms[p] = {}

@@ -1,8 +1,8 @@
 <div id="dep_<%= dependency.id %>" class="dependency_no">
-  <% if perms.empty? or perms['prioritize'].empty? %>
+  <% if perms.empty? or perms['edit'].empty? %>
     <a href="#" onclick="jQuery('#dep_<%= dependency.id %>').remove(); return false" ><img src="/images/cross_small.png" class="close-cross" border="0" title="<%=_ 'Remove'%>" class="tooltip"></a>
   <% end %>
-  
+
   <% if dependency.done? %>
     <img src="/images/tick.png" border=0>
   <% end %>
