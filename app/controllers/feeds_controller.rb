@@ -220,7 +220,7 @@ class FeedsController < ApplicationController
 
         if params['mode'].nil? || params['mode'] == 'tasks'
           logger.info("selecting tasks")
-          @tasks = Task.accessed_by(user).find(:all, :include => [:milestone, :tags, :task_users, :users, :ical_entry ])
+          @tasks = Task.accessed_by(user).find(:all, :include => [:milestone, :tags, :task_users, :ical_entry ])
         end
 
       else
