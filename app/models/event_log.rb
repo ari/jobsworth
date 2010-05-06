@@ -46,8 +46,8 @@ class EventLog < ActiveRecord::Base
   RESOURCE_CHANGE = 71
 
   named_scope :accessed_by, lambda { |user|
-    { :conditions => ["company_id = ? AND (event_logs.project_id IN ( #{user.project_ids_for_sql} ) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=1 or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ",
-                      user.company_id, user.id, user.access_level_id, user.id]
+    { :conditions => ["event_logs.company_id = ? AND (event_logs.project_id IN ( #{user.project_ids_for_sql} ) OR event_logs.project_id IS NULL) AND if(target_type='WorkLog', (select work_logs.id from work_logs join project_permissions on work_logs.project_id = project_permissions.project_id and project_permissions.user_id= ? where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ? and (project_permissions.can_see_unwatched=? or ? in (select task_users.user_id from task_users where task_users.task_id=work_logs.task_id))) , true) ",
+                      user.company_id, true, user.id, user.access_level_id, user.id]
     }
   }
   def started_at
@@ -60,13 +60,13 @@ class EventLog < ActiveRecord::Base
     event_log_types = [ EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED,
                         EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
     if (event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )
-      filter << " AND event_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
+      filter << " AND event_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
       filter << " AND event_logs.event_type = #{EventLog::FORUM_NEW_POST}" if params[:filter_status].to_i == EventLog::FORUM_NEW_POST
       filter << " AND event_logs.event_type = #{EventLog::WIKI_CREATED}" if params[:filter_status].to_i == EventLog::WIKI_CREATED
       filter << " AND event_logs.event_type IN (#{EventLog::WIKI_CREATED},#{EventLog::WIKI_MODIFIED})" if params[:filter_status].to_i == EventLog::WIKI_MODIFIED
       filter << " AND event_logs.event_type = #{ EventLog::RESOURCE_PASSWORD_REQUESTED }" if params[:filter_status].to_i == EventLog::RESOURCE_PASSWORD_REQUESTED
     else
-      filter << " AND work_logs.user_id = #{params[:filter_user]}" if params[:filter_user].to_i > 0
+      filter << " AND work_logs.user_id = #{params[:filter_user].to_i}" if params[:filter_user].to_i > 0
       filter << " AND work_logs.log_type = #{EventLog::TASK_CREATED}" if params[:filter_status].to_i == EventLog::TASK_CREATED
       filter << " AND work_logs.log_type IN (#{EventLog::TASK_CREATED},#{EventLog::TASK_REVERTED},#{EventLog::TASK_COMPLETED})" if params[:filter_status].to_i == EventLog::TASK_REVERTED
       filter << " AND work_logs.log_type = #{EventLog::TASK_COMPLETED}" if params[:filter_status].to_i == EventLog::TASK_COMPLETED
@@ -81,16 +81,14 @@ class EventLog < ActiveRecord::Base
     end
 
     if params[:filter_project].to_i > 0
-      filter = " AND work_logs.project_id = #{params[:filter_project]}" + filter
-    else
-      filter = " AND (work_logs.project_id IN (#{current_user.project_ids_for_sql}) OR work_logs.project_id IS NULL or work_logs.project_id = 0)" + filter
+      filter = " AND work_logs.project_id = #{params[:filter_project].to_i}" + filter
     end
 
     if event_log_types.include?(params[:filter_status].to_i)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
 
-      @logs = EventLog.paginate(:all, :include => [:user], :order => "event_logs.created_at desc", :conditions => ["event_logs.company_id = ? AND if(target_type='WorkLog', (select id from work_logs where work_logs.id=event_logs.target_id and work_logs.access_level_id <= ?) , true)  #{filter}", current_user.company_id, current_user.access_level_id], :per_page => 100, :page => params[:page] )
+      @logs = EventLog.accessed_by(current_user).paginate(:all, :include => [:user], :order => "event_logs.created_at desc", :conditions => ["? #{filter}", true], :per_page => 100, :page => params[:page] )
 
       worklog_ids = []
       @logs.each do |l|
@@ -105,7 +103,7 @@ class EventLog < ActiveRecord::Base
       end
 
     else
-      @logs = WorkLog.level_accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["work_logs.company_id = ? #{filter}", current_user.company_id], :include => [:user, {:task => [ :milestone, :tags, :dependencies, :dependants, :users, { :project => [:customer] } ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["? #{filter}", true], :include => [ {:task => [ :milestone, :tags, :dependencies, :dependants ]}], :per_page => 100, :page => params[:page] )
     end
     return @logs, @work_logs
   end

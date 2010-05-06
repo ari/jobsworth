@@ -2,14 +2,7 @@
 class TimelineController < ApplicationController
 
   def list
-    if current_user.admin == 0
-      flash['notice'] = _("Sorry, only admins can use timeline in next few days.")
-      redirect_to '/'
-      return false
-    end
-
     @filter_params = {}
-
     [:filter_user, :filter_status, :filter_project, :filter_date].each do |fp|
       @filter_params[fp] = params[fp] unless params[fp].blank?
     end
