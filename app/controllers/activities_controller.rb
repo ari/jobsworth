@@ -21,7 +21,7 @@ class ActivitiesController < ApplicationController
   def welcome
     @projects_count  = current_projects.size
     @tasks_count     = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id ])
-    @work_count      = WorkLog.accessed_by(current_user).find_all_by_log_type(EventLog::TASK_WORK_ADDED).count
+    @work_count      = WorkLog.accessed_by(current_user).count(:conditions=>{ :log_type=>EventLog::TASK_WORK_ADDED})
     @completed_count = Task.count(:conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND completed_at IS NOT NULL", current_user.company_id ])
     @users_count     = User.count(:conditions => ["company_id = ?", current_user.company_id])
 
