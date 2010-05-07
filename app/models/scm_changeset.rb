@@ -6,7 +6,7 @@ class ScmChangeset < ActiveRecord::Base
 
   belongs_to :scm_project
 
-  has_many :scm_files, :dependent => :destroy, :counter_cache => true
+  has_many :scm_files, :dependent => :destroy
   has_one  :work_log
 
   def issue_num
