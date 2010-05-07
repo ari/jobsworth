@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100507132634) do
+ActiveRecord::Schema.define(:version => 20100507151253) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -503,6 +503,7 @@ ActiveRecord::Schema.define(:version => 20100507132634) do
     t.datetime "last_checkout"
     t.text     "module"
     t.text     "location"
+    t.string   "secret_key"
   end
 
   add_index "scm_projects", ["company_id"], :name => "fk_scm_projects_company_id"
