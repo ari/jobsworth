@@ -2,6 +2,7 @@ jQuery.noConflict();
 
 jQuery(document).ready(function(){
     jQuery('a.lightbox').nyroModal();
+    updateTooltips();
 });
 
 var lastElement = null;
@@ -63,7 +64,9 @@ function inline_image(el) {
  sets up tooltips in page.
 */
 function updateTooltips() {
+	if (useTooltips == 1) {
     jQuery('.tooltip').tooltip({showURL: false });
+  }
 }
 
 function UpdateDnD() {
