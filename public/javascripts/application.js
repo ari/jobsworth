@@ -862,7 +862,7 @@ function autocomplete(input_field, output_list, path, after_callback) {
                     autocomplete_list= jQuery(output_list);
                     var pos= jQuery(input_field).offset();
                     var left= pos.left+ "px";
-                    var top= 2+ pos.top+ jQuery(input_field).height()+ "px";
+                    var top= 4+ pos.top+ jQuery(input_field).height()+ "px";
                     autocomplete_list.empty().append(data)
                     .css({
                       'position': 'absolute',
@@ -879,7 +879,7 @@ function autocomplete(input_field, output_list, path, after_callback) {
                         .click(function(){
                           jQuery(input_field).val(jQuery(this).text()); 
                           autocomplete_list.hide();
-                          after_callback(this);
+                          after_callback(input_field, this);
                     });                     
                  }                     
               });

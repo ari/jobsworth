@@ -4,8 +4,12 @@
 <label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %><br/>
 <label for="project_customer_id"><%=_ 'Client' %></label>
 
-<%= text_field_with_auto_complete(:customer, :name,
-      { :size => 12, :value => @project.customer.nil? ? "" :@project.customer.name }, :after_update_element => "addCustomerToProject") %>
+<%= text_field :customer, :name, { :size => 12, :value => @project.customer.nil? ? "" :@project.customer.name } %>
+<div id= "customer_name_auto_complete" class= "auto_complete" ></div>
+<br/>
+<script type= "text/javascript">
+  autocomplete('#customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+</script>
 
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="">
 
