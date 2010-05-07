@@ -1,9 +1,14 @@
 #location - ulr of the repository
+require 'digest/md5'
 class ScmProject < ActiveRecord::Base
   belongs_to :project
   belongs_to :company
   has_many :scm_changesets
-
+  validates_presence_of :project
+  before_create do |scm_project|
+    scm_project.company = scm_project.project.company if scm_project.company.nil? and !scm_project.project.nil?
+    scm_project.secret_key = Digest::MD5.hexdigest( rand(100000000).to_s + Time.now.to_s)[0..11]
+  end
 end
 
 
