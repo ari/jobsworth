@@ -1,11 +1,12 @@
+# commit
+# author - author of the commit, string
+# user - author of the commit, User (NULL if author not registered in system)
 class ScmChangeset < ActiveRecord::Base
-  belongs_to :company
-  belongs_to :project
   belongs_to :user
 
   belongs_to :scm_project
 
-  has_many :scm_revisions
+  has_many :scm_files, :dependent => :destroy, :counter_cache => true
   has_one  :work_log
 
   def issue_num
@@ -37,8 +38,6 @@ end
 # Table name: scm_changesets
 #
 #  id             :integer(4)      not null, primary key
-#  company_id     :integer(4)
-#  project_id     :integer(4)
 #  user_id        :integer(4)
 #  scm_project_id :integer(4)
 #  author         :string(255)
@@ -52,6 +51,4 @@ end
 #  scm_changesets_commit_date_index  (commit_date)
 #  scm_changesets_author_index       (author)
 #  fk_scm_changesets_user_id         (user_id)
-#  fk_scm_changesets_company_id      (company_id)
-#
 

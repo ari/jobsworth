@@ -1,3 +1,4 @@
+#location - ulr of the repository
 class ScmProject < ActiveRecord::Base
   belongs_to :project
   belongs_to :company
