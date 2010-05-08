@@ -9,6 +9,35 @@ class ScmChangeset < ActiveRecord::Base
   has_many :scm_files, :dependent => :destroy
   has_one  :work_log
 
+  before_create do | changeset |
+    user= User.find_by_email(changeset.author)
+    user= User.find_by_username(changeset.author) if user.nil?
+    user= User.find_by_name(changeset.author) if user.nil?
+    changeset.user=user
+  end
+
+  after_create do | changeset |
+    num= changeset.message.scan(/#(\d+)/).first
+    unless (num.nil? or num.first.blank?)
+      num = num.first
+      task= changeset.scm_project.project.tasks.find_by_task_num(num)
+      unless task.nil?
+        log= WorkLog.create
+        log.scm_changeset=changeset
+        log.task= task
+        log.project= task.project
+        log.started_at=Time.now
+        log.body = changeset.message
+        log.log_type=EventLog::SCM_COMMIT
+        log.user = changeset.user.nil? ? User.first : changeset.user
+        log.save!
+        log.send_notifications
+        log.save!
+      end
+    end
+  end
+
+
   def issue_num
     name = "[#{self.changeset_num}]"
   end
