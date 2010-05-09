@@ -1,0 +1,22 @@
+<% form_for @scm_project do |f| %>
+  <fieldset>
+  <legend><%= _ 'New SCM project' %> </legend>
+  <%= error_messages_for :scm_project %>
+  <%= f.label :scm_type, 'SCM type' %>
+  <%= f.text_field :scm_type %>
+  <br/>
+  <%= f.label :location, 'Project location' %>
+  <%= f.text_field :location %>
+  <br/>
+  <%= f.label :project_id, 'Project' %>
+  <%= f.select :project_id, current_user.projects.collect{|p| [p.name, p.id]} %>
+
+  <p>
+  <% if @scm_project.new_record? %>
+    <%= submit_tag _("Create"), :class => 'nolabel' %>
+  <% else %>
+    <%= submit_tag _("Save"), :class => 'nolabel' %>
+  <% end %>
+  </p>
+</fieldset>
+<% end %>
