@@ -9,11 +9,11 @@ ActionController::Routing::Routes.draw do |map|
   map.connect '/policy', :controller => 'login', :action => 'policy'
   map.connect '/terms', :controller => 'login', :action => 'terms'
   map.connect '/about', :controller => 'login', :action => 'about'
-  
+
   map.home '/forums/index', :controller => 'forums', :action => 'index'
 
-  map.resources(:resources, :collection => { 
-                  :attributes => :get, 
+  map.resources(:resources, :collection => {
+                  :attributes => :get,
                   :auto_complete_for_resource_parent => :get },
                 :member => { :show_password => :get })
 
@@ -21,11 +21,11 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :organizational_units
   map.resources :pages, :collection => { :target_list => :any }
 
-  map.resources(:task_filters, 
+  map.resources(:task_filters,
                 :member => { :select => :any },
-                :collection => { 
-                  :reset => :any, :search => :any, 
-                  :update_current_filter => :any, 
+                :collection => {
+                  :reset => :any, :search => :any,
+                  :update_current_filter => :any,
                   :set_single_task_filter => :any })
 
   map.resources :forums do |forum|
@@ -41,7 +41,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :work_logs
   map.resources :tags
 
-  map.resources(:work, :collection => { 
+  map.resources(:work, :collection => {
                   :start => :any,
                   :stop => :any,
                   :cancel => :any,
@@ -56,7 +56,7 @@ ActionController::Routing::Routes.draw do |map|
   map.monitored_posts           'users/:user_id/monitored', :controller => 'posts', :action => 'monitored'
 
   map.resources :properties
-
+  map.resources :scm_projects
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   map.connect ':controller/:action/:id.:format'
@@ -224,11 +224,11 @@ end
 #                                             PUT    /properties/:id(.:format)                                           {:controller=>"properties", :action=>"update"}
 #                                             DELETE /properties/:id(.:format)                                           {:controller=>"properties", :action=>"destroy"}
 #                                                    /:controller/service.wsdl                                           {:action=>"wsdl"}
-#                                                    /:controller/:action/:id(.:format)                                  
-#                                                    /:controller/:action/:id                                            
+#                                                    /:controller/:action/:id(.:format)
+#                                                    /:controller/:action/:id
 # Loaded suite /opt/local/bin/rake
 # Started
-# 
+#
 # Finished in 0.000233 seconds.
-# 
+#
 # 0 tests, 0 assertions, 0 failures, 0 errors
