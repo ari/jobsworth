@@ -3,9 +3,9 @@ class ScmChangesetsController < ApplicationController
   #Changesets should be created only by api, not by user.
   def create
     if ScmChangeset.create_from_web_hook(params)
-      render :status=> :created
+      render :text=>'', :status=> :created
     else
-      render :status=> :unprocessable_entity
+      render :text=>'', :status=> :unprocessable_entity
     end
   end
 end
