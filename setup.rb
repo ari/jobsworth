@@ -111,14 +111,6 @@ puts "Will create '#{username}' with password '#{password}' for '#{company}' as 
 puts
 
 
-jug_port = "\n"
-
-print "Enter port for push server [443]: "
-jug_port = gets
-
-jug_port = "443" if jug_port == "\n"
-jug_port.strip!
-
 puts "Creating config files..."
 puts "  Creating config/database.yml"
 
@@ -270,8 +262,6 @@ puts "All done!"
 puts "---------"
 
 puts
-puts "Please start the required services by entering the following in a console:"
-puts "  nohup ./script/push_server &"
 puts "Make sure passenger and apache httpd are properly set up and a virtual host defined."
 puts
 puts "Access your installation from http://#{subdomain}.#{domain}:3000"
