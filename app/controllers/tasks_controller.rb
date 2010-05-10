@@ -516,7 +516,6 @@ class TasksController < ApplicationController
 
     render :text => updated.to_s
   end
-
 protected
   ###
   # Sets up the attributes needed to display new action
@@ -539,7 +538,6 @@ protected
 
   # setup some instance variables for task list views
   def list_init
-    # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
 
@@ -576,6 +574,8 @@ protected
     Task
   end
   def tasks_for_list
+    session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
+    session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
     current_task_filter.tasks_for_jqgrid(params)
   end
   #this method so big and complicated, so I can't find proper name for it

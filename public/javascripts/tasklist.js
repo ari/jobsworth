@@ -62,10 +62,11 @@ function taskListConfigSerialise() {
 }
 
 var colModel; // we need a global variable to put the model into
-
+var currentSort;
 // get the column definition as early as possible
 jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
-        colModel = data;
+        colModel = data.colModel;
+        currentSort = data.currentSort;
         // but don't try to build the grid until the DOM has loaded
         jQuery(document).ready(function() {
                 initTaskList()
@@ -84,7 +85,8 @@ function initTaskList() {
                 colModel : colModel,
                 loadonce: false, // force sorting to happen in the browser
                 sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
-                sortname: 'id',
+                sortname: currentSort.column,
+                sortorder: currentSort.order,
                 autowidth: true,
                 caption: "Tasks",
                 viewrecords: true,
@@ -210,7 +212,7 @@ function initTaskList() {
 
 
 jQuery(window).bind('resize', function() {
-	jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
+        jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
 }).trigger('resize');
 
 
