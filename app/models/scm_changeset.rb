@@ -30,6 +30,7 @@ class ScmChangeset < ActiveRecord::Base
         log= WorkLog.create
         log.scm_changeset=changeset
         log.task= task
+        log.company= task.company
         log.project= task.project
         log.started_at=Time.now
         log.body = changeset.message
