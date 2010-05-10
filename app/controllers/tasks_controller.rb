@@ -429,8 +429,8 @@ class TasksController < ApplicationController
   end
 
   def toggle_history
-    session[:only_comments] ||= 0
-    session[:only_comments] = 1 - session[:only_comments]
+    session[:only_comments] ||= false
+    session[:only_comments] = ! session[:only_comments]
 
     @task = Task.accessed_by(current_user).find(params[:id])
   end
@@ -707,6 +707,7 @@ protected
   #NOTE: this code is very fragile
   #TODO: find sophisticated solution
   def copy_todos_from_template(id, task)
+    return unless id.to_i > 0
     template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
     if template.nil?
       #this is not template, just regular task
