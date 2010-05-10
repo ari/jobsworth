@@ -63,15 +63,12 @@ module TasksHelper
   # no customer are also returned though).
   ###
   def auto_complete_for_resources(customer_id)
-    options = {
-      :select => 'complete_value',
-      :tokens => ',',
-      :url => { :action => "auto_complete_for_resource_name",
-        :customer_id => customer_id },
-      :after_update_element => "addResourceToTask"
-    }
-
-    return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
+   
+    text_field(:resource, :name, { :size => 12 }) +
+    content_tag(:div, :"", :id=>"resource_name_auto_complete", :class=> "auto_complete") +
+    "<script type = 'text/javascript'>
+      autocomplete('#resource_name','#resource_name_auto_complete','/tasks/auto_complete_for_resource_name/customer_id=#{customer_id}', addResourceToTask);
+     </script>"
   end
 
   ###
@@ -80,13 +77,9 @@ module TasksHelper
   # to the db until the task is saved)
   ###
   def auto_complete_for_dependencies
-    auto_complete_field('dependencies_input',
-                        { :url => { :action => 'dependency_targets' },
-                          :min_chars => 1,
-                          :frequency => 0.5,
-                          :indicator => 'loading',
-                          :after_update_element => "addDependencyToTask"
-                        })
+    "<script type= 'text/javascript'>
+        autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
+     </script>"
   end
 
   ###
@@ -134,13 +127,13 @@ module TasksHelper
   # to the task notify list.
   ###
   def add_notifier_field
-    html_options = {
-      :size => "12",
-      :title => _("Add users by name or email"),
-      :class => "tooltip"
-    }
-    text_field_with_auto_complete(:user, :name, html_options,
-                                  :after_update_element => "addUserToTask")
+     text_field(:user, :name, :size=> "12", :title => _("Add users by name or email"), :class => "tooltip" ) +
+     content_tag(:div, :"", :id => "user_name_auto_complete", :class => "auto_complete" )+
+     "<script type= 'text/javascript'>
+        autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+     </script>"
+
+
   end
 
   # Returns an array that show the start of ranges to be used
