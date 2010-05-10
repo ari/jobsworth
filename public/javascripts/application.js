@@ -239,7 +239,7 @@ jQuery(document).ready(function() {
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
 */
-function addSearchFilter(selected) {
+function addSearchFilter(input, selected) {
     selected = jQuery(selected);
     var idName = selected.attr("data-id");
     var idValue = selected.attr("data-idval");
@@ -718,7 +718,7 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function setPageTarget(selected) {
+function setPageTarget(input, selected) {
     var id = jQuery(selected).find(".id").val();
     var type = jQuery(selected).find(".type").val();
 
