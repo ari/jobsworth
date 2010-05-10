@@ -141,22 +141,22 @@ describe ScmChangeset do
       @params= { :secret_key => @scm_project.secret_key, :provider=>"github", :payload=> GITHUB_PAYLOAD }
     end
     it "should map secret_key to scm_project" do
-      ScmChangeset.create_from_web_hooks(@params).each{ |changeset| changeset.scm_project.should == @scm_project }
+      ScmChangeset.create_from_web_hook(@params).each{ |changeset| changeset.scm_project.should == @scm_project }
     end
     it "should retunr array of created changesets if everything is ok" do
-      ScmChangeset.create_from_web_hooks(@params).should have(2).changesets
+      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
     end
     it "should return false if any of changesets not saved" do
       @params[:payload] = GITHUB_PAYLOAD.sub("Chris Wanstrath", "")
-      ScmChangeset.create_from_web_hooks(@params).should == false
+      ScmChangeset.create_from_web_hook(@params).should == false
     end
     it "should return false if scm_project with this secret_key not exist" do
       @params[:secret_key]="not exist"
-      ScmChangeset.create_from_web_hooks(@params).should == false
+      ScmChangeset.create_from_web_hook(@params).should == false
     end
     it "should return false if parser for this provider not exist" do
       @params[:provider]="not exist"
-      ScmChangeset.create_from_web_hooks(@params).should == false
+      ScmChangeset.create_from_web_hook(@params).should == false
     end
   end
 end

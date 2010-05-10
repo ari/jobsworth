@@ -80,7 +80,7 @@ class ScmChangeset < ActiveRecord::Base
       changeset
     end
   end
-  def ScmChangeset.create_from_web_hooks(params)
+  def ScmChangeset.create_from_web_hook(params)
     scm_project = ScmProject.find_by_secret_key(params[:secret_key])
     if scm_project.nil?
       return false
