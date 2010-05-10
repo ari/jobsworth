@@ -57,6 +57,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :properties
   map.resources :scm_projects
+  map.connect 'api/scm/:provider/:secret_key', :controller => :scm_changesets, :action=> :create
   map.connect ':controller/service.wsdl', :action => 'wsdl'
 
   map.connect ':controller/:action/:id.:format'
