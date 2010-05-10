@@ -8,7 +8,10 @@ class ScmChangeset < ActiveRecord::Base
 
   has_many :scm_files, :dependent => :destroy
   has_one  :work_log
+  validates_presence_of :scm_project
+  validates_presence_of :author
 
+  accepts_nested_attributes_for :scm_files
   before_create do | changeset |
     if changeset.user_id.nil?
       user= User.find_by_email(changeset.author)
@@ -60,20 +63,37 @@ class ScmChangeset < ActiveRecord::Base
   def full_name
     "#{self.project.name}"
   end
+
   def ScmChangeset.github_parser(payload)
     payload = JSON.parse(payload)
     payload['commits'].collect do |commit|
       changeset= { }
       changeset[:changeset_rev]= commit['id']
-      changeset[:files]=[]
-      changeset[:files] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
-      changeset[:files] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
-      changeset[:files] << commit['deleted'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['deleted'].nil?
-      changeset[:files].flatten!
+      changeset[:scm_files_attributes]=[]
+      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['deleted'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['deleted'].nil?
+      changeset[:scm_files_attributes].flatten!
       changeset[:author] = commit['author']['name']
       changeset[:message] = commit['message']
       changeset[:commit_date] = commit['timestamp']
       changeset
+    end
+  end
+  def ScmChangeset.create_from_web_hooks(params)
+    scm_project = ScmProject.find_by_secret_key(params[:secret_key])
+    if scm_project.nil?
+      return false
+    end
+    if params[:provider] == 'github'
+      github_parser(params[:payload]).collect do |changeset|
+        scm_changeset=ScmChangeset.new(changeset)
+        scm_changeset.scm_project=scm_project
+        return false unless scm_changeset.save
+        scm_changeset
+      end
+    else
+      return false
     end
   end
 end

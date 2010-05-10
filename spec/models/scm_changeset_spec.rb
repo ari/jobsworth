@@ -1,5 +1,51 @@
 require 'spec_helper'
-
+GITHUB_PAYLOAD =<<-GITHUB
+         {
+         "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
+           "repository": {
+           "url": "http://github.com/defunkt/github",
+           "name": "github",
+           "description": "You're lookin' at it.",
+           "watchers": 5,
+           "forks": 2,
+           "private": 1,
+           "owner": {
+           "email": "chris@ozmm.org",
+           "name": "defunkt"
+           }
+         },
+         "commits": [
+           {
+           "id": "41a212ee83ca127e3c8cf465891ab7216a705f59",
+           "url": "http://github.com/defunkt/github/commit/41a212ee83ca127e3c8cf465891ab7216a705f59",
+           "author": {
+             "email": "chris@ozmm.org",
+             "name": "Chris Wanstrath"
+             },
+           "message": "okay i give in",
+           "timestamp": "2008-02-15T14:57:17-08:00",
+            "added": ["filepath.rb"],
+            "deleted" : ["filepath.html"],
+            "modified" : ["README"]
+           },
+           {
+           "id": "de8251ff97ee194a289832576287d6f8ad74e3d0",
+           "url": "http://github.com/defunkt/github/commit/de8251ff97ee194a289832576287d6f8ad74e3d0",
+           "author": {
+             "email": "chris@ozmm.org",
+             "name": "Chris Wanstrath"
+           },
+           "modified": ["fileone.rb", "filetwo.rb"],
+           "deleted" : ["badfile.rb"],
+           "added" : ["brandnewfile.txt"],
+           "message": "update pricing a tad",
+           "timestamp": "2008-02-15T14:36:34-08:00"
+           }
+         ],
+         "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
+         "ref": "refs/heads/master"
+        }
+        GITHUB
 describe ScmChangeset do
   before(:each) do
     @scm_project=ScmProject.make
@@ -47,55 +93,8 @@ describe ScmChangeset do
   describe "hook parsers" do
     describe "github parser" do
      before(:each) do
-       payload =<<-GITHUB
-         {
-         "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
-           "repository": {
-           "url": "http://github.com/defunkt/github",
-           "name": "github",
-           "description": "You're lookin' at it.",
-           "watchers": 5,
-           "forks": 2,
-           "private": 1,
-           "owner": {
-           "email": "chris@ozmm.org",
-           "name": "defunkt"
-           }
-         },
-         "commits": [
-           {
-           "id": "41a212ee83ca127e3c8cf465891ab7216a705f59",
-           "url": "http://github.com/defunkt/github/commit/41a212ee83ca127e3c8cf465891ab7216a705f59",
-           "author": {
-             "email": "chris@ozmm.org",
-             "name": "Chris Wanstrath"
-             },
-           "message": "okay i give in",
-           "timestamp": "2008-02-15T14:57:17-08:00",
-            "added": ["filepath.rb"],
-            "deleted" : ["filepath.html"],
-            "modified" : ["README"]
-           },
-           {
-           "id": "de8251ff97ee194a289832576287d6f8ad74e3d0",
-           "url": "http://github.com/defunkt/github/commit/de8251ff97ee194a289832576287d6f8ad74e3d0",
-           "author": {
-             "email": "chris@ozmm.org",
-             "name": "Chris Wanstrath"
-           },
-           "modified": ["fileone.rb", "filetwo.rb"],
-           "deleted" : ["badfile.rb"],
-           "added" : ["brandnewfile.txt"],
-           "message": "update pricing a tad",
-           "timestamp": "2008-02-15T14:36:34-08:00"
-           }
-         ],
-         "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
-         "ref": "refs/heads/master"
-        }
-        GITHUB
-        @changesets=ScmChangeset.github_parser(payload)
-        @payload = JSON.parse(payload)
+        @changesets=ScmChangeset.github_parser(GITHUB_PAYLOAD)
+        @payload = JSON.parse(GITHUB_PAYLOAD)
       end
 
       it "should map commits array to array of changesets" do
@@ -106,21 +105,21 @@ describe ScmChangeset do
         @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['commits'][index]['id']}
       end
 
-      it "should map modified array to array of files with state modified" do
+      it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['modified'].each { |file| changeset[:files].should include({ :path=>file, :state=>:modified})}
+          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
         end
       end
 
-      it "should map added array to array of files with state added"do
+      it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['added'].each { |file| changeset[:files].should include({ :path=>file, :state=>:added})}
+          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
         end
       end
 
-      it "should map deleted array to array of files with status deleted"do
+      it "should map deleted array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['deleted'].each { |file| changeset[:files].should include({ :path=>file, :state=>:deleted})}
+          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
         end
       end
 
@@ -135,6 +134,29 @@ describe ScmChangeset do
       it "should map message to changeset message" do
         @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
       end
+    end
+  end
+  describe "create_from_web_hooks" do
+    before(:each) do
+      @params= { :secret_key => @scm_project.secret_key, :provider=>"github", :payload=> GITHUB_PAYLOAD }
+    end
+    it "should map secret_key to scm_project" do
+      ScmChangeset.create_from_web_hooks(@params).each{ |changeset| changeset.scm_project.should == @scm_project }
+    end
+    it "should retunr array of created changesets if everything is ok" do
+      ScmChangeset.create_from_web_hooks(@params).should have(2).changesets
+    end
+    it "should return false if any of changesets not saved" do
+      @params[:payload] = GITHUB_PAYLOAD.sub("Chris Wanstrath", "")
+      ScmChangeset.create_from_web_hooks(@params).should == false
+    end
+    it "should return false if scm_project with this secret_key not exist" do
+      @params[:secret_key]="not exist"
+      ScmChangeset.create_from_web_hooks(@params).should == false
+    end
+    it "should return false if parser for this provider not exist" do
+      @params[:provider]="not exist"
+      ScmChangeset.create_from_web_hooks(@params).should == false
     end
   end
 end
