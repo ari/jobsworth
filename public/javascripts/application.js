@@ -852,6 +852,7 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, output_list, path, after_callback) {
+              jQuery(input_field).attr("autocomplete", "off");
               jQuery(input_field).keyup(function(){
               jQuery.ajax({
                 'url': path,
