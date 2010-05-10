@@ -44,7 +44,7 @@ class ScmChangeset < ActiveRecord::Base
 
 
   def issue_num
-    name = "[#{self.changeset_num}]"
+    name = "[#{self.changeset_rev}]"
   end
 
   def name
@@ -53,15 +53,15 @@ class ScmChangeset < ActiveRecord::Base
       n << " (r#{self.changeset_rev})"
     end
 
-    if self.scm_revisions && self.scm_revisions.size > 0
-      n << " [#{self.scm_revisions.size} #{self.scm_revisions.size == 1 ? 'file' : 'files'}]"
+    if self.scm_files && self.scm_files.size > 0
+      n << " [#{self.scm_files.size} #{self.scm_files.size == 1 ? 'file' : 'files'}]"
     end
 
     n
   end
 
   def full_name
-    "#{self.project.name}"
+    "#{self.scm_project.location}"
   end
 
   def ScmChangeset.github_parser(payload)
