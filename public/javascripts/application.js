@@ -2,7 +2,6 @@ jQuery.noConflict();
 
 jQuery(document).ready(function(){
     jQuery('a.lightbox').nyroModal();
-    updateTooltips();
 });
 
 var lastElement = null;
@@ -64,9 +63,7 @@ function inline_image(el) {
  sets up tooltips in page.
 */
 function updateTooltips() {
-	if (useTooltips == 1) {
     jQuery('.tooltip').tooltip({showURL: false });
-  }
 }
 
 function UpdateDnD() {
@@ -863,9 +860,9 @@ function autocomplete(input_field, output_list, path, after_callback) {
                 'type': 'POST',
                 'success': function(data) {
                     autocomplete_list= jQuery(output_list);
-                    var pos= jQuery(input_field).offset();
+                    var pos= jQuery(input_field).position();
                     var left= pos.left+ "px";
-                    var top= 4+ pos.top+ jQuery(input_field).height()+ "px";
+                    var top= 5+ pos.top+ jQuery(input_field).height()+ "px";
                     autocomplete_list.empty().append(data)
                     .css({
                       'position': 'absolute',
