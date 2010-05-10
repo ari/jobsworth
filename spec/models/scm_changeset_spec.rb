@@ -44,4 +44,97 @@ describe ScmChangeset do
       @changeset.work_log.body.should include(@valid_attributes[:message])
     end
   end
+  describe "hook parsers" do
+    describe "github parser" do
+     before(:each) do
+       payload =<<-GITHUB
+         {
+         "before": "5aef35982fb2d34e9d9d4502f6ede1072793222d",
+           "repository": {
+           "url": "http://github.com/defunkt/github",
+           "name": "github",
+           "description": "You're lookin' at it.",
+           "watchers": 5,
+           "forks": 2,
+           "private": 1,
+           "owner": {
+           "email": "chris@ozmm.org",
+           "name": "defunkt"
+           }
+         },
+         "commits": [
+           {
+           "id": "41a212ee83ca127e3c8cf465891ab7216a705f59",
+           "url": "http://github.com/defunkt/github/commit/41a212ee83ca127e3c8cf465891ab7216a705f59",
+           "author": {
+             "email": "chris@ozmm.org",
+             "name": "Chris Wanstrath"
+             },
+           "message": "okay i give in",
+           "timestamp": "2008-02-15T14:57:17-08:00",
+            "added": ["filepath.rb"],
+            "deleted" : ["filepath.html"],
+            "modified" : ["README"]
+           },
+           {
+           "id": "de8251ff97ee194a289832576287d6f8ad74e3d0",
+           "url": "http://github.com/defunkt/github/commit/de8251ff97ee194a289832576287d6f8ad74e3d0",
+           "author": {
+             "email": "chris@ozmm.org",
+             "name": "Chris Wanstrath"
+           },
+           "modified": ["fileone.rb", "filetwo.rb"],
+           "deleted" : ["badfile.rb"],
+           "added" : ["brandnewfile.txt"],
+           "message": "update pricing a tad",
+           "timestamp": "2008-02-15T14:36:34-08:00"
+           }
+         ],
+         "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
+         "ref": "refs/heads/master"
+        }
+        GITHUB
+        @changesets=ScmChangeset.github_parser(payload)
+        @payload = JSON.parse(payload)
+      end
+
+      it "should map commits array to array of changesets" do
+        @changesets.should have(@payload['commits'].size).changesets
+      end
+
+      it "should map id to changeset_rev" do
+        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['commits'][index]['id']}
+      end
+
+      it "should map modified array to array of files with state modified" do
+        @changesets.each_with_index do |changeset, index|
+          @payload['commits'][index]['modified'].each { |file| changeset[:files].should include({ :path=>file, :state=>:modified})}
+        end
+      end
+
+      it "should map added array to array of files with state added"do
+        @changesets.each_with_index do |changeset, index|
+          @payload['commits'][index]['added'].each { |file| changeset[:files].should include({ :path=>file, :state=>:added})}
+        end
+      end
+
+      it "should map deleted array to array of files with status deleted"do
+        @changesets.each_with_index do |changeset, index|
+          @payload['commits'][index]['deleted'].each { |file| changeset[:files].should include({ :path=>file, :state=>:deleted})}
+        end
+      end
+
+      it "should map author name to author" do
+        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['commits'][index]['author']['name'] }
+      end
+
+      it "should map timestamp to commit_date" do
+        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == @payload['commits'][index]['timestamp']}
+      end
+
+      it "should map message to changeset message" do
+        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
+      end
+    end
+  end
 end

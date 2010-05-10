@@ -10,10 +10,12 @@ class ScmChangeset < ActiveRecord::Base
   has_one  :work_log
 
   before_create do | changeset |
-    user= User.find_by_email(changeset.author)
-    user= User.find_by_username(changeset.author) if user.nil?
-    user= User.find_by_name(changeset.author) if user.nil?
-    changeset.user=user
+    if changeset.user_id.nil?
+      user= User.find_by_email(changeset.author)
+      user= User.find_by_username(changeset.author) if user.nil?
+      user= User.find_by_name(changeset.author) if user.nil?
+      changeset.user=user
+    end
   end
 
   after_create do | changeset |
@@ -58,7 +60,22 @@ class ScmChangeset < ActiveRecord::Base
   def full_name
     "#{self.project.name}"
   end
-
+  def ScmChangeset.github_parser(payload)
+    payload = JSON.parse(payload)
+    payload['commits'].collect do |commit|
+      changeset= { }
+      changeset[:changeset_rev]= commit['id']
+      changeset[:files]=[]
+      changeset[:files] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
+      changeset[:files] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
+      changeset[:files] << commit['deleted'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['deleted'].nil?
+      changeset[:files].flatten!
+      changeset[:author] = commit['author']['name']
+      changeset[:message] = commit['message']
+      changeset[:commit_date] = commit['timestamp']
+      changeset
+    end
+  end
 end
 
 
