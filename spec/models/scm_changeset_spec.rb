@@ -79,15 +79,9 @@ describe ScmChangeset do
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
-    it "should create work log for this task" do
-      @changeset.work_log.should_not be_nil
-      @changeset.work_log.task.should == @task
-    end
-    it "with project of scm_project project" do
-      @changeset.work_log.project.should == @scm_project.project
-    end
-    it "body should include changeset message" do
-      @changeset.work_log.body.should include(@valid_attributes[:message])
+    it "should join changeset to  this task" do
+      @changeset.task.should_not be_nil
+      @changeset.task.should == @task
     end
   end
   describe "hook parsers" do

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100507151253) do
+ActiveRecord::Schema.define(:version => 20100511102106) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -480,6 +480,7 @@ ActiveRecord::Schema.define(:version => 20100507151253) do
     t.string   "changeset_rev"
     t.text     "message"
     t.integer  "scm_files_count"
+    t.integer  "task_id"
   end
 
   add_index "scm_changesets", ["author"], :name => "scm_changesets_author_index"
@@ -821,21 +822,20 @@ ActiveRecord::Schema.define(:version => 20100507151253) do
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"
 
   create_table "work_logs", :force => true do |t|
-    t.integer  "user_id",          :default => 0,     :null => false
+    t.integer  "user_id",         :default => 0,     :null => false
     t.integer  "task_id"
-    t.integer  "project_id",       :default => 0,     :null => false
-    t.integer  "company_id",       :default => 0,     :null => false
-    t.integer  "customer_id",      :default => 0,     :null => false
-    t.datetime "started_at",                          :null => false
-    t.integer  "duration",         :default => 0,     :null => false
+    t.integer  "project_id",      :default => 0,     :null => false
+    t.integer  "company_id",      :default => 0,     :null => false
+    t.integer  "customer_id",     :default => 0,     :null => false
+    t.datetime "started_at",                         :null => false
+    t.integer  "duration",        :default => 0,     :null => false
     t.text     "body"
-    t.integer  "log_type",         :default => 0
-    t.integer  "scm_changeset_id"
-    t.integer  "paused_duration",  :default => 0
-    t.boolean  "comment",          :default => false
+    t.integer  "log_type",        :default => 0
+    t.integer  "paused_duration", :default => 0
+    t.boolean  "comment",         :default => false
     t.datetime "exported"
     t.boolean  "approved"
-    t.integer  "access_level_id",  :default => 1
+    t.integer  "access_level_id", :default => 1
   end
 
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"

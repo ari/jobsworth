@@ -32,6 +32,7 @@ class Task < ActiveRecord::Base
 
   has_many      :work_logs, :dependent => :destroy, :order => "started_at asc"
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy
+  has_many      :scm_changesets, :dependent =>:destroy
 
   belongs_to    :creator, :class_name => "User", :foreign_key => "creator_id"
 

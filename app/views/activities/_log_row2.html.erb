@@ -27,14 +27,8 @@
 
 <%= log.user.name if log.user %>
 <%= log.event_log.user if log.user.nil? && log.event_log.user %>
-<%= log.scm_changeset.author if log.scm_changeset && !log.user %>
 </h4>
 <p class="log_comment">
-<% if log.scm_changeset_id.to_i > 0 %>
-        <%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%><br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>
-<% end %>
-
 <%= log.body.gsub(/\n/, "<br/>") if log.body %>
-
 </p>
 </div>

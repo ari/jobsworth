@@ -32,24 +32,17 @@
   <%= image_tag('page_edit.png', :alt => "Page modified") if log.log_type == EventLog::PAGE_MODIFIED %>
   <%= image_tag('delete.png', :alt => "Task Deleted") if log.log_type == EventLog::TASK_DELETED %>
 
-  <%= image_tag('package.png', :alt => "Commit") if log.log_type == EventLog::SCM_COMMIT %>
-
   <% end %>
   </td>
   <td  valign="top" width="90%"><div style="float:left;"><strong>
 <% if log.task_id.to_i > 0 && log.task %>
 <%= link_to_task log.task %>
-<% elsif log.scm_changeset_id.to_i > 0 %>
-<%= "<small>" + log.scm_changeset.issue_num + "</small> " + link_to(h(log.scm_changeset.name), {:controller => 'scm', :action => 'edit', :id => log.scm_changeset_id}) -%>
-          <br /><%= "<span class=\"optional\">#{log.scm_changeset.full_name}</span> " %>
-
 <% end %>
     <%= "<br/>" if (log.task_id.to_i > 0) %>
             <%= "<span class=\"optional\">#{log.task.full_name}</span> " if log.task_id.to_i > 0 %>
             <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
             <%= "<small><span class=\"otheruser\">[#{log.event_log.user}]</span></small>" if log.user.nil? && log.event_log.user %>
-            <%= "<small><span class=\"otheruser\">[#{log.scm_changeset.author}]</span></small>" if log.scm_changeset && !log.user %>
-  </strong></div>
+   </strong></div>
   <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
   <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
 <% if log.body && log.body.length > 0 %>

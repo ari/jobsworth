@@ -12,7 +12,6 @@ class WorkLog < ActiveRecord::Base
   belongs_to :project
   belongs_to :customer
   belongs_to :task
-  belongs_to :scm_changeset
   belongs_to :access_level
 
   has_one    :ical_entry, :dependent => :destroy
@@ -249,7 +248,6 @@ end
 #  duration         :integer(4)      default(0), not null
 #  body             :text
 #  log_type         :integer(4)      default(0)
-#  scm_changeset_id :integer(4)
 #  paused_duration  :integer(4)      default(0)
 #  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime

@@ -3,11 +3,11 @@
 # user - author of the commit, User (NULL if author not registered in system)
 class ScmChangeset < ActiveRecord::Base
   belongs_to :user
-
   belongs_to :scm_project
+  belongs_to :task
 
   has_many :scm_files, :dependent => :destroy
-  has_one  :work_log
+
   validates_presence_of :scm_project
   validates_presence_of :author
 
@@ -19,27 +19,11 @@ class ScmChangeset < ActiveRecord::Base
       user= User.find_by_name(changeset.author) if user.nil?
       changeset.user=user
     end
-  end
-
-  after_create do | changeset |
     num= changeset.message.scan(/#(\d+)/).first
     unless (num.nil? or num.first.blank?)
-      num = num.first
-      task= changeset.scm_project.project.tasks.find_by_task_num(num)
-      unless task.nil?
-        log= WorkLog.create
-        log.scm_changeset=changeset
-        log.for_task(task)
-        log.body = changeset.message
-        log.log_type=EventLog::SCM_COMMIT
-        log.user = changeset.user.nil? ? User.first : changeset.user
-        log.save!
-        log.send_notifications
-        log.save!
-      end
+      changeset.task= changeset.scm_project.project.tasks.find_by_task_num(num.first)
     end
   end
-
 
   def issue_num
     name = "[#{self.changeset_rev}]"
