@@ -102,10 +102,7 @@ class WorkLog < ActiveRecord::Base
   def self.create_task_created!(task, user)
     worklog = WorkLog.new
     worklog.user = user
-    worklog.company = task.project.company
-    worklog.customer = task.project.customer
-    worklog.project = task.project
-    worklog.task = task
+    worklog.for_task(task)
     worklog.started_at = Time.now.utc
     worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
@@ -222,6 +219,12 @@ class WorkLog < ActiveRecord::Base
         #don't bother our users
       end
     end
+  end
+  def for_task(task)
+    self.task=task
+    self.project=task.project
+    self.company= task.project.company
+    self.customer= task.project.customer
   end
 private
   def mark_as_unread

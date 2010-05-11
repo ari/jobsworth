@@ -302,10 +302,7 @@ class TasksController < ApplicationController
 
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
+      worklog.for_task(@task)
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.log_type = EventLog::TASK_ARCHIVED
@@ -380,10 +377,7 @@ class TasksController < ApplicationController
 
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
+      worklog.for_task(@task)
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.log_type = EventLog::TASK_RESTORED
@@ -676,10 +670,7 @@ protected
         worklog.user_input_add params[:comment]
       end
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
+      worklog.for_task(@task)
       worklog.started_at = Time.now.utc
       worklog.duration = 0
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]

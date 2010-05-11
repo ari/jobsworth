@@ -29,9 +29,7 @@ class ScmChangeset < ActiveRecord::Base
       unless task.nil?
         log= WorkLog.create
         log.scm_changeset=changeset
-        log.task= task
-        log.company= task.company
-        log.project= task.project
+        log.for_task(task)
         log.started_at=Time.now
         log.body = changeset.message
         log.log_type=EventLog::SCM_COMMIT
