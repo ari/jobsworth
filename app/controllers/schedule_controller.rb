@@ -525,8 +525,6 @@ class ScheduleController < ApplicationController
         worklog.log_type = EventLog::TASK_MODIFIED
         worklog.user = current_user
         worklog.for_task(t)
-        worklog.started_at = Time.now.utc
-        worklog.duration = 0
         worklog.body = body
         worklog.save
 

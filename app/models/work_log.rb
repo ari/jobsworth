@@ -103,8 +103,6 @@ class WorkLog < ActiveRecord::Base
     worklog = WorkLog.new
     worklog.user = user
     worklog.for_task(task)
-    worklog.started_at = Time.now.utc
-    worklog.duration = 0
     worklog.log_type = EventLog::TASK_CREATED
     worklog.user_input =  task.description
 
@@ -225,6 +223,8 @@ class WorkLog < ActiveRecord::Base
     self.project=task.project
     self.company= task.project.company
     self.customer= task.project.customer
+    self.started_at= Time.now.utc
+    self.duration = 0
   end
 private
   def mark_as_unread

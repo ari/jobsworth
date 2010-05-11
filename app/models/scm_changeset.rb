@@ -30,7 +30,6 @@ class ScmChangeset < ActiveRecord::Base
         log= WorkLog.create
         log.scm_changeset=changeset
         log.for_task(task)
-        log.started_at=Time.now
         log.body = changeset.message
         log.log_type=EventLog::SCM_COMMIT
         log.user = changeset.user.nil? ? User.first : changeset.user
