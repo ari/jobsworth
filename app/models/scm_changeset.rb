@@ -84,15 +84,15 @@ class ScmChangeset < ActiveRecord::Base
     if scm_project.nil?
       return false
     end
-    if params[:provider] == 'github'
-      github_parser(params[:payload]).collect do |changeset|
-        scm_changeset=ScmChangeset.new(changeset)
-        scm_changeset.scm_project=scm_project
-        return false unless scm_changeset.save
-        scm_changeset
-      end
-    else
-      return false
+    case params[:provider]
+      when 'github' then github_parser(params[:payload])
+      when 'google' then google_parser(params[:payload])
+      else return false
+    end.collect do |changeset|
+      scm_changeset=ScmChangeset.new(changeset)
+      scm_changeset.scm_project=scm_project
+      return false unless scm_changeset.save
+      scm_changeset
     end
   end
 end

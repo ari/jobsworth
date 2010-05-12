@@ -202,8 +202,13 @@ describe ScmChangeset do
     it "should map secret_key to scm_project" do
       ScmChangeset.create_from_web_hook(@params).each{ |changeset| changeset.scm_project.should == @scm_project }
     end
-    it "should retunr array of created changesets if everything is ok" do
+    it "should return array of created changesets for github" do
       ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+    end
+    it "should return array of created changesets for google code" do
+      @params[:provider]='google'
+      @params[:payload] = GOOGLE_PAYLOAD
+      ScmChangeset.create_from_web_hook(@params).should have(1).changeset
     end
     it "should return false if any of changesets not saved" do
       @params[:payload] = GITHUB_PAYLOAD.sub("Chris Wanstrath", "")
