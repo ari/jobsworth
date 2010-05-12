@@ -62,6 +62,23 @@ class ScmChangeset < ActiveRecord::Base
       changeset
     end
   end
+
+  def ScmChangeset.google_parser(payload)
+    payload = JSON.parse(payload)
+    payload['revisions'].collect do |commit|
+      changeset= { }
+      changeset[:changeset_rev]= commit['revision']
+      changeset[:scm_files_attributes]=[]
+      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['removed'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['removed'].nil?
+      changeset[:scm_files_attributes].flatten!
+      changeset[:author] = commit['author']
+      changeset[:message] = commit['message']
+      changeset[:commit_date] = Time.at(commit['timestamp'])
+      changeset
+    end
+  end
   def ScmChangeset.create_from_web_hook(params)
     scm_project = ScmProject.find_by_secret_key(params[:secret_key])
     if scm_project.nil?

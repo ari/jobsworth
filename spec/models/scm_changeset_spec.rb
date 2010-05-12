@@ -46,6 +46,27 @@ GITHUB_PAYLOAD =<<-GITHUB
          "ref": "refs/heads/master"
         }
         GITHUB
+
+GOOGLE_PAYLOAD=  <<-GOOGLE
+ {
+   "project_name": "atlas-build-tool",
+   "repository_path": "http://atlas-build-tool.googlecode.com/svn/",
+   "revision_count": 1,
+   "revisions": [
+     { "revision": 33,
+       "url": "http://atlas-build-tool.googlecode.com/svn-history/r33/",
+       "author": "mparent61",
+       "timestamp":   1229470699,
+       "message": "working on easy_install",
+       "path_count": 4,
+       "added": ["/trunk/atlas_main.py"],
+       "modified": ["/trunk/Makefile", "/trunk/constants.py"],
+       "removed": ["/trunk/atlas.py"]
+     }
+   ]
+ }
+     GOOGLE
+
 describe ScmChangeset do
   before(:each) do
     @scm_project=ScmProject.make
@@ -127,6 +148,50 @@ describe ScmChangeset do
 
       it "should map message to changeset message" do
         @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['commits'][index]['message']}
+      end
+    end
+    describe "google praser" do
+      before(:each) do
+        @changesets=ScmChangeset.google_parser(GOOGLE_PAYLOAD)
+        @payload = JSON.parse(GOOGLE_PAYLOAD)
+      end
+
+      it "should map revisions array to array of changesets" do
+        @changesets.should have(@payload['revisions'].size).changesets
+      end
+
+      it "should map revision to changeset_rev" do
+        @changesets.each_with_index { |changeset, index| changeset[:changeset_rev].should == @payload['revisions'][index]['revision']}
+      end
+
+      it "should map modified array to array of scm_files_attributes with state modified" do
+        @changesets.each_with_index do |changeset, index|
+          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
+        end
+      end
+
+      it "should map added array to array of scm_files_attributes with state added"do
+        @changesets.each_with_index do |changeset, index|
+          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
+        end
+      end
+
+      it "should map removed array to array of scm_files_attributes with status deleted"do
+        @changesets.each_with_index do |changeset, index|
+          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
+        end
+      end
+
+      it "should map author to author" do
+        @changesets.each_with_index { |changeset, index| changeset[:author].should == @payload['revisions'][index]['author'] }
+      end
+
+      it "should map timestamp(from Epoch) to commit_date" do
+        @changesets.each_with_index { |changeset, index| changeset[:commit_date].should == Time.at(@payload['revisions'][index]['timestamp'])}
+      end
+
+      it "should map message to changeset message" do
+        @changesets.each_with_index { |changeset, index| changeset[:message].should == @payload['revisions'][index]['message']}
       end
     end
   end
