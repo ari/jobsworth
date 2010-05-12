@@ -8,8 +8,11 @@
 
   <label for="resource_customer"><%= _("Client") %></label>
   <%= f.hidden_field(:customer_id, :class => "auto_complete_id")  %>
-  <%= text_field_with_auto_complete(:customer, :name, { :value => @resource.customer },
-  :after_update_element => "updateAutoCompleteField") %>
+  <%= text_field :customer, :name, { :value => @resource.customer } %>
+  <div id= "customer_name_auto_complete" class= "auto_complete" ></div>
+  <script type= "text/javascript">
+    autocomplete('#customer_name', '#customer_name_auto_complete', '/resources/auto_complete_for_customer_name', updateAutoCompleteField);
+  </script>
   <br />
 
   <label for="resource_parent"><%= _("Parent resource") %></label>
