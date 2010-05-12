@@ -6,13 +6,14 @@ class ChangeScmArch < ActiveRecord::Migration
     drop_table :scm_revisions
 
     remove_column :scm_files, :commit_date
+    remove_foreign_key(:scm_files, :company_id, :company)
     remove_column :scm_files, :company_id
     remove_column :scm_files, :project_id
     remove_column :scm_files, :name
     add_column :scm_files, :scm_changeset_id, :integer
-   # foreign_key(:scm_files, :scm_changeset_id, :scm_changeset)
     add_index :scm_files, :scm_changeset_id
 
+		remove_foreign_key(:scm_changesets, :company_id, :company)
     remove_column :scm_changesets, :company_id
     remove_column :scm_changesets, :project_id
     add_column :scm_changesets, :scm_files_count, :integer
@@ -35,7 +36,6 @@ class ChangeScmArch < ActiveRecord::Migration
     add_column :scm_files, :company_id, :integer
     add_column :scm_files, :project_id, :integer
     add_column :scm_files, :name, :string
-    #remove_foreign_key(:scm_files, :scm_changeset_id, :scm_changeset)
     remove_index :scm_files, :scm_changeset_i
     remove_column :scm_files, :scm_changeset_id
 
