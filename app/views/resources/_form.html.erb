@@ -16,8 +16,11 @@
   <br />
 
   <label for="resource_parent"><%= _("Parent resource") %></label>
-  <%= text_field_with_auto_complete(:resource, :parent_id, { :size => 15 },
-      { :select => "complete_value" }) %>
+  <%= text_field :resource, :parent_id, { :size => 15 } %>
+  <div id= "customer_name_autocomplete" class= "auto_complete" ></div>
+  <script type= "text/javascript">
+    autocomplete('#resource_parent_id', '#resource_parent_id_auto_complete', '/resources/auto_complete_for_resource_parent_id', function(a,b){});
+  </script>
   <br />
 
   <label for="resource_type"><%= _("Type") %></label>
