@@ -96,26 +96,6 @@ class ProjectFile < ActiveRecord::Base
     self.created_at
   end
 
-  def generate_thumbnail(size = 124)
-    image = ImageOperations::get_image( self.file_path ) rescue begin
-                                                                  return false
-                                                                  end 
-    if ImageOperations::is_image?(image)
-      # Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory
-      # very fast. 
-      res = %x[convert #{self.file_path}  -thumbnail "124x124" \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]
-      puts res
-
-#      thumb = ImageOperations::thumbnail(image, size)
-#      f = File.new(self.thumbnail_path, "w", 0777)
-#      f.write(thumb.to_blob)
-#      f.close
-    end
-    image = thumb = nil
-    GC.start
-    true
-  end 
-  
   # Lookup, guesstimate if fail, the file extension
   # For example:
   # 'text/rss+xml' => "xml"
@@ -129,10 +109,10 @@ class ProjectFile < ActiveRecord::Base
   def generate_thumbnail(size = 124)
     image = ImageOperations::get_image( self.file_path ) rescue begin
                                                                   return false
-                                                                  end 
+                                                                  end
     if ImageOperations::is_image?(image)
       # Call ImageMagick from the shell, as RMagick/ImageMagick runs out of memory
-      # very fast. 
+      # very fast.
       res = %x[convert #{self.file_path}  -thumbnail "124x124" \\( +clone -background \\\#222222 -shadow 60x4+4+4 \\) +swap -background \\\#fafafa -layers merge +repage /tmp/thumb.jpg; mv /tmp/thumb.jpg #{self.thumbnail_path}]
       puts res
 
@@ -144,8 +124,8 @@ class ProjectFile < ActiveRecord::Base
     image = thumb = nil
     GC.start
     true
-  end 
-  
+  end
+
 end
 
 
