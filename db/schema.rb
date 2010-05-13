@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100511102106) do
+ActiveRecord::Schema.define(:version => 20100513072519) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -325,6 +325,10 @@ ActiveRecord::Schema.define(:version => 20100511102106) do
     t.string   "mime_type",                        :default => "application/octet-stream"
     t.integer  "project_folder_id"
     t.integer  "user_id"
+    t.string   "file_file_name"
+    t.string   "file_content_type"
+    t.integer  "file_file_size"
+    t.datetime "file_updated_at"
   end
 
   add_index "project_files", ["company_id"], :name => "project_files_company_id_index"
