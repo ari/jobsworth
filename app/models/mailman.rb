@@ -163,30 +163,8 @@ class Mailman < ActionMailer::Base
     task_file.project = target.project
     task_file.task = target
     task_file.user = e.user
-    task_file.filename = attachment.original_filename
-    task_file.name = attachment.original_filename
-    task_file.file_size = 0
+    task_file.file=attachment
     task_file.save
-
-    task_file.reload
-
-    if !File.directory?(task_file.path)
-      File.umask(0)
-      Dir.mkdir(task_file.path, 0777) rescue nil
-    end
-
-    File.umask(0)
-    begin
-      File.open(task_file.file_path, "wb", 0777) { |f| f.write( attachment.read ) }
-    rescue
-      task_file.destroy
-      task_file = nil
-    end
-
-    if task_file
-      task_file.file_size = File.size(task_file.file_path)
-      task_file.save
-    end
   end
 
   def create_task_from_email(email, project)
