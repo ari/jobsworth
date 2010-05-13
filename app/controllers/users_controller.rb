@@ -310,8 +310,9 @@ class UsersController < ApplicationController
       colModel << {'name' => attr.name.downcase }
       logger.info "Property '#{attr.name}' missing, adding to task list model."
     end
-
-    render :json => colModel
+    order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]
+    column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
+    render :json => { :colModel=>colModel, :currentSort=>{ :order=>order, :column => column}}
   end
 private
   def protect_admin_area

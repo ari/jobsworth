@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100504153034) do
+ActiveRecord::Schema.define(:version => 20100511102106) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -472,8 +472,6 @@ ActiveRecord::Schema.define(:version => 20100504153034) do
   add_index "resources_tasks", ["task_id"], :name => "index_resources_tasks_on_task_id"
 
   create_table "scm_changesets", :force => true do |t|
-    t.integer  "company_id"
-    t.integer  "project_id"
     t.integer  "user_id"
     t.integer  "scm_project_id"
     t.string   "author"
@@ -481,24 +479,21 @@ ActiveRecord::Schema.define(:version => 20100504153034) do
     t.datetime "commit_date"
     t.string   "changeset_rev"
     t.text     "message"
+    t.integer  "scm_files_count"
+    t.integer  "task_id"
   end
 
   add_index "scm_changesets", ["author"], :name => "scm_changesets_author_index"
   add_index "scm_changesets", ["commit_date"], :name => "scm_changesets_commit_date_index"
-  add_index "scm_changesets", ["company_id"], :name => "fk_scm_changesets_company_id"
   add_index "scm_changesets", ["user_id"], :name => "fk_scm_changesets_user_id"
 
   create_table "scm_files", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "company_id"
-    t.text     "name"
-    t.text     "path"
-    t.string   "state"
-    t.datetime "commit_date"
+    t.text    "path"
+    t.string  "state"
+    t.integer "scm_changeset_id"
   end
 
-  add_index "scm_files", ["company_id"], :name => "fk_scm_files_company_id"
-  add_index "scm_files", ["project_id"], :name => "scm_files_project_id_index"
+  add_index "scm_files", ["scm_changeset_id"], :name => "index_scm_files_on_scm_changeset_id"
 
   create_table "scm_projects", :force => true do |t|
     t.integer  "project_id"
@@ -509,26 +504,10 @@ ActiveRecord::Schema.define(:version => 20100504153034) do
     t.datetime "last_checkout"
     t.text     "module"
     t.text     "location"
+    t.string   "secret_key"
   end
 
   add_index "scm_projects", ["company_id"], :name => "fk_scm_projects_company_id"
-
-  create_table "scm_revisions", :force => true do |t|
-    t.integer  "company_id"
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.integer  "scm_changeset_id"
-    t.integer  "scm_file_id"
-    t.string   "revision"
-    t.string   "author"
-    t.datetime "commit_date"
-    t.string   "state"
-  end
-
-  add_index "scm_revisions", ["company_id"], :name => "fk_scm_revisions_company_id"
-  add_index "scm_revisions", ["scm_changeset_id"], :name => "scm_revisions_scm_changeset_id_index"
-  add_index "scm_revisions", ["scm_file_id"], :name => "scm_revisions_scm_file_id_index"
-  add_index "scm_revisions", ["user_id"], :name => "fk_scm_revisions_user_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id"
@@ -843,21 +822,20 @@ ActiveRecord::Schema.define(:version => 20100504153034) do
   add_index "wiki_revisions", ["wiki_page_id"], :name => "wiki_revisions_wiki_page_id_index"
 
   create_table "work_logs", :force => true do |t|
-    t.integer  "user_id",          :default => 0,     :null => false
+    t.integer  "user_id",         :default => 0,     :null => false
     t.integer  "task_id"
-    t.integer  "project_id",       :default => 0,     :null => false
-    t.integer  "company_id",       :default => 0,     :null => false
-    t.integer  "customer_id",      :default => 0,     :null => false
-    t.datetime "started_at",                          :null => false
-    t.integer  "duration",         :default => 0,     :null => false
+    t.integer  "project_id",      :default => 0,     :null => false
+    t.integer  "company_id",      :default => 0,     :null => false
+    t.integer  "customer_id",     :default => 0,     :null => false
+    t.datetime "started_at",                         :null => false
+    t.integer  "duration",        :default => 0,     :null => false
     t.text     "body"
-    t.integer  "log_type",         :default => 0
-    t.integer  "scm_changeset_id"
-    t.integer  "paused_duration",  :default => 0
-    t.boolean  "comment",          :default => false
+    t.integer  "log_type",        :default => 0
+    t.integer  "paused_duration", :default => 0
+    t.boolean  "comment",         :default => false
     t.datetime "exported"
     t.boolean  "approved"
-    t.integer  "access_level_id",  :default => 1
+    t.integer  "access_level_id", :default => 1
   end
 
   add_index "work_logs", ["company_id"], :name => "work_logs_company_id_index"

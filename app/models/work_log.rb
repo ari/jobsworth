@@ -12,7 +12,6 @@ class WorkLog < ActiveRecord::Base
   belongs_to :project
   belongs_to :customer
   belongs_to :task
-  belongs_to :scm_changeset
   belongs_to :access_level
 
   has_one    :ical_entry, :dependent => :destroy
@@ -102,12 +101,7 @@ class WorkLog < ActiveRecord::Base
   def self.create_task_created!(task, user)
     worklog = WorkLog.new
     worklog.user = user
-    worklog.company = task.project.company
-    worklog.customer = task.project.customer
-    worklog.project = task.project
-    worklog.task = task
-    worklog.started_at = Time.now.utc
-    worklog.duration = 0
+    worklog.for_task(task)
     worklog.log_type = EventLog::TASK_CREATED
     worklog.user_input =  task.description
 
@@ -223,6 +217,14 @@ class WorkLog < ActiveRecord::Base
       end
     end
   end
+  def for_task(task)
+    self.task=task
+    self.project=task.project
+    self.company= task.project.company
+    self.customer= task.project.customer
+    self.started_at= Time.now.utc
+    self.duration = 0
+  end
 private
   def mark_as_unread
     task.users.find(:all, :conditions=> ["users.id != ? and users.access_level_id >=?", user_id, access_level_id]).each do |user|
@@ -246,7 +248,6 @@ end
 #  duration         :integer(4)      default(0), not null
 #  body             :text
 #  log_type         :integer(4)      default(0)
-#  scm_changeset_id :integer(4)
 #  paused_duration  :integer(4)      default(0)
 #  comment          :boolean(1)      default(FALSE)
 #  exported         :datetime

@@ -139,4 +139,23 @@ describe WorkLog do
                                                                                 :conditions=> ["task_users.user_id != ? ", @work_log.user_id ])
     end
   end
+  describe "#for_task(task)" do
+    before(:each) do
+      @task= Task.make
+      @work_log= WorkLog.new
+      @work_log.for_task(@task)
+    end
+    it "should set self.task to task" do
+      @work_log.task.should == @task
+    end
+    it "should set self.project to task.project" do
+      @work_log.project.should == @task.project
+    end
+    it "should set self.company to task.project.company" do
+      @work_log.company.should == @task.project.company
+    end
+    it "should set self.customer to task.project.customer" do
+      @work_log.customer.should == @task.project.customer
+    end
+  end
 end

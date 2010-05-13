@@ -302,12 +302,7 @@ class TasksController < ApplicationController
 
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
+      worklog.for_task(@task)
       worklog.log_type = EventLog::TASK_ARCHIVED
       worklog.body = ""
       worklog.save
@@ -380,12 +375,7 @@ class TasksController < ApplicationController
 
       worklog = WorkLog.new
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
+      worklog.for_task(@task)
       worklog.log_type = EventLog::TASK_RESTORED
       worklog.body = ""
       worklog.save
@@ -429,8 +419,8 @@ class TasksController < ApplicationController
   end
 
   def toggle_history
-    session[:only_comments] ||= 0
-    session[:only_comments] = 1 - session[:only_comments]
+    session[:only_comments] ||= false
+    session[:only_comments] = ! session[:only_comments]
 
     @task = Task.accessed_by(current_user).find(params[:id])
   end
@@ -516,7 +506,6 @@ class TasksController < ApplicationController
 
     render :text => updated.to_s
   end
-
 protected
   ###
   # Sets up the attributes needed to display new action
@@ -539,7 +528,6 @@ protected
 
   # setup some instance variables for task list views
   def list_init
-    # @tasks = current_task_filter.tasks
     @ajax_task_links = true
   end
 
@@ -576,6 +564,8 @@ protected
     Task
   end
   def tasks_for_list
+    session[:jqgrid_sort_column]= params[:sidx] unless params[:sidx].nil?
+    session[:jqgrid_sort_order] = params[:sord] unless params[:sord].nil?
     current_task_filter.tasks_for_jqgrid(params)
   end
   #this method so big and complicated, so I can't find proper name for it
@@ -676,12 +666,7 @@ protected
         worklog.user_input_add params[:comment]
       end
       worklog.user = current_user
-      worklog.company = @task.project.company
-      worklog.customer = @task.project.customer
-      worklog.project = @task.project
-      worklog.task = @task
-      worklog.started_at = Time.now.utc
-      worklog.duration = 0
+      worklog.for_task(@task)
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
       worklog.send_notifications(@update_type) if worklog.comment?
@@ -707,6 +692,7 @@ protected
   #NOTE: this code is very fragile
   #TODO: find sophisticated solution
   def copy_todos_from_template(id, task)
+    return unless id.to_i > 0
     template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
     if template.nil?
       #this is not template, just regular task

@@ -1,25 +1,12 @@
 class ScmFile < ActiveRecord::Base
-  has_many :scm_revisions, :dependent => :destroy
-  belongs_to :project
-  belongs_to :company
+  belongs_to :scm_changeset, :counter_cache => true
 end
-
 
 # == Schema Information
 #
 # Table name: scm_files
 #
 #  id          :integer(4)      not null, primary key
-#  project_id  :integer(4)
-#  company_id  :integer(4)
-#  name        :text
 #  path        :text
 #  state       :string(255)
-#  commit_date :datetime
-#
-# Indexes
-#
-#  scm_files_project_id_index  (project_id)
-#  fk_scm_files_company_id     (company_id)
-#
 

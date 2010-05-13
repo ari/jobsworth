@@ -191,11 +191,8 @@ class WorklogReport
     if t.users.size > 0
       t.users.each do |u|
         w = WorkLog.new
-        w.task = t
+        w.for_task(t)
         w.user_id = u.id
-        w.company = t.company
-        w.customer = t.project.customer
-        w.project = t.project
         w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
         w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
         w.duration = t.duration.to_i * 60
@@ -203,10 +200,7 @@ class WorklogReport
       end
     else
       w = WorkLog.new
-      w.task_id = t.id
-      w.company_id = t.company_id
-      w.customer_id = t.project.customer_id
-      w.project_id = t.project_id
+      w.for_task(t)
       w.started_at = (t.due_at ? t.due_at : (t.milestone ? t.milestone.due_at : tz.now) )
       w.started_at = tz.now if w.started_at.nil? || w.started_at.to_s == ""
       w.duration = t.duration.to_i * 60
