@@ -66,7 +66,6 @@ Rails::Initializer.run do |config|
 
   if !JAVA
     config.gem 'mysql'
-    config.gem 'rmagick', :lib => 'RMagick'
     config.gem 'json'
   end
 
