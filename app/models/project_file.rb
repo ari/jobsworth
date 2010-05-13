@@ -3,6 +3,7 @@
 # Possibly belongs to a task (attachment), or a ProjectFolder
 
 class ProjectFile < ActiveRecord::Base
+  has_attached_file :file, :styles=>{ :thumbnail=>"124x124"}, :path => File.join("#{RAILS_ROOT}", 'store') + "/:id_:basename_:style.:extension"
 
   FILETYPE_IMG          = 1
 
@@ -52,32 +53,30 @@ class ProjectFile < ActiveRecord::Base
     l.created_at = r.created_at
     l.save
   }
-
-  after_destroy { |r|
-    File.delete(r.file_path) rescue begin end
-    File.delete(r.thumbnail_path) rescue begin end
-  }
-
-  def path
-    File.join("#{RAILS_ROOT}", 'store', self.company_id.to_s)
-  end
-
-  def store_name
-    "#{self.id}#{"_" + self.task_id.to_s if self.task_id.to_i > 0}_#{self.filename}"
+  before_post_process :check_file_type
+  def check_file_type
+     ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
 
   def file_path
-    File.join(self.path, self.store_name)
+    file.path
+  end
+  def file_size
+    file.size
+  end
+
+  def filename
+    self.file_file_name
   end
 
   # The thumbnails are jpg's even though they keep
   # their original extension.
   def thumbnail_path
-    File.join(path, "thumb_" + self.store_name)
+    file.path(:thumbnail)
   end
 
   def thumbnail?
-    File.exist?(thumbnail_path)
+    File.exist?(self.thumbnail_path)
   end
 
   def name
@@ -94,6 +93,9 @@ class ProjectFile < ActiveRecord::Base
 
   def started_at
     self.created_at
+  end
+  def mime_type
+    self.file_content_type
   end
 
   # Lookup, guesstimate if fail, the file extension
