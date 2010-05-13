@@ -142,71 +142,22 @@ class ProjectFilesController < ApplicationController
     end
 
     params['tmp_files'].each_with_index do |tmp_file,idx|
-      next unless tmp_file.respond_to?('original_filename')
-      filename = tmp_file.original_filename
-      next if filename.nil? || filename.strip.length == 0
-      filename = filename.split("/").last
-      filename = filename.split("\\").last
-
-      filename.gsub!(/[^\w.]/, '_')
+      next if !tmp_file.respond_to?('original_filename') or tmp_file.original_filename.nil? or tmp_file.original_filename.strip.empty?
 
       project_file = ProjectFile.new
       project_file.project_id = params['file']['project_id'].to_i
       project_file.project_folder_id = params['file']['project_folder_id']
-
       project_file.company_id = current_user.company_id
       project_file.user_id = current_user.id
-      project_file.filename = filename
       project_file.name = params['file_names'][idx] unless params['file_names'].blank? || params['file_names'][idx].blank?
-      project_file.save
-      project_file.reload
-      project_file.customer_id = project_file.project.customer_id
-
-      if !File.exist?(project_file.path) || !File.directory?(project_file.path)
-        File.umask(0)
-        Dir.mkdir(project_file.path, 0777) rescue begin
-                                                    project_file.destroy
-                                                    flash['notice'] = _('Unable to create storage directory.')
-                                                    redirect_to :action => 'list', :id => params[:file][:project_folder_id]
-                                                    return
-                                                  end
+      project_file.customer_id = Project.find(project_file.project_id).customer_id
+      project_file.file= tmp_file
+      unless project_file.save
+        flash['notice'] = _('Unable to save file.') + " [#{project_file.filename}]"
+        redirect_to :action => 'list', :id => params[:file][:project_folder_id]
+      else
+        project_files << project_file
       end
-      File.umask(0)
-      File.open(project_file.file_path, "wb", 0777) { |f| f.write( tmp_file.read ) } rescue begin
-                                                                                              project_file.destroy
-                                                                                              flash['notice'] = _("Permission denied while saving file.")
-                                                                                              redirect_to :action => 'list', :id => params[:file][:project_folder_id]
-                                                                                              return
-                                                                                            end
-
-      if( File.size?(project_file.file_path).to_i > 0 )
-        project_file.file_size = File.size?( project_file.file_path )
-
-        if project_file.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && project_file.file_size > 0
-          image = ImageOperations::get_image(project_file.file_path )
-          if ImageOperations::is_image?(image)
-            project_file.file_type = ProjectFile::FILETYPE_IMG
-            project_file.mime_type = image.mime_type
-            thumb = ImageOperations::thumbnail(image,124)
-
-            File.umask(0)
-            t = File.new(project_file.thumbnail_path, "w", 0777)
-            t.write(thumb.to_blob)
-            t.close
-          end
-        end
-        GC.start
-
-
-        unless project_file.save
-          flash['notice'] = _('Unable to save file.') + " [#{project_file.filename}]"
-          redirect_to :action => 'list', :id => params[:file][:project_folder_id]
-        else
-          project_files << project_file
-        end
-
-      end
-
     end
 
     responds_to_parent do
