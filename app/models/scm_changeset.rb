@@ -86,7 +86,7 @@ class ScmChangeset < ActiveRecord::Base
     end
     case params[:provider]
       when 'github' then github_parser(params[:payload])
-      when 'google' then google_parser(params[:payload])
+      when 'google', 'json' then google_parser(params[:payload])
       else return false
     end.collect do |changeset|
       scm_changeset=ScmChangeset.new(changeset)
