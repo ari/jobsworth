@@ -201,7 +201,6 @@ class ProjectFilesController < ApplicationController
         end
         GC.start
 
-        project_file.file_type = file_type_from_filename(filename) if project_file.file_type != ProjectFile::FILETYPE_IMG
 
         unless project_file.save
           flash['notice'] = _('Unable to save file.') + " [#{project_file.filename}]"
@@ -326,48 +325,4 @@ class ProjectFilesController < ApplicationController
     end
 
   end
-
-
-  private
-
-  def file_type_from_filename(filename)
-    file_types = {
-      'doc'  => ProjectFile::FILETYPE_DOC,
-      'txt'  => ProjectFile::FILETYPE_TXT,
-      'xls'  => ProjectFile::FILETYPE_XLS,
-      'sxc'  => ProjectFile::FILETYPE_XLS,
-      'csv'  => ProjectFile::FILETYPE_XLS,
-      'avi'  => ProjectFile::FILETYPE_AVI,
-      'mpeg' => ProjectFile::FILETYPE_AVI,
-      'mpg'  => ProjectFile::FILETYPE_AVI,
-      'mov'  => ProjectFile::FILETYPE_MOV,
-      'swf'  => ProjectFile::FILETYPE_SWF,
-      'fla'  => ProjectFile::FILETYPE_FLA,
-      'xml'  => ProjectFile::FILETYPE_XML,
-      'html' => ProjectFile::FILETYPE_HTML,
-
-      'css' => ProjectFile::FILETYPE_CSS,
-      'zip' => ProjectFile::FILETYPE_ZIP,
-      'rar' => ProjectFile::FILETYPE_RAR,
-      'tgz' => ProjectFile::FILETYPE_TGZ,
-
-      'mp3'  => ProjectFile::FILETYPE_AUDIO,
-      'wav'  => ProjectFile::FILETYPE_AUDIO,
-      'ogg'  => ProjectFile::FILETYPE_AUDIO,
-      'aiff' => ProjectFile::FILETYPE_AUDIO,
-      'iso'  => ProjectFile::FILETYPE_ISO,
-      'sql'  => ProjectFile::FILETYPE_SQL,
-      'asf'  => ProjectFile::FILETYPE_ASF,
-      'wmv'  => ProjectFile::FILETYPE_WMV
-    }
-
-    _,ext = /\.([^\.]+)$/.match(filename).to_a
-
-    file_type = file_types[ext.downcase] if ext
-    file_type ||= ProjectFile::FILETYPE_UNKNOWN
-    file_type
-  end
-
-
-
 end
