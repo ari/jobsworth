@@ -37,7 +37,7 @@ class ProjectFilesController < ApplicationController
   def show
     @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
-    if @project_files.thumbnail? || @project_files.file_type == ProjectFile::FILETYPE_IMG
+    if @project_files.thumbnail? || @project_files.image?
       send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => 'inline'
     else
       send_file @project_files.file_path, :filename => @project_files.filename, :type => "application/octet-stream"

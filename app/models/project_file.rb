@@ -4,15 +4,11 @@
 
 class ProjectFile < ActiveRecord::Base
   has_attached_file :file, :styles=>{ :thumbnail=>"124x124"}, :path => File.join("#{RAILS_ROOT}", 'store') + "/:id_:basename_:style.:extension"
-
-  FILETYPE_IMG          = 1
-
   belongs_to    :project
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :user
   belongs_to    :task
-
   belongs_to    :project_folder
 
   has_many   :event_logs, :as => :target, :dependent => :destroy
@@ -26,8 +22,8 @@ class ProjectFile < ActiveRecord::Base
     l.created_at = r.created_at
     l.save
   }
-  before_post_process :check_file_type
-  def check_file_type
+  before_post_process :image?
+  def image?
      ! file_file_name[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i].nil?
   end
 
