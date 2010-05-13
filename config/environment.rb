@@ -61,6 +61,7 @@ Rails::Initializer.run do |config|
   config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   config.gem 'smurf'
+  config.gem 'paperclip'
 #  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
 
   if !JAVA
