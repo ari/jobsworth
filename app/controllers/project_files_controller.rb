@@ -63,9 +63,9 @@ class ProjectFilesController < ApplicationController
     @project_files = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
     if (@project_files.mime_type =~ /image.*/)
       disposition = "inline"
-	else
+  else
       disposition = "attachment"
-	end
+  end
     send_file @project_files.file_path, :filename => @project_files.filename, :type => @project_files.mime_type, :disposition => disposition
   end
 
@@ -135,18 +135,18 @@ class ProjectFilesController < ApplicationController
 
   def upload
     project_files = []
-    if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0 
+    if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       flash['notice'] = _('No file selected.')
       responds_to_parent do
         render :update do |page|
           page.visual_effect(:shake,'inline_form')
-        end 
+        end
       end
       return
     end
 
     params['tmp_files'].each_with_index do |tmp_file,idx|
-	    next unless tmp_file.respond_to?('original_filename')
+      next unless tmp_file.respond_to?('original_filename')
       filename = tmp_file.original_filename
       next if filename.nil? || filename.strip.length == 0
       filename = filename.split("/").last
@@ -188,10 +188,10 @@ class ProjectFilesController < ApplicationController
 
         if project_file.filename[/\.gif|\.png|\.jpg|\.jpeg|\.tif|\.bmp|\.psd/i] && project_file.file_size > 0
           image = ImageOperations::get_image(project_file.file_path )
-					if ImageOperations::is_image?(image)
+          if ImageOperations::is_image?(image)
             project_file.file_type = ProjectFile::FILETYPE_IMG
             project_file.mime_type = image.mime_type
-						thumb = ImageOperations::thumbnail(image,124)
+            thumb = ImageOperations::thumbnail(image,124)
 
             File.umask(0)
             t = File.new(project_file.thumbnail_path, "w", 0777)
@@ -200,7 +200,7 @@ class ProjectFilesController < ApplicationController
           end
         end
         GC.start
-      
+
         project_file.file_type = file_type_from_filename(filename) if project_file.file_type != ProjectFile::FILETYPE_IMG
 
         unless project_file.save
@@ -208,24 +208,24 @@ class ProjectFilesController < ApplicationController
           redirect_to :action => 'list', :id => params[:file][:project_folder_id]
         else
           project_files << project_file
-        end 
+        end
 
-      end 
+      end
 
-    end 
+    end
 
     responds_to_parent do
       render :update do |page|
-        if project_files.size > 0 
+        if project_files.size > 0
           page.hide('inline_form')
           project_files.each do |project_file|
             page.insert_html :after, 'dir_sep', :partial => 'file_cell',  :locals => { :project_files => project_file }
             page.visual_effect(:highlight, "file_cell_#{project_file.id}", :duration => 2.0)
-          end 
+          end
         else
           page.visual_effect(:shake,'inline_form')
-        end 
-      end 
+        end
+      end
 
     end
   end
@@ -249,12 +249,6 @@ class ProjectFilesController < ApplicationController
       flash['notice'] = _("No such file.")
       redirect_to :action => 'list'
       return
-    end
-
-    begin
-      File.delete(@file.file_path)
-      File.delete(@file.thumbnail_path)
-    rescue
     end
     l = @file.event_logs.new
     l.company_id = @file.company_id
@@ -335,10 +329,10 @@ class ProjectFilesController < ApplicationController
 
 
   private
-  
+
   def file_type_from_filename(filename)
-    file_types = { 
-      'doc'  => ProjectFile::FILETYPE_DOC, 
+    file_types = {
+      'doc'  => ProjectFile::FILETYPE_DOC,
       'txt'  => ProjectFile::FILETYPE_TXT,
       'xls'  => ProjectFile::FILETYPE_XLS,
       'sxc'  => ProjectFile::FILETYPE_XLS,
