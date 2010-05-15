@@ -15,6 +15,10 @@ class ScmProjectsController < ApplicationController
     end
   end
 
+  def show
+    @scm_project=ScmProject.find(params[:id])
+  end
+
 private
   def check_access
     unless current_user.create_projects?
