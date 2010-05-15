@@ -53,3 +53,10 @@ Spec::Runner.configure do |config|
   #
   # For more information take a look at Spec::Runner::Configuration and Spec::Runner
 end
+
+def login_user(params={ })
+  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true ))
+  session[:user_id]=user.id
+  session[:remember_until] = Time.now + 1.week
+  controller.stub!(:current_user).and_return(user)
+end

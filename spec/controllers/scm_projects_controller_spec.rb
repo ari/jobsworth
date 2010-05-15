@@ -1,11 +1,4 @@
 require 'spec_helper'
-def login_user(params={ })
-  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true ))
-  session[:user_id]=user.id
-  session[:remember_until] = Time.now + 1.week
-  controller.stub!(:current_user).and_return(user)
-end
-
 describe ScmProjectsController do
   before(:each) do
     @scm_project= mock_model(ScmProject)
