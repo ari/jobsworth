@@ -21,4 +21,33 @@ describe ScmChangesetsController do
       end
     end
   end
+  describe "GET list" do
+    before(:each) do
+      login_user
+    end
+    context "with valid params" do
+      before(:each) do
+        ScmChangeset.should_receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return([mock_model(ScmChangeset)])
+        get :list, 'these'=>'params'
+      end
+      it "should respond ok" do
+        response.should be_success
+      end
+      it "should render list template" do
+        response.should render_template('list')
+      end
+    end
+    context "with invalid params" do
+      before(:each) do
+        ScmChangeset.should_receive(:for_list).with( 'these'=> "params" , "action"=>"list", "controller"=>"scm_changesets").and_return(nil)
+        get :list, 'these'=>'params'
+      end
+      it "should respond ok" do
+        response.should be_success
+      end
+      it "should render empty body" do
+        response.body.should be_empty
+      end
+    end
+  end
 end
