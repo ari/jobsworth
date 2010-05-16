@@ -223,4 +223,25 @@ describe ScmChangeset do
       ScmChangeset.create_from_web_hook(@params).should == false
     end
   end
+  describe ".for_list method" do
+    before(:each) do
+      @task=Task.make
+      2.times{ ScmChangeset.make(:task=>@task) }
+      2.times{ ScmChangeset.make(:scm_project=>@scm_project) }
+      2.times{ ScmChangeset.make }
+    end
+    it "should find all changesets by params[:task_id]" do
+      changesets = ScmChangeset.for_list(:task_id=>@task.id)
+      changesets.should have(2).changesets
+      changesets.each { |changeset| changeset.task.should == @task}
+    end
+    it "should find all changesets by params[:scm_project_id" do
+      changesets = ScmChangeset.for_list(:scm_project_id => @scm_project.id)
+      changesets.should have(2).changesets
+      changesets.each { |changeset| changeset.scm_project.should == @scm_project }
+    end
+    it "should return nil if not preseted params[:task_id] nor params[:scm_project_id]" do
+      ScmChangeset.for_list(:parameter => 1).should be_nil
+    end
+  end
 end

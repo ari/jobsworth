@@ -150,6 +150,7 @@ ScmChangeset.blueprint do
   scm_project
   message { Sham.comment }
   author  { Sham.name }
-  commit_date { Time.now -3.days }
+  commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
+  task
 end

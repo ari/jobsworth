@@ -95,6 +95,18 @@ class ScmChangeset < ActiveRecord::Base
       scm_changeset
     end
   end
+
+  def ScmChangeset.for_list(params)
+    conditions={ }
+    unless params[:scm_project_id].blank?
+      conditions[:scm_project_id]= params[:scm_project_id]
+    end
+    unless params[:task_id].blank?
+      conditions[:task_id]=params[:task_id]
+    end
+    return nil if conditions.empty?
+    ScmChangeset.all(:conditions=>conditions)
+  end
 end
 
 
