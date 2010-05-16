@@ -9,11 +9,13 @@ class MoveOldFilesToPaperclip < ActiveRecord::Migration
           file.file= File.new(full_name)
           file.save!
         rescue Exception => e
-          puts "Call to parerclip raise an exception"
-          puts "File: #{full_name}"
-          puts "Paperclip.options hash:"
-          p Paperclip.options
-          raise e
+          str= "\nCall to parerclip raise an exception\n"
+          str<< "ProjectFile object inspect:\n"
+          str<< file.inspect
+          str<< "\nFile: #{full_name}\n"
+          str<< "Paperclip.options hash:\n"
+          str<< Paperclip.options.inspect
+          raise e, e.message + str
         end
       end
     end
