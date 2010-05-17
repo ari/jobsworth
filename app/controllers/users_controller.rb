@@ -27,6 +27,10 @@ class UsersController < ApplicationController
     @user.date_format = "%d/%m/%Y"
     @user.time_format = "%H:%M"
 
+    if params[:user][:admin].to_i <= current_user.admin
+      @user.admin=params[:user][:admin]
+    end
+
     if @user.save
 
       if params[:copy_user].to_i > 0
@@ -61,8 +65,8 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
-    if params[:user][:admin].to_i > current_user.admin
-      params[:user][:admin] = current_user.admin
+    if params[:user][:admin].to_i <= current_user.admin
+      @user.admin=params[:user][:admin]
     end
 
     if @user.update_attributes(params[:user])
@@ -84,7 +88,7 @@ class UsersController < ApplicationController
 
   def update_preferences
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    if @user.update_attributes(params[:user])
+    if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
@@ -316,7 +320,7 @@ class UsersController < ApplicationController
   end
 private
   def protect_admin_area
-    if current_user.admin == 0
+    unless current_user.admin?
       flash['notice'] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return false

@@ -74,7 +74,7 @@ class User < ActiveRecord::Base
   after_create      :generate_widgets
   before_validation_on_create :set_date_time_formats
 
-  attr_protected :uuid, :autologin
+  attr_protected :uuid, :autologin, :admin, :company_id
 
   named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
 
