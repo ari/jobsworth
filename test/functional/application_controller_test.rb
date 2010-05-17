@@ -37,9 +37,9 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test "clients menu item should show for non admin users with read client option" do
     user = users(:admin)
-    user.update_attributes(:read_clients => true, :admin => false,
-                           :option_externalclients => true)
-
+    user.update_attributes(:read_clients => true, :option_externalclients => true)
+    user.admin=false
+    user.save!
     get :index
     assert_response :success
     assert_tag(:a, :attributes => { :href => "/clients/list" })
@@ -47,9 +47,9 @@ class ApplicationControllerTest < ActionController::TestCase
 
   test "clients menu item should not show for non admin users without read client option" do
     user = users(:admin)
-    user.update_attributes(:read_clients => false, :admin => false,
-                           :option_externalclients => true)
-
+    user.update_attributes(:read_clients => false, :option_externalclients => true)
+    user.admin=false
+    user.save!
     get :index
     assert_response :success
     assert_no_tag(:a, :attributes => { :href => "/clients/list" })

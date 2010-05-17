@@ -7,15 +7,17 @@ class ClientsControllerTest < ActionController::TestCase
     login
     @user = users(:tester)
     @user.update_attributes(:read_clients => false, :edit_clients => false,
-                           :create_clients => false, :admin => false, 
-                            :option_externalclients => true)
+                           :create_clients => false, :option_externalclients => true)
+    @user.admin=false
+    @user.save!
     @request.session[:user_id] = @user.id
     @client = @user.company.customers.first
     assert_not_nil @client
   end
 
   test "admin user should be able to access all actions" do
-    @user.update_attributes(:admin => true)
+    @user.admin=true
+    @user.save!
 
     get :index
     assert_redirected_to :action => "list"
@@ -129,18 +131,18 @@ class ClientsControllerTest < ActionController::TestCase
       should "see resources on edit page" do
         assert_tag :tag => "legend", :content => "Resources"
       end
-    end 
+    end
 
     context "without resources access" do
       setup do
         @user.update_attributes(:use_resources => false)
         get :edit, :id => @client.id
       end
-      
+
       should "see not resources on edit page" do
         assert_no_tag :tag => "legend", :content => "Resources"
       end
-    end 
+    end
   end
 
   private
@@ -149,5 +151,5 @@ class ClientsControllerTest < ActionController::TestCase
     assert_response 302
     assert_equal "Access denied",  @response.flash["notice"]
   end
-  
+
 end

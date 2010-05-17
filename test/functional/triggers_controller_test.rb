@@ -4,7 +4,8 @@ class TriggersControllerTest < ActionController::TestCase
   context "a non-admin logged in user" do
     setup do
       @user = login
-      @user.update_attributes(:admin => 0)
+      @user.admin=false
+      @user.save!
       assert !@user.admin?
     end
 
@@ -37,7 +38,7 @@ class TriggersControllerTest < ActionController::TestCase
       filter = TaskFilter.make(:user => @user, :company => @user.company)
 
       assert_difference('Trigger.count') do
-        post(:create, :trigger => { 
+        post(:create, :trigger => {
                :task_filter_id => filter.id, :fire_on => "create" })
       end
 
