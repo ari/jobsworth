@@ -268,6 +268,24 @@ module ApplicationHelper
   end
 
   ###
+  # Return an html tag to display the icon for given task using
+  # the selected (in the session) icons to display.
+  ###
+  def task_icon(task)
+    icon_property = session[:icons].to_i
+
+    property = current_user.company.type_property
+    if icon_property != 0 and !property
+      property = current_user.company.properties.detect { |p| p.id == icon_property }
+    end
+
+    pv = task.property_value(property)
+    src = pv.icon_url if pv
+
+    return image_tag(src, :class => "tooltip", :alt => pv, :title => pv) if !src.blank?
+  end
+
+  ###
   # Returns a submit tag suitable for the given object.
   # (Create or Update)"
   ###
