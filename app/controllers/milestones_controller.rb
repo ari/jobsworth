@@ -71,8 +71,12 @@ class MilestonesController < ApplicationController
     @milestone.attributes = params[:milestone]
     due_date = nil
     if !params[:milestone][:due_at].nil? && params[:milestone][:due_at].length > 0
-      due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
-      @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
+      begin
+        due_date = DateTime.strptime( params[:milestone][:due_at], current_user.date_format )
+        @milestone.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute)
+      rescue Exception => e
+        @milestone.due_at= @old.due_at
+      end
     end
     if @milestone.save
 
