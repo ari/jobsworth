@@ -237,12 +237,6 @@ module ApplicationHelper
     true
   end
 
-  def has_popout?(t)
-    if t.is_a? Task
-      (@current_sheet && @current_sheet.task_id == t.id) || t.done?
-    end
-  end
-
   def use_tinymce
     @content_for_tinymce = ""
     content_for :tinymce do
