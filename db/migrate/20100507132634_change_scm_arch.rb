@@ -36,7 +36,7 @@ class ChangeScmArch < ActiveRecord::Migration
     add_column :scm_files, :company_id, :integer
     add_column :scm_files, :project_id, :integer
     add_column :scm_files, :name, :string
-    remove_index :scm_files, :scm_changeset_i
+    remove_index :scm_files, :scm_changeset_id
     remove_column :scm_files, :scm_changeset_id
 
     add_column :scm_changesets, :company_id, :integer

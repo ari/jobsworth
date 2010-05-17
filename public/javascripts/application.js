@@ -2,7 +2,6 @@ jQuery.noConflict();
 
 jQuery(document).ready(function(){
     jQuery('a.lightbox').nyroModal();
-    updateTooltips();
 });
 
 var lastElement = null;
@@ -64,9 +63,7 @@ function inline_image(el) {
  sets up tooltips in page.
 */
 function updateTooltips() {
-	if (useTooltips == 1) {
     jQuery('.tooltip').tooltip({showURL: false });
-  }
 }
 
 function UpdateDnD() {
@@ -107,7 +104,7 @@ function dateToWords(elem) {
     var date = elem.text();
     var text = date;
     var className = null;
-
+ 
     date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
     if (date !== null) {
@@ -242,7 +239,7 @@ jQuery(document).ready(function() {
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
 */
-function addSearchFilter(textField, selected) {
+function addSearchFilter(input, selected) {
     selected = jQuery(selected);
     var idName = selected.attr("data-id");
     var idValue = selected.attr("data-idval");
@@ -721,7 +718,7 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function setPageTarget(evt, selected) {
+function setPageTarget(input, selected) {
     var id = jQuery(selected).find(".id").val();
     var type = jQuery(selected).find(".type").val();
 
@@ -852,4 +849,40 @@ function highlightWatchers() {
 		});
 		jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
 	}
+}
+
+function autocomplete(input_field, output_list, path, after_callback) {
+              jQuery(input_field).attr("autocomplete", "off");
+              jQuery(input_field).keyup(function(){
+              jQuery.ajax({
+                'url': path,
+                'data': jQuery(input_field).attr("name")+ '='+ jQuery(input_field).val(),
+                'dataType': 'html',
+                'type': 'POST',
+                'success': function(data) {
+                    autocomplete_list= jQuery(output_list);
+                    var pos= jQuery(input_field).position();
+                    var left= pos.left+ "px";
+                    var top= 5+ pos.top+ jQuery(input_field).height()+ "px";
+                    autocomplete_list.empty().append(data)
+                    .css({
+                      'position': 'absolute',
+                      'left': left,
+                      'top': top,
+                      'width': jQuery(input_field).width(),
+                    })
+                    .show();                   
+                    autocomplete_list.find('li')
+                        .mouseover(function(){
+                        autocomplete_list.find('li').removeClass('selected');
+                          jQuery(this).addClass('selected');
+                        })
+                        .click(function(){
+                          jQuery(input_field).val(jQuery(this).text()); 
+                          autocomplete_list.hide();
+                          after_callback(input_field, this);
+                    });                     
+                 }                     
+              });
+            });               
 }

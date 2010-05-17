@@ -256,7 +256,9 @@ class UsersController < ApplicationController
     if !text.blank?
       conds = [ "lower(name) like ?", "%#{ text }%" ]
       @projects = current_user.company.projects.find(:all, :conditions => conds)
-    end
+    end  
+    render :layout => false
+
   end
 
   def project
@@ -268,6 +270,7 @@ class UsersController < ApplicationController
                           :project => project).save
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
+    
   end
 
   def set_preference
