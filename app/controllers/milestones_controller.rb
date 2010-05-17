@@ -1,15 +1,5 @@
 # Handle basic CRUD functionality regarding Milestones
 class MilestonesController < ApplicationController
-
-  def index
-    list
-    render :action => 'list'
-  end
-
-  def list
-    @milestones = Milestone.find(:all, :conditions => ["project_id = ?", session[:project].id], :order => "due_at")
-  end
-
   def new
     @milestone = Milestone.new
     @milestone.user = current_user
