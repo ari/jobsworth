@@ -144,47 +144,6 @@ class ApplicationController < ActionController::Base
     TimeParser.parse_time(current_user, input, minutes)
   end
 
-  def parse_repeat(r)
-    # every monday
-    # every 15th
-    # every last monday
-    # every 3rd tuesday
-    # every 01/02
-    # every 12 days
-
-    r = r.strip.downcase
-
-    return unless r[0..5] == 'every '
-
-    tokens = r[6..-1].split(' ')
-
-    mode = ""
-    args = []
-
-    if tokens.size == 1
-      Date::DAYNAMES.each do |d|
-        if d.downcase == tokens[0]
-          mode = "w"
-          args[0] = tokens[0]
-          break
-        end
-      end
-
-      if mode == ""
-        1.upto(Task::REPEAT_DATE.size) do |i|
-          if Task::REPEAT_DATE[i].include? tokens[0]
-            mode = 'm'
-            args[0] = i
-            break
-          end
-        end
-      end
-
-    end
-
-
-  end
-
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
     current_user.projects
