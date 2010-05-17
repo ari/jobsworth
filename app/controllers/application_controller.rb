@@ -206,14 +206,6 @@ class ApplicationController < ActionController::Base
     session[:last_active] ||= Time.now.utc
   end
 
-  def double_escape(txt)
-    res = txt.gsub(/channel-message-mine/,'channel-message-others')
-    res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
-    res = res.gsub(/'/, "\\\\'") # escape ' to \'
-    res = res.gsub(/"/, '\\\\"')
-    res
-  end
-
   ###
   # Returns the list to use for auto completes for user names.
   ###
