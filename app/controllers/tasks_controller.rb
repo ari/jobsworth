@@ -146,7 +146,7 @@ class TasksController < ApplicationController
 
       @task.set_users_dependencies_resources(params, current_user)
 
-      create_attachments(@task)
+      @task.create_attachments(params, current_user)
 
       ############ code smell begin ####################
       # this code used to create tasks from task template
@@ -445,25 +445,6 @@ class TasksController < ApplicationController
     render :text => updated.to_s
   end
 protected
-  def create_attachments(task)
-    filenames = []
-    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = task.project.customer
-        task_file.project = task.project
-        task_file.task_id = task.id
-        task_file.user_id = current_user.id
-        task_file.file=tmp_file
-        task_file.save!
-
-        filenames << task_file.file_file_name
-      end
-    end
-    return filenames
-  end
   ###
   # Sets up the attributes needed to display new action
   ###
@@ -601,7 +582,7 @@ protected
       end
     end
 
-    files = create_attachments(@task)
+    files = @task.create_attachments(params, current_user)
     files.each do |filename|
       body << "- <strong>Attached</strong>: #{filename}\n"
     end
