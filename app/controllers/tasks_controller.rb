@@ -286,38 +286,12 @@ class TasksController < ApplicationController
   end
 
   def ajax_hide
-    @task = Task.accessed_by(current_user).find(params[:id])
-
-    unless @task.hidden == 1
-      @task.hidden = 1
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_ARCHIVED
-      worklog.body = ""
-      worklog.save
-    end
-
+    hide_task(params[:id])
     render :nothing => true
   end
 
   def ajax_restore
-    @task = Task.accessed_by(current_user).find(params[:id])
-    unless @task.hidden == 0
-      @task.hidden = 0
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_RESTORED
-      worklog.body = ""
-      worklog.save
-    end
+    hide_task(params[:id], 0)
     render :nothing => true
   end
 
@@ -445,6 +419,21 @@ class TasksController < ApplicationController
     render :text => updated.to_s
   end
 protected
+  def hide_task(id, hide=1)
+    task = Task.accessed_by(current_user).find(id)
+    unless task.hidden == hide
+      task.hidden = hide
+      task.updated_by_id = current_user.id
+      task.save
+
+      worklog = WorkLog.new
+      worklog.user = current_user
+      worklog.for_task(task)
+      worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
+      worklog.body = ""
+      worklog.save
+    end
+  end
   ###
   # Sets up the attributes needed to display new action
   ###
