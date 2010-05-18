@@ -120,7 +120,6 @@ class TasksController < ApplicationController
       @task.repeat = nil
     end
 
-    @task.company_id = current_user.company_id  #TODO: remove this line, company attached to task in line#101
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
