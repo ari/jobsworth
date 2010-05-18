@@ -21,7 +21,7 @@ class ScmProjectsController < ApplicationController
 
 private
   def check_access
-    unless current_user.create_projects?
+    unless current_user.admin?
       flash['notice'] = _"You're not allowed to create new scm project. Have your admin give you access."
       redirect_from_last
       return false

@@ -8,9 +8,6 @@
   <%= f.label :location, 'Project location' %>
   <%= f.text_field :location %>
   <br/>
-  <%= f.label :project_id, 'Project' %>
-  <%= f.select :project_id, current_user.projects.collect{|p| [p.name, p.id]} %>
-
   <p>
   <% if @scm_project.new_record? %>
     <%= submit_tag _("Create"), :class => 'nolabel' %>
