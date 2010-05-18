@@ -94,9 +94,9 @@ describe ScmChangeset do
     @valid_attributes[:author]= @user.name
     ScmChangeset.create!(@valid_attributes).user.should == @user
   end
-  context "message have task num in #(\d) format and tasks with this num exist in this project" do
+  context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
-      @task= Task.make(:company=>@scm_project.company, :project => @scm_project.project)
+      @task= Task.make(:company=>@scm_project.company)
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
