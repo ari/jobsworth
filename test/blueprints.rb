@@ -141,7 +141,6 @@ end
 
 ScmProject.blueprint do
   company
-  project { Project.make(:company=>company)}
   scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
   location
 end
