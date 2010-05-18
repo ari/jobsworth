@@ -992,6 +992,11 @@ class Task < ActiveRecord::Base
     (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
   end
 
+  def set_users_dependencies_resources(params, current_user)
+    set_users(params)
+    set_dependency_attributes(params[:dependencies], current_user)
+    set_resource_attributes(params[:resource])
+  end
   private
 
   # If creating a new work log with a duration, fails because it work log

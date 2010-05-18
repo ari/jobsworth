@@ -144,9 +144,7 @@ class TasksController < ApplicationController
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
-      @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_user)
-      @task.set_resource_attributes(params[:resource])
+      @task.set_users_dependencies_resources(params, current_user)
 
       create_attachments(@task)
 
@@ -249,11 +247,7 @@ class TasksController < ApplicationController
         else
           @task.repeat = nil
         end
-
-        @task.set_users(params)
-        @task.set_dependency_attributes(params[:dependencies], current_user)
-        @task.set_resource_attributes(params[:resource])
-
+        @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
 
