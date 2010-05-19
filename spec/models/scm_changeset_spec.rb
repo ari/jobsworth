@@ -222,6 +222,16 @@ describe ScmChangeset do
       @params[:provider]="not exist"
       ScmChangeset.create_from_web_hook(@params).should == false
     end
+    it "should rewrite changesets by (scm_project_id, changeset_rev)" do
+      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      changeset=ScmChangeset.last
+      message=changeset.message
+      changeset.message="changed"
+      changeset.save!
+      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      changeset.reload
+      changeset.message.should == message
+    end
   end
   describe ".for_list method" do
     before(:each) do
