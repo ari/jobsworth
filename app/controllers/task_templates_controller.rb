@@ -52,12 +52,7 @@ protected
   def create_worklogs_for_tasks_create
     #must be empty, templates not have worklogs
   end
-  #used for redirects in TasksController
-  def tasks_or_templates
-    "task_templates"
-  end
   def set_last_task(task)
     #empty method
   end
-
 end

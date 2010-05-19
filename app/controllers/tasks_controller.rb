@@ -275,7 +275,7 @@ class TasksController < ApplicationController
       return if request.xhr?
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
-      redirect_to "/#{tasks_or_templates}/list"
+      redirect_to :action=> "list"
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
       render :template => 'tasks/edit'
@@ -610,9 +610,6 @@ protected
     else
       @task.work_logs.last.send_notifications
     end
-  end
-  def tasks_or_templates
-    "tasks"
   end
   def set_last_task(task)
     session[:last_task_id] = task.id
