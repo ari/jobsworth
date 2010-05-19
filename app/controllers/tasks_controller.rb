@@ -120,7 +120,6 @@ class TasksController < ApplicationController
       @task.repeat = nil
     end
 
-    @task.company_id = current_user.company_id  #TODO: remove this line, company attached to task in line#101
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
@@ -145,11 +144,9 @@ class TasksController < ApplicationController
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
-      @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_user)
-      @task.set_resource_attributes(params[:resource])
+      @task.set_users_dependencies_resources(params, current_user)
 
-      create_attachments(@task)
+      @task.create_attachments(params, current_user)
 
       ############ code smell begin ####################
       # this code used to create tasks from task template
@@ -250,11 +247,7 @@ class TasksController < ApplicationController
         else
           @task.repeat = nil
         end
-
-        @task.set_users(params)
-        @task.set_dependency_attributes(params[:dependencies], current_user)
-        @task.set_resource_attributes(params[:resource])
-
+        @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
 
@@ -293,38 +286,12 @@ class TasksController < ApplicationController
   end
 
   def ajax_hide
-    @task = Task.accessed_by(current_user).find(params[:id])
-
-    unless @task.hidden == 1
-      @task.hidden = 1
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_ARCHIVED
-      worklog.body = ""
-      worklog.save
-    end
-
+    hide_task(params[:id])
     render :nothing => true
   end
 
   def ajax_restore
-    @task = Task.accessed_by(current_user).find(params[:id])
-    unless @task.hidden == 0
-      @task.hidden = 0
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_RESTORED
-      worklog.body = ""
-      worklog.save
-    end
+    hide_task(params[:id], 0)
     render :nothing => true
   end
 
@@ -452,24 +419,20 @@ class TasksController < ApplicationController
     render :text => updated.to_s
   end
 protected
-  def create_attachments(task)
-    filenames = []
-    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = task.project.customer
-        task_file.project = task.project
-        task_file.task_id = task.id
-        task_file.user_id = current_user.id
-        task_file.file=tmp_file
-        task_file.save!
+  def hide_task(id, hide=1)
+    task = Task.accessed_by(current_user).find(id)
+    unless task.hidden == hide
+      task.hidden = hide
+      task.updated_by_id = current_user.id
+      task.save
 
-        filenames << task_file.file_file_name
-      end
+      worklog = WorkLog.new
+      worklog.user = current_user
+      worklog.for_task(task)
+      worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
+      worklog.body = ""
+      worklog.save
     end
-    return filenames
   end
   ###
   # Sets up the attributes needed to display new action
@@ -608,7 +571,7 @@ protected
       end
     end
 
-    files = create_attachments(@task)
+    files = @task.create_attachments(params, current_user)
     files.each do |filename|
       body << "- <strong>Attached</strong>: #{filename}\n"
     end

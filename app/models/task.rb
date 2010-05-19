@@ -992,6 +992,30 @@ class Task < ActiveRecord::Base
     (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
   end
 
+  def set_users_dependencies_resources(params, current_user)
+    set_users(params)
+    set_dependency_attributes(params[:dependencies], current_user)
+    set_resource_attributes(params[:resource])
+  end
+  def create_attachments(params, current_user)
+    filenames = []
+    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+      params['tmp_files'].each do |tmp_file|
+        next if tmp_file.is_a?(String)
+        task_file = ProjectFile.new()
+        task_file.company = current_user.company
+        task_file.customer = self.project.customer
+        task_file.project = self.project
+        task_file.task_id = self.id
+        task_file.user_id = current_user.id
+        task_file.file=tmp_file
+        task_file.save!
+
+        filenames << task_file.file_file_name
+      end
+    end
+    return filenames
+  end
   private
 
   # If creating a new work log with a duration, fails because it work log
