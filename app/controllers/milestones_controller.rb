@@ -79,7 +79,7 @@ class MilestonesController < ApplicationController
       end
 
       flash[:notice] = _('Milestone was successfully updated.')
-      redirect_from_last
+      redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
     else
       render :action => 'edit'
     end
