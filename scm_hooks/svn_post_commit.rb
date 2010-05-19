@@ -3,12 +3,13 @@ require 'rubygems'
 require 'time'
 require 'net/http'
 require 'json'
+require 'net/https'
 
 
 # You will need to change the following two lines
 ########################
 jobsworth_url = "http://demo.getjobsworth.org"
-key ="1fbb4b951f5f"
+key = "1fbb4b951f5f"
 ########################
 
 receiver = jobsworth_url + "/api/scm/json/" + key
@@ -41,4 +42,13 @@ changed.each do |line|
   end
 end
 
-Net::HTTP.post_form(URI.parse(receiver), "payload" =>  { :revisions=>[commit] }.to_json )
+uri=URI.parse(receiver)
+if uri.scheme == 'https'
+  http = Net::HTTP.new(uri.host, 443)
+  http.use_ssl=true  
+  http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+else
+  http = Net::HTTP.new(uri.host)
+end
+http.post(uri.path, "payload=" +  { :revisions=>[commit] }.to_json )
+
