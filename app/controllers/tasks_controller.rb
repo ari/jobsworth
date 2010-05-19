@@ -139,22 +139,19 @@ class TasksController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @task.save!
+        @task.set_users_dependencies_resources(params, current_user)
+        @task.create_attachments(params, current_user)
         create_worklogs_for_tasks_create
       end
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
-      @task.set_users_dependencies_resources(params, current_user)
-
-      @task.create_attachments(params, current_user)
 
       ############ code smell begin ####################
       # this code used to create tasks from task template
       # must exist more elegancy solution
       copy_todos_from_template(params[:task][:id], @task)
       ############ code smell end #######################
-
-      @task.work_logs.each{ |w| w.send_notifications }
 
       flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
 
@@ -605,9 +602,14 @@ protected
     end
   end
   def create_worklogs_for_tasks_create
-        WorkLog.build_work_added_or_comment(@task, current_user, params)
-        @task.save! #FIXME: it saves worklog from line above
-        WorkLog.create_task_created!(@task, current_user)
+    WorkLog.build_work_added_or_comment(@task, current_user, params)
+    @task.save! #FIXME: it saves worklog from line above
+    WorkLog.create_task_created!(@task, current_user)
+    if @task.work_logs.first.comment?
+      @task.work_logs.first.send_notifications
+    else
+      @task.work_logs.last.send_notifications
+    end
   end
   def tasks_or_templates
     "tasks"

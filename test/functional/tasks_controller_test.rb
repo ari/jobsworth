@@ -300,7 +300,7 @@ class TasksControllerTest < ActionController::TestCase
           @new_task=assigns(:task)
         end
 
-        should "create work log with type TASK_CREATED, without time spend, with task description as a body  and send it" do
+        should "create work log with type TASK_CREATED, without time spend, with task description as a body  and not send it" do
           assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
@@ -317,9 +317,9 @@ class TasksControllerTest < ActionController::TestCase
           assert work_log.body =~ /#{@parameters[:comment]}/
         end
 
-        should "send two emails to each user, one with task description and one with comment" do
+        should "send one email to each user,  with comment" do
           assert_redirected_to "/activities/list"
-          assert_emails ( @new_task.users.length * 2)
+          assert_emails ( @new_task.users.length )
         end
       end
       context "without comment" do
@@ -366,7 +366,7 @@ class TasksControllerTest < ActionController::TestCase
           @new_task=assigns(:task)
         end
 
-        should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
+        should "create work log with type TASK_CREATED, without time spend, with task description as a body and not send it" do
           assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
@@ -384,9 +384,9 @@ class TasksControllerTest < ActionController::TestCase
           assert work_log.body =~ /#{@parameters[:comment]}/
         end
 
-         should "send two emails to each user, one with task description and one with comment" do
+         should "send one email to each user, with comment" do
           assert_redirected_to "/activities/list"
-          assert_emails ( @new_task.users.length * 2)
+          assert_emails ( @new_task.users.length )
         end
       end
       context "without comment" do
