@@ -37,7 +37,7 @@ changed.each do |line|
   case line[0]
     when 'A' then commit[:added]<< line[-1]
     when 'D' then commit[:removed]<< line[-1]
-    when 'U' then commit[:modified]<< line[-1]
+    when 'U', '_U' then commit[:modified]<< line[-1]
     else puts "Unrecognized change type #{line[0]} for file #{line[1]}"
   end
 end
@@ -45,7 +45,7 @@ end
 uri=URI.parse(receiver)
 if uri.scheme == 'https'
   http = Net::HTTP.new(uri.host, 443)
-  http.use_ssl=true  
+  http.use_ssl=true
   http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 else
   http = Net::HTTP.new(uri.host)
