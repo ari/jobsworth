@@ -1017,8 +1017,18 @@ class Task < ActiveRecord::Base
     end
     return filenames
   end
-  private
 
+  def repeat_task
+    repeat = self.clone
+    repeat.due_at = repeat.next_repeat_date
+    repeat.tags << self.tags
+    repeat.watchers= self.watchers
+    repeat.owners = self.owners
+    repeat.dependencies = self.dependencies
+    repeat.save!
+  end
+
+  private
   # If creating a new work log with a duration, fails because it work log
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
@@ -1031,46 +1041,6 @@ class Task < ActiveRecord::Base
       end
     end
   end
-
-  def repeat_task
-    repeat = Task.new
-    repeat.status = 0
-    repeat.project_id = self.project_id
-    repeat.company_id = self.company_id
-    repeat.name = self.name
-    repeat.repeat = self.repeat
-    repeat.requested_by = self.requested_by
-    repeat.creator_id = self.creator_id
-    repeat.set_tags(self.tags.collect{|t| t.name}.join(', '))
-    repeat.set_task_num(self.company_id)
-    repeat.duration = self.duration
-    repeat.notify_emails = self.notify_emails
-    repeat.milestone_id = self.milestone_id
-    repeat.hidden = self.hidden
-    repeat.due_at = self.due_at
-    repeat.due_at = repeat.next_repeat_date
-    repeat.description = self.description
-
-    repeat.save!
-    repeat.reload
-
-    self.task_watchers.each do |w|
-      n = TaskWatcher.new(:user => w.user, :task => repeat)
-      n.save!
-    end
-
-    self.task_owners.each do |o|
-      to = TaskOwner.new(:user => o.user, :task => repeat)
-      to.save!
-    end
-
-    self.dependencies.each do |d|
-       repeat.dependencies << d
-    end
-
-    repeat.save!
-  end
-
 end
 
 
