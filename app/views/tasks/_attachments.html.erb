@@ -3,14 +3,16 @@
                 <legend>Files attached to this task</legend>
                 <div id="task_attached_files">
                         <% for file in @task.attachments %>
+                          <div id="<%=file.dom_id%>">
                                 <% if file.thumbnail? %>
                                         <div>
                                         <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, :class=>'lightbox' %>
                                         </div>
                                 <% end %>
                                 <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:class=>file.image? ? 'lightbox':''} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
-                                <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :confirm => _("Really delete %s?", file.name), :class => 'close-cross' %>
+                                <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :"data-message" => _("Really delete %s?", file.name), :class => 'close-cross' %>
                                 <span class="divider"></span>
+                          </div>
                         <% end %>
                 </div>
         </fieldset>

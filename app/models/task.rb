@@ -996,6 +996,7 @@ class Task < ActiveRecord::Base
     set_users(params)
     set_dependency_attributes(params[:dependencies], current_user)
     set_resource_attributes(params[:resource])
+    self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
   end
   def create_attachments(params, current_user)
     filenames = []

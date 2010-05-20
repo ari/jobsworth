@@ -886,4 +886,12 @@ function init_task_form()
         highlightWatchers();
     });
     jQuery('a.lightbox').nyroModal();
+
+    jQuery('#task_attachments a.close-cross').click(function(){
+        if(!confirm(jQuery(this).attr('data-message'))) { return false; }
+        var div=jQuery(this).parent();
+        div.fadeOut();
+        div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
+        return false;
+    });
 }
