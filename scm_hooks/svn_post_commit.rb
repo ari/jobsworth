@@ -41,7 +41,14 @@ changed.each do |line|
     else puts "Unrecognized change type #{line[0]} for file #{line[1]}"
   end
 end
-
+puts "Changed files:"
+p changed
+puts '*'*80
+puts "Commit :"
+p commit
+p '*'*80
+puts "commit.to_json :"
+p  commit.to_json
 uri=URI.parse(receiver)
 if uri.scheme == 'https'
   http = Net::HTTP.new(uri.host, 443)
