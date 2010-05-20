@@ -1,9 +1,5 @@
 jQuery.noConflict();
 
-jQuery(document).ready(function(){
-    jQuery('a.lightbox').nyroModal();
-});
-
 var lastElement = null;
 var lastPrefix = null;
 var lastColor = null;
@@ -104,7 +100,7 @@ function dateToWords(elem) {
     var date = elem.text();
     var text = date;
     var className = null;
- 
+
     date = jQuery.datepicker.parseDate("yy-mm-dd", date);
 
     if (date !== null) {
@@ -736,7 +732,6 @@ jQuery(document).ready(function() {
   Attach behavior to views/tasks/_details.html.erb,
   instead of removed helper method task_project_watchers_js
 */
-jQuery(document).ready(attach_behaviour_to_project_select);
 function attach_behaviour_to_project_select() {
   var projectSelect = jQuery('#task_project_id');
   if(projectSelect.size()){
@@ -813,42 +808,38 @@ function create_task_from_template(event) {
 }
 jQuery(document).ready(function() {
     jQuery('li.task_template a').click(create_task_from_template);
-    jQuery('.autogrow').autogrow();
-    
-	highlightWatchers();  /* run this once to initialise everything right */
-    jQuery('#comment').keyup(function() {
-		highlightWatchers();
-	});
+    highlightWatchers();  /* run this once to initialise everything right */
+    init_task_form();
 });
 
 function toggleAccess() {
-	if (jQuery('#accessLevel_container div').hasClass('private')) {
-		jQuery('#accessLevel_container div').removeClass('private');
-		jQuery('#work_log_access_level_id').val('1');
-	} else {
-		jQuery('#accessLevel_container div').addClass('private');
-		jQuery('#work_log_access_level_id').val('2');
+        if (jQuery('#accessLevel_container div').hasClass('private')) {
+                jQuery('#accessLevel_container div').removeClass('private');
+                jQuery('#work_log_access_level_id').val('1');
+        } else {
+                jQuery('#accessLevel_container div').addClass('private');
+                jQuery('#work_log_access_level_id').val('2');
     }
-	highlightWatchers();
+        highlightWatchers();
 }
-	
+
 function highlightWatchers() {
-	if (jQuery('#comment').val() == '') {
-		jQuery('.watcher').removeClass('will_notify');
-		jQuery('#notify_users').html('');
-	} else {
-		if (jQuery('#accessLevel_container div').hasClass('private')) {
-			jQuery('.watcher').removeClass('will_notify');
-			jQuery('.watcher.access_level_2').addClass('will_notify');
-		} else {
-			jQuery('.watcher').addClass('will_notify');
-		}
-		var watcher = "Notify: ";
-		jQuery('div.watcher.will_notify a.username span').each(function() {
-			watcher = watcher + jQuery(this).html() + ", ";
-		});
-		jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
-	}
+        if (jQuery('#comment').val() == '') {
+                jQuery('.watcher').removeClass('will_notify');
+                jQuery('#notify_users').html('');
+        } else {
+                if (jQuery('#accessLevel_container div').hasClass('private')) {
+                        jQuery('.watcher').removeClass('will_notify');
+                        jQuery('.watcher.access_level_2').addClass('will_notify');
+                } else {
+                        jQuery('.watcher').addClass('will_notify');
+                }
+                var watcher = "Notify: ";
+                jQuery('div.watcher.will_notify a.username span').each(function() {
+                        watcher = watcher + jQuery(this).html() + ", ";
+                });
+                jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
+        }
 }
 
 function autocomplete(input_field, output_list, path, after_callback) {
@@ -871,18 +862,28 @@ function autocomplete(input_field, output_list, path, after_callback) {
                       'top': top,
                       'width': jQuery(input_field).width(),
                     })
-                    .show();                   
+                    .show();
                     autocomplete_list.find('li')
                         .mouseover(function(){
                         autocomplete_list.find('li').removeClass('selected');
                           jQuery(this).addClass('selected');
                         })
                         .click(function(){
-                          jQuery(input_field).val(jQuery(this).text()); 
+                          jQuery(input_field).val(jQuery(this).text());
                           autocomplete_list.hide();
                           after_callback(input_field, this);
-                    });                     
-                 }                     
+                    });
+                 }
               });
-            });               
+            });
+}
+
+function init_task_form()
+{
+    attach_behaviour_to_project_select();
+    jQuery('.autogrow').autogrow();
+    jQuery('#comment').keyup(function() {
+        highlightWatchers();
+    });
+    jQuery('a.lightbox').nyroModal();
 }
