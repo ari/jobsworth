@@ -382,17 +382,11 @@ class Task < ActiveRecord::Base
   end
 
   def minutes_left
-    d = self.duration.to_i - self.worked_minutes
-    d = 240 if d < 0 && self.duration.to_i > 0
-    d = 0 if d < 0
-    d
+    minutes_left_by self.duration
   end
 
   def scheduled_minutes_left
-    d = self.scheduled_duration.to_i - self.worked_minutes
-    d = 240 if d < 0 && self.scheduled_duration.to_i > 0
-    d = 0 if d < 0
-    d
+    minutes_left_by self.scheduled_duration
   end
 
   def overworked?
@@ -1040,6 +1034,13 @@ class Task < ActiveRecord::Base
         self.errors.add_to_base(msg)
       end
     end
+  end
+
+  def minutes_left_by(duration)
+    d = duration.to_i - self.worked_minutes
+    d = 240 if d < 0 && duration.to_i > 0
+    d = 0 if d < 0
+    d
   end
 end
 
