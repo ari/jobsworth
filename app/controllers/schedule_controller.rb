@@ -602,11 +602,7 @@ class ScheduleController < ApplicationController
     gantt
 
     render :update do |page|
-      if @schedule_in_progress
-        page << "jQuery('#gantt-save-revert').show();"
-      else
-        page << "jQuery('#gantt-save-revert').hide();"
-      end
+      gantt_save_revert_view(page)
 
       page["duration-#{@task.dom_id}"].value = worked_nice(@task.scheduled_duration)
       page["duration-#{@task.dom_id}"].className = ((@task.scheduled? && @task.scheduled_duration != @task.duration) ? "scheduled" : "")
@@ -673,11 +669,7 @@ class ScheduleController < ApplicationController
     gantt
 
     render :update do |page|
-      if @schedule_in_progress
-        page << "jQuery('#gantt-save-revert').show();"
-      else
-        page << "jQuery('#gantt-save-revert').hide();"
-      end
+      gantt_save_revert_view(page)
       page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
       page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
 
@@ -746,11 +738,7 @@ class ScheduleController < ApplicationController
     gantt
 
     render :update do |page|
-      if @schedule_in_progress
-        page << "jQuery('#gantt-save-revert').show();"
-      else
-        page << "jQuery('#gantt-save-revert').hide();"
-      end
+      gantt_save_revert_view(page)
       if @milestone
         page["due-#{@milestone.dom_id}"].value = (@milestone.scheduled_at ? @milestone.scheduled_at.strftime_localized(current_user.date_format) : "")
         page["due-#{@milestone.dom_id}"].className = ((@milestone.scheduled? && @milestone.scheduled_at != @milestone.due_at) ? "scheduled" : "")
@@ -866,6 +854,14 @@ class ScheduleController < ApplicationController
      else
        "#88f"
      end
+    end
+  end
+private
+  def gantt_save_revert_view(page)
+    if @schedule_in_progress
+      page << "jQuery('#gantt-save-revert').show();"
+    else
+      page << "jQuery('#gantt-save-revert').hide();"
     end
   end
 end
