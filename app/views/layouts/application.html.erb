@@ -73,8 +73,16 @@
       // <![CDATA[
       var userId=<%= current_user.id %>;
       var useTooltips=<%= current_user.option_tooltips.to_i %>;
-      new Form.Element.Observer('worklog_body', 2, function(element, value) {new Ajax.Updater('worklog-saved', '/tasks/updatelog', {asynchronous:true, evalScripts:true, parameters: Form.serialize($('worklog_form'))  })});
-      
+        jQuery('#worklog_body').blur(function(){
+          jQuery.ajax({
+            'url': '/tasks/updatelog',
+            'data': jQuery('#worklog_form').serialize(),
+            'dataType': 'text',
+            'type': 'POST',
+            'success': function(data){jQuery('#worklog-saved').html(data) ;}
+          });
+      })
+
       // ]]>
     </script>
   </body>
