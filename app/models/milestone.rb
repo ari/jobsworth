@@ -1,4 +1,4 @@
-# Logical grouping of tasks from one project. 
+# Logical grouping of tasks from one project.
 #
 # Can have a due date, and be completed
 
@@ -15,13 +15,9 @@ class Milestone < ActiveRecord::Base
     r.project.save
   }
 
-  def percent_complete
-    p = 0.0
-
-    complete = self.completed_tasks * 1.0
-    total =  self.total_tasks * 1.0
-    return 0.0 if total == 0
-    p = (complete / total) * 100.0
+  def percent_complet
+    return 0.0 if total_tasks == 0
+    return (completed_tasks.to_f / total_tasks.to_f) * 100.0
   end
 
   def complete?
@@ -47,7 +43,7 @@ class Milestone < ActiveRecord::Base
     else
       nil
     end
-  end 
+  end
 
   def due_date
     unless @due_date
@@ -63,13 +59,13 @@ class Milestone < ActiveRecord::Base
 
   def scheduled_date
     (self.scheduled? ? self.scheduled_at : self.due_at)
-  end 
-  
+  end
+
   def worked_minutes
     if @minutes.nil?
       @minutes = WorkLog.sum('work_logs.duration', :joins => "INNER JOIN tasks ON tasks.milestone_id = #{self.id}", :conditions => ["work_logs.task_id = tasks.id AND tasks.completed_at IS NULL"] ) || 0
       @minutes /= 60
-    end 
+    end
     @minutes
   end
 
@@ -77,7 +73,7 @@ class Milestone < ActiveRecord::Base
     if @duration.nil?
       @duration = Task.sum(:duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, false]) || 0
       @duration += Task.sum(:scheduled_duration, :conditions => ["tasks.milestone_id = ? AND tasks.completed_at IS NULL AND tasks.scheduled = ?", self.id, true]) || 0
-    end 
+    end
     @duration
   end
 
@@ -85,7 +81,7 @@ class Milestone < ActiveRecord::Base
      self.completed_tasks = Task.count( :conditions => ["milestone_id = ? AND completed_at is not null", self.id] )
      self.total_tasks = Task.count( :conditions => ["milestone_id = ?", self.id] )
      self.save
-     
+
   end
 
   def to_s
