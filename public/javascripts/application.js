@@ -823,6 +823,7 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
+    autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
 });
 
 function toggleAccess() {
