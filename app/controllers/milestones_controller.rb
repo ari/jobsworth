@@ -87,12 +87,6 @@ class MilestonesController < ApplicationController
 
   def destroy
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-
-    @milestone.tasks.each { |t|
-      t.milestone = nil
-      t.save
-    }
-
     Notifications::deliver_milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at) rescue nil
     @milestone.destroy
 
