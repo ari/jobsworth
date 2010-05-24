@@ -806,10 +806,23 @@ function create_task_from_template(event) {
         jQuery("form#taskform_ctft").submit();
     });
 }
+
+function attachObseverForWorkLog(){
+   jQuery('#worklog_body').blur(function(){
+          jQuery.ajax({
+            'url': '/tasks/updatelog',
+            'data': jQuery('#worklog_form').serialize(),
+            'dataType': 'text',
+            'type': 'POST',
+            'success': function(data){jQuery('#worklog-saved').html(data) ;}
+          });
+    })
+}
 jQuery(document).ready(function() {
     jQuery('li.task_template a').click(create_task_from_template);
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
+    attachObseverForWorkLog();
 });
 
 function toggleAccess() {

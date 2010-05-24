@@ -72,16 +72,7 @@
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[
       var userId=<%= current_user.id %>;
-      var useTooltips=<%= current_user.option_tooltips.to_i %>;
-        jQuery('#worklog_body').blur(function(){
-          jQuery.ajax({
-            'url': '/tasks/updatelog',
-            'data': jQuery('#worklog_form').serialize(),
-            'dataType': 'text',
-            'type': 'POST',
-            'success': function(data){jQuery('#worklog-saved').html(data) ;}
-          });
-      })
+      var useTooltips=<%= current_user.option_tooltips.to_i %>;        
 
       // ]]>
     </script>
