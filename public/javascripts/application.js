@@ -825,6 +825,7 @@ jQuery(document).ready(function() {
     attachObseverForWorkLog();
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
     autocomplete('#customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
+    autocomplete('#customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
 });
 
 function toggleAccess() {
