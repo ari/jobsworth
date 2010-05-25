@@ -15,7 +15,7 @@ class Milestone < ActiveRecord::Base
     r.project.save
   }
 
-  def percent_complet
+  def percent_complete
     return 0.0 if total_tasks == 0
     return (completed_tasks.to_f / total_tasks.to_f) * 100.0
   end
