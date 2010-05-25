@@ -41,14 +41,7 @@ changed.each do |line|
     else puts "Unrecognized change type #{line[0]} for file #{line[1]}"
   end
 end
-puts "Changed files:"
-p changed
-puts '*'*80
-puts "Commit :"
-p commit
-p '*'*80
-puts "commit.to_json :"
-p  commit.to_json
+
 uri=URI.parse(receiver)
 if uri.scheme == 'https'
   http = Net::HTTP.new(uri.host, 443)
@@ -57,5 +50,8 @@ if uri.scheme == 'https'
 else
   http = Net::HTTP.new(uri.host)
 end
-http.post(uri.path, "payload=" +  { :revisions=>[commit] }.to_json )
 
+req = Net::HTTP::Post.new(uri.path)
+req.form_data =  {"payload"=>  { :revisions=>[commit] }.to_json}
+
+http.request(req)
