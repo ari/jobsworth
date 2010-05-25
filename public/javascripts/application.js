@@ -908,4 +908,7 @@ function init_task_form()
         div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
         return false;
     });
+    
+    autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
+
 }
