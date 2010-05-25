@@ -824,6 +824,7 @@ jQuery(document).ready(function() {
     init_task_form();
     attachObseverForWorkLog();
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
+    autocomplete('#customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
 });
 
 function toggleAccess() {
@@ -911,5 +912,5 @@ function init_task_form()
     
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
-
+    
 }

@@ -9,9 +9,6 @@
        <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
        
        <%= text_field :customer, :name, {:value => @user.customer} %>
-       <script type= "text/javascript">
-          autocomplete('#customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-       </script>
        <br/>
 
        <% if @user.autologin && !@user.autologin.empty? %>
