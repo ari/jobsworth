@@ -25,9 +25,6 @@
     <td colspan="12">
       <%= text_field :project, :name, { :value => "" }%>
       <div id= "project_name_auto_complete" class= "auto_complete" ></div>
-      <script type= "text/javascript">
-        autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
-      </script>
     </td>
   </tr>
 </table>
