@@ -72,17 +72,6 @@ module TasksHelper
   end
 
   ###
-  # Returns the html to display an auto complete for task dependencies. When
-  # a choice is made, the dependency will be added to the page (but not saved
-  # to the db until the task is saved)
-  ###
-  def auto_complete_for_dependencies
-    "<script type= 'text/javascript'>
-        autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
-     </script>"
-  end
-
-  ###
   # Returns the html for the field to select status for a task.
   ###
   def status_field(task)

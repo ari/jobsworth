@@ -5,7 +5,6 @@
   <% if perms['edit'].empty? %>
     <input name="dependencies[]" size="12" type="text" id="dependencies_input" title="<%=_("Search by task number or title")%>" class="tooltip" >
     <div style="clear:both; display:none;" id="dependencies_input_auto_complete"></div>
-    <%= auto_complete_for_dependencies %>
   <% else %>
     <input name="dependencies[]" size="12" type="text" disabled="disabled">
   <% end %>
