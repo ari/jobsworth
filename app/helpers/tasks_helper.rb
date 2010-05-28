@@ -117,12 +117,7 @@ module TasksHelper
   ###
   def add_notifier_field
      text_field(:user, :name, :size=> "12", :title => _("Add users by name or email"), :class => "tooltip" ) +
-     content_tag(:div, "", :id => "user_name_auto_complete", :class => "auto_complete" )+
-     "<script type= 'text/javascript'>
-        autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
-     </script>"
-
-
+     content_tag(:div, "", :id => "user_name_auto_complete", :class => "auto_complete" )
   end
 
   # Returns an array that show the start of ranges to be used

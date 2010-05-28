@@ -828,6 +828,7 @@ jQuery(document).ready(function() {
     autocomplete('#customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
+    autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
 });
 
 function toggleAccess() {
