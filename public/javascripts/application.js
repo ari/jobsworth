@@ -559,6 +559,7 @@ function addTaskFilter(sender, id, field_name) {
 function removeTaskUser(sender) {
     sender = jQuery(sender);
     sender.parent(".watcher").remove();
+    highlightWatchers();
 }
 
 function toggleTaskIcon(sender) {
@@ -588,9 +589,7 @@ function addUserToTask(input, li) {
 
     var url = tasks_path("add_notification");
     var params = { user_id : userId, id : taskId };
-    jQuery.get(url, params, function(data) {
-        jQuery("#task_notify").append(data);
-    });
+    addUser(url, params);
 }
 
 
@@ -600,8 +599,13 @@ function addUserToTask(input, li) {
 function addAutoAddUsersToTask(clientId, taskId, projectId) {
     var url = tasks_path("add_users_for_client");
     var params = { client_id : clientId, id : taskId, project_id : projectId };
+    addUser(url, params);
+}
+
+function addUser(url, params){
     jQuery.get(url, params, function(data) {
         jQuery("#task_notify").append(data);
+        highlightWatchers();
     });
 }
 /*
@@ -913,8 +917,8 @@ function init_task_form()
         div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
         return false;
     });
-    
+
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
-    
+
 }
