@@ -22,7 +22,16 @@ jQuery("div.log_history").tabs();
   </div>
   <div id="changesets_tab">
   <% @task.scm_changesets.each do |changeset| %>
-   <%= h changeset.inspect%>
+  <div>
+   Revision: <%= h  changeset.changeset_rev%><br/>
+   Author: <%= h changeset.author%><br/>
+   Date:   <%=  changeset.commit_date%><br/>
+   Message: <%= h changeset.message %> <br/>
+   Changes:</br>
+   <% changeset.scm_files.each do |file| %>
+   <%= file.state+ " " +file.path%><br/>
+   <%end%>
+  </div>
   <% end %>
   </div>
 </div>
