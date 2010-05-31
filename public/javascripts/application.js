@@ -902,6 +902,7 @@ function autocomplete(input_field, output_list, path, after_callback) {
 function init_task_form()
 {
     attach_behaviour_to_project_select();
+    jQuery("div.log_history").tabs();
     jQuery('.autogrow').autogrow();
     jQuery('#comment').keyup(function() {
         highlightWatchers();

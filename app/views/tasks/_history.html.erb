@@ -1,11 +1,28 @@
 <span class="right">
   <%= toggle_history_view_link %>
 </span>
-
+<script type='text/javascript'>
+jQuery("div.log_history").tabs();
+</script>
 <div class="log_history clearfix">
-  <% logs = (session[:only_comments] ? @task.work_logs.comments : @task.work_logs) -%>
-  <% logs = logs.level_accessed_by(current_user).all(:order => "started_at desc") -%>
-  <% logs.each do |log| -%>
+  <ul id="tasktabs">
+    <li><a href="#comments_tab"><span>Comments</span></a></li>
+    <li><a href="#all_tab"><span>All</span></a></li>
+    <li><a href="#changesets_tab"><span>Commits</span></li>
+  </ul>
+  <div id="comments_tab">
+  <% @task.work_logs.comments.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
     <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
   <% end -%>
+  </div>
+  <div id="all_tab">
+  <% @task.work_logs.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
+    <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
+  <% end -%>
+  </div>
+  <div id="changesets_tab">
+  <% @task.scm_changesets.each do |changeset| %>
+   <%= h changeset.inspect%>
+  <% end %>
+  </div>
 </div>
