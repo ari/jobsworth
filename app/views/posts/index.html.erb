@@ -16,7 +16,7 @@
 <p class="pages"><%= _ 'Pages' %>: <strong><%= pagination_links @post_pages, :window_size => 10, :params => params %></strong></p>
 <% end -%>
 
-<table border="0" cellspacing="0" cellpadding="0" class="posts wide">
+<table cellspacing="0" cellpadding="0" class="posts wide">
 <% for post in @posts do %>
 <% unless post == @posts.first %>
 <tr class="spacer">

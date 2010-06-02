@@ -1,8 +1,3 @@
-
-  <%content_for :head do %>
-    <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", :cache => "prototype-all" %>
-  <%end%>
-
 <table width="100%" cellpadding=0 cellspacing=0 id="content" >
   <tr>
     <td valign="top" align="left" id="left_col">
@@ -42,7 +37,7 @@ var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onO
   <% @widget = widget %>
 var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
 
-var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="jQuery.getScript(\'/widgets/edit/<%=@widget.id%>\'); return false;;"><img src="/images/configure.png" border="0"/></a><a href="#" onclick="if( confirm(\'Really delete widget?\') ){jQuery.getScript(\'/widgets/destroy/<%=@widget.id%>\'); return false; }"><img src="/images/delete.png" border="0"/></a></div>';
+var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="jQuery.getScript(\'/widgets/edit/<%=@widget.id%>\'); return false;;"><img src="/images/configure.png"/></a><a href="#" onclick="if( confirm(\'Really delete widget?\') ){jQuery.getScript(\'/widgets/destroy/<%=@widget.id%>\'); return false; }"><img src="/images/delete.png"/></a></div>';
 title += '<div><%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "showProgress();", :complete => "hideProgress();" }, { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
 title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %></div>';
 
