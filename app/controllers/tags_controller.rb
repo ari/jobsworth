@@ -1,4 +1,5 @@
 class TagsController < ApplicationController
+  cache_sweeper :tag_sweeper, :only => [:update, :destroy]
   def index
     @tags = current_user.company.tags
   end
@@ -14,7 +15,7 @@ class TagsController < ApplicationController
 
   def update
     @tag = current_user.company.tags.find(params[:id])
-    
+
     if @tag and @tag.update_attributes(params[:tag])
       flash[:notice] = _("Tag saved")
     else
@@ -26,7 +27,7 @@ class TagsController < ApplicationController
 
   def destroy
     @tag = current_user.company.tags.find(params[:id])
-    
+
     if @tag
       @tag.destroy
       flash[:notice] = _("Tag deleted")

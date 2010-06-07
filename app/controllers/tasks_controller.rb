@@ -7,7 +7,7 @@ end
 # Handle tasks for a Company / User
 #
 class TasksController < ApplicationController
-
+  cache_sweeper :tag_sweeper, :only =>[:create, :update]
   def new
     init_attributes_for_new_template
 

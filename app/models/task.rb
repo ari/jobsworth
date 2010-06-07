@@ -484,6 +484,7 @@ class Task < ActiveRecord::Base
       tag = Company.find(self.company_id).tags.find_or_create_by_name(tag_name)
       self.tags << tag unless self.tags.include?(tag)
     end
+    self.company.tags.first.save unless self.company.tags.first.nil? #ugly, trigger tag save callback, needed to cache sweeper
     true
   end
 
