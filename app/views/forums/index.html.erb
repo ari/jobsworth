@@ -3,7 +3,7 @@
 <%= feed_icon_tag _("Recent Posts"), formatted_all_posts_path(:format => 'rss') %>
 </p>
 
-<table border="0" cellspacing="0" cellpadding="0" class="wide forums">
+<table cellspacing="0" cellpadding="0" class="wide forums">
   <tr>
     <th class="la" width="70%" colspan="2"><%= current_user.company.name + ' ' + _('Forums') %></th>
 <% if admin? %>

@@ -327,13 +327,6 @@ class TasksController < ApplicationController
               :filename => filename)
   end
 
-  def toggle_history
-    session[:only_comments] ||= false
-    session[:only_comments] = ! session[:only_comments]
-
-    @task = Task.accessed_by(current_user).find(params[:id])
-  end
-
   ###
   # This action just sets the unread status for a task.
   ###

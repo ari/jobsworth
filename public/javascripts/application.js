@@ -829,7 +829,7 @@ jQuery(document).ready(function() {
     attachObseverForWorkLog();
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
     autocomplete('#customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-    autocomplete('#customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+    autocomplete('#project_customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
 });
 
@@ -865,6 +865,7 @@ function highlightWatchers() {
 
 function autocomplete(input_field, output_list, path, after_callback) {
               jQuery(input_field).attr("autocomplete", "off");
+              jQuery(output_list).hide();
               jQuery(input_field).keyup(function(){
               jQuery.ajax({
                 'url': path,
@@ -902,6 +903,7 @@ function autocomplete(input_field, output_list, path, after_callback) {
 function init_task_form()
 {
     attach_behaviour_to_project_select();
+    jQuery("div.log_history").tabs();
     jQuery('.autogrow').autogrow();
     jQuery('#comment').keyup(function() {
         highlightWatchers();

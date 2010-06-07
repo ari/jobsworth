@@ -1,11 +1,31 @@
-<span class="right">
-  <%= toggle_history_view_link %>
-</span>
-
 <div class="log_history clearfix">
-  <% logs = (session[:only_comments] ? @task.work_logs.comments : @task.work_logs) -%>
-  <% logs = logs.level_accessed_by(current_user).all(:order => "started_at desc") -%>
-  <% logs.each do |log| -%>
+  <ul id="tasktabs">
+    <li><a href="#comments_tab"><span>Comments</span></a></li>
+    <li><a href="#all_tab"><span>All</span></a></li>
+    <li><a href="#changesets_tab"><span>Commits</span></li>
+  </ul>
+  <div id="comments_tab">
+  <% @task.work_logs.comments.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
     <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
   <% end -%>
+  </div>
+  <div id="all_tab">
+  <% @task.work_logs.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
+    <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
+  <% end -%>
+  </div>
+  <div id="changesets_tab">
+  <% @task.scm_changesets.each do |changeset| %>
+  <div>
+   Revision: <%= h  changeset.changeset_rev%><br/>
+   Author: <%= h changeset.author%><br/>
+   Date:   <%=  changeset.commit_date%><br/>
+   Message: <%= h changeset.message %> <br/>
+   Changes:</br>
+   <% changeset.scm_files.each do |file| %>
+   <%= file.state+ " " +file.path%><br/>
+   <%end%>
+  </div>
+  <% end %>
+  </div>
 </div>

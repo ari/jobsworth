@@ -1,3 +1,4 @@
+
 class ScmProjectsController < ApplicationController
   before_filter :check_access
 
@@ -7,7 +8,7 @@ class ScmProjectsController < ApplicationController
 
   def create
     @scm_project= ScmProject.new(params[:scm_project])
-
+    @scm_project.company= current_user.company
     if @scm_project.save
       redirect_to scm_project_url(@scm_project)
     else
