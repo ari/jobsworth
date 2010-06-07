@@ -2,9 +2,9 @@
 
 <!--[form:project]-->
 <label for="project_name"><%=_ 'Name' %></label><%= text_field 'project', 'name'  %><br/>
-<label for="project_customer_id"><%=_ 'Client' %></label>
+<label for="project_customer_name"><%=_ 'Client' %></label>
 
-<%= text_field :customer, :name, { :size => 12, :value => @project.customer.nil? ? "" :@project.customer.name } %>
+<%= text_field :customer, :name, { :id=>"project_customer_name",:size => 12, :value => @project.customer.nil? ? "" :@project.customer.name } %>
 <div id= "customer_name_auto_complete" class= "auto_complete" ></div>
 <br/>
 
