@@ -898,6 +898,9 @@ function autocomplete(input_field, output_list, path, after_callback) {
                  }
               });
             });
+            jQuery(input_field).blur(function(){
+                jQuery(output_list).hide();
+            });
 }
 
 function init_task_form()
@@ -920,5 +923,6 @@ function init_task_form()
 
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
-
+    autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
+    autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
 }
