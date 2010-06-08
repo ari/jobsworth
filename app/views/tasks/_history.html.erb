@@ -5,14 +5,10 @@
     <li><a href="#changesets_tab"><span>Commits</span></li>
   </ul>
   <div id="comments_tab">
-  <% @task.work_logs.comments.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
-    <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
-  <% end -%>
+    <%= render :partial => 'activities/log_row2', :collection=>@task.work_logs.comments.level_accessed_by(current_user).all(:order => "started_at desc")  %>
   </div>
   <div id="all_tab">
-  <% @task.work_logs.level_accessed_by(current_user).all(:order => "started_at desc").each do |log| -%>
-    <%= render :partial => 'activities/log_row2', :locals => { :log => log } %>
-  <% end -%>
+    <%= render :partial => 'activities/log_row2', :collection=> @task.work_logs.level_accessed_by(current_user).all(:order => "started_at desc") %>
   </div>
   <div id="changesets_tab">
     <%= render :partial => 'scm_changesets/changeset', :collection=>@task.scm_changesets %>
