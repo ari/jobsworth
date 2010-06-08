@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100515083501) do
+ActiveRecord::Schema.define(:version => 20100608094224) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -248,16 +248,6 @@ ActiveRecord::Schema.define(:version => 20100515083501) do
     t.text     "body"
     t.boolean  "portal",     :default => true
   end
-
-  create_table "notifications", :force => true do |t|
-    t.integer "task_id"
-    t.integer "user_id"
-    t.boolean "unread",               :default => false
-    t.boolean "notified_last_change", :default => true
-  end
-
-  add_index "notifications", ["task_id"], :name => "index_notifications_on_task_id"
-  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
 
   create_table "organizational_units", :force => true do |t|
     t.integer  "customer_id"
@@ -583,16 +573,6 @@ ActiveRecord::Schema.define(:version => 20100515083501) do
 
   add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
   add_index "task_filters", ["user_id"], :name => "fk_task_filters_user_id"
-
-  create_table "task_owners", :force => true do |t|
-    t.integer "user_id"
-    t.integer "task_id"
-    t.boolean "unread",               :default => false
-    t.boolean "notified_last_change", :default => true
-  end
-
-  add_index "task_owners", ["task_id"], :name => "task_owners_task_id_index"
-  add_index "task_owners", ["user_id"], :name => "task_owners_user_id_index"
 
   create_table "task_property_values", :force => true do |t|
     t.integer "task_id"
