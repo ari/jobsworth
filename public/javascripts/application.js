@@ -899,7 +899,9 @@ function autocomplete(input_field, output_list, path, after_callback) {
               });
             });
             jQuery(input_field).blur(function(){
-                jQuery(output_list).hide();
+                setTimeout(function() {
+                  jQuery(output_list).hide();
+                }, 250);
             });
 }
 
