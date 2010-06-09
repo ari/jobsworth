@@ -581,10 +581,8 @@ function toggleTaskIcon(sender) {
 /*
   Adds the selected user to the current tasks list of users
 */
-function addUserToTask(input, li) {
-    jQuery(input).val("");
-
-    var userId = jQuery(li).find(".complete_value").text();
+function addUserToTask(event, ui) {
+    var userId = ui.item.id;
     var taskId = jQuery("#task_id").val();
 
     var url = tasks_path("add_notification");
@@ -863,48 +861,8 @@ function highlightWatchers() {
         }
 }
 
-function autocomplete(input_field, output_list, path, after_callback) {
-              jQuery(input_field).attr("autocomplete", "off");
-              jQuery(output_list).hide();
-              jQuery(input_field).keyup(function(){
-                if (jQuery(input_field).val().length > 1){
-                  jQuery.ajax({
-                    'url': path,
-                    'data': jQuery(input_field).attr("name")+ '='+ jQuery(input_field).val(),
-                    'dataType': 'html',
-                    'type': 'POST',
-                    'success': function(data) {
-                        autocomplete_list= jQuery(output_list);
-                        var pos= jQuery(input_field).position();
-                        var left= pos.left+ "px";
-                        var top= 5+ pos.top+ jQuery(input_field).height()+ "px";
-                        autocomplete_list.empty().append(data)
-                        .css({
-                          'position': 'absolute',
-                          'left': left,
-                          'top': top,
-                          'width': jQuery(input_field).width(),
-                        })
-                        .show();
-                        autocomplete_list.find('li')
-                            .mouseover(function(){
-                            autocomplete_list.find('li').removeClass('selected');
-                              jQuery(this).addClass('selected');
-                            })
-                            .click(function(){
-                              jQuery(input_field).val(jQuery(this).text());
-                              autocomplete_list.hide();
-                              after_callback(input_field, this);
-                        });
-                    }
-                  });
-                }  
-              });
-              jQuery(input_field).blur(function(){
-                setTimeout(function() {
-                  jQuery(output_list).hide();
-                }, 250);
-              });
+function autocomplete(input_field, path, after_callback) {
+               jQuery(input_field).autocomplete({source:path, select:after_callback, delay:800, minLength:2});
 }
 
 function init_task_form()
@@ -928,5 +886,5 @@ function init_task_form()
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
-    autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+    autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
 }
