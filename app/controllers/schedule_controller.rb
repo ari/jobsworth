@@ -5,7 +5,7 @@ class ScheduleController < ApplicationController
   helper_method :gantt_offset
   helper_method :gantt_width
   helper_method :gantt_color
-
+  helper_method :gantt_save_revert_view
   def users_gantt_free(dates, t, date, rev = false)
     free = true
     t.users.each do |u|
