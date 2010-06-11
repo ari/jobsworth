@@ -214,7 +214,7 @@ class ApplicationController < ActionController::Base
     if !text.blank?
       conds = Search.search_conditions_for([ text ])
       @users = current_user.company.users.find(:all, :conditions => conds)
-      render :json=> @users.collect{|user| {:value =>user.name, :id=>user.id} }.to_json
+      render :json=> @users.collect{|user| {:value => user.name, :id=> user.id} }.to_json
     else
       render :nothing=> true
     end
@@ -224,16 +224,14 @@ class ApplicationController < ActionController::Base
   # Returns the list to use for auto completes for customer names.
   ###
   def auto_complete_for_customer_name
-    text = params[:customer]
-    text = text[:name] if text
-
-    @customers = []
+    text = params[:term]
     if !text.blank?
       conds = Search.search_conditions_for([ text ])
       @customers = current_user.company.customers.find(:all, :conditions => conds)
+      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
+    else
+      render :nothing=> true
     end
-
-    render(:partial => "/clients/auto_complete_for_customer_name")
   end
 
   ###

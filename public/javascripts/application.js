@@ -584,10 +584,11 @@ function toggleTaskIcon(sender) {
 function addUserToTask(event, ui) {
     var userId = ui.item.id;
     var taskId = jQuery("#task_id").val();
-
     var url = tasks_path("add_notification");
     var params = { user_id : userId, id : taskId };
-    addUser(url, params);
+    addUser(url, params); 
+    jQuery(this).val("");
+
 }
 
 
@@ -609,10 +610,8 @@ function addUser(url, params){
 /*
   Adds the selected customer to the current task list of clients
 */
-function addCustomerToTask(input, li) {
-    jQuery(input).val("");
-
-    var clientId = jQuery(li).find(".complete_value").text();
+function addCustomerToTask(event, ui) {
+    var clientId = ui.item.id;
     var taskId = jQuery("#task_id").val();
 
     var url = tasks_path("add_client");
@@ -826,7 +825,7 @@ jQuery(document).ready(function() {
     init_task_form();
     attachObseverForWorkLog();
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
-    autocomplete('#customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
+    autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
 });
@@ -862,7 +861,7 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, path, after_callback) {
-               jQuery(input_field).autocomplete({source:path, select:after_callback, delay:800, minLength:2});
+               jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 2});
 }
 
 function init_task_form()
@@ -884,7 +883,7 @@ function init_task_form()
     });
 
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
-    autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
+    autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
 }
