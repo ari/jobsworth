@@ -11,7 +11,6 @@ class TodosController < ApplicationController
 
   def update
     @todo = @task.todos.find(params[:id])
-    params[:todo].delete(:done)
     @todo.update_attributes(params[:todo])
 
     render :partial => "todos"
@@ -37,6 +36,11 @@ class TodosController < ApplicationController
     @todo.destroy
 
     render :partial => "todos"
+  end
+
+  def reorder
+    params[:todos].values.each{ |todo| t=@task.todos.find(todo[:id]); t.position=todo[:position]; t.save!}
+    render :nothing=>true
   end
 
   private
