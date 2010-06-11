@@ -7,7 +7,6 @@
   
   <%= text_field :customer, :name, {:size => 12, :value => "", :autocomplete => "off"}.merge(perms['edit']) %>
   <br/>
-  <div id= "customer_name_auto_complete" class= "auto_complete" ></div>
   <div id="task_customers">
     <%= render :partial => "tasks/task_customer", :collection => @task.customers %>
   </div>
