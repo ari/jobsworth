@@ -1,4 +1,7 @@
 <li id="<%=todo.dom_id%>" class="<%=todo.css_classes%>">
+  <%= hidden_field_tag("id", todo.id) %>
+  <%= hidden_field_tag("task_id", todo.task_id) %>
+  <%= hidden_field_tag("todo[position]", todo.position)%>
   <%= todo_open_close_check_box(todo) %>
   <span class="display">
     <%=h todo.name %>

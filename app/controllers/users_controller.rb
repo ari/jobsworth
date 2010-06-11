@@ -256,7 +256,7 @@ class UsersController < ApplicationController
     if !text.blank?
       conds = [ "lower(name) like ?", "%#{ text }%" ]
       @projects = current_user.company.projects.find(:all, :conditions => conds)
-    end  
+    end
     render :layout => false
 
   end
@@ -270,7 +270,7 @@ class UsersController < ApplicationController
                           :project => project).save
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
-    
+
   end
 
   def set_preference
@@ -283,7 +283,6 @@ class UsersController < ApplicationController
   end
 
   def set_tasklistcols
-    colModel = JSON.parse(params[:model]) rescue nil
     current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
     render :nothing => true
   end

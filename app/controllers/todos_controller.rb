@@ -11,6 +11,7 @@ class TodosController < ApplicationController
 
   def update
     @todo = @task.todos.find(params[:id])
+    params[:todo].delete(:done)
     @todo.update_attributes(params[:todo])
 
     render :partial => "todos"

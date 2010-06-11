@@ -52,7 +52,7 @@ function taskListConfigSerialise() {
         jQuery.ajax({
                 type: "POST",
                 url: '/users/set_tasklistcols',
-                data: { model : JSON.parse(JSON.stringify(model))}, // this code is mad, but it makes it work on Chrome/Firefox
+                data: { model : JSON.stringify(model)},
                 dataType: 'json',
                 success: function(msg) {
                         alert( "Data Saved: " + msg );

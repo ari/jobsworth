@@ -886,4 +886,14 @@ function init_task_form()
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
+    jQuery('.task-todo').sortable({update: function(event,ui){
+      jQuery.each(jQuery('.task-todo li'),
+                  function(index, element){
+                      var position = jQuery('input#todo_position', element);
+                      position.val(index+1);
+                      jQuery.ajax({url: '/todos/update', type: 'POST', data: jQuery('input', element).serialize()});
+                  });
+      }
+    });
+
 }
