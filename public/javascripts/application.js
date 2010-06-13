@@ -867,37 +867,44 @@ function autocomplete(input_field, output_list, path, after_callback) {
               jQuery(input_field).attr("autocomplete", "off");
               jQuery(output_list).hide();
               jQuery(input_field).keyup(function(){
-              jQuery.ajax({
-                'url': path,
-                'data': jQuery(input_field).attr("name")+ '='+ jQuery(input_field).val(),
-                'dataType': 'html',
-                'type': 'POST',
-                'success': function(data) {
-                    autocomplete_list= jQuery(output_list);
-                    var pos= jQuery(input_field).position();
-                    var left= pos.left+ "px";
-                    var top= 5+ pos.top+ jQuery(input_field).height()+ "px";
-                    autocomplete_list.empty().append(data)
-                    .css({
-                      'position': 'absolute',
-                      'left': left,
-                      'top': top,
-                      'width': jQuery(input_field).width(),
-                    })
-                    .show();
-                    autocomplete_list.find('li')
-                        .mouseover(function(){
-                        autocomplete_list.find('li').removeClass('selected');
-                          jQuery(this).addClass('selected');
+                if (jQuery(input_field).val().length > 1){
+                  jQuery.ajax({
+                    'url': path,
+                    'data': jQuery(input_field).attr("name")+ '='+ jQuery(input_field).val(),
+                    'dataType': 'html',
+                    'type': 'POST',
+                    'success': function(data) {
+                        autocomplete_list= jQuery(output_list);
+                        var pos= jQuery(input_field).position();
+                        var left= pos.left+ "px";
+                        var top= 5+ pos.top+ jQuery(input_field).height()+ "px";
+                        autocomplete_list.empty().append(data)
+                        .css({
+                          'position': 'absolute',
+                          'left': left,
+                          'top': top,
+                          'width': jQuery(input_field).width(),
                         })
-                        .click(function(){
-                          jQuery(input_field).val(jQuery(this).text());
-                          autocomplete_list.hide();
-                          after_callback(input_field, this);
-                    });
-                 }
+                        .show();
+                        autocomplete_list.find('li')
+                            .mouseover(function(){
+                            autocomplete_list.find('li').removeClass('selected');
+                              jQuery(this).addClass('selected');
+                            })
+                            .click(function(){
+                              jQuery(input_field).val(jQuery(this).text());
+                              autocomplete_list.hide();
+                              after_callback(input_field, this);
+                        });
+                    }
+                  });
+                }  
               });
-            });
+              jQuery(input_field).blur(function(){
+                setTimeout(function() {
+                  jQuery(output_list).hide();
+                }, 250);
+              });
 }
 
 function init_task_form()
