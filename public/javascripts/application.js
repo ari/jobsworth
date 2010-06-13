@@ -930,12 +930,14 @@ function init_task_form()
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
     jQuery('.task-todo').sortable({update: function(event,ui){
-      jQuery.each(jQuery('.task-todo li'),
+        var todos= new Array();
+        jQuery.each(jQuery('.task-todo li'),
                   function(index, element){
                       var position = jQuery('input#todo_position', element);
                       position.val(index+1);
-                      jQuery.ajax({url: '/todos/update', type: 'POST', data: jQuery('input', element).serialize()});
+                      todos[index]= {id: jQuery('input#id', element).val(), position: index+1} ;
                   });
+        jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
       }
     });
 }
