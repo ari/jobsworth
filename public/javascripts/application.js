@@ -588,6 +588,7 @@ function addUserToTask(event, ui) {
     var params = { user_id : userId, id : taskId };
     addUser(url, params); 
     jQuery(this).val("");
+    return false;
 
 }
 
