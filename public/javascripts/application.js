@@ -622,6 +622,8 @@ function addCustomerToTask(event, ui) {
     });
 
     addAutoAddUsersToTask(clientId, taskId);
+    jQuery(this).val("");
+    return false;
 }
 /*Adds the selected customer to the new project*/
 function addCustomerToProject(input, li){
