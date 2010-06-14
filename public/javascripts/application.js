@@ -447,28 +447,24 @@ function addAttributeChoices(sender) {
   Adds the selected dependency to the task currently being edited.
   The task must be saved for the dependency to be permanently linked.
 */
-function addDependencyToTask(input, li) {
-    var id = jQuery(li).find(".complete_value").text();
-    jQuery(input).val("");
-
+function addDependencyToTask(event, ui) {
+    var id = ui.item.id;
+    jQuery(this).val("");
     jQuery.get("/tasks/dependency/", { dependency_id : id }, function(data) {
         jQuery("#task_dependencies .dependencies").append(data);
     });
+    return false;
 }
 /*
   Adds the selected resource to the task currently being edited.
   The task must be saved for the resource to be permanently linked.
 */
 function addResourceToTask(event, ui) {
-    var id = ui.item.id;
-    
+    var id = ui.item.id;    
     jQuery(this).val("");
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
         jQuery("#task_resources").append(data);
-    });
-   
-   
-    
+    });  
     return false;
 }
 /*
@@ -891,7 +887,7 @@ function init_task_form()
 
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
-    autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
+    autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
     jQuery('.task-todo').sortable({update: function(event,ui){
       jQuery.each(jQuery('.task-todo li'),

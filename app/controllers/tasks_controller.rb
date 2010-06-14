@@ -51,12 +51,11 @@ class TasksController < ApplicationController
   end
 
   def dependency_targets
-    value = params[:dependencies][0]
+    value = params[:term]
     value.gsub!(/#/, '')
-
     @keys = [ value ]
-    @tasks = Task.search(current_user, @keys)
-    render :layout => false
+    @tasks = Task.search(current_user, @keys)    
+    render :json=> @tasks.collect{|task| {:label => "[##{task.id}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.id } }.to_json
   end
 
   def auto_complete_for_resource_name
