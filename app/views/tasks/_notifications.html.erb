@@ -31,7 +31,8 @@
       <% end -%>
   </label>
 
-  <%= add_notifier_field %>
+  <%= text_field(:user, :name, :size=> "12", :id => "user_name_auto_complete" ) %>
+    
   <br clear="all" />
   <%= render(:partial => "tasks/notification", :collection => users) %>
 </fieldset>

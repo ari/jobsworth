@@ -210,16 +210,14 @@ class ApplicationController < ActionController::Base
   # Returns the list to use for auto completes for user names.
   ###
   def auto_complete_for_user_name
-    text = params[:user]
-    text = text[:name] if text
+    searchFor = [params[:term]]
+    if !searchFor.blank?
+      conds = Search.search_conditions_for(searchFor, [ 'name' ])
+      @users = User.find(:all, :order => 'name', :conditions => conds)
 
-    @users = []
-    if !text.blank?
-      conds = Search.search_conditions_for([ text ])
-      @users = current_user.company.users.find(:all, :conditions => conds)
+	  ActiveRecord::Base.include_root_in_json = false
+      render(:json => @users.to_json(:only => :id, :methods => [:label, :value]))
     end
-
-    render(:partial => "/users/auto_complete_for_user_name")
   end
 
   ###

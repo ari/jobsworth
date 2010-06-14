@@ -925,10 +925,16 @@ function init_task_form()
         return false;
     });
 
+	jQuery('#user_name_auto_complete').autocomplete({
+		source: '/tasks/auto_complete_for_user_name',
+		minLength: 3,
+		select: function(event, ui) { addUserToTask(); }
+	});
+	
     autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '#customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '#dependencies_input_auto_complete','/tasks/dependency_targets', addDependencyToTask);
-    autocomplete('#user_name', '#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
         jQuery.each(jQuery('.task-todo li'),
