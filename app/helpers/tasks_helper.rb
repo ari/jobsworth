@@ -66,7 +66,7 @@ module TasksHelper
 
     text_field(:resource, :name, { :size => 12 }) +
     "<script type = 'text/javascript'>
-      autocomplete('#resource_name','#resource_name_auto_complete','/tasks/auto_complete_for_resource_name/customer_id=#{customer_id}', addResourceToTask);
+      autocomplete('#resource_name', '/tasks/auto_complete_for_resource_name/customer_id=#{customer_id}', addResourceToTask);
      </script>"
   end
 

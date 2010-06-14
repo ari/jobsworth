@@ -459,13 +459,17 @@ function addDependencyToTask(input, li) {
   Adds the selected resource to the task currently being edited.
   The task must be saved for the resource to be permanently linked.
 */
-function addResourceToTask(input, li) {
-    var id = jQuery(li).find(".complete_value").text();
-    jQuery(input).val("");
-
+function addResourceToTask(event, ui) {
+    var id = ui.item.id;
+    
+    jQuery(this).val("");
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
         jQuery("#task_resources").append(data);
     });
+   
+   
+    
+    return false;
 }
 /*
   Removes the link from resource to task
