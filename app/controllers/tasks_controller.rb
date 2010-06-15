@@ -51,21 +51,18 @@ class TasksController < ApplicationController
   end
 
   def dependency_targets
-    value = params[:dependencies][0]
+    value = params[:term]
     value.gsub!(/#/, '')
-
     @keys = [ value ]
-    @tasks = Task.search(current_user, @keys)
-    render :layout => false
+    @tasks = Task.search(current_user, @keys)    
+    render :json=> @tasks.collect{|task| {:label => "[##{task.id}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.id } }.to_json
   end
 
   def auto_complete_for_resource_name
     return if !current_user.use_resources?
 
-    search = params[:resource]
-    search = search[:name] if search
+    search = params[:term]
     search = search.split(",").last if search
-    @resources = []
 
     if !search.blank?
       conds = "lower(name) like ?"
@@ -79,8 +76,10 @@ class TasksController < ApplicationController
 
       @resources = current_user.company.resources.find(:all,
                                                        :conditions => conds)
+     render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
+    else
+      render :nothing=> true
     end
-    render :layout=> false
   end
 
   def resource

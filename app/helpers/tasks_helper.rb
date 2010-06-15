@@ -65,9 +65,8 @@ module TasksHelper
   def auto_complete_for_resources(customer_id)
 
     text_field(:resource, :name, { :size => 12 }) +
-    content_tag(:div, "", :id=>"resource_name_auto_complete", :class=> "auto_complete") +
     "<script type = 'text/javascript'>
-      autocomplete('#resource_name','#resource_name_auto_complete','/tasks/auto_complete_for_resource_name/customer_id=#{customer_id}', addResourceToTask);
+      autocomplete('#resource_name', '/tasks/auto_complete_for_resource_name/customer_id=#{customer_id}', addResourceToTask);
      </script>"
   end
 
@@ -116,8 +115,7 @@ module TasksHelper
   # to the task notify list.
   ###
   def add_notifier_field
-     text_field(:user, :name, :size=> "12", :title => _("Add users by name or email"), :class => "tooltip" ) +
-     content_tag(:div, "", :id => "user_name_auto_complete", :class => "auto_complete" )
+     text_field(:user, :name, :size=> "12", :title => _("Add users by name or email"), :class => "tooltip" )
   end
 
   # Returns an array that show the start of ranges to be used
