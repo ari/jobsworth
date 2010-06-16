@@ -712,10 +712,9 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function setPageTarget(input, selected) {
-    var id = jQuery(selected).find(".id").val();
-    var type = jQuery(selected).find(".type").val();
-
+function setPageTarget(event, ui) {
+    var id = ui.item.id;
+    var type = jQuery(ui).find(".type").val();
     jQuery("#page_notable_id").val(id);
     jQuery("#page_notable_type").val(type);
 }
@@ -821,7 +820,7 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
-    autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
+    autocomplete('#target', '/pages/target_list', setPageTarget);
     autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
