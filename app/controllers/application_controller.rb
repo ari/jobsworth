@@ -213,7 +213,7 @@ class ApplicationController < ActionController::Base
     text = params[:term]
     if !text.blank?
       # the next line searches for names starting with given text OR surname (space started) starting with text
-      @users = User.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
+      @users = current_user.company.users.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
       render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
     else
       render :nothing=> true
