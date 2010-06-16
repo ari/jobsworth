@@ -273,9 +273,8 @@ function addSearchFilterTaskIdListener() {
     var filter = jQuery("#search_filter");
 }
 
-function addProjectToUser(input, li) {
-    li = jQuery(li);
-    var value = li.find(".complete_value").text();
+function addProjectToUser(event, ui) {
+    var value = ui.item.id;
 
     var url = document.location.toString();
     url = url.replace("/edit/", "/project/");
@@ -283,7 +282,8 @@ function addProjectToUser(input, li) {
         jQuery("#add_user").before(data);
     });
 
-    input.value = "";
+    jQuery(this).val("");
+    return false;
 }
 
 function addUserToProject(input, li) {
@@ -830,7 +830,7 @@ jQuery(document).ready(function() {
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
     autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
-    autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
+    autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
 });
 
 function toggleAccess() {

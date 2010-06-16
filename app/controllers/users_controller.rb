@@ -249,15 +249,12 @@ class UsersController < ApplicationController
   end
 
   def auto_complete_for_project_name
-    text = params[:project]
-    text = text[:name] if text
-
-    @projects = []
+    text = params[:term]
     if !text.blank?
       conds = [ "lower(name) like ?", "%#{ text }%" ]
       @projects = current_user.company.projects.find(:all, :conditions => conds)
     end
-    render :layout => false
+    render :json=> @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
 
   end
 
