@@ -864,7 +864,7 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, path, after_callback) {
-               jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 2});
+               jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3});
 }
 
 function init_task_form()
@@ -889,6 +889,7 @@ function init_task_form()
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
+
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
         jQuery.each(jQuery('.task-todo li'),

@@ -315,6 +315,16 @@ class User < ActiveRecord::Base
 
     str.join(" ")
   end
+  
+  # This is used for the json formatting used for autocomplete
+  def value
+  	return name
+  end
+  
+  # This is used for the json formatting used for autocomplete
+  def label
+  	return name
+  end
 
   # Returns an array of all task filters this user can see
   def visible_task_filters
