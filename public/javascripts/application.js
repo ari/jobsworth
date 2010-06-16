@@ -626,12 +626,9 @@ function addCustomerToTask(event, ui) {
     return false;
 }
 /*Adds the selected customer to the new project*/
-function addCustomerToProject(input, li){
-    var clientId = jQuery(li).find(".complete_value").text();
-    jQuery(li).find("span").remove();//Can't get text after span, so I delete span.
-    var clientName = jQuery(li).text();
+function addCustomerToProject(event, ui){
+    var clientId = ui.item.id;
     jQuery('#project_customer_id').val(clientId);
-    jQuery(input).val(clientName);
 }
 /*
   If this task has no linked clients yet, link the one that
@@ -829,7 +826,7 @@ jQuery(document).ready(function() {
     attachObseverForWorkLog();
     autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
     autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-    autocomplete('#project_customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+    autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
 });
 
