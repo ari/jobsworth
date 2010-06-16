@@ -286,17 +286,14 @@ function addProjectToUser(event, ui) {
     return false;
 }
 
-function addUserToProject(input, li) {
-    li = jQuery(li);
-    var value = li.find(".complete_value").text();
-
+function addUserToProject(event, ui) {
+    var value = ui.item.id;
     var url = document.location.toString();
     url = url.replace("/edit/", "/ajax_add_permission/");
     jQuery.get(url, { user_id : value }, function(data) {
         jQuery("#user_table").html(data);
     });
-
-    input.value = "";
+    return false;
 }
 
 /*
@@ -828,6 +825,7 @@ jQuery(document).ready(function() {
     autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
+    autocomplete('#user_name', '/projects/auto_complete_for_user_name', addUserToProject);
 });
 
 function toggleAccess() {
