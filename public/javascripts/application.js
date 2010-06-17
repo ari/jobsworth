@@ -235,20 +235,19 @@ jQuery(document).ready(function() {
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
 */
-function addSearchFilter(input, selected) {
-    selected = jQuery(selected);
-    var idName = selected.attr("data-id");
-    var idValue = selected.attr("data-idval");
+function addSearchFilter(event, ui) {
+    selected = ui.item;
+    var idName = selected.id;
+    var idValue = selected.idval;
     /*NOTE: if user select qulifier, than idName -> name of param qualifier_id
       idValue -> value of this param, etc.
       else if user select keyword, then idName -> name of keyword_id or unread_only  param, idValue-> value of  param,
       but type&column name/value not exist
     */
-    var typeName = selected.attr("data-type");
-    var typeValue = selected.attr("data-typeval");
-    var columnName = selected.attr("data-col");
-    var columnValue = selected.attr("data-colval");
-
+    var typeName = selected.type;
+    var typeValue = selected.typeval;
+    var columnName = selected.col;
+    var columnValue = selected.colval;
     if (idName && idName.length > 0) {
         var filterKeys = jQuery("#search_filter_form ul#search_filter_keys");
         filterKeys.append('<input type="hidden" name="'+idName+'" value="'+idValue+'"/>');
@@ -879,7 +878,7 @@ function init_task_form()
         return false;
     });
 
-    autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
+    autocomplete('#search_filter', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
