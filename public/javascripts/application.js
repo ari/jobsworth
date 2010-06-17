@@ -302,15 +302,8 @@ function addUserToProject(event, ui) {
  The autocomplete text field itself will be updated with the name, and
  a hidden field directly before the text field will be updated with the object id.
 */
-function updateAutoCompleteField(input, li) {
-    li = jQuery(li);
-    input = jQuery(input);
-
-    var id = li.find(".complete_value").text();
-    input.siblings(".auto_complete_id").val(id);
-
-    li.find(".complete_value").remove();
-    input.val(li.text());
+function updateAutoCompleteField(event, ui) {
+    jQuery("#resource_customer_id").val(ui.item.id);
 }
 
 /*
@@ -625,8 +618,7 @@ function addCustomerToTask(event, ui) {
 }
 /*Adds the selected customer to the new project*/
 function addCustomerToProject(event, ui){
-    var clientId = ui.item.id;
-    jQuery('#project_customer_id').val(clientId);
+    jQuery('#project_customer_id').val(ui.item.id);
 }
 /*
   If this task has no linked clients yet, link the one that
@@ -822,7 +814,7 @@ jQuery(document).ready(function() {
     init_task_form();
     attachObseverForWorkLog();
     autocomplete('#target', '/pages/target_list', setPageTarget);
-    autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
+    autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
     autocomplete('#user_name', '/projects/auto_complete_for_user_name', addUserToProject);

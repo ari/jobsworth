@@ -128,13 +128,13 @@ class ResourcesController < ApplicationController
   end
 
   def auto_complete_for_resource_parent_id
-    search = params[:resource]
+    search = params[:term]
     search = search[:parent_id] if search
     @resources = []
-    
     if !search.blank?
       cond = [ "lower(name) like ?", "%#{ search.downcase }%" ]
       @resources = current_user.company.resources.find(:all, :conditions => cond)
+      render :json=> @resources.collect{|resource| {:value => resource.name, :id=> resource.id} }.to_json
     end
   end
 
