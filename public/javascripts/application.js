@@ -261,6 +261,8 @@ function addSearchFilter(event, ui) {
     } else {
                 // probably selected a heading, just ignore
     }
+    jQuery(this).val("");
+    return false;
 }
 
 
