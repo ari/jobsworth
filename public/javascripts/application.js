@@ -854,6 +854,27 @@ function autocomplete(input_field, path, after_callback) {
                jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3});
 }
 
+jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
+                _renderMenu: function( ul, items ) {
+                        var self = this,
+                                currentCategory = "";
+                        jQuery.each( items, function( index, item ) {
+                                if ( item.category != currentCategory ) {
+                                        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                                        currentCategory = item.category;
+                                }
+                                self._renderItem( ul, item );
+                        });
+                }
+        });
+
+jQuery(function() {
+    jQuery('#search_filter').catcomplete({
+          source: '/task_filters/search', 
+          select: addSearchFilter,
+          delay: 0,
+    })
+});
 function init_task_form()
 {
     attach_behaviour_to_project_select();
@@ -872,7 +893,6 @@ function init_task_form()
         return false;
     });
 
-    autocomplete('#search_filter', '/task_filters/search', addSearchFilter);
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);

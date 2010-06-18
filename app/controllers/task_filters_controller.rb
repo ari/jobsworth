@@ -34,31 +34,45 @@ class TaskFiltersController < ApplicationController
     array = []
     (@to_list || []).each do |name, values| 
       if values and values.any? 
-        array << {:label => name} 
-        values.each do |v| 
+       values.each do |v| 
           array<< {:id =>  "task_filter[qualifiers_attributes][][qualifiable_id]",
                    :idval => v.id, 
-                   :type=> "task_filter[qualifiers_attributes][][qualifiable_type]", :typeval => v.class.name, :value => v.to_s}
+                   :type=> "task_filter[qualifiers_attributes][][qualifiable_type]", :typeval => v.class.name, 
+                   :value => v.to_s,
+                   :category => name.to_s}
         end 
       end 
     end
     
     (@date_columns || []).each do |column, matches|
           next if matches.empty?
-            array << {:label => column.to_s.gsub("_at", "").humanize}
+           
             matches.each do |m|
-              array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",  :idval => m.id, :type => "task_filter[qualifiers_attributes][][qualifiable_type]", :typeval => m.class.name, :col => "task_filter[qualifiers_attributes][][qualifiable_column]", :colval => column.to_s, :value => m.name }
+              array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",                                                                  
+                        :idval => m.id, 
+                        :type => "task_filter[qualifiers_attributes][][qualifiable_type]", 
+                        :typeval => m.class.name, 
+                        :col => "task_filter[qualifiers_attributes][][qualifiable_column]", 
+                        :colval => column.to_s, 
+                        :value => m.name.to_s,
+                        :category => column.to_s.gsub("at", "").humanize}
           end
     end
     
     if !@filter.blank?
-          array << {:label => "Keyword"}
-          array << {:id => "task_filter[keywords_attributes][]", :idval=> @filter, :value => @filter}
+         
+          array << {:id => "task_filter[keywords_attributes][]", 
+                    :idval=> @filter, 
+                    :value => @filter,
+                    :category => "Keyword"}
     end
     
     if @unread_only
-         array << {:label => "Read Status"}
-         array << {:id => "task_filter[unread_only]", :idval => true, :value => "My unread tasks only"}
+        
+         array << {:id => "task_filter[unread_only]", 
+                   :idval => true, 
+                   :value => "My unread tasks only",
+                   :category =>"Read Status"}
     end
     
     render :json => array.to_json
