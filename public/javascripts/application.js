@@ -868,13 +868,7 @@ jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
                 }
         });
 
-jQuery(function() {
-    jQuery('#search_filter').catcomplete({
-          source: '/task_filters/search', 
-          select: addSearchFilter,
-          delay: 0,
-    })
-});
+
 function init_task_form()
 {
     attach_behaviour_to_project_select();
@@ -892,7 +886,14 @@ function init_task_form()
         div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
         return false;
     });
-
+    jQuery(function() {
+        jQuery('#search_filter').catcomplete({
+              source: '/task_filters/search', 
+              select: addSearchFilter,
+              delay: 800,
+              minLength: 3
+        })
+    });
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
