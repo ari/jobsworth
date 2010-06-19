@@ -937,13 +937,11 @@ pre.auto_generated {
   padding: 0;
   margin: 0;
   display: block;
-  clear: both;
 }
 
 #content li
 {
   list-style: none;
-  clear: both;
   padding: 0;
   margin: 0 0 0 0;
   display: block;
