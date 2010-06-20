@@ -8,26 +8,25 @@
       <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}"%>
     </span>
   </div>
-  
-  <div class="scm_revision">
-    <%= changeset.changeset_rev%>
-  </div>
-  
+
   <h4 class="log_name">
     <% if changeset.user.nil? %>
       <%= changeset.author %>
     <% else %>
       <%= changeset.user.name %>
-    <% end -%>                     
+    <% end -%>
+    <span class="scm_revision">
+      <%= changeset.changeset_rev%>
+    </span>
   </h4>
   
   <p class="log_comment">
     <%= changeset.message.gsub(/\n/, "<br/>") if changeset.message %>
   </p>
   
-  <p class="scm_files">
+  <ul class="scm_files">
     <% changeset.scm_files.each do |file| %>
-    <%= file.state+ " " +file.path%><br/>
-    <%end%>
-  </p>
+      <li><span class="state"><%= file.state %></span><span class="file"><%= file.path %></span><li/>
+    <% end %>
+  </ul>
 </div>
