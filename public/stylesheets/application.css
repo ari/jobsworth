@@ -1609,6 +1609,7 @@ select#custom_attribute_1 {
 }
 
 #task_history {
+    padding-top: 20px;
     margin-left: 0;
     padding-left: 0;
 }

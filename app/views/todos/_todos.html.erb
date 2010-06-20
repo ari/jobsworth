@@ -7,7 +7,7 @@
     <%= link_to_function(_("New To-do Item"), "toggleTodoEdit(this)") %>
   </div>
   <div class="edit" style="display: none">
-    <%= text_field_tag("todo[name]", "") %>
+    <%= text_field_tag("todo[name]", "", :size => 50) %>
     <%= javascript_tag("addNewTodoKeyListener(#{ @task.id })", :defer => "defer") %>
     <%= link_to_function(_("Cancel"), "toggleTodoEdit(this)") %>
   </div>
