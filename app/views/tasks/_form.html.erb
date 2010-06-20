@@ -35,15 +35,3 @@
     <%= render(:partial => "tasks/history") %>
   </div>
 </div>
-
-<script type="text/javascript">
-  jQuery('#task_status').change(function() {
-    if( jQuery('#task_status').val() == "6" ) {
-      jQuery('#defer_options').show();
-    } else {
-      jQuery('#defer_options').hide();
-    }
-    return false;
-  });
-  jQuery('#comment').focus();
-</script>
