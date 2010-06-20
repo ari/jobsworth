@@ -1,8 +1,8 @@
 <div class="log_history clearfix">
   <ul id="tasktabs">
-    <li><a href="#comments_tab"><span>Comments</span></a></li>
-    <li><a href="#all_tab"><span>All</span></a></li>
-    <li><a href="#changesets_tab"><span>Commits</span></a></li>
+    <li><a href="#comments_tab">Messages (<%= @task.work_logs.comments.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#all_tab">Logs (<%= @task.work_logs.level_accessed_by(current_user).count %>)</a></li>
+    <li><a href="#changesets_tab">Commits (<%= @task.scm_changesets.count %>)</a></li>
   </ul>
   <div id="comments_tab">
     <%= render :partial => 'activities/log_row2', :collection=>@task.work_logs.comments.level_accessed_by(current_user).all(:order => "started_at desc")  %>
