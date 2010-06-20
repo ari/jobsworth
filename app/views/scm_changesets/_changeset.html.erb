@@ -2,7 +2,7 @@
 <div class="log_timestamp">
         <span class="log_date">
                 <%= tz.utc_to_local(changeset.commit_date).strftime("%A") %> <br/>
-                <%= tz.utc_to_local(changeset.commit_date).strftime("%d %B %Y") %>
+                <%= tz.utc_to_local(changeset.commit_date).strftime("%d %b %Y") %>
         </span>
         <span class="log_time">
                  <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}"%>
