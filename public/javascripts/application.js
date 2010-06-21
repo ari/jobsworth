@@ -235,20 +235,19 @@ jQuery(document).ready(function() {
 
 /* This function add inputs to search filter form, it works in both cases via normal http post and via ajax
 */
-function addSearchFilter(input, selected) {
-    selected = jQuery(selected);
-    var idName = selected.attr("data-id");
-    var idValue = selected.attr("data-idval");
+function addSearchFilter(event, ui) {
+    selected = ui.item;
+    var idName = selected.id;
+    var idValue = selected.idval;
     /*NOTE: if user select qulifier, than idName -> name of param qualifier_id
       idValue -> value of this param, etc.
       else if user select keyword, then idName -> name of keyword_id or unread_only  param, idValue-> value of  param,
       but type&column name/value not exist
     */
-    var typeName = selected.attr("data-type");
-    var typeValue = selected.attr("data-typeval");
-    var columnName = selected.attr("data-col");
-    var columnValue = selected.attr("data-colval");
-
+    var typeName = selected.type;
+    var typeValue = selected.typeval;
+    var columnName = selected.col;
+    var columnValue = selected.colval;
     if (idName && idName.length > 0) {
         var filterKeys = jQuery("#search_filter_form ul#search_filter_keys");
         filterKeys.append('<input type="hidden" name="'+idName+'" value="'+idValue+'"/>');
@@ -262,6 +261,8 @@ function addSearchFilter(input, selected) {
     } else {
                 // probably selected a heading, just ignore
     }
+    jQuery(this).val("");
+    return false;
 }
 
 
@@ -273,9 +274,8 @@ function addSearchFilterTaskIdListener() {
     var filter = jQuery("#search_filter");
 }
 
-function addProjectToUser(input, li) {
-    li = jQuery(li);
-    var value = li.find(".complete_value").text();
+function addProjectToUser(event, ui) {
+    var value = ui.item.id;
 
     var url = document.location.toString();
     url = url.replace("/edit/", "/project/");
@@ -283,20 +283,18 @@ function addProjectToUser(input, li) {
         jQuery("#add_user").before(data);
     });
 
-    input.value = "";
+    jQuery(this).val("");
+    return false;
 }
 
-function addUserToProject(input, li) {
-    li = jQuery(li);
-    var value = li.find(".complete_value").text();
-
+function addUserToProject(event, ui) {
+    var value = ui.item.id;
     var url = document.location.toString();
     url = url.replace("/edit/", "/ajax_add_permission/");
     jQuery.get(url, { user_id : value }, function(data) {
         jQuery("#user_table").html(data);
     });
-
-    input.value = "";
+    return false;
 }
 
 /*
@@ -304,15 +302,8 @@ function addUserToProject(input, li) {
  The autocomplete text field itself will be updated with the name, and
  a hidden field directly before the text field will be updated with the object id.
 */
-function updateAutoCompleteField(input, li) {
-    li = jQuery(li);
-    input = jQuery(input);
-
-    var id = li.find(".complete_value").text();
-    input.siblings(".auto_complete_id").val(id);
-
-    li.find(".complete_value").remove();
-    input.val(li.text());
+function updateAutoCompleteField(event, ui) {
+    jQuery("#resource_customer_id").val(ui.item.id);
 }
 
 /*
@@ -626,12 +617,8 @@ function addCustomerToTask(event, ui) {
     return false;
 }
 /*Adds the selected customer to the new project*/
-function addCustomerToProject(input, li){
-    var clientId = jQuery(li).find(".complete_value").text();
-    jQuery(li).find("span").remove();//Can't get text after span, so I delete span.
-    var clientName = jQuery(li).text();
-    jQuery('#project_customer_id').val(clientId);
-    jQuery(input).val(clientName);
+function addCustomerToProject(event, ui){
+    jQuery('#project_customer_id').val(ui.item.id);
 }
 /*
   If this task has no linked clients yet, link the one that
@@ -718,10 +705,9 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function setPageTarget(input, selected) {
-    var id = jQuery(selected).find(".id").val();
-    var type = jQuery(selected).find(".type").val();
-
+function setPageTarget(event, ui) {
+    var id = ui.item.id;
+    var type = jQuery(ui).find(".type").val();
     jQuery("#page_notable_id").val(id);
     jQuery("#page_notable_type").val(type);
 }
@@ -827,10 +813,11 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
-    autocomplete('#target', '#target_auto_complete', '/pages/target_list', setPageTarget);
-    autocomplete('#new_customer_name', '#customer_name_autocomplete', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-    autocomplete('#project_customer_name', '#customer_name_auto_complete', '/projects/auto_complete_for_customer_name', addCustomerToProject);
-    autocomplete('#project_name', '#project_name_auto_complete', '/users/auto_complete_for_project_name', addProjectToUser);
+    autocomplete('#target', '/pages/target_list', setPageTarget);
+    autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
+    autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+    autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
+    autocomplete('#user_name', '/projects/auto_complete_for_user_name', addUserToProject);
 });
 
 function toggleAccess() {
@@ -864,8 +851,23 @@ function highlightWatchers() {
 }
 
 function autocomplete(input_field, path, after_callback) {
-               jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 2});
+               jQuery(input_field).autocomplete({source: path, select: after_callback, delay: 800, minLength: 3});
 }
+
+jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
+                _renderMenu: function( ul, items ) {
+                        var self = this,
+                                currentCategory = "";
+                        jQuery.each( items, function( index, item ) {
+                                if ( item.category != currentCategory ) {
+                                        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+                                        currentCategory = item.category;
+                                }
+                                self._renderItem( ul, item );
+                        });
+                }
+        });
+
 
 function init_task_form()
 {
@@ -884,11 +886,18 @@ function init_task_form()
         div.html('<input type="hidden" name="delete_files[]" value="' + div.attr('id').split('-')[1] + '">');
         return false;
     });
-
-    autocomplete('#search_filter', '#search_filter_auto_complete', '/task_filters/search', addSearchFilter);
+    jQuery(function() {
+        jQuery('#search_filter').catcomplete({
+              source: '/task_filters/search', 
+              select: addSearchFilter,
+              delay: 800,
+              minLength: 3
+        })
+    });
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/dependency_targets', addDependencyToTask);
-    autocomplete('#user_name', '/tasks/auto_complete_for_user_name', addUserToTask);
+    autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
         jQuery.each(jQuery('.task-todo li'),

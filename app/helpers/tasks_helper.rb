@@ -110,14 +110,6 @@ module TasksHelper
     end
   end
 
-  ###
-  # Returns a field that will allow users or email address to be added
-  # to the task notify list.
-  ###
-  def add_notifier_field
-     text_field(:user, :name, :size=> "12", :title => _("Add users by name or email"), :class => "tooltip" )
-  end
-
   # Returns an array that show the start of ranges to be used
   # for a tag cloud
   def cloud_ranges(counts)

@@ -3,7 +3,6 @@
 <div id="search_filter_div" class="section">
 	<% remote_filter_form_tag do  %>
 	    <%= text_field_tag "filter", "Task search...", :id => "search_filter", :class => "grey", :autocomplete =>"off" %>
-	    <div id="search_filter_auto_complete" class="auto_complete"></div>	
 	    <%
 	    redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
 	    redir_params = (local_assigns[:redirect_params] ? redirect_params : {})

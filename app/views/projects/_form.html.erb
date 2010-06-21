@@ -5,7 +5,6 @@
 <label for="project_customer_name"><%=_ 'Client' %></label>
 
 <%= text_field :customer, :name, { :id=>"project_customer_name",:size => 12, :value => @project.customer.nil? ? "" :@project.customer.name } %>
-<div id= "customer_name_auto_complete" class= "auto_complete" ></div>
 <br/>
 
 <input type = "hidden" id = "project_customer_id" name = "project[customer_id]" value="<%=@project.customer.nil? ? 0 :@project.customer.id -%>">
