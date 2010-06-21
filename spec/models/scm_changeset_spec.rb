@@ -122,19 +122,19 @@ describe ScmChangeset do
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
+          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
+          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map deleted array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
+          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
         end
       end
 
@@ -166,19 +166,19 @@ describe ScmChangeset do
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
+          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
+          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map removed array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
+          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
         end
       end
 
