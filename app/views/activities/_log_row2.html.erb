@@ -1,35 +1,32 @@
 <% log=log_row2%>
 <% date_format = current_user.time_format %>
 <div class="log_entry access_level_<%=log.access_level_id%>">
-<div class="log_timestamp">
-        <span class="log_date">
-                <%= tz.utc_to_local(log.started_at).strftime("%A") %> <br/>
-                <%= tz.utc_to_local(log.started_at).strftime("%d %B %Y") %>
-        </span>
-        <span class="log_time">
-                <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
-                        <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %>
-                <% else %>
-                        <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><% end %>
-                <% end %>
-        </span>
-
-
-        <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
-                <span class="log_worktime">
-                (<%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) %> worked)
-                </span>
-        <% end %>
-
-</div>
-
-
-<h4 class="log_name">
-
-<%= log.user.name if log.user %>
-<%= log.event_log.user if log.user.nil? && log.event_log.user %>
-</h4>
-<p class="log_comment">
-<%= log.body.gsub(/\n/, "<br/>") if log.body %>
-</p>
+  <div class="log_timestamp">
+    <span class="log_date">
+      <%= tz.utc_to_local(log.started_at).strftime("%A") %><br/>
+      <%= tz.utc_to_local(log.started_at).strftime("%d %b %Y") %>
+    </span>
+    <span class="log_time">
+      <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
+      <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %>
+      <% else %>
+      <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><% end %>
+      <% end %>
+    </span>
+    
+    <% if (log.duration > 0 && ((log.user && log.user.id == current_user.id) || current_user.admin?) ) %>
+      <span class="log_worktime">
+        (<%= link_to "#{worked_nice(log.duration/60)}", edit_work_log_path(log) %> worked)
+      </span>
+    <% end %>
+  </div>
+  
+  
+  <h4 class="log_name">
+    <%= log.user.name if log.user %>
+    <%= log.event_log.user if log.user.nil? && log.event_log.user %>
+  </h4>
+  <p class="log_comment">
+    <%= log.body.gsub(/\n/, "<br/>") if log.body %>
+  </p>
 </div>

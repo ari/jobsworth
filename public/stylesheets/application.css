@@ -937,13 +937,11 @@ pre.auto_generated {
   padding: 0;
   margin: 0;
   display: block;
-  clear: both;
 }
 
 #content li
 {
   list-style: none;
-  clear: both;
   padding: 0;
   margin: 0 0 0 0;
   display: block;
@@ -1611,8 +1609,17 @@ select#custom_attribute_1 {
 }
 
 #task_history {
+    padding-top: 20px;
     margin-left: 0;
     padding-left: 0;
+}
+
+#task_history h4 {
+	margin: 0;
+}
+
+#task_history .scm_revision {
+	color:  #666;
 }
 
 #task_history h4 {
@@ -1639,8 +1646,22 @@ select#custom_attribute_1 {
     display: block;
     font-size: 10px;
 }
-#task_history .log_name, #taskform #task_history .log_comment {
+#task_history .log_name, #task_history .log_comment {
     margin-left: 100px;
+}
+#task_history ul.scm_files {
+    margin-left: 100px;
+    padding-left: 0;
+    list-style: none;
+}
+#task_history ul.scm_files li .state {
+    font-weight: bold;
+    color: #155;
+}
+#task_history ul.scm_files li .file {
+    color: #666;
+    font-size: 90%;
+    margin-left: 10px;
 }
 
 #task_history .log_name {
