@@ -54,7 +54,7 @@ class TasksController < ApplicationController
     value = params[:term]
     value.gsub!(/#/, '')
     @keys = [ value ]
-    @tasks = Task.search(current_user, @keys)    
+    @tasks = Task.search(current_user, @keys)
     render :json=> @tasks.collect{|task| {:label => "[##{task.id}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.id } }.to_json
   end
 
@@ -313,7 +313,7 @@ class TasksController < ApplicationController
     filename = "clockingit_tasks.csv"
     @tasks= current_task_filter.tasks
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
-      csv << Task.csv_header
+      csv << @tasks.first.csv_header
       @tasks.each do |t|
         csv << t.to_csv
       end
