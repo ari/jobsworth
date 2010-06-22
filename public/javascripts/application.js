@@ -451,11 +451,11 @@ function addDependencyToTask(event, ui) {
   The task must be saved for the resource to be permanently linked.
 */
 function addResourceToTask(event, ui) {
-    var id = ui.item.id;    
+    var id = ui.item.id;
     jQuery(this).val("");
     jQuery.get("/tasks/resource/", { resource_id : id }, function(data) {
         jQuery("#task_resources").append(data);
-    });  
+    });
     return false;
 }
 /*
@@ -577,7 +577,7 @@ function addUserToTask(event, ui) {
     var taskId = jQuery("#task_id").val();
     var url = tasks_path("add_notification");
     var params = { user_id : userId, id : taskId };
-    addUser(url, params); 
+    addUser(url, params);
     jQuery(this).val("");
     return false;
 
@@ -707,7 +707,7 @@ function addNewTodoKeyListener(taskId) {
 
 function setPageTarget(event, ui) {
     var id = ui.item.id;
-    var type = jQuery(ui).find(".type").val();
+    var type = ui.item.type;
     jQuery("#page_notable_id").val(id);
     jQuery("#page_notable_type").val(type);
 }
@@ -879,7 +879,7 @@ function init_task_form() {
       return false;
     });
     jQuery('#comment').focus();
-    
+
     attach_behaviour_to_project_select();
     jQuery("div.log_history").tabs();
     jQuery('.autogrow').autogrow();
@@ -897,7 +897,7 @@ function init_task_form() {
     });
     jQuery(function() {
         jQuery('#search_filter').catcomplete({
-              source: '/task_filters/search', 
+              source: '/task_filters/search',
               select: addSearchFilter,
               delay: 800,
               minLength: 3
