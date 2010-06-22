@@ -18,7 +18,7 @@ class PagesControllerTest < ActionController::TestCase
     end
 
     should "be able to post target_list" do
-      post :target_list, :target => @user.name
+      post :target_list, :term => @user.name
       assert_response :success
     end
 
