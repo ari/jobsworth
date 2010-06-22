@@ -50,7 +50,7 @@ class TasksController < ApplicationController
     list_init
   end
 
-  def dependency_targets
+  def auto_complete_for_dependency_targets
     value = params[:term]
     value.gsub!(/#/, '')
     @keys = [ value ]
