@@ -53,7 +53,7 @@ class PagesController < ApplicationController
     @matches += Customer.search(current_user.company, str)
     @matches += current_user.all_projects.find(:all,
                               :conditions => Search.search_conditions_for(str))
-    render :json=> @matches.collect{|match| {:value => match.name, :id=> match.id} }.to_json
-  
+    render :json=> @matches.collect{|match| {:value => "#{match.class.name} : #{match.to_s}", :id=> match.id, :type=>match.class.name} }.to_json
+
   end
 end

@@ -1,8 +1,0 @@
-<ul>
-  <% @matches.each do |o| -%>
-    <li><%= o.class.name %> : <%= o %>
-      <%= hidden_field_tag :id, o.id, :class => "id" %>
-      <%= hidden_field_tag :id, o.class.name, :class => "type" %>
-    </li>
-  <% end -%>
-</ul>
