@@ -431,8 +431,8 @@ class TasksControllerTest < ActionController::TestCase
       assert_response :success
     end
 
-    should "render dependency_targets" do
-      get :dependency_targets, :term =>  @task.name 
+    should "render auto_complete_for_dependency_targets" do
+      get :auto_complete_for_dependency_targets, :term =>  @task.name 
 
       assert_response :success
       assert_equal Task.search(@user,[@task.name]), assigns("tasks")
