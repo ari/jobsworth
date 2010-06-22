@@ -4,7 +4,10 @@ class TaskFiltersController < ApplicationController
 
   def search
     @filter = params[:term]
-    return if @filter.blank?
+    if @filter.blank?
+      render :nothing=>true
+      return
+    end
 
     @filter = @filter.downcase
     limit = 10

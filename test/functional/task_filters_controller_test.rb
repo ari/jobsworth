@@ -21,108 +21,121 @@ class TaskFiltersControllerTest < ActionController::TestCase
     should "return nothing with an empty search" do
       get :search
       body = @response.body.gsub(/\s/, "")
-      assert_equal "<ul></ul>", body
+      assert_equal "", body
     end
 
     should "be able to search by task project" do
-      get :search, :filter => @task.project.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' => @task.project.id
-                 })
+      get :search, :term => @task.project.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == @task.project.id)  }
+      #assert_tag(:attributes => {
+                  # 'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                  # 'data-idval' => @task.project.id
+                # })
     end
 
     should "be able to search by task customer" do
-      get :search, :filter => @task.project.customer.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' => @task.project.customer.id
-                 })
+      get :search, :term => @task.project.customer.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == @task.project.customer.id)  }
+     # assert_tag(:attributes => {
+      #             'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+       #            'data-idval' => @task.project.customer.id
+        #         })
     end
 
 
     should "be able to search by task milestone" do
-      get :search, :filter => @task.milestone.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' => @task.milestone.id })
+      get :search, :term => @task.milestone.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == @task.milestone.id)  }
+      #assert_tag(:attributes => {
+       #            'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+        #           'data-idval' => @task.milestone.id })
     end
 
     should "be able to search by tags" do
       tag = Tag.make(:company => @user.company)
-      get :search, :filter => tag.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' => tag.id
-                 })
+      get :search, :term => tag.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == tag.id)  }
+      #assert_tag(:attributes => {
+      #             'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+       #            'data-idval' => tag.id
+        #         })
     end
 
     should "be able to search by task status" do
       Status.create_default_statuses(@user.company)
       status = @user.company.statuses.rand
-      get :search, :filter => status.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' =>  status.id
-                 })
+      get :search, :term => status.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == status.id)  }
+      #assert_tag(:attributes => {
+         #          'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+           #        'data-idval' =>  status.id
+           #      })
     end
 
     should "be able to search by task user" do
-      get :search, :filter => @user.name
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' => @user.id
-                 })
+      get :search, :term => @user.name
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == @user.id)  }
+      #assert_tag(:attributes => {
+         #          'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+           #        'data-idval' => @user.id
+            #     })
     end
 
     should "be able to search by keyword" do
-      get :search, :filter => "A keyword"
-      assert_tag(:attributes => {
-                   'data-id'=>"task_filter[keywords_attributes][]",
-                   'data-idval'=>"a keyword"
-                 })
+      get :search, :term => "A keyword"
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[keywords_attributes][]") and (hash['idval'] == "a keyword")  }
+      #assert_tag(:attributes => {
+         #          'data-id'=>"task_filter[keywords_attributes][]",
+          #         'data-idval'=>"a keyword"
+          #       })
     end
 
     should "be able to search by read status" do
-      get :search, :filter => "unread"
-      assert_tag(:attributes => {
-                   'data-id'=> "task_filter[unread_only]",
-                   'data-idval' => "true"
-                 })
+      get :search, :term => "unread"
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[unread_only]") and (hash['idval'] == true)  }
+      #assert_tag(:attributes => {
+       #            'data-id'=> "task_filter[unread_only]",
+       #            'data-idval' => "true"
+        #         })
     end
 
     context "searching on time ranges" do
       setup do
         @time_range = TimeRange.make(:name => "today")
-        get :search, :filter => @time_range.name
+        get :search, :term => @time_range.name
       end
 
       should "should find time range by name" do
-        assert_tag(:attributes => {
-                     'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                     'data-idval' => @time_range.id
-                 })
+         assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == @time_range.id)  }
+        #assert_tag(:attributes => {
+        #             'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+         #            'data-idval' => @time_range.id
+         #        })
       end
 
       should "have due_at qualifiable_name" do
-        assert_tag(:attributes => {
-                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
-                     'data-colval' => "due_at"
-                 })
+        assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['col'] == "task_filter[qualifiers_attributes][][qualifiable_column]") and (hash['colval'] == "due_at")  }
+        #assert_tag(:attributes => {
+            #         'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+            #         'data-colval' => "due_at"
+               #  })
       end
 
       should "have create_at qualifiable_name" do
-        assert_tag(:attributes => {
-                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
-                     'data-colval' => "created_at"
-                 })
+ 
+           assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['col'] == "task_filter[qualifiers_attributes][][qualifiable_column]") and (hash['colval'] == "created_at")  }
+        #assert_tag(:attributes => {
+        #             'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+        #             'data-colval' => "created_at"
+        #         })
       end
 
       should "have updated_at qualifiable_name" do
-        assert_tag(:attributes => {
-                     'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
-                     'data-colval' => "updated_at"
-                 })
+          assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['col'] == "task_filter[qualifiers_attributes][][qualifiable_column]") and (hash['colval'] == "updated_at")  }                                                                                                             
+        #assert_tag(:attributes => {
+        #             'data-col' => "task_filter[qualifiers_attributes][][qualifiable_column]",
+         #            'data-colval' => "updated_at"
+          #       })
       end
     end
 
@@ -132,11 +145,12 @@ class TaskFiltersControllerTest < ActionController::TestCase
       assert_not_nil property
       assert_not_nil value
 
-      get :search, :filter => value.value
-      assert_tag(:attributes => {
-                   'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   'data-idval' =>  value.id
-                 })
+      get :search, :term => value.value
+      assert_not_nil JSON.parse(@response.body).detect{|hash| (hash['id'] == "task_filter[qualifiers_attributes][][qualifiable_id]") and (hash['idval'] == value.id)  }                                                                                                                
+      #assert_tag(:attributes => {
+              #     'data-id' => "task_filter[qualifiers_attributes][][qualifiable_id]",
+              #     'data-idval' =>  value.id
+              #   })
     end
 
     should "be able to render new" do
@@ -245,5 +259,5 @@ class TaskFiltersControllerTest < ActionController::TestCase
         end
       end
     end
-  end
+  end                                                                                                                   
 end
