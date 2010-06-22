@@ -227,7 +227,7 @@ class ApplicationController < ActionController::Base
     text = params[:term]
     if !text.blank?
       conds = Search.search_conditions_for([ text ])
-      @customers = current_user.company.customers.find(:all, :order => 'name', :conditions => conds, :limit => 50)
+      @customers = current_user.company.customers.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
       render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
       render :nothing=> true
