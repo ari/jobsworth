@@ -432,7 +432,7 @@ class TasksControllerTest < ActionController::TestCase
     end
 
     should "render dependency_targets" do
-      get :dependency_targets, :dependencies => [ @task.name ]
+      get :dependency_targets, :term =>  @task.name 
 
       assert_response :success
       assert_equal Task.search(@user,[@task.name]), assigns("tasks")
