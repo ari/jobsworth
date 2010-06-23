@@ -226,7 +226,6 @@ class ApplicationController < ActionController::Base
   def auto_complete_for_customer_name
     text = params[:term]
     if !text.blank?
-      conds = Search.search_conditions_for([ text ])
       @customers = current_user.company.customers.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
       render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
     else
