@@ -39,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :posts, :name_prefix => 'all_', :collection => { :search => :get }
   map.resources :todos, :member => { :toggle_done => :post }
   map.resources :work_logs
-  map.resources :tags
+  map.resources(:tags, :collection=>{:auto_complete_for_tags=>:get})
 
   map.resources(:work, :collection => {
                   :start => :any,

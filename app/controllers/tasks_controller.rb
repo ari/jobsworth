@@ -49,7 +49,7 @@ class TasksController < ApplicationController
   def gantt
     list_init
   end
-
+  
   def auto_complete_for_dependency_targets
     value = params[:term]
     value.gsub!(/#/, '')

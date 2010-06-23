@@ -37,5 +37,12 @@ class TagsController < ApplicationController
 
     redirect_to tags_path
   end
+  
+  def auto_complete_for_tags
+    value = params[:term]
+   
+    @tags = current_user.company.tags.find(:all, :conditions => ['name LIKE ?', '%' + value +'%' ])
+    render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
+  end
 
 end

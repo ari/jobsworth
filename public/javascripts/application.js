@@ -920,3 +920,38 @@ function init_task_form() {
     });
 
 }
+
+
+   
+    jQuery(function(){
+        function split(val) {
+                 return val.split(/,\s*/);
+        }
+        function extractLast(term) {
+                 return split(term).pop();
+                }
+        jQuery('#task_set_tags').autocomplete({
+            source: function(request, response) {
+                                jQuery.getJSON('/tags/auto_complete_for_tags' , {
+                                        term: extractLast(request.term)
+                                }, response);
+            },
+            search: function() {
+                                var term = extractLast(this.value);
+                                if (term.length < 2) {
+                                        return false;
+                                }
+                        },
+            focus: function() {
+                    return false;
+            },
+            select: function(event, ui) {
+                    var terms = split( this.value );
+                    terms.pop();
+                    terms.push( ui.item.value );
+                    terms.push("");
+                    this.value = terms.join(", ");
+                    return false;
+            }
+        });
+     });

@@ -7,44 +7,6 @@
       :autocomplete => "off" }.merge( perms['edit'])) %> 
   <br />
 
-  <% @tags =  Tag.top_counts(current_user.company);
-    if @tags.any? %>
-    <script type="text/javascript">
-    jQuery(function(){
-        var arrayTags = [<%= @tags.collect {|t| "'#{t[0].gsub(/'/, "\\\\\'")}'"}.join(', ') %>];
-        function split(val) {
-                 return val.split(/,\s*/);
-        }
-        function extractLast(term) {
-                 return split(term).pop();
-                }
-        jQuery('#task_set_tags').autocomplete({
-            source: function(request, response) {
-                 var term= extractLast(request.term);
-                 response(jQuery.map(arrayTags, function(tag, i){
-                    if (tag.indexOf(term)> -1){ 
-                      return tag;
-                    } else {
-                      return null;
-                    }
-                 }));
-            },
-           focus: function() {
-                    return false;
-            },
-            select: function(event, ui) {
-                    var terms = split( this.value );
-                    terms.pop();
-                    terms.push( ui.item.value );
-                    terms.push("");
-                    this.value = terms.join(", ");
-                    return false;
-            }
-        });
-     });
-    </script>
-  <% end %>
-
 
   <% current_user.company.properties.each do |p| 
        selected = @task.new_record? ? p.default_value : @task.property_value(p)
