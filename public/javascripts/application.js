@@ -906,6 +906,7 @@ function init_task_form() {
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
+    autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
 
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
@@ -920,9 +921,8 @@ function init_task_form() {
     });
 
 }
-
-
    
+function autocomplete_multiple_remote(input_field, path){
     jQuery(function(){
         function split(val) {
                  return val.split(/,\s*/);
@@ -930,9 +930,9 @@ function init_task_form() {
         function extractLast(term) {
                  return split(term).pop();
                 }
-        jQuery('#task_set_tags').autocomplete({
+        jQuery(input_field).autocomplete({
             source: function(request, response) {
-                                jQuery.getJSON('/tags/auto_complete_for_tags' , {
+                                jQuery.getJSON(path, {
                                         term: extractLast(request.term)
                                 }, response);
             },
@@ -953,5 +953,9 @@ function init_task_form() {
                     this.value = terms.join(", ");
                     return false;
             }
+
         });
+
      });
+
+}
