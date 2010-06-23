@@ -813,7 +813,15 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
-    autocomplete('#target', '/pages/target_list', setPageTarget);
+     
+    jQuery(function() {
+        jQuery('#target').catcomplete({
+              source: '/pages/target_list',
+              select: setPageTarget,
+              delay: 800,
+              minLength: 1
+        })
+    });
     autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
@@ -866,7 +874,7 @@ jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
                                 self._renderItem( ul, item );
                         });
                 }
-        });
+});
 
 
 function init_task_form() {
