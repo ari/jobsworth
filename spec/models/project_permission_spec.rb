@@ -6,7 +6,7 @@ describe ProjectPermission do
     @permission=ProjectPermission.create!
   end
   it "should return array of available permissions in ProjectPermission.permissions" do
-    ProjectPermission.permissions.should == ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'prioritize', 'milestone', 'report', 'grant', 'all']
+    ProjectPermission.permissions.should == ['comment', 'work', 'close', 'see_unwatched', 'create', 'edit', 'reassign', 'milestone', 'report', 'grant', 'all']
   end
   context ".message_for(permission)" do
     it "should return access denied message for permission" do
