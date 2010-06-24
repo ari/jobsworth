@@ -56,4 +56,9 @@ class PagesController < ApplicationController
     render :json=> @matches.collect{|match| {:value => "#{match.class.name} : #{match.to_s}", :id=> match.id, :type=>match.class.name, :category=> "#{match.class.name}"} }.to_json
 
   end
+
+  def snippet
+    snippet = current_user.company.pages.snippets.find(params[:id])
+    render :text=> snippet.body
+  end
 end

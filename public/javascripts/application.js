@@ -813,7 +813,7 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
-     
+
     jQuery(function() {
         jQuery('#target').catcomplete({
               source: '/pages/target_list',
@@ -927,9 +927,14 @@ function init_task_form() {
         jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
       }
     });
-
+    jQuery('#selected_snippet_id').change(function(){
+        if(jQuery(this).val() == "0") { return true; }
+        jQuery.ajax({ url: '/pages/snippet/'+jQuery(this).val(), type:'GET', success: function(data){
+            jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
+        } });
+    });
 }
-   
+
 function autocomplete_multiple_remote(input_field, path){
     jQuery(function(){
         function split(val) {
