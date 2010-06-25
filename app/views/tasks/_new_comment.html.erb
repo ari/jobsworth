@@ -1,8 +1,16 @@
 <fieldset id="task_information">
-  <% if current_user.company.pages.snippets.any? %>
-         <%= select('selected_snippet', 'id', [['None',0]]+current_user.company.pages.snippets.collect { |snippet| [snippet.name, snippet.id] })  -%>
-  <% end -%>
+  <div id="snippet" class="ui-icon ui-icon-clipboard">
+    <ul class="ui-menu ui-widget ui-widget-content ui-corner-all">
+      <% current_user.company.pages.snippets.collect do |snippet| %>
+        <li class="ui-menu-item" id="snippet-<%= snippet.id %>">
+          <a class="ui-corner-all" tabindex="-1"><%= snippet.name %></a>
+        </li>
+      <% end -%>
+      <li class="ui-menu-item"><a href="/pages/new">Create a snippet...</a></li>
+    </ul>
+  </div>
   <%= text_area_tag 'comment', params[:comment], { :rows => 3, :class => 'autogrow'}.merge( perms['comment'] )  %>
+
   <%= cit_submit_tag(@task) %>
 
   <% if current_user.access_level_id > 1 %>

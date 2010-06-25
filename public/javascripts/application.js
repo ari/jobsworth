@@ -927,11 +927,21 @@ function init_task_form() {
         jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
       }
     });
-    jQuery('#selected_snippet_id').change(function(){
-        if(jQuery(this).val() == "0") { return true; }
-        jQuery.ajax({ url: '/pages/snippet/'+jQuery(this).val(), type:'GET', success: function(data){
-            jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
-        } });
+    
+    jQuery('#snippet').click(function() {
+      jQuery(this).children('ul').slideToggle();
+    });
+    
+    jQuery('#snippet ul li').hover(function() {
+      jQuery(this).toggleClass('ui-state-hover');
+    });
+    
+    jQuery('#snippet ul li').click(function() {
+      var id = jQuery(this).attr('id');
+      id = id.split('-')[1];
+      jQuery.ajax({ url: '/pages/snippet/'+id, type:'GET', success: function(data) {
+        jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
+      } });
     });
 }
 
