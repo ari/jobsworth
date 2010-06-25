@@ -44,6 +44,7 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many :task_property_values, :dependent => :destroy, :include => [ :property ]
+  accepts_nested_attributes_for :task_property_values, :allow_destroy => true
 
   has_many :task_customers, :dependent => :destroy
   has_many :customers, :through => :task_customers, :order => "customers.name asc"
@@ -592,12 +593,25 @@ class Task < ActiveRecord::Base
 
   # Sets up custom properties using the given form params
   def properties=(params)
-    task_property_values.clear
-
-    params.each do |prop_id, val_id|
-      next if val_id.blank?
-      task_property_values.build(:property_id => prop_id, :property_value_id => val_id)
-    end
+    ids=[]
+    attributes= params.collect {  |prop_id, val_id|
+      task_property_value= task_property_values.find_by_property_id(prop_id)
+      if task_property_value.nil?
+        hash={ :property_id => prop_id, :property_value_id => val_id}
+      else
+        ids << task_property_value.id
+        hash={ :id=> task_property_value.id }
+        if val_id.blank?
+          hash[:_destroy]= 1
+        else
+          hash[:property_id]=prop_id
+          hash[:property_value_id]=val_id
+        end
+      end
+      hash
+    }
+    attributes += (self.task_property_values.collect(&:id) - ids).collect{ |id| { :id=>id, :_destroy=>1} }
+    self.task_property_values_attributes= attributes
   end
 
   #set default properties for new task

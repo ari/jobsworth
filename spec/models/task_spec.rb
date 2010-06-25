@@ -156,7 +156,9 @@ describe Task do
         @task.reload
       end
       it "should not change task_property_values in database" do
-        @task.task_property_values.should == @task_property_values
+        @task.property_value(@properties[0]).should == @properties[0].property_values.first
+        @task.property_value(@properties[1]).should == @properties[1].property_values.first
+        @task.property_value(@properties[2]).should == nil
       end
     end
   end
