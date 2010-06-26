@@ -8,7 +8,6 @@
 	<script type="text/javascript" src="../../utils/editable_selects.js"></script>
 	<script type="text/javascript" src="js/cell.js"></script>
 	<link href="css/cell.css" rel="stylesheet" type="text/css" />
-	<base target="_self" />
 </head>
 <body id="tablecell" style="display: none">
 	<form onsubmit="updateAction();return false;" action="#">
@@ -171,13 +170,8 @@
 				</select>
 			</div>
 
-			<div style="float: left">
-				<div><input type="submit" id="insert" name="insert" value="{#update}" /></div>
-			</div>
-
-			<div style="float: right">
-				<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
-			</div>
+			<input type="submit" id="insert" name="insert" value="{#update}" />
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
 		</div>
 	</form>
 </body>

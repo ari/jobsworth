@@ -17,14 +17,11 @@
   <label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
   <label for="page_snippet"><%= _('Snippet (visible to all users)') %></label>
   <%= f.check_box :snippet%><br/>
-  <label for="page_body"><%=_ 'Body' %></label><textarea name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
-  <!--[eoform:page]-->
+  <textarea class="tinymce" name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
+
   <label>&nbsp;</label>
   <%= submit_tag _("Save"), :class => 'nolabel' %><br/>
 
   </td></tr>
   </table>
-  <script type="text/javascript" language="javascript" charset="utf-8">
-  tinyMCE.execCommand("mceAddControl", true, "page_body");
-  </script>
 <% end -%>
