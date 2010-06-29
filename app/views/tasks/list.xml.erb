@@ -1,10 +1,12 @@
 <tasks>
     <rows>
-<%      @tasks.each do |task|
+<%      total_time = 0
+        @tasks.each do |task|
         cache([ task, current_user.id ]) do
         customer = (task.customers.first || task.project.customer) -%>
 <task>
 <%      readFlag = ""
+        total_time += task.minutes_left.to_i
         if (task.unread?(current_user))
                 readFlag = "f" # this task is unread
         else if (task.users + task.watchers).include?(current_user) # only users assigned to or watching a task can mark unread
@@ -25,9 +27,10 @@
         <due><%= task.due_date.to_time.to_i unless task.due_date.nil? %></due>
         <time><%= task.minutes_left.to_i %></time>
         <assigned><%= task.owners.map{ |u| u.name }.join(", ") %></assigned>
-        <resolution><%= task.status_type%></resolution>
+        <resolution><%= task.status_type %></resolution>
 </task>
 <% end -%>
 <% end -%>
     </rows>
+    <userdata name="time"><%= total_time %></userdata>
 </tasks>

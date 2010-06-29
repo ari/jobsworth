@@ -81,7 +81,7 @@ function initTaskList() {
                         repeatitems:false
                 },
                 colModel : colModel,
-                loadonce: false, // force sorting to happen in the browser
+                loadonce: false,
                 sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
                 sortname: currentSort.column,
                 sortorder: currentSort.order,
@@ -102,7 +102,8 @@ function initTaskList() {
                 rowNum:200,
                 recordtext: '{2} tasks found.',
 
-                //footerrow: true,
+                footerrow: true,
+                userDataOnFooter: true,
                 
                 height: 300,
                 width: 500
@@ -216,7 +217,6 @@ function initTaskList() {
                         return "<span class='unread_icon'/>";
                 }
         });
-
 }
 
 
