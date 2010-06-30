@@ -1,30 +1,24 @@
+<% content_for :head do %>
+  <%= javascript_include_tag "tiny_mce", "tiny_mce/jquery.tinymce" %>
+<% end %>
+
 <% form_for(@page) do |f| %>
   <%= f.error_messages %>
-
-  <%= use_tinymce %>
-
-  <table width="100%" cellspacing="0" cellpadding="0">
-  <tr><td valign="top">
-
-  <!--[form:page]-->
-  <label for="page_notable_id"><%= "Target (Client/User/Project)" %></label>
-  <%= text_field_tag "target", @page.notable, :autocomplete => "off" %>
   <%= hidden_field "page", "notable_id" %>
   <%= hidden_field "page", "notable_type" %>
 
-  <br />
+  <label for="page_notable_id"><%= "Target (Client/User/Project)" %></label>
+  <%= text_field_tag "target", @page.notable, :autocomplete => "off" %>
 
-  <label for="page_name"><%=_ 'Name' %></label><%= text_field 'page', 'name'  %><br/>
-  <label for="page_snippet"><%= _('Snippet') %></label>
-  <%= f.check_box :snippet%><br/>
-  <label for="page_body"><%=_ 'Body' %></label><textarea name="page[body]" id="page_body"><%= html_encode(@page.body) %></textarea><br/>
-  <!--[eoform:page]-->
-  <label>&nbsp;</label>
+  <label for="page_name"><%=_ 'Name' %></label>
+  <%= text_field 'page', 'name'  %>
+  
+  <label for="page_snippet"><%= _('Snippet (visible to all users)') %></label>
+  <%= f.check_box :snippet%>
+  
+  <br/><br/>
+
+  <textarea class="tinymce" name="page[body]" id="page_body" rows="20" style="width:100%;"><%= html_encode(@page.body) %></textarea><br/>
+
   <%= submit_tag _("Save"), :class => 'nolabel' %><br/>
-
-  </td></tr>
-  </table>
-  <script type="text/javascript" language="javascript" charset="utf-8">
-  tinyMCE.execCommand("mceAddControl", true, "page_body");
-  </script>
 <% end -%>

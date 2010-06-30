@@ -103,18 +103,7 @@ class FeedsController < ApplicationController
       if widget
         filter = ''
         if widget.filter_by?
-          filter = case widget.filter_by[0..0]
-                   when 'c'
-                     "AND tasks.project_id IN (#{user.projects.find(:all, :conditions => ["customer_id = ?", widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-                   when 'p'
-                     "AND tasks.project_id = #{widget.filter_by[1..-1]}"
-                   when 'm'
-                     "AND tasks.milestone_id = #{widget.filter_by[1..-1]}"
-                   when 'u'
-                     "AND tasks.project_id = #{widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                   else
-                     ""
-                   end
+          filter = widget.from_filter_by
         end
         pids = user.projects.collect{|p| p.id}.join(",")
 

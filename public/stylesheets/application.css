@@ -1503,7 +1503,7 @@ fieldset#task_attachments {
 
 fieldset#task_information {
     margin-bottom: 20px;
-    padding: 10px;
+    padding-top: 0px;
 }
 
 fieldset#task_information input[type = "submit"] {
@@ -1676,6 +1676,22 @@ select#custom_attribute_1 {
     color: #444;
     padding-left: 0px;
     line-height: 1.6em;
+}
+/* -------------------- */
+
+#snippet {
+  position: relative;
+  overflow: visible;
+  text-indent: 0;
+  float: right;
+}
+
+#snippet ul {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: -238px;
+  width:  250px;
 }
 
 

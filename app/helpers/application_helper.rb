@@ -238,17 +238,6 @@ module ApplicationHelper
     true
   end
 
-  def use_tinymce
-    @content_for_tinymce = ""
-    content_for :tinymce do
-      javascript_include_tag "tiny_mce/tiny_mce"
-    end
-    @content_for_tinymce_init = ""
-    content_for :tinymce_init do
-      javascript_include_tag "tiny_mce"
-    end
-  end
-
   ###
   # Returns a string of css style to color task using the
   # selected (in the session) coloring.
@@ -447,6 +436,14 @@ module ApplicationHelper
     current_templates.collect do |t|
       link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
     end
+  end
+
+  def text_with_links(text)
+    text = sanitize(text)
+    regex = Regexp.new '((https?:\/\/)([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)'
+    text.gsub!( regex, '<a href="\1">\1</a>' )
+    text.gsub!(/#(\d+)/, '<a href="/tasks/edit/\1">#\1</a>' )
+    return text
   end
 end
 
