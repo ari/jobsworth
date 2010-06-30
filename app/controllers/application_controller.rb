@@ -92,13 +92,11 @@ class ApplicationController < ActionController::Base
     # Remember the previous _important_ page for returning to after an edit / update.
     if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
         request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ||
-        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) &&
+        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') || request.request_uri.include?('/projects') ) &&
         !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-#    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-#    session[:user_id] = 1
 
     logger.info("remember[#{session[:remember_until]}]")
 
