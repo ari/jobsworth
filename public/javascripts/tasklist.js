@@ -67,10 +67,8 @@ var currentSort;
 jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
         colModel = data.colModel;
         currentSort = data.currentSort;
-        // but don't try to build the grid until the DOM has loaded
-        jQuery(document).ready(function() {
-                initTaskList()
-        });
+        initTaskList();
+        resizeGrid(); // using this instead of autowidth since it seems to behave better
 });
 
 function initTaskList() {
@@ -83,27 +81,32 @@ function initTaskList() {
                         repeatitems:false
                 },
                 colModel : colModel,
-                loadonce: false, // force sorting to happen in the browser
+                loadonce: false,
                 sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
                 sortname: currentSort.column,
                 sortorder: currentSort.order,
-                autowidth: true,
+
                 caption: "Tasks",
                 viewrecords: true,
                 multiselect: false,
 
-                afterInsertRow : setRowReadStatus,
-                onSelectRow: selectRow,
-                resizeStop: taskListConfigSerialise,
-
+                afterInsertRow : function(rowid, rowdata, rowelem) { setRowReadStatus(rowid, rowdata); },
+                onSelectRow: function(rowid, status) { selectRow(rowid); },
+                resizeStop: function(newwidth, index) { taskListConfigSerialise(); },
+                shrinkToFit: true,
+                
                 pager: '#task_pager',
                 emptyrecords: 'No tasks found.',
                 pgbuttons:false,
                 pginput:false,
                 rowNum:200,
-                recordtext: '{1} tasks found.',
+                recordtext: '{2} tasks found.',
 
-                height: "300px"
+                footerrow: true,
+                userDataOnFooter: true,
+                
+                height: 300,
+                width: 500
         });
 
 
@@ -117,7 +120,14 @@ function initTaskList() {
 
         jQuery("#task_list").jqGrid('sortableRows');
 
-        jQuery("#task_list").jqGrid('gridResize',{minHeight:150, maxHeight:1000});
+        jQuery("#task_list").jqGrid('gridResize',{
+          stop: function(event, ui) {
+            // force width
+            resizeGrid();
+          },
+          minHeight: 150,
+          maxHeight: 1000
+        });
 
         jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
                 caption: "Columns",
@@ -207,14 +217,16 @@ function initTaskList() {
                         return "<span class='unread_icon'/>";
                 }
         });
-
 }
 
 
 jQuery(window).bind('resize', function() {
-        jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
-}).trigger('resize');
+  resizeGrid();
+});
 
+function resizeGrid() {
+  jQuery("#task_list").setGridWidth(jQuery(window).width() - 220); //allow for sidebar and margins
+}
 
 // -------------------------
 //  Calendar
