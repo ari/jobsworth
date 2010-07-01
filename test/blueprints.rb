@@ -9,6 +9,7 @@ Sham.description  { Faker::Lorem.paragraph }
 Sham.comment  { Faker::Lorem.paragraph }
 Sham.password { Faker::Lorem.sentence(1) }
 Sham.location { Faker::Internet.domain_name}
+
 Company.blueprint do
   name
   subdomain { "subdomain #{ name }" }
@@ -26,7 +27,7 @@ end
 
 User.blueprint do
   company
-  customer
+  customer { company.internal_customer }
   name
   password
   email
