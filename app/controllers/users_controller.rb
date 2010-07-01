@@ -317,7 +317,7 @@ class UsersController < ApplicationController
   end
 private
   def protect_admin_area
-    unless current_user.admin?
+    unless current_user.admin? or current_user.edit_clients?
       flash['notice'] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return false
