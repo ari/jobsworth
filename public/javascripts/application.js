@@ -913,9 +913,10 @@ function init_task_form() {
     });
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
+    autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
-
+    
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
         jQuery.each(jQuery('.task-todo li'),
@@ -927,7 +928,7 @@ function init_task_form() {
         jQuery.ajax({ url: '/todos/reorder', data: {task_id: jQuery('input#task_id').val(), todos: todos }, type: 'POST' });
       }
     });
-    
+
     jQuery('#snippet').click(function() {
       jQuery(this).children('ul').slideToggle();
     });
@@ -943,6 +944,7 @@ function init_task_form() {
         jQuery('#comment').val(jQuery('#comment').val() + '\n' + data);
       } });
     });
+
 }
 
 function autocomplete_multiple_remote(input_field, path){

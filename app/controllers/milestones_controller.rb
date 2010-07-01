@@ -102,7 +102,8 @@ class MilestonesController < ApplicationController
       Notifications::deliver_milestone_changed(current_user, milestone, 'completed', milestone.due_at) rescue nil
       flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
     end
-    redirect_to :controller => 'activities', :action => 'list'
+    
+    redirect_from_last
   end
 
   def revert
