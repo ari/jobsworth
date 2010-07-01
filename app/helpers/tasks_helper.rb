@@ -63,7 +63,7 @@ module TasksHelper
   # no customer are also returned though).
   ###
   def auto_complete_for_resources(customer_id)
-    text_field(:resource, :name_autocomplete, { :size => 12, 'data-customer-id'=>customer_id }) 
+    text_field(:resource, :name, {:id => "resource_name_auto_complete", :size => 12, 'data-customer-id'=>customer_id }) 
   end
 
   ###

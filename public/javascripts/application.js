@@ -913,7 +913,7 @@ function init_task_form() {
     });
     autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
-    autocomplete('#resource_name_autocomplete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name').attr('data-customer-id'), addResourceToTask);
+    autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
     
