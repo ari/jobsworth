@@ -290,7 +290,7 @@ class WidgetsController < ApplicationController
           @items[d] = (@items[d] - worked > 0) ? (@items[d] - worked) : 0
 
         else
-          @items[d] = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (completed_at IS NULL OR completed_at > ?) #{filter}", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) #{filter}", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
           worked = current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) AND tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) #{filter} AND tasks.duration > 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
           @items[d] = (@items[d] - worked > 0) ? (@items[d] - worked) : 0
         end
@@ -337,16 +337,16 @@ class WidgetsController < ApplicationController
       0.upto(range * step) do |d|
 
         unless @widget.mine?
-          @totals[d]  = Task.accessed_by(current_user).sum('duration', :conditions => ["created_at < ? AND tasks.duration > 0 #{filter}", start + d*interval]).to_f / current_user.workday_duration
+          @totals[d]  = Task.accessed_by(current_user).sum('duration', :conditions => ["tasks.created_at < ? AND tasks.duration > 0 #{filter}", start + d*interval]).to_f / current_user.workday_duration
           @totals[d] += Task.accessed_by(current_user).sum('work_logs.duration', :conditions => ["tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ? #{filter}", start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
 
-          @items[d] = Task.accessed_by(current_user).sum('tasks.duration', :conditions => ["(completed_at IS NOT NULL AND completed_at < ?) #{filter} tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] = Task.accessed_by(current_user).sum('tasks.duration', :conditions => ["(tasks.completed_at IS NOT NULL AND tasks.completed_at < ?) #{filter} tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
           @items[d] += Task.accessed_by(current_user).sum('work_logs.duration', :conditions => ["tasks.created_at < ? AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) #{filter} AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
         else
           @totals[d]  = current_user.tasks.sum('duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND tasks.duration > 0", start + d*interval]).to_f / current_user.workday_duration
           @totals[d] += current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ? AND tasks.duration = 0 AND work_logs.started_at < ?", start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
 
-          @items[d] = current_user.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND (completed_at IS NOT NULL AND completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
+          @items[d] = current_user.tasks.sum('tasks.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND (tasks.completed_at IS NOT NULL AND tasks.completed_at < ?) AND tasks.created_at < ?  AND tasks.duration > 0", start + d*interval, start + d*interval]).to_f / current_user.workday_duration
           @items[d] += current_user.tasks.sum('work_logs.duration', :conditions => ["tasks.project_id IN (#{current_project_ids}) #{filter} AND tasks.created_at < ?  AND tasks.duration = 0 AND (tasks.completed_at IS NULL OR tasks.completed_at > ?) AND work_logs.started_at < ?", start + d*interval, start + d*interval, start + d*interval], :include => :work_logs).to_f / (current_user.workday_duration * 60)
         end
 
