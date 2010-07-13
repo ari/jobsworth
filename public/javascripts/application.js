@@ -825,7 +825,7 @@ jQuery(document).ready(function() {
     autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
     autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
     autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
-    autocomplete('#user_name', '/projects/auto_complete_for_user_name', addUserToProject);
+    autocomplete('#project_user_name_autocomplete', '/projects/auto_complete_for_user_name', addUserToProject);
 });
 
 function toggleAccess() {
@@ -911,7 +911,7 @@ function init_task_form() {
               minLength: 3
         })
     });
-    autocomplete('#customer_name', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
+    autocomplete('#task_customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
     autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);

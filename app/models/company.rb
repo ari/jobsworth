@@ -7,6 +7,7 @@ class Company < ActiveRecord::Base
   has_many      :projects, :dependent => :destroy, :order => "lower(projects.name)"
   has_many      :milestones
   has_many      :tasks
+  has_many      :templates
   has_many      :pages, :dependent => :destroy
   has_many      :work_logs
   has_many      :project_files, :dependent => :destroy

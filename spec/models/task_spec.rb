@@ -162,4 +162,52 @@ describe Task do
       end
     end
   end
+  describe "add users, resources, dependencies to task using Task#set_users_resources_dependencies" do
+    before(:each) do
+      @company= Company.make
+      @task = Task.make(:company=>@company)
+      @user = User.make(:company=>@company)      
+      @resourse = Resource.make(:company=>@company)
+      @task.owners<< User.make(:company=>@company, :projects=>[@task.project])
+      @task.watchers<< User.make(:company=>@company, :projects=>[@task.project])
+      @task.resources<< Resource.make(:company=>@company)
+      @task.dependencies<< Task.make(:company=>@company, :project=> @task.project)
+      @attributes = {:dependencies=>[@task.dependencies.first.task_num.to_s], 
+                     :resource=>{:name=>'',:ids=>@task.resource_ids},
+                     :assigned=>@task.owner_ids,
+                     :users=>@task.user_ids}
+      @task.save!
+    end
+    context "when task saved" do
+      it "should saved new user in database if add task user" do
+	@attributes[:users] << @user.id
+        @task.set_users_dependencies_resources(@attributes, @user)
+	@task.save.should == true
+	@task.reload
+	@task.users.should include(@user)
+      end
+      it "should saved task without user in database if delete task user"
+      it "should saved new resource in database if add task resource"
+      it "should saved task without resourse in database if delete task resourse"
+      it "should saved new dependens if add task dependens"
+      it "should saved task without dependens if delete task dependens"
+      
+      it "should not change task user in database if not changed task user"
+      it "should not change task resource in database if not changed task resource"
+      it "should not change task dependens in database if not changed task dependens"
+    end
+    
+    context "when task not saved" do
+      it "should build new user in memory if add task user"
+      it "should delete exist user from memory if delete task user"
+      it "should build new resource in memory if add task resource"
+      it "should delete exist resource from memory if delete task resource"
+      it "should build new dependens in memory if add task dependens"
+      it "should delete exist dependens from memory if delete task dependens"
+      
+      it "should not change task user in database if not change task user"
+      it "should not change task resource in database if not change task resource"
+      it "should not change task dependens in database if not change task dependens"
+    end
+  end
 end
