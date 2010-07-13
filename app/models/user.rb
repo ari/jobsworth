@@ -192,6 +192,9 @@ class User < ActiveRecord::Base
     self.name
   end
 
+  def display_login
+    name + " / " + (customer.nil? ? company.name : customer.name)
+  end
 #  def login(subdomain = nil)
 #   company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
 #   companyId = company.nil ? 1 : company.id
@@ -315,15 +318,15 @@ class User < ActiveRecord::Base
 
     str.join(" ")
   end
-  
+
   # This is used for the json formatting used for autocomplete
   def value
-  	return name
+    return name
   end
-  
+
   # This is used for the json formatting used for autocomplete
   def label
-  	return name
+    return name
   end
 
   # Returns an array of all task filters this user can see
