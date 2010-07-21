@@ -131,7 +131,7 @@ class FeedsController < ApplicationController
             i.title = "#{task.issue_name}"
             i.link = "#{user.company.site_URL}/tasks/view/#{task.task_num}"
             i.description = task.description unless task.description.blank?
-            i.date = user.tz.utc_to_local(task.created_at)
+            i.date = task.created_at.utc
             i.author = task.creator.name unless task.creator.nil?
           end
         end
