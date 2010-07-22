@@ -9,12 +9,8 @@
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.8' unless defined? RAILS_GEM_VERSION
 
-
-
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
-$: << RAILS_ROOT
-$: << '.'
 require File.join(File.dirname(__FILE__), '../lib/localization.rb')
 Localization.load
 
@@ -51,20 +47,19 @@ Rails::Initializer.run do |config|
 
   # Rotate logs when they reach 50Mb and keep 5 old logs
   config.logger = Logger.new(config.log_path, 5, 50*1024*1024)
-
-
+  config.gem 'erubis'
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
   config.gem 'daemons', :version => '1.0.10'
   config.gem 'eventmachine'
   config.gem 'will_paginate', :version => '2.3.12'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
-  config.gem 'RedCloth', :version => '4.2.2'
+ # config.gem 'RedCloth', :version => '4.2.2'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   config.gem 'smurf'
   config.gem 'paperclip'
+  config.gem 'abstract'
 #  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
-
   if !JAVA
     config.gem 'mysql'
     config.gem 'json'
