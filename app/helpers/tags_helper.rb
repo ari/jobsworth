@@ -15,7 +15,7 @@ module TagsHelper
       links << link_to_filter_on_tag(tag, :class => class_name)
     end
 
-    return links.join(", ")
+    return links.join(", ").html_safe
   end
 
   # Returns a link to view tasks with the given tag.
