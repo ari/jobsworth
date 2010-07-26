@@ -58,7 +58,7 @@ Rails::Initializer.run do |config|
   config.gem 'will_paginate', :version => '2.3.14'
   config.gem 'icalendar', :version => '1.1.0'
   config.gem 'tzinfo'
-  config.gem 'RedCloth', :version => '4.2.2'
+  config.gem 'RedCloth', :version => '4.2.3'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   config.gem 'smurf'
   config.gem 'paperclip'
