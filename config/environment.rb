@@ -1,5 +1,3 @@
-# just an error to ensure this doesn't get used while it's crashing the systme
-#1/0
 # Be sure to restart your web server when you modify this file.
 
 # Uncomment below to force Rails into production mode when
@@ -53,15 +51,15 @@ Rails::Initializer.run do |config|
 
 
   config.gem 'splattael-activerecord_base_without_table', :lib => 'activerecord_base_without_table', :source => 'http://gems.github.com'
-  config.gem 'daemons', :version => '1.0.10'
+  config.gem 'daemons', :version => '1.1.0'
   config.gem 'eventmachine'
   config.gem 'will_paginate', :version => '2.3.14'
-  config.gem 'icalendar', :version => '1.1.0'
+  config.gem 'icalendar', :version => '1.1.5'
   config.gem 'tzinfo'
   config.gem 'RedCloth', :version => '4.2.3'
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
-  config.gem 'smurf'
-  config.gem 'paperclip'
+  config.gem 'smurf', :version => '1.0.4'
+  config.gem 'paperclip', :version => '2.3.3'
 #  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
 
   if !JAVA
