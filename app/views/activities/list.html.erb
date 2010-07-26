@@ -42,8 +42,8 @@ var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onO
 var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
 
 var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="jQuery.getScript(\'/widgets/edit/<%=@widget.id%>\'); return false;;"><img src="/images/configure.png"/></a><a href="#" onclick="if( confirm(\'Really delete widget?\') ){jQuery.getScript(\'/widgets/destroy/<%=@widget.id%>\'); return false; }"><img src="/images/delete.png"/></a></div>';
-title += '<div><%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "showProgress();", :complete => "hideProgress();" }, { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'') %>';
-title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join %></div>';
+title += '<div><%= link_to_remote("&nbsp;", {:url => { :controller => 'widgets', :action => 'toggle_display', :id => @widget.id }, :loading => "showProgress();", :complete => "hideProgress();" }, { :class => (@widget.collapsed? ? "widget-collapsed" : "widget-open"), :id => "indicator-#{@widget.dom_id}" }).gsub(/'/,'\\\\\'').html_safe %>';
+title += '<%= render(:partial => "widgets/widget_#{@widget.widget_type}_header").gsub(/'/,'\\\\\'').split(/\n/).join.html_safe %></div>';
 
 widget.setTitle(title);
 widget.setContent('<span class="optional"><br/><%= _'Loading...'%></span>');

@@ -91,7 +91,7 @@ module TasksHelper
     res += select('task', 'hide_until', defer_options, { :selected => "" })
     res += "</div>"
 
-    return res
+    return res.html_safe
   end
 
   ###
