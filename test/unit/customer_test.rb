@@ -13,7 +13,7 @@ class CustomerTest < ActiveRecord::TestCase
   end
 
   def test_path
-    path = File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}")
+    path = Rails.root.join('store', 'logos', "#{@internal.company_id}")
     assert_equal path, @internal.path
   end
 
@@ -22,7 +22,7 @@ class CustomerTest < ActiveRecord::TestCase
   end
 
   def test_logo_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'logos', "#{@internal.company_id}", "logo_#{@internal.id}"), @internal.logo_path
+    assert_equal Rails.root.join('store', 'logos', "#{@internal.company_id}", "logo_#{@internal.id}"), @internal.logo_path
   end
   
   def test_full_name

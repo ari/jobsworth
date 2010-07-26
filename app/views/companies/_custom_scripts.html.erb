@@ -17,8 +17,7 @@
     </ul>
   <% else -%>
   <p>
-    <%=_ ("No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: " +
-	 "#{ RAILS_ROOT }/lib/scripts") %>
+    <%=_ ("No custom scripts found. If there should be some, check the file ends in \".rb\" and is in the folder: #{Rails.root}/lib/scripts") %>
   </p>
   <% end -%>
 </fieldset>
