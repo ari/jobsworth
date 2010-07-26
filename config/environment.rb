@@ -31,7 +31,7 @@ Rails::Initializer.run do |config|
   # -- all .rb files in that directory are automatically loaded.
 
   # Add additional load paths for your own custom dirs
-   config.load_paths += %W( #{RAILS_ROOT}/app/sweepers )
+   config.load_paths += %W( #{Rails.root}/app/sweepers )
 
   # Enable page/fragment caching by setting a file-based store
   # (remember to create the caching directory and make it readable to the application)
@@ -85,7 +85,7 @@ Rails::Initializer.run do |config|
   # CUSTOM GEMS
   # Any gem files which aren't needed for the system to work, but may
   # be required for your own development should be in this file:
-  custom_gems_file = "#{ RAILS_ROOT }/config/custom.gems.rb"
+  custom_gems_file = "#{Rails.root}/config/custom.gems.rb"
   load custom_gems_file if File.exist?(custom_gems_file)
   load_custom_gems(config) if respond_to?(:load_custom_gems)
 end

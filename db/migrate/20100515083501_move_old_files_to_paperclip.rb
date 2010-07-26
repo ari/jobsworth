@@ -3,7 +3,7 @@ class MoveOldFilesToPaperclip < ActiveRecord::Migration
     ProjectFile.all.each do |file|
       filename=file.attributes['filename']
       store_name =  "#{file.id}#{"_" + file.task_id.to_s if file.task_id.to_i > 0}_#{filename}"
-      full_name= File.join("#{RAILS_ROOT}", 'store', file.company_id.to_s, store_name)
+      full_name= Rails.root.join('store', file.company_id.to_s, store_name)
       if File.exist?(full_name)
         begin
           file.file= File.new(full_name)
