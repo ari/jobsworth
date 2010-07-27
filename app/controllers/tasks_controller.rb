@@ -49,7 +49,7 @@ class TasksController < ApplicationController
   def gantt
     list_init
   end
-  
+
   def auto_complete_for_dependency_targets
     value = params[:term]
     value.gsub!(/#/, '')
@@ -123,7 +123,6 @@ class TasksController < ApplicationController
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
     @task.set_tags(tags)
-    @task.set_task_num(current_user.company_id)
     @task.duration = 0 if @task.duration.nil?
 
     unless current_user.can?(@task.project, 'create')

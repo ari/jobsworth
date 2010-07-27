@@ -166,13 +166,13 @@ describe Task do
     before(:each) do
       @company = Company.make
       @task = Task.make(:company=>@company)
-      @user = User.make(:company=>@company, :projects=>[@task.project], :admin=>true)      
+      @user = User.make(:company=>@company, :projects=>[@task.project], :admin=>true)
       @resource = Resource.make(:company=>@company)
       @task.owners<< User.make(:company=>@company, :projects=>[@task.project])
       @task.watchers<< User.make(:company=>@company, :projects=>[@task.project])
       @task.resources<< Resource.make(:company=>@company)
       @task.dependencies<< Task.make(:company=>@company, :project=>@task.project)
-      @params = {:dependencies=>[@task.dependencies.first.task_num.to_s], 
+      @params = {:dependencies=>[@task.dependencies.first.task_num.to_s],
                      :resource=>{:name=>'',:ids=>@task.resource_ids},
                      :assigned=>@task.owner_ids,
                      :users=>@task.user_ids}
@@ -180,11 +180,11 @@ describe Task do
     end
     context "when task saved" do
       it "should saved new user in database if add task user" do
-	@params[:users] << @user.id
+  @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
-	@task.save.should == true
-	@task.reload
-	@task.users.should include(@user)
+  @task.save.should == true
+  @task.reload
+  @task.users.should include(@user)
       end
       it "should saved task without user in database if delete task user" do
         @params[:users] = []
@@ -217,14 +217,14 @@ describe Task do
         @task.reload
         @task.dependencies.should include(dependent)
       end
-      it "should saved task without dependency if delete task dependencies" do 
+      it "should saved task without dependency if delete task dependencies" do
         @params[:dependencies]=[]
         @task.set_users_dependencies_resources(@params, @user)
         @task.save.should == true
         @task.reload
         @task.dependencies.should == []
       end
-      
+
       it "should not change task user in database if not changed task user" do
         user_ids = @task.user_ids
         @params[:resource][:ids] << @resource.id
@@ -240,7 +240,7 @@ describe Task do
         @task.save.should == true
         @task.reload
         @task.resource_ids.should == resource_ids
-      end  
+      end
       it "should not change task dependency in database if not changed task dependency" do
         dependency_ids = @task.dependency_ids
         @params[:users] << @user.id
@@ -251,9 +251,10 @@ describe Task do
         @task.dependency_ids.should == dependency_ids
       end
     end
-    
+
     context "when task not saved" do
-      it "should build new user in memory if add task user" do   
+      it "should build new user in memory if add task user" do
+        pending
         @params[:users] << @user.id
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
@@ -283,8 +284,19 @@ describe Task do
         @task.reload
         @task.resources.should_not include(@resource)
       end
-      it "should delete exist resource from memory if delete task resource"
-      it "should build new dependency in memory if add task dependency" do 
+      it "should delete exist resource from memory if delete task resource" do
+        @task.recources.should_not be_empty
+        ids= @task.recource_ids
+        @params[:resource][:ids] = []
+        @task.set_users_dependencies_resources(@params, @user)
+        @task.project_id = nil
+        @task.save.should == false
+        @task.resources.should be_empty
+        @task.reload
+        @task.resource_ids.should == ids
+      end
+      it "should build new dependency in memory if add task dependency" do
+        pending
         dependent = Task.make(:company => @company, :project => @task.project)
         @params[:dependencies] << dependent.task_num.to_s
         @task.set_users_dependencies_resources(@params, @user)
@@ -295,7 +307,7 @@ describe Task do
         @task.dependencies.should_not include(dependent)
       end
       it "should delete exist dependency from memory if delete task dependency"
-      
+
       it "should not change task user in database if not change task user"
       it "should not change task resource in database if not change task resource"
       it "should not change task dependency in database if not change task dependency"
