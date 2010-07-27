@@ -21,7 +21,7 @@
 	link_list += content_tag(:li, link, :class => class_names.join(" "))
 	end
 	-%>
-	<%= link_list %>
+	<%= link_list.html_safe %>
 	</ul>
 	
 	<%= yield(:task_list) %>
