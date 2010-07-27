@@ -173,7 +173,6 @@ class Mailman < ActionMailer::Base
                     :company => project.company,
                     :description => "",
                     :duration => 0)
-    task.set_task_num(project.company.id)
     task.set_default_properties
     task.save(false)
     attach_users_to_task(task, email)

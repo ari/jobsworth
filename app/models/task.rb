@@ -306,16 +306,6 @@ class Task < ActiveRecord::Base
     self.sheets.size > 0
   end
 
-  def set_task_num(company_id = nil)
-    company_id ||= company.id
-
-    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
-    num ||= 0
-    num += 1
-
-    @attributes['task_num'] = num
-  end
-
   def time_left
     res = 0
     if self.due_at != nil
@@ -1040,6 +1030,17 @@ class Task < ActiveRecord::Base
   end
 
   private
+
+  def set_task_num
+    company_id ||= company.id
+
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num ||= 0
+    num += 1
+
+    @attributes['task_num'] = num
+  end
+
   # If creating a new work log with a duration, fails because it work log
   # has a mandatory attribute missing, the error message it the unhelpful
   # "Work logs in invalid". Fix that here
