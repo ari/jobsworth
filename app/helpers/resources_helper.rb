@@ -133,10 +133,10 @@ module ResourcesHelper
       content += callback.call(id) if callback
       classname = "add"
       classname += " first" if res.empty?
-      res << content_tag(:li, content, :class => classname)
+      res << content_tag(:li, content.html_safe, :class => classname)
     end
 
-    content = res.join(" ")
+    content = res.join(" ").html_safe
     return content_tag(:ul, content, :class => "menu")
   end
 
