@@ -14,7 +14,7 @@
       for @project in @projects
         if client != @project.customer_id
       %>
-      <%= "</div>" unless client.nil? %>
+      <%= "</div>".html_safe unless client.nil? %>
       <% client = @project.customer_id %>
       <div id="<%=@project.customer.dom_id%>" class="client-block">
         <div class="client-heading hoverrow">
