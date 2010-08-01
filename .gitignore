@@ -22,3 +22,5 @@ public/javascripts/prototype-all.js
 public/stylesheets/all.css
 public/stylesheets/popup.css
 rerun.txt
+Capfile
+config/deploy.rb
