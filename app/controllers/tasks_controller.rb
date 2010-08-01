@@ -113,7 +113,7 @@ class TasksController < ApplicationController
                                                                                                     flash['notice'] = _('Invalid due date ignored.')
                                                                                                     due_date = nil
                                                                                                   end
-        @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+        @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
       end
     else
       @task.repeat = nil
@@ -237,7 +237,7 @@ class TasksController < ApplicationController
                                                                                         flash['notice'] = _('Invalid due date ignored.')
                                                                                         due_date = nil
                                                                                                     end
-            @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+            @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
           end
         else
           @task.repeat = nil
