@@ -176,7 +176,7 @@ class ProjectsController < ApplicationController
 
     @project.destroy
     flash['notice'] = _('Project was deleted.')
-    redirect_from_last
+    redirect_to :controller => 'projects', :action => 'list'
   end
 
   def complete
