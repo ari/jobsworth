@@ -199,7 +199,7 @@ module TasksHelper
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
 
     options = {
-      :id => "due_at", :class => "tooltip", :title => date_tooltip,
+      :id => "due_at", :class => "tooltip", :title => date_tooltip.html_safe,
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
     }
@@ -232,7 +232,7 @@ module TasksHelper
     values << [ _("Description"), task.description ]
     comment = task.last_comment
     if comment
-      values << [ _("Last Comment"), "#{ comment.user.name }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
+      values << [ _("Last Comment"), "#{ comment.user.name }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }".html_safe ]
     end
 
     return task_tooltip(values)
@@ -265,7 +265,7 @@ module TasksHelper
       res += "<td>#{ value }</td></tr>"
     end
     res += "</table>"
-    return escape_once(res)
+    return res.html_safe
   end
 
   # Returns a hash of permissions for the current task and user
@@ -302,7 +302,7 @@ module TasksHelper
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
       content_tag(:span, :class => "unread_icon") do
-        link_to_function("<span>*</span>", "toggleTaskUnread(event, #{ user.id })")
+        link_to_function("<span>*</span>".html_safe, "toggleTaskUnread(event, #{ user.id })")
       end
     end
   end

@@ -374,7 +374,7 @@ class FeedsController < ApplicationController
 
   def igoogle_feed
     if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.", :layout => false
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.".html_safe, :layout => false
       return
     end
 

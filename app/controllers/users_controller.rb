@@ -48,7 +48,7 @@ class UsersController < ApplicationController
         begin
           Signup::deliver_account_created(@user, current_user, params['welcome_message'])
         rescue
-          flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
+          flash['notice'] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
         end
       end
 

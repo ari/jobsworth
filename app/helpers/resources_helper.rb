@@ -54,7 +54,7 @@ module ResourcesHelper
       res += link_to_function(_("Show Password"), "showPassword(this, '#{ url }')")
     end
 
-    return res
+    return res.html_safe
   end
 
   ###

@@ -173,7 +173,7 @@ class ApplicationController < ActionController::Base
   end
 
   def highlight( text, k )
-    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>')
+    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>').html_safe
   end
 
   def highlight_all( text, keys )
@@ -302,7 +302,7 @@ class ApplicationController < ActionController::Base
     text = highlight_all(text, highlight_keys)
 
     link += self.class.helpers.link_to(text, url, html)
-    return link
+    return link.html_safe
   end
 
   # returns the current task filter (or a new, blank one

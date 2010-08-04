@@ -454,19 +454,19 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+      return  "- <strong>Due</strong>: #{old_name} -> #{new_name}\n".html_safe
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n" : ""
+    (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n".html_safe : ""
   end
   def task_description_changed(old_task, task)
-    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n" : ""
+    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n".html_safe : ""
   end
   def task_duration_changed(old_task, task)
-     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
+     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
@@ -574,7 +574,7 @@ protected
         second_worklog.send_notifications if second_worklog.comment?
       end
     else
-      worklog.body=body
+      worklog.body=body.html_safe
       if params[:comment] && params[:comment].length > 0
         worklog.comment = true
         worklog.body << "\n"

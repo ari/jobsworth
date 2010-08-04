@@ -86,6 +86,8 @@ module ApplicationHelper
     if res.length > 0
       res = "<span class=\"#{css}\">[#{res}]</span>"
     end
+
+    return res.html_safe
   end
 
   def due_in_css(task)
@@ -154,7 +156,7 @@ module ApplicationHelper
         url = "/wiki/show/#{URI.encode(name)}"
       end
 
-      "<a href=\"#{url}\">#{text}</a>"
+      "<a href=\"#{url}\">#{text}</a>".html_safe
     }
   end
 
@@ -183,17 +185,17 @@ module ApplicationHelper
 
   def submit_tag(value = "Save Changes", options={} )
     or_option = options.delete(:or)
-    return super + "<span class='button_or'>"+"or"+" " + or_option + "</span>" if or_option
+    return super + ("<span class='button_or'>"+"or"+" " + or_option + "</span>").html_safe if or_option
     super
   end
 
   def ajax_spinner_for(id, spinner="spinner.gif")
-    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> "
+    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> ".html_safe
   end
 
   def avatar_for(user, size=32)
     if current_user.option_avatars == 1
-      return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />"
+      return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />".html_safe
     end
     ""
   end
@@ -213,8 +215,8 @@ module ApplicationHelper
 
   def topic_title_link(topic, options)
     if topic.title =~ /^\[([^\]]{1,15})\]((\s+)\w+.*)/
-      "<span class='flag'>#{$1}</span>" +
-      link_to(h($2.strip), topic_path(@forum, topic), options)
+      ("<span class='flag'>#{$1}</span>"+
+      link_to(h($2.strip), topic_path(@forum, topic), options)).html_safe
     else
       link_to(h(topic.title), topic_path(@forum, topic), options)
     end
@@ -443,7 +445,7 @@ module ApplicationHelper
     regex = Regexp.new '((https?:\/\/)([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)'
     text.gsub!( regex, '<a href="\1">\1</a>' )
     text.gsub!(/#(\d+)/, '<a href="/tasks/edit/\1">#\1</a>' )
-    return text
+    return text.html_safe
   end
 end
 
