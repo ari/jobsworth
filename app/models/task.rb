@@ -410,7 +410,7 @@ class Task < ActiveRecord::Base
 
   def issue_num
     if self.status > 1
-    "<strike>##{self.task_num}</strike>"
+    "<strike>##{self.task_num}</strike>".html_safe
     else
     "##{self.task_num}"
     end

@@ -87,11 +87,11 @@ module TasksHelper
     defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
 
     res = select('task', 'status', options, {:selected => @task.status}, can_close)
-    res += '<div id="defer_options" style="display:none;">'
+    res += '<div id="defer_options" style="display:none;">'.html_safe
     res += select('task', 'hide_until', defer_options, { :selected => "" })
-    res += "</div>"
+    res += "</div>".html_safe
 
-    return res.html_safe
+    return res
   end
 
   ###
@@ -146,7 +146,7 @@ module TasksHelper
       options.last[1] << [ project.name, project.id ]
     end
 
-    return grouped_options_for_select(options, task.project_id, "Please select")
+    return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
 
 

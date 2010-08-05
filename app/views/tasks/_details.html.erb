@@ -28,5 +28,5 @@
   <%= due_date_field(@task, perms) %>
 
   <label for="task_status"><%= _("Resolution") %></label>
-  <%= raw status_field(@task) %>
+  <%= status_field(@task).html_safe %>
 </fieldset>

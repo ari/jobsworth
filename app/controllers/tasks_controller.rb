@@ -151,7 +151,7 @@ class TasksController < ApplicationController
       copy_todos_from_template(params[:task][:id], @task)
       ############ code smell end #######################
 
-      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
+      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
       return if request.xhr?
       redirect_from_last
@@ -272,7 +272,7 @@ class TasksController < ApplicationController
 
       return if request.xhr?
 
-      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
+      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
       redirect_to :action=> "list"
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_form_variables(@task)
@@ -454,13 +454,13 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- <strong>Due</strong>: #{old_name} -> #{new_name}\n".html_safe
+      return  "- <strong>Due</strong>:".html_safe + " #{old_name} -> #{new_name}\n"
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n".html_safe : ""
+    (old_task[:name] != task[:name]) ? ("- <strong>Name</strong>:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
     (old_task.description != task.description) ? "- <strong>Description</strong> changed\n".html_safe : ""
