@@ -53,7 +53,7 @@ module TasksHelper
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
     else
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0 }, perms['milestone'])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0}, perms['milestone'])
     end
   end
 
@@ -210,14 +210,16 @@ module TasksHelper
     end
 
     js = <<-EOS
+    <script type="text/javascript" language="javascript">
     jQuery(function() {
       jQuery("#due_at").datepicker({ constrainInput: false,
                                       dateFormat: '#{ current_user.dateFormat }'
                                    });
     });
+    </script>
     EOS
 
-    return text_field("task", "due_at", options) + javascript_tag(js)
+    return text_field("task", "due_at", options) + js.html_safe
   end
 
   # Returns the notify emails for the given task, one per line
@@ -232,7 +234,7 @@ module TasksHelper
     values << [ _("Description"), task.description ]
     comment = task.last_comment
     if comment
-      values << [ _("Last Comment"), "#{ comment.user.name }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }".html_safe ]
+      values << [ _("Last Comment"), "#{ ERB::Util.h(comment.user.name) }:<br/>#{ ERB::Util.h(comment).body.gsub(/\n/, '<br/>') }".html_safe ]
     end
 
     return task_tooltip(values)
@@ -257,15 +259,15 @@ module TasksHelper
     return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
-  # Converts the given array into a table that looks good in a toolip
+  # Converts the given array into a table that looks good in a tooltip
   def task_tooltip(names_and_values)
-    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
+    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>".html_safe
     names_and_values.each do |name, value|
-      res += "<tr><th>#{ name }</th>"
-      res += "<td>#{ value }</td></tr>"
+      res += "<tr><th>".html_safe + name + "</th>".html_safe
+      res += "<td>".html_safe + value + "</td></tr>".html_safe
     end
-    res += "</table>"
-    return res.html_safe
+    res += "</table>".html_safe
+    return res
   end
 
   # Returns a hash of permissions for the current task and user

@@ -15,7 +15,7 @@
       <select name="task[properties][<%= p.id %>]" id="<%= name %>">
 	<option></option>
 	<% p.property_values.each do |pv| -%>
-          <option value="<%= pv.id %>" <%= selected == pv ? "selected" : ""  %>><%= h(pv.value) %></option>
+          <option value="<%= pv.id %>" <%= selected == pv ? "selected = 'selected'".html_safe : ""  %>><%= h(pv.value) %></option>
 	<% end -%>
       </select>
     <% end -%>
