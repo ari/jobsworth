@@ -32,16 +32,17 @@
 <% if log.task && log.task_id > 0  %>
 <%= link_to_task(log.task, false, @keys) %>
 <% end %>
-            <%= "<br/>" if log.task_id.to_i > 0 %><%= "<span class=\"optional\">#{highlight_all(log.task.full_name, @keys)}</span> " if log.task_id.to_i > 0 %>
+            <%= "<br/>".html_safe if log.task_id.to_i > 0 %>
+            <%= "<span class=\"optional\">".html_safe + highlight_all(log.task.full_name, @keys) + "</span>".html_safe if log.task_id.to_i > 0 %>
 
-            <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
-            <%= "<small><span class=\"otheruser\">[#{log.event_log.user}]</span></small>" if log.user.nil? && log.event_log.user %>
+            <%= "<small><span class=\"otheruser\">[".html_safe + log.user.name + "]</span></small>".html_safe if log.user %>
+            <%= "<small><span class=\"otheruser\">[".html_safe + log.event_log.user + "]</span></small>".html_safe if log.user.nil? && log.event_log.user %>
 
   </strong></div>
   <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
   <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
 <% if log.body && log.body.length > 0 %>
-      <%= highlight_all(wrap_text(log.body, 100).gsub(/\n/, "<br/>".html_safe), @keys) if log.body %>
+      <%= highlight_all(wrap_text(log.body, 100).gsub(/\n/, "<br/>").html_safe, @keys) if log.body %>
 <% end %>
   </div>
   </td>

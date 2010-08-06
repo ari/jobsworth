@@ -136,7 +136,7 @@ module ApplicationHelper
         m
       else
         elems = m.match(URL_MATCH).to_a
-        "<a href=\"#{elems[0]}\" target=\"_blank\">#{elems[0]}</a>"
+        "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
       end
     }
 
@@ -156,15 +156,21 @@ module ApplicationHelper
         url = "/wiki/show/#{URI.encode(name)}"
       end
 
-      "<a href=\"#{url}\">#{text}</a>".html_safe
+      "<a href=\"#{url}\">".html_safe + text + "</a>".html_safe
     }
   end
 
-  def highlight_all( text, keys )
+  def highlight_safe_html( text, k, raw = false )
+    res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
+    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
+    res
+  end
+
+  def highlight_all( text, keys)
     keys.each do |k|
-      text = highlight(text, k)
+      text = highlight_safe_html( text, k, true)
     end
-    text
+    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe 
   end
 
   def milestone_classes(m)
