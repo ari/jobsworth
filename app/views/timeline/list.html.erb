@@ -1,3 +1,4 @@
+  <%= render :partial => "panel" %>
   <table width="100%" cellpadding="0" cellspacing="0">
     <tr>
       <td valign="top">
@@ -18,15 +19,15 @@
 
             filter_count = 0
             %>
-            <% form_tag( :controller => 'timeline', :action => 'list' ) do %>
+            <% form_tag( {:controller => 'timeline', :action => 'list'}, {:name => 'time_line_filters'} ) do %>
 
-            <select name="filter_date" id="filter_date" onchange="javascript:document.forms[1].submit();">
+            <select name="filter_date" id="filter_date" onchange="time_line_filters.submit();">
                 <% @dates =  [[_("[All Time]"), "0"], [_("This Week"),"1"], [_("Last Week"),"2"],[_("This Month"),"3"],[_("Last Month"),"4"],[_("This Year"),"5"],[_("Last Year"),"6"]] %>
                 <%= options_for_select @dates, params[:filter_date] %>
             </select>
 
             <% if @projects.size > 1 %>
-            <select name="filter_project" id="filter_project" onchange="javascript:document.forms[1].submit();">
+            <select name="filter_project" id="filter_project" onchange="time_line_filters.submit();">
               <option value="0" class="select_default"><%= _("[Any Project]") %></option>
               <% @clients = Customer.find(:all, :conditions => ["company_id = ?", current_user.company_id], :order => "name") %>
               <% @clients.each do |c| %>
@@ -44,12 +45,12 @@
             </select>
             <% end %>
 
-            <select name="filter_user" id="filter_user" onchange="javascript:document.forms[1].submit();">
+            <select name="filter_user" id="filter_user" onchange="time_line_filters.submit();">
               <% @users = [[_("[Any User]"), "0"]] + @users %>
               <%= options_for_select @users, params[:filter_user].to_i %>
             </select>
 
-            <select name="filter_status" id="filter_status" onchange="javascript:document.forms[1].submit();">
+            <select name="filter_status" id="filter_status" onchange="time_line_filters.submit();">
               <%
                  @status = [[_("[Any Type]"), "-1"],
                             [_("Closed"), EventLog::TASK_COMPLETED.to_s],
@@ -67,6 +68,8 @@
               %>
               <%= options_for_select @status, params[:filter_status] %>
             </select>
+
+            <%= hidden_field_tag "filter_task", params[:filter_task] || 0 %>
 
             <% end %>
             </td>
