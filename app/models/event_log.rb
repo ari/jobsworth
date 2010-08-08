@@ -85,9 +85,9 @@ class EventLog < ActiveRecord::Base
     end
 
     if params[:filter_task].to_i > 0
-      filter = " AND tasks.status = #{Task::OPEN}" if params[:filter_task] == "1"
-      filter = " AND tasks.status = #{Task::OPEN} AND task_users.type = 'TaskOwner'" if params[:filter_task] == "2"
-      filter = " AND task_users.unread = 1" if params[:filter_task] == "3"
+      filter << " AND tasks.status = #{Task::OPEN}" if params[:filter_task] == "1"
+      filter << " AND tasks.status = #{Task::OPEN} AND task_users.type = 'TaskOwner'" if params[:filter_task] == "2"
+      filter << " AND task_users.unread = 1" if params[:filter_task] == "3"
     end
 
     if event_log_types.include?(params[:filter_status].to_i)

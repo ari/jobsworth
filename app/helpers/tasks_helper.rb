@@ -234,7 +234,7 @@ module TasksHelper
     values << [ _("Description"), task.description ]
     comment = task.last_comment
     if comment
-      values << [ _("Last Comment"), "#{ ERB::Util.h(comment.user.name) }:<br/>#{ ERB::Util.h(comment).body.gsub(/\n/, '<br/>') }".html_safe ]
+      values << [ _("Last Comment"), "#{ ERB::Util.h(comment.user.name) }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }".html_safe ]
     end
 
     return task_tooltip(values)
