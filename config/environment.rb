@@ -59,7 +59,7 @@ Rails::Initializer.run do |config|
   config.gem 'paperclip', :version => '2.3.3'
 #  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
   if !JAVA
-    config.gem 'mysql'
+    config.gem 'mysql2'
     config.gem 'json'
   end
 
