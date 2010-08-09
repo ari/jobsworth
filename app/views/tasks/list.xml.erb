@@ -23,11 +23,9 @@
 <% end -%>
         <summary><%=h task.name %></summary>
         <client><%=h customer.name %></client>
-        <milestone>
-          <% str = [ h(task.project.name) ] -%>
-          <% str << h(task.milestone.name) if task.milestone_id.to_i > 0 %>
-          <%= str.join("/") %>
-        </milestone>
+<% str = [ h(task.project.name) ] -%>
+<% str << h(task.milestone.name) if task.milestone_id.to_i > 0 -%>
+        <milestone><%= str.join("/") %></milestone>
         <due><%= task.due_date.to_time.to_i unless task.due_date.nil? %></due>
         <time><%= task.minutes_left.to_i %></time>
         <assigned><%= task.owners.map{ |u| u.name }.join(", ") %></assigned>
