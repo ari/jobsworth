@@ -386,14 +386,14 @@ class Task < ActiveRecord::Base
 
   def full_name
     if self.project
-      [self.project.full_name, self.full_tags].join(' / ')
+      [ERB::Util.h(self.project.full_name), self.full_tags].join(' / ').html_safe
     else
       ""
     end
   end
 
   def full_tags
-    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{t.name}\" class=\"description\">#{t.name.capitalize.gsub(/\"/,'&quot;')}</a>" }.join(" / ")
+    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
   end
 
   def full_name_without_links

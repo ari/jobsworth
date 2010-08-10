@@ -357,7 +357,7 @@ class WorklogReport
 
   def name_from_worklog(w,r)
     if r == 1
-      "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{w.task.name}</a> <br /><small>#{w.task.full_name}</small>"
+      "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{ERB::Util.h w.task.name}</a> <br /><small>#{ERB::Util.h w.task.full_name}</small>".html_safe
     elsif r == 2
       w.is_a?(Tag) ? "#{w.name}" : "none"
     elsif r == 3
@@ -441,7 +441,7 @@ class WorklogReport
     elsif key == "1_start"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>")
+      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>".html_safe)
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
       rkey = key_from_worklog(w, 13).to_s
@@ -450,7 +450,7 @@ class WorklogReport
     elsif key == "3_task"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{w.task.name}</a> <br/><small>#{w.task.full_name}</small>")
+      do_row(rkey, row_name, key, "#{w.task.issue_num} <a href=\"/tasks/view/#{w.task.task_num}\">#{ERB::Util.h w.task.name}</a> <br/><small>#{ERB::Util.h w.task.full_name}</small>".html_safe)
     elsif key == "4_user"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
@@ -468,6 +468,7 @@ class WorklogReport
       if current_user.can_approve_work_logs?
         body = "<input type='checkbox' #{ w.approved? ? "checked" : "" }"
         body += " onClick='toggleWorkLogApproval(this, #{ w.id })' />"
+        body = body.html_safe
       end
       do_row(rkey, row_name, key, body)
     elsif (attr = custom_attribute_from_key(key))
@@ -494,7 +495,7 @@ class WorklogReport
 
   def get_date_header(w)
     if [0,1,2].include? @range.to_i
-      tz.utc_to_local(w.started_at).strftime_localized("%a <br/>%d/%m")
+      tz.utc_to_local(w.started_at).strftime_localized("%a <br/>%d/%m").html_safe
     elsif [3,4].include? @range.to_i
       if tz.utc_to_local(w.started_at).beginning_of_week.month != tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).month
         if tz.utc_to_local(w.started_at).beginning_of_week.month == tz.utc_to_local(w.started_at).month
@@ -506,7 +507,7 @@ class WorklogReport
         "#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")
       end
     elsif @range.to_i == 5 || @range.to_i == 6
-      tz.utc_to_local(w.started_at).strftime_localized("%b <br/>%y")
+      tz.utc_to_local(w.started_at).strftime_localized("%b <br/>%y").html_safe
     end
   end
 
