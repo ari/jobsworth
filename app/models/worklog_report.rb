@@ -240,7 +240,7 @@ class WorklogReport
       @column_headers[ '__' ] = "#{start_date.strftime_localized(current_user.date_format)}"
       @column_headers[ '__' ] << "- #{end_date.strftime_localized(current_user.date_format)}" if end_date && end_date.yday != start_date.yday
     else
-      @column_headers[ '__' ] = "&nbsp;"
+      @column_headers[ '__' ] = "&nbsp;".html_safe
     end
 
     for w in work_logs
@@ -413,8 +413,8 @@ class WorklogReport
       @rows[rkey][vkey] += duration if duration
     else
       @rows[rkey][vkey] ||= ""
-      @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration
-      @rows[rkey][vkey] += "<br/>" if @rows[rkey][vkey].length > 0 && duration && !(duration.include?('#') || duration.include?('small'))
+      @rows[rkey][vkey] += "<br/>".html_safe if @rows[rkey][vkey].length > 0 && duration
+      @rows[rkey][vkey] += "<br/>".html_safe if @rows[rkey][vkey].length > 0 && duration && !(duration.include?('#') || duration.include?('small'))
       @rows[rkey][vkey] += duration if duration
     end
   end
@@ -435,7 +435,7 @@ class WorklogReport
       rkey = key_from_worklog(w, 15).to_s
       row_name = name_from_worklog(w, 1)
       body = w.body
-      body.gsub!(/\n/, " <br/>") if body
+      body.gsub!(/\n/, " <br/>".html_safe) if body
       do_row(rkey, row_name, key, body)
       @row_totals[rkey] += w.duration
     elsif key == "1_start"
@@ -499,12 +499,12 @@ class WorklogReport
     elsif [3,4].include? @range.to_i
       if tz.utc_to_local(w.started_at).beginning_of_week.month != tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).month
         if tz.utc_to_local(w.started_at).beginning_of_week.month == tz.utc_to_local(w.started_at).month
-          "#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).end_of_month.strftime_localized("%d/%m")
+          ("#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).end_of_month.strftime_localized("%d/%m")).html_safe
         else
-          "#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_month.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")
+          ("#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_month.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")).html_safe
         end
       else
-        "#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")
+        ("#{_('Week')} #{tz.utc_to_local(w.started_at).strftime_localized("%W").to_i + 1} <br/>" +  tz.utc_to_local(w.started_at).beginning_of_week.strftime_localized("%d/%m") + ' - ' + tz.utc_to_local(w.started_at).beginning_of_week.since(6.days).strftime_localized("%d/%m")).html_safe
       end
     elsif @range.to_i == 5 || @range.to_i == 6
       tz.utc_to_local(w.started_at).strftime_localized("%b <br/>%y").html_safe

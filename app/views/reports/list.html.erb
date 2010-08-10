@@ -20,8 +20,10 @@
 
               <% if @column_headers && @column_headers.size > 1 %>
               <% if @generated_report && @generated_report.id > 0 %>
-              <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>><%= link_to  "CSV" + image_tag('report_go.png', :border => 0, :class => 'tooltip', :title => _('Download CSV file of this report')), :action => "get_csv", :id => @generated_report.id %></td></tr>
-                  <% end %>
+              <tr><td align="right" colspan=<%= @column_headers.keys.size + 1 %>>
+                 <%= link_to ("CSV" + image_tag('report_go.png', :border => 0, :class => 'tooltip', :title => _('Download CSV file of this report'))).html_safe, :action => "get_csv", :id => @generated_report.id %>
+              </td></tr>
+              <% end %>
 
               <tr>
                 <th class="row_header"><%= @column_headers['__'] %></th>
@@ -56,7 +58,7 @@
                 <% last_key = value['__'] %>
                 <% @column_headers.sort.each do |k,v| %>
                 <% next if k == '__' %>
-                <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]/60) : value[k] %></td>
+                <td class="row_value<%=" audit" if params[:report][:type] == "2"%><%=" task" if params[:report][:type] == "3"%>"><%=(value[k] && value[k].is_a?(Fixnum)) ?  worked_nice(value[k]/60) : value[k].html_safe %></td>
                 <% end %>
                 <% subtotal += @row_totals[key] if params[:report][:subtotals] == "1" %>
                 <td class="row_total"><%= worked_nice(@row_totals[key]/60) %></td>
