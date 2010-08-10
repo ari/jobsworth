@@ -38,7 +38,7 @@ function onOutWidget(portal, widget) {
 var portal = new Xilinus.Portal("#content div", {url: "/widgets/save_order", onOverWidget: onOverWidget, onOutWidget: onOutWidget} );
 
 <% current_user.widgets.each do |widget| %>
-  <% @widget = widget %>
+  <% @widget = widget unless widget.name == "Recent Activities" %>
 var widget = new Xilinus.Widget("widget", "<%=@widget.dom_id%>");
 
 var title = '<div style="float:right;display:none;" class="widget-menu"><a href="#" onclick="jQuery.getScript(\'/widgets/edit/<%=@widget.id%>\'); return false;;"><img src="/images/configure.png"/></a><a href="#" onclick="if( confirm(\'Really delete widget?\') ){jQuery.getScript(\'/widgets/destroy/<%=@widget.id%>\'); return false; }"><img src="/images/delete.png"/></a></div>';
