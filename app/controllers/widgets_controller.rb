@@ -27,7 +27,7 @@ class WidgetsController < ApplicationController
     when 1 then
       project_list_extracted_from_show
     when 2 then
-      activities_extracted_from_show
+      # Recent Activities : already removed
     when 3 then
       task_graph_extracted_from_show
     when 4 then
@@ -53,7 +53,7 @@ class WidgetsController < ApplicationController
       when 1 then
         page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
       when 2 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/recent_work'
+        # Recent Activities : already removed
       when 3..7 then
         page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
       when 8 then
@@ -244,10 +244,6 @@ class WidgetsController < ApplicationController
   def project_list_extracted_from_show
     @projects = current_user.projects.find(:all, :order => 't1_r2, projects.name, milestones.due_at IS NULL, milestones.due_at, milestones.name', :conditions => ["projects.completed_at IS NULL"], :include => [ :customer, :milestones])
     @completed_projects = current_user.completed_projects.size
-  end
-
-  def activities_extracted_from_show
-    @activities = EventLog.accessed_by(current_user).find(:all, :order => "event_logs.created_at DESC", :limit => @widget.number)
   end
 
   def task_graph_extracted_from_show
