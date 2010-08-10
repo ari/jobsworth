@@ -424,7 +424,7 @@ module ApplicationHelper
                               :style => remove_style)
     end
 
-    return res
+    return res.html_safe
   end
 
 
