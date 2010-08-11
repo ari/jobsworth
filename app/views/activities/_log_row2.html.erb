@@ -24,9 +24,9 @@
 
   <h4 class="log_name">
     <%= log.user.name if log.user %>
-    <%= log.event_log.user if log.user.nil? && log.event_log.user %>
+    <% log.event_log.user if log.user.nil? && log.event_log.user %>
   </h4>
   <p class="log_comment">
-    <%= text_with_links(log.body.gsub(/\n/, "<br/>")) if log.body %>
+    <%= text_with_links(log.body.gsub(/\n/, "<br/>".html_safe).gsub('&amp;', '&'.html_safe).gsub('&quot;', '"'.html_safe)) if log.body %>
   </p>
 </div>
