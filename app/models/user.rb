@@ -144,14 +144,6 @@ class User < ActiveRecord::Base
     w.save
 
     w = new_widget
-    w.name = _("Recent Activities")
-    w.widget_type = 2
-    w.number = 20
-    w.column = 2
-    w.position = 0
-    w.save
-
-    w = new_widget
     w.name = _("Open Tasks")
     w.widget_type = 3
     w.number = 7
@@ -338,6 +330,7 @@ class User < ActiveRecord::Base
 
     return @visible_task_filters
   end
+  
   def project_ids_for_sql
     unless @current_project_ids
       @current_project_ids=self.project_ids
@@ -345,6 +338,7 @@ class User < ActiveRecord::Base
     end
     @current_project_ids
   end
+
   private
 
   # Sets up search options to use in a find for things linked to
