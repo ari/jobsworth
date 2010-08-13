@@ -575,7 +575,7 @@ function toggleTaskIcon(sender) {
 function addUserToTask(event, ui) {
     var userId = ui.item.id;
     var taskId = jQuery("#task_id").val();
-    var url = tasks_path("add_notification");
+    var url = tasks_path('add_notification');
     var params = { user_id : userId, id : taskId };
     addUser(url, params);
     jQuery(this).val("");
@@ -778,26 +778,39 @@ function tasks_path(action_name) {
     if(/tasks\//.test(document.location.pathname)) {
         return "/tasks/" + action_name ;
     }
-        else if ( /task_templates\//.test(document.location.pathname)) {
+    else if ( /task_templates\//.test(document.location.pathname)) {
             return "/task_templates/" + action_name ;
-        }
+    }
+    else if(jQuery('#template_clone').val() == '1') {
+	    return "/tasks/" + action_name ;
+	}
     return action_name;
 }
 
 /*
 This function simulate two step user behavior in one click
 First goto template edit page, see template in form
-Second send this form to tasks/create.
-So create task from template == send form with template to tasks/create action
+Second send template form attributes to tasks/new
 */
+
 function create_task_from_template(event) {
     jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data) {
         var form=jQuery(data).first();
         form.attr('action','/tasks/create');
-        form.attr('id','taskform_ctft');
-        form.hide();
-        jQuery('body').append(form);
-        jQuery("form#taskform_ctft").submit();
+        form.attr('id','taskform');
+        jQuery('#main_col').html(form);
+        jQuery('#taskform').append('<input type="hidden" id="template_clone" value="1" />');
+        jQuery('#task_id').removeAttr('value');
+        jQuery('#todo-container').prev().hide();
+        jQuery('#todo-container').hide();
+        jQuery('ul#primary > li').removeClass('active');
+        jQuery('li.task_template').parent().parent().addClass('active');
+        jQuery('#work-log').prevAll().remove();
+        jQuery('#task_sidebar > small > a').attr('href', '/tasks/edit/0').text('#0');
+        jQuery("#due_at").datepicker({ constrainInput: false, dateFormat: 'dd/mm/yy' });
+        highlightWatchers();
+        init_task_form();
+        attachObseverForWorkLog();
     });
 }
 
@@ -817,7 +830,9 @@ jQuery(document).ready(function() {
     highlightWatchers();  /* run this once to initialise everything right */
     init_task_form();
     attachObseverForWorkLog();
-
+    if ( /task_templates\//.test(document.location.pathname)) {
+       hide_unneeded_inputs_for_task_template();
+    }
     jQuery(function() {
         jQuery('#target').catcomplete({
               source: '/pages/target_list',
@@ -987,4 +1002,16 @@ function autocomplete_multiple_remote(input_field, path){
 
      });
 
+}
+
+function hide_unneeded_inputs_for_task_template() {
+    jQuery("#task_dependencies").hide();
+    jQuery("#snippet").hide();
+    jQuery("#upload_container").hide();
+    jQuery("#task_information > textarea.autogrow").hide();
+    jQuery("#accessLevel_container").hide();
+    jQuery("#worktime_container").hide();
+    jQuery("#task_time_links").hide();	
+    jQuery("#notify_users").hide();	
+    jQuery("#task_information > br").hide();
 }

@@ -154,7 +154,7 @@ class TasksController < ApplicationController
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
       return if request.xhr?
-      redirect_from_last
+      redirect_to :action => :list
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
