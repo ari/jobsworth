@@ -807,6 +807,7 @@ function create_task_from_template(event) {
         jQuery('li.task_template').parent().parent().addClass('active');
         jQuery('#work-log').prevAll().remove();
         jQuery('#task_sidebar > small > a').attr('href', '/tasks/edit/0').text('#0');
+        jQuery('#task_sidebar > small > span').remove();
         jQuery("#due_at").datepicker({ constrainInput: false, dateFormat: 'dd/mm/yy' });
         jQuery("#flash").remove();
         highlightWatchers();
