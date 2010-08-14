@@ -1,0 +1,47 @@
+page.remove 'flash'
+if @task.valid?
+  
+  #update grid
+  @task.reload
+  customer = (@task.customers.first || @task.project.customer)
+  milestone_str = [ @task.project.name ]
+  milestone_str << @task.milestone.name if @task.milestone_id.to_i > 0
+  due = @task.due_date.to_time unless @task.due_date.nil?
+  attrs = {}
+  current_user.company.properties.each do |prop| 
+    pv = @task.property_value(prop)
+    if pv && pv.icon_url.present?
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{prop.name.downcase}\"]').html('#{pv.to_html}');"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{prop.name.downcase}\"]').attr('title', '#{pv.value}');"
+    elsif pv
+      attrs.merge! prop.name.downcase => pv.to_html
+    end
+  end 
+  attrs.merge! "summary" => h(@task.name) if @changes['name']
+  attrs.merge! "client" => h(customer.name) if @changes['customer_id']
+  attrs.merge! "due" => due if @changes['due_at']
+  attrs.merge! "milestone" => milestone_str.join("/") if @changes['milestone_id']
+  attrs.merge! "time" => @task.minutes_left.to_i if @changes['duration']
+  attrs.merge! "resolution" => @task.status_type if @changes['status']
+  attrs.merge! "assigned" => @task.owners.map{ |u| u.name }.join(", ")
+  attrs.each do |attr, val|
+    page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').text('#{val}');"
+    page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
+  end
+  notice = <<-EOS
+    <div class="ui-widget" id="flash"><div class="ui-state-highlight ui-corner-all"><p>
+      <span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span><span id="flash_message">#{_('Task was successfully updated.')}</span>
+      <span id="flash_hide" onCLick = "jQuery('#flash').remove();">[#{_ 'Hide'}]</span>
+    </p></div></div>
+  EOS
+  page.insert_html :after, 'tabmenu', notice
+  #page << "loadTask('#{@task.task_num}');"
+else
+  page.remove 'errorExplanation'
+  page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
+  page.insert_html :after, 'task_id', error_messages_for(:task)
+  page << 'jQuery("#errorExplanation > ul li").css("margin", "20px 0px 2px 30px")'
+  @task.errors.each_error do |attr,err|
+    page << "jQuery('#task_#{attr}').wrap('<span class=\"fieldWithErrors\" />')"
+  end
+end

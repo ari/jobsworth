@@ -1,8 +1,13 @@
+<% cont = controller.controller_name %>
 <% cache([ "edit_form", @task, current_user.id ]) do -%>
-
-  <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
-    <%= render :partial => "tasks/form" %>
+  <% if cont == "task_templates" %>
+    <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
+      <%= render :partial => "tasks/form" %>
+    <% end %>
+  <% else %>
+    <% form_remote_tag(:url => {:action => 'update', :id => @task}, :html => { :multipart => "true", :id => "taskform" }) do %>
+      <%= render :partial => "tasks/form" %>
+    <% end %>
   <% end %>
-
 <% end -%>
 

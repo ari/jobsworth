@@ -835,6 +835,7 @@ jQuery(document).ready(function() {
     if ( /task_templates\//.test(document.location.pathname)) {
        hide_unneeded_inputs_for_task_template();
     }
+    jQuery('#flash_message').click(function(){ jQuery('#flash').remove();})
     jQuery(function() {
         jQuery('#target').catcomplete({
               source: '/pages/target_list',

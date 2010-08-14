@@ -270,13 +270,21 @@ class TasksController < ApplicationController
         big_fat_controller_method
       end
 
-      return if request.xhr?
-
-      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
-      redirect_to :action=> "list"
+      respond_to do |format|
+        format.html { 
+           flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+           redirect_to :action=> "list"
+        }
+        format.js { render(:layout => false) }
+      end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      init_form_variables(@task)
-      render :template => 'tasks/edit'
+      respond_to do |format|
+        format.html {
+          init_form_variables(@task)
+          render :template => 'tasks/edit'
+        }
+        format.js { render(:layout => false) }
+      end    
     end
   end
 
