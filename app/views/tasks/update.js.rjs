@@ -28,14 +28,13 @@ if @task.valid?
     page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').text('#{val}');"
     page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
   end
-  notice = <<-EOS
-    <div class="ui-widget" id="flash"><div class="ui-state-highlight ui-corner-all"><p>
-      <span class="ui-icon ui-icon-info" style="float: left; margin-right: 0.3em;"></span><span id="flash_message">#{_('Task was successfully updated.')}</span>
-      <span id="flash_hide" onCLick = "jQuery('#flash').remove();">[#{_ 'Hide'}]</span>
-    </p></div></div>
-  EOS
-  page.insert_html :after, 'tabmenu', notice
-  #page << "loadTask('#{@task.task_num}');"
+  
+  page.replace_html 'taskform', :partial => "edit_form"
+  page.remove 'errorExplanation'
+  page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
+  page.replace 'upload_container', :partial => "/tasks/upload_container"
+  page.replace "task_attachments", :partial => "/tasks/attachments"
+  page.insert_html :after, 'tabmenu', :partial => "/layouts/flash", :locals => {:message => (link_to_task(@task) + " - #{_('Task was successfully updated.')}")}
 else
   page.remove 'errorExplanation'
   page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"

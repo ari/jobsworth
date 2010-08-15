@@ -1,13 +1,8 @@
-<% cont = controller.controller_name %>
-<% cache([ "edit_form", @task, current_user.id ]) do -%>
-  <% if cont == "task_templates" %>
-    <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }) do %>
-      <%= render :partial => "tasks/form" %>
-    <% end %>
-  <% else %>
-    <% form_remote_tag(:url => {:action => 'update', :id => @task}, :html => { :multipart => "true", :id => "taskform" }) do %>
-      <%= render :partial => "tasks/form" %>
-    <% end %>
+<% attrs = controller.controller_name  == "task_templates" ? {} : {:target => "upload_frame"} %>
+<% cache([ "edit_form", @task, current_user.id, controller.controller_name  ]) do -%>
+  <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }.merge(attrs)) do %>
+    <%= render :partial => "tasks/form" %>
   <% end %>
 <% end -%>
+<iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
 

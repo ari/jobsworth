@@ -222,6 +222,7 @@ class TasksController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
+        @changes = @task.changes
         @task.save!
 
         @task.hide_until = nil if params[:task][:hide_until].nil?
@@ -269,19 +270,26 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-
       respond_to do |format|
-        format.html { 
-           flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
-           redirect_to :action=> "list"
+        format.html {
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+            redirect_to :action=> "list"
+          end
         }
         format.js { render(:layout => false) }
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
         format.html {
-          init_form_variables(@task)
-          render :template => 'tasks/edit'
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            init_form_variables(@task)
+            render :template => 'tasks/edit'
+          end
         }
         format.js { render(:layout => false) }
       end    
