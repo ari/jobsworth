@@ -1,7 +1,9 @@
+
 <%= render(:partial => "task_header") %>
 <%= @task.issue_name%>
 <%= "-" * @task.issue_name.length %>
 <%= raw("\n#{@change}\n") if @change.length > 0 -%>
 
 <%= "Description:\n#{@task.description}\n" if @task.description.length > 0 -%>
+
 <%= render(:partial => "task_footer") %>
