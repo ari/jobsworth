@@ -52,7 +52,7 @@ class Task < ActiveRecord::Base
 
   has_one       :ical_entry
 
-  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
+  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy
   accepts_nested_attributes_for :todos
 
   has_many      :sheets
