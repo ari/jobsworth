@@ -1,3 +1,4 @@
+
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveRecord::TestCase
@@ -69,15 +70,15 @@ class UserTest < ActiveRecord::TestCase
   end
 
   def test_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}"), @user.path
+    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}").to_s, @user.path
   end
 
   def test_avatar_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}"), @user.avatar_path
+    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}").to_s, @user.avatar_path
   end
 
   def test_avatar_large_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}_large"), @user.avatar_large_path
+    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}_large").to_s, @user.avatar_large_path
   end
 
   def test_generate_uuid
