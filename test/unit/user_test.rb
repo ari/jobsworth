@@ -32,10 +32,10 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil u.uuid
     assert_not_nil u.autologin
 
-    assert u.uuid.length == 32
-    assert u.autologin.length == 32
+    assert_equal u.uuid.length, 32
+    assert_equal u.autologin.length, 32
 
-    assert u.widgets.size == 5
+    assert_equal u.widgets.size, 4
   end
 
   def test_validate_name
