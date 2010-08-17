@@ -46,6 +46,9 @@ class User < ActiveRecord::Base
 
   has_many      :preferences, :as => :preferencable
   has_many      :received_from_emails, :class_name=>"Email", :dependent=>:destroy
+
+  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(RAILS_ROOT, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
+
   include PreferenceMethods
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
@@ -61,14 +64,6 @@ class User < ActiveRecord::Base
   validates_presence_of         :company
   validates_presence_of :time_format
   validates_presence_of :date_format
-
-  after_destroy { |r|
-    begin
-      File.delete(r.avatar_path)
-      File.delete(r.avatar_large_path)
-    rescue
-    end
-  }
 
   before_create                 :generate_uuid
   after_create      :generate_widgets
@@ -88,20 +83,16 @@ class User < ActiveRecord::Base
     return company.users.find(:all, :conditions => conds)
   end
 
-  def path
-    File.join("#{RAILS_ROOT}", 'store', 'avatars', self.company_id.to_s)
-  end
-
   def avatar_path
-    File.join(self.path, "#{self.id}")
+    avatar.path(:small)
   end
 
   def avatar_large_path
-    File.join(self.path, "#{self.id}_large")
+    avatar.path(:large)
   end
 
   def avatar?
-    File.exist? self.avatar_path
+    !self.avatar_path.nil? and File.exist?(self.avatar_path)
   end
 
   def generate_uuid
@@ -167,9 +158,9 @@ class User < ActiveRecord::Base
   def avatar_url(size=32, secure = false)
     if avatar?
       if size > 25 && File.exist?(avatar_large_path)
-        "/users/avatar/#{self.id}?large=1&" + File.mtime(avatar_large_path).to_i.to_s
+        '/users/avatar/'+id.to_s+'?large=1'
       else
-        "/users/avatar/#{self.id}?" + File.mtime(avatar_path).to_i.to_s
+        '/users/avatar/'+id.to_s
       end
     elsif email
       if secure
@@ -330,7 +321,7 @@ class User < ActiveRecord::Base
 
     return @visible_task_filters
   end
-  
+
   def project_ids_for_sql
     unless @current_project_ids
       @current_project_ids=self.project_ids

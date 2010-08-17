@@ -141,24 +141,14 @@ class UsersController < ApplicationController
       redirect_from_last
       return
     end
-    filename = params['user']['tmp_file'].original_filename
     @user = User.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
 
     if @user.avatar?
-      File.delete(@user.avatar_path) rescue begin
-                                                flash['notice'] = _("Permission denied while deleting old avatar.")
-                                                redirect_to :action => 'edit_preferences'
-                                                return
-                                              end
-
-    end
-
-    if !File.directory?(@user.path)
-      Dir.mkdir(@user.path, 0755) rescue begin
-                                                flash['notice'] = _('Unable to create storage directory.')
-                                                redirect_to :action => 'edit_preferences'
-                                                return
-                                              end
+      @user.avatar.destroy rescue begin
+                                    flash['notice'] = _("Permission denied while deleting old avatar.")
+                                    redirect_to :action => 'edit_preferences'
+                                    return
+                                  end
     end
 
     unless params['user']['tmp_file'].size > 0
@@ -167,64 +157,20 @@ class UsersController < ApplicationController
       return
     end
 
-    File.open(@user.avatar_path, "wb", 0755) { |f| f.write( params['user']['tmp_file'].read ) } rescue begin
+    @user.avatar=params['user']['tmp_file']
+    @user.save! rescue begin
                                                                                                                flash['notice'] = _("Permission denied while saving file.")
                                                                                                                redirect_to :action => 'edit_preferences'
                                                                                                                return
                                                                                                              end
-
-
-    if( File.size?(@user.avatar_path).to_i > 0 )
-      image = Magick::Image.read( @user.avatar_path ).first
-      image.format = 'JPEG'
-
-      if image.columns > image.rows
-        scale = 25.0 / image.columns
-      else
-        scale = 25.0 / image.rows
-      end
-      large_scale = scale*2
-
-      large = image.scale(large_scale)
-      small = image.scale(scale)
-
-      begin
-        File.open(@user.avatar_path, "wb", 0777) { |f| f.write( small.to_blob ) }
-        File.open(@user.avatar_large_path, "wb", 0777) { |f| f.write( large.to_blob ) }
-      rescue
-        image = nil
-        large = nil
-        small = nil
-        GC.start
-
-        flash['notice'] = _("Permission denied while saving resized file.")
-        redirect_to :action => 'edit_preferences'
-        return
-      end
-      image = nil
-      large = nil
-      small = nil
-      GC.start
-    else
-      flash['notice'] = _('Empty file.')
-      begin
-        File.delete(@user.avatar_path)
-        File.delete(@user.avatar_large_path)
-      rescue
-      end
-      redirect_from_last
-      return
-    end
-    GC.start
     flash['notice'] = _('Avatar successfully uploaded.')
     redirect_from_last
   end
 
   def delete_avatar
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    unless @user.nil?
-      File.delete(@user.avatar_path) rescue begin end
-      File.delete(@user.avatar_large_path) rescue begin end
+    unless @user.nil? && !@user.avatar?
+      @user.avatar.destroy #rescue begin end
     end
     redirect_from_last
   end
