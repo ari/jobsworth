@@ -1,5 +1,5 @@
 development:
-  adapter: mysql
+  adapter: mysql2
   database: DATABASE
   host: HOST
   username: USERNAME
@@ -8,7 +8,7 @@ development:
   SOCKET
 
 test: &TEST
-  adapter: mysql
+  adapter: mysql2
   database: DATABASE_test
   host: HOST
   username: USERNAME
@@ -17,7 +17,7 @@ test: &TEST
   SOCKET
 
 production:
-  adapter: mysql
+  adapter: mysql2
   database: DATABASE
   host: HOST
   username: USERNAME
