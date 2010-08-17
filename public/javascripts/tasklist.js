@@ -64,6 +64,7 @@ function taskListConfigSerialise() {
 var colModel; // we need a global variable to put the model into
 var currentSort;
 // get the column definition as early as possible
+
 jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
         colModel = data.colModel;
         currentSort = data.currentSort;
@@ -159,51 +160,15 @@ function initTaskList() {
 
         jQuery.extend(jQuery.fn.fmatter , {
                 daysFromNow : function(cellvalue, options, rowdata) {
-                        if (cellvalue == "") {
-                                return "";
-                        }
-                        var one_day=1000*60*60*24;
-                        var days = Math.round( (new Date(cellvalue * 1000) - new Date().getTime()) /one_day);
-                        if (days == 0) {
-                                return "<span class='due_today'>today</span>";
-                        }
-                        if (days == 1) {
-                                return "<span class='due_future'>tomorrow</span>";
-                        }
-                        if (days == -1) {
-                                return "<span class='due_past'>" + "yesterday</span>";
-                        }
-                        if (days > 548) {
-                                return "<span class='due_future'>" + Math.round(days/365) + " years</span>";
-                        }
-                        if (days < -548) {
-                                return "<span class='due_past'>" + Math.round(-days/365) + " years ago</span>";
-                        }
-                        if (days > 50) {
-                                return "<span class='due_future'>" + Math.round(days/30.4) + " months</span>"; // average number of days in a month
-                        }
-                        if (days < -50) {
-                                return "<span class='due_past'>" + Math.round(-days/30.4) + " months ago</span>";
-                        }
-                        if (days > 14) {
-                                return "<span class='due_future'>" + Math.round(days/7) + " weeks</span>";
-                        }
-                        if (days < -14) {
-                                return "<span class='due_past'>" + Math.round(-days/7) + " weeks ago</span>";
-                        }
-                        if (days > 0) {
-                                return "<span class='due_future'>" + days + " days</span>";
-                        }
-                        return "<span class='due_past'>" + -days + " days ago</span>";
+                        var val = dueTaskValue(cellvalue);
+                        return val;
                 }
         });
 
         jQuery.extend(jQuery.fn.fmatter , {
                 tasktime : function(cellvalue, options, rowdata) {
-                        if (cellvalue == 0) {
-                                return "";
-                        }
-                        return Math.round(cellvalue/6)/10 + "hr";
+                        var val = timeTaskValue(cellvalue);
+                        return val;
                 }
         });
 
@@ -253,3 +218,49 @@ jQuery(document).ready(function() {
     });
 
 });
+
+function dueTaskValue(cellvalue) {
+    if (cellvalue == "") {
+        return "";
+    }
+    var one_day=1000*60*60*24;
+    var days = Math.round( (new Date(cellvalue * 1000) - new Date().getTime()) /one_day);
+    if (days == 0) {
+        return "<span class='due_today'>today</span>";
+    }
+    if (days == 1) {
+        return "<span class='due_future'>tomorrow</span>";
+    }
+    if (days == -1) {
+        return "<span class='due_past'>" + "yesterday</span>";
+    }
+    if (days > 548) {
+        return "<span class='due_future'>" + Math.round(days/365) + " years</span>";
+    }
+    if (days < -548) {
+        return "<span class='due_past'>" + Math.round(-days/365) + " years ago</span>";
+    }
+    if (days > 50) {
+        return "<span class='due_future'>" + Math.round(days/30.4) + " months</span>"; // average number of days in a month
+    }
+    if (days < -50) {
+        return "<span class='due_past'>" + Math.round(-days/30.4) + " months ago</span>";
+    }
+    if (days > 14) {
+        return "<span class='due_future'>" + Math.round(days/7) + " weeks</span>";
+    }
+    if (days < -14) {
+        return "<span class='due_past'>" + Math.round(-days/7) + " weeks ago</span>";
+    }
+    if (days > 0) {
+        return "<span class='due_future'>" + days + " days</span>";
+    }
+    return "<span class='due_past'>" + -days + " days ago</span>";
+}
+
+function timeTaskValue(cellvalue) {
+    if (cellvalue == 0) {
+        return "";
+    }
+    return Math.round(cellvalue/6)/10 + "hr";
+}

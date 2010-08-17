@@ -6,7 +6,8 @@ if @task.valid?
   customer = (@task.customers.first || @task.project.customer)
   milestone_str = [ @task.project.name ]
   milestone_str << @task.milestone.name if @task.milestone_id.to_i > 0
-  due = @task.due_date.to_time unless @task.due_date.nil?
+  due = @task.due_date.to_time.to_i unless @task.due_date.nil?
+  time = @task.minutes_left.to_i
   attrs = {}
   current_user.company.properties.each do |prop| 
     pv = @task.property_value(prop)
@@ -21,16 +22,23 @@ if @task.valid?
   attrs.merge! "client" => h(customer.name) if @changes['customer_id']
   attrs.merge! "due" => due if @changes['due_at']
   attrs.merge! "milestone" => milestone_str.join("/") if @changes['milestone_id']
-  attrs.merge! "time" => @task.minutes_left.to_i if @changes['duration']
+  attrs.merge! "time" => time if @changes['duration']
   attrs.merge! "resolution" => @task.status_type if @changes['status']
   attrs.merge! "assigned" => @task.owners.map{ |u| u.name }.join(", ")
   attrs.each do |attr, val|
-    page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').text('#{val}');"
-    page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
+    if attr == "due" || attr == "time"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').html(#{attr}TaskValue(#{eval(attr)}));"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', #{attr}TaskValue(#{eval(attr)}).replace(/<.*?>/g,\'\'));"
+    else
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').text('#{val}');"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
+    end
   end
   
   page.replace_html 'taskform', :partial => "edit_form"
-  page.remove 'errorExplanation'
+  page << "jQuery('div.log_history').tabs();"
+  page << "jQuery('#comment').removeAttr('value');"
+  page << "jQuery('#errorExplanation').remove();"
   page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
   page.replace 'upload_container', :partial => "/tasks/upload_container"
   page.replace "task_attachments", :partial => "/tasks/attachments"
