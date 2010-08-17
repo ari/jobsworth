@@ -1,7 +1,7 @@
 class RemoveRecentActivitiesFromWidgets < ActiveRecord::Migration
 
   def self.up
-    Widget.destroy_all(:name => _("Recent Activities"))
+    Widget.destroy_all(:widget_type => 2)
   end
 
   def self.down

@@ -55,7 +55,7 @@ class TasksController < ApplicationController
     value.gsub!(/#/, '')
     @keys = [ value ]
     @tasks = Task.search(current_user, @keys)
-    render :json=> @tasks.collect{|task| {:label => "[##{task.id}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.id } }.to_json
+    render :json=> @tasks.collect{|task| {:label => "[##{task.task_num}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.task_num } }.to_json
   end
 
   def auto_complete_for_resource_name
@@ -154,7 +154,7 @@ class TasksController < ApplicationController
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
       return if request.xhr?
-      redirect_from_last
+      redirect_to :action => :list
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
@@ -222,6 +222,7 @@ class TasksController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
+        @changes = @task.changes
         @task.save!
 
         @task.hide_until = nil if params[:task][:hide_until].nil?
@@ -269,14 +270,29 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-
-      return if request.xhr?
-
-      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
-      redirect_to :action=> "list"
+      respond_to do |format|
+        format.html {
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+            redirect_to :action=> "list"
+          end
+        }
+        format.js { render(:layout => false) }
+      end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      init_form_variables(@task)
-      render :template => 'tasks/edit'
+      respond_to do |format|
+        format.html {
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            init_form_variables(@task)
+            render :template => 'tasks/edit'
+          end
+        }
+        format.js { render(:layout => false) }
+      end    
     end
   end
 
