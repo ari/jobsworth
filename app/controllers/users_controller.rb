@@ -180,16 +180,10 @@ class UsersController < ApplicationController
 
       if image.columns > image.rows
         scale = 25.0 / image.columns
-        large_scale = 50.0 / image.columns
       else
         scale = 25.0 / image.rows
-        large_scale = 50.0 / image.rows
       end
-
-      if image.rows * scale > 25.0
-        scale = 25.0 / image.rows
-        large_scale = 50.0 / image.rows
-      end
+      large_scale = scale*2
 
       large = image.scale(large_scale)
       small = image.scale(scale)
