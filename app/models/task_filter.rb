@@ -145,6 +145,10 @@ private
   # Returns a conditions hash the will filter tasks based on the
   # given property value qualifiers
   def conditions_for_property_qualifiers(property_qualifiers)
+    simple_conditions_for_property_qualifiers(property_qualifiers)
+  end
+
+  def simple_conditions_for_property_qualifiers(property_qualifiers)
     name = "task_property_values.property_value_id"
     grouped = property_qualifiers.group_by { |q| q.qualifiable.property }
 
@@ -157,11 +161,16 @@ private
     return res
   end
 
+
   # Returns an array of conditions that will filter tasks based on the
   # given standard qualifiers.
   # Standard qualifiers are things like project, milestone, user, where
   # a filter will OR the different users, but and between different types
   def conditions_for_standard_qualifiers(standard_qualifiers)
+    simple_conditions_for_standard_qualifiers(standard_qualifiers)
+  end
+
+  def simple_conditions_for_standard_qualifiers(standard_qualifiers)
     res = []
 
     grouped_conditions = standard_qualifiers.group_by { |q| q.qualifiable_type }
@@ -177,10 +186,14 @@ private
   # Returns a string sql fragment that will limit tasks to
   # those that match the set keywords
   def conditions_for_keywords
+    simple_conditions_for_keywords(keywords)
+  end
+
+  def simple_conditions_for_keywords(keywords_arg)
     sql = []
     params = []
 
-    keywords.each do |kw|
+    keywords_arg.each do |kw|
       str = "lower(tasks.name) like ?"
       str += " or lower(tasks.description) like ?"
       sql << str
@@ -197,6 +210,10 @@ private
   # Status qualifiers have to be handled especially until the
   # migration from an array in code to db backed statuses is complete
   def conditions_for_status_qualifiers(status_qualifiers)
+    simple_conditions_for_status_qualifiers(status_qualifiers)
+  end
+
+  def simple_conditions_for_status_qualifiers(status_qualifiers)
     old_status_ids = []
     c = company || user.company
 
@@ -214,6 +231,10 @@ private
   # those in a project belonging to customers, or linked directly
   # to the customer
   def conditions_for_customer_qualifiers(customer_qualifiers)
+    simple_conditions_for_customer_qualifiers(customer_qualifiers)
+  end
+
+  def simple_conditions_for_customer_qualifiers(customer_qualifiers)
     ids = customer_qualifiers.map { |q| q.qualifiable.id }
     ids = ids.join(",")
 
@@ -227,6 +248,10 @@ private
   # Returns a sql string fragment that will limit tasks to only those
   # which match the given time qualifiers
   def conditions_for_time_qualifiers(time_qualifiers)
+    simple_conditions_for_time_qualifiers(time_qualifiers)
+  end
+
+  def simple_conditions_for_time_qualifiers(time_qualifiers)
     return if time_qualifiers.empty?
 
     res = []
