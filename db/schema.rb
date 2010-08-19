@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100818131406) do
+ActiveRecord::Schema.define(:version => 20100819092939) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -182,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20100818131406) do
     t.string   "word"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "reversed",       :default => false
   end
 
   add_index "keywords", ["task_filter_id"], :name => "fk_keywords_task_filter_id"
@@ -561,6 +562,7 @@ ActiveRecord::Schema.define(:version => 20100818131406) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "qualifiable_column"
+    t.boolean  "reversed",           :default => false
   end
 
   add_index "task_filter_qualifiers", ["task_filter_id"], :name => "fk_task_filter_qualifiers_task_filter_id"

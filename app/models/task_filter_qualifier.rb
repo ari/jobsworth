@@ -10,6 +10,8 @@ class TaskFilterQualifier < ActiveRecord::Base
   named_scope :for, lambda { |type|
     { :conditions => { :qualifiable_type => type } } }
 
+  named_scope :reversed, :conditions=> { :reversed => true }
+
   private
 
   def set_qualifiable_from_task_num
