@@ -2,6 +2,9 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+17 August 2010
+	We've moved to the new mysql2 adaptor. Please change your database.yml file from "adapter: mysql" to "adapter: mysql2" 
+
 21 April 2010
 	Some major changes under the hood in preparation for access control improvements. Tasks watchers and assignees are now merged into one table.
 	Comment level access control is now implemented. Look for the new role popup in the user view which lets you assign one of two access levels. Some more work on the UI is coming, so consider this just a preview of what is to come.

@@ -2818,3 +2818,7 @@ fieldset.basic .actions label {
                 margin:.8em 0 .2em;
                 line-height:1.5;
 }
+
+#flash_message{
+  cursor: pointer;
+}
