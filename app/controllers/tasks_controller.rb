@@ -33,6 +33,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { render :action => "grid" }
       format.xml  { render :template => "tasks/list.xml" }
+      format.json { render :template => "tasks/list.json"}
     end
   end
 

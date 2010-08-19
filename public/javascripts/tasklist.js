@@ -63,24 +63,28 @@ function taskListConfigSerialise() {
 
 var colModel; // we need a global variable to put the model into
 var currentSort;
-// get the column definition as early as possible
+var tasksJson;
 
+jQuery.ajax({
+    type: "GET", url : '/tasks/list?format=json', datatype: "json",
+    success: function(results){ tasksJson = results.tasks.rows },
+    error: function(XMLHttpRequest, textStatus, errorThrown){ alert("Error" + errorThrown);}
+});
+
+
+// get the column definition as early as possible
 jQuery.getJSON('/users/get_tasklistcols', {}, function(data) {
         colModel = data.colModel;
         currentSort = data.currentSort;
         initTaskList();
         resizeGrid(); // using this instead of autowidth since it seems to behave better
+        jQuery("#task_list").trigger("reloadGrid");
 });
 
 function initTaskList() {
-
         jQuery('#task_list').jqGrid({
-            url:'/tasks/list?format=xml',
-                datatype: 'xml',
-                xmlReader: {
-                        row:"task",
-                        repeatitems:false
-                },
+                data: tasksJson,
+                datatype: 'local',
                 colModel : colModel,
                 loadonce: false,
                 sortable : function(permutation) { taskListConfigSerialise(); }, // re-order columns
@@ -107,7 +111,12 @@ function initTaskList() {
                 userDataOnFooter: true,
                 
                 height: 300,
-                width: 500
+                width: 500,
+
+                grouping: true,
+                groupingView: {
+                        groupField: ["milestone"]
+                }
         });
 
 
