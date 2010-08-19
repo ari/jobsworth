@@ -107,8 +107,8 @@ class TaskFilter < ActiveRecord::Base
   def keywords_attributes=(new_keywords)
     keywords.clear
 
-    (new_keywords || []).each do |word|
-      keywords.build(:word => word)
+    (new_keywords || []).each do |kw|
+      keywords.build(kw)
     end
   end
 

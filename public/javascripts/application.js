@@ -248,6 +248,8 @@ function addSearchFilter(event, ui) {
     var typeValue = selected.typeval;
     var columnName = selected.col;
     var columnValue = selected.colval;
+    var reversedName = selected.reversed;
+    var reversedVal = selected.reversedval;
     if (idName && idName.length > 0) {
         var filterKeys = jQuery("#search_filter_form ul#search_filter_keys");
         filterKeys.append('<input type="hidden" name="'+idName+'" value="'+idValue+'"/>');
@@ -256,6 +258,9 @@ function addSearchFilter(event, ui) {
         }
         if (columnName && columnName.length>0) {
             filterKeys.append('<input type="hidden" name="'+columnName+'" value="'+columnValue+'"/>');
+        }
+        if (reversedName && reversedName.length > 0) {
+            filterKeys.append('<input type="hidden" name="'+reversedName+'" value="'+reversedVal+'"/>');
         }
         submitSearchFilterForm();
     } else {
@@ -782,8 +787,8 @@ function tasks_path(action_name) {
             return "/task_templates/" + action_name ;
     }
     else if(jQuery('#template_clone').val() == '1') {
-	    return "/tasks/" + action_name ;
-	}
+            return "/tasks/" + action_name ;
+        }
     return action_name;
 }
 
@@ -938,7 +943,7 @@ function init_task_form() {
     autocomplete('#resource_name_auto_complete', '/tasks/auto_complete_for_resource_name/customer_id='+ jQuery('#resource_name_auto_complete').attr('data-customer-id'), addResourceToTask);
     autocomplete('#user_name_auto_complete', '/tasks/auto_complete_for_user_name', addUserToTask);
     autocomplete_multiple_remote('#task_set_tags', '/tags/auto_complete_for_tags' );
-    
+
     jQuery('.task-todo').sortable({update: function(event,ui){
         var todos= new Array();
         jQuery.each(jQuery('.task-todo li'),
@@ -954,11 +959,11 @@ function init_task_form() {
     jQuery('#snippet').click(function() {
       jQuery(this).children('ul').slideToggle();
     });
-    
+
     jQuery('#snippet ul li').hover(function() {
       jQuery(this).toggleClass('ui-state-hover');
     });
-    
+
     jQuery('#snippet ul li').click(function() {
       var id = jQuery(this).attr('id');
       id = id.split('-')[1];
@@ -1014,7 +1019,7 @@ function hide_unneeded_inputs_for_task_template() {
     jQuery("#task_information > textarea.autogrow").hide();
     jQuery("#accessLevel_container").hide();
     jQuery("#worktime_container").hide();
-    jQuery("#task_time_links").hide();	
-    jQuery("#notify_users").hide();	
+    jQuery("#task_time_links").hide();
+    jQuery("#notify_users").hide();
     jQuery("#task_information > br").hide();
 }

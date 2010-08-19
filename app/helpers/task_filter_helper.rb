@@ -80,15 +80,17 @@ module TaskFilterHelper
   # Returns the name to print out to describe the type of the
   # given qualifier
   def qualifier_name(qualifier)
-    if qualifier.qualifiable_type == "PropertyValue"
-      return qualifier.qualifiable.property.name
+    name = if qualifier.qualifiable_type == "PropertyValue"
+      qualifier.qualifiable.property.name
     elsif qualifier.qualifiable_type == "TimeRange"
-      return qualifier.qualifiable_column.gsub("_at", "").humanize
+      qualifier.qualifiable_column.gsub("_at", "").humanize
     elsif qualifier.qualifiable_type == "Status"
-      return "Resolution" #FIXME: would be better use Status.to_s or something like this
+      "Resolution" #FIXME: would be better use Status.to_s or something like this
     else
       qualifier.qualifiable_type
     end
+    name += ' is not' if qualifier.reversed?
+    return name
   end
 
   def link_to_tasks_filtered_by(*args)
