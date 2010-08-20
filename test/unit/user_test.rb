@@ -69,18 +69,6 @@ class UserTest < ActiveRecord::TestCase
 
   end
 
-  def test_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}").to_s, @user.path
-  end
-
-  def test_avatar_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}").to_s, @user.avatar_path
-  end
-
-  def test_avatar_large_path
-    assert_equal Rails.root.join('store', 'avatars', "#{@user.company_id}", "#{@user.id}_large").to_s, @user.avatar_large_path
-  end
-
   def test_generate_uuid
     user = User.new
     user.generate_uuid
@@ -93,10 +81,7 @@ class UserTest < ActiveRecord::TestCase
   end
 
   def test_avatar_url
-    if @user.avatar?
-      assert_equal "/users/avatar/1?large=1", @user.avatar_url
-      assert_equal "/users/avatar/1", @user.avatar_url(25)
-    else
+    unless @user.avatar?
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=32", @user.avatar_url
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=25", @user.avatar_url(25)
     end

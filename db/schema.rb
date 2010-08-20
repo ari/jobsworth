@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100810023438) do
+ActiveRecord::Schema.define(:version => 20100818131406) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -87,14 +87,18 @@ ActiveRecord::Schema.define(:version => 20100810023438) do
   add_index "custom_attributes", ["company_id", "attributable_type"], :name => "index_custom_attributes_on_company_id_and_attributable_type"
 
   create_table "customers", :force => true do |t|
-    t.integer  "company_id",                   :default => 0,    :null => false
-    t.string   "name",          :limit => 200, :default => "",   :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+    t.integer  "company_id",                       :default => 0,    :null => false
+    t.string   "name",              :limit => 200, :default => "",   :null => false
+    t.string   "contact_email",     :limit => 200
+    t.string   "contact_name",      :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "css"
-    t.boolean  "active",                       :default => true
+    t.boolean  "active",                           :default => true
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
@@ -742,6 +746,10 @@ ActiveRecord::Schema.define(:version => 20100810023438) do
     t.boolean  "can_approve_work_logs"
     t.boolean  "auto_add_to_customer_tasks"
     t.integer  "access_level_id",                           :default => 1
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"
