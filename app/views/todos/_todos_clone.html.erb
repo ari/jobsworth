@@ -1,0 +1,13 @@
+<ul class="task-todo" id="todos-clone">
+  <%= render :partial => "/todos/todo", :collection => session[:todos_clone] %>
+</ul>
+
+<div id="new-todos" class="todo">
+  <div class="display">
+    <%= link_to_function(_("New To-do Item"), "toggleTodoEdit(this);addNewTodoCloneKeyListener();") %>
+  </div>
+  <div class="edit" style="display: none">
+    <%= text_field_tag("todo[name]", "", :size => 50) %>
+    <%= link_to_function(_("Cancel"), "toggleTodoCloneEdit(this)") %>
+  </div>
+</div>

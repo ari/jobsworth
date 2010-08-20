@@ -145,12 +145,11 @@ class TasksController < ApplicationController
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
-
-      ############ code smell begin ####################
-      # this code used to create tasks from task template
-      # must exist more elegancy solution
-      copy_todos_from_template(params[:task][:id], @task)
-      ############ code smell end #######################
+      #save todos
+      if session[:todos_clone]
+        save_todos(session[:todos_clone], @task)
+        session[:todos_clone] = nil
+      end
 
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
@@ -443,6 +442,7 @@ protected
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
+    session[:todos_clone] = nil
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
@@ -622,16 +622,10 @@ protected
   def set_last_task(task)
     session[:last_task_id] = task.id
   end
-  #this function copy todos from task template to task
-  #NOTE: this code is very fragile
-  #TODO: find sophisticated solution
-  def copy_todos_from_template(id, task)
-    return unless id.to_i > 0
-    template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
-    if template.nil?
-      #this is not template, just regular task
-      return
+  def save_todos(todos, task)
+    todos.each do |t|
+      t.task_id = task.id
+      t.save
     end
-    template.todos.each{|todo| task.todos<< todo.clone }
   end
 end

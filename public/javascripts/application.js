@@ -683,6 +683,23 @@ function addTodoKeyListener(todoId, taskId) {
     });
 }
 
+function addTodoCloneKeyListener(positionId) {
+    var todo = jQuery("#todos-" + positionId);
+    var input = todo.find(".edit input");
+
+    input.keypress(function(key) {
+        if (key.keyCode == 13) {
+            jQuery(".todo-container").load("/todos/update_clone/" + positionId,  {
+                "_method": "PUT",
+                "todo[name]": input.val()
+            });
+
+            key.stopPropagation();
+            return false;
+        }
+    });
+}
+
 /*
 Adds listeners to handle users pressing enter in the todo
 create field
@@ -696,6 +713,23 @@ function addNewTodoKeyListener(taskId) {
             jQuery(".todo-container").load("/todos/create", {
                 "_method": "POST",
                 task_id: taskId,
+                "todo[name]": input.val()
+            });
+
+            key.stopPropagation();
+            return false;
+        }
+    });
+}
+
+function addNewTodoCloneKeyListener() {
+    var todo = jQuery("#new-todos");
+    var input = todo.find(".edit input");
+
+    input.keypress(function(key) {
+        if (key.keyCode == 13) {
+            jQuery(".todo-container").load("/todos/create_clone", {
+                "_method": "POST",
                 "todo[name]": input.val()
             });
 
@@ -800,9 +834,9 @@ function create_task_from_template(event) {
         form.attr('id','taskform');
         jQuery('#main_col').html(form);
         jQuery('#taskform').append('<input type="hidden" id="template_clone" value="1" />');
+        jQuery('.todo-container').load('/todos/list_clone/' + jQuery("#task_id").val());
+        jQuery('.task-todo').attr("id", "todo-tasks-clone");
         jQuery('#task_id').removeAttr('value');
-        jQuery('#todo-container').prev().hide();
-        jQuery('#todo-container').hide();
         jQuery('ul#primary > li').removeClass('active');
         jQuery('li.task_template').parent().parent().addClass('active');
         jQuery('#work-log').prevAll().remove();
