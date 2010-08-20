@@ -201,6 +201,18 @@ function removeSearchFilter(link) {
     submitSearchFilterForm();
 }
 
+function reverseSearchFilter(link){
+
+    link = jQuery(link);
+    input= link.parent().siblings("input.reversed");
+    if(input.val() == "false"){
+        input.val("true");
+    }else {
+        input.val("false");
+    }
+    submitSearchFilterForm();
+}
+
 jQuery(document).ready(function() {
         // make search box contents selected when the user clicks in it
         jQuery("#search_filter").focus( function() {
