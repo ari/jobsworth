@@ -1,6 +1,6 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
-    <%= h(name || project.name) %>
+    <%= h((if defined?(name) then name end) || project.name) %>
   </td>
 <%
    user_granted = project.users.include? @user

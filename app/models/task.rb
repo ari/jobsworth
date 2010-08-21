@@ -547,13 +547,12 @@ class Task < ActiveRecord::Base
       nil
     end
   end
-
   def css_classes
     unless @css
-      @css = case self.status
-      when 0 then ""
-      when 1 then " in_progress"
-      when 2 then " closed"
+      @css= if self.open? 
+        "" 
+      elsif self.closed?
+        " closed" 
       else
         " invalid"
       end

@@ -272,10 +272,6 @@ div.page_header a {
   margin: 0 0 1px 0px;
 }
 
-.in_progress {
-  font-style: italic;
-}
-
 .task.unread .task-name a, .task.unread, .task.unassigned {
   font-weight: bold;
 }
