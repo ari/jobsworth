@@ -13,40 +13,29 @@ You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will
 
 Install the following packages:
 
-* ruby gems
-* ruby mysql driver (you could also choose postgresql)
-* rake
-* ImageMagick
+* ruby 1.9 (Ruby 1.9 is much faster than 1.8.)
+* ruby mysql driver (you could also choose postgresql but it is tested somewhat less)
 
 How to install these will differ on each platform. Some possibilities:
 
 
 ==== FreeBSD with Ruby 1.9
 
-Ruby 1.9 is much faster than 1.8.
-
   echo "RUBY_DEFAULT_VER=1.9" >> /etc/make.conf
-  portmaster converters/ruby-iconv databases/ruby-mysql graphics/ImageMagick
-
-
-==== FreeBSD with Ruby 1.8
-
-Sometimes you just need to use 1.8 if you have other tools which rely on 1.8, such as portinstall.
-
-  portmaster converters/ruby-iconv devel/ruby18-gems databases/ruby-mysql devel/rubygem-rake graphics/ImageMagick
+  portmaster converters/ruby-iconv databases/ruby-mysql
 
 
 ==== OSX
 
 First install the Macports system from http://www.macports.org. Then:
 
-  sudo port install rb-rubygems rb-mysql rb-rake ImageMagick libxml2 libxslt
+  sudo port install ruby19 libxml2 libxslt
 
 ==== Linux, etc
 
-Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Imagemagick, Rake and the Ruby mysql driver installed. Something like:
+Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. Something like:
 
-  yum install libxml2 libxslt ImageMagick ruby
+  yum install ruby19
 
 === Step 3: Phusion Passenger
 
@@ -69,7 +58,7 @@ Your Apache httpd virtual host DocumentRoot should point to the public directory
     ErrorLog /var/log/www/myserver.example.com.au-access_log
   </VirtualHost>
 
-You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for Rails application.
+You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for a Rails application.
 
   <Directory /usr/squish/public>
     AllowOverride All
