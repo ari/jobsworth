@@ -12,19 +12,6 @@ class CustomerTest < ActiveRecord::TestCase
     @external = customers(:external_customer)
   end
 
-  def test_path
-    path = Rails.root.join('store', 'logos', "#{@internal.company_id}")
-    assert_equal path.to_s, @internal.path
-  end
-
-  def test_store_name
-    assert_equal "logo_#{@internal.id}", @internal.store_name
-  end
-
-  def test_logo_path
-    assert_equal Rails.root.join('store', 'logos', "#{@internal.company_id}", "logo_#{@internal.id}").to_s, @internal.logo_path
-  end
-
   def test_full_name
     assert_equal "ClockingIT", @internal.full_name
     assert_not_equal "ClockingIT", @external.full_name

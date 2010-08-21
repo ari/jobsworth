@@ -35,7 +35,7 @@ class TaskFilterTest < ActiveSupport::TestCase
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
 
-    filter.keywords_attributes = [ "keyword1", "keyword2" ]
+    filter.keywords_attributes = [ { :word=>"keyword1"}, {:word=>"keyword2"} ]
     assert_equal "keyword1", filter.keywords[0].word
     assert_equal "keyword2", filter.keywords[1].word
   end

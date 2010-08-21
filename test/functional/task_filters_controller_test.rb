@@ -33,16 +33,16 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     should "be able to search by task project" do
       get :search, :term => @task.project.name
-      assert_json({ 
+      assert_json({
                    "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
-                   "idval" => @task.project.id 
+                   "idval" => @task.project.id
                   })
     end
 
     should "be able to search by task customer" do
       get :search, :term => @task.project.customer.name
       assert_json({
-                   "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",                              
+                   "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
                    "idval" => @task.project.customer.id
                   })
     end
@@ -59,7 +59,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
     should "be able to search by tags" do
       tag = Tag.make(:company => @user.company)
       get :search, :term => tag.name
-      assert_json({ 
+      assert_json({
                    "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
                    "idval" => tag.id
                   })
@@ -69,7 +69,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
       Status.create_default_statuses(@user.company)
       status = @user.company.statuses.rand
       get :search, :term => status.name
-      assert_json({ 
+      assert_json({
                    "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
                    "idval" => status.id
                   })
@@ -77,16 +77,16 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
     should "be able to search by task user" do
       get :search, :term => @user.name
-      assert_json({ 
-                   "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",                                     
+      assert_json({
+                   "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
                    "idval" => @user.id
                   })
     end
 
     should "be able to search by keyword" do
       get :search, :term => "A keyword"
-      assert_json({ 
-                   "id" => "task_filter[keywords_attributes][]",
+      assert_json({
+                   "id" => "task_filter[keywords_attributes][][word]",
                    "idval" => "a keyword"
                   })
     end
@@ -107,20 +107,20 @@ class TaskFiltersControllerTest < ActionController::TestCase
 
       should "should find time range by name" do
          assert_json({
-                      "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",                    
+                      "id" => "task_filter[qualifiers_attributes][][qualifiable_id]",
                       "idval" => @time_range.id
                      })
       end
 
       should "have due_at qualifiable_name" do
-        assert_json({ 
+        assert_json({
                      "col" => "task_filter[qualifiers_attributes][][qualifiable_column]",
                       "colval" => "due_at"
                     })
       end
 
       should "have create_at qualifiable_name" do
- 
+
            assert_json({
                         "col" => "task_filter[qualifiers_attributes][][qualifiable_column]",
                         "colval" => "created_at"
@@ -131,7 +131,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
           assert_json({
                        "col" => "task_filter[qualifiers_attributes][][qualifiable_column]",
                        "colval" => "updated_at"
-                      })                                                                                                             
+                      })
       end
     end
 
@@ -144,7 +144,7 @@ class TaskFiltersControllerTest < ActionController::TestCase
       get :search, :term => value.value
       assert_json({
                    "id" => "task_filter[qualifiers_attributes][][qualifiable_id]", "idval" => value.id
-                  })                                                                                                                
+                  })
     end
 
     should "be able to render new" do
@@ -253,5 +253,5 @@ class TaskFiltersControllerTest < ActionController::TestCase
         end
       end
     end
-  end                                                                                                                   
+  end
 end
