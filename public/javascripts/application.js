@@ -202,9 +202,7 @@ function removeSearchFilter(link) {
 }
 
 function reverseSearchFilter(link){
-
-    link = jQuery(link);
-    input= link.parent().siblings("input.reversed");
+    input= jQuery(link).siblings("input.reversed");
     if(input.val() == "false"){
         input.val("true");
     }else {
