@@ -2,8 +2,41 @@ Clocking IT change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+21 August 2010
+	Task filters now have a NOT option. That is, you can apply the inverse of any of the filters.
+
+20 August 2010
+	The task list can now be grouped by milestones. Soon we'll be able to drag and drop tasks between those milestones directly in the grid view.
+
 17 August 2010
-	We've moved to the new mysql2 adaptor. Please change your database.yml file from "adapter: mysql" to "adapter: mysql2" 
+	We've moved to the new mysql2 adaptor. Please change your database.yml file from "adapter: mysql" to "adapter: mysql2" if you wish to use it. It promises faster speeds and better UTF compatibility.
+
+12 August 2010
+	Templates now don't create a saved record until after the user saves explicitly.
+
+9 August 2010
+	The activities widget on the overview page is removed. It posed a major security hole.
+	
+3 August 2010
+	Move to Rails 2.3.8 and the XSS plugin. This closes a huge number of cross-site scripting vulnerabilities within the code. We've also moved to Erubis as a template engine which results in some performance improvements.
+	
+11 July 2010
+	Templates can now be deleted.
+	
+24 June 2010
+	Snippets: new feature which is essentially a template for adding tasks.
+	
+23 June 2010
+	Autocomplete now implemented from the jquery-ui library. Much more robust, faster and prettier.
+	
+20 June 2010
+	To do items are now sortable
+
+18 May 2010
+	Version control integration. Now we integrate with SVN, git or any other SCM system.
+
+12 May 2010
+	Move all attachment code to Paperclip. This make it all more robust and simpler. This also eliminates ImageReady.
 
 21 April 2010
 	Some major changes under the hood in preparation for access control improvements. Tasks watchers and assignees are now merged into one table.

@@ -1,6 +1,8 @@
 <li>
-  <%= hidden_field_tag "task_filter[keywords_attributes][]", keyword.word %>
-  <%=_ "Keyword:" %>
+  <%= hidden_field_tag "task_filter[keywords_attributes][][word]", keyword.word %>
+  <%= hidden_field_tag "task_filter[keywords_attributes][][reversed]", keyword.reversed, :class => "reversed" %>
+  <%= link_to_function(image_tag("invert.png"), "reverseSearchFilter(this)") %>
+  <%=_ (keyword.reversed? ? "Have not keyword:" : "Keyword:") %>
   <%= keyword.word %>
   <span class="right small"><%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
   &nbsp;
