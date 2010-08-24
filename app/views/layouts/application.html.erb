@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "jquery.layout", "ui.multiselect", "jquery.jqGrid","jquery.autogrow", "json2", "tasklist", :cache => "main" %>
+    <%= javascript_include_tag :defaults, "rails", "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "jquery.layout", "ui.multiselect", "jquery.jqGrid","jquery.autogrow", "json2", "tasklist", :cache => "main" %>
     <%= javascript_include_tag "fullcalendar" %>
     <%= yield :head %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
@@ -15,6 +15,8 @@
     <% end %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>
+    
+    <%= csrf_meta_tag %>
     <title><%= $CONFIG[:productName] %></title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <%
