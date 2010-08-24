@@ -57,7 +57,8 @@ Rails::Initializer.run do |config|
   config.gem 'gchartrb', :version => '0.8', :lib => 'google_chart'
   config.gem 'smurf', :version => '1.0.4'
   config.gem 'paperclip', :version => '2.3.3'
-#  config.gem 'auto_complete_jquery', :source => 'http://gems.github.com'
+  config.gem 'acts_as_tree'
+
   if !JAVA
     config.gem 'mysql2', :version => '>= 0.2.3'
     config.gem 'json'
