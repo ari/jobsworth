@@ -1028,6 +1028,32 @@ class Task < ActiveRecord::Base
     repeat.save!
   end
 
+  def update_group(group, value)
+    user_id = self.project.user_id
+    company_id =  self.project.company_id
+    if group == "milestone"
+      val_arr = value.split("/")
+      if val_arr.size == 1
+        self.milestone_id = nil        
+      else
+        mid = Milestone.find_by_name_and_user_id(val_arr[1], user_id).id
+        self.milestone_id = mid
+      end
+      pid = Project.find_by_name_and_user_id_and_company_id(val_arr[0], user_id, company_id).id
+      self.project_id = pid
+      save
+    elsif group == "resolution"
+      p = Status.find_by_name_and_company_id(value, company_id).id
+      self.status = (p - 1)
+      save
+    elsif ["severity", "priority"].include? group
+      if prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+        pv = PropertyValue.find_by_value_and_property_id(value, prop.id)
+        self.set_property_value(prop, pv)
+      end
+    end
+  end
+
   private
 
   def set_task_num

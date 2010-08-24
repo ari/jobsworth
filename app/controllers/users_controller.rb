@@ -255,6 +255,12 @@ class UsersController < ApplicationController
     column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
     render :json => { :colModel=>colModel, :currentSort=>{ :order=>order, :column => column}}
   end
+
+  def set_task_grouping_preference
+    current_user.preference_attributes = [ [ 'task_grouping', params[:id] ] ]
+    render :nothing => true
+  end
+  
 private
   def protect_admin_area
     unless current_user.admin? or current_user.edit_clients?
