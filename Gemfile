@@ -7,7 +7,7 @@ gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_wi
 
 source 'http://rubygems.org'
 gem 'daemons', '1.1.0'
-gem 'will_paginate', '2.3.14'
+gem 'will_paginate', "~> 3.0"
 gem 'icalendar', :git => 'git://github.com/yoon/icalendar.git'
 gem 'tzinfo'
 gem 'RedCloth', '4.2.3'
