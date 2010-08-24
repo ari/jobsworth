@@ -27,6 +27,10 @@ class UsersController < ApplicationController
     @user.date_format = "%d/%m/%Y"
     @user.time_format = "%H:%M"
 
+    if params[:user][:admin].to_i <= current_user.admin
+      @user.admin=params[:user][:admin]
+    end
+
     if @user.save
 
       if params[:copy_user].to_i > 0
@@ -44,7 +48,7 @@ class UsersController < ApplicationController
         begin
           Signup::deliver_account_created(@user, current_user, params['welcome_message'])
         rescue
-          flash['notice'] += "<br/>" + _("Error sending creation email. Account still created.")
+          flash['notice'] += ("<br/>" + _("Error sending creation email. Account still created.")).html_safe
         end
       end
 
@@ -61,8 +65,8 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
 
-    if params[:user][:admin].to_i > current_user.admin
-      params[:user][:admin] = current_user.admin
+    if params[:user][:admin].to_i <= current_user.admin
+      @user.admin=params[:user][:admin]
     end
 
     if @user.update_attributes(params[:user])
@@ -84,11 +88,12 @@ class UsersController < ApplicationController
 
   def update_preferences
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    if @user.update_attributes(params[:user])
+    if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
-      render :action => 'edit'
+      @user=current_user
+      render :action => 'edit_preferences'
     end
   end
 
@@ -136,24 +141,14 @@ class UsersController < ApplicationController
       redirect_from_last
       return
     end
-    filename = params['user']['tmp_file'].original_filename
     @user = User.find(params[:id],  :conditions => ["company_id = ?", current_user.company_id])
 
     if @user.avatar?
-      File.delete(@user.avatar_path) rescue begin
-                                                flash['notice'] = _("Permission denied while deleting old avatar.")
-                                                redirect_to :action => 'edit_preferences'
-                                                return
-                                              end
-
-    end
-
-    if !File.directory?(@user.path)
-      Dir.mkdir(@user.path, 0755) rescue begin
-                                                flash['notice'] = _('Unable to create storage directory.')
-                                                redirect_to :action => 'edit_preferences'
-                                                return
-                                              end
+      @user.avatar.destroy rescue begin
+                                    flash['notice'] = _("Permission denied while deleting old avatar.")
+                                    redirect_to :action => 'edit_preferences'
+                                    return
+                                  end
     end
 
     unless params['user']['tmp_file'].size > 0
@@ -162,70 +157,20 @@ class UsersController < ApplicationController
       return
     end
 
-    File.open(@user.avatar_path, "wb", 0755) { |f| f.write( params['user']['tmp_file'].read ) } rescue begin
+    @user.avatar=params['user']['tmp_file']
+    @user.save! rescue begin
                                                                                                                flash['notice'] = _("Permission denied while saving file.")
                                                                                                                redirect_to :action => 'edit_preferences'
                                                                                                                return
                                                                                                              end
-
-
-    if( File.size?(@user.avatar_path).to_i > 0 )
-      image = Magick::Image.read( @user.avatar_path ).first
-      image.format = 'JPEG'
-
-      if image.columns > image.rows
-        scale = 25.0 / image.columns
-        large_scale = 50.0 / image.columns
-      else
-        scale = 25.0 / image.rows
-        large_scale = 50.0 / image.rows
-      end
-
-      if image.rows * scale > 25.0
-        scale = 25.0 / image.rows
-        large_scale = 50.0 / image.rows
-      end
-
-      large = image.scale(large_scale)
-      small = image.scale(scale)
-
-      begin
-        File.open(@user.avatar_path, "wb", 0777) { |f| f.write( small.to_blob ) }
-        File.open(@user.avatar_large_path, "wb", 0777) { |f| f.write( large.to_blob ) }
-      rescue
-        image = nil
-        large = nil
-        small = nil
-        GC.start
-
-        flash['notice'] = _("Permission denied while saving resized file.")
-        redirect_to :action => 'edit_preferences'
-        return
-      end
-      image = nil
-      large = nil
-      small = nil
-      GC.start
-    else
-      flash['notice'] = _('Empty file.')
-      begin
-        File.delete(@user.avatar_path)
-        File.delete(@user.avatar_large_path)
-      rescue
-      end
-      redirect_from_last
-      return
-    end
-    GC.start
     flash['notice'] = _('Avatar successfully uploaded.')
     redirect_from_last
   end
 
   def delete_avatar
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    unless @user.nil?
-      File.delete(@user.avatar_path) rescue begin end
-      File.delete(@user.avatar_large_path) rescue begin end
+    unless @user.nil? && !@user.avatar?
+      @user.avatar.destroy #rescue begin end
     end
     redirect_from_last
   end
@@ -244,14 +189,13 @@ class UsersController < ApplicationController
   end
 
   def auto_complete_for_project_name
-    text = params[:project]
-    text = text[:name] if text
-
-    @projects = []
+    text = params[:term]
     if !text.blank?
       conds = [ "lower(name) like ?", "%#{ text }%" ]
       @projects = current_user.company.projects.find(:all, :conditions => conds)
     end
+    render :json=> @projects.collect{|project| {:value => project.name, :id=> project.id} }.to_json
+
   end
 
   def project
@@ -263,6 +207,7 @@ class UsersController < ApplicationController
                           :project => project).save
 
     render(:partial => "project", :locals => { :project => project, :user_edit => true })
+
   end
 
   def set_preference
@@ -275,7 +220,6 @@ class UsersController < ApplicationController
   end
 
   def set_tasklistcols
-    colModel = JSON.parse(params[:model]) rescue nil
     current_user.preference_attributes = [ [ 'tasklistcols', params[:model] ] ]
     render :nothing => true
   end
@@ -311,9 +255,15 @@ class UsersController < ApplicationController
     column = session[:jqgrid_sort_column].nil? ?  'id' : session[:jqgrid_sort_column]
     render :json => { :colModel=>colModel, :currentSort=>{ :order=>order, :column => column}}
   end
+
+  def set_task_grouping_preference
+    current_user.preference_attributes = [ [ 'task_grouping', params[:id] ] ]
+    render :nothing => true
+  end
+  
 private
   def protect_admin_area
-    if current_user.admin == 0
+    unless current_user.admin? or current_user.edit_clients?
       flash['notice'] = _("Only admins can edit users.")
       redirect_to :action => 'edit_preferences'
       return false

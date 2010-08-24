@@ -6,8 +6,8 @@ class ScriptsController < ApplicationController
       return
     end
 
-    cmd = "#{ RAILS_ROOT }/lib/scripts/#{ params[:script] }"
-    cmd = "#{ RAILS_ROOT }/script/runner -e #{ RAILS_ENV } #{ cmd }"
+    cmd = "#{Rails.root}/lib/scripts/#{ params[:script] }"
+    cmd = "#{Rails.root}/script/runner -e #{ RAILS_ENV } #{ cmd }"
     
     
     result = ""

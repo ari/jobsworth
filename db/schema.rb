@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100513072519) do
+ActiveRecord::Schema.define(:version => 20100819092939) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -87,14 +87,18 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
   add_index "custom_attributes", ["company_id", "attributable_type"], :name => "index_custom_attributes_on_company_id_and_attributable_type"
 
   create_table "customers", :force => true do |t|
-    t.integer  "company_id",                   :default => 0,    :null => false
-    t.string   "name",          :limit => 200, :default => "",   :null => false
-    t.string   "contact_email", :limit => 200
-    t.string   "contact_name",  :limit => 200
+    t.integer  "company_id",                       :default => 0,    :null => false
+    t.string   "name",              :limit => 200, :default => "",   :null => false
+    t.string   "contact_email",     :limit => 200
+    t.string   "contact_name",      :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "css"
-    t.boolean  "active",                       :default => true
+    t.boolean  "active",                           :default => true
+    t.string   "logo_file_name"
+    t.string   "logo_content_type"
+    t.integer  "logo_file_size"
+    t.datetime "logo_updated_at"
   end
 
   add_index "customers", ["company_id", "name"], :name => "customers_company_id_index"
@@ -178,6 +182,7 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
     t.string   "word"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "reversed",       :default => false
   end
 
   add_index "keywords", ["task_filter_id"], :name => "fk_keywords_task_filter_id"
@@ -249,16 +254,6 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
     t.boolean  "portal",     :default => true
   end
 
-  create_table "notifications", :force => true do |t|
-    t.integer "task_id"
-    t.integer "user_id"
-    t.boolean "unread",               :default => false
-    t.boolean "notified_last_change", :default => true
-  end
-
-  add_index "notifications", ["task_id"], :name => "index_notifications_on_task_id"
-  add_index "notifications", ["user_id"], :name => "index_notifications_on_user_id"
-
   create_table "organizational_units", :force => true do |t|
     t.integer  "customer_id"
     t.datetime "created_at"
@@ -270,15 +265,16 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
   add_index "organizational_units", ["customer_id"], :name => "fk_organizational_units_customer_id"
 
   create_table "pages", :force => true do |t|
-    t.string   "name",         :limit => 200, :default => "", :null => false
+    t.string   "name",         :limit => 200, :default => "",    :null => false
     t.text     "body"
-    t.integer  "company_id",                  :default => 0,  :null => false
-    t.integer  "user_id",                     :default => 0,  :null => false
+    t.integer  "company_id",                  :default => 0,     :null => false
+    t.integer  "user_id",                     :default => 0,     :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "position"
     t.integer  "notable_id"
     t.string   "notable_type"
+    t.boolean  "snippet",                     :default => false
   end
 
   add_index "pages", ["company_id"], :name => "pages_company_id_index"
@@ -566,6 +562,7 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "qualifiable_column"
+    t.boolean  "reversed",           :default => false
   end
 
   add_index "task_filter_qualifiers", ["task_filter_id"], :name => "fk_task_filter_qualifiers_task_filter_id"
@@ -583,16 +580,6 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
 
   add_index "task_filters", ["company_id"], :name => "fk_task_filters_company_id"
   add_index "task_filters", ["user_id"], :name => "fk_task_filters_user_id"
-
-  create_table "task_owners", :force => true do |t|
-    t.integer "user_id"
-    t.integer "task_id"
-    t.boolean "unread",               :default => false
-    t.boolean "notified_last_change", :default => true
-  end
-
-  add_index "task_owners", ["task_id"], :name => "task_owners_task_id_index"
-  add_index "task_owners", ["user_id"], :name => "task_owners_user_id_index"
 
   create_table "task_property_values", :force => true do |t|
     t.integer "task_id"
@@ -761,6 +748,10 @@ ActiveRecord::Schema.define(:version => 20100513072519) do
     t.boolean  "can_approve_work_logs"
     t.boolean  "auto_add_to_customer_tasks"
     t.integer  "access_level_id",                           :default => 1
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["autologin"], :name => "index_users_on_autologin"

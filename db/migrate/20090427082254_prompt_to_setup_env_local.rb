@@ -1,7 +1,7 @@
 class PromptToSetupEnvLocal < ActiveRecord::Migration
   def self.up
-    file = "#{ RAILS_ROOT }/config/environment.local.rb"
-    sample = "#{ RAILS_ROOT }/config/environment.local.example"
+    file = "#{Rails.root}/config/environment.local.rb"
+    sample = "#{Rails.root}/config/environment.local.example"
 
     if !File.exists?(file)
       File.copy(sample, file)

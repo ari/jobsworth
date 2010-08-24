@@ -3,7 +3,7 @@ class TimelineController < ApplicationController
 
   def list
     @filter_params = {}
-    [:filter_user, :filter_status, :filter_project, :filter_date].each do |fp|
+    [:filter_user, :filter_status, :filter_project, :filter_date, :filter_task].each do |fp|
       @filter_params[fp] = params[fp] unless params[fp].blank?
     end
 

@@ -9,27 +9,27 @@ class ClientsController < ApplicationController
   end
 
   def list
-	if request.post?
-	    session[:client_name_filter] = params[:search_text].strip
+  if request.post?
+      session[:client_name_filter] = params[:search_text].strip
     end
-    
+
     if !session[:client_name_filter].blank?
         filter = []
-	    filter << session[:client_name_filter]
-	    @customers = Customer.search(current_user.company, filter)
-	    @users = User.search(current_user.company, filter)
-	    # add any missing customers to the list
-	    @users.each { |u| @customers << u.customer }
+      filter << session[:client_name_filter]
+      @customers = Customer.search(current_user.company, filter)
+      @users = User.search(current_user.company, filter)
+      # add any missing customers to the list
+      @users.each { |u| @customers << u.customer }
 
-		@customers = @customers.flatten.uniq.compact
-		@customers = @customers.sort_by { |c| c.name.downcase }
-		@paginate = false
-	else
-		@customers = Customer.paginate(:order => "customers.name", 
-		                             :conditions => ["customers.company_id = ?", current_user.company_id], 
-		                             :page => params[:page],
-		                             :per_page => 100)
-		@paginate = true
+    @customers = @customers.flatten.uniq.compact
+    @customers = @customers.sort_by { |c| c.name.downcase }
+    @paginate = false
+  else
+    @customers = Customer.paginate(:order => "customers.name",
+                                 :conditions => ["customers.company_id = ?", current_user.company_id],
+                                 :page => params[:page],
+                                 :per_page => 100)
+    @paginate = true
     end
   end
 
@@ -86,87 +86,41 @@ class ClientsController < ApplicationController
       redirect_from_last
       return
     end
-    filename = params['customer']['tmp_file'].original_filename
-    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", current_user.company_id])
-
-    if @customer.logo?
-      File.delete(@customer.logo_path) rescue begin
-                                                flash['notice'] = _("Permission denied while deleting old logo.")
-                                                redirect_to :action => 'list'
-                                                return
-                                              end
-
-    end
-
-    if !File.directory?(@customer.path)
-      Dir.mkdir(@customer.path, 0755) rescue begin
-                                                flash['notice'] = _('Unable to create storage directory.')
-                                                redirect_to :action => 'list'
-                                                return
-                                              end
-    end
-
     unless params['customer']['tmp_file'].size > 0
       flash['notice'] = _('Empty file uploaded.')
       redirect_from_last
       return
     end
 
-    File.open(@customer.logo_path, "wb", 0755) { |f| f.write( params['customer']['tmp_file'].read ) } rescue begin
-                                                                                                               flash['notice'] = _("Permission denied while saving file.")
-                                                                                                               redirect_to :action => 'list'
-                                                                                                               return
-                                                                                                             end
+    @customer = Customer.find(params['customer']['id'],  :conditions => ["company_id = ?", current_user.company_id])
 
+    if @customer.logo?
+      @customer.logo.destroy rescue begin
+                                                flash['notice'] = _("Permission denied while deleting old logo.")
+                                                redirect_to :action => 'list'
+                                                return
+                                              end
 
-    if( File.size?(@customer.logo_path).to_i > 0 )
-      image = Magick::Image.read( @customer.logo_path ).first
-
-      if image.columns > 250 or image.rows > 50
-
-        if image.columns > image.rows
-          scale = 250.0 / image.columns
-        else
-          scale = 50.0 / image.rows
-        end
-
-        if image.rows * scale > 50.0
-          scale = 50.0 / image.rows
-        end
-
-        image.scale!(scale)
-
-        File.open(@customer.logo_path, "wb", 0777) { |f| f.write( image.to_blob ) } rescue begin
-                                                                                             flash['notice'] = _("Permission denied while saving resized file.")
-                                                                                             redirect_to :action => 'list'
-                                                                                             return
-                                                                                           end
-
-      end
-    else
-      flash['notice'] = _('Empty file.')
-      File.delete(@customer.logo_path) rescue begin end
-      if params[:company_settings]
-         redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
-      else
-         redirect_from_last
-      end
-      return
     end
-    GC.start
+    @customer.logo= params['customer']['tmp_file']
+    @customer.save!#  rescue begin
+                  #    flash['notice'] = _("Permission denied while saving resized file.")
+                  #    redirect_to :action => 'list'
+                  #    return
+                  #  end
 
     flash['notice'] = _('Logo successfully uploaded.')
     if params[:company_settings]
        redirect_to :controller => 'companies', :action => 'edit', :id => current_user.company
     else
        redirect_from_last
-    end 
+    end
   end
 
   def delete_logo
     @customer = Customer.find(params[:id], :conditions => ["company_id = ?", current_user.company_id] )
-    if !@customer.nil?
-      File.delete(@customer.logo_path) rescue begin end
+    if !@customer.nil? && customer.logo?
+      @cusomer.logo.destroy rescue begin end
     end
     redirect_from_last
   end
@@ -177,7 +131,7 @@ class ClientsController < ApplicationController
     client = company.customers.find(params[:id])
 
     if client.logo?
-      # N.B. Modern browsers don't seem to mind us not sending the mime type here, 
+      # N.B. Modern browsers don't seem to mind us not sending the mime type here,
       # so let's save an expensive call to rmagick and just send through the file
       # Tested with FF 3.5, Opera 10, Safari 4.0, IE7, Chrome 2.0
       send_file(client.logo_path, :filename => "logo", :disposition => "inline")

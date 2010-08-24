@@ -21,7 +21,7 @@ class ScmChangeset < ActiveRecord::Base
     end
     num= changeset.message.scan(/#(\d+)/).first
     unless (num.nil? or num.first.blank?)
-      changeset.task= changeset.scm_project.project.tasks.find_by_task_num(num.first)
+      changeset.task= changeset.scm_project.company.tasks.find_by_task_num(num.first)
     end
   end
 
@@ -52,9 +52,9 @@ class ScmChangeset < ActiveRecord::Base
       changeset= { }
       changeset[:changeset_rev]= commit['id']
       changeset[:scm_files_attributes]=[]
-      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
-      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
-      changeset[:scm_files_attributes] << commit['deleted'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['deleted'].nil?
+      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>'M' } } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>'A' } }       unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['deleted'].collect{ |file| { :path=>file, :state=>'D' } }   unless commit['deleted'].nil?
       changeset[:scm_files_attributes].flatten!
       changeset[:author] = commit['author']['name']
       changeset[:message] = commit['message']
@@ -69,9 +69,9 @@ class ScmChangeset < ActiveRecord::Base
       changeset= { }
       changeset[:changeset_rev]= commit['revision']
       changeset[:scm_files_attributes]=[]
-      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>:modified } } unless commit['modified'].nil?
-      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>:added } }       unless commit['added'].nil?
-      changeset[:scm_files_attributes] << commit['removed'].collect{ |file| { :path=>file, :state=>:deleted } }   unless commit['removed'].nil?
+      changeset[:scm_files_attributes] << commit['modified'].collect{ |file| { :path=>file, :state=>'M' } } unless commit['modified'].nil?
+      changeset[:scm_files_attributes] << commit['added'].collect{ |file| { :path=>file, :state=>'A' } }       unless commit['added'].nil?
+      changeset[:scm_files_attributes] << commit['removed'].collect{ |file| { :path=>file, :state=>'D' } }   unless commit['removed'].nil?
       changeset[:scm_files_attributes].flatten!
       changeset[:author] = commit['author']
       changeset[:message] = commit['message']
@@ -89,11 +89,23 @@ class ScmChangeset < ActiveRecord::Base
       when 'google', 'json' then google_parser(params[:payload])
       else return false
     end.collect do |changeset|
-      scm_changeset=ScmChangeset.new(changeset)
-      scm_changeset.scm_project=scm_project
+      scm_changeset=ScmChangeset.find_or_create_by_scm_project_id_and_changeset_rev(scm_project.id, changeset[:changeset_rev])
+      scm_changeset.attributes=changeset
       return false unless scm_changeset.save
       scm_changeset
     end
+  end
+
+  def ScmChangeset.for_list(params)
+    conditions={ }
+    unless params[:scm_project_id].blank?
+      conditions[:scm_project_id]= params[:scm_project_id]
+    end
+    unless params[:task_id].blank?
+      conditions[:task_id]=params[:task_id]
+    end
+    return nil if conditions.empty?
+    ScmChangeset.all(:conditions=>conditions)
   end
 end
 

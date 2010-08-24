@@ -1,14 +1,16 @@
 <% content_for(:side_panel) do %>
-	<div id="tags" class="section">
-		<div class="page_header">
-			<%=_ 'Tags' %>
-			<% if current_user.admin? -%>
-			  <%= link_to _("Edit"), tags_path %>
-			<% end -%>
-		</div>
-	
-		<div class="cloud">
-			<%= tag_links %>
-		</div>
-	</div>
+  <% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
+        <div id="tags" class="section">
+                <div class="page_header">
+                        <%=_ 'Tags' %>
+                        <% if current_user.admin? -%>
+                          <%= link_to _("Edit"), tags_path %>
+                        <% end -%>
+                </div>
+
+                <div class="cloud">
+                        <%= tag_links %>
+                </div>
+        </div>
+  <% end -%>
 <% end %>

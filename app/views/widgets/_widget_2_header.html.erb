@@ -1,4 +1,0 @@
-<span id="name-<%=@widget.dom_id%>"><%= @widget.name %></span>
-&nbsp;<%= link_to( image_tag("feed.png", :border => 0, :class => "tooltip", :title => _("Subscribe to the recent activities RSS feed")), :controller => 'feeds', :action => 'rss', :id => current_user.uuid )%>
-<%= link_to( image_tag("calendar.png", :border => 0, :class => "tooltip", :title => (_("Subscribe to the iCal feed for your projects.") + "<br/><br/>" + _("For a personal feed, replace <b>ical_all</b> with <b>ical</b> in the URL.") + "<br/>" + _("You can also append <b>?mode=tasks</b> for only tasks, <b>?mode=logs</b> for only work logs, <br/>or <b>?mode=milestones</b> for just milestones."))), :controller => 'feeds', :action => 'ical_all', :id => current_user.uuid )%>
-

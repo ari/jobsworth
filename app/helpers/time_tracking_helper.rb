@@ -7,11 +7,11 @@ module TimeTrackingHelper
 
     if @current_sheet.paused?
       image = image_tag("time_resume.png", 
-                        :title => _("Resume working on <b>%s</b>.", task.name), 
+                        :title => _("Resume working on <b>%s</b>.", task.name).html_safe,
                         :class => "tooltip")
     else
       image = image_tag("time_pause.png", 
-                        :title => _("Pause working on <b>%s</b>.", task.name), 
+                        :title => _("Pause working on <b>%s</b>.", task.name).html_safe,
                         :class => "tooltip")
     end
 
@@ -25,11 +25,11 @@ module TimeTrackingHelper
 
     if @current_sheet and @current_sheet.task == task
       image = image_tag("time_add.png", :class => "tooltip work_icon", 
-                        :title => _("Stop working on <b>%s</b>.", task.name))
+                        :title => _("Stop working on <b>%s</b>.", task.name).html_safe)
       url = stop_work_path
     else
       image = image_tag("time.png", :class => "tooltip work_icon", 
-                        :title => _("Start working on <b>%s</b>.", task.name))
+                        :title => _("Start working on <b>%s</b>.", task.name).html_safe)
       url = start_work_path(:task_num => task.task_num)
     end
 
@@ -39,7 +39,7 @@ module TimeTrackingHelper
   # Returns a link to add work to the given task
   def add_work_link(task, text = nil)
     text ||= image_tag("add.png", :class => "tooltip work_icon", 
-                       :title => _("Add earlier work to <b>%s</b>.", task.name))
+                       :title => _("Add earlier work to <b>%s</b>.", task.name).html_safe)
 
     url = new_work_log_path(:task_id => task.task_num, 
                             :work_log => { :log_type => EventLog::TASK_WORK_ADDED })
@@ -50,7 +50,7 @@ module TimeTrackingHelper
   def cancel_work_link(task)
     if @current_sheet and @current_sheet.task == task
       image = image_tag("time_delete.png", :class => "tooltip work_icon", 
-                        :title => _("Cancel working on <b>%s</b>.", task.name))
+                        :title => _("Cancel working on <b>%s</b>.", task.name).html_safe)
 
       return link_to(image, cancel_work_path, :confirm => "Really abort work?")
     end

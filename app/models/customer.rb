@@ -2,7 +2,7 @@
 # ClockingIT.
 
 class Customer < ActiveRecord::Base
-  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy, 
+  has_many(:custom_attribute_values, :as => :attributable, :dependent => :destroy,
            # set validate = false because validate method is over-ridden and does that for us
            :validate => false)
   include CustomAttributeMethods
@@ -18,21 +18,18 @@ class Customer < ActiveRecord::Base
   has_many :task_customers, :dependent => :destroy
   has_many :tasks, :through => :task_customers
 
-  has_many      :organizational_units 
+  has_many      :organizational_units
 
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(RAILS_ROOT, 'store', 'logos') + "/logo_:id_:style.:extension"
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 
   validates_uniqueness_of       :name, :scope => 'company_id'
-  
+
   validates_presence_of         :company_id
 
-  after_destroy { |r|
-    File.delete(r.logo_path) rescue begin end
-  }
-
   ###
-  # Searches the customers for company and returns 
+  # Searches the customers for company and returns
   # any that have names or ids that match at least one of
   # the given strings
   ###
@@ -49,16 +46,8 @@ class Customer < ActiveRecord::Base
     self == company.internal_customer
   end
 
-  def path
-    File.join("#{RAILS_ROOT}", 'store', 'logos', self.company_id.to_s)
-  end
-
-  def store_name
-    "logo_#{self.id}"
-  end
-
   def logo_path
-    File.join(self.path, self.store_name)
+    logo.path
   end
 
   def full_name
@@ -70,7 +59,7 @@ class Customer < ActiveRecord::Base
   end
 
   def logo?
-    File.exist?(self.logo_path)
+    !self.logo_path.nil? && File.exist?(self.logo_path)
   end
 
   def to_s

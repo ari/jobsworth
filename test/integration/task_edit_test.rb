@@ -10,26 +10,24 @@ class TaskEditTest < ActionController::IntegrationTest
       setup do
         @project = project_with_some_tasks(@user)
         @project2 = project_with_some_tasks(@user)
-        
+
         2.times { @project.milestones.make(:project => @project, :user => @user,
                                  :company => @project.company) }
       end
 
       context "on the task edit screen" do
-        setup do 
+        setup do
           @task = @project.tasks.first
-          visit "/"
-          click_link "tasks"
-          click_link @task.name
+          visit "/tasks/edit/#{@task.task_num}"
         end
 
         should "be able to edit information" do
           fill_in "task_name", :with => "a new title"
           fill_in "tags", :with => "t1, t2"
           fill_in "task_description", :with => "a new description"
-          
+
           click_button "save"
-          
+
           @task.reload
           assert_equal "a new title", @task.name
           assert_equal "a new description", @task.description
@@ -51,9 +49,9 @@ class TaskEditTest < ActionController::IntegrationTest
         end
 
         should "be able to set the status" do
-          select "Set in Progress", :from => "status"
+          select "Closed", :from => "task_status"
           click_button "save"
-          assert_equal "In Progress", @task.reload.status_type
+          assert_equal "Closed", @task.reload.status_type
         end
 
         should "be able to add comments" do
@@ -106,7 +104,7 @@ class TaskEditTest < ActionController::IntegrationTest
           fill_in "work_log_duration", :with => "5m"
           fill_in "comment", :with => "some work log notes"
           click_button "save"
-          
+
           log = @task.reload.work_logs.detect { |wl| wl.duration == 300 }
           assert_not_nil log
           assert_equal 300, log.duration

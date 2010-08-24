@@ -9,6 +9,7 @@ Sham.description  { Faker::Lorem.paragraph }
 Sham.comment  { Faker::Lorem.paragraph }
 Sham.password { Faker::Lorem.sentence(1) }
 Sham.location { Faker::Internet.domain_name}
+
 Company.blueprint do
   name
   subdomain { "subdomain #{ name }" }
@@ -26,7 +27,7 @@ end
 
 User.blueprint do
   company
-  customer
+  customer { company.internal_customer }
   name
   password
   email
@@ -141,7 +142,6 @@ end
 
 ScmProject.blueprint do
   company
-  project { Project.make(:company=>company)}
   scm_type { ['git', 'svn', 'cvs', 'mercurial', 'bazar'][rand(4)]}
   location
 end
@@ -150,6 +150,7 @@ ScmChangeset.blueprint do
   scm_project
   message { Sham.comment }
   author  { Sham.name }
-  commit_date { Time.now -3.days }
+  commit_date { Time.now - 3.days }
   changeset_num { rand(1000000) }
+  task
 end

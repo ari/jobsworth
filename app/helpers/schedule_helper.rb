@@ -40,7 +40,7 @@ module ScheduleHelper
     end
 
     cal = <<EOF
-<table id="schedule" class="#{options[:table_class]}" cellpadding="0" cellspacing="0" border="0" >
+<table id="schedule" class="#{options[:table_class]}" cellpadding="0" cellspacing="0">
   <thead>
    <tr><td width="100%" colspan="7"><div align="center">#{ link_to '<<', :controller => 'schedule', :action => 'list', :year => prev_year, :month => prev_month} #{_(Date::MONTHNAMES[options[:month]])} #{options[:year]} #{link_to '>>', :controller => 'schedule', :action => 'list', :year => next_year, :month => next_month}</div></td></tr>
 

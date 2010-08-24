@@ -1,3 +1,4 @@
+
 require File.dirname(__FILE__) + '/../test_helper'
 
 class UserTest < ActiveRecord::TestCase
@@ -31,10 +32,10 @@ class UserTest < ActiveRecord::TestCase
     assert_not_nil u.uuid
     assert_not_nil u.autologin
 
-    assert u.uuid.length == 32
-    assert u.autologin.length == 32
+    assert_equal u.uuid.length, 32
+    assert_equal u.autologin.length, 32
 
-    assert u.widgets.size == 5
+    assert_equal u.widgets.size, 4
   end
 
   def test_validate_name
@@ -68,18 +69,6 @@ class UserTest < ActiveRecord::TestCase
 
   end
 
-  def test_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}"), @user.path
-  end
-
-  def test_avatar_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}"), @user.avatar_path
-  end
-
-  def test_avatar_large_path
-    assert_equal File.join("#{RAILS_ROOT}", 'store', 'avatars', "#{@user.company_id}", "#{@user.id}_large"), @user.avatar_large_path
-  end
-
   def test_generate_uuid
     user = User.new
     user.generate_uuid
@@ -92,10 +81,7 @@ class UserTest < ActiveRecord::TestCase
   end
 
   def test_avatar_url
-    if @user.avatar?
-      assert_equal "/users/avatar/1?large=1", @user.avatar_url
-      assert_equal "/users/avatar/1", @user.avatar_url(25)
-    else
+    unless @user.avatar?
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=32", @user.avatar_url
       assert_equal "http://www.gravatar.com/avatar.php?gravatar_id=7fe6da9c206af10497cdc35d63cf87a3&rating=PG&size=25", @user.avatar_url(25)
     end

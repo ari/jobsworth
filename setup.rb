@@ -221,6 +221,7 @@ if @company.save
 
   @company.customers << @customer
   puts "  Creating initial user..."
+  @user.customer=@customer
   @company.users << @user
 else
   c = Company.find_by_subdomain(subdomain)

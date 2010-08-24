@@ -84,6 +84,12 @@ class EventLog < ActiveRecord::Base
       filter = " AND work_logs.project_id = #{params[:filter_project].to_i}" + filter
     end
 
+    if params[:filter_task].to_i > 0
+      filter << " AND tasks.status = #{Task::OPEN}" if params[:filter_task] == "1"
+      filter << " AND tasks.status = #{Task::OPEN} AND task_users.type = 'TaskOwner'" if params[:filter_task] == "2"
+      filter << " AND task_users.unread = 1" if params[:filter_task] == "3"
+    end
+
     if event_log_types.include?(params[:filter_status].to_i)
       filter.gsub!(/work_logs/, 'event_logs')
       filter.gsub!(/started_at/, 'created_at')
@@ -103,7 +109,7 @@ class EventLog < ActiveRecord::Base
       end
 
     else
-      @logs = WorkLog.accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["? #{filter}", true], :include => [ {:task => [ :milestone, :tags, :dependencies, :dependants ]}], :per_page => 100, :page => params[:page] )
+      @logs = WorkLog.accessed_by(current_user).paginate(:all, :order => "work_logs.started_at desc,work_logs.id desc", :conditions => ["? #{filter}", true], :include => [ {:task => [ :milestone, :tags, :dependencies, :dependants, :task_users ]}], :per_page => 100, :page => params[:page] )
     end
     return @logs, @work_logs
   end

@@ -76,7 +76,7 @@ describe ScmChangeset do
       :message => "Initial import",
       :scm_project=> @scm_project
     }
-    @user = User.make(:company=>@scm_project.company, :projects=>[@scm_project.project])
+    @user = User.make(:company=>@scm_project.company)
   end
 
   it "should create a new instance given valid attributes" do
@@ -94,9 +94,9 @@ describe ScmChangeset do
     @valid_attributes[:author]= @user.name
     ScmChangeset.create!(@valid_attributes).user.should == @user
   end
-  context "message have task num in #(\d) format and tasks with this num exist in this project" do
+  context "message have task num in #(\d) format and tasks with this num exist in this company" do
     before(:each) do
-      @task= Task.make(:company=>@scm_project.company, :project => @scm_project.project)
+      @task= Task.make(:company=>@scm_project.company)
       @valid_attributes[:message]= "Commit for task ##{@task.task_num}"
       @changeset= ScmChangeset.create!(@valid_attributes)
     end
@@ -122,19 +122,19 @@ describe ScmChangeset do
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
+          @payload['commits'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
+          @payload['commits'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map deleted array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
+          @payload['commits'][index]['deleted'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
         end
       end
 
@@ -166,19 +166,19 @@ describe ScmChangeset do
 
       it "should map modified array to array of scm_files_attributes with state modified" do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:modified})}
+          @payload['revisions'][index]['modified'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'M'})}
         end
       end
 
       it "should map added array to array of scm_files_attributes with state added"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:added})}
+          @payload['revisions'][index]['added'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'A'})}
         end
       end
 
       it "should map removed array to array of scm_files_attributes with status deleted"do
         @changesets.each_with_index do |changeset, index|
-          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>:deleted})}
+          @payload['revisions'][index]['removed'].each { |file| changeset[:scm_files_attributes].should include({ :path=>file, :state=>'D'})}
         end
       end
 
@@ -221,6 +221,37 @@ describe ScmChangeset do
     it "should return false if parser for this provider not exist" do
       @params[:provider]="not exist"
       ScmChangeset.create_from_web_hook(@params).should == false
+    end
+    it "should rewrite changesets by (scm_project_id, changeset_rev)" do
+      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      changeset=ScmChangeset.last
+      message=changeset.message
+      changeset.message="changed"
+      changeset.save!
+      ScmChangeset.create_from_web_hook(@params).should have(2).changesets
+      changeset.reload
+      changeset.message.should == message
+    end
+  end
+  describe ".for_list method" do
+    before(:each) do
+      @task=Task.make
+      2.times{ ScmChangeset.make(:task=>@task) }
+      2.times{ ScmChangeset.make(:scm_project=>@scm_project) }
+      2.times{ ScmChangeset.make }
+    end
+    it "should find all changesets by params[:task_id]" do
+      changesets = ScmChangeset.for_list(:task_id=>@task.id)
+      changesets.should have(2).changesets
+      changesets.each { |changeset| changeset.task.should == @task}
+    end
+    it "should find all changesets by params[:scm_project_id" do
+      changesets = ScmChangeset.for_list(:scm_project_id => @scm_project.id)
+      changesets.should have(2).changesets
+      changesets.each { |changeset| changeset.scm_project.should == @scm_project }
+    end
+    it "should return nil if not preseted params[:task_id] nor params[:scm_project_id]" do
+      ScmChangeset.for_list(:parameter => 1).should be_nil
     end
   end
 end

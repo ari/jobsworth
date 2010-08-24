@@ -52,10 +52,10 @@
 <p style="margin-top:0;"><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>
 <% end %>
 <% if @topics.size > 10 %>
-<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></p><br/>
+<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + _('Previous') }) %></p><br/>
 <% end %>
 
-<table border="0" cellspacing="0" cellpadding="0" class="wide topics">
+<table cellspacing="0" cellpadding="0" class="wide topics">
 <tr>
   <th class="la" colspan="2"><%=_ 'Topic' %></th>
   <th width="1%"><%=_ 'Posts' %></th>
@@ -81,10 +81,10 @@
     <% end %>
   </td>
   <td class="c2">
-    <%= _("Sticky")+": <strong>" if topic.sticky? %>
+    <%= (_("Sticky")+": <strong>").html_safe if topic.sticky? %>
     <%= topic_title_link (topic), :class => "entry-title", :rel => "bookmark" %>
     <%#= link_to h(topic.title), topic_path(@forum, topic), :class => "entry-title", :rel => "bookmark" %>
-    <%= "</strong>" if topic.sticky? %>
+    <%= "</strong>".html_safe if topic.sticky? %>
     <% if topic.paged? -%>
     <small><%= link_to _('last'), topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page) %></small>
     <% end -%>
@@ -93,7 +93,7 @@
   <td class="ca inv stat"><%= number_with_delimiter(topic.views) %></td>
   <td class="lp">
     <abbr class="updated" title="<%= topic.replied_at.xmlschema %>"><%= time_ago_in_words(topic.replied_at) %></abbr>
-    <%= "#{_('by')} <span class=\"author\"><strong class=\"fn\">#{h(topic.replied_by_user.display_name)}</strong></span>" %>
+    <%= ("#{_('by')} <span class=\"author\"><strong class=\"fn\">").html_safe + h(topic.replied_by_user.display_name) +"</strong></span>".html_safe %>
     <span><%= link_to _('View'), topic_path(:forum_id => @forum, :id => topic, :page => topic.last_page, :anchor => "posts-#{topic.last_post_id}") %></span>
   </td>
 </tr>
@@ -104,7 +104,7 @@
 <p style="float:right;"><%= link_to _('Next page'), { :page => @topic_pages.current.next }.merge(params.reject{|k,v| k=="page"})  %></p>
 <% end %>
 
-<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;', :prev_label => '&laquo; ' + _('Previous') }) %></p>
+<p><%= will_paginate(@topics, { :next_label => _('Next') + ' &raquo;'.html_safe, :prev_label => '&laquo; '.html_safe + _('Previous') }) %></p>
 
 <% if logged_in? %>
 <p><%= link_to _('New topic'), new_topic_path(@forum), :class => "utility" %></p>

@@ -3,8 +3,11 @@ class TaskFiltersController < ApplicationController
   layout "popup", :only => "new"
 
   def search
-    @filter = params[:filter]
-    return if @filter.blank?
+    @filter = params[:term]
+    if @filter.blank?
+      render :nothing=>true
+      return
+    end
 
     @filter = @filter.downcase
     limit = 10
@@ -30,6 +33,58 @@ class TaskFiltersController < ApplicationController
     end
 
     @unread_only = @filter.index("unread")
+
+    array = []
+    (@to_list || []).each do |name, values|
+      if values and values.any?
+       values.each do |v|
+          array<< {:id =>  "task_filter[qualifiers_attributes][][qualifiable_id]",
+                   :idval => v.id,
+                   :type=> "task_filter[qualifiers_attributes][][qualifiable_type]", :typeval => v.class.name,
+                   :reversed => "task_filter[qualifiers_attributes][][reversed]",
+                   :reversedval=>false,
+                   :value => v.to_s,
+                   :category => name.to_s}
+        end
+      end
+    end
+
+    (@date_columns || []).each do |column, matches|
+          next if matches.empty?
+
+            matches.each do |m|
+              array << {:id => "task_filter[qualifiers_attributes][][qualifiable_id]",
+                        :idval => m.id,
+                        :type => "task_filter[qualifiers_attributes][][qualifiable_type]",
+                        :typeval => m.class.name,
+                        :col => "task_filter[qualifiers_attributes][][qualifiable_column]",
+                        :colval => column.to_s,
+                        :reversed => "task_filter[qualifiers_attributes][][reversed]",
+                        :reversedval=>false,
+                        :value => m.name.to_s,
+                        :category => column.to_s.gsub("at", "").humanize}
+          end
+    end
+
+    if !@filter.blank?
+
+          array << {:id => "task_filter[keywords_attributes][][word]",
+                    :idval=> @filter,
+                    :value => @filter,
+                    :reversed => "task_filter[keywords_attributes][][reversed]",
+                    :reversedval=>false,
+                    :category => "Keyword"}
+    end
+
+    if @unread_only
+
+         array << {:id => "task_filter[unread_only]",
+                   :idval => true,
+                   :value => "My unread tasks only",
+                   :category =>"Read Status"}
+    end
+
+    render :json => array.to_json
   end
 
   def new

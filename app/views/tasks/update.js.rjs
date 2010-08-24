@@ -1,0 +1,54 @@
+page.remove 'flash'
+if @task.valid?
+  
+  #update grid
+  @task.reload
+  customer = (@task.customers.first || @task.project.customer)
+  milestone_str = [ @task.project.name ]
+  milestone_str << @task.milestone.name if @task.milestone_id.to_i > 0
+  due = @task.due_date.to_time.to_i unless @task.due_date.nil?
+  time = @task.minutes_left.to_i
+  attrs = {}
+  current_user.company.properties.each do |prop| 
+    pv = @task.property_value(prop)
+    if pv && pv.icon_url.present?
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{prop.name.downcase}\"]').html('#{pv.to_html}');"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{prop.name.downcase}\"]').attr('title', '#{pv.value}');"
+    elsif pv
+      attrs.merge! prop.name.downcase => pv.to_html
+    end
+  end 
+  attrs.merge! "summary" => h(@task.name) if @changes['name']
+  attrs.merge! "client" => h(customer.name) if @changes['customer_id']
+  attrs.merge! "due" => due if @changes['due_at']
+  attrs.merge! "milestone" => milestone_str.join("/") if @changes['milestone_id']
+  attrs.merge! "time" => time if @changes['duration']
+  attrs.merge! "resolution" => @task.status_type if @changes['status']
+  attrs.merge! "assigned" => @task.owners.map{ |u| u.name }.join(", ")
+  attrs.each do |attr, val|
+    if attr == "due" || attr == "time"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').html(#{attr}TaskValue(#{eval(attr)}));"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', #{attr}TaskValue(#{eval(attr)}).replace(/<.*?>/g,\'\'));"
+    else
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').text('#{val}');"
+      page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
+    end
+  end
+  
+  page.replace_html 'taskform', :partial => "edit_form"
+  page << "jQuery('div.log_history').tabs();"
+  page << "jQuery('#comment').removeAttr('value');"
+  page << "jQuery('#errorExplanation').remove();"
+  page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
+  page.replace 'upload_container', :partial => "/tasks/upload_container"
+  page.replace "task_attachments", :partial => "/tasks/attachments"
+  page.insert_html :after, 'tabmenu', :partial => "/layouts/flash", :locals => {:message => (link_to_task(@task) + " - #{_('Task was successfully updated.')}")}
+else
+  page.remove 'errorExplanation'
+  page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
+  page.insert_html :after, 'task_id', error_messages_for(:task)
+  page << 'jQuery("#errorExplanation > ul li").css("margin", "20px 0px 2px 30px")'
+  @task.errors.each_error do |attr,err|
+    page << "jQuery('#task_#{attr}').wrap('<span class=\"fieldWithErrors\" />')"
+  end
+end

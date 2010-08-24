@@ -12,7 +12,7 @@
     <label for="task_milestone_id"><%=_ 'Milestone' %></label>
     <%= milestone_select(perms) %>
     <% if current_user.can?( Project.find(selected_project), 'milestone' ) %>
-      <span id="add_milestone"><a href="/milestones/quick_new?project_id=<%=selected_project%>" class="lightbox" target="_blank"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;" border="0"></a></span>
+      <span id="add_milestone"><a href="/milestones/quick_new?project_id=<%=selected_project%>" class="lightbox" target="_blank"><img src="/images/add.png" style="margin:0;padding:2px 0 0 0;"/></a></span>
     <% end %>
   </div>
   <br/>
@@ -28,5 +28,5 @@
   <%= due_date_field(@task, perms) %>
 
   <label for="task_status"><%= _("Resolution") %></label>
-  <%= status_field(@task) %>
+  <%= status_field(@task).html_safe %>
 </fieldset>

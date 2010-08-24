@@ -107,8 +107,8 @@ class TaskFilter < ActiveRecord::Base
   def keywords_attributes=(new_keywords)
     keywords.clear
 
-    (new_keywords || []).each do |word|
-      keywords.build(:word => word)
+    (new_keywords || []).each do |kw|
+      keywords.build(kw)
     end
   end
 
@@ -145,6 +145,12 @@ private
   # Returns a conditions hash the will filter tasks based on the
   # given property value qualifiers
   def conditions_for_property_qualifiers(property_qualifiers)
+    property_qualifiers = property_qualifiers.group_by { |qualifier| qualifier.reversed? }
+    simple_conditions_for_property_qualifiers(property_qualifiers[false]) + simple_conditions_for_property_qualifiers(property_qualifiers[true]).map { |sql| "not " + sql }
+  end
+
+  def simple_conditions_for_property_qualifiers(property_qualifiers)
+    return [] if property_qualifiers.nil?
     name = "task_property_values.property_value_id"
     grouped = property_qualifiers.group_by { |q| q.qualifiable.property }
 
@@ -157,11 +163,18 @@ private
     return res
   end
 
+
   # Returns an array of conditions that will filter tasks based on the
   # given standard qualifiers.
   # Standard qualifiers are things like project, milestone, user, where
   # a filter will OR the different users, but and between different types
   def conditions_for_standard_qualifiers(standard_qualifiers)
+    standard_qualifiers = standard_qualifiers.group_by { |qualifier| qualifier.reversed?}
+    simple_conditions_for_standard_qualifiers(standard_qualifiers[false])+ simple_conditions_for_standard_qualifiers(standard_qualifiers[true]).map{|sql| 'not ' + sql}
+  end
+
+  def simple_conditions_for_standard_qualifiers(standard_qualifiers)
+    return [] if standard_qualifiers.nil?
     res = []
 
     grouped_conditions = standard_qualifiers.group_by { |q| q.qualifiable_type }
@@ -177,13 +190,19 @@ private
   # Returns a string sql fragment that will limit tasks to
   # those that match the set keywords
   def conditions_for_keywords
+    kws = keywords.group_by { |keyword| keyword.reversed? }
+    compose_sql(simple_conditions_for_keywords(kws[false]), simple_conditions_for_keywords(kws[true]))
+  end
+
+  def simple_conditions_for_keywords(keywords_arg)
+    return  if keywords_arg.nil?
     sql = []
     params = []
 
-    keywords.each do |kw|
+    keywords_arg.each do |kw|
       str = "lower(tasks.name) like ?"
       str += " or lower(tasks.description) like ?"
-      sql << str
+      sql << "coalesce((#{str}),0)"
       2.times { params << "%#{ kw.word.downcase }%" }
     end
 
@@ -197,6 +216,12 @@ private
   # Status qualifiers have to be handled especially until the
   # migration from an array in code to db backed statuses is complete
   def conditions_for_status_qualifiers(status_qualifiers)
+    status_qualifiers = status_qualifiers.group_by { |qualifier| qualifier.reversed? }
+    compose_sql(simple_conditions_for_status_qualifiers(status_qualifiers[false]), simple_conditions_for_status_qualifiers(status_qualifiers[true]))
+  end
+
+  def simple_conditions_for_status_qualifiers(status_qualifiers)
+    return if status_qualifiers.nil?
     old_status_ids = []
     c = company || user.company
 
@@ -214,12 +239,18 @@ private
   # those in a project belonging to customers, or linked directly
   # to the customer
   def conditions_for_customer_qualifiers(customer_qualifiers)
+    customer_qualifiers = customer_qualifiers.group_by { |qualifier| qualifier.reversed? }
+    compose_sql(simple_conditions_for_customer_qualifiers(customer_qualifiers[false]), simple_conditions_for_customer_qualifiers(customer_qualifiers[true]))
+  end
+
+  def simple_conditions_for_customer_qualifiers(customer_qualifiers)
+    return if customer_qualifiers.nil?
     ids = customer_qualifiers.map { |q| q.qualifiable.id }
     ids = ids.join(",")
 
     if !ids.blank?
       res = "projects.customer_id in (#{ ids })"
-      res += " or task_customers.customer_id in (#{ ids })"
+      res += " or coalesce(task_customers.customer_id in (#{ ids }),0)"
       return "(#{ res })"
     end
   end
@@ -227,7 +258,12 @@ private
   # Returns a sql string fragment that will limit tasks to only those
   # which match the given time qualifiers
   def conditions_for_time_qualifiers(time_qualifiers)
-    return if time_qualifiers.empty?
+    time_qualifiers = time_qualifiers.group_by { |qualifier| qualifier.reversed? }
+    compose_sql(simple_conditions_for_time_qualifiers(time_qualifiers[false]), simple_conditions_for_time_qualifiers(time_qualifiers[true]))
+  end
+
+  def simple_conditions_for_time_qualifiers(time_qualifiers)
+    return if time_qualifiers.nil? or time_qualifiers.empty?
 
     res = []
     time_qualifiers.each do |tq|
@@ -238,7 +274,7 @@ private
 
       sql = "tasks.#{ column } >= '#{ start_time.to_formatted_s(:db) }'"
       sql += " and tasks.#{ column } < '#{ end_time.to_formatted_s(:db) }'"
-      res << sql
+      res << "coalesce((#{sql}),0)"
     end
 
     res = res.join(" or ")
@@ -276,6 +312,22 @@ private
     params = [ true]
     sql = TaskFilter.send(:sanitize_sql_array, [ sql ] + params)
     "(#{ sql })"
+  end
+
+  def compose_sql(arg1, arg2)
+    if arg1.blank?
+      if arg2.blank?
+        ""
+      else
+        "( not #{arg2} )"
+      end
+    else
+      if arg2.blank?
+        arg1
+      else
+        "(#{arg1} and not #{arg2})"
+      end
+    end
   end
 
   # Parse parameters from jqGrid for Task.all method

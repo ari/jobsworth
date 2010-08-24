@@ -1,0 +1,32 @@
+<div class="log_entry">
+  <div class="log_timestamp">
+    <span class="log_date">
+      <%= tz.utc_to_local(changeset.commit_date).strftime("%A") %> <br/>
+      <%= tz.utc_to_local(changeset.commit_date).strftime("%d %b %Y") %>
+    </span>
+    <span class="log_time">
+      <%= "#{tz.utc_to_local(changeset.commit_date).strftime(current_user.time_format)}"%>
+    </span>
+  </div>
+
+  <h4 class="log_name">
+    <% if changeset.user.nil? %>
+      <%= changeset.author %>
+    <% else %>
+      <%= changeset.user.name %>
+    <% end -%>
+    <span class="scm_revision">
+      <%= changeset.changeset_rev%>
+    </span>
+  </h4>
+  
+  <p class="log_comment">
+    <%= changeset.message.gsub(/\n/, "<br/>") if changeset.message %>
+  </p>
+  
+  <ul class="scm_files">
+    <% changeset.scm_files.each do |file| %>
+      <li><span class="state"><%= file.state %></span><span class="file"><%= file.path %></span><li/>
+    <% end %>
+  </ul>
+</div>

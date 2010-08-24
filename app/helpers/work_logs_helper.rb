@@ -5,18 +5,16 @@ module WorkLogsHelper
   ###
   def work_log_status_options
     options = []
-    options << [_("Leave Open"), 0] if @task.status == 0
-    options << [_("Revert to Open"), 0] if @task.status != 0
-    options << [_("Set in Progress"), 1] if @task.status == 0
-    options << [_("Leave as in Progress"), 1] if @task.status == 1
-    options << [_("Close"), 2] if @task.status == 0 || @task.status == 1
-    options << [_("Leave Closed"), 2] if @task.status == 2
-    options << [_("Set as Won't Fix"), 3] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Won't Fix"), 3] if @task.status == 3
-    options << [_("Set as Invalid"), 4] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Invalid"), 4] if @task.status == 4
-    options << [_("Set as Duplicate"), 5] if @task.status == 0 || @task.status == 1
-    options << [_("Leave as Duplicate"), 5] if @task.status == 5
+    options << [_("Leave Open"), 0] if @task.open?
+    options << [_("Revert to Open"), 0] if @task.resolved?
+    options << [_("Close"), 1] if @task.open?
+    options << [_("Leave Closed"), 1] if @task.closed?
+    options << [_("Set as Won't Fix"), 2] if @task.open?
+    options << [_("Leave as Won't Fix"), 2] if @task.will_not_fix?
+    options << [_("Set as Invalid"), 3] if @task.open?
+    options << [_("Leave as Invalid"), 3] if @task.invalid?
+    options << [_("Set as Duplicate"), 4] if @task.open?
+    options << [_("Leave as Duplicate"), 4] if @task.duplicate?
 
     return options
   end

@@ -12,7 +12,7 @@
     <% if @project.users.size > 0 %>
     <div>
       <div class="information-header"><%= _('Members') %></div>
-      <div class="information-value" style="float:left;"><%= @project.users.collect{|user| link_to_tasks_filtered_by(user, :class=>'tooltip',:title=> _('Tasks') + ':' +  user.tasks.count(:conditions => ["project_id=? AND completed_at IS NULL",@project.id]).to_s) }.join(", ") %></div>
+      <div class="information-value" style="float:left;"><%= @project.users.collect{|user| link_to_tasks_filtered_by(user, :class=>'tooltip',:title=> _('Tasks') + ':' +  user.tasks.count(:conditions => ["project_id=? AND completed_at IS NULL",@project.id]).to_s) }.join(", ").html_safe %></div>
     </div>
     <% end %>
     <div style="clear:both;"></div>

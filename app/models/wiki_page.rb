@@ -36,7 +36,7 @@ class WikiPage < ActiveRecord::Base
   end
 
   def to_url
-    "<a href=\"/wiki/show/#{URI.encode(name)}\">#{name}</a>"
+    "<a href=\"/wiki/show/#{URI.encode(name)}\">#{name}</a>".html_safe
   end
 
   def body

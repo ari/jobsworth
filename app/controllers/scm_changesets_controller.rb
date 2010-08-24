@@ -8,4 +8,10 @@ class ScmChangesetsController < ApplicationController
       render :text=>'', :status=> :unprocessable_entity
     end
   end
+  def list
+    @scm_changesets = ScmChangeset.for_list(params)
+    if @scm_changesets.nil?
+      render :text=>"" and return
+    end
+  end
 end

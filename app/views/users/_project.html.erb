@@ -1,6 +1,6 @@
 <tr class="hoverrow" id="user-<%= project.dom_id %>">
   <td>
-    <%= h(name || project.name) %>
+    <%= h((if defined?(name) then name end) || project.name) %>
   </td>
 <%
    user_granted = project.users.include? @user
@@ -14,12 +14,12 @@
 
  if @user == project.owner %>
   <td>
-    <%= image_tag("user_suit.png", :title => "Can't remove <b>project creator</b>!", :class => "tooltip") %>
+    <%= image_tag("user_suit.png", :title => "Can't remove <b>project creator</b>!".html_safe, :class => "tooltip") %>
   </td>
   <% for p in perms %>
     <td>
-      <%= image_tag("user_suit.png", :title => "Can't remove the <b>project creator</b>!", :class => "tooltip") if perm.can? p %>
-      <%= image_tag("delete.png", :title => _("Can't remove the <b>project creator</b>!"), :class => "tooltip") unless perm.can? p %>
+      <%= image_tag("user_suit.png", :title => "Can't remove the <b>project creator</b>!".html_safe, :class => "tooltip") if perm.can? p %>
+      <%= image_tag("delete.png", :title => _("Can't remove the <b>project creator</b>!").html_safe, :class => "tooltip") unless perm.can? p %>
     </td>
   <% end 
   
@@ -29,7 +29,7 @@
 #-----------------
 elsif user_granted %>
   <td>
-    <%= link_to_remote image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", @user.name), :class => "tooltip"),
+    <%= link_to_remote image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
     :loading => "showProgress();",
@@ -39,12 +39,12 @@ elsif user_granted %>
 
   <% for p in perms %>
     <td>
-      <%= link_to_remote image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, @user.name), :class => "tooltip"),
+      <%= link_to_remote image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
       :loading => "showProgress();",
       :complete => "hideProgress();" if perm.can? p %>
-      <%= link_to_remote image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, @user.name), :class => "tooltip"),
+      <%= link_to_remote image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
       :loading => "showProgress();",
@@ -57,7 +57,7 @@ elsif user_granted %>
 #-----------------
 else %>
   <td>
-    <%= link_to_remote image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", @user.name), :class => "tooltip"),
+    <%= link_to_remote image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
     :loading => "showProgress();",

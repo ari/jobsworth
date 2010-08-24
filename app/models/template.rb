@@ -3,6 +3,15 @@
 class Template < Task
   default_scope :condition=>{ :type=>'Template'}
 
+  def clone_todos
+    res = []
+    todos.each do |t|
+      res << t.clone
+      res.last.task_id = nil
+    end
+    res
+  end
+
 end
 
 

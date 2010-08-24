@@ -7,7 +7,7 @@ end
 # Handle tasks for a Company / User
 #
 class TasksController < ApplicationController
-
+  cache_sweeper :tag_sweeper, :only =>[:create, :update]
   def new
     init_attributes_for_new_template
 
@@ -33,6 +33,7 @@ class TasksController < ApplicationController
     respond_to do |format|
       format.html { render :action => "grid" }
       format.xml  { render :template => "tasks/list.xml" }
+      format.json { render :template => "tasks/list.json"}
     end
   end
 
@@ -50,22 +51,19 @@ class TasksController < ApplicationController
     list_init
   end
 
-  def dependency_targets
-    value = params[:dependencies][0]
+  def auto_complete_for_dependency_targets
+    value = params[:term]
     value.gsub!(/#/, '')
-
     @keys = [ value ]
     @tasks = Task.search(current_user, @keys)
-    render :layout => false
+    render :json=> @tasks.collect{|task| {:label => "[##{task.task_num}] #{task.name}", :value=>task.name[0..13] + '...' , :id => task.task_num } }.to_json
   end
 
   def auto_complete_for_resource_name
     return if !current_user.use_resources?
 
-    search = params[:resource]
-    search = search[:name] if search
+    search = params[:term]
     search = search.split(",").last if search
-    @resources = []
 
     if !search.blank?
       conds = "lower(name) like ?"
@@ -79,8 +77,10 @@ class TasksController < ApplicationController
 
       @resources = current_user.company.resources.find(:all,
                                                        :conditions => conds)
+     render :json=> @resources.collect{|resource| {:label => "[##{resource.id}] #{resource.name}", :value => resource.name, :id=> resource.id} }.to_json
+    else
+      render :nothing=> true
     end
-    render :layout=> false
   end
 
   def resource
@@ -114,18 +114,16 @@ class TasksController < ApplicationController
                                                                                                     flash['notice'] = _('Invalid due date ignored.')
                                                                                                     due_date = nil
                                                                                                   end
-        @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+        @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
       end
     else
       @task.repeat = nil
     end
 
-    @task.company_id = current_user.company_id  #TODO: remove this line, company attached to task in line#101
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
     @task.set_tags(tags)
-    @task.set_task_num(current_user.company_id)
     @task.duration = 0 if @task.duration.nil?
 
     unless current_user.can?(@task.project, 'create')
@@ -140,29 +138,23 @@ class TasksController < ApplicationController
     begin
       ActiveRecord::Base.transaction do
         @task.save!
+        @task.set_users_dependencies_resources(params, current_user)
+        @task.create_attachments(params, current_user)
         create_worklogs_for_tasks_create
       end
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
 
-      @task.set_users(params)
-      @task.set_dependency_attributes(params[:dependencies], current_user)
-      @task.set_resource_attributes(params[:resource])
+      #save todos
+      if session[:todos_clone]
+        save_todos(session[:todos_clone], @task)
+        session[:todos_clone] = nil
+      end
 
-      create_attachments(@task)
-
-      ############ code smell begin ####################
-      # this code used to create tasks from task template
-      # must exist more elegancy solution
-      copy_todos_from_template(params[:task][:id], @task)
-      ############ code smell end #######################
-
-      @task.work_logs.each{ |w| w.send_notifications }
-
-      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully created.')}"
+      flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
       return if request.xhr?
-      redirect_from_last
+      redirect_to :action => :list
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       init_attributes_for_new_template
       return if request.xhr?
@@ -230,6 +222,7 @@ class TasksController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
+        @changes = @task.changes
         @task.save!
 
         @task.hide_until = nil if params[:task][:hide_until].nil?
@@ -245,16 +238,12 @@ class TasksController < ApplicationController
                                                                                         flash['notice'] = _('Invalid due date ignored.')
                                                                                         due_date = nil
                                                                                                     end
-            @task.due_at = tz.local_to_utc(due_date.to_time + 1.day - 1.minute) unless due_date.nil?
+            @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
           end
         else
           @task.repeat = nil
         end
-
-        @task.set_users(params)
-        @task.set_dependency_attributes(params[:dependencies], current_user)
-        @task.set_resource_attributes(params[:resource])
-
+        @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
 
@@ -281,50 +270,39 @@ class TasksController < ApplicationController
 
         big_fat_controller_method
       end
-
-      return if request.xhr?
-
-      flash['notice'] ||= "#{ link_to_task(@task) } - #{_('Task was successfully updated.')}"
-      redirect_to "/#{tasks_or_templates}/list"
+      respond_to do |format|
+        format.html {
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+            redirect_to :action=> "list"
+          end
+        }
+        format.js { render(:layout => false) }
+      end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
-      init_form_variables(@task)
-      render :template => 'tasks/edit'
+      respond_to do |format|
+        format.html {
+          if params[:controller] == "tasks"
+            responds_to_parent { render :action => "update.js.rjs" }
+          else
+            init_form_variables(@task)
+            render :template => 'tasks/edit'
+          end
+        }
+        format.js { render(:layout => false) }
+      end    
     end
   end
 
   def ajax_hide
-    @task = Task.accessed_by(current_user).find(params[:id])
-
-    unless @task.hidden == 1
-      @task.hidden = 1
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_ARCHIVED
-      worklog.body = ""
-      worklog.save
-    end
-
+    hide_task(params[:id])
     render :nothing => true
   end
 
   def ajax_restore
-    @task = Task.accessed_by(current_user).find(params[:id])
-    unless @task.hidden == 0
-      @task.hidden = 0
-      @task.updated_by_id = current_user.id
-      @task.save
-
-      worklog = WorkLog.new
-      worklog.user = current_user
-      worklog.for_task(@task)
-      worklog.log_type = EventLog::TASK_RESTORED
-      worklog.body = ""
-      worklog.save
-    end
+    hide_task(params[:id], 0)
     render :nothing => true
   end
 
@@ -350,7 +328,7 @@ class TasksController < ApplicationController
     filename = "clockingit_tasks.csv"
     @tasks= current_task_filter.tasks
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
-      csv << Task.csv_header
+      csv << @tasks.first.csv_header
       @tasks.each do |t|
         csv << t.to_csv
       end
@@ -361,13 +339,6 @@ class TasksController < ApplicationController
     send_data(csv_string,
               :type => 'text/csv; charset=utf-8; header=present',
               :filename => filename)
-  end
-
-  def toggle_history
-    session[:only_comments] ||= false
-    session[:only_comments] = ! session[:only_comments]
-
-    @task = Task.accessed_by(current_user).find(params[:id])
   end
 
   ###
@@ -451,30 +422,34 @@ class TasksController < ApplicationController
 
     render :text => updated.to_s
   end
-protected
-  def create_attachments(task)
-    filenames = []
-    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = task.project.customer
-        task_file.project = task.project
-        task_file.task_id = task.id
-        task_file.user_id = current_user.id
-        task_file.file=tmp_file
-        task_file.save!
 
-        filenames << task_file.file_file_name
-      end
+  def set_group
+    task = Task.find_by_task_num(params[:id])
+    task.update_group(params[:group], params[:value])
+   
+    render :nothing => true
+  end
+protected
+  def hide_task(id, hide=1)
+    task = Task.accessed_by(current_user).find(id)
+    unless task.hidden == hide
+      task.hidden = hide
+      task.updated_by_id = current_user.id
+      task.save
+
+      worklog = WorkLog.new
+      worklog.user = current_user
+      worklog.for_task(task)
+      worklog.log_type =  hide == 1 ? EventLog::TASK_ARCHIVED : EventLog::TASK_RESTORED
+      worklog.body = ""
+      worklog.save
     end
-    return filenames
   end
   ###
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
+    session[:todos_clone] = nil
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
@@ -503,19 +478,19 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+      return  "- <strong>Due</strong>:".html_safe + " #{old_name} -> #{new_name}\n"
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? "- <strong>Name</strong>: #{old_task[:name]} -> #{task[:name]}\n" : ""
+    (old_task[:name] != task[:name]) ? ("- <strong>Name</strong>:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
-    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n" : ""
+    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n".html_safe : ""
   end
   def task_duration_changed(old_task, task)
-     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n" : ""
+     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
@@ -608,7 +583,7 @@ protected
       end
     end
 
-    files = create_attachments(@task)
+    files = @task.create_attachments(params, current_user)
     files.each do |filename|
       body << "- <strong>Attached</strong>: #{filename}\n"
     end
@@ -623,7 +598,7 @@ protected
         second_worklog.send_notifications if second_worklog.comment?
       end
     else
-      worklog.body=body
+      worklog.body=body.html_safe
       if params[:comment] && params[:comment].length > 0
         worklog.comment = true
         worklog.body << "\n"
@@ -642,26 +617,22 @@ protected
     end
   end
   def create_worklogs_for_tasks_create
-        WorkLog.build_work_added_or_comment(@task, current_user, params)
-        @task.save! #FIXME: it saves worklog from line above
-        WorkLog.create_task_created!(@task, current_user)
-  end
-  def tasks_or_templates
-    "tasks"
+    WorkLog.build_work_added_or_comment(@task, current_user, params)
+    @task.save! #FIXME: it saves worklog from line above
+    WorkLog.create_task_created!(@task, current_user)
+    if @task.work_logs.first.comment?
+      @task.work_logs.first.send_notifications
+    else
+      @task.work_logs.last.send_notifications
+    end
   end
   def set_last_task(task)
     session[:last_task_id] = task.id
   end
-  #this function copy todos from task template to task
-  #NOTE: this code is very fragile
-  #TODO: find sophisticated solution
-  def copy_todos_from_template(id, task)
-    return unless id.to_i > 0
-    template = Template.find_by_id(id,:conditions=>["company_id = ?", current_user.company_id])
-    if template.nil?
-      #this is not template, just regular task
-      return
+  def save_todos(todos, task)
+    todos.each do |t|
+      t.task_id = task.id
+      t.save
     end
-    template.todos.each{|todo| task.todos<< todo.clone }
   end
 end

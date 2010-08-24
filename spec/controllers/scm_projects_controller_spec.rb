@@ -1,32 +1,25 @@
 require 'spec_helper'
-def login_user(params={ })
-  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true ))
-  session[:user_id]=user.id
-  session[:remember_until] = Time.now + 1.week
-  controller.stub!(:current_user).and_return(user)
-end
-
 describe ScmProjectsController do
   before(:each) do
     @scm_project= mock_model(ScmProject)
   end
   describe "GET new" do
     it "should render new template" do
-      login_user( 'create_projects?' => true )
+      login_user( 'admin?' => true )
       ScmProject.should_receive(:new).and_return(@scm_project)
       get :new
       response.should render_template('scm_projects/new')
     end
     it "should redirect to last url, if user not have create project permission" do
-      login_user( 'create_projects?' => false )
+      login_user('admin?' => false )
       get :new
       response.should  be_redirect
     end
   end
   describe "POST create" do
-    context "user with can_create_projects permission" do
+    context "user with admin permission" do
       before(:each) do
-        login_user( 'create_projects?' => true )
+        login_user( 'admin?' => true )
       end
       context "with valiad params" do
         before(:each) do
@@ -47,9 +40,9 @@ describe ScmProjectsController do
         end
       end
     end
-    context "user without can_create_projects permission" do
+    context "user without admin permission" do
       before(:each) do
-        login_user('create_projects?' => false )
+        login_user('admin?' => false )
         post :create, :scm_project =>  { :these=>'params' }
       end
       it "should redirect to last" do

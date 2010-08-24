@@ -54,7 +54,7 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
 
   <div id="task-handle-<%=task.id%>" style="float:left; padding-left:0.4em;display:none;" class="handle"><%= image_tag('drag.gif', :border => 0) %></div>
   <div style="float:left; padding-left:0.3em;">
-    <img src="/images/spacer.gif" width="16" height="16" border="0"/>
+    <img src="/images/spacer.gif" width="16" height="16"/>
   </div>
   <div class="unread_icon">
         <a href="#" onclick="toggleTaskUnread(this);"><span>*</span></a>
@@ -74,18 +74,27 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
      <% end %>
        <%= "(#{worked_nice(task.worked_minutes)})" if( task.duration.to_i == 0 && task.worked_minutes > 0) -%>
      <% end -%>
-     <%= "<span class=\"task_milestone\">[#{task.milestone.name}]</span>" unless task.milestone_id.to_i == 0 -%>
+     <% unless task.milestone_id.to_i == 0 %>
+       <span class="task_milestone">[<%= task.milestone.name %>]</span>
+     <% end %>
    <% name = _("No one")
       name = task.users.collect{|u| u.name}.join(', ') unless task.users.empty?
    %>
 
    <div class="task_info description">
    <% if controller.controller_name != 'search' %>
-   <%= task.full_name %>
+     <% if task.project %>
+       <%= task.project.full_name %> /
+       <% task.tags.each do |t| %>
+         <a href="/tasks/list/?tag=<%= t.name %>" class="description">
+           <%= t.name.capitalize.gsub(/\"/,'&quot;'.html_safe) %>
+         </a> /
+       <% end %>
+     <% end %>
    <% else %>
    <%= highlight_all(task.full_name_without_links, @keys) %>
    <% end %>
-   <%= "<span class=\"otheruser\">[#{name}]</span>" %>
+   <span class="otheruser">[<%= name %>]</span>
    <%= due_in_words(task) unless task.due_date && task.done?%>
    <%= "[#{overdue_time(task.completed_at)}]" if task.done?%>
    </div>

@@ -7,7 +7,8 @@
 
        <label for="user_customer_id"><%=_ "Client" %></label>
        <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
-       <%= text_field_with_auto_complete(:customer, :name, { :value => @user.customer }, :after_update_element => "updateAutoCompleteField") %>
+       
+       <%= text_field :customer, :name, {:value => @user.customer} %>
        <br/>
 
        <% if @user.autologin && !@user.autologin.empty? %>

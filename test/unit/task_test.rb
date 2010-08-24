@@ -86,8 +86,9 @@ class TaskTest < ActiveRecord::TestCase
 
   def test_set_task_num
     max = Task.maximum('task_num', :conditions => ["company_id = ?", @task.company.id])
-    @task.set_task_num(@task.company.id)
-    assert_equal max + 1, @task.task_num
+    task = @task.clone
+    task.save
+    assert_equal max + 1, task.task_num
   end
 
   def test_time_left

@@ -156,7 +156,7 @@ class ProjectsController < ApplicationController
       end
 
       flash['notice'] = _('Project was successfully updated.')
-      redirect_from_last
+      redirect_to :action=> "list"
     else
       render :action => 'edit'
     end
@@ -176,7 +176,7 @@ class ProjectsController < ApplicationController
 
     @project.destroy
     flash['notice'] = _('Project was deleted.')
-    redirect_from_last
+    redirect_to :controller => 'projects', :action => 'list'
   end
 
   def complete

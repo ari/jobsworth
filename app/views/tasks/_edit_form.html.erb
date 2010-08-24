@@ -1,0 +1,3 @@
+<% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform", :target => "upload_frame" }) do %>
+  <%= render :partial => "tasks/form" %>
+<% end %>

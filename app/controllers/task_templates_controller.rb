@@ -31,6 +31,14 @@ class TaskTemplatesController < TasksController
   def set_unread
     render :text => "", :layout => false
   end
+  
+  def destroy    
+    @task_template = current_templates.detect { |template| template.id == params[:id].to_i }
+    @task_template.destroy
+    flash['notice'] = _('Template was deleted.')  
+    redirect_to '/task_templates/list'
+  end
+  
 protected
 ####  This methods inherited from TasksController.
 ####  They modifies behavior of TasksController actions: new, create, edit, update etc.
@@ -52,12 +60,7 @@ protected
   def create_worklogs_for_tasks_create
     #must be empty, templates not have worklogs
   end
-  #used for redirects in TasksController
-  def tasks_or_templates
-    "task_templates"
-  end
   def set_last_task(task)
     #empty method
   end
-
 end

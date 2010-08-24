@@ -1,4 +1,5 @@
 class TagsController < ApplicationController
+  cache_sweeper :tag_sweeper, :only => [:update, :destroy]
   def index
     @tags = current_user.company.tags
   end
@@ -14,7 +15,7 @@ class TagsController < ApplicationController
 
   def update
     @tag = current_user.company.tags.find(params[:id])
-    
+
     if @tag and @tag.update_attributes(params[:tag])
       flash[:notice] = _("Tag saved")
     else
@@ -26,7 +27,7 @@ class TagsController < ApplicationController
 
   def destroy
     @tag = current_user.company.tags.find(params[:id])
-    
+
     if @tag
       @tag.destroy
       flash[:notice] = _("Tag deleted")
@@ -35,6 +36,13 @@ class TagsController < ApplicationController
     end
 
     redirect_to tags_path
+  end
+  
+  def auto_complete_for_tags
+    value = params[:term]
+   
+    @tags = current_user.company.tags.find(:all, :conditions => ['name LIKE ?', '%' + value +'%' ])
+    render :json=> @tags.collect{|tag| {:value => tag.name }}.to_json
   end
 
 end

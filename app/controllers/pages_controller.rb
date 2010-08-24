@@ -47,13 +47,18 @@ class PagesController < ApplicationController
   # Renders a list of possible notable targets for a page
   def target_list
     @matches = []
-    str = [ params[:target] ]
+    str = [ params[:term] ]
 
     @matches += User.search(current_user.company, str)
     @matches += Customer.search(current_user.company, str)
     @matches += current_user.all_projects.find(:all,
                               :conditions => Search.search_conditions_for(str))
+    render :json=> @matches.collect{|match| {:value => "#{match.class.name} : #{match.to_s}", :id=> match.id, :type=>match.class.name, :category=> "#{match.class.name}"} }.to_json
 
-    render :layout => false
+  end
+
+  def snippet
+    snippet = current_user.company.pages.snippets.find(params[:id])
+    render :text=> snippet.body
   end
 end

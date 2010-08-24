@@ -53,7 +53,7 @@ module TasksHelper
       return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {}, perms['milestone'])
     else
       milestones = Milestone.find(:all, :order => 'due_at, name', :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL', current_user.company.id, selected_project])
-      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0 }, perms['milestone'])
+      return select('task', 'milestone_id', [[_("[None]"), "0"]] + milestones.collect {|c| [ c.name, c.id ] }, {:selected => 0}, perms['milestone'])
     end
   end
 
@@ -63,30 +63,7 @@ module TasksHelper
   # no customer are also returned though).
   ###
   def auto_complete_for_resources(customer_id)
-    options = {
-      :select => 'complete_value',
-      :tokens => ',',
-      :url => { :action => "auto_complete_for_resource_name",
-        :customer_id => customer_id },
-      :after_update_element => "addResourceToTask"
-    }
-
-    return text_field_with_auto_complete(:resource, :name, { :size => 12 }, options)
-  end
-
-  ###
-  # Returns the html to display an auto complete for task dependencies. When
-  # a choice is made, the dependency will be added to the page (but not saved
-  # to the db until the task is saved)
-  ###
-  def auto_complete_for_dependencies
-    auto_complete_field('dependencies_input',
-                        { :url => { :action => 'dependency_targets' },
-                          :min_chars => 1,
-                          :frequency => 0.5,
-                          :indicator => 'loading',
-                          :after_update_element => "addDependencyToTask"
-                        })
+    text_field(:resource, :name, {:id => "resource_name_auto_complete", :size => 12, 'data-customer-id'=>customer_id }) 
   end
 
   ###
@@ -110,9 +87,9 @@ module TasksHelper
     defer_options << [_("One month"), tz.local_to_utc(tz.now.next_month.at_midnight).to_s(:db)]
 
     res = select('task', 'status', options, {:selected => @task.status}, can_close)
-    res += '<div id="defer_options" style="display:none;">'
+    res += '<div id="defer_options" style="display:none;">'.html_safe
     res += select('task', 'hide_until', defer_options, { :selected => "" })
-    res += "</div>"
+    res += "</div>".html_safe
 
     return res
   end
@@ -127,20 +104,6 @@ module TasksHelper
                        :partial => "tasks/notification",
                        :locals => { :notification => current_user })
     end
-  end
-
-  ###
-  # Returns a field that will allow users or email address to be added
-  # to the task notify list.
-  ###
-  def add_notifier_field
-    html_options = {
-      :size => "12",
-      :title => _("Add users by name or email"),
-      :class => "tooltip"
-    }
-    text_field_with_auto_complete(:user, :name, html_options,
-                                  :after_update_element => "addUserToTask")
   end
 
   # Returns an array that show the start of ranges to be used
@@ -183,7 +146,7 @@ module TasksHelper
       options.last[1] << [ project.name, project.id ]
     end
 
-    return grouped_options_for_select(options, task.project_id, "Please select")
+    return grouped_options_for_select(options, task.project_id, "Please select").html_safe
   end
 
 
@@ -236,7 +199,7 @@ module TasksHelper
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
 
     options = {
-      :id => "due_at", :class => "tooltip", :title => date_tooltip,
+      :id => "due_at", :class => "tooltip", :title => date_tooltip.html_safe,
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
     }
@@ -247,14 +210,16 @@ module TasksHelper
     end
 
     js = <<-EOS
+    <script type="text/javascript" language="javascript">
     jQuery(function() {
       jQuery("#due_at").datepicker({ constrainInput: false,
                                       dateFormat: '#{ current_user.dateFormat }'
                                    });
     });
+    </script>
     EOS
 
-    return text_field("task", "due_at", options) + javascript_tag(js)
+    return text_field("task", "due_at", options) + js.html_safe
   end
 
   # Returns the notify emails for the given task, one per line
@@ -269,7 +234,7 @@ module TasksHelper
     values << [ _("Description"), task.description ]
     comment = task.last_comment
     if comment
-      values << [ _("Last Comment"), "#{ comment.user.name }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }" ]
+      values << [ _("Last Comment"), "#{ ERB::Util.h(comment.user.name) }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }".html_safe ]
     end
 
     return task_tooltip(values)
@@ -294,15 +259,15 @@ module TasksHelper
     return task_tooltip([ [ _("Milestone Due Date"), formatted_date_for_current_user(task.milestone.due_date) ] ])
   end
 
-  # Converts the given array into a table that looks good in a toolip
+  # Converts the given array into a table that looks good in a tooltip
   def task_tooltip(names_and_values)
-    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
+    res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>".html_safe
     names_and_values.each do |name, value|
-      res += "<tr><th>#{ name }</th>"
-      res += "<td>#{ value }</td></tr>"
+      res += "<tr><th>".html_safe + name + "</th>".html_safe
+      res += "<td>".html_safe + value + "</td></tr>".html_safe
     end
-    res += "</table>"
-    return escape_once(res)
+    res += "</table>".html_safe
+    return res
   end
 
   # Returns a hash of permissions for the current task and user
@@ -339,18 +304,8 @@ module TasksHelper
 
     content_tag(:span, :class => classname, :id => "task_#{ task.task_num }") do
       content_tag(:span, :class => "unread_icon") do
-        link_to_function("<span>*</span>", "toggleTaskUnread(event, #{ user.id })")
+        link_to_function("<span>*</span>".html_safe, "toggleTaskUnread(event, #{ user.id })")
       end
     end
   end
-
-  # Returns a link that allows the user to toggle whether the
-  # full task history or only comments are shown
-  def toggle_history_view_link
-    str = session[:only_comments] ? _("Showing Full History") : _("Showing Only Comments")
-
-    return link_to_remote(str, :loading => "showProgress();", :complete => "hideProgress();",
-                          :url => { :action => 'toggle_history', :id => @task.id })
-  end
-
 end

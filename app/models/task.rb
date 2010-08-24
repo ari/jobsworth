@@ -44,6 +44,7 @@ class Task < ActiveRecord::Base
   has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many :task_property_values, :dependent => :destroy, :include => [ :property ]
+  accepts_nested_attributes_for :task_property_values, :allow_destroy => true
 
   has_many :task_customers, :dependent => :destroy
   has_many :customers, :through => :task_customers, :order => "customers.name asc"
@@ -51,7 +52,7 @@ class Task < ActiveRecord::Base
 
   has_one       :ical_entry
 
-  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position"
+  has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy
   accepts_nested_attributes_for :todos
 
   has_many      :sheets
@@ -305,16 +306,6 @@ class Task < ActiveRecord::Base
     self.sheets.size > 0
   end
 
-  def set_task_num(company_id = nil)
-    company_id ||= company.id
-
-    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
-    num ||= 0
-    num += 1
-
-    @attributes['task_num'] = num
-  end
-
   def time_left
     res = 0
     if self.due_at != nil
@@ -382,17 +373,11 @@ class Task < ActiveRecord::Base
   end
 
   def minutes_left
-    d = self.duration.to_i - self.worked_minutes
-    d = 240 if d < 0 && self.duration.to_i > 0
-    d = 0 if d < 0
-    d
+    minutes_left_by self.duration
   end
 
   def scheduled_minutes_left
-    d = self.scheduled_duration.to_i - self.worked_minutes
-    d = 240 if d < 0 && self.scheduled_duration.to_i > 0
-    d = 0 if d < 0
-    d
+    minutes_left_by self.scheduled_duration
   end
 
   def overworked?
@@ -401,14 +386,14 @@ class Task < ActiveRecord::Base
 
   def full_name
     if self.project
-      [self.project.full_name, self.full_tags].join(' / ')
+      [ERB::Util.h(self.project.full_name), self.full_tags].join(' / ').html_safe
     else
       ""
     end
   end
 
   def full_tags
-    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{t.name}\" class=\"description\">#{t.name.capitalize.gsub(/\"/,'&quot;')}</a>" }.join(" / ")
+    self.tags.collect{ |t| "<a href=\"/tasks/list/?tag=#{ERB::Util.h t.name}\" class=\"description\">#{ERB::Util.h t.name.capitalize.gsub(/\"/,'&quot;'.html_safe)}</a>" }.join(" / ").html_safe
   end
 
   def full_name_without_links
@@ -425,7 +410,7 @@ class Task < ActiveRecord::Base
 
   def issue_num
     if self.status > 1
-    "<strike>##{self.task_num}</strike>"
+    "<strike>##{self.task_num}</strike>".html_safe
     else
     "##{self.task_num}"
     end
@@ -490,6 +475,7 @@ class Task < ActiveRecord::Base
       tag = Company.find(self.company_id).tags.find_or_create_by_name(tag_name)
       self.tags << tag unless self.tags.include?(tag)
     end
+    self.company.tags.first.save unless self.company.tags.first.nil? #ugly, trigger tag save callback, needed to cache sweeper
     true
   end
 
@@ -561,13 +547,12 @@ class Task < ActiveRecord::Base
       nil
     end
   end
-
   def css_classes
     unless @css
-      @css = case self.status
-      when 0 then ""
-      when 1 then " in_progress"
-      when 2 then " closed"
+      @css= if self.open? 
+        "" 
+      elsif self.closed?
+        " closed" 
       else
         " invalid"
       end
@@ -597,12 +582,25 @@ class Task < ActiveRecord::Base
 
   # Sets up custom properties using the given form params
   def properties=(params)
-    task_property_values.clear
-
-    params.each do |prop_id, val_id|
-      next if val_id.blank?
-      task_property_values.build(:property_id => prop_id, :property_value_id => val_id)
-    end
+    ids=[]
+    attributes= params.collect {  |prop_id, val_id|
+      task_property_value= task_property_values.find_by_property_id(prop_id)
+      if task_property_value.nil?
+        hash={ :property_id => prop_id, :property_value_id => val_id}
+      else
+        ids << task_property_value.id
+        hash={ :id=> task_property_value.id }
+        if val_id.blank?
+          hash[:_destroy]= 1
+        else
+          hash[:property_id]=prop_id
+          hash[:property_value_id]=val_id
+        end
+      end
+      hash
+    }
+    attributes += (self.task_property_values.collect(&:id) - ids).collect{ |id| { :id=>id, :_destroy=>1} }
+    self.task_property_values_attributes= attributes
   end
 
   #set default properties for new task
@@ -613,12 +611,14 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def Task.csv_header
-    ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution', 'Priority', 'Severity']
+  def csv_header
+    ['Client', 'Project', 'Num', 'Name', 'Tags', 'User', 'Milestone', 'Due', 'Created', 'Completed', 'Worked', 'Estimated', 'Resolution'] +
+      company.properties.collect { |property| property.name }
   end
 
   def to_csv
-    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type, priority_type, severity_type]
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type ] +
+      company.properties.collect { |property| property_value(property).to_s }
   end
 
   def set_property_value(property, property_value)
@@ -992,7 +992,79 @@ class Task < ActiveRecord::Base
     (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
   end
 
+  def set_users_dependencies_resources(params, current_user)
+    set_users(params)
+    set_dependency_attributes(params[:dependencies], current_user)
+    set_resource_attributes(params[:resource])
+    self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
+  end
+  def create_attachments(params, current_user)
+    filenames = []
+    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+      params['tmp_files'].each do |tmp_file|
+        next if tmp_file.is_a?(String)
+        task_file = ProjectFile.new()
+        task_file.company = current_user.company
+        task_file.customer = self.project.customer
+        task_file.project = self.project
+        task_file.task_id = self.id
+        task_file.user_id = current_user.id
+        task_file.file=tmp_file
+        task_file.save!
+
+        filenames << task_file.file_file_name
+      end
+    end
+    return filenames
+  end
+
+  def repeat_task
+    repeat = self.clone
+    repeat.due_at = repeat.next_repeat_date
+    repeat.tags << self.tags
+    repeat.watchers= self.watchers
+    repeat.owners = self.owners
+    repeat.dependencies = self.dependencies
+    repeat.save!
+  end
+
+  def update_group(group, value)
+    user_id = self.project.user_id
+    company_id =  self.project.company_id
+    if group == "milestone"
+      val_arr = value.split("/")
+      if val_arr.size == 1
+        self.milestone_id = nil        
+      else
+        mid = Milestone.find_by_name_and_user_id(val_arr[1], user_id).id
+        self.milestone_id = mid
+      end
+      pid = Project.find_by_name_and_user_id_and_company_id(val_arr[0], user_id, company_id).id
+      self.project_id = pid
+      save
+    elsif group == "resolution"
+      p = Status.find_by_name_and_company_id(value, company_id).id
+      self.status = (p - 1)
+      save
+    elsif ["severity", "priority"].include? group
+      if prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+        pv = PropertyValue.find_by_value_and_property_id(value, prop.id)
+        self.set_property_value(prop, pv)
+      end
+    end
+  end
+
   private
+
+  def set_task_num
+    company_id ||= company.id
+
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num ||= 0
+    num += 1
+
+    @attributes['task_num'] = num
+  end
 
   # If creating a new work log with a duration, fails because it work log
   # has a mandatory attribute missing, the error message it the unhelpful
@@ -1007,45 +1079,12 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def repeat_task
-    repeat = Task.new
-    repeat.status = 0
-    repeat.project_id = self.project_id
-    repeat.company_id = self.company_id
-    repeat.name = self.name
-    repeat.repeat = self.repeat
-    repeat.requested_by = self.requested_by
-    repeat.creator_id = self.creator_id
-    repeat.set_tags(self.tags.collect{|t| t.name}.join(', '))
-    repeat.set_task_num(self.company_id)
-    repeat.duration = self.duration
-    repeat.notify_emails = self.notify_emails
-    repeat.milestone_id = self.milestone_id
-    repeat.hidden = self.hidden
-    repeat.due_at = self.due_at
-    repeat.due_at = repeat.next_repeat_date
-    repeat.description = self.description
-
-    repeat.save!
-    repeat.reload
-
-    self.task_watchers.each do |w|
-      n = TaskWatcher.new(:user => w.user, :task => repeat)
-      n.save!
-    end
-
-    self.task_owners.each do |o|
-      to = TaskOwner.new(:user => o.user, :task => repeat)
-      to.save!
-    end
-
-    self.dependencies.each do |d|
-       repeat.dependencies << d
-    end
-
-    repeat.save!
+  def minutes_left_by(duration)
+    d = duration.to_i - self.worked_minutes
+    d = 240 if d < 0 && duration.to_i > 0
+    d = 0 if d < 0
+    d
   end
-
 end
 
 

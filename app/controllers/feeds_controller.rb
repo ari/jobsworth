@@ -103,18 +103,7 @@ class FeedsController < ApplicationController
       if widget
         filter = ''
         if widget.filter_by?
-          filter = case widget.filter_by[0..0]
-                   when 'c'
-                     "AND tasks.project_id IN (#{user.projects.find(:all, :conditions => ["customer_id = ?", widget.filter_by[1..-1]]).collect(&:id).compact.join(',') } )"
-                   when 'p'
-                     "AND tasks.project_id = #{widget.filter_by[1..-1]}"
-                   when 'm'
-                     "AND tasks.milestone_id = #{widget.filter_by[1..-1]}"
-                   when 'u'
-                     "AND tasks.project_id = #{widget.filter_by[1..-1]} AND tasks.milestone_id IS NULL"
-                   else
-                     ""
-                   end
+          filter = widget.from_filter_by
         end
         pids = user.projects.collect{|p| p.id}.join(",")
 
@@ -142,7 +131,7 @@ class FeedsController < ApplicationController
             i.title = "#{task.issue_name}"
             i.link = "#{user.company.site_URL}/tasks/view/#{task.task_num}"
             i.description = task.description unless task.description.blank?
-            i.date = user.tz.utc_to_local(task.created_at)
+            i.date = task.created_at.utc
             i.author = task.creator.name unless task.creator.nil?
           end
         end
@@ -385,7 +374,7 @@ class FeedsController < ApplicationController
 
   def igoogle_feed
     if params[:up_uid].nil? || params[:up_uid].empty?
-      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.", :layout => false
+      render :text => "Please enter your widget key in this gadgets settings. The key can be found on your <a href=\"#{user.company.site_URL}/users/edit_preferences\">preferences page</a>.".html_safe, :layout => false
       return
     end
 

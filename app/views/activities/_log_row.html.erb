@@ -38,15 +38,26 @@
 <% if log.task_id.to_i > 0 && log.task %>
 <%= link_to_task log.task %>
 <% end %>
-    <%= "<br/>" if (log.task_id.to_i > 0) %>
-            <%= "<span class=\"optional\">#{log.task.full_name}</span> " if log.task_id.to_i > 0 %>
-            <%= "<small><span class=\"otheruser\">[#{log.user.name}]</span></small>" if log.user %>
-            <%= "<small><span class=\"otheruser\">[#{log.event_log.user}]</span></small>" if log.user.nil? && log.event_log.user %>
+    <%= "<br/>".html_safe if (log.task_id.to_i > 0) %>
+            <% if log.task_id.to_i > 0 %>
+            <span class="optional">
+              <% if log.task.project %>
+                <%= log.task.project.full_name %> /
+                <% log.task.tags.each do |t| %>
+                <a href="/tasks/list/?tag=<%= t.name %>" class="description">
+                  <%= t.name.capitalize.gsub(/\"/,'&quot;'.html_safe) %>
+                </a> /
+              <% end %>
+            <% end %>
+            </span>
+            <% end %>
+            <%= "<small><span class=\"otheruser\">[".html_safe + log.user.name + "]</span></small>".html_safe if log.user %>
+            <%= "<small><span class=\"otheruser\">[".html_safe + log.event_log.user + "]</span></small>".html_safe if log.user.nil? && log.event_log.user %>
    </strong></div>
   <div style="float:right;"><%= avatar_for log.user, 25 if log.user %></div>
   <div style="clear:both;padding-left:4px;padding-right:4px;padding-top:0.2em;padding-bottom:1em;border-top:1px solid #e8e8e8;">
 <% if log.body && log.body.length > 0 %>
-       <%= x = wrap_text( log.body.gsub(/- <strong>([^<]+)<\/strong>/) {|m| "- <strong>#{_($1)}</strong>"}, 100).gsub(/\n/, "<br/>") if log.body %>
+       <%= x = wrap_text( log.body.gsub(/- <strong>([^<]+)<\/strong>/) {|m| "- <strong>#{_($1)}</strong>".html_safe}, 100).gsub(/\n/, "<br/>".html_safe) if log.body %>
 <% end %>
   </div>
   </td>

@@ -92,13 +92,11 @@ class ApplicationController < ActionController::Base
     # Remember the previous _important_ page for returning to after an edit / update.
     if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
         request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ||
-        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') ) &&
+        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') || request.request_uri.include?('/projects') ) &&
         !request.xhr?
       session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
     end
 
-#    session[:user_id] = User.find(:first, :offset => rand(1000).to_i).id
-#    session[:user_id] = 1
 
     logger.info("remember[#{session[:remember_until]}]")
 
@@ -144,47 +142,6 @@ class ApplicationController < ActionController::Base
     TimeParser.parse_time(current_user, input, minutes)
   end
 
-  def parse_repeat(r)
-    # every monday
-    # every 15th
-    # every last monday
-    # every 3rd tuesday
-    # every 01/02
-    # every 12 days
-
-    r = r.strip.downcase
-
-    return unless r[0..5] == 'every '
-
-    tokens = r[6..-1].split(' ')
-
-    mode = ""
-    args = []
-
-    if tokens.size == 1
-      Date::DAYNAMES.each do |d|
-        if d.downcase == tokens[0]
-          mode = "w"
-          args[0] = tokens[0]
-          break
-        end
-      end
-
-      if mode == ""
-        1.upto(Task::REPEAT_DATE.size) do |i|
-          if Task::REPEAT_DATE[i].include? tokens[0]
-            mode = 'm'
-            args[0] = i
-            break
-          end
-        end
-      end
-
-    end
-
-
-  end
-
   # List of Users current Projects ordered by customer_id and Project.name
   def current_projects
     current_user.projects
@@ -216,7 +173,7 @@ class ApplicationController < ActionController::Base
   end
 
   def highlight( text, k )
-    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>')
+    t = text.gsub(/(#{Regexp.escape(k)})/i, '<strong>\1</strong>').html_safe
   end
 
   def highlight_all( text, keys )
@@ -247,44 +204,31 @@ class ApplicationController < ActionController::Base
     session[:last_active] ||= Time.now.utc
   end
 
-  def double_escape(txt)
-    res = txt.gsub(/channel-message-mine/,'channel-message-others')
-    res = res.gsub(/\\n|\n|\\r|\r/,'') # remove linefeeds
-    res = res.gsub(/'/, "\\\\'") # escape ' to \'
-    res = res.gsub(/"/, '\\\\"')
-    res
-  end
-
   ###
   # Returns the list to use for auto completes for user names.
   ###
   def auto_complete_for_user_name
-    text = params[:user]
-    text = text[:name] if text
-
-    @users = []
+    text = params[:term]
     if !text.blank?
-      conds = Search.search_conditions_for([ text ])
-      @users = current_user.company.users.find(:all, :conditions => conds)
+      # the next line searches for names starting with given text OR surname (space started) starting with text
+      @users = current_user.company.users.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
+      render :json=> @users.collect{|user| {:value => user.name + ' (' + user.customer.name + ')', :id=> user.id} }.to_json
+    else
+      render :nothing=> true
     end
-
-    render(:partial => "/users/auto_complete_for_user_name")
   end
 
   ###
   # Returns the list to use for auto completes for customer names.
   ###
   def auto_complete_for_customer_name
-    text = params[:customer]
-    text = text[:name] if text
-
-    @customers = []
+    text = params[:term]
     if !text.blank?
-      conds = Search.search_conditions_for([ text ])
-      @customers = current_user.company.customers.find(:all, :conditions => conds)
+      @customers = current_user.company.customers.find(:all, :order => 'name', :conditions => [ 'name LIKE ? OR name LIKE ?', text + '%', '% ' + text + '%'], :limit => 50)
+      render :json=> @customers.collect{|customer| {:value => customer.name, :id=> customer.id} }.to_json
+    else
+      render :nothing=> true
     end
-
-    render(:partial => "/clients/auto_complete_for_customer_name")
   end
 
   ###
@@ -358,7 +302,7 @@ class ApplicationController < ActionController::Base
     text = highlight_all(text, highlight_keys)
 
     link += self.class.helpers.link_to(text, url, html)
-    return link
+    return link.html_safe
   end
 
   # returns the current task filter (or a new, blank one

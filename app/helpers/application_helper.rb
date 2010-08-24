@@ -86,6 +86,8 @@ module ApplicationHelper
     if res.length > 0
       res = "<span class=\"#{css}\">[#{res}]</span>"
     end
+
+    return res.html_safe
   end
 
   def due_in_css(task)
@@ -134,7 +136,7 @@ module ApplicationHelper
         m
       else
         elems = m.match(URL_MATCH).to_a
-        "<a href=\"#{elems[0]}\" target=\"_blank\">#{elems[0]}</a>"
+        "<a href=\"#{elems[0]}\" target=\"_blank\">".html_safe + elems[0] + "</a>".html_safe
       end
     }
 
@@ -154,15 +156,21 @@ module ApplicationHelper
         url = "/wiki/show/#{URI.encode(name)}"
       end
 
-      "<a href=\"#{url}\">#{text}</a>"
+      "<a href=\"#{url}\">".html_safe + text + "</a>".html_safe
     }
   end
 
-  def highlight_all( text, keys )
+  def highlight_safe_html( text, k, raw = false )
+    res = text.gsub(/(#{Regexp.escape(k)})/i, '{{{\1}}}')
+    res = ERB::Util.h(res).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe unless raw
+    res
+  end
+
+  def highlight_all( text, keys)
     keys.each do |k|
-      text = highlight(text, k)
+      text = highlight_safe_html( text, k, true)
     end
-    text
+    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe 
   end
 
   def milestone_classes(m)
@@ -177,22 +185,23 @@ module ApplicationHelper
   end
 
   def link_to_milestone(milestone)
-    link_to_tasks_filtered_by(milestone,  {:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)})
+   open= current_user.company.statuses.first
+   return link_to(h(milestone.name), path_to_tasks_filtered_by(milestone, open),{:class => "tooltip#{milestone_classes(milestone)}", :title => milestone.to_tip(:duration_format => current_user.duration_format, :workday_duration => current_user.workday_duration, :days_per_week => current_user.days_per_week, :user => current_user)} )
   end
 
   def submit_tag(value = "Save Changes", options={} )
     or_option = options.delete(:or)
-    return super + "<span class='button_or'>"+"or"+" " + or_option + "</span>" if or_option
+    return super + ("<span class='button_or'>"+"or"+" " + or_option + "</span>").html_safe if or_option
     super
   end
 
   def ajax_spinner_for(id, spinner="spinner.gif")
-    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> "
+    "<img src='/images/#{spinner}' style='display:none; vertical-align:middle;' id='#{id.to_s}_spinner'> ".html_safe
   end
 
   def avatar_for(user, size=32)
     if current_user.option_avatars == 1
-      return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />"
+      return "<img src=\"#{user.avatar_url(size, request.ssl?)}\" class=\"photo\" />".html_safe
     end
     ""
   end
@@ -212,8 +221,8 @@ module ApplicationHelper
 
   def topic_title_link(topic, options)
     if topic.title =~ /^\[([^\]]{1,15})\]((\s+)\w+.*)/
-      "<span class='flag'>#{$1}</span>" +
-      link_to(h($2.strip), topic_path(@forum, topic), options)
+      ("<span class='flag'>#{$1}</span>"+
+      link_to(h($2.strip), topic_path(@forum, topic), options)).html_safe
     else
       link_to(h(topic.title), topic_path(@forum, topic), options)
     end
@@ -235,23 +244,6 @@ module ApplicationHelper
 
   def logged_in?
     true
-  end
-
-  def has_popout?(t)
-    if t.is_a? Task
-      (@current_sheet && @current_sheet.task_id == t.id) || t.done?
-    end
-  end
-
-  def use_tinymce
-    @content_for_tinymce = ""
-    content_for :tinymce do
-      javascript_include_tag "tiny_mce/tiny_mce"
-    end
-    @content_for_tinymce_init = ""
-    content_for :tinymce_init do
-      javascript_include_tag "tiny_mce"
-    end
   end
 
   ###
@@ -432,7 +424,7 @@ module ApplicationHelper
                               :style => remove_style)
     end
 
-    return res
+    return res.html_safe
   end
 
 
@@ -452,6 +444,14 @@ module ApplicationHelper
     current_templates.collect do |t|
       link_to t, :controller=>'task_templates', :action=>'edit',:id=>t.task_num
     end
+  end
+
+  def text_with_links(text)
+    text = sanitize(text)
+    regex = Regexp.new '((https?:\/\/)([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)'
+    text.gsub!( regex, '<a href="\1">\1</a>' )
+    text.gsub!(/#(\d+)/, '<a href="/tasks/edit/\1">#\1</a>' )
+    return text.html_safe
   end
 end
 

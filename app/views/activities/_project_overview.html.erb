@@ -16,7 +16,7 @@
                         %>
 
                         <tr><td colspan=2 align=left class="project_customer">
-                                <%= link_to_remote collapse, :url => { :controller => 'activities', :action => 'toggle_display', :id => project.customer_id },
+                                <%= link_to_remote collapse.html_safe, :url => { :controller => 'activities', :action => 'toggle_display', :id => project.customer_id },
                                                              :loading => "showProgress();",
                                              :complete => "hideProgress();"
                %></strong></td></tr>
@@ -74,7 +74,7 @@ jQuery('#project_<%= project.id %>').hover(function () {
 // ]]>
 </script>
 
-        <div style="float: left; margin-left:5px;"><span class="projects"><%= link_to_remote collapse,
+        <div style="float: left; margin-left:5px;"><span class="projects"><%= link_to_remote collapse.html_safe,
                                               :url => { :controller => 'activities', :action => 'toggle_display_milestones', :id => project.id },
                                               :loading => "showProgress();",
                                               :complete => "hideProgress();" %> <%= link_to_tasks_filtered_by(project) %></span>

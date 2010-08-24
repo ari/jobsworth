@@ -35,7 +35,7 @@ class TaskFilterTest < ActiveSupport::TestCase
     filter = TaskFilter.make_unsaved
     assert filter.keywords.empty?
 
-    filter.keywords_attributes = [ "keyword1", "keyword2" ]
+    filter.keywords_attributes = [ { :word=>"keyword1"}, {:word=>"keyword2"} ]
     assert_equal "keyword1", filter.keywords[0].word
     assert_equal "keyword2", filter.keywords[1].word
   end
@@ -113,10 +113,9 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       kw1 = Task.connection.quote_string("%keyword1%")
       kw2 = Task.connection.quote_string("%keyword2%")
-      sql = (0...2).map { "lower(tasks.name) like ? or lower(tasks.description) like ?" }.join(" or ")
+      sql = (0...2).map { "coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?),0)" }.join(" or ")
       params = [ kw1, kw1, kw2, kw2 ]
       expected = Task.send(:sanitize_sql_array, [ sql ] + params)
-
       assert_not_nil conditions.index(expected)
     end
 
