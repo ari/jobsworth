@@ -1,6 +1,4 @@
-git "git://github.com/rails/arel.git"
-git "git://github.com/rails/rack.git"
-gem "rails", "3.0.0.rc1"
+gem "rails", "3.0.0.rc2"
 
 source 'http://gems.github.com'
 gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_without_table"
