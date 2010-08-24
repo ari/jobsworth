@@ -79,11 +79,13 @@ Naturally adjust the paths to suit your own environment.
   
 === Step 5: Ruby gems
 
-There are a few Ruby gems which are needed for running CIT. Change directory into the top of your CIT installation, then type:
+First we need a new gem installation tool.
 
-  rake gems:install
+  gem install bundler --prerelease
 
-That will install the gems you need.
+Then in order to install all the gems we need.
+
+  bundle install
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
