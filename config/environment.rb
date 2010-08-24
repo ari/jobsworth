@@ -58,6 +58,7 @@ Rails::Initializer.run do |config|
   config.gem 'smurf', :version => '1.0.4'
   config.gem 'paperclip', :version => '2.3.3'
   config.gem 'acts_as_tree'
+  config.gem 'acts_as_list'
 
   if !JAVA
     config.gem 'mysql2', :version => '>= 0.2.3'
