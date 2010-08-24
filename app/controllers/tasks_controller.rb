@@ -422,6 +422,13 @@ class TasksController < ApplicationController
 
     render :text => updated.to_s
   end
+
+  def set_group
+    task = Task.find_by_task_num(params[:id])
+    task.update_group(params[:group], params[:value])
+   
+    render :nothing => true
+  end
 protected
   def hide_task(id, hide=1)
     task = Task.accessed_by(current_user).find(id)

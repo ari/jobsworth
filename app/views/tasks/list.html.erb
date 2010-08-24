@@ -23,7 +23,15 @@
 	-%>
 	<%= link_list.html_safe %>
 	</ul>
-	
+   	<% if controller.controller_name == "tasks" && controller.action_name == "list" %>
+   		<br />
+		Group By:
+    		<%= select_tag("chngroup", 
+        		options_for_select({"Client" => "client", "Milestone" => "milestone", "Priority" => "priority",
+                      	      "Severity" => "severity", "Resolution" => "resolution", "No Grouping" => "clear"},
+        		current_user.preference('task_grouping'))) %>
+    		<br /><br/>
+    	<% end %>
 	<%= yield(:task_list) %>
 
 	<div id="task">
