@@ -424,8 +424,8 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = Task.find_by_task_num(params[:id])
-    task.update_group(params[:group], params[:value])
+    task = current_user.company.tasks.find_by_task_num(params[:id])
+    task.update_group(params[:group], params[:value], params[:icon])
    
     render :nothing => true
   end
