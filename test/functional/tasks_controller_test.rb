@@ -298,10 +298,10 @@ class TasksControllerTest < ActionController::TestCase
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
+          assert_redirected_to "/tasks/list"
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body  and not send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
@@ -309,7 +309,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "create work log with type TASK_WORK_ADDED, with time, comment as a body  and send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_WORK_ADDED )
           assert_equal work_log.duration,  60*10  # 10 minutes
@@ -318,7 +317,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "send one email to each user,  with comment" do
-          assert_redirected_to "/activities/list"
           assert_emails ( @new_task.users.length )
         end
       end
@@ -328,10 +326,10 @@ class TasksControllerTest < ActionController::TestCase
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
+          assert_redirected_to "/tasks/list"
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
@@ -339,7 +337,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "create work log with type TASK_WORK_ADDED, with time spend, without body and not send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_WORK_ADDED )
           assert_equal work_log.duration,  60*10  # 10 minutes
@@ -348,7 +345,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "send only one email to each user, with task description" do
-          assert_redirected_to "/activities/list"
           assert_emails  @new_task.users.length
         end
       end
@@ -364,10 +360,10 @@ class TasksControllerTest < ActionController::TestCase
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
+          assert_redirected_to "/tasks/list"
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and not send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
@@ -375,7 +371,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "create work log with type TASK_COMMENT, without time spend, comment as a body and send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_COMMENT )
           assert_not_nil work_log
@@ -385,7 +380,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
          should "send one email to each user, with comment" do
-          assert_redirected_to "/activities/list"
           assert_emails ( @new_task.users.length )
         end
       end
@@ -395,10 +389,10 @@ class TasksControllerTest < ActionController::TestCase
           #this context not have other contexts, so make post here
           post(:create, @parameters)
           @new_task=assigns(:task)
+          assert_redirected_to "/tasks/list"
         end
 
         should "create work log with type TASK_CREATED, without time spend, with task description as a body and send it" do
-          assert_redirected_to "/activities/list"
           assert @new_task.work_logs.exists?
           work_log= @new_task.work_logs.find_by_log_type( EventLog::TASK_CREATED )
           assert_equal work_log.duration, 0
@@ -406,7 +400,6 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "send only one email to each user, with task description" do
-          assert_redirected_to "/activities/list"
           assert_emails  @new_task.users.length
         end
       end
