@@ -23,9 +23,9 @@ class NewTaskTest < ActionController::IntegrationTest
       should "be able to create task ok" do
         project_count = @project.tasks.count
         milestone_count = @milestone.tasks.count
-        
+
         click_button "create"
-        
+
         assert_equal project_count + 1, @project.tasks.count
         assert_equal milestone_count + 1, @milestone.tasks.count
       end
@@ -33,11 +33,12 @@ class NewTaskTest < ActionController::IntegrationTest
       should "be able to create a worklog using the task description" do
         fill_in "work_log_duration", :with => "5m"
         click_button "create"
-        
+
         task = @user.company.tasks.last
         log = task.reload.work_logs.detect { |wl| wl.duration == 300 }
         assert_not_nil log
-        assert_equal task.description, log.body
+        log = task.work_logs.last
+        assert_match task.description, log.body
       end
     end
   end
