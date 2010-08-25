@@ -2,14 +2,14 @@ require 'test_helper'
 
 class EditPreferencesTest < ActionController::IntegrationTest
   context "a logged in user" do
-    setup do 
+    setup do
       @user = login
       click_link "preferences"
     end
 
     should "be able to edit their own preferences" do
       fill_in "email", :with => "new@email.com"
-      uncheck "receive notifications by default"
+      uncheck "receive notifications"
       click_button "save"
       @user.reload
 
