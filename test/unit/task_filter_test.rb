@@ -113,10 +113,9 @@ class TaskFilterTest < ActiveSupport::TestCase
 
       kw1 = Task.connection.quote_string("%keyword1%")
       kw2 = Task.connection.quote_string("%keyword2%")
-      sql = (0...2).map { "lower(tasks.name) like ? or lower(tasks.description) like ?" }.join(" or ")
+      sql = (0...2).map { "coalesce((lower(tasks.name) like ? or lower(tasks.description) like ?),0)" }.join(" or ")
       params = [ kw1, kw1, kw2, kw2 ]
       expected = Task.send(:sanitize_sql_array, [ sql ] + params)
-
       assert_not_nil conditions.index(expected)
     end
 

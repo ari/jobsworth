@@ -202,7 +202,7 @@ private
     keywords_arg.each do |kw|
       str = "lower(tasks.name) like ?"
       str += " or lower(tasks.description) like ?"
-      sql << str
+      sql << "coalesce((#{str}),0)"
       2.times { params << "%#{ kw.word.downcase }%" }
     end
 
@@ -250,7 +250,7 @@ private
 
     if !ids.blank?
       res = "projects.customer_id in (#{ ids })"
-      res += " or task_customers.customer_id in (#{ ids })"
+      res += " or coalesce(task_customers.customer_id in (#{ ids }),0)"
       return "(#{ res })"
     end
   end
@@ -274,7 +274,7 @@ private
 
       sql = "tasks.#{ column } >= '#{ start_time.to_formatted_s(:db) }'"
       sql += " and tasks.#{ column } < '#{ end_time.to_formatted_s(:db) }'"
-      res << sql
+      res << "coalesce((#{sql}),0)"
     end
 
     res = res.join(" or ")
