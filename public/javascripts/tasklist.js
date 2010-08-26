@@ -147,7 +147,7 @@ function initTaskList() {
                             		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"] > span.ui-icon').remove();
                         	}
             		}
-        	},
+        	}
     	});
 	
 	jQuery("#task_list").jqGrid('gridResize', {
@@ -203,7 +203,7 @@ function initTaskList() {
                         } else {
                             jQuery("#task_list").jqGrid('groupingGroupBy',vl);
                         }
-                    };
+                    }
                 }},
                 draggable: true
 	    });
