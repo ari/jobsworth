@@ -101,25 +101,7 @@ class TasksController < ApplicationController
 
     @task = current_company_task_new
     @task.attributes = params[:task]
-
-    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-
-      repeat = @task.parse_repeat(params[:task][:due_at])
-      if repeat && repeat != ""
-        @task.repeat = repeat
-        @task.due_at = tz.local_to_utc(@task.next_repeat_date)
-      else
-        @task.repeat = nil
-        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                                    flash['notice'] = _('Invalid due date ignored.')
-                                                                                                    due_date = nil
-                                                                                                  end
-        @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
-      end
-    else
-      @task.repeat = nil
-    end
-
+    task_due_and_repeat_calculation(params, @task, tz)
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
@@ -226,23 +208,7 @@ class TasksController < ApplicationController
         @task.save!
 
         @task.hide_until = nil if params[:task][:hide_until].nil?
-
-        if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-          repeat = @task.parse_repeat(params[:task][:due_at])
-          if repeat && repeat != ""
-            @task.repeat = repeat
-            @task.due_at = tz.local_to_utc(@task.next_repeat_date)
-          else
-            @task.repeat = nil
-            due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                        flash['notice'] = _('Invalid due date ignored.')
-                                                                                        due_date = nil
-                                                                                                    end
-            @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
-          end
-        else
-          @task.repeat = nil
-        end
+        task_due_and_repeat_calculation(params, @task, tz)
         @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
@@ -292,7 +258,7 @@ class TasksController < ApplicationController
           end
         }
         format.js { render(:layout => false) }
-      end    
+      end
     end
   end
 
@@ -426,10 +392,28 @@ class TasksController < ApplicationController
   def set_group
     task = Task.find_by_task_num(params[:id])
     task.update_group(params[:group], params[:value])
-   
+
     render :nothing => true
   end
 protected
+  def task_due_and_repeat_calculation(params, task, tz)
+    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
+      repeat = task.parse_repeat(params[:task][:due_at])
+      if repeat && repeat != ""
+        task.repeat = repeat
+        task.due_at = tz.local_to_utc(@task.next_repeat_date)
+      else
+        task.repeat = nil
+        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
+                                                                                                    flash['notice'] = _('Invalid due date ignored.')
+                                                                                                    due_date = nil
+                                                                                                  end
+        task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
+      end
+    else
+      task.repeat = nil
+    end
+  end
   def hide_task(id, hide=1)
     task = Task.accessed_by(current_user).find(id)
     unless task.hidden == hide
