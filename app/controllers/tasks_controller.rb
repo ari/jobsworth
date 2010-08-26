@@ -632,6 +632,7 @@ protected
   def save_todos(todos, task)
     todos.each do |t|
       t.task_id = task.id
+      t.completed_by_user_id = current_user.id unless t.completed_at.blank?
       t.save
     end
   end

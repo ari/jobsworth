@@ -20,11 +20,12 @@ module TodosHelper
     else
       url = "/todos/toggle_todo_clone_done/#{ todo.position }"
     end
+    id = @task ? todo.id : todo.position
 
     check_box("todo", "done", { :title => title,
                 :checked => todo.done?,
                 :class => "button tooltip checkbox",
-                :id => "button_#{ todo.id }",
+                :id => "button_#{ id }",
                 :onclick => "jQuery('.todo-container').load('#{ url }')"
               })
   end
