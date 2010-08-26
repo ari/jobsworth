@@ -14,7 +14,9 @@ module DateAndTimeHelper
   # Returns a string of the given date formatted according to the
   # current user's preferences
   def formatted_date_for_current_user(date)
-    tz.utc_to_local(date.to_time).strftime("#{ current_user.date_format }") if date
+    tm= tz.utc_to_local(date.to_time).strftime("#{ current_user.date_format }") if date
+    p tm
+    tm
   end
 
   ###
