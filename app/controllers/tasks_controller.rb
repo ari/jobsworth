@@ -424,8 +424,8 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = Task.find_by_task_num(params[:id])
-    task.update_group(params[:group], params[:value])
+    task = current_user.company.tasks.find_by_task_num(params[:id])
+    task.update_group(params[:group], params[:value], params[:icon])
    
     render :nothing => true
   end
@@ -632,6 +632,7 @@ protected
   def save_todos(todos, task)
     todos.each do |t|
       t.task_id = task.id
+      t.completed_by_user_id = current_user.id unless t.completed_at.blank?
       t.save
     end
   end

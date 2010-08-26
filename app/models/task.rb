@@ -1028,7 +1028,7 @@ class Task < ActiveRecord::Base
     repeat.save!
   end
 
-  def update_group(group, value)
+  def update_group(group, value, icon = nil)
     user_id = self.project.user_id
     company_id =  self.project.company_id
     if group == "milestone"
@@ -1046,11 +1046,14 @@ class Task < ActiveRecord::Base
       p = Status.find_by_name_and_company_id(value, company_id).id
       self.status = (p - 1)
       save
-    elsif ["severity", "priority"].include? group
-      if prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+    elsif prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+      if !value.blank?
         pv = PropertyValue.find_by_value_and_property_id(value, prop.id)
-        self.set_property_value(prop, pv)
+      elsif !icon.blank?
+        icon = icon.split("?")[0]
+        pv = PropertyValue.find_by_icon_url_and_property_id(icon, prop.id)
       end
+      self.set_property_value(prop, pv)
     end
   end
 

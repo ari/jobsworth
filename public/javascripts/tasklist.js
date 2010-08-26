@@ -112,18 +112,6 @@ function initTaskList() {
 		        groupField: [jQuery("#chngroup").val()]
    		}
 	});
-
- 	jQuery("#chngroup").change(function(){
- 		var vl = jQuery(this).val();
-        	if(vl) {
-                	if(vl == "clear") {
-                		jQuery("#task_list").jqGrid('groupingRemove',true);
-            		} else {
-                		jQuery("#task_list").jqGrid('groupingGroupBy',vl);
-            		}
-        	}
-        	jQuery.post("/users/set_task_grouping_preference/" +  vl);
-    	});
 		
 	jQuery('#task_list').navGrid('#task_pager', {refresh:true, search:false, add:false, edit:false, view:false, del:false},
 		{}, // use default settings for edit
@@ -132,22 +120,32 @@ function initTaskList() {
 		{}, // use default settings for search
 		{} // use default settings for view
 	);
-	
+		
 	jQuery("#task_list").jqGrid('sortableRows', {
 	        update: function(event, ui) {
 	        	if (jQuery("#chngroup").val() != "clear") {
                 		var id = ui.item.index();
                 		for (i=id;i>=0;i--) {
-                    			if (jQuery("tbody.ui-sortable > tr.ui-widget-content").eq(i-1).attr("id").match(/task_listghead/) != null) {
-                        			var group_id = jQuery("tbody.ui-sortable > tr.ui-widget-content").eq(i-1).attr("id");
+                    			if (jQuery("tbody.ui-sortable > tr.ui-widget-content").eq(i-1).attr("id").match(/task_listghead/) != null) {                       			
+                                    		var group_id = jQuery("tbody.ui-sortable > tr.ui-widget-content").eq(i-1).attr("id");
                         			var group_text = jQuery("#" + group_id + " > td").text();
+                                    		var group_icon;
+                                    		if (group_text == "") {
+                                      			group_icon = jQuery("#" + group_id + " > td > img").attr("src");
+                                    		}
                         			break;
                     			}
                 		}
                 		var group = jQuery("#chngroup").val();
-                		jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text);
-        			jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
-           			jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').attr('title', group_text);
+                		jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text+ "&icon=" + group_icon);
+                        	if (group_text != "") {
+                            		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
+                            		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').attr('title', group_text);
+                        	} else if(group_icon != undefined) {
+                            		var image = jQuery("#" + group_id + " > td").html();
+                            		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').html(image);
+                            		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"] > span.ui-icon').remove();
+                        	}
             		}
         	},
     	});
@@ -186,6 +184,33 @@ function initTaskList() {
 			});
     }
 	});
+
+    jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
+    	caption: "Grouping",
+    	title: "Tasks Grouping",
+    	onClickButton : function () {
+            jQuery("#groupby").show();
+            var $dialog = jQuery("#groupby").dialog({
+	    	autoOpen: false,
+	    	title: 'Tasks Grouping',
+            	buttons: { "Save": function() {
+                    vl = jQuery("#chngroup").val();
+                    jQuery.post("/users/set_task_grouping_preference/" +  vl);
+                    jQuery(this).dialog("close");
+                    if(vl) {
+                        if(vl == "clear") {
+                            jQuery("#task_list").jqGrid('groupingRemove',true);
+                        } else {
+                            jQuery("#task_list").jqGrid('groupingGroupBy',vl);
+                        }
+                    };
+                }},
+                draggable: true
+	    });
+	    $dialog.dialog('open');
+	    return false;
+        }
+    });
 	
 	jQuery.extend(jQuery.fn.fmatter , {
     daysFromNow : function(cellvalue, options, rowdata) {

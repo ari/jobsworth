@@ -21,10 +21,10 @@ class TodosController < ApplicationController
 
     if @todo.done?
       @todo.completed_at = nil
-      @todo.completed_by_user = nil
+      @todo.completed_by_user_id = nil
     else
       @todo.completed_at = Time.now
-      @todo.completed_by_user = current_user
+      @todo.completed_by_user_id = current_user.id
     end
 
     @todo.save
@@ -46,6 +46,7 @@ class TodosController < ApplicationController
   #TODOS clone : for todos at task creation page (from template)
   def list_clone
     session[:todos_clone] = Template.find(params[:id]).clone_todos
+    session[:todos_clone].collect{|t| t.completed_by_user = nil}
 
     render :partial => "todos_clone"
   end
@@ -53,6 +54,7 @@ class TodosController < ApplicationController
   def create_clone
     @todo = Todo.new(params[:todo])
     @todo.creator_id = current_user.id
+    @todo.position = session[:todos_clone].size + 1
     session[:todos_clone] << @todo
    
     render :partial => "todos_clone"
@@ -71,15 +73,8 @@ class TodosController < ApplicationController
         break
       end
     end
-
-    if @todo.done?
-      @todo.completed_at = nil
-      @todo.completed_by_user = nil
-    else
-      @todo.completed_at = Time.now
-      @todo.completed_by_user = current_user
-    end
-
+    @todo.completed_at = @todo.done? ? nil : @todo.completed_at = Time.now
+    
     render :partial => "todos_clone"
   end
 
@@ -110,5 +105,4 @@ class TodosController < ApplicationController
       redirect_from_last
     end
   end
-
 end
