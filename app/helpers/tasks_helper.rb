@@ -310,11 +310,11 @@ module TasksHelper
   end
 
   def options_for_changegroup
-    cols = {"Client" => "client", "Milestone" => "milestone", "Resolution" => "resolution"}
+    cols = [["Grouped by Client", "client"], ["Grouped by Milestone", "milestone"], ["Grouped by Resolution", "resolution"]]
     current_user.company.properties.each do |p|
-      cols.merge!(p.name.camelize => p.name.downcase)
+      cols << ["Grouped by #{p.name.camelize}", p.name.downcase]
     end
-    cols.merge!("No Grouping" => "clear")
+    cols << ["No Grouped", "clear"]
     return options_for_select(cols, current_user.preference('task_grouping'))
   end
 end

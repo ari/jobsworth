@@ -2830,3 +2830,6 @@ tr.jqgroup td{
   padding-top: 12px;
 }
 
+select#chngroup {
+  margin-left:5px;
+}

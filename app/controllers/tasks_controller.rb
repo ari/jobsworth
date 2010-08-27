@@ -390,7 +390,7 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = Task.find_by_task_num(params[:id])
+    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     task.update_group(params[:group], params[:value])
 
     render :nothing => true

@@ -60,6 +60,18 @@ function taskListConfigSerialise() {
 	});
 }
 
+function change_group(){
+    var vl = jQuery("div.ui-pg-div > #chngroup").val();
+    if(vl) {
+        if(vl == "clear") {
+            jQuery("#task_list").jqGrid('groupingRemove',true);
+        } else {
+            jQuery("#task_list").jqGrid('groupingGroupBy',vl);
+        }
+    }
+    jQuery.post("/users/set_task_grouping_preference/" +  vl);
+};
+
 var colModel; // we need a global variable to put the model into
 var currentSort;
 
@@ -174,7 +186,7 @@ function initTaskList() {
 	    window.location.href="/tasks/get_csv";
 		}
 	});
-	
+
 	jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
     caption: "Save filter",
     title: "Save filter",
@@ -184,33 +196,13 @@ function initTaskList() {
 			});
     }
 	});
-
+  
     jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
-    	caption: "Grouping",
-    	title: "Tasks Grouping",
-    	onClickButton : function () {
-            jQuery("#groupby").show();
-            var $dialog = jQuery("#groupby").dialog({
-	    	autoOpen: false,
-	    	title: 'Tasks Grouping',
-            	buttons: { "Save": function() {
-                    vl = jQuery("#chngroup").val();
-                    jQuery.post("/users/set_task_grouping_preference/" +  vl);
-                    jQuery(this).dialog("close");
-                    if(vl) {
-                        if(vl == "clear") {
-                            jQuery("#task_list").jqGrid('groupingRemove',true);
-                        } else {
-                            jQuery("#task_list").jqGrid('groupingGroupBy',vl);
-                        }
-                    }
-                }},
-                draggable: true
-	    });
-	    $dialog.dialog('open');
-	    return false;
-        }
+        caption: jQuery("#groupby").html(),
+        buttonicon: "none",
+        id: "jgrid_footer_changegroup"
     });
+    jQuery('#task_pager_center').remove();   
 	
 	jQuery.extend(jQuery.fn.fmatter , {
     daysFromNow : function(cellvalue, options, rowdata) {

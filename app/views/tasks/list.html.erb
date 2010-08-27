@@ -24,8 +24,7 @@
 	<%= link_list.html_safe %>
 	</ul>
    	<div id="groupby" style="display:none">
-      		Group By:
-        	<%= select_tag("chngroup", options_for_changegroup) %>
+        	<%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
     	</div>
 	<%= yield(:task_list) %>
 
