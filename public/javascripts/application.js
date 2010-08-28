@@ -763,7 +763,7 @@ function new_task_form() {
     edit.toggle();
 }
 
-function addNewTodoKeyListener(sender, button) {
+function addNewTodoKeyListenerForUncreatedTask(sender, button) {
      if (button == "edit") {
        var li_element = jQuery(sender).parent().parent();
        var input = jQuery(sender).parent().siblings(".edit").children("input");

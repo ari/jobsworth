@@ -46,7 +46,7 @@ module TodosHelper
       todo = Todo.new(:creator_id => current_user.id)
       page.insert_html(:bottom, "todos-clone", :partial => "/todos/new_todo",
                        :locals => { :todo => todo})
-      page << "addNewTodoKeyListener(this, 'new');new_task_form();"
+      page << "addNewTodoKeyListenerForUncreatedTask(this, 'new');new_task_form();"
     end
   end
 
