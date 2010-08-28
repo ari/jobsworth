@@ -70,15 +70,6 @@ function addSearchFilter(event, ui) {
     return false;
 }
 
-
-/*
-Sets up the search filter input field to add a task automatically
-if a number is entered and then the user hits enter
-*/
-function addSearchFilterTaskIdListener() {
-    var filter = jQuery("#search_filter");
-}
-
 function removeTaskFilter(sender) {
   var li = jQuery(sender).parent();
   var form = li.parents("form");
