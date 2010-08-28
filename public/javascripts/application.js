@@ -5,8 +5,8 @@ jQuery.noConflict();
 //
 
 jQuery(function() {
-        jQuery("input:submit").button();
-        //jQuery("#tabmenu").tabs();
+  jQuery("input:submit").button();
+  //jQuery("#tabmenu").tabs();
 });
 
 
@@ -16,19 +16,19 @@ jQuery(function() {
 //
 
 function showProgress() {
-        jQuery('#loading').show('fast');
+  jQuery('#loading').show('fast');
 }
 function hideProgress() {
-        jQuery('#loading').hide('fast');
+  jQuery('#loading').hide('fast');
 }
 
 jQuery(document).mousemove(function(e) {
-        if(jQuery('#loading').is(':visible')) {
-                jQuery("#loading").css({
-            top: (e.pageY  - 8) + "px",
-            left: (e.pageX + 10) + "px"
-        });
-        }
+  if (jQuery('#loading').is(':visible')) {
+    jQuery("#loading").css({
+      top: (e.pageY  - 8) + "px",
+      left: (e.pageX + 10) + "px"
+    });
+  }
 });
 
 jQuery("#loading").bind("ajaxSend", function(){
@@ -37,6 +37,8 @@ jQuery("#loading").bind("ajaxSend", function(){
    jQuery(this).hide('fast');
 });
 
+
+/* this function is deprecated and subject to removal */
 function inline_image(el) {
   $(el).setStyle({width:'auto', visibility:'hidden'});
   if (el.width > 500) {
@@ -119,13 +121,6 @@ jQuery.fn.dateToWords = function() {
   });
 };
 
-/*
- Clears the text in the given field
-*/
-function clearPrompt(field) {
-    field.value = "";
-}
-
 
 function addProjectToUser(event, ui) {
     var value = ui.item.id;
@@ -150,14 +145,6 @@ function addUserToProject(event, ui) {
     return false;
 }
 
-/*
- This function adds in the selected value to the previous autocomplete.
- The autocomplete text field itself will be updated with the name, and
- a hidden field directly before the text field will be updated with the object id.
-*/
-function updateAutoCompleteField(event, ui) {
-    jQuery("#resource_customer_id").val(ui.item.id);
-}
 
 /*
   Requests the available attributes for the given resource type
@@ -354,10 +341,10 @@ function nestedCheckboxChanged(checkbox) {
     failed a validation.
 */
 function fixNestedCheckboxes() {
-    var checkboxes = jQuery(".nested_checkbox");
-    for (var i = 0; i < checkboxes.length; i++) {
-                nestedCheckboxChanged(checkboxes[i]);
-    }
+  var checkboxes = jQuery(".nested_checkbox");
+  for (var i = 0; i < checkboxes.length; i++) {
+    nestedCheckboxChanged(checkboxes[i]);
+  }
 }
 
 /*
@@ -401,10 +388,6 @@ function setPageTarget(event, ui) {
     jQuery("#page_notable_type").val(type);
 }
 
-jQuery(document).ready(function() {
-    fixNestedCheckboxes();
-});
-
 /*TODO: Move following code to another file
 */
 /*
@@ -426,101 +409,67 @@ function attach_behaviour_to_project_select() {
     });
   }
 }
-/*Attach behavior to filters panel,
-  change filter via ajax only on task/list page.
-  On all other pages, when user click on filter link change filter
-*/
-function initFiltersPanel() {
-  jQuery('div.task_filters ul li a').click(loadFilterPanel);
-}
-
-function initTagsPanel() {
-  jQuery('#tags a').click(loadFilterPanel);
-}
-
-function loadFilterPanel() {
-  jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
-  jQuery.ajax({
-            beforeSend: function(){ showProgress(); },
-            complete: function(request){ tasklistReload(); hideProgress(); } ,
-            data:'',
-            success:  function(request){jQuery('#search_filter_keys').html(request);},
-            type:'post',
-            url: this.href
-        });
-        return false;
-}
-
-jQuery(document).ready(function() {
-    //only if we on task list page
-    if( /tasks\/list$/.test(document.location.href) ){
-        initFiltersPanel();
-        initTagsPanel();
-    }
-});
-
 
 //return path to tasks or task_templates controller
 //based on current page path
 //so we can reuse tasks code, views and javasript in taks_templates
 function tasks_path(action_name) {
-    if(/tasks\//.test(document.location.pathname)) {
-        return "/tasks/" + action_name ;
-    }
-    else if ( /task_templates\//.test(document.location.pathname)) {
-            return "/task_templates/" + action_name ;
-    }
-    else if(jQuery('#template_clone').val() == '1') {
-            return "/tasks/" + action_name ;
-        }
-    return action_name;
+  if (/tasks\//.test(document.location.pathname)) {
+    return "/tasks/" + action_name ;
+  }
+  else if ( /task_templates\//.test(document.location.pathname)) {
+    return "/task_templates/" + action_name ;
+  }
+  else if (jQuery('#template_clone').val() == '1') {
+    return "/tasks/" + action_name ;
+  }
+  return action_name;
 }
 
 
-function attachObseverForWorkLog() {
-	jQuery('#worklog_body').blur(function(){
-		jQuery.ajax({
-			'url': '/tasks/updatelog',
-			'data': jQuery('#worklog_form').serialize(),
-			'dataType': 'text',
-			'type': 'POST',
-			'success': function(data){jQuery('#worklog-saved').html(data) ;}
-		});
-	});
+/*
+ This function adds in the selected value to the previous autocomplete.
+ The autocomplete text field itself will be updated with the name, and
+ a hidden field directly before the text field will be updated with the object id.
+*/
+function updateAutoCompleteField(event, ui) {
+    jQuery("#resource_customer_id").val(ui.item.id);
 }
 
 jQuery(document).ready(function() {
-    jQuery('li.task_template a').click(create_task_from_template);
-    highlightWatchers();  /* run this once to initialise everything right */
-    init_task_form();
-    attachObseverForWorkLog();
-    if ( /task_templates\//.test(document.location.pathname)) {
-       hide_unneeded_inputs_for_task_template();
-    }
-    jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
-    jQuery(function() {
-        jQuery('#target').catcomplete({
-              source: '/pages/target_list',
-              select: setPageTarget,
-              delay: 800,
-              minLength: 1
-        })
-    });
-    autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-    autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
-    autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
-    autocomplete('#project_user_name_autocomplete', '/projects/auto_complete_for_user_name', addUserToProject);
+  fixNestedCheckboxes();
+
+  jQuery('li.task_template a').click(create_task_from_template);
+  highlightWatchers();  /* run this once to initialise everything right */
+  init_task_form();
+  attachObseverForWorkLog();
+  if ( /task_templates\//.test(document.location.pathname)) {
+     hide_unneeded_inputs_for_task_template();
+  }
+  jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
+  jQuery(function() {
+    jQuery('#target').catcomplete({
+          source: '/pages/target_list',
+          select: setPageTarget,
+          delay: 800,
+          minLength: 1
+    })
+  });
+  autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
+  autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+  autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
+  autocomplete('#project_user_name_autocomplete', '/projects/auto_complete_for_user_name', addUserToProject);
 });
 
 function toggleAccess() {
-        if (jQuery('#accessLevel_container div').hasClass('private')) {
-                jQuery('#accessLevel_container div').removeClass('private');
-                jQuery('#work_log_access_level_id').val('1');
-        } else {
-                jQuery('#accessLevel_container div').addClass('private');
-                jQuery('#work_log_access_level_id').val('2');
-    }
-        highlightWatchers();
+  if (jQuery('#accessLevel_container div').hasClass('private')) {
+    jQuery('#accessLevel_container div').removeClass('private');
+    jQuery('#work_log_access_level_id').val('1');
+  } else {
+    jQuery('#accessLevel_container div').addClass('private');
+    jQuery('#work_log_access_level_id').val('2');
+  }
+  highlightWatchers();
 }
 
 
@@ -530,17 +479,17 @@ function autocomplete(input_field, path, after_callback) {
 }
 
 jQuery.widget("custom.catcomplete", jQuery.ui.autocomplete, {
-                _renderMenu: function( ul, items ) {
-                        var self = this,
-                                currentCategory = "";
-                        jQuery.each( items, function( index, item ) {
-                                if ( item.category != currentCategory ) {
-                                        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
-                                        currentCategory = item.category;
-                                }
-                                self._renderItem( ul, item );
-                        });
-                }
+  _renderMenu: function( ul, items ) {
+    var self = this,
+      currentCategory = "";
+    jQuery.each( items, function( index, item ) {
+      if ( item.category != currentCategory ) {
+        ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+        currentCategory = item.category;
+      }
+      self._renderItem( ul, item );
+    });
+  }
 });
 
 
@@ -585,3 +534,14 @@ function autocomplete_multiple_remote(input_field, path){
 }
 
 
+/* Events */
+
+jQuery('#worklog_body').blur(function(){
+	jQuery.ajax({
+		'url': '/tasks/updatelog',
+		'data': jQuery('#worklog_form').serialize(),
+		'dataType': 'text',
+		'type': 'POST',
+		'success': function(data){jQuery('#worklog-saved').html(data) ;}
+	});
+});

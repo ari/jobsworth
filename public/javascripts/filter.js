@@ -84,7 +84,38 @@ function addTaskFilter(sender, id, field_name) {
   jQuery("#filter_form").submit();
 }
 
+/*Attach behavior to filters panel,
+  change filter via ajax only on task/list page.
+  On all other pages, when user click on filter link change filter
+*/
+function initFiltersPanel() {
+  jQuery('div.task_filters ul li a').click(loadFilterPanel);
+}
+
+function initTagsPanel() {
+  jQuery('#tags a').click(loadFilterPanel);
+}
+
+function loadFilterPanel() {
+  jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
+  jQuery.ajax({
+            beforeSend: function(){ showProgress(); },
+            complete: function(request){ tasklistReload(); hideProgress(); } ,
+            data:'',
+            success:  function(request){jQuery('#search_filter_keys').html(request);},
+            type:'post',
+            url: this.href
+        });
+        return false;
+}
+
 jQuery(document).ready(function() {
+  //only if we on task list page
+  if( /tasks\/list$/.test(document.location.href) ){
+      initFiltersPanel();
+      initTagsPanel();
+  }
+
   // make search box contents selected when the user clicks in it
   jQuery("#search_filter").focus( function() {
     if (jQuery(this).val() == "Task search...") {
