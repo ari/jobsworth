@@ -28,9 +28,9 @@ module Misc
       hours = minutes / 60
       minutes = minutes - (hours * 60) if hours > 0
 
-      res += "#{weeks}#{_('w')}#{' ' if duration_format == 0}" if weeks > 0
-      res += "#{days}#{_('d')}#{' ' if duration_format == 0}" if days > 0
-      res += "#{hours}#{_('h')}#{' ' if duration_format == 0}" if hours > 0
+      res += "#{weeks.round(2)}#{_('w')}#{' ' if duration_format == 0}" if weeks > 0
+      res += "#{days.round(2)}#{_('d')}#{' ' if duration_format == 0}" if days > 0
+      res += "#{hours.round(2)}#{_('h')}#{' ' if duration_format == 0}" if hours > 0
     end
     res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
 
