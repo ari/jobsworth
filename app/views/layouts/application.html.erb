@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "jquery.layout", "ui.multiselect", "jquery.jqGrid", "jquery.autogrow", "json2", "fullcalendar", "tasklist", :cache => "main" %>
+    <%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "jquery.layout", "ui.multiselect", "jquery.jqGrid", "jquery.autogrow", "json2", "tasklist", :cache => "main" %>
     <%= javascript_include_tag "fullcalendar" %>
     <%= yield :head %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
