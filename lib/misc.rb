@@ -1,6 +1,6 @@
 module Misc
 
-  defaults = { :domain => "clockingit.com", :replyto => "admin", :from => "admin", :prefix => "[ClockingIT]" }
+  defaults = { :domain => "getjobsworth.org", :replyto => "admin", :from => "admin", :prefix => "[Jobsworth]" }
   
   $CONFIG ||= { }
   defaults.keys.each do |k|

@@ -1,4 +1,4 @@
-# Placeholder for the upcoming API for ClockingIT
+# Placeholder for the upcoming API
 #
 class ApiController < ApplicationController
 

@@ -286,7 +286,7 @@ class TasksController < ApplicationController
 
   def get_csv
     list_init
-    filename = "clockingit_tasks.csv"
+    filename = "jobsworth_tasks.csv"
     @tasks= current_task_filter.tasks
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
       csv << @tasks.first.csv_header
@@ -295,7 +295,7 @@ class TasksController < ApplicationController
       end
 
     end
-    logger.info("Seinding[#{filename}]")
+    logger.info("Sending[#{filename}]")
 
     send_data(csv_string,
               :type => 'text/csv; charset=utf-8; header=present',

@@ -1,4 +1,4 @@
-# Translations of strings used in ClockingIT
+# Translations of strings
 
 class Locale < ActiveRecord::Base
   belongs_to :user
