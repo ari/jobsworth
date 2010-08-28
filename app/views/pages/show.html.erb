@@ -1,6 +1,6 @@
 <div id="wiki">
 <h1><%= @page.name %></h1>
-<%= @page.body %>
+<%= @page.body.html_safe %>
 </div>
 <div id="wiki-info">
 <%= link_to _('Edit'), :action => 'edit', :id => @page %> |
