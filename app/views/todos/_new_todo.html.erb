@@ -17,7 +17,7 @@
   </span>
   <span class="todo_not_yet_done" <%= "style='display: none;'" if todo.done? %>>
     &nbsp;
-    <%= link_to_function(image_tag("edit.png"), "addNewTodoKeyListener(this, 'edit');toggleTodoEdit(this);") %>
+    <%= link_to_function(image_tag("edit.png"), "addNewTodoKeyListenerForUncreatedTask(this, 'edit');toggleTodoEdit(this);") %>
   </span>
 
   &nbsp;
