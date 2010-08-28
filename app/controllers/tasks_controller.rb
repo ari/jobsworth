@@ -107,6 +107,7 @@ class TasksController < ApplicationController
     @task.duration = parse_time(params[:task][:duration], true)
     @task.set_tags(tags)
     @task.duration = 0 if @task.duration.nil?
+    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
 
     unless current_user.can?(@task.project, 'create')
       flash['notice'] = _("You don't have access to create tasks on this project.")
@@ -126,12 +127,6 @@ class TasksController < ApplicationController
       end
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
-
-      #save todos
-      if session[:todos_clone]
-        save_todos(session[:todos_clone], @task)
-        session[:todos_clone] = nil
-      end
 
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
@@ -433,7 +428,6 @@ protected
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
-    session[:todos_clone] = nil
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
@@ -612,11 +606,5 @@ protected
   end
   def set_last_task(task)
     session[:last_task_id] = task.id
-  end
-  def save_todos(todos, task)
-    todos.each do |t|
-      t.task_id = task.id
-      t.save
-    end
   end
 end

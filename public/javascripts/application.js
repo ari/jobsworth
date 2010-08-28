@@ -698,23 +698,6 @@ function addTodoKeyListener(todoId, taskId) {
     });
 }
 
-function addTodoCloneKeyListener(positionId) {
-    var todo = jQuery("#todos-" + positionId);
-    var input = todo.find(".edit input");
-
-    input.keypress(function(key) {
-        if (key.keyCode == 13) {
-            jQuery(".todo-container").load("/todos/update_clone/" + positionId,  {
-                "_method": "PUT",
-                "todo[name]": input.val()
-            });
-
-            key.stopPropagation();
-            return false;
-        }
-    });
-}
-
 /*
 Adds listeners to handle users pressing enter in the todo
 create field
@@ -737,16 +720,64 @@ function addNewTodoKeyListener(taskId) {
     });
 }
 
-function addNewTodoCloneKeyListener() {
-    var todo = jQuery("#new-todos");
-    var input = todo.find(".edit input");
+/*
+ Add function to handle open/close task
+ For New Task
+*/
+
+function new_todo_open_close_check(val, sender, time, formatted_time, user, user_id) {
+    if (val == true) {
+        jQuery(sender).attr("title", "Close <b>" + jQuery(sender).val() + "</b>")
+        jQuery(sender).siblings(".completed_by_user_id").val(user_id);
+        jQuery(sender).siblings(".completed_at").val(time);
+        jQuery(sender).siblings(".new_todo_complete").val(true);
+        jQuery(sender).parent().attr("class", "todo todo-completed");
+        jQuery(sender).siblings(".todo_not_yet_done").hide();
+        jQuery(sender).siblings(".todo_done").show();
+        jQuery(sender).siblings(".edit").hide();
+        jQuery(sender).siblings(".todo_done").children(".time").text("["+formatted_time+"]");
+        jQuery(sender).siblings(".todo_done").children(".user").text("["+user+"]");
+    } else {
+        jQuery(sender).attr("title", "Open <b>" + jQuery(sender).val() + "</b>")
+        jQuery(sender).siblings(".completed_by_user_id").val(" ");
+        jQuery(sender).siblings(".completed_at").val(" ");
+        jQuery(sender).siblings(".new_todo_complete").val(false);
+        jQuery(sender).parent().attr("class", "todo todo-active");
+        jQuery(sender).siblings(".todo_not_yet_done").show();
+        jQuery(sender).siblings(".todo_done").hide();
+    }
+}
+
+/*
+  Add function to handle new todo
+  For new Task
+*/
+
+
+function new_task_form() {
+    var todo = jQuery("#todos-clone").children("li:last-child");
+    var display = todo.find(".display");
+    var edit = todo.find(".edit");
+
+    display.toggle();
+    edit.toggle();
+}
+
+function addNewTodoKeyListener(sender, button) {
+     if (button == "edit") {
+       var li_element = jQuery(sender).parent().parent();
+       var input = jQuery(sender).parent().siblings(".edit").children("input");
+     } else if(button == "new") {
+       var li_element = jQuery("#todos-clone").children("li:last-child");
+       var input = li_element.children("span.edit").children("input");
+     };
 
     input.keypress(function(key) {
         if (key.keyCode == 13) {
-            jQuery(".todo-container").load("/todos/create_clone", {
-                "_method": "POST",
-                "todo[name]": input.val()
-            });
+            li_element.children(".display").show();
+            li_element.children(".display").text(input.val());
+            li_element.children(".edit").children("input").val(input.val());
+            li_element.children(".edit").hide();
 
             key.stopPropagation();
             return false;

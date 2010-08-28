@@ -1,0 +1,26 @@
+<li id="new_todo_<%= todo.position %>" class="<%= todo.css_classes%>">
+  <%= new_todo_open_close_check_box(todo) %>
+  <%= hidden_field_tag "todos[][creator_id]", todo.creator_id, :class => "creator_id" %>
+  <%= hidden_field_tag "todos[][completed_by_user_id]", todo.completed_by_user_id, :class => "completed_by_user_id" %>
+  <%= hidden_field_tag "todos[][completed_at]", todo.completed_at, :class => "completed_at" %>
+  <span class="display">
+    <%=h todo.name %>
+  </span>
+  <span class="edit" style="display: none;">
+    <%= text_field_tag("todos[][name]", todo.name) %>
+    <%= link_to_function("Cancel", "toggleTodoEdit(this)") %>
+  </span>
+
+  <span class="todo_done" <%= "style='display: none;'" unless todo.done? %>>
+    <span class="time"><%=h "[#{ formatted_datetime_for_current_user(todo.completed_at) }]" %></span>
+    <span class="user"><%=h "[#{ todo.completed_by_user.name }]" if todo.completed_by_user %></span>
+  </span>
+  <span class="todo_not_yet_done" <%= "style='display: none;'" if todo.done? %>>
+    &nbsp;
+    <%= link_to_function(image_tag("edit.png"), "addNewTodoKeyListener(this, 'edit');toggleTodoEdit(this);") %>
+  </span>
+
+  &nbsp;
+  <%= link_to image_tag("cross_small.png", :class => "tooltip", :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe), "",
+              :onClick => "jQuery(this).parent().remove(); return false;"%>
+</li>
