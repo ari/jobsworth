@@ -48,6 +48,5 @@ function create_task_from_template(event) {
         jQuery("#flash").remove();
         highlightWatchers();
         init_task_form();
-        attachObseverForWorkLog();
     });
 }

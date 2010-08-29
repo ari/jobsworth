@@ -442,7 +442,6 @@ jQuery(document).ready(function() {
 
   highlightWatchers();
   init_task_form();
-  attachObseverForWorkLog();
 
   jQuery(function() {
     jQuery('#target').catcomplete({
