@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title><%= $CONFIG[:productName] %></title>
-<%= stylesheet_link_tag "portal" %>
+<%= stylesheet_link_tag "login" %>
 <% if !@company.nil?
    @internal = @company.internal_customer
    if @internal and !@internal.css.blank? %>

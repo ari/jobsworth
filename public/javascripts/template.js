@@ -1,21 +1,34 @@
-function hide_unneeded_inputs_for_task_template() {
-  jQuery("#task_dependencies").hide();
-  jQuery("#snippet").hide();
-  jQuery("#upload_container").hide();
-  jQuery("#task_information > textarea.autogrow").hide();
-  jQuery("#accessLevel_container").hide();
-  jQuery("#worktime_container").hide();
-  jQuery("#task_time_links").hide();
-  jQuery("#notify_users").hide();
-  jQuery("#task_information > br").hide();
-}
+/*
+  Disable all the features of tasks which
+  aren't needed in templates
+*/
+jQuery(document).ready(function() {
+
+  if ( /task_templates\//.test(document.location.pathname)) {
+    jQuery("#task_dependencies").hide();
+    jQuery("#snippet").hide();
+    jQuery("#upload_container").hide();
+    jQuery("#task_information > textarea.autogrow").hide();
+    jQuery("#accessLevel_container").hide();
+    jQuery("#worktime_container").hide();
+    jQuery("#task_time_links").hide();
+    jQuery("#notify_users").hide();
+    jQuery("#task_information > br").hide();
+  }
+  
+});
 
 /*
-This function simulate two step user behavior in one click
-First goto template edit page, see template in form
-Second send template form attributes to tasks/new
+  Create new tasks from a template when you
+  click on the menu item
 */
-
+jQuery('li.task_template a').click(create_task_from_template);
+  
+/*
+  This function simulate two step user behavior in one click
+  First goto template edit page, see template in form
+  Second send template form attributes to tasks/new
+*/
 function create_task_from_template(event) {
     jQuery.get('/task_templates/edit/'+jQuery(this).attr('data-tasknum')+'.js', function(data) {
         var form=jQuery(data).first();

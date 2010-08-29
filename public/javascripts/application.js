@@ -308,6 +308,7 @@ function removeTaskResource(link) {
 }
 
 /*
+  For the resources edit page.
   Retrieves the password from the given url, and updated
   the nearest password div with the returned value.
 */
@@ -439,14 +440,10 @@ function updateAutoCompleteField(event, ui) {
 jQuery(document).ready(function() {
   fixNestedCheckboxes();
 
-  jQuery('li.task_template a').click(create_task_from_template);
-  highlightWatchers();  /* run this once to initialise everything right */
+  highlightWatchers();
   init_task_form();
   attachObseverForWorkLog();
-  if ( /task_templates\//.test(document.location.pathname)) {
-     hide_unneeded_inputs_for_task_template();
-  }
-  jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
+
   jQuery(function() {
     jQuery('#target').catcomplete({
           source: '/pages/target_list',
@@ -535,7 +532,8 @@ function autocomplete_multiple_remote(input_field, path){
 
 
 /* Events */
-
+jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
+  
 jQuery('#worklog_body').blur(function(){
 	jQuery.ajax({
 		'url': '/tasks/updatelog',
