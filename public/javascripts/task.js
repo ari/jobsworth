@@ -1,3 +1,17 @@
+// -------------------------
+//  Task edit
+// -------------------------
+
+/* Load a task into the edit panel by ajax */
+function loadTask(id) {
+	jQuery("#task").fadeOut();
+	jQuery.get("/tasks/edit/" + id, {}, function(data) {
+		jQuery("#task").html(data);
+		jQuery("#task").fadeIn('slow');
+		init_task_form();
+  });
+}
+
 /*
  Marks the task sender belongs to as unread.
  Also removes the "unread" class from the task html.
