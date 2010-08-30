@@ -101,30 +101,13 @@ class TasksController < ApplicationController
 
     @task = current_company_task_new
     @task.attributes = params[:task]
-
-    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-
-      repeat = @task.parse_repeat(params[:task][:due_at])
-      if repeat && repeat != ""
-        @task.repeat = repeat
-        @task.due_at = tz.local_to_utc(@task.next_repeat_date)
-      else
-        @task.repeat = nil
-        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                                    flash['notice'] = _('Invalid due date ignored.')
-                                                                                                    due_date = nil
-                                                                                                  end
-        @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
-      end
-    else
-      @task.repeat = nil
-    end
-
+    task_due_and_repeat_calculation(params, @task, tz)
     @task.updated_by_id = current_user.id
     @task.creator_id = current_user.id
     @task.duration = parse_time(params[:task][:duration], true)
     @task.set_tags(tags)
     @task.duration = 0 if @task.duration.nil?
+    params[:todos].collect { |todo| @task.todos.build(todo) } if params[:todos]
 
     unless current_user.can?(@task.project, 'create')
       flash['notice'] = _("You don't have access to create tasks on this project.")
@@ -144,12 +127,6 @@ class TasksController < ApplicationController
       end
       session[:last_project_id] = @task.project_id
       set_last_task(@task)
-
-      #save todos
-      if session[:todos_clone]
-        save_todos(session[:todos_clone], @task)
-        session[:todos_clone] = nil
-      end
 
       flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully created.')}")
 
@@ -226,23 +203,7 @@ class TasksController < ApplicationController
         @task.save!
 
         @task.hide_until = nil if params[:task][:hide_until].nil?
-
-        if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
-          repeat = @task.parse_repeat(params[:task][:due_at])
-          if repeat && repeat != ""
-            @task.repeat = repeat
-            @task.due_at = tz.local_to_utc(@task.next_repeat_date)
-          else
-            @task.repeat = nil
-            due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
-                                                                                        flash['notice'] = _('Invalid due date ignored.')
-                                                                                        due_date = nil
-                                                                                                    end
-            @task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
-          end
-        else
-          @task.repeat = nil
-        end
+        task_due_and_repeat_calculation(params, @task, tz)
         @task.set_users_dependencies_resources(params, current_user)
         @task.duration = parse_time(params[:task][:duration], true) if (params[:task] && params[:task][:duration])
         @task.updated_by_id = current_user.id
@@ -292,7 +253,7 @@ class TasksController < ApplicationController
           end
         }
         format.js { render(:layout => false) }
-      end    
+      end
     end
   end
 
@@ -325,7 +286,7 @@ class TasksController < ApplicationController
 
   def get_csv
     list_init
-    filename = "clockingit_tasks.csv"
+    filename = "jobsworth_tasks.csv"
     @tasks= current_task_filter.tasks
     csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
       csv << @tasks.first.csv_header
@@ -334,7 +295,7 @@ class TasksController < ApplicationController
       end
 
     end
-    logger.info("Seinding[#{filename}]")
+    logger.info("Sending[#{filename}]")
 
     send_data(csv_string,
               :type => 'text/csv; charset=utf-8; header=present',
@@ -424,12 +385,30 @@ class TasksController < ApplicationController
   end
 
   def set_group
-    task = Task.find_by_task_num(params[:id])
+    task = Task.accessed_by(current_user).find_by_task_num(params[:id])
     task.update_group(params[:group], params[:value])
-   
+
     render :nothing => true
   end
 protected
+  def task_due_and_repeat_calculation(params, task, tz)
+    if !params[:task].nil? && !params[:task][:due_at].nil? && params[:task][:due_at].length > 0
+      repeat = task.parse_repeat(params[:task][:due_at])
+      if repeat && repeat != ""
+        task.repeat = repeat
+        task.due_at = tz.local_to_utc(@task.next_repeat_date)
+      else
+        task.repeat = nil
+        due_date = DateTime.strptime( params[:task][:due_at], current_user.date_format ) rescue begin
+                                                                                                    flash['notice'] = _('Invalid due date ignored.')
+                                                                                                    due_date = nil
+                                                                                                  end
+        task.due_at = tz.local_to_utc(due_date.to_time) unless due_date.nil?
+      end
+    else
+      task.repeat = nil
+    end
+  end
   def hide_task(id, hide=1)
     task = Task.accessed_by(current_user).find(id)
     unless task.hidden == hide
@@ -449,7 +428,6 @@ protected
   # Sets up the attributes needed to display new action
   ###
   def init_attributes_for_new_template
-    session[:todos_clone] = nil
     @projects = current_user.projects.find(:all, :order => 'name', :conditions => ["completed_at IS NULL"]).collect {  |c|
       [ "#{c.name} / #{c.customer.name}", c.id ] if current_user.can?(c, 'create')
     }.compact unless current_user.projects.nil?
@@ -628,11 +606,5 @@ protected
   end
   def set_last_task(task)
     session[:last_task_id] = task.id
-  end
-  def save_todos(todos, task)
-    todos.each do |t|
-      t.task_id = task.id
-      t.save
-    end
   end
 end

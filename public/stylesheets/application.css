@@ -2823,7 +2823,13 @@ fieldset.basic .actions label {
   cursor: pointer;
 }
 
-tbody.ui-sortable tr.jqgroup td{
-  font-weight: bold;    
+tr.jqgroup td{
+  font-weight: bold;
+  font-size: 1.1em;
+  padding-bottom: 3px;
+  padding-top: 12px;
 }
 
+select#chngroup {
+  margin-left:5px;
+}

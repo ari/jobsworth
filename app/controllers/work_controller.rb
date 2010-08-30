@@ -7,7 +7,6 @@ class WorkController < ApplicationController
     if task
       sheet = Sheet.create(:task => task, :user => current_user,
                            :project => task.project)
-      task.status = 1 if task.status == 0
       task.save
 
       @current_sheet = sheet

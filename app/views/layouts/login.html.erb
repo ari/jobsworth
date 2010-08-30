@@ -2,8 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title><%= $CONFIG[:productName] %></title>
-	<%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "grid.locale-en.js", "jquery.jqGrid.min", "json2", "tasklist", :cache => "main" %>
-    <%= stylesheet_link_tag "portal" %>
+  	<%= javascript_include_tag(
+  	  :defaults,
+  	  "jquery.tooltip",
+  	  "jquery-ui",
+  	%>
+    <%= stylesheet_link_tag "login" %>
   </head>
 
   <body>

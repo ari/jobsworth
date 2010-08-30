@@ -1,8 +1,12 @@
 /*
-* jQuery UI CSS Framework
-* Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
-* Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-*/
+ * jQuery UI CSS Framework @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ */
 
 /* Layout helpers
 ----------------------------------*/
@@ -38,11 +42,16 @@
 
 
 /*
-* jQuery UI CSS Framework
-* Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
-* Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana,Arial,sans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=a86734&bgTextureHeader=04_highlight_hard.png&bgImgOpacityHeader=40&borderColorHeader=b86d32&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=f4f0ec&bgTextureContent=05_inset_soft.png&bgImgOpacityContent=100&borderColorContent=e0cfc2&fcContent=1e1b1d&iconColorContent=c47a23&bgColorDefault=ede4d4&bgTextureDefault=12_gloss_wave.png&bgImgOpacityDefault=70&borderColorDefault=cdc3b7&fcDefault=625850&iconColorDefault=c47a23&bgColorHover=f3ce77&bgTextureHover=12_gloss_wave.png&bgImgOpacityHover=100&borderColorHover=f5ad66&fcHover=b35100&iconColorHover=f35f07&bgColorActive=f4f0ec&bgTextureActive=12_gloss_wave.png&bgImgOpacityActive=100&borderColorActive=e0cfc2&fcActive=b35100&iconColorActive=f35f07&bgColorHighlight=f5ebb5&bgTextureHighlight=04_highlight_hard.png&bgImgOpacityHighlight=75&borderColorHighlight=d9bb73&fcHighlight=060200&iconColorHighlight=cb672b&bgColorError=7a0008&bgTextureError=08_diagonals_thick.png&bgImgOpacityError=20&borderColorError=8a0002&fcError=ffffff&iconColorError=ffffff&bgColorOverlay=aaaaaa&bgTextureOverlay=07_diagonals_medium.png&bgImgOpacityOverlay=40&opacityOverlay=60&bgColorShadow=454545&bgTextureShadow=01_flat.png&bgImgOpacityShadow=100&opacityShadow=30&thicknessShadow=0px&offsetTopShadow=4px&offsetLeftShadow=4px&cornerRadiusShadow=4px
-*/
+ * jQuery UI CSS Framework @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Theming/API
+ *
+ * To view and modify this theme, visit http://jqueryui.com/themeroller/?ctl=themeroller&ffDefault=Verdana,Arial,sans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=a86734&bgTextureHeader=04_highlight_hard.png&bgImgOpacityHeader=40&borderColorHeader=b86d32&fcHeader=ffffff&iconColorHeader=ffffff&bgColorContent=f4f0ec&bgTextureContent=05_inset_soft.png&bgImgOpacityContent=100&borderColorContent=e0cfc2&fcContent=1e1b1d&iconColorContent=c47a23&bgColorDefault=ede4d4&bgTextureDefault=12_gloss_wave.png&bgImgOpacityDefault=70&borderColorDefault=cdc3b7&fcDefault=625850&iconColorDefault=c47a23&bgColorHover=f3ce77&bgTextureHover=12_gloss_wave.png&bgImgOpacityHover=100&borderColorHover=f5ad66&fcHover=b35100&iconColorHover=f35f07&bgColorActive=f4f0ec&bgTextureActive=12_gloss_wave.png&bgImgOpacityActive=100&borderColorActive=e0cfc2&fcActive=b35100&iconColorActive=f35f07&bgColorHighlight=f5ebb5&bgTextureHighlight=04_highlight_hard.png&bgImgOpacityHighlight=75&borderColorHighlight=d9bb73&fcHighlight=060200&iconColorHighlight=cb672b&bgColorError=7a0008&bgTextureError=08_diagonals_thick.png&bgImgOpacityError=20&borderColorError=8a0002&fcError=ffffff&iconColorError=ffffff&bgColorOverlay=aaaaaa&bgTextureOverlay=07_diagonals_medium.png&bgImgOpacityOverlay=40&opacityOverlay=60&bgColorShadow=454545&bgTextureShadow=01_flat.png&bgImgOpacityShadow=100&opacityShadow=30&thicknessShadow=0px&offsetTopShadow=4px&offsetLeftShadow=4px&cornerRadiusShadow=4px
+ */
 
 
 /* Component containers
@@ -283,8 +292,15 @@
 
 /* Overlays */
 .ui-widget-overlay { background: #aaaaaa url(images/ui-bg_diagonals-medium_40_aaaaaa_40x40.png) 50% 50% repeat; opacity: .60;filter:Alpha(Opacity=60); }
-.ui-widget-shadow { margin: 4px 0 0 4px; padding: 0px; background: #454545 url(images/ui-bg_flat_100_454545_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }/* Resizable
-----------------------------------*/
+.ui-widget-shadow { margin: 4px 0 0 4px; padding: 0px; background: #454545 url(images/ui-bg_flat_100_454545_40x100.png) 50% 50% repeat-x; opacity: .30;filter:Alpha(Opacity=30); -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }/*
+ * jQuery UI Resizable @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Resizable#theming
+ */
 .ui-resizable { position: relative;}
 .ui-resizable-handle { position: absolute;font-size: 0.1px;z-index: 99999; display: block;}
 .ui-resizable-disabled .ui-resizable-handle, .ui-resizable-autohide .ui-resizable-handle { display: none; }
@@ -295,24 +311,45 @@
 .ui-resizable-se { cursor: se-resize; width: 12px; height: 12px; right: 1px; bottom: 1px; }
 .ui-resizable-sw { cursor: sw-resize; width: 9px; height: 9px; left: -5px; bottom: -5px; }
 .ui-resizable-nw { cursor: nw-resize; width: 9px; height: 9px; left: -5px; top: -5px; }
-.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/* Selectable
-----------------------------------*/
-.ui-selectable-helper { border:1px dotted black }
-/* Autocomplete
-----------------------------------*/
+.ui-resizable-ne { cursor: ne-resize; width: 9px; height: 9px; right: -5px; top: -5px;}/*
+ * jQuery UI Selectable @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Selectable#theming
+ */
+.ui-selectable-helper { position: absolute; z-index: 100; border:1px dotted black; }
+/*
+ * jQuery UI Autocomplete @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Autocomplete#theming
+ */
 .ui-autocomplete { position: absolute; cursor: default; }	
-.ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
 
 /* workarounds */
 * html .ui-autocomplete { width:1px; } /* without this, the menu expands to 100% in IE6 */
 
-/* Menu
-----------------------------------*/
+/*
+ * jQuery UI Menu @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Menu#theming
+ */
 .ui-menu {
 	list-style:none;
 	padding: 2px;
 	margin: 0;
 	display:block;
+	float: left;
 }
 .ui-menu .ui-menu {
 	margin-top: -3px;
@@ -337,9 +374,15 @@
 	font-weight: normal;
 	margin: -1px;
 }
-/* Button
-----------------------------------*/
-
+/*
+ * jQuery UI Button @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Button#theming
+ */
 .ui-button { display: inline-block; position: relative; padding: 0; margin-right: .1em; text-decoration: none !important; cursor: pointer; text-align: center; zoom: 1; overflow: visible; } /* the overflow property removes extra width in IE */
 .ui-button-icon-only { width: 2.2em; } /* to make room for the icon, a width needs to be set here */
 button.ui-button-icon-only { width: 2.4em; } /* button elements seem to need a little more width */
@@ -350,15 +393,17 @@ button.ui-button-icons-only { width: 3.7em; }
 .ui-button .ui-button-text { display: block; line-height: 1.4;  }
 .ui-button-text-only .ui-button-text { padding: .4em 1em; }
 .ui-button-icon-only .ui-button-text, .ui-button-icons-only .ui-button-text { padding: .4em; text-indent: -9999999px; }
-.ui-button-text-icon .ui-button-text, .ui-button-text-icons .ui-button-text { padding: .4em 1em .4em 2.1em; }
+.ui-button-text-icon-primary .ui-button-text, .ui-button-text-icons .ui-button-text { padding: .4em 1em .4em 2.1em; }
+.ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text { padding: .4em 2.1em .4em 1em; }
 .ui-button-text-icons .ui-button-text { padding-left: 2.1em; padding-right: 2.1em; }
 /* no icon support for input elements, provide padding by default */
 input.ui-button { padding: .4em 1em; }
 
 /*button icon element(s) */
-.ui-button-icon-only .ui-icon, .ui-button-text-icon .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon { position: absolute; top: 50%; margin-top: -8px; }
+.ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon { position: absolute; top: 50%; margin-top: -8px; }
 .ui-button-icon-only .ui-icon { left: 50%; margin-left: -8px; }
-.ui-button-text-icon .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary { left: .5em; }
+.ui-button-text-icon-primary .ui-button-icon-primary, .ui-button-text-icons .ui-button-icon-primary, .ui-button-icons-only .ui-button-icon-primary { left: .5em; }
+.ui-button-text-icon-secondary .ui-button-icon-secondary, .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary { right: .5em; }
 .ui-button-text-icons .ui-button-icon-secondary, .ui-button-icons-only .ui-button-icon-secondary { right: .5em; }
 
 /*button sets*/
@@ -367,26 +412,36 @@ input.ui-button { padding: .4em 1em; }
 
 /* workarounds */
 button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra padding in Firefox */
-
-
-
-
-
-/* Dialog
-----------------------------------*/
+/*
+ * jQuery UI Dialog @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Dialog#theming
+ */
 .ui-dialog { position: absolute; padding: .2em; width: 300px; overflow: hidden; }
 .ui-dialog .ui-dialog-titlebar { padding: .5em 1em .3em; position: relative;  }
 .ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; } 
 .ui-dialog .ui-dialog-titlebar-close { position: absolute; right: .3em; top: 50%; width: 19px; margin: -10px 0 0 0; padding: 1px; height: 18px; }
 .ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; }
 .ui-dialog .ui-dialog-titlebar-close:hover, .ui-dialog .ui-dialog-titlebar-close:focus { padding: 0; }
-.ui-dialog .ui-dialog-content { border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
+.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; overflow: auto; zoom: 1; }
 .ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
-.ui-dialog .ui-dialog-buttonpane button { float: right; margin: .5em .4em .5em 0; cursor: pointer; padding: .2em .6em .3em .6em; line-height: 1.4em; width:auto; overflow:visible; }
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
+.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
 .ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
 .ui-draggable .ui-dialog-titlebar { cursor: move; }
-/* Tabs
-----------------------------------*/
+/*
+ * jQuery UI Tabs @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Tabs#theming
+ */
 .ui-tabs { position: relative; padding: .2em; zoom: 1; } /* position: relative prevents IE scroll bug (element with position: relative inside container with overflow: auto appear as "fixed") */
 .ui-tabs .ui-tabs-nav { margin: 0; padding: .2em .2em 0; }
 .ui-tabs .ui-tabs-nav li { list-style: none; float: left; position: relative; top: 1px; margin: 0 .2em 1px 0; border-bottom: 0 !important; padding: 0; white-space: nowrap; }
@@ -396,8 +451,15 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
 .ui-tabs .ui-tabs-hide { display: none !important; }
-/* Datepicker
-----------------------------------*/
+/*
+ * jQuery UI Datepicker @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Datepicker#theming
+ */
 .ui-datepicker { width: 17em; padding: .2em .2em 0; }
 .ui-datepicker .ui-datepicker-header { position:relative; padding:.2em 0; }
 .ui-datepicker .ui-datepicker-prev, .ui-datepicker .ui-datepicker-next { position:absolute; top: 2px; width: 1.8em; height: 1.8em; }
@@ -456,7 +518,14 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
     left: -4px; /*must have*/
     width: 200px; /*must have*/
     height: 200px; /*must have*/
-}/* Progressbar
-----------------------------------*/
+}/*
+ * jQuery UI Progressbar @VERSION
+ *
+ * Copyright 2010, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Progressbar#theming
+ */
 .ui-progressbar { height:2em; text-align: left; }
 .ui-progressbar .ui-progressbar-value {margin: -1px; height:100%; }
