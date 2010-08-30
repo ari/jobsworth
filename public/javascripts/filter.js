@@ -64,7 +64,7 @@ function addSearchFilter(event, ui) {
         }
         submitSearchFilterForm();
     } else {
-                // probably selected a heading, just ignore
+        // probably selected a heading, just ignore
     }
     jQuery(this).val("");
     return false;

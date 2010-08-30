@@ -449,7 +449,7 @@ jQuery(document).ready(function() {
           select: setPageTarget,
           delay: 800,
           minLength: 1
-    })
+    });
   });
   autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
   autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
