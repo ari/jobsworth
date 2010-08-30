@@ -211,7 +211,7 @@ function addNewTodoKeyListener(taskId) {
 
 function new_todo_open_close_check(val, sender, time, formatted_time, user, user_id) {
     if (val == true) {
-        jQuery(sender).attr("title", "Close <b>" + jQuery(sender).val() + "</b>")
+        jQuery(sender).attr("title", "Close <b>" + jQuery(sender).val() + "</b>");
         jQuery(sender).siblings(".completed_by_user_id").val(user_id);
         jQuery(sender).siblings(".completed_at").val(time);
         jQuery(sender).siblings(".new_todo_complete").val(true);
@@ -222,7 +222,7 @@ function new_todo_open_close_check(val, sender, time, formatted_time, user, user
         jQuery(sender).siblings(".todo_done").children(".time").text("["+formatted_time+"]");
         jQuery(sender).siblings(".todo_done").children(".user").text("["+user+"]");
     } else {
-        jQuery(sender).attr("title", "Open <b>" + jQuery(sender).val() + "</b>")
+        jQuery(sender).attr("title", "Open <b>" + jQuery(sender).val() + "</b>");
         jQuery(sender).siblings(".completed_by_user_id").val(" ");
         jQuery(sender).siblings(".completed_at").val(" ");
         jQuery(sender).siblings(".new_todo_complete").val(false);
@@ -251,10 +251,10 @@ function addNewTodoKeyListenerForUncreatedTask(sender, button) {
      if (button == "edit") {
        var li_element = jQuery(sender).parent().parent();
        var input = jQuery(sender).parent().siblings(".edit").children("input");
-     } else if(button == "new") {
+     } else if (button == "new") {
        var li_element = jQuery("#todos-clone").children("li:last-child");
        var input = li_element.children("span.edit").children("input");
-     };
+     }
 
     input.keypress(function(key) {
         if (key.keyCode == 13) {
@@ -301,7 +301,7 @@ function init_task_form() {
               select: addSearchFilter,
               delay: 800,
               minLength: 3
-        })
+        });
     });
     autocomplete('#task_customer_name_auto_complete', '/tasks/auto_complete_for_customer_name', addCustomerToTask);
     autocomplete('#dependencies_input', '/tasks/auto_complete_for_dependency_targets', addDependencyToTask);
