@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= javascript_include_tag :defaults, "jquery.nyroModal", "jquery.dimensions", "jquery.tooltip", "jquery-ui", "jquery.layout", "ui.multiselect", "jquery.jqGrid", "jquery.autogrow", "json2", "tasklist", :cache => "main" %>
+    <%= javascript_include_tag(
+      :defaults,
+      "jquery.nyroModal",
+      "jquery.tooltip",
+      "jquery-ui",
+      "jquery.layout",
+      "ui.multiselect",
+      "jquery.jqGrid",
+      "jquery.autogrow",
+      "json2",
+      "tasklist",
+      "task",
+      "filter",
+      "template",
+      :cache => "main"
+    ) %>
     <%= javascript_include_tag "fullcalendar" %>
     <%= yield :head %>
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
@@ -10,7 +25,15 @@
     	<%= javascript_include_tag "builder", "portal", "flotr" %>
     <% end %>
     
-    <%= stylesheet_link_tag "jquery-ui", "application", "jquery.tooltip", "ui.jqgrid", "fullcalendar", "nyroModal", :cache => true %>
+    <%= stylesheet_link_tag(
+      "jquery-ui",
+      "application",
+      "jquery.tooltip",
+      "ui.jqgrid",
+      "fullcalendar",
+      "nyroModal",
+      :cache => true
+    ) %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <%= stylesheet_link_tag "print", { :media => "print" } %>
     <%= auto_discovery_link_tag(:rss, {:controller => 'feeds', :action => 'rss', :id => current_user.uuid }) %>

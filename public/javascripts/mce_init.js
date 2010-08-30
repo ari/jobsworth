@@ -2,8 +2,6 @@ jQuery(document).ready(function() {
   jQuery('.tinymce').tinymce({
     script_url : '/javascripts/tiny_mce/tiny_mce.js',
     theme: "advanced",
-    mode: "specific_textareas",
-    editor_selector: "tinymce",
     skin: "o2k7",
     skin_variant: "silver",
     plugins: "contextmenu,paste,spellchecker,style,table",

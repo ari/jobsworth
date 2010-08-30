@@ -15,7 +15,7 @@ Rake::RDocTask.new(:rdoc) do |rd|
     "app/**/*.rb",
     "lib/**/*.rb")
 
-  rd.title = "Clocking IT"
+  rd.title = "Jobsworth"
   rd.options << '--line-numbers'
   rd.options << '--inline-source'
   rd.options << '--all' # all methods, not just public

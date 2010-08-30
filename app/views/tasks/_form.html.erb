@@ -17,7 +17,6 @@
     <%= render(:partial => "new_comment") %>
   </div>
 
-  <% if !@task.new_record? -%>
     <div class="page_header">
       <%= _("To-do") %>
       <span id="todo-status-<%= @task.dom_id %>">
@@ -27,9 +26,8 @@
       </span>
     </div>
     <div id="todo-container" class="todo-container">
-      <%= render :partial => "/todos/todos" %>
+      <%= render :partial => @task.new_record? ? "/todos/todos_clone" : "/todos/todos" %>
     </div>
-  <% end -%>
 
   <div id="task_history">
     <%= render(:partial => "tasks/history") %>

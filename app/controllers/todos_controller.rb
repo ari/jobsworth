@@ -1,5 +1,5 @@
 class TodosController < ApplicationController
-  before_filter :load_task, :except => [:list_clone, :create_clone, :update_clone, :destroy_clone, :toggle_todo_clone_done]
+  before_filter :load_task, :except => [:list_clone]
 
   def create
     @todo = @task.todos.build(params[:todo])
@@ -43,49 +43,11 @@ class TodosController < ApplicationController
     render :nothing=>true
   end
 
-  #TODOS clone : for todos at task creation page (from template)
+  #for todos at task creation page (from template)
   def list_clone
-    session[:todos_clone] = Template.find(params[:id]).clone_todos
-    session[:todos_clone].collect{|t| t.completed_by_user = nil}
-
-    render :partial => "todos_clone"
-  end
-
-  def create_clone
-    @todo = Todo.new(params[:todo])
-    @todo.creator_id = current_user.id
-    @todo.position = session[:todos_clone].size + 1
-    session[:todos_clone] << @todo
-   
-    render :partial => "todos_clone"
-  end
-
-  def update_clone
-    session[:todos_clone].each{|t| t.name = params[:todo][:name] if t.position == params[:id].to_i}
-     
-    render :partial => "todos_clone"
-  end
-  
-  def toggle_todo_clone_done
-    session[:todos_clone].each do |t|
-      if t.position == params[:id].to_i
-        @todo = t
-        break
-      end
-    end
-    @todo.completed_at = @todo.done? ? nil : @todo.completed_at = Time.now
-    
-    render :partial => "todos_clone"
-  end
-
-  def destroy_clone
-    size = session[:todos_clone].size
-    session[:todos_clone].delete_if{|x| x.position == params[:id].to_i}
-    session[:todos_clone].each do |t|
-      p = t.position
-      t.position = p -1 if t.position > params[:id].to_i
-    end
-
+    @task = Task.new
+    Template.find(params[:id]).clone_todos.collect{|t| @task.todos.build(t.attributes) }
+ 
     render :partial => "todos_clone"
   end
 

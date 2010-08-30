@@ -6,16 +6,16 @@ puts "If you don't want this to happen, please press <Ctrl-c> to abort."
 puts "*******************************************************************************************"
 puts
 
-print "Enter MySQL database name for ClockingIT [cit]: "
+print "Enter MySQL database name for Jobsworth [jobsworth]: "
 db = gets
 db = "cit" if db == "\n"
-print "Enter username for ClockingIT MySQL account [cit]: "
+print "Enter username for Jobsworth MySQL account [jobsworth]: "
 dbuser = gets
 dbuser = "cit" if dbuser == "\n"
-print "Enter password for ClockingIT MySQL account [cit]: "
+print "Enter password for ClockingIT MySQL account [jobsworth]: "
 dbpw = gets
 dbpw = "cit" if dbpw == "\n"
-print "Enter host for ClockingIT MySQL account [localhost]: "
+print "Enter host for Jobsworth MySQL account [localhost]: "
 dbhost = gets
 dbhost = "localhost" if dbhost == "\n"
 
@@ -30,7 +30,7 @@ puts
 
 
 
-puts "Please create the database and user for ClockingIT by running something like this: "
+puts "Please create the database and user for Jobsworth by running something like this: "
 puts " echo \"CREATE DATABASE #{db} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci; GRANT ALL ON #{db}.* TO '#{dbuser}'@'localhost' IDENTIFIED BY '#{dbpw}'; FLUSH PRIVILEGES;\" | mysql -u root -p "
 puts
 puts "Press <Return> once you have done this."
@@ -40,7 +40,7 @@ puts
 domain = "\n"
 while domain == "\n" || domain.split('.').size < 3
   puts
-  print "Enter hostname for the ClockingIT service (for example projects.mycompany.com): "
+  print "Enter hostname for the Jobsworth service (for example projects.mycompany.com): "
   domain = gets
 end
 
@@ -50,7 +50,7 @@ subdomain = domain.split('.').first
 domain = domain.split('.')[1..-1].join('.')
 
 puts
-puts "Using '#{subdomain}.#{domain}' to access ClockingIT."
+puts "Using '#{subdomain}.#{domain}' to access Jobsworth."
 puts
 
 company = "\n"
