@@ -1,5 +1,6 @@
 {
     "tasks": {
+        "records":"<%= @tasks.size %>",
         "rows": [
 <%      total_time = 0
         @tasks.each_with_index do |task, idx|
@@ -17,25 +18,25 @@
                 end
         end
 -%>
-                "read": "<%= readFlag %>",
-                "id": "<%= task.task_num %>",
+                "read":"<%= readFlag %>",
+                "id":"<%= task.task_num %>",
                 <% current_user.company.properties.each do |prop| -%>
                 <% pv = task.property_value(prop) -%>
-                "<%= prop.name.downcase %>": "<%= pv.to_html.gsub('"', "'") if pv %>",
+                "<%= prop.name.downcase %>":"<%= pv.to_html.gsub('"', "'") if pv %>",
                 <% end -%>
-                "summary": "<%=h task.name %>",
-                "client": "<%=h customer.name %>",
+                "summary":"<%=h task.name %>",
+                "client":"<%=h customer.name %>",
                 <% str = [ task.project.name ] -%>
                 <% str << task.milestone.name if task.milestone_id.to_i > 0 -%>
-                "milestone": "<%= str.join("/") %>",
-                "due": "<%= task.due_date.to_time.to_i unless task.due_date.nil? %>",
-                "time": "<%= task.minutes_left.to_i %>",
-                "assigned": "<%= task.owners.map{ |u| u.name }.join(", ") %>",
-                "resolution": "<%= task.status_type %>"
+                "milestone":"<%= str.join("/") %>",
+                "due":"<%= task.due_date.to_time.to_i unless task.due_date.nil? %>",
+                "time":"<%= task.minutes_left.to_i %>",
+                "assigned":"<%= task.owners.map{ |u| u.name }.join(", ") %>",
+                "resolution":"<%= task.status_type %>"
             }<%= "," unless @tasks.size - 1 == idx  %>
         <% end -%>
         <% end -%>
         ],
-        "userdata": <%= total_time %>
+        "userdata":{"time":"<%= total_time %>"}
     }
 }
