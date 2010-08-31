@@ -8,8 +8,8 @@ class MilestonesController < ApplicationController
 
   def quick_new
     self.new
-    @popup = true
-    render :action => 'new', :layout => 'popup'
+    @popup, @disable_title = true, true
+    render :action => 'new', :layout => false
   end
 
   # Ajax callback from milestone popup window to create a new milestone on submitting the form
