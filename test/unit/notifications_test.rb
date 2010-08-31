@@ -12,7 +12,7 @@ class NotificationsTest < ActiveRecord::TestCase
       # need to hard code these configs because the fixtured have hard coded values
       $CONFIG[:domain] = "clockingit.com"
       $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
-      $CONFIG[:productName] = "ClockingIT"
+      $CONFIG[:productName] = "Jobsworth"
 
       @expected = TMail::Mail.new
       @expected.set_content_type "text", "plain", { "charset" => CHARSET }
@@ -31,20 +31,20 @@ class NotificationsTest < ActiveRecord::TestCase
       end
 
       should "create created mail as expected" do
-        @expected.subject  = '[ClockingIT] Created: [#1] Test [Test Project] (Unassigned)'
+        @expected.subject  = '[Jobsworth] Created: [#1] Test [Test Project] (Unassigned)'
         @expected.body     = read_fixture('created')
 
-        notification = Notifications.create_created(@task, @user, 
-                                                    @task.notification_email_addresses(@user), 
+        notification = Notifications.create_created(@task, @user,
+                                                    @task.notification_email_addresses(@user),
                                                     "", @expected.date)
         assert_equal @expected.encoded.strip, notification.encoded.strip
       end
 
       should "create changed mail as expected" do
-        @expected.subject = '[ClockingIT] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
+        @expected.subject = '[Jobsworth] Resolved: [#1] Test -> Open [Test Project] (Erlend Simonsen)'
         @expected['Mime-Version'] = '1.0'
         @expected.body    = read_fixture('changed')
-        
+
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
@@ -66,14 +66,14 @@ class NotificationsTest < ActiveRecord::TestCase
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
         assert_nil notification.body.index("/tasks/view/")
-      end      
+      end
 
       should "create created mail without view task link" do
-        notification = Notifications.create_created(@task, @user, 
-                                                    @task.notification_email_addresses(@user), 
+        notification = Notifications.create_created(@task, @user,
+                                                    @task.notification_email_addresses(@user),
                                                     "", @expected.date)
         assert_nil notification.body.index("/tasks/view/")
-      end      
+      end
     end
   end
 
