@@ -4,8 +4,7 @@
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][qualifiable_column]", qualifier.qualifiable_column, :class => "column" %>
   <%= hidden_field_tag "task_filter[qualifiers_attributes][][reversed]", qualifier.reversed, :class => "reversed" %>
   <%= link_to_function(image_tag("invert.png"), "reverseSearchFilter(this)") %>
-  <%= qualifier_name(qualifier) %>
-  <%= qualifier.qualifiable %>
+  <%= qualifier_name(qualifier) %> <%= qualifier_value(qualifier) %>
   <span class="right small"><%= link_to_function(image_tag("cross_small.png"), "removeSearchFilter(this)") %></span>
   &nbsp;
 </li>

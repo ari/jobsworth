@@ -18,24 +18,24 @@
       end
     end
 -%>
-"read":"<%= readFlag %>",
-"id":"<%= task.task_num %>",
+"read":<%= readFlag.to_json.html_safe %>,
+"id":<%= task.task_num.to_json.html_safe %>,
 <%  current_user.company.properties.each do |prop| -%>
-<%= prop.name.downcase.to_json.html_safe %>:<%= task.property_value(prop).to_html.to_json.html_safe rescue "".to_json.html_safe %>,
+<%= prop.name.downcase.to_json.html_safe %>:<%= task.property_value(prop).to_html.to_json.html_safe rescue "\"\"".html_safe %>,
 <%  end -%>
 "summary":<%= task.name.to_json.html_safe %>,
 "client":<%= customer.name.to_json.html_safe %>,
 <% str = [ task.project.name ] -%>
 <% str << task.milestone.name if task.milestone_id.to_i > 0 -%>
 "milestone":<%= str.join("/").to_json.html_safe %>,
-"due":"<%= task.due_date.to_time.to_i unless task.due_date.nil? %>",
-"time":"<%= task.minutes_left.to_i %>",
-"assigned":"<%= task.owners.map{ |u| u.name }.join(", ") %>",
-"resolution":"<%= task.status_type %>"
+"due":<%= task.due_date.to_time.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
+"time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
+"assigned":<%= task.owners.map{ |u| u.name }.join(", ").to_json.html_safe %>,
+"resolution":<%= task.status_type.to_json.html_safe %>
 }<%= "," unless @tasks.size - 1 == idx  %>
     <% end -%>
     <% end -%>
 ],
-"userdata":{"time":"<%= total_time %>"}
+"userdata":{"time":<%= total_time.to_json.html_safe %>}
   }
 }
