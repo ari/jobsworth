@@ -92,6 +92,16 @@ module TaskFilterHelper
     name += ' is not' if qualifier.reversed?
     return name
   end
+  
+  # Returns the value of the given qualifier
+  def qualifier_value(qualifier)
+    if qualifier.qualifiable_type == "PropertyValue"
+      return qualifier.qualifiable.value
+    else
+      # FIXME the next line is a bit rubbish: all qualifiable should have 'value'
+      return qualifier.qualifiable.to_s
+    end
+  end
 
   def link_to_tasks_filtered_by(*args)
     name= args.first.is_a?(String) ? args.shift : args.first.name
