@@ -185,14 +185,20 @@ function initTaskList() {
       window.location.href="/tasks/get_csv";
   	}
   });
-  
+
+  appendPartial("/task_filters/new", '#savefilter', false);
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
     caption: "Save filter",
     title: "Save filter",
     onClickButton : function () {
-      jQuery.nyroModalManual( {
-      	url: '/task_filters/new'
-  		});
+      var dialog = jQuery("#savefilter").dialog({
+        width: 400,
+	    autoOpen: false,
+	    title: 'Save Filter',
+        draggable: true
+	  });
+	  dialog.dialog('open');
+	  return false;
     }
   });
   

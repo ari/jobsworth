@@ -2425,6 +2425,18 @@ input.scheduled {
     border-bottom: 1px solid #FFFFFF;
 }
 
+
+div.basic label {
+    margin-bottom: 0.3em;
+    margin-right: 0.5em;
+    text-align: left;
+    width: 15em;
+}
+
+div.basic input {
+    margin-top: 0.2em;
+}
+
 fieldset.basic label {
     margin-bottom: 0.3em;
     margin-right: 0.5em;
