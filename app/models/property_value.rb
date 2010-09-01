@@ -14,16 +14,11 @@ class PropertyValue < ActiveRecord::Base
     @sort_rank ||= (property.property_values.length - property.property_values.index(self))
   end
 
-  def to_s
-     HTML::FullSanitizer.new.sanitize "#{ value }"
-  end
-
   def to_html
     if icon_url.present?
-      return image_tag(icon_url, :class => "tooltip",
-                       :alt => self.to_s, :title => self.to_s)
+      return image_tag(icon_url, :class => "tooltip", :alt => value, :title => value)
     else
-      return self.to_s
+      return value
     end
   end
 
