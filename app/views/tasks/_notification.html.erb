@@ -23,6 +23,6 @@
   </label>
 
   <%= link_to_function(image_tag("cross_small.png"), "removeTaskUser(this)", :class => "removeLink") %>
-  <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user, :layout => "popup" },
-  :class => "username lightbox", :target => "_blank" %>
+  <%= link_to user.to_html, { :controller => "users", :action => "edit", :id => user},
+  :class => "username", :target => "_blank" %>
 </div>
