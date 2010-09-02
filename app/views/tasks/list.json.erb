@@ -32,8 +32,7 @@
 "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
 "assigned":<%= task.owners.map{ |u| u.name }.join(", ").to_json.html_safe %>,
 "resolution":<%= task.status_type.to_json.html_safe %>
-}<%= "," unless @tasks.size - 1 == idx  %>
-    <% end -%>
+}<% end -%><%= "," unless @tasks.size - 1 == idx  %>
     <% end -%>
 ],
 "userdata":{"time":<%= total_time.to_json.html_safe %>}
