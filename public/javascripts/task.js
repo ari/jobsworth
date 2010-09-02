@@ -286,7 +286,6 @@ function init_task_form() {
     jQuery('#comment').keyup(function() {
         highlightWatchers();
     });
-    jQuery('a.lightbox').nyroModal();
 
     jQuery('#task_attachments a.close-cross').click(function(){
         if(!confirm(jQuery(this).attr('data-message'))) { return false; }

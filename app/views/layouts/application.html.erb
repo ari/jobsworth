@@ -3,7 +3,6 @@
   <head>
     <%= javascript_include_tag(
       :defaults,
-      "jquery.nyroModal",
       "jquery.tooltip",
       "jquery-ui",
       "jquery.layout",
@@ -32,7 +31,6 @@
       "jquery.tooltip",
       "ui.jqgrid",
       "fullcalendar",
-      "nyroModal",
       :cache => true
     ) %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
