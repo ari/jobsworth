@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
   has_many      :preferences, :as => :preferencable
   has_many      :received_from_emails, :class_name=>"Email", :dependent=>:destroy
 
-  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(RAILS_ROOT, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
+  has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
 
   include PreferenceMethods
 
