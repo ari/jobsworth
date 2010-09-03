@@ -15,15 +15,15 @@ jQuery(document).ready(function() {
     jQuery("#notify_users").hide();
     jQuery("#task_information > br").hide();
   }
+
+  /*
+    Create new tasks from a template when you
+    click on the menu item
+  */
+  jQuery('li.task_template a').click(create_task_from_template);
   
 });
 
-/*
-  Create new tasks from a template when you
-  click on the menu item
-*/
-jQuery('li.task_template a').click(create_task_from_template);
-  
 /*
   This function simulate two step user behavior in one click
   First goto template edit page, see template in form
