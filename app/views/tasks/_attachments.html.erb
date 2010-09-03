@@ -5,11 +5,12 @@
                         <% for file in @task.attachments %>
                           <div id="<%=file.dom_id%>">
                                 <% if file.thumbnail? %>
-                                        <div>
-                                        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, :class=>'lightbox' %>
+                                        <div class="file_thumbnail">
+                                        <%= link_to image_tag("/project_files/thumbnail/#{file.id}"), {:controller => 'project_files', :action => 'show', :id => file.id.to_s + "." + file.file_extension}, :target => "_blank" %>
+                                        <span id="thumbnail_dialog_<%=file.dom_id%>" style="display:none"> <%= image_tag("/project_files/download/#{file.id}.#{file.file_extension}") %></span>
                                         </div>
                                 <% end %>
-                                <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension}, {:class=>file.image? ? 'lightbox':''} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
+                                <%= link_to h(file.name), {:controller => 'project_files', :action => 'download', :id => file.id.to_s + "." + file.file_extension} %><em>(<%=number_to_human_size(file.file_size) %>)</em>
                                 <%= link_to image_tag("/images/cross_small.png", :border=>0), {:controller => 'project_files', :action => 'destroy', :id => file.id}, :"data-message" => _("Really delete %s?", file.name), :class => 'close-cross' %>
                                 <span class="divider"></span>
                           </div>

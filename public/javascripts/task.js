@@ -286,7 +286,6 @@ function init_task_form() {
     jQuery('#comment').keyup(function() {
         highlightWatchers();
     });
-    jQuery('a.lightbox').nyroModal();
 
     jQuery('#task_attachments a.close-cross').click(function(){
         if(!confirm(jQuery(this).attr('data-message'))) { return false; }
@@ -337,6 +336,10 @@ function init_task_form() {
       } });
     });
 
+    jQuery('#add_milestone img').click(add_milestone_popup);
+    jQuery('#task_project_id').change(function() {
+      jQuery("#milestone_project_id").val(jQuery('#task_project_id').val());
+    });
 }
 
 function highlightWatchers() {
@@ -356,4 +359,19 @@ function highlightWatchers() {
                 });
                 jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
         }
+}
+
+function add_milestone_popup() {
+    jQuery("#milestone_name").val(" ");
+    jQuery("#milestone_due_at").val(" ");
+    jQuery("#milestone_user_id").val(" ");
+    jQuery("#milestone_description").val(" ");
+    var popup = jQuery("span#ui_popup_dialog").dialog({
+        autoOpen: false,
+	    title: 'New Milestone',
+        width: 370,
+        draggable: true
+	});
+	popup.dialog('open');
+	return false;
 }

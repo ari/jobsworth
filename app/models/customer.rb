@@ -19,7 +19,7 @@ class Customer < ActiveRecord::Base
 
   has_many      :organizational_units
 
-  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(RAILS_ROOT, 'store', 'logos') + "/logo_:id_:style.:extension"
+  has_attached_file :logo, :whiny => false, :styles=>{ :original => "250x50>"}, :path => File.join(Rails.root.to_s, 'store', 'logos') + "/logo_:id_:style.:extension"
   validates_length_of           :name,  :maximum=>200
   validates_presence_of         :name
 

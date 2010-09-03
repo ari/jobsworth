@@ -19,7 +19,7 @@
 	<div class="otheruser">
 	  <small>[<%= log.user.name %>]</small>
 	</div>
-	<%= log.body %>
+	<%= log.body.html_safe %>
       </div>
     </div>
   <% end %>

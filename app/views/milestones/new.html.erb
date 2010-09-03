@@ -1,8 +1,8 @@
 <fieldset>
-<legend><%=_ 'New Milestone' %></legend>
+<%= "<legend>#{_ 'New Milestone' }</legend>" unless @disable_title %>
 
 <% unless @popup.nil? %>
-<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "parent.jQuery.nyroModalRemove();" do %>
+<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "jQuery('span#ui_popup_dialog').dialog('destroy');" do %>
   <%= render :partial => 'form' %>
   <%= submit_tag _("Create"), :class => 'nolabel'%>
 <% end %>

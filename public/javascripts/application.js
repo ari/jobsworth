@@ -246,6 +246,15 @@ function appendPartial(url, selector, callback) {
     });
 }
 
+function appendPopup(url, selector, callback) {
+    jQuery.get(url, { }, function(data) {
+        var html = "<span style='display: none' id='ui_popup_dialog'>"+ data +"</span>"
+        jQuery(selector).prepend(html);
+
+        if (callback) { callback.call(); }
+    });
+}
+
 function updatePositionFields(listSelector) {
     var list = jQuery(listSelector);
     var children = list.children();

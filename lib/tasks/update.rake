@@ -17,10 +17,8 @@ namespace :update do
     Rake::Task['tmp:cache:clear'].invoke
 
     system "rm -f public/javascripts/main.js"
-    system "rm -f public/javascripts/popup.js"
     system "rm -f public/javascripts/prototype-all.js"
     system "rm -f public/stylesheets/all.css"
-    system "rm -f public/stylesheets/popup.css"
 
     puts "Restart Apache httpd."
     system "apachectl graceful"

@@ -25,7 +25,8 @@
 	</ul>
    	<div id="groupby" style="display:none">
         	<%= select_tag("chngroup", options_for_changegroup, :onChange => "change_group()") %>
-    	</div>
+       </div>
+       <div id="savefilter" style="display:none"></div>
 	<%= yield(:task_list) %>
 
 	<div id="task">

@@ -1,7 +1,5 @@
 class TaskFiltersController < ApplicationController
-  layout nil, :except => "new"
-  layout "popup", :only => "new"
-
+  
   def search
     @filter = params[:term]
     if @filter.blank?
@@ -89,6 +87,7 @@ class TaskFiltersController < ApplicationController
 
   def new
     @filter = TaskFilter.new(:user => current_user)
+    render :layout => false
   end
 
   def create
