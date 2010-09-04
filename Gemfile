@@ -1,4 +1,4 @@
-gem "rails", "3.0.0.rc2"
+gem "rails", "3.0.0"
 
 source 'http://gems.github.com'
 gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_without_table"
@@ -31,6 +31,10 @@ group :test do
   gem "cucumber-rails",   :git => "git://github.com/aslakhellesoy/cucumber-rails.git"
 #  gem "capybara"
 #  gem "capybara-envjs"
-#  gem "launchy"
-#  gem "ruby-debug"
+  gem "launchy"
+  gem "ruby-debug"
+end
+
+group :development do
+  gem "bullet"
 end

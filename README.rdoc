@@ -22,7 +22,7 @@ How to install these will differ on each platform. Some possibilities:
 ==== FreeBSD with Ruby 1.9
 
   echo "RUBY_DEFAULT_VER=1.9" >> /etc/make.conf
-  portmaster converters/ruby-iconv databases/ruby-mysql
+  portmaster converters/ruby-iconv databases/ruby-mysql textproc/libxslt archivers/zip
 
 
 ==== OSX
