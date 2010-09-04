@@ -91,35 +91,9 @@ If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5
   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
-
-
 == Upgrading to a newer revision
 
-  git checkout db/schema.rb
-  git pull
-
-Check that there aren't any updated gems or new gems to install. If there are, just follow the instructions you will be given on screen.
-
-  rake gems
-
-Next, make sure the database is updated:
-
-  rake db:migrate RAILS_ENV=production
-
-Depending on which environment you are updating, you can change the RAIL_ENV value to "test" or "development" and the appropriate database will be updated.
-
-Restart the web server just to ensure anything cached is cleared
-
-  apachectl graceful
-  
-Clear out cached asset files
-
-  rm public/javascripts/main.js
-  rm public/javascripts/popup.js
-  rm public/javascripts/prototype-all.js
-  rm public/stylesheets/all.css
-  rm public/stylesheets/popup.css
-
+  rake update:git
 
 == Setting up Email Integration
 

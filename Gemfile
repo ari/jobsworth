@@ -29,8 +29,8 @@ group :test do
   gem "cucumber",         :git => "git://github.com/aslakhellesoy/cucumber.git"
   gem "database_cleaner", :git => 'git://github.com/bmabey/database_cleaner.git'
   gem "cucumber-rails",   :git => "git://github.com/aslakhellesoy/cucumber-rails.git"
-  gem "capybara"
-  gem "capybara-envjs"
-  gem "launchy"
-  gem "ruby-debug"
+#  gem "capybara"
+#  gem "capybara-envjs"
+#  gem "launchy"
+#  gem "ruby-debug"
 end
