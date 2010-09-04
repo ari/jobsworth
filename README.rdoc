@@ -81,7 +81,7 @@ Naturally adjust the paths to suit your own environment.
 
 First we need a new gem installation tool.
 
-  gem install bundler --prerelease
+  gem install bundler
 
 Then in order to install all the gems we need.
 
