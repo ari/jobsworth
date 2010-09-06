@@ -1,6 +1,8 @@
 <% content_for(:side_panel) do %>
-  <% cache "tags/#{current_user.company_id}/#{current_user.id}" do %>
+  <% tags_preference = current_user.preference('tags') || 'open' %>
+  <% cache "tags/#{current_user.company_id}/#{current_user.id}/#{tags_preference}" do %>
         <div id="tags" class="section">
+                <span class="collapsable-sidepanel-button panel-<%= tags_preference %>">&nbsp;</span>
                 <div class="page_header">
                         <%=_ 'Tags' %>
                         <% if current_user.admin? -%>
@@ -8,9 +10,10 @@
                         <% end -%>
                 </div>
 
-                <div class="cloud">
+                <div class="cloud panel_content">
                         <%= tag_links %>
                 </div>
         </div>
   <% end -%>
+  <%= javascript_tag("jQuery('div#tags div.panel_content').hide();") if tags_preference == "collapsed" %>
 <% end %>

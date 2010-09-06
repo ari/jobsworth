@@ -2162,6 +2162,34 @@ textarea.small {
     padding-left: 1em;
 }
 
+.panel-open {
+    float: left;
+    height: 13px;
+    width: 13px;
+    background: url(/images/expand-indicator-small.png) 0px 0px no-repeat;
+    color: #a6a6a6;
+    font-size: 80%;
+    padding-right: 2px;
+    padding-left: 0px;
+    margin-top: 5px;
+    margin-left: 2px;
+    cursor:pointer;
+}
+
+.panel-collapsed {
+    float: left;
+    height: 13px;
+    width: 13px;
+    background: url(/images/expand-indicator-small.png) 0px -13px no-repeat;
+    color: #a6a6a6;
+    font-size: 80%;
+    padding-right: 2px;
+    padding-left: 0px;
+    margin-top: 5px;
+    margin-left: 2px;
+    cursor:pointer;
+}
+
 a.widget-open {
     float: left;
     height: 13px;
