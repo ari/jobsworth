@@ -112,7 +112,8 @@ module TaskFilterHelper
   end
 
   def path_to_tasks_filtered_by(*objects)
-    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } }, :redirect_action => request.request_uri}
+    redirect_action = controller.controller_name == "tasks" && controller.action_name == "calendar" ? {:redirect_action => "/tasks/calendar"} : {}
+    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } }}.merge!(redirect_action)
     update_current_filter_task_filters_path(link_params)
   end
 end
