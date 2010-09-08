@@ -135,7 +135,7 @@ class TaskFiltersController < ApplicationController
     if request.xhr?
       render :partial => "search_filter_keys"
     else
-      redirect_to(params[:redirect_action] || "/tasks/list")
+      redirect_to '/tasks/list'
     end
   end
 

@@ -52,8 +52,7 @@ module TaskFilterHelper
   def link_to_unread_tasks(user)
     label = _("My Unread Tasks")
     link_params = { :task_filter => {
-        :unread_only => true },
-        :redirect_action => request.request_uri }
+        :unread_only => true } }
 
     count = TaskFilter.new(:user => current_user, :unread_only => true).count
     if count > 0
@@ -75,7 +74,7 @@ module TaskFilterHelper
     str += " (#{ count })" if count > 0
     class_name = (count > 0 ? "unread" : "")
 
-    return link_to(str, { :controller => 'task_filters', :action => 'select', :id => filter.id, :redirect_action => request.request_uri})
+    return link_to(str, { :controller => 'task_filters', :action => 'select', :id => filter.id})
   end
 
   # Returns the name to print out to describe the type of the
@@ -112,8 +111,7 @@ module TaskFilterHelper
   end
 
   def path_to_tasks_filtered_by(*objects)
-    redirect_action = controller.controller_name == "tasks" && controller.action_name == "calendar" ? {:redirect_action => "/tasks/calendar"} : {}
-    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } }}.merge!(redirect_action)
+    link_params = { :task_filter => { :qualifiers_attributes =>objects.compact.collect{ |object| { :qualifiable_type => object.class, :qualifiable_id => object.id } } } }
     update_current_filter_task_filters_path(link_params)
   end
 end
