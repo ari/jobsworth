@@ -202,31 +202,6 @@ class TaskTest < ActiveRecord::TestCase
     assert_equal v2, @task.property_value(v2.property)
   end
 
-  def test_convert_attributes_to_properties
-    type, priority, severity = @task.company.create_default_properties
-
-    @task.type_id = 2
-    @task.priority = -1
-
-    @task.convert_attributes_to_properties(type, priority, severity)
-
-    assert_equal "Defect", @task.property_value(type).to_s
-    assert_equal "Low", @task.property_value(priority).to_s
-    assert_equal "Normal",  @task.property_value(severity).to_s
-  end
-
-  def test_convert_properties_to_attributes
-    type, priority, severity = @task.company.create_default_properties
-    @task.set_property_value(type, type.property_values.last)
-    @task.set_property_value(severity, severity.property_values.last)
-
-    @task.convert_properties_to_attributes
-
-    assert_equal 3, @task.type_id
-    assert_equal -2, @task.severity_id
-    assert_equal 0, @task.priority
-  end
-
   def test_notification_email_addresses_returns_watchers_and_users
     u1 = users(:admin)
     u2 = users(:fudge)
