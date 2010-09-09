@@ -26,7 +26,7 @@
 "summary":<%= task.name.to_json.html_safe %>,
 "client":<%= customer.name.to_json.html_safe %>,
 <% str = [ task.project.name ] -%>
-<% str << task.milestone.name if task.milestone_id.to_i > 0 -%>
+<% str << task.milestone.name.strip if task.milestone_id.to_i > 0 -%>
 "milestone":<%= str.join("/").to_json.html_safe %>,
 "due":<%= task.due_date.to_time.to_i.to_json.html_safe rescue "\"\"".html_safe %>,
 "time":<%= task.minutes_left.to_i.to_json.html_safe rescue "\"\"".html_safe %>,

@@ -1002,7 +1002,7 @@ class Task < ActiveRecord::Base
         if val_arr.size == 1
           self.milestone_id = nil
         else
-          mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND name = ?', user.company.id, pid, val_arr[1]]).id
+          mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip]).id
           self.milestone_id = mid
         end
         self.project_id = pid
