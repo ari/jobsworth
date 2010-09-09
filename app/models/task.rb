@@ -638,7 +638,8 @@ class Task < ActiveRecord::Base
   def property_value(property)
     return unless property
 
-    tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
+    #tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
+    tpv = TaskPropertyValue.find_by_task_id_and_property_id(self.id, property.id)
     tpv.property_value if tpv
   end
 
@@ -1029,18 +1030,21 @@ class Task < ActiveRecord::Base
   end
 
   def update_group(user, group, value, icon = nil)
-    if group == "milestone"
+    if group == "milestone" 
       val_arr = value.split("/")
-      pid = user.projects.find_by_name(val_arr[0]).id
-      if val_arr.size == 1
-        self.milestone_id = nil
-      else
-        mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND name = ?', user.company.id, pid, val_arr[1]]).id
-        self.milestone_id = mid
+      task_project = user.projects.find_by_name(val_arr[0])
+      if user.can?(task_project, "milestone")
+        pid = task_project.id
+        if val_arr.size == 1
+          self.milestone_id = nil
+        else
+          mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND name = ?', user.company.id, pid, val_arr[1]]).id
+          self.milestone_id = mid
+        end
+        self.project_id = pid
+        save
       end
-      self.project_id = pid
-      save
-    elsif group == "resolution"
+    elsif group == "resolution" && user.can?(self.project, 'close')
       p = Status.find_by_name_and_company_id(value, user.company_id).id
       self.status = (p - 1)
       save
