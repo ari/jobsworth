@@ -1028,25 +1028,23 @@ class Task < ActiveRecord::Base
     repeat.save!
   end
 
-  def update_group(group, value, icon = nil)
-    user_id = self.project.user_id
-    company_id =  self.project.company_id
+  def update_group(user, group, value, icon = nil)
     if group == "milestone"
       val_arr = value.split("/")
+      pid = user.projects.find_by_name(val_arr[0]).id
       if val_arr.size == 1
-        self.milestone_id = nil        
+        self.milestone_id = nil
       else
-        mid = Milestone.find_by_name_and_user_id(val_arr[1], user_id).id
+        mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND name = ?', user.company.id, pid, val_arr[1]]).id
         self.milestone_id = mid
       end
-      pid = Project.find_by_name_and_user_id_and_company_id(val_arr[0], user_id, company_id).id
       self.project_id = pid
       save
     elsif group == "resolution"
-      p = Status.find_by_name_and_company_id(value, company_id).id
+      p = Status.find_by_name_and_company_id(value, user.company_id).id
       self.status = (p - 1)
       save
-    elsif prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+    elsif prop = Property.find_by_company_id_and_name(user.company_id, group.camelize)
       if !value.blank?
         pv = PropertyValue.find_by_value_and_property_id(value, prop.id)
       elsif !icon.blank?

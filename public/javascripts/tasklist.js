@@ -48,6 +48,7 @@ function taskListConfigSerialise() {
 	});
 }
 
+var group_value = ""
 function change_group() {
   var vl = jQuery("div.ui-pg-div > #chngroup").val();
   if(vl) {
@@ -58,6 +59,7 @@ function change_group() {
     }
   }
   jQuery.post("/users/set_task_grouping_preference/" +  vl);
+  group_value = vl;
 }
 
 
@@ -147,7 +149,11 @@ function initTaskList() {
     			break;
   			}
   		}
-  		var group = jQuery("#chngroup").val();
+        if (group_value != "") {
+          var group = group_value;
+        } else {
+          var group = jQuery("#chngroup").val();
+        }
   		jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text+ "&icon=" + group_icon);
       	if (group_text != "") {
       		jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
