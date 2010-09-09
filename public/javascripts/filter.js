@@ -6,7 +6,7 @@ function submitSearchFilterForm() {
   var form = jQuery("#search_filter_form")[0];
   var redirect = jQuery(form.redirect_action).val();
   if (redirect.indexOf("/tasks/list") >= 0) {
-    form.onsubmit();
+      form.trigger('submit');
   }
   else {
     form.submit();
@@ -97,14 +97,18 @@ function initTagsPanel() {
 }
 
 function loadFilterPanel() {
+    return loadFilter('', this.href);
+}
+
+function loadFilter(data, url){
   jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
   jQuery.ajax({
             beforeSend: function(){ showProgress(); },
             complete: function(request){ tasklistReload(); hideProgress(); } ,
-            data:'',
+            data: data,
             success:  function(request){jQuery('#search_filter_keys').html(request);},
             type:'post',
-            url: this.href
+            url: url
         });
         return false;
 }
@@ -112,6 +116,9 @@ function loadFilterPanel() {
 jQuery(document).ready(function() {
   //only if we on task list page
   if( /tasks\/list$/.test(document.location.href) ){
+      jQuery("#search_filter_form").submit(function(event){
+        return loadFilter(jQuery.param(jQuery(this).serializeArray()), "/task_filters/update_current_filter");
+      });
       initFiltersPanel();
       initTagsPanel();
   }
