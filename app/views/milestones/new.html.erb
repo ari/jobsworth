@@ -1,5 +1,5 @@
 <fieldset>
-<%= "<legend>#{_ 'New Milestone' }</legend>" unless @disable_title %>
+<%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
 
 <% unless @popup.nil? %>
 <% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "jQuery('span#ui_popup_dialog').dialog('destroy');" do %>
