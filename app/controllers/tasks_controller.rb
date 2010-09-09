@@ -386,8 +386,9 @@ class TasksController < ApplicationController
 
   def set_group
     task = Task.accessed_by(current_user).find_by_task_num(params[:id])
-    task.update_group(params[:group], params[:value])
+    task.update_group(current_user, params[:group], params[:value], params[:icon])
 
+    expire_fragment( %r{tasks\/#{task.id}-.*\/#{current_user.id}} )
     render :nothing => true
   end
 protected

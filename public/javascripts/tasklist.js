@@ -48,6 +48,7 @@ function taskListConfigSerialise() {
         });
 }
 
+var group_value = ""
 function change_group() {
   var vl = jQuery("div.ui-pg-div > #chngroup").val();
   if(vl) {
@@ -58,6 +59,7 @@ function change_group() {
     }
   }
   jQuery.post("/users/set_task_grouping_preference/" +  vl);
+  group_value = vl;
 }
 
 
