@@ -638,8 +638,7 @@ class Task < ActiveRecord::Base
   def property_value(property)
     return unless property
 
-    #tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
-    tpv = TaskPropertyValue.find_by_task_id_and_property_id(self.id, property.id)
+    tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
     tpv.property_value if tpv
   end
 
