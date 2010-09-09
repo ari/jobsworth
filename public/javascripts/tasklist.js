@@ -122,7 +122,7 @@ function initTaskList() {
 
         grouping: jQuery("#chngroup").val() != "clear",
         groupingView: {
-      groupField: [jQuery("#chngroup").val()]
+           groupField: [jQuery("#chngroup").val()]
         }
   });
 
@@ -144,12 +144,16 @@ function initTaskList() {
                         var group_text = jQuery("#" + group_id + " > td").text();
                 var group_icon;
                 if (group_text == "") {
-                        group_icon = jQuery("#" + group_id + " > td > img").attr("src");
+                        group_icon = jQuery("#" + group_id + " > td > span > img").attr("src");
                 }
                         break;
                         }
                 }
-                var group = jQuery("#chngroup").val();
+                if (group_value != "") {
+                        var group = group_value;
+                } else {
+                        var group = jQuery("#chngroup").val();
+                }
                 jQuery.post("/tasks/set_group/"+ ui.item.attr("id") +"?group=" +  group + "&value=" + group_text+ "&icon=" + group_icon);
         if (group_text != "") {
                 jQuery('.ui-sortable > tr#'+ ui.item.attr("id") +' > td[aria-describedby=\"task_list_'+ group + '\"]').text(group_text);
@@ -210,8 +214,6 @@ function initTaskList() {
       id: "jgrid_footer_changegroup"
   });
   jQuery('#task_pager_center').remove();
-
-
   resizeGrid();
 }
 
