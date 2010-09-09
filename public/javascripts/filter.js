@@ -3,14 +3,7 @@ Submits the search filter form. If we are looking at the task list,
 does that via ajax. Otherwise does a normal html post
 */
 function submitSearchFilterForm() {
-  var form = jQuery("#search_filter_form")[0];
-  var redirect = jQuery(form.redirect_action).val();
-  if (redirect.indexOf("/tasks/list") >= 0) {
-      form.trigger('submit');
-  }
-  else {
-    form.submit();
-  }
+    jQuery("#search_filter_form").trigger('submit');
 }
 
 /*
@@ -104,7 +97,7 @@ function loadFilter(data, url){
   jQuery('#search_filter_keys').effect("highlight", {color: '#FF9900'}, 3000);
   jQuery.ajax({
             beforeSend: function(){ showProgress(); },
-            complete: function(request){ tasklistReload(); hideProgress(); } ,
+            complete: function(request){ tasksViewReload(); hideProgress(); } ,
             data: data,
             success:  function(request){jQuery('#search_filter_keys').html(request);},
             type:'post',
@@ -113,9 +106,19 @@ function loadFilter(data, url){
         return false;
 }
 
+function tasksViewReload()
+{
+    if(/tasks\/list$/.test(document.location.href)) {
+        return tasklistReload();
+    }
+    if(/tasks\/calendar$/.test(document.location.href)) {
+        return calendarReload();
+    }
+}
+
 jQuery(document).ready(function() {
-  //only if we on task list page
-  if( /tasks\/list$/.test(document.location.href) ){
+  //only if we on tasks list or calendar or gantt page
+    if( /tasks\/(list|calendar|gantt)$/.test(document.location.href) ){
       jQuery("#search_filter_form").submit(function(event){
         return loadFilter(jQuery.param(jQuery(this).serializeArray()), "/task_filters/update_current_filter");
       });
