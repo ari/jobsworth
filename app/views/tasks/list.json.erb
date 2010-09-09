@@ -21,7 +21,7 @@
 "read":<%= readFlag.to_json.html_safe %>,
 "id":<%= task.task_num.to_json.html_safe %>,
 <%  current_user.company.properties.each do |prop| -%>
-<%= prop.name.downcase.to_json.html_safe %>:<%= TaskPropertyValue.find_by_task_id_and_property_id(task.id, prop.id).to_html.to_json.html_safe rescue "\"\"".html_safe %>,
+<%= prop.name.downcase.to_json.html_safe %>:<%= TaskPropertyValue.find_by_task_id_and_property_id(task.id, prop.id).property_value.to_html.to_json.html_safe rescue "\"\"".html_safe %>,
 <%  end -%>
 "summary":<%= task.name.to_json.html_safe %>,
 "client":<%= customer.name.to_json.html_safe %>,
