@@ -327,14 +327,12 @@ class Task < ActiveRecord::Base
   end
 
   def due_date
-    if self.due_at?
-      self.due_at
-    elsif self.milestone_id.to_i > 0 && milestone && milestone.due_at?
-      milestone.due_at
-    else
-      nil
-    end
+    due = self.due_at
+    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
+    due
   end
+
+  alias_method :due, :due_date
 
   def scheduled_date
     if self.scheduled?
@@ -502,12 +500,6 @@ class Task < ActiveRecord::Base
 
     conditions = "(#{ conditions.join(" or ") })"
     return tf.tasks(conditions)
-  end
-
-  def due
-    due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
-    due
   end
 
   def to_tip(options = { })
