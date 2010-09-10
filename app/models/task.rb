@@ -326,6 +326,17 @@ class Task < ActiveRecord::Base
     worked_minutes > 0 || self.worked_on?
   end
 
+  ###
+  # This method return due_date - duration
+  # It used only to display task in calendar. User should not start work on task when start_date come.
+  # For date when user should start work on task we have schedule controller.
+  # Again, do not use this method outside calendar view. And this method should be removed when schedule code will be fixed.
+  ###
+  def start_date
+    return due_date if (duration.nil? or due_date.nil?)
+    due_date - (duration/(60*8)).to_i.days
+  end
+
   def due_date
     due = self.due_at
     due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
