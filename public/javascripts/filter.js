@@ -106,16 +106,6 @@ function loadFilter(data, url){
         return false;
 }
 
-function tasksViewReload()
-{
-    if(/tasks\/list$/.test(document.location.href)) {
-        return tasklistReload();
-    }
-    if(/tasks\/calendar$/.test(document.location.href)) {
-        return calendarReload();
-    }
-}
-
 jQuery(document).ready(function() {
   //only if we on tasks list or calendar or gantt page
     if( /tasks\/(list|calendar|gantt)$/.test(document.location.href) ){
