@@ -248,9 +248,7 @@ class UsersController < ApplicationController
     #ensure all custom properties are in the model
     current_user.company.properties.each do |attr|
       next if colModel.detect { |c| c['name'] == attr.name.downcase }
-      colModel << {'name' => attr.name.downcase, 
-                   'sorttype' => "function(cell) {return prop_json['#{attr.name.downcase}'][cell]}"
-                  }
+      colModel << {'name' => attr.name.downcase}
       logger.info "Property '#{attr.name}' missing, adding to task list model."
     end
     order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]

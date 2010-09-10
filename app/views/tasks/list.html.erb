@@ -20,14 +20,6 @@
 	
 	link_list += content_tag(:li, link, :class => class_names.join(" "))
 	end
-        prop_json = {}
-        current_user.company.properties.each do |p|
-          pv_hash = {}
-          p.property_values.find(:all, :order => "position").each_with_index do |pv, idx|
-            pv_hash.merge!({pv.to_html => idx})
-          end
-          prop_json[p.name.downcase] = pv_hash
-        end
 	-%>
 	<%= link_list.html_safe %>
 	</ul>
@@ -41,5 +33,4 @@
 	  <%= render_last_task %>
 	</div>
 </div>
-<%= javascript_tag("var prop_json=" + prop_json.to_json) %>
 <%= render :partial => "/tags/panel" %>
