@@ -248,7 +248,7 @@ class UsersController < ApplicationController
     #ensure all custom properties are in the model
     current_user.company.properties.each do |attr|
       next if colModel.detect { |c| c['name'] == attr.name.downcase }
-      colModel << {'name' => attr.name.downcase }
+      colModel << {'name' => attr.name.downcase}
       logger.info "Property '#{attr.name}' missing, adding to task list model."
     end
     order = session[:jqgrid_sort_order].nil? ?  'asc': session[:jqgrid_sort_order]
@@ -258,6 +258,11 @@ class UsersController < ApplicationController
 
   def set_task_grouping_preference
     current_user.preference_attributes = [ [ 'task_grouping', params[:id] ] ]
+    render :nothing => true
+  end
+
+  def set_side_panel_preference
+    current_user.preference_attributes = [ [ params[:panel], params[:id] ] ]
     render :nothing => true
   end
   

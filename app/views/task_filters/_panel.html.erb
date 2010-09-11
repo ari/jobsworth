@@ -1,10 +1,12 @@
 <% content_for(:side_panel) do %>
-<div class="task_filters section">
+<% panel_preference = current_user.preference('task_filters') || 'open' %>
+<div id="task_filters" class="task_filters section">
+  <a class="collapsable-sidepanel-button panel-<%= panel_preference %>">&nbsp;</a>
   <div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
     <div><%=_ "Filters" %></div>
   </div>
 
-  <ul>
+  <ul class="panel_content">
     <li><%= link_to_open_tasks %></li>
     <li><%= link_to_open_tasks(current_user) %></li>
     <li><%= link_to_unread_tasks(current_user) %></li>
@@ -24,4 +26,5 @@
     <% end -%>
   </ul>
 </div>
+<%= javascript_tag("jQuery('div#task_filters ul.panel_content').hide();") if panel_preference == "collapsed" %>
 <% end %>

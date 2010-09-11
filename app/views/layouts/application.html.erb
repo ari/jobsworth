@@ -23,9 +23,9 @@
     <%= javascript_include_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>
     <% if ['activities'].include? controller.controller_name %>
       <!--[if IE]><%= javascript_include_tag "excanvas" %><![endif]-->
-    	<%= javascript_include_tag "builder", "portal", "flotr" %>
+        <%= javascript_include_tag "builder", "portal", "flotr" %>
     <% end %>
-    
+
     <%= stylesheet_link_tag(
       "jquery-ui",
       "application",
@@ -43,15 +43,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <%
      @internal = current_user.company.internal_customer
-	   if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0
+           if !@internal.nil? && !@internal.css.nil? && @internal.css.length > 0
     %>
-	    <style type="text/css">	
-	      	<%= @internal.css %>
-	    </style>
-  	<% end %>
+            <style type="text/css">
+                <%= @internal.css %>
+            </style>
+        <% end %>
     <script type="text/javascript">
-	  jQuery.jgrid.no_legacy_api = true;
-	  jQuery.jgrid.useJSON = true;
+          jQuery.jgrid.no_legacy_api = true;
+          jQuery.jgrid.useJSON = true;
     </script>
   </head>
   <body>
@@ -72,18 +72,23 @@
         <td style="<%= "display:none;"  if session[:collapse_menu].to_i > 0 %>" id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
+          <% worklog_preference = current_user.preference('work-log') || 'open' %>
           <div <%= "style=\"display:none;\"" if @current_sheet.nil? || controller.action_name == "stop_work" %> id="work-log">
+            <a class="collapsable-sidepanel-button panel-<%= worklog_preference %>">&nbsp;</a>
             <div class="page_header tooltip" title="<%= _'Text entered will be saved automatically to your current work notes.'%>">
               <%= _'Work Log' %>
             </div>
+            <span class="panel_content">
             <form method="post" onsubmit="return false;" id="worklog_form">
               <textarea name="worklog[body]" id="worklog_body" rows="4">
                 <%= @current_sheet.body if @current_sheet %>
               </textarea>
             </form>
             <div id="worklog-saved" class="optional" style="text-align:right;padding-bottom:0.3em;padding-right:1em;"></div>
+            </span>
             <br/>
           </div>
+          <%= javascript_tag("jQuery('div#work-log span.panel_content').hide();") if worklog_preference == "collapsed" %>
           <%= render(:partial => "pages/panel") %>
         </td>
       </tr>
@@ -98,8 +103,8 @@
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[
       var userId=<%= current_user.id %>;
-      var useTooltips=<%= current_user.option_tooltips.to_i %>;        
-
+      var useTooltips=<%= current_user.option_tooltips.to_i %>;
+      var userDateFormat="<%= current_user.dateFormat %>";
       // ]]>
     </script>
   </body>

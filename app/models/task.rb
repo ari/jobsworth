@@ -326,15 +326,24 @@ class Task < ActiveRecord::Base
     worked_minutes > 0 || self.worked_on?
   end
 
-  def due_date
-    if self.due_at?
-      self.due_at
-    elsif self.milestone_id.to_i > 0 && milestone && milestone.due_at?
-      milestone.due_at
-    else
-      nil
-    end
+  ###
+  # This method return due_date - duration
+  # It used only to display task in calendar. User should not start work on task when start_date come.
+  # For date when user should start work on task we have schedule controller.
+  # Again, do not use this method outside calendar view. And this method should be removed when schedule code will be fixed.
+  ###
+  def start_date
+    return due_date if (duration.nil? or due_date.nil?)
+    due_date - (duration/(60*8)).to_i.days
   end
+
+  def due_date
+    due = self.due_at
+    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
+    due
+  end
+
+  alias_method :due, :due_date
 
   def scheduled_date
     if self.scheduled?
@@ -432,28 +441,27 @@ class Task < ActiveRecord::Base
     self.company.statuses[self.status].name
   end
 
-  def Task.status_type(type)
-    Task.status_types[type]
-  end
 
   def Task.status_types
     Company.first.statuses.all.collect {|a| a.name }
   end
 
   def priority_type
-    Task.priority_types[self.priority]
-  end
-
-  def Task.priority_types
-    {  -2 => "Lowest", -1 => "Low", 0 => "Normal", 1 => "High", 2 => "Urgent", 3 => "Critical" }
+    v=property_value(company.priority_property)
+    if v.nil?
+      return "Normal"
+    else
+      return v.value
+    end
   end
 
   def severity_type
-    Task.severity_types[self.severity_id]
-  end
-
-  def Task.severity_types
-    { -2 => "Trivial", -1 => "Minor", 0 => "Normal", 1 => "Major", 2 => "Critical", 3 => "Blocker"}
+    v=property_value(company.severity_property)
+    if v.nil?
+      return "Normal"
+    else
+      return v.value
+    end
   end
 
   def owners_to_display
@@ -505,12 +513,6 @@ class Task < ActiveRecord::Base
     return tf.tasks(conditions)
   end
 
-  def due
-    due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
-    due
-  end
-
   def to_tip(options = { })
     unless @tip
       owners = "No one"
@@ -549,10 +551,10 @@ class Task < ActiveRecord::Base
   end
   def css_classes
     unless @css
-      @css= if self.open? 
-        "" 
+      @css= if self.open?
+        ""
       elsif self.closed?
-        " closed" 
+        " closed"
       else
         " invalid"
       end
@@ -642,20 +644,7 @@ class Task < ActiveRecord::Base
     tpv.property_value if tpv
   end
 
-  ###
-  # This method will help in the migration of type id, priority and severity
-  # to use properties. It can be removed once that is done.
-  ###
-  def convert_attributes_to_properties(type, priority, severity)
-    old_value = Task.issue_types[attributes['type_id'].to_i]
-    copy_task_value(old_value, type)
 
-    old_value = Task.priority_types[attributes['priority'].to_i]
-    copy_task_value(old_value || 0, priority)
-
-    old_value = Task.severity_types[attributes['severity_id'].to_i]
-    copy_task_value(old_value || 0, severity)
-  end
 
   ###
   # This method will help in the migration of type id, priority and severity
@@ -672,31 +661,10 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # This method will help in the rollback of type, priority and severity
-  # from properties.
-  # It can be removed after.
-  ###
-  def convert_properties_to_attributes
-    type = company.properties.detect { |p| p.name == "Type" }
-    severity = company.properties.detect { |p| p.name == "Severity" }
-    priority = company.properties.detect { |p| p.name == "Priority" }
-
-    self.type_id = Task.issue_types.index(property_value(type).to_s)
-    self.severity_id = Task.severity_types.invert[property_value(severity).to_s] || 0
-    self.priority = Task.priority_types.invert[property_value(priority).to_s] || 0
-  end
-
-  ###
   # These methods replace the columns for these values. If people go ahead
   # and change the default priority, etc values then they will return a
   # default value that shouldn't affect sorting.
   ###
-  def priority
-    property_value_as_integer(company.priority_property, Task.priority_types.invert) || 0
-  end
-  def severity_id
-    property_value_as_integer(company.severity_property, Task.severity_types.invert) || 0
-  end
   def type_id
     property_value_as_integer(company.type_property) || 0
   end
@@ -1028,25 +996,26 @@ class Task < ActiveRecord::Base
     repeat.save!
   end
 
-  def update_group(group, value, icon = nil)
-    user_id = self.project.user_id
-    company_id =  self.project.company_id
+  def update_group(user, group, value, icon = nil)
     if group == "milestone"
       val_arr = value.split("/")
-      if val_arr.size == 1
-        self.milestone_id = nil        
-      else
-        mid = Milestone.find_by_name_and_user_id(val_arr[1], user_id).id
-        self.milestone_id = mid
+      task_project = user.projects.find_by_name(val_arr[0])
+      if user.can?(task_project, "milestone")
+        pid = task_project.id
+        if val_arr.size == 1
+          self.milestone_id = nil
+        else
+          mid = Milestone.find(:first, :conditions => ['company_id = ? AND project_id = ? AND completed_at IS NULL AND LTRIM(name) = ?', user.company.id, pid, val_arr[1].strip]).id
+          self.milestone_id = mid
+        end
+        self.project_id = pid
+        save
       end
-      pid = Project.find_by_name_and_user_id_and_company_id(val_arr[0], user_id, company_id).id
-      self.project_id = pid
-      save
-    elsif group == "resolution"
-      p = Status.find_by_name_and_company_id(value, company_id).id
+    elsif group == "resolution" && user.can?(self.project, 'close')
+      p = Status.find_by_name_and_company_id(value, user.company_id).id
       self.status = (p - 1)
       save
-    elsif prop = Property.find_by_company_id_and_name(company_id, group.camelize)
+    elsif prop = Property.find_by_company_id_and_name(user.company_id, group.camelize)
       if !value.blank?
         pv = PropertyValue.find_by_value_and_property_id(value, prop.id)
       elsif !icon.blank?

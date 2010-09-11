@@ -1,6 +1,22 @@
 require 'test_helper'
 
 class TaskEditTest < ActionController::IntegrationTest
+  def self.make_test_for_due_date
+    should "not change due_at if user not chenge it" do
+      old_due=field_with_id("due_at").value
+      fill_in "task_description", :with => 'changed description'
+      click_button "save"
+      visit "/tasks/edit/#{@task.task_num}"
+      assert_equal field_with_id("due_at").value, old_due
+      assert_equal 'changed description', @task.reload.description
+    end
+    should "change due_at " do
+      fill_in "due_at", :with => "27/07/2009"
+      click_button "save"
+      visit "/tasks/edit/#{@task.task_num}"
+      assert_equal field_with_id("due_at").value,  "27/07/2009"
+    end
+  end
   context "A logged in user" do
     setup do
       @user = login
@@ -18,6 +34,8 @@ class TaskEditTest < ActionController::IntegrationTest
       context "on the task edit screen" do
         setup do
           @task = @project.tasks.first
+          @task.due_at = Time.now + 3.days
+          @task.save!
           visit "/tasks/edit/#{@task.task_num}"
         end
 
@@ -67,10 +85,21 @@ class TaskEditTest < ActionController::IntegrationTest
           assert_equal 240, @task.reload.duration
         end
 
-        should "be able to set the due date" do
-          fill_in "due_at", :with => "27/07/2009"
-          click_button "save"
-          assert_equal "27/07/2009", @task.reload.due_date.strftime("%d/%m/%Y")
+        context "be able to set the due date" do
+          context "a logged in user from GMT -8 time zone" do
+            setup do
+              @user.time_zone='America/Chicago'
+              @user.save!
+            end
+            make_test_for_due_date
+          end
+          context "a logged in user from GMT +2 time zone" do
+            setup do
+              @user.time_zone="Europe/Kiev"
+              @user.save!
+            end
+            make_test_for_due_date
+          end
         end
 
         should "be able to set type" do

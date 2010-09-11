@@ -1,11 +1,14 @@
-<div class="section">
+<% notes_preference = current_user.preference('notes') || 'open' %>
+<div id="notes" class="section">
+    <a class="collapsable-sidepanel-button panel-<%= notes_preference %>">&nbsp;</a>
 	<div class="page_header tooltip" title="<%= _'Easy access to commonly needed information.'%>">
 		<%= link_to _('New'), :controller => 'pages', :action => 'new' %>
 	    <%=_ 'Notes'%>
 	</div>
-	<ul>
+	<ul class="panel_content">
 	<% for page in current_pages %>
 	<li><%= link_to "#{page.name} / #{page.notable.name}", { :controller => 'pages', :action => 'show', :id => page} %> <small>(<%=_('%s ago', time_ago_in_words( page.updated_at, false ) )%>)</small></li>
 	<% end %>
 	</ul>
 </div>
+<%= javascript_tag("jQuery('div#notes ul.panel_content').hide();") if notes_preference == "collapsed" %>

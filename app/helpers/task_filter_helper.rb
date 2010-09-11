@@ -26,20 +26,6 @@ module TaskFilterHelper
     return res
   end
 
-  # Return the html for a remote task filter form tag
-  def remote_filter_form_tag(&block)
-    args={ :url => "/task_filters/update_current_filter",
-                    :html => { :method => "post", :id => "search_filter_form"},
-                    :loading => "showProgress()",
-                    :update => "search_filter_keys",
-                    :loaded => "tasklistReload(); hideProgress() "}
-    if block_given?
-      return form_remote_tag(args, &block)
-    else
-      return form_remote_tag(args)
-    end
-  end
-
   # Returns a link to set the task filter to show only open tasks.
   # If user is passed, only open tasks belonging to that user will
   # be shown
@@ -92,7 +78,7 @@ module TaskFilterHelper
     name += ' is not' if qualifier.reversed?
     return name
   end
-  
+
   # Returns the value of the given qualifier
   def qualifier_value(qualifier)
     if qualifier.qualifiable_type == "PropertyValue"

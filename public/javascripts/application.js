@@ -464,6 +464,8 @@ jQuery(document).ready(function() {
   autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
   autocomplete('#project_user_name_autocomplete', '/projects/auto_complete_for_user_name', addUserToProject);
+
+  jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
 
 function toggleAccess() {
@@ -541,13 +543,13 @@ function autocomplete_multiple_remote(input_field, path){
 
 /* Events */
 jQuery('#flash_message').click(function(){ jQuery('#flash').remove();});
-  
+
 jQuery('#worklog_body').blur(function(){
-	jQuery.ajax({
-		'url': '/tasks/updatelog',
-		'data': jQuery('#worklog_form').serialize(),
-		'dataType': 'text',
-		'type': 'POST',
-		'success': function(data){jQuery('#worklog-saved').html(data) ;}
-	});
+        jQuery.ajax({
+                'url': '/tasks/updatelog',
+                'data': jQuery('#worklog_form').serialize(),
+                'dataType': 'text',
+                'type': 'POST',
+                'success': function(data){jQuery('#worklog-saved').html(data) ;}
+        });
 });
