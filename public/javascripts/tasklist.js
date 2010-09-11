@@ -17,11 +17,6 @@ function getUserPreference(name) {
   jQuery.post("/users/set_preference",  params);
 }
 
-function tasklistReload() {
-        jQuery("#task_list").trigger("reloadGrid");
-}
-
-
 function selectRow(rowid) {
         jQuery('#task_list').setCell(rowid, 'read', true);
         jQuery('#task_list>tbody>tr#' + rowid).removeClass('unread');
@@ -322,7 +317,8 @@ function timeTaskValue(cellvalue) {
         return Math.round(cellvalue/6)/10 + "hr";
 }
 
-function calendarReload()
+function tasksViewReload()
 {
+    jQuery("#task_list").trigger("reloadGrid");
     jQuery('#calendar').fullCalendar('refetchEvents');
 }

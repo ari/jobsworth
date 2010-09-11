@@ -63,7 +63,7 @@ module TasksHelper
   # no customer are also returned though).
   ###
   def auto_complete_for_resources(customer_id)
-    text_field(:resource, :name, {:id => "resource_name_auto_complete", :size => 12, 'data-customer-id'=>customer_id }) 
+    text_field(:resource, :name, {:id => "resource_name_auto_complete", :size => 12, 'data-customer-id'=>customer_id })
   end
 
   ###
@@ -199,7 +199,7 @@ module TasksHelper
     date_tooltip = _("Enter task due date.<br/>For recurring tasks, try:<br/>every day<br/>every thursday<br/>every last friday<br/>every 14 days<br/>every 3rd monday <em>(of a month)</em>")
 
     options = {
-      :id => "due_at", :class => "tooltip", :title => date_tooltip.html_safe,
+      :id => "due_at", :class => "tooltip datefield", :title => date_tooltip.html_safe,
       :size => 12,
       :value => formatted_date_for_current_user(task.due_date)
     }
@@ -209,17 +209,7 @@ module TasksHelper
       options[:value] = @task.repeat_summary
     end
 
-    js = <<-EOS
-    <script type="text/javascript" language="javascript">
-    jQuery(function() {
-      jQuery("#due_at").datepicker({ constrainInput: false,
-                                      dateFormat: '#{ current_user.dateFormat }'
-                                   });
-    });
-    </script>
-    EOS
-
-    return text_field("task", "due_at", options) + js.html_safe
+    return text_field("task", "due_at", options)
   end
 
   # Returns the notify emails for the given task, one per line

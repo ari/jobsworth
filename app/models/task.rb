@@ -326,15 +326,24 @@ class Task < ActiveRecord::Base
     worked_minutes > 0 || self.worked_on?
   end
 
-  def due_date
-    if self.due_at?
-      self.due_at
-    elsif self.milestone_id.to_i > 0 && milestone && milestone.due_at?
-      milestone.due_at
-    else
-      nil
-    end
+  ###
+  # This method return due_date - duration
+  # It used only to display task in calendar. User should not start work on task when start_date come.
+  # For date when user should start work on task we have schedule controller.
+  # Again, do not use this method outside calendar view. And this method should be removed when schedule code will be fixed.
+  ###
+  def start_date
+    return due_date if (duration.nil? or due_date.nil?)
+    due_date - (duration/(60*8)).to_i.days
   end
+
+  def due_date
+    due = self.due_at
+    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
+    due
+  end
+
+  alias_method :due, :due_date
 
   def scheduled_date
     if self.scheduled?
@@ -502,12 +511,6 @@ class Task < ActiveRecord::Base
 
     conditions = "(#{ conditions.join(" or ") })"
     return tf.tasks(conditions)
-  end
-
-  def due
-    due = self.due_at
-    due = self.milestone.due_at if(due.nil? && self.milestone_id.to_i > 0 && self.milestone)
-    due
   end
 
   def to_tip(options = { })
