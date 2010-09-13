@@ -67,7 +67,7 @@ Rails::Initializer.run do |config|
 
   if RUBY_VERSION < "1.9"
     # fastercsv has been moved in as default csv engine in 1.9
-    config.gem 'fastercsv', :version > '1.5.0'
+    config.gem 'fastercsv', :version => '>=1.5.0'
   else
     require "csv"
     if !defined?(FasterCSV)
