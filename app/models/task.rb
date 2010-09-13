@@ -593,7 +593,7 @@ class Task < ActiveRecord::Base
   end
 
   def to_csv
-    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type ] +
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, self.due_date, created_at, completed_at, worked_minutes, duration, status_type ] +
       company.properties.collect { |property| property_value(property).to_s }
   end
 
