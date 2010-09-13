@@ -461,9 +461,9 @@ jQuery(document).ready(function() {
     });
   });
   autocomplete('#resource_customer_name', '/users/auto_complete_for_customer_name', updateAutoCompleteField);
-  autocomplete('#project_customer_name', '/projects/auto_complete_for_customer_name', addCustomerToProject);
+  autocomplete('#project_customer_name', '/application/auto_complete_for_customer_name', addCustomerToProject);
   autocomplete('#project_name', '/users/auto_complete_for_project_name', addProjectToUser);
-  autocomplete('#project_user_name_autocomplete', '/projects/auto_complete_for_user_name', addUserToProject);
+  autocomplete('#project_user_name_autocomplete', '/application/auto_complete_for_user_name', addUserToProject);
 
   jQuery(".datefield").datepicker({ constrainInput: false, dateFormat: userDateFormat});
 });
