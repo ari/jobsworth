@@ -619,25 +619,10 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # These methods replace the columns for these values. If people go ahead
-  # and change the default priority, etc values then they will return a
-  # default value that shouldn't affect sorting.
+  # This method return value of property named "Type"
   ###
-  def type_id
-    property_value_as_integer(company.type_property) || 0
-  end
-
-  ###
-  # Returns an int representing the given property.
-  # Pass in a hash of strings to ids to return those values, otherwise
-  # the index in the property value list is returned.
-  ###
-  def property_value_as_integer(property, mappings = {})
-    task_value = property_value(property)
-
-    if task_value
-      return mappings[task_value.value] || property.property_values.index(task_value)
-    end
+  def type
+    property_value(company.type_property)
   end
 
   ###
