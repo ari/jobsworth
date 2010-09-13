@@ -33,7 +33,11 @@ class NotificationsTest < ActiveRecord::TestCase
       should "create created mail as expected" do
         @expected.subject  = '[Jobsworth] Created: [#1] Test [Test Project] (Unassigned)'
         @expected.body     = read_fixture('created')
-
+        @task.company.properties.destroy_all
+        @task.company.create_default_properties
+        @task.company.properties.each{ |p|
+          @task.set_property_value(p, p.default_value)
+        }
         notification = Notifications.create_created(@task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "", @expected.date)

@@ -455,15 +455,6 @@ class Task < ActiveRecord::Base
     end
   end
 
-  def severity_type
-    v=property_value(company.severity_property)
-    if v.nil?
-      return "Normal"
-    else
-      return v.value
-    end
-  end
-
   def owners_to_display
     o = self.owners.collect{ |u| u.name}.join(', ')
     o = "Unassigned" if o.nil? || o == ""
@@ -642,22 +633,6 @@ class Task < ActiveRecord::Base
 
     tpv = task_property_values.detect { |tpv| tpv.property.id == property.id }
     tpv.property_value if tpv
-  end
-
-
-
-  ###
-  # This method will help in the migration of type id, priority and severity
-  # to use properties. It can be removed once that is done.
-  #
-  # Copies the severity, priority etc on the given task to the new
-  # property.
-  ###
-  def copy_task_value(old_value, new_property)
-    return if !old_value
-
-    matching_value = new_property.property_values.detect { |pv| pv.value == old_value }
-    set_property_value(new_property, matching_value) if matching_value
   end
 
   ###

@@ -138,12 +138,7 @@ class Company < ActiveRecord::Base
   def type_property
     @type_property ||= properties.detect { |p| p.name == "Type" || p.name == _("Type") }
   end
-  ###
-  # Returns the property to use to represent a tasks severity.
-  ###
-  def severity_property
-    @severity_property ||= properties.detect { |p| p.name == "Severity" || p.name == _("Severity") }
-  end
+
   ###
   # Returns the property to use to represent a tasks priority.
   ###

@@ -22,6 +22,10 @@ class PropertyValue < ActiveRecord::Base
     end
   end
 
+  def to_s
+    value
+  end
+
   private
 
   include ActionView::Helpers::AssetTagHelper
