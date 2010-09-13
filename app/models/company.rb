@@ -124,15 +124,6 @@ class Company < ActiveRecord::Base
   end
 
   ###
-  # Returns the default array to sort tasks by for this company.
-  ###
-  def default_sort_array(task)
-    array = []
-
-    return array
-  end
-
-  ###
   # Returns the property to use to represent a tasks type.
   ###
   def type_property
