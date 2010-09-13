@@ -878,11 +878,6 @@ class Task < ActiveRecord::Base
     return res
   end
 
-  # Builds a new (unsaved) work log for this task using the given params
-  def last_comment
-    @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
-  end
-
   # return a users mapped to the duration of time they have worked on this task
   def user_work
     if @user_work.nil?
