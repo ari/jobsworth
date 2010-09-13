@@ -15,8 +15,6 @@ module DateAndTimeHelper
   # current user's preferences
   def formatted_date_for_current_user(date)
     tm= tz.utc_to_local(date.to_time).strftime("#{ current_user.date_format }") if date
-    p tm
-    tm
   end
 
   ###
