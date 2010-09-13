@@ -429,14 +429,6 @@ class Task < ActiveRecord::Base
     "#{self.issue_num} #{self.name}"
   end
 
-  def issue_type
-    Task.issue_types[self.type_id.to_i]
-  end
-
-  def Task.issue_types
-    ["Task", "New Feature", "Defect", "Improvement"]
-  end
-
   def status_type
     self.company.statuses[self.status].name
   end
@@ -444,15 +436,6 @@ class Task < ActiveRecord::Base
 
   def Task.status_types
     Company.first.statuses.all.collect {|a| a.name }
-  end
-
-  def priority_type
-    v=property_value(company.priority_property)
-    if v.nil?
-      return "Normal"
-    else
-      return v.value
-    end
   end
 
   def owners_to_display

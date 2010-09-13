@@ -59,7 +59,6 @@ class CompanyTest < ActiveRecord::TestCase
     @company.create_default_properties
 
     ensure_property_method_works_with_translation(:type_property)
-    ensure_property_method_works_with_translation(:priority_property)
   end
 
   test "preference_attributes should create preferences" do
@@ -90,7 +89,7 @@ class CompanyTest < ActiveRecord::TestCase
     end
 
     should "have priority" do
-      assert_not_nil @company.priority_property
+      assert_not_nil @company.properties.detect{ |p| p.name == "Priority" }
     end
 
     should "have property values in the top 33% as critical" do

@@ -140,13 +140,6 @@ class Company < ActiveRecord::Base
   end
 
   ###
-  # Returns the property to use to represent a tasks priority.
-  ###
-  def priority_property
-    @priority_property ||= properties.detect { |p| p.name == "Priority" || p.name == _("Priority") }
-  end
-
-  ###
   # Returns the URL to the installation
   ###
   def site_URL
