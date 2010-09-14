@@ -342,23 +342,32 @@ function init_task_form() {
     });
 }
 
+// this variable is used to cache the last state so we don't run
+// all of highlightWatchers() on every keystroke
+var task_comment_empty = null;
+
 function highlightWatchers() {
-        if (jQuery('#comment').val() == '') {
-                jQuery('.watcher').removeClass('will_notify');
-                jQuery('#notify_users').html('');
-        } else {
-                if (jQuery('#accessLevel_container div').hasClass('private')) {
-                        jQuery('.watcher').removeClass('will_notify');
-                        jQuery('.watcher.access_level_2').addClass('will_notify');
-                } else {
-                        jQuery('.watcher').addClass('will_notify');
-                }
-                var watcher = "Notify: ";
-                jQuery('div.watcher.will_notify a.username span').each(function() {
-                        watcher = watcher + jQuery(this).html() + ", ";
-                });
-                jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
-        }
+	var comment_val = jQuery('#comment').val();
+	
+  if (comment_val !== task_comment_empty) {
+	  if (comment_val == '') {
+	    jQuery('.watcher').removeClass('will_notify');
+	    jQuery('#notify_users').html('');
+	  } else {
+	    if (jQuery('#accessLevel_container div').hasClass('private')) {
+	      jQuery('.watcher').removeClass('will_notify');
+	      jQuery('.watcher.access_level_2').addClass('will_notify');
+	    } else {
+	      jQuery('.watcher').addClass('will_notify');
+	    }
+	    var watcher = "Notify: ";
+	    jQuery('div.watcher.will_notify a.username span').each(function() {
+	      watcher = watcher + jQuery(this).html() + ", ";
+	    });
+	    jQuery('#notify_users').html(watcher.substring(0,watcher.length-2));
+	  }
+	  task_comment_empty = (comment_val == '');
+  }
 }
 
 function add_milestone_popup() {
