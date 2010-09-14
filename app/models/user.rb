@@ -178,15 +178,10 @@ class User < ActiveRecord::Base
   def display_login
     name + " / " + (customer.nil? ? company.name : customer.name)
   end
-#  def login(subdomain = nil)
-#   company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
-#   companyId = company.nil ? 1 : company.id
-#   User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
-#  end
 
   def login(company = nil)
     return if !company or !company.respond_to?(:users)
-    user = company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
+    user = company.users.find(:first, :conditions => { :active=>true, :username => self.username, :password => self.password })
     unless user.nil?
       user.last_login_at =Time.now.utc
       user.save
