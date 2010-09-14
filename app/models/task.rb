@@ -593,7 +593,7 @@ class Task < ActiveRecord::Base
   end
 
   def to_csv
-    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type ] +
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, self.due_date, created_at, completed_at, worked_minutes, duration, status_type ] +
       company.properties.collect { |property| property_value(property).to_s }
   end
 
@@ -619,25 +619,10 @@ class Task < ActiveRecord::Base
   end
 
   ###
-  # These methods replace the columns for these values. If people go ahead
-  # and change the default priority, etc values then they will return a
-  # default value that shouldn't affect sorting.
+  # This method return value of property named "Type"
   ###
-  def type_id
-    property_value_as_integer(company.type_property) || 0
-  end
-
-  ###
-  # Returns an int representing the given property.
-  # Pass in a hash of strings to ids to return those values, otherwise
-  # the index in the property value list is returned.
-  ###
-  def property_value_as_integer(property, mappings = {})
-    task_value = property_value(property)
-
-    if task_value
-      return mappings[task_value.value] || property.property_values.index(task_value)
-    end
+  def type
+    property_value(company.type_property)
   end
 
   ###
@@ -891,11 +876,6 @@ class Task < ActiveRecord::Base
     end
 
     return res
-  end
-
-  # Builds a new (unsaved) work log for this task using the given params
-  def last_comment
-    @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
   end
 
   # return a users mapped to the duration of time they have worked on this task

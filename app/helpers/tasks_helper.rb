@@ -218,18 +218,6 @@ module TasksHelper
     return emails.join("\n")
   end
 
-  # Returns basic task info as a tooltip
-  def task_info_tip(task)
-    values = []
-    values << [ _("Description"), task.description ]
-    comment = task.last_comment
-    if comment
-      values << [ _("Last Comment"), "#{ ERB::Util.h(comment.user.name) }:<br/>#{ comment.body.gsub(/\n/, '<br/>') }".html_safe ]
-    end
-
-    return task_tooltip(values)
-  end
-
   # Returns information about the customer as a tooltip
   def task_customer_tip(customer)
     values = []
