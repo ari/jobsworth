@@ -3,6 +3,7 @@
 <%= "-" * @task.issue_name.length %>
 
 Resolution: <%= @task.status_type %> (by <%= @user.name %>)
+If you reply to this email, the task will be automatically re-opened.
 
 <%= "#{@user.name}:\n#{@note}\n" if @note.length > 0 -%>
 <%= "\n" if @note.length > 0 -%>
