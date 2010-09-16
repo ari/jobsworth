@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100819092939) do
+ActiveRecord::Schema.define(:version => 20100914011439) do
 
   create_table "access_levels", :force => true do |t|
     t.string   "name"
@@ -110,6 +110,16 @@ ActiveRecord::Schema.define(:version => 20100819092939) do
 
   add_index "dependencies", ["dependency_id"], :name => "dependencies_dependency_id_index"
   add_index "dependencies", ["task_id"], :name => "dependencies_task_id_index"
+
+  create_table "email_addresses", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.boolean  "default"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "email_addresses", ["user_id"], :name => "fk_email_addresses_user_id"
 
   create_table "emails", :force => true do |t|
     t.string   "from"
@@ -706,7 +716,6 @@ ActiveRecord::Schema.define(:version => 20100819092939) do
     t.integer  "company_id",                                :default => 0,       :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "email",                      :limit => 200
     t.datetime "last_login_at"
     t.integer  "admin",                                     :default => 0
     t.string   "time_zone"

@@ -46,6 +46,7 @@ class User < ActiveRecord::Base
 
   has_many      :preferences, :as => :preferencable
   has_many      :received_from_emails, :class_name=>"Email", :dependent=>:destroy
+  has_many      :email_addresses, :dependent=>:destroy, :order => "email_addresses.default DESC"
 
   has_attached_file :avatar, :whiny => false , :styles=>{ :small=> "25x25>", :large=>"50x50>"}, :path => File.join(Rails.root.to_s, 'store', 'avatars')+ "/:id_:basename_:style.:extension"
 
@@ -328,6 +329,22 @@ class User < ActiveRecord::Base
       @current_project_ids=@current_project_ids.empty? ? "0" : @current_project_ids.join(",")
     end
     @current_project_ids
+  end
+
+  def self.find_by_email(email)
+    find(:first, :conditions => ["email_addresses.email = ? and email_addresses.default = ?", email, true], :joins => :email_addresses)
+  end
+
+  def email
+    email_addresses.detect { |pv| pv.default }.try(:email)
+  end
+
+  def email=(email)
+    if new_record? || email_addresses.size == 0
+      email_addresses.build(:email => email, :default => true)
+    else
+      email_addresses.update_all({:email => email}, {:default => true})
+    end
   end
 
   private

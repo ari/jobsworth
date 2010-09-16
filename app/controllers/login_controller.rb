@@ -220,8 +220,8 @@ class LoginController < ApplicationController
       return
     end
 
-    User.find(:all, :conditions => { :email => email }).each do |u|
-      Signup::deliver_forgot_password(u)
+    EmailAddress.find(:all, :conditions => { :email => email }).each do |e|
+       Signup::deliver_forgot_password(e.user)
     end
 
     # tell user it was successful even if we didn't find the user, for security.

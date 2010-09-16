@@ -4,7 +4,7 @@ admin:
   username: test
   password: password
   company: cit
-  email: admin@clockingit.com
+  #email: admin@clockingit.com
   last_login_at: <%= Time.now.utc.to_s(:db) %>
   admin: 10
   time_zone: Europe/Oslo
@@ -35,7 +35,7 @@ fudge:
   username: fudge
   password: password
   company: fudge
-  email: mr@fudgie.org
+ # email: mr@fudgie.org
   last_login_at: null
   admin: 0
   time_zone: Europe/London
@@ -66,7 +66,7 @@ tester:
   username: tester
   password: password
   company: cit
-  email: test@clockingit.com
+  #email: test@clockingit.com
   last_login_at: null
   admin: 0
   time_zone: Europe/Oslo
@@ -97,7 +97,7 @@ tester_limited:
   username: tester_limited
   password: password
   company: cit
-  email: tester@clockingit.com
+  #email: tester@clockingit.com
   last_login_at: null
   admin: 0
   time_zone: Europe/Oslo
