@@ -29,10 +29,10 @@ class CompanyTest < ActiveRecord::TestCase
     company = Company.new
     company.name = "Test"
     company.subdomain = 'cit'
-    
+
     assert !company.valid?
     assert_not_nil company.errors.on(:subdomain)
-    
+
     company.subdomain = 'unique-name'
     assert company.valid?
     assert_nil company.errors.on(:subdomain)
@@ -59,8 +59,6 @@ class CompanyTest < ActiveRecord::TestCase
     @company.create_default_properties
 
     ensure_property_method_works_with_translation(:type_property)
-    ensure_property_method_works_with_translation(:severity_property)
-    ensure_property_method_works_with_translation(:priority_property)
   end
 
   test "preference_attributes should create preferences" do
@@ -90,15 +88,14 @@ class CompanyTest < ActiveRecord::TestCase
       @company.create_default_properties
     end
 
-    should "have severity and priority" do
-      assert_not_nil @company.priority_property
-      assert_not_nil @company.severity_property
+    should "have priority" do
+      assert_not_nil @company.properties.detect{ |p| p.name == "Priority" }
     end
 
     should "have property values in the top 33% as critical" do
       values = @company.critical_values.map { |v| v.value }
       assert_equal [ "Blocker", "Critical", "Critical", "Urgent"], values.sort
-    end 
+    end
 
     should "have property values in the middle 34% as normal" do
       values = @company.normal_values.map { |v| v.value }
@@ -111,7 +108,7 @@ class CompanyTest < ActiveRecord::TestCase
     end
   end
 
-  private 
+  private
 
   def ensure_property_method_works_with_translation(method)
     prop = @company.send(method)

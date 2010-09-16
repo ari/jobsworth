@@ -124,31 +124,10 @@ class Company < ActiveRecord::Base
   end
 
   ###
-  # Returns the default array to sort tasks by for this company.
-  ###
-  def default_sort_array(task)
-    array = []
-
-    return array
-  end
-
-  ###
   # Returns the property to use to represent a tasks type.
   ###
   def type_property
     @type_property ||= properties.detect { |p| p.name == "Type" || p.name == _("Type") }
-  end
-  ###
-  # Returns the property to use to represent a tasks severity.
-  ###
-  def severity_property
-    @severity_property ||= properties.detect { |p| p.name == "Severity" || p.name == _("Severity") }
-  end
-  ###
-  # Returns the property to use to represent a tasks priority.
-  ###
-  def priority_property
-    @priority_property ||= properties.detect { |p| p.name == "Priority" || p.name == _("Priority") }
   end
 
   ###

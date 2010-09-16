@@ -22,6 +22,10 @@ class PropertyValue < ActiveRecord::Base
     end
   end
 
+  def to_s
+    value
+  end
+
   #for tasklist grouping purpose (sort group by position)
   def position_to_s
     "0" * (4 - position.to_s.size) + position.to_s

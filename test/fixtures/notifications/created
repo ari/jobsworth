@@ -7,9 +7,9 @@ o------ please reply above this line ------o
 
   Client:       Internal
   Project:      Test Project
-  Task Type:    Task
-  Severity:     Normal
+  Type:         Task
   Priority:     Normal
+  Severity:     Normal
   Assigned To:  No one
   Created By:   Erlend Simonsen
 

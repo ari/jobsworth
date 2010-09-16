@@ -429,14 +429,6 @@ class Task < ActiveRecord::Base
     "#{self.issue_num} #{self.name}"
   end
 
-  def issue_type
-    Task.issue_types[self.type_id.to_i]
-  end
-
-  def Task.issue_types
-    ["Task", "New Feature", "Defect", "Improvement"]
-  end
-
   def status_type
     self.company.statuses[self.status].name
   end
@@ -444,24 +436,6 @@ class Task < ActiveRecord::Base
 
   def Task.status_types
     Company.first.statuses.all.collect {|a| a.name }
-  end
-
-  def priority_type
-    v=property_value(company.priority_property)
-    if v.nil?
-      return "Normal"
-    else
-      return v.value
-    end
-  end
-
-  def severity_type
-    v=property_value(company.severity_property)
-    if v.nil?
-      return "Normal"
-    else
-      return v.value
-    end
   end
 
   def owners_to_display
@@ -619,7 +593,7 @@ class Task < ActiveRecord::Base
   end
 
   def to_csv
-    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, due_at.nil? ? milestone.nil? ? nil : milestone.due_at : due_at, created_at, completed_at, worked_minutes, duration, status_type ] +
+    [project.customer.name, project.name, task_num, name, tags.collect(&:name).join(','), owners_to_display, milestone.nil? ? nil : milestone.name, self.due_date, created_at, completed_at, worked_minutes, duration, status_type ] +
       company.properties.collect { |property| property_value(property).to_s }
   end
 
@@ -644,42 +618,11 @@ class Task < ActiveRecord::Base
     tpv.property_value if tpv
   end
 
-
-
   ###
-  # This method will help in the migration of type id, priority and severity
-  # to use properties. It can be removed once that is done.
-  #
-  # Copies the severity, priority etc on the given task to the new
-  # property.
+  # This method return value of property named "Type"
   ###
-  def copy_task_value(old_value, new_property)
-    return if !old_value
-
-    matching_value = new_property.property_values.detect { |pv| pv.value == old_value }
-    set_property_value(new_property, matching_value) if matching_value
-  end
-
-  ###
-  # These methods replace the columns for these values. If people go ahead
-  # and change the default priority, etc values then they will return a
-  # default value that shouldn't affect sorting.
-  ###
-  def type_id
-    property_value_as_integer(company.type_property) || 0
-  end
-
-  ###
-  # Returns an int representing the given property.
-  # Pass in a hash of strings to ids to return those values, otherwise
-  # the index in the property value list is returned.
-  ###
-  def property_value_as_integer(property, mappings = {})
-    task_value = property_value(property)
-
-    if task_value
-      return mappings[task_value.value] || property.property_values.index(task_value)
-    end
+  def type
+    property_value(company.type_property)
   end
 
   ###
@@ -933,11 +876,6 @@ class Task < ActiveRecord::Base
     end
 
     return res
-  end
-
-  # Builds a new (unsaved) work log for this task using the given params
-  def last_comment
-    @last_comment ||= self.work_logs.reverse.detect { |wl| wl.comment? }
   end
 
   # return a users mapped to the duration of time they have worked on this task

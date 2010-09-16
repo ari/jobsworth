@@ -72,7 +72,7 @@ class TaskFilterTest < ActiveSupport::TestCase
 
     should "filter on custom attributes separately" do
       type = @company.type_property
-      priority = @company.priority_property
+      priority = @company.properties.detect{ |p| p.name == "Priority"}
       assert_not_nil type
       assert_not_nil priority
 

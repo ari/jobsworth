@@ -18,9 +18,9 @@ class ActiveSupport::TestCase
 
   setup { Sham.reset }
 
-  # Returns a project with a few tasks. 
+  # Returns a project with a few tasks.
   # Milestones will also be created if options[:make_milestones] is true
-  # The project will belong to user's company and user will have full 
+  # The project will belong to user's company and user will have full
   # access to the project.
   # The user will also be on the assigned list for the tasks.
   def project_with_some_tasks(user, options = {})
@@ -28,8 +28,8 @@ class ActiveSupport::TestCase
     customer = options[:customer] || user.company.internal_customer
     make_milestones = options[:make_milestones]
 
-    project = Project.make(:company => user.company, 
-                           :customer => customer)
+    project = Project.make(:company => user.company,
+                           :customer => customer, :owner=>user)
     perm = project.project_permissions.build(:user => user)
     perm.set("all")
     project.save!
@@ -65,7 +65,7 @@ module ActionController
   end
 end
 
-class ActionController::TestCase 
+class ActionController::TestCase
 
   # Just set the session id to login
   def login
@@ -73,13 +73,13 @@ class ActionController::TestCase
     @user = users(:admin)
     @request.session[:user_id] = @user.id
     @user.company.create_default_statuses
-    
+
     return @user
   end
 
 end
 
-class ActionController::IntegrationTest 
+class ActionController::IntegrationTest
   # Uses webrat to login to the system
   def login
     clear_all_fixtures
