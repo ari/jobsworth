@@ -18,13 +18,13 @@ Clockingit::Application.configure do
   config.action_mailer.raise_delivery_errors = false
   
   config.after_initialize do 
-    Bullet.enable = true
-    Bullet.alert = false
-    Bullet.bullet_logger= true
-    Bullet.console = false
-    Bullet.rails_logger = false
-    Bullet.growl = false
-    Bullet.disable_browser_cache= false
+#    Bullet.enable = true
+#    Bullet.alert = false
+#    Bullet.bullet_logger= true
+#    Bullet.console = false
+#    Bullet.rails_logger = false
+#    Bullet.growl = false
+#    Bullet.disable_browser_cache= false
   end
 
 end
