@@ -13,8 +13,8 @@ class TaskFilter < ActiveRecord::Base
   validates_presence_of :user
   validates_presence_of :name
 
-  named_scope :shared, :conditions => { :shared => true }
-  named_scope :visible, :conditions => { :system => false }
+  scope :shared, :conditions => { :shared => true }
+  scope :visible, :conditions => { :system => false }
 
   before_create :set_company_from_user
 

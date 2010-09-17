@@ -2,7 +2,7 @@ class TaskUser < ActiveRecord::Base
   belongs_to :user
   belongs_to :task #, :touch => true
 
-  named_scope :unread, :conditions => { :unread => true }
+  scope :unread, :conditions => { :unread => true }
 
   # touch currently calls validations, which fail when creating from email, so update manually
   # see https://rails.lighthouseapp.com/projects/8994/tickets/2520-patch-activerecordtouch-without-validations

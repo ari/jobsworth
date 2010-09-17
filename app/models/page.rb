@@ -9,8 +9,8 @@ class Page < ActiveRecord::Base
 
   validates_presence_of :name
 
-  named_scope :projects, :conditions => [ "notable_type = 'Project'" ]
-  named_scope :snippets, :conditions => [ "snippet = ?", true ]
+  scope :projects, :conditions => [ "notable_type = 'Project'" ]
+  scope :snippets, :conditions => [ "snippet = ?", true ]
 
   after_create { |page| page.setup_event_log( EventLog::PAGE_CREATED, "- #{page.name} Created") }
 

@@ -71,7 +71,7 @@ class User < ActiveRecord::Base
   before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 
-  named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
+  scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
 
   ###
   # Searches the users for company and returns

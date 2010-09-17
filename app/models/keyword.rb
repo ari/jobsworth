@@ -7,7 +7,7 @@ class Keyword < ActiveRecord::Base
 
   before_validation :set_company_from_task_filter
 
-  named_scope :reversed, :conditions => { :reversed => true }
+  scope :reversed, :conditions => { :reversed => true }
 
   private
 
