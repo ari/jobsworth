@@ -4,19 +4,19 @@ source 'http://gems.github.com'
 gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_without_table"
 
 source 'http://rubygems.org'
-gem 'daemons',						'1.1.0'
-gem 'will_paginate',			'>=3.0pre2'
-gem 'icalendar',					'>=1.1.5'
+gem 'daemons',                                          '1.1.0'
+gem 'will_paginate',                    '>=3.0pre2'
+gem 'icalendar',                                        '>=1.1.5'
 gem 'tzinfo'
-gem 'RedCloth',						'4.2.3'
-gem 'gchartrb',						'>=0.8', :require=>"google_chart"
+gem 'RedCloth',                                         '4.2.3'
+gem 'gchartrb',                                         '>=0.8', :require=>"google_chart"
 gem 'smurf'
-gem 'paperclip',					'>=2.3.3'
+gem 'paperclip',                                        '>=2.3.3'
 gem 'json'
-gem 'mysql2',							'>=0.2.3'
+gem 'mysql2',                                                   '>=0.2.3'
 gem 'acts_as_tree'
 gem 'acts_as_list'
-
+gem 'fastercsv'
 
 group :test do
   gem "rspec"
