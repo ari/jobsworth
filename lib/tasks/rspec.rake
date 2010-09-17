@@ -1,6 +1,6 @@
 gem 'test-unit', '1.2.3' if RUBY_VERSION.to_f >= 1.9
 rspec_gem_dir = nil
-Dir["#{RAILS_ROOT}/vendor/gems/*"].each do |subdir|
+Dir["#{Rails.root}/vendor/gems/*"].each do |subdir|
   rspec_gem_dir = subdir if subdir.gsub("#{RAILS_ROOT}/vendor/gems/","") =~ /^(\w+-)?rspec-(\d+)/ && File.exist?("#{subdir}/lib/spec/rake/spectask.rb")
 end
 rspec_plugin_dir = File.expand_path(File.dirname(__FILE__) + '/../../vendor/plugins/rspec')
@@ -47,7 +47,7 @@ end
 
 Rake.application.instance_variable_get('@tasks').delete('default')
 
-spec_prereq = File.exist?(File.join(RAILS_ROOT, 'config', 'database.yml')) ? "db:test:prepare" : :noop
+spec_prereq = File.exist?(File.join(Rails.root.to_s, 'config', 'database.yml')) ? "db:test:prepare" : :noop
 task :noop do
 end
 
