@@ -445,7 +445,7 @@ class Task < ActiveRecord::Base
   end
 
   def set_tags( tagstring )
-    return false unless tagstring
+    return false if (tagstring.nil? or  tagstring.gsub(' ','') == self.tagstring.gsub(' ',''))
     self.tags.clear
     tagstring.split(',').each do |t|
       tag_name = t.downcase.strip
@@ -460,7 +460,9 @@ class Task < ActiveRecord::Base
     self.company.tags.first.save unless self.company.tags.first.nil? #ugly, trigger tag save callback, needed to cache sweeper
     true
   end
-
+  def tagstring
+    tags.map { |t| t.name }.join(', ')
+  end
   def set_tags=( tagstring )
     self.set_tags(tagstring)
   end
