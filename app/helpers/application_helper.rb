@@ -1,6 +1,6 @@
 # The methods added to this helper will be available to all templates in the application.
 require 'digest/md5'
-
+require "lib/misc"
 module ApplicationHelper
   URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-:\+]*(\?\S+)?)?)?)/i
 
@@ -170,7 +170,7 @@ module ApplicationHelper
     keys.each do |k|
       text = highlight_safe_html( text, k, true)
     end
-    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe 
+    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
   end
 
   def milestone_classes(m)
