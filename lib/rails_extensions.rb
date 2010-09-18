@@ -30,3 +30,40 @@ module ActionView::Helpers::DateHelper
   end
 end
 
+# Cache extension borrowed from http://blog.pluron.com/2008/07/hell-is-paved-w.html
+# Author: Alexander Dymo
+module ActionController
+  module Caching
+    module Fragments
+      #NOTE: this method will fail if use not file store
+      def expire_matched_fragment_in_dir(dir, regexp, options = nil)
+        return unless cache_configured?
+        self.class.benchmark("Expired fragments in dir matching: #{regexp.source}, #{cache_store}, #{}") do
+          cache_store.delete_matched_in_dir(dir, regexp, options)
+        end
+      end
+    end
+  end
+end
+
+module ActiveSupport
+  module Cache
+    # A cache store implementation which stores everything on the filesystem.
+    class FileStore
+      def delete_matched_in_dir(dir, matcher, options = nil)
+        log("delete matched_in_dir: #{dir}", matcher.inspect, options)
+        path = File.join(@cache_path, dir)
+        return unless File.exist?(path) #it's ok to not have the cache dir
+        search_dir(path) do |f|
+          if f =~ matcher
+          begin
+            File.delete(f)
+          rescue SystemCallError => e
+            # If there's no cache, then there's nothing to complain about
+          end
+          end
+         end
+       end
+    end
+  end
+end

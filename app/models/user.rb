@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
 
   has_many      :tasks, :through => :task_owners
   has_many      :task_owners, :dependent => :destroy
-  has_many      :work_logs, :dependent => :destroy
+  has_many      :work_logs
   has_many      :work_log_notifications, :dependent => :destroy
 
   has_many      :notifications, :class_name=>"TaskWatcher", :dependent => :destroy
@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
   has_many      :forums, :through => :moderatorships, :order => 'forums.name'
   has_many      :moderatorships, :dependent => :destroy
 
-  has_many      :posts, :dependent => :destroy
-  has_many      :topics, :dependent => :destroy
+  has_many      :posts
+  has_many      :topics
 
-  has_many      :monitorships,:dependent => :destroy
+  has_many      :monitorships, :dependent => :destroy
   has_many      :monitored_topics, :through => :monitorships, :source => 'topic', :conditions => ['monitorships.active = ? AND monitorship_type = ?', true, 'topic'], :order => 'topics.replied_at desc'
   has_many      :monitored_forums, :through => :monitorships, :source => 'forum', :conditions => ['monitorships.active = ? AND monitorship_type = ?', true, 'forum'], :order => 'forums.position'
 
@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   before_create                 :generate_uuid
   after_create      :generate_widgets
   before_validation_on_create :set_date_time_formats
-
+  before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 
   named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
@@ -179,15 +179,10 @@ class User < ActiveRecord::Base
   def display_login
     name + " / " + (customer.nil? ? company.name : customer.name)
   end
-#  def login(subdomain = nil)
-#   company = Company.find(:first, :conditions => ["subdomain = ?", subdomain.downcase])
-#   companyId = company.nil ? 1 : company.id
-#   User.find( :first, :conditions => [ 'username = ? AND password = ? AND company_id = ?', self.username, self.password, companyId ] )
-#  end
 
   def login(company = nil)
     return if !company or !company.respond_to?(:users)
-    user = company.users.find(:first, :conditions => { :username => self.username, :password => self.password })
+    user = company.users.find(:first, :conditions => { :active=>true, :username => self.username, :password => self.password })
     unless user.nil?
       user.last_login_at =Time.now.utc
       user.save
@@ -347,7 +342,18 @@ class User < ActiveRecord::Base
     end
   end
 
-  private
+private
+  def reject_destroy_if_exist
+    [:work_logs, :topics, :posts].each do |association|
+      errors.add_to_base("The user has the #{association.to_s.humanize}, please remove them first or deactivate user.") unless eval("#{association}.count").zero?
+    end
+    if errors.count.zero?
+      ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{self.company_id} AND creator_id = #{self.id}")
+      return true
+    else
+      return false
+    end
+  end
 
   # Sets up search options to use in a find for things linked to
   # through projects.
@@ -446,4 +452,3 @@ end
 #  index_users_on_autologin                (autologin)
 #  index_users_on_customer_id              (customer_id)
 #
-

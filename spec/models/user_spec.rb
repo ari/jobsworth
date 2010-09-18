@@ -32,4 +32,51 @@ describe User do
       @user.project_ids_for_sql.should == "0"
     end
   end
+  describe "destroy" do
+    before(:each) do
+      @user=User.make
+      @user.work_logs.clear
+      @user.topics.clear
+      @user.posts.clear
+    end
+
+    it "should destroy user" do
+      @user.destroy
+      User.find_by_id(@user.id).should be_nil
+    end
+
+    it "should not destroy if work logs exist" do
+      @user.work_logs << WorkLog.make
+      @user.save!
+      @user.destroy.should == false
+    end
+
+    it "should not destroy if topics exist" do
+      @user.topics << Topic.make
+      @user.save!
+      @user.destroy.should == false
+    end
+
+    it "should not destroy if posts exist" do
+      @user.posts << Post.make
+      @user.save!
+      @user.destroy.should == false
+    end
+
+    it "should set tasks.creator_id to NULL" do
+      t=Task.make(:creator=>@user, :company=>@user.company)
+      t.creator.should == @user
+      @user.destroy.should_not == false
+      t.reload.creator.should be_nil
+    end
+
+    it "should not touch tasks.creator_id if user not destroyed" do
+      t=Task.make(:creator=>@user, :company=>@user.company)
+      t.creator.should == @user
+      @user.work_logs << WorkLog.make
+      @user.save!
+      @user.destroy.should == false
+      t.reload.creator.should == @user.reload
+    end
+  end
 end

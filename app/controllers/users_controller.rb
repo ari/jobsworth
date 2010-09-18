@@ -108,8 +108,7 @@ class UsersController < ApplicationController
     end
 
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    ActiveRecord::Base.connection.execute("UPDATE tasks set creator_id = NULL WHERE company_id = #{current_user.company_id} AND creator_id = #{@user.id}")
-    @user.destroy
+    flash['notice'] = @user.errors.full_messages.join(' ')    unless @user.destroy
     redirect_to(:controller => "clients", :action => 'list')
   end
 
@@ -268,7 +267,7 @@ class UsersController < ApplicationController
     current_user.preference_attributes = [ [ params[:panel], params[:id] ] ]
     render :nothing => true
   end
-  
+
 private
   def protect_admin_area
     unless current_user.admin? or current_user.edit_clients?

@@ -445,7 +445,7 @@ class Task < ActiveRecord::Base
   end
 
   def set_tags( tagstring )
-    return false unless tagstring
+    return false if (tagstring.nil? or  tagstring.gsub(' ','') == self.tagstring.gsub(' ',''))
     self.tags.clear
     tagstring.split(',').each do |t|
       tag_name = t.downcase.strip
@@ -460,7 +460,9 @@ class Task < ActiveRecord::Base
     self.company.tags.first.save unless self.company.tags.first.nil? #ugly, trigger tag save callback, needed to cache sweeper
     true
   end
-
+  def tagstring
+    tags.map { |t| t.name }.join(', ')
+  end
   def set_tags=( tagstring )
     self.set_tags(tagstring)
   end
@@ -658,43 +660,6 @@ class Task < ActiveRecord::Base
     return false if company.maximum_sort_rank == 0
 
     sort_rank.to_f / company.maximum_sort_rank.to_f < 0.20
-  end
-
-  ###
-  # Generate a cache key from all changing data
-  ###
-  def cache_expiry(current_user)
-    # due / completed ago
-    distance_in_minutes = 0
-    due_part = "0"
-    if done?
-      from_time = completed_at
-      to_time = Time.now.utc
-      distance_in_minutes = (((to_time - from_time).abs)/60).round
-    elsif due_date
-      from_time = Time.now.utc
-      to_time = due_date
-      distance_in_minutes = (((to_time - from_time).abs)/60).round
-    end
-
-    if distance_in_minutes > 0
-      due_part = case distance_in_minutes
-                 when 0..1440     then "00"
-                 when 1441..2880   then "10"
-                 when 2881..10080  then "2#{(distance_in_minutes / 1440).round.to_s}"
-                 when 10081..20160 then "3#{(distance_in_minutes / 1440).round.to_s}"
-                 when 20161..43200 then "4#{(distance_in_minutes / 1440 / 7).round.to_s}"
-                 when 43201..86400 then "50"
-                 else "6#{(distance_in_minutes / 1440 / 30).round.to_s}"
-                 end
-    end
-
-    worked_part = worked_on? ? "1#{worked_minutes}" : "0#{worked_minutes}"
-    config_part = current_user.show_type_icons? ? "1" : "0"
-    config_part << current_user.option_tracktime.to_s
-    locale_part = current_user.locale.to_s
-
-    "#{locale_part}#{due_part}#{worked_part}#{config_part}"
   end
 
   def users_to_notify(user_who_made_change=nil)
