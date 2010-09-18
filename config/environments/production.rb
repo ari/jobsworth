@@ -39,4 +39,7 @@ Clockingit::Application.configure do
 
   # Enable threaded mode
   # config.threadsafe!
+  
+  # Print deprecation notices to the Rails logger
+  config.active_support.deprecation = :log
 end
