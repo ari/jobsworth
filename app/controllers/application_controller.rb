@@ -1,12 +1,16 @@
 # The filters added to this controller will be run for all controllers in the application.
 # Likewise will all the methods added be available for all controllers.
+
+require 'digest/md5'
+require 'lib/misc'
+require 'lib/localization'
+
 class ApplicationController < ActionController::Base
   include Misc
   include ExceptionNotifiable
   include DateAndTimeHelper
   
-  require 'lib/localization'
-
+		
   helper :task_filter
   helper :users
   helper :date_and_time
