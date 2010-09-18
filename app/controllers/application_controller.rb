@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   include ExceptionNotifiable
   include DateAndTimeHelper
   
-  require lib/localization
+  require 'lib/localization'
 
   helper :task_filter
   helper :users
