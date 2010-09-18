@@ -96,11 +96,11 @@ class ApplicationController < ActionController::Base
     session[:history] ||= []
 
     # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
-        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ||
-        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') || request.request_uri.include?('/projects') ) &&
+    if( request.fullpath.include?('/list') || request.fullpath.include?('/search') || request.fullpath.include?('/edit_preferences') ||
+        request.fullpath.include?('/timeline') || request.fullpath.include?('/gantt') ||
+        request.fullpath.include?('/forums') || request.fullpath.include?('/topics') || request.fullpath.include?('/projects') ) &&
         !request.xhr?
-      session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
+      session[:history] = [request.fullpath] + session[:history][0,3] if session[:history][0] != request.fullpath
     end
 
 
@@ -113,8 +113,8 @@ class ApplicationController < ActionController::Base
     end
 
     if session[:user_id].to_i == 0
-      if !(request.request_uri.include?('/login/login') || request.xhr?)
-        session[:redirect] = request.request_uri
+      if !(request.fullpath.include?('/login/login') || request.xhr?)
+        session[:redirect] = request.fullpath
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
       end
