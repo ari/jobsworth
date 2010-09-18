@@ -17,6 +17,7 @@ gem 'mysql2',                                                   '>=0.2.3'
 gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'fastercsv'
+gem 'dynamic_form'
 
 group :test do
   gem "rspec"
