@@ -67,7 +67,7 @@
     <table id="main-table">
       <tr>
         <td valign="top" id="main_col">
-          <%= @content_for_layout %>
+          <%= yield :layout %>
         </td>
         <td id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
