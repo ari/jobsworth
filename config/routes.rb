@@ -91,6 +91,6 @@ Clockingit::Application.routes.draw do |map|
   match 'api/scm/:provider/:secret_key' => 'scm_changesets#create'
   match ':controller/service.wsdl', :action => 'wsdl'
 
-  match ':controller(/:action(/:id(.:format)))'
+  match ":controller(/:action(/:id(.:format)))"
 
 end
