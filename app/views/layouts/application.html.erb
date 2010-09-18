@@ -69,8 +69,7 @@
         <td valign="top" id="main_col">
           <%= @content_for_layout %>
         </td>
-        <td id="right-menu-collapse" onclick="jQuery('#side_panel').toggle(); jQuery.get('/activities/toggle_menu'); return false;">&nbsp;</td>
-        <td style="<%= "display:none;"  if session[:collapse_menu].to_i > 0 %>" id="side_panel">
+        <td id="side_panel">
           <% # use content_for(:side_panel) to add extra content to this sidebar -%>
           <%= yield(:side_panel) %>
           <% worklog_preference = current_user.preference('work-log') || 'open' %>

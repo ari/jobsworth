@@ -53,10 +53,4 @@ class ActivitiesController < ApplicationController
     session[:collapse_milestones][params[:id]] = 1 - session[:collapse_milestones][params[:id]].to_i
   end
 
-  def toggle_menu
-    session[:collapse_menu] ||= 0
-    session[:collapse_menu] = 1 - session[:collapse_menu].to_i
-    render :text => ""
-  end
-
 end
