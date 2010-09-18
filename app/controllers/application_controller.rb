@@ -70,7 +70,7 @@ class ApplicationController < ActionController::Base
 
   def tz
     unless @tz
-      @tz = Timezone.get(current_user.time_zone)
+      @tz = TZInfo::Timezone.get(current_user.time_zone)
     end
     @tz
   end
