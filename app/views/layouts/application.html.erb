@@ -99,7 +99,6 @@
       <% end %><%= link_to "[Admin]", :controller => "admin", :action => "index" if current_user.admin == 10 %>
     </div>
 
-    <%= periodically_call_remote(:url => { :controller => 'tasks', :action => 'update_sheet_info', :format => "js" }, :frequency => 90 ) -%>
     <script type="text/javascript" language="javascript" charset="utf-8">
       // <![CDATA[
       var userId=<%= current_user.id %>;

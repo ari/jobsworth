@@ -553,3 +553,16 @@ jQuery('#worklog_body').blur(function(){
                 'success': function(data){jQuery('#worklog-saved').html(data) ;}
         });
 });
+
+// Update the sheet at the top of the page every 90 seconds
+//
+jQuery(document).ready(function(){
+	setInterval(function() {
+		jQuery.ajax({
+			data:'',
+			dataType:'script',
+			type:'post',
+			url:'/tasks/update_sheet_info?format=js'
+			})
+		},90 * 1000);
+});
