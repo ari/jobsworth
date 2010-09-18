@@ -201,7 +201,8 @@ module TasksHelper
     options = {
       :id => "due_at", :class => "tooltip datefield", :title => date_tooltip.html_safe,
       :size => 12,
-      :value => formatted_date_for_current_user(task.due_date)
+      :value => formatted_date_for_current_user(task.due_date),
+      :autocomplete => "off"
     }
     options = options.merge(permissions['edit'])
 
