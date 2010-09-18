@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   include Misc
   include ExceptionNotifiable
   include DateAndTimeHelper
+  
+  require lib/localization
 
   helper :task_filter
   helper :users
