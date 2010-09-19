@@ -9,18 +9,26 @@ class CreateEmailAddresses < ActiveRecord::Migration
       t.timestamps
     end
     foreign_key(:email_addresses, :user_id, :users)
-    
-    User.find(:all, :select => "id, email").each do |u|
-      u.email_addresses.create(:email => u.read_attribute(:email), :default => true)
-    end
+
+    #backup user_id and email
+    execute("CREATE TABLE backup_user_emails SELECT id, email from users")
+
+    #move email data from users table to email_adresses table
+    execute("INSERT INTO email_addresses(`user_id`, `email`,`default`, `created_at`, `updated_at`)
+             SELECT users.id, users.email, 1, users.created_at, users.updated_at from users")
     remove_column :users, :email
   end
 
   def self.down
     add_column :users, :email, :string
-    EmailAddress.find(:all, :conditions => {:default => 1}).each do |e|
-      e.user.update_attribute('email', e.email)
-    end
+
+    execute("UPDATE users LEFT JOIN email_addresses ON users.id = email_addresses.user_id
+             SET users.email = email_addresses.email WHERE email_addresses.default = 1")
+    execute("UPDATE users LEFT JOIN backup_user_emails ON users.id = backup_user_emails.id
+             SET users.email = backup_user_emails.email WHERE users.email is NULL OR users.email = ''")
+  
+    drop_table :backup_user_emails
     drop_table :email_addresses
   end
+  
 end
