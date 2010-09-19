@@ -22,16 +22,18 @@
       <% end %>
       </small><br />
   <% if !folder.new_record? && (@up.nil? || @up == false) %>
-  <%= link_to_remote _('Edit'),
-       :url => { :action => 'edit_folder', :id => folder},
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();"
+  <%= link_to _('Edit'),
+			:url => { :action => 'edit_folder', :id => folder},
+			:loading => "showProgress();",
+			:complete => "hideProgress();",
+			:remote => true
      %>
-  | <%= link_to_remote _('Delete'),
-                                   :url => { :action => 'destroy_folder', :id => folder},
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();",
-                                   :confirm => _("Are you sure?")
+  | <%= link_to _('Delete'),
+			:url => { :action => 'destroy_folder', :id => folder},
+			:loading => "showProgress();",
+			:complete => "hideProgress();",
+			:confirm => _("Are you sure?"),
+			:remote => true
      %>
 <% else %>
 <span>&nbsp;</span>
