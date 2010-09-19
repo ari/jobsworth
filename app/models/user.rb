@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
 
   before_create                 :generate_uuid
   after_create      :generate_widgets
-  before_validation_on_create :set_date_time_formats
+	before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 

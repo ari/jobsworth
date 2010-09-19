@@ -281,9 +281,6 @@ class TasksController < ApplicationController
     end
   end
 
-  def update_sheet_info
-  end
-
   def get_csv
     list_init
     filename = "jobsworth_tasks.csv"

@@ -56,10 +56,6 @@ function updateTooltips() {
     jQuery('.tooltip').tooltip({showURL: false });
 }
 
-function UpdateDnD() {
-  updateTooltips();
-}
-
 function do_update(user, url) {
   if( user != userId ) {
       jQuery.get(url);
@@ -558,11 +554,8 @@ jQuery('#worklog_body').blur(function(){
 //
 jQuery(document).ready(function(){
 	setInterval(function() {
-		jQuery.ajax({
-			data:'',
-			dataType:'script',
-			type:'post',
-			url:'/tasks/update_sheet_info?format=js'
-			})
-		},90 * 1000);
+		jQuery.get('layouts/sheet_info', function(data) {
+  		jQuery('#menu_info').html(data);
+		});
+	},90 * 1000);
 });

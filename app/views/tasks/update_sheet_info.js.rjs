@@ -1,3 +1,0 @@
-page.replace_html 'menu_info', :partial => 'layouts/sheet_info'
-
-page.call "UpdateDnD"
