@@ -187,19 +187,21 @@ function initTaskList() {
         }
   });
 
-  appendPartial("/task_filters/new", '#savefilter', false);
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
     caption: "Save filter",
     title: "Save filter",
     onClickButton : function () {
-      var dialog = jQuery("#savefilter").dialog({
+      if (jQuery("#savefilter div").length == 0) {
+        appendPartial("/task_filters/new", '#savefilter', false);
+      }
+      dialog = jQuery("#savefilter").dialog({
         width: 400,
-            autoOpen: false,
-            title: 'Save Filter',
+        autoOpen: false,
+        title: 'Save Filter',
         draggable: true
-          });
-          dialog.dialog('open');
-          return false;
+      });
+      dialog.dialog('open');
+      return false;
     }
   });
 
