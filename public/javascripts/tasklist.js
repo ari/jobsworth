@@ -64,18 +64,20 @@ function change_group() {
   but only after it has returned successfully
 */
 jQuery(document).ready(function() {
-  jQuery.ajax({
-    async: false,
-    url: '/users/get_tasklistcols',
-    dataType: 'json',
-    success:function(response) {
-      columnModel = response;
-      initTaskList();
-    },
-    error:function (xhr, thrownError) {
-      alert("Invalid task list model returned from server");
-    }
-  });
+  if ( /tasks\/list/.test(document.location.pathname)) {
+    jQuery.ajax({
+      async: false,
+      url: '/users/get_tasklistcols',
+      dataType: 'json',
+      success:function(response) {
+        columnModel = response;
+        initTaskList();
+      },
+      error:function (xhr, thrownError) {
+        alert("Invalid task list model returned from server");
+      }
+    });
+  }
 });
 
 function initTaskList() {
