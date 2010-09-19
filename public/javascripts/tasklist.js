@@ -64,7 +64,7 @@ function change_group() {
   but only after it has returned successfully
 */
 jQuery(document).ready(function() {
-  if ( /tasks\/list/.test(document.location.pathname)) {
+  if (jQuery('#task_list').length) {
     jQuery.ajax({
       async: false,
       url: '/users/get_tasklistcols',
