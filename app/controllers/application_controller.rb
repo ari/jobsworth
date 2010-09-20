@@ -1,10 +1,16 @@
 # The filters added to this controller will be run for all controllers in the application.
 # Likewise will all the methods added be available for all controllers.
+
+require 'digest/md5'
+require 'lib/misc'
+require 'lib/localization'
+
 class ApplicationController < ActionController::Base
   include Misc
   include ExceptionNotifiable
   include DateAndTimeHelper
-
+  
+		
   helper :task_filter
   helper :users
   helper :date_and_time
@@ -64,7 +70,7 @@ class ApplicationController < ActionController::Base
 
   def tz
     unless @tz
-      @tz = Timezone.get(current_user.time_zone)
+      @tz = TZInfo::Timezone.get(current_user.time_zone)
     end
     @tz
   end
@@ -90,11 +96,11 @@ class ApplicationController < ActionController::Base
     session[:history] ||= []
 
     # Remember the previous _important_ page for returning to after an edit / update.
-    if( request.request_uri.include?('/list') || request.request_uri.include?('/search') || request.request_uri.include?('/edit_preferences') ||
-        request.request_uri.include?('/timeline') || request.request_uri.include?('/gantt') ||
-        request.request_uri.include?('/forums') || request.request_uri.include?('/topics') || request.request_uri.include?('/projects') ) &&
+    if( request.fullpath.include?('/list') || request.fullpath.include?('/search') || request.fullpath.include?('/edit_preferences') ||
+        request.fullpath.include?('/timeline') || request.fullpath.include?('/gantt') ||
+        request.fullpath.include?('/forums') || request.fullpath.include?('/topics') || request.fullpath.include?('/projects') ) &&
         !request.xhr?
-      session[:history] = [request.request_uri] + session[:history][0,3] if session[:history][0] != request.request_uri
+      session[:history] = [request.fullpath] + session[:history][0,3] if session[:history][0] != request.fullpath
     end
 
 
@@ -107,8 +113,8 @@ class ApplicationController < ActionController::Base
     end
 
     if session[:user_id].to_i == 0
-      if !(request.request_uri.include?('/login/login') || request.xhr?)
-        session[:redirect] = request.request_uri
+      if !(request.fullpath.include?('/login/login') || request.xhr?)
+        session[:redirect] = request.fullpath
       elsif session[:history] && session[:history].size > 0
         session[:redirect] = session[:history][0]
       end

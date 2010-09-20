@@ -35,17 +35,19 @@ class="task <%=classes%>" style="position:relative; <%= color_style(task) %> <% 
     <% if !(@current_sheet && @current_sheet.task_id == task.id) -%>
         <% if task.done? -%>
           <% if task.hidden == 0 -%>
-            <%= link_to_remote image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
-                  :url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
-                  :loading => "showProgress();",
-                  :complete => "hideProgress();",
-                  :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
+            <%= link_to image_tag("folder_add.png", :border => 0, :title => _("Move <b>%s</b> to the Archive.", task.name), :class => "tooltip"),
+								:url => { :controller => 'tasks', :action => 'ajax_hide', :id => task },
+								:loading => "showProgress();",
+								:complete => "hideProgress();",
+								:success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5),
+								:remote => true -%>
           <% else -%>
-            <%= link_to_remote image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
-                  :url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
-                  :loading => "showProgress();",
-                  :complete => "hideProgress();",
-                  :success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5) -%>
+            <%= link_to image_tag("folder_go.png", :border => 0, :title => _("Restore <b>%s</b> from the Archive.", task.name), :class => "tooltip"),
+								:url => { :controller => 'tasks', :action => 'ajax_restore', :id => task },
+								:loading => "showProgress();",
+								:complete => "hideProgress();",
+								:success => visual_effect(:fade, "task_#{task.id}", :duration => 0.5),
+								:remote => true -%>
           <% end -%>
         <% end -%>
       <% end -%>

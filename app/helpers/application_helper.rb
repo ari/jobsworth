@@ -1,6 +1,5 @@
 # The methods added to this helper will be available to all templates in the application.
-require 'digest/md5'
-require "lib/misc"
+
 module ApplicationHelper
   URL_MATCH = /(https?):\/\/(([-\w\.]+)+(:\d+)?(\/([\w%\/_\.-:\+]*(\?\S+)?)?)?)/i
 

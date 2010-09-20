@@ -18,16 +18,18 @@
 
   <small><%=h tz.utc_to_local(project_files.created_at).strftime("#{current_user.time_format} #{current_user.date_format}") %> - <%= number_to_human_size(project_files.file_size) %> </small><br />
   <%= link_to _('Show'), :action => 'show', :id => project_files %>
-  | <%= link_to_remote _('Edit'),
+  | <%= link_to _('Edit'),
                                    :url => { :action => 'edit', :id => project_files},
                                    :loading => "showProgress();",
-                                   :complete => "hideProgress();"
+                                   :complete => "hideProgress();",
+                                   :remote => true
      %>
-  | <%= link_to_remote _('Delete'),
+  | <%= link_to _('Delete'),
                                    :url => { :action => 'destroy', :id => project_files},
                                    :loading => "showProgress();",
                                    :complete => "hideProgress();",
-                                   :confirm => _("Are you sure?")
+                                   :confirm => _("Are you sure?"),
+                                   :remote => true
      %>
   </div>
 </div>

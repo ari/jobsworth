@@ -2,7 +2,4 @@ current_user.widgets.each do |widget|
   if widget.configured?
     page << "jQuery.get('/widgets/show/#{widget.id}', function(data){ portal.refreshHeights();});"
   end   
-end 
-
-page.call "UpdateDnD"
-
+end

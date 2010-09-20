@@ -5,8 +5,9 @@ module TodosHelper
                       :title => _("Delete <b>%s</b>.", h(todo.name)).html_safe)
     path = todo_path(todo, :task_id => @task.id) 
 
-    link_to_remote(image, :url => path, :method => :delete,
-                   :update => "todo-container")
+    link_to(image, :url => path, :method => :delete,
+                   :update => "todo-container",
+                   :remote => true)
   end
 
   def todo_open_close_check_box(todo)

@@ -56,10 +56,6 @@ function updateTooltips() {
     jQuery('.tooltip').tooltip({showURL: false });
 }
 
-function UpdateDnD() {
-  updateTooltips();
-}
-
 function do_update(user, url) {
   if( user != userId ) {
       jQuery.get(url);
@@ -552,4 +548,14 @@ jQuery('#worklog_body').blur(function(){
                 'type': 'POST',
                 'success': function(data){jQuery('#worklog-saved').html(data) ;}
         });
+});
+
+// Update the sheet at the top of the page every 90 seconds
+//
+jQuery(document).ready(function(){
+	setInterval(function() {
+		jQuery.get('layouts/sheet_info', function(data) {
+  		jQuery('#menu_info').html(data);
+		});
+	},90 * 1000);
 });

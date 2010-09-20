@@ -29,26 +29,29 @@
 #-----------------
 elsif user_granted %>
   <td>
-    <%= link_to_remote image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
+    <%= link_to image_tag("tick.png", :title => _("Remove all access for <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
     :loading => "showProgress();",
-    :complete => "hideProgress();"
+    :complete => "hideProgress();",
+    :remote => true 
     %>
   </td>
 
   <% for p in perms %>
     <td>
-      <%= link_to_remote image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
+      <%= link_to image_tag("tick.png", :title => _("Remove %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
       :loading => "showProgress();",
-      :complete => "hideProgress();" if perm.can? p %>
-      <%= link_to_remote image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
+      :complete => "hideProgress();",
+      :remote => true if perm.can? p %>
+      <%= link_to image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, @user.name).html_safe, :class => "tooltip"),
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
       :loading => "showProgress();",
-      :complete => "hideProgress();" unless perm.can? p %>
+      :complete => "hideProgress();",
+			:remote => true unless perm.can? p %>
     </td>
   <% end 
   
@@ -57,11 +60,12 @@ elsif user_granted %>
 #-----------------
 else %>
   <td>
-    <%= link_to_remote image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
+    <%= link_to image_tag("delete.png", :title => _("Grant access to <b>%s</b>?", @user.name).html_safe, :class => "tooltip"),
     :update => 'permission_list',
     :url => { :controller => 'projects', :action => 'ajax_add_permission', :user_id => @user.id, :id => project.id, :user_edit => user_edit },
     :loading => "showProgress();",
-    :complete => "hideProgress();updateTooltips();"
+    :complete => "hideProgress();updateTooltips();",
+    :remote => true
     %>
   </td>
   <td colspan="12"></td>

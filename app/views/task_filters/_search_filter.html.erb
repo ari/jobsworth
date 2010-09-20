@@ -1,7 +1,7 @@
 <% content_for(:side_panel) do %>
 <% cache([ "search_filter", current_task_filter ]) do -%>
 <div id="search_filter_div" class="section">
-        <% form_tag( "/task_filters/update_current_filter" , {:method=>"post", :id => "search_filter_form"}) do  %>
+        <%= form_tag( "/task_filters/update_current_filter" , {:method=>"post", :id => "search_filter_form"}) do  %>
             <%= text_field_tag "filter", "Task search...", :id => "search_filter", :class => "grey", :autocomplete =>"off" %>
             <%
             redir_action = (local_assigns[:redirect_action] ? redirect_action : "list")
