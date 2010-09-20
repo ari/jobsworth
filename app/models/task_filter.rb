@@ -15,7 +15,7 @@ class TaskFilter < ActiveRecord::Base
 
   named_scope :shared, :conditions => { :shared => true }
   named_scope :visible, :conditions => { :system => false }
-  named_scope :recent_for, lambda {|user| { :conditions=>{ :recent_for_user_id => user.id} } }
+  named_scope :recent_for, lambda {|user| { :conditions=>{ :recent_for_user_id => user.id}, :order=>"id desc" } }
   before_create :set_company_from_user
 
   # Returns the system filter for the given user. If none is found,
@@ -136,7 +136,56 @@ class TaskFilter < ActiveRecord::Base
                              :word => kw.word)
     end
   end
+
+  def store_for(user)
+    if (TaskFilter.recent_for(user).count >= 10)
+      TaskFilter.recent_for(user).last.destroy
+    end
+    filter=TaskFilter.new(:recent_for_user_id=>user.id, :user=>user, :company=>self.company)
+    filter.name= generate_name
+    filter.name= self.name if filter.name.blank?
+    filter.copy_from(self)
+    filter.save!
+  end
 private
+ ###
+  # This method generate filter name based on qualifiers and keywords
+  # this name will include first project, milestone, status, client, user qualifier in this order
+  # then all keywords, then other qualifiers
+  # also name include only 3 items.
+  # Method is too complex, would be happy if we can remove order and just cat first 3 items
+  ###
+  def generate_name
+    counter = 0
+    arr=[]
+    types=["Project", "Milestone", "Status", "Client", "User"]
+    types.each do |type|
+      qualifier = qualifiers.detect{ |q| q.qualifiable_type == type }
+      unless qualifier.nil?
+        counter +=1
+        arr<< (qualifier.reversed? ? 'not' : '') + qualifier.qualifiable.to_s
+      end
+      if counter == 3
+        return arr.join(', ')
+      end
+    end
+    keywords.each do |kw|
+      counter += 1
+      arr<< (kw.reversed? ? 'not' : '') + kw.word;
+      if counter == 3
+        return arr.join(', ')
+      end
+    end
+    qualifiers.select { |q| ! types.include?(q.qualifiable_type)}.each do |qualifier|
+      counter +=1
+      arr<< (qualifier.reversed? ? 'not' : '') + qualifier.qualifiable.to_s
+      if counter == 3
+        return arr.join(', ')
+      end
+    end
+    arr<< "Unread only" if unread_only?
+    return arr.join(', ')
+  end
 
   def to_include
     to_include = [ :project, :task_users]
