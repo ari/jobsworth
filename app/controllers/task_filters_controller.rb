@@ -131,7 +131,7 @@ class TaskFiltersController < ApplicationController
 
     filter.attributes = params[:task_filter]
     filter.save
-
+    filter.store_for(current_user)
     if request.xhr?
       render :partial => 'search_filter_keys'
     else
