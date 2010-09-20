@@ -163,7 +163,7 @@ private
       qualifier = qualifiers.detect{ |q| q.qualifiable_type == type }
       unless qualifier.nil?
         counter +=1
-        arr<< (qualifier.reversed? ? 'not' : '') + qualifier.qualifiable.to_s
+        arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
       end
       if counter == 3
         return arr.join(', ')
@@ -171,14 +171,14 @@ private
     end
     keywords.each do |kw|
       counter += 1
-      arr<< (kw.reversed? ? 'not' : '') + kw.word;
+      arr<< (kw.reversed? ? 'not ' : '') + kw.word;
       if counter == 3
         return arr.join(', ')
       end
     end
     qualifiers.select { |q| ! types.include?(q.qualifiable_type)}.each do |qualifier|
       counter +=1
-      arr<< (qualifier.reversed? ? 'not' : '') + qualifier.qualifiable.to_s
+      arr<< (qualifier.reversed? ? 'not ' : '') + qualifier.qualifiable.to_s
       if counter == 3
         return arr.join(', ')
       end
