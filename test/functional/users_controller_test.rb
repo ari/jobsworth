@@ -1,7 +1,7 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class UsersControllerTest < ActionController::TestCase
-  fixtures(:users)
+  fixtures(:users, :email_addresses)
   
   context "a logged in admin user" do
     setup do
@@ -16,9 +16,16 @@ class UsersControllerTest < ActionController::TestCase
 
     should "redirect /update to /clients/edit" do
       customer = @user.company.customers.first
-      post(:update, :id => @user.id, :user => { :name => "test", 
-             :customer_id => customer.id })
+      assert_equal "admin@clockingit.com", @user.email
+      post(:update, :id => @user.id,
+           :user => { :name => "test", :customer_id => customer.id },
+           :emails => {email_addresses(:admin_email_1).id.to_s => {"default"=>"", "email"=>email_addresses(:admin_email_1).email},
+                       email_addresses(:admin_email_3).id.to_s => {"default"=>"1", "email"=>email_addresses(:admin_email_3).email}},
+           :new_emails => [{"email"=>"my@yahoo.com"}, {"email"=>"my@gmail.com"}])
 
+      @user.reload
+      assert_equal "newadminemail@clockingit.com", @user.email
+      assert_equal %w(admin@clockingit.com my@gmail.com my@yahoo.com newadminemail@clockingit.com), @user.email_addresses.collect(&:email).sort
       assert_redirected_to(:id => customer.id, :anchor => "users",
                            :controller => "clients", :action => "edit")
     end
@@ -39,9 +46,12 @@ class UsersControllerTest < ActionController::TestCase
         assert_redirected_to :action => "edit", :id => created.id
       end
       
-      should "send a welcome email if :send_welcome_mail is checked" do
-        post(:create, :user => @user_params, :send_welcome_email => "1")
-        assert_sent_email
+      should "send a welcome email to primary email if :send_welcome_mail is checked" do
+        post(:create, :user => @user_params, :send_welcome_email => "1",
+             :new_emails=>[{"default"=>"1", "email"=>"myemail@gmail.com"}, {"email"=>"anothermail@yahoo.com"}])
+        assert_sent_email do |email|
+          assert_equal %w(myemail@gmail.com), email.to
+        end
       end
 
       should "not send an email if :send_welcome_mail is not checked" do
