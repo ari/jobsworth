@@ -21,11 +21,13 @@ gem 'fastercsv'
 group :test do
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0.beta'
-  gem "machinist",        '>=2.0.0.beta2'
+  gem "shoulda"
+  gem "machinist",        '1.0.6'
   gem "faker"
   gem "ZenTest"
   gem "autotest"
   gem "autotest-rails"
+  gem "webrat"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0.rc.2'
   gem "cucumber-rails",   '>=0.3.2'
