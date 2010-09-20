@@ -15,7 +15,7 @@ class TaskFilter < ActiveRecord::Base
 
   named_scope :shared, :conditions => { :shared => true }
   named_scope :visible, :conditions => { :system => false }
-
+  named_scope :recent_for, lambda {|user| { :conditions=>{ :recent_for_user_id => user.id} } }
   before_create :set_company_from_user
 
   # Returns the system filter for the given user. If none is found,
