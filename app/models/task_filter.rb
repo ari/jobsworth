@@ -125,7 +125,17 @@ class TaskFilter < ActiveRecord::Base
       "#{ key }/#{ last_task_update.to_i }/#{ user.id }"
     end
   end
-
+  def copy_from(filter)
+    self.unread_only = filter.unread_only
+    filter.qualifiers.each { |q| self.qualifiers << q.clone }
+    filter.keywords.each do |kw|
+      # N.B Shouldn't have to pass in all these values, but it
+      # doesn't work when we don't, so...
+      self.keywords.build(:task_filter => self,
+                             :company => filter.company,
+                             :word => kw.word)
+    end
+  end
 private
 
   def to_include
