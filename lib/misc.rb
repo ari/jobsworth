@@ -28,14 +28,15 @@ module Misc
       hours = minutes / 60
       minutes = minutes - (hours * 60) if hours > 0
 
-      weeks = weeks.round(2) if weeks.is_a?(Float)
-      days = days.round(2) if days.is_a?(Float)
-      hours = hours.round(2) if hours.is_a?(Float)
+      weeks = weeks.round(2) if [Float, BigDecimal].include?(weeks.class)
+      days = days.round(2) if [Float, BigDecimal].include?(days.class)
+      hours = hours.round(2) if [Float, BigDecimal].include?(hours.class)
 
       res += "#{weeks}#{_('w')}#{' ' if duration_format == 0}" if weeks > 0
       res += "#{days}#{_('d')}#{' ' if duration_format == 0}" if days > 0
       res += "#{hours}#{_('h')}#{' ' if duration_format == 0}" if hours > 0
     end
+    minutes = minutes.round(2) if [Float, BigDecimal].include?(minutes.class)
     res += "#{minutes}#{_('m')}" if minutes > 0 || res == ''
 
     if( duration_format == 2 )
