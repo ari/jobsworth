@@ -1,4 +1,4 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class EditPreferencesTest < ActionController::IntegrationTest
   context "a logged in user" do
@@ -8,12 +8,14 @@ class EditPreferencesTest < ActionController::IntegrationTest
     end
 
     should "be able to edit their own preferences" do
-      fill_in "email", :with => "new@email.com"
+      @emails = @user.email_addresses
+      @primary_email_id =  @emails.detect { |e| e.default }.id
+      fill_in "emails[#{@primary_email_id}][email]", :with => "new@email.com"
       uncheck "receive notifications"
       click_button "save"
       @user.reload
 
-      assert_equal "new@email.com", @user.email
+      assert_equal "new@email.com", @user.primary_email
       assert !@user.receive_notifications?
     end
 
