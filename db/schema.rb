@@ -32,17 +32,14 @@ ActiveRecord::Schema.define(:version => 20100920121117) do
   add_index "activities", ["user_id"], :name => "fk_activities_user_id"
 
   create_table "companies", :force => true do |t|
-    t.string   "name",                :limit => 200, :default => "",    :null => false
-    t.string   "contact_email",       :limit => 200
-    t.string   "contact_name",        :limit => 200
+    t.string   "name",          :limit => 200, :default => "",   :null => false
+    t.string   "contact_email", :limit => 200
+    t.string   "contact_name",  :limit => 200
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "subdomain",                          :default => "",    :null => false
-    t.boolean  "show_wiki",                          :default => true
-    t.boolean  "show_forum",                         :default => true
-    t.boolean  "show_chat",                          :default => true
-    t.boolean  "show_messaging",                     :default => true
-    t.boolean  "restricted_userlist",                :default => false
+    t.string   "subdomain",                    :default => "",   :null => false
+    t.boolean  "show_wiki",                    :default => true
+    t.boolean  "show_forum",                   :default => true
   end
 
   add_index "companies", ["subdomain"], :name => "index_companies_on_subdomain", :unique => true
@@ -598,9 +595,7 @@ ActiveRecord::Schema.define(:version => 20100920121117) do
     t.integer "property_value_id"
   end
 
-  add_index "task_property_values", ["property_id"], :name => "property_id"
   add_index "task_property_values", ["task_id", "property_id"], :name => "task_property", :unique => true
-  add_index "task_property_values", ["task_id"], :name => "task_id"
 
   create_table "task_tags", :id => false, :force => true do |t|
     t.integer "tag_id"
@@ -613,10 +608,10 @@ ActiveRecord::Schema.define(:version => 20100920121117) do
   create_table "task_users", :force => true do |t|
     t.integer  "user_id"
     t.integer  "task_id"
+    t.string   "type"
     t.boolean  "unread"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type",       :default => "TaskOwner"
   end
 
   add_index "task_users", ["task_id"], :name => "index_task_users_on_task_id"
@@ -658,7 +653,7 @@ ActiveRecord::Schema.define(:version => 20100920121117) do
   add_index "tasks", ["milestone_id"], :name => "index_tasks_on_milestone_id"
   add_index "tasks", ["project_id", "completed_at"], :name => "tasks_project_completed_index"
   add_index "tasks", ["project_id", "milestone_id"], :name => "tasks_project_id_index"
-  add_index "tasks", ["task_num", "company_id", "type"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
+  add_index "tasks", ["type", "task_num", "company_id"], :name => "index_tasks_on_type_and_task_num_and_company_id", :unique => true
 
   create_table "time_ranges", :force => true do |t|
     t.string   "name"
