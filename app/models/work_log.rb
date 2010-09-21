@@ -201,9 +201,8 @@ class WorkLog < ActiveRecord::Base
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
         self.setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
-            email_body<< CGI::unescapeHTML(self.body)
-            Notifications::deliver_changed(update_type, self.task, self.user, recipients,
-                                           email_body.gsub(/<[^>]*>/,''))
+            email_body<< self.body
+            Notifications::deliver_changed(update_type, self.task, self.user, recipients, email_body)
           end
     else
       if self.log_type == EventLog::TASK_CREATED
