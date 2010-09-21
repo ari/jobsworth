@@ -19,11 +19,12 @@ describe ScmProjectsController do
   describe "POST create" do
     context "user with admin permission" do
       before(:each) do
-        login_user( 'admin?' => true )
+        login_user( 'admin?' => true, "company"=> 1)
       end
       context "with valiad params" do
         before(:each) do
           ScmProject.should_receive(:new).with('these' => 'params').and_return(@scm_project = mock_model(ScmProject, { :save=>true}))
+          @scm_project.should_receive("company=").with(1)
           post :create, :scm_project => { :these=>'params'}
         end
         it "should redirect to show action" do
@@ -33,6 +34,7 @@ describe ScmProjectsController do
       context "with invalid params" do
         before(:each) do
           ScmProject.should_receive(:new).with('these'=>'params').and_return(@scm_project = mock_model(ScmProject,{ :save=>false}))
+          @scm_project.should_receive("company=").with(1)
           post :create,:scm_project =>  { :these=>'params'}
         end
         it "should render new template" do

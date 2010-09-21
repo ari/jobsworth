@@ -3,7 +3,9 @@
 <div id="task_filters" class="task_filters section">
   <a class="collapsable-sidepanel-button panel-<%= panel_preference %>">&nbsp;</a>
   <div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
-    <div><%=_ "Filters" %></div>
+    <div><%=_ "Filters" %> <a href="#" id="recent_filters_button">Recent</a></div>
+    <div id="recent_filters">
+    </div>
   </div>
 
   <ul class="panel_content">
@@ -14,8 +16,8 @@
     <li>
       <span class="right small">
         <% if tf.user == current_user or current_user.admin? -%>
-          <%= link_to(image_tag("cross_small.png"), task_filter_path(tf), 
-	      :method => :delete, :confirm => _("Are you sure?")) %>
+          <%= link_to(image_tag("cross_small.png"), task_filter_path(tf),
+              :method => :delete, :confirm => _("Are you sure?")) %>
         <% else -%>
           <%= "[#{ _("Shared") }]" %>
         <% end -%>

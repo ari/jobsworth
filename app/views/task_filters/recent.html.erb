@@ -1,0 +1,7 @@
+<ul class="ui-menu ui-widget ui-widget-content ui-corner-all" style ="display:none">
+  <% @filters.each do |filter| -%>
+  <li class="ui-menu-item" >
+    <%= select_task_filter_link(filter) %>
+  </li>
+  <% end -%>
+</ul>
