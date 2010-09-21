@@ -334,6 +334,8 @@ class User < ActiveRecord::Base
     email_addresses.detect { |pv| pv.default }.try(:email)
   end
 
+  alias_method :primary_email, :email
+
   def email=(email)
     if new_record? || email_addresses.size == 0
       email_addresses.build(:email => email, :default => true)
