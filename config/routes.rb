@@ -24,7 +24,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources(:task_filters,
                 :member => { :select => :any },
                 :collection => {
-                  :reset => :any, :search => :any,
+                  :reset => :any, :search => :any, :recent=>:any,
                   :update_current_filter => :any,
                   :set_single_task_filter => :any })
 

@@ -5,13 +5,6 @@
   <div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
     <div><%=_ "Filters" %> <a href="#" id="recent_filters_button">Recent</a></div>
     <div id="recent_filters">
-    <ul class="ui-menu ui-widget ui-widget-content ui-corner-all" style ="display:none">
-      <% TaskFilter.recent_for(current_user).each do |filter| -%>
-        <li class="ui-menu-item" >
-          <%= select_task_filter_link(filter) %>
-        </li>
-      <% end -%>
-    </ul>
     </div>
   </div>
 

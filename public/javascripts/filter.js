@@ -160,15 +160,17 @@ jQuery(document).ready(function() {
   });
 
     jQuery('#recent_filters_button').click(function() {
-      jQuery('#recent_filters').children('ul').slideToggle();
-    });
-
-    jQuery('#recent_filters ul li').hover(function() {
-      jQuery(this).toggleClass('ui-state-hover');
-    });
-
-    jQuery('#recent_filters ul li a').click( function(){
-        loadFilterPanel();
-        jQuery('#recent_filters').slideToggle();
+      if(jQuery('#recent_filters ul').is(':visible')){ jQuery('#recent_filters ul').slideToggle(); return false;}
+      jQuery('#recent_filters').load("/task_filters/recent", function(){
+        jQuery('#recent_filters').children('ul').slideToggle();
+        jQuery('#recent_filters ul li').hover(function() {
+          jQuery(this).toggleClass('ui-state-hover');
+        });
+        jQuery('#recent_filters ul li a').click( function(){
+          loadFilterPanel();
+          jQuery('#recent_filters').slideToggle();
+        });
+      });
+      return false;
     });
 });

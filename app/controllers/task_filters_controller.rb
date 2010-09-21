@@ -153,6 +153,10 @@ class TaskFiltersController < ApplicationController
     redirect_to "/tasks/list"
   end
 
+  def recent
+    @filters = TaskFilter.recent_for(current_user)
+    render :layout =>false
+  end
   private
 
   def name_conds(prefix = nil)
