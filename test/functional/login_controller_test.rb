@@ -17,6 +17,7 @@ class LoginControllerTest < ActionController::TestCase
     user_count = User.count
     company_count = Company.count
     customer_count = Customer.count
+    email_address_count = EmailAddress.count
     
     post :take_signup, { :username => 'newuser', :password => 'newpassword', :password_again => 'newpassword', :name => "New User", :email => "new@clockingit.com", :company => 'New Company',
       :subdomain => 'newsubdomain', :user => {:time_zone => 'Europe/Oslo' } }
@@ -24,6 +25,7 @@ class LoginControllerTest < ActionController::TestCase
     assert_equal User.count, user_count + 1
     assert_equal Company.count, company_count + 1
     assert_equal Customer.count, customer_count + 1
+    assert_equal EmailAddress.count, email_address_count  + 1
 
     assert_response 302
   end 

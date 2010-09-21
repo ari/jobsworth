@@ -1,5 +1,5 @@
 class TaskFiltersController < ApplicationController
-  
+
   def search
     @filter = params[:term]
     if @filter.blank?
@@ -93,15 +93,7 @@ class TaskFiltersController < ApplicationController
   def create
     @filter = TaskFilter.new(params[:task_filter])
     @filter.user = current_user
-    @filter.unread_only = current_task_filter.unread_only
-    current_task_filter.qualifiers.each { |q| @filter.qualifiers << q.clone }
-    current_task_filter.keywords.each do |kw|
-      # N.B Shouldn't have to pass in all these values, but it
-      # doesn't work when we don't, so...
-      @filter.keywords.build(:task_filter => @filter,
-                             :company => current_user.company,
-                             :word => kw.word)
-    end
+    @filter.copy_from(current_task_filter)
 
     if !@filter.save
       flash[:notice] = _"Filter couldn't be saved. A name is required"
@@ -118,16 +110,7 @@ class TaskFiltersController < ApplicationController
       target_filter = current_task_filter
       target_filter.qualifiers.clear
       target_filter.keywords.clear
-      target_filter.unread_only = @filter.unread_only
-
-      @filter.qualifiers.each { |q| target_filter.qualifiers << q.clone }
-      @filter.keywords.each do |kw|
-        # N.B Shouldn't have to pass in all these values, but it
-        # doesn't work when we don't, so...
-        target_filter.keywords.build(:task_filter => target_filter,
-                                     :company => current_user.company,
-                                     :word => kw.word)
-      end
+      target_filter.copy_from(@filter)
       target_filter.save!
     else
       flash[:notice] = _"You don't have access to that task filter"
@@ -148,7 +131,7 @@ class TaskFiltersController < ApplicationController
 
     filter.attributes = params[:task_filter]
     filter.save
-
+    filter.store_for(current_user)
     if request.xhr?
       render :partial => 'search_filter_keys'
     else

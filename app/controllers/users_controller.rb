@@ -31,6 +31,7 @@ class UsersController < ApplicationController
       @user.admin=params[:user][:admin]
     end
 
+    save_email_addresses
     if @user.save
 
       if params[:copy_user].to_i > 0
@@ -69,6 +70,7 @@ class UsersController < ApplicationController
       @user.admin=params[:user][:admin]
     end
 
+    save_email_addresses
     if @user.update_attributes(params[:user])
       flash['notice'] = _('User was successfully updated.')
       if @user.customer
@@ -88,6 +90,7 @@ class UsersController < ApplicationController
 
   def update_preferences
     @user = User.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
+    save_email_addresses
     if (@user == current_user) and @user.update_attributes(params[:user])
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
@@ -274,4 +277,23 @@ private
     end
     true
   end
+
+  def save_email_addresses
+    update_existing_email_address_values(@user, params[:emails]) unless @user.new_record?
+    params[:new_emails].each{|e| @user.email_addresses.build(e)} if params[:new_emails]
+  end
+
+  def update_existing_email_address_values(user, emails)
+    return if !user or !emails
+
+    user.email_addresses.each do |e|
+      posted_vals = emails[e.id.to_s]
+      if !posted_vals.blank?
+        e.update_attributes(posted_vals)
+      else
+        user.email_addresses.delete(e)
+      end
+    end
+  end
+
 end

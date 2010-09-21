@@ -1,0 +1,42 @@
+admin_email_1:
+  user: admin
+  email: admin@clockingit.com
+  default: 1
+admin_email_2:
+  user: admin
+  email: otheradmin@clockingit.com
+  default: 0
+admin_email_3:
+  user: admin
+  email: newadminemail@clockingit.com
+  default: 0
+fudge_email_1:
+  user: fudge
+  email: mr@fudgie.org
+  default: 1
+fudge_email_2:
+  user: fudge
+  email: mr2@fudgie.org
+  default: 0
+tester_email_1:
+  user: tester
+  email: test@clockingit.com
+  default: 1
+tester_limited_email_1:
+  user: tester_limited
+  email: tester@clockingit.com
+  default: 1
+
+# == Schema Information
+#
+# Table name: users
+#
+#  id                         :integer(4)      not null, primary key
+#  email                      :string(200)     
+#  default                    :boolean(1)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#
+# Indexes
+#
+#  index_email_addresses_on_user_id           (user_id)

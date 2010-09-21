@@ -64,18 +64,20 @@ function change_group() {
   but only after it has returned successfully
 */
 jQuery(document).ready(function() {
-  jQuery.ajax({
-    async: false,
-    url: '/users/get_tasklistcols',
-    dataType: 'json',
-    success:function(response) {
-      columnModel = response;
-      initTaskList();
-    },
-    error:function (xhr, thrownError) {
-      alert("Invalid task list model returned from server");
-    }
-  });
+  if (jQuery('#task_list').length) {
+    jQuery.ajax({
+      async: false,
+      url: '/users/get_tasklistcols',
+      dataType: 'json',
+      success:function(response) {
+        columnModel = response;
+        initTaskList();
+      },
+      error:function (xhr, thrownError) {
+        alert("Invalid task list model returned from server");
+      }
+    });
+  }
 });
 
 function initTaskList() {
@@ -187,19 +189,21 @@ function initTaskList() {
         }
   });
 
-  appendPartial("/task_filters/new", '#savefilter', false);
   jQuery("#task_list").jqGrid('navButtonAdd','#task_pager', {
     caption: "Save filter",
     title: "Save filter",
     onClickButton : function () {
-      var dialog = jQuery("#savefilter").dialog({
+      if (jQuery("#savefilter div").length == 0) {
+        appendPartial("/task_filters/new", '#savefilter', false);
+      }
+      dialog = jQuery("#savefilter").dialog({
         width: 400,
-            autoOpen: false,
-            title: 'Save Filter',
+        autoOpen: false,
+        title: 'Save Filter',
         draggable: true
-          });
-          dialog.dialog('open');
-          return false;
+      });
+      dialog.dialog('open');
+      return false;
     }
   });
 
