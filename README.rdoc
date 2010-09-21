@@ -9,12 +9,13 @@ You will want to put the source somewhere sensible depending on your operating s
 
 === Step 2: Prerequsites
 
-You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL has been heavily tested, and some people are running postgresql.
+You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql will probably work.
 
 Install the following packages:
 
-* ruby 1.9 (Ruby 1.9 is much faster than 1.8.)
-* ruby mysql driver (you could also choose postgresql but it is tested somewhat less)
+* ruby 1.9.2 or ruby 1.8.x
+* zip
+* ImageMagick
 
 How to install these will differ on each platform. Some possibilities:
 
@@ -22,20 +23,20 @@ How to install these will differ on each platform. Some possibilities:
 ==== FreeBSD with Ruby 1.9
 
   echo "RUBY_DEFAULT_VER=1.9" >> /etc/make.conf
-  portmaster converters/ruby-iconv databases/ruby-mysql textproc/libxslt archivers/zip
+  portmaster converters/ruby-iconv archivers/zip graphics/ImageMagick
 
 
 ==== OSX
 
 First install the Macports system from http://www.macports.org. Then:
 
-  sudo port install ruby19 libxml2 libxslt
+  sudo port install ruby19 ImageMagick
 
 ==== Linux, etc
 
 Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. Something like:
 
-  yum install ruby19
+  yum install ruby19 ImageMagick
 
 === Step 3: Phusion Passenger
 
@@ -70,12 +71,6 @@ You'll need to allow access to the folder you specify if isn't already inside yo
 
 Naturally adjust the paths to suit your own environment.
 
-
-=== Step 4: Setup configuration and database
-
-  cd /usr/local/www/jobsworth
-  ruby setup.rb
-  
   
 === Step 5: Ruby gems
 
@@ -85,12 +80,17 @@ First we need a new gem installation tool.
 
 Then in order to install all the gems we need.
 
+  cd /usr/local/www/jobsworth
   bundle install
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
+=== Step 4: Setup configuration and database
+
+  ruby setup.rb
+  
 == Upgrading to a newer revision
 
   rake update:git
