@@ -29,7 +29,6 @@ class Notifications < ActionMailer::Base
                when :reverted   then "#{$CONFIG[:prefix]} #{_'Reverted'}: #{task.issue_name} [#{task.project.name}] (#{user.name})"
                when :reassigned then "#{$CONFIG[:prefix]} #{_'Reassigned'}: #{task.issue_name} [#{task.project.name}] (#{task.owners_to_display})"
                end
-
     @body       = {:task => task, :user => user, :change => change}
 
     @recipients = recipients
