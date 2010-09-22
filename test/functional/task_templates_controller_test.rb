@@ -1,9 +1,9 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class TaskTemplatesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers, :projects
   context 'a logged in user' do
-    def setup
+    setup do
       @request.with_subdomain('cit')
       @user = users(:admin)
       @request.session[:user_id] = @user.id
