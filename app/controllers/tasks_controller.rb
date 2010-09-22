@@ -457,19 +457,19 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- <strong>Due</strong>:".html_safe + " #{old_name} -> #{new_name}\n"
+      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? ("- <strong>Name</strong>:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
+    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
-    (old_task.description != task.description) ? "- <strong>Description</strong> changed\n".html_safe : ""
+    (old_task.description != task.description) ? "- Description changed\n".html_safe : ""
   end
   def task_duration_changed(old_task, task)
-     (old_task.duration != task.duration) ? "- <strong>Estimate</strong>: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
+     (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 ############### This methods extracted to make Template Method design pattern #############################################3
   def current_company_task_new
@@ -499,12 +499,12 @@ protected
     if @old_users != assigned_ids
       @task.users.reload
       new_name = @task.owners.empty? ? 'Unassigned' : @task.owners.collect{ |u| u.name}.join(', ')
-      body << "- <strong>Assignment</strong>: #{new_name}\n"
+      body << "- Assignment: #{new_name}\n"
       @update_type = :reassigned
     end
 
     if @old_project_id != @task.project_id
-      body << "- <strong>Project</strong>: #{@old_project_name} -> #{@task.project.name}\n"
+      body << "- Project: #{@old_project_name} -> #{@task.project.name}\n"
       WorkLog.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
       ProjectFile.update_all("customer_id = #{@task.project.customer_id}, project_id = #{@task.project_id}", "task_id = #{@task.id}")
     end
@@ -520,19 +520,19 @@ protected
 
       new_name = "None"
       new_name = @task.milestone.name unless @task.milestone.nil?
-      body << "- <strong>Milestone</strong>: #{old_name} -> #{new_name}\n"
+      body << "- Milestone: #{old_name} -> #{new_name}\n"
     end
 
     body << task_due_changed(@old_task, @task)
 
     new_tags = @task.tags.collect {|t| t.name}.sort.join(', ')
     if @old_tags != new_tags
-      body << "- <strong>Tags</strong>: #{new_tags}\n"
+      body << "- Tags: #{new_tags}\n"
     end
 
     new_deps = @task.dependencies.collect { |t| "[#{t.issue_num}] #{t.name}"}.sort.join(", ")
     if @old_deps != new_deps
-       body << "- <strong>Dependencies</strong>: #{(new_deps.length > 0) ? new_deps : _("None")}"
+       body << "- Dependencies: #{(new_deps.length > 0) ? new_deps : _("None")}"
     end
 
     worklog = WorkLog.new
@@ -540,7 +540,7 @@ protected
 
 
     if @old_task.status != @task.status
-      body << "- <strong>Resolution</strong>: #{@old_task.status_type} -> #{@task.status_type}\n"
+      body << "- Resolution: #{@old_task.status_type} -> #{@task.status_type}\n"
 
       worklog.log_type = EventLog::TASK_COMPLETED if @task.resolved?
       worklog.log_type = EventLog::TASK_REVERTED if (@task.open? || (!@task.resolved? && @old_task.resolved?))
@@ -564,7 +564,7 @@ protected
 
     files = @task.create_attachments(params, current_user)
     files.each do |filename|
-      body << "- <strong>Attached</strong>: #{filename}\n"
+      body << "- Attached: #{filename}\n"
     end
 
 
