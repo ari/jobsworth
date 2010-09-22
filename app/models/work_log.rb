@@ -83,15 +83,6 @@ class WorkLog < ActiveRecord::Base
     end
 
   }
-  #You must use two following methods to add unescaped user input!!!
-  def user_input=(user_comment)
-    self.body=user_comment
-  end
-  # this method must be named user_input<<
-  # but I can't redefine <<
-  def user_input_add(user_comment)
-    self.body<< user_comment
-  end
 
   ###
   # Creates and saves a worklog for the given task.
@@ -103,7 +94,7 @@ class WorkLog < ActiveRecord::Base
     worklog.user = user
     worklog.for_task(task)
     worklog.log_type = EventLog::TASK_CREATED
-    worklog.user_input =  task.description
+    worklog.body=   task.description
 
     #worklog.comment = ??????
     worklog.save!

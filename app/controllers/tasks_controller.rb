@@ -577,11 +577,11 @@ protected
         second_worklog.send_notifications if second_worklog.comment?
       end
     else
-      worklog.body=body.html_safe
+      worklog.body=body
       if params[:comment] && params[:comment].length > 0
         worklog.comment = true
         worklog.body << "\n"
-        worklog.user_input_add params[:comment]
+        worklog.body << params[:comment]
       end
       worklog.user = current_user
       worklog.for_task(@task)
