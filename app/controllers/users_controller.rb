@@ -95,7 +95,7 @@ class UsersController < ApplicationController
       flash['notice'] = _('Preferences successfully updated.')
       redirect_to :controller => 'activities', :action => 'list'
     else
-      @user=current_user
+      @user=current_user unless @user == current_user
       render :action => 'edit_preferences'
     end
   end

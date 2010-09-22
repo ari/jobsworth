@@ -371,6 +371,9 @@ function highlightWatchers() {
 }
 
 function add_milestone_popup() {
+  if (jQuery("#task_project_id").val() == "") {
+    alert("Please select project before adding milestone !!")
+  } else {
     jQuery("#milestone_name").val(" ");
     jQuery("#milestone_due_at").val(" ");
     jQuery("#milestone_user_id").val(" ");
@@ -383,4 +386,5 @@ function add_milestone_popup() {
 	});
 	popup.dialog('open');
 	return false;
+  }
 }
