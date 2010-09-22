@@ -285,8 +285,8 @@ describe Task do
         @task.resources.should_not include(@resource)
       end
       it "should delete exist resource from memory if delete task resource" do
-        @task.recources.should_not be_empty
-        ids= @task.recource_ids
+        @task.resources.should_not be_empty
+        ids= @task.resource_ids
         @params[:resource][:ids] = []
         @task.set_users_dependencies_resources(@params, @user)
         @task.project_id = nil
