@@ -20,9 +20,9 @@ gem 'fastercsv'
 gem 'dynamic_form'
 
 group :test do
+  gem "shoulda",          '2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0.beta'
-  gem "shoulda"
   gem "machinist",        '1.0.6'
   gem "faker"
   gem "ZenTest"

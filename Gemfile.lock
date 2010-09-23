@@ -159,7 +159,7 @@ DEPENDENCIES
   rspec
   rspec-rails (>= 2.0.0.beta)
   ruby-debug
-  shoulda
+  shoulda (= 2.11.3)
   smurf
   splattael-activerecord_base_without_table
   tzinfo
