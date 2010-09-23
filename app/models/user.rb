@@ -327,7 +327,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_email(email, *args)
-    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses]
+    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false ]
     if args.any?
       opts = args.extract_options!
       if opts.has_key?(:conditions)
