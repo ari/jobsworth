@@ -2,6 +2,24 @@ Jobsworth change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+23 September 2010
+	There are now multiple email addresses allowed for each user. This is step one of a major refactoring of how email addresses are stored and used.
+	
+22 September 2010
+	Fix escaping of emails and comments. This means that there is no longer any rich styled text allowed inside comments.
+
+21 September 2010
+	We now store the last 10 search filters for each user.
+	
+17 September 2010
+	Dramatic improvements in the way caching is flushed, resulting in major speed increase.
+
+6 September 2010
+	Right side panels are now collapsible.
+	
+1 September 2010
+	Dragging tasks between groups in the list view changes the values in that task. For instance, dragging between milestones will change the milestone. This is a huge usability step forward and the culmination of a lot of work over the last month.
+
 21 August 2010
 	Task filters now have a NOT option. That is, you can apply the inverse of any of the filters.
 
