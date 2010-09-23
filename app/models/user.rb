@@ -73,7 +73,9 @@ class User < ActiveRecord::Base
   attr_protected :uuid, :autologin, :admin, :company_id
 
   named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
-
+  named_scope :by_email, lambda{ |email|
+    {:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false }
+  }
   ###
   # Searches the users for company and returns
   # any that have names or ids that match at least one of
@@ -327,17 +329,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_email(email, *args)
-    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false]
-    if args.any?
-      opts = args.extract_options!
-      if opts.has_key?(:conditions)
-        cond = opts[:conditions].is_a?(String) ? opts[:conditions] : opts[:conditions].is_a?(Hash) ? sanitize_sql_hash_for_conditions(opts[:conditions]) : sanitize_sql_array(opts[:conditions])
-        default_args[0][:conditions] = "#{cond} AND #{sanitize_sql_hash_for_conditions(default_args[0][:conditions])}"
-        opts.delete(:conditions)
-      end
-      default_args[0].merge! opts
-    end
-    find(:first, *default_args)
+    by_email(email).find(:first, *args)
   end
 
   def email
