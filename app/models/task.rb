@@ -513,7 +513,7 @@ class Task < ActiveRecord::Base
       res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
       res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description_wrapped.gsub(/\n/, '<br/>')}</td></tr>" unless self.description.blank?
       res << "</table>"
-      @tip = res.gsub(/\"/,'&quot;')
+      @tip = res
     end
     @tip
   end
