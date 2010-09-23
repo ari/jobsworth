@@ -327,7 +327,7 @@ class User < ActiveRecord::Base
   end
 
   def self.find_by_email(email, *args)
-    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses]
+    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false]
     if args.any?
       opts = args.extract_options!
       if opts.has_key?(:conditions)
@@ -346,11 +346,11 @@ class User < ActiveRecord::Base
 
   alias_method :primary_email, :email
 
-  def email=(email)
-    if new_record? || email_addresses.size == 0
-      email_addresses.build(:email => email, :default => true)
+  def email=(new_email)
+    if new_record? || email_addresses.size == 0 || email_addresses.detect{|pv| pv.default }.blank?
+      email_addresses.build(:email => new_email, :default => true)
     else
-      email_addresses.update_all({:email => email}, {:default => true})
+      email_addresses.detect{ |pv| pv.default }.attributes= {:email => new_email}
     end
   end
 
