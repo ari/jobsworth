@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class TaskTest < ActiveRecord::TestCase
   fixtures :tasks, :projects, :users, :companies, :customers, :properties, :property_values
 
-  should_have_many :task_customers, :dependent => :destroy
-  should_have_many :customers, :through => :task_customers
+  should have_many(:task_customers).dependent(:destroy)
+  should have_many(:customers).through(:task_customers)
 
   def setup
     @task = tasks(:normal_task)

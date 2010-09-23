@@ -8,9 +8,9 @@ class OrganizationalUnitTest < ActiveRecord::TestCase
     end
     subject { @org_unit }
 
-    should_validate_presence_of :name
-    should_belong_to :customer
-    should_have_many :custom_attribute_values
+    should validate_presence_of(:name)
+    should belong_to(:customer)
+    should have_many(:custom_attribute_values)
   end
 end
 

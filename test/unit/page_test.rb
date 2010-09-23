@@ -1,19 +1,18 @@
 require File.dirname(__FILE__) + '/../test_helper'
-
 class PageTest < ActiveRecord::TestCase
 
-  should_belong_to :company
-  should_belong_to :user
-  should_belong_to :notable
+  should belong_to(:company)
+  should belong_to(:user)
+  should belong_to(:notable)
 
-  should_validate_presence_of :name
+  should validate_presence_of(:name)
 
   context "A normal page" do
     setup do
       @page = Page.make
     end
     subject { @page }
-    
+
 
     should "require a notable" do
       @page.notable = nil

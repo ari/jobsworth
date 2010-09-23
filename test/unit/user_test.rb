@@ -10,15 +10,15 @@ class UserTest < ActiveRecord::TestCase
   subject { @user }
 
 
-  should_validate_presence_of :company
-  should_validate_presence_of :password
-  should_validate_presence_of :username
-  should_validate_presence_of :name
+  should validate_presence_of(:company)
+  should validate_presence_of(:password)
+  should validate_presence_of(:username)
+  should validate_presence_of(:name)
 
-  should_have_many :task_filters, :dependent => :destroy
-  should_have_many :sheets, :dependent => :destroy
-  should_have_many :notes
-  should_have_many :preferences
+  should have_many(:task_filters).dependent(:destroy)
+  should have_many(:sheets).dependent(:destroy)
+  should have_many(:notes)
+  should have_many(:preferences)
 
   def test_create
     u = User.new

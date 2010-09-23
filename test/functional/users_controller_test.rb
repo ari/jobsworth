@@ -2,12 +2,12 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class UsersControllerTest < ActionController::TestCase
   fixtures(:users, :email_addresses)
-  
+
   context "a logged in admin user" do
     setup do
       login
     end
-    
+
     should "should render edit" do
       other = User.make(:company => @user.company)
       get :edit, :id => other.id
@@ -50,7 +50,7 @@ class UsersControllerTest < ActionController::TestCase
         assert !created.new_record?
         assert_redirected_to :action => "edit", :id => created.id
       end
-      
+
       should "send a welcome email to primary email if :send_welcome_mail is checked" do
         post(:create, :user => @user_params, :send_welcome_email => "1",
              :new_emails=>[{"default"=>"1", "email"=>"myemail@gmail.com"}, {"email"=>"anothermail@yahoo.com"}])
@@ -62,7 +62,7 @@ class UsersControllerTest < ActionController::TestCase
 
       should "not send an email if :send_welcome_mail is not checked" do
         post(:create, :user => @user_params)
-        assert_did_not_send_email
+        should_not have_sent_email
       end
     end
   end

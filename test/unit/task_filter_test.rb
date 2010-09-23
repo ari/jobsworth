@@ -2,11 +2,11 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 class TaskFilterTest < ActiveSupport::TestCase
 
-  should_have_many :qualifiers
-  should_belong_to :user
-  should_validate_presence_of :user
-  should_validate_presence_of :name
-  should_have_many :keywords, :dependent => :destroy
+  should have_many(:qualifiers)
+  should belong_to(:user)
+  should validate_presence_of(:user)
+  should validate_presence_of(:name)
+  should have_many(:keywords).dependent(:destroy)
 
   context "TaskFilter.system_filter" do
     setup do

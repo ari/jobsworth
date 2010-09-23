@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class PreferenceTest < ActiveSupport::TestCase
-  should_belong_to :preferencable
+  should belong_to(:preferencable)
 end
 
 

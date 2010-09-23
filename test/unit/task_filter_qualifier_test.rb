@@ -1,10 +1,10 @@
 require 'test_helper'
 
 class TaskFilterQualifierTest < ActiveSupport::TestCase
-  should_belong_to :task_filter
-  should_belong_to :qualifiable
+  should belong_to(:task_filter)
+  should belong_to(:qualifiable)
 
-  should_validate_presence_of :qualifiable
+  should validate_presence_of(:qualifiable)
 
   context "a task with a different task num than id" do
     setup do

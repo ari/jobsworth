@@ -5,9 +5,9 @@ class TimeRangeTest < ActiveSupport::TestCase
     @time_range = TimeRange.make
   end
   subject { @time_range }
-  
-  should_validate_presence_of :name
-  should_validate_uniqueness_of :name
+
+  should validate_presence_of(:name)
+  should validate_uniqueness_of(:name)
 
   context "a normal time range" do
     should "eval start to get start_time" do
