@@ -6,10 +6,10 @@ class Mailman < ActionMailer::Base
 
   # helper method to remove email reply noise from the body
   def self.clean_body(body)
-    new_body_end = body.index(Mailman::BODY_SPLIT) || body.length
-    body = body[0, new_body_end].strip
+    new_body_end = body.to_s.index(Mailman::BODY_SPLIT) || body.to_s.length
+    body = body.to_s[0, new_body_end].strip
 
-    lines = body.split("\n")
+    lines = body.to_s.split("\n")
     while lines.any?
       line = lines.last.strip
 
@@ -216,7 +216,7 @@ class Mailman < ActionMailer::Base
   end
 
   def send_email_to_creator(task, email)
-    email_body = email.body.gsub(/<[^>]*>/,'')
+    email_body = email.body.to_s.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
     user = task.company.users.first(:conditions => { :admin => 1 })
     Notifications::deliver_created(task, user, email.from.first.strip, email_body)
