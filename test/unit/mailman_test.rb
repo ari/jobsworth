@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
-class MailmanTest < ActiveSupport::TestCase
+class MailmanTest < ActionMailer::TestCase
   fixtures :tasks, :users, :companies, :projects, :properties
 
   def setup
@@ -13,7 +13,7 @@ class MailmanTest < ActiveSupport::TestCase
     @task.watchers << @company.users[1]
     @task.save!
 
-    @tmail = TMail::Mail.parse(test_mail)
+    @tmail = Mail.new(test_mail)
 
     WorkLog.delete_all
     ActionMailer::Base.deliveries.clear
@@ -77,7 +77,7 @@ class MailmanTest < ActiveSupport::TestCase
     assert_equal 0, WorkLog.count
     clear_users(@task)
 
-    mail = TMail::Mail.new
+    mail = Mail.new
     mail.to = "task-#{ @task.task_num }@#{ $CONFIG[:domain ]}"
     mail.from = @user.email
     mail.body = "AAAA"
@@ -173,7 +173,7 @@ o------ please reply above this line ------o
     should "be added to incoming_email_project preference for company" do
       count = @project.tasks.count
       mail = test_mail(@to, @from)
-      @tmail = TMail::Mail.parse(mail)
+      @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
@@ -189,7 +189,7 @@ o------ please reply above this line ------o
 
       count = @project.tasks.count
       mail = test_mail("to@random", "from@random")
-      @tmail = TMail::Mail.parse(mail)
+      @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
 
       assert_equal count + 1, @project.tasks.count
@@ -199,7 +199,7 @@ o------ please reply above this line ------o
 
     should "set task properties default values" do
       mail = test_mail(@to, @from)
-      @tmail = TMail::Mail.parse(mail)
+      @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
       task = Task.find(:first, :order => "id desc")
       assert_equal @tmail.subject, task.name
@@ -211,7 +211,7 @@ o------ please reply above this line ------o
       user = @project.company.users.make(:customer=>Customer.make(:company=>@project.company))
       user1 = @project.company.users.make(:customer=>user.customer, :auto_add_to_customer_tasks=>true)
       mail = test_mail(@to, user.email)
-      @tmail = TMail::Mail.parse(mail)
+      @tmail = Mail.new(mail)
       Mailman.receive(@tmail.to_s)
       task = Task.find(:first, :order => "id desc")
       assert task.watchers.include?(user1)
@@ -230,7 +230,7 @@ o------ please reply above this line ------o
       @company.preference_attributes = { "incoming_email_project" => @project.id }
 
       mail = test_mail("to@random", "from@random")
-      @tmail = TMail::Mail.parse(mail)
+      @tmail = Mail.new(mail)
     end
 
     should "add users to task as assigned" do
