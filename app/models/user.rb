@@ -326,13 +326,25 @@ class User < ActiveRecord::Base
     @current_project_ids
   end
 
-  def self.find_by_email(email)
-    find(:first, :conditions => ["email_addresses.email = ? and email_addresses.default = ?", email, true], :joins => :email_addresses)
+  def self.find_by_email(email, *args)
+    default_args = [:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses]
+    if args.any?
+      opts = args.extract_options!
+      if opts.has_key?(:conditions)
+        cond = opts[:conditions].is_a?(String) ? opts[:conditions] : opts[:conditions].is_a?(Hash) ? sanitize_sql_hash_for_conditions(opts[:conditions]) : sanitize_sql_array(opts[:conditions])
+        default_args[0][:conditions] = "#{cond} AND #{sanitize_sql_hash_for_conditions(default_args[0][:conditions])}"
+        opts.delete(:conditions)
+      end
+      default_args[0].merge! opts
+    end
+    find(:first, *default_args)
   end
 
   def email
     email_addresses.detect { |pv| pv.default }.try(:email)
   end
+
+  alias_method :primary_email, :email
 
   def email=(email)
     if new_record? || email_addresses.size == 0

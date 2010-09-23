@@ -93,6 +93,22 @@ class TasksControllerTest < ActionController::TestCase
       assert_emails @task.users.length
       assert_response :success
     end
+    should "send unescaped html in email" do
+      @task.name= name_html = "<strong>name</strong> ; <script> alert('XSS');</script>"
+      @task.description= description_html = "<strong>description</strong> ; <script> alert('XSS');</script>"
+      @task.save!
+      comment_html = "<strong>comment</strong> ; <script> alert('XSS');</script>"
+      post(:update, :id => @task.id, :task => { },
+           :users=> @task.user_ids,
+           :comment => comment_html)
+      @task.reload
+      assert_emails @task.users.length
+      assert_response :success
+      mail = ActionMailer::Base.deliveries.first
+      assert_match name_html, mail.body
+      assert_match description_html, mail.body
+      assert_match comment_html, mail.body
+    end
     context "one of task's watched attributes changed," do
       setup do
         @parameters={:id=>@task.id, :task=>{ :name=>"ababa-galamaga"}, :users=>  @task.user_ids}

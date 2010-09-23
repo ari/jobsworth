@@ -1,6 +1,6 @@
 
 <%= render(:partial => "task_header") %>
-<%= @task.issue_name %>
+<%= @task.issue_name.html_safe %>
 <%= "-" * @task.issue_name.length %>
 
   Client:       <%= @task.project.customer.name %>
@@ -20,7 +20,7 @@ unless @task.due_at.nil? -%>
 <% end -%>
   Created By:   <%= @user.name %>
 
-<%= "#{@user.name}:\n#{@note}\n" if @note && @note.length > 0 -%>
+<%= "#{@user.name}:\n#{@note}\n".html_safe if @note && @note.length > 0 -%>
 <%= "\n" if @note && @note.length > 0 -%>
-<%= "Description:\n" + @task.description if @task.description.length > 0 %>
+<%= "Description:\n" + @task.description.html_safe if @task.description.length > 0 %>
 <%= render(:partial => "task_footer") %>

@@ -55,6 +55,11 @@ class NotificationsTest < ActiveRecord::TestCase
         assert_equal @expected.encoded.strip, notification.encoded.strip
         assert_not_nil @expected.body.index("/tasks/view/")
       end
+      should "not escape html in email" do
+        html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
+        notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), html)
+        assert_not_nil notification.body.index(html)
+      end
     end
 
     context "a user without access to the task" do
