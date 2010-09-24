@@ -23,7 +23,6 @@ group :test do
   gem "shoulda",          '2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0.beta'
-  gem "machinist",        '1.0.6'
   gem "faker"
   gem "ZenTest"
   gem "autotest"
@@ -36,6 +35,7 @@ group :test do
 #  gem "capybara-envjs"
   gem "launchy"
   gem "ruby-debug"
+  gem "machinist",        '1.0.6'
 end
 
 group :development do
