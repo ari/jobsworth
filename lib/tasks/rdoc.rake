@@ -2,7 +2,6 @@
 
 require 'rake'
 require 'rake/tasklib'
-require 'rdoc/rdoc'
 
 Rake::RDocTask.new(:rdoc) do |rd|
 
