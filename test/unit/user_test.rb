@@ -47,7 +47,7 @@ class UserTest < ActiveRecord::TestCase
 
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['name']
+    assert_equal "can't be blank", u.errors['name'].first
 
   end
 
@@ -60,12 +60,12 @@ class UserTest < ActiveRecord::TestCase
 
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "can't be blank", u.errors['username']
+    assert_equal "can't be blank", u.errors['username'].first
 
     u.username = 'test'
     assert !u.save
     assert_equal 1, u.errors.size
-    assert_equal "has already been taken", u.errors['username']
+    assert_equal "has already been taken", u.errors['username'].first
 
   end
 

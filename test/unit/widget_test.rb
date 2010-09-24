@@ -18,7 +18,7 @@ class WidgetTest < ActiveRecord::TestCase
 
     assert !w.save
     assert_equal 1, w.errors.size
-    assert_equal "can't be blank", w.errors['name']
+    assert_equal "can't be blank", w.errors['name'].first
 
   end
 

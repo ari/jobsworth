@@ -11,7 +11,7 @@ class ProjectTest < ActiveRecord::TestCase
   def test_truth
     assert_kind_of Project,  @project
   end
-  
+
   def test_after_create_without_forum
     p = Project.new
     p.name = "a"
@@ -20,7 +20,7 @@ class ProjectTest < ActiveRecord::TestCase
     p.customer = customers(:internal_customer)
     p.create_forum = 0
     p.save
-    
+
     assert_not_nil        p.forums
     assert_equal       0, p.forums.size
   end
@@ -49,18 +49,18 @@ class ProjectTest < ActiveRecord::TestCase
 
     assert !p.save
     assert_equal 1, p.errors.size
-    assert_equal "can't be blank", p.errors['name']
-    
+    assert_equal "can't be blank", p.errors['name'].first
+
   end
-  
+
   def test_full_name
     assert_equal "Internal / Test Project", @project.full_name
   end
-  
+
   def test_to_css_name
     assert_equal "test-project internal", @project.to_css_name
   end
-  
+
 end
 
 
