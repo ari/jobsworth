@@ -5,20 +5,18 @@ class Notifications < ActionMailer::Base
 
   require  File.join(File.dirname(__FILE__), '../../lib/misc')
 
-  def created(task, user, recipients, note = "", sent_at = Time.now)
-    @task = task
+  def created(task, user, _recipients_, note = "", sent_at = Time.now)
+    body(:task => task, :user => user, :note => note)
+    subject   "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
 
-    @body       = {:task => task, :user => user, :note => note}
-    @subject    = "#{$CONFIG[:prefix]} #{_('Created')}: #{task.issue_name} [#{task.project.name}] (#{(task.users.empty? ? _('Unassigned') : task.users.collect{|u| u.name}.join(', '))})"
+    recipients  _recipients_
 
-    @recipients = recipients
-
-    @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
-    @sent_on    = sent_at
-    @reply_to   = "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
+    from       "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
+    sent_on    sent_at
+    reply_to   "task-#{task.task_num}@#{user.company.subdomain}.#{$CONFIG[:email_domain]}"
   end
 
-  def changed(update_type, task, user, recipients, change, sent_at = Time.now)
+  def changed(update_type, task, user, _recipients_, change, sent_at = Time.now)
     @task = task
 
     @subject = case update_type
@@ -31,7 +29,7 @@ class Notifications < ActionMailer::Base
                end
     @body       = {:task => task, :user => user, :change => change}
 
-    @recipients = recipients
+    @recipients = _recipients_
 
     @from       = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
     @sent_on    = sent_at

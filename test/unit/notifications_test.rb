@@ -14,8 +14,8 @@ class NotificationsTest < ActiveRecord::TestCase
       $CONFIG[:email_domain] = $CONFIG[:domain].gsub(/:\d+/, '')
       $CONFIG[:productName] = "Jobsworth"
 
-      @expected = TMail::Mail.new
-      @expected.set_content_type "text", "plain", { "charset" => CHARSET }
+      @expected = Mail.new
+      @expected.set_content_type "text/plain; charset=#{CHARSET}"
 
       @expected.from     = "#{$CONFIG[:from]}@#{$CONFIG[:email_domain]}"
       @expected.reply_to = 'task-1@cit.clockingit.com'
@@ -58,7 +58,7 @@ class NotificationsTest < ActiveRecord::TestCase
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
         notification = Notifications.create_changed(:changed, @task, @user, @task.notification_email_addresses(@user), html)
-        assert_not_nil notification.body.index(html)
+        assert_not_nil notification.body.to_s.index(html)
       end
     end
 
@@ -74,7 +74,7 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
-        assert_nil notification.body.index("/tasks/view/")
+        assert_nil notification.body.to_s.index("/tasks/view/")
       end
 
       should "create created mail without view task link" do
