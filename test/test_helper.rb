@@ -7,7 +7,7 @@ require File.expand_path(File.dirname(__FILE__) + "/blueprints")
 
 require "webrat"
 Webrat.configure do |config|
-  config.mode = :rails
+  config.mode = :rake
   config.open_error_files = false
 end
 
