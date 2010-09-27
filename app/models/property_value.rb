@@ -15,10 +15,11 @@ class PropertyValue < ActiveRecord::Base
   end
 
   def to_html
-    if icon_url.present?
-      return image_tag(icon_url, :class => "tooltip", :alt => value, :title => value)
+    src, val = ERB::Util.h(icon_url), ERB::Util.h(value)
+    if self.icon_url.present?
+      return "<img src='#{src}' class='tooltip' alt='#{val}' title='#{val}'/>"
     else
-      return value
+      return val
     end
   end
 
@@ -32,8 +33,6 @@ class PropertyValue < ActiveRecord::Base
   end
 
   private
-
-  include ActionView::Helpers::AssetTagHelper
 
   def set_position
     return true unless self.position.nil?
