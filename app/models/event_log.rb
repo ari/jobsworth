@@ -56,7 +56,7 @@ class EventLog < ActiveRecord::Base
 
   def EventLog.event_logs_for_timeline(current_user, params)
     filter= ""
-    tz=Timezone.new(current_user.time_zone)
+    tz=TZInfo::Timezone.new(current_user.time_zone)
     event_log_types = [ EventLog::FORUM_NEW_POST, EventLog::WIKI_CREATED,
                         EventLog::WIKI_MODIFIED, EventLog::RESOURCE_PASSWORD_REQUESTED ]
     if (event_log_types.include?(params[:filter_status].to_i) || params[:filter_status].nil? )

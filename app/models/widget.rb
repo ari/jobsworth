@@ -77,7 +77,7 @@ class Widget < ActiveRecord::Base
     end
   end
   def counts
-    tz= Timezone.get(user.time_zone)
+    tz= user.tz
     start=tz.local_to_utc(tz.now.at_midnight)
     intervals= [[start, start+1.day],
                 [start - 1.day, start],
