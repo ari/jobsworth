@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class TasksControllerTest < ActionController::TestCase
+  include ActionMailer::TestHelper
   fixtures :users, :companies, :tasks, :customers, :projects
 
   def setup
