@@ -1,6 +1,6 @@
 page.remove 'flash'
 if @task.valid?
-  
+
   #update grid
   @task.reload
   customer = (@task.customers.first || @task.project.customer)
@@ -9,7 +9,7 @@ if @task.valid?
   due = @task.due_date.to_time.to_i unless @task.due_date.nil?
   time = @task.minutes_left.to_i
   attrs = {}
-  current_user.company.properties.each do |prop| 
+  current_user.company.properties.each do |prop|
     pv = @task.property_value(prop)
     if pv && pv.icon_url.present?
       page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{prop.name.downcase}\"]').html('#{pv.to_html}');"
@@ -17,7 +17,7 @@ if @task.valid?
     elsif pv
       attrs.merge! prop.name.downcase => pv.to_html
     end
-  end 
+  end
   attrs.merge! "summary" => h(@task.name) if @changes['name']
   attrs.merge! "client" => h(customer.name) if @changes['customer_id']
   attrs.merge! "due" => due if @changes['due_at']
@@ -34,7 +34,7 @@ if @task.valid?
       page << "jQuery('.ui-sortable > tr##{@task.task_num} > td[aria-describedby=\"task_list_#{attr}\"]').attr('title', '#{val}');"
     end
   end
-  
+
   page.replace_html 'taskform', :partial => "edit_form"
   page << "jQuery('div.log_history').tabs();"
   page << "jQuery('#comment').removeAttr('value');"

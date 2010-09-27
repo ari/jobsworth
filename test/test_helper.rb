@@ -6,6 +6,8 @@ require 'lib/misc'
 require File.expand_path(File.dirname(__FILE__) + "/blueprints")
 
 require "webrat"
+
+include ActionMailer::TestHelper
 Webrat.configure do |config|
   config.mode = :rack
   config.open_error_files = false
@@ -105,16 +107,5 @@ class ActionController::IntegrationTest
   # Uses webrat to logout of the system
   def logout
     visit "/login/logout"
-  end
-end
-
-def assert_emails(number)
-  if block_given?
-    original_count = ActionMailer::Base.deliveries.size
-    yield
-    new_count = ActionMailer::Base.deliveries.size
-    assert_equal original_count + number, new_count, "#{number} emails expected, but #{new_count - original_count} were sent"
-  else
-    assert_equal number, ActionMailer::Base.deliveries.size
   end
 end
