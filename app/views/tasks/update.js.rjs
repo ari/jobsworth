@@ -48,7 +48,7 @@ else
   page << "jQuery('span.fieldWithErrors').removeClass('fieldWithErrors')"
   page.insert_html :after, 'task_id', error_messages_for(:task)
   page << 'jQuery("#errorExplanation > ul li").css("margin", "20px 0px 2px 30px")'
-  @task.errors.each_error do |attr,err|
+  @task.errors.each do |attr,err|
     page << "jQuery('#task_#{attr}').wrap('<span class=\"fieldWithErrors\" />')"
   end
 end
