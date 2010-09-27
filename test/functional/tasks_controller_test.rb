@@ -73,6 +73,7 @@ class TasksControllerTest < ActionController::TestCase
     get :update_sheet_info, :format => "js"
     assert_response :success
   end
+  
 ###########################################################
   context "a task with a few users attached" do
     setup do
@@ -304,6 +305,16 @@ class TasksControllerTest < ActionController::TestCase
       }
     end
 
+    context "with a few todos" do
+      should "create todos" do
+        @parameters.merge!( {
+            :todos=>[{"name"=>"First Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""},
+                     {"name"=>"Second Todo", "completed_at"=>"", "creator_id"=>@user.id, "completed_by_user_id"=>""}] })
+         post(:create, @parameters)
+         assert_equal ["First Todo", "Second Todo"], assigns(:task).todos.collect(&:name).sort
+      end
+    end
+      
     context "with time spend" do
       setup do
         @parameters.merge!( { :work_log=>{:duration=>'10m', :started_at=>"02/02/2010 17:02" } })
@@ -334,7 +345,7 @@ class TasksControllerTest < ActionController::TestCase
         end
 
         should "send one email to each user,  with comment" do
-          assert_emails ( @new_task.users.length )
+          assert_emails @new_task.users.length 
         end
       end
       context "without comment" do
@@ -397,7 +408,7 @@ class TasksControllerTest < ActionController::TestCase
         end
 
          should "send one email to each user, with comment" do
-          assert_emails ( @new_task.users.length )
+          assert_emails @new_task.users.length
         end
       end
       context "without comment" do

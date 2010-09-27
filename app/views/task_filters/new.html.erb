@@ -1,6 +1,6 @@
 <div id="content" class="basic">
 
-  <% remote_form_for(@filter, :success => "jQuery('#savefilter').dialog('destroy');") do |f| %>
+  <% form_for(@filter, :remote => true, :success => "jQuery('#savefilter').dialog('destroy');") do |f| %>
 
   <%= f.label :name %>
   <%= f.text_field :name %>

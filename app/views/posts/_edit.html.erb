@@ -1,6 +1,6 @@
 <div id="edit" class="editbox">
 <div class="container">
-  <% remote_form_for :post, :url => post_path(:forum_id => @post.forum_id, :topic_id => @post.topic_id, :id => @post),
+  <% form_for :post, :remote => true, :url => post_path(:forum_id => @post.forum_id, :topic_id => @post.topic_id, :id => @post),
     :html => { :method => :put }, :before => "jQuery('#editbox_spinner').show();" do |f| -%>
 
   <table width="100%" cellpadding="0" cellspacing="0">
