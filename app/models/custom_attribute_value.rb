@@ -11,12 +11,12 @@ class CustomAttributeValue < ActiveRecord::Base
     has_value ||= choice
 
     if max_length and value and max_length < value.length
-      errors.add_to_base("#{ custom_attribute.display_name } is too long")
+      errors.add(:base, "#{ custom_attribute.display_name } is too long")
       valid = false
     end
 
     if custom_attribute.mandatory? and !has_value
-      errors.add_to_base("#{ custom_attribute.display_name } is required")
+      errors.add(:base, "#{ custom_attribute.display_name } is required")
       valid = false
     end
 

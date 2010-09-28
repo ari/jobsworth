@@ -837,7 +837,7 @@ class Task < ActiveRecord::Base
     mandatory_properties.each do |p|
       if !property_value(p)
         res = false
-        errors.add_to_base(_("%s is required", p.name))
+        errors.add(:base, _("%s is required", p.name))
       end
     end
 
@@ -949,7 +949,7 @@ class Task < ActiveRecord::Base
     if errors.key?("work_logs")
       errors.delete("work_logs")
       self.work_logs.last.errors.each_full do |msg|
-        self.errors.add_to_base(msg)
+        self.errors.add(:base, msg)
       end
     end
   end
