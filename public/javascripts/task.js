@@ -5,7 +5,7 @@
 /* Load a task into the edit panel by ajax */
 function loadTask(id) {
 	jQuery("#task").fadeOut();
-	jQuery.get("/tasks/edit/" + id, {}, function(data) {
+	jQuery.get("/tasks/edit/" + id + "?format=js", {}, function(data) {
 		jQuery("#task").html(data);
 		jQuery("#task").fadeIn('slow');
 		init_task_form();
