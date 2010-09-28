@@ -2,10 +2,10 @@
 <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
 
 <% unless @popup.nil? %>
-<% form_remote_tag :name => 'milestoneForm', :url => { :action => 'create' }, :success => "jQuery('span#ui_popup_dialog').dialog('destroy');" do %>
+<%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm' %>
   <%= render :partial => 'form' %>
   <%= submit_tag _("Create"), :class => 'nolabel'%>
-<% end %>
+</form>
 <% else %>
   <% form_tag :action => 'create' do %>
    <%= render :partial => 'form' %>
