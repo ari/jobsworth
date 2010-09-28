@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
 
   before_create                 :generate_uuid
   after_create      :generate_widgets
-	before_validation :set_date_time_formats, :on => :create
+  before_validation :set_date_time_formats, :on => :create
   before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 
@@ -281,7 +281,7 @@ class User < ActiveRecord::Base
 
   def tz
     unless @tz
-      @tz = Timezone.get(self.time_zone)
+      @tz = TZInfo::Timezone.get(self.time_zone)
     end
     @tz
   end
