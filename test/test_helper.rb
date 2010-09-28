@@ -4,14 +4,9 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'rails/test_help'
 require 'lib/misc'
 require File.expand_path(File.dirname(__FILE__) + "/blueprints")
-
-require "webrat"
+require "capybara/rails"
 
 include ActionMailer::TestHelper
-Webrat.configure do |config|
-  config.mode = :rack
-  config.open_error_files = false
-end
 
 class ActiveSupport::TestCase
   self.use_transactional_fixtures = true
@@ -81,6 +76,7 @@ class ActionController::TestCase
 end
 
 class ActionController::IntegrationTest
+  include Capybara
   # Uses webrat to login to the system
   def login
     clear_all_fixtures

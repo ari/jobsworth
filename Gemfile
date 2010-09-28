@@ -27,11 +27,11 @@ group :test do
   gem "ZenTest"
   gem "autotest"
   gem "autotest-rails"
-  gem "webrat"
+ # gem "webrat"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0.rc.2'
   gem "cucumber-rails",   '>=0.3.2'
-#  gem "capybara"
+  gem "capybara"
 #  gem "capybara-envjs"
   gem "launchy"
   gem "ruby-debug"
