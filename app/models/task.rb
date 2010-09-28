@@ -64,6 +64,7 @@ class Task < ActiveRecord::Base
   validates_presence_of   :company
   validates_presence_of   :project_id
 
+  validate :validate_properties
   after_validation :fix_work_log_error
 
   before_create :set_task_num
@@ -829,7 +830,7 @@ class Task < ActiveRecord::Base
   ###
   # Custom validation for tasks.
   ###
-  def validate
+  def validate_properties
     res = true
 
     mandatory_properties = company.properties.select { |p| p.mandatory? }
