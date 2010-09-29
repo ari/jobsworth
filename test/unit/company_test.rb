@@ -31,11 +31,11 @@ class CompanyTest < ActiveRecord::TestCase
     company.subdomain = 'cit'
 
     assert !company.valid?
-    assert !company.errors[:subdomain]
+    assert !company.errors[:subdomain].empty?
 
     company.subdomain = 'unique-name'
     assert company.valid?
-    assert !company.errors[:subdomain].empty?
+    assert company.errors[:subdomain].empty?
   end
 
   def test_company_should_create_default_properties_on_create
