@@ -72,8 +72,8 @@ class User < ActiveRecord::Base
   before_destroy :reject_destroy_if_exist
   attr_protected :uuid, :autologin, :admin, :company_id
 
-  named_scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
-  named_scope :by_email, lambda{ |email|
+  scope(:auto_add, :conditions => { :auto_add_to_customer_tasks => true })
+  scope :by_email, lambda{ |email|
     {:conditions => {'email_addresses.email' => email, 'email_addresses.default' => true}, :joins => :email_addresses, :readonly => false }
   }
   ###
