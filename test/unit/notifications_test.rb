@@ -4,7 +4,7 @@ require 'notifications'
 
 class NotificationsTest < ActiveRecord::TestCase
   FIXTURES_PATH = File.dirname(__FILE__) + '/../fixtures'
-  CHARSET = "utf-8"
+  CHARSET = "UTF-8"
   fixtures :users, :tasks, :projects, :customers, :companies
 
   context "a normal notification" do
@@ -28,6 +28,8 @@ class NotificationsTest < ActiveRecord::TestCase
       setup do
         @task = tasks(:normal_task)
         @user = users(:admin)
+        @user.projects<<@task.project
+        @user.save!
       end
 
       should "create created mail as expected" do
@@ -41,7 +43,10 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_created(@task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "", @expected.date)
-        assert_equal @expected.encoded.strip, notification.encoded.strip
+        assert_equal @task.notification_email_addresses(@user), [@user.email]
+        assert @user.can_view_task?(@task)
+        assert_match /tasks\/view/, notification.body.to_s
+        assert_equal @expected.body.to_s, notification.body.to_s
       end
 
       should "create changed mail as expected" do
@@ -52,8 +57,9 @@ class NotificationsTest < ActiveRecord::TestCase
         notification = Notifications.create_changed(:completed, @task, @user,
                                                     @task.notification_email_addresses(@user),
                                                     "Task Changed", @expected.date)
-        assert_equal @expected.encoded.strip, notification.encoded.strip
-        assert_not_nil @expected.body.to_s.index("/tasks/view/")
+        assert @user.can_view_task?(@task)
+        assert_match  /tasks\/view/,  notification.body.to_s
+        assert_equal @expected.body.to_s, notification.body.to_s
       end
       should "not escape html in email" do
         html = '<strong> HTML </strong> <script type = "text/javascript"> alert("XSS");</script>'
