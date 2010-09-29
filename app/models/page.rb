@@ -37,7 +37,7 @@ class Page < ActiveRecord::Base
 
   def validate
     if notable.nil?
-      errors.add_to_base("Target required")
+      errors.add(:base, "Target required")
     end
   end
 end

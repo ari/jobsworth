@@ -5,10 +5,10 @@ class Resource < ActiveRecord::Base
   belongs_to :customer
   belongs_to :resource_type
   belongs_to :parent, :class_name => "Resource"
-  has_many(:child_resources, :class_name => "Resource", 
-           :foreign_key => "parent_id", 
+  has_many(:child_resources, :class_name => "Resource",
+           :foreign_key => "parent_id",
            :order => "lower(name)")
-  has_many(:resource_attributes, 
+  has_many(:resource_attributes,
            :include => :resource_type_attribute,
            :dependent => :destroy)
   has_many :event_logs, :as => :target, :order => "updated_at desc"
@@ -36,7 +36,7 @@ class Resource < ActiveRecord::Base
       attr.attributes = values
       updated << attr
     end
-    
+
     missing = resource_attributes - updated
     resource_attributes.delete(missing)
   end
@@ -89,7 +89,7 @@ class Resource < ActiveRecord::Base
   def validate
     # check customer is present
     res = !customer.nil?
-    errors.add_to_base(_("Client can't be blank")) if customer.nil?
+    errors.add(:base, _("Client can't be blank")) if customer.nil?
 
     # check attributes are valid
     invalid = resource_attributes.select { |attr| !attr.check_regex }
@@ -98,19 +98,19 @@ class Resource < ActiveRecord::Base
     # add errors for any invalid attributes
     invalid.each do |attr|
       msg = "#{ attr.resource_type_attribute.name } doesn't match regex"
-      errors.add_to_base(msg)
+      errors.add(:base, msg)
     end
 
     if resource_type
       # check for missing mandatory attributes
       resource_type.resource_type_attributes.each do |rta|
         next if !rta.is_mandatory?
-        
+
         attr = resource_attributes.detect { |ra| ra.resource_type_attribute == rta }
         value = attr.value if attr
         if value.blank?
           res = false
-          errors.add_to_base("Missing value for mandatory #{ rta.name }")
+          errors.add(:base, "Missing value for mandatory #{ rta.name }")
         end
       end
     end
@@ -130,18 +130,18 @@ class Resource < ActiveRecord::Base
 
   ###
   # Returns a new resource_attribute linked to this
-  # resource. 
+  # resource.
   ###
   def build_new_attribute(values)
     attr_type_id = values[:resource_type_attribute_id]
-    
+
     # check we're using attributes from this company
     rtas = []
     company.resource_types.each { |rt| rtas += rt.resource_type_attributes }
 
     rta = rtas.detect { |rta| rta.id == attr_type_id.to_i }
     if rta
-      return resource_attributes.build 
+      return resource_attributes.build
     end
   end
 end

@@ -1,23 +1,23 @@
 module CustomAttributeMethods
 
   ###
-  # Returns the custom attributes that should be displayed for 
+  # Returns the custom attributes that should be displayed for
   # the current objects class.
   ###
   def available_custom_attributes
     return [] if company.nil?
 
-    company.custom_attributes.find(:all, 
+    company.custom_attributes.find(:all,
                                    :conditions => { :attributable_type => self.class.name },
                                    :order => "position")
   end
 
   ###
   # Returns an array of the custom attributes values defined for the current
-  # object. This will include *at least* the ones defined in 
-  # available_custom_attributes. 
+  # object. This will include *at least* the ones defined in
+  # available_custom_attributes.
   #
-  # If there are multiple values defined for one attribute type, they 
+  # If there are multiple values defined for one attribute type, they
   # will be returned as a nested array.
   #
   ###
@@ -36,7 +36,7 @@ module CustomAttributeMethods
         res += existing
       end
     end
-    
+
     return res
   end
 
@@ -65,7 +65,7 @@ module CustomAttributeMethods
       end
       updated << cav
     end
-    
+
     # anything still in existing_values hasn't been updated, so delete.
     missing = custom_attribute_values - updated
     custom_attribute_values.delete(missing)
@@ -113,7 +113,7 @@ module CustomAttributeMethods
 
       invalid.each do |cav|
         cav.errors.each do |attr, err|
-          errors.add_to_base(err)
+          errors.add(:base, err)
         end
       end
     end
