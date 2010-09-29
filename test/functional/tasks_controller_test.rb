@@ -116,7 +116,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
             post(:update,@parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type according to changes, with (changes+comment) as a body, without time and send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
@@ -140,7 +140,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{ })
             post(:update,@parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type according to changes, with (changes + comment) as a body, without time and send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
@@ -163,7 +163,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{ :duration=>'10m',:started_at=>Time.now.utc.to_s})
             post(:update,@parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
@@ -186,7 +186,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{ })
             post(:update,@parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type according to changes, with changes as a body, without time and not send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_MODIFIED)
@@ -214,7 +214,7 @@ class TasksControllerTest < ActionController::TestCase
             @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
             assert_equal 0, @task.work_logs.count, 'before call update task don\'t have worklogs'
             post(:update, @parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type TASK_WORK_ADDED, with comment as a body, with time spend and send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
@@ -231,7 +231,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{ })
             post(:update, @parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type TASK_COMMENT, with comment as a body and send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_COMMENT)
@@ -253,7 +253,7 @@ class TasksControllerTest < ActionController::TestCase
           setup do
             @parameters.merge!(:work_log=>{:duration=>'10m',:started_at=>Time.now.utc.to_s })
             post(:update, @parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "create work log with type TASK_WORK_ADDED, without body, and not send it" do
             worklog=@task.work_logs.find_by_log_type(EventLog::TASK_WORK_ADDED)
@@ -271,7 +271,7 @@ class TasksControllerTest < ActionController::TestCase
             @parameters.merge!(:work_log=>{ })
             assert_equal 0, @task.work_logs.size, 'must not have worklogs before update'
             post(:update, @parameters)
-            assert_response :success
+            assert_response :redirect
           end
           should "not create any worklogs and not send any emails" do
             assert_emails 0

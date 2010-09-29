@@ -18,6 +18,7 @@ gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'fastercsv'
 gem 'dynamic_form'
+gem 'remotipart'
 
 group :test do
   gem "shoulda",          '2.11.3'

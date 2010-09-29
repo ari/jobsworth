@@ -28,7 +28,7 @@ class TasksController < ApplicationController
 
   def list
     list_init
-
+    @task = Task.accessed_by(current_user).find_by_id(session[:last_task_id])
     @tasks= tasks_for_list
     respond_to do |format|
       format.html { render :action => "grid" }
@@ -233,26 +233,18 @@ class TasksController < ApplicationController
       end
       respond_to do |format|
         format.html {
-          if params[:controller] == "tasks"
-            responds_to_parent { render :action => "update.js.rjs" }
-          else
-            flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
-            redirect_to :action=> "list"
-          end
+          flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
+          redirect_to :action=> "list"
         }
-        format.js { render(:layout => false) }
+        format.js
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
-        format.html {
-          if params[:controller] == "tasks"
-            responds_to_parent { render :action => "update.js.rjs" }
-          else
-            init_form_variables(@task)
-            render :template => 'tasks/edit'
-          end
+        format.html {       
+          init_form_variables(@task)
+          render :template => 'tasks/edit'
         }
-        format.js { render(:layout => false) }
+        format.js
       end
     end
   end

@@ -1,8 +1,7 @@
-<% attrs = controller.controller_name  == "task_templates" ? {} : {:target => "upload_frame"} %>
+<% attrs = controller.controller_name  == "task_templates" ? {} : {:remote => true} %>
 <% cache([ "edit_form", @task, current_user.id, controller.controller_name  ]) do -%>
-  <% form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }.merge(attrs)) do %>
+  <%= form_tag({ :action => 'update', :id => @task}, { :multipart => "true", :id => "taskform" }.merge(attrs)) %>
     <%= render :partial => "tasks/form" %>
-  <% end %>
+  </form>
 <% end -%>
-<iframe id="upload_frame" name="upload_frame" style="display: none"></iframe>
 

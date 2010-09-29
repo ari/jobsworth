@@ -15,7 +15,7 @@ module TimeTrackingHelper
                         :class => "tooltip")
     end
 
-    return link_to(image, pause_work_path)
+    return link_to(image, pause_work_index_path)
   end
 
   # Returns a link to start or stop work on the given task.
@@ -26,11 +26,11 @@ module TimeTrackingHelper
     if @current_sheet and @current_sheet.task == task
       image = image_tag("time_add.png", :class => "tooltip work_icon", 
                         :title => _("Stop working on <b>%s</b>.", task.name).html_safe)
-      url = stop_work_path
+      url = stop_work_index_path
     else
       image = image_tag("time.png", :class => "tooltip work_icon", 
                         :title => _("Start working on <b>%s</b>.", task.name).html_safe)
-      url = start_work_path(:task_num => task.task_num)
+      url = start_work_index_path(:task_num => task.task_num)
     end
 
     return link_to(image, url)
@@ -52,7 +52,7 @@ module TimeTrackingHelper
       image = image_tag("time_delete.png", :class => "tooltip work_icon", 
                         :title => _("Cancel working on <b>%s</b>.", task.name).html_safe)
 
-      return link_to(image, cancel_work_path, :confirm => "Really abort work?")
+      return link_to(image, cancel_work_index_path, :confirm => "Really abort work?")
     end
   end
 
