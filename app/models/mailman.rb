@@ -30,15 +30,15 @@ class Mailman < ActionMailer::Base
       email.parts.each do |m|
         next if body
 
-        if m.content_type.downcase == "text/plain"
-          body = m.body
+        if m.content_type =~ /text\/plain/i
+          body = m.body.to_s
         elsif m.multipart?
           body = get_body(m)
         end
       end
     end
 
-    body ||= email.body
+    body ||= email.body.to_s
     body = Mailman.clean_body(body)
     body = CGI::escapeHTML(body)
     return body
@@ -163,7 +163,7 @@ class Mailman < ActionMailer::Base
     task_file.project = target.project
     task_file.task = target
     task_file.user = e.user
-    task_file.file=attachment
+    task_file.file=attachment.body.to_s
     task_file.save
   end
 
