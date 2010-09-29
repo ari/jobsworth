@@ -170,7 +170,7 @@ module ApplicationHelper
     keys.each do |k|
       text = highlight_safe_html( text, k, true)
     end
-    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe 
+    ERB::Util.h(text).gsub("{{{", "<strong>").gsub("}}}", "</strong>").html_safe
   end
 
   def milestone_classes(m)
@@ -447,11 +447,7 @@ module ApplicationHelper
   end
 
   def text_with_links(text)
-    text = sanitize(text)
-    regex = Regexp.new '((https?:\/\/)([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)'
-    text.gsub!( regex, '<a href="\1">\1</a>' )
-    text.gsub!(/#(\d+)/, '<a href="/tasks/edit/\1">#\1</a>' )
-    return text.html_safe
+    text
   end
 end
 
