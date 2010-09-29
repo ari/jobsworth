@@ -446,11 +446,7 @@ module ApplicationHelper
   end
 
   def text_with_links(text)
-    text = sanitize(text)
-    regex = Regexp.new '((https?:\/\/)([-\w\.]+)+(:\d+)?(\/([\w\/_\.]*(\?\S+)?)?)?)'
-    text.gsub!( regex, '<a href="\1">\1</a>' )
-    text.gsub!(/#(\d+)/, '<a href="/tasks/edit/\1">#\1</a>' )
-    return text.html_safe
+    text
   end
 end
 
