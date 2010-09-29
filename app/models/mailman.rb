@@ -164,6 +164,7 @@ class Mailman < ActionMailer::Base
     task_file.task = target
     task_file.user = e.user
     task_file.file=attachment.body.to_s
+    task_file.file_file_name=$1  unless (attachment.content_type =~ /name=([^;]*)/ ).nil?
     task_file.save
   end
 
