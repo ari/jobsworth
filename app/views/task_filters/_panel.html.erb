@@ -4,10 +4,9 @@
   <a class="collapsable-sidepanel-button panel-<%= panel_preference %>">&nbsp;</a>
   <div class="page_header tooltip" title="<%= _'Custom saved filters showing a subset of your tasks'%>">
     <div><%=_ "Filters" %> <a href="#" id="recent_filters_button">Recent</a></div>
-    <div id="recent_filters">
-    </div>
   </div>
-
+    <div id="recent_filters" style="position:absolute">
+    </div>
   <ul class="panel_content">
     <li><%= link_to_open_tasks %></li>
     <li><%= link_to_open_tasks(current_user) %></li>
