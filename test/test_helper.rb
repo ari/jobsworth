@@ -90,8 +90,6 @@ class ActionController::IntegrationTest
     fill_in "password", :with => user.password
     click_button "submit_button"
 
-    assert_equal user.id, @request.session[:user_id]
-
     return user
   end
 
@@ -103,5 +101,8 @@ class ActionController::IntegrationTest
   # Uses webrat to logout of the system
   def logout
     visit "/login/logout"
+  end
+  teardown do
+    logout
   end
 end
