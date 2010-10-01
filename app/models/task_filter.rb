@@ -14,7 +14,7 @@ class TaskFilter < ActiveRecord::Base
   validates_presence_of :name
 
   scope :shared, :conditions => { :shared => true }
-  scope :visible, :conditions => { :system => false }
+  scope :visible, :conditions => { :system => false, :recent_for_user_id=>nil}
   scope :recent_for, lambda {|user| { :conditions=>{ :recent_for_user_id => user.id}, :order=>"id desc" } }
   before_create :set_company_from_user
 
