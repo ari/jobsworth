@@ -12,7 +12,7 @@ class ActivitiesControllerTest < ActionController::TestCase
   
   test "/index should render :success" do
     get :index
-    assert_equal Timezone.get('Europe/Oslo'), assigns(:current_user).tz
+    assert_equal TZInfo::Timezone.get('Europe/Oslo'), assigns(:current_user).tz
     assert_equal users(:admin), assigns(:current_user)
     assert_response :success
   end
