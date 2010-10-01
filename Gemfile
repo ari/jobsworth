@@ -21,6 +21,7 @@ gem 'dynamic_form'
 gem 'remotipart'
 
 group :test do
+  gem "rcov"
   gem "shoulda",          '2.11.3'
   gem "rspec"
   gem "rspec-rails",      '>=2.0.0.beta'

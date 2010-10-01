@@ -111,6 +111,7 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
+    rcov (0.9.9)
     remotipart (0.1.1)
     rspec (2.0.0.beta.22)
       rspec-core (= 2.0.0.beta.22)
@@ -169,6 +170,7 @@ DEPENDENCIES
   mysql2 (>= 0.2.3)
   paperclip (>= 2.3.3)
   rails (= 3.0.0)
+  rcov
   remotipart
   rspec
   rspec-rails (>= 2.0.0.beta)
