@@ -6,7 +6,7 @@ if @task.valid?
   customer = (@task.customers.first || @task.project.customer)
   milestone_str = [ @task.project.name ]
   milestone_str << @task.milestone.name if @task.milestone_id.to_i > 0
-  due = @task.due_date.to_time.to_i unless @task.due_date.nil?
+  due = @task.due_date.blank? ? "''" : @task.due_date.to_time.to_i
   time = @task.minutes_left.to_i
   attrs = {}
   current_user.company.properties.each do |prop| 
