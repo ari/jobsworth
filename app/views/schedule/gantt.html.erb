@@ -1,7 +1,3 @@
-  <%content_for :head do %>
-    <%= javascript_include_tag "prototype", "effects", "dragdrop", "controls", :cache => "prototype-all" %>
-  <%end%>
-
 <script type="text/javascript">var userDateFormat='<%= current_user.dateFormat %>';</script>
 <script type="text/javascript" language="javascript" charset="utf-8" src="/javascripts/gantt.js"></script>
 <table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
@@ -13,48 +9,47 @@
   <tr>
     <td colspan="2" style="padding-top:0.3em;">
        <%= gantt_filter %>
-	  <div id="gantt-save-revert" <%= " style=\"display:none;\"" unless @schedule_in_progress%>>
-	      <form method="post">
-                <div style="float:left;"><%= submit_to_remote 'revert-gantt', _('Revert'), :url => {:action => 'gantt_reset'}, :html => {:title => _('Revert schedule to saved state. Includes filtered tasks.'), :class => 'nolabel tooltip'} %>
-                <%= submit_to_remote 'save-gantt', _('Save'), :url => {:action => 'gantt_save'}, :html => {:title => _('Save and activate schedule. Includes filtered tasks.'), :class => 'nolabel tooltip'} %><%= check_box_tag 'notify', '1', (current_user.send_notifications > 0), {:class => 'tooltip checkbox', :title => _('Send notification emails to people affected by these changes')} %><%=_ 'Send notification emails' %></div>
-	     </form>
-           </div>
     </td>
   </tr>
   <tr>
-    <td valign="top" style="padding-right:0.3em;padding-top:0.5em;">
-      <table cellpadding="0" cellspacing="0">
-	<tr>
-	  <th style="height:20px;" colspan="4">
-	  </th>
-	</tr>
-	<tr>
-	  <th style="height:20px;" width="200px"><%= _'Task'%></th>
-	  <th><%=_ 'Worked'%></th>
-	  <th><%=_ 'Estimate'%></th>
-	  <th><%=_ 'Due Date'%></th>
-	</tr>
-	<% i = 1
-	  date_tooltip = _("Enter task due date, or click calendar button.")
-          last_milestone = nil
-          @displayed_tasks.each do |t| 
-	   @t = t
-          if @t.milestone_id.to_i > 0 && @t.milestone_id != last_milestone
-	    last_milestone = @t.milestone_id
-	    %>
-        <%= render :partial => "gantt_milestone_row", :locals => {:tab => i} %>            
-	  <% i+=2
-             end %>
-	<%= render :partial => "gantt_task_row", :locals => {:tab => i} %>
-
-	<% i += 2
-	end %>
-      </table>
-    </td>
-    <td width="70%" valign="top" style="padding-left:0.3em;padding-top:0.5em;">
-      <div id="gantt-container" style="width:98%;height:100%;overflow-x:auto;overflow-y:hidden;border-left:1px solid #999;border-right:1px solid #999;position:relative;border-top:1px solid #999;">
-	<%= render :partial => 'gantt_chart' %>
-      </div>
+    <td colspan="2" style="padding-top:0.3em;">
+      <div id="ganttChart"></div>
     </td>
   </tr>
 </table>
+<script type="text/javascript">  
+  var gantt_data = [
+    <% @groups.each_with_index do |g, g_idx| -%>
+    <% @selected_tasks = @tasks.select {|t| t.project_id == g[:pid] && t.milestone_id == g[:mid]} -%>
+	  {
+      id: <%= g_idx + 1%>, itemName: <%= g[:name].to_json.html_safe %>, series: [
+          <% @selected_tasks.each_with_index do |st, idx| -%><% unless st.start_date.blank? || st.due_date.blank? -%>
+          <%
+             ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
+             ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
+          -%>
+	      { seriesName: <%= st.name.to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }<%="," unless idx == @selected_tasks.size - 1%>
+          <% end -%><% end -%>
+	      ]
+	  }<%="," unless g_idx == @groups.size - 1%>
+      <% @tasks -= @selected_tasks %>
+    <% end -%>
+  ];
+  jQuery("#ganttChart").ganttView({
+    data: gantt_data,
+	start: new Date(<%=@range[0].year%>,<%=@range[0].month-1%>,<%= @range[0].day%>),
+	end: new Date(<%=@range[1].year%>,<%=@range[1].month-1%>,<%= @range[1].day%>),
+	slideWidth: 550,
+    behavior: {
+	  onClick: function (data) {
+	   
+	  },
+	  onResize: function (data) {
+	   
+      },
+	  onDrag: function (data) {
+	  
+	  }
+    }
+  });
+</script>

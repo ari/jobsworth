@@ -52,6 +52,13 @@ class TaskFilter < ActiveRecord::Base
     tasks(parse_fullcalendar_params(parameters))
   end
 
+  def tasks_for_gantt(parameters)
+    Task.all_accessed_by(user).all(:conditions => conditions(parse_fullcalendar_params(parameters)),
+                                  :include => [:milestone, :project],
+                                  :order => "projects.name, milestones.name",
+                                  :limit => 500)
+  end
+
   # Returns an array of all tasks matching the conditions from this filter.
   # If :conditions is passed, that will be ANDed to the conditions
   # if :include is passed, that will be ANDed to the to_include
