@@ -488,32 +488,35 @@ class Task < ActiveRecord::Base
     conditions = "(#{ conditions.join(" or ") })"
     return tf.tasks(conditions)
   end
-
+  
+  def escape_twice(attribute)
+    attribute.gsub(/</,'&lt;').gsub('&lt;','&amp;lt;').gsub(/>/, '&gt;').gsub('&gt;','&amp;gt;').gsub(/\"/, '&quot;').gsub('&quot;','&amp;quot;')
+  end
   def to_tip(options = { })
     unless @tip
       owners = "No one"
       owners = self.users.collect{|u| u.name}.join(', ') unless self.users.empty?
 
       res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
-      res << "<tr><th>#{_('Summary')}</td><td>#{self.name}</tr>"
-      res << "<tr><th>#{_('Project')}</td><td>#{self.project.full_name}</td></tr>"
-      res << "<tr><th>#{_('Tags')}</td><td>#{self.full_tags}</td></tr>" unless self.full_tags.blank?
-      res << "<tr><th>#{_('Assigned To')}</td><td>#{owners}</td></tr>"
-      res << "<tr><th>#{_('Requested By')}</td><td>#{self.requested_by}</td></tr>" unless self.requested_by.blank?
+      res << "<tr><th>#{_('Summary')}</td><td>#{escape_twice(self.name)}</tr>"
+      res << "<tr><th>#{_('Project')}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
+      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags)}</td></tr>" unless self.full_tags.blank?
+      res << "<tr><th>#{_('Assigned To')}</td><td>#{escape_twice(owners)}</td></tr>"
+      res << "<tr><th>#{_('Requested By')}</td><td>#{escape_twice(self.requested_by)}</td></tr>" unless self.requested_by.blank?
       res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
-      res << "<tr><th>#{_('Milestone')}</td><td>#{self.milestone.name}</td></tr>" if self.milestone_id.to_i > 0
+      res << "<tr><th>#{_('Milestone')}</td><td>#{escape_twice(self.milestone.name)}</td></tr>" if self.milestone_id.to_i > 0
       res << "<tr><th>#{_('Completed')}</td><td>#{options[:user].tz.utc_to_local(self.completed_at).strftime_localized(options[:user].date_format)}</td></tr>" if self.completed_at
       res << "<tr><th>#{_('Due Date')}</td><td>#{options[:user].tz.utc_to_local(due).strftime_localized(options[:user].date_format)}</td></tr>" if self.due
       unless self.dependencies.empty?
-        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{self.dependencies.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
+        res << "<tr><th valign=\"top\">#{_('Dependencies')}</td><td>#{escape_twice(self.dependencies.collect { |t| t.issue_name }.join('<br />'))}</td></tr>"
       end
       unless self.dependants.empty?
-        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{self.dependants.collect { |t| t.issue_name }.join('<br />')}</td></tr>"
+        res << "<tr><th valign=\"top\">#{_('Depended on by')}</td><td>#{escape_twice(self.dependants.collect { |t| t.issue_name }.join('<br />'))}</td></tr>"
       end
       res << "<tr><th>#{_('Progress')}</td><td>#{format_duration(self.worked_minutes, options[:duration_format], options[:workday_duration], options[:days_per_week])} / #{format_duration( self.duration.to_i, options[:duration_format], options[:workday_duration], options[:days_per_week] )}</tr>"
-      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{self.description_wrapped.gsub(/\n/, '<br/>').gsub(/\"/,'&quot;').gsub(/</,'&lt;').gsub(/>/,'&gt;')}</td></tr>" unless self.description.blank?
+      res << "<tr><th>#{_('Description')}</th><td class=\"tip_description\">#{escape_twice(self.description_wrapped).gsub(/\n/, '<br/>')}</td></tr>" unless self.description.blank?
       res << "</table>"
-      @tip = res.gsub(/\"/,'&quot;')
+      @tip = res
     end
     @tip
   end
