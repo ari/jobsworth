@@ -29,6 +29,9 @@
     <% if ['tasks'].include? controller.controller_name %>
         <%= javascript_include_tag 'jquery.form', 'jquery.remotipart' %>
     <% end %>
+    <% if ['schedule'].include? controller.controller_name %>
+        <%= javascript_include_tag 'date', 'jquery.ganttView' %>
+    <% end %>
 
     <%= stylesheet_link_tag(
       "jquery-ui",
@@ -37,6 +40,7 @@
       "ui.multiselect",
       "ui.jqgrid",
       "fullcalendar",
+      "jquery.ganttView",
       :cache => true
     ) %>
     <%= stylesheet_link_tag "beast" if ['forums', 'posts', 'topics'].include? controller.controller_name %>

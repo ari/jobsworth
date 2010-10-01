@@ -422,61 +422,16 @@ class ScheduleController < ApplicationController
   end
 
   def gantt
-    @tasks = current_task_filter.tasks
-    @displayed_tasks = @tasks
-
-
-    @dates = { }
-
-    @start = { }
-    @end = { }
-
-    @range = [Time.now.utc.midnight, 1.month.since.utc.midnight]
-
-    @milestone_start = { }
-    @milestone_end = { }
-
-    start_date = current_user.tz.now.midnight + 8.hours
-
-    tasks = @tasks.select{ |t| t.scheduled_due_at } # all tasks with due dates
-
-
-    @milestones = @tasks.select{ |t| t.scheduled_due_at.nil? && t.milestone && t.milestone.scheduled_date }.reverse # all tasks with milestone with due date
-    tasks += @milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
-    tasks += @milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
-    tasks += @milestones.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
-    tasks += @milestones.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
-
-    non_due = @tasks.reject{ |t| t.scheduled_due_at } # all tasks without due date
-    tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size > 0}
-    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size > 0}
-    tasks += non_due.select{ |t| t.dependencies.size > 0 && t.dependants.size == 0}
-    tasks += non_due.select{ |t| t.dependencies.size == 0 && t.dependants.size == 0}
-
-    @schedule_in_progress = false
-
-    for task in @tasks
-      if task.scheduled? && (task.scheduled_at != task.due_at || task.scheduled_duration != task.duration)
-        @schedule_in_progress = true
-        break
-      end
-
-      if task.milestone && task.milestone.scheduled? && task.milestone.scheduled_at != task.milestone.due_at
-        @schedule_in_progress = true
-        break
-      end
-
+    @range = [Time.now.utc.midnight, 2.month.since.utc.midnight - 1.day]
+    @tasks = current_task_filter.tasks_for_gantt(params)
+    @groups = []
+    @tasks.each do |task, idx|
+      name = [ task.project.name ]
+      name << task.milestone.name.strip if task.milestone_id.to_i > 0
+      name = name.join("/<br/>")
+      @groups << {:name => name, :pid => task.project_id, :mid => task.milestone_id}
     end
-
-    @stack = []
-
-    tasks.each do |t|
-      t.dependencies.each do |d|
-        schedule_task(@dates,d)
-      end
-      schedule_task(@dates,t)
-    end
-
+    @groups.uniq!      
   end
 
   def gantt_reset
