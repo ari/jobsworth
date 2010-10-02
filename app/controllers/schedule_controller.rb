@@ -434,31 +434,11 @@ class ScheduleController < ApplicationController
     @groups.uniq!      
   end
 
-  def gantt_reset
-    projects = current_user.projects.select{ |p| current_user.can?(p, 'edit')}.collect(&:id).join(',')
-    projects = "0" if projects.nil? || projects.length == 0
-
-    Task.update_all("scheduled=0, scheduled_at=NULL, scheduled_duration = 0", ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL"])
-
-    projects = current_user.projects.select{ |p| current_user.can?(p, 'milestone')}.collect(&:id).join(',')
-    projects = "0" if projects.nil? || projects.length == 0
-
-    Milestone.update_all("scheduled=0, scheduled_at=NULL", ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL"])
-    flash['notice'] = _('Schedule reverted')
-
-    render :update do |page|
-      page.redirect_to :action => 'gantt'
-    end
-
-  end
-
   def gantt_save
-
-    projects = current_user.projects.select{ |p| current_user.can?(p, 'edit')}.collect(&:id).join(',')
-    projects = "0" if projects.nil? || projects.length == 0
-
-    tasks = Task.find(:all, :conditions => ["tasks.project_id IN (#{projects}) AND tasks.completed_at IS NULL AND scheduled=1"])
-    tasks.each do |t|
+    t = Task.find_by_task_num(params[:id])
+    t.duration = params[:duration].to_i * 480
+    t.due_at = params[:due_date]
+    if current_user.can?(t.project, 'edit')
       body = ""
       if t.scheduled_at != t.due_at
         old_name = "None"
@@ -467,11 +447,11 @@ class ScheduleController < ApplicationController
         new_name = "None"
         new_name = current_user.tz.utc_to_local(t.scheduled_at).strftime_localized("%A, %d %B %Y") unless t.scheduled_at.nil?
 
-        body << "- <strong>Due</strong>: #{old_name} -> #{new_name}\n"
+        body << "- Due: #{old_name} -> #{new_name}\n"
         t.due_at = t.scheduled_at
       end
       if t.scheduled_duration.to_i != t.duration.to_i
-        body << "- <strong>Estimate</strong>: #{worked_nice(t.duration).strip} -> #{worked_nice(t.scheduled_duration)}\n"
+        body << "- Estimate: #{worked_nice(t.duration).strip} -> #{worked_nice(t.scheduled_duration)}\n"
         t.duration = t.scheduled_duration
       end
 
@@ -482,11 +462,6 @@ class ScheduleController < ApplicationController
         worklog.for_task(t)
         worklog.body = body
         worklog.save
-
-        if(params['notify'].to_i == 1)
-          Notifications::deliver_changed( :updated, t, current_user, body.gsub(/<[^>]*>/,'')) rescue nil
-        end
-
       end
 
       t.scheduled_at = nil
@@ -494,27 +469,18 @@ class ScheduleController < ApplicationController
       t.scheduled = false
       t.save
     end
-
-    projects = current_user.projects.select{ |p| current_user.can?(p, 'milestone')}.collect(&:id).join(',')
-    projects = "0" if projects.nil? || projects.length == 0
-
-    milestones = Milestone.find(:all, :conditions => ["milestones.project_id IN (#{projects}) AND milestones.completed_at IS NULL AND scheduled=1"])
-    milestones.each do |m|
+    
+    m = t.milestone 
+    if current_user.can?(t.project, 'milestone') && m && !m.completed_at & m.scheduled
       if m.due_at != m.scheduled_at
         m.due_at = m.scheduled_at
-        if(params['notify'].to_i == 1)
-          Notifications::deliver_milestone_changed(current_user, m, 'updated', m.due_at) rescue nil
-        end
       end
       m.scheduled_at = nil
       m.scheduled = false
       m.save
     end
 
-    flash['notice'] = _('Schedule saved')
-    render :update do |page|
-      page.redirect_to :action => 'gantt'
-    end
+    render :nothing => true
   end
 
   def reschedule
