@@ -25,3 +25,5 @@ rerun.txt
 Capfile
 config/deploy.rb
 .bundle\n
+coverage.data
+coverage

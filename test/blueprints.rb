@@ -1,3 +1,4 @@
+require File.dirname(__FILE__) + '/test_helper'
 require "machinist/active_record"
 require "sham"
 require 'faker'
