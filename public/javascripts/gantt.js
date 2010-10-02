@@ -1,48 +1,19 @@
-var ganttIsDragging = 0;
-var ganttLastX = 0;
+function update_gantt(tasknum, duration, end_date) {
+  jQuery.post("/schedule/gantt_save/"+ tasknum + "?duration=" +  duration + "&due_date=" + end_date);
+}
 
-function ganttDragging(e) {
+var DateUtils = {
+  daysBetween: function (start, end) {
+    if (!start || !end) { return 0; }
+      start = Date.parse(start); end = Date.parse(end);
+      if (start.getYear() == 1901 || end.getYear() == 8099) { return 0; }
+      var count = 0, date = start.clone();
+      while (date.compareTo(end) == -1) { count = count + 1; date.addDays(1); }
+      return count;
+  },
 
-  if(ganttIsDragging == 1) {
-    setTimeout(function() { ganttDragging(e);}, 1000);
-    var w = Element.getWidth(e);
-    var x = Element.positionedOffset(e)[0];
-    if( x != ganttLastX) {
-      new Ajax.Request('/schedule/gantt_dragging/' + e.id + "?x=" + x + "&w=" + w);
-      ganttLastX = x;
-    }
+  isWeekend: function (date) {
+    return date.getDay() % 6 == 0;
   }
-}
+};
 
-function ganttDragEnd(ev) {
-  ganttIsDragging = 0;
-  var e = ev.element;
-  var w = Element.getWidth(e);
-  var x = Element.positionedOffset(e)[0];
-
-
-  new Ajax.Request('/schedule/gantt_drag/' + e.id + "?x=" + x + "&w=" + w);
-}
-
-
-function ganttDragStart(ev) {
-  ganttIsDragging = 1;
-  var e = ev.element;
-  var w = Element.getWidth(e);
-  var x = Element.positionedOffset(e)[0];
-  setTimeout( function() { ganttDragging(e);} , 1000);
-}
-
-jQuery(document).ready(function() {
-	jQuery("input[id^=due-]").datepicker({dateFormat: userDateFormat});
-	jQuery("input[id^=due-tasks]").blur(function(){
-		value = jQuery(this).val();
-		id = jQuery(this).attr('id').match(/\d+/);
-		jQuery.post('/schedule/reschedule/' + id,{due: value});
-	});
-	jQuery("input[id^=due-milestones]").blur(function(){
-		value = jQuery(this).val();
-		id = jQuery(this).attr('id').match(/\d+/);
-			jQuery.post('/schedule/reschedule_milestone/' + id,{due: value});
-	});
-});

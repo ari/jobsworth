@@ -28,7 +28,7 @@
              ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
              ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
           -%>
-	      { seriesName: <%= st.name.to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }<%="," unless idx == @selected_tasks.size - 1%>
+	      { tasknum: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }<%="," unless idx == @selected_tasks.size - 1%>
           <% end -%><% end -%>
 	      ]
 	  }<%="," unless g_idx == @groups.size - 1%>
@@ -40,15 +40,12 @@
 	start: new Date(<%=@range[0].year%>,<%=@range[0].month-1%>,<%= @range[0].day%>),
 	end: new Date(<%=@range[1].year%>,<%=@range[1].month-1%>,<%= @range[1].day%>),
 	slideWidth: 550,
-    behavior: {
-	  onClick: function (data) {
-	   
-	  },
+        behavior: {
 	  onResize: function (data) {
-	   
-      },
+	    update_gantt(data.tasknum, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+          },
 	  onDrag: function (data) {
-	  
+            update_gantt(data.tasknum, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
 	  }
     }
   });
