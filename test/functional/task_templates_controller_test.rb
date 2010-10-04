@@ -37,7 +37,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
       end
       should 'not create any worklogs' do
         assert_not_nil @template
-        assert_equal 0, @template.work_logs.size
+        assert_equal 0, WorkLog.all(:conditions=>{ :task_id=>@template.id}).size
       end
     end
     context 'when update task tamplate' do
@@ -85,7 +85,7 @@ class TaskTemplatesControllerTest < ActionController::TestCase
         assert_equal 0, @template.dependencies.size
       end
       should 'not add any worklogs' do
-        assert_equal 0, @template.work_logs.size
+        assert_equal 0, WorkLog.all(:conditions=>{ :task_id=>@template.id}).size
       end
     end
     context 'when create task from given template' do

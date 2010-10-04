@@ -1,6 +1,6 @@
 class TaskUser < ActiveRecord::Base
   belongs_to :user
-  belongs_to :task #, :touch => true
+  belongs_to :task, :class_name=>"AbstractTask" #, :touch => true
 
   scope :unread, :conditions => { :unread => true }
 
