@@ -2,8 +2,8 @@
 # Likewise will all the methods added be available for all controllers.
 
 require 'digest/md5'
-require 'lib/misc'
-require 'lib/localization'
+require '#{Rails.root}/lib/misc'
+require '#{Rails.root}/lib/localization'
 
 class ApplicationController < ActionController::Base
   include Misc
