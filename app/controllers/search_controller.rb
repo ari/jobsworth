@@ -6,7 +6,7 @@ class SearchController < ApplicationController
     @logs = []
 
     return if params[:query].blank?
-    @keys = params[:query].split.map { |s| s.strip.downcase }
+    @keys = params[:query].to_s.split.map { |s| s.strip.downcase }
 
     company = current_user.company
     project_ids = "(#{ current_user.all_project_ids.join(", ") })"
