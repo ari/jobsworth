@@ -358,11 +358,6 @@ class AbstractTask < ActiveRecord::Base
     self.company.statuses[self.status].name
   end
 
-
-  def Task.status_types
-    Company.first.statuses.all.collect {|a| a.name }
-  end
-
   def owners_to_display
     o = self.owners.collect{ |u| u.name}.join(', ')
     o = "Unassigned" if o.nil? || o == ""
