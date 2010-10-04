@@ -17,7 +17,7 @@ class Task < AbstractTask
 
   after_save { |r|
     r.ical_entry.destroy if r.ical_entry
-    project = r.project(:readonly => false)
+    project = r.project
     project.update_project_stats
     project.save
 

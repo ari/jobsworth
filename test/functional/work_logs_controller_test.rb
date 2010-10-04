@@ -1,10 +1,12 @@
-require 'test_helper'
+require File.dirname(__FILE__) + '/../test_helper'
 
 class WorkLogsControllerTest < ActionController::TestCase
+  fixtures(:projects)
+  
   context "a logged in user" do
     setup do
       @user = login
-      project = @user.projects.first
+      project = projects(:test_project)
       @task = Task.make(:users => [ @user ], :project => project,
                         :company => @user.company)
       assert_not_nil @task
