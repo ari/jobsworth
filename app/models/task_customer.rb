@@ -1,5 +1,5 @@
 class TaskCustomer < ActiveRecord::Base
-  belongs_to :task
+  belongs_to :task, :class_name=>"AbstractTask"
   belongs_to :customer
 end
 
