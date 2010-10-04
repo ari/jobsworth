@@ -11,6 +11,7 @@ class Task < AbstractTask
 
   has_many      :sheets
 
+  has_one       :ical_entry
   after_validation :fix_work_log_error
 
   after_create { |t| Trigger.fire(t, "create") }

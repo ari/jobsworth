@@ -43,8 +43,6 @@ class AbstractTask < ActiveRecord::Base
   has_many :customers, :through => :task_customers, :order => "customers.name asc"
   adds_and_removes_using_params :customers
 
-  has_one       :ical_entry, :foreign_key=>'task_id'
-
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy,  :foreign_key=>'task_id'
   accepts_nested_attributes_for :todos
 
