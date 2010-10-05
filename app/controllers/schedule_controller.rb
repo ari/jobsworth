@@ -7,10 +7,8 @@ class ScheduleController < ApplicationController
     @tasks = current_task_filter.tasks_for_gantt(params)
     @groups = []
     @tasks.each do |task, idx|
-      name = [ task.project.name ]
-      name << task.milestone.name.strip if task.milestone_id.to_i > 0
-      name = name.join("/<br/>")
-      @groups << {:name => name, :pid => task.project_id, :mid => task.milestone_id}
+      name = task.project.name 
+      @groups << {:name => name, :pid => task.project_id}
     end
     @groups.uniq!      
   end
