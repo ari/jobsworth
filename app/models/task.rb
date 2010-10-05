@@ -489,8 +489,8 @@ class Task < ActiveRecord::Base
     return tf.tasks(conditions)
   end
   
-  def escape_twice(attribute)
-    attribute.gsub(/</,'&lt;').gsub('&lt;','&amp;lt;').gsub(/>/, '&gt;').gsub('&gt;','&amp;gt;').gsub(/\"/, '&quot;').gsub('&quot;','&amp;quot;')
+  def escape_twice(attr)
+    h(String.new(h attr))
   end
   def to_tip(options = { })
     unless @tip
