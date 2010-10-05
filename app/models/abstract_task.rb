@@ -1,5 +1,4 @@
 require "active_record_extensions"
-
 # this is abstract class for Task and Template
 class AbstractTask < ActiveRecord::Base
   set_table_name "tasks"
@@ -25,8 +24,8 @@ class AbstractTask < ActiveRecord::Base
   has_many      :task_owners, :dependent => :destroy, :foreign_key=>'task_id'
 
 
-  has_and_belongs_to_many  :dependencies, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
-  has_and_belongs_to_many  :dependants, :class_name => "Task", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
+  has_and_belongs_to_many  :dependencies, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "dependency_id", :foreign_key => "task_id", :order => 'dependency_id', :select => "tasks.*"
+  has_and_belongs_to_many  :dependants, :class_name => "AbstractTask", :join_table => "dependencies", :association_foreign_key => "task_id", :foreign_key => "dependency_id", :order => 'task_id', :select=> "tasks.*"
 
   has_many      :attachments, :class_name => "ProjectFile", :dependent => :destroy, :foreign_key=>'task_id'
   has_many      :scm_changesets, :dependent =>:destroy, :foreign_key=>'task_id'
@@ -358,7 +357,7 @@ class AbstractTask < ActiveRecord::Base
   end
 
 
-  def Task.status_types
+  def self.status_types
     Company.first.statuses.all.collect {|a| a.name }
   end
 
@@ -560,7 +559,7 @@ class AbstractTask < ActiveRecord::Base
       d.split(",").each do |dep|
         dep.strip!
         next if dep.to_i == 0
-        t = Task.accessed_by(user).find_by_task_num(dep)
+        t = self.class.accessed_by(user).find_by_task_num(dep)
         new_dependencies << t if t
       end
     end
