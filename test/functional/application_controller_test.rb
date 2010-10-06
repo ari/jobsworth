@@ -1,4 +1,4 @@
-require "#{Rails.root}/test/test_helper.rb"
+require "test_helper"
 
 class ApplicationControllerTest < ActionController::TestCase
   tests ActivitiesController
