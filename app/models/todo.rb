@@ -2,7 +2,7 @@
 
 class Todo < ActiveRecord::Base
   belongs_to :company
-  belongs_to :task
+  belongs_to :task, :class_name=> "AbstractTask"
   belongs_to :completed_by_user, :class_name => "User", :foreign_key => "completed_by_user_id"
 
 
