@@ -120,10 +120,6 @@ class Task < AbstractTask
     conditions = "(#{ conditions.join(" or ") })"
     return tf.tasks(conditions)
   end
-  
-  def escape_twice(attr)
-    h(String.new(h attr))
-  end
 
   def worked_and_duration_class
     if worked_minutes > duration
