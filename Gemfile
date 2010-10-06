@@ -16,9 +16,12 @@ gem 'json'
 gem 'mysql2',                                                   '>=0.2.3'
 gem 'acts_as_tree'
 gem 'acts_as_list'
-gem 'fastercsv'
 gem 'dynamic_form'
 gem 'remotipart'
+
+platforms :ruby_18 do
+  gem 'fastercsv'
+end
 
 group :test do
   gem "rcov"
@@ -29,14 +32,16 @@ group :test do
   gem "ZenTest"
   gem "autotest"
   gem "autotest-rails"
- # gem "webrat"
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0.rc.2'
   gem "cucumber-rails",   '>=0.3.2'
   gem "capybara"
-#  gem "capybara-envjs"
+
+  platforms :ruby_18 do
+    gem "ruby-debug"
+  end
   gem "launchy"
-  gem "ruby-debug"
+  
   gem "machinist",        '1.0.6'
 end
 
