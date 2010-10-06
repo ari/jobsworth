@@ -1,5 +1,5 @@
 require 'date'
-require 'lib/localization'
+require "#{Rails.root}/lib/localization"
 
 namespace :locale do
 
