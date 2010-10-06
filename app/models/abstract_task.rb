@@ -234,8 +234,8 @@ class AbstractTask < ActiveRecord::Base
       ""
     end
   end
-  def escape_twice(attribute)
-    attribute.gsub(/</,'&lt;').gsub('&lt;','&amp;lt;').gsub(/>/, '&gt;').gsub('&gt;','&amp;gt;').gsub(/\"/, '&quot;').gsub('&quot;','&amp;quot;')
+  def escape_twice(attr)
+    ERB::Util.h(String.new(ERB::Util.h(attr)))
   end
   def to_tip(options = { })
     unless @tip
