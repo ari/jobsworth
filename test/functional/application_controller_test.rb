@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require "#{Rails.root}/test/test_helper.rb"
 
 class ApplicationControllerTest < ActionController::TestCase
   tests ActivitiesController

@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require "test_helper"
 
 class ActivitiesControllerTest < ActionController::TestCase
   fixtures :users, :companies, :customers, :tasks, :projects, :milestones, :work_logs

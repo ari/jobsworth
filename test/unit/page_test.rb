@@ -1,4 +1,5 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require "test_helper"
+
 class PageTest < ActiveRecord::TestCase
 
   should belong_to(:company)

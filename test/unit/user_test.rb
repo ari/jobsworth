@@ -1,5 +1,4 @@
-
-require File.dirname(__FILE__) + '/../test_helper'
+require "test_helper"
 
 class UserTest < ActiveRecord::TestCase
   fixtures :users, :projects, :project_permissions, :companies, :customers
