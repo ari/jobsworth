@@ -500,7 +500,7 @@ class Task < ActiveRecord::Base
       res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
       res << "<tr><th>#{_('Summary')}</td><td>#{escape_twice(self.name)}</tr>"
       res << "<tr><th>#{_('Project')}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
-      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags)}</td></tr>" unless self.full_tags.blank?
+      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags_without_links)}</td></tr>" unless self.full_tags.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{escape_twice(owners)}</td></tr>"
       res << "<tr><th>#{_('Requested By')}</td><td>#{escape_twice(self.requested_by)}</td></tr>" unless self.requested_by.blank?
       res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"
