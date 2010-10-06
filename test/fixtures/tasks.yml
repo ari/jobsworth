@@ -78,7 +78,26 @@ template_task:
   repeat: null
   hide_until: null
   type: Template
-
+one_day_duration_task:
+  name: Small Test
+  project: test_project
+  position: 0
+  due_at: <%= (Time.now + 2.weeks).utc.to_s(:db) %>
+  completed_at: <%= Time.now.utc.to_s(:db) %>
+  duration: 480
+  hidden: 0
+  milestone_id: null
+  description: Just a normal Task
+  company: cit
+  updated_by_id: 1
+  task_num: 4
+  status: 1
+  requested_by: null
+  creator_id: 1
+  notify_emails: null
+  repeat: null
+  hide_until: null
+  type: Task
 
 
 # == Schema Information

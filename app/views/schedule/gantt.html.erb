@@ -25,25 +25,40 @@
 	  {
       id: <%= g_idx + 1%>, itemName: <%= g[:name].to_json.html_safe %>, series: [
           <% @selected_tasks.each_with_index do |st, idx| -%>
-          <% if st.milestone_id > 0 && !@m.include?(st.milestone_id) %>
+          <% if st.milestone && !@m.include?(st.milestone_id) %>
           <%
             m = Milestone.find(st.milestone_id)
-            start_date = m.due_date - (m.duration/(60*8)).to_i.days
+            start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
           %>
           <%
+             if start_date < Date.today
+             ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
+             else
              ny, nm, nd = start_date.year, start_date.month - 1, start_date.day
+             end
              ey, em, ed = m.due_date.year, m.due_date.month - 1, m.due_date.day
           -%>
-	      { milestone_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>), color: "black"},
+          <% if m.due_date >= Date.today -%>
+	      { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>), color: "black"},
+          <% else %>
+          { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), end: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), color: "black"},
+          <% end %>
           <% @m << m.id -%>
           <% end %>
-          <% unless st.start_date.blank? || st.due_date.blank? -%>
+          <% unless st.start_date.blank? || st.due_date.blank? || st.start_date.to_date < Date.today  -%>
           <%
+             if st.start_date < Date.today
+             ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
+             else
              ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
+             end
              ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
           -%>
-	      { tasknum: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }<%="," unless idx == @selected_tasks.size - 1%>
+	      { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }
+          <% else -%>
+          { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), end: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>)}
           <% end -%>
+          <%="," unless idx == @selected_tasks.size - 1%>
           <% end -%>
 	      ]
 	  }<%="," unless g_idx == @groups.size - 1%>
@@ -57,10 +72,10 @@
 	slideWidth: 550,
         behavior: {
 	  onResize: function (data) {
-	    update_gantt(data.tasknum, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+	    update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
           },
 	  onDrag: function (data) {
-            update_gantt(data.tasknum, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+            update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
 	  }
     }
   });

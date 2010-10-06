@@ -1,5 +1,6 @@
-function update_gantt(tasknum, duration, end_date) {
-  jQuery.post("/schedule/gantt_save/"+ tasknum + "?duration=" +  duration + "&due_date=" + end_date);
+function update_gantt(gantt_type, gannt_id, duration, end_date) {
+  if (gantt_type=='task'){ var action = 'gantt_save'} else {var action = 'gantt_milestone_save'};
+  jQuery.post("/schedule/" + action + "/"+ gannt_id + "?duration=" +  duration + "&due_date=" + end_date);
 }
 
 var DateUtils = {
