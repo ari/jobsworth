@@ -454,7 +454,7 @@ private
   #return conditions for TaskFilter#tasks, unfortunately TaskFilter#task does not support active record :conditions, only plain sql:(
   def parse_fullcalendar_params(calendar_params)
     if !calendar_params[:end].blank? and !calendar_params[:start].blank?
-      return  "due_at< '#{Time.at(calendar_params[:end].to_i)}' and due_at > '#{Time.at(calendar_params[:start].to_i)}'"
+      return TaskFilter.send(:sanitize_sql_array, ["due_at < ? and due_at > ?", Time.at(calendar_params[:end].to_i), Time.at(calendar_params[:start].to_i)])
     else
       return nil
     end
