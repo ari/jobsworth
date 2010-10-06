@@ -42,6 +42,10 @@ group :test do
   end
   gem "launchy"
   
+  platforms :ruby_19 do
+  	gem 'test-unit'
+  end
+  
   gem "machinist",        '1.0.6'
 end
 
