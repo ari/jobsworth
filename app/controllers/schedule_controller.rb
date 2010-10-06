@@ -15,6 +15,8 @@ class ScheduleController < ApplicationController
 
   def gantt_save
     t = Task.find_by_task_num(params[:id])
+    old_task_duration = t.duration
+    old_task_due_at = t.due_at
     t.duration = params[:duration].to_i * 480
     repeat = t.parse_repeat(params[:due_date])
     if repeat && repeat != ""
@@ -25,23 +27,12 @@ class ScheduleController < ApplicationController
       due_date = DateTime.strptime(params[:due_date], current_user.date_format)
       t.due_at = tz.local_to_utc(due_date.to_time)
     end
+    t.scheduled_duration = t.duration if t.scheduled? && t.duration != old_task_duration
+    t.scheduled_at = t.due_at if t.scheduled? && t.due_at != old_task_due_at
     if current_user.can?(t.project, 'edit')
       body = ""
-      if t.scheduled_at != t.due_at
-        old_name = "None"
-        old_name = current_user.tz.utc_to_local(t.due_at).strftime_localized("%A, %d %B %Y") unless t.due_at.nil?
-
-        new_name = "None"
-        new_name = current_user.tz.utc_to_local(t.scheduled_at).strftime_localized("%A, %d %B %Y") unless t.scheduled_at.nil?
-
-        body << "- Due: #{old_name} -> #{new_name}\n"
-        t.due_at = t.scheduled_at
-      end
-      if t.scheduled_duration.to_i != t.duration.to_i
-        body << "- Estimate: #{worked_nice(t.duration).strip} -> #{worked_nice(t.scheduled_duration)}\n"
-        t.duration = t.scheduled_duration
-      end
-
+      body << task_duration_changed(Task.find(t.id), t)
+      body << task_due_changed(Task.find(t.id), t)
       if body != ""
         worklog = WorkLog.new
         worklog.log_type = EventLog::TASK_MODIFIED
@@ -51,9 +42,9 @@ class ScheduleController < ApplicationController
         worklog.save
       end
 
-      t.scheduled_at = nil
-      t.scheduled_duration = 0
-      t.scheduled = false
+      #t.scheduled_at = nil
+      #t.scheduled_duration = 0
+      #t.scheduled = false
       t.save
     end
     
@@ -68,6 +59,35 @@ class ScheduleController < ApplicationController
     end
 
     render :nothing => true
+  end
+
+  def gantt_milestone_save
+    m = Milestone.find(params[:id])
+    if current_user.can?(m.project, 'milestone')
+      due_date = DateTime.strptime(params[:due_date], current_user.date_format)
+      m.due_at = tz.local_to_utc(due_date.to_time)
+      m.save
+    end
+
+    render :nothing => true
+  end
+
+  protected
+  def task_due_changed(old_task, task)
+    if old_task.due_at != task.due_at
+      old_name = "None"
+      old_name = current_user.tz.utc_to_local(old_task.due_at).strftime_localized("%A, %d %B %Y") unless old_task.due_at.nil?
+      new_name = "None"
+      new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
+
+      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
+    else
+      return ""
+    end
+  end
+
+  def task_duration_changed(old_task, task)
+    (old_task.duration != task.duration) ? "- Estimate: #{worked_nice(old_task.duration).strip} -> #{worked_nice(task.duration)}\n".html_safe : ""
   end
 
 end
