@@ -35,13 +35,9 @@ class MilestonesController < ApplicationController
         flash[:notice] = _('Milestone was successfully created.')
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       else
-        render :update do |page|
-        logger.debug "Milestone saved, reloading popup with 'parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});'"
-        # TODO: this could be replaced with "page[task_milestone_id].replace :partial => get_milestones
-        # except that get_milestone currently returns json, not html
-        page << "parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
-        page << "jQuery('span#ui_popup_dialog').dialog('destroy');"
-        end
+        #bind 'ajax:success' event
+        #return json to provide refreshMilestones parameters
+        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id}
       end
       Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date) rescue nil
     else
