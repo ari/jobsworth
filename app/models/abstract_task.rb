@@ -45,7 +45,7 @@ class AbstractTask < ActiveRecord::Base
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy,  :foreign_key=>'task_id'
   accepts_nested_attributes_for :todos
 
-  has_and_belongs_to_many :resources, :foreign_key=>'task_id'
+  has_and_belongs_to_many :resources, :join_table=> 'resources_tasks', :foreign_key=>'task_id'
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
@@ -236,7 +236,7 @@ class AbstractTask < ActiveRecord::Base
     end
   end
   def escape_twice(attr)
-    ERB::Util.h(String.new(ERB::Util.h(attr)))
+    h(String.new(h(attr)))
   end
   def to_tip(options = { })
     unless @tip
@@ -246,7 +246,7 @@ class AbstractTask < ActiveRecord::Base
       res = "<table id=\"task_tooltip\" cellpadding=0 cellspacing=0>"
       res << "<tr><th>#{_('Summary')}</td><td>#{escape_twice(self.name)}</tr>"
       res << "<tr><th>#{_('Project')}</td><td>#{escape_twice(self.project.full_name)}</td></tr>"
-      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags)}</td></tr>" unless self.full_tags.blank?
+      res << "<tr><th>#{_('Tags')}</td><td>#{escape_twice(self.full_tags_without_links)}</td></tr>" unless self.full_tags_without_links.blank?
       res << "<tr><th>#{_('Assigned To')}</td><td>#{escape_twice(owners)}</td></tr>"
       res << "<tr><th>#{_('Requested By')}</td><td>#{escape_twice(self.requested_by)}</td></tr>" unless self.requested_by.blank?
       res << "<tr><th>#{_('Resolution')}</td><td>#{_(self.status_type)}</td></tr>"

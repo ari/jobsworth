@@ -12,7 +12,7 @@ class Resource < ActiveRecord::Base
            :include => :resource_type_attribute,
            :dependent => :destroy)
   has_many :event_logs, :as => :target, :order => "updated_at desc"
-  has_and_belongs_to_many :tasks
+  has_and_belongs_to_many :tasks, :join_table=>:resources_tasks
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
