@@ -545,7 +545,7 @@ class WorklogReport
   def create_csv
     csv_string = ""
     if @column_headers
-      # N.B FasterCSV has been renamed CSV in 1.9. See environment.rb
+      # N.B FasterCSV has been renamed CSV in 1.9. See initializers/fastercsv.rb
       # for where we redefine it so the next line still works...
       csv_string = FasterCSV.generate( :col_sep => "," ) do |csv|
 
