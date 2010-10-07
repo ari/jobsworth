@@ -12,7 +12,7 @@
                         collapse = " <div id=\"indicator_#{project.customer_id}\" class=\""
                         collapse << ((session[:collapse_projects] && session[:collapse_projects][project.customer_id.to_s].to_i == 1) ? "collapse-indicator-closed" : "collapse-indicator-open")
                         collapse << "\"></div>"
-                        collapse << (project.customer.name == 'Internal' ? current_user.company.name : project.customer.name)
+                        collapse << (project.customer.name == 'Internal' ? current_user.company.name : h(project.customer.name))
                         %>
 
                         <tr><td colspan=2 align=left class="project_customer">
@@ -58,7 +58,7 @@
     <tr class="milestone" id="project_<%=project.id%>"><td colspan="2"><div style="position:relative;height:16px;">
         <div id="edit_project_<%= project.id%>" class="popout" style="position: absolute; z-index:10; left:0; top:0; width: 16px; display:none; ">
           <% if current_user.can?(project, 'grant') || current_user.can?(project, 'milestone') %>
-            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", project.name), :class => "tooltip"),
+            <%= link_to image_tag("edit.png", :border => 0, :title => _("Edit project <b>%s</b>", escape_twice(project.name)), :class => "tooltip"),
             { :controller => 'projects', :action => 'edit', :id => project } -%>
           <% end %>
         </div>
@@ -74,12 +74,15 @@ jQuery('#project_<%= project.id %>').hover(function () {
 });
 // ]]>
 </script>
-
-        <div style="float: left; margin-left:5px;"><span class="projects"><%= link_to collapse.html_safe,
-          :url => { :controller => 'activities', :action => 'toggle_display_milestones', :id => project.id },
-          :loading => "showProgress();",
-          :complete => "hideProgress();",
-          :remote => true %> <%= link_to_tasks_filtered_by(project) %></span>
+        <div style="float: left; margin-left:5px;">
+          <span class="projects">
+            <%= link_to collapse.html_safe,
+                        :url => { :controller => 'activities', :action => 'toggle_display_milestones', :id => project.id },
+                        :loading => "showProgress();",
+                        :complete => "hideProgress();",
+                        :remote=>true %> 
+            <%= link_to_tasks_filtered_by(project) %>
+          </span>
         </div>
         <div class="prog-border"  style="float: right; height: 15px;position:relative;">
           <% if @widget.order_by == 'work' %>

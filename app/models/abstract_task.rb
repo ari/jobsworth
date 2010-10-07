@@ -45,7 +45,7 @@ class AbstractTask < ActiveRecord::Base
   has_many      :todos, :order => "completed_at IS NULL desc, completed_at desc, position", :dependent => :destroy,  :foreign_key=>'task_id'
   accepts_nested_attributes_for :todos
 
-  has_and_belongs_to_many :resources, :foreign_key=>'task_id'
+  has_and_belongs_to_many :resources, :join_table=> 'task_resources', :foreign_key=>'task_id'
 
   validates_length_of           :name,  :maximum=>200, :allow_nil => true
   validates_presence_of         :name
