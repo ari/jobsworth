@@ -8,7 +8,7 @@
   </div>
   <div class="edit" style="display: none">
     <%= text_field_tag("todo[name]", "", :size => 50) %>
-    <%= javascript_tag("addNewTodoKeyListener(#{ @task.id })", :defer => "defer") %>
+    <%= javascript_tag("addNewTodoKeyListener(#{ @task.id });delete_todo_callback();", :defer => "defer") %>
     <%= link_to_function(_("Cancel"), "toggleTodoEdit(this)") %>
   </div>
 </div>

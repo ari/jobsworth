@@ -342,6 +342,11 @@ function init_task_form() {
     });
 }
 
+function delete_todo_callback() {
+  jQuery(".delete_todo").bind("ajax:success", function(data, status, xhr) {
+    jQuery(this).parent().remove();
+  });
+}
 // this variable is used to cache the last state so we don't run
 // all of highlightWatchers() on every keystroke
 var task_comment_empty = null;

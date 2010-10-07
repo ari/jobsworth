@@ -35,7 +35,7 @@ class TodosController < ApplicationController
     @todo = @task.todos.find(params[:id])
     @todo.destroy
 
-    render :partial => "todos"
+    render :nothing => true
   end
 
   def reorder
