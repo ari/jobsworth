@@ -10,9 +10,9 @@ class User < ActiveRecord::Base
   belongs_to    :company
   belongs_to    :customer
   belongs_to    :access_level
-  has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name"
-  has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name"
-  has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project
+  has_many      :projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NULL'], :order => "projects.customer_id, projects.name", :readonly => false
+  has_many      :completed_projects, :through => :project_permissions, :conditions => ['projects.completed_at IS NOT NULL'], :source => :project, :order => "projects.customer_id, projects.name", :readonly => false
+  has_many      :all_projects, :through => :project_permissions, :order => "projects.customer_id, projects.name", :source => :project, :readonly => false
   has_many      :project_permissions, :dependent => :destroy
 
   has_many      :pages, :dependent => :nullify
