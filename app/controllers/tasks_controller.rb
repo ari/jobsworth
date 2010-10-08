@@ -236,7 +236,11 @@ class TasksController < ApplicationController
           flash['notice'] ||= (link_to_task(@task) + " - #{_('Task was successfully updated.')}")
           redirect_to :action=> "list"
         }
-        format.js
+        format.js {
+          # bind 'ajax:success' event
+          # return json to update tasklist
+          render :json => {:tasknum => @task.task_num}.to_json
+        }
       end
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
       respond_to do |format|
@@ -244,7 +248,10 @@ class TasksController < ApplicationController
           init_form_variables(@task)
           render :template => 'tasks/edit'
         }
-        format.js
+        format.js {
+          # bind 'ajax:failure' event
+          render :json => @post.errors.full_messages.to_json
+        }
       end
     end
   end
