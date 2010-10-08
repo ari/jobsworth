@@ -1,2 +1,0 @@
-page.replace_html 'task_history', :partial => 'history'
-page.visual_effect(:highlight, "task_history", :duration => 2.0)
