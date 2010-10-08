@@ -12,19 +12,19 @@ class NewTaskTest < ActionController::IntegrationTest
     context "creating a new task" do
       setup do
         visit "/"
-        click_link "new task"
+        click_link "New Task"
 
         fill_in "task_name", :with => "a brand new task"
         fill_in "task_description", :with => "a new desc"
-        select @project.name, :from => "project"
-        select @milestone.name, :from => "milestone"
+        select @project.name, :from => "Project"
+        select @milestone.name, :from => "Milestone"
       end
 
       should "be able to create task ok" do
         project_count = @project.tasks.count
         milestone_count = @milestone.tasks.count
 
-        click_button "create"
+        click_button "Create"
 
         assert_equal project_count + 1, @project.tasks.count
         assert_equal milestone_count + 1, @milestone.tasks.count
@@ -32,7 +32,7 @@ class NewTaskTest < ActionController::IntegrationTest
 
       should "be able to create a worklog using the task description" do
         fill_in "work_log_duration", :with => "5m"
-        click_button "create"
+        click_button "Create"
 
         task = @user.company.tasks.last
         log = task.reload.work_logs.detect { |wl| wl.duration == 300 }

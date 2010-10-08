@@ -18,33 +18,33 @@ class ResourcesTest < ActionController::IntegrationTest
 
     context "and an existing resource" do
       setup do
-        @resource = Resource.make(:company => @user.company, 
+        @resource = Resource.make(:company => @user.company,
                                   :customer => @user.customer,
                                   :resource_type => @type)
-        @resource.resource_attributes.build(:resource_type_attribute => @attr1, 
+        @resource.resource_attributes.build(:resource_type_attribute => @attr1,
                                             :value => "any old value 1")
-        @resource.resource_attributes.build(:resource_type_attribute => @attr2, 
+        @resource.resource_attributes.build(:resource_type_attribute => @attr2,
                                             :value => "any old value 2")
         @resource.save!
 
-        click_link "resources"
+        click_link "Resources"
       end
 
       context "editing a resource" do
         setup do
           click_link @resource.name
         end
-        
+
         should "be able to edit name" do
-          fill_in "name", :with => "a new name"
-          click_button "save"
+          fill_in "Name", :with => "a new name"
+          click_button "Save"
           assert_equal "a new name", @resource.reload.name
         end
 
         should "be able to set attribute values" do
           fill_in @attr1.name, :with => "val1"
           fill_in @attr2.name, :with => "val2"
-          click_button "save"
+          click_button "Save"
 
           @resource.reload
           val1 = @resource.resource_attributes.detect { |ra| ra.resource_type_attribute == @attr1 }
@@ -54,13 +54,13 @@ class ResourcesTest < ActionController::IntegrationTest
         end
 
         should "be able to edit notes" do
-          fill_in "notes", :with => "some notes"
-          click_button "save"
+          fill_in "Notes", :with => "some notes"
+          click_button "Save"
           assert_equal "some notes", @resource.reload.notes
         end
 
         should "be able to delete the resource" do
-          click_link "delete"
+          click_link "Delete"
           assert_nil Resource.find_by_id(@resource.id)
         end
       end

@@ -15,7 +15,7 @@ class CustomAttributesTest < ActionController::IntegrationTest
       }
 
       visit "/"
-      visit "clients"
+      visit "/clients"
     end
 
     context "with a basic custom attribute on customer" do
@@ -25,8 +25,8 @@ class CustomAttributesTest < ActionController::IntegrationTest
       end
 
       should "be able to edit custom attributes on customer edit screen" do
-        fill_in @attr.display_name, :with => "attr1 value" 
-        click_button "save"
+        fill_in @attr.display_name, :with => "attr1 value"
+        click_button "Save"
         assert_equal "attr1 value", @customer.reload.values_for(@attr)[0]
       end
     end
@@ -41,7 +41,7 @@ class CustomAttributesTest < ActionController::IntegrationTest
 
       should "be able to edit custom attributes on customer edit screen" do
         select "Female", :from => @attr.display_name
-        click_button "save"
+        click_button "Save"
         assert_equal "Female", @customer.reload.values_for(@attr)[0]
       end
     end
@@ -53,8 +53,8 @@ class CustomAttributesTest < ActionController::IntegrationTest
       end
 
       should "be able to edit custom attributes on customer edit screen" do
-        fill_in @attr.display_name, :with => "attr1 value" 
-        click_button "save"
+        fill_in @attr.display_name, :with => "attr1 value"
+        click_button "Save"
         assert_equal "attr1 value", @customer.reload.values_for(@attr)[0]
       end
     end
