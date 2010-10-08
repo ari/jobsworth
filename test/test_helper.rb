@@ -80,7 +80,6 @@ class ActionController::IntegrationTest
   # Uses webrat to login to the system
   def login
     clear_all_fixtures
-
     company = Company.make
     customer = Customer.make(:company => company)
     user = User.make(:customer => customer, :company => company)
@@ -103,6 +102,6 @@ class ActionController::IntegrationTest
     visit "/login/logout"
   end
   teardown do
-    logout
+    Capybara.reset_sessions!
   end
 end
