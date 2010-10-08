@@ -558,7 +558,7 @@ function mark_as_default(sender) {
    jQuery("span#user_email_addresses span b").replaceWith("<span class='email_link_actions'><a class='action_email' href='#' onclick='mark_as_default(this); return false;'>Mark As Default</a><a class='action_email' href='#' onclick='jQuery(this).parent().parent().remove(); return false;'>Remove</a></span>");
    jQuery(sender).parent().parent().prependTo("span#user_email_addresses");
    jQuery(sender).parent().replaceWith("<b>Default</b>");
-}});
+}
 
 // Update the sheet at the top of the page every 90 seconds
 //
@@ -569,3 +569,4 @@ jQuery(document).ready(function(){
 		});
 	},90 * 1000);
 });
+
