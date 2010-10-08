@@ -6,7 +6,7 @@
        <span id="user_email_addresses">
        <% @user.email_addresses.each_with_index do |e, idx| -%>
          <span>
-         <% fields_for(e.new_record? ? 'new_emails' : 'emails', e) do |f| %>
+         <%= fields_for(e.new_record? ? 'new_emails' : 'emails', e) do |f| %>
             <label for="user_email"><%=_ 'Email' if idx == 0 %></label><%= f.text_field 'email', :index => e.id  %>
             <% if idx == 0 %>
               <%= content_tag(:b, "Default", :id => 'default_email') %>
@@ -20,7 +20,7 @@
          <% end %>
          <br/>
          </span>
-	   <% end -%>
+           <% end -%>
        <% if @user.email_addresses.size == 0 -%>
           <span>
           <label for="user_email"><%=_ 'Email' %></label><%= text_field_tag('new_emails[][email]','', :size => 30) %>
@@ -34,7 +34,7 @@
 
        <label for="user_customer_id"><%=_ "Client" %></label>
        <%= hidden_field_tag("user[customer_id]", @user.customer_id, :id => "user_customer_id", :class => "auto_complete_id") %>
-       
+
        <%= text_field :customer, :name, {:value => @user.customer} %>
        <br/>
 

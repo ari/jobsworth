@@ -1,9 +1,9 @@
 <li class="attribute" id="<%= dom_id(attribute) %>">
-  <% 
+  <%
      preset = attribute.custom_attribute_choices.any?
    -%>
 
-  <% fields_for(prefix(attribute), attribute) do |f| %>
+  <%= fields_for(prefix(attribute), attribute) do |f| %>
     <%= f.hidden_field :position, :index => attribute.id, :class => "position" %>
 
     <label><%=_ "Name" %></label>

@@ -1,11 +1,11 @@
 <li class="attribute resource_type_attribute" id="resource_type_attribute_<%= attribute.id %>">
-  <% 
+  <%
      prefix = "type_attributes"
-     prefix = "new_#{ prefix }" if attribute.new_record? 
+     prefix = "new_#{ prefix }" if attribute.new_record?
      prefix = "resource_type[#{ prefix }]"
    -%>
-  
-  <% fields_for(prefix, attribute) do |f| %>
+
+  <%= fields_for(prefix, attribute) do |f| %>
     <%= f.hidden_field(:position, :index => attribute.id, :class => "position") %>
 
     <label><%=_ "Name" %></label>

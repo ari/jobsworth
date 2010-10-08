@@ -3,7 +3,7 @@
   <p>
     <%=_ "Enter a duration to create a work log." %>
   </p>
-  <% fields_for "work_log" do |f| -%>
+  <%= fields_for "work_log" do |f| -%>
     <%= f.label :started_at, _("Start") %>
     <%= f.text_field :started_at, :class => "text", :value => formatted_datetime_for_current_user(Time.now) %>
 

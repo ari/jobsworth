@@ -1,5 +1,5 @@
 <li class="choice">
-  <% fields_for(choice_prefix(choice, attribute), choice) do |cf| -%>
+  <%= fields_for(choice_prefix(choice, attribute), choice) do |cf| -%>
     <label><%=_ "Choice" %></label>
     <%= cf.text_field(:value) %>
     <label><%=_ "Color" %></label>
