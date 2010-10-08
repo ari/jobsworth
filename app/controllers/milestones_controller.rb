@@ -35,15 +35,11 @@ class MilestonesController < ApplicationController
         flash[:notice] = _('Milestone was successfully created.')
         redirect_to :controller => 'projects', :action => 'edit', :id => @milestone.project
       else
-        render :update do |page|
-        logger.debug "Milestone saved, reloading popup with 'parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});'"
-        # TODO: this could be replaced with "page[task_milestone_id].replace :partial => get_milestones
-        # except that get_milestone currently returns json, not html
-        page << "parent.refreshMilestones(#{@milestone.project_id}, #{@milestone.id});"
-        page << "jQuery('span#ui_popup_dialog').dialog('destroy');"
-        end
+        #bind 'ajax:success' event
+        #return json to provide refreshMilestones parameters
+        render :json => {:project_id => @milestone.project_id, :milestone_id => @milestone.id}
       end
-      Notifications::deliver_milestone_changed(current_user, @milestone, 'created', due_date) rescue nil
+      Notifications::milestone_changed(current_user, @milestone, 'created', due_date).deliver rescue nil
     else
       render :action => 'new'
     end
@@ -73,9 +69,9 @@ class MilestonesController < ApplicationController
 
       if(@old.due_at != @milestone.due_at || @old.name != @milestone.name || @old.description != @milestone.description )
         if( @old.name != @milestone.name)
-          Notifications::deliver_milestone_changed(current_user, @milestone, 'renamed', @milestone.due_at, @old.name) rescue nil
+          Notifications::milestone_changed(current_user, @milestone, 'renamed', @milestone.due_at, @old.name).deliver rescue nil
         else
-          Notifications::deliver_milestone_changed(current_user, @milestone, 'updated', @milestone.due_at) rescue nil
+          Notifications::milestone_changed(current_user, @milestone, 'updated', @milestone.due_at).deliver rescue nil
         end
       end
 
@@ -88,7 +84,7 @@ class MilestonesController < ApplicationController
 
   def destroy
     @milestone = Milestone.find(params[:id], :conditions => ["company_id = ?", current_user.company_id])
-    Notifications::deliver_milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at) rescue nil
+    Notifications::milestone_changed(current_user, @milestone, 'deleted', @milestone.due_at).deliver rescue nil
     @milestone.destroy
 
     redirect_from_last
@@ -100,7 +96,7 @@ class MilestonesController < ApplicationController
       milestone.completed_at = Time.now.utc
       milestone.save
 
-      Notifications::deliver_milestone_changed(current_user, milestone, 'completed', milestone.due_at) rescue nil
+      Notifications::milestone_changed(current_user, milestone, 'completed', milestone.due_at).deliver rescue nil
       flash[:notice] = _("%s / %s completed.", milestone.project.name, milestone.name)
     end
     
@@ -112,7 +108,7 @@ class MilestonesController < ApplicationController
     unless milestone.nil?
       milestone.completed_at = nil
       milestone.save
-      Notifications::deliver_milestone_changed(current_user, milestone, 'reverted', milestone.due_at) rescue nil
+      Notifications::milestone_changed(current_user, milestone, 'reverted', milestone.due_at).deliver rescue nil
       flash[:notice] = _("%s / %s reverted.", milestone.project.name, milestone.name)
     end
     redirect_to :controller => 'activities', :action => 'list'

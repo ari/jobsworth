@@ -2,7 +2,7 @@
 <%= "<legend>#{_ 'New Milestone' }</legend>".html_safe unless @disable_title %>
 
 <% unless @popup.nil? %>
-<%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm' %>
+<%= form_tag '/milestones/create' , :remote => true, :name => 'milestoneForm', :id => "add_milestone_form" %>
   <%= render :partial => 'form' %>
   <%= submit_tag _("Create"), :class => 'nolabel'%>
 </form>

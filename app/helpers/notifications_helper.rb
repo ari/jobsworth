@@ -1,4 +1,5 @@
 module NotificationsHelper
+  include TaskFilterHelper
   # Returns true if there is a user with the given email
   # who should be allowed to view task.
   def show_task_link?(task, email)
