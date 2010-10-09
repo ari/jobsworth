@@ -8,6 +8,7 @@ class Page < ActiveRecord::Base
   has_one    :event_log, :as => :target
 
   validates_presence_of :name
+  validate :validate_presence_of_notable
 
   scope :projects, :conditions => [ "notable_type = 'Project'" ]
   scope :snippets, :conditions => [ "snippet = ?", true ]
@@ -35,7 +36,7 @@ class Page < ActiveRecord::Base
 
   protected
 
-  def validate
+  def validate_presence_of_notable
     if notable.nil?
       errors.add(:base, "Target required")
     end
