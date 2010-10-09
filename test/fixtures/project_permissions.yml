@@ -69,6 +69,20 @@ user_2nd_project:
   can_close: true
   can_grant: true
   can_milestone: true
+admin_completed_project:
+  id: 6
+  company: cit
+  project: completed_project
+  user: admin
+  can_comment: true
+  can_work: true
+  can_report: true
+  can_create: true
+  can_edit: true
+  can_reassign: true
+  can_close: true
+  can_grant: true
+  can_milestone: true
 
 
 # == Schema Information
