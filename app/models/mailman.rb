@@ -175,14 +175,14 @@ class Mailman < ActionMailer::Base
                     :description => "",
                     :duration => 0)
     task.set_default_properties
-    task.save(false)
+    task.save(:validate=>false)
     attach_users_to_task(task, email)
-    task.save(false)
+    task.save(:validate=>false)
     attach_customers_to_task(task)
 
     # need to do without_validations to get around validation
     # errors on custom attributes
-    task.save(false)
+    task.save(:validate=> false)
     send_email_to_creator(task, email)
 
     return task
