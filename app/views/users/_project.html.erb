@@ -44,7 +44,7 @@ elsif user_granted %>
       :update => 'permission_list',
       :url => { :controller => 'projects', :action => 'ajax_remove_permission', :user_id => @user.id, :id => project.id, :perm => p, :user_edit => user_edit },
       :loading => "showProgress();",
-      :complete => "hideProgress();".
+      :complete => "hideProgress();",
       :remote => true if perm.can? p %>
       <%= link_to image_tag("delete.png", :title => _("Grant %s access for <b>%s</b>?", p, escape_twice(@user.name)).html_safe, :class => "tooltip"),
       :update => 'permission_list',
