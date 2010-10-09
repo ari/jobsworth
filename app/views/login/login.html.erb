@@ -27,7 +27,7 @@
 	  <% if @internal -%>
 	    <%= tag("img", {:src => "/clients/show_logo/#{@internal.id}", :alt => "logo" } ) %>
 	  <% end -%>
-		<% form_tag( {:action => 'validate'}, {:id => 'loginform', :name => 'loginform'}) do %>
+		<%= form_tag( {:action => 'validate'}, {:id => 'loginform', :name => 'loginform'}) do %>
 			<div id="name"><%= $CONFIG[:productName] %></div>
 			<button type="submit" name="Submit" id="submit_button" value="Login" tabindex="4"></button>
 			<p>
