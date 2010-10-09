@@ -17,6 +17,7 @@ class Resource < ActiveRecord::Base
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
   validates_presence_of :name
+  validate :validate_attributes
 
   FILTERABLE = [ :customer_id, :resource_type_id ]
 
@@ -86,7 +87,7 @@ class Resource < ActiveRecord::Base
   ###
   # Checks all attributes are valid
   ###
-  def validate
+  def validate_attributes
     # check customer is present
     res = !customer.nil?
     errors.add(:base, _("Client can't be blank")) if customer.nil?
