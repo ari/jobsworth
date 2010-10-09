@@ -182,7 +182,7 @@ class Mailman < ActionMailer::Base
 
     # need to do without_validations to get around validation
     # errors on custom attributes
-    task.save(:validation=> false)
+    task.save(:validate=> false)
     send_email_to_creator(task, email)
 
     return task

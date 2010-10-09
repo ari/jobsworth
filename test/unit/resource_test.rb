@@ -19,13 +19,13 @@ class ResourceTest < ActiveRecord::TestCase
 
   def test_attribute_values_creates_new_attributes
     params = []
-    params << { 
-      :resource_type_attribute_id => @type.resource_type_attributes.first.id, 
+    params << {
+      :resource_type_attribute_id => @type.resource_type_attributes.first.id,
       :value => "t1" }
-    params << { 
+    params << {
       :resource_type_attribute_id => @type.resource_type_attributes[1].id,
       :value => "t2" }
-    
+
     @resource.attribute_values = params
     attrs = @resource.resource_attributes
     assert_equal 2, attrs.length
@@ -34,7 +34,7 @@ class ResourceTest < ActiveRecord::TestCase
   end
 
   def test_attribute_values_updates_existing_attributes
-    @resource.resource_attributes.build(:resource_type_attribute_id => @type.id, 
+    @resource.resource_attributes.build(:resource_type_attribute_id => @type.id,
                                         :value => "t1")
     @resource.save!
 
@@ -52,7 +52,7 @@ class ResourceTest < ActiveRecord::TestCase
   end
 
   def test_not_valid_if_mandatory_fields_missing
-    assert @resource.validate
+    assert @resource.validate_attributes
 
     attr = @type.resource_type_attributes.first
 
