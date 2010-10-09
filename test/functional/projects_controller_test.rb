@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../test_helper'
+require 'test_helper'
 
 class ProjectsControllerTest < ActionController::TestCase
   fixtures :customers, :projects
@@ -27,7 +27,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                   :customer=>customers(:internal_customer)},
                        :copy_project=>@project.id}
       end
-      assert_equal 3, @project.project_permissions.size
+      assert_equal 3, assigns[:project].project_permissions.size
       assert_redirected_to :action => "edit", :id => assigns[:project].id
     end
 
