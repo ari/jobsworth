@@ -5,14 +5,14 @@ class Resource < ActiveRecord::Base
   belongs_to :customer
   belongs_to :resource_type
   belongs_to :parent, :class_name => "Resource"
-  has_many(:child_resources, :class_name => "Resource", 
-           :foreign_key => "parent_id", 
+  has_many(:child_resources, :class_name => "Resource",
+           :foreign_key => "parent_id",
            :order => "lower(name)")
-  has_many(:resource_attributes, 
+  has_many(:resource_attributes,
            :include => :resource_type_attribute,
            :dependent => :destroy)
   has_many :event_logs, :as => :target, :order => "updated_at desc"
-  has_and_belongs_to_many :tasks
+  has_and_belongs_to_many :tasks, :join_table=>:resources_tasks
 
   validates_presence_of :company_id
   validates_presence_of :resource_type_id
@@ -36,7 +36,7 @@ class Resource < ActiveRecord::Base
       attr.attributes = values
       updated << attr
     end
-    
+
     missing = resource_attributes - updated
     resource_attributes.delete(missing)
   end
@@ -105,7 +105,7 @@ class Resource < ActiveRecord::Base
       # check for missing mandatory attributes
       resource_type.resource_type_attributes.each do |rta|
         next if !rta.is_mandatory?
-        
+
         attr = resource_attributes.detect { |ra| ra.resource_type_attribute == rta }
         value = attr.value if attr
         if value.blank?
@@ -130,18 +130,18 @@ class Resource < ActiveRecord::Base
 
   ###
   # Returns a new resource_attribute linked to this
-  # resource. 
+  # resource.
   ###
   def build_new_attribute(values)
     attr_type_id = values[:resource_type_attribute_id]
-    
+
     # check we're using attributes from this company
     rtas = []
     company.resource_types.each { |rt| rtas += rt.resource_type_attributes }
 
     rta = rtas.detect { |rta| rta.id == attr_type_id.to_i }
     if rta
-      return resource_attributes.build 
+      return resource_attributes.build
     end
   end
 end
