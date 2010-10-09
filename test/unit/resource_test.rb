@@ -52,21 +52,21 @@ class ResourceTest < ActiveRecord::TestCase
   end
 
   def test_not_valid_if_mandatory_fields_missing
-    assert @resource.validate_attributes
+    assert @resource.valid?
 
     attr = @type.resource_type_attributes.first
 
     attr.is_mandatory = true
     @type.save
 
-    assert !@resource.validate
+    assert !@resource.valid?
   end
 
-  def test_validate_does_not_fail_when_resource_type_not_set
+  def test_validate_attributes_does_not_fail_when_resource_type_not_set
     @resource.resource_type = nil
 
     begin
-      assert @resource.validate
+      assert @resource.validate_attributes
     rescue
       assert_equal "", "Shouldn't throw an error"
     end
