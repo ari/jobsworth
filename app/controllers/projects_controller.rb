@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
 
       if @project.company.users.size == 1
         flash['notice'] = _('Project was successfully created.')
-        redirect_from_last
+        redirect_to :action => 'list'
       else
         flash['notice'] = _('Project was successfully created. Add users who need access to this project.')
         redirect_to :action => 'edit', :id => @project
