@@ -18,6 +18,7 @@ gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
+gem 'escape_utils'
 
 platforms :ruby_18 do
   gem 'fastercsv'
