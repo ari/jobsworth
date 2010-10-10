@@ -1,10 +1,8 @@
 <div id="upload_container">
-   <label for="tmp_files[]"><%=_ 'Attach a file' %>
+  <label for="tmp_files[]"><%=_ 'Attach a file' %>
      <% if perms['comment'].empty? %>(
-      <%= link_to_function _("Upload more files") do |page|
-          page.insert_html :bottom, :upload_container, "<label>&nbsp;</label><input type=\"file\" size=\"15\" class\"file\" name=\"tmp_files[]\"/><br />"
-          end %>
+      <%= link_to_function _("Upload more files"), "jQuery('#upload_container').append('#{file_field_tag('tmp_files[]', { :size => 15, :class => 'file' }.merge( perms['comment'] ))}')" %>
    )<% end %>
   </label>
-    <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
+  <%= file_field_tag 'tmp_files[]', { :size => 15, :class => "file" }.merge( perms['comment'] ) %>
 </div>
