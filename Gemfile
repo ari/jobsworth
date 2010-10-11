@@ -36,7 +36,7 @@ group :test do
   gem "cucumber",         '>=0.8.5'
   gem "database_cleaner", '>=0.6.0.rc.2'
   gem "cucumber-rails",   '>=0.3.2'
-  gem "capybara"
+  gem "capybara", '>=0.3.9', :git => 'git://github.com/lysenko/capybara.git'
 
   platforms :ruby_18 do
     gem "ruby-debug"
