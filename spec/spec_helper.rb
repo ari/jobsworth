@@ -2,7 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require File.join(RAILS_ROOT,'test','blueprints')
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -25,11 +24,4 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-  config.use_instantiated_fixtures  = false
-end
-def login_user(params={ })
-  user=mock_model(User, params.merge(:locale=>nil, 'seen_welcome?' => true, :time_zone=> "Europe/Kiev") )
-  session[:user_id]=user.id
-  session[:remember_until] = Time.now + 1.week
-  controller.stub!(:current_user).and_return(user)
 end
