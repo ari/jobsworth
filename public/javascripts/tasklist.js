@@ -328,13 +328,10 @@ function tasksViewReload()
 }
 
 function ajax_update_task_callback() {
-    jQuery("#task_list").trigger("reloadGrid");
     jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
+      jQuery("#task_list").trigger("reloadGrid");
       var task = jQuery.parseJSON(json);
-      jQuery.get("/tasks/edit/"+ task.tasknum +"?format=js", {}, function(data) {
-          jQuery("#task").html(data);
-          jQuery("div.log_history").tabs();
-      });
+      loadTask(task.tasknum);
       jQuery('#errorExplanation').remove();
       jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
     });

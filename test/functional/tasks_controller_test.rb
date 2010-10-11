@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 class TasksControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks, :customers, :projects
@@ -86,7 +86,7 @@ class TasksControllerTest < ActionController::TestCase
            :users=> @task.user_ids,
            :comment => "a test comment")
       assert_emails @task.users.length
-      assert_response :success
+      assert_response :redirect
     end
     should "send unescaped html in email" do
       @task.name= name_html = "<strong>name</strong> ; <script> alert('XSS');</script>"
@@ -98,7 +98,7 @@ class TasksControllerTest < ActionController::TestCase
            :comment => comment_html)
       @task.reload
       assert_emails @task.users.length
-      assert_response :success
+      assert_response :redirect
       mail = ActionMailer::Base.deliveries.first
       assert_match name_html, mail.body
       assert_match description_html, mail.body
