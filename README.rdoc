@@ -7,9 +7,22 @@ The easiest way to get the source and easily update it from time to time is with
 
 You will want to put the source somewhere sensible depending on your operating system. On OSX that might be ~/Sites/jobsworth and on FreeBSD /usr/local/www/jobsworth. We'll use the FreeBSD path in these instructions.
 
+Now pick a branch. You can follow "dev" if you are working on the development of jobsworth. This branch will be frequently unstable and you should know quite a bit about Rails and jobsworth before you follow this one.
+
+  git checkout dev
+
+Or follow "master" if you want the stable branch.
+
+  git checkout master
+
+Or you may wish to just stick with a particular release which will never be updated, such as
+
+  git checkout v1.2
+
+
 === Step 2: Prerequsites
 
-You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql will probably work.
+You need to be running some type of Unix: OSX, Linux, Solaris, BSD. Windows will probably not work. You will also need a database. MySQL is recommended. Postgresql may work.
 
 Install the following packages:
 
@@ -36,7 +49,7 @@ First install the Macports system from http://www.macports.org. Then:
 
 Under other operating systems use your favourite package manager to ensure you have Ruby, rubygems, Rake and the Ruby mysql driver installed. Something like:
 
-  yum install ruby19 ImageMagick
+  yum install ruby19 ImageMagick zip
 
 === Step 3: Phusion Passenger
 
@@ -61,7 +74,7 @@ Your Apache httpd virtual host DocumentRoot should point to the public directory
 
 You'll need to allow access to the folder you specify if isn't already inside your global httpd DocumentRoot. And MultiViews is bad for a Rails application.
 
-  <Directory /usr/squish/public>
+  <Directory /usr/local/www/jobsworth/public>
     AllowOverride All
     Options -MultiViews
     Order allow,deny
@@ -74,7 +87,7 @@ Naturally adjust the paths to suit your own environment.
   
 === Step 5: Ruby gems
 
-First we need a new gem installation tool.
+First we need the Rails gem installation tool.
 
   gem install bundler
 
@@ -84,7 +97,7 @@ Then in order to install all the gems we need.
   bundle install
 
 If you have trouble on OSX with the mysql gem (this seems to be an issue on 10.5), then try this
-  sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
+  sudo env ARCHFLAGS="-arch i386" gem install mysql2 -- --with-mysql-include=/opt/local/include/mysql5 --with-mysql-lib=/opt/local/lib/mysql5 --with-mysql-config=/opt/local/lib/mysql5/bin/mysql_config
 
 
 === Step 4: Setup configuration and database
