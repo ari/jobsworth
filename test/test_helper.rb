@@ -77,13 +77,6 @@ end
 
 class ActionController::IntegrationTest
   include Capybara
-  class Capybara::XPath
-    def text_field(locator, options={})
-      options = options.merge(:value => options[:with]) if options.has_key?(:with)
-      add_field(locator, "//input[@type!='radio' and @type!='checkbox' and @type!='submit']", options)
-    end
-  end
-  # Uses webrat to login to the system
   def login
     clear_all_fixtures
     company = Company.make
