@@ -328,11 +328,20 @@ function tasksViewReload()
 }
 
 function ajax_update_task_callback() {
-    jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
+  jQuery('#taskform').bind("ajax:success", function(event, json, xhr) {
+    jQuery('#errorExplanation').remove();
+    var task = jQuery.parseJSON(json);
+    if (task.status == "error") {
+      var html = "<div class='errorExplanation' id='errorExplanation'>";
+      html += "<h2>"+ task.messages.length +" error prohibited this template from being saved</h2><p>There were problems with the following fields:</p>";
+      for (i=0 ; i < task.messages.length ; i++) {html += "<ul><li>"+ task.messages[i] + "</li></ul>";}
+      html += "</div>"
+      jQuery(html).insertAfter("#task_id");
+    }
+    else {
       jQuery("#task_list").trigger("reloadGrid");
-      var task = jQuery.parseJSON(json);
       loadTask(task.tasknum);
-      jQuery('#errorExplanation').remove();
       jQuery("span.fieldWithErrors").removeClass("fieldWithErrors");
-    });
+    }
+  });
 }

@@ -52,7 +52,6 @@ class TasksControllerTest < ActionController::TestCase
     # post something that will cause a validation to fail
     post(:update, :id => task.id, :task => { :name => "" })
 
-    assert_template "tasks/update.js.rjs"
     assert_response :success
   end
 
