@@ -6,7 +6,7 @@
             <td>
             <fieldset style="padding-top:0;">
               <legend><%=_ 'Edit Project' %></legend>
-              <% form_tag :action => 'update', :id => @project do %>
+              <%= form_tag :action => 'update', :id => @project do %>
               <%= render :partial => "form" %>
               <% end %>
               <br />

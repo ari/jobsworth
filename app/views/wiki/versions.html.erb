@@ -4,7 +4,7 @@
 
 <% if @page.revisions.empty? %>
 <h4><%= _"This wiki page doesn't exist yet. Create it by entering text and clicking the button below."%></h4>
-  <% form_tag :action => 'create', :id => @page.name do %>
+  <%= form_tag :action => 'create', :id => @page.name do %>
 <textarea name="body" rows="20" style="width:80%;">
 </textarea>
 <div style="clear:both;float:left;"><%= submit_tag _("Create") %> <%= _('or')%> <%= link_to _("Cancel"), :controller => "wiki", :action => "cancel_create", :id => @page.name %></div>

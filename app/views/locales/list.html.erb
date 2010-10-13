@@ -5,7 +5,7 @@
 
 <div style="background-color:#fcc;padding:0.5em 1em 0.5em 1em;margin:0.2em 1em 0.5em 1em;border-top:1px solid black;border-bottom:1px solid black;text-align:center"><strong><%= _ 'Changes are not made live instantly.'%></strong></div>
 
-<% form_tag :action => 'update', :id => current_user.locale do %>
+<%= form_tag :action => 'update', :id => current_user.locale do %>
 
 <% @keys.each do |k| %>
 <div style="border:1px solid #ddd;padding:0.5em;margin:0.5em;<%= "background-color:#fcc;" if k.key == k.singular && current_user.locale != 'en_US' && !k.same? %>">
