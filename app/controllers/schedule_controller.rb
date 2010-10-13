@@ -2,15 +2,21 @@
 # TODO: Simple Events
 class ScheduleController < ApplicationController
 
+  def list
+    redirect_to :action => "gantt"
+  end
+
   def gantt
-    @range = [Time.now.utc.midnight, 2.month.since.utc.midnight - 1.day]
+  end
+
+  def gantt_data
     @tasks = current_task_filter.tasks_for_gantt(params)
     @groups = []
     @tasks.each do |task, idx|
-      name = task.project.name 
+      name = task.project.name
       @groups << {:name => name, :pid => task.project_id}
     end
-    @groups.uniq!      
+    @groups.uniq!
   end
 
   def gantt_save

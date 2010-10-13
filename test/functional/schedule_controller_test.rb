@@ -1,6 +1,5 @@
 require "test_helper"
 
-
 class ScheduleControllerTest < ActionController::TestCase
   fixtures :users, :companies, :tasks
 
@@ -8,13 +7,17 @@ class ScheduleControllerTest < ActionController::TestCase
     login
   end
 
-  test "/gantt should display and assign some tasks" do
+  test "/gantt should display" do
     get :gantt
     assert_response :success
+  end
 
+  test "/gantt_data should assign some task" do
+    get :gantt_data, :format => "js"
     tasks = assigns['tasks']
     assert_not_nil tasks
     assert tasks.length > 0
+    assert_response :success
   end
 
   test "/gantt should update due_at" do
