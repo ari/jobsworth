@@ -193,13 +193,13 @@ class WorkLog < ActiveRecord::Base
         self.setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< self.body
-            Notifications::deliver_changed(update_type, self.task, self.user, recipients, email_body)
+            Notifications.changed(update_type, self.task, self.user, recipients, email_body).deliver
           end
     else
       if self.log_type == EventLog::TASK_CREATED
         self.setup_notifications do |recipients|
           #note send without comment, user add comment will be sended another mail
-          Notifications::deliver_created(self.task, self.user, recipients)
+          Notifications.created(self.task, self.user, recipients).deliver
         end
       else
         #we don't have comment
