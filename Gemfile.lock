@@ -1,4 +1,12 @@
 GIT
+  remote: git://github.com/collectiveidea/delayed_job.git
+  revision: aba9905764c2a13a110a272137d1ad9798fd55e0
+  specs:
+    delayed_job (2.1.0.pre2)
+      activesupport (~> 3.0)
+      daemons
+
+GIT
   remote: git://github.com/lysenko/capybara.git
   revision: a1112d7a76e6e500acae8f4113e1d61ed2572384
   specs:
@@ -173,6 +181,7 @@ DEPENDENCIES
   cucumber-rails (>= 0.3.2)
   daemons (= 1.1.0)
   database_cleaner (>= 0.6.0.rc.2)
+  delayed_job!
   dynamic_form
   faker
   fastercsv
