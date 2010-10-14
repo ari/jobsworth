@@ -230,7 +230,7 @@ class Mailman < ActionMailer::Base
     user.receive_own_notifications=false
     user.save!
 
-    work_log.send_notifications
+    work_log.notify()
 
     user.receive_own_notifications=tmp
     user.save!
