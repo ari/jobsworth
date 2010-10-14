@@ -94,38 +94,33 @@ describe WorkLog do
     end
   end
 
-  describe "setup_notifications" do
+  describe "notify()" do
     before(:each) do
       company=Company.make
       2.times{ User.make(:access_level_id=>1, :company=> company) }
       2.times{ User.make(:access_level_id=>2, :company=> company) }
       company.reload
       @task= Task.make(:company=>company, :users=>company.users)
-      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task)
+      @work_log=WorkLog.make(:comment=>true, :user=> User.first, :task=>@task, :body=>"some text")
     end
     it "should yield only emails of users with access level great or equal to work log's access level" do
-      emails=[]
-      @work_log.setup_notifications() do |email|
-        emails<< email
-      end
-      emails.should == @task.users.collect{ |user| user.email }
+      ActionMailer::Base.deliveries=[]
+      @work_log.notify()
+      ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should == @task.users.collect{ |user| user.email }
       @work_log.access_level_id=2
-      emails=[]
-      @work_log.setup_notifications() do |email|
-        emails<< email
-      end
-      emails.should == @task.users.find_all_by_access_level_id(2).collect{ |user| user.email }
+      ActionMailer::Base.deliveries=[]
+      @work_log.notify()
+      ActionMailer::Base.deliveries.map{ |email| email.to }.flatten.should == @task.users.find_all_by_access_level_id(2).collect{ |user| user.email }
     end
     it "should mark as unread task for users, except WorkLog#user" do
       @task.task_users.find_by_unread(true).should be_nil
-      @work_log.setup_notifications do
-      end
+      @work_log.notify()
       @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all,:conditions=>["task_users.user_id != ?", @work_log.user_id])
     end
     it "should mark as uread task for users with access to work log" do
       @task.task_users.find_by_unread(true).should be_nil
       @work_log.access_level_id=2
-      @work_log.setup_notifications { }
+      @work_log.notify()
       @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all, :include => :user,
                                                                                 :conditions=> ["users.access_level_id =? and task_users.user_id != ? ", 2, @work_log.user_id ])
     end
@@ -134,7 +129,7 @@ describe WorkLog do
       @task.task_users.find_by_unread(true).should be_nil
       User.update_all("receive_notifications= 0")
       @work_log.access_level_id=1
-      @work_log.setup_notifications { }
+      @work_log.notify()
       @task.task_users.find_all_by_unread(true).should == @task.task_users.find(:all, :include => :user,
                                                                                 :conditions=> ["task_users.user_id != ? ", @work_log.user_id ])
     end
