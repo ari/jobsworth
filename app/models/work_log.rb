@@ -154,7 +154,11 @@ class WorkLog < ActiveRecord::Base
 
   def notify(update_type= :comment)
     mark_as_unread
-    send_notifications(update_type)
+    if Rails.env == 'production'
+      send_later(:send_notifications,update_type)
+    else
+      send_notifications(update_type)
+    end
   end
 
   def for_task(task)
