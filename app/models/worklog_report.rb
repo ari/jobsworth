@@ -441,7 +441,7 @@ class WorklogReport
     elsif key == "1_start"
       rkey = key_from_worklog(w, 13).to_s
       row_name = name_from_worklog(w, 15)
-      do_row(rkey, row_name, key, "<a href=\"/tasks/edit_log/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>".html_safe)
+      do_row(rkey, row_name, key, "<a href=\"/work_logs/edit/#{w.id}\">#{tz.utc_to_local(w.started_at).strftime_localized(current_user.time_format)}</a>".html_safe)
       @row_totals[rkey] += w.duration
     elsif key == "2_end"
       rkey = key_from_worklog(w, 13).to_s

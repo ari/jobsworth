@@ -2,6 +2,9 @@ Jobsworth change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+15 October 2010
+	Released version 1.2.1 with a number of minor bug fixes for Ruby 1.9 and some cross site scripting attack fixes.
+	
 23 September 2010
 	There are now multiple email addresses allowed for each user. This is step one of a major refactoring of how email addresses are stored and used.
 	
