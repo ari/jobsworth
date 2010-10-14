@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 
 require 'rails/test_help'
 require "#{Rails.root}/lib/misc"
-require 'blueprints'
+require "#{Rails.root}/test/blueprints"
 require "capybara/rails"
 
 include ActionMailer::TestHelper
