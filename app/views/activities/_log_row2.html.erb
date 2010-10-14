@@ -8,7 +8,7 @@
     </span>
     <span class="log_time">
       <% if log.log_type == EventLog::TASK_COMMENT && (log.user_id.to_i == current_user.id || current_user.admin?)%>
-      <%= link_to("#{tz.utc_to_local(log.started_at).strftime(date_format)}", { :controller => 'tasks', :action => 'edit_log', :id => log }) %>
+      <%= link_to"#{tz.utc_to_local(log.started_at).strftime(date_format)}", edit_work_log_path(log) %>
       <% else %>
       <%= "#{tz.utc_to_local(log.started_at).strftime(date_format)}"%><% if log.duration > 0 %> - <%= "#{tz.utc_to_local(log.ended_at).strftime(date_format)}"%><% end %>
       <% end %>
