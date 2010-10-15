@@ -11,7 +11,7 @@ describe ScmChangesetsController do
         post :create, :scm_changeset=>{ :these=> :params }
       end
       it "respond with HTTP-STATUS: 201 CREATED" do
-        response.status.should =~ /201/
+        response.status.should == 201
       end
     end
     context "with invalid params" do
@@ -20,7 +20,7 @@ describe ScmChangesetsController do
         post :create, :scm_changeset=>{ :these=> :params }
       end
       it "respond with HTTP-STATUS: 422 Unprocessable Entity" do
-        response.status.should =~ /422/
+        response.status.should == 422
       end
     end
   end
