@@ -1,3 +1,0 @@
-page.replace_html "inline_form", :partial => "new_file"
-page.show 'inline_form'
-page.visual_effect(:highlight, 'new_file', :duration => 1.0)
