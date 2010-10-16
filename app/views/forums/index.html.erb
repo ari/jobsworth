@@ -40,7 +40,7 @@
     <td class="inv lp">
       <% if forum.posts.last %>
         <div class="tooltip" title="<%= h(forum.posts.last.body_html) %>">
-        <%= truncate(forum.posts.last.topic.title, 40) %><br />
+        <%= truncate(forum.posts.last.topic.title, :length => 40) %><br />
         <%= "#{_('by')} <strong>#{h(forum.posts.last.user.display_name)}</strong>".html_safe %><br />
         <%= _('%s ago', time_ago_in_words(forum.posts.last.created_at)) %>
         <span>(<%= link_to _('View'), topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>
@@ -86,7 +86,7 @@
     <td class="inv lp">
       <% if forum.posts.last %>
         <div class="tooltip" title="<%= h(forum.posts.last.body_html)%>">
-        <%= truncate(forum.posts.last.topic.title, 40) %><br />
+        <%= truncate(forum.posts.last.topic.title, :length => 40) %><br />
         <%= "#{_'by'} <strong>#{h(forum.posts.last.user.display_name)}</strong>".html_safe %><br />
         <%= _('%s ago', time_ago_in_words(forum.posts.last.created_at)) %>
         <span>(<%= link_to _('View'), topic_path(:forum_id => forum, :id => forum.posts.last.topic_id, :page => forum.posts.last.topic.last_page, :anchor => forum.posts.last.dom_id) %>)</span>

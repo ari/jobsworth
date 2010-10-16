@@ -1,17 +1,13 @@
 <fieldset id="edit_file" class="basic">
 <legend>Editing Project File</legend>
 
-<% form_remote_tag :url => {:action => 'update', :id => @file },
-                                   :loading => "showProgress();",
-                                   :complete => "hideProgress();" do  %>
+<% form_tag({:action => 'update', :id => @file }, :id => "edit_file_form", :remote => true) do  %>
   <%= render :partial => "form_edit" %>
   <label>&nbsp;</label><div class="buttons">
   <%= submit_tag _("Update"), :class => 'nolabel' %>
     <div style="padding-top:0.2em;"><span class="optional"> <%= _("or") %> </span>
-    <%= link_to_function _("Cancel") do |page|
-          page.hide 'inline_form'
-        end
-    %></div>
+    <%= link_to_function _("Cancel"), "jQuery('#inline_form').hide()" %>
+    </div>
   </div>
 <% end %>
 </fieldset>

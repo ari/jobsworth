@@ -21,10 +21,10 @@ class ProjectFilesController < ApplicationController
     end
     folder = params[:id]
     @current_folder = ProjectFolder.find_by_id(params['id']) || ProjectFolder.new( :name => "/" )
-    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
-    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.nil? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
+    @project_files = ProjectFile.find(:all, :order => "created_at DESC", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND task_id IS NULL AND project_folder_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
+    @project_folders = ProjectFolder.find(:all, :order => "name", :conditions => ["company_id = ? AND project_id IN (#{current_project_ids}) AND parent_id #{folder.blank? ? "IS NULL" : ("= " + folder)}", current_user.company_id])
 
-    unless folder.nil?
+    unless folder.blank?
       up = ProjectFolder.new
       up.name = ".."
       up.created_at = Time.now.utc
@@ -75,6 +75,7 @@ class ProjectFilesController < ApplicationController
       @file.project_folder_id = params[:id]
       @file.project_id = current_folder.nil? ? nil : current_folder.project_id
     end
+    render :partial => "new_file"
   end
 
   def new_folder
@@ -93,6 +94,7 @@ class ProjectFilesController < ApplicationController
       @folder.parent_id = @parent_folder.nil? ? nil : @parent_folder.id
       @folder.project_id = @parent_folder.nil? ? nil : @parent_folder.project_id
     end
+    render :partial => "new_folder"
   end
 
   def edit_folder
@@ -130,17 +132,11 @@ class ProjectFilesController < ApplicationController
   end
 
   def upload
-    project_files = []
+    @project_files = []
     if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      flash['notice'] = _('No file selected.')
-      responds_to_parent do
-        render :update do |page|
-          page.visual_effect(:shake,'inline_form')
-        end
-      end
-      return
+      @valid, @message = false, _('No file selected.')
+      render :file => '/project_files/upload.json.erb' and return
     end
-
     params['tmp_files'].each_with_index do |tmp_file,idx|
       next if !tmp_file.respond_to?('original_filename') or tmp_file.original_filename.nil? or tmp_file.original_filename.strip.empty?
 
@@ -153,31 +149,19 @@ class ProjectFilesController < ApplicationController
       project_file.customer_id = Project.find(project_file.project_id).customer_id
       project_file.file= tmp_file
       unless project_file.save
-        flash['notice'] = _('Unable to save file.') + " [#{project_file.filename}]"
-        redirect_to :action => 'list', :id => params[:file][:project_folder_id]
+        @valid, @message = false, _('Unable to save file.') + " [#{project_file.filename}]"
+        render :file => '/project_files/upload.json.erb' and return
       else
-        project_files << project_file
+        @project_files << project_file
       end
     end
-
-    responds_to_parent do
-      render :update do |page|
-        if project_files.size > 0
-          page.hide('inline_form')
-          project_files.each do |project_file|
-            page.insert_html :after, 'dir_sep', :partial => 'file_cell',  :locals => { :project_files => project_file }
-            page.visual_effect(:highlight, "file_cell_#{project_file.id}", :duration => 2.0)
-          end
-        else
-          page.visual_effect(:shake,'inline_form')
-        end
-      end
-
-    end
+    @valid = true
+    render :file => '/project_files/upload.json.erb'
   end
 
   def edit
     @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
+    render :partial => "edit"
   end
 
   def update
@@ -186,6 +170,7 @@ class ProjectFilesController < ApplicationController
       flash['notice'] = _('Unable to update file')
       redirect_to :action => 'list', :id => @file.project_folder_id
     end
+    render :partial => 'file_cell.html.erb', :locals => { :project_files => @file}
   end
 
   def destroy
@@ -205,10 +190,11 @@ class ProjectFilesController < ApplicationController
     l.save
 
     @file.destroy
-
-    return if request.xhr?
-
-    redirect_from_last
+    
+    respond_to do |format|
+      format.html { redirect_from_last }
+      format.js { render :nothing => true }
+    end
 
   end
 

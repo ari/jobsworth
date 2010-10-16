@@ -1,7 +1,7 @@
 <fieldset class="basic">
 <legend><%=_ 'New Client' %></legend>
 
-<% form_tag :action => 'create' do %>
+<%= form_tag :action => 'create' do %>
   <%= render :partial => "form" %>
   <label>&nbsp;</label>
   <%= submit_tag _("Create"), :class => "nolabel" %>

@@ -41,7 +41,7 @@
     </div>
 
     <%= avatar_for post.user %>
-    <span class="fn"><%= link_to truncate(h(post.user.display_name), 15), user_path(post.user), :class => (post.user == @posts.first.user ? "admin" : nil) %></span>
+    <span class="fn"><%= link_to truncate(h(post.user.display_name), :length => 15), user_path(post.user), :class => (post.user == @posts.first.user ? "admin" : nil) %></span>
     <span class="posts"><%= '{count} post(s)'[(count=post.user.posts_count)==1 ? :post_count : :posts_count, number_with_delimiter(count)] %></span>
   </td>
   <td class="body entry-content">

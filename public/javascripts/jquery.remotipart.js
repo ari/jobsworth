@@ -11,10 +11,10 @@ jQuery(function ($) {
 	          throw "No URL specified for remote call (action must be present).";
 	        } else {
 	            if (el.triggerAndReturn('ajax:before')) {
-					if(url.substr(-3) != '.js') url += '.js'; //force rails to respond to respond to the request with :format = js
+					if(url.substr(-3) != '.js') url += '?format=js'; //force rails to respond to respond to the request with :format = js
 	                el.ajaxSubmit({
 	                    url: url,
-	                    dataType: 'script',
+	                    dataType: 'json',
 	                    beforeSend: function (xhr) {
 	                        el.trigger('ajax:loading', xhr);
 	                    },

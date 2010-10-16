@@ -32,13 +32,13 @@ Clockingit::Application.routes.draw do
 	end
 
   resources :task_filters do
-	  get :select, :on => :member
-  	collection do
+    match :select, :on => :member
+    collection do
       get :reset
       get :search
       get :update_current_filter
       get :set_single_task_filter
-	  end
+    end
   end
 
   match '/forums/index' => 'forums#index'

@@ -18,3 +18,36 @@ var DateUtils = {
   }
 };
 
+function show_gantt(gantt_data, start_date, end_date) {
+  jQuery("#ganttChart").ganttView({
+    data: gantt_data,
+    start: start_date,
+    end: end_date,
+    slideWidth: 550,
+    behavior: {
+      onResize: function (data) {
+        update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+      },
+      onDrag: function (data) {
+         update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
+      }
+    }
+  });
+}
+
+function refresh_gantt() {
+  jQuery.ajax({
+    url: '/schedule/gantt_data?format=js',
+    dataType: 'script',
+    success:function(response) {
+      gantt_data = eval(response);
+      jQuery("#ganttChart").empty();
+      show_gantt(gantt_data, Date.today(), Date.parse("+2months"));
+    },
+    beforeSend: function(){ showProgress(); },
+    complete: function(){ hideProgress(); },
+    error:function (xhr, thrownError) {
+      alert("Invalid task list model returned from server");
+    }
+  });
+};
