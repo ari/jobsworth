@@ -7,4 +7,10 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+begin
+  require 'delayed/tasks'
+rescue LoadError
+  STDERR.puts "Run `bundle install` to install delayed_job"
+end
+
 Clockingit::Application.load_tasks

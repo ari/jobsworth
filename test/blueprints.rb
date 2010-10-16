@@ -66,6 +66,7 @@ end
 
 Task.blueprint do
   name
+  description {Faker::Lorem.paragraph }
   company
   project
 end

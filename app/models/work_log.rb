@@ -152,6 +152,25 @@ class WorkLog < ActiveRecord::Base
     end
   end
 
+  def notify(update_type= :comment)
+    mark_as_unread
+    if Rails.env == 'production'
+      send_later(:send_notifications,update_type)
+    else
+      send_notifications(update_type)
+    end
+  end
+
+  def for_task(task)
+    self.task=task
+    self.project=task.project
+    self.company= task.project.company
+    self.customer= task.project.customer
+    self.started_at= Time.now.utc
+    self.duration = 0
+  end
+
+private
   ###
   # This method will set up notifications. A block should be passed that will
   # send the actual emails, but this method will update the owners, worklog, etc
@@ -179,27 +198,27 @@ class WorkLog < ActiveRecord::Base
         self.body ||= ""
         self.body += "\n\n" if !self.body.blank?
         self.body += comment
-        self.save
+        self.save!
       end
     end
-    mark_as_unread
   end
+
   ###
   # this function will send notifications
   # only if work log have comment or log type TASK_CREATED
   ###
   def send_notifications(update_type= :comment)
     if (self.comment? and self.log_type != EventLog::TASK_CREATED) or self.log_type == EventLog::TASK_COMMENT
-        self.setup_notifications do |recipients|
+        setup_notifications do |recipients|
             email_body= self.user.name + ":\n"
             email_body<< self.body
-            Notifications::deliver_changed(update_type, self.task, self.user, recipients, email_body)
+            Notifications.changed(update_type, self.task, self.user, recipients, email_body).deliver
           end
     else
       if self.log_type == EventLog::TASK_CREATED
-        self.setup_notifications do |recipients|
+        setup_notifications do |recipients|
           #note send without comment, user add comment will be sended another mail
-          Notifications::deliver_created(self.task, self.user, recipients)
+          Notifications.created(self.task, self.user, recipients).deliver
         end
       else
         #we don't have comment
@@ -207,15 +226,7 @@ class WorkLog < ActiveRecord::Base
       end
     end
   end
-  def for_task(task)
-    self.task=task
-    self.project=task.project
-    self.company= task.project.company
-    self.customer= task.project.customer
-    self.started_at= Time.now.utc
-    self.duration = 0
-  end
-private
+
   def mark_as_unread
     task.users.find(:all, :conditions=> ["users.id != ? and users.access_level_id >=?", user_id, access_level_id]).each do |user|
       task.set_task_read(user, false)

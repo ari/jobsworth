@@ -248,7 +248,7 @@ class TasksController < ApplicationController
           init_form_variables(@task)
           render :template => 'tasks/edit'
         }
-        format.js {   
+        format.js {
           # bind js event
           render :json => {:status => :error, :messages => @task.errors.full_messages}.to_json
         }
@@ -570,7 +570,7 @@ protected
       if second_worklog
         @task.save!
         second_worklog.save!
-        second_worklog.send_notifications if second_worklog.comment?
+        second_worklog.notify() if second_worklog.comment?
       end
     else
       worklog.body=body
@@ -583,7 +583,7 @@ protected
       worklog.for_task(@task)
       worklog.access_level_id= (params[:work_log].nil? or params[:work_log][:access_level_id].nil?) ? 1 : params[:work_log][:access_level_id]
       worklog.save!
-      worklog.send_notifications(@update_type) if worklog.comment?
+      worklog.notify(@update_type) if worklog.comment?
       if params[:work_log] && !params[:work_log][:duration].blank?
         WorkLog.build_work_added_or_comment(@task, current_user, params)
         @task.save!
@@ -596,9 +596,9 @@ protected
     @task.save! #FIXME: it saves worklog from line above
     WorkLog.create_task_created!(@task, current_user)
     if @task.work_logs.first.comment?
-      @task.work_logs.first.send_notifications
+      @task.work_logs.first.notify()
     else
-      @task.work_logs.last.send_notifications
+      @task.work_logs.last.notify()
     end
   end
   def set_last_task(task)

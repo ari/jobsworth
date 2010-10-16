@@ -18,6 +18,7 @@ gem 'acts_as_tree'
 gem 'acts_as_list'
 gem 'dynamic_form'
 gem 'remotipart'
+gem "delayed_job",  :git => 'git://github.com/collectiveidea/delayed_job.git'
 
 platforms :ruby_18 do
   gem 'fastercsv'

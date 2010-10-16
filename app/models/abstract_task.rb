@@ -485,7 +485,68 @@ class AbstractTask < ActiveRecord::Base
     tpv.property_value if tpv
   end
 
-   ###
+  def set_users_dependencies_resources(params, current_user)
+    set_users(params)
+    set_dependency_attributes(params[:dependencies], current_user)
+    set_resource_attributes(params[:resource])
+    self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
+  end
+  ###
+  # Custom validation for tasks.
+  ###
+  def validate_properties
+    res = true
+
+    mandatory_properties = company.properties.select { |p| p.mandatory? }
+    mandatory_properties.each do |p|
+      if !property_value(p)
+        res = false
+        errors.add_to_base(_("%s is required", p.name))
+      end
+    end
+
+    return res
+  end
+
+  def create_attachments(params, current_user)
+    filenames = []
+    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
+      params['tmp_files'].each do |tmp_file|
+        next if tmp_file.is_a?(String)
+        task_file = ProjectFile.new()
+        task_file.company = current_user.company
+        task_file.customer = self.project.customer
+        task_file.project = self.project
+        task_file.task_id = self.id
+        task_file.user_id = current_user.id
+        task_file.file=tmp_file
+        task_file.save!
+
+        filenames << task_file.file_file_name
+      end
+    end
+    return filenames
+  end
+
+  def statuses_for_select_list
+    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
+  end
+  def notify_emails_array
+    (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
+  end
+private
+
+  def set_task_num
+    company_id ||= company.id
+
+    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
+    num ||= 0
+    num += 1
+
+    @attributes['task_num'] = num
+  end
+
+  ###
   # Sets the task watchers for this task.
   # Existing watchers WILL be cleared by this method.
   ###
@@ -575,67 +636,6 @@ class AbstractTask < ActiveRecord::Base
     end
 
     self.save
-  end
-
-  def set_users_dependencies_resources(params, current_user)
-    set_users(params)
-    set_dependency_attributes(params[:dependencies], current_user)
-    set_resource_attributes(params[:resource])
-    self.attachments.find(params[:delete_files]).each{ |file| file.destroy }  rescue nil
-  end
-  ###
-  # Custom validation for tasks.
-  ###
-  def validate_properties
-    res = true
-
-    mandatory_properties = company.properties.select { |p| p.mandatory? }
-    mandatory_properties.each do |p|
-      if !property_value(p)
-        res = false
-        errors.add_to_base(_("%s is required", p.name))
-      end
-    end
-
-    return res
-  end
-
-  def create_attachments(params, current_user)
-    filenames = []
-    unless params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
-      params['tmp_files'].each do |tmp_file|
-        next if tmp_file.is_a?(String)
-        task_file = ProjectFile.new()
-        task_file.company = current_user.company
-        task_file.customer = self.project.customer
-        task_file.project = self.project
-        task_file.task_id = self.id
-        task_file.user_id = current_user.id
-        task_file.file=tmp_file
-        task_file.save!
-
-        filenames << task_file.file_file_name
-      end
-    end
-    return filenames
-  end
-
-  def statuses_for_select_list
-    company.statuses.collect{|s| [s.name]}.each_with_index{|s,i| s<< i }
-  end
-  def notify_emails_array
-    (notify_emails || "").split(/$| |,/).map{ |email| email.strip.empty? ? nil : email.strip }.compact
-  end
-private
-
-  def set_task_num
-    company_id ||= company.id
-
-    num = self.class.maximum('task_num', :conditions => ["company_id = ?", company_id])
-    num ||= 0
-    num += 1
-
-    @attributes['task_num'] = num
   end
 
 end
