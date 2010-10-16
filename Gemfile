@@ -1,4 +1,4 @@
-gem "rails", "3.0.0"
+gem "rails", "3.0.1"
 
 source 'http://gems.github.com'
 gem 'splattael-activerecord_base_without_table', :require=>"activerecord_base_without_table"
