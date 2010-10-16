@@ -43,8 +43,8 @@ module Localization
   end
 
   def self.load
-    Dir.glob("#{RAILS_ROOT}/lang/*.rb"){ |t| require t }
-    Dir.glob("#{RAILS_ROOT}/lang/custom/*.rb"){ |t| require t }
+    Dir.glob(Rails.root.join("lang", "*.rb")){ |t| require t }
+    Dir.glob(Rails.root.join("lang", "custom", "*.rb")){ |t| require t }
   end
 
   def self.lang(locale = nil)
