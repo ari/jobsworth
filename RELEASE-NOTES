@@ -2,6 +2,9 @@ Jobsworth change history for new functionality and major bug fixes.
 
 For comprehensive details of every change, please consult http://github.com/ari/clockingit/commits/
 
+17 October 2010
+	The migration to Rails 3 is now largely complete. There may be some minor cleaning up around the edges, but the bulk of the work is done. Now we can get back to implementing new features.
+
 15 October 2010
 	Released version 1.2.1 with a number of minor bug fixes for Ruby 1.9 and some cross site scripting attack fixes.
 	

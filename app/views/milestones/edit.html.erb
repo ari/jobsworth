@@ -1,7 +1,7 @@
 <fieldset>
 <legend><%=_ 'Edit Milestone' %></legend>
 
-<% form_tag :action => 'update', :id => @milestone do %>
+<%= form_tag :action => 'update', :id => @milestone do %>
   <%= render :partial => 'form' %>
   <label>&nbsp;</label>
   <%= submit_tag _('Save'), :class => 'nolabel' %>

@@ -1,82 +1,8 @@
-<script type="text/javascript">var userDateFormat='<%= current_user.dateFormat %>';</script>
+<% content_for(:task_list) do %>
 <script type="text/javascript" language="javascript" charset="utf-8" src="/javascripts/gantt.js"></script>
-<table id="content" width="100%" cellpadding="0" cellspacing="0" style="padding-right:1em;">
-  <tr>
-    <td class="page_header" colspan="2">
-      <div style="float:left;"><%=_ 'Plan / GANTT' %></div>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" style="padding-top:0.3em;">
-       <%= gantt_filter %>
-    </td>
-  </tr>
-  <tr>
-    <td colspan="2" style="padding-top:0.3em;">
-      <div id="ganttChart"></div>
-    </td>
-  </tr>
-</table>
+<div style="padding-top:0.3em;padding-right:1em;" id="ganttChart"></div>
 <script type="text/javascript">  
-  var gantt_data = [
-    <% @groups.each_with_index do |g, g_idx| -%>
-    <% @selected_tasks = @tasks.select {|t| t.project_id == g[:pid]} -%>
-      <% @m = [] %>
-	  {
-      id: <%= g_idx + 1%>, itemName: <%= g[:name].to_json.html_safe %>, series: [
-          <% @selected_tasks.each_with_index do |st, idx| -%>
-          <% if st.milestone && !@m.include?(st.milestone_id) %>
-          <%
-            m = Milestone.find(st.milestone_id)
-            start_date = m.due_date - (m.duration/(60*8)).to_i.days - 1
-          %>
-          <%
-             if start_date < Date.today
-             ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
-             else
-             ny, nm, nd = start_date.year, start_date.month - 1, start_date.day
-             end
-             ey, em, ed = m.due_date.year, m.due_date.month - 1, m.due_date.day
-          -%>
-          <% if m.due_date >= Date.today -%>
-	      { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>), color: "black"},
-          <% else %>
-          { gantt_type: "milestone", gantt_id: <%= m.id %> , seriesName: <%= "<span style = 'text-transform: uppercase;'>#{link_to_milestone(m)}</span>".to_json.html_safe %>, start: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), end: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), color: "black"},
-          <% end %>
-          <% @m << m.id -%>
-          <% end %>
-          <% unless st.start_date.blank? || st.due_date.blank? || st.start_date.to_date < Date.today  -%>
-          <%
-             if st.start_date < Date.today
-             ny, nm, nd = Date.today.year, Date.today.month - 1, Date.today.day
-             else
-             ny, nm, nd = st.start_date.year, st.start_date.month - 1, st.start_date.day
-             end
-             ey, em, ed = st.due_date.year, st.due_date.month - 1, st.due_date.day
-          -%>
-	      { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= ny %>,<%= nm %>,<%= nd %>), end: new Date(<%= ey %>,<%= em %>,<%= ed %>) }
-          <% else -%>
-          { gantt_type: "task", gantt_id: <%= st.task_num %> , seriesName: <%= link_to_task(st).to_json.html_safe %>, start: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>), end: new Date(<%= @range[0].year %>,<%= @range[0].month %>,<%= @range[0].day %>)}
-          <% end -%>
-          <%="," unless idx == @selected_tasks.size - 1%>
-          <% end -%>
-	      ]
-	  }<%="," unless g_idx == @groups.size - 1%>
-      <% @tasks -= @selected_tasks %>
-    <% end -%>
-  ];
-  jQuery("#ganttChart").ganttView({
-    data: gantt_data,
-	start: new Date(<%=@range[0].year%>,<%=@range[0].month-1%>,<%= @range[0].day%>),
-	end: new Date(<%=@range[1].year%>,<%=@range[1].month-1%>,<%= @range[1].day%>),
-	slideWidth: 550,
-        behavior: {
-	  onResize: function (data) {
-	    update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
-          },
-	  onDrag: function (data) {
-            update_gantt(data.gantt_type, data.gantt_id, DateUtils.daysBetween(data.start, data.end) + 1, data.end.toString("dd/MM/yyyy"));
-	  }
-    }
-  });
+  refresh_gantt();
 </script>
+<% end -%>
+<%= render :file => 'tasks/list' %>

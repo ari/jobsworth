@@ -23,7 +23,7 @@
 <% @page_title = @forum.name %>
 <% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @forum.id, true, 'forum']).zero? %>
 
-<% form_tag monitorship_path(@forum), :style => 'margin-top:0em; float:right;' do -%>
+<%= form_tag monitorship_path(@forum), :style => 'margin-top:0em; float:right;' do -%>
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
     onclick="if (this.checked) {<%= remote_function :url => monitorship_path(@forum) %>} else {<%= remote_function :url => monitorship_path(@forum), :method => :delete %>}" />

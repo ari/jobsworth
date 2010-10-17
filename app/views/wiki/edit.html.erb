@@ -12,7 +12,7 @@
 [[Wikipage|link name]]</pre>
   </div>
   <div style="width:80%;">
-  <% form_tag :action => 'create', :id => @page.name do %>
+  <%= form_tag :action => 'create', :id => @page.name do %>
     <% if @page.revisions.empty? %>
     <h5 style="margin:0;">This wiki page doesn't exist yet. Create it by entering text and clicking the button below.</h5>
     <textarea id="wiki_body" name="body" style="width:100%;" rows="20" class="tinymce"></textarea>

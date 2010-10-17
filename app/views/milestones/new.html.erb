@@ -7,7 +7,7 @@
   <%= submit_tag _("Create"), :class => 'nolabel'%>
 </form>
 <% else %>
-  <% form_tag :action => 'create' do %>
+  <%= form_tag :action => 'create' do %>
    <%= render :partial => 'form' %>
   <%= submit_tag _("Create"), :class => 'nolabel' %>
 <% end %>

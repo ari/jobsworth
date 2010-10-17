@@ -1,7 +1,7 @@
 <% @page_title = @topic.title %>
 <% @monitoring = !Monitorship.count(:all, :conditions => ['user_id = ? and monitorship_id = ? and active = ? and monitorship_type = ?', current_user.id, @topic.id, true, 'topic']).zero? %>
 
-<% form_tag topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
+<%= form_tag topic_monitorship_path(@forum, @topic), :style => 'margin-top:0em; float:right;' do -%>
 <div>
   <input id="monitor_checkbox" type="checkbox" <%= "checked='checked'" if @monitoring %>
     onclick="if (this.checked) {<%= remote_function :url => topic_monitorship_path(@forum, @topic) %>} else {<%= remote_function :url => topic_monitorship_path(@forum, @topic), :method => :delete %>}" />
@@ -69,7 +69,7 @@
     </div>
 
     <%= avatar_for post.user %>
-    <span class="fn"><span class="<%= (post.user == @posts.first.user ? "threadauthor" : "") %>"><%= truncate(h(post.user.display_name), 15)%></span>
+    <span class="fn"><span class="<%= (post.user == @posts.first.user ? "threadauthor" : "") %>"><%= truncate(h(post.user.display_name), :length => 15)%></span>
     <% if post.user.admin? or post.forum.moderators.include?(post.user) %>
     <span class="admin">
       <% if((post.forum.company_id.nil? && post.user.admin > 1) || (!post.forum.company_id.nil? && post.user.admin?)) %>
