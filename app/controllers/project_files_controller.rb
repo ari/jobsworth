@@ -132,7 +132,7 @@ class ProjectFilesController < ApplicationController
   end
 
   def upload
-    @project_files = []
+    @type, @project_files = 'file', []
     if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       @valid, @message = false, _('No file selected.')
       render :file => '/project_files/upload.json.erb' and return
@@ -257,5 +257,6 @@ class ProjectFilesController < ApplicationController
       @file.save
     end
 
+    render :nothing => true
   end
 end

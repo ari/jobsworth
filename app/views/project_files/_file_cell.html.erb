@@ -1,4 +1,4 @@
-<div id="file_cell_<%= project_files.id%>" class="file_cell project-<%= project_files.project_id %>">
+<div id="file_cell_<%= project_files.id%>" class="cell_draggable file_cell project-<%= project_files.project_id %>">
   <div style="text-align:center;" class="handle"><center>
   <% if project_files.image? %>
   <div class="file_cell_img">
@@ -22,4 +22,3 @@
   | <%= link_to_function _('Delete'), "remove_file(#{project_files.id}, '#{_("Are you sure?")}')" %>
   </div>
 </div>
-<%#= draggable_element "file_cell_#{project_files.id}", { :revert => true, :ghosting => false, :handle => "'handle'", :onclick => "function(element){location.href='#{url_for(:action => 'show', :id => project_files)}';}" } %>
