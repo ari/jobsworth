@@ -1,4 +1,4 @@
-<div id="folder_cell_<%= folder.id %>" class="file_cell project-<%= folder.project_id %>" >
+<div id="folder_cell_<%= folder.id %>" class="cell_droppable<%= " cell_draggable" unless folder.new_record? %> file_cell project-<%= folder.project_id %>" >
   <center>
     <div class="file_cell_icon<%= " handle" unless folder.new_record?%>"<%= " onclick=\"location.href='#{url_for(:action => 'list', :id => folder)}'\"" if folder.new_record? %> >
       <a href="#"><img src="/images/folder_big.png" ></a><br />
@@ -13,12 +13,3 @@
     </div>
   </div>
 </div>
-<script type="text/javascript">
-//<![CDATA[
-Droppables.add("folder_cell_<%=folder.id%>", {accept:'project-<%=folder.project_id%>', hoverclass:'folder-active', onDrop:function(element, dropElement){jQuery(element).hide(); jQuery.get('/project_files/move', { id:  encodeURIComponent(element.id + " " + dropElement.id)} ) }})
-//]]>
-</script>
-
-<% unless folder.new_record?  %>
-  <%= draggable_element "folder_cell_#{ folder.id }", { :revert => true, :ghosting => false, :handle => "'handle'", :onclick => "function(element){location.href='#{url_for(:action => 'list', :id => folder)}';}" } %>
-<% end %>

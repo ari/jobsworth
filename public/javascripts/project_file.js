@@ -86,3 +86,17 @@ function html_decode(value) {
   if(value=='&nbsp;' || value=='&#160;' || (value.length==1 && value.charCodeAt(0)==160)) { return "";}
   return !value ? value : String(value).replace(/&amp;/g, "&").replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&quot;/g, '"');
 }
+
+//drag and drop
+jQuery(function() {
+  jQuery(".cell_draggable" ).draggable({ revert: "invalid" });
+  jQuery(".cell_droppable" ).droppable({
+    tolerance: 'pointer',
+    drop: function(event, ui) {
+      var drop_id = jQuery(this).attr("id");
+      var drag_id = jQuery(ui.draggable).attr("id");
+      jQuery("#" + drag_id).remove();
+      jQuery.get("/project_files/move?id=" + drag_id +" " + drop_id);
+    }
+  });
+});
