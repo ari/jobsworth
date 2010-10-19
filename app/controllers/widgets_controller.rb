@@ -14,10 +14,7 @@ class WidgetsController < ApplicationController
     end
 
     unless @widget.configured?
-      render :update do |page|
-        page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
-        page << "jQuery('#config-#{@widget.dom_id}').show('slow')"
-      end
+      render :partial => "widget_#{@widget.widget_type}_config"
       return
     end
 
@@ -46,44 +43,21 @@ class WidgetsController < ApplicationController
       sheets_extracted_from_show
     end
 
-    render :update do |page|
-      case @widget.widget_type
+    case @widget.widget_type
       when 0 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => 'tasks/task_list', :locals => { :tasks => @items }
+        render :partial => 'tasks/task_list', :locals => { :tasks => @items }
       when 1 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => 'activities/project_overview'
+        render :partial => 'activities/project_overview'
       when 2 then
         # Recent Activities : already removed
-      when 3..7 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
-      when 8 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
-        page << "document.write = function(s) {"
-        page << "$('gadget-wrapper-#{@widget.dom_id}').innerHTML += s;"
-        page << "}"
-        page << "var e = new Element('script', {id:'gadget-#{@widget.dom_id}'});"
-        page << "$('gadget-wrapper-#{@widget.dom_id}').insert({top: e});"
-        page << "$('gadget-#{@widget.dom_id}').src=#{@widget.gadget_url.gsub(/&amp;/,'&').gsub(/<script src=/,'').gsub(/><\/script>/,'')};"
-      when 9..10 then
-        page.replace_html "content_#{@widget.dom_id}", :partial => "widgets/widget_#{@widget.widget_type}"
-      end
-
-      page.call("updateTooltips")
-      page.call("portal.refreshHeights")
-
+      when 3..10 then
+        render :partial => "widgets/widget_#{@widget.widget_type}"
     end
 
   end
 
   def add
-    render :update do |page|
-      page << "if(! $('add-widget' ) ) {"
-      page.insert_html :top, "left_col", :partial => "widgets/add"
-      page.visual_effect :appear, "add-widget"
-      page << "} else {"
-      page.visual_effect :fade, "add-widget"
-      page << "}"
-    end
+    render :partial => "widgets/add"
   end
 
   def destroy
@@ -141,18 +115,7 @@ class WidgetsController < ApplicationController
       render :nothing => true
       return
     end
-
-    render :update do |page|
-      page << "if(!jQuery('#config-#{@widget.dom_id}' ).size() ) {"
-      page.insert_html :before, "content_#{@widget.dom_id}", :partial => "widget_#{@widget.widget_type}_config"
-      page << "jQuery('#config-#{@widget.dom_id}' ).fadeIn('slow')"
-      page << "} else {"
-      page << "jQuery('#config-#{@widget.dom_id}' ).fadeOut('slow')"
-      page.delay(1) do
-        page.remove "config-#{@widget.dom_id}"
-      end
-      page << "}"
-    end
+    render :partial => "widget_#{@widget.widget_type}_config"
   end
 
   def update
@@ -164,14 +127,10 @@ class WidgetsController < ApplicationController
     end
 
     @widget.configured = true
-
     if @widget.update_attributes(params[:widget])
-
-      render :update do |page|
-        page.remove "config-#{@widget.dom_id}"
-        page.replace_html "name-#{@widget.dom_id}", @widget.name
-        page << "jQuery.getScript('/widgets/show/#{@widget.id}');"
-      end
+      render :json => {:widget_name => @widget.name, :widget_type => @widget.widget_type, :gadget_url => @widget.gadget_url, :configured => @widget.configured}
+    else
+      render :nothing => true
     end
   end
 
@@ -200,22 +159,8 @@ class WidgetsController < ApplicationController
     end
 
     @widget.collapsed = !@widget.collapsed?
-
-    render :update do |page|
-      if @widget.collapsed?
-        page.hide "content_#{@widget.dom_id}"
-        page << "Element.removeClassName($('indicator-#{@widget.dom_id}'), 'widget-open');"
-        page << "Element.addClassName($('indicator-#{@widget.dom_id}'), 'widget-collapsed');"
-      else
-        page.show "content_#{@widget.dom_id}"
-        page << "Element.removeClassName($('indicator-#{@widget.dom_id}'), 'widget-collapsed');"
-        page << "Element.addClassName($('indicator-#{@widget.dom_id}'), 'widget-open');"
-      end
-      page << "portal.refreshHeights();"
-    end
-
     @widget.save
-
+    render :json => {:collapsed => @widget.collapsed?, :dom_id => @widget.dom_id}
   end
 
   private

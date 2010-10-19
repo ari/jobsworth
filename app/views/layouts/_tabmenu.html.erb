@@ -10,7 +10,7 @@
       <% if active == "activities/list" %>
       <ul>
         <li>
-          <%= link_to _('Add New Widget'), :url => { :controller => 'widgets', :action => 'add'}, :remote => true %>
+          <%= link_to_function _('Add New Widget'), 'add_widget()' %>
         </li>
       </ul>
       <% end %>
