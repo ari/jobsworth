@@ -1,7 +1,7 @@
 <fieldset id="edit_file" class="basic">
 <legend>Editing Project File</legend>
 
-<% form_tag({:action => 'update', :id => @file }, :id => "edit_file_form", :remote => true) do  %>
+<%= form_tag({:action => 'update', :id => @file }, :id => "edit_file_form", :remote => true) do  %>
   <%= render :partial => "form_edit" %>
   <label>&nbsp;</label><div class="buttons">
   <%= submit_tag _("Update"), :class => 'nolabel' %>

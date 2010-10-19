@@ -3,7 +3,7 @@
     <%= _("Edit tag - %s", @tag.name) %>
   </legend>
 
-  <% form_for(@tag) do |f| -%>
+  <%= form_for(@tag) do |f| -%>
     <%= f.label :name %>
     <%= f.text_field :name %>
     <br />
