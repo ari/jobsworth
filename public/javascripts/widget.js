@@ -105,3 +105,46 @@ function add_widget() {
     jQuery("#add-widget").fadeOut("slow");
   }
 }
+
+// functions for 'Projects' widget
+function toggle_projects(id) {
+  jQuery.ajax({
+    url: '/activities/toggle_display/' + id,
+    dataType: 'json',
+    success:function(response) {
+      if (response.collapse == 1) {
+        jQuery("#projects_customer_" + response.id).hide();
+        jQuery("#indicator_" + response.id).attr("class", "collapse-indicator-closed");
+      } else {
+        jQuery("#projects_customer_" + response.id).show();
+        jQuery("#indicator_" + response.id).attr("class", "collapse-indicator-open");
+      }
+    },
+    beforeSend: function(){ showProgress(); },
+    complete: function(){ hideProgress(); },
+    error:function (xhr, thrownError) {
+      alert("Invalid request");
+    }
+  });
+}
+
+function toogle_milestones(id) {
+ jQuery.ajax({
+    url: '/activities/toggle_display_milestones/' + id,
+    dataType: 'json',
+    success:function(response) {
+      if (response.collapse == 1) {
+        jQuery('tr.project_' + response.id).hide();
+        jQuery('#small_indicator_' + response.id).attr('class', 'small-collapse-indicator-closed');
+      } else {
+        jQuery('tr.project_' + response.id).show();
+        jQuery('#small_indicator_' + response.id).attr('class', 'small-collapse-indicator-open');
+      }
+    },
+    beforeSend: function(){ showProgress(); },
+    complete: function(){ hideProgress(); },
+    error:function (xhr, thrownError) {
+      alert("Invalid request");
+    }
+  });
+}
