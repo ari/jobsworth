@@ -9,7 +9,7 @@ function widget_toggle_display(widget_id) {
       }
       else {
         jQuery("#content_" + response.dom_id).show();
-        jQuery("#indicator-" + response.dom_id).attr("class", "widget-open")
+        jQuery("#indicator-" + response.dom_id).attr("class", "widget-open");
       }
       portal.refreshHeights();
     },
@@ -107,44 +107,34 @@ function add_widget() {
 }
 
 // functions for 'Projects' widget
-function toggle_projects(id) {
-  jQuery.ajax({
-    url: '/activities/toggle_display/' + id,
-    dataType: 'json',
-    success:function(response) {
-      if (response.collapse == 1) {
-        jQuery("#projects_customer_" + response.id).hide();
-        jQuery("#indicator_" + response.id).attr("class", "collapse-indicator-closed");
-      } else {
-        jQuery("#projects_customer_" + response.id).show();
-        jQuery("#indicator_" + response.id).attr("class", "collapse-indicator-open");
-      }
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      alert("Invalid request");
+function toggle_projects(id, toggle) {
+    toggle_projects_widget(id, toggle, 'project_', '#projects_customer_', '#indicator_', 'collapse-indicator-');
+}
+function toggle_milestones(id, toggle){
+    toggle_projects_widget(id, toggle, 'milestone_', 'tr.project_', '#small_indicator_', 'small-collapse-indicator-');
+}
+function toggle_projects_widget(id, toggle, cookie_prefix, container_prefix, indicator_prefix, class_prefix)
+{
+    var collapsed = jQuery.cookie(cookie_prefix + id);
+    collapsed = (collapsed == 'true' ? true : false);
+    if(toggle) { collapsed = !collapsed; }
+    jQuery.cookie(cookie_prefix + id, (collapsed ? 'true' : null));
+    if (collapsed) {
+        jQuery(container_prefix + id).hide();
+        jQuery(indicator_prefix + id).attr('class', class_prefix  + 'closed');
+    } else {
+        jQuery(container_prefix + id).show();
+        jQuery(indicator_prefix + id).attr('class', class_prefix + 'open');
     }
-  });
 }
 
-function toogle_milestones(id) {
- jQuery.ajax({
-    url: '/activities/toggle_display_milestones/' + id,
-    dataType: 'json',
-    success:function(response) {
-      if (response.collapse == 1) {
-        jQuery('tr.project_' + response.id).hide();
-        jQuery('#small_indicator_' + response.id).attr('class', 'small-collapse-indicator-closed');
-      } else {
-        jQuery('tr.project_' + response.id).show();
-        jQuery('#small_indicator_' + response.id).attr('class', 'small-collapse-indicator-open');
-      }
-    },
-    beforeSend: function(){ showProgress(); },
-    complete: function(){ hideProgress(); },
-    error:function (xhr, thrownError) {
-      alert("Invalid request");
+function init_projects_widget(){
+    if (document.cookie && document.cookie != '') {
+        jQuery.each(document.cookie.match(/milestone_[0-9]+/g), function(index, key){
+            toggle_milestones(key.split('_')[1], false)
+        });
+        jQuery.each(document.cookie.match(/project_[0-9]+/g), function(index, key){
+            toggle_projects(key.split('_')[1], false)
+        });
     }
-  });
 }

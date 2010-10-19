@@ -42,17 +42,4 @@ class ActivitiesController < ApplicationController
     flash['notice'] = _('Tutorial hidden. It will no longer be shown in the menu.')
     redirect_to :controller => 'activities', :action => 'list'
   end
-
-  def toggle_display
-    session[:collapse_projects] ||= {}
-    session[:collapse_projects][params[:id]] = 1 - session[:collapse_projects][params[:id]].to_i
-    render :json => {:id => params[:id], :collapse => session[:collapse_projects][params[:id]].to_i}
-  end
-
-  def toggle_display_milestones
-    session[:collapse_milestones] ||= {}
-    session[:collapse_milestones][params[:id]] = 1 - session[:collapse_milestones][params[:id]].to_i
-    render :json => {:id => params[:id], :collapse => session[:collapse_milestones][params[:id]].to_i}
-  end
-
 end
