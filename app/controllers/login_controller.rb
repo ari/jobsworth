@@ -166,7 +166,7 @@ class LoginController < ApplicationController
         @company.customers << @customer
         @company.users << @user
 
-        Signup::deliver_signup(@user, @company) rescue flash[:notice] = "Error sending registration email. Account still created.<br/>"
+        Signup::signup(@user, @company).deliver rescue flash[:notice] = "Error sending registration email. Account still created.<br/>"
         redirect_to "http://#{@company.subdomain}.#{$CONFIG[:domain]}"
       end
 
@@ -221,7 +221,7 @@ class LoginController < ApplicationController
     end
 
     EmailAddress.find(:all, :conditions => { :email => email }).each do |e|
-       Signup::deliver_forgot_password(e.user)
+       Signup::forgot_password(e.user).deliver
     end
 
     # tell user it was successful even if we didn't find the user, for security.

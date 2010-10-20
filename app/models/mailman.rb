@@ -75,7 +75,7 @@ class Mailman < ActionMailer::Base
       add_email_to_task(e, email, task)
 
     else
-      Notifications::deliver_unknown_from_address(email.from.first, company.subdomain)
+      Notifications::unknown_from_address(email.from.first, company.subdomain).deliver
     end
 
     return e
@@ -220,7 +220,7 @@ class Mailman < ActionMailer::Base
     email_body = email.body.to_s.gsub(/<[^>]*>/,'')
     # need a user, so just use the first admin
     user = task.company.users.first(:conditions => { :admin => 1 })
-    Notifications::deliver_created(task, user, email.from.first.strip, email_body)
+    Notifications::created(task, user, email.from.first.strip, email_body).deliver
     task.mark_as_unread(user)
   end
 
