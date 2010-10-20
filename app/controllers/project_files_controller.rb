@@ -102,17 +102,18 @@ class ProjectFilesController < ApplicationController
       redirect_to :controller => 'projects', :action => 'new'
     else
       @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
-    end
+      render :partial => "edit_folder"
+    end    
   end
 
   def update_folder
     @folder = ProjectFolder.find(params[:id], :conditions => ["project_id IN (#{current_project_ids})"])
     unless @folder.update_attributes(params[:folder])
-      flash['notice'] = _('Unable to update folder.')
-      redirect_to :action => 'list', :id => @folder.parent_id
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update folder.')})
+      render :json => {:status => 'error', :html => message}
       return
     end
-
+    render :json => {:status => 'success', :html => render_to_string(:partial => 'folder_cell.html.erb', :locals => { :folder => @folder })}
   end
 
   def create_folder
@@ -121,18 +122,22 @@ class ProjectFilesController < ApplicationController
     if @folder.parent_id.to_i > 0
       parent = ProjectFolder.find(:first, :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
       if parent.nil?
-        flash['notice'] = _('Unable to find selected parent folder.')
-        redirect_to :action => list
+        message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to find selected parent folder.')})
+        render :json => {:status => 'error', :message => message}
         return
       end
     end
     unless @folder.save
-      render :action => 'list'
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to save folder.')})
+      render :json => {:status => 'error', :message => message}
+    else
+      html = render_to_string(:partial => 'folder_cell.html.erb', :locals => { :folder => @folder })
+      render :json => {:status => 'success', :html => html}
     end
   end
 
   def upload
-    @type, @project_files = 'file', []
+    @project_files = []
     if params['tmp_files'].blank? || params['tmp_files'].select{|f| f != ""}.size == 0
       @valid, @message = false, _('No file selected.')
       render :file => '/project_files/upload.json.erb' and return
@@ -159,7 +164,7 @@ class ProjectFilesController < ApplicationController
     render :file => '/project_files/upload.json.erb'
   end
 
-  def edit
+  def edit_file
     @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
     render :partial => "edit"
   end
@@ -167,18 +172,19 @@ class ProjectFilesController < ApplicationController
   def update
     @file = ProjectFile.find(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
     unless @file.update_attributes(params[:file])
-      flash['notice'] = _('Unable to update file')
-      redirect_to :action => 'list', :id => @file.project_folder_id
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _('Unable to update file')})
+      render :json => {:status => 'error', :html => message}
+      return
     end
-    render :partial => 'file_cell.html.erb', :locals => { :project_files => @file}
+    render :json => {:status => 'success', :html => render_to_string(:partial => 'file_cell.html.erb', :locals => {:project_files => @file})}
   end
 
-  def destroy
+  def destroy_file
     @file = ProjectFile.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id])
 
     if @file.nil?
-      flash['notice'] = _("No such file.")
-      redirect_to :action => 'list'
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such file.")})
+      render :json => {:status => 'error', :message => message}       
       return
     end
     l = @file.event_logs.new
@@ -186,28 +192,24 @@ class ProjectFilesController < ApplicationController
     l.project_id = @file.project_id
     l.user_id = current_user.id
     l.event_type = EventLog::FILE_DELETED
-    l.title = "{@file.name} deleted"
+    l.title = "#{@file.name} deleted"
     l.save
 
     @file.destroy
-    
-    respond_to do |format|
-      format.html { redirect_from_last }
-      format.js { render :nothing => true }
-    end
-
+    render :json => {:status => 'success' }
   end
 
   def destroy_folder
     @folder = ProjectFolder.find_by_id(params[:id], :conditions => ["company_id = ? AND project_id IN (#{current_project_ids})", current_user.company_id] )
 
     if @folder.nil?
-      flash['notice'] = _("No such folder.")
-      redirect_to :action => 'list'
+      message = render_to_string(:partial => "/layouts/flash.html.erb", :locals => {:message => _("No such folder.")})
+      render :json => {:status => 'error', :message => message}
       return
     end
 
     @folder.destroy
+    render :json => {:status => 'success'}
   end
 
   def move
@@ -256,7 +258,7 @@ class ProjectFilesController < ApplicationController
       end
       @file.save
     end
-
-    render :nothing => true
+    render :partial => 'folder_cell.html.erb', :locals => { :folder => @folder, :just_dropped => true}
   end
+
 end
