@@ -46,6 +46,7 @@ class WorkLog < ActiveRecord::Base
   }
 
   validates_presence_of :started_at
+  validate :validate_logs
 
   after_update { |r|
     r.ical_entry.destroy if r.ical_entry
@@ -144,9 +145,7 @@ class WorkLog < ActiveRecord::Base
     customer.name if customer
   end
 
-  alias :validate_custom_attributes :validate
-
-  def validate
+  def validate_logs
     if log_type == EventLog::TASK_WORK_ADDED
       validate_custom_attributes
     end

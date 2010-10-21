@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
   validates_presence_of         :company
   validates_presence_of :time_format
   validates_presence_of :date_format
+  validate :validate_custom_attributes
 
   before_create                 :generate_uuid
   after_create      :generate_widgets

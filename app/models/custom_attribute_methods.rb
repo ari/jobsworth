@@ -103,7 +103,7 @@ module CustomAttributeMethods
   # Checks if this object, and all associated values are valid. Adds errors
   # to base if not.
   ###
-  def validate
+  def validate_custom_attributes
     valid = true
 
     invalid = all_custom_attribute_values.flatten.select { |cav| !cav.valid? }

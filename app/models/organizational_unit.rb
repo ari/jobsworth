@@ -9,6 +9,7 @@ class OrganizationalUnit < ActiveRecord::Base
 
   validates_presence_of :name
   validates_presence_of :customer
+  validate :validate_custom_attributes
 
   def company
     customer.company

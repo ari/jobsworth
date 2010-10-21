@@ -26,6 +26,7 @@ class Customer < ActiveRecord::Base
   validates_uniqueness_of       :name, :scope => 'company_id'
 
   validates_presence_of         :company_id
+  validate                      :validate_custom_attributes
 
   ###
   # Searches the customers for company and returns
