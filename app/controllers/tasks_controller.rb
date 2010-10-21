@@ -453,13 +453,13 @@ protected
       new_name = "None"
       new_name = current_user.tz.utc_to_local(task.due_at).strftime_localized("%A, %d %B %Y") unless task.due_at.nil?
 
-      return  "- Due:".html_safe + " #{old_name} -> #{new_name}\n"
+      return  "- Due:".html_safe + " #{old_name} " + "->".html_safe + " #{new_name}\n"
     else
       return ""
     end
   end
   def task_name_changed(old_task, task)
-    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} -> #{task[:name]}\n") : ""
+    (old_task[:name] != task[:name]) ? ("- Name:".html_safe  + "#{old_task[:name]} " + "->".html_safe + " #{task[:name]}\n") : ""
   end
   def task_description_changed(old_task, task)
     (old_task.description != task.description) ? "- Description changed\n".html_safe : ""
